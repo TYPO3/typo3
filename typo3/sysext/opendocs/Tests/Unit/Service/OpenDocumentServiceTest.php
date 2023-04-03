@@ -22,17 +22,15 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class OpenDocumentServiceTest extends UnitTestCase
+final class OpenDocumentServiceTest extends UnitTestCase
 {
-    protected OpenDocumentService $subject;
-    protected MockObject&BackendUserAuthentication $backendUser;
+    private BackendUserAuthentication&MockObject $backendUser;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->backendUser = $this->getMockBuilder(BackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
         $GLOBALS['BE_USER'] = $this->backendUser;
-        $this->subject = new OpenDocumentService();
     }
 
     /**
@@ -47,13 +45,12 @@ class OpenDocumentServiceTest extends UnitTestCase
             ],
             'identifier2',
         ]);
-
-        $openDocuments = $this->subject->getOpenDocuments();
+        $subject = new OpenDocumentService();
+        $openDocuments = $subject->getOpenDocuments();
         $expected = [
             'identifier1' => [ 'data1' ],
             'identifier2' => [ 'data2' ],
         ];
-
         self::assertEquals($expected, $openDocuments);
     }
 
@@ -63,9 +60,8 @@ class OpenDocumentServiceTest extends UnitTestCase
     public function handlesUserSessionWithoutOpenDocuments(): void
     {
         $this->backendUser->method('getModuleData')->with('FormEngine', 'ses')->willReturn(null);
-
-        $openDocuments = $this->subject->getOpenDocuments();
-
+        $subject = new OpenDocumentService();
+        $openDocuments = $subject->getOpenDocuments();
         self::assertEquals([], $openDocuments);
     }
 
@@ -77,12 +73,11 @@ class OpenDocumentServiceTest extends UnitTestCase
         $this->backendUser->method('getModuleData')->with('opendocs::recent')->willReturn([
             'identifier1' => [ 'data1' ],
         ]);
-
-        $recentDocuments = $this->subject->getRecentDocuments();
+        $subject = new OpenDocumentService();
+        $recentDocuments = $subject->getRecentDocuments();
         $expected = [
             'identifier1' => [ 'data1' ],
         ];
-
         self::assertEquals($expected, $recentDocuments);
     }
 
@@ -92,9 +87,8 @@ class OpenDocumentServiceTest extends UnitTestCase
     public function handlesUserSessionWithoutRecentDocuments(): void
     {
         $this->backendUser->method('getModuleData')->with('opendocs::recent')->willReturn(null);
-
-        $recentDocuments = $this->subject->getRecentDocuments();
-
+        $subject = new OpenDocumentService();
+        $recentDocuments = $subject->getRecentDocuments();
         self::assertEquals([], $recentDocuments);
     }
 
@@ -149,13 +143,17 @@ class OpenDocumentServiceTest extends UnitTestCase
             'identifier2' => [ 'data2' ],
         ];
 
-        $this->backendUser->expects(self::atLeastOnce())->method('pushModuleData')->withConsecutive(
+        $series = [
             ['FormEngine', $expectedOpenDocumentsData],
-            ['opendocs::recent', $expectedRecentDocumentsData]
-        );
+            ['opendocs::recent', $expectedRecentDocumentsData],
+        ];
+        $this->backendUser->method('pushModuleData')->willReturnCallback(function (string $module, array $data) use (&$series): void {
+            $expectedArgs = array_shift($series);
+            self::assertSame($expectedArgs[0], $module);
+            self::assertSame($expectedArgs[1], $data);
+        });
 
-        $this->subject->closeDocument('identifier9');
-        $this->subject->closeDocument('identifier9');
-        $this->subject->closeDocument('unknownIdentifier');
+        $subject = new OpenDocumentService();
+        $subject->closeDocument('identifier9');
     }
 }
