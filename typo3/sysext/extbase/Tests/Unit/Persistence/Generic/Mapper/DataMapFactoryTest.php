@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DataMapFactoryTest extends UnitTestCase
+final class DataMapFactoryTest extends UnitTestCase
 {
     /**
      * @test
@@ -31,16 +31,16 @@ class DataMapFactoryTest extends UnitTestCase
     public function buildDataMapThrowsExceptionIfClassNameIsNotKnown(): void
     {
         $this->expectException(InvalidClassException::class);
-        // @TODO expectExceptionCode is 0
-        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['getControlSection'], [], '', false);
+        $this->expectExceptionCode(1476045117);
+        $subject = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);
         $cacheMock = $this->getMockBuilder(VariableFrontend::class)
             ->onlyMethods(['get'])
             ->disableOriginalConstructor()
             ->getMock();
         $cacheMock->method('get')->willReturn(false);
-        $mockDataMapFactory->_set('dataMapCache', $cacheMock);
-        $mockDataMapFactory->_set('baseCacheIdentifier', 'PackageDependentCacheIdentifier');
-        $mockDataMapFactory->buildDataMap('UnknownObject');
+        $subject->_set('dataMapCache', $cacheMock);
+        $subject->_set('baseCacheIdentifier', 'PackageDependentCacheIdentifier');
+        $subject->buildDataMap('UnknownClass');
     }
 
     public static function classNameTableNameMappings(): array
@@ -59,7 +59,7 @@ class DataMapFactoryTest extends UnitTestCase
      */
     public function resolveTableNameReturnsExpectedTablenames($className, $expected): void
     {
-        $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);
-        self::assertSame($expected, $dataMapFactory->_call('resolveTableName', $className));
+        $subject = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);
+        self::assertSame($expected, $subject->_call('resolveTableName', $className));
     }
 }
