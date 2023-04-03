@@ -286,7 +286,7 @@ abstract class ActionController implements ControllerInterface
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    protected function initializeActionMethodArguments()
+    protected function initializeActionMethodArguments(): void
     {
         $methodParameters = $this->reflectionService
             ->getClassSchema(static::class)
@@ -420,7 +420,7 @@ abstract class ActionController implements ControllerInterface
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    protected function renderAssetsForRequest($request)
+    protected function renderAssetsForRequest($request): void
     {
         if (!$this->view instanceof AbstractTemplateView) {
             // Only AbstractTemplateView (from Fluid engine, so this includes all TYPO3 Views based
@@ -540,64 +540,29 @@ abstract class ActionController implements ControllerInterface
     /**
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    protected function setViewConfiguration(ViewInterface $view)
+    protected function setViewConfiguration(ViewInterface $view): void
     {
-        // Template Path Override
-        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(
+        $configuration = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
         );
-
-        if (method_exists($view, 'setTemplateRootPaths')) {
-            $setting = 'templateRootPaths';
-            $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
-            // no need to bother if there is nothing to set
-            if ($parameter) {
-                $view->setTemplateRootPaths($parameter);
-            }
-        }
-
-        if (method_exists($view, 'setLayoutRootPaths')) {
-            $setting = 'layoutRootPaths';
-            $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
-            // no need to bother if there is nothing to set
-            if ($parameter) {
-                $view->setLayoutRootPaths($parameter);
-            }
-        }
-
-        if (method_exists($view, 'setPartialRootPaths')) {
-            $setting = 'partialRootPaths';
-            $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
-            // no need to bother if there is nothing to set
-            if ($parameter) {
-                $view->setPartialRootPaths($parameter);
-            }
-        }
-    }
-
-    /**
-     * Handles the path resolving for *rootPath(s)
-     *
-     * numerical arrays get ordered by key ascending
-     *
-     * @param array $extbaseFrameworkConfiguration
-     * @param string $setting parameter name from TypoScript
-     *
-     * @return array
-     *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    protected function getViewProperty($extbaseFrameworkConfiguration, $setting)
-    {
-        $values = [];
-        if (
-            !empty($extbaseFrameworkConfiguration['view'][$setting])
-            && is_array($extbaseFrameworkConfiguration['view'][$setting])
+        if (!empty($configuration['view']['templateRootPaths'])
+            && is_array($configuration['view']['templateRootPaths'])
+            && method_exists($view, 'setTemplateRootPaths')
         ) {
-            $values = $extbaseFrameworkConfiguration['view'][$setting];
+            $view->setTemplateRootPaths($configuration['view']['templateRootPaths']);
         }
-
-        return $values;
+        if (!empty($configuration['view']['layoutRootPaths'])
+            && is_array($configuration['view']['layoutRootPaths'])
+            && method_exists($view, 'setLayoutRootPaths')
+        ) {
+            $view->setLayoutRootPaths($configuration['view']['layoutRootPaths']);
+        }
+        if (!empty($configuration['view']['partialRootPaths'])
+            && is_array($configuration['view']['partialRootPaths'])
+            && method_exists($view, 'setPartialRootPaths')
+        ) {
+            $view->setPartialRootPaths($configuration['view']['partialRootPaths']);
+        }
     }
 
     /**
@@ -717,7 +682,6 @@ abstract class ActionController implements ControllerInterface
     /**
      * Creates a Message object and adds it to the FlashMessageQueue.
      *
-     * @param string $messageBody The message
      * @param string $messageTitle Optional message title
      * @param int|ContextualFeedbackSeverity $severity Optional severity, must be one of \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity cases. Accepts int values as well, which is deprecated.
      * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default) or not
@@ -726,11 +690,8 @@ abstract class ActionController implements ControllerInterface
      *
      * @todo: Change $severity to allow ContextualFeedbackSeverity only in v13
      */
-    public function addFlashMessage($messageBody, $messageTitle = '', $severity = ContextualFeedbackSeverity::OK, $storeInSession = true)
+    public function addFlashMessage(string $messageBody, $messageTitle = '', $severity = ContextualFeedbackSeverity::OK, $storeInSession = true)
     {
-        if (!is_string($messageBody)) {
-            throw new \InvalidArgumentException('The message body must be of type string, "' . gettype($messageBody) . '" given.', 1243258395);
-        }
         if (is_int($severity)) {
             // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
             $severity = ContextualFeedbackSeverity::transform($severity);
@@ -738,7 +699,7 @@ abstract class ActionController implements ControllerInterface
         /* @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
         $flashMessage = GeneralUtility::makeInstance(
             FlashMessage::class,
-            (string)$messageBody,
+            $messageBody,
             (string)$messageTitle,
             $severity,
             $storeInSession

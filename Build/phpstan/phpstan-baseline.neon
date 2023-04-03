@@ -1751,11 +1751,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Error/ResultTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$messageBody of method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\ActionController\\:\\:addFlashMessage\\(\\) expects string, stdClass given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ActionControllerTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$name of class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\Argument constructor expects string, ArrayObject\\<\\*NEVER\\*, \\*NEVER\\*\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ArgumentTest.php

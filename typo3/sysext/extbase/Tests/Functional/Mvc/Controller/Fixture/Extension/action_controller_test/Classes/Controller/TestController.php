@@ -19,19 +19,47 @@ namespace ExtbaseTeam\ActionControllerTest\Controller;
 
 use ExtbaseTeam\ActionControllerTest\Domain\Model\Model;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
- * Fixture controller
+ * Fixture controller with some test actions and making some abstract controller things public.
  */
 class TestController extends ActionController
 {
+    public $view;
+    public $arguments;
+    public $actionMethodName;
+    public RequestInterface $request;
+
     public function getArguments(): Arguments
     {
         return $this->arguments;
+    }
+
+    public function renderAssetsForRequest($request): void
+    {
+        parent::renderAssetsForRequest($request);
+    }
+
+    public function initializeActionMethodArguments(): void
+    {
+        parent::initializeActionMethodArguments();
+    }
+
+    public function setViewConfiguration(ViewInterface $view): void
+    {
+        parent::setViewConfiguration($view);
+    }
+
+    public function getFlashMessageQueue(string $identifier = null): FlashMessageQueue
+    {
+        return parent::getFlashMessageQueue($identifier);
     }
 
     public function initializeFooAction(): void
@@ -67,6 +95,21 @@ class TestController extends ActionController
     }
 
     public function quxAction(): ResponseInterface
+    {
+        return $this->htmlResponse('');
+    }
+
+    public function initializeActionMethodArgumentsTestActionOne(string $stringArgument, int $integerArgument, \stdClass $objectArgument): ResponseInterface
+    {
+        return $this->htmlResponse('');
+    }
+
+    public function initializeActionMethodArgumentsTestActionTwo(string $arg1, array $arg2 = [21], string $arg3 = 'foo'): ResponseInterface
+    {
+        return $this->htmlResponse('');
+    }
+
+    public function initializeActionMethodArgumentsTestActionThree($arg1): ResponseInterface
     {
         return $this->htmlResponse('');
     }
