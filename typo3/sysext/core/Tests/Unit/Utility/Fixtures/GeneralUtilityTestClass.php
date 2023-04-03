@@ -17,18 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
-/**
- * Class GeneralUtilityFixture
- */
-class GeneralUtilityFixture extends GeneralUtility
+final class GeneralUtilityTestClass
 {
-    /**
-     * Resets the internal computed class name cache.
-     */
-    public static function resetFinalClassNameCache(): void
+    public function user_calledUserFunction(): string
     {
-        static::$finalClassNameCache = [];
+        return 'Worked fine';
     }
 }

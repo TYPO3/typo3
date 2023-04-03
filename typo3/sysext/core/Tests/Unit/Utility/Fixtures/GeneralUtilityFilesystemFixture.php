@@ -19,13 +19,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class GeneralUtilityFilesystemFixture
- */
 class GeneralUtilityFilesystemFixture extends GeneralUtility
 {
     /**
-     * For testing we must allow vfs:// as first part file path
+     * For testing, we must allow vfs:// as first part file path
      *
      * @param string $path File path to evaluate
      */

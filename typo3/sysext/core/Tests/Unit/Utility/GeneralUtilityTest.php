@@ -29,8 +29,8 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ExtendedSingletonClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFilesystemFixture;
-use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityMakeInstanceInjectLoggerFixture;
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityTestClass;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OriginalClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OtherReplacementClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ReplacementClassFixture;
@@ -42,7 +42,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class GeneralUtilityTest extends UnitTestCase
+final class GeneralUtilityTest extends UnitTestCase
 {
     public const NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';
 
@@ -2956,7 +2956,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function makeInstanceInstanciatesConfiguredImplementation(): void
     {
-        GeneralUtilityFixture::resetFinalClassNameCache();
+        GeneralUtility::flushInternalRuntimeCaches();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = ['className' => ReplacementClassFixture::class];
         self::assertInstanceOf(ReplacementClassFixture::class, GeneralUtility::makeInstance(OriginalClassFixture::class));
     }
@@ -2966,7 +2966,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function makeInstanceResolvesConfiguredImplementationsRecursively(): void
     {
-        GeneralUtilityFixture::resetFinalClassNameCache();
+        GeneralUtility::flushInternalRuntimeCaches();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = ['className' => ReplacementClassFixture::class];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][ReplacementClassFixture::class] = ['className' => OtherReplacementClassFixture::class];
         self::assertInstanceOf(OtherReplacementClassFixture::class, GeneralUtility::makeInstance(OriginalClassFixture::class));
@@ -3391,54 +3391,42 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertFileExists($absoluteTargetDirectory . 'foo/file');
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////
-    // Tests concerning deprecation log
-    /////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////
-    // Tests concerning callUserFunction
-    ///////////////////////////////////////////////////
-    /**
-     * @test
-     * @dataProvider callUserFunctionInvalidParameterDataprovider
-     * @param non-empty-string $functionName
-     */
-    public function callUserFunctionWillThrowExceptionForInvalidParameters(string $functionName, int $expectedException): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode($expectedException);
-
-        $inputData = ['foo' => 'bar'];
-        GeneralUtility::callUserFunction($functionName, $inputData, $this);
-    }
-
-    /**
-     * Data provider for callUserFunctionInvalidParameterDataprovider and
-     * callUserFunctionWillThrowExceptionForInvalidParameters.
-     */
-    public static function callUserFunctionInvalidParameterDataprovider(): array
+    public static function callUserFunctionInvalidParameterDataProvider(): array
     {
         return [
-            'Function is not prefixed' => [self::class . '->calledUserFunction', 1294585865],
-            'Class doesn\'t exists' => ['t3lib_divTest21345->user_calledUserFunction', 1294585866],
-            'No method name' => [self::class, 1294585867],
+            'Method does not exist' => [GeneralUtilityTestClass::class . '->calledUserFunction', 1294585865],
+            'Class does not exist' => ['t3lib_divTest21345->user_calledUserFunction', 1294585866],
+            'No method name' => [GeneralUtilityTestClass::class, 1294585867],
             'No class name' => ['->user_calledUserFunction', 1294585866],
             'No function name' => ['', 1294585867],
         ];
     }
 
     /**
-     * Above tests already showed that the prefix is checked properly,
-     * therefore this test skips the prefix and enables to inline the instantly
-     * created function (who's name doesn't have a prefix).
-     *
+     * @test
+     * @dataProvider callUserFunctionInvalidParameterDataProvider
+     * @param non-empty-string $functionName
+     */
+    public function callUserFunctionWillThrowExceptionForInvalidParameters(string $functionName, int $expectedException): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode($expectedException);
+        $inputData = ['foo' => 'bar'];
+        GeneralUtility::callUserFunction($functionName, $inputData, $this);
+    }
+
+    /**
      * @test
      */
-    public function callUserFunctionCanCallFunction(): void
+    public function callUserFunctionCanCallClosure(): void
     {
         $inputData = ['foo' => 'bar'];
-        $result = GeneralUtility::callUserFunction(static function () {
-            return 'Worked fine';
-        }, $inputData, $this, '');
+        $result = GeneralUtility::callUserFunction(
+            static fn (): string => 'Worked fine',
+            $inputData,
+            $this,
+            ''
+        );
         self::assertEquals('Worked fine', $result);
     }
 
@@ -3448,13 +3436,18 @@ class GeneralUtilityTest extends UnitTestCase
     public function callUserFunctionCanCallMethod(): void
     {
         $inputData = ['foo' => 'bar'];
-        $result = GeneralUtility::callUserFunction(self::class . '->user_calledUserFunction', $inputData, $this);
+        $result = GeneralUtility::callUserFunction(GeneralUtilityTestClass::class . '->user_calledUserFunction', $inputData, $this);
         self::assertEquals('Worked fine', $result);
     }
 
-    public function user_calledUserFunction(): string
+    /**
+     * @test
+     */
+    public function callUserFunctionTrimsSpaces(): void
     {
-        return 'Worked fine';
+        $inputData = ['foo' => 'bar'];
+        $result = GeneralUtility::callUserFunction("\t" . GeneralUtilityTestClass::class . '->user_calledUserFunction ', $inputData, $this);
+        self::assertEquals('Worked fine', $result);
     }
 
     /**
@@ -3464,20 +3457,10 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $inputData = ['foo' => 'bar'];
         $closure = static function ($parameters, $reference) use ($inputData) {
-            $reference->assertEquals($inputData, $parameters, 'Passed data doesn\'t match expected output');
+            $reference->assertEquals($inputData, $parameters, 'Passed data does not match expected output');
             return 'Worked fine';
         };
         self::assertEquals('Worked fine', GeneralUtility::callUserFunction($closure, $inputData, $this));
-    }
-
-    /**
-     * @test
-     */
-    public function callUserFunctionTrimsSpaces(): void
-    {
-        $inputData = ['foo' => 'bar'];
-        $result = GeneralUtility::callUserFunction("\t" . self::class . '->user_calledUserFunction ', $inputData, $this);
-        self::assertEquals('Worked fine', $result);
     }
 
     /**

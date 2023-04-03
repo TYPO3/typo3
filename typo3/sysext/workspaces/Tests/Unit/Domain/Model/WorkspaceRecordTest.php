@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Tests\Unit\Domain\Model;
 
-use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFixture;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Domain\Record\AbstractRecord;
 use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -27,12 +27,12 @@ class WorkspaceRecordTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        GeneralUtilityFixture::resetFinalClassNameCache();
+        GeneralUtility::flushInternalRuntimeCaches();
     }
 
     protected function tearDown(): void
     {
-        GeneralUtilityFixture::resetFinalClassNameCache();
+        GeneralUtility::flushInternalRuntimeCaches();
         parent::tearDown();
     }
 
