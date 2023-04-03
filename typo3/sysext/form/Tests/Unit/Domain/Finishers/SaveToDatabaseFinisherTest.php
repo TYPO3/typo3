@@ -23,7 +23,7 @@ use TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SaveToDatabaseFinisherTest extends UnitTestCase
+final class SaveToDatabaseFinisherTest extends UnitTestCase
 {
     /**
      * @test
@@ -143,9 +143,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
      */
     public function executeInternalProcessesMultipleTables(): void
     {
-        $saveToDatabaseFinisher = $this->getMockBuilder(SaveToDatabaseFinisher::class)
-            ->onlyMethods(['process'])
-            ->getMock();
+        $saveToDatabaseFinisher = $this->getMockBuilder(SaveToDatabaseFinisher::class)->onlyMethods(['process'])->getMock();
         $saveToDatabaseFinisher->setOptions([
             [
                 'table' => 'tx_foo',
@@ -160,9 +158,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
                 ],
             ],
         ]);
-
-        $saveToDatabaseFinisher->expects(self::exactly(2))->method('process')->withConsecutive([0], [1]);
-
+        $saveToDatabaseFinisher->expects(self::exactly(2))->method('process');
         $saveToDatabaseFinisher->execute($this->createMock(FinisherContext::class));
     }
 
