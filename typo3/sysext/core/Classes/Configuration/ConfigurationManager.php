@@ -292,7 +292,7 @@ class ConfigurationManager
      * @param array $keys Array with key paths to remove from LocalConfiguration
      * @return bool TRUE if something was removed
      */
-    public function removeLocalConfigurationKeysByPath(array $keys)
+    public function removeLocalConfigurationKeysByPath(array $keys): bool
     {
         $result = false;
         $localConfiguration = $this->getLocalConfiguration();

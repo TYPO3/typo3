@@ -3011,11 +3011,6 @@ parameters:
 			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/FileNodeTest.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Install\\\\Tests\\\\Unit\\\\Service\\\\SilentConfigurationUpgradeServiceTest\\:\\:\\$backupPackageManager \\(TYPO3\\\\CMS\\\\Core\\\\Package\\\\UnitTestPackageManager\\) does not accept TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageManager\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/Service/SilentConfigurationUpgradeServiceTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$recordUid of method TYPO3\\\\CMS\\\\Linkvalidator\\\\Repository\\\\BrokenLinkRepository\\:\\:removeBrokenLinksForRecord\\(\\) expects int, string given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/linkvalidator/Classes/LinkAnalyzer.php
