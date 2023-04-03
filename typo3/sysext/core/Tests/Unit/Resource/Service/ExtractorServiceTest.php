@@ -24,10 +24,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Service\ExtractorService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class ExtractorServiceTest
- */
-class ExtractorServiceTest extends UnitTestCase
+final class ExtractorServiceTest extends UnitTestCase
 {
     /**
      * @test
@@ -42,7 +39,6 @@ class ExtractorServiceTest extends UnitTestCase
 
         $extractorService = new ExtractorService();
         $method = new \ReflectionMethod($extractorService, 'isFileTypeSupportedByExtractor');
-        $method->setAccessible(true);
         $arguments = [
             $fileMock,
             $extractorMock,
@@ -65,7 +61,6 @@ class ExtractorServiceTest extends UnitTestCase
 
         $extractorService = new ExtractorService();
         $method = new \ReflectionMethod($extractorService, 'isFileTypeSupportedByExtractor');
-        $method->setAccessible(true);
         $arguments = [
             $fileMock,
             $extractorMock,
@@ -88,7 +83,6 @@ class ExtractorServiceTest extends UnitTestCase
 
         $extractorService = new ExtractorService();
         $method = new \ReflectionMethod($extractorService, 'isFileTypeSupportedByExtractor');
-        $method->setAccessible(true);
         $arguments = [
             $fileMock,
             $extractorMock,
@@ -228,7 +222,7 @@ class ExtractorServiceTest extends UnitTestCase
         $storageMock->method('getDriverType')->willReturn('Local');
 
         $subject = $this->getMockBuilder(ExtractorService::class)
-            ->setMethods(['getExtractorRegistry'])
+            ->onlyMethods(['getExtractorRegistry'])
             ->getMock()
         ;
 
@@ -268,7 +262,7 @@ class ExtractorServiceTest extends UnitTestCase
         ]);
 
         $extractorRegistryMock = $this->getMockBuilder(ExtractorRegistry::class)
-            ->setMethods(['createExtractorInstance'])
+            ->onlyMethods(['createExtractorInstance'])
             ->getMock();
 
         $extractorRegistryMock->expects(self::any())->method('createExtractorInstance')->willReturnMap(
