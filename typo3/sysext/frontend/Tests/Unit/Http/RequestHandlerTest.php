@@ -35,6 +35,9 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Http\RequestHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * @todo: It looks as if these unit tests should be turned into functional tests
+ */
 class RequestHandlerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
@@ -449,10 +452,21 @@ class RequestHandlerTest extends UnitTestCase
 
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
         $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
-        $pageRendererMock->expects(self::exactly(2))->method('setMetaTag')->withConsecutive(
+        $series = [
             [$expectedTags[0]['type'], $expectedTags[0]['name'], $expectedTags[0]['content'], [], false],
-            [$expectedTags[1]['type'], $expectedTags[1]['name'], $expectedTags[1]['content'], [], false]
-        );
+            [$expectedTags[1]['type'], $expectedTags[1]['name'], $expectedTags[1]['content'], [], false],
+        ];
+        $pageRendererMock
+            ->expects(self::exactly(2))
+            ->method('setMetaTag')
+            ->willReturnCallback(function (string $type, string $name, string $content, array $subProperties, bool $replace) use (&$series): void {
+                $expectedArgs = array_shift($series);
+                self::assertSame($expectedArgs[0], $type);
+                self::assertSame($expectedArgs[1], $name);
+                self::assertSame($expectedArgs[2], $content);
+                self::assertSame($expectedArgs[3], $subProperties);
+                self::assertSame($expectedArgs[4], $replace);
+            });
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
         $frontendTypoScript->setSetupArray([]);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
