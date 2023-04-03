@@ -30,7 +30,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FrontendConfigurationManagerTest extends UnitTestCase
+final class FrontendConfigurationManagerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
@@ -96,9 +96,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         ],
     ];
 
-    /**
-     * Sets up this testcase
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -636,9 +633,16 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname_somepluginname.' => $testPluginSettings,
             ],
         ];
+        $series = [
+            [$testExtensionSettings, $testExtensionSettingsConverted],
+            [$testPluginSettings, $testPluginSettingsConverted],
+        ];
         $this->mockTypoScriptService->expects(self::exactly(2))->method('convertTypoScriptArrayToPlainArray')
-            ->withConsecutive([$testExtensionSettings], [$testPluginSettings])
-            ->willReturnOnConsecutiveCalls($testExtensionSettingsConverted, $testPluginSettingsConverted);
+            ->willReturnCallback(function (array $settings) use (&$series): array {
+                $arguments = array_shift($series);
+                self::assertSame($settings, $arguments[0]);
+                return $arguments[1];
+            });
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
         $frontendTypoScript->setSetupArray($testSetup);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
