@@ -586,9 +586,9 @@ class Clipboard
                 $selectedRecordTitle = (string)count($selectedElements);
             }
         } else {
-            $recordTitle = $table !== 'pages' && is_array($reference)
-                ? BackendUtility::getRecordTitle($table, $reference)
-                : $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+            $recordTitle = $table === 'pages' && !is_array($reference)
+                ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
+                : BackendUtility::getRecordTitle($table, $reference);
             if ($this->current === 'normal') {
                 $selectedItem = $this->getSelectedRecord();
                 $selectedRecordTitle = $selectedItem['_RECORD_TITLE'];
