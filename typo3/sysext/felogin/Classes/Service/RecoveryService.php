@@ -20,7 +20,6 @@ namespace TYPO3\CMS\FrontendLogin\Service;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Email;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -86,7 +85,7 @@ class RecoveryService
     /**
      * Create email object from configuration.
      */
-    protected function prepareMail(RequestInterface $request, Address $receiver, string $hash): Email
+    protected function prepareMail(RequestInterface $request, Address $receiver, string $hash): FluidEmail
     {
         $url = $this->uriBuilder->setCreateAbsoluteUri(true)
             ->uriFor(

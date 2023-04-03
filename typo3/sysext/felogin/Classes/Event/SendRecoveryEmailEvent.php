@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Event;
 
-use Symfony\Component\Mime\Email;
+use TYPO3\CMS\Core\Mail\FluidEmail;
 
 /**
  * Event that contains the email to be sent to the user when they request a new password.
@@ -27,7 +27,7 @@ use Symfony\Component\Mime\Email;
  */
 final class SendRecoveryEmailEvent
 {
-    public function __construct(private readonly Email $email, private readonly array $user)
+    public function __construct(private readonly FluidEmail $email, private readonly array $user)
     {
     }
 
@@ -36,7 +36,7 @@ final class SendRecoveryEmailEvent
         return $this->user;
     }
 
-    public function getEmail(): Email
+    public function getEmail(): FluidEmail
     {
         return $this->email;
     }
