@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FolderLinkHandlerTest extends UnitTestCase
+final class FolderLinkHandlerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
@@ -63,8 +63,6 @@ class FolderLinkHandlerTest extends UnitTestCase
      * Helpful to know in which if() clause the stuff gets in
      *
      * @test
-     *
-     *
      * @dataProvider resolveParametersForFilesDataProvider
      */
     public function resolveFileReferencesToSplitParameters(array $input, array $expected): void
@@ -93,8 +91,6 @@ class FolderLinkHandlerTest extends UnitTestCase
      * Helpful to know in which if() clause the stuff gets in
      *
      * @test
-     *
-     *
      * @dataProvider resolveParametersForFilesDataProvider
      */
     public function splitParametersToUnifiedIdentifierForFiles(array $input, array $parameters, string $expected): void
@@ -108,7 +104,7 @@ class FolderLinkHandlerTest extends UnitTestCase
         $folderData = explode(':', $parameters['folder']);
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
-            ->getMock(['getUid']);
+            ->getMock();
         $storage->method('getUid')->willReturn($folderData[0]);
         $folderObject->method('getStorage')->willReturn($storage);
         $folderObject->method('getIdentifier')->willReturn($folderData[1]);

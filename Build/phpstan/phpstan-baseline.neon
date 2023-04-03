@@ -1381,11 +1381,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/EmailLinkHandlerTest.php
 
 		-
-			message: "#^Method PHPUnit\\\\Framework\\\\MockObject\\\\MockBuilder\\<TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceStorage\\>\\:\\:getMock\\(\\) invoked with 1 parameter, 0 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/FolderLinkHandlerTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$locale of function setlocale expects array\\|string\\|null, int given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/core/Tests/Unit/Localization/LocalesTest.php
