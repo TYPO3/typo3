@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class Typo3DatabaseBackendTest extends UnitTestCase
+final class Typo3DatabaseBackendTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
@@ -156,11 +156,16 @@ class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->setCache($frontend);
 
         $connectionMock = $this->createMock(Connection::class);
-        $connectionMock->expects(self::exactly(2))
-            ->method('truncate')
-            ->withConsecutive(['cache_test'], ['cache_test_tags'])
-            ->willReturn(0);
-
+        $series = [
+            ['cache_test'],
+            ['cache_test_tags'],
+        ];
+        $connectionMock->expects(self::exactly(2))->method('truncate')
+            ->willReturnCallback(function (string $table) use (&$series): int {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $table);
+                return 0;
+            });
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->with(self::anything())->willReturn($connectionMock);
 
