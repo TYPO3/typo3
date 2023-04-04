@@ -169,7 +169,6 @@ class JsonElement extends AbstractFormElement
             }
 
             $codeMirrorConfig = [
-                'label' => $this->data['tableName'] . ' > ' . $this->data['fieldName'],
                 'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->getModule(), false),
             ];
 

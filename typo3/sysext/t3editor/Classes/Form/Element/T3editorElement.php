@@ -122,7 +122,6 @@ class T3editorElement extends AbstractFormElement
             $parameterArray['itemFormElValue'],
             $attributes,
             $settings,
-            $this->data['tableName'] . ' > ' . $this->data['fieldName'],
             [
                 'target' => 0,
                 'effectivePid' => $this->data['effectivePid'] ?? 0,
@@ -177,7 +176,6 @@ class T3editorElement extends AbstractFormElement
      * @param string $class Class attribute of HTML tag
      * @param string $content Content of the editor
      * @param array $attributes Any additional editor parameters
-     * @param string $label Codemirror panel label
      *
      * @return string Generated HTML code for editor
      * @throws \TYPO3\CMS\T3editor\Exception\InvalidModeException
@@ -188,7 +186,6 @@ class T3editorElement extends AbstractFormElement
         string $content = '',
         array $attributes = [],
         array $settings = [],
-        string $label = '',
         array $hiddenfields = []
     ): string {
         $code = [];
@@ -216,7 +213,6 @@ class T3editorElement extends AbstractFormElement
         }
         $codeMirrorConfig = [
             'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->getModule(), false),
-            'label' => $label,
             'addons' => GeneralUtility::jsonEncodeForHtmlAttribute($addons, false),
             'keymaps' => GeneralUtility::jsonEncodeForHtmlAttribute($keymaps, false),
             'options' => GeneralUtility::jsonEncodeForHtmlAttribute($settings, false),
