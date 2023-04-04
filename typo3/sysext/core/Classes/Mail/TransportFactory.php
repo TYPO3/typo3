@@ -75,7 +75,7 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
 
         $transportType = isset($mailSettings['transport_spool_type'])
             && !empty($mailSettings['transport_spool_type'])
-            ? 'spool' : $mailSettings['transport'];
+            ? 'spool' : (string)$mailSettings['transport'];
 
         switch ($transportType) {
             case 'spool':
@@ -140,8 +140,8 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 );
                 break;
             case 'mbox':
-                $mboxFile = $mailSettings['transport_mbox_file'];
-                if ($mboxFile == '') {
+                $mboxFile = (string)($mailSettings['transport_mbox_file'] ?? '');
+                if ($mboxFile === '') {
                     throw new Exception('$GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'transport_mbox_file\'] needs to be set when transport is set to "mbox".', 1294586645);
                 }
                 // Create our transport
@@ -193,9 +193,10 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
      */
     protected function createSpool(array $mailSettings): DelayedTransportInterface
     {
-        switch ($mailSettings['transport_spool_type']) {
+        $transportSpoolType = (string)($mailSettings['transport_spool_type'] ?? '');
+        switch ($transportSpoolType) {
             case self::SPOOL_FILE:
-                $path = GeneralUtility::getFileAbsFileName($mailSettings['transport_spool_filepath']);
+                $path = GeneralUtility::getFileAbsFileName($mailSettings['transport_spool_filepath'] ?? '');
                 if (empty($path)) {
                     throw new \RuntimeException('The Spool Type filepath must be configured for TYPO3 in order to be used. Be sure that it\'s not accessible via the web.', 1518558797);
                 }
@@ -214,7 +215,7 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 );
                 break;
             default:
-                $spool = GeneralUtility::makeInstance($mailSettings['transport_spool_type'], $mailSettings);
+                $spool = GeneralUtility::makeInstance($transportSpoolType, $mailSettings);
                 if (!($spool instanceof DelayedTransportInterface)) {
                     throw new \RuntimeException(
                         $mailSettings['transport_spool_type'] . ' is not an implementation of DelayedTransportInterface, but must implement that interface to be used as a mail spool.',
