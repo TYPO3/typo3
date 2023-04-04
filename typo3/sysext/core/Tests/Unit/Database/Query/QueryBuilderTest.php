@@ -36,12 +36,11 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class QueryBuilderTest extends UnitTestCase
+final class QueryBuilderTest extends UnitTestCase
 {
-    protected Connection&MockObject $connection;
-    protected ?AbstractPlatform $platform;
-    protected ?QueryBuilder $subject;
-    protected DoctrineQueryBuilder&MockObject $concreteQueryBuilder;
+    private Connection&MockObject $connection;
+    private ?QueryBuilder $subject;
+    private DoctrineQueryBuilder&MockObject $concreteQueryBuilder;
 
     /**
      * Create a new database connection mock object for every test.
@@ -223,8 +222,16 @@ class QueryBuilderTest extends UnitTestCase
      */
     public function selectQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->withConsecutive(['aField'], ['anotherField'])
-            ->willReturnArgument(0);
+        $series = [
+            ['aField'],
+            ['anotherField'],
+        ];
+        $this->connection->expects(self::exactly(2))->method('quoteIdentifier')
+            ->willReturnCallback(function (string $field) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $field);
+                return $field;
+            });
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('select')->with('aField', 'anotherField')
             ->willReturn($this->subject);
         $this->subject->select('aField', 'anotherField');
@@ -333,8 +340,16 @@ class QueryBuilderTest extends UnitTestCase
      */
     public function addSelectQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')
-            ->withConsecutive(['aField'], ['anotherField'])->willReturnArgument(0);
+        $series = [
+            ['aField'],
+            ['anotherField'],
+        ];
+        $this->connection->expects(self::exactly(2))->method('quoteIdentifier')
+            ->willReturnCallback(function (string $field) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $field);
+                return $field;
+            });
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('addSelect')->with('aField', 'anotherField')
             ->willReturn($this->subject);
         $this->subject->addSelect('aField', 'anotherField');
@@ -425,11 +440,17 @@ class QueryBuilderTest extends UnitTestCase
      */
     public function joinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->withConsecutive(
+        $series = [
             ['fromAlias'],
             ['join'],
             ['alias'],
-        )->willReturnArgument(0);
+        ];
+        $this->connection->expects(self::exactly(3))->method('quoteIdentifier')
+            ->willReturnCallback(function (string $field) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $field);
+                return $field;
+            });
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('innerJoin')
             ->with('fromAlias', 'join', 'alias', null)->willReturn($this->subject);
         $this->subject->join('fromAlias', 'join', 'alias');
@@ -440,11 +461,17 @@ class QueryBuilderTest extends UnitTestCase
      */
     public function innerJoinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->withConsecutive(
+        $series = [
             ['fromAlias'],
             ['join'],
             ['alias'],
-        )->willReturnArgument(0);
+        ];
+        $this->connection->expects(self::exactly(3))->method('quoteIdentifier')
+            ->willReturnCallback(function (string $field) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $field);
+                return $field;
+            });
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('innerJoin')
             ->with('fromAlias', 'join', 'alias', null)->willReturn($this->subject);
         $this->subject->innerJoin('fromAlias', 'join', 'alias');
@@ -455,11 +482,17 @@ class QueryBuilderTest extends UnitTestCase
      */
     public function leftJoinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->withConsecutive(
+        $series = [
             ['fromAlias'],
             ['join'],
             ['alias'],
-        )->willReturnArgument(0);
+        ];
+        $this->connection->expects(self::exactly(3))->method('quoteIdentifier')
+            ->willReturnCallback(function (string $field) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $field);
+                return $field;
+            });
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('leftJoin')
             ->with('fromAlias', 'join', 'alias', self::anything())->willReturn($this->subject);
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
@@ -472,11 +505,17 @@ class QueryBuilderTest extends UnitTestCase
      */
     public function rightJoinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->withConsecutive(
+        $series = [
             ['fromAlias'],
             ['join'],
             ['alias'],
-        )->willReturnArgument(0);
+        ];
+        $this->connection->expects(self::exactly(3))->method('quoteIdentifier')
+            ->willReturnCallback(function (string $field) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $field);
+                return $field;
+            });
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('rightJoin')
             ->with('fromAlias', 'join', 'alias', self::anything())->willReturn($this->subject);
         $this->concreteQueryBuilder->method('getQueryPart')->with('from')->willReturn([]);
@@ -599,9 +638,16 @@ class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteColumnValuePairs')
             ->with(['aField' => ':dcValue1', 'aValue' => ':dcValue2'])->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('createNamedParameter')
-            ->withConsecutive([1, self::anything()], [2, self::anything()])
-            ->willReturnOnConsecutiveCalls(':dcValue1', ':dcValue2');
+        $series = [
+            [1, ':dcValue1'],
+            [2, ':dcValue2'],
+        ];
+        $this->concreteQueryBuilder->expects(self::exactly(2))->method('createNamedParameter')
+            ->willReturnCallback(function (int $value) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $value);
+                return $arguments[1];
+            });
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('values')
             ->with(['aField' => ':dcValue1', 'aValue' => ':dcValue2'])->willReturn($this->subject);
         $this->subject->values(['aField' => 1, 'aValue' => 2]);
@@ -911,10 +957,16 @@ class QueryBuilderTest extends UnitTestCase
         $expectedSQLForQuery = 'SELECT * FROM pages WHERE (uid=1) AND (pages.deleted = 0)';
         $expectedSQLForResetRestrictions = 'SELECT * FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
 
-        $this->connection->method('executeQuery')->withConsecutive(
-            [$expectedSQLForQuery, self::anything()],
-            [$expectedSQLForResetRestrictions, self::anything()],
-        )->willReturn($this->createMock(Result::class));
+        $series = [
+            [$expectedSQLForQuery, $this->createMock(Result::class)],
+            [$expectedSQLForResetRestrictions, $this->createMock(Result::class)],
+        ];
+        $this->connection->expects(self::exactly(2))->method('executeQuery')
+            ->willReturnCallback(function (string $sql) use (&$series): Result&MockObject {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $sql);
+                return $arguments[1];
+            });
 
         $subject->executeQuery();
         $subject->resetRestrictions();
@@ -928,14 +980,17 @@ class QueryBuilderTest extends UnitTestCase
     public function getQueriedTablesReturnsSameTableTwiceForInnerJoin(): void
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getQueryPart')
-            ->withConsecutive(['from'], ['join'])
-            ->willReturnOnConsecutiveCalls(
+        $series = [
+            [
+                'from',
                 [
                     [
                         'table' => 'aTable',
                     ],
                 ],
+            ],
+            [
+                'join',
                 [
                     'aTable' => [
                         [
@@ -944,9 +999,15 @@ class QueryBuilderTest extends UnitTestCase
                             'joinAlias' => 'aTable_alias',
                         ],
                     ],
-                ]
-            );
-
+                ],
+            ],
+        ];
+        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getQueryPart')
+            ->willReturnCallback(function (string $sql) use (&$series): array {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $sql);
+                return $arguments[1];
+            });
         // Call a protected method
         $result = \Closure::bind(function () {
             return $this->getQueriedTables();
