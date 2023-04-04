@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class DatabaseIntegrityControllerTest extends FunctionalTestCase
+final class DatabaseIntegrityControllerTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {
@@ -111,26 +111,13 @@ class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertSame('1,2,3,4,5', $treeList);
     }
 
-    /**
-     * @test
-     * @dataProvider dataForGetTreeListReturnsListOfIdsWithBeginSetToZero
-     */
-    public function getTreeListReturnsListOfIdsWithBeginSetToZero(int $id, int $depth, string $expectation): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
-        $treeList = $subject->_call('getTreeList', $id, $depth);
-        self::assertSame($expectation, $treeList);
-    }
-
     public static function dataForGetTreeListReturnsListOfIdsWithBeginSetToZero(): array
     {
         return [
-            // [$id, $depth, $expectation]
             [
-                1,
-                1,
-                '1,2',
+                1, // id
+                1, // depth
+                '1,2', // expectation
             ],
             [
                 1,
@@ -152,24 +139,23 @@ class DatabaseIntegrityControllerTest extends FunctionalTestCase
 
     /**
      * @test
-     * @dataProvider dataForGetTreeListReturnsListOfIdsWithBeginSetToMinusOne
+     * @dataProvider dataForGetTreeListReturnsListOfIdsWithBeginSetToZero
      */
-    public function getTreeListReturnsListOfIdsWithBeginSetToMinusOne(int $id, int $depth, string $expectation): void
+    public function getTreeListReturnsListOfIdsWithBeginSetToZero(int $id, int $depth, string $expectation): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
         $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
-        $treeList = $subject->_call('getTreeList', $id, $depth, -1);
+        $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertSame($expectation, $treeList);
     }
 
     public static function dataForGetTreeListReturnsListOfIdsWithBeginSetToMinusOne(): array
     {
         return [
-            // [$id, $depth, $expectation]
             [
-                1,
-                1,
-                ',2',
+                1, // id
+                1, // depth
+                ',2', // expectation
             ],
             [
                 1,
@@ -187,6 +173,18 @@ class DatabaseIntegrityControllerTest extends FunctionalTestCase
                 ',3',
             ],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider dataForGetTreeListReturnsListOfIdsWithBeginSetToMinusOne
+     */
+    public function getTreeListReturnsListOfIdsWithBeginSetToMinusOne(int $id, int $depth, string $expectation): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
+        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $treeList = $subject->_call('getTreeList', $id, $depth, -1);
+        self::assertSame($expectation, $treeList);
     }
 
     /**
@@ -276,11 +274,8 @@ class DatabaseIntegrityControllerTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider getQueryWithIdOrDateDataProvider
-     *
-     * @param mixed $inputValue
-     * @param mixed $inputValue1
      */
-    public function getQueryWithIdOrDate($inputValue, $inputValue1, string $expected, int $comparison = 64): void
+    public function getQueryWithIdOrDate(mixed $inputValue, mixed $inputValue1, string $expected, int $comparison = 64): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -301,7 +296,7 @@ class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertSame($expected, trim($subject->_call('getQuery', $inputConf), "\n\r"));
     }
 
-    public function arbitraryDataIsEscapedDataProvider(): array
+    public static function arbitraryDataIsEscapedDataProvider(): array
     {
         $dataSet = [];
         $injectors = [
@@ -311,8 +306,8 @@ class DatabaseIntegrityControllerTest extends FunctionalTestCase
             // ' ECT
             'INJ %quoteCharacter%%commentStart% %commentEnd%%quoteCharacter% ECT',
         ];
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
-        $comparisons = array_keys($subject->_get('compSQL'));
+        $subjectReflection = new \ReflectionClass(DatabaseIntegrityController::class);
+        $comparisons = array_keys($subjectReflection->getProperty('compSQL')->getDefaultValue());
         foreach ($injectors as $injector) {
             foreach ($comparisons as $comparison) {
                 $dataSet[] = [
@@ -347,7 +342,6 @@ class DatabaseIntegrityControllerTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider arbitraryDataIsEscapedDataProvider
-     * @throws \Doctrine\DBAL\Exception
      */
     public function arbitraryDataIsEscaped(string $injector, array $settings): void
     {
@@ -384,7 +378,7 @@ class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertStringNotContainsString($injector, $query);
     }
 
-    protected function prepareSettings(array $settings, array $replacements): array
+    private function prepareSettings(array $settings, array $replacements): array
     {
         foreach ($settings as $settingKey => &$settingValue) {
             if (is_string($settingValue)) {
