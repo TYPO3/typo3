@@ -52,12 +52,16 @@ class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterf
     public function ensure(): bool
     {
         $adds = $this->upgradeWizardsService->getBlockingDatabaseAdds();
-        $result = null;
-        if (count($adds) > 0) {
-            $this->output->writeln('Performing ' . count($adds) . ' database operations.');
-            $result = $this->upgradeWizardsService->addMissingTablesAndFields();
+        // Nothing to add, early return
+        if ($adds === []) {
+            return true;
         }
-        return $result === null;
+
+        $this->output->writeln('Performing ' . count($adds) . ' database operations.');
+        // remove potentially empty error messages
+        $errorMessages = array_filter($this->upgradeWizardsService->addMissingTablesAndFields());
+
+        return $errorMessages === [];
     }
 
     /**
