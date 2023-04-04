@@ -8,6 +8,7 @@ return [
         'crdate' => 'createdon',
         'tstamp' => 'updatedon',
         'adminOnly' => true,
+        'hideTable' => true,
         'rootLevel' => 1,
         'groupName' => 'system',
         'default_sortby' => 'name',
