@@ -39,69 +39,14 @@ export class CodeMirrorElement extends LitElement {
   static styles = css`
     @media (prefers-color-scheme: dark) {
       :host {
-        --codemirror-border-color: #7d8799;
-        --codemirror-panel-background-color: #282c34;
-      }
-
-      .cm-scroller {
         color-scheme: dark;
       }
-    }
-
-    @media (prefers-color-scheme: light) {
-      :host {
-        --codemirror-border-color: #dddddd;
-        --codemirror-panel-background-color: #f5f5f5;
-      }
-    }
-
-    :host {
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      border: 1px solid var(--codemirror-border-color);
-      border-radius: var(--typo3-input-border-radius);
-      transition: outline-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
 
     :host([fullscreen]) {
       position: fixed;
       inset: 64px 0 0;
       z-index: 9;
-    }
-
-    :host(:focus) {
-      --codemirror-border-color: #80bcf3;
-      box-shadow: 0 0 0 0.25rem rgba(0,120,230,.25);
-    }
-
-    typo3-backend-spinner {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    #codemirror-parent {
-      min-height: calc(8px + 12px * 1.4 * var(--rows, 18));
-    }
-
-    #codemirror-parent,
-    .cm-editor {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      max-height: 100%;
-    }
-
-    #codemirror-parent .cm-focused {
-      outline: none;
-    }
-
-    .cm-scroller {
-      min-height: 100%;
-      max-height: calc(100vh - 10rem);
-      flex: 1;
     }
 
     :host([fullscreen]) .cm-scroller {
@@ -113,21 +58,58 @@ export class CodeMirrorElement extends LitElement {
       max-height: initial;
     }
 
-    .panel {
-      font-size: .85em;
-      color: var(--typo3-component-color);
-      background-color: var(--codemirror-panel-background-color);
-      border-style: solid;
-      border-color: var(--codemirror-border-color);
-      border-width: 0;
-      border-top-width: 1px;
-      padding: .25em .5em;
+    .codemirror-label {
+      font-size: .875em;
+      opacity: .75;
     }
 
-    .panel-top {
-      border-top-width: 0;
-      border-bottom-width: 1px;
-      order: -1;
+    .codemirror-label-top {
+      margin-bottom: .25rem;
+    }
+
+    .codemirror-label-bottom {
+      margin-top: .25rem;
+    }
+
+    typo3-backend-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .cm-editor {
+      overflow: hidden;
+      border-radius: var(--typo3-input-border-radius);
+      border: var(--typo3-input-border-width) solid var(--typo3-input-border-color);
+      box-shadow: var(--typo3-input-box-shadow);
+      transition: outline-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    .cm-focused {
+      outline: none !important;
+      border-color: var(--typo3-input-focus-border-color);
+      box-shadow: var(--typo3-input-box-shadow), var(--typo3-input-focus-box-shadow);
+    }
+
+    .cm-gutters {
+      height: auto !important;
+      position: relative !important;
+    }
+
+    .cm-content {
+      min-height: calc(8px + 12px * 1.4 * var(--rows, 18)) !important;
+    }
+
+    .cm-scroller {
+      min-height: 100%;
+      max-height: calc(100vh - 10rem);
+      flex: 1;
+      align-items: unset;
+    }
+
+    .ͼ1 .cm-scroller {
+      align-items: unset !important;
     }
   `;
 
@@ -150,9 +132,10 @@ export class CodeMirrorElement extends LitElement {
 
   render() {
     return html`
+      ${this.label && this.panel === 'top' ? html`<div class="codemirror-label codemirror-label-top">${this.label}</div>` : ''}
       <div id="codemirror-parent" @keydown=${(e: KeyboardEvent) => this.onKeydown(e)}></div>
-      ${this.label ? html`<div class="panel panel-${this.panel}">${this.label}</div>` : ''}
-      ${this.editorView === null ? html`<typo3-backend-spinner size="large" variant="dark"></typo3-backend-spinner>` : ''}
+      ${this.label && this.panel === 'bottom' ? html`<div class="codemirror-label codemirror-label-bottom">${this.label}</div>` : ''}
+      ${this.editorView === null ? html`<typo3-backend-spinner size="large"></typo3-backend-spinner>` : ''}
     `;
   }
 
