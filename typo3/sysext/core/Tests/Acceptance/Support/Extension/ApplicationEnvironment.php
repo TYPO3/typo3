@@ -68,6 +68,7 @@ final class ApplicationEnvironment extends BackendEnvironment
             'felogin',
             'seo',
             'recycler',
+            'viewpage',
         ],
         'testExtensionsToLoad' => [
             'typo3conf/ext/styleguide',
