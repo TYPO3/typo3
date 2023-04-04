@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataH
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
-class SlugSiteWithoutRequiredCHashRequestTest extends AbstractTestCase
+final class SlugSiteWithoutRequiredCHashRequestTest extends AbstractTestCase
 {
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
@@ -64,25 +64,22 @@ class SlugSiteWithoutRequiredCHashRequestTest extends AbstractTestCase
         });
     }
 
-    public function pageRenderingStopsWithInvalidCacheHashDataProvider(): array
+    public static function pageRenderingStopsWithInvalidCacheHashDataProvider(): array
     {
         $domainPaths = [
             'https://website.local/',
         ];
-
         $queries = [
             '',
             'welcome',
         ];
-
         $customQueries = [
             '?testing[value]=1',
             '?testing[value]=1&cHash=',
             '?testing[value]=1&cHash=WRONG',
         ];
-
-        return $this->wrapInArray(
-            $this->keysFromValues(
+        return self::wrapInArray(
+            self::keysFromValues(
                 PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
@@ -113,12 +110,11 @@ class SlugSiteWithoutRequiredCHashRequestTest extends AbstractTestCase
         );
     }
 
-    public function pageIsRenderedWithValidCacheHashDataProvider(): array
+    public static function pageIsRenderedWithValidCacheHashDataProvider(): array
     {
         $domainPaths = [
             'https://website.local/',
         ];
-
         // cHash has been calculated with encryption key set to
         // '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6'
         $queries = [
@@ -127,18 +123,14 @@ class SlugSiteWithoutRequiredCHashRequestTest extends AbstractTestCase
             // '?cHash=7d1f13fa91159dac7feb3c824936b39d',
             'welcome?cHash=f42b850e435f0cedd366f5db749fc1af',
         ];
-
         $customQueries = [
             '&testing[value]=1',
         ];
-
-        $dataSet = $this->wrapInArray(
-            $this->keysFromValues(
+        return self::wrapInArray(
+            self::keysFromValues(
                 PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
-
-        return $dataSet;
     }
 
     /**

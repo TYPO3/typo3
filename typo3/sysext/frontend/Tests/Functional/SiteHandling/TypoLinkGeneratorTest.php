@@ -32,7 +32,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValu
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class TypoLinkGeneratorTest extends AbstractTestCase
+final class TypoLinkGeneratorTest extends AbstractTestCase
 {
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/backend/Resources/Public/Images/Logo.png' => 'fileadmin/logo.png',
@@ -90,7 +90,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         (new Indexer($storage))->processChangesInStorages();
     }
 
-    public function linkIsGeneratedDataProvider(): array
+    public static function linkIsGeneratedDataProvider(): array
     {
         $instructions = [
             [
@@ -206,7 +206,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
                 '<a href="https://acme.ca/features-ca">FR-CA: Features</a>',
             ],
         ];
-        return $this->keysFromTemplate($instructions, '%1$s;');
+        return self::keysFromTemplate($instructions, '%1$s;');
     }
 
     /**
@@ -329,7 +329,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function linkIsEncodedDataProvider(): array
+    public static function linkIsEncodedDataProvider(): array
     {
         $instructions = [
             [
@@ -457,7 +457,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
                 '<a href="/&lt;/&gt;" target="&lt;&quot;&gt;" title="&lt;&quot;&gt;" class="&lt;&quot;&gt;">&lt;/&gt;</a>',
             ],
         ];
-        return $this->keysFromTemplate($instructions, '%1$s;');
+        return self::keysFromTemplate($instructions, '%1$s;');
     }
 
     /**

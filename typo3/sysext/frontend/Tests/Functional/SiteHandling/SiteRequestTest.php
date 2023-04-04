@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
-class SiteRequestTest extends AbstractTestCase
+final class SiteRequestTest extends AbstractTestCase
 {
     protected function setUp(): void
     {
@@ -52,7 +52,7 @@ class SiteRequestTest extends AbstractTestCase
         });
     }
 
-    public function shortcutsAreRedirectedDataProvider(): array
+    public static function shortcutsAreRedirectedDataProvider(): array
     {
         $domainPaths = [
             // @todo Implicit strict mode handling when calling non-existent site
@@ -60,13 +60,11 @@ class SiteRequestTest extends AbstractTestCase
             // 'https://localhost/',
             'https://website.local/',
         ];
-
         $queries = [
             '',
         ];
-
-        return $this->wrapInArray(
-            $this->keysFromValues(
+        return self::wrapInArray(
+            self::keysFromValues(
                 PermutationUtility::meltStringItems([$domainPaths, $queries])
             )
         );
@@ -130,25 +128,22 @@ class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function pageIsRenderedWithPathsDataProvider(): array
+    public static function pageIsRenderedWithPathsDataProvider(): array
     {
         $domainPaths = [
             // @todo currently base needs to be defined with domain
             // '/',
             'https://website.local/',
         ];
-
         $languagePaths = [
             'en-en/',
             'fr-fr/',
             'fr-ca/',
             '简/',
         ];
-
         $queries = [
             '?id=1100',
         ];
-
         return array_map(
             static function (string $uri) {
                 if (str_contains($uri, '/fr-fr/')) {
@@ -162,7 +157,7 @@ class SiteRequestTest extends AbstractTestCase
                 }
                 return [$uri, $expectedPageTitle];
             },
-            $this->keysFromValues(
+            self::keysFromValues(
                 PermutationUtility::meltStringItems([$domainPaths, $languagePaths, $queries])
             )
         );
@@ -200,24 +195,21 @@ class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function pageIsRenderedWithPathsAndChineseDefaultLanguageDataProvider(): array
+    public static function pageIsRenderedWithPathsAndChineseDefaultLanguageDataProvider(): array
     {
         $domainPaths = [
             // @todo currently base needs to be defined with domain
             // '/',
             'https://website.local/',
         ];
-
         $languagePaths = [
             '简/',
             'fr-fr/',
             'fr-ca/',
         ];
-
         $queries = [
             '?id=1110',
         ];
-
         return array_map(
             static function (string $uri) {
                 if (str_contains($uri, '/fr-fr/')) {
@@ -229,7 +221,7 @@ class SiteRequestTest extends AbstractTestCase
                 }
                 return [$uri, $expectedPageTitle];
             },
-            $this->keysFromValues(
+            self::keysFromValues(
                 PermutationUtility::meltStringItems([$domainPaths, $languagePaths, $queries])
             )
         );
@@ -302,7 +294,7 @@ class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function pageIsRenderedWithDomainsDataProvider(): array
+    public static function pageIsRenderedWithDomainsDataProvider(): array
     {
         $domainPaths = [
             // @todo: This turns into a redirect to the default language (".us") making this function obsolete
@@ -316,11 +308,9 @@ class SiteRequestTest extends AbstractTestCase
             // @todo Implicit strict mode handling when calling non-existent site
             // 'https://website.other/',
         ];
-
         $queries = [
             '?id=1100',
         ];
-
         return array_map(
             static function (string $uri) {
                 if (str_contains($uri, '.fr/')) {
@@ -334,7 +324,7 @@ class SiteRequestTest extends AbstractTestCase
                 }
                 return [$uri, $expectedPageTitle];
             },
-            $this->keysFromValues(
+            self::keysFromValues(
                 PermutationUtility::meltStringItems([$domainPaths, $queries])
             )
         );
@@ -372,7 +362,7 @@ class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function restrictedPageIsRenderedDataProvider(): array
+    public static function restrictedPageIsRenderedDataProvider(): array
     {
         $instructions = [
             // frontend user 1
@@ -410,8 +400,7 @@ class SiteRequestTest extends AbstractTestCase
             ['https://website.local/index.php?id=1520', 3, 'Forecasts'],
             ['https://website.local/index.php?id=1521', 3, 'Current Year'],
         ];
-
-        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+        return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
     /**
@@ -443,7 +432,7 @@ class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
+    public static function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
     {
         $instructions = [
             // no frontend user given
@@ -463,8 +452,7 @@ class SiteRequestTest extends AbstractTestCase
             ['https://website.local/?id=1512', 2],
             ['https://website.local/?id=2021', 2],
         ];
-
-        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+        return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
     /**
@@ -555,14 +543,13 @@ class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function restrictedPageWithParentSysFolderIsRenderedDataProvider(): array
+    public static function restrictedPageWithParentSysFolderIsRenderedDataProvider(): array
     {
         $instructions = [
             // frontend user 4
             ['https://website.local/?id=2021', 4, 'FEGroups Restricted'],
         ];
-
-        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+        return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
     /**
@@ -594,7 +581,7 @@ class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
+    public static function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
     {
         $instructions = [
             // no frontend user given
@@ -606,8 +593,7 @@ class SiteRequestTest extends AbstractTestCase
             // frontend user 3
             ['https://website.local/?id=2021', 3],
         ];
-
-        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+        return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
     /**
@@ -704,7 +690,7 @@ class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider(): array
+    public static function hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider(): array
     {
         $instructions = [
             // hidden page, always 404
@@ -713,8 +699,7 @@ class SiteRequestTest extends AbstractTestCase
             // hidden fe group restricted and fegroup generally okay
             ['https://website.local/?id=2022', 4],
         ];
-
-        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+        return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
     /**
@@ -746,26 +731,23 @@ class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function pageRenderingStopsWithInvalidCacheHashDataProvider(): array
+    public static function pageRenderingStopsWithInvalidCacheHashDataProvider(): array
     {
         $domainPaths = [
             'https://website.local/',
         ];
-
         $queries = [
             '?',
             '?id=1000',
             '?id=1100',
         ];
-
         $customQueries = [
             '&testing[value]=1',
             '&testing[value]=1&cHash=',
             '&testing[value]=1&cHash=WRONG',
         ];
-
-        return $this->wrapInArray(
-            $this->keysFromValues(
+        return self::wrapInArray(
+            self::keysFromValues(
                 PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
@@ -852,7 +834,7 @@ class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function pageIsRenderedWithValidCacheHashDataProvider(): array
+    public static function pageIsRenderedWithValidCacheHashDataProvider(): array
     {
         $domainPaths = [
             // @todo Implicit strict mode handling when calling non-existent site
@@ -860,7 +842,6 @@ class SiteRequestTest extends AbstractTestCase
             // 'https://localhost/',
             'https://website.local/',
         ];
-
         // cHash has been calculated with encryption key set to
         // '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6'
         $queries = [
@@ -868,13 +849,11 @@ class SiteRequestTest extends AbstractTestCase
             // '?&cHash=7d1f13fa91159dac7feb3c824936b39d&id=1000',
             '?&cHash=f42b850e435f0cedd366f5db749fc1af&id=1100',
         ];
-
         $customQueries = [
             '&testing[value]=1',
         ];
-
-        return $this->wrapInArray(
-            $this->keysFromValues(
+        return self::wrapInArray(
+            self::keysFromValues(
                 PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
@@ -901,22 +880,20 @@ class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function checkIfIndexPhpReturnsShortcutRedirectWithPageIdAndTypeNumProvidedDataProvider(): array
+    public static function checkIfIndexPhpReturnsShortcutRedirectWithPageIdAndTypeNumProvidedDataProvider(): array
     {
         $domainPaths = [
             'https://website.local/',
             'https://website.local/index.php',
         ];
-
         $queries = [
             '',
             '?id=1000',
             '?type=0',
             '?id=1000&type=0',
         ];
-
-        return $this->wrapInArray(
-            $this->keysFromValues(
+        return self::wrapInArray(
+            self::keysFromValues(
                 PermutationUtility::meltStringItems([$domainPaths, $queries])
             )
         );

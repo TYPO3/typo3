@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
-class SlugSiteRequestTest extends AbstractTestCase
+final class SlugSiteRequestTest extends AbstractTestCase
 {
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
@@ -67,7 +67,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         });
     }
 
-    public function requestsAreRedirectedWithoutHavingDefaultSiteLanguageDataProvider(): array
+    public static function requestsAreRedirectedWithoutHavingDefaultSiteLanguageDataProvider(): array
     {
         $domainPaths = [
             'https://website.local/',
@@ -75,9 +75,8 @@ class SlugSiteRequestTest extends AbstractTestCase
             // @todo: See how core should act here and activate this or have an own test for this scenario
             // 'https://website.local//',
         ];
-
-        return $this->wrapInArray(
-            $this->keysFromValues($domainPaths)
+        return self::wrapInArray(
+            self::keysFromValues($domainPaths)
         );
     }
 
@@ -103,7 +102,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
 
-    public function shortcutsAreRedirectedDataProvider(): array
+    public static function shortcutsAreRedirectedDataProvider(): array
     {
         $domainPaths = [
             'https://website.local/',
@@ -111,9 +110,8 @@ class SlugSiteRequestTest extends AbstractTestCase
             // @todo: See how core should act here and activate this or have an own test for this scenario
             // 'https://website.local//',
         ];
-
-        return $this->wrapInArray(
-            $this->keysFromValues($domainPaths)
+        return self::wrapInArray(
+            self::keysFromValues($domainPaths)
         );
     }
 
@@ -177,7 +175,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function shortcutsAreRedirectedDataProviderWithChineseCharacterInBase(): array
+    public static function shortcutsAreRedirectedDataProviderWithChineseCharacterInBase(): array
     {
         $domainPaths = [
             'https://website.local/简',
@@ -185,9 +183,8 @@ class SlugSiteRequestTest extends AbstractTestCase
             'https://website.local/简/',
             'https://website.local/简/?',
         ];
-
-        return $this->wrapInArray(
-            $this->keysFromValues($domainPaths)
+        return self::wrapInArray(
+            self::keysFromValues($domainPaths)
         );
     }
 
@@ -353,7 +350,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function pageIsRenderedWithPathsDataProvider(): array
+    public static function pageIsRenderedWithPathsDataProvider(): array
     {
         $domainPaths = [
             'https://website.local/en-en/welcome',
@@ -361,7 +358,6 @@ class SlugSiteRequestTest extends AbstractTestCase
             'https://website.local/fr-ca/bienvenue',
             'https://website.local/简/简-bienvenue',
         ];
-
         return array_map(
             static function (string $uri) {
                 if (str_contains($uri, '/fr-fr/')) {
@@ -375,7 +371,7 @@ class SlugSiteRequestTest extends AbstractTestCase
                 }
                 return [$uri, $expectedPageTitle];
             },
-            $this->keysFromValues($domainPaths)
+            self::keysFromValues($domainPaths)
         );
     }
 
@@ -411,14 +407,13 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function pageIsRenderedWithPathsAndChineseDefaultLanguageDataProvider(): array
+    public static function pageIsRenderedWithPathsAndChineseDefaultLanguageDataProvider(): array
     {
         $domainPaths = [
             'https://website.local/简/简-bienvenue',
             'https://website.local/fr-fr/zh-bienvenue',
             'https://website.local/fr-ca/zh-bienvenue',
         ];
-
         return array_map(
             static function (string $uri) {
                 if (str_contains($uri, '/fr-fr/')) {
@@ -430,7 +425,7 @@ class SlugSiteRequestTest extends AbstractTestCase
                 }
                 return [$uri, $expectedPageTitle];
             },
-            $this->keysFromValues($domainPaths)
+            self::keysFromValues($domainPaths)
         );
     }
 
@@ -465,7 +460,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function pageIsRenderedWithDomainsDataProvider(): array
+    public static function pageIsRenderedWithDomainsDataProvider(): array
     {
         $domainPaths = [
             'https://website.us/welcome',
@@ -474,7 +469,6 @@ class SlugSiteRequestTest extends AbstractTestCase
             // Explicitly testing chinese character domains
             'https://website.简/简-bienvenue',
         ];
-
         return array_map(
             static function (string $uri) {
                 if (str_contains($uri, '.fr/')) {
@@ -488,7 +482,7 @@ class SlugSiteRequestTest extends AbstractTestCase
                 }
                 return [$uri, $expectedPageTitle];
             },
-            $this->keysFromValues($domainPaths)
+            self::keysFromValues($domainPaths)
         );
     }
 
@@ -547,7 +541,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame('EN: Frontend Editing', $responseStructure->getScopePath('page/title'));
     }
 
-    public function restrictedPageIsRenderedDataProvider(): array
+    public static function restrictedPageIsRenderedDataProvider(): array
     {
         $instructions = [
             // frontend user 1
@@ -568,8 +562,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             ['https://website.local/my-acme/forecasts', 3, 'Forecasts'],
             ['https://website.local/my-acme/forecasts/current-year', 3, 'Current Year'],
         ];
-
-        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+        return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
     /**
@@ -601,14 +594,13 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function restrictedPageWithParentSysFolderIsRenderedDataProvider(): array
+    public static function restrictedPageWithParentSysFolderIsRenderedDataProvider(): array
     {
         $instructions = [
             // frontend user 4
             ['https://website.local/sysfolder-restricted', 4, 'FEGroups Restricted'],
         ];
-
-        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+        return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
     /**
@@ -640,7 +632,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
+    public static function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
     {
         $instructions = [
             // no frontend user given
@@ -657,8 +649,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             // frontend user 2
             ['https://website.local/my-acme/whitepapers/solutions', 2],
         ];
-
-        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+        return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
     /**
@@ -789,7 +780,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
+    public static function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
     {
         $instructions = [
             // no frontend user given
@@ -801,8 +792,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             // frontend user 3
             ['https://website.local/sysfolder-restricted', 3],
         ];
-
-        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+        return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
     /**
@@ -933,7 +923,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider(): array
+    public static function hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider(): array
     {
         $instructions = [
             // hidden page, always 404
@@ -942,8 +932,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             // hidden fe group restricted and fegroup generally okay
             ['https://website.local/sysfolder-restricted-hidden', 4],
         ];
-
-        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+        return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
     /**
@@ -975,25 +964,22 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function pageRenderingStopsWithInvalidCacheHashDataProvider(): array
+    public static function pageRenderingStopsWithInvalidCacheHashDataProvider(): array
     {
         $domainPaths = [
             'https://website.local/',
         ];
-
         $queries = [
             '',
             'welcome',
         ];
-
         $customQueries = [
             '?testing[value]=1',
             '?testing[value]=1&cHash=',
             '?testing[value]=1&cHash=WRONG',
         ];
-
-        return $this->wrapInArray(
-            $this->keysFromValues(
+        return self::wrapInArray(
+            self::keysFromValues(
                 PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
@@ -1096,12 +1082,11 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function pageIsRenderedWithValidCacheHashDataProvider(): array
+    public static function pageIsRenderedWithValidCacheHashDataProvider(): array
     {
         $domainPaths = [
             'https://website.local/',
         ];
-
         // cHash has been calculated with encryption key set to
         // '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6'
         $queries = [
@@ -1110,18 +1095,14 @@ class SlugSiteRequestTest extends AbstractTestCase
             // '?cHash=7d1f13fa91159dac7feb3c824936b39d',
             'welcome?cHash=f42b850e435f0cedd366f5db749fc1af',
         ];
-
         $customQueries = [
             '&testing[value]=1',
         ];
-
-        $dataSet = $this->wrapInArray(
-            $this->keysFromValues(
+        return self::wrapInArray(
+            self::keysFromValues(
                 PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
-
-        return $dataSet;
     }
 
     /**

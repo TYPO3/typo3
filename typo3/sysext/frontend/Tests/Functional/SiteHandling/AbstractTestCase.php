@@ -55,7 +55,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    protected function wrapInArray(array $array): array
+    protected static function wrapInArray(array $array): array
     {
         return array_map(
             static function ($item) {
@@ -68,7 +68,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
     /**
      * @param string[] $array
      */
-    protected function keysFromValues(array $array): array
+    protected static function keysFromValues(array $array): array
     {
         return array_combine($array, $array);
     }
@@ -82,12 +82,8 @@ abstract class AbstractTestCase extends FunctionalTestCase
      *     '1->2 (user:3)'    => [1, 2, 3],
      *     '11->22 (user:33)' => [11, 22, 33],
      *   ]
-     *
-     * @param array $array
-     * @param string $template
-     * @param callable|null $callback
      */
-    protected function keysFromTemplate(array $array, string $template, callable $callback = null): array
+    protected static function keysFromTemplate(array $array, string $template, callable $callback = null): array
     {
         $keys = array_unique(
             array_map(

@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScrip
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
-class SlugLinkGeneratorTest extends AbstractTestCase
+final class SlugLinkGeneratorTest extends AbstractTestCase
 {
     protected function setUp(): void
     {
@@ -95,7 +95,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         );
     }
 
-    public function linkIsGeneratedDataProvider(): array
+    public static function linkIsGeneratedDataProvider(): array
     {
         $instructions = [
             // acme.com -> acme.com (same site)
@@ -122,11 +122,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://blog.acme.com/', 2100, 1300, 'https://products.acme.com/products'],
             ['https://blog.acme.com/', 2100, 1310, 'https://products.acme.com/products/planets'],
         ];
-
-        return $this->keysFromTemplate(
-            $instructions,
-            '%2$d->%3$d'
-        );
+        return self::keysFromTemplate($instructions, '%2$d->%3$d');
     }
 
     /**
@@ -148,7 +144,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function linkIsGeneratedFromMountPointDataProvider(): array
+    public static function linkIsGeneratedFromMountPointDataProvider(): array
     {
         $instructions = [
             // acme.com -> acme.com (same site)
@@ -176,7 +172,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://blog.acme.com/', [7100, 2700], 7110, 1310, 'https://products.acme.com/products/planets'],
         ];
 
-        return $this->keysFromTemplate(
+        return self::keysFromTemplate(
             $instructions,
             '%3$d->%4$d (mount:%2$s)',
             static function (array $items) {
@@ -211,7 +207,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function linkIsGeneratedForLanguageDataProvider(): array
+    public static function linkIsGeneratedForLanguageDataProvider(): array
     {
         $instructions = [
             // acme.com -> acme.com (same site)
@@ -251,11 +247,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://blog.acme.com/', 2100, 1300, 0, 'https://products.acme.com/products'],
             ['https://blog.acme.com/', 2100, 1310, 0, 'https://products.acme.com/products/planets'],
         ];
-
-        return $this->keysFromTemplate(
-            $instructions,
-            '%2$d->%3$d (lang:%4$d)'
-        );
+        return self::keysFromTemplate($instructions, '%2$d->%3$d (lang:%4$d)');
     }
 
     /**
@@ -278,7 +270,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function linkIsGeneratedWithQueryParametersDataProvider(): array
+    public static function linkIsGeneratedWithQueryParametersDataProvider(): array
     {
         $instructions = [
             // acme.com -> acme.com (same site)
@@ -306,7 +298,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://blog.acme.com/', 2100, 1310, 'https://products.acme.com/products/planets?testing%5Bvalue%5D=1&cHash=e64bfc7ab7dd6b70d161e4d556be9726'],
         ];
 
-        return $this->keysFromTemplate(
+        return self::keysFromTemplate(
             $instructions,
             '%2$d->%3$d'
         );
@@ -332,7 +324,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function linkIsGeneratedForRestrictedPageDataProvider(): array
+    public static function linkIsGeneratedForRestrictedPageDataProvider(): array
     {
         $instructions = [
             ['https://acme.us/', 1100, 1510, 0, ''],
@@ -363,11 +355,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', 1100, 1520, 3, '/my-acme/forecasts'],
             ['https://acme.us/', 1100, 1521, 3, '/my-acme/forecasts/current-year'],
         ];
-
-        return $this->keysFromTemplate(
-            $instructions,
-            '%2$d->%3$d (user:%4$d)'
-        );
+        return self::keysFromTemplate($instructions, '%2$d->%3$d (user:%4$d)');
     }
 
     /**
@@ -390,7 +378,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function linkIsGeneratedForRestrictedPageUsingLoginPageDataProvider(): array
+    public static function linkIsGeneratedForRestrictedPageUsingLoginPageDataProvider(): array
     {
         $instructions = [
             // no frontend user given
@@ -422,11 +410,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', 1100, 1520, 1500, 3, '<a href="/my-acme/forecasts">Forecasts</a>'],
             ['https://acme.us/', 1100, 1521, 1500, 3, '<a href="/my-acme/forecasts/current-year">Current Year</a>'],
         ];
-
-        return $this->keysFromTemplate(
-            $instructions,
-            '%2$d->%3$d (via: %4$d, user:%5$d)'
-        );
+        return self::keysFromTemplate($instructions, '%2$d->%3$d (via: %4$d, user:%5$d)');
     }
 
     /**
@@ -459,7 +443,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPagesDataProvider(): array
+    public static function linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPagesDataProvider(): array
     {
         $instructions = [
             // default language (0)
@@ -475,11 +459,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://acme.ca/', 1100, 1512, 2, '/my-acme-ca/papiersblanc/la-solutions'],
             ['https://acme.ca/', 1100, 1515, 2, '/my-acme-ca/papiersblanc/recherche'],
         ];
-
-        return $this->keysFromTemplate(
-            $instructions,
-            '%2$d->%3$d (language: %4$d)'
-        );
+        return self::keysFromTemplate($instructions, '%2$d->%3$d (language: %4$d)');
     }
 
     /**
@@ -507,7 +487,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function linkIsGeneratedForPageVersionDataProvider(): array
+    public static function linkIsGeneratedForPageVersionDataProvider(): array
     {
         $instructions = [
             // acme.com -> acme.com (same site): link to changed page
@@ -527,11 +507,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://blog.acme.com/', 2100, 1950, false, 1, 'https://acme.us/bye'],
             ['https://blog.acme.com/', 2100, 1950, false, 0, ''],
         ];
-
-        return $this->keysFromTemplate(
-            $instructions,
-            '%2$d->%3$d (resolve:%4$d, be_user:%5$d)'
-        );
+        return self::keysFromTemplate($instructions, '%2$d->%3$d (resolve:%4$d, be_user:%5$d)');
     }
 
     /**
