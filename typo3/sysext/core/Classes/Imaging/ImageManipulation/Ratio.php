@@ -45,7 +45,7 @@ class Ratio
     }
 
     /**
-     * @return Ratio[]
+     * @return list<Ratio>
      * @throws \TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException
      */
     public static function createMultipleFromConfiguration(array $config): array
@@ -67,6 +67,8 @@ class Ratio
 
     /**
      * @internal
+     *
+     * @return array{id: string, title: string, value: float}
      */
     public function asArray(): array
     {
