@@ -5603,4 +5603,32 @@ return [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
         ],
     ],
+    'TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->setHashedPassword' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100355-DeprecateMethodsInPasswordChangeEventInExtfelogin.rst',
+        ],
+    ],
+    'TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->setAsInvalid' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100355-DeprecateMethodsInPasswordChangeEventInExtfelogin.rst',
+        ],
+    ],
+    'TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->getErrorMessage' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-100355-DeprecateMethodsInPasswordChangeEventInExtfelogin.rst',
+        ],
+    ],
+    'TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->isPropagationStopped' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-100355-DeprecateMethodsInPasswordChangeEventInExtfelogin.rst',
+        ],
+    ],
 ];

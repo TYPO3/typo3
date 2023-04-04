@@ -20,9 +20,7 @@ namespace TYPO3\CMS\FrontendLogin\Event;
 use Psr\EventDispatcher\StoppableEventInterface;
 
 /**
- * Event that contains information about the password which was set, and is about to be stored in the database.
- *
- * Additional validation can happen here.
+ * Informal event that contains information about the password which was set, and is about to be stored in the database.
  */
 final class PasswordChangeEvent implements StoppableEventInterface
 {
@@ -46,8 +44,15 @@ final class PasswordChangeEvent implements StoppableEventInterface
         return $this->passwordHash;
     }
 
+    /**
+     * @deprecated will be removed in TYPO3 13
+     */
     public function setHashedPassword(string $passwordHash): void
     {
+        trigger_error(
+            __METHOD__ . ' will be removed in TYPO3 v13.0.',
+            E_USER_DEPRECATED
+        );
         $this->passwordHash = $passwordHash;
     }
 
@@ -56,19 +61,40 @@ final class PasswordChangeEvent implements StoppableEventInterface
         return $this->rawPassword;
     }
 
+    /**
+     * @deprecated will be removed in TYPO3 13
+     */
     public function setAsInvalid(string $message): void
     {
+        trigger_error(
+            __METHOD__ . ' will be removed in TYPO3 v13.0. Use a password policy validator to validate the user password.',
+            E_USER_DEPRECATED
+        );
         $this->invalid = true;
         $this->errorMessage = $message;
     }
 
+    /**
+     * @deprecated will be removed in TYPO3 13
+     */
     public function getErrorMessage(): ?string
     {
+        trigger_error(
+            __METHOD__ . ' will be removed in TYPO3 v13.0.',
+            E_USER_DEPRECATED
+        );
         return $this->errorMessage;
     }
 
+    /**
+     * @deprecated will be removed in TYPO3 13
+     */
     public function isPropagationStopped(): bool
     {
+        trigger_error(
+            __METHOD__ . ' will be removed in TYPO3 v13.0.',
+            E_USER_DEPRECATED
+        );
         return $this->invalid;
     }
 }
