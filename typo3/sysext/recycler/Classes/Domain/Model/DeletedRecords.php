@@ -58,13 +58,6 @@ class DeletedRecords
     protected $table = [];
 
     /**
-     * Object from helper class
-     *
-     * @var RecyclerUtility
-     */
-    protected $recyclerHelper;
-
-    /**
      * Array with all label fields from different tables
      *
      * @var array
