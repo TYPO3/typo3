@@ -28,9 +28,9 @@ use TYPO3\CMS\Core\Tests\Unit\DependencyInjection\Fixtures\CommandRegistryPackag
 use TYPO3\CMS\Core\Tests\Unit\DependencyInjection\Fixtures\NullServiceProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ConsoleCommandPassTest extends UnitTestCase
+final class ConsoleCommandPassTest extends UnitTestCase
 {
-    protected function buildContainer(string $uniqid, array $packages = []): ContainerInterface
+    private function buildContainer(string $uniqid, array $packages = []): ContainerInterface
     {
         $packageManagerMock = $this->createMock(PackageManager::class);
         $activePackages = [];
@@ -42,10 +42,6 @@ class ConsoleCommandPassTest extends UnitTestCase
             $packageMock->method('getServiceProvider')->willReturn($config['serviceProvider'] ?? NullServiceProvider::class);
             $activePackages[$packageKey] = $packageMock;
         }
-
-        $consecutiveCallArguments = array_map(fn ($packageKey): array => [$packageKey], array_keys($activePackages));
-        $packageManagerMock->method('getPackage')->withConsecutive($consecutiveCallArguments)->willReturn(array_values($activePackages));
-        $packageManagerMock->method('isPackageActive')->withConsecutive($consecutiveCallArguments)->willReturn(true);
 
         $packageManagerMock->method('getCacheIdentifier')->willReturn('PackageManager.' . $uniqid);
         $packageManagerMock->method('getActivePackages')->willReturn($activePackages);
