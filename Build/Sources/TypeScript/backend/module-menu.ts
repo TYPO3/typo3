@@ -452,7 +452,7 @@ class ModuleMenu {
       if (moduleData.navigationComponentId) {
         Viewport.NavigationContainer.showComponent(moduleData.navigationComponentId);
       } else {
-        Viewport.NavigationContainer.hide(false);
+        Viewport.NavigationContainer.hide();
       }
     };
     document.addEventListener('typo3-module-load', moduleLoadListener);
@@ -481,7 +481,7 @@ class ModuleMenu {
       if (moduleData.navigationComponentId) {
         Viewport.NavigationContainer.showComponent(moduleData.navigationComponentId);
       } else {
-        Viewport.NavigationContainer.hide(true);
+        Viewport.NavigationContainer.hide();
       }
 
       ModuleMenu.highlightModule(moduleName);

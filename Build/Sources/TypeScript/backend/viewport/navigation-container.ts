@@ -34,11 +34,6 @@ class NavigationContainer extends AbstractContainer {
     return document.querySelector(ScaffoldIdentifierEnum.contentNavigation);
   }
 
-  private get switcher(): HTMLElement|null
-  {
-    return document.querySelector(ScaffoldIdentifierEnum.contentNavigationSwitcher);
-  }
-
   /**
    * Renders registered (non-iframe) navigation component e.g. a page tree
    *
@@ -92,20 +87,15 @@ class NavigationContainer extends AbstractContainer {
     });
   }
 
-  public hide(hideSwitcher: boolean): void {
+  public hide(): void {
     const parent = this.parent;
-    const switcher = this.switcher;
     parent.classList.remove('scaffold-content-navigation-expanded');
     parent.classList.remove('scaffold-content-navigation-available');
-    if (hideSwitcher && switcher) {
-      switcher.style.display = 'none';
-    }
   }
 
   public show(component: string): void {
     const parent = this.parent;
     const container = this.container;
-    const switcher = this.switcher;
     container.querySelectorAll(ScaffoldIdentifierEnum.contentNavigationDataComponent).forEach((el: HTMLElement) => el.style.display = 'none');
     if (typeof component !== undefined) {
       parent.classList.add('scaffold-content-navigation-expanded');
@@ -115,10 +105,6 @@ class NavigationContainer extends AbstractContainer {
         // Re-set to the display setting from CSS
         selectedElement.style.display = null;
       }
-    }
-    if (switcher) {
-      // Re-set to the display setting from CSS
-      switcher.style.display = null;
     }
   }
 
