@@ -21,32 +21,46 @@ use TYPO3\CMS\Reactions\Repository\ReactionDemand;
 use TYPO3\CMS\Reactions\Repository\ReactionRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ReactionsRepositoryTest extends FunctionalTestCase
+final class ReactionsRepositoryTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['reactions'];
 
-    public function demandProvider(): array
+    public static function demandProvider(): array
     {
         return [
-            'default demand' => [$this->getDemand(), 4],
-            'filter by name: Test' => [$this->getDemand('Test'), 2],
-            'filter by name: Random' => [$this->getDemand('Random'), 1],
-            'filter by name: INVALID' => [$this->getDemand('INVALID'), 2],
-            'filter by reaction type: CreateRecordReaction' => [$this->getDemand('', 'create-record'), 1],
-            'filter by name and reaction type: CreateRecordReaction' => [$this->getDemand('Test', 'create-record'), 1],
+            'default demand' => [
+                new ReactionDemand(1, '', '', '', ''),
+                4,
+            ],
+            'filter by name: Test' => [
+                new ReactionDemand(1, '', '', 'Test', ''),
+                2,
+            ],
+            'filter by name: Random' => [
+                new ReactionDemand(1, '', '', 'Random', ''),
+                1,
+            ],
+            'filter by name: INVALID' => [
+                new ReactionDemand(1, '', '', 'INVALID', ''),
+                2,
+            ],
+            'filter by reaction type: CreateRecordReaction' => [
+                new ReactionDemand(1, '', '', '', 'create-record'),
+                1,
+            ],
+            'filter by name and reaction type: CreateRecordReaction' => [
+                new ReactionDemand(1, '', '', 'Test', 'create-record'),
+                1,
+            ],
         ];
     }
 
     /**
      * @dataProvider demandProvider
      * @test
-     * @param ReactionDemand $demand
-     * @param int $resultCount
      */
-    public function findByDemandWorks(
-        ReactionDemand $demand,
-        int $resultCount,
-    ): void {
+    public function findByDemandWorks(ReactionDemand $demand, int $resultCount): void
+    {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
         $results = (new ReactionRepository())->findByDemand($demand);
         self::assertCount($resultCount, $results);
@@ -70,18 +84,5 @@ class ReactionsRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
         $reactions = (new ReactionRepository())->getReactionRecords();
         self::assertCount(4, $reactions);
-    }
-
-    private function getDemand(
-        string $name = '',
-        string $reactionType = ''
-    ): ReactionDemand {
-        return new ReactionDemand(
-            1,
-            '',
-            '',
-            $name,
-            $reactionType,
-        );
     }
 }
