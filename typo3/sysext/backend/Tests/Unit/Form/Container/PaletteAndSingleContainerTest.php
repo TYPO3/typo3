@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PaletteAndSingleContainerTest extends UnitTestCase
+final class PaletteAndSingleContainerTest extends UnitTestCase
 {
     /**
      * @test

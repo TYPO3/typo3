@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class UriBuilderTest extends UnitTestCase
+final class UriBuilderTest extends UnitTestCase
 {
     public static function validRoutesAreBuiltDataProvider(): array
     {

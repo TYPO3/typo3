@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MetaDataAspectTest extends UnitTestCase
+final class MetaDataAspectTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
     protected ResourceStorage&MockObject $storageMock;

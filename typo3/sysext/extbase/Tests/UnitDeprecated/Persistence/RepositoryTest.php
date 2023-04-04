@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RepositoryTest extends UnitTestCase
+final class RepositoryTest extends UnitTestCase
 {
     protected Repository&MockObject&AccessibleObjectInterface $repository;
 

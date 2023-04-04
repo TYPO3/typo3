@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\InstantiatableAbstractRestrictionCo
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockEnforceableQueryRestriction;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockQueryRestriction;
 
-class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
+final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
 {
     /**
      * @test

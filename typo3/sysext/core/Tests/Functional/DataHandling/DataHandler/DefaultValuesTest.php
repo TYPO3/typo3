@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 /**
  * Tests various places to set default values properly for new records
  */
-class DefaultValuesTest extends AbstractDataHandlerActionTestCase
+final class DefaultValuesTest extends AbstractDataHandlerActionTestCase
 {
     protected const PAGE_DATAHANDLER = 88;
 

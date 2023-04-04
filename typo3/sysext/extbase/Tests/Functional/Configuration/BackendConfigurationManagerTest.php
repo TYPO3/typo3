@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BackendConfigurationManagerTest extends FunctionalTestCase
+final class BackendConfigurationManagerTest extends FunctionalTestCase
 {
     /**
      * @test

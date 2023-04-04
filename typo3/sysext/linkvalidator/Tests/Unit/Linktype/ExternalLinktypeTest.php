@@ -28,7 +28,7 @@ use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ExternalLinktypeTest extends UnitTestCase
+final class ExternalLinktypeTest extends UnitTestCase
 {
     protected function setUp(): void
     {

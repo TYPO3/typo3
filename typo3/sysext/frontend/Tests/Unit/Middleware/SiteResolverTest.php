@@ -36,7 +36,7 @@ use TYPO3\CMS\Frontend\Middleware\SiteResolver;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SiteResolverTest extends UnitTestCase
+final class SiteResolverTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
     protected SiteFinder&AccessibleObjectInterface $siteFinder;

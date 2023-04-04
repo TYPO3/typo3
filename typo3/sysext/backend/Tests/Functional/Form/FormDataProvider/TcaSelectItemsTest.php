@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TcaSelectItemsTest extends FunctionalTestCase
+final class TcaSelectItemsTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/backend/Tests/Functional/Fixtures/Extensions/test_tca_select_items'];
     protected array $pathsToProvideInTestInstance = ['typo3/sysext/backend/Tests/Functional/Form/Fixtures/TcaSelectItems/files/' => 'fileadmin/'];

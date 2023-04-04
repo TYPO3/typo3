@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ApplicationTypeTest extends UnitTestCase
+final class ApplicationTypeTest extends UnitTestCase
 {
     /**
      * @test

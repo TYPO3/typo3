@@ -23,7 +23,7 @@ use PhpParser\ParserFactory;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\InterfaceMethodChangedMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class InterfaceMethodChangedMatcherTest extends UnitTestCase
+final class InterfaceMethodChangedMatcherTest extends UnitTestCase
 {
     /**
      * @test

@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 
-class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
+final class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
      * @test

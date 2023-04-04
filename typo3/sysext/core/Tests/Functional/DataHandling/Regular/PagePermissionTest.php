@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 /**
  * Tests related to DataHandler setting proper page permissions
  */
-class PagePermissionTest extends AbstractDataHandlerActionTestCase
+final class PagePermissionTest extends AbstractDataHandlerActionTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',

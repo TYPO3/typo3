@@ -23,7 +23,7 @@ use PhpParser\ParserFactory;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\PropertyPublicMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PropertyPublicMatcherTest extends UnitTestCase
+final class PropertyPublicMatcherTest extends UnitTestCase
 {
     /**
      * @test

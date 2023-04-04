@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Reflection;
 
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ReflectionServiceTest extends UnitTestCase
+final class ReflectionServiceTest extends UnitTestCase
 {
     /**
      * @test

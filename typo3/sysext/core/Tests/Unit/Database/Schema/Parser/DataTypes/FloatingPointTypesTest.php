@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
 /**
  * Tests for parsing FLOAT/REAL/DOUBLE SQL data types
  */
-class FloatingPointTypesTest extends AbstractDataTypeBaseTestCase
+final class FloatingPointTypesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseFloatingPointTypes()

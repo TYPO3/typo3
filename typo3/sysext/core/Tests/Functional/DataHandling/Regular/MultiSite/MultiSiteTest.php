@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 /**
  * Functional test for the DataHandler when handling multiple page trees
  */
-class MultiSiteTest extends AbstractDataHandlerActionTestCase
+final class MultiSiteTest extends AbstractDataHandlerActionTestCase
 {
     protected const VALUE_PageIdWebsite = 1;
     protected const VALUE_PageIdSecondSite = 50;

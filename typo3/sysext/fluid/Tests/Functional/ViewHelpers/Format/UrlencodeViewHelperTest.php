@@ -21,7 +21,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class UrlencodeViewHelperTest extends FunctionalTestCase
+final class UrlencodeViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

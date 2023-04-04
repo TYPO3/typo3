@@ -28,7 +28,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\Section;
 use TYPO3\CMS\Form\Domain\Model\FormElements\UnknownFormElement;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractSectionTest extends UnitTestCase
+final class AbstractSectionTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

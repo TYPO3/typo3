@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\Session;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SessionTest extends UnitTestCase
+final class SessionTest extends UnitTestCase
 {
     /**
      * @test

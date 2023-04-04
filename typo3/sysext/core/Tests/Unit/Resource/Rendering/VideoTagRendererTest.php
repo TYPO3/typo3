@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class VideoTagRendererTest
  */
-class VideoTagRendererTest extends UnitTestCase
+final class VideoTagRendererTest extends UnitTestCase
 {
     /**
      * @test

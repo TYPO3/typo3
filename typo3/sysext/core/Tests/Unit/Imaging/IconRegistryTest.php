@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class IconRegistryTest extends UnitTestCase
+final class IconRegistryTest extends UnitTestCase
 {
     /**
      * @test

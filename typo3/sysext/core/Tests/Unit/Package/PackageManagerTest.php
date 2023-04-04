@@ -38,7 +38,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the default package manager
  */
-class PackageManagerTest extends UnitTestCase
+final class PackageManagerTest extends UnitTestCase
 {
     protected PackageManager&MockObject&AccessibleObjectInterface $packageManager;
 

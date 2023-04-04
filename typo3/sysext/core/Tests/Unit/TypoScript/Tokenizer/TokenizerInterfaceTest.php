@@ -46,7 +46,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * This tests LosslessTokenizer, LossyTokenizer and LosslessTokenizer->__toString()
  */
-class TokenizerInterfaceTest extends UnitTestCase
+final class TokenizerInterfaceTest extends UnitTestCase
 {
     public static function tokenizeStringDataProvider(): array
     {

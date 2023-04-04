@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\SystemEnvironment\ServerResponse;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Install\SystemEnvironment\ServerResponse\ContentSecurityPolicyHeader;
 
-class ContentSecurityPolicyHeaderTest extends TestCase
+final class ContentSecurityPolicyHeaderTest extends TestCase
 {
     public static function mitigatesCrossSiteScriptingDataProvider(): array
     {

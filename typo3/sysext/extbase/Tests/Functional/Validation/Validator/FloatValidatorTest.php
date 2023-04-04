@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\FloatValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FloatValidatorTest extends FunctionalTestCase
+final class FloatValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

@@ -30,7 +30,7 @@ use TYPO3\CMS\Frontend\Typolink\DatabaseRecordLinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatabaseRecordLinkBuilderTest extends UnitTestCase
+final class DatabaseRecordLinkBuilderTest extends UnitTestCase
 {
     public static function attributesSetInRecordLinkOverwriteConfiguredAttributesDataProvider(): array
     {

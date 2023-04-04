@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BootstrapRendererTest extends UnitTestCase
+final class BootstrapRendererTest extends UnitTestCase
 {
     protected function setUp(): void
     {

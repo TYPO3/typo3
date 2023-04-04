@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ModuleLoaderTest extends UnitTestCase
+final class ModuleLoaderTest extends UnitTestCase
 {
     /**
      * @test

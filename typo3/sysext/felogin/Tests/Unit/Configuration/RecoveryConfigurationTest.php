@@ -31,7 +31,7 @@ use TYPO3\CMS\FrontendLogin\Configuration\IncompleteConfigurationException;
 use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RecoveryConfigurationTest extends UnitTestCase
+final class RecoveryConfigurationTest extends UnitTestCase
 {
     protected MockObject&ConfigurationManager $configurationManager;
 

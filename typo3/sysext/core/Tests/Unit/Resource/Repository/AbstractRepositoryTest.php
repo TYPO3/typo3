@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Resource\AbstractRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractRepositoryTest extends UnitTestCase
+final class AbstractRepositoryTest extends UnitTestCase
 {
     protected function createDatabaseMock(): QueryBuilder&MockObject
     {

@@ -23,7 +23,7 @@ use PhpParser\ParserFactory;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ArrayDimensionMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ArrayDimensionMatcherTest extends UnitTestCase
+final class ArrayDimensionMatcherTest extends UnitTestCase
 {
     /**
      * @test

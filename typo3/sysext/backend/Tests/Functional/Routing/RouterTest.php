@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\RouteCollection;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RouterTest extends FunctionalTestCase
+final class RouterTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

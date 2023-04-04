@@ -22,7 +22,7 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ExtensionRepositoryTest extends UnitTestCase
+final class ExtensionRepositoryTest extends UnitTestCase
 {
     /**
      * @test

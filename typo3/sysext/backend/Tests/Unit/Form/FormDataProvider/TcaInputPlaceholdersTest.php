@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaInputPlaceholdersTest extends UnitTestCase
+final class TcaInputPlaceholdersTest extends UnitTestCase
 {
     protected function setUp(): void
     {

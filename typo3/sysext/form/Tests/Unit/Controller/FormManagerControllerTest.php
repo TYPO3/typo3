@@ -29,7 +29,7 @@ use TYPO3\CMS\Form\Service\DatabaseService;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FormManagerControllerTest extends UnitTestCase
+final class FormManagerControllerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

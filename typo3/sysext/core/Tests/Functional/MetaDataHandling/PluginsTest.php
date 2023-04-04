@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 /**
  * Functional test for the DataHandler
  */
-class PluginsTest extends AbstractTestCase
+final class PluginsTest extends AbstractTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta',

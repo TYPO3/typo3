@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Http\StreamFactory
  */
-class StreamFactoryTest extends UnitTestCase
+final class StreamFactoryTest extends UnitTestCase
 {
     /**
      * Helper method to create a random directory and return the path.

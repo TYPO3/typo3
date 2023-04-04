@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierUnsetLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierTokenStream;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class IdentifierUnsetLineTest extends UnitTestCase
+final class IdentifierUnsetLineTest extends UnitTestCase
 {
     /**
      * @test

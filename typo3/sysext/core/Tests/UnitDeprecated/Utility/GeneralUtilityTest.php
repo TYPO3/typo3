@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Utility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class GeneralUtilityTest extends UnitTestCase
+final class GeneralUtilityTest extends UnitTestCase
 {
     /**
      * @test

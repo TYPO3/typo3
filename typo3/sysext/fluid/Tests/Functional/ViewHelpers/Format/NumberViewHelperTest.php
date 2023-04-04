@@ -21,7 +21,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class NumberViewHelperTest extends FunctionalTestCase
+final class NumberViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

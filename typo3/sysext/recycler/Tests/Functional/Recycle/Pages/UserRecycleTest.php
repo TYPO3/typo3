@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Recycler\Tests\Functional\Recycle\Pages;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Recycler\Tests\Functional\Recycle\AbstractRecycleTestCase;
 
-class UserRecycleTest extends AbstractRecycleTestCase
+final class UserRecycleTest extends AbstractRecycleTestCase
 {
     protected function setUp(): void
     {

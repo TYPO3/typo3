@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationDefinitionException;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class EnumerationTest extends UnitTestCase
+final class EnumerationTest extends UnitTestCase
 {
     /**
      * @test

@@ -28,7 +28,7 @@ use TYPO3\HtmlSanitizer\Behavior;
 use TYPO3\HtmlSanitizer\Sanitizer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class DefaultSanitizerBuilderTest extends FunctionalTestCase
+final class DefaultSanitizerBuilderTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

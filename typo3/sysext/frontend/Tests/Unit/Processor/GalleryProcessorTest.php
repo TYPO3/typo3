@@ -24,7 +24,7 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class GalleryProcessorTest extends UnitTestCase
+final class GalleryProcessorTest extends UnitTestCase
 {
     protected ContentObjectRenderer&MockObject $contentObjectRenderer;
 

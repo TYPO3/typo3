@@ -25,7 +25,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class IconViewHelperTest extends FunctionalTestCase
+final class IconViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

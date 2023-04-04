@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TokenTest extends UnitTestCase
+final class TokenTest extends UnitTestCase
 {
     /**
      * @test

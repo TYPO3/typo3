@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ErrorHandlerTest extends FunctionalTestCase
+final class ErrorHandlerTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

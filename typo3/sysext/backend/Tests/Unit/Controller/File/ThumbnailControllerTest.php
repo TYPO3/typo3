@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Tests for \TYPO3\CMS\Backend\Controller\File\ThumbnailController
  */
-class ThumbnailControllerTest extends UnitTestCase
+final class ThumbnailControllerTest extends UnitTestCase
 {
     protected ThumbnailController&MockObject $subject;
 

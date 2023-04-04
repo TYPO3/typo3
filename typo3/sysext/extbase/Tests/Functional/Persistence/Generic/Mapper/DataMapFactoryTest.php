@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class DataMapFactoryTest extends FunctionalTestCase
+final class DataMapFactoryTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

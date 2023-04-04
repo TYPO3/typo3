@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class EditDocumentControllerTest extends UnitTestCase
+final class EditDocumentControllerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

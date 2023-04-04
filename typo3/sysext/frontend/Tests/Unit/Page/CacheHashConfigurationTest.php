@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Utility\PermutationUtility;
 use TYPO3\CMS\Frontend\Page\CacheHashConfiguration;
 
-class CacheHashConfigurationTest extends TestCase
+final class CacheHashConfigurationTest extends TestCase
 {
     public static function nonArrayValueThrowsExceptionDataProvider(): array
     {

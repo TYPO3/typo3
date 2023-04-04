@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * Workspace service test
  */
-class WorkspaceServiceTest extends FunctionalTestCase
+final class WorkspaceServiceTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
 

@@ -23,7 +23,7 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ListenerProviderTest extends UnitTestCase
+final class ListenerProviderTest extends UnitTestCase
 {
     protected ContainerInterface&MockObject $containerMock;
     protected ?ListenerProvider $listenerProvider;

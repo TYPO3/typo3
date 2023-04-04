@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaDatabaseRecordTest extends UnitTestCase
+final class TcaDatabaseRecordTest extends UnitTestCase
 {
     protected TcaDatabaseRecord $subject;
 

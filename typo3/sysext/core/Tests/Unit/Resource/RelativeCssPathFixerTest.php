@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RelativeCssPathFixerTest extends UnitTestCase
+final class RelativeCssPathFixerTest extends UnitTestCase
 {
     public static function fixRelativeUrlPathsDataProvider(): array
     {

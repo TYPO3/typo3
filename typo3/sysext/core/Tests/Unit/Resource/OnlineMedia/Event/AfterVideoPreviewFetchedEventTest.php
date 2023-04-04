@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AfterVideoPreviewFetchedEventTest extends UnitTestCase
+final class AfterVideoPreviewFetchedEventTest extends UnitTestCase
 {
     /**
      * @test

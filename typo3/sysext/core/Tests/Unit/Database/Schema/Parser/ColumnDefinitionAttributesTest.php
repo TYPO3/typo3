@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Tests for CreateColumnDefinitionItem attributes
  */
-class ColumnDefinitionAttributesTest extends UnitTestCase
+final class ColumnDefinitionAttributesTest extends UnitTestCase
 {
     /**
      * Each parameter array consists of the following values:

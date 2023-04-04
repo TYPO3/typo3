@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Validation\CountValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class CountValidatorTest extends FunctionalTestCase
+final class CountValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

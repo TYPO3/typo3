@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FluidTemplateContentObjectTest extends FunctionalTestCase
+final class FluidTemplateContentObjectTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

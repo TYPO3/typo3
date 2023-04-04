@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ResourceCompressorTest extends FunctionalTestCase
+final class ResourceCompressorTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
 /**
  * Tests for parsing TEXT SQL data types
  */
-class TextTypesTest extends AbstractDataTypeBaseTestCase
+final class TextTypesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseTextDataType()

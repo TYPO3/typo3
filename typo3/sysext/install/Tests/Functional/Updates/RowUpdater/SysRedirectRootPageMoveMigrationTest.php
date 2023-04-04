@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SysRedirectRootPageMoveMigrationTest extends FunctionalTestCase
+final class SysRedirectRootPageMoveMigrationTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

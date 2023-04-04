@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Utility\ExtensionManagementUtility;
 
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ExtensionManagementUtilityTcaOverrideRequireTest extends FunctionalTestCase
+final class ExtensionManagementUtilityTcaOverrideRequireTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Utility/ExtensionManagementUtility/Fixtures/Extensions/test_tcaoverride_a',

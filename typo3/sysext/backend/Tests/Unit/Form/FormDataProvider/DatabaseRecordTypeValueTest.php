@@ -21,7 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatabaseRecordTypeValueTest extends UnitTestCase
+final class DatabaseRecordTypeValueTest extends UnitTestCase
 {
     protected DatabaseRecordTypeValue&MockObject $subject;
 

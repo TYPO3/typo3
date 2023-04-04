@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaGroupTest extends UnitTestCase
+final class TcaGroupTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

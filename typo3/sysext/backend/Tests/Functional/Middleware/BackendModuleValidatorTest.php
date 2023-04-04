@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BackendModuleValidatorTest extends FunctionalTestCase
+final class BackendModuleValidatorTest extends FunctionalTestCase
 {
     protected BackendModuleValidator $subject;
     protected ServerRequestInterface $request;

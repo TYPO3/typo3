@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\StringInclude;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RootNodeTest extends UnitTestCase
+final class RootNodeTest extends UnitTestCase
 {
     /**
      * @test

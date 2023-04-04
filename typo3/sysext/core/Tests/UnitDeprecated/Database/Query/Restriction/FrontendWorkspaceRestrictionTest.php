@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Database\Query\Restriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 use TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction\AbstractRestrictionTestCase;
 
-class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
+final class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 {
     protected bool $resetSingletonInstances = true;
 

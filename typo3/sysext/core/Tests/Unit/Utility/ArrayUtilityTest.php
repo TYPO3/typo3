@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * @todo When further defining the method parameter types test bench errors occur
  */
-class ArrayUtilityTest extends UnitTestCase
+final class ArrayUtilityTest extends UnitTestCase
 {
     ///////////////////////
     // Tests concerning filterByValueRecursive

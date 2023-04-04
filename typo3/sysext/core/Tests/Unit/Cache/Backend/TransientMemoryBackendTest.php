@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the TransientMemory cache backend
  */
-class TransientMemoryBackendTest extends UnitTestCase
+final class TransientMemoryBackendTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

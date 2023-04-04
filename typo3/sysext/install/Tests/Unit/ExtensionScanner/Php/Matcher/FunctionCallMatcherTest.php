@@ -23,7 +23,7 @@ use PhpParser\ParserFactory;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\FunctionCallMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FunctionCallMatcherTest extends UnitTestCase
+final class FunctionCallMatcherTest extends UnitTestCase
 {
     /**
      * @test

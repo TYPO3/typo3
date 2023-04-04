@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Serializer\Typo3XmlSerializer;
 use TYPO3\CMS\Core\Serializer\Typo3XmlSerializerOptions;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class Typo3XmlParserTest extends UnitTestCase
+final class Typo3XmlParserTest extends UnitTestCase
 {
     public static function decodeReturnsStringOrArrayDataProvider(): array
     {

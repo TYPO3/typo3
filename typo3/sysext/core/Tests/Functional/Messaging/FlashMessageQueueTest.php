@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FlashMessageQueueTest extends FunctionalTestCase
+final class FlashMessageQueueTest extends FunctionalTestCase
 {
     /**
      * @test

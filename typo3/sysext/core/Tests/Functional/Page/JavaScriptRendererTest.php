@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\JavaScriptRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class JavaScriptRendererTest extends FunctionalTestCase
+final class JavaScriptRendererTest extends FunctionalTestCase
 {
     /**
      * Ensures closing comment block cannot be injected.

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MailUtilityTest extends UnitTestCase
+final class MailUtilityTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

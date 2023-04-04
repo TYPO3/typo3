@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\PasswordPolicy\Validator\NotCurrentPasswordValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class NotCurrentPasswordValidatorTest extends FunctionalTestCase
+final class NotCurrentPasswordValidatorTest extends FunctionalTestCase
 {
     /**
      * @var bool Speed up this test case, it needs no database

@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Http\Application;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SiteTest extends UnitTestCase
+final class SiteTest extends UnitTestCase
 {
     public function tearDown(): void
     {

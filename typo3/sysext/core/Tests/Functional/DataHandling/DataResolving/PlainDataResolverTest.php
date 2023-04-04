@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataResolving;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
-class PlainDataResolverTest extends AbstractDataHandlerActionTestCase
+final class PlainDataResolverTest extends AbstractDataHandlerActionTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',

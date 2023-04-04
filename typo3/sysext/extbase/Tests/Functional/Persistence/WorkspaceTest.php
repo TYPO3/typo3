@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class WorkspaceTest extends FunctionalTestCase
+final class WorkspaceTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',

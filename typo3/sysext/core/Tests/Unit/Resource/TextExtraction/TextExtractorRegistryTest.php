@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Test cases for TextExtractorRegistry
  */
-class TextExtractorRegistryTest extends UnitTestCase
+final class TextExtractorRegistryTest extends UnitTestCase
 {
     /**
      * Initialize a TextExtractorRegistry and mock createTextExtractorInstance()

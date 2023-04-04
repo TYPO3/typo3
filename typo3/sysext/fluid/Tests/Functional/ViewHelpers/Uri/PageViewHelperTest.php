@@ -29,7 +29,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PageViewHelperTest extends FunctionalTestCase
+final class PageViewHelperTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

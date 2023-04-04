@@ -21,7 +21,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableVariant;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RenderableVariantTest extends UnitTestCase
+final class RenderableVariantTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

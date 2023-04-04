@@ -30,7 +30,7 @@ use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
+final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
 {
     /**
      * Data provider for generating the list of trusted properties

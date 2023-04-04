@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\RateLimiter\RateLimiterFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RateLimiterFactoryTest extends FunctionalTestCase
+final class RateLimiterFactoryTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

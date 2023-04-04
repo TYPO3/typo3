@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TotpProviderTest extends FunctionalTestCase
+final class TotpProviderTest extends FunctionalTestCase
 {
     private BackendUserAuthentication $user;
     private MfaProviderManifestInterface $subject;

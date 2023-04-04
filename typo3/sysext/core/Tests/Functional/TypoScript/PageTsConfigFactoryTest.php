@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * Tests PageTsConfigFactory and indirectly IncludeTree/TsConfigTreeBuilder
  */
-class PageTsConfigFactoryTest extends FunctionalTestCase
+final class PageTsConfigFactoryTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_pagetsconfigfactory',

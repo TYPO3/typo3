@@ -22,7 +22,7 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FormDataCompilerTest extends UnitTestCase
+final class FormDataCompilerTest extends UnitTestCase
 {
     protected FormDataCompiler $subject;
     protected FormDataGroupInterface&MockObject $formDataGroupMock;

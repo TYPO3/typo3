@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PhpassPasswordHashTest extends UnitTestCase
+final class PhpassPasswordHashTest extends UnitTestCase
 {
     /**
      * @test

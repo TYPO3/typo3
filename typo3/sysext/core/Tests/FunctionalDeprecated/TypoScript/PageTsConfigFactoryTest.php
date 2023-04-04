@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteSettings;
 use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PageTsConfigFactoryTest extends FunctionalTestCase
+final class PageTsConfigFactoryTest extends FunctionalTestCase
 {
     /**
      * @test

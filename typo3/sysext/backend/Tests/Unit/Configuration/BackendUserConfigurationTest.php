@@ -22,7 +22,7 @@ use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BackendUserConfigurationTest extends UnitTestCase
+final class BackendUserConfigurationTest extends UnitTestCase
 {
     protected BackendUserConfiguration $backendUserConfiguration;
     protected BackendUserAuthentication&MockObject $backendUserMock;

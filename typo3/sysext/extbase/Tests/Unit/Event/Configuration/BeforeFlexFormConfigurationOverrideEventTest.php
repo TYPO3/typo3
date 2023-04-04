@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Event\Configuration;
 use TYPO3\CMS\Extbase\Event\Configuration\BeforeFlexFormConfigurationOverrideEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BeforeFlexFormConfigurationOverrideEventTest extends UnitTestCase
+final class BeforeFlexFormConfigurationOverrideEventTest extends UnitTestCase
 {
     /**
      * @test

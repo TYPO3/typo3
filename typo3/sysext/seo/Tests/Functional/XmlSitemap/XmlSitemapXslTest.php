@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class XmlSitemapXslTest extends AbstractTestCase
+final class XmlSitemapXslTest extends AbstractTestCase
 {
     protected array $coreExtensionsToLoad = ['seo'];
 

@@ -34,7 +34,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ContentObjectRendererTest extends FunctionalTestCase
+final class ContentObjectRendererTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

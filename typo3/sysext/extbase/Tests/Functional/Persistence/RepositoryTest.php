@@ -22,7 +22,7 @@ use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RepositoryTest extends FunctionalTestCase
+final class RepositoryTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 

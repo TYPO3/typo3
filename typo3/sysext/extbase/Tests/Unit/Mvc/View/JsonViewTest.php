@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the JSON view
  */
-class JsonViewTest extends UnitTestCase
+final class JsonViewTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

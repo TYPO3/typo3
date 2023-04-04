@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ArrayConverterTest extends FunctionalTestCase
+final class ArrayConverterTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

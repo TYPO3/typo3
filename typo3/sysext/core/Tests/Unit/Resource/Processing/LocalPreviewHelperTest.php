@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper
  */
-class LocalPreviewHelperTest extends UnitTestCase
+final class LocalPreviewHelperTest extends UnitTestCase
 {
     /**
      * @test

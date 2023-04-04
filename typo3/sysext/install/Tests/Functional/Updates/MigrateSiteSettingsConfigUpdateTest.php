@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\MigrateSiteSettingsConfigUpdate;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class MigrateSiteSettingsConfigUpdateTest extends FunctionalTestCase
+final class MigrateSiteSettingsConfigUpdateTest extends FunctionalTestCase
 {
     /**
      * @test

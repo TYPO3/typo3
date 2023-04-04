@@ -27,7 +27,7 @@ use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\RedirectService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class IntegrityServiceTest extends FunctionalTestCase
+final class IntegrityServiceTest extends FunctionalTestCase
 {
     protected bool $resetSingletonInstances = true;
     protected array $coreExtensionsToLoad = ['redirects'];

@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * @requires function sem_get
  */
-class SemaphoreLockStrategyTest extends UnitTestCase
+final class SemaphoreLockStrategyTest extends UnitTestCase
 {
     /**
      * @test

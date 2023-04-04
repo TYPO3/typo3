@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\InputButton;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class InputButtonTest extends UnitTestCase
+final class InputButtonTest extends UnitTestCase
 {
     /**
      * Try to validate an empty button

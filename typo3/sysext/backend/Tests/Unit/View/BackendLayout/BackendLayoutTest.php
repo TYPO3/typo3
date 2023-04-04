@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testing backend layout representation.
  */
-class BackendLayoutTest extends UnitTestCase
+final class BackendLayoutTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class AudioTagRendererTest
  */
-class AudioTagRendererTest extends UnitTestCase
+final class AudioTagRendererTest extends UnitTestCase
 {
     /**
      * @test

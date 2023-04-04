@@ -23,7 +23,7 @@ use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\CreatablePrope
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTestCase
+final class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTestCase
 {
     /**
      * @test

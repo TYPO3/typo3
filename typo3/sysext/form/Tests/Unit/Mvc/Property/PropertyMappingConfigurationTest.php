@@ -32,7 +32,7 @@ use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PropertyMappingConfigurationTest extends UnitTestCase
+final class PropertyMappingConfigurationTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

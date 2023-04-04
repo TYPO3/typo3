@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
 use TYPO3\CMS\Core\Package\MetaData;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MetaDataTest extends UnitTestCase
+final class MetaDataTest extends UnitTestCase
 {
     public static function typeIsCorrectlyResolvedDataProvider(): \Generator
     {

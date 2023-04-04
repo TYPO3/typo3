@@ -22,7 +22,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TaskValidatorTest extends UnitTestCase
+final class TaskValidatorTest extends UnitTestCase
 {
     /**
      * @test

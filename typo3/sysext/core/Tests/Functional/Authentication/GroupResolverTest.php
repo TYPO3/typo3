@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class GroupResolverTest extends FunctionalTestCase
+final class GroupResolverTest extends FunctionalTestCase
 {
     public function setUp(): void
     {

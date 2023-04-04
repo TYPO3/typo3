@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
+final class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',

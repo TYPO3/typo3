@@ -30,7 +30,7 @@ use TYPO3\CMS\Reactions\Reaction\CreateRecordReaction;
 use TYPO3\CMS\Reactions\Repository\ReactionRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class CreateRecordReactionTest extends FunctionalTestCase
+final class CreateRecordReactionTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['reactions'];
 

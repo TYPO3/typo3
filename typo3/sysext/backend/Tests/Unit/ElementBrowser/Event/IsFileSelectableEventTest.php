@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class IsFileSelectableEventTest extends UnitTestCase
+final class IsFileSelectableEventTest extends UnitTestCase
 {
     /**
      * @test

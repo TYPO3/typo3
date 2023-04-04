@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\Domain\Model\File;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FileConverterTest extends FunctionalTestCase
+final class FileConverterTest extends FunctionalTestCase
 {
     /**
      * @test

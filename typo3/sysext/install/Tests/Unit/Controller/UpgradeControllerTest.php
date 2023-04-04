@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Install\Controller\UpgradeController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class UpgradeControllerTest extends UnitTestCase
+final class UpgradeControllerTest extends UnitTestCase
 {
     public static function versionDataProvider(): array
     {

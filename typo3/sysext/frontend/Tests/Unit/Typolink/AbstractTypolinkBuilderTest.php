@@ -30,7 +30,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractTypolinkBuilderTest extends UnitTestCase
+final class AbstractTypolinkBuilderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

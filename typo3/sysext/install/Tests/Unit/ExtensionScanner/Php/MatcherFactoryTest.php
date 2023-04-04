@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php;
 use TYPO3\CMS\Install\ExtensionScanner\Php\MatcherFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MatcherFactoryTest extends UnitTestCase
+final class MatcherFactoryTest extends UnitTestCase
 {
     /**
      * @test

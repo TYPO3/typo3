@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSyntaxScannerVisito
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
+final class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class IsDirtyTest extends FunctionalTestCase
+final class IsDirtyTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 

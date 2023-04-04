@@ -25,7 +25,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class IndexerTest extends UnitTestCase
+final class IndexerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

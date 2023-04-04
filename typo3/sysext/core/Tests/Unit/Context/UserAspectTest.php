@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class UserAspectTest extends UnitTestCase
+final class UserAspectTest extends UnitTestCase
 {
     /**
      * @test

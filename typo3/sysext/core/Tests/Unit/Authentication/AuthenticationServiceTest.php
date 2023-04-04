@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Tests\Functional\Authentication\Fixtures\AnyUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AuthenticationServiceTest extends UnitTestCase
+final class AuthenticationServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Extension test
  */
-class ExtensionTest extends UnitTestCase
+final class ExtensionTest extends UnitTestCase
 {
     /**
      * Data provider for getCategoryIndexFromStringOrNumberReturnsIndex

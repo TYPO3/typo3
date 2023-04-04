@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaMigrationTest extends UnitTestCase
+final class TcaMigrationTest extends UnitTestCase
 {
     /**
      * @test

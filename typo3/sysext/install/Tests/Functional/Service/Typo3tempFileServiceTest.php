@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\Service\Typo3tempFileService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class Typo3tempFileServiceTest extends FunctionalTestCase
+final class Typo3tempFileServiceTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
     private string $directoryName;

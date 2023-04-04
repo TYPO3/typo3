@@ -22,7 +22,7 @@ use TYPO3\CMS\Dashboard\WidgetGroup;
 use TYPO3\CMS\Dashboard\WidgetGroupRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class WidgetGroupRegistryTest extends UnitTestCase
+final class WidgetGroupRegistryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
     protected WidgetGroupRegistry $subject;

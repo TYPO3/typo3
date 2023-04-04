@@ -43,7 +43,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  * WORKSPACE: Records checked globally: 3
  * WORKSPACE: Records checked on (other) pid 300: 2
  */
-class CheckboxValidationTest extends FunctionalTestCase
+final class CheckboxValidationTest extends FunctionalTestCase
 {
     protected const PAGE_ID = 200;
     protected const PAGE_ID_OTHER = 300;

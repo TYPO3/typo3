@@ -21,7 +21,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Redirects\ViewHelpers\TargetPageIdViewHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TargetPageIdViewHelperTest extends UnitTestCase
+final class TargetPageIdViewHelperTest extends UnitTestCase
 {
     /**
      * @test

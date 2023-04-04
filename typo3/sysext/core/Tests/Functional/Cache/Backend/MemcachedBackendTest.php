@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class MemcachedBackendTest extends FunctionalTestCase
+final class MemcachedBackendTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

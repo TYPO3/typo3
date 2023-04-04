@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model\Entity;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ObjectStorageTest extends UnitTestCase
+final class ObjectStorageTest extends UnitTestCase
 {
     /**
      * @test

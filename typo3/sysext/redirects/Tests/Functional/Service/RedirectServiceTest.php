@@ -38,7 +38,7 @@ use TYPO3\CMS\Redirects\Service\RedirectService;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RedirectServiceTest extends FunctionalTestCase
+final class RedirectServiceTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

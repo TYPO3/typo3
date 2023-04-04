@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\BooleanValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BooleanValidatorTest extends FunctionalTestCase
+final class BooleanValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

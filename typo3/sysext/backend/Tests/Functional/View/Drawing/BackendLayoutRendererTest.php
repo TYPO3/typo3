@@ -31,7 +31,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataH
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BackendLayoutRendererTest extends FunctionalTestCase
+final class BackendLayoutRendererTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

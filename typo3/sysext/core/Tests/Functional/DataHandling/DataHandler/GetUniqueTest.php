@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * Tests related to DataHandler::getUnique()
  */
-class GetUniqueTest extends FunctionalTestCase
+final class GetUniqueTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

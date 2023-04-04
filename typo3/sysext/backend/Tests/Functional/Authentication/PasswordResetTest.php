@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PasswordResetTest extends FunctionalTestCase
+final class PasswordResetTest extends FunctionalTestCase
 {
     protected object $logger;
 

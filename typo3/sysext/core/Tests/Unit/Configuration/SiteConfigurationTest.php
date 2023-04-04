@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SiteConfigurationTest extends UnitTestCase
+final class SiteConfigurationTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

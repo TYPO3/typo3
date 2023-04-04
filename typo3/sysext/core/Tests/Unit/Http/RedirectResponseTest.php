@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RedirectResponseTest extends UnitTestCase
+final class RedirectResponseTest extends UnitTestCase
 {
     /**
      * @test

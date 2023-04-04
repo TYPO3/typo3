@@ -35,7 +35,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for \GuzzleHTTP\Client compatibility with TYPO3 PSR-7 Stack
  */
-class ClientTest extends UnitTestCase
+final class ClientTest extends UnitTestCase
 {
     /**
      * @test

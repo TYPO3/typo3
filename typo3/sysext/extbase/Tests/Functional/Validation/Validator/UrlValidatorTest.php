@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\UrlValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class UrlValidatorTest extends FunctionalTestCase
+final class UrlValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

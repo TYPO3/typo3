@@ -22,7 +22,7 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class StateUtilityTest extends UnitTestCase
+final class StateUtilityTest extends UnitTestCase
 {
     /**
      * @test

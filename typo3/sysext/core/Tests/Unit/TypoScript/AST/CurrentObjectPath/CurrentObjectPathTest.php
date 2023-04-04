@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CurrentObjectPathTest extends UnitTestCase
+final class CurrentObjectPathTest extends UnitTestCase
 {
     /**
      * @test

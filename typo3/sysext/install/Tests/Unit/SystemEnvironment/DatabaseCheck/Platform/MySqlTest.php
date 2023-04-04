@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform\MySql;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MySqlTest extends UnitTestCase
+final class MySqlTest extends UnitTestCase
 {
     public static function checkMySQLOrMariaDBVersionReportsExpectedStatusDataProvider(): \Generator
     {

@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class MfaControllerTest extends FunctionalTestCase
+final class MfaControllerTest extends FunctionalTestCase
 {
     protected MfaController $subject;
     protected ServerRequest $request;

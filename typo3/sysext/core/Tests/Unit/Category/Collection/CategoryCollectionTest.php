@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category\Collection;
 use TYPO3\CMS\Core\Category\Collection\CategoryCollection;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CategoryCollectionTest extends UnitTestCase
+final class CategoryCollectionTest extends UnitTestCase
 {
     /**
      * @test

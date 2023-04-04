@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Select\WorkspacesDiscard
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\Select\AbstractActionWorkspacesTestCase;
 
-class ActionTest extends AbstractActionWorkspacesTestCase
+final class ActionTest extends AbstractActionWorkspacesTestCase
 {
     /**
      * @test

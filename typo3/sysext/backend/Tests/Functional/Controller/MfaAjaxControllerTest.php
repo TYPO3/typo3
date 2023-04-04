@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class MfaAjaxControllerTest extends FunctionalTestCase
+final class MfaAjaxControllerTest extends FunctionalTestCase
 {
     protected MfaAjaxController $subject;
     protected ServerRequest $request;

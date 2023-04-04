@@ -24,7 +24,7 @@ use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodCallStaticMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MethodCallStaticMatcherTest extends UnitTestCase
+final class MethodCallStaticMatcherTest extends UnitTestCase
 {
     /**
      * @test

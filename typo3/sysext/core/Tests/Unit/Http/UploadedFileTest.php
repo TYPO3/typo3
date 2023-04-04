@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  *
  * Adapted from https://github.com/phly/http/
  */
-class UploadedFileTest extends UnitTestCase
+final class UploadedFileTest extends UnitTestCase
 {
     protected $tmpFile;
 

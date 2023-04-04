@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Country\CountryFilter;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CountryProviderTest extends UnitTestCase
+final class CountryProviderTest extends UnitTestCase
 {
     /**
      * @test

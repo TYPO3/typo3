@@ -25,7 +25,7 @@ use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ConstructorArgumentMatcher;
 use TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures\Subject;
 
-class ConstructorArgumentMatcherTest extends TestCase
+final class ConstructorArgumentMatcherTest extends TestCase
 {
     public static function hitsFromFixtureAreFoundDataProvider(): array
     {

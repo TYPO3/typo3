@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ProductionExceptionHandlerTest extends UnitTestCase
+final class ProductionExceptionHandlerTest extends UnitTestCase
 {
     /**
      * @test

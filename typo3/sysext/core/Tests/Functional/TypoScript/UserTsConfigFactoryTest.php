@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * Tests UserTsConfigFactory and indirectly IncludeTree/TsConfigTreeBuilder
  */
-class UserTsConfigFactoryTest extends FunctionalTestCase
+final class UserTsConfigFactoryTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_usertsconfigfactory',

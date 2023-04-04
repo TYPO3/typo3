@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class MailerTest extends FunctionalTestCase
+final class MailerTest extends FunctionalTestCase
 {
     /**
      * @test

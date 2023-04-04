@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class LocalDriverTest extends FunctionalTestCase
+final class LocalDriverTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

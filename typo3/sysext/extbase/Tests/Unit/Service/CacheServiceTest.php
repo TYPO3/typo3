@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CacheServiceTest extends UnitTestCase
+final class CacheServiceTest extends UnitTestCase
 {
     protected CacheService $cacheService;
     protected CacheManager&MockObject $cacheManagerMock;

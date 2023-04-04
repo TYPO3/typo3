@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Writer\DatabaseWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class DatabaseWriterTest extends FunctionalTestCase
+final class DatabaseWriterTest extends FunctionalTestCase
 {
     /**
      * @test

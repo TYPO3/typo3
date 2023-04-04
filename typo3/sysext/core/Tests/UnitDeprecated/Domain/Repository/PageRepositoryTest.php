@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PageRepositoryTest extends UnitTestCase
+final class PageRepositoryTest extends UnitTestCase
 {
     protected PageRepository&MockObject&AccessibleObjectInterface $pageSelectObject;
 

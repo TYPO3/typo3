@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Text;
 use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TextCropperTest extends UnitTestCase
+final class TextCropperTest extends UnitTestCase
 {
     private TextCropper $subject;
 

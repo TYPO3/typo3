@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SqlReaderTest extends UnitTestCase
+final class SqlReaderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

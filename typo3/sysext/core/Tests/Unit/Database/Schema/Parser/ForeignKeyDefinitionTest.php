@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Tests for CreateForeignKeyDefinitionItem
  */
-class ForeignKeyDefinitionTest extends UnitTestCase
+final class ForeignKeyDefinitionTest extends UnitTestCase
 {
     /**
      * Each parameter array consists of the following values:

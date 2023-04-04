@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class VimeoRendererTest
  */
-class VimeoRendererTest extends UnitTestCase
+final class VimeoRendererTest extends UnitTestCase
 {
     protected VimeoRenderer&MockObject $subject;
 

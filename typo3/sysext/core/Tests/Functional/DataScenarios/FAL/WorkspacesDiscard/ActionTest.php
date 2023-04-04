@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Functional\DataScenarios\FAL\AbstractActionWorkspacesTe
 /**
  * Functional test for the DataHandler
  */
-class ActionTest extends AbstractActionWorkspacesTestCase
+final class ActionTest extends AbstractActionWorkspacesTestCase
 {
     /**
      * @test

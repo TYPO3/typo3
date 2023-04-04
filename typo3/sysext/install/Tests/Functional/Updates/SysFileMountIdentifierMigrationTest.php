@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\SysFileMountIdentifierMigration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SysFileMountIdentifierMigrationTest extends FunctionalTestCase
+final class SysFileMountIdentifierMigrationTest extends FunctionalTestCase
 {
     private const TABLE_NAME = 'sys_filemounts';
 

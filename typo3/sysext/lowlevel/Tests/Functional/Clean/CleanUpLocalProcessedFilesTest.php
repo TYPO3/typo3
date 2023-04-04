@@ -27,7 +27,7 @@ use TYPO3\CMS\Lowlevel\Command\CleanUpLocalProcessedFilesCommand;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3\TestingFramework\Core\Testbase;
 
-class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
+final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
 {
     protected ?CleanUpLocalProcessedFilesCommand $subject = null;
 

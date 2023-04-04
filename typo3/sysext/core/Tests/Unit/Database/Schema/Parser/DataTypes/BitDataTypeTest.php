@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
 /**
  * Tests for parsing BIT SQL data type
  */
-class BitDataTypeTest extends AbstractDataTypeBaseTestCase
+final class BitDataTypeTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseBitDataType()

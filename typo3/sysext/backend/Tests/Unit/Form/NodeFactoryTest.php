@@ -30,7 +30,7 @@ use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeResolvers\Invalid
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class NodeFactoryTest extends UnitTestCase
+final class NodeFactoryTest extends UnitTestCase
 {
     /**
      * @test

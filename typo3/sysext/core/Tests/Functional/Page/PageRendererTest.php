@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PageRendererTest extends FunctionalTestCase
+final class PageRendererTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Functional\Updates;
 use TYPO3\CMS\Install\Updates\BackendModulePermissionMigration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BackendModulePermissionMigrationTest extends FunctionalTestCase
+final class BackendModulePermissionMigrationTest extends FunctionalTestCase
 {
     protected string $baseDataSet = __DIR__ . '/Fixtures/BackendModulePermissionMigrationBefore.csv';
     protected string $resultDataSet = __DIR__ . '/Fixtures/BackendModulePermissionMigrationAfter.csv';

@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TypoScriptParserTest extends UnitTestCase
+final class TypoScriptParserTest extends UnitTestCase
 {
     protected TypoScriptParser&MockObject&AccessibleObjectInterface $typoScriptParser;
 

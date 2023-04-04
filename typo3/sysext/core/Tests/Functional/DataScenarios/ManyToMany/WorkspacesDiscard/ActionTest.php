@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\ManyToMany\WorkspacesDis
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\ManyToMany\AbstractActionWorkspacesTestCase;
 
-class ActionTest extends AbstractActionWorkspacesTestCase
+final class ActionTest extends AbstractActionWorkspacesTestCase
 {
     /**
      * @test

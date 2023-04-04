@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ReferenceIndexWorkspaceLoadedTest extends FunctionalTestCase
+final class ReferenceIndexWorkspaceLoadedTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
         'workspaces',

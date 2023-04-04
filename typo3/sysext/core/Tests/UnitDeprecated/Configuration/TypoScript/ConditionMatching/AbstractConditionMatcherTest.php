@@ -40,7 +40,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractConditionMatcherTest extends UnitTestCase
+final class AbstractConditionMatcherTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;
     protected bool $resetSingletonInstances = true;

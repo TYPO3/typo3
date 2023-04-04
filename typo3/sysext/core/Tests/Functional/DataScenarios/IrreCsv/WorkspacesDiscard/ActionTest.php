@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreCsv\WorkspacesDiscar
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreCsv\AbstractActionWorkspacesTestCase;
 
-class ActionTest extends AbstractActionWorkspacesTestCase
+final class ActionTest extends AbstractActionWorkspacesTestCase
 {
     /**
      * @test

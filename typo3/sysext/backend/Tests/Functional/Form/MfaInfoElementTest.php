@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class MfaInfoElementTest extends FunctionalTestCase
+final class MfaInfoElementTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

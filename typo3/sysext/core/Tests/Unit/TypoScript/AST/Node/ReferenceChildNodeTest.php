@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ReferenceChildNode;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ReferenceChildNodeTest extends UnitTestCase
+final class ReferenceChildNodeTest extends UnitTestCase
 {
     /**
      * @test

@@ -23,7 +23,7 @@ use TYPO3\CMS\Webhooks\Model\WebhookType;
 use TYPO3\CMS\Webhooks\WebhookTypesRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class WebhookInstructionFactoryTest extends UnitTestCase
+final class WebhookInstructionFactoryTest extends UnitTestCase
 {
     /**
      * Simulate a tt_content record

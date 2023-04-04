@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\Event;
 use TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ModifyNewContentElementWizardItemsEventTest extends UnitTestCase
+final class ModifyNewContentElementWizardItemsEventTest extends UnitTestCase
 {
     protected ModifyNewContentElementWizardItemsEvent $subject;
 

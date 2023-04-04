@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class TranslateViewHelperTest extends FunctionalTestCase
+final class TranslateViewHelperTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['indexed_search'];
 

@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationExcepti
 use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class HashServiceTest extends UnitTestCase
+final class HashServiceTest extends UnitTestCase
 {
     protected HashService $hashService;
 

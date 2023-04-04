@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FileWriterTest extends UnitTestCase
+final class FileWriterTest extends UnitTestCase
 {
     protected string $logFileDirectory = 'Log';
     protected string $logFileName = 'test.log';

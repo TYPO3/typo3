@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class Argon2idPasswordHashTest extends UnitTestCase
+final class Argon2idPasswordHashTest extends UnitTestCase
 {
     protected Argon2idPasswordHash $subject;
 

@@ -21,7 +21,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
 use TYPO3\CMS\Form\Mvc\Configuration\InheritancesResolverService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class InheritancesResolverServiceTest extends UnitTestCase
+final class InheritancesResolverServiceTest extends UnitTestCase
 {
     /**
      * @var InheritancesResolverService

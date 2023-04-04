@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaItemsProcessorFunctionsTest extends UnitTestCase
+final class TcaItemsProcessorFunctionsTest extends UnitTestCase
 {
     protected function setUp(): void
     {

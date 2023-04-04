@@ -59,7 +59,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  * @todo Add tests for multilingual setups
  * @todo Add tests with various TypoScript settings activated
  */
-class MountPointTest extends AbstractTestCase
+final class MountPointTest extends AbstractTestCase
 {
     protected function setUp(): void
     {

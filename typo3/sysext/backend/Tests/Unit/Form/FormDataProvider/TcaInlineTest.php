@@ -22,7 +22,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaInlineTest extends UnitTestCase
+final class TcaInlineTest extends UnitTestCase
 {
     protected BackendUserAuthentication&MockObject $beUserMock;
 

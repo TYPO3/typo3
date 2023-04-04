@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TotpTest extends UnitTestCase
+final class TotpTest extends UnitTestCase
 {
     protected string $secret;
     protected int $timestamp = 1613652061;

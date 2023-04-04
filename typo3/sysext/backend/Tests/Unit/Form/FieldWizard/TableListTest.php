@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TableListTest extends UnitTestCase
+final class TableListTest extends UnitTestCase
 {
     /**
      * @test

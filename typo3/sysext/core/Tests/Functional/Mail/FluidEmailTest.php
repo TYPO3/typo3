@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Mail;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FluidEmailTest extends FunctionalTestCase
+final class FluidEmailTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

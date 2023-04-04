@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class WorkspaceAspectTest extends UnitTestCase
+final class WorkspaceAspectTest extends UnitTestCase
 {
     /**
      * @test

@@ -35,7 +35,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * This tests AstBuilder and CommentAwareAstBuilder
  */
-class AstBuilderInterfaceTest extends UnitTestCase
+final class AstBuilderInterfaceTest extends UnitTestCase
 {
     public static function buildDataProvider(): \Generator
     {

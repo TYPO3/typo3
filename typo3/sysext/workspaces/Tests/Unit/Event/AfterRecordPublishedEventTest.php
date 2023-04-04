@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Workspaces\Tests\Unit\Event;
 use TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AfterRecordPublishedEventTest extends UnitTestCase
+final class AfterRecordPublishedEventTest extends UnitTestCase
 {
     /**
      * @test

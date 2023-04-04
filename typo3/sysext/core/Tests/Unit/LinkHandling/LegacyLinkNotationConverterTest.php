@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LegacyLinkNotationConverterTest extends UnitTestCase
+final class LegacyLinkNotationConverterTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

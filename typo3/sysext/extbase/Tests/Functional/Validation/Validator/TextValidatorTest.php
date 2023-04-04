@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Validation\Validator\TextValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TextValidatorTest extends FunctionalTestCase
+final class TextValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

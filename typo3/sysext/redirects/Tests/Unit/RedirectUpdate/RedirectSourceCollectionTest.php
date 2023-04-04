@@ -21,7 +21,7 @@ use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
 use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RedirectSourceCollectionTest extends UnitTestCase
+final class RedirectSourceCollectionTest extends UnitTestCase
 {
     /**
      * @test

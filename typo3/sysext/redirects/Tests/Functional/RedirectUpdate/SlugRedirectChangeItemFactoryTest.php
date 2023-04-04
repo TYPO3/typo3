@@ -26,7 +26,7 @@ use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
+final class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['redirects'];
 

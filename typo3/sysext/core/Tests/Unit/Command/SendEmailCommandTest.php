@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SendEmailCommandTest extends UnitTestCase
+final class SendEmailCommandTest extends UnitTestCase
 {
     /**
      * @test

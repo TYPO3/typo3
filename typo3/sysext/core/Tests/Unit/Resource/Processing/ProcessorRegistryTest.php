@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ProcessorRegistryTest extends UnitTestCase
+final class ProcessorRegistryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

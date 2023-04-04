@@ -22,7 +22,7 @@ use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ClosureFinisherTest extends UnitTestCase
+final class ClosureFinisherTest extends UnitTestCase
 {
     /**
      * @test

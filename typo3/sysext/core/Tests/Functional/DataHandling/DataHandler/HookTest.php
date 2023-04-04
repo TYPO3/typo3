@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Tests triggering hook execution in DataHandler.
  */
-class HookTest extends AbstractDataHandlerActionTestCase
+final class HookTest extends AbstractDataHandlerActionTestCase
 {
     protected const VALUE_PageId = 89;
     protected const VALUE_ContentId = 297;

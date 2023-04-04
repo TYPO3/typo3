@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Tests for CreateIndexDefinitionItem
  */
-class IndexDefinitionTest extends UnitTestCase
+final class IndexDefinitionTest extends UnitTestCase
 {
     /**
      * Each parameter array consists of the following values:

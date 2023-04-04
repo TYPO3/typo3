@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaInlineConfigurationTest extends UnitTestCase
+final class TcaInlineConfigurationTest extends UnitTestCase
 {
     /**
      * @var array Set of default controls

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Compatibility;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PublicPropertyDeprecationTraitTest extends UnitTestCase
+final class PublicPropertyDeprecationTraitTest extends UnitTestCase
 {
     /**
      * @var object Test fixture (anonymous class)

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Type;
 use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BitSetTest extends UnitTestCase
+final class BitSetTest extends UnitTestCase
 {
     /**
      * @test

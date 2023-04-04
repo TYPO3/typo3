@@ -31,7 +31,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RedirectFinisherTest extends UnitTestCase
+final class RedirectFinisherTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

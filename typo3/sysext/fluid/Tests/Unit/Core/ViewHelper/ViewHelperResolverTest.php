@@ -24,7 +24,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ViewHelperResolverTest extends UnitTestCase
+final class ViewHelperResolverTest extends UnitTestCase
 {
     /**
      * @test

@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\String\StringFragmentPattern;
 use TYPO3\CMS\Core\Utility\String\StringFragmentSplitter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class StringFragmentSplitterTest extends UnitTestCase
+final class StringFragmentSplitterTest extends UnitTestCase
 {
     public static function stringIsSplitDataProvider(): \Generator
     {

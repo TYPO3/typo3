@@ -28,7 +28,7 @@ use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractCoreMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class GeneratorClassesResolverTest extends UnitTestCase
+final class GeneratorClassesResolverTest extends UnitTestCase
 {
     /**
      * @test

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Html\Parser;
 use TYPO3\CMS\Core\Html\SimpleNode;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ParserTest extends UnitTestCase
+final class ParserTest extends UnitTestCase
 {
     private const TYPES = [
         SimpleNode::TYPE_ELEMENT => 'ELEMENT',

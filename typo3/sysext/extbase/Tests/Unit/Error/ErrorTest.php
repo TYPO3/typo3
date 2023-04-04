@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ErrorTest extends UnitTestCase
+final class ErrorTest extends UnitTestCase
 {
     /**
      * @test

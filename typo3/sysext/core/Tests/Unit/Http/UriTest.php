@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  *
  * Adapted from https://github.com/phly/http/
  */
-class UriTest extends UnitTestCase
+final class UriTest extends UnitTestCase
 {
     /**
      * @test

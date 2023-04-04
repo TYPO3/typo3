@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
 use TYPO3\CMS\Extbase\Domain\Model\Category;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CategoryTest extends UnitTestCase
+final class CategoryTest extends UnitTestCase
 {
     /**
      * @test

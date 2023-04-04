@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Tests\Fixture\StringBackedEnum;
 use TYPO3\CMS\Extbase\Tests\Fixture\UnbackedEnum;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class EnumConverterTest extends FunctionalTestCase
+final class EnumConverterTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

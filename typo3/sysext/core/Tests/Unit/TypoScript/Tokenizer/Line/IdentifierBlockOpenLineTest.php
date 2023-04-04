@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierBlockOpenLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierTokenStream;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class IdentifierBlockOpenLineTest extends UnitTestCase
+final class IdentifierBlockOpenLineTest extends UnitTestCase
 {
     /**
      * @test

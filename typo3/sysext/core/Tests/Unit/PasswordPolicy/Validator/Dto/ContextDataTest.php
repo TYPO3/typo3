@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\PasswordPolicy\Validator\Dto;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ContextDataTest extends UnitTestCase
+final class ContextDataTest extends UnitTestCase
 {
     /**
      * @test

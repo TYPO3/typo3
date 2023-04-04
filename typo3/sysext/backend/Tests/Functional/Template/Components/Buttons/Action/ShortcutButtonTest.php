@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ShortcutButtonTest extends FunctionalTestCase
+final class ShortcutButtonTest extends FunctionalTestCase
 {
     private const FIXTURES_PATH_PATTERN = __DIR__ . '/../../../Fixtures/%s.html';
 

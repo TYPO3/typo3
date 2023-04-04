@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class LocalizationUtilityTest extends FunctionalTestCase
+final class LocalizationUtilityTest extends FunctionalTestCase
 {
     protected ConfigurationManagerInterface&MockObject $configurationManagerInterfaceMock;
 

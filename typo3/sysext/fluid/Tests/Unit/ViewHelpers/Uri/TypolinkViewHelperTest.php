@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
 use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TypolinkViewHelperTest extends UnitTestCase
+final class TypolinkViewHelperTest extends UnitTestCase
 {
     public static function plainDecodedConfigurationDataProvider(): array
     {

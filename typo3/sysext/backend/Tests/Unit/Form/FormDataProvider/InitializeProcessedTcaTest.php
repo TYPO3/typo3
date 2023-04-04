@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class InitializeProcessedTcaTest extends UnitTestCase
+final class InitializeProcessedTcaTest extends UnitTestCase
 {
     protected InitializeProcessedTca $subject;
 

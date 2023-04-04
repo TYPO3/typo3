@@ -22,7 +22,7 @@ use TYPO3\CMS\Dashboard\WidgetRegistry;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class WidgetRegistryTest extends FunctionalTestCase
+final class WidgetRegistryTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['dashboard'];
     protected WidgetRegistry $subject;

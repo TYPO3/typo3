@@ -34,7 +34,7 @@ use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class AddPageTypeZeroSourceTest extends FunctionalTestCase
+final class AddPageTypeZeroSourceTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['redirects'];
 

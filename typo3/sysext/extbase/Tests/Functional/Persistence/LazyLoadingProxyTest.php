@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class LazyLoadingProxyTest extends FunctionalTestCase
+final class LazyLoadingProxyTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['extbase'];
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];

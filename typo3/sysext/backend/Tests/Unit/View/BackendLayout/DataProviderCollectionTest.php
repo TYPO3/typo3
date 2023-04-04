@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testing collection of backend layout data providers.
  */
-class DataProviderCollectionTest extends UnitTestCase
+final class DataProviderCollectionTest extends UnitTestCase
 {
     protected DataProviderCollection $dataProviderCollection;
 

@@ -30,7 +30,7 @@ use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FormPersistenceManagerTest extends UnitTestCase
+final class FormPersistenceManagerTest extends UnitTestCase
 {
     /**
      * @test

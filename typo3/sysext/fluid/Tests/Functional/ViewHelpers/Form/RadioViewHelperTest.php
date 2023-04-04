@@ -27,7 +27,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class RadioViewHelperTest extends FunctionalTestCase
+final class RadioViewHelperTest extends FunctionalTestCase
 {
     public static function renderDataProvider(): array
     {

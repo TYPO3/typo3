@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\UploadedFileFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class UploadedFileFactoryTest extends UnitTestCase
+final class UploadedFileFactoryTest extends UnitTestCase
 {
     /**
      * @test

@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @link second test for reflection
  * @link second test for reflection with second value
  */
-class ReflectionServiceTest extends UnitTestCase
+final class ReflectionServiceTest extends UnitTestCase
 {
     /**
      * @test

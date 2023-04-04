@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * Tests the TCA option "min".
  */
-class MinValueTest extends FunctionalTestCase
+final class MinValueTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler',

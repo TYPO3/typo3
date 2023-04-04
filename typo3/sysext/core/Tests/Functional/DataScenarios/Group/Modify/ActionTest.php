@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Tests\Functional\DataScenarios\Group\AbstractActionTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
-class ActionTest extends AbstractActionTestCase
+final class ActionTest extends AbstractActionTestCase
 {
     /**
      * @test

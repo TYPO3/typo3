@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\CMS\FrontendLogin\Service\ValidatorResolverService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ValidatorResolverServiceTest extends UnitTestCase
+final class ValidatorResolverServiceTest extends UnitTestCase
 {
     protected ValidatorResolverService $subject;
 

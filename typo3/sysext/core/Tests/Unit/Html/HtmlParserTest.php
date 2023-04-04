@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Html\HtmlParser
  */
-class HtmlParserTest extends UnitTestCase
+final class HtmlParserTest extends UnitTestCase
 {
     protected ?HtmlParser $subject;
 

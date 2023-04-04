@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class UriBuilderTest extends FunctionalTestCase
+final class UriBuilderTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

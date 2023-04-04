@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\History;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RecordHistoryTest extends FunctionalTestCase
+final class RecordHistoryTest extends FunctionalTestCase
 {
     private RecordHistory $subject;
 

@@ -21,7 +21,7 @@ use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
-class ImportExportTest extends AbstractImportExportTestCase
+final class ImportExportTest extends AbstractImportExportTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',

@@ -29,7 +29,7 @@ use TYPO3\CMS\Redirects\Controller\ManagementController;
 use TYPO3\CMS\Redirects\Event\ModifyRedirectManagementControllerViewDataEvent;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ManagementControllerTest extends FunctionalTestCase
+final class ManagementControllerTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['redirects'];
     protected ManagementController $subject;

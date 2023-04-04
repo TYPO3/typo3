@@ -22,7 +22,7 @@ use PhpParser\ParserFactory;
 use TYPO3\CMS\Install\ExtensionScanner\Php\CodeStatistics;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CodeStatisticsTest extends UnitTestCase
+final class CodeStatisticsTest extends UnitTestCase
 {
     /**
      * @test

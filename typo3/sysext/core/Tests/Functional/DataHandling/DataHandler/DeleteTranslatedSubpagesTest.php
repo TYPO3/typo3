@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Functional test for deleting page with translated subpage
  */
-class DeleteTranslatedSubpagesTest extends AbstractDataHandlerActionTestCase
+final class DeleteTranslatedSubpagesTest extends AbstractDataHandlerActionTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',

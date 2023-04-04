@@ -28,7 +28,7 @@ use TYPO3\CMS\Workspaces\EventListener\PageTreeItemsHighlighter;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PageTreeItemsHighlighterTest extends FunctionalTestCase
+final class PageTreeItemsHighlighterTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
 

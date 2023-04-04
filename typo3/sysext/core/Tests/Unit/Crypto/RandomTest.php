@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Exception\InvalidPasswordRulesException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RandomTest extends UnitTestCase
+final class RandomTest extends UnitTestCase
 {
     /**
      * @test

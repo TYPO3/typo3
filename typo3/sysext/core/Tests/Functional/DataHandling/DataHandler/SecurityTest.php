@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * Tests related to security aspects in DataHandler
  */
-class SecurityTest extends FunctionalTestCase
+final class SecurityTest extends FunctionalTestCase
 {
     /**
      * @var BackendUserAuthentication

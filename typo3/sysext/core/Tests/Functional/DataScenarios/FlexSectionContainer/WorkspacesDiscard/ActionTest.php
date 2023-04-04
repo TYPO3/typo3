@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\FlexSectionContainer\Wor
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\FlexSectionContainer\AbstractActionWorkspacesTestCase;
 
-class ActionTest extends AbstractActionWorkspacesTestCase
+final class ActionTest extends AbstractActionWorkspacesTestCase
 {
     /**
      * @test

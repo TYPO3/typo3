@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Install\Updates\BackendGroupsExplicitAllowDenyMigration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BackendGroupsExplicitAllowDenyMigrationTest extends FunctionalTestCase
+final class BackendGroupsExplicitAllowDenyMigrationTest extends FunctionalTestCase
 {
     /**
      * @test

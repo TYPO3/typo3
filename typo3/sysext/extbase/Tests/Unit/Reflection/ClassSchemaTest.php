@@ -36,7 +36,7 @@ use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ClassSchemaTest extends UnitTestCase
+final class ClassSchemaTest extends UnitTestCase
 {
     /**
      * @test

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ContextTest extends UnitTestCase
+final class ContextTest extends UnitTestCase
 {
     /**
      * Date provider for hasAspectReturnsTrueOnExistingAspect

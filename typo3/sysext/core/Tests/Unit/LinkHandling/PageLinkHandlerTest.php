@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 use TYPO3\CMS\Core\LinkHandling\PageLinkHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PageLinkHandlerTest extends UnitTestCase
+final class PageLinkHandlerTest extends UnitTestCase
 {
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page

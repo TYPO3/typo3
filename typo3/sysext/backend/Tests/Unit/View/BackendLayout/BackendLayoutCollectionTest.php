@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testing collection of backend layouts.
  */
-class BackendLayoutCollectionTest extends UnitTestCase
+final class BackendLayoutCollectionTest extends UnitTestCase
 {
     /**
      * @test

@@ -32,7 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class TYPO3\CMS\Extbase\Tests\Unit\Validation\ValidatorClassNameResolverTest
  */
-class ValidatorClassNameResolverTest extends UnitTestCase
+final class ValidatorClassNameResolverTest extends UnitTestCase
 {
     /**
      * @test

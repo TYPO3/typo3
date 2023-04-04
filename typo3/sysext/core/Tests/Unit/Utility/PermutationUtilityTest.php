@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\StringValue;
 use TYPO3\CMS\Core\Utility\PermutationUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PermutationUtilityTest extends UnitTestCase
+final class PermutationUtilityTest extends UnitTestCase
 {
     public static function meltStringItemsDataProvider(): array
     {

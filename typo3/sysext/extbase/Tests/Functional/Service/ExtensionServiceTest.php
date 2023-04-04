@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ExtensionServiceTest extends FunctionalTestCase
+final class ExtensionServiceTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 

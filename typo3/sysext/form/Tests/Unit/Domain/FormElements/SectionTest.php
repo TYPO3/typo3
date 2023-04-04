@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  *
  * Class AbstractFormElementTest
  */
-class SectionTest extends UnitTestCase
+final class SectionTest extends UnitTestCase
 {
     protected static $IDENTIFIER = 'an_id';
     protected static $TYPE = 'a_type';

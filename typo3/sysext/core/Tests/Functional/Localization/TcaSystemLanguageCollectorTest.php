@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TcaSystemLanguageCollectorTest extends FunctionalTestCase
+final class TcaSystemLanguageCollectorTest extends FunctionalTestCase
 {
     public function setUp(): void
     {

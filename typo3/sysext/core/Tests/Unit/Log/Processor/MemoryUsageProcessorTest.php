@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Processor\MemoryUsageProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MemoryUsageProcessorTest extends UnitTestCase
+final class MemoryUsageProcessorTest extends UnitTestCase
 {
     /**
      * @test

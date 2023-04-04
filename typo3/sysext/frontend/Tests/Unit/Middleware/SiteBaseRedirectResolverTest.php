@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Tests\Functional\Fixtures\Frontend\PhpError;
 use TYPO3\CMS\Frontend\Middleware\SiteBaseRedirectResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SiteBaseRedirectResolverTest extends UnitTestCase
+final class SiteBaseRedirectResolverTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

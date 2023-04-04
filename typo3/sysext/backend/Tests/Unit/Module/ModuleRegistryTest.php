@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ModuleRegistryTest extends UnitTestCase
+final class ModuleRegistryTest extends UnitTestCase
 {
     protected ModuleFactory $moduleFactory;
 

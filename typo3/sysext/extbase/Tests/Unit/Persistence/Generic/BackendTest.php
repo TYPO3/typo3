@@ -28,7 +28,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BackendTest extends UnitTestCase
+final class BackendTest extends UnitTestCase
 {
     protected function tearDown(): void
     {

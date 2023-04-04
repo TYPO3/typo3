@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaColumnsProcessShowitemTest extends UnitTestCase
+final class TcaColumnsProcessShowitemTest extends UnitTestCase
 {
     /**
      * @test

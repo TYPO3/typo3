@@ -22,7 +22,7 @@ use TYPO3\CMS\Workspaces\Domain\Record\AbstractRecord;
 use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class WorkspaceRecordTest extends UnitTestCase
+final class WorkspaceRecordTest extends UnitTestCase
 {
     protected function setUp(): void
     {

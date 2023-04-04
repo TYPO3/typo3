@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TreeDataProviderFactoryTest extends UnitTestCase
+final class TreeDataProviderFactoryTest extends UnitTestCase
 {
     protected function setUp(): void
     {

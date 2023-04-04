@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ShortcutControllerTest extends FunctionalTestCase
+final class ShortcutControllerTest extends FunctionalTestCase
 {
     protected ShortcutController $subject;
     protected ServerRequest $request;

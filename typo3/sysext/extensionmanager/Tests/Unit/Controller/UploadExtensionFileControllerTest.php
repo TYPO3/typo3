@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Update from TER controller test
  */
-class UploadExtensionFileControllerTest extends UnitTestCase
+final class UploadExtensionFileControllerTest extends UnitTestCase
 {
     /**
      * @return array The test data for getExtensionFromZipFileExtractsExtensionKey

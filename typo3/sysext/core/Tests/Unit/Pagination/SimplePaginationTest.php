@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SimplePaginationTest extends UnitTestCase
+final class SimplePaginationTest extends UnitTestCase
 {
     /**
      * @var array

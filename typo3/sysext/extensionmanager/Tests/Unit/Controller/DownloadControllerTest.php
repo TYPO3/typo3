@@ -25,7 +25,7 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DownloadControllerTest extends UnitTestCase
+final class DownloadControllerTest extends UnitTestCase
 {
     /**
      * @test

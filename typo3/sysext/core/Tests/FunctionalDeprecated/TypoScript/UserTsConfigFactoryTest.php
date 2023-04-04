@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\TypoScript\UserTsConfigFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class UserTsConfigFactoryTest extends FunctionalTestCase
+final class UserTsConfigFactoryTest extends FunctionalTestCase
 {
     /**
      * @test

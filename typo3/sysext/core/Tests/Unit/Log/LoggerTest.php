@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Log\Writer\NullWriter;
 use TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\WriterFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LoggerTest extends UnitTestCase
+final class LoggerTest extends UnitTestCase
 {
     /**
      * @test

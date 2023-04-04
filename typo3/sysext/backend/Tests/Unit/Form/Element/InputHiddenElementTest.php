@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Tests for InputHiddenElement Form
  */
-class InputHiddenElementTest extends UnitTestCase
+final class InputHiddenElementTest extends UnitTestCase
 {
     /**
      * @test

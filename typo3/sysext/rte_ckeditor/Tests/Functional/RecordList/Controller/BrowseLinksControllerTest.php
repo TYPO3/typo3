@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BrowseLinksControllerTest extends FunctionalTestCase
+final class BrowseLinksControllerTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
         'rte_ckeditor',

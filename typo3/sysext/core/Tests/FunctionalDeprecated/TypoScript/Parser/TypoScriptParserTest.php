@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\FunctionalDeprecated\TypoScript\Parser;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TypoScriptParserTest extends FunctionalTestCase
+final class TypoScriptParserTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

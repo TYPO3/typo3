@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatabaseUserPermissionCheckTest extends UnitTestCase
+final class DatabaseUserPermissionCheckTest extends UnitTestCase
 {
     protected BackendUserAuthentication&MockObject $beUserMock;
 

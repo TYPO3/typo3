@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ResourceCompressorTest extends UnitTestCase
+final class ResourceCompressorTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;
 

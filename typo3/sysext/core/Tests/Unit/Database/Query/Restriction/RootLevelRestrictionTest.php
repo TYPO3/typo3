@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 
-class RootLevelRestrictionTest extends AbstractRestrictionTestCase
+final class RootLevelRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
      * @test

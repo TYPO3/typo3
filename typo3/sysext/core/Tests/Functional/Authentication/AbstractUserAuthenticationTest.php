@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Tests\Functional\Authentication\Fixtures\AnyUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class AbstractUserAuthenticationTest extends FunctionalTestCase
+final class AbstractUserAuthenticationTest extends FunctionalTestCase
 {
     private string $sessionId;
     private AnyUserAuthentication $subject;

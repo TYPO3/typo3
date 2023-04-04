@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Redirects\Tests\Unit\Evaluation;
 use TYPO3\CMS\Redirects\Evaluation\SourceHost;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SourceHostTest extends UnitTestCase
+final class SourceHostTest extends UnitTestCase
 {
     public static function evaluateFieldValueWorksWithDifferentInputsDataProvider(): array
     {

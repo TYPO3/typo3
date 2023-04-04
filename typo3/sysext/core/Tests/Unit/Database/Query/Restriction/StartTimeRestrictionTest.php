@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 
-class StartTimeRestrictionTest extends AbstractRestrictionTestCase
+final class StartTimeRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
      * @test

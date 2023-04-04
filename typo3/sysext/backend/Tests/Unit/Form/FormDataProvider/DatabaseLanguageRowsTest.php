@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatabaseLanguageRowsTest extends UnitTestCase
+final class DatabaseLanguageRowsTest extends UnitTestCase
 {
     protected DatabaseLanguageRows&MockObject $subject;
 

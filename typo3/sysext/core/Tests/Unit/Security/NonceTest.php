@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Security\NonceException;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class NonceTest extends UnitTestCase
+final class NonceTest extends UnitTestCase
 {
     public static function nonceIsCreatedDataProvider(): \Generator
     {

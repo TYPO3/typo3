@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface;
 use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FluidTemplateCacheTest extends UnitTestCase
+final class FluidTemplateCacheTest extends UnitTestCase
 {
     /**
      * @test

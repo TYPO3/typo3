@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\Property\DummyEntityWithoutTypeDeclarations;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
+final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
 {
     /**
      * @test

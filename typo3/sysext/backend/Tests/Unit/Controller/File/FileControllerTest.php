@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FileControllerTest extends UnitTestCase
+final class FileControllerTest extends UnitTestCase
 {
     protected File&MockObject $fileResourceMock;
 

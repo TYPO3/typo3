@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ReferenceIndexTest extends FunctionalTestCase
+final class ReferenceIndexTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',

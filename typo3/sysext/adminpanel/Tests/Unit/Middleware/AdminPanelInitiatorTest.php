@@ -27,7 +27,7 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AdminPanelInitiatorTest extends UnitTestCase
+final class AdminPanelInitiatorTest extends UnitTestCase
 {
     /**
      * @test

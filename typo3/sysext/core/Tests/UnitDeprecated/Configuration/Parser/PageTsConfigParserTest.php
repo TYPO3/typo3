@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteSettings;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PageTsConfigParserTest extends UnitTestCase
+final class PageTsConfigParserTest extends UnitTestCase
 {
     /**
      * @test

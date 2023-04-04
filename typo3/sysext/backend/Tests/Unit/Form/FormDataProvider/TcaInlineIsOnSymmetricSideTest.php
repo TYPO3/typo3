@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineIsOnSymmetricSide;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaInlineIsOnSymmetricSideTest extends UnitTestCase
+final class TcaInlineIsOnSymmetricSideTest extends UnitTestCase
 {
     protected TcaInlineIsOnSymmetricSide $subject;
 

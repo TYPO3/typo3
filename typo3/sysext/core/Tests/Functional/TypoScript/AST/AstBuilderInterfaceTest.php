@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * This tests AstBuilder and CommentAwareAstBuilder
  */
-class AstBuilderInterfaceTest extends FunctionalTestCase
+final class AstBuilderInterfaceTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['tstemplate'];
 

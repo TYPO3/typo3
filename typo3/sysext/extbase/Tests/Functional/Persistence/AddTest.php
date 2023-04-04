@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class AddTest extends FunctionalTestCase
+final class AddTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 

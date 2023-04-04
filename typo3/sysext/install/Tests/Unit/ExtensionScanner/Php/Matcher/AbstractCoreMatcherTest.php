@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractCoreMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractCoreMatcherTest extends UnitTestCase
+final class AbstractCoreMatcherTest extends UnitTestCase
 {
     /**
      * @test

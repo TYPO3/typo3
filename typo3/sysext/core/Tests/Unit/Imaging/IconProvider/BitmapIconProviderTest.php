@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider
  */
-class BitmapIconProviderTest extends UnitTestCase
+final class BitmapIconProviderTest extends UnitTestCase
 {
     protected ?BitmapIconProvider $subject;
 

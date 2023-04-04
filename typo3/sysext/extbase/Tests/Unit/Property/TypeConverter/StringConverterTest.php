@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class StringConverterTest extends UnitTestCase
+final class StringConverterTest extends UnitTestCase
 {
     /**
      * @var TypeConverterInterface

@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PlaintextRendererTest extends UnitTestCase
+final class PlaintextRendererTest extends UnitTestCase
 {
     /**
      * @test

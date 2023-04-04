@@ -21,7 +21,7 @@ use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\CacheHashConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CacheHashCalculatorTest extends UnitTestCase
+final class CacheHashCalculatorTest extends UnitTestCase
 {
     protected CacheHashCalculator $subject;
 

@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class IndexerTest
  */
-class IndexerTest extends UnitTestCase
+final class IndexerTest extends UnitTestCase
 {
     /**
      * @test

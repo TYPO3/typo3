@@ -24,7 +24,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class EditRecordViewHelperTest extends FunctionalTestCase
+final class EditRecordViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

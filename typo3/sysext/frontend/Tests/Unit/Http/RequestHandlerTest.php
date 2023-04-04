@@ -38,7 +38,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * @todo: It looks as if these unit tests should be turned into functional tests
  */
-class RequestHandlerTest extends UnitTestCase
+final class RequestHandlerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ConnectionPoolTest extends UnitTestCase
+final class ConnectionPoolTest extends UnitTestCase
 {
     /**
      * @test

@@ -26,7 +26,7 @@ use TYPO3\CMS\Dashboard\WidgetRegistry;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DashboardWidgetPassTest extends UnitTestCase
+final class DashboardWidgetPassTest extends UnitTestCase
 {
     protected DashboardWidgetPass $subject;
     protected ContainerBuilder&MockObject $container;

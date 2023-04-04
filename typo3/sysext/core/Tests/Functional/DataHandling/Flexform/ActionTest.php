@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Flexform;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
-class ActionTest extends AbstractDataHandlerActionTestCase
+final class ActionTest extends AbstractDataHandlerActionTestCase
 {
     protected const VALUE_ContentId = 100;
 

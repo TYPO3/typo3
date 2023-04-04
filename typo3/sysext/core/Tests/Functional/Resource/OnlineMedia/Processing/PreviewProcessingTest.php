@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PreviewProcessingTest extends FunctionalTestCase
+final class PreviewProcessingTest extends FunctionalTestCase
 {
     /**
      * @test

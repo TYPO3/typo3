@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CorePasswordValidatorTest extends UnitTestCase
+final class CorePasswordValidatorTest extends UnitTestCase
 {
     protected function setUp(): void
     {

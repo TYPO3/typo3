@@ -30,7 +30,7 @@ use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity2;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PersistenceManagerTest extends UnitTestCase
+final class PersistenceManagerTest extends UnitTestCase
 {
     /**
      * @test

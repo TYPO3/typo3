@@ -30,7 +30,7 @@ use TYPO3\CMS\Install\Configuration\Image\GraphicsMagickPreset;
 use TYPO3\CMS\Seo\MetaTag\MetaTagGenerator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class MetaTagGeneratorTest extends FunctionalTestCase
+final class MetaTagGeneratorTest extends FunctionalTestCase
 {
     private MetaTagGenerator $subject;
     private ResourceStorage $defaultStorage;

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SysTemplateRepositoryTest extends FunctionalTestCase
+final class SysTemplateRepositoryTest extends FunctionalTestCase
 {
     /**
      * @test

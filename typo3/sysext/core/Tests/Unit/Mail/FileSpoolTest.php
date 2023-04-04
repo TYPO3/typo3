@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Mail\FileSpool;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FileSpoolTest extends UnitTestCase
+final class FileSpoolTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

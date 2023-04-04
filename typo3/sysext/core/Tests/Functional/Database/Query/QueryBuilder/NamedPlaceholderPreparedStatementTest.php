@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class NamedPlaceholderPreparedStatementTest extends FunctionalTestCase
+final class NamedPlaceholderPreparedStatementTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

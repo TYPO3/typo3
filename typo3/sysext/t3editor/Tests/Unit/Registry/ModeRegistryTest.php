@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Unit test class for Registry\ModeRegistry
  */
-class ModeRegistryTest extends UnitTestCase
+final class ModeRegistryTest extends UnitTestCase
 {
     protected ModeRegistry $subject;
 

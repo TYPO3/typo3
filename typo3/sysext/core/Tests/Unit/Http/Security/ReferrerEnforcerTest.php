@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ReferrerEnforcerTest extends UnitTestCase
+final class ReferrerEnforcerTest extends UnitTestCase
 {
     private static function buildRefreshContentPattern(string $uri): string
     {

@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class UserSessionManagerTest extends UnitTestCase
+final class UserSessionManagerTest extends UnitTestCase
 {
     use JwtTrait;
 

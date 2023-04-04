@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatabaseEffectivePidTest extends UnitTestCase
+final class DatabaseEffectivePidTest extends UnitTestCase
 {
     protected DatabaseEffectivePid $subject;
 

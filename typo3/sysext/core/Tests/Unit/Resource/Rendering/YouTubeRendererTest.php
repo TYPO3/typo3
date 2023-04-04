@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class YouTubeRendererTest
  */
-class YouTubeRendererTest extends UnitTestCase
+final class YouTubeRendererTest extends UnitTestCase
 {
     protected YouTubeRenderer&MockObject $subject;
 

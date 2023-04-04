@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Download queue test
  */
-class DownloadQueueTest extends UnitTestCase
+final class DownloadQueueTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue

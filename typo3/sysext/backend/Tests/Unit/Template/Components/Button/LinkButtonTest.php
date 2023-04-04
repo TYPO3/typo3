@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LinkButtonTest extends UnitTestCase
+final class LinkButtonTest extends UnitTestCase
 {
     /**
      * Try validating an empty button

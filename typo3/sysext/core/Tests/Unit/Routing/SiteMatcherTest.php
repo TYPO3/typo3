@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SiteMatcherTest extends UnitTestCase
+final class SiteMatcherTest extends UnitTestCase
 {
     /**
      * @test

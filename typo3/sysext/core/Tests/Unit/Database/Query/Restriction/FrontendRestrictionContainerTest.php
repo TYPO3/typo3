@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
-class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
+final class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
 {
     protected bool $resetSingletonInstances = true;
 

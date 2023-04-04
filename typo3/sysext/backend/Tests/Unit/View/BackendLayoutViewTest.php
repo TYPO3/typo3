@@ -22,7 +22,7 @@ use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BackendLayoutViewTest extends UnitTestCase
+final class BackendLayoutViewTest extends UnitTestCase
 {
     protected BackendLayoutView&MockObject&AccessibleObjectInterface $backendLayoutView;
 

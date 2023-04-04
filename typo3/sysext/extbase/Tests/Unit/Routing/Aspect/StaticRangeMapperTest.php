@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Routing\Aspect;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Routing\Aspect\StaticRangeMapper;
 
-class StaticRangeMapperTest extends TestCase
+final class StaticRangeMapperTest extends TestCase
 {
     public static function valueSettingsDataProvider(): array
     {

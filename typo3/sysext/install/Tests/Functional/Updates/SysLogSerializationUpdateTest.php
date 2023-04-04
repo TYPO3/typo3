@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Functional\Updates;
 use TYPO3\CMS\Install\Updates\SysLogSerializationUpdate;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SysLogSerializationUpdateTest extends FunctionalTestCase
+final class SysLogSerializationUpdateTest extends FunctionalTestCase
 {
     protected string $baseDataSet = __DIR__ . '/Fixtures/SysLogSerializationBase.csv';
     protected string $resultDataSet = __DIR__ . '/Fixtures/SysLogSerializationFinished.csv';

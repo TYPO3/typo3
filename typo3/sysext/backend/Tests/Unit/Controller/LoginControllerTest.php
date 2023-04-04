@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LoginControllerTest extends UnitTestCase
+final class LoginControllerTest extends UnitTestCase
 {
     /**
      * @test

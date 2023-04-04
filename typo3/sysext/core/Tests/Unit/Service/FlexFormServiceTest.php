@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FlexFormServiceTest extends UnitTestCase
+final class FlexFormServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

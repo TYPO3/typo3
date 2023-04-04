@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class DownloadRecordListTest extends FunctionalTestCase
+final class DownloadRecordListTest extends FunctionalTestCase
 {
     private ?BackendUserAuthentication $user;
 

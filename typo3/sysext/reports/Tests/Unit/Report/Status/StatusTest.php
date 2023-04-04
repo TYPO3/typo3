@@ -34,7 +34,7 @@ use TYPO3\CMS\Reports\Status as StatusValue;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class StatusTest extends UnitTestCase
+final class StatusTest extends UnitTestCase
 {
     protected function setUp(): void
     {

@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ImportMapTest extends UnitTestCase
+final class ImportMapTest extends UnitTestCase
 {
     protected array $packages = [];
 

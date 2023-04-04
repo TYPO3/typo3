@@ -21,7 +21,7 @@ use Psr\Log\InvalidArgumentException;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LogLevelTest extends UnitTestCase
+final class LogLevelTest extends UnitTestCase
 {
     /**
      * @test

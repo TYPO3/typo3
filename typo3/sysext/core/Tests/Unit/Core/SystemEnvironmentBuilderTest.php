@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase
  */
-class SystemEnvironmentBuilderTest extends UnitTestCase
+final class SystemEnvironmentBuilderTest extends UnitTestCase
 {
     protected SystemEnvironmentBuilder&MockObject&AccessibleObjectInterface $subject;
 

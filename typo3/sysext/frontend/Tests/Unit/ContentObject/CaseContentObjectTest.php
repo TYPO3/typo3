@@ -27,7 +27,7 @@ use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CaseContentObjectTest extends UnitTestCase
+final class CaseContentObjectTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\FeLoginModeExtractionUpdate;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FeLoginModeExtractionUpdateTest extends FunctionalTestCase
+final class FeLoginModeExtractionUpdateTest extends FunctionalTestCase
 {
     /**
      * @test

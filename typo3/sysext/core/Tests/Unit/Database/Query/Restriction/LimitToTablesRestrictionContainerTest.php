@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\LimitToTablesRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 
-class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTestCase
+final class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTestCase
 {
     /**
      * @test

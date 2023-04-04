@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the ProcessedFile class of the TYPO3 FAL
  */
-class ProcessedFileTest extends UnitTestCase
+final class ProcessedFileTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

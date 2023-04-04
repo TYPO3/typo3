@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Install\Service\Typo3tempFileService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class Typo3tempFileServiceTest extends UnitTestCase
+final class Typo3tempFileServiceTest extends UnitTestCase
 {
     /**
      * @test

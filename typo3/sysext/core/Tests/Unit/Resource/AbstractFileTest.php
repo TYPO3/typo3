@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the abstract file class of the TYPO3 FAL
  */
-class AbstractFileTest extends UnitTestCase
+final class AbstractFileTest extends UnitTestCase
 {
     /**
      * @test

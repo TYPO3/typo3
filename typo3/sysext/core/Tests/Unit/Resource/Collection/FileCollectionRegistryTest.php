@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Resource\Collection\StaticFileCollection;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FileCollectionRegistryTest extends UnitTestCase
+final class FileCollectionRegistryTest extends UnitTestCase
 {
     /**
      * @test

@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\DependencyInjection\ListenerProviderPass;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ListenerProviderPassTest extends UnitTestCase
+final class ListenerProviderPassTest extends UnitTestCase
 {
     protected function getContainerWithListenerProvider(array $packages = []): ContainerBuilder
     {

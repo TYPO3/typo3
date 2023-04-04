@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Renderable;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractRenderableTest extends UnitTestCase
+final class AbstractRenderableTest extends UnitTestCase
 {
     /**
      * @test

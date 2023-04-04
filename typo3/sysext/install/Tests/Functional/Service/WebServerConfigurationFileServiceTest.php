@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Install\Service\WebServerConfigurationFileService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class WebServerConfigurationFileServiceTest extends FunctionalTestCase
+final class WebServerConfigurationFileServiceTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

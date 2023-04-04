@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PagesTsConfigGuardTest extends FunctionalTestCase
+final class PagesTsConfigGuardTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

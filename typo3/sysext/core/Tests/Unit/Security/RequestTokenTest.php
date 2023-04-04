@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Security\SigningSecretInterface;
 use TYPO3\CMS\Core\Security\SigningSecretResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RequestTokenTest extends UnitTestCase
+final class RequestTokenTest extends UnitTestCase
 {
     /**
      * @test

@@ -21,7 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ResultTest extends UnitTestCase
+final class ResultTest extends UnitTestCase
 {
     protected Result $result;
 

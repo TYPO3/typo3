@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Lowlevel\Tests\Unit\Event;
 use TYPO3\CMS\Lowlevel\Event\ModifyBlindedConfigurationOptionsEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ModifyBlindedConfigurationOptionsEventTest extends UnitTestCase
+final class ModifyBlindedConfigurationOptionsEventTest extends UnitTestCase
 {
     /**
      * @test

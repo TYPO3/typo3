@@ -22,7 +22,7 @@ use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LogRecordTest extends UnitTestCase
+final class LogRecordTest extends UnitTestCase
 {
     /**
      * Returns a LogRecord

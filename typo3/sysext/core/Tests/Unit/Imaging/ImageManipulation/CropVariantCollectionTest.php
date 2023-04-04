@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CropVariantCollectionTest extends UnitTestCase
+final class CropVariantCollectionTest extends UnitTestCase
 {
     private static array $tca = [
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',

@@ -24,7 +24,7 @@ use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider;
 use TYPO3\CMS\Lowlevel\Event\ModifyBlindedConfigurationOptionsEvent;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class GlobalVariableProviderTest extends FunctionalTestCase
+final class GlobalVariableProviderTest extends FunctionalTestCase
 {
     /**
      * @test

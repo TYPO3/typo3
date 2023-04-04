@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class NormalizedParamsTest extends UnitTestCase
+final class NormalizedParamsTest extends UnitTestCase
 {
     /**
      * @return array[]

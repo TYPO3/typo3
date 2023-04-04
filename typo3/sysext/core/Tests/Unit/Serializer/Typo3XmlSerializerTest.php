@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Serializer\Typo3XmlParserOptions;
 use TYPO3\CMS\Core\Serializer\Typo3XmlSerializer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class Typo3XmlSerializerTest extends UnitTestCase
+final class Typo3XmlSerializerTest extends UnitTestCase
 {
     /**
      * @test

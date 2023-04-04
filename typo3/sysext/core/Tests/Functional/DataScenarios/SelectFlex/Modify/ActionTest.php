@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\SelectFlex\Modify;
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\SelectFlex\AbstractActionTestCase;
 
-class ActionTest extends AbstractActionTestCase
+final class ActionTest extends AbstractActionTestCase
 {
     /**
      * @test

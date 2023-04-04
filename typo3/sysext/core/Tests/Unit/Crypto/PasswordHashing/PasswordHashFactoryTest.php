@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing\Fixtures\TestPasswordHash;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PasswordHashFactoryTest extends UnitTestCase
+final class PasswordHashFactoryTest extends UnitTestCase
 {
     /**
      * @test

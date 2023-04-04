@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Tests related to DataHandler slug unique handling
  */
-class SlugUniqueTest extends AbstractDataHandlerActionTestCase
+final class SlugUniqueTest extends AbstractDataHandlerActionTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',

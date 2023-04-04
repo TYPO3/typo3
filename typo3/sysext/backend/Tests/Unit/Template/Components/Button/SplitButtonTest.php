@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class BackendModuleRequestHandlerTest
  */
-class SplitButtonTest extends UnitTestCase
+final class SplitButtonTest extends UnitTestCase
 {
     /**
      * Try to validate an empty button

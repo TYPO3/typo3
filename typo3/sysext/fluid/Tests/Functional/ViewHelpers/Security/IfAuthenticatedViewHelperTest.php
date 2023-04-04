@@ -25,7 +25,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class IfAuthenticatedViewHelperTest extends FunctionalTestCase
+final class IfAuthenticatedViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

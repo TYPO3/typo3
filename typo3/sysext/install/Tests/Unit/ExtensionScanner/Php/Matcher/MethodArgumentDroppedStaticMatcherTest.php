@@ -23,7 +23,7 @@ use PhpParser\ParserFactory;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentDroppedStaticMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MethodArgumentDroppedStaticMatcherTest extends UnitTestCase
+final class MethodArgumentDroppedStaticMatcherTest extends UnitTestCase
 {
     /**
      * @test

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CommandUtilityTest extends UnitTestCase
+final class CommandUtilityTest extends UnitTestCase
 {
     /**
      * Data provider for getConfiguredApps

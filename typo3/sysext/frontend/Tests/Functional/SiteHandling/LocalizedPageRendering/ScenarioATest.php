@@ -38,7 +38,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRenderin
  *   Calling "headquarter" page in DE returns a 404 response because no fallback chain is configured
  *   Calling "headquarter" page in DE-CH renders page in EN
  */
-class ScenarioATest extends AbstractLocalizedPagesTestCase
+final class ScenarioATest extends AbstractLocalizedPagesTestCase
 {
     protected function setUp(): void
     {

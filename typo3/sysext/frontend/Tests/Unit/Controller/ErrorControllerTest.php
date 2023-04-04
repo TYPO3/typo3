@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ErrorControllerTest extends UnitTestCase
+final class ErrorControllerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

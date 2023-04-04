@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilderDefaultValues;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RequestBuilderDefaultValuesTest extends UnitTestCase
+final class RequestBuilderDefaultValuesTest extends UnitTestCase
 {
     private const MINIMAL_WORKING_CONFIGURATION = [
         'extensionName' => 'news',

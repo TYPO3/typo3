@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  * This test has the same scenarios as in the TypoScript version:
  * @see \TYPO3\CMS\Frontend\Tests\Functional\Rendering\LocalizedSiteContentRenderingTest
  */
-class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
+final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
 {
     use SiteBasedTestTrait;
 

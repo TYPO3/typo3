@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\String\StringFragment;
 use TYPO3\CMS\Core\Utility\String\StringFragmentCollection;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class StringFragmentCollectionTest extends UnitTestCase
+final class StringFragmentCollectionTest extends UnitTestCase
 {
     /**
      * @test

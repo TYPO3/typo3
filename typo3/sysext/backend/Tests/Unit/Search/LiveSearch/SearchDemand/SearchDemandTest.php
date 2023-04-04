@@ -24,7 +24,7 @@ use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandPropertyName;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
 use TYPO3\CMS\Core\Http\ServerRequest;
 
-class SearchDemandTest extends TestCase
+final class SearchDemandTest extends TestCase
 {
     /**
      * @test

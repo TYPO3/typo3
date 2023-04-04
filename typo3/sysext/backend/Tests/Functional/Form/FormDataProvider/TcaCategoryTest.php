@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TcaCategoryTest extends FunctionalTestCase
+final class TcaCategoryTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SiteDatabaseEditRowTest extends UnitTestCase
+final class SiteDatabaseEditRowTest extends UnitTestCase
 {
     public function setUp(): void
     {

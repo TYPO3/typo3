@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaTypesShowitemTest extends UnitTestCase
+final class TcaTypesShowitemTest extends UnitTestCase
 {
     protected TcaTypesShowitem $subject;
 

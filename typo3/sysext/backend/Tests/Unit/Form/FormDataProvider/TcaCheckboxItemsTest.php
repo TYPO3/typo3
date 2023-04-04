@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaCheckboxItemsTest extends UnitTestCase
+final class TcaCheckboxItemsTest extends UnitTestCase
 {
     protected function tearDown(): void
     {

@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class VerifyHostHeaderTest extends UnitTestCase
+final class VerifyHostHeaderTest extends UnitTestCase
 {
     /**
      * @test

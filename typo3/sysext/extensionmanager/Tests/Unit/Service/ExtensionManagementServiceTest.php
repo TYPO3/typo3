@@ -29,7 +29,7 @@ use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ExtensionManagementServiceTest extends UnitTestCase
+final class ExtensionManagementServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

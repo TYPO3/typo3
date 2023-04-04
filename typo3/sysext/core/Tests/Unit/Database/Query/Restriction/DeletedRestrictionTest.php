@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 
-class DeletedRestrictionTest extends AbstractRestrictionTestCase
+final class DeletedRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
      * @test

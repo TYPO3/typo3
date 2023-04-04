@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerLinkGenerator
 
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
+final class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
 {
     public static function defaultExtbaseControllerActionNamesAreAppliedWithAdditionalNonMappedQueryArgumentsDataProvider(): array
     {

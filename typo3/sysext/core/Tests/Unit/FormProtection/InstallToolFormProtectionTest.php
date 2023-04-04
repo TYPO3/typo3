@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class InstallToolFormProtectionTest extends UnitTestCase
+final class InstallToolFormProtectionTest extends UnitTestCase
 {
     /**
      * @test

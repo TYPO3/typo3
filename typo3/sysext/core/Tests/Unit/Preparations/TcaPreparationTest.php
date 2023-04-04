@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Preparations;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaPreparationTest extends UnitTestCase
+final class TcaPreparationTest extends UnitTestCase
 {
     /**
      * @test

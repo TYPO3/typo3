@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TokenStreamTest extends UnitTestCase
+final class TokenStreamTest extends UnitTestCase
 {
     /**
      * @test

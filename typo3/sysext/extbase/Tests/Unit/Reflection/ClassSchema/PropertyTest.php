@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class TYPO3\CMS\Extbase\Tests\Unit\Reflection\PropertyTest
  */
-class PropertyTest extends UnitTestCase
+final class PropertyTest extends UnitTestCase
 {
     /**
      * @test

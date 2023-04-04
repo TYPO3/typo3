@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class TimeTrackerTest
  */
-class TimeTrackerTest extends UnitTestCase
+final class TimeTrackerTest extends UnitTestCase
 {
     /**
      * @test

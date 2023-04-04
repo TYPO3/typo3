@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BackendUtilityTest extends UnitTestCase
+final class BackendUtilityTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

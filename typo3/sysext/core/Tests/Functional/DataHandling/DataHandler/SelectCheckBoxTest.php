@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SelectCheckBoxTest extends FunctionalTestCase
+final class SelectCheckBoxTest extends FunctionalTestCase
 {
     protected const PAGE_ID = 0;
     protected ?BackendUserAuthentication $backendUserAuthentication = null;

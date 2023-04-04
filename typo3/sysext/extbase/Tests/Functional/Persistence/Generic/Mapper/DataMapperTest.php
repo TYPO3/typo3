@@ -36,7 +36,7 @@ use TYPO3Tests\TestDataMapper\Domain\Model\CustomDateTime;
 use TYPO3Tests\TestDataMapper\Domain\Model\Example;
 use TYPO3Tests\TestDataMapper\Domain\Model\TraversableDomainObjectExample;
 
-class DataMapperTest extends FunctionalTestCase
+final class DataMapperTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',

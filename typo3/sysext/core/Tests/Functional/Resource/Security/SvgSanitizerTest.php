@@ -21,7 +21,7 @@ use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Resource\Security\SvgSanitizer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SvgSanitizerTest extends FunctionalTestCase
+final class SvgSanitizerTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

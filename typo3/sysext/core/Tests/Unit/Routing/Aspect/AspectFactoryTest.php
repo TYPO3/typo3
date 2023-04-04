@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AspectFactoryTest extends UnitTestCase
+final class AspectFactoryTest extends UnitTestCase
 {
     protected function setUp(): void
     {

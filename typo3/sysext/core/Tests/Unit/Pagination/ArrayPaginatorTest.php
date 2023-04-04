@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Pagination;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ArrayPaginatorTest extends UnitTestCase
+final class ArrayPaginatorTest extends UnitTestCase
 {
     protected array $fixture = [];
 

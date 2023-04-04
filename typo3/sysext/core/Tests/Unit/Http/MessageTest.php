@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  *
  * Adapted from https://github.com/phly/http/
  */
-class MessageTest extends UnitTestCase
+final class MessageTest extends UnitTestCase
 {
     protected ?Stream $stream;
     protected ?Message $message;

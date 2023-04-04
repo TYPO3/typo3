@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PageLayoutResolverTest extends UnitTestCase
+final class PageLayoutResolverTest extends UnitTestCase
 {
     /**
      * @test

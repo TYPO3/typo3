@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaSelectTreeAjaxFieldDataTest extends UnitTestCase
+final class TcaSelectTreeAjaxFieldDataTest extends UnitTestCase
 {
     protected TcaSelectTreeAjaxFieldData $subject;
 

@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ValuePickerItemDataProviderTest extends UnitTestCase
+final class ValuePickerItemDataProviderTest extends UnitTestCase
 {
     protected array $sysRedirectResultSet = [
         'tableName' => 'sys_redirect',

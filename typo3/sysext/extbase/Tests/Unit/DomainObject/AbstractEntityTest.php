@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\DomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractEntityTest extends UnitTestCase
+final class AbstractEntityTest extends UnitTestCase
 {
     /**
      * @test

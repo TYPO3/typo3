@@ -23,7 +23,7 @@ use PhpParser\ParserFactory;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentRequiredMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MethodArgumentRequiredMatcherTest extends UnitTestCase
+final class MethodArgumentRequiredMatcherTest extends UnitTestCase
 {
     /**
      * @test

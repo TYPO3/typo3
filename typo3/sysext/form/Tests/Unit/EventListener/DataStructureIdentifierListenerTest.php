@@ -27,7 +27,7 @@ use TYPO3\CMS\Form\EventListener\DataStructureIdentifierListener;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DataStructureIdentifierListenerTest extends UnitTestCase
+final class DataStructureIdentifierListenerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

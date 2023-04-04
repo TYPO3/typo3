@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\ResourceUtility
  */
-class ResourceUtilityTest extends UnitTestCase
+final class ResourceUtilityTest extends UnitTestCase
 {
     public static function recursiveFileListSortingHelperTestDataProvider(): array
     {

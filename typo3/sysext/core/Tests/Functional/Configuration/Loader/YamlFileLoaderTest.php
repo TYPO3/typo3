@@ -22,7 +22,7 @@ use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class YamlFileLoaderTest extends FunctionalTestCase
+final class YamlFileLoaderTest extends FunctionalTestCase
 {
     protected bool $resetSingletonInstances = true;
 

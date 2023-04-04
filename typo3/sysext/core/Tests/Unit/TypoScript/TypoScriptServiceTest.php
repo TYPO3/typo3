@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TypoScriptServiceTest extends UnitTestCase
+final class TypoScriptServiceTest extends UnitTestCase
 {
     /**
      * data provider for convertTypoScriptArrayToPlainArray

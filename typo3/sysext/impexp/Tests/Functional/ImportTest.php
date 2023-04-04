@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Impexp\Exception\LoadingFileFailedException;
 use TYPO3\CMS\Impexp\Import;
 
-class ImportTest extends AbstractImportExportTestCase
+final class ImportTest extends AbstractImportExportTestCase
 {
     protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/XmlImports' => 'fileadmin/xml_imports',

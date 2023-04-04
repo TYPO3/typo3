@@ -35,7 +35,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * Tests for the validation logic of the Extbase ActionController.
  */
-class ActionControllerValidationTest extends FunctionalTestCase
+final class ActionControllerValidationTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',

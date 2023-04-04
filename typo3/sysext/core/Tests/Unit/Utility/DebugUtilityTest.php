@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\DebugUtility
  */
-class DebugUtilityTest extends UnitTestCase
+final class DebugUtilityTest extends UnitTestCase
 {
     protected function tearDown(): void
     {

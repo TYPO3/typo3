@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FormInlineAjaxControllerTest extends FunctionalTestCase
+final class FormInlineAjaxControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

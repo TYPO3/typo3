@@ -23,7 +23,7 @@ use TYPO3\CMS\Impexp\Command\ImportCommand;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
-class ImportCommandTest extends AbstractImportExportTestCase
+final class ImportCommandTest extends AbstractImportExportTestCase
 {
     /**
      * @test

@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
-class AbstractTemplateViewTest extends UnitTestCase
+final class AbstractTemplateViewTest extends UnitTestCase
 {
     protected AbstractTemplateView&MockObject&AccessibleObjectInterface $view;
 

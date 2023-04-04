@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\FluidTest\Controller\TemplateController;
 
-class TemplatesPathsTest extends FunctionalTestCase
+final class TemplatesPathsTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

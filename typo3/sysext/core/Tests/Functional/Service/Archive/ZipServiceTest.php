@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ZipServiceTest extends FunctionalTestCase
+final class ZipServiceTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

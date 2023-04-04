@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FileLinkHandlerTest extends UnitTestCase
+final class FileLinkHandlerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

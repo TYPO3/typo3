@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LoginProviderResolverTest extends UnitTestCase
+final class LoginProviderResolverTest extends UnitTestCase
 {
     protected function setUp(): void
     {

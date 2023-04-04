@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for class \TYPO3\CMS\Backend\Tree\TreeNodeCollection.
  */
-class TreeNodeCollectionTest extends UnitTestCase
+final class TreeNodeCollectionTest extends UnitTestCase
 {
     /**
      * @test

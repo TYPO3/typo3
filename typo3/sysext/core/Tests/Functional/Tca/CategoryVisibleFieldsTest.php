@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class CategoryVisibleFieldsTest extends FunctionalTestCase
+final class CategoryVisibleFieldsTest extends FunctionalTestCase
 {
     protected static $categoryFields = [
         'title',

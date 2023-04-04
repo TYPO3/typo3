@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Redirects\Event\RedirectWasHitEvent;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class WebhookExecutionTest extends FunctionalTestCase
+final class WebhookExecutionTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
         'redirects',

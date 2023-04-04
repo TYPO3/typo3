@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ArgumentsTest extends UnitTestCase
+final class ArgumentsTest extends UnitTestCase
 {
     /**
      * @test

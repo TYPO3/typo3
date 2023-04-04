@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ScopeTest extends UnitTestCase
+final class ScopeTest extends UnitTestCase
 {
     protected function tearDown(): void
     {

@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
 use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PolicyTest extends UnitTestCase
+final class PolicyTest extends UnitTestCase
 {
     private Nonce $nonce;
 

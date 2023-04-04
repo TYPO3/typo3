@@ -21,7 +21,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TypoScriptServiceTest extends UnitTestCase
+final class TypoScriptServiceTest extends UnitTestCase
 {
     /**
      * @test

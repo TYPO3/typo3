@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\HttpUtility
  */
-class HttpUtilityTest extends UnitTestCase
+final class HttpUtilityTest extends UnitTestCase
 {
     /**
      * @dataProvider isUrlBuiltCorrectlyDataProvider

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LocaleTest extends UnitTestCase
+final class LocaleTest extends UnitTestCase
 {
     /**
      * @test

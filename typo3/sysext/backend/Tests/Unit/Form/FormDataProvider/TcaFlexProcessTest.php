@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaFlexProcessTest extends UnitTestCase
+final class TcaFlexProcessTest extends UnitTestCase
 {
     protected BackendUserAuthentication&MockObject $backendUserMock;
 

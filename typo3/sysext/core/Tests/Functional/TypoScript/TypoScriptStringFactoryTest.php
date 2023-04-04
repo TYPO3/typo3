@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TypoScriptStringFactoryTest extends FunctionalTestCase
+final class TypoScriptStringFactoryTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

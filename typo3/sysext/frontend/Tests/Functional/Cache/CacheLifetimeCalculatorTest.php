@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class CacheLifetimeCalculatorTest extends FunctionalTestCase
+final class CacheLifetimeCalculatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

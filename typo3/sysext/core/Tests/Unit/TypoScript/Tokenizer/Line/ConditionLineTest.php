@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ConditionLineTest extends UnitTestCase
+final class ConditionLineTest extends UnitTestCase
 {
     /**
      * @test

@@ -33,7 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class TYPO3\CMS\Extbase\Tests\Unit\Reflection\MethodParameterTest
  */
-class MethodParameterTest extends UnitTestCase
+final class MethodParameterTest extends UnitTestCase
 {
     /**
      * @test

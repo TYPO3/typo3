@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Repository;
 use TYPO3\CMS\Beuser\Domain\Repository\FileMountRepository;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FileMountRepositoryTest extends UnitTestCase
+final class FileMountRepositoryTest extends UnitTestCase
 {
     /**
      * @test

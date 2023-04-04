@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMapFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ColumnMapFactoryTest extends FunctionalTestCase
+final class ColumnMapFactoryTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

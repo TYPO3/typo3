@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Schema\Struct;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SelectItemTest extends UnitTestCase
+final class SelectItemTest extends UnitTestCase
 {
     public static function selectionItemCanBeConstructedFromTcaItemDataProvider(): iterable
     {

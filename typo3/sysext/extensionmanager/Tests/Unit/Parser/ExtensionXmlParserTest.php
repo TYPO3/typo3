@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Parser;
 use TYPO3\CMS\Extensionmanager\Parser\ExtensionXmlParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ExtensionXmlParserTest extends UnitTestCase
+final class ExtensionXmlParserTest extends UnitTestCase
 {
     /**
      * @test

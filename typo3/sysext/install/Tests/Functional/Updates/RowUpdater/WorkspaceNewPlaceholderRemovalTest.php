@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class WorkspaceNewPlaceholderRemovalTest extends FunctionalTestCase
+final class WorkspaceNewPlaceholderRemovalTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
 

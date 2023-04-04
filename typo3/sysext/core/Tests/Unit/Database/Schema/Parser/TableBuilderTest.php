@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TableBuilderTest extends UnitTestCase
+final class TableBuilderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

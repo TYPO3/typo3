@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the file class of the TYPO3 FAL
  */
-class FileTest extends UnitTestCase
+final class FileTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

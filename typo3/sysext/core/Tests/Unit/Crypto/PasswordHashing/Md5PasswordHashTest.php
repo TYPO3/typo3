@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Md5PasswordHash;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class Md5PasswordHashTest extends UnitTestCase
+final class Md5PasswordHashTest extends UnitTestCase
 {
     /**
      * @test

@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for class \TYPO3\CMS\Core\Authentication\IpLocker
  */
-class IpLockerTest extends UnitTestCase
+final class IpLockerTest extends UnitTestCase
 {
     public static function getSessionIpLockDataProvider(): array
     {

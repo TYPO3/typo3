@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\ShortcutRecordsMigration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ShortcutRecordsMigrationTest extends FunctionalTestCase
+final class ShortcutRecordsMigrationTest extends FunctionalTestCase
 {
     private const TABLE_NAME = 'sys_be_shortcuts';
 

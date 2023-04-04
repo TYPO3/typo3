@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the package class
  */
-class PackageTest extends UnitTestCase
+final class PackageTest extends UnitTestCase
 {
     protected string $testRoot;
 

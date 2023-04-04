@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
-class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
+final class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
 {
     protected const PAGE_DATAHANDLER = 88;
 

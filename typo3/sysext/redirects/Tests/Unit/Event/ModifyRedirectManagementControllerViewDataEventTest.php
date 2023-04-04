@@ -23,7 +23,7 @@ use TYPO3\CMS\Redirects\Event\ModifyRedirectManagementControllerViewDataEvent;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ModifyRedirectManagementControllerViewDataEventTest extends UnitTestCase
+final class ModifyRedirectManagementControllerViewDataEventTest extends UnitTestCase
 {
     /**
      * @test

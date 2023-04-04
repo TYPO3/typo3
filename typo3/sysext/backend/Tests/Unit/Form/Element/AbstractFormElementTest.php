@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractFormElementTest extends UnitTestCase
+final class AbstractFormElementTest extends UnitTestCase
 {
     public static function formatValueDataProvider(): array
     {

@@ -24,7 +24,7 @@ use TYPO3\CMS\Impexp\Export;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ExportTest extends UnitTestCase
+final class ExportTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

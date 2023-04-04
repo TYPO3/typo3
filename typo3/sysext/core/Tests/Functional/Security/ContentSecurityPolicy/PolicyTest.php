@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  * In contrast to the other `PolicyTest` (unit-test), these
  * tests rely on platform information like, package states.
  */
-class PolicyTest extends FunctionalTestCase
+final class PolicyTest extends FunctionalTestCase
 {
     private Nonce $nonce;
     protected bool $initializeDatabase = false;

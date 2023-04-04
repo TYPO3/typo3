@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaColumnsOverridesTest extends UnitTestCase
+final class TcaColumnsOverridesTest extends UnitTestCase
 {
     protected TcaColumnsOverrides $subject;
 

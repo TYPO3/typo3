@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatabaseTreeDataProviderTest extends UnitTestCase
+final class DatabaseTreeDataProviderTest extends UnitTestCase
 {
     /**
      * @test

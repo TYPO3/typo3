@@ -22,7 +22,7 @@ use TYPO3\CMS\Dashboard\DashboardPreset;
 use TYPO3\CMS\Dashboard\DashboardPresetRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DashboardPresetRegistryTest extends UnitTestCase
+final class DashboardPresetRegistryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
     protected DashboardPresetRegistry $subject;

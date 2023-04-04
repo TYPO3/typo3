@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class CaseViewHelperTest extends FunctionalTestCase
+final class CaseViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

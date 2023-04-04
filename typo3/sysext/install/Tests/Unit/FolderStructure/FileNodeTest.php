@@ -28,7 +28,7 @@ use TYPO3\CMS\Install\FolderStructure\FileNode;
 use TYPO3\CMS\Install\FolderStructure\NodeInterface;
 use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 
-class FileNodeTest extends AbstractFolderStructureTestCase
+final class FileNodeTest extends AbstractFolderStructureTestCase
 {
     /**
      * @test

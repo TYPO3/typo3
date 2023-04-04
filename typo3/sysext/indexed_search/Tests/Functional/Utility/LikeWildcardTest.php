@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class LikeWildcardTest extends FunctionalTestCase
+final class LikeWildcardTest extends FunctionalTestCase
 {
     /**
      * @test

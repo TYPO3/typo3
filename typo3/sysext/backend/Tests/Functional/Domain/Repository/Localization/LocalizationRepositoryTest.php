@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class LocalizationRepositoryTest extends FunctionalTestCase
+final class LocalizationRepositoryTest extends FunctionalTestCase
 {
     protected LocalizationRepository $subject;
 

@@ -28,7 +28,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ObjectConverterTest extends FunctionalTestCase
+final class ObjectConverterTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class AlphanumericValidatorTest extends FunctionalTestCase
+final class AlphanumericValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

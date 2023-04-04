@@ -144,6 +144,7 @@ Options:
             - checkNamespaceIntegrity: Verify namespace integrity in class and test code files are in good shape.
             - checkPermissions: test some core files for correct executable bits
             - checkRst: test .rst files for integrity
+            - checkTestClassFinal: check test case classes are final
             - checkTestMethodsPrefix: check tests methods do not start with "test"
             - clean: clean up build, cache and testing related files and folders
             - cleanBuild: clean up build related files and folders
@@ -583,6 +584,12 @@ case ${TEST_SUITE} in
     checkAnnotations)
         setUpDockerComposeDotEnv
         docker-compose run check_annotations
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    checkTestClassFinal)
+        setUpDockerComposeDotEnv
+        docker-compose run check_test_class_final
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;

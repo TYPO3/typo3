@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaFlexPrepareTest extends UnitTestCase
+final class TcaFlexPrepareTest extends UnitTestCase
 {
     protected TcaFlexPrepare $subject;
 

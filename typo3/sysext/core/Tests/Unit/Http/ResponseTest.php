@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  *
  * Adapted from https://github.com/phly/http/
  */
-class ResponseTest extends UnitTestCase
+final class ResponseTest extends UnitTestCase
 {
     protected ?Response $response;
 

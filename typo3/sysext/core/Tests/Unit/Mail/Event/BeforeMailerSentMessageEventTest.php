@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Mail\TransportFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BeforeMailerSentMessageEventTest extends UnitTestCase
+final class BeforeMailerSentMessageEventTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

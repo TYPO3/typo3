@@ -26,7 +26,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FrontendUserAuthenticationTest extends FunctionalTestCase
+final class FrontendUserAuthenticationTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

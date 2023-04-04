@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Session\Backend;
 use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatabaseSessionBackendTest extends UnitTestCase
+final class DatabaseSessionBackendTest extends UnitTestCase
 {
     /**
      * @test

@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatabaseEditRowTest extends UnitTestCase
+final class DatabaseEditRowTest extends UnitTestCase
 {
     protected DatabaseEditRow&MockObject $subject;
 

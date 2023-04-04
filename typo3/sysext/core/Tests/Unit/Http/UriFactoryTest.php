@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Http\UriFactory
  */
-class UriFactoryTest extends UnitTestCase
+final class UriFactoryTest extends UnitTestCase
 {
     /**
      * @test

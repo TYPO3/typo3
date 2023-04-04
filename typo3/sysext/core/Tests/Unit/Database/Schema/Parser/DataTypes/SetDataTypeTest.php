@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
 /**
  * Tests for parsing SET SQL data type
  */
-class SetDataTypeTest extends AbstractDataTypeBaseTestCase
+final class SetDataTypeTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseSetDataType()

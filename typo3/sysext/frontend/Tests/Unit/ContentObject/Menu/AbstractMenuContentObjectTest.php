@@ -50,7 +50,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractMenuContentObjectTest extends UnitTestCase
+final class AbstractMenuContentObjectTest extends UnitTestCase
 {
     use PageRendererFactoryTrait;
 

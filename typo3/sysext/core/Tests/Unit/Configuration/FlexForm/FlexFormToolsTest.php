@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FlexFormToolsTest extends UnitTestCase
+final class FlexFormToolsTest extends UnitTestCase
 {
     /**
      * @test

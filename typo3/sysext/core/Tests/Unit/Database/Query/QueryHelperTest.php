@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class QueryHelperTest extends UnitTestCase
+final class QueryHelperTest extends UnitTestCase
 {
     /**
      * Test cases for stripping of leading logical operators in where constraints.

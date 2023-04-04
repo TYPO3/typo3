@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SiteResolverTest extends FunctionalTestCase
+final class SiteResolverTest extends FunctionalTestCase
 {
     /**
      * @test

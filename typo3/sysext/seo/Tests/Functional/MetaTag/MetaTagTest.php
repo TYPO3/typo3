@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 /**
  * Functional test for the DataHandler
  */
-class MetaTagTest extends AbstractTestCase
+final class MetaTagTest extends AbstractTestCase
 {
     protected function setUp(): void
     {

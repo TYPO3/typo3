@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RouteDispatcherTest extends UnitTestCase
+final class RouteDispatcherTest extends UnitTestCase
 {
     public function tearDown(): void
     {

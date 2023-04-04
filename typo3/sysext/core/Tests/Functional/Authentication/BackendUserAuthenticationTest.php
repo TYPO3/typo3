@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BackendUserAuthenticationTest extends FunctionalTestCase
+final class BackendUserAuthenticationTest extends FunctionalTestCase
 {
     /**
      * @var AuthenticationService

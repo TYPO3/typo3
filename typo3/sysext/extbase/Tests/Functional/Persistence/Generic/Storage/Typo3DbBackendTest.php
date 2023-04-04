@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class Typo3DbBackendTest extends FunctionalTestCase
+final class Typo3DbBackendTest extends FunctionalTestCase
 {
     protected bool $resetSingletonInstances = true;
 

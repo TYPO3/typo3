@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RecoveryCodesProviderTest extends FunctionalTestCase
+final class RecoveryCodesProviderTest extends FunctionalTestCase
 {
     private BackendUserAuthentication $user;
     private MfaProviderManifestInterface $subject;

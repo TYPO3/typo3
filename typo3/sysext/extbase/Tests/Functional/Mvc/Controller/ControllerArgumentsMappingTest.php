@@ -29,7 +29,7 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ControllerArgumentsMappingTest extends FunctionalTestCase
+final class ControllerArgumentsMappingTest extends FunctionalTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Request

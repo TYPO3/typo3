@@ -25,7 +25,7 @@ use TYPO3\CMS\Form\Mvc\Validation\DateRangeValidator;
 use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class DateRangeValidatorTest extends FunctionalTestCase
+final class DateRangeValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

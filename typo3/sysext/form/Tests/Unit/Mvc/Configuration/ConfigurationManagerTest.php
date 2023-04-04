@@ -26,7 +26,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ConfigurationManagerTest extends UnitTestCase
+final class ConfigurationManagerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

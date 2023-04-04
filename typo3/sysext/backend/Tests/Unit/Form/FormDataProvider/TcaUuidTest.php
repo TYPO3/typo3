@@ -21,7 +21,7 @@ use Symfony\Component\Uid\Uuid;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaUuid;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaUuidTest extends UnitTestCase
+final class TcaUuidTest extends UnitTestCase
 {
     public function resultArrayDataProvider(): \Generator
     {

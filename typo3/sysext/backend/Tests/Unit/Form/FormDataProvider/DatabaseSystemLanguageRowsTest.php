@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatabaseSystemLanguageRowsTest extends UnitTestCase
+final class DatabaseSystemLanguageRowsTest extends UnitTestCase
 {
     /**
      * @test

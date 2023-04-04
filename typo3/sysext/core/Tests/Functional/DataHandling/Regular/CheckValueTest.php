@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCa
 /**
  * Tests related to DataHandler::checkValue()
  */
-class CheckValueTest extends AbstractDataHandlerActionTestCase
+final class CheckValueTest extends AbstractDataHandlerActionTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler',

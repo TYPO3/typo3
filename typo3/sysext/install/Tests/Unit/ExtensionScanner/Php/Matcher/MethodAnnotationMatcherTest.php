@@ -23,7 +23,7 @@ use PhpParser\ParserFactory;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodAnnotationMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MethodAnnotationMatcherTest extends UnitTestCase
+final class MethodAnnotationMatcherTest extends UnitTestCase
 {
     /**
      * @test

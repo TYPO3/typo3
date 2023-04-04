@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Http\RequestFactory
  */
-class RequestFactoryTest extends UnitTestCase
+final class RequestFactoryTest extends UnitTestCase
 {
     /**
      * @test

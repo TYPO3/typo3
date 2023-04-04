@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ModuleFactoryTest extends UnitTestCase
+final class ModuleFactoryTest extends UnitTestCase
 {
     protected ModuleFactory $subject;
 

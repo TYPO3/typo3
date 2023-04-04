@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Model;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BackendUserTest extends UnitTestCase
+final class BackendUserTest extends UnitTestCase
 {
     protected BackendUser $subject;
 

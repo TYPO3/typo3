@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\DebuggerUtilityAccessibleProxy
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DebuggerUtilityTest extends UnitTestCase
+final class DebuggerUtilityTest extends UnitTestCase
 {
     /**
      * @test

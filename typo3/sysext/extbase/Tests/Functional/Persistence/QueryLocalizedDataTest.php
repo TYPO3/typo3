@@ -33,7 +33,7 @@ use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class QueryLocalizedDataTest extends FunctionalTestCase
+final class QueryLocalizedDataTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 

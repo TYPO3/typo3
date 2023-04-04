@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Tests for CreateTableStatement
  */
-class CreateTableFragmentTest extends UnitTestCase
+final class CreateTableFragmentTest extends UnitTestCase
 {
     /**
      * Each parameter array consists of the following values:

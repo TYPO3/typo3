@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  *
  * Adapted from https://github.com/phly/http/
  */
-class ServerRequestTest extends UnitTestCase
+final class ServerRequestTest extends UnitTestCase
 {
     protected ?ServerRequest $request;
 

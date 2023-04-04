@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Tests\Unit\Authentication\Mfa\Provider\Fixtures\Crypto\Passwo
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RecoveryCodesTest extends UnitTestCase
+final class RecoveryCodesTest extends UnitTestCase
 {
     protected RecoveryCodes $subject;
 

@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
 
-class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
+final class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
      * @test

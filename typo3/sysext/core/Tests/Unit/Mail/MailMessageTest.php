@@ -21,7 +21,7 @@ use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MailMessageTest extends UnitTestCase
+final class MailMessageTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class Typo3QuerySettingsTest extends UnitTestCase
+final class Typo3QuerySettingsTest extends UnitTestCase
 {
     protected ?Typo3QuerySettings $subject = null;
 

@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Type\File\FileInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ImageMagickFileTest extends FunctionalTestCase
+final class ImageMagickFileTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

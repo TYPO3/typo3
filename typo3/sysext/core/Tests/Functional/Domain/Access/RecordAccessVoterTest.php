@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RecordAccessVoterTest extends FunctionalTestCase
+final class RecordAccessVoterTest extends FunctionalTestCase
 {
     protected RecordAccessVoter $subject;
 

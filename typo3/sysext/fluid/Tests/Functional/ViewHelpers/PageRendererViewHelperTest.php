@@ -27,7 +27,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class PageRendererViewHelperTest extends FunctionalTestCase
+final class PageRendererViewHelperTest extends FunctionalTestCase
 {
     public static function renderDataProvider(): array
     {

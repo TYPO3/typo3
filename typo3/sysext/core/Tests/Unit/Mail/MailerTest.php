@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Mail\TransportFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MailerTest extends UnitTestCase
+final class MailerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

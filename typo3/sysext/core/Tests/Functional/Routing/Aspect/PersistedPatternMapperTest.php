@@ -31,7 +31,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataH
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PersistedPatternMapperTest extends FunctionalTestCase
+final class PersistedPatternMapperTest extends FunctionalTestCase
 {
     private const ASPECT_CONFIGURATION = [
         'tableName' => 'tt_content',

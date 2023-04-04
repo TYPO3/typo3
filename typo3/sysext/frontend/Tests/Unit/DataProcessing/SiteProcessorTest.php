@@ -23,7 +23,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\DataProcessing\SiteProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SiteProcessorTest extends UnitTestCase
+final class SiteProcessorTest extends UnitTestCase
 {
     /**
      * @test

@@ -29,7 +29,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FormRuntimeTest extends FunctionalTestCase
+final class FormRuntimeTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
         'form',

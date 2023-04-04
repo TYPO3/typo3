@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\Event\Configuration\BeforeFlexFormConfigurationOverrideEve
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FrontendConfigurationManagerTest extends FunctionalTestCase
+final class FrontendConfigurationManagerTest extends FunctionalTestCase
 {
     /**
      * @test

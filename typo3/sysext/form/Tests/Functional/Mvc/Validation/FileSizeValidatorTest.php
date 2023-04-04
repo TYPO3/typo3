@@ -27,7 +27,7 @@ use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Form\Mvc\Validation\FileSizeValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FileSizeValidatorTest extends FunctionalTestCase
+final class FileSizeValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

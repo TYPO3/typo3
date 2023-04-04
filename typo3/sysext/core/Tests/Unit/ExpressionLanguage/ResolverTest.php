@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtili
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ResolverTest extends UnitTestCase
+final class ResolverTest extends UnitTestCase
 {
     public function setUp(): void
     {

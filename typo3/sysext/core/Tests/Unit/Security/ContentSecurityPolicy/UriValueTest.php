@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Security\ContentSecurityPolicy;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class UriValueTest extends UnitTestCase
+final class UriValueTest extends UnitTestCase
 {
     public static function uriIsParsedAndSerializedDataProvider(): \Generator
     {

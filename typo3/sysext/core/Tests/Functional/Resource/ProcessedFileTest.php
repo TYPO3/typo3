@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ProcessedFileTest extends FunctionalTestCase
+final class ProcessedFileTest extends FunctionalTestCase
 {
     private const TEST_IMAGE = 'fileadmin/ProcessedFileTest.jpg';
 

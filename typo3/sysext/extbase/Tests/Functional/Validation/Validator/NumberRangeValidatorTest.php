@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class NumberRangeValidatorTest extends FunctionalTestCase
+final class NumberRangeValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

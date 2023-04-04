@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatetimeElementTest extends UnitTestCase
+final class DatetimeElementTest extends UnitTestCase
 {
     /**
      * @var string Selected timezone backup

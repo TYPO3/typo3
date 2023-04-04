@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Database\Schema\ConnectionMigrator;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ConnectionMigratorTest extends UnitTestCase
+final class ConnectionMigratorTest extends UnitTestCase
 {
     protected MySQLPlatform $platform;
     protected AccessibleObjectInterface&MockObject $subject;

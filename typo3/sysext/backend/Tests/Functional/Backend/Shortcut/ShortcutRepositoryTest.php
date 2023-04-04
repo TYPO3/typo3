@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ShortcutRepositoryTest extends FunctionalTestCase
+final class ShortcutRepositoryTest extends FunctionalTestCase
 {
     protected ShortcutRepository $subject;
 

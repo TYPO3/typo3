@@ -22,7 +22,7 @@ use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Backend\Tree\TreeRepresentationNode;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TreeNodeTest extends UnitTestCase
+final class TreeNodeTest extends UnitTestCase
 {
     /**
      * @test

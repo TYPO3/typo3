@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BackendGroupsVisibleFieldsTest extends FunctionalTestCase
+final class BackendGroupsVisibleFieldsTest extends FunctionalTestCase
 {
     protected static $backendGroupsFields = [
         'hidden',

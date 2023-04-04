@@ -29,7 +29,7 @@ use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class MimeTypeValidatorTest extends FunctionalTestCase
+final class MimeTypeValidatorTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['form'];
 

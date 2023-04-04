@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BlowfishPasswordHashTest extends UnitTestCase
+final class BlowfishPasswordHashTest extends UnitTestCase
 {
     /**
      * @test

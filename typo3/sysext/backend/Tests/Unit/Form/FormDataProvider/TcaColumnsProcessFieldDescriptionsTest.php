@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
+final class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
 {
     protected TcaColumnsProcessFieldDescriptions $subject;
 

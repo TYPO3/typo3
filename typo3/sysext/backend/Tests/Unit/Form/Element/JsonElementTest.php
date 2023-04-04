@@ -30,7 +30,7 @@ use TYPO3\CMS\T3editor\Mode;
 use TYPO3\CMS\T3editor\Registry\ModeRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class JsonElementTest extends UnitTestCase
+final class JsonElementTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

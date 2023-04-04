@@ -22,7 +22,7 @@ use TYPO3\CMS\Linkvalidator\EventListener\CheckBrokenRteLinkEventListener;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class CheckBrokenRteLinkEventListenerTest extends FunctionalTestCase
+final class CheckBrokenRteLinkEventListenerTest extends FunctionalTestCase
 {
     protected CheckBrokenRteLinkEventListener $subject;
 

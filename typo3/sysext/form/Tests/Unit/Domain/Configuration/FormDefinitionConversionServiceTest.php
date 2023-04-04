@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FormDefinitionConversionServiceTest extends UnitTestCase
+final class FormDefinitionConversionServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

@@ -21,7 +21,7 @@ use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LogEntryRepositoryTest extends UnitTestCase
+final class LogEntryRepositoryTest extends UnitTestCase
 {
     /**
      * @test

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FileReferenceTest extends UnitTestCase
+final class FileReferenceTest extends UnitTestCase
 {
     protected function prepareFixture(array $fileReferenceProperties, array $originalFileProperties): FileReference&MockObject&AccessibleObjectInterface
     {

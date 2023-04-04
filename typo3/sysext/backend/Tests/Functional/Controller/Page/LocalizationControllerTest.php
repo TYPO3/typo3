@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
-class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
+final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
 {
     protected LocalizationController&MockObject&AccessibleObjectInterface $subject;
 

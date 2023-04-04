@@ -22,7 +22,7 @@ use TYPO3\CMS\Install\ViewHelpers\Format\PhpErrorCodeViewHelper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class PhpErrorCodeViewHelperTest extends FunctionalTestCase
+final class PhpErrorCodeViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

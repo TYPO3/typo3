@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  * NOTE: If you want to execute these tests you need to enable apc in
  * cli context (apc.enable_cli = 1) and disable slam defense (apc.slam_defense = 0)
  */
-class ApcuBackendTest extends FunctionalTestCase
+final class ApcuBackendTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

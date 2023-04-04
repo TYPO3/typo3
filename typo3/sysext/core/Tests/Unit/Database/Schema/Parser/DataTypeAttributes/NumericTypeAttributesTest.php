@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
  * MySQL supports the SQL standard integer types INTEGER (or INT) and SMALLINT.
  * As an extension to the standard, MySQL also supports the integer types TINYINT, MEDIUMINT, and BIGINT.
  */
-class NumericTypeAttributesTest extends AbstractDataTypeBaseTestCase
+final class NumericTypeAttributesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseNumericDataTypeAttributes()

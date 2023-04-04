@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Type;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MapTest extends UnitTestCase
+final class MapTest extends UnitTestCase
 {
     /**
      * @test

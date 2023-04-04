@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the PHP source code cache frontend
  */
-class PhpFrontendTest extends UnitTestCase
+final class PhpFrontendTest extends UnitTestCase
 {
     /**
      * @test

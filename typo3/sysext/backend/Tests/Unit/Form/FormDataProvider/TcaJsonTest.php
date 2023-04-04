@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaJson;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaJsonTest extends UnitTestCase
+final class TcaJsonTest extends UnitTestCase
 {
     public static function resultArrayDataProvider(): \Generator
     {

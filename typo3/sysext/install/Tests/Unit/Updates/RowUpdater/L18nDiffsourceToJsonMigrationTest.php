@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\Updates\RowUpdater;
 use TYPO3\CMS\Install\Updates\RowUpdater\L18nDiffsourceToJsonMigration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
+final class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
 {
     /**
      * @test

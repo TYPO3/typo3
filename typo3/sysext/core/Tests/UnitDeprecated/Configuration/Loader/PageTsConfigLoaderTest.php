@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PageTsConfigLoaderTest extends UnitTestCase
+final class PageTsConfigLoaderTest extends UnitTestCase
 {
     /**
      * @test

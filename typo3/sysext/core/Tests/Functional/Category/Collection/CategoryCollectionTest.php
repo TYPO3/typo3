@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class CategoryCollectionTest extends FunctionalTestCase
+final class CategoryCollectionTest extends FunctionalTestCase
 {
     /**
      * @var array

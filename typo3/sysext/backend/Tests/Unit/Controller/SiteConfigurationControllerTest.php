@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Controller\SiteConfigurationController;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SiteConfigurationControllerTest extends UnitTestCase
+final class SiteConfigurationControllerTest extends UnitTestCase
 {
     /**
      * @test

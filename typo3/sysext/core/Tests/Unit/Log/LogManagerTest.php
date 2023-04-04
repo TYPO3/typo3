@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Log\Writer\NullWriter;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LogManagerTest extends UnitTestCase
+final class LogManagerTest extends UnitTestCase
 {
     /**
      * @test

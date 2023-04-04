@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class DateTimeConverterTest extends FunctionalTestCase
+final class DateTimeConverterTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

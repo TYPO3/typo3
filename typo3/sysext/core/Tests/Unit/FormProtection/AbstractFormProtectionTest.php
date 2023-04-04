@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase
  */
-class AbstractFormProtectionTest extends UnitTestCase
+final class AbstractFormProtectionTest extends UnitTestCase
 {
     protected ?FormProtectionTesting $subject;
 

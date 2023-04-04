@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Redirects\Event\RedirectWasHitEvent;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class IncrementHitCountTest extends FunctionalTestCase
+final class IncrementHitCountTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['redirects'];
 

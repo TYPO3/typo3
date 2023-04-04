@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SysTemplateTreeBuilderTest extends FunctionalTestCase
+final class SysTemplateTreeBuilderTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

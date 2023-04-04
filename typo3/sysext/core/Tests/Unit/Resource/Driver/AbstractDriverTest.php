@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractDriverTest extends UnitTestCase
+final class AbstractDriverTest extends UnitTestCase
 {
     /**
      * @test

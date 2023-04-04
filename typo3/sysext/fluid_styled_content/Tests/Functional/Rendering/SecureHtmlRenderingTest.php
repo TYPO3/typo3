@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScrip
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SecureHtmlRenderingTest extends FunctionalTestCase
+final class SecureHtmlRenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

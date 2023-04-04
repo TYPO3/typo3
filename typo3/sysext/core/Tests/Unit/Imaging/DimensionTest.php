@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\Dimension
  */
-class DimensionTest extends UnitTestCase
+final class DimensionTest extends UnitTestCase
 {
     protected ?Dimension $subject;
     protected int $width = 32;

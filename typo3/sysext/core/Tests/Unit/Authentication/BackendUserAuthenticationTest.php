@@ -43,7 +43,7 @@ use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BackendUserAuthenticationTest extends UnitTestCase
+final class BackendUserAuthenticationTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

@@ -38,7 +38,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRenderin
  *   Calling "about" page in DE returns a 404 response because fallback chain is not processed due to l18n_cfg=2
  *   Calling "about" page in DE-CH renders page in DE
  */
-class ScenarioCTest extends AbstractLocalizedPagesTestCase
+final class ScenarioCTest extends AbstractLocalizedPagesTestCase
 {
     protected function setUp(): void
     {

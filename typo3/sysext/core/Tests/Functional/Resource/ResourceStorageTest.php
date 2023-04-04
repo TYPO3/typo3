@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ResourceStorageTest extends FunctionalTestCase
+final class ResourceStorageTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

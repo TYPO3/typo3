@@ -33,7 +33,7 @@ use TYPO3\CMS\FrontendLogin\Redirect\RedirectModeHandler;
 use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RedirectHandlerTest extends UnitTestCase
+final class RedirectHandlerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
     protected RedirectHandler $subject;

@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the filename filter of the TYPO3 VFS
  */
-class FileNameFilterTest extends UnitTestCase
+final class FileNameFilterTest extends UnitTestCase
 {
     /**
      * Return combinations of files and paths to test against.

@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * Representing an image dimension (width and height)
  * and calculating the dimension from a source with a given processing instruction
  */
-class ImageDimensionTest extends UnitTestCase
+final class ImageDimensionTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

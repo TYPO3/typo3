@@ -21,7 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatabaseParentPageRowTest extends UnitTestCase
+final class DatabaseParentPageRowTest extends UnitTestCase
 {
     protected DatabaseParentPageRow&MockObject $subject;
 

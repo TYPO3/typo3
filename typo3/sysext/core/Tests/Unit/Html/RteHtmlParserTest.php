@@ -21,7 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RteHtmlParserTest extends UnitTestCase
+final class RteHtmlParserTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

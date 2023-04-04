@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ModuleDataTest extends FunctionalTestCase
+final class ModuleDataTest extends FunctionalTestCase
 {
     /**
      * @test

@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class EnableFileServiceTest extends FunctionalTestCase
+final class EnableFileServiceTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

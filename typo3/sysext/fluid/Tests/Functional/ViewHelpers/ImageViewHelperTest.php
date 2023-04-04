@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class ImageViewHelperTest extends FunctionalTestCase
+final class ImageViewHelperTest extends FunctionalTestCase
 {
     public static function invalidArgumentsDataProvider(): array
     {

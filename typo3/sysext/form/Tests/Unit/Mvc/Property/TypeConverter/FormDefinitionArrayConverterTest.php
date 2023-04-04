@@ -24,7 +24,7 @@ use TYPO3\CMS\Form\Mvc\Property\TypeConverter\FormDefinitionArrayConverter;
 use TYPO3\CMS\Form\Type\FormDefinitionArray;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FormDefinitionArrayConverterTest extends UnitTestCase
+final class FormDefinitionArrayConverterTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

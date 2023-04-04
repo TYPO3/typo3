@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\ClassNamingUtility
  */
-class ClassNamingUtilityTest extends UnitTestCase
+final class ClassNamingUtilityTest extends UnitTestCase
 {
     /**
      * DataProvider for translateModelNameToRepositoryName

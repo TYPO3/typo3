@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\Query\Restriction\PagePermissionRestriction;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
-class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
+final class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
      * Builds a shell for the user aspect object which returns the checked values in the Restriction.

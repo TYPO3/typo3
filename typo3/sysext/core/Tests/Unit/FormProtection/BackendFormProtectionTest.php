@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BackendFormProtectionTest extends UnitTestCase
+final class BackendFormProtectionTest extends UnitTestCase
 {
     protected BackendFormProtection $subject;
     protected BackendUserAuthentication&MockObject $backendUserMock;

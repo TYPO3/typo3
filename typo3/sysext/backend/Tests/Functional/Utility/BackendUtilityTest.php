@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BackendUtilityTest extends FunctionalTestCase
+final class BackendUtilityTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

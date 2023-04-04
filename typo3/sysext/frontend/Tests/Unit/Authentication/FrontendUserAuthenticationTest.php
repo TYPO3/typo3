@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FrontendUserAuthenticationTest extends UnitTestCase
+final class FrontendUserAuthenticationTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

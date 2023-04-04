@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 /**
  * Functional test for the DataHandler
  */
-class ActionTest extends AbstractActionWorkspacesTestCase
+final class ActionTest extends AbstractActionWorkspacesTestCase
 {
     /**
      * @test

@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ArgumentTest extends UnitTestCase
+final class ArgumentTest extends UnitTestCase
 {
     protected Argument $simpleValueArgument;
     protected Argument $objectArgument;

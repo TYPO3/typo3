@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SiteResolvingTest extends UnitTestCase
+final class SiteResolvingTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

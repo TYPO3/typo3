@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class TelephoneLinkHandlerTest
  */
-class TelephoneLinkHandlerTest extends UnitTestCase
+final class TelephoneLinkHandlerTest extends UnitTestCase
 {
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page

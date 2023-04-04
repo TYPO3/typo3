@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DependencyTest extends UnitTestCase
+final class DependencyTest extends UnitTestCase
 {
     /**
      * @test

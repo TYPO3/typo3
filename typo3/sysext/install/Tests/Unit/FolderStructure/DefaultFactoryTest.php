@@ -21,7 +21,7 @@ use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\FolderStructure\StructureFacadeInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DefaultFactoryTest extends UnitTestCase
+final class DefaultFactoryTest extends UnitTestCase
 {
     /**
      * @test

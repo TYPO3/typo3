@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TranslationConfigurationProviderTest extends UnitTestCase
+final class TranslationConfigurationProviderTest extends UnitTestCase
 {
     protected TranslationConfigurationProvider $subject;
 

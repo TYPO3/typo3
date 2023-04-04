@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Cache\Core;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-class ClassAliasLoaderTest extends FunctionalTestCase
+final class ClassAliasLoaderTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

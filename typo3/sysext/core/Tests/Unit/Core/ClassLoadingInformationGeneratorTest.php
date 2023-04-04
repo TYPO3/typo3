@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Tests\Unit\Core\Fixtures\test_extension\Resources\PHP\Another
 use TYPO3\CMS\Core\Tests\Unit\Core\Fixtures\test_extension\Resources\PHP\TestFile;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ClassLoadingInformationGeneratorTest extends UnitTestCase
+final class ClassLoadingInformationGeneratorTest extends UnitTestCase
 {
     /**
      * @test

@@ -33,7 +33,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DataMapperTest extends UnitTestCase
+final class DataMapperTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Loader;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class YamlFileLoaderTest extends UnitTestCase
+final class YamlFileLoaderTest extends UnitTestCase
 {
     public static function loadWithEnvVarDataProvider(): array
     {

@@ -24,7 +24,7 @@ use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SlugRedirectChangeItemCreatedEventTest extends UnitTestCase
+final class SlugRedirectChangeItemCreatedEventTest extends UnitTestCase
 {
     /**
      * @test

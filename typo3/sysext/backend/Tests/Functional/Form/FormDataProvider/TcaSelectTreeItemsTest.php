@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  * This test only covers the specialties of the renderType `selectTree`. Common type `select` functionality is tested in
  * TcaSelectItemsTest.
  */
-class TcaSelectTreeItemsTest extends FunctionalTestCase
+final class TcaSelectTreeItemsTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/backend/Tests/Functional/Fixtures/Extensions/test_tca_select_tree_items'];
 

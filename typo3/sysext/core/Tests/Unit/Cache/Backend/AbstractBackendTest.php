@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Backend\Fixtures\ConcreteBackendFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractBackendTest extends UnitTestCase
+final class AbstractBackendTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

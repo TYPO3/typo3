@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaRecordTitleTest extends UnitTestCase
+final class TcaRecordTitleTest extends UnitTestCase
 {
     protected string $timeZone;
 

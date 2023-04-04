@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the ErrorHandler class.
  */
-class ErrorHandlerTest extends UnitTestCase
+final class ErrorHandlerTest extends UnitTestCase
 {
     protected ErrorHandlerInterface $subject;
 

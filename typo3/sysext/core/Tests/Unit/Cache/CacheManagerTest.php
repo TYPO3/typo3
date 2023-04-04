@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendInitializeObjectFixture;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CacheManagerTest extends UnitTestCase
+final class CacheManagerTest extends UnitTestCase
 {
     /**
      * @test

@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Test suite for filtering files by their extensions.
  */
-class FileExtensionFilterTest extends UnitTestCase
+final class FileExtensionFilterTest extends UnitTestCase
 {
     /**
      * Cleans up this test suite.

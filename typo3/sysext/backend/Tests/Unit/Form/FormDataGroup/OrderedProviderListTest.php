@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class OrderedProviderListTest extends UnitTestCase
+final class OrderedProviderListTest extends UnitTestCase
 {
     /**
      * @test

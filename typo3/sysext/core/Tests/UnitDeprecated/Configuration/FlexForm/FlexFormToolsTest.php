@@ -8,7 +8,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FlexFormToolsTest extends UnitTestCase
+final class FlexFormToolsTest extends UnitTestCase
 {
     public static function tceFormsRemovedInMigrationDataProvider(): iterable
     {

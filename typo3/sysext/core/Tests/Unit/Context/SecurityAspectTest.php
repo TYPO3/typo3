@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Security\NoncePool;
 use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SecurityAspectTest extends UnitTestCase
+final class SecurityAspectTest extends UnitTestCase
 {
     /**
      * @test

@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RendererRegistryTest extends UnitTestCase
+final class RendererRegistryTest extends UnitTestCase
 {
     /**
      * Initialize a RendererRegistry and mock createRendererInstance()

@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Unit test for marker utility
  */
-class MarkerBasedTemplateServiceTest extends UnitTestCase
+final class MarkerBasedTemplateServiceTest extends UnitTestCase
 {
     protected ?MarkerBasedTemplateService $templateService;
 

@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Page\AssetRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AssetRendererTest extends UnitTestCase
+final class AssetRendererTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
     protected ?AssetRenderer $assetRenderer;

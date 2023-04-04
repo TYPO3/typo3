@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\FileLockStrategy
  */
-class FileLockStrategyTest extends UnitTestCase
+final class FileLockStrategyTest extends UnitTestCase
 {
     /**
      * @test

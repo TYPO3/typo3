@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class TypolinkViewHelperTest extends FunctionalTestCase
+final class TypolinkViewHelperTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

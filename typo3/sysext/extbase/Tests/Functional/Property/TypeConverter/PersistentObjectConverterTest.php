@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PersistentObjectConverterTest extends FunctionalTestCase
+final class PersistentObjectConverterTest extends FunctionalTestCase
 {
     // @todo: Switch to a simple test extension that contains a test model, instead.
     protected array $coreExtensionsToLoad = ['beuser'];

@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Tests for ReferenceDefinition
  */
-class ReferenceDefinitionTest extends UnitTestCase
+final class ReferenceDefinitionTest extends UnitTestCase
 {
     /**
      * Each parameter array consists of the following values:

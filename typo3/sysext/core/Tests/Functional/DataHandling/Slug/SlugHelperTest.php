@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Functional test for the SlugHelper
  */
-class SlugHelperTest extends AbstractDataHandlerActionTestCase
+final class SlugHelperTest extends AbstractDataHandlerActionTestCase
 {
     /**
      * Default Site Configuration

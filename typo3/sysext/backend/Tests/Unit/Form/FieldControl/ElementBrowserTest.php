@@ -22,7 +22,7 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ElementBrowserTest extends UnitTestCase
+final class ElementBrowserTest extends UnitTestCase
 {
     /**
      * @test

@@ -29,7 +29,7 @@ use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FormFrontendControllerTest extends UnitTestCase
+final class FormFrontendControllerTest extends UnitTestCase
 {
     public function setUp(): void
     {

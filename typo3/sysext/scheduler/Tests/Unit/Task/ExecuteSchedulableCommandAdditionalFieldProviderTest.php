@@ -32,7 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * @todo: Turn into functional tests to avoid mocking party and set SchedulerModuleController final when done.
  */
-class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTestCase
+final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

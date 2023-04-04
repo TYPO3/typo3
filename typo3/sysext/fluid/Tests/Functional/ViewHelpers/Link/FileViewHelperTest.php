@@ -31,7 +31,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class FileViewHelperTest extends FunctionalTestCase
+final class FileViewHelperTest extends FunctionalTestCase
 {
     private const TEMPLATE_PATH = 'EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/Link/FileViewHelper/Template.html';
 

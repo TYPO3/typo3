@@ -23,7 +23,7 @@ use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SlugRedirectChangeItemTest extends UnitTestCase
+final class SlugRedirectChangeItemTest extends UnitTestCase
 {
     /**
      * @test

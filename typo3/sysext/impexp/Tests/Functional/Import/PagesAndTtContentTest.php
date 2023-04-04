@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
-class PagesAndTtContentTest extends AbstractImportExportTestCase
+final class PagesAndTtContentTest extends AbstractImportExportTestCase
 {
     /**
      * @test

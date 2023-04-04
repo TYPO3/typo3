@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Lowlevel\Tests\Unit\Controller;
 use TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatabaseIntegrityControllerTest extends UnitTestCase
+final class DatabaseIntegrityControllerTest extends UnitTestCase
 {
     public static function getSubscriptReturnsExpectedValuesDataProvider(): array
     {

@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\DependencyInjection\FailsafeContainer as Container;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FailsafeContainerTest extends UnitTestCase
+final class FailsafeContainerTest extends UnitTestCase
 {
     /**
      * @test

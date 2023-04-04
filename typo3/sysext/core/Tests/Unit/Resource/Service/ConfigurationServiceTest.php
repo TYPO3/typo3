@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ConfigurationServiceTest extends UnitTestCase
+final class ConfigurationServiceTest extends UnitTestCase
 {
     /**
      * @test

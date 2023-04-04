@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Test cases of CsvUtility
  */
-class CsvUtilityTest extends UnitTestCase
+final class CsvUtilityTest extends UnitTestCase
 {
     public static function csvToArrayDataProvider(): array
     {

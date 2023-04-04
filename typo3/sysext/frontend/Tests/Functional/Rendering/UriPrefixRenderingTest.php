@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class UriPrefixRenderingTest extends FunctionalTestCase
+final class UriPrefixRenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

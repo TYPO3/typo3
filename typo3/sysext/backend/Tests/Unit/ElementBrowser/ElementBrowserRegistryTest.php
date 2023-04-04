@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ElementBrowserRegistryTest extends UnitTestCase
+final class ElementBrowserRegistryTest extends UnitTestCase
 {
     /**
      * @test

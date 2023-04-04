@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RecordHistoryStoreTest extends FunctionalTestCase
+final class RecordHistoryStoreTest extends FunctionalTestCase
 {
     private RecordHistoryStore $subject;
 

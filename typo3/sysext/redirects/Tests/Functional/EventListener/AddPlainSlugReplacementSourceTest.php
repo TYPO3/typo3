@@ -29,7 +29,7 @@ use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class AddPlainSlugReplacementSourceTest extends FunctionalTestCase
+final class AddPlainSlugReplacementSourceTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['redirects'];
 

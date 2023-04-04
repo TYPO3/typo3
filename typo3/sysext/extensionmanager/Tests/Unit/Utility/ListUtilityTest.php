@@ -25,7 +25,7 @@ use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ListUtilityTest extends UnitTestCase
+final class ListUtilityTest extends UnitTestCase
 {
     protected ListUtility $subject;
 

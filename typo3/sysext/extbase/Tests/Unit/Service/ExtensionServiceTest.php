@@ -30,7 +30,7 @@ use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ExtensionServiceTest extends UnitTestCase
+final class ExtensionServiceTest extends UnitTestCase
 {
     protected ConfigurationManagerInterface&MockObject $mockConfigurationManager;
     protected ExtensionService $extensionService;

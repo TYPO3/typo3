@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FlashMessageServiceTest extends UnitTestCase
+final class FlashMessageServiceTest extends UnitTestCase
 {
     protected FlashMessageService $flashMessageService;
 

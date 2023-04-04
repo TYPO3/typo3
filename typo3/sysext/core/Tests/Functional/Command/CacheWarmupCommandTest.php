@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class CacheWarmupCommandTest extends AbstractCommandTestCase
+final class CacheWarmupCommandTest extends AbstractCommandTestCase
 {
     /**
      * @test

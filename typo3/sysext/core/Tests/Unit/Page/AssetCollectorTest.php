@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AssetCollectorTest extends UnitTestCase
+final class AssetCollectorTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
     protected ?AssetCollector $assetCollector;

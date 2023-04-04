@@ -22,7 +22,7 @@ use TYPO3\CMS\Backend\Form\Container\PaletteAndSingleContainer;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ListOfFieldsContainerTest extends UnitTestCase
+final class ListOfFieldsContainerTest extends UnitTestCase
 {
     /**
      * @test

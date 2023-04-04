@@ -22,7 +22,7 @@ use TYPO3\CMS\Install\FolderStructure\RootNode;
 use TYPO3\CMS\Install\FolderStructure\StructureFacade;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class StructureFacadeTest extends UnitTestCase
+final class StructureFacadeTest extends UnitTestCase
 {
     /**
      * @test

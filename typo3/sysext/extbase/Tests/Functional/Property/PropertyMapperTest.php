@@ -33,7 +33,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PropertyMapperTest extends FunctionalTestCase
+final class PropertyMapperTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['extbase'];
     protected array $testExtensionsToLoad = [

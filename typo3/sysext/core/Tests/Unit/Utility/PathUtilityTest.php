@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * @todo Defining the method parameter types further leads to test bench errors
  */
-class PathUtilityTest extends UnitTestCase
+final class PathUtilityTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;
 

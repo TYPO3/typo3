@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreForeignFieldNonWs\Abstract
  *        For now, we're skipping "WorkspaceDiscard", "WorkspacePublish" and "WorkspacePublishAll" tests, since
  *        "WorkspaceModify" already show enough inconsistencies.
  */
-class ActionTest extends AbstractActionWorkspacesTestCase
+final class ActionTest extends AbstractActionWorkspacesTestCase
 {
     /**
      * @test

@@ -34,7 +34,7 @@ use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\RedirectService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RedirectServiceTest extends UnitTestCase
+final class RedirectServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

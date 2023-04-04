@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
-class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExportTestCase
+final class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExportTestCase
 {
     protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',

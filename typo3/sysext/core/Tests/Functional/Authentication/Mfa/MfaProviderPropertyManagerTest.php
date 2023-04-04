@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class MfaProviderPropertyManagerTest extends FunctionalTestCase
+final class MfaProviderPropertyManagerTest extends FunctionalTestCase
 {
     protected AbstractUserAuthentication $user;
 

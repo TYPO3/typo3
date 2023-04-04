@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Tests\Functional\Tree\Repository\Fixtures\Tree\NormalizeTr
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PageTreeRepositoryTest extends FunctionalTestCase
+final class PageTreeRepositoryTest extends FunctionalTestCase
 {
     use NormalizeTreeTrait;
 

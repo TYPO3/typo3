@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Redirects\Tests\Unit\Event;
 use TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BeforeRedirectMatchDomainEventTest extends UnitTestCase
+final class BeforeRedirectMatchDomainEventTest extends UnitTestCase
 {
     /**
      * @test

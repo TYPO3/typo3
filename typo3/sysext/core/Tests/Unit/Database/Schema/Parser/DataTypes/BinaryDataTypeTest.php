@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
 /**
  * Tests for parsing BINARY/VARBINARY SQL data types
  */
-class BinaryDataTypeTest extends AbstractDataTypeBaseTestCase
+final class BinaryDataTypeTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseBinaryDataType()

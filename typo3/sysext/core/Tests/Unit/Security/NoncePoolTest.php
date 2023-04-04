@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Security\NoncePool;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class NoncePoolTest extends UnitTestCase
+final class NoncePoolTest extends UnitTestCase
 {
     /**
      * @test

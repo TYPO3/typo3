@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class IconFactoryTest extends FunctionalTestCase
+final class IconFactoryTest extends FunctionalTestCase
 {
     protected IconFactory $subject;
     protected string $notRegisteredIconIdentifier = 'my-super-unregistered-identifier';

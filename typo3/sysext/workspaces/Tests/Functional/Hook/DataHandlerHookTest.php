@@ -31,7 +31,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * DataHandlerHook test - Contains scenarios that do not fit into DataHandler/ modify/publish/... scenarios
  */
-class DataHandlerHookTest extends FunctionalTestCase
+final class DataHandlerHookTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
 

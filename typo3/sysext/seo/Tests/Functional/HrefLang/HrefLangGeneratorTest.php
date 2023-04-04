@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataH
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class HrefLangGeneratorTest extends FunctionalTestCase
+final class HrefLangGeneratorTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

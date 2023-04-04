@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class NoteVisibleFieldsTest extends FunctionalTestCase
+final class NoteVisibleFieldsTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['sys_note'];
 

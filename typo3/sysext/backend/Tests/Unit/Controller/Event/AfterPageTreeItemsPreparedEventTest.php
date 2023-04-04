@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AfterPageTreeItemsPreparedEventTest extends UnitTestCase
+final class AfterPageTreeItemsPreparedEventTest extends UnitTestCase
 {
     /**
      * @test

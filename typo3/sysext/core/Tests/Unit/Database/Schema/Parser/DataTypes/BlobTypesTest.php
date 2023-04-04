@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
 /**
  * Tests for parsing BLOB SQL data types
  */
-class BlobTypesTest extends AbstractDataTypeBaseTestCase
+final class BlobTypesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseBlobDataType()

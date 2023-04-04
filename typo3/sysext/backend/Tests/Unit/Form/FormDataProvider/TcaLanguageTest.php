@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaLanguageTest extends UnitTestCase
+final class TcaLanguageTest extends UnitTestCase
 {
     protected function setUp(): void
     {

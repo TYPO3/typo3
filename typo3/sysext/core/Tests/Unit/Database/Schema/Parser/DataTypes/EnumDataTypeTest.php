@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
 /**
  * Tests for parsing ENUM SQL data type
  */
-class EnumDataTypeTest extends AbstractDataTypeBaseTestCase
+final class EnumDataTypeTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseEnumDataType()

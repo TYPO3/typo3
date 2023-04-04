@@ -96,7 +96,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  * -> getFallbackChain()
  *    if the page is not available in a specific language, apply other language Ids in the given order until the page translation can be found.
  */
-class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCase
+final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCase
 {
     use SiteBasedTestTrait;
 

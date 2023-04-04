@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Reports\Report\Status\Typo3Status;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class Typo3StatusTest extends UnitTestCase
+final class Typo3StatusTest extends UnitTestCase
 {
     protected function setUp(): void
     {

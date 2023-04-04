@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class EscapeChildrenRenderingTest extends FunctionalTestCase
+final class EscapeChildrenRenderingTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\Fixture\AbstractCompositeV
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractCompositeValidatorTest extends UnitTestCase
+final class AbstractCompositeValidatorTest extends UnitTestCase
 {
     /**
      * @test

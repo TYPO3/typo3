@@ -43,7 +43,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRenderin
  *   Calling "products" page in DE renders page in DE
  *   Calling "products" page in DE-CH renders page in DE-CH
  */
-class ScenarioFTest extends AbstractLocalizedPagesTestCase
+final class ScenarioFTest extends AbstractLocalizedPagesTestCase
 {
     protected function setUp(): void
     {

@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the ApplicationContext class
  */
-class ApplicationContextTest extends UnitTestCase
+final class ApplicationContextTest extends UnitTestCase
 {
     /**
      * Data provider with allowed contexts.

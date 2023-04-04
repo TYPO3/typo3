@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class StringLengthValidatorTest extends FunctionalTestCase
+final class StringLengthValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class IntegerValidatorTest extends FunctionalTestCase
+final class IntegerValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

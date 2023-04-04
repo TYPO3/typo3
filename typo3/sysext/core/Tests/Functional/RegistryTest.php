@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RegistryTest extends FunctionalTestCase
+final class RegistryTest extends FunctionalTestCase
 {
     /**
      * @test

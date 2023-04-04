@@ -22,7 +22,7 @@ use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 
-class ExportPageTreeViewTest extends AbstractImportExportTestCase
+final class ExportPageTreeViewTest extends AbstractImportExportTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',

@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifest;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class MfaProviderRegistryTest extends FunctionalTestCase
+final class MfaProviderRegistryTest extends FunctionalTestCase
 {
     protected MfaProviderRegistry $subject;
     protected AbstractUserAuthentication $user;

@@ -22,7 +22,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ScriptViewHelperTest extends FunctionalTestCase
+final class ScriptViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

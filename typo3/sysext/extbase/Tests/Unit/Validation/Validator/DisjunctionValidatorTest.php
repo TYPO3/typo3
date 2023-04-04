@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DisjunctionValidatorTest extends UnitTestCase
+final class DisjunctionValidatorTest extends UnitTestCase
 {
     /**
      * @test

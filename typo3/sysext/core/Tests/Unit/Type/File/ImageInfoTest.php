@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ImageInfoTest extends UnitTestCase
+final class ImageInfoTest extends UnitTestCase
 {
     /**
      * @test

@@ -32,7 +32,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * Functional database test for Clipboard behaviour
  */
-class ClipboardTest extends FunctionalTestCase
+final class ClipboardTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

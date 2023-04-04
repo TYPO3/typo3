@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeMemorySpoolFixture;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeValidSpoolFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TransportFactoryTest extends UnitTestCase
+final class TransportFactoryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

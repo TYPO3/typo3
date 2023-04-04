@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class TYPO3\CMS\Extbase\Tests\Unit\Reflection\MethodTest
  */
-class MethodTest extends UnitTestCase
+final class MethodTest extends UnitTestCase
 {
     /**
      * @test

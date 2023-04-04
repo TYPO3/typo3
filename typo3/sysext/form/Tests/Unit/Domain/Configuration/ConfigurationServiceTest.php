@@ -25,7 +25,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ConfigurationServiceTest extends UnitTestCase
+final class ConfigurationServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

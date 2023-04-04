@@ -32,7 +32,7 @@ use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RedirectUrlValidatorTest extends UnitTestCase
+final class RedirectUrlValidatorTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;
 

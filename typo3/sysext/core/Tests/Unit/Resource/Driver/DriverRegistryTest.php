@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DriverRegistryTest extends UnitTestCase
+final class DriverRegistryTest extends UnitTestCase
 {
     /**
      * @test

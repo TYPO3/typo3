@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class EditDocumentControllerTest extends FunctionalTestCase
+final class EditDocumentControllerTest extends FunctionalTestCase
 {
     protected EditDocumentController $subject;
 

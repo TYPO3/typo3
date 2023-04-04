@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class VisibilityAspectTest extends UnitTestCase
+final class VisibilityAspectTest extends UnitTestCase
 {
     /**
      * @test

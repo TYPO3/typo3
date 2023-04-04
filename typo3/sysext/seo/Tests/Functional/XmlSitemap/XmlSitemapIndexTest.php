@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 /**
  * Contains functional tests for the XmlSitemap Index
  */
-class XmlSitemapIndexTest extends AbstractTestCase
+final class XmlSitemapIndexTest extends AbstractTestCase
 {
     protected array $coreExtensionsToLoad = ['seo'];
 

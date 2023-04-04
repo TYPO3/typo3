@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TreeFromLineStreamBuilderTest extends FunctionalTestCase
+final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
 {
     protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/core/Tests/Functional/TypoScript/IncludeTree/Fixtures/IncludeTyposcript/FileadminImport/Scenario1' => 'fileadmin/Scenario1',

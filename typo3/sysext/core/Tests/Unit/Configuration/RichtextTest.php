@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RichtextTest extends UnitTestCase
+final class RichtextTest extends UnitTestCase
 {
     /**
      * @test

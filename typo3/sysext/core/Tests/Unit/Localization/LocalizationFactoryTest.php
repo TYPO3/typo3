@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LocalizationFactoryTest extends UnitTestCase
+final class LocalizationFactoryTest extends UnitTestCase
 {
     /**
      * @test

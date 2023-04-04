@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for class \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection.
  */
-class SortedTreeNodeCollectionTest extends UnitTestCase
+final class SortedTreeNodeCollectionTest extends UnitTestCase
 {
     protected function createTestCollection(): SortedTreeNodeCollection
     {

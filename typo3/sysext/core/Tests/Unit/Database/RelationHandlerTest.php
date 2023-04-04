@@ -21,7 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RelationHandlerTest extends UnitTestCase
+final class RelationHandlerTest extends UnitTestCase
 {
     protected RelationHandler&MockObject $subject;
 

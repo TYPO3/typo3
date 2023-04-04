@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRenderin
  *   have a fallback in place, should keep the current language and not switch
  *   to the translation language.
  */
-class ScenarioGTest extends AbstractLocalizedPagesTestCase
+final class ScenarioGTest extends AbstractLocalizedPagesTestCase
 {
     protected function setUp(): void
     {

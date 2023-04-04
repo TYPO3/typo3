@@ -33,7 +33,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  *
  * @requires extension redis
  */
-class RedisBackendTest extends FunctionalTestCase
+final class RedisBackendTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Session\Backend;
 use TYPO3\CMS\Core\Session\Backend\RedisSessionBackend;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RedisSessionBackendTest extends UnitTestCase
+final class RedisSessionBackendTest extends UnitTestCase
 {
     protected function setUp(): void
     {

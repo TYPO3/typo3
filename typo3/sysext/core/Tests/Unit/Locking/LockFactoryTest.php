@@ -31,7 +31,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\LockFactory
  */
-class LockFactoryTest extends UnitTestCase
+final class LockFactoryTest extends UnitTestCase
 {
     protected LockFactory&MockObject&AccessibleObjectInterface $mockFactory;
 

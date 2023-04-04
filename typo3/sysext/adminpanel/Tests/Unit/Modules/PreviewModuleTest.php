@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PreviewModuleTest extends UnitTestCase
+final class PreviewModuleTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

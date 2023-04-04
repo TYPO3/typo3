@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\LinkHandling\LinkHandlingInterface;
 use TYPO3\CMS\Core\LinkHandling\UrlLinkHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class UrlLinkHandlerTest extends UnitTestCase
+final class UrlLinkHandlerTest extends UnitTestCase
 {
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page

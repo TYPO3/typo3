@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Charset;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CharsetConverterTest extends UnitTestCase
+final class CharsetConverterTest extends UnitTestCase
 {
     /**
      * @test

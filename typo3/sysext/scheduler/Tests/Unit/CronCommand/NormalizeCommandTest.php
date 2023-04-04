@@ -21,7 +21,7 @@ use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\Tests\Unit\CronCommand\AccessibleProxies\NormalizeCommandAccessibleProxy;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class NormalizeCommandTest extends UnitTestCase
+final class NormalizeCommandTest extends UnitTestCase
 {
     public static function normalizeValidDataProvider(): array
     {

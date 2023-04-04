@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\ReferenceChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RootNodeTest extends UnitTestCase
+final class RootNodeTest extends UnitTestCase
 {
     /**
      * @test

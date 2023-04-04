@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BcryptPasswordHashTest extends UnitTestCase
+final class BcryptPasswordHashTest extends UnitTestCase
 {
     protected ?BcryptPasswordHash $subject;
 

@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class CollectionValidatorTest extends FunctionalTestCase
+final class CollectionValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

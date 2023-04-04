@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\ProcessorFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractProcessorTest extends UnitTestCase
+final class AbstractProcessorTest extends UnitTestCase
 {
     /**
      * @test

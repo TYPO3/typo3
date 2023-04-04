@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Filelist\Event\ModifyEditFileFormDataEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ModifyEditFileFormDataEventTest extends UnitTestCase
+final class ModifyEditFileFormDataEventTest extends UnitTestCase
 {
     /**
      * @test

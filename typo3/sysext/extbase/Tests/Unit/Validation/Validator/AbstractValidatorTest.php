@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\Fixture\AbstractValidatorC
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractValidatorTest extends UnitTestCase
+final class AbstractValidatorTest extends UnitTestCase
 {
     /**
      * @test

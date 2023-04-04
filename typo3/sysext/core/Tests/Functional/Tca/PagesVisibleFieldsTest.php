@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PagesVisibleFieldsTest extends FunctionalTestCase
+final class PagesVisibleFieldsTest extends FunctionalTestCase
 {
     /**
      * These form fields are visible in the default page types.

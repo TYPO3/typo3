@@ -26,7 +26,7 @@ use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ActionControllerTest extends UnitTestCase
+final class ActionControllerTest extends UnitTestCase
 {
     /**
      * Creates a fake extension inside typo3temp/. No configuration is created,

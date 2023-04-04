@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class PlainTextExtractorTest
  */
-class PlainTextExtractorTest extends UnitTestCase
+final class PlainTextExtractorTest extends UnitTestCase
 {
     /**
      * @test

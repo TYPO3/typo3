@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
 /**
  * Tests for parsing DECIMAL/NUMERIC SQL data types
  */
-class FixedPointTypesTest extends AbstractDataTypeBaseTestCase
+final class FixedPointTypesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseFixedPointTypes()

@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class EmailViewHelperTest extends FunctionalTestCase
+final class EmailViewHelperTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

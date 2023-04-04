@@ -33,7 +33,7 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ActionControllerArgumentTest extends FunctionalTestCase
+final class ActionControllerArgumentTest extends FunctionalTestCase
 {
     private string $pluginName = 'Pi1';
     private string $extensionName = 'ActionControllerArgumentTest';

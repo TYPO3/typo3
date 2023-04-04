@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Class TYPO3\CMS\Extbase\Tests\Unit\Persistence\ClassesConfigurationTest
  */
-class ClassesConfigurationTest extends UnitTestCase
+final class ClassesConfigurationTest extends UnitTestCase
 {
     /**
      * @test

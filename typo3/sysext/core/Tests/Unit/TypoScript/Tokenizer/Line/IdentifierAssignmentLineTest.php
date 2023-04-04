@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierAssignmentLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierTokenStream;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class IdentifierAssignmentLineTest extends UnitTestCase
+final class IdentifierAssignmentLineTest extends UnitTestCase
 {
     /**
      * @test

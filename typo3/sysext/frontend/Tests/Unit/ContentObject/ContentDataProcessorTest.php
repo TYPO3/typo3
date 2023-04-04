@@ -25,7 +25,7 @@ use TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\DataProcessorFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ContentDataProcessorTest extends UnitTestCase
+final class ContentDataProcessorTest extends UnitTestCase
 {
     protected ContentDataProcessor $contentDataProcessor;
     protected Container $container;

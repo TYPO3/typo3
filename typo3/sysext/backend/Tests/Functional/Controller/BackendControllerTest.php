@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BackendControllerTest extends FunctionalTestCase
+final class BackendControllerTest extends FunctionalTestCase
 {
     public function setUp(): void
     {

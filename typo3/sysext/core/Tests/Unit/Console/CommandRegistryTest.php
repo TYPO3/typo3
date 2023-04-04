@@ -24,7 +24,7 @@ use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CommandRegistryTest extends UnitTestCase
+final class CommandRegistryTest extends UnitTestCase
 {
     protected ContainerInterface&MockObject $containerMock;
 

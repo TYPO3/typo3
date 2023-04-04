@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class NotEmptyValidatorTest extends FunctionalTestCase
+final class NotEmptyValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

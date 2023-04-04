@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Redirects\Tests\Unit\Repository;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DemandTest extends UnitTestCase
+final class DemandTest extends UnitTestCase
 {
     public static function getParametersRespectsDemandStateStateDataProvider(): array
     {

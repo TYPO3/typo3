@@ -21,7 +21,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class InternalRequestDataMappingTest extends FunctionalTestCase
+final class InternalRequestDataMappingTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_request_mirror',

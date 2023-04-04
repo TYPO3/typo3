@@ -21,7 +21,7 @@ use ScssPhp\ScssPhp\Compiler;
 use TYPO3\CMS\RteCKEditor\Service\ScssProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ScssProcessorTest extends UnitTestCase
+final class ScssProcessorTest extends UnitTestCase
 {
     public static function cssIsPrefixedForScssDataProvider(): \Generator
     {

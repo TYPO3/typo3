@@ -25,7 +25,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\DataProcessing\FlexFormProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FlexFormProcessorTest extends UnitTestCase
+final class FlexFormProcessorTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
     protected MockObject&ContentObjectRenderer $contentObjectRendererMock;

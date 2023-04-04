@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
 /**
  * Tests for parsing INTEGER SQL data types
  */
-class IntegerTypesTest extends AbstractDataTypeBaseTestCase
+final class IntegerTypesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseIntegerDataType()

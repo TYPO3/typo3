@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SlidingWindowPaginationTest extends UnitTestCase
+final class SlidingWindowPaginationTest extends UnitTestCase
 {
     protected $paginator = [];
 

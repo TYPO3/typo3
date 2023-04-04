@@ -38,7 +38,7 @@ use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\FrontendLogin\Service\RecoveryService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RecoveryServiceTest extends UnitTestCase
+final class RecoveryServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

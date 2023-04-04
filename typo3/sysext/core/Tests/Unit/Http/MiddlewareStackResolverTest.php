@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class MiddlewareStackResolverTest extends UnitTestCase
+final class MiddlewareStackResolverTest extends UnitTestCase
 {
     /**
      * @test

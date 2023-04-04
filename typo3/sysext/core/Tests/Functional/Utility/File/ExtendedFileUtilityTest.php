@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ExtendedFileUtilityTest extends FunctionalTestCase
+final class ExtendedFileUtilityTest extends FunctionalTestCase
 {
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/core/Tests/Functional/Utility/Fixtures/Folders/' => 'fileadmin/',

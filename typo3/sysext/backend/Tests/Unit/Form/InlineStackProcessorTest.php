@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class InlineStackProcessorTest extends UnitTestCase
+final class InlineStackProcessorTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

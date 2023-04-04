@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RegularExpressionValidatorTest extends FunctionalTestCase
+final class RegularExpressionValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

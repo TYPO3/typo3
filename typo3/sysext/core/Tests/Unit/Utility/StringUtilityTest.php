@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\StringUtility
  */
-class StringUtilityTest extends UnitTestCase
+final class StringUtilityTest extends UnitTestCase
 {
     /**
      * @test

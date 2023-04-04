@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
 /**
  * Tests for parsing DATE/TIME related SQL data types
  */
-class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
+final class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseDateTimeType()

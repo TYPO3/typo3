@@ -34,7 +34,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class QueryTest extends UnitTestCase
+final class QueryTest extends UnitTestCase
 {
     protected Query&MockObject&AccessibleObjectInterface $query;
     protected QuerySettingsInterface $querySettings;

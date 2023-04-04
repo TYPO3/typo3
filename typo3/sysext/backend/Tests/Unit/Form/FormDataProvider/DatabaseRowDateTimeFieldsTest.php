@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DatabaseRowDateTimeFieldsTest extends UnitTestCase
+final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
 {
     /**
      * @test

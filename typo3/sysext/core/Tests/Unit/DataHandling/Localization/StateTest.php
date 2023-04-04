@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\Localization;
 use TYPO3\CMS\Core\DataHandling\Localization\State;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class StateTest extends UnitTestCase
+final class StateTest extends UnitTestCase
 {
     public const TABLE_NAME = 'tx_test_table';
 

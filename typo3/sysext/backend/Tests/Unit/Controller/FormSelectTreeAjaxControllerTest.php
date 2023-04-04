@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Controller\FormSelectTreeAjaxController;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FormSelectTreeAjaxControllerTest extends UnitTestCase
+final class FormSelectTreeAjaxControllerTest extends UnitTestCase
 {
     /**
      * @test

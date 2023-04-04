@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\TestLogger\ConstructorAttributeChannelTester;
 use TYPO3Tests\TestLogger\LoggerAwareClassAttributeChannelTester;
 
-class LoggerAwareChannelTest extends FunctionalTestCase
+final class LoggerAwareChannelTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_logger',

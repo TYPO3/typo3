@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\IpAnonymizationUtility
  */
-class IpAnonymizationUtilityTest extends UnitTestCase
+final class IpAnonymizationUtilityTest extends UnitTestCase
 {
     /**
      * Data provider for anonymizeIpReturnsCorrectValue

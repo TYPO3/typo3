@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class QueryResultPaginatorTest extends FunctionalTestCase
+final class QueryResultPaginatorTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 

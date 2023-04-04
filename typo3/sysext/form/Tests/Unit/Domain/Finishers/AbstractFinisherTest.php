@@ -26,7 +26,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractFinisherTest extends UnitTestCase
+final class AbstractFinisherTest extends UnitTestCase
 {
     /**
      * @test

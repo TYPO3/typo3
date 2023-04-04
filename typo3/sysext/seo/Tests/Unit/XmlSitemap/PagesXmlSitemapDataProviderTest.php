@@ -22,7 +22,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Seo\XmlSitemap\PagesXmlSitemapDataProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PagesXmlSitemapDataProviderTest extends UnitTestCase
+final class PagesXmlSitemapDataProviderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

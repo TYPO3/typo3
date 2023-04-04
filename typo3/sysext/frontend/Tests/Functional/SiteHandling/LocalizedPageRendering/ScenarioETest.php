@@ -41,7 +41,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRenderin
  *   Calling "about" page in DE with EN slug returns a 404 response
  *   Calling "about" page in DE-CH with EN slug renders page in DE
  */
-class ScenarioETest extends AbstractLocalizedPagesTestCase
+final class ScenarioETest extends AbstractLocalizedPagesTestCase
 {
     protected function setUp(): void
     {

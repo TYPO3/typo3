@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BackendLayoutVisibleFieldsTest extends FunctionalTestCase
+final class BackendLayoutVisibleFieldsTest extends FunctionalTestCase
 {
     protected static array $backendLayoutFields = [
         'title',

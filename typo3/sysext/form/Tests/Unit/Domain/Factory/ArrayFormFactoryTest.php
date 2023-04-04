@@ -23,7 +23,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\Section;
 use TYPO3\CMS\Form\Domain\Model\FormElements\UnknownFormElement;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ArrayFormFactoryTest extends UnitTestCase
+final class ArrayFormFactoryTest extends UnitTestCase
 {
     /**
      * @test

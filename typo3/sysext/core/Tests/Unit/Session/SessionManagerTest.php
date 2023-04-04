@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SessionManagerTest extends UnitTestCase
+final class SessionManagerTest extends UnitTestCase
 {
     /**
      * @test

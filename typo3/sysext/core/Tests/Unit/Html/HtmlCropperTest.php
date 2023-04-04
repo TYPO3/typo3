@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Html;
 use TYPO3\CMS\Core\Html\HtmlCropper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class HtmlCropperTest extends UnitTestCase
+final class HtmlCropperTest extends UnitTestCase
 {
     private HtmlCropper $subject;
 

@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Tests for CreateColumnDefinitionItem
  */
-class ColumnDefinitionItemTest extends UnitTestCase
+final class ColumnDefinitionItemTest extends UnitTestCase
 {
     /**
      * @test

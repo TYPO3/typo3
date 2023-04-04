@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Resource\Event\AfterDefaultUploadFolderWasResolvedEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class DefaultUploadFolderResolverTest extends FunctionalTestCase
+final class DefaultUploadFolderResolverTest extends FunctionalTestCase
 {
     public function setUp(): void
     {

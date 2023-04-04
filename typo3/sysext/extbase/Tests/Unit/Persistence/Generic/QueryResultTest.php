@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class QueryResultTest extends UnitTestCase
+final class QueryResultTest extends UnitTestCase
 {
     /**
      * @var QueryResult

@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\SysFileCollectionIdentifierMigration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SysFileCollectionIdentifierMigrationTest extends FunctionalTestCase
+final class SysFileCollectionIdentifierMigrationTest extends FunctionalTestCase
 {
     private const TABLE_NAME = 'sys_file_collection';
 

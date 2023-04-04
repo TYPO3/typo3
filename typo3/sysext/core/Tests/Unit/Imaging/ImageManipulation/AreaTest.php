@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AreaTest extends UnitTestCase
+final class AreaTest extends UnitTestCase
 {
     /**
      * @test

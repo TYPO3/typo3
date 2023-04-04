@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Country\Country;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class CountryTest extends FunctionalTestCase
+final class CountryTest extends FunctionalTestCase
 {
     /**
      * @test

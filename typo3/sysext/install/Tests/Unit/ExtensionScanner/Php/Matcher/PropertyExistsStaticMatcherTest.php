@@ -23,7 +23,7 @@ use PhpParser\ParserFactory;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\PropertyExistsStaticMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PropertyExistsStaticMatcherTest extends UnitTestCase
+final class PropertyExistsStaticMatcherTest extends UnitTestCase
 {
     /**
      * @test

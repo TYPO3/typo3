@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RequestTest extends UnitTestCase
+final class RequestTest extends UnitTestCase
 {
     /**
      * @test

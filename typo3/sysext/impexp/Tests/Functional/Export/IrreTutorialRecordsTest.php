@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
-class IrreTutorialRecordsTest extends AbstractImportExportTestCase
+final class IrreTutorialRecordsTest extends AbstractImportExportTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',

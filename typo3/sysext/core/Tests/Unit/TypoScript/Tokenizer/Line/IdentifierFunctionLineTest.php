@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class IdentifierFunctionLineTest extends UnitTestCase
+final class IdentifierFunctionLineTest extends UnitTestCase
 {
     /**
      * @test

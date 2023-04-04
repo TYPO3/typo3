@@ -25,7 +25,7 @@ use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\SubModuleFixture;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ConfigurationServiceTest extends UnitTestCase
+final class ConfigurationServiceTest extends UnitTestCase
 {
     protected MockObject&BackendUserAuthentication $beUser;
 

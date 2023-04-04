@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FolderTest extends UnitTestCase
+final class FolderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

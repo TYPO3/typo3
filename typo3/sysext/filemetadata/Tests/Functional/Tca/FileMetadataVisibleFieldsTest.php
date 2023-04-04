@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FileMetadataVisibleFieldsTest extends FunctionalTestCase
+final class FileMetadataVisibleFieldsTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['filemetadata'];
 

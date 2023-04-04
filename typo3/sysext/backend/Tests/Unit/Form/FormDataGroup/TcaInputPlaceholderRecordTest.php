@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaInputPlaceholderRecordTest extends UnitTestCase
+final class TcaInputPlaceholderRecordTest extends UnitTestCase
 {
     protected TcaInputPlaceholderRecord $subject;
 

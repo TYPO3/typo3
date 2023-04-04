@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
-class ExportTest extends AbstractImportExportTestCase
+final class ExportTest extends AbstractImportExportTestCase
 {
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',

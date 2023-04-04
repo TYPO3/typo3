@@ -24,7 +24,7 @@ use TYPO3\CMS\Install\CoreVersion\CoreRelease;
 use TYPO3\CMS\Install\Service\CoreVersionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CoreVersionServiceTest extends UnitTestCase
+final class CoreVersionServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

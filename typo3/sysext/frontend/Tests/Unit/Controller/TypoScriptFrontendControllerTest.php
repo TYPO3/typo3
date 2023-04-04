@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TypoScriptFrontendControllerTest extends UnitTestCase
+final class TypoScriptFrontendControllerTest extends UnitTestCase
 {
     public static function baseUrlWrapHandlesDifferentUrlsDataProvider(): array
     {

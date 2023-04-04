@@ -23,7 +23,7 @@ use PhpParser\ParserFactory;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ArrayGlobalMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ArrayGlobalMatcherTest extends UnitTestCase
+final class ArrayGlobalMatcherTest extends UnitTestCase
 {
     /**
      * @test

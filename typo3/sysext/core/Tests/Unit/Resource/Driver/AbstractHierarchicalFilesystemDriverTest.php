@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 use TYPO3\CMS\Core\Resource\Driver\AbstractHierarchicalFilesystemDriver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractHierarchicalFilesystemDriverTest extends UnitTestCase
+final class AbstractHierarchicalFilesystemDriverTest extends UnitTestCase
 {
     public static function canonicalizeAndCheckFileIdentifierCanonicalizesPathDataProvider(): array
     {

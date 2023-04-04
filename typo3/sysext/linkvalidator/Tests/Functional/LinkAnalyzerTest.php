@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class LinkAnalyzerTest extends FunctionalTestCase
+final class LinkAnalyzerTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
         'info',

@@ -24,7 +24,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class EventDispatcherTest extends UnitTestCase
+final class EventDispatcherTest extends UnitTestCase
 {
     protected ListenerProviderInterface&MockObject $listenerProviderMock;
     protected EventDispatcher $eventDispatcher;

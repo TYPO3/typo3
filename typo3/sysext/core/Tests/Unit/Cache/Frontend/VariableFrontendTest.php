@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class VariableFrontendTest extends UnitTestCase
+final class VariableFrontendTest extends UnitTestCase
 {
     /**
      * @test

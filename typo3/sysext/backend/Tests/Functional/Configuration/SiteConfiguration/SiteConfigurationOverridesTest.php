@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Configuration\SiteConfiguration;
 use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SiteConfigurationOverridesTest extends FunctionalTestCase
+final class SiteConfigurationOverridesTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

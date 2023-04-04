@@ -21,7 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class NoopEventDispatcherTest extends UnitTestCase
+final class NoopEventDispatcherTest extends UnitTestCase
 {
     /**
      * @test

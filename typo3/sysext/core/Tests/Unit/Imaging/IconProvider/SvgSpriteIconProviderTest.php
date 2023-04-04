@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\IconProvider\SvgSpriteIconProvider
  */
-class SvgSpriteIconProviderTest extends UnitTestCase
+final class SvgSpriteIconProviderTest extends UnitTestCase
 {
     protected ?SvgSpriteIconProvider $subject;
 

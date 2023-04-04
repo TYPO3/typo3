@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Frontend\Typolink\LinkVarsCalculator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LinkVarsCalculatorTest extends UnitTestCase
+final class LinkVarsCalculatorTest extends UnitTestCase
 {
     public static function calculateLinkVarsDataProvider(): array
     {

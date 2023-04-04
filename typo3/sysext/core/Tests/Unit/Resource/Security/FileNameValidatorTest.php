@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
-class FileNameValidatorTest extends TestCase
+final class FileNameValidatorTest extends TestCase
 {
     public static function deniedFilesWithoutDenyPatternDataProvider(): array
     {

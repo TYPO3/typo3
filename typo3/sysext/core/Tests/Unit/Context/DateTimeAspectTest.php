@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DateTimeAspectTest extends UnitTestCase
+final class DateTimeAspectTest extends UnitTestCase
 {
     /**
      * @test

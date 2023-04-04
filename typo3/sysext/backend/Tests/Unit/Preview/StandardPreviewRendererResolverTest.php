@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class StandardPreviewRendererResolverTest extends UnitTestCase
+final class StandardPreviewRendererResolverTest extends UnitTestCase
 {
     protected StandardPreviewRendererResolver $subject;
 

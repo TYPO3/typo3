@@ -33,7 +33,7 @@ use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PageArgumentValidatorTest extends UnitTestCase
+final class PageArgumentValidatorTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

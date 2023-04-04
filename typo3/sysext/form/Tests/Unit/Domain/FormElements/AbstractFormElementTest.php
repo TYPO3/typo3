@@ -24,7 +24,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\AbstractFormElement;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractFormElementTest extends UnitTestCase
+final class AbstractFormElementTest extends UnitTestCase
 {
     /**
      * @test

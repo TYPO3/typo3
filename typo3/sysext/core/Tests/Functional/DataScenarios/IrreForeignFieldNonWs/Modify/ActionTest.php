@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreForeignFieldNonWs\Mo
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreForeignFieldNonWs\AbstractActionTestCase;
 
-class ActionTest extends AbstractActionTestCase
+final class ActionTest extends AbstractActionTestCase
 {
     /**
      * @test

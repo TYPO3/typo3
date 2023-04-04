@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TcaFolderTest extends UnitTestCase
+final class TcaFolderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

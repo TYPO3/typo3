@@ -25,7 +25,7 @@ use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ModifyAutoCreateRedirectRecordBeforePersistingEventTest extends UnitTestCase
+final class ModifyAutoCreateRedirectRecordBeforePersistingEventTest extends UnitTestCase
 {
     public function modifyAutoCreateRedirectRecordBeforePersistingGettersReturnInstantiatingValues(): void
     {

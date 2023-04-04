@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\FlexformIrre;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
-class ActionTest extends AbstractDataHandlerActionTestCase
+final class ActionTest extends AbstractDataHandlerActionTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
 

@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierCopyLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierTokenStream;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class IdentifierCopyLineTest extends UnitTestCase
+final class IdentifierCopyLineTest extends UnitTestCase
 {
     /**
      * @test

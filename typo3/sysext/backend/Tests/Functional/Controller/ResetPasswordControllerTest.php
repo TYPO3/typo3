@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ResetPasswordControllerTest extends FunctionalTestCase
+final class ResetPasswordControllerTest extends FunctionalTestCase
 {
     protected ResetPasswordController $subject;
     protected ServerRequestInterface $request;

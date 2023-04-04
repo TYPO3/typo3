@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ExtensionManagementUtilityTest extends UnitTestCase
+final class ExtensionManagementUtilityTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
     protected ?PackageManager $backUpPackageManager;

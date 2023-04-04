@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\ThirdCo
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ExtensionUtilityTest extends UnitTestCase
+final class ExtensionUtilityTest extends UnitTestCase
 {
     /**
      * @test

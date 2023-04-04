@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Database\Query\UnsupportedPreparedStatementParameterTypeExcep
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
+final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

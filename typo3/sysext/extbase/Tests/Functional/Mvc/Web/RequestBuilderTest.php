@@ -38,7 +38,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\TestingFramework\Core\Functional\Framework\FrameworkState;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RequestBuilderTest extends FunctionalTestCase
+final class RequestBuilderTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

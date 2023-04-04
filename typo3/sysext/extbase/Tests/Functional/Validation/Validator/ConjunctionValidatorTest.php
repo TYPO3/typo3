@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ConjunctionValidatorTest extends FunctionalTestCase
+final class ConjunctionValidatorTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

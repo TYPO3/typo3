@@ -25,7 +25,7 @@ use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\FrontendLogin\Service\UserService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FrontendUserRepositoryTest extends FunctionalTestCase
+final class FrontendUserRepositoryTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['felogin'];
     protected FrontendUserRepository $repository;

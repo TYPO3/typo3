@@ -22,7 +22,7 @@ use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SetTypeTest extends UnitTestCase
+final class SetTypeTest extends UnitTestCase
 {
     protected function setUp(): void
     {

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Session;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SessionManagerTest extends FunctionalTestCase
+final class SessionManagerTest extends FunctionalTestCase
 {
     /**
      * @var SessionManager

@@ -22,7 +22,7 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class BackendViewFactoryTest extends FunctionalTestCase
+final class BackendViewFactoryTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/backend/Tests/Functional/View/Fixtures/Extensions/test_templates_a',

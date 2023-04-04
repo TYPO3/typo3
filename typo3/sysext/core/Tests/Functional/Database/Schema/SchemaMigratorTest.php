@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class SchemaMigratorTest extends FunctionalTestCase
+final class SchemaMigratorTest extends FunctionalTestCase
 {
     /**
      * @var SqlReader

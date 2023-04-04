@@ -36,7 +36,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataH
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TreeControllerTest extends FunctionalTestCase
+final class TreeControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
     use NormalizeTreeTrait;

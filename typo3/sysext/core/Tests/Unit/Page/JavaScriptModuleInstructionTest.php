@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class JavaScriptModuleInstructionTest extends UnitTestCase
+final class JavaScriptModuleInstructionTest extends UnitTestCase
 {
     public static function flagsAreAssignedDataProvider(): array
     {

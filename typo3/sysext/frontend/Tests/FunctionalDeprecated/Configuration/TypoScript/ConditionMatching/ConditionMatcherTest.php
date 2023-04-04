@@ -35,7 +35,7 @@ use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatch
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ConditionMatcherTest extends FunctionalTestCase
+final class ConditionMatcherTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class DocumentationFileTest extends FunctionalTestCase
+final class DocumentationFileTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

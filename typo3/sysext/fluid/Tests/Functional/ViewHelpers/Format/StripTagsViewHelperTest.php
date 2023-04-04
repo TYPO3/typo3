@@ -21,7 +21,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-class StripTagsViewHelperTest extends FunctionalTestCase
+final class StripTagsViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 

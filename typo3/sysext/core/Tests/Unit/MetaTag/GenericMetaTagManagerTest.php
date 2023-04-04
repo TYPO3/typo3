@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\MetaTag;
 use TYPO3\CMS\Core\MetaTag\GenericMetaTagManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class GenericMetaTagManagerTest extends UnitTestCase
+final class GenericMetaTagManagerTest extends UnitTestCase
 {
     /**
      * @test

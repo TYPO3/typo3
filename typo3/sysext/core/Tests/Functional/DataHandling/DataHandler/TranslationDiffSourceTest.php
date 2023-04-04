@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class TranslationDiffSourceTest extends AbstractDataHandlerActionTestCase
+final class TranslationDiffSourceTest extends AbstractDataHandlerActionTestCase
 {
     protected const PAGE_DATAHANDLER = 88;
 

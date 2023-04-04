@@ -23,7 +23,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PageLinkBuilderTest extends UnitTestCase
+final class PageLinkBuilderTest extends UnitTestCase
 {
     /**
      * @test

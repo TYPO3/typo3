@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class SlugHelperUniqueWithLanguageTest extends AbstractDataHandlerActionTestCase
+final class SlugHelperUniqueWithLanguageTest extends AbstractDataHandlerActionTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler_slug',

@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
 /**
  * Tests for parsing JSON SQL data type
  */
-class JsonDataTypeTest extends AbstractDataTypeBaseTestCase
+final class JsonDataTypeTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * @test

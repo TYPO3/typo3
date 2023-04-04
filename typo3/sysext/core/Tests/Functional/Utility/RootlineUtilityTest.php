@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataH
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RootlineUtilityTest extends FunctionalTestCase
+final class RootlineUtilityTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

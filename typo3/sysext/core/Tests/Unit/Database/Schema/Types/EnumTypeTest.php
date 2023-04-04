@@ -22,7 +22,7 @@ use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class EnumTypeTest extends UnitTestCase
+final class EnumTypeTest extends UnitTestCase
 {
     protected function setUp(): void
     {

@@ -44,7 +44,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  *       is executed in which order. This is somehow clumsy. Either cover proper DataHandler hook execution with
  *       additional tests avoiding the simulation and testing SlugService in indirect way - or refactor them here.
  */
-class SlugServiceTest extends FunctionalTestCase
+final class SlugServiceTest extends FunctionalTestCase
 {
     /**
      * @var SlugService

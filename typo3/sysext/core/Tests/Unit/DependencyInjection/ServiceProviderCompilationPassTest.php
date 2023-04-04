@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Tests\Unit\DependencyInjection\Fixtures\TestServiceProviderOv
 use TYPO3\CMS\Core\Tests\Unit\DependencyInjection\Fixtures\TestServiceProviderOverride2;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ServiceProviderCompilationPassTest extends UnitTestCase
+final class ServiceProviderCompilationPassTest extends UnitTestCase
 {
     protected function getContainer(array $serviceProviders, callable $configure = null): ContainerBuilder
     {

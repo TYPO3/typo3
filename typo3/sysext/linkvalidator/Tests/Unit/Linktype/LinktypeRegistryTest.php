@@ -21,7 +21,7 @@ use TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class LinktypeRegistryTest extends UnitTestCase
+final class LinktypeRegistryTest extends UnitTestCase
 {
     /**
      * @test

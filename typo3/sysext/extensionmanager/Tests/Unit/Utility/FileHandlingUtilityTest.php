@@ -28,7 +28,7 @@ use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FileHandlingUtilityTest extends UnitTestCase
+final class FileHandlingUtilityTest extends UnitTestCase
 {
     /**
      * @var array List of created fake extensions

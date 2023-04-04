@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class IconTest extends UnitTestCase
+final class IconTest extends UnitTestCase
 {
     protected ?Icon $subject;
     protected string $iconIdentifier = 'actions-close';

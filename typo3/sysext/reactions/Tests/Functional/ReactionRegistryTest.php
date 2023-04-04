@@ -22,7 +22,7 @@ use TYPO3\CMS\Reactions\Reaction\CreateRecordReaction;
 use TYPO3\CMS\Reactions\ReactionRegistry;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ReactionRegistryTest extends FunctionalTestCase
+final class ReactionRegistryTest extends FunctionalTestCase
 {
     protected bool $resetSingletonInstances = true;
 

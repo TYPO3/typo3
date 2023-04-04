@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SiteLanguageTest extends UnitTestCase
+final class SiteLanguageTest extends UnitTestCase
 {
     public static function languageFallbackIdConversionDataProvider(): array
     {

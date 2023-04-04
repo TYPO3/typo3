@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Configuration\CKEditor5Migrator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class CKEditor5MigratorTest extends UnitTestCase
+final class CKEditor5MigratorTest extends UnitTestCase
 {
     public static function migrationDataProvider(): array
     {

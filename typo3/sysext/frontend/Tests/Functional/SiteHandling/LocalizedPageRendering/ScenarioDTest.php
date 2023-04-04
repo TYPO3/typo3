@@ -43,7 +43,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRenderin
  *   Calling "company" page in EN renders page in EN
  *   Calling "company" page in DE redirects to page "About" in DE
  */
-class ScenarioDTest extends AbstractLocalizedPagesTestCase
+final class ScenarioDTest extends AbstractLocalizedPagesTestCase
 {
     protected function setUp(): void
     {

@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for the abstract cache frontend
  */
-class AbstractFrontendTest extends UnitTestCase
+final class AbstractFrontendTest extends UnitTestCase
 {
     /**
      * @test

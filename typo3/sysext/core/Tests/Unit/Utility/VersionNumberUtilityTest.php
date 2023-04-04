@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\VersionNumberUtility
  */
-class VersionNumberUtilityTest extends UnitTestCase
+final class VersionNumberUtilityTest extends UnitTestCase
 {
     public static function getNumericTypo3VersionNumberDataProvider(): array
     {
