@@ -34,7 +34,6 @@ class ReflectionServiceTest extends UnitTestCase
 
         $reflectionClass = new \ReflectionClass($reflectionService);
         $classSchemaProperty = $reflectionClass->getProperty('classSchemata');
-        $classSchemaProperty->setAccessible(true);
 
         self::assertSame([], $classSchemaProperty->getValue($reflectionService));
     }

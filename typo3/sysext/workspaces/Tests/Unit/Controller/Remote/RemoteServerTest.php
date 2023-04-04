@@ -106,7 +106,6 @@ class RemoteServerTest extends UnitTestCase
         $subject = $this->getAccessibleMock(RemoteServer::class, null, [], '', false);
         $reflection = new \ReflectionClass(RemoteServer::class);
         $reflectionProperty = $reflection->getProperty('differenceHandler');
-        $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($subject, new DiffUtility());
         $result = $subject->_call(
             'prepareFileReferenceDifferences',

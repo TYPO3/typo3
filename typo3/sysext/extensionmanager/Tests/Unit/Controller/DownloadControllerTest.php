@@ -50,7 +50,6 @@ class DownloadControllerTest extends UnitTestCase
 
         $reflectionClass = new \ReflectionClass($subject);
         $reflectionMethod = $reflectionClass->getMethod('installFromTer');
-        $reflectionMethod->setAccessible(true);
 
         $result = $reflectionMethod->invokeArgs($subject, [$dummyExtension]);
 

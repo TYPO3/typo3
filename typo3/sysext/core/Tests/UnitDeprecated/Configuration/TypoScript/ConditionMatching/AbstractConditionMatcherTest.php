@@ -76,7 +76,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
         ));
         // test the abstract methods via the backend condition matcher
         $this->evaluateExpressionMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateExpression');
-        $this->evaluateExpressionMethod->setAccessible(true);
         $defaultProvider = new DefaultProvider(new Typo3Version(), new Context(), new Features());
         GeneralUtility::addInstance(DefaultProvider::class, $defaultProvider);
         $this->conditionMatcher = new ConditionMatcher();

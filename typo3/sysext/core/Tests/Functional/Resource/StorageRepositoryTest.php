@@ -481,7 +481,6 @@ class StorageRepositoryTest extends FunctionalTestCase
         // This is a hack, as capabilities is not settable from the outside
         $objectReflection = new \ReflectionObject($subject);
         $property = $objectReflection->getProperty('capabilities');
-        $property->setAccessible(true);
         $property->setValue($subject, $subject->getCapabilities() & 7);
         $result = $subject->searchFiles($search, $folder);
         $expectedFiles = array_map([$subject, 'getFile'], $expectedIdentifiers);

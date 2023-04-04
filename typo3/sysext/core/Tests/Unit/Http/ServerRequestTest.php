@@ -181,7 +181,6 @@ class ServerRequestTest extends UnitTestCase
 
         $body = $request->getBody();
         $r = new \ReflectionProperty($body, 'stream');
-        $r->setAccessible(true);
         $stream = $r->getValue($body);
         self::assertEquals('php://memory', $stream);
     }

@@ -88,7 +88,6 @@ class CategoryCollectionTest extends FunctionalTestCase
     {
         $subject = new CategoryCollection('tx_test_test');
         $method = new \ReflectionMethod(CategoryCollection::class, 'getCollectedRecords');
-        $method->setAccessible(true);
         $records = $method->invoke($subject);
         self::assertIsArray($records);
         self::assertEmpty($records);

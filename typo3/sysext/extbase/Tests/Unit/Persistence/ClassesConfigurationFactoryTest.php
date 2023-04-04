@@ -67,7 +67,6 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
 
         $reflectionMethod = (new \ReflectionClass($classesConfigurationFactory))
             ->getMethod('inheritPropertiesFromParentClasses');
-        $reflectionMethod->setAccessible(true);
         $classes = $reflectionMethod->invoke($classesConfigurationFactory, $classes);
 
         self::assertSame(

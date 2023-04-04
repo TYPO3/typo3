@@ -35,7 +35,6 @@ class LocalizationUtilityTest extends FunctionalTestCase
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
         $this->configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
         $property = $reflectionClass->getProperty('configurationManager');
-        $property->setAccessible(true);
         $property->setValue($this->configurationManagerInterfaceMock);
     }
 
@@ -46,7 +45,6 @@ class LocalizationUtilityTest extends FunctionalTestCase
     {
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
         $property = $reflectionClass->getProperty('configurationManager');
-        $property->setAccessible(true);
         $property->setValue(null);
         parent::tearDown();
     }
@@ -58,7 +56,6 @@ class LocalizationUtilityTest extends FunctionalTestCase
     {
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
         $method = $reflectionClass->getMethod('flattenTypoScriptLabelArray');
-        $method->setAccessible(true);
 
         $expected = [
             'key1' => 'value1',

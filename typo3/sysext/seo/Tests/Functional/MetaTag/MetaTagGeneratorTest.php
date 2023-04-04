@@ -173,7 +173,6 @@ class MetaTagGeneratorTest extends FunctionalTestCase
         // invoke processing of social image
         $reflectionSubject = new \ReflectionObject($this->subject);
         $reflectionMethod = $reflectionSubject->getMethod('processSocialImage');
-        $reflectionMethod->setAccessible(true); // no-op in PHP 8.1
         /** @var FileInterface $processedSocialImage */
         $processedSocialImage = $reflectionMethod->invoke($this->subject, $fileReference);
 

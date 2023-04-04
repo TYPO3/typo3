@@ -1117,7 +1117,6 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         } catch (PropertyNotAccessibleException $error) {
             // Workaround for this test
             $propertyReflection = new \ReflectionProperty($subject, $pathSegment);
-            $propertyReflection->setAccessible(true);
             return $propertyReflection->getValue($subject);
         }
         return $subject;

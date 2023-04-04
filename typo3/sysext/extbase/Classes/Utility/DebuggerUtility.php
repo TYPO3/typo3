@@ -413,7 +413,6 @@ class DebuggerUtility
                             . htmlspecialchars($property->getName(), ENT_COMPAT) . '</span>';
                     }
                     $dump .= ' => ';
-                    $property->setAccessible(true);
                     $visibility = ($property->isProtected() ? 'protected' : ($property->isPrivate() ? 'private' : 'public'));
                     if ($plainText) {
                         $dump .= self::ansiEscapeWrap($visibility, '42;30', $ansiColors) . ' ';

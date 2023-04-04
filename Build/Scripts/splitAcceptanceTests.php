@@ -121,7 +121,6 @@ class SplitAcceptanceTests extends NodeVisitorAbstract
                     // are protected, so we reflect them and make them accessible to see how many test cases they contain.
                     $dataProviderMethodName = $test['dataProvider'];
                     $dataProviderMethod = new \ReflectionMethod($fqcn, $dataProviderMethodName);
-                    $dataProviderMethod->setAccessible(true);
                     $numberOfDataSets = count($dataProviderMethod->invoke(new $fqcn()));
                     $testStats[$relativeFilename] += $numberOfDataSets;
                 } else {

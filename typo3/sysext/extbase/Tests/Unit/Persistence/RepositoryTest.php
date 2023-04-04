@@ -279,7 +279,6 @@ class RepositoryTest extends UnitTestCase
         $repository = new EntityRepository();
         $reflectionClass = new \ReflectionClass($repository);
         $reflectionProperty = $reflectionClass->getProperty('objectType');
-        $reflectionProperty->setAccessible(true);
         $objectType = $reflectionProperty->getValue($repository);
 
         self::assertEquals(Entity::class, $objectType);
