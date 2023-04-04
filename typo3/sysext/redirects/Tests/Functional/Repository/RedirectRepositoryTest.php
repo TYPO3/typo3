@@ -23,53 +23,61 @@ use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RedirectRepositoryTest extends FunctionalTestCase
+final class RedirectRepositoryTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['redirects'];
 
-    public function demandProvider(): array
+    public static function demandProvider(): array
     {
         $allRecordCount = 6;
         return [
-            'default demand' => [$this->getDemand(), $allRecordCount, $allRecordCount - 4],
-            'configuration with hitCount' => [$this->getDemand(2), $allRecordCount, $allRecordCount - 3],
+            'default demand' => [
+                self::getDemand(),
+                $allRecordCount,
+                $allRecordCount - 4,
+            ],
+            'configuration with hitCount' => [
+                self::getDemand(2),
+                $allRecordCount,
+                $allRecordCount - 3,
+            ],
             'configuration with statusCode 302' => [
-                $this->getDemand(0, [302]),
+                self::getDemand(0, [302]),
                 $allRecordCount,
                 $allRecordCount - 1,
             ],
             'demand with statusCode 302, 303' => [
-                $this->getDemand(0, [302, 303]),
+                self::getDemand(0, [302, 303]),
                 $allRecordCount,
                 $allRecordCount - 2,
             ],
             'demand with domain' => [
-                $this->getDemand(0, [], ['foo.com']),
+                self::getDemand(0, [], ['foo.com']),
                 $allRecordCount,
                 $allRecordCount - 2,
             ],
             'demand with domains' => [
-                $this->getDemand(0, [], ['foo.com', 'bar.com']),
+                self::getDemand(0, [], ['foo.com', 'bar.com']),
                 $allRecordCount,
                 $allRecordCount - 3,
             ],
             'demand with path' => [
-                $this->getDemand(0, [], [], '/foo'),
+                self::getDemand(0, [], [], '/foo'),
                 $allRecordCount,
                 $allRecordCount - 1,
             ],
             'demand with path starts with' => [
-                $this->getDemand(0, [], [], '/foo%'),
+                self::getDemand(0, [], [], '/foo%'),
                 $allRecordCount,
                 $allRecordCount - 3,
             ],
             'demand with path ends with' => [
-                $this->getDemand(0, [], [], '%/foo'),
+                self::getDemand(0, [], [], '%/foo'),
                 $allRecordCount,
                 $allRecordCount - 1,
             ],
             'demand with path in the middle' => [
-                $this->getDemand(0, [], [], '%foo%'),
+                self::getDemand(0, [], [], '%foo%'),
                 $allRecordCount,
                 $allRecordCount - 3,
             ],
@@ -80,11 +88,8 @@ class RedirectRepositoryTest extends FunctionalTestCase
      * @dataProvider demandProvider
      * @test
      */
-    public function removeByDemandWorks(
-        Demand $demand,
-        int $redirectBeforeCleanup,
-        int $redirectAfterCleanup
-    ): void {
+    public function removeByDemandWorks(Demand $demand, int $redirectBeforeCleanup, int $redirectAfterCleanup): void
+    {
         self::assertSame(0, $this->getRedirectCount());
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectRepositoryTest_redirects.csv');
 
@@ -94,7 +99,7 @@ class RedirectRepositoryTest extends FunctionalTestCase
         self::assertSame($redirectAfterCleanup, $this->getRedirectCount());
     }
 
-    protected function getRedirectCount(): int
+    private function getRedirectCount(): int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_redirect');
@@ -105,7 +110,7 @@ class RedirectRepositoryTest extends FunctionalTestCase
             ->fetchOne();
     }
 
-    private function getDemand(
+    private static function getDemand(
         int $hitCount = 0,
         array $statusCodes = [],
         array $domains = [],
