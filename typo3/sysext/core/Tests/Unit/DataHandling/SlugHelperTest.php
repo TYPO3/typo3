@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class SlugHelperTest extends UnitTestCase
+final class SlugHelperTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
@@ -487,10 +487,17 @@ class SlugHelperTest extends UnitTestCase
                 $options,
             ]
         );
-        $subject->expects(self::atLeast(2))
+        $series = [
+            [13, $parentPage],
+            [10, null],
+        ];
+        $subject->expects(self::exactly(2))
             ->method('resolveParentPageRecord')
-            ->withConsecutive([13], [10])
-            ->willReturn($parentPage, null);
+            ->willReturnCallback(function (int $pid) use (&$series): ?array {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $pid);
+                return $arguments[1];
+            });
         self::assertEquals(
             $expected,
             $subject->generate(['title' => $input, 'uid' => 13], 13)
