@@ -130,10 +130,10 @@ export class ClipboardPanel extends LitElement {
         <td colspan="2" class="nowrap">
           <button type="button" class="btn btn-link" title="${tab.description}" data-action="setP" @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setP': tab.identifier } })}">
             ${clipboardData.current === tab.identifier ? html`
-              <typo3-backend-icon identifier="actions-check-circle-alt" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
+              <typo3-backend-icon identifier="actions-check-circle-alt" size="small"></typo3-backend-icon>
               ${tab.title}
               ${tab.info}` : html`
-              <typo3-backend-icon identifier="actions-circle" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
+              <typo3-backend-icon identifier="actions-circle" size="small"></typo3-backend-icon>
               <span class="text-muted">
                 ${tab.title}
                 ${tab.info}
@@ -146,18 +146,18 @@ export class ClipboardPanel extends LitElement {
             <div class="btn-group">
               <input type="radio" class="btn-check" id="clipboard-copymode-copy" data-action="setCopyMode" ?checked=${clipboardData.copyMode === CopyMode.copy} @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setCopyMode': '1' } })}">
               <label class="btn btn-default btn-sm" for="clipboard-copymode-copy">
-                <typo3-backend-icon identifier="actions-edit-copy" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                <typo3-backend-icon identifier="actions-edit-copy" size="small"></typo3-backend-icon>
                 ${clipboardData.labels.copyElements}
               </label>
               <input type="radio" class="btn-check" id="clipboard-copymode-move" data-action="setCopyMode" ?checked=${clipboardData.copyMode !== CopyMode.copy} @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setCopyMode': '0' } })}">
               <label class="btn btn-default btn-sm" for="clipboard-copymode-move">
-                <typo3-backend-icon identifier="actions-cut" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                <typo3-backend-icon identifier="actions-cut" size="small"></typo3-backend-icon>
                 ${clipboardData.labels.moveElements}
               </label>
             </div>
             ${!clipboardData.elementCount ? nothing : html`
               <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeAll}" data-action="removeAll" @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'removeAll': tab.identifier } })}">
-                <typo3-backend-icon identifier="actions-minus" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                <typo3-backend-icon identifier="actions-minus" size="small"></typo3-backend-icon>
                 ${clipboardData.labels.removeAll}
               </button>`}
           `}
@@ -183,14 +183,14 @@ export class ClipboardPanel extends LitElement {
             ${!tabItem.infoDataDispatch ? nothing : html`
               <button type="button" class="btn btn-default btn-sm" data-dispatch-action="${tabItem.infoDataDispatch.action}" data-dispatch-args="${tabItem.infoDataDispatch.args}" title="${clipboardData.labels.info}">
                 <span>
-                  <typo3-backend-icon identifier="actions-document-info" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                  <typo3-backend-icon identifier="actions-document-info" size="small"></typo3-backend-icon>
                 </span>
               </button>
             `}
             ${!tabItem.identifier ? nothing : html`
               <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeItem}" data-action="remove" @click="${(event: PointerEvent) => this.updateClipboard(event,{ CB: { 'remove': tabItem.identifier } })}">
                 <span>
-                    <typo3-backend-icon identifier="actions-minus" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                    <typo3-backend-icon identifier="actions-minus" size="small"></typo3-backend-icon>
                     ${clipboardData.labels.removeItem}
                 </span>
               </button>

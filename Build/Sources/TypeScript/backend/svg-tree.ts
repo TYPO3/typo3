@@ -1455,7 +1455,7 @@ export class Toolbar extends LitElement {
               <button class="dropdown-item" @click="${() => this.refreshTree()}">
                 <span class="dropdown-item-columns">
                   <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                    <typo3-backend-icon identifier="actions-refresh" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                    <typo3-backend-icon identifier="actions-refresh" size="small"></typo3-backend-icon>
                   </span>
                   <span class="dropdown-item-column dropdown-item-column-title">
                     ${lll('labels.refresh')}
@@ -1467,7 +1467,7 @@ export class Toolbar extends LitElement {
               <button class="dropdown-item" @click="${(evt: MouseEvent) => this.collapseAll(evt)}">
                 <span class="dropdown-item-columns">
                   <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                    <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                    <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small"></typo3-backend-icon>
                   </span>
                   <span class="dropdown-item-column dropdown-item-column-title">
                     ${lll('labels.collapse')}

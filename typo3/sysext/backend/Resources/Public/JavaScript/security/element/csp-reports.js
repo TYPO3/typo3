@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var CspReportAttribute,__decorate=function(t,e,i,o){var l,s=arguments.length,n=s<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(t,e,i,o);else for(var r=t.length-1;r>=0;r--)(l=t[r])&&(n=(s<3?l(n):s>3?l(e,i,n):l(e,i))||n);return s>3&&n&&Object.defineProperty(e,i,n),n};import{customElement,property,state}from"lit/decorators.js";import{html,LitElement,nothing}from"lit";import{classMap}from"lit/directives/class-map.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import{styleTag,lll}from"@typo3/core/lit-helper.js";!function(t){t.fixable="fixable",t.irrelevant="irrelevant",t.suspicious="suspicious"}(CspReportAttribute||(CspReportAttribute={}));let CspReports=class extends LitElement{constructor(){super(...arguments),this.selectedScope=null,this.reports=[],this.selectedReport=null,this.suggestions=[]}createRenderRoot(){return this}connectedCallback(){super.connectedCallback(),this.fetchReports()}render(){return html`
+var CspReportAttribute,__decorate=function(t,e,i,o){var s,l=arguments.length,n=l<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(t,e,i,o);else for(var r=t.length-1;r>=0;r--)(s=t[r])&&(n=(l<3?s(n):l>3?s(e,i,n):s(e,i))||n);return l>3&&n&&Object.defineProperty(e,i,n),n};import{customElement,property,state}from"lit/decorators.js";import{html,LitElement,nothing}from"lit";import{classMap}from"lit/directives/class-map.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import{styleTag,lll}from"@typo3/core/lit-helper.js";!function(t){t.fixable="fixable",t.irrelevant="irrelevant",t.suspicious="suspicious"}(CspReportAttribute||(CspReportAttribute={}));let CspReports=class extends LitElement{constructor(){super(...arguments),this.selectedScope=null,this.reports=[],this.selectedReport=null,this.suggestions=[]}createRenderRoot(){return this}connectedCallback(){super.connectedCallback(),this.fetchReports()}render(){return html`
       ${styleTag`
         .infolist-container {
           container-type: inline-size;
@@ -122,7 +122,7 @@ var CspReportAttribute,__decorate=function(t,e,i,o){var l,s=arguments.length,n=s
         <ul class="dropdown-menu">
           <button class="dropdown-item dropdown-item-spaced" title="${lll("all")||"ALL"}" @click="${()=>{this.selectScope(null)}}">
             <span class="${null===this.selectedScope?"text-primary":""}">
-              <typo3-backend-icon identifier="${null===this.selectedScope?"actions-dot":"empty-empty"}" alternativeMarkupIdentifier="inline" class="icon icon-size-small"></typo3-backend-icon>
+              <typo3-backend-icon identifier="${null===this.selectedScope?"actions-dot":"empty-empty"}" size="small"></typo3-backend-icon>
             </span>
             ${lll("all")||"ALL"}
           </button>
@@ -130,7 +130,7 @@ var CspReportAttribute,__decorate=function(t,e,i,o){var l,s=arguments.length,n=s
             <li>
               <button class="dropdown-item dropdown-item-spaced" title="${t}" @click="${()=>{this.selectScope(t)}}">
                 <span class="${t===this.selectedScope?"text-primary":""}">
-                  <typo3-backend-icon identifier="${t===this.selectedScope?"actions-dot":"empty-empty"}" alternativeMarkupIdentifier="inline" class="icon icon-size-small"></typo3-backend-icon>
+                  <typo3-backend-icon identifier="${t===this.selectedScope?"actions-dot":"empty-empty"}" size="small"></typo3-backend-icon>
                 </span>
                 ${t}
               </button>
@@ -194,7 +194,7 @@ var CspReportAttribute,__decorate=function(t,e,i,o){var l,s=arguments.length,n=s
                 </p>
               `))}
               <button class="btn btn-primary" @click=${()=>this.invokeMutateReportAction(t,e)}>
-                <typo3-backend-icon identifier="actions-check" alternativeMarkupIdentifier="inline" class="icon icon-size-small"></typo3-backend-icon>
+                <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
                 ${lll("button.apply")||"Apply"}
               </button>
             </div>
@@ -202,15 +202,15 @@ var CspReportAttribute,__decorate=function(t,e,i,o){var l,s=arguments.length,n=s
 
           <div class="card-footer">
             <button class="btn btn-default" @click=${()=>this.selectReport(null)}>
-              <typo3-backend-icon identifier="actions-close" alternativeMarkupIdentifier="inline" class="icon icon-size-small"></typo3-backend-icon>
+              <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
               ${lll("button.close")||"Close"}
             </button>
             <button class="btn btn-default" @click=${()=>this.invokeMuteReportAction(t)}>
-              <typo3-backend-icon identifier="actions-ban" alternativeMarkupIdentifier="inline" class="icon icon-size-small"></typo3-backend-icon>
+              <typo3-backend-icon identifier="actions-ban" size="small"></typo3-backend-icon>
               ${lll("button.mute")||"Mute"}
             </button>
             <button class="btn btn-default" @click=${()=>this.invokeDeleteReportAction(t)}>
-              <typo3-backend-icon identifier="actions-delete" alternativeMarkupIdentifier="inline" class="icon icon-size-small"></typo3-backend-icon>
+              <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
               ${lll("button.delete")||"Delete"}
             </button>
           </div>

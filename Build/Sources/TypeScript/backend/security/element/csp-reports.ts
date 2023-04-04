@@ -216,7 +216,7 @@ export class CspReports extends LitElement {
         <ul class="dropdown-menu">
           <button class="dropdown-item dropdown-item-spaced" title="${lll('all') || 'ALL'}" @click="${() => { this.selectScope(null); }}">
             <span class="${null === this.selectedScope ? 'text-primary' : '' }">
-              <typo3-backend-icon identifier="${null === this.selectedScope ? 'actions-dot' : 'empty-empty'}" alternativeMarkupIdentifier="inline" class="icon icon-size-small"></typo3-backend-icon>
+              <typo3-backend-icon identifier="${null === this.selectedScope ? 'actions-dot' : 'empty-empty'}" size="small"></typo3-backend-icon>
             </span>
             ${lll('all') || 'ALL'}
           </button>
@@ -224,7 +224,7 @@ export class CspReports extends LitElement {
             <li>
               <button class="dropdown-item dropdown-item-spaced" title="${scope}" @click="${() => { this.selectScope(scope); }}">
                 <span class="${scope === this.selectedScope ? 'text-primary' : '' }">
-                  <typo3-backend-icon identifier="${scope === this.selectedScope ? 'actions-dot' : 'empty-empty'}" alternativeMarkupIdentifier="inline" class="icon icon-size-small"></typo3-backend-icon>
+                  <typo3-backend-icon identifier="${scope === this.selectedScope ? 'actions-dot' : 'empty-empty'}" size="small"></typo3-backend-icon>
                 </span>
                 ${scope}
               </button>
@@ -297,7 +297,7 @@ export class CspReports extends LitElement {
                 </p>
               `)}
               <button class="btn btn-primary" @click=${() => this.invokeMutateReportAction(report, suggestion)}>
-                <typo3-backend-icon identifier="actions-check" alternativeMarkupIdentifier="inline" class="icon icon-size-small"></typo3-backend-icon>
+                <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
                 ${ lll('button.apply') || 'Apply'}
               </button>
             </div>
@@ -305,15 +305,15 @@ export class CspReports extends LitElement {
 
           <div class="card-footer">
             <button class="btn btn-default" @click=${() => this.selectReport(null)}>
-              <typo3-backend-icon identifier="actions-close" alternativeMarkupIdentifier="inline" class="icon icon-size-small"></typo3-backend-icon>
+              <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
               ${ lll('button.close') || 'Close'}
             </button>
             <button class="btn btn-default" @click=${() => this.invokeMuteReportAction(report)}>
-              <typo3-backend-icon identifier="actions-ban" alternativeMarkupIdentifier="inline" class="icon icon-size-small"></typo3-backend-icon>
+              <typo3-backend-icon identifier="actions-ban" size="small"></typo3-backend-icon>
               ${ lll('button.mute') || 'Mute'}
             </button>
             <button class="btn btn-default" @click=${() => this.invokeDeleteReportAction(report)}>
-              <typo3-backend-icon identifier="actions-delete" alternativeMarkupIdentifier="inline" class="icon icon-size-small"></typo3-backend-icon>
+              <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
               ${ lll('button.delete') || 'Delete'}
             </button>
           </div>
