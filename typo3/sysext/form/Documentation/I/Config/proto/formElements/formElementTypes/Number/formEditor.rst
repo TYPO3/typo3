@@ -48,13 +48,35 @@ formEditor
                   propertyPath: defaultValue
                   propertyValidators:
                     10: IntegerOrEmpty
-                700:
+                550:
                   identifier: step
                   templateName: Inspector-TextEditor
                   label: formEditor.elements.TextMixin.editor.step.label
                   propertyPath: properties.fluidAdditionalAttributes.step
                   propertyValidators:
                     10: Integer
+                700:
+                 identifier: gridColumnViewPortConfiguration
+                 templateName: Inspector-GridColumnViewPortConfigurationEditor
+                 label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                 configurationOptions:
+                   viewPorts:
+                     10:
+                       viewPortIdentifier: xs
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                     20:
+                       viewPortIdentifier: sm
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                     30:
+                       viewPortIdentifier: md
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                     40:
+                       viewPortIdentifier: lg
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                   numbersOfColumnsToUse:
+                     label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                     propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                     fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
                 800:
                   identifier: requiredValidator
                   templateName: Inspector-RequiredValidatorEditor

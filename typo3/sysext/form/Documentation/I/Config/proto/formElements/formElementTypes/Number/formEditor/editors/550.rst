@@ -1,0 +1,36 @@
+.. include:: /Includes.rst.txt
+
+formEditor.editors.550
+----------------------
+
+:aspect:`Option path`
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Number.formEditor.editors.550
+
+:aspect:`Data type`
+      array/ :ref:`[TextEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         Number:
+           formEditor:
+             editors:
+               550:
+                 identifier: step
+                 templateName: Inspector-TextEditor
+                 label: formEditor.elements.TextMixin.editor.step.label
+                 propertyPath: properties.fluidAdditionalAttributes.step
+                 propertyValidators:
+                   10: Integer
+
