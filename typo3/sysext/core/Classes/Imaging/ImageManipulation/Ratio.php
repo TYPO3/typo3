@@ -59,8 +59,8 @@ class Ratio
             foreach ($config as $id => $ratioConfig) {
                 $areas[] = new self(
                     $id,
-                    $ratioConfig['title'],
-                    (float)$ratioConfig['value']
+                    (string)($ratioConfig['title'] ?? ''),
+                    (float)($ratioConfig['value'] ?? 0.0)
                 );
             }
         } catch (\Throwable $throwable) {
