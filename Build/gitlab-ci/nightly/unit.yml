@@ -158,3 +158,21 @@ unit php 8.2 min random:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
     - Build/Scripts/runTests.sh -s unitRandom -p 8.2
+
+# temp until phpunit 9 is gone to ensure 10 works for now
+unit php 8.2 phpunit 10:
+  stage: unit
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s unit10 -p 8.2
+unit php 8.1 phpunit 10:
+  stage: unit
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s unit10 -p 8.1

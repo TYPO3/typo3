@@ -1293,6 +1293,35 @@ services:
         fi
       "
 
+  unit10:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+    working_dir: ${CORE_ROOT}
+    environment:
+      COMPOSER_CACHE_DIR: ".cache/composer"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        php -v | grep '^PHP'
+        composer req --dev --no-progress --no-interaction phpunit/phpunit:^10 -w
+        composer req --dev --no-progress --no-interaction typo3/testing-framework:dev-lolli-1
+        if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
+          XDEBUG_MODE=\"off\" \
+          vendor/phpunit/phpunit/phpunit -c Build/phpunit/UnitTests-10.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
+        else
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
+          vendor/phpunit/phpunit/phpunit -c Build/phpunit/UnitTests-10.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
+        fi
+      "
+
   unitDeprecated:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"

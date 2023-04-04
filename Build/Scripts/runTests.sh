@@ -830,6 +830,13 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
+    unit10)
+        # temp until phpunit 9 is gone to ensure 10 works for now
+        setUpDockerComposeDotEnv
+        docker-compose run unit10
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
     unitDeprecated)
         setUpDockerComposeDotEnv
         docker-compose run unitDeprecated

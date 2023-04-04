@@ -49,3 +49,14 @@ unit php 8.2 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unit -p 8.2
+
+# temp until phpunit 9 is gone to ensure 10 works for now
+unit php 8.2 phpunit 10 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - main
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s unit10 -p 8.2
