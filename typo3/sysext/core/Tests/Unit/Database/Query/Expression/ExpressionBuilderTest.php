@@ -25,11 +25,10 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ExpressionBuilderTest extends UnitTestCase
+final class ExpressionBuilderTest extends UnitTestCase
 {
-    protected Connection&MockObject $connectionMock;
-    protected ?ExpressionBuilder $subject;
-    protected string $testTable = 'testTable';
+    private Connection&MockObject $connectionMock;
+    private ExpressionBuilder $subject;
 
     /**
      * Create a new database connection mock object for every test.
@@ -37,7 +36,6 @@ class ExpressionBuilderTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->connectionMock = $this->createMock(Connection::class);
         $this->subject = new ExpressionBuilder($this->connectionMock);
     }
@@ -270,10 +268,17 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->method('getName')->willReturn('postgresql');
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn('"');
 
-        $this->connectionMock->expects(self::atLeastOnce())->method('quote')->withConsecutive(
-            ["'1'", Connection::PARAM_STR],
-            [',', self::anything()],
-        )->willReturnOnConsecutiveCalls("'1'", "','");
+        $series = [
+            ["'1'", Connection::PARAM_STR, "'1'"],
+            [',', Connection::PARAM_STR, "','"],
+        ];
+        $this->connectionMock->expects(self::exactly(2))->method('quote')
+            ->willReturnCallback(function (string $value, mixed $type) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $value);
+                self::assertSame($arguments[1], $type);
+                return $arguments[2];
+            });
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             return '"' . $identifier . '"';
         });
@@ -314,11 +319,19 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->method('getName')->willReturn('sqlite');
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
-        $this->connectionMock->expects(self::atLeastOnce())->method('quote')->withConsecutive(
-            [',', self::anything()],
-            [',', self::anything()],
-            [',1,', self::anything()],
-        )->willReturnOnConsecutiveCalls("','", "','", "'%,1,%'");
+        $series = [
+            [',', Connection::PARAM_STR, "','"],
+            [',', Connection::PARAM_STR, "','"],
+            [',1,', Connection::PARAM_STR, "'%,1,%'"],
+        ];
+        $this->connectionMock->expects(self::exactly(3))->method('quote')
+            ->willReturnCallback(function (string $value, mixed $type) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $value);
+                self::assertSame($arguments[1], $type);
+                return $arguments[2];
+            });
+
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             return '"' . $identifier . '"';
         });
@@ -339,11 +352,18 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->method('getName')->willReturn('sqlite');
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
-        $this->connectionMock->expects(self::atLeastOnce())->method('quote')->withConsecutive(
-            [',', self::anything()],
-            [',', self::anything()],
-            [',\'Some\'Value,', self::anything()],
-        )->willReturnOnConsecutiveCalls("','", "','", "',''Some''Value,'");
+        $series = [
+            [',', Connection::PARAM_STR, "','"],
+            [',', Connection::PARAM_STR, "','"],
+            [',\'Some\'Value,', Connection::PARAM_STR, "',''Some''Value,'"],
+        ];
+        $this->connectionMock->expects(self::exactly(3))->method('quote')
+            ->willReturnCallback(function (string $value, mixed $type) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $value);
+                self::assertSame($arguments[1], $type);
+                return $arguments[2];
+            });
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             return '"' . $identifier . '"';
         });
@@ -437,10 +457,17 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->method('getName')->willReturn('postgresql');
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn('"');
 
-        $this->connectionMock->expects(self::atLeastOnce())->method('quote')->withConsecutive(
-            ["'1'", Connection::PARAM_STR],
-            [',', self::anything()],
-        )->willReturnOnConsecutiveCalls("'1'", "','");
+        $series = [
+            ["'1'", Connection::PARAM_STR, "'1'"],
+            [',', Connection::PARAM_STR, "','"],
+        ];
+        $this->connectionMock->expects(self::exactly(2))->method('quote')
+            ->willReturnCallback(function (string $value, mixed $type) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $value);
+                self::assertSame($arguments[1], $type);
+                return $arguments[2];
+            });
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             return '"' . $identifier . '"';
         });
@@ -481,11 +508,18 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->method('getName')->willReturn('sqlite');
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
-        $this->connectionMock->expects(self::atLeastOnce())->method('quote')->withConsecutive(
-            [',', self::anything()],
-            [',', self::anything()],
-            [',1,', self::anything()]
-        )->willReturnOnConsecutiveCalls("','", "','", "'%,1,%'");
+        $series = [
+            [',', Connection::PARAM_STR, "','"],
+            [',', Connection::PARAM_STR, "','"],
+            [',1,', Connection::PARAM_STR, "'%,1,%'"],
+        ];
+        $this->connectionMock->expects(self::exactly(3))->method('quote')
+            ->willReturnCallback(function (string $value, mixed $type) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $value);
+                self::assertSame($arguments[1], $type);
+                return $arguments[2];
+            });
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             return '"' . $identifier . '"';
         });
@@ -506,11 +540,18 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->method('getName')->willReturn('sqlite');
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
-        $this->connectionMock->expects(self::atLeastOnce())->method('quote')->withConsecutive(
-            [',', Connection::PARAM_STR],
-            [',', Connection::PARAM_STR],
-            [',\'Some\'Value,', self::anything()],
-        )->willReturnOnConsecutiveCalls("','", "','", "',''Some''Value,'");
+        $series = [
+            [',', Connection::PARAM_STR, "','"],
+            [',', Connection::PARAM_STR, "','"],
+            [',\'Some\'Value,', Connection::PARAM_STR, "',''Some''Value,'"],
+        ];
+        $this->connectionMock->expects(self::exactly(3))->method('quote')
+            ->willReturnCallback(function (string $value, mixed $type) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $value);
+                self::assertSame($arguments[1], $type);
+                return $arguments[2];
+            });
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             return '"' . $identifier . '"';
         });
