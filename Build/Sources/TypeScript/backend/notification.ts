@@ -118,13 +118,13 @@ class Notification {
     }
 
     const box = <NotificationMessage>document.createElement('typo3-notification-message');
-    box.setAttribute('notificationId', 'notification-' + Math.random().toString(36).substr(2, 5));
-    box.setAttribute('title', title);
+    box.setAttribute('notification-id', 'notification-' + Math.random().toString(36).substring(2, 6));
+    box.setAttribute('notification-title', title);
     if (message) {
-      box.setAttribute('message', message);
+      box.setAttribute('notification-message', message);
     }
-    box.setAttribute('severity', severity.toString());
-    box.setAttribute('duration', duration.toString());
+    box.setAttribute('notification-severity', severity.toString());
+    box.setAttribute('notification-duration', duration.toString());
     box.actions = actions;
     this.messageContainer.appendChild(box);
   }
@@ -132,11 +132,11 @@ class Notification {
 
 @customElement('typo3-notification-message')
 export class NotificationMessage extends LitElement {
-  @property() notificationId: string;
-  @property() title: string;
-  @property() message: string;
-  @property({ type: Number }) severity: SeverityEnum = SeverityEnum.info;
-  @property() duration: number = 0;
+  @property({ type: String, attribute: 'notification-id' }) notificationId: string;
+  @property({ type: String, attribute: 'notification-title' }) notificationTitle: string;
+  @property({ type: String, attribute: 'notification-message' }) notificationMessage: string;
+  @property({ type: Number, attribute: 'notification-severity' }) notificationSeverity: SeverityEnum = SeverityEnum.info;
+  @property({ type: Number, attribute: 'notification-duration' }) notificationDuration: number = 0;
   @property({ type: Array, attribute: false }) actions: Array<Action> = [];
 
   @state() visible: boolean = false;
@@ -150,8 +150,8 @@ export class NotificationMessage extends LitElement {
     await new Promise(resolve => window.setTimeout(resolve, 200));
     this.visible = true;
     await this.requestUpdate();
-    if (this.duration > 0) {
-      await new Promise(resolve => window.setTimeout(resolve, this.duration * 1000));
+    if (this.notificationDuration > 0) {
+      await new Promise(resolve => window.setTimeout(resolve, this.notificationDuration * 1000));
       this.close();
     }
   }
@@ -181,9 +181,9 @@ export class NotificationMessage extends LitElement {
   }
 
   render() {
-    const className = Severity.getCssClass(this.severity);
+    const className = Severity.getCssClass(this.notificationSeverity);
     let icon = '';
-    switch (this.severity) {
+    switch (this.notificationSeverity) {
       case SeverityEnum.notice:
         icon = 'actions-lightbulb';
         break;
@@ -218,8 +218,8 @@ export class NotificationMessage extends LitElement {
             </span>
           </div>
           <div class="media-body">
-            <h4 class="alert-title">${this.title}</h4>
-            <p class="alert-message text-pre-wrap">${this.message ? this.message : ''}</p>
+            <h4 class="alert-title">${this.notificationTitle}</h4>
+            <p class="alert-message text-pre-wrap">${this.notificationMessage ? this.notificationMessage : ''}</p>
           </div>
         </div>
         ${this.actions.length === 0 ? '' : html`
