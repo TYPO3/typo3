@@ -81,19 +81,6 @@ class FileListDragDrop {
 
     new RegularEvent('drag', (event: DragEvent): void => {
       event.stopPropagation();
-
-      if (event.screenX === 0 && event.screenY === 0) {
-        return;
-      }
-
-      const preview = this.rootDocument.getElementById(this.dragPreviewId);
-      const calculatedPosition = this.determinePreviewPosition(event);
-
-      const currentPosition = preview.getBoundingClientRect();
-      if (calculatedPosition.left === currentPosition.left && calculatedPosition.top === currentPosition.top) {
-        return;
-      }
-      this.updatePreviewPosition(preview, calculatedPosition);
     }, { capture: true, passive: true }).delegateTo(document, selector);
 
     new RegularEvent('dragover', (event: DragEvent, target: HTMLElement): void => {
@@ -125,6 +112,23 @@ class FileListDragDrop {
       event.stopPropagation();
       target.classList.remove('success');
     }, { capture: true, passive: true }).delegateTo(document, selector);
+
+    new RegularEvent('dragover', (event: DragEvent) : void => {
+      if (event.screenX === 0 && event.screenY === 0) {
+        return;
+      }
+
+      const preview = this.rootDocument.getElementById(this.dragPreviewId);
+      if (!preview) {
+        return;
+      }
+      const calculatedPosition = this.determinePreviewPosition(event);
+      const currentPosition = preview.getBoundingClientRect();
+      if (calculatedPosition.left === currentPosition.left && calculatedPosition.top === currentPosition.top) {
+        return;
+      }
+      this.updatePreviewPosition(preview, calculatedPosition);
+    }, { capture: true, passive: true }).bindTo(window);
   }
 
   private createPreview(selectedItems: ResourceInterface[]): HTMLDivElement {
@@ -165,7 +169,7 @@ class FileListDragDrop {
     return preview;
   }
 
-  private updatePreviewPosition(preview: HTMLElement, position: Coordinates) {
+  private updatePreviewPosition(preview: HTMLElement, position: Coordinates): void {
     if (this.currentAnimationRequestId) {
       window.cancelAnimationFrame(this.currentAnimationRequestId);
     }
