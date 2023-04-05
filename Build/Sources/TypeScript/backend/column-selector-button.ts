@@ -40,12 +40,12 @@ enum SelectorActions {
  * @example
  * <typo3-backend-column-selector-button
  *    class="btn btn-default"
- *    url="/url/to/column/selector/form"
- *    target="/url/to/go/after/column/selection"
- *    title="Show columns"
- *    ok="Update"
- *    close="Cancel"
- *    close="Error"
+ *    data-url="/url/to/column/selector/form"
+ *    data-target="/url/to/go/after/column/selection"
+ *    data-title="Show columns"
+ *    data-button-ok="Update"
+ *    data-button-close="Cancel"
+ *    data-error-message="Error"
  * >
  *   Show columns
  * </typo3-backend-column-selector-button>
@@ -54,12 +54,12 @@ enum SelectorActions {
 export class ColumnSelectorButton extends LitElement {
   static styles = [css`:host { cursor: pointer; appearance: button; }`];
 
-  @property({ type: String }) url: string;
-  @property({ type: String }) target: string;
-  @property({ type: String }) title: string = 'Show columns';
-  @property({ type: String }) ok: string = lll('button.ok') || 'Update';
-  @property({ type: String }) close: string = lll('button.close') || 'Close';
-  @property({ type: String }) error: string = 'Could not update columns';
+  @property({ type: String, attribute: 'data-url' }) modalUrl: string;
+  @property({ type: String, attribute: 'data-target' }) modalTarget: string;
+  @property({ type: String, attribute: 'data-title' }) modalTitle: string = 'Show columns';
+  @property({ type: String, attribute: 'data-button-ok' }) buttonOk: string = lll('button.ok') || 'Update';
+  @property({ type: String, attribute: 'data-button-close' }) buttonClose: string = lll('button.close') || 'Close';
+  @property({ type: String, attribute: 'data-error-message' }) errorMessage: string = 'Could not update columns';
 
   public constructor() {
     super();
@@ -163,27 +163,27 @@ export class ColumnSelectorButton extends LitElement {
   }
 
   private showColumnSelectorModal(): void {
-    if (!this.url || !this.target) {
+    if (!this.modalUrl || !this.modalTarget) {
       // Don't render modal in case no url or target is given
       return;
     }
 
     const modal = Modal.advanced({
-      content: this.url,
-      title: this.title,
+      content: this.modalUrl,
+      title: this.modalTitle,
       severity: SeverityEnum.notice,
       size: Modal.sizes.medium,
       type: Modal.types.ajax,
       buttons: [
         {
-          text: this.close,
+          text: this.buttonClose,
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
           trigger: (e: Event, modal: ModalElement): void => modal.hideModal()
         },
         {
-          text: this.ok,
+          text: this.buttonOk,
           btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.info),
           name: 'update',
           trigger: (e: Event, modal: ModalElement): void => this.processSelection(modal)
@@ -205,7 +205,7 @@ export class ColumnSelectorButton extends LitElement {
         const data = await response.resolve();
         if (data.success === true) {
           // @todo This does not jump to the anchor (#t3-table-some_table) after the reload!!!
-          this.ownerDocument.location.href = this.target;
+          this.ownerDocument.location.href = this.modalTarget;
           this.ownerDocument.location.reload();
         } else {
           Notification.error(data.message || 'No update was performed');
@@ -316,7 +316,7 @@ export class ColumnSelectorButton extends LitElement {
   }
 
   private abortSelection(): void {
-    Notification.error(this.error);
+    Notification.error(this.errorMessage);
     Modal.dismiss();
   }
 }

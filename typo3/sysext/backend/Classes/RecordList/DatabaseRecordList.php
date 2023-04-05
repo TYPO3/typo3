@@ -1911,12 +1911,12 @@ class DatabaseRecordList
         return '
             <typo3-backend-column-selector-button
                 class="btn btn-sm btn-default"
-                url="' . htmlspecialchars($columnSelectorUrl) . '"
-                target="' . htmlspecialchars($this->listURL() . '#t3-table-' . $tableIdentifier) . '"
-                title="' . htmlspecialchars($columnSelectorTitle) . '"
-                ok="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView')) . '"
-                close="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"
-                error="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error')) . '"
+                data-url="' . htmlspecialchars($columnSelectorUrl) . '"
+                data-target="' . htmlspecialchars($this->listURL() . '#t3-table-' . $tableIdentifier) . '"
+                data-title="' . htmlspecialchars($columnSelectorTitle) . '"
+                data-button-ok="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView')) . '"
+                data-button-close="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"
+                data-error-message="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error')) . '"
                 data-recordlist-action="columns"
             >'
                 . $this->iconFactory->getIcon('actions-options', Icon::SIZE_SMALL) . ' '

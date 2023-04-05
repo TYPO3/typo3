@@ -481,18 +481,18 @@ class FileListController implements LoggerAwareInterface
                 ->setTag('typo3-backend-column-selector-button')
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.selectColumns'))
                 ->setAttributes([
-                    'url' => $this->uriBuilder->buildUriFromRoute(
+                    'data-url' => $this->uriBuilder->buildUriFromRoute(
                         'ajax_show_columns_selector',
                         ['id' => $this->id, 'table' => '_FILE']
                     ),
-                    'target' => $this->filelist->createModuleUri(),
-                    'title' => sprintf(
+                    'data-target' => $this->filelist->createModuleUri(),
+                    'data-title' => sprintf(
                         $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
                         $lang->sL($GLOBALS['TCA']['sys_file']['ctrl']['title'] ?? ''),
                     ),
-                    'ok' => $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView'),
-                    'close' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
-                    'error' => $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error'),
+                    'data-button-ok' => $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView'),
+                    'data-button-close' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
+                    'data-error-message' => $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error'),
                 ])
                 ->setIcon($this->iconFactory->getIcon('actions-options'));
         }
