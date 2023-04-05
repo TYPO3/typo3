@@ -30,7 +30,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ValidatorResolverTest extends FunctionalTestCase
+final class ValidatorResolverTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
@@ -58,7 +58,7 @@ class ValidatorResolverTest extends FunctionalTestCase
     {
         $subject = $this->getAccessibleMock(
             ValidatorResolver::class,
-            ['dummy'],
+            null,
             [$this->get(ReflectionService::class)]
         );
 
