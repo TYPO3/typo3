@@ -47,6 +47,7 @@ final class PolicyProvider
         private readonly RequestId $requestId,
         private readonly SiteFinder $siteFinder,
         private readonly ModelService $modelService,
+        private readonly PolicyRegistry $policyRegistry,
         private readonly ResolutionRepository $resolutionRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
@@ -59,11 +60,21 @@ final class PolicyProvider
     {
         // @todo add policy cache per scope
         $defaultPolicy = $this->provideDefaultFor($scope);
+        // fetch violation resolutions from database
         $mutationCollections = array_map(
             static fn (Resolution $resolution) => $resolution->mutationCollection,
             $this->resolutionRepository->findByScope($scope)
         );
+        // add temporary(!) mutations that were collected during processing this request
+        if ($this->policyRegistry->hasMutationCollections()) {
+            $mutationCollections = array_merge(
+                $mutationCollections,
+                $this->policyRegistry->getMutationCollections()
+            );
+        }
+        // apply all mutations to current policy
         $currentPolicy = $defaultPolicy->mutate(...$mutationCollections);
+        // allow other components to modify the current policy individually via PSR-14 event
         $event = new PolicyMutatedEvent($scope, $defaultPolicy, $currentPolicy, ...$mutationCollections);
         $this->eventDispatcher->dispatch($event);
         return $event->getCurrentPolicy();

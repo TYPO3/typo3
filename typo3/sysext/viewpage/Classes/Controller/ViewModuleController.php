@@ -32,6 +32,12 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Mutation;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationMode;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyRegistry;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -50,7 +56,8 @@ class ViewModuleController
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly PageRepository $pageRepository,
-        protected readonly SiteFinder $siteFinder
+        protected readonly SiteFinder $siteFinder,
+        protected readonly PolicyRegistry $policyRegistry,
     ) {
     }
 
@@ -86,11 +93,12 @@ class ViewModuleController
             $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
         $languageId = (int)$moduleData->get('language');
-        $targetUrl = (string)PreviewUriBuilder::create($pageId)
+        $targetUri = PreviewUriBuilder::create($pageId)
             ->withAdditionalQueryParameters($this->getTypeParameterIfSet($pageId))
             ->withLanguage($languageId)
             ->buildUri();
-        if ($targetUrl === '') {
+        $targetUrl = (string)$targetUri;
+        if ($targetUri === null || $targetUrl === '') {
             $view->addFlashMessage(
                 $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:noSiteConfiguration'),
                 '',
@@ -116,6 +124,11 @@ class ViewModuleController
             'url' => $targetUrl,
         ]);
 
+        if ($targetUri->getScheme() !== '' && $targetUri->getHost() !== '') {
+            // temporarily(!) extend the CSP `frame-src` directive with the URL to be shown in the `<iframe>`
+            $mutation = new Mutation(MutationMode::Extend, Directive::FrameSrc, UriValue::fromUri($targetUri));
+            $this->policyRegistry->appendMutationCollection(new MutationCollection($mutation));
+        }
         return $view->renderResponse('Show');
     }
 

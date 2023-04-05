@@ -531,6 +531,9 @@ services:
     arguments:
       $mutations: '@content.security.policies'
 
+  TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyRegistry:
+    public: true
+
   TYPO3\CMS\Core\Security\ContentSecurityPolicy\Processing\AssetHandler:
     tags:
       - name: event.listener
