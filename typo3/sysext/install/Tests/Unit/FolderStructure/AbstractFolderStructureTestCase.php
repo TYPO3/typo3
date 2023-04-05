@@ -15,17 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Tests\Unit;
+namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
-abstract class FolderStructureTestCase extends UnitTestCase
+abstract class AbstractFolderStructureTestCase extends UnitTestCase
 {
     /**
      * Create a random directory in the file system and return the path.

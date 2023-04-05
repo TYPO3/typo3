@@ -27,9 +27,8 @@ use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\FileNode;
 use TYPO3\CMS\Install\FolderStructure\NodeInterface;
 use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
-use TYPO3\CMS\Install\Tests\Unit\FolderStructureTestCase;
 
-class FileNodeTest extends FolderStructureTestCase
+class FileNodeTest extends AbstractFolderStructureTestCase
 {
     /**
      * @test
