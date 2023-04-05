@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+	Functional test suite setup
+
+	Functional tests should extend \TYPO3\TestingFramework\Core\Tests\FunctionalTestCase,
+	take a look at this class for further documentation on how to run the suite.
+
+	TYPO3 CMS functional test suite also needs phpunit bootstrap code, the
+	file is located next to this .xml as FunctionalTestsBootstrap.php
+
+    The recommended way to execute the suite is "runTests.sh -s functional"
+    execute "Build/Scripts/runTests.sh -h" for more details.
+-->
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+    backupGlobals="true"
+    bootstrap="FunctionalTestsBootstrap.php"
+    cacheResult="false"
+    colors="true"
+    beStrictAboutTestsThatDoNotTestAnything="false"
+    failOnWarning="true"
+    failOnRisky="true"
+    cacheDirectory=".phpunit.cache"
+>
+  <testsuites>
+    <testsuite name="Core tests">
+      <directory>../../typo3/sysext/*/Tests/Functional/</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <ini name="display_errors" value="1"/>
+    <ini name="error_reporting" value="E_ALL"/>
+    <env name="TYPO3_CONTEXT" value="Testing"/>
+  </php>
+</phpunit>

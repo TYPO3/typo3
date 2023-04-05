@@ -743,6 +743,31 @@ case ${TEST_SUITE} in
         esac
         docker-compose down
         ;;
+    functional10)
+        handleDbmsAndDriverOptions
+        setUpDockerComposeDotEnv
+        if [ "${CHUNKS}" -gt 0 ]; then
+            docker-compose run functional_split10
+        fi
+        case ${DBMS} in
+            sqlite)
+                # sqlite has a tmpfs as typo3temp/var/tests/functional-sqlite-dbs/
+                # Since docker is executed as root (yay!), the path to this dir is owned by
+                # root if docker creates it. Thank you, docker. We create the path beforehand
+                # to avoid permission issues on host filesystem after execution.
+                mkdir -p "${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/"
+                docker-compose run prepare_functional_sqlite
+                docker-compose run functional_sqlite10
+                SUITE_EXIT_CODE=$?
+                ;;
+            *)
+                echo "Functional tests don't run with DBMS ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                exit 1
+        esac
+        docker-compose down
+        ;;
     functionalDeprecated)
         handleDbmsAndDriverOptions
         setUpDockerComposeDotEnv

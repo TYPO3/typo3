@@ -816,6 +816,17 @@ services:
         rm -rf Build/phpunit/FunctionalTests-Job-*.xml
         php -dxdebug.mode=off Build/Scripts/splitFunctionalTests.php -v ${CHUNKS}
       "
+  functional_split10:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        rm -rf Build/phpunit/FunctionalTests-Job-*.xml
+        php -dxdebug.mode=off Build/Scripts/splitFunctionalTests10.php -v ${CHUNKS}
+      "
 
   prepare_functional_mariadb:
     image: alpine:3.8
@@ -1112,6 +1123,44 @@ services:
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/phpunit/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
         else
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/phpunit/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
+        fi
+        if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
+          XDEBUG_MODE=\"off\" $${COMMAND};
+        else
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
+          $${COMMAND};
+        fi
+      "
+  functional_sqlite10:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    tmpfs:
+      - ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+    environment:
+      COMPOSER_CACHE_DIR: ".cache/composer"
+      typo3DatabaseDriver: pdo_sqlite
+      typo3TestingRedisHost: redis4
+      typo3TestingMemcachedHost: memcached1-5
+    working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        php -v | grep '^PHP'
+        composer req --dev --no-progress --no-interaction phpunit/phpunit:^10 -w
+        composer req --dev --no-progress --no-interaction typo3/testing-framework:dev-lolli-1
+        if [ ${CHUNKS} -gt 0 ]; then
+          echo \"Running chunk ${THISCHUNK}\"
+          COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/phpunit/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
+        else
+          COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/phpunit/FunctionalTests-10.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
         fi
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" $${COMMAND};
