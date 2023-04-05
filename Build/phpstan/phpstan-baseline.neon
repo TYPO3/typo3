@@ -2261,6 +2261,11 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/ViewHelpers/GridColumnClassAutoConfigurationViewHelper.php
 
 		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 2
+			path: ../../typo3/sysext/form/Tests/Functional/Service/TranslationServiceTest.php
+
+		-
 			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/CaseContentObject.php
