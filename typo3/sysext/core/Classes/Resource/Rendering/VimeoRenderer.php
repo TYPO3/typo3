@@ -148,7 +148,7 @@ class VimeoRenderer implements FileRendererInterface
         if (isset($options['api']) && (int)$options['api'] === 1) {
             $urlParams[] = 'api=1';
         }
-        if (!empty($options['no-cookie'])) {
+        if (!isset($options['no-cookie']) || !empty($options['no-cookie'])) {
             $urlParams[] = 'dnt=1';
         }
         $urlParams[] = 'title=' . (int)!empty($options['showinfo']);
