@@ -17,21 +17,147 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\RequestHandling;
 
+use Symfony\Component\Mailer\SentMessage;
+use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Mail\FluidEmail;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Form\Tests\Functional\Framework\FormHandling\FormDataFactory;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RequestHandlingTest extends AbstractRequestHandlingTest
+final class RequestHandlingTest extends FunctionalTestCase
 {
-    protected string $databaseScenarioFile = __DIR__ . '/Fixtures/OnePageWithMultipleFormIntegrationsScenario.yaml';
-    private FormDataFactory $formDataFactory;
+    use SiteBasedTestTrait;
+
+    protected array $coreExtensionsToLoad = ['form', 'fluid_styled_content'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/form/Tests/Functional/RequestHandling/Fixtures/Extensions/form_caching_tests',
+    ];
+    protected array $configurationToUseInTestInstance = [
+        'MAIL' => [
+            'defaultMailFromAddress' => 'hello@typo3.org',
+            'defaultMailFromName' => 'TYPO3',
+            'transport' => 'mbox',
+            'transport_spool_type' => 'file',
+            'transport_spool_filepath' => self::MAIL_SPOOL_FOLDER,
+        ],
+        'SYS' => [
+            'caching' => [
+                'cacheConfigurations' => [
+                    'hash' => [
+                        'backend' => Typo3DatabaseBackend::class,
+                        'frontend' => VariableFrontend::class,
+                    ],
+                    'pages' => [
+                        'backend' => Typo3DatabaseBackend::class,
+                        'frontend' => VariableFrontend::class,
+                    ],
+                    'rootline' => [
+                        'backend' => Typo3DatabaseBackend::class,
+                        'frontend' => VariableFrontend::class,
+                    ],
+                ],
+            ],
+            'encryptionKey' => '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6',
+        ],
+    ];
+
+    private string $databaseScenarioFile = __DIR__ . '/Fixtures/OnePageWithMultipleFormIntegrationsScenario.yaml';
+    private const ROOT_PAGE_BASE_URI = 'http://localhost';
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_GB.UTF8'],
+    ];
+    private const MAIL_SPOOL_FOLDER = 'typo3temp/var/transient/spool/';
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->formDataFactory = new FormDataFactory();
+        $this->writeSiteConfiguration(
+            'site1',
+            $this->buildSiteConfiguration(1000, self::ROOT_PAGE_BASE_URI . '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+        $this->withDatabaseSnapshot(function () {
+            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+            $backendUser = $this->setUpBackendUser(1);
+            Bootstrap::initializeLanguageObject();
+            $factory = DataHandlerFactory::fromYamlFile($this->databaseScenarioFile);
+            $writer = DataHandlerWriter::withBackendUser($backendUser);
+            $writer->invokeFactory($factory);
+            self::failIfArrayIsNotEmpty($writer->getErrors());
+        });
     }
 
-    public function theCachingBehavesTheSameForAllFormIntegrationVariantsDataProvider(): \Generator
+    protected function tearDown(): void
+    {
+        $this->purgeMailSpool();
+        parent::tearDown();
+    }
+
+    private function getMailSpoolMessages(): array
+    {
+        $messages = [];
+        foreach (array_filter(glob($this->instancePath . '/' . self::MAIL_SPOOL_FOLDER . '*'), 'is_file') as $path) {
+            $serializedMessage = file_get_contents($path);
+            $sentMessage = unserialize($serializedMessage);
+            if (!$sentMessage instanceof SentMessage) {
+                continue;
+            }
+            $fluidEmail = $sentMessage->getOriginalMessage();
+            if (!$fluidEmail instanceof FluidEmail) {
+                continue;
+            }
+            $parsedHeaders = $this->parseRawHeaders($sentMessage->toString());
+            $item = [
+                'plaintext' => $fluidEmail->getTextBody(),
+                'html' => $fluidEmail->getHtmlBody(),
+                'subject' => $fluidEmail->getSubject(),
+                'date' => $fluidEmail->getDate() ?? $parsedHeaders['Date'] ?? null,
+                'to' => $fluidEmail->getTo(),
+            ];
+            if (is_string($item['date'])) {
+                // @todo `@timezone` is not handled here - probably tests don't need date at all
+                $item['date'] = new \DateTimeImmutable($item['date']);
+            }
+            $messages[] = $item;
+        }
+        return $messages;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function parseRawHeaders(string $rawMessage): array
+    {
+        $rawParts = explode("\r\n\r\n", $rawMessage, 2);
+        $rawLines = explode("\r\n", $rawParts[0]);
+        $rawHeaders = array_map(
+            fn (string $rawLine) => array_map(
+                'trim',
+                explode(':', $rawLine, 2)
+            ),
+            $rawLines
+        );
+        return array_combine(
+            array_column($rawHeaders, 0),
+            array_column($rawHeaders, 1)
+        );
+    }
+
+    private function purgeMailSpool(): void
+    {
+        foreach (glob($this->instancePath . '/' . self::MAIL_SPOOL_FOLDER . '*') as $path) {
+            unlink($path);
+        }
+    }
+
+    public static function theCachingBehavesTheSameForAllFormIntegrationVariantsDataProvider(): \Generator
     {
         yield 'Multistep form / ext:form content element' => [
             'formIdentifier' => 'multistep-test-form-1001',
@@ -113,9 +239,11 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
     {
         $uri = static::ROOT_PAGE_BASE_URI . '/form';
 
+        $subject = new FormDataFactory();
+
         // goto form page
         $pageMarkup = (string)$this->executeFrontendSubRequest(new InternalRequest($uri), null, true)->getBody();
-        $formData = $this->formDataFactory->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
         $honeypotIdFromStep1 = $formData->getHoneypotId();
         $sessionIdFromStep1 = $formData->getSessionId();
@@ -127,7 +255,7 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
         // post data and go to summary page
         $formPostRequest = $formData->with('text-1', 'FOObarBAZ')->toPostRequest(new InternalRequest($uri));
         $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
-        $formData = $this->formDataFactory->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
         $honeypotIdFromStep2 = $formData->getHoneypotId();
         $sessionIdFromStep2 = $formData->getSessionId();
@@ -141,7 +269,7 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
         // go back to first page
         $formPostRequest = $formData->with('__currentPage', '0')->toPostRequest(new InternalRequest($uri));
         $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
-        $formData = $this->formDataFactory->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
         $honeypotIdFromStep3 = $formData->getHoneypotId();
         $sessionIdFromStep3 = $formData->getSessionId();
@@ -153,7 +281,7 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
         // post data and go to summary page
         $formPostRequest = $formData->with('text-1', 'BAZbarFOO')->toPostRequest(new InternalRequest($uri));
         $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
-        $formData = $this->formDataFactory->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
         $honeypotIdFromStep4 = $formData->getHoneypotId();
         $sessionIdFromStep4 = $formData->getSessionId();
@@ -167,7 +295,7 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
         // submit and trigger finishers
         $formPostRequest = $formData->toPostRequest(new InternalRequest($uri));
         $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
-        $formData = $this->formDataFactory->fromHtmlMarkupAndXpath($pageMarkup, '//*[@id="' . $formIdentifier . '"]');
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//*[@id="' . $formIdentifier . '"]');
 
         $formMarkup = $formData->getFormMarkup();
         $mails = $this->getMailSpoolMessages();
@@ -177,7 +305,7 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
         self::assertStringContainsString('Text: BAZbarFOO', $mails[0]['plaintext'] ?? '', 'Mail contains form data');
     }
 
-    public function formRendersUncachedIfTheActionTargetIsCalledViaHttpGetDataProvider(): \Generator
+    public static function formRendersUncachedIfTheActionTargetIsCalledViaHttpGetDataProvider(): \Generator
     {
         yield 'Multistep form / ext:form content element' => [
             'formIdentifier' => 'multistep-test-form-1001',
@@ -246,21 +374,23 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
     {
         $uri = static::ROOT_PAGE_BASE_URI . '/form';
 
+        $subject = new FormDataFactory();
+
         // goto form page
         $pageMarkup = (string)$this->executeFrontendSubRequest(new InternalRequest($uri), null, true)->getBody();
-        $formData = $this->formDataFactory->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
         // goto form target with HTTP GET
-        $pageMarkup = (string)$this->executeFrontendSubRequest($formData->toGetRequest(new InternalRequest($uri), false), null, true)->getBody();
+        (string)$this->executeFrontendSubRequest($formData->toGetRequest(new InternalRequest($uri), false), null, true)->getBody();
 
         // goto form page
         $pageMarkup = (string)$this->executeFrontendSubRequest(new InternalRequest($uri), null, true)->getBody();
-        $formData = $this->formDataFactory->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
         // post data and go to summary page
         $formPostRequest = $formData->with('text-1', 'FOObarBAZ')->toPostRequest(new InternalRequest($uri));
         $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
-        $formData = $this->formDataFactory->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
         $formMarkup = $formData->getFormMarkup();
 
@@ -268,7 +398,7 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
         self::assertStringContainsString('FOObarBAZ', $formMarkup, 'data from "text-1" is shown');
     }
 
-    public function theHoneypotElementChangesWithEveryCallOfTheFirstFormStepDataProvider(): \Generator
+    public static function theHoneypotElementChangesWithEveryCallOfTheFirstFormStepDataProvider(): \Generator
     {
         // disabled until https://review.typo3.org/c/Packages/TYPO3.CMS/+/67642/ is fixed
         // yield 'Multistep form / ext:form content element' => [
@@ -339,16 +469,18 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
     {
         $uri = static::ROOT_PAGE_BASE_URI . '/form';
 
+        $subject = new FormDataFactory();
+
         // goto form page
         $pageMarkup = (string)$this->executeFrontendSubRequest(new InternalRequest($uri), null, true)->getBody();
-        $formData = $this->formDataFactory->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
         $honeypotId = $formData->getHoneypotId();
 
         self::assertNotEmpty($honeypotId, 'honeypot element exists');
 
         // revisit form page
         $pageMarkup = (string)$this->executeFrontendSubRequest(new InternalRequest($uri), null, true)->getBody();
-        $formData = $this->formDataFactory->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
+        $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
         $honeypotIdFromRevisit = $formData->getHoneypotId();
 
