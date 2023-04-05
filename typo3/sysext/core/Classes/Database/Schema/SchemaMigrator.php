@@ -49,7 +49,7 @@ class SchemaMigrator
      *
      * @param string[] $statements The CREATE TABLE statements
      * @param bool $remove TRUE for RENAME/DROP table and column suggestions, FALSE for ADD/CHANGE suggestions
-     * @return array[] SQL statements to migrate the database to the expected schema, indexed by performed operation
+     * @return array<string, array> SQL statements to migrate the database to the expected schema, indexed by performed operation
      * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
@@ -82,7 +82,7 @@ class SchemaMigrator
      * Return the raw Doctrine SchemaDiff objects for each connection. This diff contains
      * all changes without any pre-processing.
      *
-     * @return SchemaDiff[]
+     * @return array<string, SchemaDiff>
      * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
@@ -158,7 +158,7 @@ class SchemaMigrator
      *
      * @param string[] $statements The CREATE TABLE statements
      * @param bool $createOnly Only perform changes that add fields or create tables
-     * @return array[] Error messages for statements that occurred during the installation procedure.
+     * @return array<string, string> Error messages for statements that occurred during the installation procedure.
      * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException

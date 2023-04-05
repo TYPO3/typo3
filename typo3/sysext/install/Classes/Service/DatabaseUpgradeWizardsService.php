@@ -34,7 +34,11 @@ class DatabaseUpgradeWizardsService
     /**
      * Get a list of tables, single columns and indexes to add.
      *
-     * @return array Array with possible keys "tables", "columns", "indexes"
+     * @return array{
+     *           tables?: list<array{table: string}>,
+     *           columns?: list<array{table: string, field: string}>,
+     *           indexes?: list<array{table: string, index: string}>
+     *         }
      */
     public function getBlockingDatabaseAdds(): array
     {
@@ -84,6 +88,8 @@ class DatabaseUpgradeWizardsService
 
     /**
      * Add missing tables, indexes and fields to DB.
+     *
+     * @return array<string, string> Every sql statement as key with empty string or error message as value
      */
     public function addMissingTablesAndFields(): array
     {
