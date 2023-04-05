@@ -126,7 +126,7 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-array\\<int, array\\{label\\: string, attributes\\: non\\-empty\\-array\\<'class'\\|'disabled'\\|'title'\\|'value', mixed\\>\\}\\> and array\\{\\} will always evaluate to false\\.$#"
+			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-array\\<int\\<0, max\\>, array\\{label\\: string, attributes\\: non\\-empty\\-array\\<'class'\\|'disabled'\\|'title'\\|'value', mixed\\>\\}\\> and array\\{\\} will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
 
@@ -156,7 +156,7 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/FormDataProvider/TcaInputPlaceholders.php
 
 		-
-			message: "#^Parameter \\#2 \\$array of function implode expects array\\<string\\>, array\\<int, array\\|string\\> given\\.$#"
+			message: "#^Parameter \\#2 \\$array of function implode expects array\\<string\\>, array\\<int\\<0, max\\>, array\\|string\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/InlineStackProcessor.php
 
@@ -576,7 +576,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Authentication/Mfa/Provider/TotpProvider.php
 
 		-
-			message: "#^Parameter \\#1 \\$key1 of method Redis\\:\\:sUnion\\(\\) expects string, array\\<int, string\\> given\\.$#"
+			message: "#^Parameter \\#1 \\$key1 of method Redis\\:\\:sUnion\\(\\) expects string, array\\<int\\<0, max\\>, string\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Cache/Backend/RedisBackend.php
 
