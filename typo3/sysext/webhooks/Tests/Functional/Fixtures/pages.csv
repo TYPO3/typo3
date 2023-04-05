@@ -1,0 +1,30 @@
+pages,,,,,,,,,,,,,,,,
+,uid,pid,title,deleted,slug,perms_everybody,fe_group,t3ver_oid,t3ver_wsid,t3ver_state,sys_language_uid,l10n_parent,doktype,mount_pid,mount_pid_ol,sorting
+,1,0,Root 1,0,"/",15,0,0,0,0,0,0,0,0,0,16
+,2,1,Dummy 1-2,0,"/dummy-1-2",15,0,0,0,0,0,0,0,0,0,16
+,3,1,Dummy 1-3,0,"/dummy-1-3",15,0,0,0,0,0,0,0,0,0,32
+,4,1,Dummy 1-4,0,"/dummy-1-4",15,0,0,0,0,0,0,0,0,0,64
+,5,2,Dummy 1-2-5,0,"/dummy-1-2-5",15,0,0,0,0,0,0,0,0,0,16
+,6,2,Dummy 1-2-6,0,"/dummy-1-2-6",15,-2,0,0,0,0,0,0,0,0,32
+,7,2,Dummy 1-2-7,0,"/dummy-1-2-7",15,0,0,0,0,0,0,0,0,0,64
+,8,3,Dummy 1-3-8,0,"/dummy-1-3-8",15,0,0,0,0,0,0,0,0,0,16
+,9,3,Dummy 1-3-9,0,"/dummy-1-2-9",15,0,0,0,0,0,0,0,0,0,32
+,10,4,Dummy 1-4-10,0,"/dummy-1-4-10",15,0,0,0,0,0,0,0,0,0,16
+,11,0,Workspace Root,0,,15,0,0,987654321,1,0,0,0,0,0,16
+,901,0,Wurzel 1,0,,0,0,0,0,0,1,1,0,0,0,16
+,902,1,Attrappe 1-2,0,,0,0,0,0,0,1,2,0,0,0,16
+,903,1,Attrappe 1-3,0,,0,0,0,0,0,1,3,0,0,0,32
+,904,2,Attrappe 1-2-5,0,,0,0,0,0,0,1,5,0,0,0,16
+,905,2,Attrappe 1-2-6,0,,0,-2,0,0,0,1,6,0,0,0,32
+,906,3,Attrappe 1-3-9,0,,0,0,0,0,0,1,9,0,0,0,32
+,1000,0,MountPoint tests,0,,0,0,0,0,0,0,0,1,0,0,32
+,1001,1000,root default language,0,,0,0,0,0,0,0,0,0,0,0,32
+,1002,1000,root translation,0,,0,0,0,0,0,1,1001,1,0,0,32
+,1003,1000,Mount default language,0,,0,0,0,0,0,0,0,7,1001,1,64
+,1004,1000,Mount translation,0,,0,0,0,0,0,1,1003,7,1001,1,64
+tt_content,,,,,,,,,,,,,,,,
+,uid,pid,header,bodytext,sys_language_uid,l18n_parent,,,,,,,,,,
+,1,1,"Default Content #1","<p>Say thanks for HTML in the DB</p>",0,0,,,,,,,,,,
+,2,1,"Translated Content #1","<p>Grazie por HTML en la database</p>",1,1,,,,,,,,,,
+,3,1,"Default Content #2","<p>Could be anything</p>",0,0,,,,,,,,,,
+,4,1,"Translated #2","\NULL",1,3,,,,,,,,,,

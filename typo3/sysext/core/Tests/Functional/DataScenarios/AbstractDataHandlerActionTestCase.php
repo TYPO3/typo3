@@ -35,7 +35,9 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
- * Functional test for the DataHandler
+ * Functional test for the DataHandler.
+ *
+ * DO NOT (ab)use this abstract in other classes than ext:core Functional/DataHandling/DataScenarios!
  */
 abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
 {
