@@ -21,7 +21,7 @@ use Doctrine\DBAL\Platforms\SqlitePlatform;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ExpressionBuilderTest extends FunctionalTestCase
+final class ExpressionBuilderTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Database/Fixtures/Extensions/test_expressionbuilder',
@@ -670,7 +670,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
-    public function likeReturnsExpectedDataSetsDataProvider(): \Generator
+    public static function likeReturnsExpectedDataSetsDataProvider(): \Generator
     {
         yield 'lowercase search word matches german umlauts in upper and lower casing #1' => [
             'searchWord' => '%über%',
@@ -774,7 +774,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
         self::assertSame($expectedRows, $rows);
     }
 
-    public function notLikeReturnsExpectedDataSetsDataProvider(): \Generator
+    public static function notLikeReturnsExpectedDataSetsDataProvider(): \Generator
     {
         yield 'lowercase search word filters german umlauts in upper and lower casing #1' => [
             'searchWord' => '%Überraschungen%',
