@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Command;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-abstract class AbstractCommandTest extends FunctionalTestCase
+abstract class AbstractCommandTestCase extends FunctionalTestCase
 {
     protected function executeConsoleCommand(string $cmdline, ...$args): array
     {

@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Package\PackageManager;
 
-class CacheFlushCommandTest extends AbstractCommandTest
+class CacheFlushCommandTest extends AbstractCommandTestCase
 {
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
