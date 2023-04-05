@@ -86,7 +86,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200')
         );
     }
@@ -99,7 +99,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?loop=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?loop=1&amp;dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['loop' => 1])
         );
     }
@@ -112,7 +112,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;muted=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;muted=1&amp;dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
@@ -129,7 +129,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileReferenceMock->method('getOriginalFile')->willReturn($fileResourceMock);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;muted=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;muted=1&amp;dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileReferenceMock, '300m', '200')
         );
     }
@@ -142,7 +142,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;muted=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;muted=1&amp;dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
@@ -155,7 +155,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen foo="bar" custom-play="preload" sanitizetest="&lt;&gt;&quot;&apos;test" width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen foo="bar" custom-play="preload" sanitizetest="&lt;&gt;&quot;&apos;test" width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload', '<"\'>sanitize^&test' => '<>"\'test']])
         );
     }
@@ -168,7 +168,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen data-player-handler="vimeo" data-custom-playerId="player-123" data-sanitizetest="test" width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen data-player-handler="vimeo" data-custom-playerId="player-123" data-sanitizetest="test" width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['data' => ['player-handler' => 'vimeo', 'custom-playerId' => 'player-123', '*sanitize&test"' => 'test']])
         );
     }
@@ -181,7 +181,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen foo="bar" custom-play="preload" data-player-handler="vimeo" data-custom-playerId="player-123" width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen foo="bar" custom-play="preload" data-player-handler="vimeo" data-custom-playerId="player-123" width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['data' => ['player-handler' => 'vimeo', 'custom-playerId' => 'player-123'], 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload']])
         );
     }
@@ -194,7 +194,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['allow' => 'foo; bar'])
         );
     }
@@ -207,7 +207,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;muted=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;muted=1&amp;dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['allow' => 'foo; bar', 'autoplay' => 1])
         );
     }
@@ -227,7 +227,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331/private0123?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331/private0123?dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $subject->render($fileResourceMock, '300m', '200')
         );
     }
@@ -247,7 +247,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331&lt;script&gt;danger&lt;/script&gt;&apos;&quot;random&quot;quotes;?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331&lt;script&gt;danger&lt;/script&gt;&apos;&quot;random&quot;quotes;?dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $subject->render($fileResourceMock, '300m', '200')
         );
     }
@@ -260,8 +260,21 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?api=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?api=1&amp;dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['api' => 1])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithEnabledNoCookieIsCorrect(): void
+    {
+        $fileResourceMock = $this->createMock(File::class);
+
+        self::assertSame(
+            '<iframe src="https://player.vimeo.com/video/7331?api=1&amp;dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['api' => 1, 'no-cookie' => 1])
         );
     }
 
@@ -273,8 +286,8 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?api=1&amp;dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['api' => 1, 'no-cookie' => 1])
+            '<iframe src="https://player.vimeo.com/video/7331?api=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['api' => 1, 'no-cookie' => 0])
         );
     }
 }
