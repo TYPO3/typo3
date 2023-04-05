@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
 /**
  * Contains functional tests for the XmlSitemap Index
  */
-class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTest
+class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
 {
     protected array $configurationToUseInTestInstance = [
         'FE' => [

@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-abstract class AbstractXmlSitemapPagesTest extends AbstractTestCase
+abstract class AbstractXmlSitemapPagesTestCase extends AbstractTestCase
 {
     /**
      * @var array

@@ -21,7 +21,7 @@ namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
  * Contains functional tests for the XmlSitemap Index with
  * $GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'] = true
  */
-class XmlSitemapPagesWithHideIfNotTranslatedTest extends AbstractXmlSitemapPagesTest
+class XmlSitemapPagesWithHideIfNotTranslatedTest extends AbstractXmlSitemapPagesTestCase
 {
     /**
      * This inverts the meaning of the
