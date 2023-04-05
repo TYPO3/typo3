@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueExce
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -43,7 +44,11 @@ use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FlexFormToolsTest extends FunctionalTestCase
+/**
+ * @todo: This test contains various tests that mock DB calls. Those should
+ *        be removed and substituted with DB fixture data.
+ */
+final class FlexFormToolsTest extends FunctionalTestCase
 {
     protected bool $resetSingletonInstances = true;
 
@@ -591,11 +596,38 @@ class FlexFormToolsTest extends FunctionalTestCase
         $queryBuilderMock->method('select')->with('uid', 'pid', 'tx_templavoila_ds');
         $queryBuilderMock->expects(self::atLeastOnce())->method('from')->with('aTableName')->willReturn($queryBuilderMock);
         $queryBuilderMock->expects(self::atLeastOnce())->method('expr')->willReturn($expressionBuilderMock);
-        $queryBuilderMock->method('createNamedParameter')->withConsecutive([2, 1], [1, 1])->willReturnOnConsecutiveCalls('2', '1');
-        $expressionBuilderMock->expects(self::atLeastOnce())->method('eq')->withConsecutive(['uid', 2], ['uid', 1])
-            ->willReturnOnConsecutiveCalls('uid = 2', 'uid = 1');
-        $queryBuilderMock->expects(self::atLeastOnce())->method('where')->withConsecutive(['uid = 2'], ['uid = 1'])
-            ->willReturn($queryBuilderMock);
+        $seriesOne = [
+            [2, Connection::PARAM_INT, '2'],
+            [1, Connection::PARAM_INT, '1'],
+        ];
+        $queryBuilderMock->expects(self::exactly(2))->method('createNamedParameter')
+            ->willReturnCallback(function (int $value, int $type) use (&$seriesOne): string {
+                $arguments = array_shift($seriesOne);
+                self::assertSame($arguments[0], $value);
+                self::assertSame($arguments[1], $type);
+                return $arguments[2];
+            });
+        $seriesTwo = [
+            ['uid', '2', 'uid = 2'],
+            ['uid', '1', 'uid = 1'],
+        ];
+        $expressionBuilderMock->expects(self::exactly(2))->method('eq')
+            ->willReturnCallback(function (string $field, string $value) use (&$seriesTwo): string {
+                $arguments = array_shift($seriesTwo);
+                self::assertSame($arguments[0], $field);
+                self::assertSame($arguments[1], $value);
+                return $arguments[2];
+            });
+        $seriesThree = [
+            ['uid = 2'],
+            ['uid = 1'],
+        ];
+        $queryBuilderMock->expects(self::exactly(2))->method('where')
+            ->willReturnCallback(function (string $predicate) use (&$seriesThree, $queryBuilderMock): QueryBuilder {
+                $arguments = array_shift($seriesThree);
+                self::assertSame($arguments[0], $predicate);
+                return $queryBuilderMock;
+            });
         $queryBuilderMock->expects(self::atLeastOnce())->method('executeQuery')->willReturn($statementMock);
         $queryBuilderMock->expects(self::atLeastOnce())->method('count')->with('uid')->willReturn($queryBuilderMock);
 
@@ -657,11 +689,38 @@ class FlexFormToolsTest extends FunctionalTestCase
         $queryBuilderMock->method('select')->with('uid', 'pid', 'tx_templavoila_ds');
         $queryBuilderMock->expects(self::atLeastOnce())->method('from')->with('aTableName')->willReturn($queryBuilderMock);
         $queryBuilderMock->expects(self::atLeastOnce())->method('expr')->willReturn($expressionBuilderMock);
-        $queryBuilderMock->method('createNamedParameter')->withConsecutive([2, 1], [1, 1])->willReturnOnConsecutiveCalls('2', '1');
-        $expressionBuilderMock->expects(self::atLeastOnce())->method('eq')->withConsecutive(['uid', 2], ['uid', 1])
-            ->willReturnOnConsecutiveCalls('uid = 2', 'uid = 1');
-        $queryBuilderMock->expects(self::atLeastOnce())->method('where')->withConsecutive(['uid = 2'], ['uid = 1'])
-            ->willReturn($queryBuilderMock);
+        $seriesOne = [
+            [2, Connection::PARAM_INT, '2'],
+            [1, Connection::PARAM_INT, '1'],
+        ];
+        $queryBuilderMock->expects(self::exactly(2))->method('createNamedParameter')
+            ->willReturnCallback(function (int $value, int $type) use (&$seriesOne): string {
+                $arguments = array_shift($seriesOne);
+                self::assertSame($arguments[0], $value);
+                self::assertSame($arguments[1], $type);
+                return $arguments[2];
+            });
+        $seriesTwo = [
+            ['uid', '2', 'uid = 2'],
+            ['uid', '1', 'uid = 1'],
+        ];
+        $expressionBuilderMock->expects(self::exactly(2))->method('eq')
+            ->willReturnCallback(function (string $field, string $value) use (&$seriesTwo): string {
+                $arguments = array_shift($seriesTwo);
+                self::assertSame($arguments[0], $field);
+                self::assertSame($arguments[1], $value);
+                return $arguments[2];
+            });
+        $seriesThree = [
+            ['uid = 2'],
+            ['uid = 1'],
+        ];
+        $queryBuilderMock->expects(self::exactly(2))->method('where')
+            ->willReturnCallback(function (string $predicate) use (&$seriesThree, $queryBuilderMock): QueryBuilder {
+                $arguments = array_shift($seriesThree);
+                self::assertSame($arguments[0], $predicate);
+                return $queryBuilderMock;
+            });
         $queryBuilderMock->expects(self::atLeastOnce())->method('executeQuery')->willReturn($statementMock);
         $queryBuilderMock->expects(self::atLeastOnce())->method('count')->with('uid')->willReturn($queryBuilderMock);
 
@@ -796,11 +855,38 @@ class FlexFormToolsTest extends FunctionalTestCase
         $queryBuilderMock->method('select')->with('uid', 'pid', 'tx_templavoila_ds');
         $queryBuilderMock->expects(self::atLeastOnce())->method('from')->with('aTableName')->willReturn($queryBuilderMock);
         $queryBuilderMock->expects(self::atLeastOnce())->method('expr')->willReturn($expressionBuilderMock);
-        $queryBuilderMock->method('createNamedParameter')->withConsecutive([2, 1], [1, 1])->willReturnOnConsecutiveCalls('2', '1');
-        $expressionBuilderMock->expects(self::atLeastOnce())->method('eq')->withConsecutive(['uid', 2], ['uid', 1])
-            ->willReturnOnConsecutiveCalls('uid = 2', 'uid = 1');
-        $queryBuilderMock->expects(self::atLeastOnce())->method('where')->withConsecutive(['uid = 2'], ['uid = 1'])
-            ->willReturn($queryBuilderMock);
+        $seriesOne = [
+            [2, Connection::PARAM_INT, '2'],
+            [1, Connection::PARAM_INT, '1'],
+        ];
+        $queryBuilderMock->expects(self::exactly(2))->method('createNamedParameter')
+            ->willReturnCallback(function (int $value, int $type) use (&$seriesOne): string {
+                $arguments = array_shift($seriesOne);
+                self::assertSame($arguments[0], $value);
+                self::assertSame($arguments[1], $type);
+                return $arguments[2];
+            });
+        $seriesTwo = [
+            ['uid', '2', 'uid = 2'],
+            ['uid', '1', 'uid = 1'],
+        ];
+        $expressionBuilderMock->expects(self::exactly(2))->method('eq')
+            ->willReturnCallback(function (string $field, string $value) use (&$seriesTwo): string {
+                $arguments = array_shift($seriesTwo);
+                self::assertSame($arguments[0], $field);
+                self::assertSame($arguments[1], $value);
+                return $arguments[2];
+            });
+        $seriesThree = [
+            ['uid = 2'],
+            ['uid = 1'],
+        ];
+        $queryBuilderMock->expects(self::exactly(2))->method('where')
+            ->willReturnCallback(function (string $predicate) use (&$seriesThree, $queryBuilderMock): QueryBuilder {
+                $arguments = array_shift($seriesThree);
+                self::assertSame($arguments[0], $predicate);
+                return $queryBuilderMock;
+            });
         $queryBuilderMock->expects(self::atLeastOnce())->method('executeQuery')->willReturn($statementMock);
         $queryBuilderMock->expects(self::atLeastOnce())->method('count')->with('uid')->willReturn($queryBuilderMock);
 
