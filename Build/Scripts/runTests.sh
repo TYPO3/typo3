@@ -183,31 +183,39 @@ Options:
             - postgres: use postgres
             - sqlite: use sqlite
 
-    -i <10.1|10.2|10.3|10.4|10.5>
+    -i <10.1|10.2|10.3|10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11>
         Only with -d mariadb
         Specifies on which version of mariadb tests are performed
-            - 10.1
-            - 10.2
-            - 10.3 (default)
-            - 10.4
-            - 10.5
+            - 10.1   short-term, no longer maintained
+            - 10.2   short-term, no longer maintained
+            - 10.3   short-term, maintained until 2023-05-25 (default)
+            - 10.4   short-term, maintained until 2024-06-18
+            - 10.5   short-term, maintained until 2025-06-24
+            - 10.6   long-term, maintained until 2026-06
+            - 10.7   short-term, no longer maintained
+            - 10.8   short-term, maintained until 2023-05
+            - 10.9   short-term, maintained until 2023-08
+            - 10.10  short-term, maintained until 2023-11
+            - 10.11  long-term, maintained until 2028-02
 
     -j <5.5|5.6|5.7|8.0>
         Only with -d mysql
         Specifies on which version of mysql tests are performed
-            - 5.5 (default)
-            - 5.6
-            - 5.7
-            - 8.0
+            - 5.5   unmaintained since 2018-12 (default)
+            - 5.6   unmaintained since 2021-02
+            - 5.7   maintained until 2023-10
+            - 8.0   maintained until 2026-04
 
-    -k <9.6|10|11|12|13>
+    -k <9.6|10|11|12|13|14|15>
         Only with -d postgres
         Specifies on which version of postgres tests are performed
-            - 9.6
-            - 10 (default)
-            - 11
-            - 12
-             -13
+            - 9.6   unmaintained since 2021-11-11
+            - 10    unmaintained since 2022-11-10 (default)
+            - 11    maintained until 2023-11-09
+            - 12    maintained until 2024-11-14
+            - 13    maintained until 2025-11-13
+            - 14    maintained until 2026-11-12
+            - 15    maintained until 2027-11-11
 
     -c <chunk/numberOfChunks>
         Only with -s functional|acceptance
@@ -373,7 +381,7 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
         i)
             MARIADB_VERSION=${OPTARG}
-            if ! [[ ${MARIADB_VERSION} =~ ^(10.1|10.2|10.3|10.4|10.5)$ ]]; then
+            if ! [[ ${MARIADB_VERSION} =~ ^(10.1|10.2|10.3|10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
@@ -385,7 +393,7 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
         k)
             POSTGRES_VERSION=${OPTARG}
-            if ! [[ ${POSTGRES_VERSION} =~ ^(9.6|10|11|12|13)$ ]]; then
+            if ! [[ ${POSTGRES_VERSION} =~ ^(9.6|10|11|12|13|14|15)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
