@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FileBackendTest extends FunctionalTestCase
+final class FileBackendTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
@@ -649,7 +649,16 @@ class FileBackendTest extends FunctionalTestCase
             'bar',
             'baz',
         ]);
-        $subject->expects(self::exactly(3))->method('remove')->withConsecutive(['foo'], ['bar'], ['baz']);
+        $series = [
+            ['foo'],
+            ['bar'],
+            ['baz'],
+        ];
+        $subject->expects(self::exactly(3))->method('remove')
+            ->willReturnCallback(function (string $value) use (&$series): void {
+                $arguments = array_shift($series);
+                self::assertSame($arguments[0], $value);
+            });
         $subject->flushByTag('UnitTestTag%special');
     }
 
