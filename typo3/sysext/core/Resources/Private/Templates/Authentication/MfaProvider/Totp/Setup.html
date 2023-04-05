@@ -33,18 +33,15 @@
                 <div class="form-control-wrap mt-1">
                     <div class="input-group">
                         <input type="text" id="secret" name="secret" value="{secret}" readonly="readonly" class="form-control"/>
-                        <span class="input-group-btn">
-                            <typo3-mfa-totp-url-info-button url="{totpAuthUrl}"
-                                                            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.totpAuthUrlModal.title')}"
-                                                            description="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.totpAuthUrlModal.description')}"
-                                                            ok="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.totpAuthUrlModal.ok')}">
-                                <button type="button"
-                                        class="btn btn-default"
-                                        title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.totpAuthUrlButton.title')}">
-                                    <core:icon identifier="actions-info"/>
-                                </button>
-                            </typo3-mfa-totp-url-info-button>
-                        </span>
+                        <typo3-mfa-totp-url-info-button
+                            class="btn btn-default"
+                            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.totpAuthUrlButton.title')}"
+                            data-url="{totpAuthUrl}"
+                            data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.totpAuthUrlModal.title')}"
+                            data-description="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.totpAuthUrlModal.description')}"
+                            data-button-ok="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.totpAuthUrlModal.ok')}">
+                            <core:icon identifier="actions-info"/>
+                        </typo3-mfa-totp-url-info-button>
                     </div>
                 </div>
             </div>

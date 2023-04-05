@@ -11,16 +11,18 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, TemplateResult, LitElement } from 'lit';
+import { html, css, TemplateResult, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import Modal from '@typo3/backend/modal';
 
 @customElement('typo3-mfa-totp-url-info-button')
 export class MfaTotpUrlButton extends LitElement {
-  @property({ type: String }) url: string;
-  @property({ type: String }) title: string;
-  @property({ type: String }) description: string;
-  @property({ type: String }) ok: string;
+  static styles = [css`:host { cursor: pointer; appearance: button; }`];
+
+  @property({ type: String, attribute: 'data-url' }) modalUrl: string;
+  @property({ type: String, attribute: 'data-title' }) modalTitle: string;
+  @property({ type: String, attribute: 'data-description' }) modalDescription: string;
+  @property({ type: String, attribute: 'data-button-ok' }) buttonOk: string;
 
   public constructor() {
     super();
@@ -28,6 +30,21 @@ export class MfaTotpUrlButton extends LitElement {
       e.preventDefault();
       this.showTotpAuthUrlModal();
     });
+    this.addEventListener('keydown', (e: KeyboardEvent): void => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.showTotpAuthUrlModal();
+      }
+    });
+  }
+
+  public connectedCallback(): void {
+    if (!this.hasAttribute('role')) {
+      this.setAttribute('role', 'button');
+    }
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0');
+    }
   }
 
   protected render(): TemplateResult {
@@ -36,15 +53,15 @@ export class MfaTotpUrlButton extends LitElement {
 
   private showTotpAuthUrlModal(): void {
     Modal.advanced({
-      title: this.title,
+      title: this.modalTitle,
       content: html`
-        <p>${this.description}</p>
-        <pre>${this.url}</pre>
+        <p>${this.modalDescription}</p>
+        <pre>${this.modalUrl}</pre>
       `,
       buttons: [
         {
           trigger: (): void => Modal.dismiss(),
-          text: this.ok || 'OK',
+          text: this.buttonOk || 'OK',
           active: true,
           btnClass: 'btn-default',
           name: 'ok'
