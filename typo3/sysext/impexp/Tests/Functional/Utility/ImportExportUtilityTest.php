@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
 
-class ImportExportUtilityTest extends AbstractImportExportTestCase
+final class ImportExportUtilityTest extends AbstractImportExportTestCase
 {
     public static function importFailsDataProvider(): array
     {
@@ -49,7 +49,7 @@ class ImportExportUtilityTest extends AbstractImportExportTestCase
 
         $importUtilityMock = $this->getAccessibleMock(
             ImportExportUtility::class,
-            ['dummy'],
+            null,
             ['eventDispatcher' => new NoopEventDispatcher()]
         );
         $importUtilityMock->importT3DFile($filePath, 0);
@@ -64,7 +64,7 @@ class ImportExportUtilityTest extends AbstractImportExportTestCase
 
         $importUtilityMock = $this->getAccessibleMock(
             ImportExportUtility::class,
-            ['dummy'],
+            null,
             ['eventDispatcher' => new NoopEventDispatcher()]
         );
         $result = $importUtilityMock->importT3DFile($filePath, 0);
