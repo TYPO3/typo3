@@ -57,6 +57,7 @@
 @import "component/recordlist";
 @import "component/resources";
 @import "component/recordsearchbox";
+@import "component/treelist";
 
 //
 // Elements
@@ -93,14 +94,12 @@
 // Modules
 //
 @import "module/access";
-@import "module/backenduser";
 @import "module/extensionmanager";
 @import "module/help";
 @import "module/info";
 @import "module/install";
 @import "module/page";
 @import "module/recycler";
-@import "module/tstemplate";
 @import "module/viewpage";
 @import "module/workspaces";
 @import "module/scheduler";

@@ -233,6 +233,11 @@ $panel-heading-bg-scale: -85%;
     }
 }
 
+.panel-body-overflow {
+    overflow: auto;
+    max-width: 100%;
+}
+
 //
 // Footer
 //

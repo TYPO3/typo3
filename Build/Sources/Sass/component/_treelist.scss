@@ -1,0 +1,255 @@
+//
+// Tree List
+//
+//  <ul class="treelist">
+//      <li class="loose">
+//          ....
+//      </li>
+//      <li>
+//          <a class="treelist-control" aria-expanded="false">
+//              ...
+//          </a>
+//          <span class="treelist-group">
+//              <span class="treelist-label">...</span>
+//          </span>
+//          <div class="treelist-collapse collapse">
+//              <ul class="treelist">
+//                  ...
+//              </ul>
+//          </div>
+//      </li>
+//      <li>
+//          <span class="treelist-group">
+//              <span class="treelist-label">...</span>
+//          </span>
+//          <ul class="treelist">
+//              ...
+//          </ul>
+//      </li>
+//  </ul>
+//
+
+//
+// Variables
+//
+:root {
+    --treelist-color: #333;
+    --treelist-comment-color: #666;
+    --treelist-bg: #fff;
+    --treelist-border-width: 1px;
+    --treelist-border-color: #ddd;
+    --treelist-indentation: 1rem;
+    --treelist-indentation-spacer: .5rem;
+    --treelist-item-spacer: 2px;
+    --treelist-item-line-height: 24px;
+    --treelist-control-size: 16px;
+}
+
+//
+// Component
+//
+.treelist,
+.treelist ul {
+    color: var(--treelist-color);
+    background: var(--treelist-bg);
+    padding: 0;
+    padding-left: calc(var(--treelist-indentation) / 2);
+    list-style: none;
+    position: relative;
+
+    &:before {
+        content: '';
+        display: block;
+        width: 0;
+        position: absolute;
+        top: 0;
+        bottom: calc(var(--treelist-item-line-height) / 2);
+        left: calc(var(--treelist-indentation) / 2 - var(--treelist-border-width) / 2);
+        margin-bottom: -2px;
+        border-left: 1px solid var(--treelist-border-color);
+    }
+
+    &:after {
+        content: '';
+        display: table;
+    }
+}
+
+.treelist {
+    li {
+        &:before {
+            content: '';
+            display: block;
+            width: calc(var(--treelist-indentation) - var(--treelist-indentation-spacer) - 1px);
+            height: 0;
+            border-top: 1px solid var(--treelist-border-color);
+            margin-top: -2px;
+            position: absolute;
+            top: calc((var(--treelist-item-line-height) / 2) + 1px);
+            left: 0;
+        }
+
+        &:last-child:before {
+            background: var(--treelist-bg);
+            height: auto;
+            left: 0;
+            width: calc(var(--treelist-indentation) - var(--treelist-indentation-spacer));
+            bottom: 0;
+        }
+
+        &.active {
+            > .treelist-group {
+                &:before {
+                    content: '';
+                    position: absolute;
+                    right: calc(var(--treelist-indentation-space) * -1);
+                    left: calc(var(--treelist-indentation-space) * -1);
+                    top: -1px;
+                    bottom: -1px;
+                    display: block;
+                    border: 1px solid rgba(0, 0, 0, .25);
+                    background-color: rgba(255, 255, 255, .75);
+                    border-radius: 2px;
+                }
+            }
+        }
+
+        &.loose {
+            &:before {
+                display: none !important;
+            }
+        }
+        margin: var(--treelist-item-spacer) 0;
+        padding-left: var(--treelist-indentation);
+        line-height: var(--treelist-item-line-height);
+        position: relative;
+
+        .treelist-control {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}
+
+.treelist-comment {
+    font-family: var(--typo3-font-family-monospace);
+    color: var(--treelist-comment-color);
+}
+
+.treelist-group {
+    position: relative;
+    display: block;
+
+    > span {
+        position: relative;
+    }
+}
+
+.treelist-group-monospace {
+    font-family: var(--typo3-font-family-monospace);
+}
+
+.treelist-operator {
+    opacity: .5;
+}
+
+.treelist-value {
+    font-weight: bold;
+}
+
+.treelist-icon {
+    top: -2px;
+}
+
+.treelist-show {
+    position: relative;
+    display: inline-block;
+    width: var(--treelist-control-size);
+    text-align: center;
+    margin-left: -2px;
+}
+
+.treelist-control {
+    position: absolute;
+    top: calc(var(--treelist-item-line-height) / 2);
+    transform: translate(-50%, -50%);
+    left: 0;
+    display: block;
+    text-align: center;
+    line-height: var(--treelist-control-size);
+    width: var(--treelist-control-size);
+    height: var(--treelist-control-size);
+    user-select: none;
+
+    &:before,
+    &:target:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: var(--treelist-control-size);
+        height: var(--treelist-control-size);
+        background-color: var(--treelist-bg);
+    }
+
+    &:active,
+    &:focus,
+    &:hover {
+        cursor: pointer;
+        outline: none;
+        text-decoration: none;
+    }
+
+    typo3-backend-icon {
+        --icon-color-primary: var(--treelist-color);
+    }
+
+    &[aria-expanded="true"] typo3-backend-icon[identifier="actions-chevron-right"] {
+        display: none;
+    }
+
+    &[aria-expanded="false"] typo3-backend-icon[identifier="actions-chevron-down"] {
+        display: none;
+    }
+}
+
+.treelist-root {
+    padding-left: 0;
+
+    &:before {
+        display: none;
+    }
+
+    > li {
+        padding-left: var(--treelist-control-size);
+
+        &:before {
+            display: none;
+        }
+
+        > .treelist-group {
+            > .treelist-control {
+                margin-left: calc(var(--treelist-control-size) * -1);
+
+                &:before {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+}
+
+.treelist-root-clean {
+    > li {
+        padding-left: 0;
+    }
+}
+
+//
+// Tree Variations
+//
+.panel-tab {
+    --treelist-bg: #{$nav-tabs-active-link-bg};
+}

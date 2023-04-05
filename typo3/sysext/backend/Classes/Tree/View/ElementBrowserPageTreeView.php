@@ -68,9 +68,9 @@ class ElementBrowserPageTreeView extends BrowseTreeView
     {
         if ($this->ext_isLinkable($v['doktype'], $v['uid'])) {
             $url = GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => (int)$v['uid']]);
-            return '<span class="list-tree-title"><a href="' . htmlspecialchars($url) . '" class="t3js-pageLink">' . $title . '</a></span>';
+            return '<span class="treelist-title"><a href="' . htmlspecialchars($url) . '" class="t3js-pageLink">' . $title . '</a></span>';
         }
-        return '<span class="list-tree-title text-muted">' . $title . '</span>';
+        return '<span class="treelist-title text-muted">' . $title . '</span>';
     }
 
     /**
@@ -92,12 +92,12 @@ class ElementBrowserPageTreeView extends BrowseTreeView
         foreach ($treeArr as $treeItem) {
             $classAttr = $treeItem['row']['_CSSCLASS'];
             if ($treeItem['isFirst']) {
-                $out .= '<ul class="list-tree">';
+                $out .= '<ul class="treelist">';
             }
 
             // Add CSS classes to the list item
             if ($treeItem['hasSub']) {
-                $classAttr .= ' list-tree-control-open';
+                $classAttr .= ' treelist-control-open';
             }
 
             $selected = '';
@@ -107,14 +107,15 @@ class ElementBrowserPageTreeView extends BrowseTreeView
             }
             $urlParameters = $this->linkParameterProvider->getUrlParameters(['pid' => (int)$treeItem['row']['uid']]);
             $cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid'])
-                ? '<a href="' . htmlspecialchars($this->getThisScript() . HttpUtility::buildQueryString($urlParameters)) . '" class="list-tree-show">' . $this->iconFactory->getIcon('actions-caret-right', Icon::SIZE_SMALL)->render() . '</a>'
+                ? '<a href="' . htmlspecialchars($this->getThisScript() . HttpUtility::buildQueryString($urlParameters)) . '" class="treelist-show">' . $this->iconFactory->getIcon('actions-caret-right', Icon::SIZE_SMALL)->render() . '</a>'
                 : '';
             $out .= '
-				<li' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
-					<span class="list-tree-group' . $selected . '">
-						' . $cEbullet . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row']) . '
-					</span>
-				';
+                <li' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
+                    ' . $cEbullet . '
+                    <span class="treelist-group' . $selected . '">
+                        ' . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row']) . '
+                    </span>
+                ';
             if (!$treeItem['hasSub']) {
                 $out .= '</li>';
             }
@@ -133,7 +134,7 @@ class ElementBrowserPageTreeView extends BrowseTreeView
                 }
             }
         }
-        return '<ul class="list-tree list-tree-root">' . $out . '</ul>';
+        return '<ul class="treelist treelist-root">' . $out . '</ul>';
     }
 
     /**
@@ -167,13 +168,13 @@ class ElementBrowserPageTreeView extends BrowseTreeView
         $name = $bMark ? ' name=' . $bMark : '';
         $urlParameters = $this->linkParameterProvider->getUrlParameters([]);
         if ($isOpen) {
-            $class = 'list-tree-control-open';
+            $class = 'treelist-control-open';
             $icon = $this->iconFactory->getIcon('actions-chevron-down', Icon::SIZE_SMALL);
         } else {
-            $class = 'list-tree-control-closed';
+            $class = 'treelist-control-collapsed';
             $icon = $this->iconFactory->getIcon('actions-chevron-right', Icon::SIZE_SMALL);
         }
-        return '<a class="list-tree-control ' . $class
+        return '<a class="treelist-control ' . $class
             . '" href="' . htmlspecialchars($this->getThisScript() . HttpUtility::buildQueryString($urlParameters)) . $anchor . '"' . $name . '>' . $icon->render(AbstractSvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
     }
 }

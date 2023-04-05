@@ -37,7 +37,7 @@
     >
         <div class="panel-body  t3js-collapse-states-search-tree">
             <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
-                <ul class="list-tree text-monospace">
+                <ul class="treelist">
                     <f:comment>
                         Variable {editUri} is a performance optimization hack: The ActiveTree template is called
                         recursive for each node and then creates an "edit" link in each. This is expensive with

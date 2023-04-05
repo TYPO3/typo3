@@ -152,13 +152,13 @@ class CollapseStateSearch {
   }
 
   private findNodesByIdentifier(term: string, treeContainer: HTMLElement): Element[] {
-    return Array.from(treeContainer.querySelectorAll('.list-tree-label')).filter((el: Element): boolean => {
+    return Array.from(treeContainer.querySelectorAll('.treelist-label')).filter((el: Element): boolean => {
       return el.textContent.toLowerCase().includes(term);
     });
   }
 
   private findNodesByValue(term: string, treeContainer: HTMLElement): Element[] {
-    const matchingValueNodes = Array.from(treeContainer.querySelectorAll('.list-tree-value')).filter((el: Element): boolean => {
+    const matchingValueNodes = Array.from(treeContainer.querySelectorAll('.treelist-value')).filter((el: Element): boolean => {
       return el.textContent.toLowerCase().includes(term);
     });
     return matchingValueNodes.map((node: Element): Element => {
@@ -167,13 +167,13 @@ class CollapseStateSearch {
   }
 
   private findNodesByComment(term: string, treeContainer: HTMLElement): Element[] {
-    return Array.from(treeContainer.querySelectorAll('.list-tree-comment')).filter((el: Element): boolean => {
+    return Array.from(treeContainer.querySelectorAll('.treelist-comment')).filter((el: Element): boolean => {
       return el.textContent.toLowerCase().includes(term);
     });
   }
 
   private findNodesByConstantSubstitution(term: string, treeContainer: HTMLElement): Element[] {
-    return Array.from(treeContainer.querySelectorAll('.list-tree-constant-substitution')).filter((el: Element): boolean => {
+    return Array.from(treeContainer.querySelectorAll('.treelist-constant-substitution')).filter((el: Element): boolean => {
       return el.textContent.toLowerCase().includes(term);
     });
   }

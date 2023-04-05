@@ -24,8 +24,8 @@
 //
 $diff-bgcolor: #fff;
 $diff-border: #ccc;
-$diff-color-remove: #c80c05;
-$diff-color-add: #44a512;
+$diff-color-remove: $danger;
+$diff-color-add: $success;
 $diff-padding: 10px;
 $diff-title-bgcolor: #fafafa;
 
@@ -36,20 +36,20 @@ $diff-title-bgcolor: #fafafa;
     background-color: $diff-bgcolor;
     border: 1px solid $diff-border;
     display: table;
-}
 
-.diff-item {
-    display: table-row;
-
-    + .diff-item {
-        border-top: 1px solid $diff-border;
+    .diff-item-title,
+    .diff-item-result {
+        padding: $diff-padding;
+        display: table-cell;
     }
-}
 
-.diff-item-title,
-.diff-item-result {
-    padding: $diff-padding;
-    display: table-cell;
+    .diff-item {
+        display: table-row;
+
+        + .diff-item {
+            border-top: 1px solid $diff-border;
+        }
+    }
 }
 
 .diff-item-title {
@@ -60,7 +60,7 @@ $diff-title-bgcolor: #fafafa;
 }
 
 .diff-item-result {
-    font-family: $font-family-monospace;
+    font-family: var(--typo3-font-family-monospace);
     width: 100%;
     white-space: pre-wrap;
     word-break: break-word;
@@ -68,14 +68,14 @@ $diff-title-bgcolor: #fafafa;
 
     del {
         color: $diff-color-remove;
-        background-color: lighten($diff-color-remove, 58%);
+        background-color: shift-color($diff-color-remove, -85%);
         text-decoration: none;
         display: inline-block;
     }
 
     ins {
         color: $diff-color-add;
-        background-color: lighten($diff-color-add, 58%);
+        background-color: shift-color($diff-color-add, -85%);
         text-decoration: none;
         display: inline-block;
     }

@@ -291,13 +291,14 @@
 </f:section>
 
 <f:section name="userTsConfigTree">
-    <ul class="list-tree text-monospace">
+    <ul class="treelist">
         <f:for each="{treeArray}" key="key" as="value">
             <li>
-                <span class="list-tree-group">
-                    <span class="list-tree-label">{key}</span>
+                <span class="treelist-group treelist-group-monospace">
+                    <span class="treelist-label">{key}</span>
                     <f:if condition="!{bu:isArray(value: value)}">
-                        = <span class="list-tree-value">{value}</span>
+                        <span class="treelist-operator">=</span>
+                        <span class="treelist-value">{value}</span>
                     </f:if>
                 </span>
                 <f:if condition="{bu:isArray(value: value)}">

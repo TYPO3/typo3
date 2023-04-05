@@ -206,23 +206,17 @@ class ExportPageTreeView extends AbstractTreeView
         $out = '';
         $closeDepth = [];
         foreach ($treeArr as $treeItem) {
-            $classAttr = '';
             if ($treeItem['isFirst'] ?? false) {
-                $out .= '<ul class="list-tree">';
-            }
-
-            // Add CSS classes to the list item
-            if ($treeItem['hasSub'] ?? false) {
-                $classAttr .= ' list-tree-control-open';
+                $out .= '<ul class="treelist">';
             }
 
             $idAttr = htmlspecialchars('pages' . $treeItem['row']['uid']);
             $out .= '
-				<li id="' . $idAttr . '"' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
-					<span class="list-tree-group">
-						<span class="list-tree-icon">' . $treeItem['HTML'] . '</span>
-						<span class="list-tree-title">' . $this->getTitleStr($treeItem['row'], $titleLen) . '</span>
-					</span>';
+                <li id="' . $idAttr . '">
+                    <span class="treelist-group">
+                        <span class="treelist-icon">' . $treeItem['HTML'] . '</span>
+                        <span class="treelist-title">' . $this->getTitleStr($treeItem['row'], $titleLen) . '</span>
+                    </span>';
 
             if (!($treeItem['hasSub'] ?? false)) {
                 $out .= '</li>';
@@ -242,7 +236,7 @@ class ExportPageTreeView extends AbstractTreeView
                 }
             }
         }
-        return '<ul class="list-tree list-tree-root list-tree-root-clean">' . $out . '</ul>';
+        return '<ul class="treelist treelist-root treelist-root-clean">' . $out . '</ul>';
     }
 
     /**

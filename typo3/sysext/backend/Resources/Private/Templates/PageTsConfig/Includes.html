@@ -90,8 +90,8 @@
             </h3>
         </div>
         <div id="pagetsconfig-includes-{type}-tree-body" class="panel-collapse collapse" data-persist-collapse-state="true" aria-labelledby="pagetsconfig-includes-{type}-tree-heading">
-            <div class="tstemplate-tree-wrapper table-fit mb-0">
-                <ul class="list-tree text-monospace list-group">
+            <div class="panel-body panel-body-overflow">
+                <ul class="treelist">
                     <f:render
                         section="Tree"
                         arguments="{
@@ -110,23 +110,23 @@
     <f:if condition="{tree.children}">
         <f:for each="{tree.nextChild}" as="child">
             <li>
+                <f:if condition="{child.children}">
+                    <a
+                        class="treelist-control treelist-control-collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse-list-{child.identifier}"
+                        aria-expanded="false"
+                    >
+                        <typo3-backend-icon size="small" identifier="actions-chevron-down"></typo3-backend-icon>
+                        <typo3-backend-icon size="small" identifier="actions-chevron-right"></typo3-backend-icon>
+                    </a>
+                </f:if>
                 <div class="row justify-content-between">
                     <div class="col">
                         <div class="row row-cols-auto justify-content-md-between">
                             <div class="col col-12 col-lg-auto">
-                                <span class="list-tree-group">
-                                    <f:if condition="{child.children}">
-                                        <a
-                                            class="list-tree-control list-tree-control-collapsed"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#collapse-list-{child.identifier}"
-                                            aria-expanded="false"
-                                        >
-                                            <typo3-backend-icon identifier="actions-caret-down"></typo3-backend-icon>
-                                            <typo3-backend-icon identifier="actions-caret-right"></typo3-backend-icon>
-                                        </a>
-                                    </f:if>
-                                    <span class="list-tree-label">
+                                <span class="treelist-group treelist-group-monospace">
+                                    <span class="treelist-label">
                                         <f:if condition="{child.type} == 'Segment'">
                                             <f:then>
                                                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.tree.child.type.Segment" />
@@ -192,7 +192,7 @@
 
                 <f:if condition="{child.children}">
                     <ul
-                        class="list-tree text-monospace list-group collapse"
+                        class="treelist list-group collapse"
                         id="collapse-list-{child.identifier}"
                         data-persist-collapse-state="true"
                         data-persist-collapse-state-suffix="typoscript-include-{type}"

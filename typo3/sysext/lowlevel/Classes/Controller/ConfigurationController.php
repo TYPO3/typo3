@@ -74,17 +74,18 @@ final class ConfigurationController
      */
     private function renderTree(array|\ArrayObject $tree, string $labelHash, string $incomingIdentifier = ''): string
     {
-        if (empty($incomingIdentifier)) {
-            $html = '<ul class="list-tree text-monospace">';
-        } else {
-            $html = '<ul' .
-                ' class="list-tree text-monospace collapse"' .
+        $html = '';
+        if (!empty($incomingIdentifier)) {
+            $html .= '<div' .
+                ' class="treelist-collapse collapse"' .
                 ' data-persist-collapse-state="true"' .
                 ' data-persist-collapse-state-suffix="lowlevel-configuration-' . $labelHash . '"' .
                 ' data-persist-collapse-state-if-state="shown"' .
                 ' data-persist-collapse-state-not-if-search="true"' .
                 ' id="collapse-list-' . $incomingIdentifier . '">';
         }
+
+        $html .= '<ul class="treelist">';
 
         foreach ($tree as $key => $value) {
             if ($value instanceof \BackedEnum) {
@@ -97,21 +98,21 @@ final class ConfigurationController
             $isValueIterable = is_iterable($value);
 
             $html .= '<li>';
-            $html .= '<span class="list-tree-group">';
             $newIdentifier = '';
             if ($isValueIterable && !empty($value)) {
                 $newIdentifier = hash('xxh3', $incomingIdentifier . $key);
-                $html .= '<a class="list-tree-control collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-list-' . $newIdentifier . '" aria-expanded="false">' .
-                    '<typo3-backend-icon identifier="actions-caret-right"></typo3-backend-icon>' .
-                    '<typo3-backend-icon identifier="actions-caret-down"></typo3-backend-icon>' .
+                $html .= '<a class="treelist-control collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-list-' . $newIdentifier . '" aria-expanded="false">' .
+                    '<typo3-backend-icon size="small" identifier="actions-chevron-right"></typo3-backend-icon>' .
+                    '<typo3-backend-icon size="small" identifier="actions-chevron-down"></typo3-backend-icon>' .
                     '</a>';
             }
-            $html .= '<span class="list-tree-label">' . htmlspecialchars((string)$key) . '</span>';
+            $html .= '<span class="treelist-group treelist-group-monospace">';
+            $html .= '<span class="treelist-label">' . htmlspecialchars((string)$key) . '</span>';
             if (!$isValueIterable) {
-                $html .= ' = <span class="list-tree-value">' . htmlspecialchars((string)$value) . '</span>';
+                $html .= ' <span class="treelist-operator">=</span> <span class="treelist-value">' . htmlspecialchars((string)$value) . '</span>';
             }
             if ($isValueIterable && empty($value)) {
-                $html .= ' =';
+                $html .= ' <span class="treelist-operator">=</span>';
             }
             $html .= '</span>';
             if ($isValueIterable && !empty($value)) {
@@ -121,6 +122,10 @@ final class ConfigurationController
         }
 
         $html .= '</ul>';
+
+        if (!empty($incomingIdentifier)) {
+            $html .= '</div>';
+        }
 
         return $html;
     }

@@ -302,13 +302,13 @@ abstract class AbstractTreeView
         $name = $bMark ? ' name="' . $bMark . '"' : '';
         $aUrl = $this->getThisScript() . $anchor;
         if ($isOpen) {
-            $class = 'list-tree-control-open';
+            $class = 'treelist-control-open';
             $icon = $iconFactory->getIcon('actions-chevron-down', Icon::SIZE_SMALL);
         } else {
-            $class = 'list-tree-control-closed';
+            $class = 'treelist-control-collapsed';
             $icon = $iconFactory->getIcon('actions-chevron-right', Icon::SIZE_SMALL);
         }
-        return '<a class="list-tree-control ' . $class . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '>' . $icon->render(AbstractSvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
+        return '<a class="treelist-control ' . $class . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '>' . $icon->render(AbstractSvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
     }
 
     /**

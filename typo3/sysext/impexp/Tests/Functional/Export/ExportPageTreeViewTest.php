@@ -72,14 +72,14 @@ class ExportPageTreeViewTest extends AbstractImportExportTestCase
             GeneralUtility::trimExplode('AND', $clause, true)
         );
         self::assertEquals($expectedTreeItemsCount, count($tree));
-        self::assertEquals($expectedTreeItemsCount, substr_count($treeHtml, '<span class="list-tree-title">'));
+        self::assertEquals($expectedTreeItemsCount, substr_count($treeHtml, '<span class="treelist-title">'));
         foreach ($tree as $treeItem) {
             self::assertStringContainsString(
                 sprintf('id="pages%d"', $treeItem['row']['uid']),
                 $treeHtml
             );
             self::assertStringContainsString(
-                sprintf('<span class="list-tree-title">%s</span>', $treeItem['row']['title']),
+                sprintf('<span class="treelist-title">%s</span>', $treeItem['row']['title']),
                 $treeHtml
             );
         }

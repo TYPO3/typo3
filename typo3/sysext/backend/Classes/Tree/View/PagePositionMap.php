@@ -131,7 +131,7 @@ class PagePositionMap
         foreach ($pageTree->tree as $cc => $dat) {
             if ($latestInvDepth > $dat['invertedDepth']) {
                 $margin = 'style="margin-left: ' . ($dat['invertedDepth'] * 16 + 9) . 'px;"';
-                $lines[] = '<ul class="list-tree" ' . $margin . '>';
+                $lines[] = '<ul class="treelist" ' . $margin . '>';
             }
             // Make link + parameters.
             $latestInvDepth = $dat['invertedDepth'];
@@ -144,7 +144,7 @@ class PagePositionMap
                     if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $pageTree->tree[$cc]['invertedDepth'])) {
                         end($lines);
                         $margin = 'style="margin-left: ' . (($dat['invertedDepth'] - 1) * 16 + 9) . 'px;"';
-                        $lines[] = '<ul class="list-tree" ' . $margin . '><li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($id, $id)) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '</a></span></li></ul>';
+                        $lines[] = '<ul class="treelist" ' . $margin . '><li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($id, $id)) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '</a></span></li></ul>';
                     }
                 }
                 // If going down
@@ -186,7 +186,7 @@ class PagePositionMap
         $prev_dat = end($pageTree->tree);
         if ($prev_dat['row']['uid'] == $id) {
             if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id)) {
-                $lines[] = '<ul class="list-tree" style="margin-left: 25px"><li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($id, $id)) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '</a></span></li></ul>';
+                $lines[] = '<ul class="treelist" style="margin-left: 25px"><li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($id, $id)) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '</a></span></li></ul>';
             }
         }
         for ($a = $latestInvDepth; $a <= $this->depth; $a++) {
@@ -200,7 +200,7 @@ class PagePositionMap
             }
         }
 
-        $code = '<ul class="list-tree">';
+        $code = '<ul class="treelist">';
 
         foreach ($lines as $line) {
             if (str_starts_with($line, '<ul') || str_starts_with($line, '</ul')) {
