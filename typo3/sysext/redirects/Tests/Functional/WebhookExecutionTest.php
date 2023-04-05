@@ -19,8 +19,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Redirects\Event\RedirectWasHitEvent;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -90,7 +91,8 @@ class WebhookExecutionTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler']['logger'] = function () use ($inspector) {
             return function (RequestInterface $request) use ($inspector) {
                 $inspector($request);
-                return new Response('success', 200);
+                return (new ResponseFactory())->createResponse()
+                    ->withBody((new StreamFactory())->createStream('success'));
             };
         };
     }
