@@ -27,9 +27,9 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
+final class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
 {
-    public static function localeModifierDataProvider(string|TestSet|null $parentSet = null): array
+    private static function localeModifierDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -96,6 +96,11 @@ class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
             ->getTargetsForDataProvider();
     }
 
+    public static function localeModifierDataProvider(): array
+    {
+        return static::localeModifierDataProviderBuilder();
+    }
+
     /**
      * @test
      * @dataProvider localeModifierDataProvider
@@ -138,7 +143,7 @@ class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
      * Combines the previous data provider for mappable aspects into one large
      * data set that is permuted for several page type decorator instructions.
      */
-    public function pageTypeDecoratorIsAppliedDataProvider(): array
+    public static function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];
         foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {
@@ -147,7 +152,7 @@ class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
                 ->withVariables($pageTypeDeclaration->getVariables());
             $testSets = array_merge(
                 $testSets,
-                $this->localeModifierDataProvider($testSet),
+                static::localeModifierDataProviderBuilder($testSet),
             );
         }
         return $testSets;

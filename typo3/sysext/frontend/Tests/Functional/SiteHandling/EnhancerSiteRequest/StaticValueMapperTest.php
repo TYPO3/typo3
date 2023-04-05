@@ -26,9 +26,9 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableI
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 
-class StaticValueMapperTest extends AbstractEnhancerSiteRequestTest
+final class StaticValueMapperTest extends AbstractEnhancerSiteRequestTest
 {
-    public static function staticValueMapperDataProvider(string|TestSet|null $parentSet = null): array
+    private static function staticValueMapperDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -83,16 +83,21 @@ class StaticValueMapperTest extends AbstractEnhancerSiteRequestTest
             ->getTargetsForDataProvider();
     }
 
+    public static function staticValueMapperIsAppliedDataProvider(): array
+    {
+        return static::staticValueMapperDataProviderBuilder();
+    }
+
     /**
      * @test
-     * @dataProvider staticValueMapperDataProvider
+     * @dataProvider staticValueMapperIsAppliedDataProvider
      */
     public function staticValueMapperIsApplied(TestSet $testSet): void
     {
         $this->assertPageArgumentsEquals($testSet);
     }
 
-    public function pageTypeDecoratorIsAppliedDataProvider(): array
+    public static function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];
         foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {
@@ -101,7 +106,7 @@ class StaticValueMapperTest extends AbstractEnhancerSiteRequestTest
                 ->withVariables($pageTypeDeclaration->getVariables());
             $testSets = array_merge(
                 $testSets,
-                $this->staticValueMapperDataProvider($testSet),
+                static::staticValueMapperDataProviderBuilder($testSet),
             );
         }
         return $testSets;

@@ -26,9 +26,9 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableI
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 
-class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTest
+final class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTest
 {
-    public static function persistedPatternMapperDataProvider(string|TestSet|null $parentSet = null): array
+    private static function persistedPatternMapperDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -75,16 +75,21 @@ class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTest
             ->getTargetsForDataProvider();
     }
 
+    public static function persistedPatternMapperIsAppliedDataProvider(): array
+    {
+        return self::persistedPatternMapperDataProviderBuilder();
+    }
+
     /**
      * @test
-     * @dataProvider persistedPatternMapperDataProvider
+     * @dataProvider persistedPatternMapperIsAppliedDataProvider
      */
     public function persistedPatternMapperIsApplied(TestSet $testSet): void
     {
         $this->assertPageArgumentsEquals($testSet);
     }
 
-    public function pageTypeDecoratorIsAppliedDataProvider(): array
+    public static function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];
         foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {
@@ -93,7 +98,7 @@ class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTest
                 ->withVariables($pageTypeDeclaration->getVariables());
             $testSets = array_merge(
                 $testSets,
-                $this->persistedPatternMapperDataProvider($testSet),
+                self::persistedPatternMapperDataProviderBuilder($testSet),
             );
         }
         return $testSets;

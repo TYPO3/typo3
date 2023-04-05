@@ -28,9 +28,9 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
+final class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
 {
-    public static function staticRangeMapperDataProvider(string|TestSet|null $parentSet = null): array
+    private static function staticRangeMapperDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {
         $variableContexts = array_map(
             static function ($value) {
@@ -84,9 +84,14 @@ class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
             ->getTargetsForDataProvider();
     }
 
+    public static function staticRangeMapperIsAppliedDataProvider(): array
+    {
+        return self::staticRangeMapperDataProviderBuilder();
+    }
+
     /**
      * @test
-     * @dataProvider staticRangeMapperDataProvider
+     * @dataProvider staticRangeMapperIsAppliedDataProvider
      */
     public function staticRangeMapperIsApplied(TestSet $testSet): void
     {
@@ -122,7 +127,7 @@ class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
      * Combines the previous data provider for mappable aspects into one large
      * data set that is permuted for several page type decorator instructions.
      */
-    public function pageTypeDecoratorIsAppliedDataProvider(): array
+    public static function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];
         foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {
@@ -131,7 +136,7 @@ class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
                 ->withVariables($pageTypeDeclaration->getVariables());
             $testSets = array_merge(
                 $testSets,
-                $this->staticRangeMapperDataProvider($testSet)
+                static::staticRangeMapperDataProviderBuilder($testSet)
             );
         }
         return $testSets;

@@ -27,9 +27,9 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariablesContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 
-class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
+final class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
 {
-    public static function staticRangeMapperDataProvider(string|TestSet|null $parentSet = null): array
+    private static function staticRangeMapperDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {
         $variableContexts = array_map(
             static function ($value) {
@@ -86,16 +86,21 @@ class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
             ->getTargetsForDataProvider();
     }
 
+    public static function staticRangeMapperIsAppliedDataProvider(): array
+    {
+        return self::staticRangeMapperDataProviderBuilder();
+    }
+
     /**
      * @test
-     * @dataProvider staticRangeMapperDataProvider
+     * @dataProvider staticRangeMapperIsAppliedDataProvider
      */
     public function staticRangeMapperIsApplied(TestSet $testSet): void
     {
         $this->assertPageArgumentsEquals($testSet);
     }
 
-    public function pageTypeDecoratorIsAppliedDataProvider(): array
+    public static function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];
         foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {
@@ -104,7 +109,7 @@ class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
                 ->withVariables($pageTypeDeclaration->getVariables());
             $testSets = array_merge(
                 $testSets,
-                $this->staticRangeMapperDataProvider($testSet)
+                self::staticRangeMapperDataProviderBuilder($testSet)
             );
         }
         return $testSets;

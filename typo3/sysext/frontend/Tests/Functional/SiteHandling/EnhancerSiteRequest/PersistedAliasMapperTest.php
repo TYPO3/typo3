@@ -28,9 +28,9 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariablesContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 
-class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
+final class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
 {
-    public static function persistedAliasMapperDataProvider(string|TestSet|null $parentSet = null): array
+    private static function persistedAliasMapperDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -77,19 +77,21 @@ class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
             ->getTargetsForDataProvider();
     }
 
+    public static function persistedAliasMapperIsAppliedDataProvider(): array
+    {
+        return self::persistedAliasMapperDataProviderBuilder();
+    }
+
     /**
      * @test
-     * @dataProvider persistedAliasMapperDataProvider
+     * @dataProvider persistedAliasMapperIsAppliedDataProvider
      */
     public function persistedAliasMapperIsApplied(TestSet $testSet): void
     {
         $this->assertPageArgumentsEquals($testSet);
     }
 
-    /**
-     * @param string|TestSet|null $parentSet
-     */
-    public static function fallbackValueIsResolvedDataProvider($parentSet = null): array
+    public static function fallbackValueIsResolvedDataProvider(): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -100,7 +102,7 @@ class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
         ]);
         return Permutation::create($variables)
             ->withTargets(
-                TestSet::create($parentSet)
+                TestSet::create()
                     ->withMergedApplicables(LanguageContext::create(0))
                     ->withTargetPageId(1100)
                     ->withUrl(
@@ -142,10 +144,7 @@ class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
         $this->assertPageArgumentsEquals($testSet);
     }
 
-    /**
-     * @return array
-     */
-    public function pageTypeDecoratorIsAppliedDataProvider(): array
+    public static function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];
         foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {
@@ -154,7 +153,7 @@ class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
                 ->withVariables($pageTypeDeclaration->getVariables());
             $testSets = array_merge(
                 $testSets,
-                $this->persistedAliasMapperDataProvider($testSet),
+                self::persistedAliasMapperDataProviderBuilder($testSet),
             );
         }
         return $testSets;

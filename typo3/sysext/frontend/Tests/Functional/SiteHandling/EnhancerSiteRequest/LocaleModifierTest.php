@@ -27,9 +27,9 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariablesContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 
-class LocaleModifierTest extends AbstractEnhancerSiteRequestTest
+final class LocaleModifierTest extends AbstractEnhancerSiteRequestTest
 {
-    public static function localeModifierDataProvider(string|TestSet|null $parentSet = null): array
+    private static function localeModifierDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -120,16 +120,21 @@ class LocaleModifierTest extends AbstractEnhancerSiteRequestTest
             ->getTargetsForDataProvider();
     }
 
+    public static function localeModifierIsAppliedDataProvider(): array
+    {
+        return self::localeModifierDataProviderBuilder();
+    }
+
     /**
      * @test
-     * @dataProvider localeModifierDataProvider
+     * @dataProvider localeModifierIsAppliedDataProvider
      */
     public function localeModifierIsApplied(TestSet $testSet): void
     {
         $this->assertPageArgumentsEquals($testSet);
     }
 
-    public function pageTypeDecoratorIsAppliedDataProvider(): array
+    public static function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];
         foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {
@@ -138,7 +143,7 @@ class LocaleModifierTest extends AbstractEnhancerSiteRequestTest
                 ->withVariables($pageTypeDeclaration->getVariables());
             $testSets = array_merge(
                 $testSets,
-                $this->localeModifierDataProvider($testSet),
+                self::localeModifierDataProviderBuilder($testSet),
             );
         }
         return $testSets;

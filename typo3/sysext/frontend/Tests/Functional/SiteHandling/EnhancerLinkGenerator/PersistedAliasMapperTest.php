@@ -27,9 +27,9 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class PersistedAliasMapperTest extends AbstractEnhancerLinkGeneratorTestCase
+final class PersistedAliasMapperTest extends AbstractEnhancerLinkGeneratorTestCase
 {
-    public static function persistedAliasMapperDataProvider(string|TestSet|null $parentSet = null): array
+    private static function persistedAliasMapperDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -74,6 +74,11 @@ class PersistedAliasMapperTest extends AbstractEnhancerLinkGeneratorTestCase
             ->getTargetsForDataProvider();
     }
 
+    public static function persistedAliasMapperDataProvider(): array
+    {
+        return static::persistedAliasMapperDataProviderBuilder();
+    }
+
     /**
      * @test
      * @dataProvider persistedAliasMapperDataProvider
@@ -112,7 +117,7 @@ class PersistedAliasMapperTest extends AbstractEnhancerLinkGeneratorTestCase
      * Combines the previous data provider for mappable aspects into one large
      * data set that is permuted for several page type decorator instructions.
      */
-    public function pageTypeDecoratorIsAppliedDataProvider(): array
+    public static function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];
         foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {
@@ -121,7 +126,7 @@ class PersistedAliasMapperTest extends AbstractEnhancerLinkGeneratorTestCase
                 ->withVariables($pageTypeDeclaration->getVariables());
             $testSets = array_merge(
                 $testSets,
-                $this->persistedAliasMapperDataProvider($testSet),
+                self::persistedAliasMapperDataProviderBuilder($testSet),
             );
         }
         return $testSets;

@@ -27,9 +27,9 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
+final class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
 {
-    public static function staticValueMapperDataProvider(string|TestSet|null $parentSet = null): array
+    private static function staticValueMapperDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -100,9 +100,14 @@ class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
             ->getTargetsForDataProvider();
     }
 
+    public static function staticValueMapperIsAppliedDataProvider(): array
+    {
+        return self::staticValueMapperDataProviderBuilder();
+    }
+
     /**
      * @test
-     * @dataProvider staticValueMapperDataProvider
+     * @dataProvider staticValueMapperIsAppliedDataProvider
      */
     public function staticValueMapperIsApplied(TestSet $testSet): void
     {
@@ -141,7 +146,7 @@ class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
      * Combines the previous data provider for mappable aspects into one large
      * data set that is permuted for several page type decorator instructions.
      */
-    public function pageTypeDecoratorIsAppliedDataProvider(): array
+    public static function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];
         foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {
@@ -150,7 +155,7 @@ class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
                 ->withVariables($pageTypeDeclaration->getVariables());
             $testSets = array_merge(
                 $testSets,
-                $this->staticValueMapperDataProvider($testSet),
+                self::staticValueMapperDataProviderBuilder($testSet),
             );
         }
         return $testSets;

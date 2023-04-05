@@ -27,9 +27,9 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTestCase
+final class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTestCase
 {
-    public static function persistedPatternMapperDataProvider(string|TestSet|null $parentSet = null): array
+    private static function persistedPatternMapperDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -92,6 +92,11 @@ class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTestCase
             ->getTargetsForDataProvider();
     }
 
+    public static function persistedPatternMapperDataProvider(): array
+    {
+        return static::persistedPatternMapperDataProviderBuilder();
+    }
+
     /**
      * @test
      * @dataProvider persistedPatternMapperDataProvider
@@ -133,7 +138,7 @@ class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTestCase
      * Combines the previous data provider for mappable aspects into one large
      * data set that is permuted for several page type decorator instructions.
      */
-    public function pageTypeDecoratorIsAppliedDataProvider(): array
+    public static function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];
         foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {
@@ -142,7 +147,7 @@ class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTestCase
                 ->withVariables($pageTypeDeclaration->getVariables());
             $testSets = array_merge(
                 $testSets,
-                $this->persistedPatternMapperDataProvider($testSet),
+                self::persistedPatternMapperDataProviderBuilder($testSet),
             );
         }
         return $testSets;
