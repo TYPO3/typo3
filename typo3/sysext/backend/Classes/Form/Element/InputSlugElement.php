@@ -167,19 +167,17 @@ class InputSlugElement extends AbstractFormElement
         $mainFieldHtml[] =                      ' data-formengine-input-params="' . htmlspecialchars((string)json_encode(['field' => $parameterArray['itemFormElName'], 'evalList' => implode(',', $evalList)])) . '"';
         $mainFieldHtml[] =                      ' data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
         $mainFieldHtml[] =                  ' />';
-        $mainFieldHtml[] =                  '<span class="input-group-btn">';
-        $mainFieldHtml[] =                      '<button class="btn btn-default t3js-form-field-slug-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
-        $mainFieldHtml[] =                          $this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL)->render();
-        $mainFieldHtml[] =                      '</button>';
-        $mainFieldHtml[] =                      '<button class="btn btn-default t3js-form-field-slug-recreate" type="button" title="' . htmlspecialchars($recreateButtonTitle) . '">';
-        $mainFieldHtml[] =                          $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render();
-        $mainFieldHtml[] =                      '</button>';
-        $mainFieldHtml[] =                  '</span>';
         $mainFieldHtml[] =                  '<input type="hidden"';
         $mainFieldHtml[] =                      ' class="t3js-form-field-slug-hidden"';
         $mainFieldHtml[] =                      ' name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
         $mainFieldHtml[] =                      ' value="' . htmlspecialchars($itemValue) . '"';
         $mainFieldHtml[] =                  ' />';
+        $mainFieldHtml[] =                  '<button class="btn btn-default t3js-form-field-slug-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
+        $mainFieldHtml[] =                      $this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL)->render();
+        $mainFieldHtml[] =                  '</button>';
+        $mainFieldHtml[] =                  '<button class="btn btn-default t3js-form-field-slug-recreate" type="button" title="' . htmlspecialchars($recreateButtonTitle) . '">';
+        $mainFieldHtml[] =                      $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render();
+        $mainFieldHtml[] =                  '</button>';
         $mainFieldHtml[] =              '</div>';
         $mainFieldHtml[] =          '</div>';
         if (!empty($fieldControlHtml)) {

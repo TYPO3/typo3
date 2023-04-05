@@ -557,14 +557,12 @@ class InlineControlContainer extends AbstractContainer
                 $createNewRelationText = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createNewRelation'));
             }
             $item .= '
-            <span class="input-group-btn">
                 <button type="button" class="btn btn-default t3js-create-new-button" title="' . $createNewRelationText . '">
                     ' . $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render() . $createNewRelationText . '
-                </button>
-            </span>';
+                </button>';
         } else {
             $item .= '
-            <span class="input-group-btn btn"></span>';
+            <span class="btn"></span>';
         }
 
         // Wrap the selector and add a spacer to the bottom

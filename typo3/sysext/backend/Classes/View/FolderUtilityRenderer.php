@@ -72,10 +72,8 @@ class FolderUtilityRenderer
         $markup[] = '<h4>' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:create_folder.title')) . '</h4>';
         $markup[] = '<div class="input-group">';
         $markup[] = '<input class="form-control" type="text" name="data[newfolder][0][data]" placeholder="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:create_folder.placeholder')) . '" />';
-        $markup[] = '<span class="input-group-btn">';
         $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
             . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:create_folder.submit')) . '" />';
-        $markup[] = '</span>';
         $markup[] = '</div>';
         $markup[] = '<input type="hidden" name="data[newfolder][0][target]" value="'
             . htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';
@@ -157,10 +155,8 @@ class FolderUtilityRenderer
         $markup[] = '<div class="col">';
         $markup[] = '<div class="input-group">';
         $markup[] = '<input type="file" multiple="multiple" name="upload_0[]" class="form-control" />';
-        $markup[] = '<div class="input-group-btn">';
         $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
             . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')) . '" />';
-        $markup[] = '</div>';
         $markup[] = '</div>';
         $markup[] = '</div>';
 
@@ -195,10 +191,8 @@ class FolderUtilityRenderer
             $markup[] = '<div class="input-group">';
             $markup[] = '<input type="url" name="data[newMedia][0][url]" class="form-control" placeholder="'
                 . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')) . '" />';
-            $markup[] = '<div class="input-group-btn">';
             $markup[] = '<button class="btn btn-default">'
                 . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit')) . '</button>';
-            $markup[] = '</div>';
             $markup[] = '</div>';
             $markup[] = '</div>';
             $markup[] = '<div class="row mt-1">';

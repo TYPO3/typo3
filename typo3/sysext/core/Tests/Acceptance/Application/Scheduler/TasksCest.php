@@ -138,7 +138,7 @@ final class TasksCest
         $I->click('[data-scheduler-table] > tbody > tr > td.nowrap > div:nth-child(1) > a:nth-child(1)');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->canSee('Edit scheduled task "System Status Update (reports)"');
-        $I->click('#task_group_row > div > div > div > div > button');
+        $I->click('#task_group_row > div > div > div > button');
         $modalDialog->canSeeDialog();
 
         $I->fillField('.modal.show input[name="action[createGroup]"]', 'new task group');

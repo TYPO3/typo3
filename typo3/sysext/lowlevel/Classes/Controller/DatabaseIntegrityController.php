@@ -1422,10 +1422,8 @@ class DatabaseIntegrityController
             if (in_array('limit', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableLimit'] ?? false)) {
                 $limit = [];
                 $limit[] = '<div class="input-group">';
-                $limit[] = '	<span class="input-group-btn">';
                 $limit[] = $this->updateIcon();
-                $limit[] = '	</span>';
-                $limit[] = '	<input type="text" class="form-control" value="' . htmlspecialchars($this->extFieldLists['queryLimit']) . '" name="SET[queryLimit]" id="queryLimit">';
+                $limit[] = '<input type="text" class="form-control" value="' . htmlspecialchars($this->extFieldLists['queryLimit']) . '" name="SET[queryLimit]" id="queryLimit">';
                 $limit[] = '</div>';
 
                 $prevLimit = $limitBegin - $limitLength < 0 ? 0 : $limitBegin - $limitLength;
@@ -1989,10 +1987,8 @@ class DatabaseIntegrityController
     {
         $out = [];
         $out[] = '<div class="input-group mb-2">';
-        $out[] = '	<span class="input-group-btn">';
         $out[] = $this->updateIcon();
-        $out[] = ' 	</span>';
-        $out[] = '	<input type="text" class="form-control t3js-clearable" value="' . htmlspecialchars($fieldName) . '" name="' . htmlspecialchars($name) . '">';
+        $out[] = '<input type="text" class="form-control t3js-clearable" value="' . htmlspecialchars($fieldName) . '" name="' . htmlspecialchars($name) . '">';
         $out[] = '</div>';
 
         $out[] = '<select class="form-select t3js-addfield" name="_fieldListDummy" size="5" data-field="' . htmlspecialchars($name) . '">';

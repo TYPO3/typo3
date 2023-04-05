@@ -23,13 +23,14 @@
                             {f:if(condition: '!{constantItem.isInCurrentTemplate}', then: 'disabled')}
                         >
                         <div class="input-group userTS" id="userTS-{constantItem.idName}" style="{f:if(condition: constantItem.isInCurrentTemplate, else: 'display:none;')}">
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="undo" rel="{constantItem.idName}">
-                                    <span title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle')}">
-                                        <core:icon identifier="actions-edit-undo" />
-                                    </span>
-                                </button>
-                            </span>
+                            <button
+                                type="button"
+                                class="btn btn-default t3js-toggle"
+                                data-bs-toggle="undo"
+                                rel="{constantItem.idName}"
+                                title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle')}">
+                                <core:icon identifier="actions-edit-undo" />
+                            </button>
 
                             <f:switch expression="{constantItem.type}">
 
@@ -183,13 +184,11 @@
 
                         </div>
                         <div class="input-group defaultTS" id="defaultTS-{constantItem.idName}" style="{f:if(condition: constantItem.isInCurrentTemplate, then: 'display:none;')}">
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="edit" rel="{constantItem.idName}">
-                                    <span title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle')}">
-                                        <core:icon identifier="actions-open" />
-                                    </span>
-                                </button>
-                            </span>
+                            <button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="edit" rel="{constantItem.idName}">
+                                <span title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle')}">
+                                    <core:icon identifier="actions-open" />
+                                </span>
+                            </button>
                             <input class="form-control" type="number" placeholder="{constantItem.default_value}" readonly>
                         </div>
                     </div>

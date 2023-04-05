@@ -164,22 +164,6 @@ fieldset[disabled] .form-control {
             display: block;
         }
     }
-
-    .input-group-btn {
-        label {
-            border-color: $danger;
-        }
-
-        label:before {
-            font-family: inherit;
-            font-size: inherit;
-            margin-right: inherit;
-            text-align: inherit;
-            content: '';
-            color: inherit;
-            display: block;
-        }
-    }
 }
 
 //
