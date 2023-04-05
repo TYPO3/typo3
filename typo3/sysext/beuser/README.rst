@@ -14,5 +14,5 @@ filemounts in a separate submodule.
 
 :Repository:  https://github.com/typo3/typo3
 :Issues:      https://forge.typo3.org/
-:Read online: https://docs.typo3.org/
+:Read online: https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Backend/AccessControl/UsersAndGroups/
 :TER:         https://extensions.typo3.org/extension/beuser/

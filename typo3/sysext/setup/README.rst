@@ -7,5 +7,5 @@ including the preferred language, their name and email address.
 
 :Repository:  https://github.com/typo3/typo3
 :Issues:      https://forge.typo3.org/
-:Read online: https://docs.typo3.org/
+:Read online: https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/Configuration/UserSettingsConfiguration/
 :TER:         https://extensions.typo3.org/extension/setup/
