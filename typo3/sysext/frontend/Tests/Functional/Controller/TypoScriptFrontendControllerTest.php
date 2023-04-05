@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScrip
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TypoScriptFrontendControllerTest extends FunctionalTestCase
+final class TypoScriptFrontendControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
@@ -120,16 +120,6 @@ alert(yes);', $body);
     }
 
     /**
-     * A USER_INT method for headerAndFooterMarkersAreReplacedDuringIntProcessing()
-     */
-    public function userIntCallback(): string
-    {
-        $GLOBALS['TSFE']->additionalHeaderData[] = 'headerDataFromUserInt';
-        $GLOBALS['TSFE']->additionalFooterData[] = 'footerDataFromUserInt';
-        return 'userIntContent';
-    }
-
-    /**
      * @test
      */
     public function localizationReturnsUnchangedStringIfNotLocallangLabel(): void
@@ -151,14 +141,6 @@ alert(yes);', $body);
     }
 
     /**
-     * A USER method for localizationReturnsUnchangedStringIfNotLocallangLabel()
-     */
-    public function slWithoutLLLCallback(): string
-    {
-        return $GLOBALS['TSFE']->sL('notprefixedWithLLL');
-    }
-
-    /**
      * @test
      */
     public function localizationReturnsLocalizedStringWithLocallangLabel(): void
@@ -177,14 +159,6 @@ alert(yes);', $body);
         $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/en/'))->withPageId(88));
         $body = (string)$response->getBody();
         self::assertStringContainsString('Pagetree Overview', $body);
-    }
-
-    /**
-     * A USER method for localizationReturnsUnchangedStringIfNotLocallangLabel()
-     */
-    public function slWithLLLCallback(): string
-    {
-        return $GLOBALS['TSFE']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page');
     }
 
     public static function mountPointParameterContainsOnlyValidMPValuesDataProvider(): array
@@ -229,17 +203,6 @@ alert(yes);', $body);
         );
         $body = (string)$response->getBody();
         self::assertStringContainsString($expected, $body);
-    }
-
-    /**
-     * A USER method for mountPointParameterContainsOnlyValidMPValues()
-     */
-    public function pageExposingMpParameterCallback(): string
-    {
-        if ($GLOBALS['TSFE']->MP === '') {
-            return 'empty';
-        }
-        return 'foo' . $GLOBALS['TSFE']->MP . 'bar';
     }
 
     public static function getFromCacheSetsConfigRootlineToLocalRootlineDataProvider(): array
