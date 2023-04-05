@@ -34,7 +34,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-final class RouteTest extends AbstractEnhancerSiteRequestTest
+final class RouteTest extends AbstractEnhancerSiteRequestTestCase
 {
     public static function routeDefaultsAreConsideredDataProvider(): array
     {

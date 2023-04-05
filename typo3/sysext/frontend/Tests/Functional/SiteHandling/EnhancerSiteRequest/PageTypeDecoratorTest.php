@@ -27,7 +27,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTest
+class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTestCase
 {
     public static function pageTypeDecoratorIsAppliedDataProvider(): array
     {

@@ -28,7 +28,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariablesContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 
-final class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
+final class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTestCase
 {
     private static function persistedAliasMapperDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {

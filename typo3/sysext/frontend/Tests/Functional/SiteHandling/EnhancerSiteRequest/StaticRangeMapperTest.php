@@ -27,7 +27,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariablesContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 
-final class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
+final class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTestCase
 {
     private static function staticRangeMapperDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {

@@ -27,7 +27,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariablesContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 
-final class LocaleModifierTest extends AbstractEnhancerSiteRequestTest
+final class LocaleModifierTest extends AbstractEnhancerSiteRequestTestCase
 {
     private static function localeModifierDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {

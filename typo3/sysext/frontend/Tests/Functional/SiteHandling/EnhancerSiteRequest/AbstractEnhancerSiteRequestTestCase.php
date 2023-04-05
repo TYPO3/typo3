@@ -27,10 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataH
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-/**
- * Abstract test case
- */
-abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
+abstract class AbstractEnhancerSiteRequestTestCase extends AbstractTestCase
 {
     protected function setUp(): void
     {

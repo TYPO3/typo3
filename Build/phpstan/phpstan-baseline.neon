@@ -2618,7 +2618,7 @@ parameters:
 		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/EnhancerSiteRequest/AbstractEnhancerSiteRequestTest.php
+			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/EnhancerSiteRequest/AbstractEnhancerSiteRequestTestCase.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"

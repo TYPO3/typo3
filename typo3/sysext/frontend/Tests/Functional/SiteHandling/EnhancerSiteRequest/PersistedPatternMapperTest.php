@@ -26,7 +26,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableI
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 
-final class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTest
+final class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTestCase
 {
     private static function persistedPatternMapperDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {

@@ -26,7 +26,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableI
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 
-final class StaticValueMapperTest extends AbstractEnhancerSiteRequestTest
+final class StaticValueMapperTest extends AbstractEnhancerSiteRequestTestCase
 {
     private static function staticValueMapperDataProviderBuilder(string|TestSet|null $parentSet = null): array
     {
