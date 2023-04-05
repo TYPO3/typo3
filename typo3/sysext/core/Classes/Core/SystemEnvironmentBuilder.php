@@ -119,7 +119,8 @@ class SystemEnvironmentBuilder
         $scriptPath = GeneralUtility::fixWindowsFilePath(self::getPathThisScript($isCli));
         $rootPath = self::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
         // Check if the root path has been set in the environment (e.g. by the composer installer)
-        if (getenv('TYPO3_PATH_ROOT')) {
+        $rootPathFromEnvironment = self::getDefinedPathRoot();
+        if ($rootPathFromEnvironment) {
             if ($isCli && self::usesComposerClassLoading()) {
                 // $scriptPath is used for various path calculations based on the document root
                 // Therefore we assume it is always a subdirectory of the document root, which is not the case
@@ -132,7 +133,7 @@ class SystemEnvironmentBuilder
                 // or has the real path
                 $scriptName = ltrim(substr($scriptPath, strlen($rootPath)), '/');
             }
-            $rootPath = rtrim(GeneralUtility::fixWindowsFilePath((string)getenv('TYPO3_PATH_ROOT')), '/');
+            $rootPath = rtrim(GeneralUtility::fixWindowsFilePath($rootPathFromEnvironment), '/');
             $scriptPath = $rootPath . '/' . $scriptName;
         }
         return $scriptPath;
@@ -155,8 +156,9 @@ class SystemEnvironmentBuilder
     protected static function calculateRootPath(int $entryPointLevel, int $requestType): string
     {
         // Check if the root path has been set in the environment (e.g. by the composer installer)
-        if (getenv('TYPO3_PATH_ROOT')) {
-            return rtrim(GeneralUtility::fixWindowsFilePath((string)getenv('TYPO3_PATH_ROOT')), '/');
+        $pathRoot = self::getDefinedPathRoot();
+        if ($pathRoot) {
+            return rtrim(GeneralUtility::fixWindowsFilePath($pathRoot), '/');
         }
         $isCli = self::isCliRequestType($requestType);
         // Absolute path of the entry script that was called
@@ -199,13 +201,19 @@ class SystemEnvironmentBuilder
         $GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
     }
 
+    protected static function getDefinedPathRoot(): string
+    {
+        return getenv('TYPO3_PATH_ROOT') ?: getenv('REDIRECT_TYPO3_PATH_ROOT') ?: '';
+    }
+
     /**
      * Initialize the Environment class
      */
     protected static function initializeEnvironment(int $requestType, string $scriptPath, string $sitePath)
     {
-        if (getenv('TYPO3_PATH_ROOT')) {
-            $rootPathFromEnvironment = rtrim(GeneralUtility::fixWindowsFilePath((string)getenv('TYPO3_PATH_ROOT')), '/');
+        $pathRoot = self::getDefinedPathRoot();
+        if ($pathRoot) {
+            $rootPathFromEnvironment = rtrim(GeneralUtility::fixWindowsFilePath($pathRoot), '/');
             if ($sitePath !== $rootPathFromEnvironment) {
                 // This means, that we re-initialized the environment during a single request
                 // This currently only happens in custom code or during functional testing
@@ -215,7 +223,8 @@ class SystemEnvironmentBuilder
             }
         }
 
-        $projectRootPath = GeneralUtility::fixWindowsFilePath((string)getenv('TYPO3_PATH_APP'));
+        $projectRootPath = (string)(getenv('TYPO3_PATH_APP') ?: getenv('REDIRECT_TYPO3_PATH_APP') ?: '');
+        $projectRootPath = GeneralUtility::fixWindowsFilePath($projectRootPath);
         $isDifferentRootPath = ($projectRootPath && $projectRootPath !== $sitePath);
         Environment::initialize(
             static::createApplicationContext(),
