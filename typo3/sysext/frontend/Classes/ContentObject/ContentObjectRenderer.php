@@ -5159,7 +5159,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $includeRecordsWithoutDefaultTranslation = $includeRecordsWithoutDefaultTranslation !== '' && $includeRecordsWithoutDefaultTranslation !== '0';
             } else {
                 // Option was not explicitly set, check what's in for the language overlay type.
-                $includeRecordsWithoutDefaultTranslation = $languageAspect->getOverlayType() === $languageAspect::OVERLAYS_ON_WITH_FLOATING;
+                // OVERLAYS_ON means that we do not include the "floating" records (records without default translation)
+                $includeRecordsWithoutDefaultTranslation = $languageAspect->getOverlayType() !== $languageAspect::OVERLAYS_ON;
             }
             if ($includeRecordsWithoutDefaultTranslation) {
                 $languageQuery = $expressionBuilder->or(
