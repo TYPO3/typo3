@@ -841,7 +841,8 @@ class SchedulerModuleController
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:close'))
             ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL))
             ->setShowLabelText(true)
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage'));
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage'))
+            ->setClasses('t3js-scheduler-close');
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         $saveButton = $buttonBar->makeInputButton()
             ->setName('CMD')

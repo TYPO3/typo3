@@ -22,6 +22,7 @@ import { ActionEventDetails } from '@typo3/backend/multi-record-selection-action
 import PersistentStorage from '@typo3/backend/storage/persistent';
 import DateTimePicker from '@typo3/backend/date-time-picker';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
+import Severity from '@typo3/backend/severity';
 
 interface TableNumberMapping {
   [s: string]: number;
@@ -35,6 +36,7 @@ class Scheduler {
   constructor() {
     this.initializeEvents();
     this.initializeDefaultStates();
+    this.initializeCloseConfirm();
 
     DocumentSaveActions.getInstance().addPreSubmitCallback((): void => {
       let taskClass = $('#task_class').val();
@@ -283,6 +285,66 @@ class Scheduler {
 
       form.submit();
     }
+  }
+
+  private initializeCloseConfirm() {
+    const schedulerForm: HTMLFormElement = document.querySelector('form[name=tx_scheduler_form]');
+    if(!schedulerForm) {
+      return;
+    }
+
+    const formData = new FormData(schedulerForm)
+
+    document.querySelector('.t3js-scheduler-close').addEventListener('click', (e: Event) => {
+      const newFormData = new FormData(schedulerForm)
+      const formDataObj = Object.fromEntries(formData.entries());
+      const newFormDataObj = Object.fromEntries(newFormData.entries());
+      const formChanged = JSON.stringify(formDataObj) !== JSON.stringify(newFormDataObj)
+
+      if(formChanged || schedulerForm.querySelector('input[value="add"]')) {
+        e.preventDefault();
+        const closeUrl = (e.target as HTMLLinkElement).href
+        Modal.confirm(
+          TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to close without saving?',
+          TYPO3.lang['label.confirm.close_without_save.content'] || 'You currently have unsaved changes. Are you sure you want to discard these changes?',
+          Severity.warning,
+          [
+            {
+              text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'No, I will continue editing',
+              btnClass: 'btn-default',
+              name: 'no',
+              trigger: () => Modal.dismiss(),
+            },
+            {
+              text: TYPO3.lang['buttons.confirm.close_without_save.yes'] || 'Yes, discard my changes',
+              btnClass: 'btn-default',
+              name: 'yes',
+              trigger: () => {
+                Modal.dismiss();
+                window.location.href = closeUrl
+              }
+            },
+            {
+              text: TYPO3.lang['buttons.confirm.save_and_close'] || 'Save and close',
+              btnClass: 'btn-primary',
+              name: 'save',
+              active: true,
+              trigger: () => {
+                Modal.dismiss();
+
+                const hidden = document.createElement('input')
+                hidden.type = 'hidden';
+                hidden.value = 'saveclose';
+                hidden.name = 'CMD';
+
+                schedulerForm.append(hidden)
+                schedulerForm.submit();
+              },
+            }
+          ]
+        );
+      }
+    })
   }
 }
 
