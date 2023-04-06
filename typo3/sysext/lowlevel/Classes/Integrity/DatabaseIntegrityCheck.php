@@ -500,7 +500,7 @@ class DatabaseIntegrityCheck
      */
     public function testDBRefs($theArray): string
     {
-        $result = '';
+        $rows = [];
         foreach ($theArray as $table => $dbArr) {
             if ($GLOBALS['TCA'][$table]) {
                 $ids = array_keys($dbArr);
@@ -524,18 +524,19 @@ class DatabaseIntegrityCheck
                         if (isset($dbArr[$row['uid']])) {
                             unset($dbArr[$row['uid']]);
                         } else {
-                            $result .= 'Strange Error. ...<br />';
+                            $rows[] = 'Strange Error. ...';
                         }
                     }
                     foreach ($dbArr as $theId => $theC) {
-                        $result .= 'There are ' . $theC . ' records pointing to this missing or deleted record; [' . $table . '][' . $theId . ']<br />';
+                        $rows[] = 'There are ' . $theC . ' records pointing to this missing or deleted record; <code>[' . $table . '][' . $theId . ']</code>';
                     }
                 }
             } else {
-                $result .= 'Codeerror. Table is not a table...<br />';
+                $rows[] = 'Codeerror. Table is not a table...';
             }
         }
-        return $result;
+
+        return $rows !== [] ? '<ul class="list-unstyled">' . implode(LF, array_map(static fn (string $row): string => '<li>' . $row . '</li>', $rows)) . '</ul>' : '';
     }
 
     public function getPageIdArray(): array
