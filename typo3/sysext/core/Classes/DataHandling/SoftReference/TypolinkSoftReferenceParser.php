@@ -115,7 +115,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
                     $finalTagParts['uid'] = $linkData['uid'];
                     break;
                 case LinkService::TYPE_PAGE:
-                    $linkData['pageuid'] = (int)$linkData['pageuid'];
+                    $linkData['pageuid'] = (int)($linkData['pageuid'] ?? 0);
                     if (isset($linkData['pagetype'])) {
                         $linkData['pagetype'] = (int)$linkData['pagetype'];
                     }
