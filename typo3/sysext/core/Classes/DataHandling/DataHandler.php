@@ -3624,7 +3624,7 @@ class DataHandler implements LoggerAwareInterface
         $enableField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] ?? '';
         $headerField = $GLOBALS['TCA'][$table]['ctrl']['label'];
         // Getting "copy-after" fields if applicable:
-        $copyAfterFields = $destPid < 0 ? $this->fixCopyAfterDuplFields($table, $uid, abs($destPid), false) : [];
+        $copyAfterFields = $destPid < 0 ? $this->fixCopyAfterDuplFields((string)$table, (int)abs($destPid)) : [];
         // Page TSconfig related:
         $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
         $tE = $this->getTableEntries($table, $TSConfig);
@@ -8760,29 +8760,26 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * When er record is copied you can specify fields from the previous record which should be copied into the new one
-     * This function is also called with new elements. But then $update must be set to zero and $newData containing the data array. In that case data in the incoming array is NOT overridden. (250202)
+     * When a record is copied you can specify fields from the previous record which should be copied into the new one
      *
      * @param string $table Table name
-     * @param int $uid Record UID
      * @param int $prevUid UID of previous record
-     * @param bool $update If set, updates the record
-     * @param array $newData Input array. If fields are already specified AND $update is not set, values are not set in output array.
+     *
      * @return array Output array (For when the copying operation needs to get the information instead of updating the info)
      * @internal should only be used from within DataHandler
      */
-    public function fixCopyAfterDuplFields($table, $uid, $prevUid, $update, $newData = [])
+    protected function fixCopyAfterDuplFields(string $table, int $prevUid): array
     {
-        if ($GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'] ?? false) {
-            $prevData = $this->recordInfo($table, $prevUid);
-            $theFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], true);
-            foreach ($theFields as $field) {
-                if ($GLOBALS['TCA'][$table]['columns'][$field] && ($update || !isset($newData[$field]))) {
-                    $newData[$field] = $prevData[$field];
-                }
-            }
-            if ($update && !empty($newData)) {
-                $this->updateDB($table, $uid, $newData);
+        if (!($GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'] ?? false)
+            || ($prevData = $this->recordInfo($table, $prevUid)) === null
+        ) {
+            return [];
+        }
+
+        $newData = [];
+        foreach (GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], true) as $field) {
+            if (($GLOBALS['TCA'][$table]['columns'][$field] ?? false) && !isset($newData[$field])) {
+                $newData[$field] = $prevData[$field];
             }
         }
         return $newData;
