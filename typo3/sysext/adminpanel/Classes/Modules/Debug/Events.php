@@ -22,10 +22,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\VarDumper\Cloner\Data;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\AbstractDumper;
-use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+use TYPO3\CMS\Adminpanel\Utility\HtmlDumper;
+use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -34,6 +35,10 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class Events extends AbstractSubModule implements DataProviderInterface
 {
+    public function __construct(private readonly RequestId $requestId)
+    {
+    }
+
     public function getIdentifier(): string
     {
         return 'debug_events';
@@ -70,6 +75,7 @@ class Events extends AbstractSubModule implements DataProviderInterface
         $events = $values['events'] ?? null;
 
         $dumper = new HtmlDumper(null, null, AbstractDumper::DUMP_LIGHT_ARRAY);
+        $dumper->setNonce($this->requestId->nonce->b64);
         $dumper->setTheme('light');
 
         $view->assign('events', $events instanceof Data ? $dumper->dump($events, true) : null);
