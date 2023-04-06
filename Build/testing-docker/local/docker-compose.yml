@@ -1155,7 +1155,6 @@ services:
         fi
         php -v | grep '^PHP'
         composer req --dev --no-progress --no-interaction phpunit/phpunit:^10 -w
-        composer req --dev --no-progress --no-interaction typo3/testing-framework:dev-lolli-1
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/phpunit/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
@@ -1224,7 +1223,6 @@ services:
         fi
         php -v | grep '^PHP'
         composer req --dev --no-progress --no-interaction phpunit/phpunit:^10 -w
-        composer req --dev --no-progress --no-interaction typo3/testing-framework:dev-lolli-1
         COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/phpunit/FunctionalTestsDeprecated-10.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" $${COMMAND};
@@ -1393,7 +1391,6 @@ services:
         fi
         php -v | grep '^PHP'
         composer req --dev --no-progress --no-interaction phpunit/phpunit:^10 -w
-        composer req --dev --no-progress --no-interaction typo3/testing-framework:dev-lolli-1
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" \
           vendor/phpunit/phpunit/phpunit -c Build/phpunit/UnitTests-10.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
@@ -1447,7 +1444,6 @@ services:
         fi
         php -v | grep '^PHP'
         composer req --dev --no-progress --no-interaction phpunit/phpunit:^10 -w
-        composer req --dev --no-progress --no-interaction typo3/testing-framework:dev-lolli-1
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" \
           vendor/phpunit/phpunit/phpunit -c Build/phpunit/UnitTestsDeprecated-10.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
