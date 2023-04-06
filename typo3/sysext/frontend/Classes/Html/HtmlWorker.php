@@ -77,6 +77,26 @@ class HtmlWorker
         return $this;
     }
 
+    /**
+     * @param string $nonce none value to be added
+     * @param string ...$nodeNames element node names to be processed (e.g. `style`)
+     */
+    public function addNonceAttribute(string $nonce, string ...$nodeNames): self
+    {
+        if ($nodeNames === []) {
+            return $this;
+        }
+        $xpath = new DOMXPath($this->document);
+        foreach ($nodeNames as $nodeName) {
+            $expression = sprintf('//%s[not(@*)]', $nodeName);
+            /** @var DOMElement $element */
+            foreach ($xpath->query($expression, $this->mount) as $element) {
+                $element->setAttribute('nonce', $nonce);
+            }
+        }
+        return $this;
+    }
+
     public function transformUri(string $selector, int $flags = 0): self
     {
         if (!$this->mount instanceof DOMNode || !$this->document instanceof DOMDocument) {

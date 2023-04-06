@@ -92,7 +92,7 @@
 		"symfony/rate-limiter": "^6.2",
 		"symfony/routing": "^6.2",
 		"symfony/uid": "^6.2",
-		"symfony/var-dumper": "^6.2",
+		"symfony/var-dumper": "^6.3",
 		"symfony/yaml": "^6.2",
 		"typo3/class-alias-loader": "^1.1.4",
 		"typo3/cms-cli": "^3.1",
