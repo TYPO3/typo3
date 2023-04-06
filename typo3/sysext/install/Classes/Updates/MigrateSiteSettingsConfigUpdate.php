@@ -85,6 +85,8 @@ class MigrateSiteSettingsConfigUpdate implements UpgradeWizardInterface
     {
         $settingsCollection = [];
         foreach ($this->siteConfiguration->getAllSiteConfigurationPaths() as $siteIdentifier => $configurationPath) {
+            // Ensure site identifier is a string, even if it only consists of digits
+            $siteIdentifier = (string)$siteIdentifier;
             // settings.yaml already exists, skip
             if (file_exists($configurationPath . '/' . self::SETTINGS_FILENAME)) {
                 continue;
