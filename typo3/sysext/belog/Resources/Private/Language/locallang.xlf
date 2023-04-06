@@ -291,9 +291,6 @@
 			<trans-unit id="chLog_l_user" resname="chLog_l_user">
 				<source>User</source>
 			</trans-unit>
-			<trans-unit id="chLog_l_error" resname="chLog_l_error">
-				<source>E</source>
-			</trans-unit>
 			<trans-unit id="chLog_l_action" resname="chLog_l_action">
 				<source>Action</source>
 			</trans-unit>

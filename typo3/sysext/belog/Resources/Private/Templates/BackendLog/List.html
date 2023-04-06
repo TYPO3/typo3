@@ -15,20 +15,11 @@
     <h1>
         <f:translate key="adminLog" />
     </h1>
-
-    <f:render
-        partial="Content/Filter"
-        arguments="{_all}"
-    />
+    <f:render partial="Content/Filter" arguments="{_all}" />
 
     <f:if condition="{access}">
         <f:then>
-            <div class="divider"></div>
-
-            <f:render
-                partial="Content/LogEntries"
-                arguments="{_all}"
-            />
+            <f:render partial="Content/LogEntries" arguments="{_all}" />
         </f:then>
         <f:else if="!{pageId}">
             <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:belog/Resources/Private/Language/locallang.xlf:info.selectPage.title')}">

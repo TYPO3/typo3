@@ -65,13 +65,36 @@
     }
 
     .col-icon,
-    .col-checkbox {
+    .col-checkbox,
+    .col-avatar {
         padding-right: 0;
     }
 
     .col-title,
     .col-task {
         width: 99%;
+    }
+
+    .col-icon {
+        width: 16px;
+        box-sizing: content-box;
+    }
+
+    .col-time {
+        width: 8ch;
+        white-space: nowrap;
+        box-sizing: content-box;
+    }
+
+    .col-datetime {
+        width: 14ch;
+        white-space: nowrap;
+        box-sizing: content-box;
+    }
+
+    .col-avatar {
+        width: 32px;
+        box-sizing: content-box;
     }
 
     .col-state {
