@@ -113,14 +113,10 @@ cleanRenderedDocumentationFiles() {
 }
 
 # Load help text into $HELP
-# @todo Remove xdebug / php8.2 note after PHP8.2 image contains working xdebug.
 read -r -d '' HELP <<EOF
 TYPO3 core test runner. Execute acceptance, unit, functional and other test suites in
 a docker based test environment. Handles execution of single test files, sending
 xdebug information to a local IDE and more.
-
-Recommended docker version is >=20.10 for xdebug break pointing to work reliably, and
-a recent docker-compose (tested >=1.21.2) is needed.
 
 Usage: $0 [options] [file]
 
@@ -229,7 +225,7 @@ Options:
     -p <8.1|8.2>
         Specifies the PHP minor version to be used
             - 8.1 (default): use PHP 8.1
-            - 8.2: use PHP 8.2 (note that xdebug is currently not available for PHP8.2)
+            - 8.2: use PHP 8.2
 
     -e "<phpunit options>"
         Only with -s functional|functionalDeprecated|unit|unitDeprecated|unitRandom|acceptance
