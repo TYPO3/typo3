@@ -13,7 +13,7 @@
 
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { ScaffoldIdentifierEnum } from './enum/viewport/scaffold-identifier';
-import { Module, ModuleSelector, ModuleState, ModuleUtility } from '@typo3/backend/module';
+import { flushModuleCache, Module, ModuleSelector, ModuleState, ModuleUtility } from '@typo3/backend/module';
 import $ from 'jquery';
 import PersistentStorage from './storage/persistent';
 import Viewport from './viewport';
@@ -262,10 +262,11 @@ class ModuleMenu {
   /**
    * Refresh the HTML by fetching the menu again
    */
-  public refreshMenu(): void {
-    new AjaxRequest(TYPO3.settings.ajaxUrls.modulemenu).get().then(async (response: AjaxResponse): Promise<void> => {
+  public refreshMenu(): Promise<void> {
+    return new AjaxRequest(TYPO3.settings.ajaxUrls.modulemenu).get().then(async (response: AjaxResponse): Promise<void> => {
       const result = await response.resolve();
       document.getElementById('modulemenu').outerHTML = result.menu;
+      flushModuleCache();
       this.initializeModuleMenuEvents();
       if (this.loadedModule) {
         ModuleMenu.highlightModule(this.loadedModule);

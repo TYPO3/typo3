@@ -93,9 +93,18 @@ interface ParsedInformation {
  */
 let parsedInformation: ParsedInformation = null;
 
-function getParsedRecordFromName(name: string): Partial<Module> | null {
+/**
+ * Flushes the runtime cache containing parsed module information
+ *
+ * @internal
+ */
+export function flushModuleCache(): void {
+  parsedInformation = null;
+}
+
+function getParsedInformation(): ParsedInformation|null {
   if (parsedInformation === null) {
-    const modulesInformation: string = String((document.querySelector('.t3js-scaffold-modulemenu') as HTMLElement)?.dataset.modulesInformation || '');
+    const modulesInformation: string = String((document.querySelector('[data-modulemenu]') as HTMLElement)?.dataset.modulesInformation || '');
     if (modulesInformation !== '') {
       try {
         parsedInformation = JSON.parse(modulesInformation);
@@ -105,8 +114,13 @@ function getParsedRecordFromName(name: string): Partial<Module> | null {
       }
     }
   }
-  if (parsedInformation !== null && name in parsedInformation) {
-    return parsedInformation[name];
+  return parsedInformation;
+}
+
+function getParsedRecordFromName(name: string): Partial<Module>|null {
+  const parsedModuleInformation = getParsedInformation();
+  if (parsedModuleInformation !== null && name in parsedModuleInformation) {
+    return parsedModuleInformation[name];
   }
   return null;
 }
