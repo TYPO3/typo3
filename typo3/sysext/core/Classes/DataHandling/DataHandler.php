@@ -5637,12 +5637,15 @@ class DataHandler
      * Before a record is deleted, check if it has references such as inline type or MM references.
      * If so, set these child records also to be deleted.
      */
-    protected function deleteRecord_procFields(string $table, array $row): void
+    protected function deleteRecord_procFields(string $table, array $recordToDelete): void
     {
         $schema = $this->tcaSchemaFactory->get($table);
-        $uid = (int)$row['uid'];
-        foreach ($row as $field => $value) {
-            $configuration = $schema->hasField($field) ? $schema->getField($field)->getConfiguration() : [];
+        $uid = (int)$recordToDelete['uid'];
+        foreach ($recordToDelete as $fieldName => $value) {
+            if (!$schema->hasField($fieldName)) {
+                continue;
+            }
+            $configuration = $schema->getField($fieldName)->getConfiguration();
             if (!isset($configuration['type'])) {
                 continue;
             }
@@ -5665,6 +5668,52 @@ class DataHandler
                 $dbAnalysis->start($value, $allowedTables, $configuration['MM'] ?? '', $uid, $table, $configuration);
                 foreach ($dbAnalysis->itemArray as $v) {
                     $this->updateRefIndex($v['table'], $v['id']);
+                }
+            } elseif ($configuration['type'] === 'flex' && (string)$value !== '') {
+                try {
+                    $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
+                        ['config' => $configuration],
+                        $table,
+                        $fieldName,
+                        $recordToDelete
+                    );
+                    $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                } catch (AbstractInvalidDataStructureException) {
+                    // Nothing to do if data structure could not be determined
+                    continue;
+                }
+                if ($dataStructureArray !== []) {
+                    $flexForm = GeneralUtility::xml2array($value);
+                    foreach (($dataStructureArray['sheets'] ?? []) as $sheetName => $sheet) {
+                        foreach ($sheet['ROOT']['el'] as $sheetFieldName => $flexField) {
+                            $flexFormValue = $flexForm['data'][$sheetName]['lDEF'][$sheetFieldName]['vDEF'] ?? null;
+                            $flexFieldConfig = $flexField['config'] ?? [];
+                            if (!isset($flexFieldConfig['type'])) {
+                                continue;
+                            }
+                            if ($flexFieldConfig['type'] === 'inline' || $flexFieldConfig['type'] === 'file') {
+                                if (in_array($this->getRelationFieldType($flexFieldConfig), ['list', 'field'], true)) {
+                                    $dbAnalysis = $this->createRelationHandlerInstance();
+                                    $dbAnalysis->start($flexFormValue, $flexFieldConfig['foreign_table'], '', $uid, $table, $flexFieldConfig);
+                                    $dbAnalysis->undeleteRecord = true;
+                                    // Non type save comparison is intended!
+                                    if (!isset($flexFieldConfig['behaviour']['enableCascadingDelete']) || $flexFieldConfig['behaviour']['enableCascadingDelete'] != false) {
+                                        // Walk through the items and remove them
+                                        foreach ($dbAnalysis->itemArray as $v) {
+                                            $this->deleteAction($v['table'], (int)$v['id']);
+                                        }
+                                    }
+                                }
+                            } elseif ($this->isReferenceField($flexFieldConfig)) {
+                                $allowedTables = $flexFieldConfig['type'] === 'group' ? $flexFieldConfig['allowed'] : $flexFieldConfig['foreign_table'];
+                                $dbAnalysis = $this->createRelationHandlerInstance();
+                                $dbAnalysis->start($value, $allowedTables, $flexFieldConfig['MM'] ?? '', $uid, $table, $flexFieldConfig);
+                                foreach ($dbAnalysis->itemArray as $v) {
+                                    $this->updateRefIndex($v['table'], $v['id']);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -5873,6 +5922,8 @@ class DataHandler
                     // @todo: Unsure if this is ok / enough. Needs coverage.
                     $this->updateRefIndex($reference['table'], $reference['id']);
                 }
+            } elseif ($fieldType === 'flex') {
+                // @todo: Implement undelete of relations within a FlexForm
             }
         }
     }
