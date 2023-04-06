@@ -203,10 +203,10 @@ class NewMultiplePagesController
         $groupLabel = '';
         foreach ($availableDoktypes as $doktypeData) {
             // If it is a group, save the group label for the children underneath
-            if ($doktypeData[1] === '--div--') {
-                $groupLabel = $doktypeData[0];
+            if ($doktypeData['value'] === '--div--') {
+                $groupLabel = $doktypeData['label'];
             } else {
-                if (in_array($doktypeData[1], $allowedDoktypes)) {
+                if (in_array($doktypeData['value'], $allowedDoktypes)) {
                     $groupedData[$groupLabel][] = $doktypeData;
                 }
             }
