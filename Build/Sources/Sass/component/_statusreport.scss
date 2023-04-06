@@ -104,6 +104,7 @@
 .statusreport-wrapper {
     border-radius: var(--statusreport-border-radius);
     box-shadow: var(--statusreport-box-shadow);
+    margin-bottom: var(--typo3-component-spacing);
 
     .statusreport {
         &:first-child {

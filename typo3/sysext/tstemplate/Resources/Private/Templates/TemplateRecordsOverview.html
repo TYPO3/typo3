@@ -18,42 +18,40 @@
     <h1>
         <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.title" />
     </h1>
-    <div>
-        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.description" /></p>
+    <p><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.description" /></p>
 
-        <f:if condition="{pageTree}">
-            <f:then>
-                <div class="table-fit">
-                    <table class="table table-striped table-hover" id="ts-overview">
-                        <thead>
-                            <tr>
-                                <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.pageTitle" /></th>
-                                <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.typoscriptRecords" /></th>
-                                <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.root" /></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <f:for each="{pageTree}" as="page">
-                                <f:render
-                                    section="TableRow"
-                                    arguments="{
-                                        page: page,
-                                        level: 0
-                                    }"
-                                />
-                            </f:for>
-                        </tbody>
-                    </table>
-                </div>
-            </f:then>
-            <f:else>
-                <f:be.infobox
-                    message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.noRecordsFound')}"
-                    state="-1"
-                />
-            </f:else>
-        </f:if>
-    </div>
+    <f:if condition="{pageTree}">
+        <f:then>
+            <div class="table-fit">
+                <table class="table table-striped table-hover" id="ts-overview">
+                    <thead>
+                        <tr>
+                            <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.pageTitle" /></th>
+                            <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.typoscriptRecords" /></th>
+                            <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.root" /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{pageTree}" as="page">
+                            <f:render
+                                section="TableRow"
+                                arguments="{
+                                    page: page,
+                                    level: 0
+                                }"
+                            />
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else>
+            <f:be.infobox
+                message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.noRecordsFound')}"
+                state="-1"
+            />
+        </f:else>
+    </f:if>
 
 </f:section>
 

@@ -423,7 +423,7 @@ class DatabaseIntegrityController
         $this->showFieldAndTableNames = $this->getBackendUserAuthentication()->shallDisplayDebugInformation();
         $searchMode = $this->MOD_SETTINGS['search'];
         $this->setFormName('queryform');
-        $submenu = '<div class="row row-cols-auto align-items-end g-3 mb-3">';
+        $submenu = '<div class="row row-cols-auto align-items-end g-3 mb-4">';
         $submenu .= '<div class="col">' . self::getDropdownMenu(0, 'SET[search]', $searchMode, $this->MOD_MENU['search'], $request) . '</div>';
         if ($this->MOD_SETTINGS['search'] === 'query') {
             $submenu .= '<div class="col">' . self::getDropdownMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery'], $request) . '</div>';
