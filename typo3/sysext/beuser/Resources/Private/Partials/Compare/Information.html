@@ -113,11 +113,11 @@
         <table class="table table-sm table-hover">
             <f:for each="{fileFolderPermissions}" as="item">
                 <tr>
-                    <td class="col-icon"><core:icon identifier="{item.2}"/></td>
+                    <td class="col-icon"><core:icon identifier="{item.icon}"/></td>
                     <td class="col-title">
-                        <f:if condition="{item.0}">
-                            <f:then>{f:translate(key:item.0,default:item.0)}</f:then>
-                            <f:else>{item.1}</f:else>
+                        <f:if condition="{item.label}">
+                            <f:then>{f:translate(key:item.label,default:item.label)}</f:then>
+                            <f:else>{item.value}</f:else>
                         </f:if>
                     </td>
                 </tr>
