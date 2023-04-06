@@ -45,7 +45,7 @@ The corresponding event listener class:
     {
         public function __invoke(LoginAttemptFailedEvent $event): void
         {
-            if ($request->getAttribute('normalizedParams')->getRemoteAddress() !== '198.51.100.42') {
+            if ($event->getRequest()->getAttribute('normalizedParams')->getRemoteAddress() !== '198.51.100.42') {
                 // send an email because an external user login attempt failed
             }
         }
