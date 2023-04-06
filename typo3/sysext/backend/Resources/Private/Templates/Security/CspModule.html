@@ -25,8 +25,10 @@
                     </span>
                 </div>
                 <div class="media-body">
-                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.callout.featureDisabled.message" />
-                    <ul>
+                    <p>
+                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.callout.featureDisabled.message" />
+                    </p>
+                    <ul class="mb-0">
                         <f:for each="{configurationStatus.featureDisabled}" as="value" key="key">
                             <li><code>security.{key}.enforceContentSecurityPolicy</code></li>
                         </f:for>
@@ -46,8 +48,10 @@
                 </div>
                 <div class="media-body">
                     <div class="callout-body">
-                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.callout.customReporting.message" />
-                        <ul>
+                        <p>
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.callout.customReporting.message" />
+                        </p>
+                        <ul class="mb-0">
                             <f:for each="{configurationStatus.customReporting}" as="value" key="key">
                                 <li><code>$GLOBALS['TYPO3_CONF_VARS']['{key}']['contentSecurityPolicyReportingUrl'] = '{value}'</code></li>
                             </f:for>
