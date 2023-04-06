@@ -875,7 +875,7 @@ class DatabaseIntegrityController
             $fC = $GLOBALS['TCA'][$table]['columns'][$fieldName] ?? null;
             $fields = $fC['config'] ?? [];
             $fields['exclude'] = $fC['exclude'] ?? '';
-            if (is_array($fC) && $fC['label']) {
+            if (is_array($fC) && ($fC['label'] ?? false)) {
                 $fields['label'] = preg_replace('/:$/', '', trim($this->getLanguageService()->sL($fC['label'])));
                 switch ($fields['type']) {
                     case 'input':
@@ -991,8 +991,8 @@ class DatabaseIntegrityController
         $out = '';
         if ($fieldSetup['type'] === 'multiple') {
             foreach (($fieldSetup['items'] ?? []) as $val) {
-                $value = $languageService->sL($val[0]);
-                if (GeneralUtility::inList($fieldValue, $val[1]) || $fieldValue == $val[1]) {
+                $value = $languageService->sL($val['label']);
+                if (GeneralUtility::inList($fieldValue, $val['value']) || $fieldValue == $val['value']) {
                     if ($out !== '') {
                         $out .= $splitString;
                     }
@@ -1002,7 +1002,7 @@ class DatabaseIntegrityController
         }
         if ($fieldSetup['type'] === 'binary') {
             foreach ($fieldSetup['items'] as $val) {
-                $value = $languageService->sL($val[0]);
+                $value = $languageService->sL($val['label']);
                 if ($out !== '') {
                     $out .= $splitString;
                 }
@@ -1013,10 +1013,10 @@ class DatabaseIntegrityController
             $dontPrefixFirstTable = 0;
             $useTablePrefix = 0;
             foreach (($fieldSetup['items'] ?? []) as $val) {
-                if (str_starts_with($val[0], 'LLL:')) {
-                    $value = $languageService->sL($val[0]);
+                if (str_starts_with($val['label'], 'LLL:')) {
+                    $value = $languageService->sL($val['label']);
                 } else {
-                    $value = $val[0];
+                    $value = $val['label'];
                 }
                 if (GeneralUtility::inList($fieldValue, $value) || $fieldValue == $value) {
                     if ($out !== '') {
@@ -1725,17 +1725,17 @@ class DatabaseIntegrityController
         if ($fieldSetup['type'] === 'multiple') {
             $optGroupOpen = false;
             foreach (($fieldSetup['items'] ?? []) as $val) {
-                $value = $languageService->sL($val[0]);
-                if ($val[1] === '--div--') {
+                $value = $languageService->sL($val['label']);
+                if ($val['value'] === '--div--') {
                     if ($optGroupOpen) {
                         $out[] = '</optgroup>';
                     }
                     $optGroupOpen = true;
                     $out[] = '<optgroup label="' . htmlspecialchars($value) . '">';
-                } elseif (GeneralUtility::inList($conf['inputValue'], $val[1])) {
-                    $out[] = '<option value="' . htmlspecialchars($val[1]) . '" selected>' . htmlspecialchars($value) . '</option>';
+                } elseif (GeneralUtility::inList($conf['inputValue'], $val['value'])) {
+                    $out[] = '<option value="' . htmlspecialchars($val['value']) . '" selected>' . htmlspecialchars($value) . '</option>';
                 } else {
-                    $out[] = '<option value="' . htmlspecialchars($val[1]) . '">' . htmlspecialchars($value) . '</option>';
+                    $out[] = '<option value="' . htmlspecialchars($val['value']) . '">' . htmlspecialchars($value) . '</option>';
                 }
             }
             if ($optGroupOpen) {
@@ -1744,7 +1744,7 @@ class DatabaseIntegrityController
         }
         if ($fieldSetup['type'] === 'binary') {
             foreach ($fieldSetup['items'] as $key => $val) {
-                $value = $languageService->sL($val[0]);
+                $value = $languageService->sL($val['label']);
                 if (GeneralUtility::inList($conf['inputValue'], (string)(2 ** $key))) {
                     $out[] = '<option value="' . 2 ** $key . '" selected>' . htmlspecialchars($value) . '</option>';
                 } else {
@@ -1756,11 +1756,11 @@ class DatabaseIntegrityController
             $useTablePrefix = 0;
             $dontPrefixFirstTable = 0;
             foreach (($fieldSetup['items'] ?? []) as $val) {
-                $value = $languageService->sL($val[0]);
-                if (GeneralUtility::inList($conf['inputValue'], $val[1])) {
-                    $out[] = '<option value="' . htmlspecialchars($val[1]) . '" selected>' . htmlspecialchars($value) . '</option>';
+                $value = $languageService->sL($val['label']);
+                if (GeneralUtility::inList($conf['inputValue'], (string)$val['value'])) {
+                    $out[] = '<option value="' . htmlspecialchars((string)$val['value']) . '" selected>' . htmlspecialchars($value) . '</option>';
                 } else {
-                    $out[] = '<option value="' . htmlspecialchars($val[1]) . '">' . htmlspecialchars($value) . '</option>';
+                    $out[] = '<option value="' . htmlspecialchars((string)$val['value']) . '">' . htmlspecialchars($value) . '</option>';
                 }
             }
             $allowedFields = $fieldSetup['allowed'] ?? '';
@@ -1895,6 +1895,8 @@ class DatabaseIntegrityController
                 }
             }
             foreach ($outArray as $key2 => $val2) {
+                $key2 = (string)$key2;
+                $val2 = (string)$val2;
                 if (GeneralUtility::inList($conf['inputValue'], $key2)) {
                     $out[] = '<option value="' . htmlspecialchars($key2) . '" selected>[' . htmlspecialchars($key2) . '] ' . htmlspecialchars($val2) . '</option>';
                 } else {
