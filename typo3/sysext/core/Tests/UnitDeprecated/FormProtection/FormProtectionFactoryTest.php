@@ -86,7 +86,7 @@ class FormProtectionFactoryTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1285353026);
 
-        FormProtectionFactory::get(self::class);
+        FormProtectionFactory::get(\stdClass::class);
     }
 
     /**

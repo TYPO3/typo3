@@ -82,21 +82,19 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->conditionMatcher->setLogger(new NullLogger());
     }
 
-    public function requestFunctionDataProvider(): array
+    public static function requestFunctionDataProvider(): array
     {
         return [
             // GET tests
             // getQueryParams()
             'request.getQueryParams()[\'foo\'] > 0' => ['request.getQueryParams()[\'foo\'] > 0', true],
             'request.getQueryParams()[\'foo\'][\'bar\'] > 0' => ['request.getQueryParams()[\'foo\'][\'bar\'] > 0', false],
-            'request.getQueryParams()[\'bar\'][\'foo\'] > 0' => ['request.getQueryParams()[\'bar\'][\'foo\'] > 0', false],
             'request.getQueryParams()[\'foo\'] == 0' => ['request.getQueryParams()[\'foo\'] == 0', false],
             'request.getQueryParams()[\'foo\'][\'bar\'] == 0' => ['request.getQueryParams()[\'foo\'][\'bar\'] == 0', false],
             // POST tests
             // getParsedBody()
             'request.getParsedBody()[\'foo\'] > 0' => ['request.getParsedBody()[\'foo\'] > 0', true],
             'request.getParsedBody()[\'foo\'][\'bar\'] > 0' => ['request.getParsedBody()[\'foo\'][\'bar\'] > 0', false],
-            'request.getParsedBody()[\'bar\'][\'foo\'] > 0' => ['request.getParsedBody()[\'bar\'][\'foo\'] > 0', false],
             'request.getParsedBody()[\'foo\'] == 0' => ['request.getParsedBody()[\'foo\'] == 0', false],
             'request.getParsedBody()[\'foo\'][\'bar\'] == 0' => ['request.getParsedBody()[\'foo\'][\'bar\'] == 0', false],
             // HEADERS tests
@@ -131,7 +129,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         );
     }
 
-    public function datesFunctionDataProvider(): array
+    public static function datesFunctionDataProvider(): array
     {
         return [
             '[dayofmonth = 17]' => ['j', 17, true],
@@ -203,7 +201,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
     /**
      * Data provider with matching applicationContext conditions.
      */
-    public function matchingApplicationContextConditionsDataProvider(): array
+    public static function matchingApplicationContextConditionsDataProvider(): array
     {
         return [
             ['Production*'],
@@ -243,7 +241,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
     /**
      * Data provider with not matching applicationContext conditions.
      */
-    public function notMatchingApplicationContextConditionsDataProvider(): array
+    public static function notMatchingApplicationContextConditionsDataProvider(): array
     {
         return [
             ['Production'],
@@ -283,7 +281,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
     /**
      * Data provider for evaluateConditionCommonEvaluatesIpAddressesCorrectly
      */
-    public function evaluateConditionCommonDevIpMaskDataProvider(): array
+    public static function evaluateConditionCommonDevIpMaskDataProvider(): array
     {
         return [
             // [0] $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']

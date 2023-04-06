@@ -176,3 +176,19 @@ unit php 8.1 phpunit 10:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s unit10 -p 8.1
+unit php 8.2 deprecated phpunit 10:
+  stage: unit
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s unitDeprecated10 -p 8.2
+unit php 8.1 deprecated phpunit 10:
+  stage: unit
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s unitDeprecated10 -p 8.1

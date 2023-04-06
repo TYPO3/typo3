@@ -37,7 +37,7 @@ class FileExtensionFilterTest extends UnitTestCase
         parent::tearDown();
     }
 
-    public function invalidInlineChildrenFilterParametersDataProvider(): array
+    public static function invalidInlineChildrenFilterParametersDataProvider(): array
     {
         return [
             [null, null, null],

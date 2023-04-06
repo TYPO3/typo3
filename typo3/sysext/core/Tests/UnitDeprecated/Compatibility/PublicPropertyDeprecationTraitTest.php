@@ -65,7 +65,7 @@ class PublicPropertyDeprecationTraitTest extends UnitTestCase
     /**
      * @return array [[$expected, $property],]
      */
-    public function issetDataProvider(): array
+    public static function issetDataProvider(): array
     {
         return [
             'public property' => [true, 'publicProperty'],

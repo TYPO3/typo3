@@ -36,7 +36,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for gpMergedWillMergeArraysFromGetAndPost
      */
-    public function gpMergedDataProvider(): array
+    public static function gpMergedDataProvider(): array
     {
         $fullDataArray = ['cake' => ['a' => 'is a', 'b' => 'lie']];
         $postPartData = ['cake' => ['b' => 'lie']];
@@ -56,7 +56,7 @@ class GeneralUtilityTest extends UnitTestCase
      * and canRetrieveGlobalInputsThroughPost
      * @todo once _GET() becomes deprecated too, only move the test, the provider was copied
      */
-    public function getAndPostDataProvider(): array
+    public static function getAndPostDataProvider(): array
     {
         return [
             'canRetrieveGlobalInputsThroughPosted input data doesn\'t exist' => ['cake', [], null],
@@ -76,7 +76,7 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expected, GeneralUtility::_POST($key));
     }
 
-    public function gpDataProvider(): array
+    public static function gpDataProvider(): array
     {
         return [
             'No key parameter' => [null, [], [], null],

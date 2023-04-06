@@ -867,6 +867,12 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
+    unitDeprecated10)
+        setUpDockerComposeDotEnv
+        docker-compose run unitDeprecated10
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
     unitJavascript)
         setUpDockerComposeDotEnv
         docker-compose run unitJavascript

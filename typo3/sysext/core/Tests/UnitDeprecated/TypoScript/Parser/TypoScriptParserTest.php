@@ -48,7 +48,7 @@ class TypoScriptParserTest extends UnitTestCase
      *
      * @return array modifier name, modifier arguments, current value, expected result
      */
-    public function executeValueModifierDataProvider(): array
+    public static function executeValueModifierDataProvider(): array
     {
         return [
             'prependString with string' => [
@@ -247,7 +247,7 @@ class TypoScriptParserTest extends UnitTestCase
         self::assertEquals($expected, $actualValue);
     }
 
-    public function executeGetEnvModifierDataProvider(): array
+    public static function executeGetEnvModifierDataProvider(): array
     {
         return [
             'environment variable not set' => [
@@ -319,7 +319,7 @@ class TypoScriptParserTest extends UnitTestCase
      *
      * @return array modifier name, modifier arguments, current value, expected result
      */
-    public function executeValueModifierInvalidDataProvider(): array
+    public static function executeValueModifierInvalidDataProvider(): array
     {
         return [
             'sortList sorts a list numeric' => [
@@ -363,7 +363,7 @@ class TypoScriptParserTest extends UnitTestCase
         self::assertEquals($expected, $this->typoScriptParser->errors[0][0]);
     }
 
-    public function invalidConditionsDataProvider(): array
+    public static function invalidConditionsDataProvider(): array
     {
         return [
             '[1 == 1]a' => ['[1 == 1]a', false],
@@ -402,7 +402,7 @@ class TypoScriptParserTest extends UnitTestCase
         self::assertEquals($expected, $this->typoScriptParser->errors[0][0]);
     }
 
-    public function doubleSlashCommentsDataProvider(): array
+    public static function doubleSlashCommentsDataProvider(): array
     {
         return [
             'valid, without spaces' => ['// valid, without spaces'],
@@ -421,7 +421,7 @@ class TypoScriptParserTest extends UnitTestCase
         self::assertEmpty($this->typoScriptParser->errors);
     }
 
-    public function includeFileDataProvider(): array
+    public static function includeFileDataProvider(): array
     {
         return [
             'TS code before not matching include' => [
@@ -459,7 +459,7 @@ class TypoScriptParserTest extends UnitTestCase
         self::assertStringNotContainsString('INCLUDE_TYPOSCRIPT', $resolvedIncludeLines);
     }
 
-    public function importFilesDataProvider(): array
+    public static function importFilesDataProvider(): array
     {
         return [
             'Found include file as single file is imported' => [
@@ -681,7 +681,7 @@ test.TYPO3Forever.TypoScript = 1
         self::assertEquals($expected, $this->typoScriptParser->setup);
     }
 
-    public function typoScriptIsParsedToArrayDataProvider(): array
+    public static function typoScriptIsParsedToArrayDataProvider(): array
     {
         return [
             'simple assignment' => [
@@ -1167,7 +1167,7 @@ test.TYPO3Forever.TypoScript = 1
         self::assertSame($expectedRemainingKey, $remainingKey);
     }
 
-    public function parseNextKeySegmentReturnsCorrectNextKeySegmentDataProvider(): array
+    public static function parseNextKeySegmentReturnsCorrectNextKeySegmentDataProvider(): array
     {
         return [
             'key without separator' => [
