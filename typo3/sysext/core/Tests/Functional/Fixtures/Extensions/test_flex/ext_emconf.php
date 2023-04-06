@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'DataHandler Testing test_flex_section_container',
-    'description' => 'DataHandler Testing test_flex_section_container',
+    'title' => 'DataHandler Testing test_flex',
+    'description' => 'DataHandler Testing test_flex',
     'category' => 'example',
     'version' => '14.0.0',
     'state' => 'beta',

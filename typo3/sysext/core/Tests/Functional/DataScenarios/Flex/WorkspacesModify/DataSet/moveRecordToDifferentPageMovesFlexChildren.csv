@@ -1,0 +1,224 @@
+"pages"
+,"uid","pid","sorting","deleted","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title"
+,1,0,256,0,0,0,0,0,"FunctionalTest"
+,88,1,256,0,0,0,0,0,"DataHandlerTest"
+,89,88,256,0,0,0,0,0,"Relations"
+,90,1,256,0,0,0,0,0,"Target"
+"sys_workspace"
+,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
+,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0
+,2,0,0,"Workspace #2",,,,,0,0,0,0,0,0,0,0,0
+"sys_workspace_stage"
+,"uid","pid","tstamp","deleted","sorting","title","responsible_persons","default_mailcomment","parentid","notification_defaults","allow_notificaton_settings"
+,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,0,0
+"sys_file"
+,"uid","pid","type","storage","identifier","extension","mime_type","name","sha1","size","creation_date","modification_date","missing","metadata","identifier_hash","folder_hash","last_indexed"
+,1,0,2,0,"/file1.jpg","jpg","image/jpeg","file1.jpg","1111111111111111111111111111111111111111",1,1738278261,1738278261,0,0,"abc1","abc1",0
+,2,0,2,0,"/file2.jpg","jpg","image/jpeg","file2.jpg","2222222222222222222222222222222222222222",2,1738278261,1738278261,0,0,"abc2","abc2",0
+"sys_file_metadata"
+,"uid","pid","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","file","title","width","height","description","alternative","categories"
+,1,0,0,0,0,0,0,0,1,"image 1",1,2,,,0
+,2,0,0,0,0,0,0,0,2,"image 2",1,2,,,0
+"sys_file_reference"
+,"uid","pid","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","uid_local","uid_foreign","tablenames","fieldname","sorting_foreign","title"
+,1,89,0,0,0,0,0,0,0,1,1,"tx_testflex","file_1",1,"image 1"
+,2,89,0,0,0,0,0,0,0,1,2,"tx_testflex","file_1",1,"image 1"
+,3,89,0,0,0,0,0,0,0,2,1,"tx_testflex","file_1",2,"image 2"
+,4,90,0,0,0,0,0,0,0,1,3,"tx_testflex","file_1",2,"image 2"
+,5,90,0,0,0,1,4,0,1,1,1,"tx_testflex","file_1",1,"image 1"
+,6,90,0,0,0,1,4,0,3,2,1,"tx_testflex","file_1",2,"image 2"
+"tx_testirrecsv_hotel"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l18n_diffsource","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","offers"
+,2,89,1,0,0,0,0,0,0,0,0,"Hotel #0","5"
+,3,89,256,0,0,0,0,0,0,0,0,"Hotel #1","6"
+,4,89,128,0,0,0,0,0,0,0,0,"Hotel #2",
+,5,90,256,0,0,0,0,0,0,0,0,"Hotel #3",
+,6,90,64,0,0,0,0,1,4,0,4,"Hotel #2",
+,7,90,128,0,0,0,0,1,4,0,3,"Hotel #1","6"
+"tx_testirrecsv_offer"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l18n_diffsource","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","prices"
+,5,89,256,0,0,0,0,0,0,0,0,"Offer #0.1","7,8,9"
+,6,89,128,0,0,0,0,0,0,0,0,"Offer #1.2","11,10"
+,7,90,256,0,0,0,0,1,4,0,6,"Offer #1.2","11,10"
+"tx_testirrecsv_price"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l18n_diffsource","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title"
+,7,89,256,0,0,0,0,0,0,0,0,"Price #0.1.1"
+,8,89,128,0,0,0,0,0,0,0,0,"Price #0.1.2"
+,9,89,64,0,0,0,0,0,0,0,0,"Price #0.1.3"
+,10,89,256,0,0,0,0,0,0,0,0,"Price #1.2.1"
+,11,89,128,0,0,0,0,0,0,0,0,"Price #1.2.2"
+,12,90,128,0,0,0,0,1,4,0,11,"Price #1.2.2"
+,13,90,256,0,0,0,0,1,4,0,10,"Price #1.2.1"
+"tx_testirreforeignfield_hotel"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l18n_diffsource","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","parentid","parenttable","parentidentifier","offers"
+# @todo: It is fishy that the workspace operation resorts the live records uid 3 and 4
+,3,89,2,0,0,0,0,0,0,0,0,"Hotel #1",1,"tx_testflex","flex_1.irre_foreignfield_1",1
+,4,89,1,0,0,0,0,0,0,0,0,"Hotel #2",1,"tx_testflex","flex_1.irre_foreignfield_1",2
+,5,89,256,0,0,0,0,0,0,0,0,"Hotel #1",2,"tx_testflex","flex_1.irre_foreignfield_1",1
+,6,90,256,0,0,0,0,0,0,0,0,"Hotel #1",3,"tx_testflex","flex_1.irre_foreignfield_1",1
+,7,90,64,0,0,0,0,1,4,0,4,"Hotel #2",1,"tx_testflex","flex_1.irre_foreignfield_1",2
+,8,90,128,0,0,0,0,1,4,0,3,"Hotel #1",1,"tx_testflex","flex_1.irre_foreignfield_1",1
+"tx_testirreforeignfield_offer"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l18n_diffsource","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","parentid","parenttable","parentidentifier","prices"
+# @todo: It is fishy that the workspace operation resorts the live records uid 5 and 6 and 7
+,5,89,1,0,0,0,0,0,0,0,0,"Offer #1.1",3,"tx_testirreforeignfield_hotel",,3
+,6,89,2,0,0,0,0,0,0,0,0,"Offer #2.2",4,"tx_testirreforeignfield_hotel",,2
+,7,89,1,0,0,0,0,0,0,0,0,"Offer #2.1",4,"tx_testirreforeignfield_hotel",,1
+,8,89,256,0,0,0,0,0,0,0,0,"Offer #3.1",5,"tx_testirreforeignfield_hotel",,1
+,9,90,256,0,0,0,0,0,0,0,0,"Offer #4.1",6,"tx_testirreforeignfield_hotel",,0
+,10,90,32,0,0,0,0,1,4,0,7,"Offer #2.1",4,"tx_testirreforeignfield_hotel",,1
+,11,90,64,0,0,0,0,1,4,0,6,"Offer #2.2",4,"tx_testirreforeignfield_hotel",,2
+,12,90,128,0,0,0,0,1,4,0,5,"Offer #1.1",3,"tx_testirreforeignfield_hotel",,3
+"tx_testirreforeignfield_price"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l18n_diffsource","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","parentid","parenttable","parentidentifier"
+# @todo: It is fishy that the workspace operation resorts the live records uid 7 to 12
+,7,89,1,0,0,0,0,0,0,0,0,"Price #1.1.1",5,"tx_testirreforeignfield_offer",,
+,8,89,2,0,0,0,0,0,0,0,0,"Price #1.1.2",5,"tx_testirreforeignfield_offer",,
+,9,89,3,0,0,0,0,0,0,0,0,"Price #1.1.3",5,"tx_testirreforeignfield_offer",,
+,10,89,1,0,0,0,0,0,0,0,0,"Price #1.2.1",6,"tx_testirreforeignfield_offer",,
+,11,89,2,0,0,0,0,0,0,0,0,"Price #1.2.2",6,"tx_testirreforeignfield_offer",,
+,12,89,1,0,0,0,0,0,0,0,0,"Price #2.1.1",7,"tx_testirreforeignfield_offer",,
+,13,89,256,0,0,0,0,0,0,0,0,"Price #1.1.1",8,"tx_testirreforeignfield_offer",,
+,14,90,8,0,0,0,0,1,4,0,12,"Price #2.1.1",7,"tx_testirreforeignfield_offer",,
+,15,90,16,0,0,0,0,1,4,0,10,"Price #1.2.1",6,"tx_testirreforeignfield_offer",,
+,16,90,32,0,0,0,0,1,4,0,11,"Price #1.2.2",6,"tx_testirreforeignfield_offer",,
+,17,90,64,0,0,0,0,1,4,0,7,"Price #1.1.1",5,"tx_testirreforeignfield_offer",,
+,18,90,128,0,0,0,0,1,4,0,8,"Price #1.1.2",5,"tx_testirreforeignfield_offer",,
+,19,90,256,0,0,0,0,1,4,0,9,"Price #1.1.3",5,"tx_testirreforeignfield_offer",,
+"tx_testflex"
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","flex_1"
+,1,89,128,0,0,0,0,0,0,0,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+ <data>
+     <sheet index=""sInline"">
+         <language index=""lDEF"">
+             <field index=""file_1"">
+                 <value index=""vDEF"">2</value>
+             </field>
+             <field index=""irre_csv_1"">
+                 <value index=""vDEF"">4,3</value>
+             </field>
+             <field index=""irre_foreignfield_1"">
+                 <value index=""vDEF"">2</value>
+             </field>
+         </language>
+     </sheet>
+ </data>
+</T3FlexForms>"
+,2,89,256,0,0,0,0,0,0,0,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+ <data>
+     <sheet index=""sInline"">
+         <language index=""lDEF"">
+             <field index=""file_1"">
+                 <value index=""vDEF"">1</value>
+             </field>
+             <field index=""irre_csv_1"">
+                 <value index=""vDEF"">2</value>
+             </field>
+             <field index=""irre_foreignfield_1"">
+                 <value index=""vDEF"">1</value>
+             </field>
+         </language>
+     </sheet>
+ </data>
+</T3FlexForms>"
+,3,90,256,0,0,0,0,0,0,0,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+ <data>
+     <sheet index=""sInline"">
+         <language index=""lDEF"">
+             <field index=""file_1"">
+                 <value index=""vDEF"">1</value>
+             </field>
+             <field index=""irre_csv_1"">
+                 <value index=""vDEF"">5</value>
+             </field>
+             <field index=""irre_foreignfield_1"">
+                 <value index=""vDEF"">1</value>
+             </field>
+         </language>
+     </sheet>
+ </data>
+</T3FlexForms>"
+,4,90,128,0,0,0,1,4,0,1,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+ <data>
+     <sheet index=""sInline"">
+         <language index=""lDEF"">
+             <field index=""file_1"">
+                 <value index=""vDEF"">2</value>
+             </field>
+             <field index=""irre_csv_1"">
+                 <value index=""vDEF"">4,3</value>
+             </field>
+             <field index=""irre_foreignfield_1"">
+                 <value index=""vDEF"">2</value>
+             </field>
+         </language>
+     </sheet>
+ </data>
+</T3FlexForms>"
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"bee7419b079bf1311d4a280440fd7887","sys_file",1,"metadata",0,0,2147483647,0,,,,0,0,"sys_file_metadata",1,,0,0,2147483647,0,0,
+,"5cf62de176f58998d1750ec070eb9269","sys_file",2,"metadata",0,0,2147483647,0,,,,0,0,"sys_file_metadata",2,,0,0,2147483647,0,0,
+,"f9c64f1c71a8b40ffa94f38fcbb366b0","sys_file_metadata",1,"file",0,0,2147483647,0,,,,0,0,"sys_file",1,,0,0,2147483647,0,0,
+,"22e73aa869347277eb1f98fc138067d2","sys_file_metadata",2,"file",0,0,2147483647,0,,,,0,0,"sys_file",2,,0,0,2147483647,0,0,
+,"74f89f508a8d8465607d030c6629dc92","sys_file_reference",1,"uid_local",0,0,2147483647,0,,,,0,0,"sys_file",1,,0,0,2147483647,0,0,
+,"722b9b18ea0d44bf263e8e8bea61d6a1","sys_file_reference",2,"uid_local",0,0,2147483647,0,,,,0,0,"sys_file",1,,0,0,2147483647,0,0,
+,"845f20ff420bd367abd0076d35db11a8","sys_file_reference",3,"uid_local",0,0,2147483647,0,,,,0,0,"sys_file",2,,0,0,2147483647,0,0,
+,"e95b18135be25665443ebc89b59d58fc","sys_file_reference",4,"uid_local",0,0,2147483647,0,,,,0,0,"sys_file",1,,0,0,2147483647,0,0,
+,"6f85cfacfff942817392efe26ff1ade0","sys_workspace",1,"custom_stages",0,0,2147483647,0,,,,0,0,"sys_workspace_stage",1,,0,0,2147483647,0,0,
+,"96a6b7ec63daee0e0ce5d4908b6eda6f","sys_workspace_stage",1,"responsible_persons",0,0,2147483647,0,,,,0,0,"be_users",3,,0,0,2147483647,0,0,
+,"f2f4d95758cef9f150c0736e09ed6646","tx_testflex",1,"flex_1",0,0,2147483647,0,"sInline/lDEF/file_1/vDEF/",,,0,0,"sys_file_reference",1,,0,0,2147483647,0,0,
+,"3053770b9dcf7a24aec63e8c70bdd0cb","tx_testflex",1,"flex_1",0,0,2147483647,0,"sInline/lDEF/file_1/vDEF/",,,1,0,"sys_file_reference",3,,0,0,2147483647,0,0,
+,"111dd2e76a7b82694d6b5781e36ec356","tx_testflex",1,"flex_1",0,0,2147483647,0,"sInline/lDEF/irre_csv_1/vDEF/",,,0,0,"tx_testirrecsv_hotel",4,,0,0,2147483647,0,0,
+,"b1e954baf5be8a8c96a2e782d09b8cb6","tx_testflex",1,"flex_1",0,0,2147483647,0,"sInline/lDEF/irre_csv_1/vDEF/",,,1,0,"tx_testirrecsv_hotel",3,,0,0,2147483647,0,0,
+,"868cf46b3c4293b81665f23a7bd1752e","tx_testflex",1,"flex_1",0,0,2147483647,0,"sInline/lDEF/irre_foreignfield_1/vDEF/",,,0,0,"tx_testirreforeignfield_hotel",4,,0,0,2147483647,0,0,
+,"b834898406cbfc98e4fe547066a78e68","tx_testflex",1,"flex_1",0,0,2147483647,0,"sInline/lDEF/irre_foreignfield_1/vDEF/",,,1,0,"tx_testirreforeignfield_hotel",3,,0,0,2147483647,0,0,
+,"3a979401badeccaebf0c218520f50a94","tx_testflex",2,"flex_1",0,0,2147483647,0,"sInline/lDEF/file_1/vDEF/",,,0,0,"sys_file_reference",2,,0,0,2147483647,0,0,
+,"a5c320d8392b24232cd807d2197086b3","tx_testflex",2,"flex_1",0,0,2147483647,0,"sInline/lDEF/irre_csv_1/vDEF/",,,0,0,"tx_testirrecsv_hotel",2,,0,0,2147483647,0,0,
+,"e3856367e9875f1d16e7e66bba5b38af","tx_testflex",2,"flex_1",0,0,2147483647,0,"sInline/lDEF/irre_foreignfield_1/vDEF/",,,0,0,"tx_testirreforeignfield_hotel",5,,0,0,2147483647,0,0,
+,"39b0dd5da4addbdb7ca692fcdbf0c98f","tx_testflex",3,"flex_1",0,0,2147483647,0,"sInline/lDEF/file_1/vDEF/",,,0,0,"sys_file_reference",4,,0,0,2147483647,0,0,
+,"bb1978652a0aecaf9873701d770de775","tx_testflex",3,"flex_1",0,0,2147483647,0,"sInline/lDEF/irre_csv_1/vDEF/",,,0,0,"tx_testirrecsv_hotel",5,,0,0,2147483647,0,0,
+,"86f003d3300a5d9a59cf59597c1283b1","tx_testflex",3,"flex_1",0,0,2147483647,0,"sInline/lDEF/irre_foreignfield_1/vDEF/",,,0,0,"tx_testirreforeignfield_hotel",6,,0,0,2147483647,0,0,
+,"9062aeb003b6d61b419f8b933a8d6ad5","tx_testirrecsv_hotel",2,"offers",0,0,2147483647,0,,,,0,0,"tx_testirrecsv_offer",5,,0,0,2147483647,0,0,
+,"9aff6bb2fb36a3fbffa596a8ddbe573a","tx_testirrecsv_hotel",3,"offers",0,0,2147483647,0,,,,0,0,"tx_testirrecsv_offer",6,,0,0,2147483647,0,0,
+,"d5312c604f0d0cb280c11113f82feb53","tx_testirrecsv_offer",5,"prices",0,0,2147483647,0,,,,0,0,"tx_testirrecsv_price",7,,0,0,2147483647,0,0,
+,"c8daf2d1e5eaa33589c0aafdc5fe7e66","tx_testirrecsv_offer",5,"prices",0,0,2147483647,0,,,,1,0,"tx_testirrecsv_price",8,,0,0,2147483647,0,0,
+,"60697c0546e73281de5ce77a2d8a613c","tx_testirrecsv_offer",5,"prices",0,0,2147483647,0,,,,2,0,"tx_testirrecsv_price",9,,0,0,2147483647,0,0,
+,"d2086ffc93453a515e34a1747adfc5ee","tx_testirrecsv_offer",6,"prices",0,0,2147483647,0,,,,0,0,"tx_testirrecsv_price",11,,0,0,2147483647,0,0,
+,"e62f479fea5c38ff6ce32a63ee1102cc","tx_testirrecsv_offer",6,"prices",0,0,2147483647,0,,,,1,0,"tx_testirrecsv_price",10,,0,0,2147483647,0,0,
+,"6fef6909e8f62102ae677abfa03107cf","tx_testirreforeignfield_hotel",3,"offers",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_offer",5,,0,0,2147483647,0,0,
+,"f4435baee14a296e0f9f9e7584d12cdc","tx_testirreforeignfield_hotel",4,"offers",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_offer",7,,0,0,2147483647,0,0,
+,"97eeecf599e0da313e913b2dead55039","tx_testirreforeignfield_hotel",4,"offers",0,0,2147483647,0,,,,1,0,"tx_testirreforeignfield_offer",6,,0,0,2147483647,0,0,
+,"a35e1e3e1ec7fbb97925a8bcbe2e4da5","tx_testirreforeignfield_hotel",5,"offers",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_offer",8,,0,0,2147483647,0,0,
+,"e28b6583a1bee6eca140d0ccb73ba128","tx_testirreforeignfield_hotel",6,"offers",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_offer",9,,0,0,2147483647,0,0,
+,"807dff67144b63742051ca04c63e1e21","tx_testirreforeignfield_offer",5,"prices",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_price",7,,0,0,2147483647,0,0,
+,"047b010df406545869b08e32fbff771e","tx_testirreforeignfield_offer",5,"prices",0,0,2147483647,0,,,,1,0,"tx_testirreforeignfield_price",8,,0,0,2147483647,0,0,
+,"cd023990f84c912c5fa983b9650b5701","tx_testirreforeignfield_offer",5,"prices",0,0,2147483647,0,,,,2,0,"tx_testirreforeignfield_price",9,,0,0,2147483647,0,0,
+,"02f4fe88195ff6c918964a30ecb5292c","tx_testirreforeignfield_offer",6,"prices",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_price",10,,0,0,2147483647,0,0,
+,"9fcc5a8d98b0e590ed343caddb550d4e","tx_testirreforeignfield_offer",6,"prices",0,0,2147483647,0,,,,1,0,"tx_testirreforeignfield_price",11,,0,0,2147483647,0,0,
+,"8d807bac697427ba7fb0b2f0e1f12493","tx_testirreforeignfield_offer",7,"prices",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_price",12,,0,0,2147483647,0,0,
+,"15dfcd32a2cd2a07f68a7a87902bee5a","tx_testirreforeignfield_offer",8,"prices",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_price",13,,0,0,2147483647,0,0,
+,"3764e699d386935b0a36e1ceb8ce96a7","sys_file_reference",5,"uid_local",0,0,2147483647,4,,,,0,1,"sys_file",1,,0,0,2147483647,0,0,
+,"ed786d1a6e19f2df187b35fcbed27163","sys_file_reference",6,"uid_local",0,0,2147483647,4,,,,0,1,"sys_file",2,,0,0,2147483647,0,0,
+,"7951b3c4c84b260bd7682da4007d11f2","tx_testirrecsv_hotel",7,"offers",0,0,2147483647,4,,,,0,1,"tx_testirrecsv_offer",7,,0,0,2147483647,4,0,
+,"c6084e9c8aef6e0f0d589713963146c7","tx_testirrecsv_offer",7,"prices",0,0,2147483647,4,,,,0,1,"tx_testirrecsv_price",12,,0,0,2147483647,4,0,
+,"cd54752632c5c765ab2ab4f4e6672c72","tx_testirrecsv_offer",7,"prices",0,0,2147483647,4,,,,1,1,"tx_testirrecsv_price",13,,0,0,2147483647,4,0,
+,"d20f095f7c6d92b5948792b0fe14d119","tx_testirreforeignfield_offer",10,"prices",0,0,2147483647,4,,,,0,1,"tx_testirreforeignfield_price",14,,0,0,2147483647,4,0,
+,"1c3c70521f6555efb0cd4fcd54227f09","tx_testirreforeignfield_offer",11,"prices",0,0,2147483647,4,,,,0,1,"tx_testirreforeignfield_price",15,,0,0,2147483647,4,0,
+,"91e7a75387508997545c403f4ff02561","tx_testirreforeignfield_offer",11,"prices",0,0,2147483647,4,,,,1,1,"tx_testirreforeignfield_price",16,,0,0,2147483647,4,0,
+,"a1be01b1d5b9b118e995d781b81706ed","tx_testirreforeignfield_offer",12,"prices",0,0,2147483647,4,,,,0,1,"tx_testirreforeignfield_price",17,,0,0,2147483647,4,0,
+,"9cc8d15a2614740129610cbc026d80f6","tx_testirreforeignfield_offer",12,"prices",0,0,2147483647,4,,,,1,1,"tx_testirreforeignfield_price",18,,0,0,2147483647,4,0,
+,"9c2b0a64097b64e90309ac4bc086520f","tx_testirreforeignfield_offer",12,"prices",0,0,2147483647,4,,,,2,1,"tx_testirreforeignfield_price",19,,0,0,2147483647,4,0,
+,"43cb37a3dddb520b25a5657b61a3c894","tx_testirreforeignfield_hotel",7,"offers",0,0,2147483647,4,,,,0,1,"tx_testirreforeignfield_offer",10,,0,0,2147483647,4,0,
+,"ca2f9f960ab200536ccac675dc0d629c","tx_testirreforeignfield_hotel",7,"offers",0,0,2147483647,4,,,,1,1,"tx_testirreforeignfield_offer",11,,0,0,2147483647,4,0,
+,"0864d32fce4dcafb8d3c7fbd634d1701","tx_testirreforeignfield_hotel",8,"offers",0,0,2147483647,4,,,,0,1,"tx_testirreforeignfield_offer",12,,0,0,2147483647,4,0,
+,"1396b2ed3a7f2deccd866500e852b209","tx_testflex",4,"flex_1",0,0,2147483647,4,"sInline/lDEF/file_1/vDEF/",,,0,1,"sys_file_reference",5,,0,0,2147483647,0,0,
+,"3aa2023b889dfc4612bff6aeccb90f34","tx_testflex",4,"flex_1",0,0,2147483647,4,"sInline/lDEF/file_1/vDEF/",,,1,1,"sys_file_reference",6,,0,0,2147483647,0,0,
+,"6079205464f03f7a135603921e6818c3","tx_testflex",4,"flex_1",0,0,2147483647,4,"sInline/lDEF/irre_csv_1/vDEF/",,,0,1,"tx_testirrecsv_hotel",6,,0,0,2147483647,0,0,
+,"b5f483c4861c17514467872df8bd0c71","tx_testflex",4,"flex_1",0,0,2147483647,4,"sInline/lDEF/irre_csv_1/vDEF/",,,1,1,"tx_testirrecsv_hotel",7,,0,0,2147483647,0,0,
+,"16aef80f03f049e6be907f093e52bd83","tx_testflex",4,"flex_1",0,0,2147483647,4,"sInline/lDEF/irre_foreignfield_1/vDEF/",,,0,1,"tx_testirreforeignfield_hotel",7,,0,0,2147483647,0,0,
+,"685ae75b2d0c33ce98c94806e6fb048b","tx_testflex",4,"flex_1",0,0,2147483647,4,"sInline/lDEF/irre_foreignfield_1/vDEF/",,,1,1,"tx_testirreforeignfield_hotel",8,,0,0,2147483647,0,0,
