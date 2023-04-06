@@ -19,9 +19,11 @@
         <f:be.infobox state="{f:if(condition:'{referenceIndexResult.errors}', then:'1', else:'0')}" title="{referenceIndexResult.resultText}">
             <f:if condition="{referenceIndexResult.errors}">
                 <f:then>
-                    <f:for each="{referenceIndexResult.errors}" as="error">
-                        {error}<br/>
-                    </f:for>
+                    <ul class="list-unstyled">
+                        <f:for each="{referenceIndexResult.errors}" as="error">
+                            <li>{error}</li>
+                        </f:for>
+                    </ul>
                 </f:then>
                 <f:else>
                     <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:refindex_ok"/>
