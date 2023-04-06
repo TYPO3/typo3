@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, TemplateResult, LitElement } from 'lit';
+import { html, css, TemplateResult, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
@@ -26,25 +26,46 @@ enum Modes {
  * Module: @typo3/backend/switch-user
  *
  * @example
- * <typo3-switch-user targetUser="123" mode="switch">
- *   <button>Switch user</button>
+ * <typo3-switch-user class="some" targetUser="123" mode="switch">
+ *   Switch user
  * </typo3-switch-user>
  */
 @customElement('typo3-backend-switch-user')
 export class SwitchUser extends LitElement {
+  static styles = [css`:host { cursor: pointer; appearance: button; }`];
+
   @property({ type: String }) targetUser: string;
   @property({ type: Modes }) mode: Modes = Modes.switch;
 
   public constructor() {
     super();
-    this.addEventListener('click', (e: Event): void => {
-      e.preventDefault();
+    this.addEventListener('click', (event: Event): void => {
+      event.preventDefault();
       if (this.mode === Modes.switch) {
         this.handleSwitchUser();
       } else if (this.mode === Modes.exit) {
         this.handleExitSwitchUser();
       }
     });
+    this.addEventListener('keydown', (event: KeyboardEvent): void => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        if (this.mode === Modes.switch) {
+          this.handleSwitchUser();
+        } else if (this.mode === Modes.exit) {
+          this.handleExitSwitchUser();
+        }
+      }
+    });
+  }
+
+  public connectedCallback(): void {
+    if (!this.hasAttribute('role')) {
+      this.setAttribute('role', 'button');
+    }
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0');
+    }
   }
 
   protected render(): TemplateResult {

@@ -23,39 +23,30 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Displays 'SwitchUser' button to change current backend user to target backend user.
  *
  * @internal
  */
-final class SwitchUserViewHelper extends AbstractViewHelper
+final class SwitchUserViewHelper extends AbstractTagBasedViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
-     * As this ViewHelper renders HTML, the output must not be escaped.
-     *
-     * @var bool
+     * @var string
      */
-    protected $escapeOutput = false;
+    protected $tagName = 'typo3-backend-switch-user';
 
     public function initializeArguments(): void
     {
+        parent::initializeArguments();
         $this->registerArgument('backendUser', BackendUser::class, 'Target backendUser to switch active session to', true);
+        $this->registerUniversalTagAttributes();
     }
 
-    /**
-     * Render link with sprite icon to change current backend user to target
-     *
-     * @param array{backendUser: BackendUser} $arguments
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $targetUser = $arguments['backendUser'];
+        $targetUser = $this->arguments['backendUser'];
         $currentUser = self::getBackendUserAuthentication();
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
@@ -64,15 +55,18 @@ final class SwitchUserViewHelper extends AbstractViewHelper
             || !$currentUser->isAdmin()
             || $currentUser->getOriginalUserIdWhenInSwitchUserMode() !== null
         ) {
-            return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+            $this->tag->setTagName('span');
+            $this->tag->addAttribute('class', $this->tag->getAttribute('class') . ' disabled');
+            $this->tag->addAttribute('disabled', 'disabled');
+            $this->tag->setContent($iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render());
+        } else {
+            $this->tag->addAttribute('title', self::getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:switchBackMode'));
+            $this->tag->addAttribute('targetUser', (string)$targetUser->getUid());
+            $this->tag->setContent($iconFactory->getIcon('actions-system-backend-user-switch', Icon::SIZE_SMALL)->render());
         }
 
-        return '
-            <typo3-backend-switch-user targetUser="' . htmlspecialchars((string)$targetUser->getUid()) . '">
-                <button type="button" class="btn btn-default" title="' . htmlspecialchars(self::getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:switchBackMode')) . '">'
-                    . $iconFactory->getIcon('actions-system-backend-user-switch', Icon::SIZE_SMALL)->render() .
-                '</button>
-            </typo3-switch-user-button>';
+        $this->tag->forceClosingTag(true);
+        return $this->tag->render();
     }
 
     protected static function getBackendUserAuthentication(): BackendUserAuthentication
