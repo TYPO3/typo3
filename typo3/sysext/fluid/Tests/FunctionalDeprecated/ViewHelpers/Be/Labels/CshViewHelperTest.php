@@ -35,7 +35,7 @@ class CshViewHelperTest extends FunctionalTestCase
         }
     }
 
-    public function isRenderedDataProvider(): array
+    public static function isRenderedDataProvider(): array
     {
         return [
             '#1' => [

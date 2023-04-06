@@ -1202,6 +1202,40 @@ services:
         fi
       "
 
+  functional_deprecated_sqlite10:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    tmpfs:
+      - ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+    environment:
+      COMPOSER_CACHE_DIR: ".cache/composer"
+      typo3DatabaseDriver: pdo_sqlite
+      typo3TestingRedisHost: redis4
+      typo3TestingMemcachedHost: memcached1-5
+    working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        php -v | grep '^PHP'
+        composer req --dev --no-progress --no-interaction phpunit/phpunit:^10 -w
+        composer req --dev --no-progress --no-interaction typo3/testing-framework:dev-lolli-1
+        COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/phpunit/FunctionalTestsDeprecated-10.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
+        if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
+          XDEBUG_MODE=\"off\" $${COMMAND};
+        else
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
+          $${COMMAND};
+        fi
+      "
+
   lint_php:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"

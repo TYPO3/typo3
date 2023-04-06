@@ -355,7 +355,7 @@ class ConditionMatcherTest extends FunctionalTestCase
         self::assertFalse($subject->match('[getTSFE().id == 1]'));
     }
 
-    public function determinePageIdFindIdFromQueryParametersDataProvider(): array
+    public static function determinePageIdFindIdFromQueryParametersDataProvider(): array
     {
         return [
             'Page ID from "id" parameter' => [
