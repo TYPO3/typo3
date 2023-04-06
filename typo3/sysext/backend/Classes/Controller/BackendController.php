@@ -166,7 +166,10 @@ class BackendController
     public function getModuleMenu(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->viewFactory->create($request);
-        $view->assign('modules', $this->modules);
+        $view->assignMultiple([
+            'modulesInformation' => GeneralUtility::jsonEncodeForHtmlAttribute($this->getModulesInformation(), false),
+            'modules' => $this->modules,
+        ]);
         return new JsonResponse(['menu' => $view->render('Backend/ModuleMenu')]);
     }
 

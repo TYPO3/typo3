@@ -29,8 +29,8 @@
         <f:render partial="Backend/Topbar" arguments="{_all}" />
     </div>
     <f:if condition="{hasModules}">
-        <div class="scaffold-modulemenu t3js-scaffold-modulemenu" data-modules-information="{modulesInformation}">
-            <f:render partial="Backend/ModuleMenu" arguments="{modules: modules}" />
+        <div class="scaffold-modulemenu t3js-scaffold-modulemenu">
+            <f:render partial="Backend/ModuleMenu" arguments="{modules: modules, modulesInformation: modulesInformation}" />
         </div>
     </f:if>
     <div class="scaffold-content t3js-scaffold-content {f:if(condition: '!{hasModules}', then: 'scaffold-no-modules')}">
