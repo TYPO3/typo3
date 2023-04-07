@@ -205,9 +205,9 @@ final class RichtextTest extends UnitTestCase
                 'config' => [
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -290,9 +290,9 @@ final class RichtextTest extends UnitTestCase
                 'config' => [
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -387,9 +387,9 @@ final class RichtextTest extends UnitTestCase
                 'config' => [
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -462,9 +462,9 @@ final class RichtextTest extends UnitTestCase
                 'config' => [
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],

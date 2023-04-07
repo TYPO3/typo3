@@ -39,9 +39,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -68,9 +68,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -110,9 +110,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -155,9 +155,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -215,9 +215,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -271,9 +271,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -315,9 +315,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -366,9 +366,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -419,9 +419,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -463,9 +463,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -541,9 +541,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -629,9 +629,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -668,9 +668,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -759,7 +759,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                         'options' => [
                             ['name' => 'left', 'className' => 'left'],
                             ['name' => 'center', 'className' => 'center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -823,9 +823,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'justify'],
                         ],
                     ],
@@ -854,9 +854,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -883,9 +883,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -916,9 +916,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -945,9 +945,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -971,9 +971,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -1000,9 +1000,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -1030,9 +1030,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
@@ -1059,9 +1059,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                     'alignment' => [
                         'options' => [
-                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'left', 'className' => 'text-start'],
                             ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'right', 'className' => 'text-end'],
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],

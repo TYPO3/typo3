@@ -23,7 +23,7 @@
                         </a>
                     </h3>
                 </div>
-                <div class="col text-right">
+                <div class="col text-end">
                     <span class="badge badge-info">
                         <f:translate
                             key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:panel.info.syntaxErrorCount.{f:if(condition: '{errorCount} > 1', then:'multiple', else: 'single')}"
@@ -43,7 +43,7 @@
                                 arguments="{0: error.include.name, 1: '{error.lineNumber + 1}'}"
                             />
                         </div>
-                        <div class="col col-auto text-right">
+                        <div class="col col-auto text-end">
                             <div class="btn-group">
                                 <f:be.link
                                     route="web_typoscript_analyzer.source"

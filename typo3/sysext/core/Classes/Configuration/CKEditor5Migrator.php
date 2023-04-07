@@ -600,9 +600,9 @@ class CKEditor5Migrator
         // Default config
         $this->configuration['alignment'] = [
             'options' => [
-                ['name' => 'left', 'className' => $classMap['left'] ?? 'text-left'],
+                ['name' => 'left', 'className' => $classMap['left'] ?? 'text-start'],
                 ['name' => 'center', 'className' => $classMap['center'] ?? 'text-center'],
-                ['name' => 'right', 'className' => $classMap['right'] ?? 'text-right'],
+                ['name' => 'right', 'className' => $classMap['right'] ?? 'text-end'],
                 ['name' => 'justify', 'className' => $classMap['justify'] ?? 'text-justify'],
             ],
         ];

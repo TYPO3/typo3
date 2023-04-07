@@ -138,7 +138,7 @@
                                     </span>
                                 </span>
                             </div>
-                            <div class="col col-12 col-lg-auto text-md-right">
+                            <div class="col col-12 col-lg-auto text-md-end">
                                 <f:comment><!-- Hand {child.type} over to f:translate and add locallang.xlf entries when Include classes stabilized. --></f:comment>
                                 <f:if condition="{child.type} != 'Segment'">
                                     <f:then>
@@ -166,7 +166,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col col-auto text-right">
+                    <div class="col col-auto text-end">
                         <div class="btn-group">
                             <f:be.link
                                 route="pagetsconfig_includes.source"
@@ -233,7 +233,7 @@
                             </a>
                         </h3>
                     </div>
-                    <div class="col text-right">
+                    <div class="col text-end">
                         <span class="badge badge-info">
                             <f:translate
                                 key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.info.syntaxErrorCount.{f:if(condition: '{errorCount} > 1', then:'multiple', else: 'single')}"
@@ -253,7 +253,7 @@
                                     arguments="{0: error.include.name, 1: '{error.lineNumber + 1}'}"
                                 />
                             </div>
-                            <div class="col col-auto text-right">
+                            <div class="col col-auto text-end">
                                 <div class="btn-group">
                                     <f:be.link
                                         route="pagetsconfig_includes.source"
@@ -296,7 +296,7 @@
                                     </a>
                                 </h3>
                             </div>
-                            <div class="col text-right">
+                            <div class="col text-end">
                                 <span class="badge badge-info">
                                     <f:translate
                                         key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.info.conditionActiveCount.{f:if(condition: '{conditionActiveCount} > 1', then:'multiple', else: 'single')}"

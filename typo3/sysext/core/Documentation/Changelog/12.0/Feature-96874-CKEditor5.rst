@@ -76,9 +76,9 @@ from `editor.config.wordcount` to `editor.config.wordCount`:
 
         alignment:
           options:
-            - { name: 'left', className: 'text-left' }
+            - { name: 'left', className: 'text-start' }
             - { name: 'center', className: 'text-center' }
-            - { name: 'right', className: 'text-right' }
+            - { name: 'right', className: 'text-end' }
             - { name: 'justify', className: 'text-justify' }
 
    in addition, the extraPlugins `justify` is not needed anymore. The new
