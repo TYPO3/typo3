@@ -211,6 +211,7 @@ module.exports = function (grunt) {
           require('autoprefixer')(),
           require('postcss-clean')({
             rebase: false,
+            format: 'keep-breaks',
             level: {
               1: {
                 specialComments: 0
