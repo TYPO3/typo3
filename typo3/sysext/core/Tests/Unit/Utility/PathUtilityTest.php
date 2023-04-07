@@ -303,6 +303,10 @@ class PathUtilityTest extends UnitTestCase
                 '/abc/../../def/ghi',
                 '/def/ghi',
             ],
+            'double-dot-elements want to go higher, more than one segment' => [
+                '/abc/../../../../def/ghi',
+                '/def/ghi',
+            ],
             'works with EXT-syntax-paths' => [
                 'EXT:abc/def/ghi/',
                 'EXT:abc/def/ghi',
@@ -334,6 +338,10 @@ class PathUtilityTest extends UnitTestCase
             'absolute windows path' => [
                 'C:\def\..\..\test.txt',
                 'C:/test.txt',
+            ],
+            'absolute windows path with more segments' => [
+                'C:\def\def2\def3\..\..\folder\subfolder\test.txt',
+                'C:/def/folder/subfolder/test.txt',
             ],
             'double slashaes' => [
                 'abc//def',
