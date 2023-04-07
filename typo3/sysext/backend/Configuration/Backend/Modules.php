@@ -91,7 +91,7 @@ return [
         'parent' => 'site',
         'access' => 'admin',
         'path' => '/module/pagetsconfig',
-        'iconIdentifier' => 'module-tstemplate',
+        'iconIdentifier' => 'module-tsconfig',
         'labels' => [
             'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig.title',
             'description' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig.description',
@@ -103,7 +103,7 @@ return [
         'parent' => 'pagetsconfig',
         'access' => 'admin',
         'path' => '/module/pagetsconfig/records',
-        'iconIdentifier' => 'module-tstemplate',
+        'iconIdentifier' => 'module-tsconfig',
         'labels' => [
             'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_pages',
         ],
@@ -117,7 +117,7 @@ return [
         'parent' => 'pagetsconfig',
         'access' => 'admin',
         'path' => '/module/pagetsconfig/active',
-        'iconIdentifier' => 'module-tstemplate',
+        'iconIdentifier' => 'module-tsconfig',
         'labels' => [
             'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active',
         ],
@@ -137,7 +137,7 @@ return [
         'parent' => 'pagetsconfig',
         'access' => 'admin',
         'path' => '/module/pagetsconfig/includes',
-        'iconIdentifier' => 'module-tstemplate',
+        'iconIdentifier' => 'module-tsconfig',
         'labels' => [
             'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes',
         ],
@@ -159,9 +159,7 @@ return [
     'tools_csp' => [
         'parent' => 'tools',
         'access' => 'systemMaintainer',
-        'icon' => 'EXT:backend/Resources/Public/Icons/module-security.svg',
-        // @todo use identifier once https://typo3.github.io/TYPO3.Icons/icons/module/module-security.html is released
-        // 'iconIdentifier' => 'module-security',
+        'iconIdentifier' => 'module-security',
         'labels' => 'LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf',
         'routes' => [
             '_default' => [

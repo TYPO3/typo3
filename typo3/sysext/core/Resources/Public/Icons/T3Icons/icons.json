@@ -252,6 +252,12 @@
       "svg": "svgs/actions/actions-browser.svg",
       "sprite": "sprites/actions.svg#actions-browser"
     },
+    "actions-brush": {
+      "identifier": "actions-brush",
+      "category": "actions",
+      "svg": "svgs/actions/actions-brush.svg",
+      "sprite": "sprites/actions.svg#actions-brush"
+    },
     "actions-building": {
       "identifier": "actions-building",
       "category": "actions",
@@ -4194,6 +4200,12 @@
       "svg": "svgs/module/module-scheduler.svg",
       "sprite": "sprites/module.svg#module-scheduler"
     },
+    "module-security": {
+      "identifier": "module-security",
+      "category": "module",
+      "svg": "svgs/module/module-security.svg",
+      "sprite": "sprites/module.svg#module-security"
+    },
     "module-seo": {
       "identifier": "module-seo",
       "category": "module",
@@ -4218,17 +4230,17 @@
       "svg": "svgs/module/module-taskcenter.svg",
       "sprite": "sprites/module.svg#module-taskcenter"
     },
-    "module-templates": {
-      "identifier": "module-templates",
+    "module-template": {
+      "identifier": "module-template",
       "category": "module",
-      "svg": "svgs/module/module-templates.svg",
-      "sprite": "sprites/module.svg#module-templates"
+      "svg": "svgs/module/module-template.svg",
+      "sprite": "sprites/module.svg#module-template"
     },
-    "module-tstemplate": {
-      "identifier": "module-tstemplate",
+    "module-tsconfig": {
+      "identifier": "module-tsconfig",
       "category": "module",
-      "svg": "svgs/module/module-tstemplate.svg",
-      "sprite": "sprites/module.svg#module-tstemplate"
+      "svg": "svgs/module/module-tsconfig.svg",
+      "sprite": "sprites/module.svg#module-tsconfig"
     },
     "module-urls": {
       "identifier": "module-urls",
@@ -4672,6 +4684,7 @@
     "actions-system-backend-user-switch": "actions-user-switch",
     "actions-variable-select": "actions-variable-add",
     "information-application-context": "actions-window-cog",
-    "empty-empty": "miscellaneous-placeholder"
+    "empty-empty": "miscellaneous-placeholder",
+    "module-templates": "module-template"
   }
 }

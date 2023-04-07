@@ -14,7 +14,7 @@ return [
         'parent' => 'site',
         'access' => 'admin',
         'path' => '/module/web/ts',
-        'iconIdentifier' => 'module-tstemplate',
+        'iconIdentifier' => 'module-template',
         'labels' => [
             'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:module.typoscript.title',
             'shortDescription' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:module.typoscript.shortDescription',
@@ -26,7 +26,7 @@ return [
         'parent' => 'web_ts',
         'access' => 'admin',
         'path' => '/module/web/typoscript/records-overview',
-        'iconIdentifier' => 'module-tstemplate',
+        'iconIdentifier' => 'module-template',
         'labels' => [
             'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.templateRecordsOverview',
         ],
@@ -40,7 +40,7 @@ return [
         'parent' => 'web_ts',
         'access' => 'admin',
         'path' => '/module/web/typoscript/constant-editor',
-        'iconIdentifier' => 'module-tstemplate',
+        'iconIdentifier' => 'module-template',
         'labels' => [
             'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.constantEditor',
         ],
@@ -58,7 +58,7 @@ return [
         'parent' => 'web_ts',
         'access' => 'admin',
         'path' => '/module/web/typoscript/overview',
-        'iconIdentifier' => 'module-tstemplate',
+        'iconIdentifier' => 'module-template',
         'labels' => [
             'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.infoModify',
         ],
@@ -75,7 +75,7 @@ return [
         'parent' => 'web_ts',
         'access' => 'admin',
         'path' => '/module/typoscript/active',
-        'iconIdentifier' => 'module-tstemplate',
+        'iconIdentifier' => 'module-template',
         'labels' => [
             'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.active',
         ],
@@ -103,7 +103,7 @@ return [
         'parent' => 'web_ts',
         'access' => 'admin',
         'path' => '/module/web/typoscript/analyzer',
-        'iconIdentifier' => 'module-tstemplate',
+        'iconIdentifier' => 'module-template',
         'labels' => [
             'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.templateAnalyzer',
         ],
