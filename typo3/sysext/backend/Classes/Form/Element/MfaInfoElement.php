@@ -150,18 +150,16 @@ class MfaInfoElement extends AbstractFormElement
         $html[] =               implode(PHP_EOL, $childHtml);
         if ($isDeactivationAllowed) {
             $html[] = '<div class="form-wizards-items-bottom">';
-            $html[] =   '<div class="help-block">';
-            $html[] =       '<button type="button"';
-            $html[] =           ' class="t3js-deactivate-mfa-button btn btn-danger ' . ($activeProviders === [] ? 'disabled" disabled="disabled' : '') . '"';
-            $html[] =           ' data-confirmation-title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfa')) . '"';
-            $html[] =           ' data-confirmation-content="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfa.confirmation.text')) . '"';
-            $html[] =           ' data-confirmation-cancel-text="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"';
-            $html[] =           ' data-confirmation-deactivate-text="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deactivate')) . '"';
-            $html[] =       '>';
-            $html[] =           $this->iconFactory->getIcon('actions-toggle-off', Icon::SIZE_SMALL)->render('inline');
-            $html[] =           htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfa'));
-            $html[] =       '</button>';
-            $html[] =   '</div>';
+            $html[] =     '<button type="button"';
+            $html[] =         ' class="t3js-deactivate-mfa-button btn btn-danger ' . ($activeProviders === [] ? 'disabled" disabled="disabled' : '') . '"';
+            $html[] =         ' data-confirmation-title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfa')) . '"';
+            $html[] =         ' data-confirmation-content="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfa.confirmation.text')) . '"';
+            $html[] =         ' data-confirmation-cancel-text="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"';
+            $html[] =         ' data-confirmation-deactivate-text="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deactivate')) . '"';
+            $html[] =     '>';
+            $html[] =     $this->iconFactory->getIcon('actions-toggle-off', Icon::SIZE_SMALL)->render('inline');
+            $html[] =     htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfa'));
+            $html[] =     '</button>';
             $html[] = '</div>';
         }
         $html[] =           '</div>';

@@ -18,7 +18,7 @@
             <option value="{optionValue}" {f:if(condition:'{optionValue} == {inData.file}', then:'selected="selected"')}>{optionLabel}</option>
         </f:for>
     </select>
-    <p class="help-block">
+    <div class="form-text">
         <f:if condition="{importFolder}">
             <f:then>
                 <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_fromPathS" arguments="{0: importFolder}" />
@@ -27,7 +27,7 @@
                 <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_no_default_upload_folder" />
             </f:else>
         </f:if>
-    </p>
+    </div>
     <f:if condition="{import.decompressionAvailable}">
         <f:else>
             <span class="text-danger"><f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_noteNoDecompressorAvailable"/></span>
@@ -53,9 +53,9 @@
         >
         <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_updateRecords"/>
     </label>
-    <p class="help-block">
+    <div class="form-text">
         (<f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_thisOptionRequiresThat"/>)
-    </p>
+    </div>
 </div>
 <f:if condition="{inData.do_update}">
     <div class="form-group">
@@ -70,9 +70,9 @@
             >
             <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_ignorePidDifferencesGlobally"/>
         </label>
-        <p class="help-block">
+        <div class="form-text">
             (<f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_ifYouSetThis"/>)
-        </p>
+        </div>
     </div>
 </f:if>
 <h4>
@@ -90,9 +90,9 @@
         >
         <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_doNotShowDifferences"/>
     </label>
-    <p class="help-block">
+    <div class="form-text">
         (<f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_greenValuesAreFrom"/>)
-    </p>
+    </div>
 </div>
 <f:if condition="{isAdmin}">
     <f:if condition="!{inData.do_update}">
@@ -110,9 +110,9 @@
                     <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_force_all_UIDS"/>
                 </span>
             </label>
-            <p class="help-block">
+            <div class="form-text">
                 (<f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_force_all_UIDS_descr"/>)
-            </p>
+            </div>
         </div>
     </f:if>
 </f:if>
@@ -182,9 +182,9 @@
         >
         <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_writeIndividualDbActions"/>
     </label>
-    <p class="help-block">
+    <div class="form-text">
         (<f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_thisIsDisabledBy"/>)
-    </p>
+    </div>
 </div>
 
 </html>

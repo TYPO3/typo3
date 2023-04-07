@@ -136,7 +136,7 @@ class FlexFormElementContainer extends AbstractContainer
                     $html = [];
                     $html[] = '<div class="form-section">';
                     $html[] =   '<div class="form-group t3js-formengine-palette-field t3js-formengine-validation-marker">';
-                    $html[] =       '<label class="t3js-formengine-label">';
+                    $html[] =       '<label class="form-label t3js-formengine-label">';
                     $html[] =           $processedTitle;
                     $html[] =           $showFieldName ? (' <code>[' . htmlspecialchars($flexFormFieldName) . ']</code>') : '';
                     $html[] =       '</label>';

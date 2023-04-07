@@ -501,7 +501,7 @@ class InlineControlContainer extends AbstractContainer
         $item = '<div class="form-control-wrap t3js-inline-controls">' . $item . '</div>';
         if (!empty($allowed)) {
             $item .= '
-                <div class="help-block">
+                <div class="form-text">
                     ' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedRelations')) . '
                     <br>
                     ' . implode(' ', array_map(static fn ($item) => '<span class="badge badge-success">' . strtoupper($item) . '</span>', $allowed)) . '

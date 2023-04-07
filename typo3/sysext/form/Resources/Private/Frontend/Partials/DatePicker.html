@@ -17,7 +17,7 @@
         </f:render>
         <f:if condition="{element.properties.displayTimeSelector}">
             <div class="form-group{f:if(condition: '{validationResults.errors.0}', then: ' has-error')}">
-                <label class="control-label" for="{element.uniqueIdentifier}-time">{formvh:translateElementProperty(element: element, property: 'timeSelectorHourLabel')}</label>
+                <label class="form-label" for="{element.uniqueIdentifier}-time">{formvh:translateElementProperty(element: element, property: 'timeSelectorHourLabel')}</label>
                 <div class="{element.properties.containerClassAttribute}">
                     <formvh:form.timePicker
                         id="{element.uniqueIdentifier}-time"
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="form-group{f:if(condition: '{validationResults.errors.0}', then: ' has-error')}">
-                <label class="control-label" for="{element.uniqueIdentifier}-time-minute">{formvh:translateElementProperty(element: element, property: 'timeSelectorMinuteLabel')}</label>
+                <label class="form-label" for="{element.uniqueIdentifier}-time-minute">{formvh:translateElementProperty(element: element, property: 'timeSelectorMinuteLabel')}</label>
                 <div class="{element.properties.containerClassAttribute}">
                     <formvh:form.timePicker
                         id="{element.uniqueIdentifier}-time-minute"

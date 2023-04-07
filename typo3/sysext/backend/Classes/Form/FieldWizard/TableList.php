@@ -85,7 +85,7 @@ class TableList extends AbstractNode
         }
 
         $html = [];
-        $html[] = '<div class="help-block">';
+        $html[] = '<div class="form-text">';
         $html[] =   implode(LF, $allowedTablesHtml);
         $html[] = '</div>';
 

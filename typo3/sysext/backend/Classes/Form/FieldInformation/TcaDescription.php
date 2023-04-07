@@ -38,7 +38,7 @@ class TcaDescription extends AbstractNode
         if (!empty($this->data['parameterArray']['fieldConf']['description'])) {
             $fieldInformationText = $this->getLanguageService()->sL($this->data['parameterArray']['fieldConf']['description']);
             if (trim($fieldInformationText) !== '') {
-                $resultArray['html'] = '<span class="formengine-field-item-description text-muted">' . nl2br(htmlspecialchars($fieldInformationText)) . '</span>';
+                $resultArray['html'] = '<div class="form-description">' . nl2br(htmlspecialchars($fieldInformationText)) . '</div>';
             }
         }
         return $resultArray;

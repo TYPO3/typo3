@@ -400,7 +400,7 @@ class PaletteAndSingleContainer extends AbstractContainer
 
         $content = [];
         $content[] = '<div class="' . implode(' ', $paletteFieldClasses) . '">';
-        $content[] =    '<label class="t3js-formengine-label">';
+        $content[] =    '<label class="form-label t3js-formengine-label">';
         $content[] =        $label;
         $content[] =    '</label>';
         $content[] =    $element['fieldHtml'];

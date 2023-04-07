@@ -32,7 +32,7 @@ export default class Workspaces {
 
     if (typeof result.sendMailTo !== 'undefined' && result.sendMailTo.length > 0) {
       $form.append(
-        $('<label />', { class: 'control-label' }).text(TYPO3.lang['window.sendToNextStageWindow.itemsWillBeSentTo']),
+        $('<label />', { class: 'form-label' }).text(TYPO3.lang['window.sendToNextStageWindow.itemsWillBeSentTo']),
       );
       $form.append(
         $('<div />', { class: 'form-group' }).append(
@@ -67,7 +67,7 @@ export default class Workspaces {
       $form.append(
         $('<div />', { class: 'form-group' }).append(
           $('<label />', {
-            class: 'control-label',
+            class: 'form-label',
             'for': 'additional',
           }).text(TYPO3.lang['window.sendToNextStageWindow.additionalRecipients']),
           $('<textarea />', {
@@ -75,7 +75,7 @@ export default class Workspaces {
             name: 'additional',
             id: 'additional',
           }).text(result.additional.value),
-          $('<span />', { class: 'help-block' }).text(TYPO3.lang['window.sendToNextStageWindow.additionalRecipients.hint']),
+          $('<div />', { class: 'form-text' }).text(TYPO3.lang['window.sendToNextStageWindow.additionalRecipients.hint']),
         ),
       );
     }
@@ -83,7 +83,7 @@ export default class Workspaces {
     $form.append(
       $('<div />', { class: 'form-group' }).append(
         $('<label />', {
-          class: 'control-label',
+          class: 'form-label',
           'for': 'comments',
         }).text(TYPO3.lang['window.sendToNextStageWindow.comments']),
         $('<textarea />', {

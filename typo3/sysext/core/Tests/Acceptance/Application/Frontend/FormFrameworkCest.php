@@ -56,10 +56,10 @@ final class FormFrameworkCest
 
         $I->fillField($this->emailSelector, 'invalid mail');
         $I->click($this->submitSelector);
-        $I->see($mandatory, $this->nameSelector . ' + span');
-        $I->see($mandatory, $this->subjectSelector . ' + span');
-        $I->see($mandatoryEmail, $this->emailSelector . ' + span');
-        $I->see($mandatory, $this->textareaSelector . ' + span');
+        $I->see($mandatory, $this->nameSelector . ' + div');
+        $I->see($mandatory, $this->subjectSelector . ' + div');
+        $I->see($mandatoryEmail, $this->emailSelector . ' + div');
+        $I->see($mandatory, $this->textareaSelector . ' + div');
     }
 
     public function sentValidForm(ApplicationTester $I): void

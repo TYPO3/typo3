@@ -421,7 +421,7 @@ class LinkElement extends AbstractFormElement
                 ];
         }
 
-        $data['additionalAttributes'] = '<div class="help-block">' . implode(' - ', $additionalAttributes) . '</div>';
+        $data['additionalAttributes'] = '<div class="form-text">' . implode(' - ', $additionalAttributes) . '</div>';
 
         return GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
             new ModifyLinkExplanationEvent($data, $linkData, $linkParts, $this->data)

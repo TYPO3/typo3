@@ -248,7 +248,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
               html += '<div class="mb-3">'
                 + '<label for="new-form-template">' + '<strong>' + TYPO3.lang['formManager.form_template'] + '</strong>' + '</label>'
                 + '<div class="formengine-field-item t3js-formengine-field-item">'
-                + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_template_description'] + '</span>'
+                + '<div class="form-description">' + TYPO3.lang['formManager.form_template_description'] + '</div>'
                 + '<div class="form-control-wrap">' + $(templateSelect)[0].outerHTML + '</div>'
                 + '</div>'
                 + '</div>';
@@ -258,7 +258,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
           html += '<div class="mb-3">'
             + '<label for="new-form-name">' + '<strong>' + TYPO3.lang['formManager.form_name'] + '</strong>' + '</label>'
             + '<div class="formengine-field-item t3js-formengine-field-item">'
-            + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_name_description'] + '</span>'
+            + '<div class="form-description">' + TYPO3.lang['formManager.form_name_description'] + '</div>'
             + '<div class="form-control-wrap">';
 
           if (settings['formName']) {
@@ -280,7 +280,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
             html += '<div class="mb-3">'
               + '<label for="new-form-save-path">' + '<strong>' + TYPO3.lang['formManager.form_save_path'] + '</strong>' + '</label>'
               + '<div class="formengine-field-item t3js-formengine-field-item">'
-              + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_save_path_description'] + '</span>'
+              + '<div class="form-description">' + TYPO3.lang['formManager.form_save_path_description'] + '</div>'
               + '<div class="form-control-wrap">' + $(savePathSelect)[0].outerHTML + '</div>'
               + '</div>'
               + '</div>';
@@ -579,7 +579,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
             + '<div class="mb-3">'
             + '<label for="duplicate-form-name">' + '<strong>' + TYPO3.lang['formManager.form_name'] + '</strong>' + '</label>'
             + '<div class="formengine-field-item t3js-formengine-field-item">'
-            + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_name_description'] + '</span>'
+            + '<div class="form-description">' + TYPO3.lang['formManager.form_name_description'] + '</div>'
             + '<div class="form-control-wrap">'
             + '<input id="duplicate-form-name" class="form-control has-error" data-identifier="duplicateFormName" />'
             + '</div>'
@@ -590,7 +590,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
             html += '<div class="mb-3">'
               + '<label for="duplicate-form-save-path">' + '<strong>' + TYPO3.lang['formManager.form_save_path'] + '</strong>' + '</label>'
               + '<div class="formengine-field-item t3js-formengine-field-item">'
-              + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_save_path_description'] + '</span>'
+              + '<div class="form-description">' + TYPO3.lang['formManager.form_save_path_description'] + '</div>'
               + '<div class="form-control-wrap">' + $(savePathSelect)[0].outerHTML + '</div>'
               + '</div>'
               + '</div>';

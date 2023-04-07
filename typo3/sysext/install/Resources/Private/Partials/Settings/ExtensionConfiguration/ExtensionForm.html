@@ -42,10 +42,10 @@
                                                     <span>{configurationItem.label}</span> <code>({categoryName}.{configurationItem.name} [{configurationItem.type}])</code>
                                                 </label>
                                                 <f:if condition="{configurationItem.description}">
-                                                    <div class="help-block">{configurationItem.description -> f:format.nl2br()}</div>
+                                                    <div class="form-description">{configurationItem.description -> f:format.nl2br()}</div>
                                                 </f:if>
                                                 <f:if condition="{configurationItem.typeHint}">
-                                                    <p><span class="text-muted">{configurationItem.typeHint}</span></p>
+                                                    <div class="form-description">{configurationItem.typeHint}</div>
                                                 </f:if>
                                                 <div class="form-control-wrap">
                                                     <f:switch expression="{configurationItem.type}">

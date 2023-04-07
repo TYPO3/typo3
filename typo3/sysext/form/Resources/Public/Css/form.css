@@ -12,8 +12,6 @@
  */
 .form-editor{padding:0 .5em}
 .form-control-wrap{margin:0;padding:.5rem 0}
-.form-control-wrap .table{margin:0}
-.form-control-wrap .help-block{margin-bottom:0}
 .form-group-select{padding-bottom:.5rem}
 .form-group-select .form-control-wrap{padding:0}
 .form-group-select .t3-form-add-collection-element{padding-bottom:0}
@@ -211,4 +209,3 @@
 .module.web_FormFormbuilder_FormEditor .module-body{padding-bottom:.5em}
 .module.web_FormFormbuilder_FormEditor .module-docheader-bar-column-left button,.module.web_FormFormbuilder_FormEditor .module-docheader-bar-column-left button:active,.module.web_FormFormbuilder_FormEditor .module-docheader-bar-column-left button:focus{outline:initial initial 0}
 .t3-form-element-new-page-button{position:absolute;left:.5em}
-.t3-form-controls.has-error .help-block{margin-bottom:initial}

@@ -49,7 +49,7 @@ final class ElementsGroupWithKeyboardCest
     public function sortElementsInGroupWithArrowAndAltKeys(ApplicationTester $I): void
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
-        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';
+        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(2)';
         $select = $formWizardsWrap . ' > div:nth-of-type(2) > select';
 
         $selectOption1 = 'styleguide demo user 1';
@@ -91,7 +91,7 @@ final class ElementsGroupWithKeyboardCest
     public function removeElementInGroupWithDeleteKey(ApplicationTester $I): void
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
-        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';
+        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(2)';
         $select = $formWizardsWrap . ' > div:nth-of-type(2) > select';
 
         $selectOption1 = 'styleguide demo user 1';

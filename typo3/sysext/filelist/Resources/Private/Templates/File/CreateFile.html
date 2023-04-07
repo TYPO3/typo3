@@ -23,7 +23,7 @@
                                     <input required class="form-control" type="text" id="newMedia" name="data[newMedia][0][url]"
                                         placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')}" />
                                 </div>
-                                <div class="help-block">
+                                <div class="form-text">
                                     <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders" /><br>
                                     <f:for each="{fileExtList}" as="fileExt">
                                         <span class="badge badge-success">{fileExt}</span>
@@ -52,7 +52,7 @@
                                 <div class="form-control-wrap">
                                     <input required class="form-control" type="text" id="newfile" name="data[newfile][0][data]" />
                                 </div>
-                                <div class="help-block">
+                                <div class="form-text">
                                     <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedEditableTextFileExtensions" /><br>
                                     <f:for each="{txtFileExtList}" as="fileExt">
                                         <span class="badge badge-success">{fileExt}</span>

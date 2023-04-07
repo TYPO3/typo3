@@ -49,10 +49,6 @@
 
     &-preview {
         grid-area: grideditor-preview;
-
-        typo3-t3editor-codemirror {
-            border: 1px solid $border-color;
-        }
     }
 }
 

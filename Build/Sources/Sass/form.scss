@@ -90,14 +90,6 @@ $tree-line-height: 20px;
 .form-control-wrap {
     margin: 0;
     padding: .5rem 0;
-
-    .table {
-        margin: 0;
-    }
-
-    .help-block {
-        margin-bottom: 0;
-    }
 }
 
 .form-group-select {
@@ -1202,10 +1194,4 @@ $tree-line-height: 20px;
 .t3-form-element-new-page-button {
     position: absolute;
     left: .5em;
-}
-
-.t3-form-controls.has-error {
-    .help-block {
-        margin-bottom: initial;
-    }
 }

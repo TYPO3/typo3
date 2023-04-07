@@ -110,7 +110,7 @@ class OnlineMedia {
           .attr('class', 'form-control online-media-url')
           .attr('placeholder', placeholder),
         $('<div>')
-          .attr('class', 'help-block')
+          .attr('class', 'form-text')
           .html(this.securityUtility.encodeHtml(allowedHelpText, false) + '<br>' + allowedExtMarkup.join(' ')),
       ]);
     const modal = Modal.show(
