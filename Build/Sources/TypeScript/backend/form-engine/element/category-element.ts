@@ -78,14 +78,15 @@ class CategoryElement extends HTMLElement{
    * If the category element is in an invisible tab, it needs to be rendered once the tab becomes visible.
    */
   private listenForVisibleTree(): void {
-    if (!this.tree.offsetParent) {
-      // Search for the parents that are tab containers
-      const idOfTabContainer = this.tree.closest('.tab-pane').getAttribute('id');
-      if (idOfTabContainer) {
-        const btn = document.querySelector('[aria-controls="' + idOfTabContainer + '"]');
-        btn.addEventListener('shown.bs.tab', () => { this.tree.dispatchEvent(new Event('svg-tree:visible')); });
-      }
-    }
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          this.tree.dispatchEvent(new Event('svg-tree:visible'));
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+    observer.observe(this.tree);
   }
 
   private generateDataUrl(): string {
