@@ -92,6 +92,7 @@ class RadioElement extends AbstractFormElement
                     'type' => 'radio',
                     'id' => $radioId,
                     'value' => $value,
+                    'class' => 'form-check-input',
                     'name' => $this->data['parameterArray']['itemFormElName'],
                 ],
                 $this->getOnFieldChangeAttrs('click', $this->data['parameterArray']['fieldChangeFunc'] ?? [])
@@ -99,9 +100,9 @@ class RadioElement extends AbstractFormElement
             if ((string)$value === (string)$this->data['parameterArray']['itemFormElValue']) {
                 $radioElementAttrs['checked'] = 'checked';
             }
-            $html[] = '<div class="radio' . $disabled . '">';
-            $html[] =     '<label for="' . $radioId . '">';
+            $html[] = '<div class="form-check' . $disabled . '">';
             $html[] =     '<input ' . GeneralUtility::implodeAttributes($radioElementAttrs, true) . $disabled . '>';
+            $html[] =     '<label class="form-check-label" for="' . $radioId . '">';
             $html[] =         htmlspecialchars($this->appendValueToLabelInDebugMode($label, $value));
             $html[] =     '</label>';
             $html[] = '</div>';
