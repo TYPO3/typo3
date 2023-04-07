@@ -1113,6 +1113,9 @@ class BackendUtility
      */
     public static function titleAttribForPages($row, $perms_clause = '', $includeAttrib = true)
     {
+        if (!isset($row['uid'])) {
+            return '';
+        }
         $lang = static::getLanguageService();
         $parts = [];
         $parts[] = 'id=' . $row['uid'];
