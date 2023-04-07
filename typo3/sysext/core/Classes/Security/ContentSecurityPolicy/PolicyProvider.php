@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyMutatedEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\Resolution;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ResolutionRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Map;
 
@@ -89,8 +90,7 @@ final class PolicyProvider
     public function provideDefaultFor(Scope $scope): Policy
     {
         // @todo add runtime policy cache per scope
-        $isFrontendSite = $scope->siteIdentifier !== null && $scope->type->isFrontend();
-        if ($isFrontendSite && $this->shallInheritDefault($scope)) {
+        if ($scope->isFrontendSite() && $this->shallInheritDefault($scope)) {
             $policy = $this->provideFor(Scope::frontend());
         } else {
             $policy = new Policy();
@@ -100,7 +100,7 @@ final class PolicyProvider
             $policy = $policy->mutate($mutationCollection);
         }
         // apply site mutations (declared in corresponding site configuration's csp.yaml file)
-        if ($isFrontendSite) {
+        if ($scope->isFrontendSite()) {
             foreach ($this->resolveSiteMutations($scope) as $mutation) {
                 $policy = $policy->mutate($mutation);
             }
@@ -128,11 +128,34 @@ final class PolicyProvider
     public function getDefaultReportingUriBase(Scope $scope, ServerRequestInterface $request, bool $absolute = true): UriInterface
     {
         $normalizedParams = $request->getAttribute('normalizedParams') ?? NormalizedParams::createFromRequest($request);
-        $url = $absolute ? $normalizedParams->getSiteUrl() : $normalizedParams->getSitePath();
-        if ($scope->type->isBackend()) {
-            $url .= 'typo3/';
+        // resolve URI from current site language or site default language in frontend scope
+        if ($scope->isFrontendSite()) {
+            $site = $this->resolveSite($scope);
+            $siteLanguage = $request->getAttribute('siteLanguage');
+            $siteLanguage = $siteLanguage instanceof SiteLanguage ? $siteLanguage : $site->getDefaultLanguage();
+            $uri = $siteLanguage->getBase();
+            $uri = $uri->withPath(rtrim($uri->getPath(), '/') . '/');
+        // otherwise fall back to current request URI
+        } else {
+            $uri = new Uri($normalizedParams->getSitePath());
         }
-        return (new Uri($url . self::REPORTING_URI))->withQuery('csp=report');
+        // add `typo3/` path in backend scope
+        if ($scope->type->isBackend()) {
+            $uri = $uri->withPath($uri->getPath() . 'typo3/');
+        }
+        // prefix current require scheme, host, port in case it's not given
+        if ($absolute && ($uri->getScheme() === '' || $uri->getHost() === '')) {
+            $current = new Uri($normalizedParams->getSiteUrl());
+            $uri = $uri
+                ->withScheme($current->getScheme())
+                ->withHost($current->getHost())
+                ->withPort($current->getPort());
+        } elseif (!$absolute && $uri->getScheme() !== '' && $uri->getHost() !== '') {
+            $uri = $uri->withScheme('')->withHost('')->withPort(null);
+        }
+        // `/en/@http-reporting?csp=report` (relative)
+        // `https://ip12.anyhost.it:8443/en/@http-reporting?csp=report` (absolute)
+        return $uri->withPath($uri->getPath() . self::REPORTING_URI)->withQuery('csp=report');
     }
 
     /**

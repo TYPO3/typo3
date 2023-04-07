@@ -114,6 +114,11 @@ final class Scope implements \Stringable, \JsonSerializable
         return $value;
     }
 
+    public function isFrontendSite(): bool
+    {
+        return $this->siteIdentifier !== null && $this->type->isFrontend();
+    }
+
     public function jsonSerialize(): string
     {
         return (string)$this;
