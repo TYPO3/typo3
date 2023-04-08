@@ -1,0 +1,37 @@
+<html
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+<f:section name="Content">
+
+    <h1><f:translate key="filemount.list.title" /></h1>
+    <f:if condition="{totalAmountOfFilemounts} > 0">
+        <f:then>
+
+            <f:render partial="Filemount/PaginatedList" arguments="{_all}" />
+
+        </f:then>
+        <f:else>
+
+            <f:be.infobox state="-1">
+                <p><f:translate key="filemount.none" /></p>
+                <backend:link.newRecord
+                    table="sys_filemounts"
+                    returnUrl="{f:be.uri(route: 'backend_user_management')}"
+                    class="btn btn-primary"
+                >
+                    <core:icon identifier="actions-add" />
+                    <f:translate key="filemount.create" />
+                </backend:link.newRecord>
+            </f:be.infobox>
+
+        </f:else>
+    </f:if>
+
+</f:section>
+
+</html>

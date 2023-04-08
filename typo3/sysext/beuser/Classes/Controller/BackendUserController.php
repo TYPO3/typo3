@@ -183,7 +183,7 @@ class BackendUserController extends ActionController
 
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/switch-user.js');
 
-        return $this->moduleTemplate->renderResponse('BackendUser/Index');
+        return $this->moduleTemplate->renderResponse('BackendUser/List');
     }
 
     /**
@@ -430,7 +430,7 @@ class BackendUserController extends ActionController
             ->setDisplayName(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroupsMenu', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
-        return $this->moduleTemplate->renderResponse('BackendUser/Groups');
+        return $this->moduleTemplate->renderResponse('BackendUserGroup/List');
     }
 
     public function compareGroupsAction(): ResponseInterface
@@ -463,7 +463,7 @@ class BackendUserController extends ActionController
             ->setDisplayName(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compareBackendUsersGroups', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
-        return $this->moduleTemplate->renderResponse('BackendUser/CompareGroups');
+        return $this->moduleTemplate->renderResponse('BackendUserGroup/Compare');
     }
 
     /**
@@ -525,7 +525,7 @@ class BackendUserController extends ActionController
             ]));
         $buttonBar->addButton($addFilemountButton);
 
-        return $this->moduleTemplate->renderResponse('BackendUser/Filemounts');
+        return $this->moduleTemplate->renderResponse('Filemount/List');
     }
 
     /**

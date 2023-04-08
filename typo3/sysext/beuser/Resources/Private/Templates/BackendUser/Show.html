@@ -1,12 +1,13 @@
 <html
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
-    data-namespace-typo3-fluid="true">
+    data-namespace-typo3-fluid="true"
+>
 
 <f:layout name="Module"/>
-
 <f:section name="Content">
-    <h1><f:translate key="backendUser" />: {data.user.username} [{data.user.uid}]</h1>
+
+    <h1><f:translate key="backendUser" />: {data.user.username} <code>[{data.user.uid}]</code></h1>
 
     <f:if condition="{data.user.description}">
         <f:be.infobox
@@ -15,104 +16,104 @@
         </f:be.infobox>
     </f:if>
 
-    <table class="table table-striped table-bordered table-hover">
-        <tr>
-            <th><f:translate key="admin" /></th>
-            <td><f:render partial="Compare/Information" section="yesno" arguments="{value:data.user.admin}" /></td>
-        </tr>
-        <tr>
-            <th>{f:translate(key:'realName')}</th>
-            <td>
-                <a
-                    href="#"
-                    data-contextmenu-trigger="click"
-                    data-contextmenu-table="be_users"
-                    data-contextmenu-uid="{data.user.uid}"
-                    title="id={data.user.uid}"
-                >
-                    <be:avatar backendUser="{data.user.uid}" showIcon="true"/>
-                </a>
-                {data.user.realName}
-            </td>
-        </tr>
-        <tr>
-            <th>{f:translate(key:'email')}</th>
-            <td>
-                <f:if condition="{data.user.email}">
-                    <f:link.email email="{data.user.email}"/>
-                </f:if>
-            </td>
-        </tr>
-        <tr>
-            <th><f:translate key="lastLogin" /></th>
-            <td>
-                <f:if condition="{data.user.lastlogin}">
-                    <f:then>
-                        <f:format.date format="{dateFormat} {timeFormat}">{data.user.lastlogin}</f:format.date>
-                    </f:then>
-                    <f:else>
-                        <f:translate key="never" />
-                    </f:else>
-                </f:if>
-            </td>
-        </tr>
-
-        <tr>
-            <th>{f:translate(key:'startDateAndTime')} / <f:translate key="endDateAndTime" /></th>
-            <td>
-                <f:if condition="{data.user.starttime}">
-                    <f:then><f:format.date format="{dateFormat} {timeFormat}">{data.user.starttime}</f:format.date></f:then>
-                    <f:else>-</f:else>
-                </f:if>&nbsp;/
-                <f:if condition="{data.user.endtime}">
-                    <f:then><f:format.date format="{dateFormat} {timeFormat}">{data.user.endtime}</f:format.date></f:then>
-                    <f:else>-</f:else>
-                </f:if>
-            </td>
-        </tr>
-    </table>
+    <div class="table-fit">
+        <table class="table table-striped table-bordered table-hover">
+            <tr>
+                <th><f:translate key="admin" /></th>
+                <td class="col-title"><f:render partial="Compare/Information" section="yesno" arguments="{value:data.user.admin}" /></td>
+            </tr>
+            <tr>
+                <th>{f:translate(key:'realName')}</th>
+                <td class="col-title">
+                    <a
+                        href="#"
+                        data-contextmenu-trigger="click"
+                        data-contextmenu-table="be_users"
+                        data-contextmenu-uid="{data.user.uid}"
+                        title="id={data.user.uid}"
+                    >
+                        <backend:avatar backendUser="{data.user.uid}" showIcon="true"/>
+                    </a>
+                    {data.user.realName}
+                </td>
+            </tr>
+            <tr>
+                <th>{f:translate(key:'email')}</th>
+                <td class="col-title">
+                    <f:if condition="{data.user.email}">
+                        <f:link.email email="{data.user.email}"/>
+                    </f:if>
+                </td>
+            </tr>
+            <tr>
+                <th><f:translate key="lastLogin" /></th>
+                <td class="col-title">
+                    <f:if condition="{data.user.lastlogin}">
+                        <f:then>
+                            <f:format.date format="{dateFormat} {timeFormat}">{data.user.lastlogin}</f:format.date>
+                        </f:then>
+                        <f:else>
+                            <f:translate key="never" />
+                        </f:else>
+                    </f:if>
+                </td>
+            </tr>
+            <tr>
+                <th>{f:translate(key:'startDateAndTime')} / <f:translate key="endDateAndTime" /></th>
+                <td class="col-title">
+                    <f:if condition="{data.user.starttime}">
+                        <f:then><f:format.date format="{dateFormat} {timeFormat}">{data.user.starttime}</f:format.date></f:then>
+                        <f:else>-</f:else>
+                    </f:if>&nbsp;/
+                    <f:if condition="{data.user.endtime}">
+                        <f:then><f:format.date format="{dateFormat} {timeFormat}">{data.user.endtime}</f:format.date></f:then>
+                        <f:else>-</f:else>
+                    </f:if>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-lg-4">
             <h2><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.subgroup" /></h2>
             <f:render partial="Compare/Information" section="groups" arguments="{groups:data.groups}"/>
         </div>
-        <div class="col-md-4">
-            <h3><f:translate key="allowedLanguages" /></h3>
+        <div class="col-lg-4">
+            <h2><f:translate key="allowedLanguages" /></h2>
             <f:render partial="Compare/Information" section="languages" arguments="{languages:data.languages}"/>
         </div>
-        <div class="col-md-4">
-            <h3><f:translate key="dbMountPoints" /></h3>
+        <div class="col-lg-4">
+            <h2><f:translate key="dbMountPoints" /></h2>
             <f:render partial="Compare/Information" section="dbMounts" arguments="{dbMounts:data.dbMounts}"/>
 
-            <h3><f:translate key="fileMounts" /></h3>
+            <h2><f:translate key="fileMounts" /></h2>
             <f:render partial="Compare/Information" section="fileMounts" arguments="{fileMounts:data.fileMounts}"/>
         </div>
     </div>
 
-
     <div class="row">
         <div class="col-md-6">
-            <h3>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.pagetypes_select')}</h3>
+            <h2>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.pagetypes_select')}</h2>
             <f:render partial="Compare/Information" section="pageTypes" arguments="{pageTypes:data.pageTypes}" />
 
-            <h3><f:translate key="permissions" /></h3>
+            <h2><f:translate key="permissions" /></h2>
             <f:render partial="Compare/Information" section="modules" arguments="{showTitle:1,modules:data.modules}"/>
 
-            <h3>{f:translate(key:'compare.tables')}</h3>
+            <h2>{f:translate(key:'compare.tables')}</h2>
             <f:render partial="Compare/Information" section="tables" arguments="{showTitle:1,tables:data.tables}"/>
 
-            <h3>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:category_perms')}</h3>
+            <h2>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:category_perms')}</h2>
             <f:render partial="Compare/Information" section="categories" arguments="{categories:data.categories}"/>
 
-            <h3>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig')}</h3>
+            <h2>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig')}</h2>
             <f:render partial="Compare/Information" section="tsconfig" arguments="{tsconfig:data.tsconfig,id:data.user.uid}" />
         </div>
         <div class="col-md-6">
-            <h3>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.non_exclude_fields')}</h3>
+            <h2>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.non_exclude_fields')}</h2>
             <f:render partial="Compare/Information" section="nonExcludeFields" arguments="{nonExcludeFields:data.non_exclude_fields, id:data.user.uid}"/>
 
-            <h3>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.fileoper_perms')}</h3>
+            <h2>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.fileoper_perms')}</h2>
             <f:render partial="Compare/Information" section="fileFolderPermissions" arguments="{fileFolderPermissions:data.fileFolderPermissions}" />
         </div>
     </div>

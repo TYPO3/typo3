@@ -36,7 +36,7 @@ final class ListUserCest
 
     public function showsHeadingAndListsBackendUsers(ApplicationTester $I): void
     {
-        $I->see('Backend User Listing');
+        $I->see('Backend users');
 
         $I->wantTo('See the table of users');
         $I->waitForElementVisible('#typo3-backend-user-list');
@@ -169,7 +169,7 @@ final class ListUserCest
 
     public function canEditUsersFromIndexListView(ApplicationTester $I): void
     {
-        $I->canSee('Backend User Listing', 'h1');
+        $I->canSee('Backend users', 'h1');
         $username = $I->grabTextFrom('#typo3-backend-user-list > tbody > tr:nth-child(1) > td.col-title > a:nth-child(1) > b');
 
         $I->amGoingTo('test the edit button');
@@ -200,6 +200,6 @@ final class ListUserCest
 
         $I->click('div.module-docheader .btn.t3js-editform-close');
         $I->waitForElementVisible('table.table-striped');
-        $I->canSee('Backend User Listing', 'h1');
+        $I->canSee('Backend users', 'h1');
     }
 }

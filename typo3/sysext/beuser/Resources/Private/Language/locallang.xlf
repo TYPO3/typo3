@@ -12,6 +12,9 @@
 			<trans-unit id="userGroupTitle" resname="userGroupTitle">
 				<source>Grouptitle or group ID</source>
 			</trans-unit>
+			<trans-unit id="avatar" resname="avatar">
+				<source>Avatar</source>
+			</trans-unit>
 			<trans-unit id="realName" resname="realName">
 				<source>Real Name</source>
 			</trans-unit>
@@ -20,9 +23,6 @@
 			</trans-unit>
 			<trans-unit id="ipAddress" resname="ipAddress">
 				<source>IP address</source>
-			</trans-unit>
-			<trans-unit id="backendUserListing" resname="backendUserListing">
-				<source>Backend User Listing</source>
 			</trans-unit>
 			<trans-unit id="subGroups" resname="subGroups">
 				<source>Sub Groups</source>
@@ -88,7 +88,7 @@
 				<source>Compare user list</source>
 			</trans-unit>
 			<trans-unit id="compareBackendUsersGroups" resname="compareBackendUsersGroups">
-				<source>Compare backend usergroups</source>
+				<source>Compare backend user groups</source>
 			</trans-unit>
 			<trans-unit id="clearCompareList" resname="clearCompareList">
 				<source>Clear compare list</source>
@@ -175,7 +175,10 @@
 				<source>Compare</source>
 			</trans-unit>
 			<trans-unit id="section.allUserGroups" resname="section.allUserGroups">
-				<source>All User Groups</source>
+				<source>All backend user groups</source>
+			</trans-unit>
+			<trans-unit id="section.allUsers" resname="section.allUsers">
+				<source>All backend users</source>
 			</trans-unit>
 			<trans-unit id="compare" resname="compare">
 				<source>Compare</source>
@@ -303,17 +306,31 @@
 			<trans-unit id="pagination.refresh" resname="pagination.refresh">
 				<source>Refresh</source>
 			</trans-unit>
-			<trans-unit id="filemounts" resname="filemounts">
-			    <source>Filemounts</source>
+
+			<trans-unit id="backendUser.list.title" resname="backendUser.list.title">
+				<source>Backend users</source>
 			</trans-unit>
-			<trans-unit id="filemount.listing" resname="filemount.listing">
-				<source>Available filemounts</source>
+			<trans-unit id="backendUser.online.title" resname="backendUser.online.title">
+				<source>Online backend users</source>
+			</trans-unit>
+			<trans-unit id="backendUser.compare.title" resname="backendUser.online.title">
+				<source>Compare backend users</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroup.list.title" resname="backendUserGroup.list.title">
+				<source>Backend user groups</source>
+			</trans-unit>
+			<trans-unit id="filemount.list.title" resname="filemount.list.title">
+				<source>Filemounts</source>
+			</trans-unit>
+
+			<trans-unit id="filemounts" resname="filemounts">
+				<source>Filemounts</source>
 			</trans-unit>
 			<trans-unit id="filemount.confirm.deletion" resname="filemount.confirm.deletion">
-			    <source>Are you sure, that you want to delete the filemount "%s"?</source>
+				<source>Are you sure, that you want to delete the filemount "%s"?</source>
 			</trans-unit>
 			<trans-unit id="filemount.create" resname="filemount.create">
-			    <source>Create new filemount</source>
+				<source>Create new filemount</source>
 			</trans-unit>
 			<trans-unit id="filemount.none" resname="filemount.none">
 				<source>There are no filemounts available.</source>
@@ -322,10 +339,10 @@
 				<source>Storage</source>
 			</trans-unit>
 			<trans-unit id="filemount.amount.multiple" resname="filemount.amount.multiple">
-				<source>Total: %s filemounts</source>
+				<source>%s filemounts</source>
 			</trans-unit>
 			<trans-unit id="filemount.amount.singular" resname="filemount.amount.singular">
-				<source>Total: 1 filemount</source>
+				<source>1 filemount</source>
 			</trans-unit>
 		</body>
 	</file>

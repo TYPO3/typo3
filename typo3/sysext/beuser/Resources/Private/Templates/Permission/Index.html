@@ -1,13 +1,12 @@
 <html
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
-    xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers"
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:beuser="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
 <f:layout name="Module" />
-
 <f:section name="Content">
 
     <f:be.pageRenderer
@@ -34,7 +33,7 @@
                     <f:if condition="{data.row.uid}">
                         <f:then>
                             <f:variable name="editUrl">
-                                <be:moduleLink route="permissions_pages" arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', action: 'edit', depth: depth, returnUrl: returnUrl}" />
+                                <backend:moduleLink route="permissions_pages" arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', action: 'edit', depth: depth, returnUrl: returnUrl}" />
                             </f:variable>
 
                             <f:comment>
@@ -50,7 +49,7 @@
                             </td>
 
                             <td class="permission-column-list">
-                                <bu:permissions permission="{data.row.perms_user}" scope="user" pageId="{data.row.uid}" />
+                                <beuser:permissions permission="{data.row.perms_user}" scope="user" pageId="{data.row.uid}" />
                             </td>
                             <td class="permission-column-group">
                                 <f:render
@@ -58,13 +57,13 @@
                                     arguments="{
                                         pageId: '{data.row.uid}',
                                         userId: '{data.row.perms_userid}',
-                                        username: '{bu:arrayElement(array:beUsers, key:data.row.perms_userid, subKey:\'username\')}'
+                                        username: '{beuser:arrayElement(array:beUsers, key:data.row.perms_userid, subKey:\'username\')}'
                                     }"
                                 />
                             </td>
 
                             <td class="permission-column-list">
-                                <bu:permissions permission="{data.row.perms_group}" scope="group" pageId="{data.row.uid}" />
+                                <beuser:permissions permission="{data.row.perms_group}" scope="group" pageId="{data.row.uid}" />
                             </td>
                             <td class="permission-column-group">
                                 <f:render
@@ -72,13 +71,13 @@
                                     arguments="{
                                         pageId: '{data.row.uid}',
                                         groupId: '{data.row.perms_groupid}',
-                                        groupname: '{bu:arrayElement(array:beGroups, key:data.row.perms_groupid, subKey:\'title\')}'
+                                        groupname: '{beuser:arrayElement(array:beGroups, key:data.row.perms_groupid, subKey:\'title\')}'
                                     }"
                                 />
                             </td>
 
                             <td class="permission-column-list">
-                                <bu:permissions permission="{data.row.perms_everybody}" scope="everybody" pageId="{data.row.uid}" />
+                                <beuser:permissions permission="{data.row.perms_everybody}" scope="everybody" pageId="{data.row.uid}" />
                             </td>
 
                             <td class="col-control">
@@ -190,7 +189,7 @@
     </div>
     <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:def" /></p>
     <p>
-        <core:icon identifier="status-status-permission-granted" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Granted" /><br/>
+        <core:icon identifier="status-status-permission-granted" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Granted" /><br>
         <core:icon identifier="status-status-permission-denied" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Denied" />
     </p>
 

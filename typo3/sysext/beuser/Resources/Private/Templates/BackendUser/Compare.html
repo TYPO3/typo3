@@ -1,11 +1,14 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+<html
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
-    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers">
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
 <f:layout name="Module" />
-
 <f:section name="Content">
-    <h1>{f:translate(key:'compareBackendUsers')}</h1>
+
+    <h1><f:translate key="backendUser.compare.title" /></h1>
     <div class="table-fit">
         <table id="tx_beuser_compare" class="table table-striped table-hover table-vertical-top">
             <thead>
@@ -13,28 +16,39 @@
                     <th></th>
                     <f:for each="{compareUserList}" as="compareData">
                         <th>
-                            <a
-                                href="#"
-                                data-contextmenu-trigger="click"
-                                data-contextmenu-table="be_users"
-                                data-contextmenu-uid="{compareData.user.uid}"
-                                title="id={compareData.user.uid}"
-                            >
-                                <be:avatar backendUser="{compareData.user.uid}" showIcon="true" />
-                            </a>
-                            {compareData.user.username}
-
-                            <f:link.action action="removeFromCompareList" arguments="{uid: compareData.user.uid, redirectToCompare:1}" class="btn btn-default float-end">
-                                <core:icon identifier="actions-minus" size="small"/>
-                            </f:link.action>
-                            <be:link.editRecord class="btn btn-default float-end" table="be_users" uid="{compareData.user.uid}" title="edit">
-                                <core:icon identifier="actions-open" />
-                            </be:link.editRecord>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <span>{compareData.user.username}</span> <code>[{compareData.user.uid}]</code>
+                                </div>
+                                <div>
+                                    <f:link.action action="removeFromCompareList" arguments="{uid: compareData.user.uid, redirectToCompare:1}" class="btn btn-default">
+                                        <core:icon identifier="actions-minus" size="small"/>
+                                    </f:link.action>
+                                    <backend:link.editRecord class="btn btn-default" table="be_users" uid="{compareData.user.uid}" title="edit">
+                                        <core:icon identifier="actions-open" />
+                                    </backend:link.editRecord>
+                                </div>
+                            </div>
                         </th>
                     </f:for>
                 </tr>
             </thead>
             <tbody>
+                <tr>
+                    <th><f:translate key="avatar" /></th>
+                    <f:for each="{compareUserList}" as="compareData">
+                        <td>
+                            <a
+                                href="#"
+                                data-contextmenu-trigger="click"
+                                data-contextmenu-table="be_users"
+                                data-contextmenu-uid="{compareData.user.uid}"
+                                title="id={compareData.user.uid}">
+                                <backend:avatar backendUser="{compareData.user.uid}" showIcon="true" />
+                            </a>
+                        </td>
+                    </f:for>
+                </tr>
                 <tr>
                     <th><f:translate key="realName" /></th>
                     <f:for each="{compareUserList}" as="compareData">
@@ -70,12 +84,12 @@
                                 <f:else>
                                     <f:if condition="{compareData.user.disable}">
                                         <f:then>
-                                            <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_users][{compareData.user.uid}][disable]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key: 'visibility.unhide')}">
+                                            <a class="btn btn-default" href="{backend:moduleLink(route:'tce_db', query:'data[be_users][{compareData.user.uid}][disable]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key: 'visibility.unhide')}">
                                                 <core:icon identifier="actions-edit-unhide" />
                                             </a>
                                         </f:then>
                                         <f:else>
-                                            <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_users][{compareData.user.uid}][disable]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key: 'visibility.hide')}">
+                                            <a class="btn btn-default" href="{backend:moduleLink(route:'tce_db', query:'data[be_users][{compareData.user.uid}][disable]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key: 'visibility.hide')}">
                                                 <core:icon identifier="actions-edit-hide" />
                                             </a>
                                         </f:else>
@@ -190,7 +204,7 @@
                 <tr>
                     <th>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig')}</th>
                     <f:for each="{compareUserList}" as="compareData">
-                        <td class="align-top">
+                        <td>
                             <f:render partial="Compare/Information" section="tsconfig" arguments="{tsconfig:compareData.tsconfig,id:compareData.user.uid}" />
                         </td>
                     </f:for>
@@ -216,5 +230,7 @@
             </tbody>
         </table>
     </div>
+
 </f:section>
+
 </html>

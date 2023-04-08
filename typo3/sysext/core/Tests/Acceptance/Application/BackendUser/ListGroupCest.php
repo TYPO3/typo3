@@ -34,7 +34,7 @@ final class ListGroupCest
         $I->switchToContentFrame();
         $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Backend user groups');
         $I->waitForElementVisible('table.table-striped');
-        $I->canSee('Backend User Group Listing', 'h1');
+        $I->canSee('Backend user groups', 'h1');
     }
 
     public function canEditBeGroupsFromListView(ApplicationTester $I): void
@@ -65,7 +65,7 @@ final class ListGroupCest
 
         $I->click('div.module-docheader .btn.t3js-editform-close');
         $I->waitForElementVisible('table.table-striped');
-        $I->waitForText('Backend User Group Listing', 120);
-        $I->see('Backend User Group Listing', 'h1');
+        $I->waitForText('Backend user groups', 120);
+        $I->see('Backend user groups', 'h1');
     }
 }

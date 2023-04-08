@@ -1,27 +1,86 @@
 <html
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:beuser="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    data-namespace-typo3-fluid="true">
+    data-namespace-typo3-fluid="true"
+>
 
 <f:layout name="Module" />
-
 <f:section name="Content">
+
     <h1><f:translate key="onlineUsers" /></h1>
     <div class="table-fit">
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th></th>
-                    <th class="col-title"><f:translate key="userName" /> / <f:translate key="realName" /></th>
-                    <th><f:translate key="lastAccess" /></th>
+                    <th class="col-title" colspan="2"><f:translate key="userName" /> / <f:translate key="realName" /></th>
+                    <th class="col-datetime"><f:translate key="lastAccess" /></th>
                     <th><f:translate key="ipAddress" /></th>
                     <th class="col-control"></th>
                 </tr>
             </thead>
             <tbody>
                 <f:for each="{onlineUsersAndSessions}" as="onlineUser">
-                    <f:render partial="BackendUser/OnlineListRow" arguments="{onlineUser: onlineUser, dateFormat: dateFormat, timeFormat: timeFormat, currentSessionId: currentSessionId}" />
+                    <f:for each="{onlineUser.sessions}" as="session" iteration="it">
+                        <tr>
+                            <f:if condition="{it.isFirst}">
+                                <f:then>
+                                    <td class="col-avatar">
+                                        <a
+                                            href="#"
+                                            data-contextmenu-trigger="click"
+                                            data-contextmenu-table="be_users"
+                                            data-contextmenu-uid="{onlineUser.backendUser.uid}"
+                                            title="{f:if(condition: '{onlineUser.backendUser.description}', then: '{onlineUser.backendUser.description} ')}(id={onlineUser.backendUser.uid})"
+                                        >
+                                            <backend:avatar backendUser="{onlineUser.backendUser.uid}" showIcon="true" />
+                                        </a>
+                                    </td>
+                                    <td class="col-title">
+                                        <b>{onlineUser.backendUser.userName}</b>
+                                        <span class="badge badge-success"><f:translate key="online" /></span>
+                                        <beuser:mfaStatus userUid="{onlineUser.backendUser.uid}"/><br>
+                                        {onlineUser.backendUser.realName}
+                                    </td>
+                                </f:then>
+                                <f:else>
+                                    <td></td>
+                                    <td class="col-title"></td>
+                                </f:else>
+                            </f:if>
+                            <td class="col-datetime">
+                                <f:format.date format="{dateFormat} {timeFormat}" date="{session.timestamp}" />
+                            </td>
+                            <td>{session.ip}</td>
+                            <td class="col-control">
+                                <div class="btn-group" role="group">
+                                    <f:if condition="{currentSessionId} == {session.id}">
+                                        <f:else>
+                                            <f:link.action
+                                                class="btn btn-default t3js-modal-trigger"
+                                                action="terminateBackendUserSession"
+                                                controller="BackendUser"
+                                                arguments="{sessionId: session.id}"
+                                                data="{severity: 'warning', title: '{f:translate(key: \'endSession\')}', bs-content: '{f:translate(key: \'reallyLogout\')} {onlineUser.backendUser.userName}?', button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}'}"
+                                            >
+                                                <core:icon identifier="actions-close" />
+                                                <f:translate key="endSession" />
+                                            </f:link.action>
+                                        </f:else>
+                                    </f:if>
+                                    <a class="btn btn-default" href="#" data-dispatch-action="TYPO3.InfoWindow.showItem" data-dispatch-args-list="be_users,{onlineUser.backendUser.uid}">
+                                        <core:icon identifier="actions-document-info" />
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </f:for>
                 </f:for>
             </tbody>
         </table>
     </div>
+
 </f:section>
+
+</html>

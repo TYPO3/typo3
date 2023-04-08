@@ -1,8 +1,9 @@
 <html
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
+
 <span id="{elementId}">
     <div class="input-group">
         <select class="form-select form-select-sm" name="new_page_group" id="new_page_group">
@@ -15,27 +16,30 @@
             </f:for>
         </select>
         <span class="btn-group">
-            <button type="button"
-                    class="savegroup btn btn-sm btn-default"
-                    title="{f:translate(key:'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:changeGroup')}"
-                    data-page="{pageId}"
-                    data-group-id="{groupUid}"
-                    data-element-id="{elementId}"
+            <button
+                type="button"
+                class="savegroup btn btn-sm btn-default"
+                title="{f:translate(key:'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:changeGroup')}"
+                data-page="{pageId}"
+                data-group-id="{groupUid}"
+                data-element-id="{elementId}"
             >
                 <core:icon identifier="actions-document-save" size="small"/>
             </button>
-            <button type="button"
-                    class="restoregroup btn btn-sm btn-default"
-                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
-                    data-page="{pageId}"
-                    data-group-id="{groupUid}"
-                    data-element-id="{elementId}"
-                    data-if-not-set="[not set]"
-                    {f:if(condition: groupname, then: 'data-groupname="{groupname}"')}
+            <button
+                type="button"
+                class="restoregroup btn btn-sm btn-default"
+                title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                data-page="{pageId}"
+                data-group-id="{groupUid}"
+                data-element-id="{elementId}"
+                data-if-not-set="[not set]"
+                {f:if(condition: groupname, then: 'data-groupname="{groupname}"')}
             >
                 <core:icon identifier="actions-close" size="small"/>
             </button>
         </span>
     </span>
 </span>
+
 </html>

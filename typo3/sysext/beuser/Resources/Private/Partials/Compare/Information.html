@@ -1,151 +1,164 @@
 <html
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:beuser="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
-    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
-    xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
 >
 
 <f:section name="languages">
-    <table class="table table-sm table-hover">
-        <f:for each="{languages}" key="languageId" as="language">
-            <tr>
-                <f:if condition="{languageId} == 0">
-                    <f:then>
-                        <td class="col-icon"></td>
-                        <td class="col-title">{f:translate(key:'information.defaultLanguage')}</td>
-                    </f:then>
-                    <f:else>
-                        <td class="col-icon">
-                            <core:icon identifier="{language.flagIconIdentifier}"/>
-                        </td>
-                        <td class="col-title">{language.title} [{languageId}]</td>
-                    </f:else>
-                </f:if>
-            </tr>
-        </f:for>
-    </table>
+    <f:if condition="{languages}">
+        <div class="table-fit">
+            <table class="table table-hover">
+                <f:for each="{languages}" key="languageId" as="language">
+                    <tr>
+                        <f:if condition="{languageId} == 0">
+                            <f:then>
+                                <td class="col-icon"></td>
+                                <td class="col-title">{f:translate(key:'information.defaultLanguage')}</td>
+                            </f:then>
+                            <f:else>
+                                <td class="col-icon"><core:icon identifier="{language.flagIconIdentifier}"/></td>
+                                <td class="col-title">{language.title} <code>[{languageId}]</code></td>
+                            </f:else>
+                        </f:if>
+                    </tr>
+                </f:for>
+            </table>
+        </div>
+    </f:if>
 </f:section>
 
 <f:section name="groups">
     <f:if condition="{groups.all}">
-        <table class="table table-sm table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th class="text-center">{f:translate(key:'compare.direct.direct')}</th>
-                    <th >{f:translate(key:'compare.direct.inherit')}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <f:for each="{groups.all}" as="group">
+        <div class="table-fit">
+            <table class="table table-bordered table-hover">
+                <thead>
                     <tr>
-                        <td class="col-title col-responsive nowrap">
-                            <a
-                                href="#"
-                                data-contextmenu-trigger="click"
-                                data-contextmenu-table="be_groups"
-                                data-contextmenu-uid="{group.row.uid}"
-                                title="id={group.row.uid}"
-                            >
-                                <core:iconForRecord table="be_groups" row="{group.row}"/>
-                            </a>
-                            <be:link.editRecord table="be_groups" uid="{group.row.uid}">
-                                {group.row.title}
-                            </be:link.editRecord>
-                        </td>
-                        <td class="text-center"><f:if condition="{group.direct}"><span class="text-success"><core:icon identifier="actions-check" size="small" /></span></f:if></td>
-                        <td class="text-center"><f:if condition="{group.diff}"><span class="text-success"><core:icon identifier="actions-check" size="small" /></span></f:if></td>
+                        <th></th>
+                        <th class="text-center">{f:translate(key:'compare.direct.direct')}</th>
+                        <th >{f:translate(key:'compare.direct.inherit')}</th>
                     </tr>
-                </f:for>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <f:for each="{groups.all}" as="group">
+                        <tr>
+                            <td class="col-title col-responsive nowrap">
+                                <a
+                                    href="#"
+                                    data-contextmenu-trigger="click"
+                                    data-contextmenu-table="be_groups"
+                                    data-contextmenu-uid="{group.row.uid}"
+                                    title="id={group.row.uid}"
+                                >
+                                    <core:iconForRecord table="be_groups" row="{group.row}"/>
+                                </a>
+                                <backend:link.editRecord table="be_groups" uid="{group.row.uid}">
+                                    {group.row.title}
+                                </backend:link.editRecord>
+                            </td>
+                            <td class="text-center"><f:if condition="{group.direct}"><span class="text-success"><core:icon identifier="actions-check" size="small" /></span></f:if></td>
+                            <td class="text-center"><f:if condition="{group.diff}"><span class="text-success"><core:icon identifier="actions-check" size="small" /></span></f:if></td>
+                        </tr>
+                    </f:for>
+                </tbody>
+            </table>
+        </div>
     </f:if>
 </f:section>
 
 <f:section name="dbMounts">
     <f:if condition="{dbMounts}">
-        <table class="table table-sm table-hover">
-            <f:for each="{dbMounts}" as="item">
-                <tr>
-                    <td class="col-icon">
-                        <a
-                            href="#"
-                            data-contextmenu-trigger="click"
-                            data-contextmenu-table="pages"
-                            data-contextmenu-uid="{item.uid}"
-                            title="id={item.uid}"
-                        >
-                            <core:iconForRecord table="pages" row="{item}"/>
-                        </a>
-                    </td>
-                    <td class="col-title">{item.title} [{item.uid}]</td>
-                </tr>
-            </f:for>
-        </table>
+        <div class="table-fit">
+            <table class="table table-hover">
+                <f:for each="{dbMounts}" as="item">
+                    <tr>
+                        <td class="col-icon">
+                            <a
+                                href="#"
+                                data-contextmenu-trigger="click"
+                                data-contextmenu-table="pages"
+                                data-contextmenu-uid="{item.uid}"
+                                title="id={item.uid}"
+                            >
+                                <core:iconForRecord table="pages" row="{item}"/>
+                            </a>
+                        </td>
+                        <td class="col-title">{item.title} <code>[{item.uid}]</code></td>
+                    </tr>
+                </f:for>
+            </table>
+        </div>
     </f:if>
 </f:section>
 
 <f:section name="fileMounts">
     <f:if condition="{fileMounts}">
-        <table class="table table-sm table-hover">
-            <f:for each="{fileMounts}" as="item">
-                <tr>
-                    <td class="col-icon">
-                        <a
-                            href="#"
-                            data-contextmenu-trigger="click"
-                            data-contextmenu-table="sys_filemounts"
-                            data-contextmenu-uid="{item.uid}"
-                            title="id={item.uid}"
-                        >
-                            <core:iconForRecord table="sys_filemounts" row="{item}"/>
-                        </a>
-                    </td>
-                    <td class="col-title">{item.title} [{item.uid}]</td>
-                </tr>
-            </f:for>
-        </table>
+        <div class="table-fit">
+            <table class="table table-hover">
+                <f:for each="{fileMounts}" as="item">
+                    <tr>
+                        <td class="col-icon">
+                            <a
+                                href="#"
+                                data-contextmenu-trigger="click"
+                                data-contextmenu-table="sys_filemounts"
+                                data-contextmenu-uid="{item.uid}"
+                                title="id={item.uid}"
+                            >
+                                <core:iconForRecord table="sys_filemounts" row="{item}"/>
+                            </a>
+                        </td>
+                        <td class="col-title">{item.title} <code>[{item.uid}]</code></td>
+                    </tr>
+                </f:for>
+            </table>
+        </div>
     </f:if>
 </f:section>
 
 <f:section name="fileFolderPermissions">
     <f:if condition="{fileFolderPermissions}">
-        <table class="table table-sm table-hover">
-            <f:for each="{fileFolderPermissions}" as="item">
-                <tr>
-                    <td class="col-icon"><core:icon identifier="{item.icon}"/></td>
-                    <td class="col-title">
-                        <f:if condition="{item.label}">
-                            <f:then>{f:translate(key:item.label,default:item.label)}</f:then>
-                            <f:else>{item.value}</f:else>
-                        </f:if>
-                    </td>
-                </tr>
-            </f:for>
-        </table>
+        <div class="table-fit">
+            <table class="table table-hover">
+                <f:for each="{fileFolderPermissions}" as="item">
+                    <tr>
+                        <td class="col-icon"><core:icon identifier="{item.icon}"/></td>
+                        <td class="col-title">
+                            <f:if condition="{item.label}">
+                                <f:then>{f:translate(key:item.label,default:item.label)}</f:then>
+                                <f:else>{item.value}</f:else>
+                            </f:if>
+                        </td>
+                    </tr>
+                </f:for>
+            </table>
+        </div>
     </f:if>
 </f:section>
 
 <f:section name="categories">
     <f:if condition="{categories}">
-        <table class="table table-sm table-hover">
-            <f:for each="{categories}" as="item">
-                <tr>
-                    <td class="col-icon">
-                        <a
-                            href="#"
-                            data-contextmenu-trigger="click"
-                            data-contextmenu-table="sys_category"
-                            data-contextmenu-uid="{item.uid}"
-                            title="id={item.uid}"
-                        >
-                            <core:iconForRecord table="sys_category" row="{item}"/>
-                        </a>
-                    </td>
-                    <td class="col-title">{item.title} [{item.uid}]</td>
-                </tr>
-            </f:for>
-        </table>
+        <div class="table-fit">
+            <table class="table table-hover">
+                <f:for each="{categories}" as="item">
+                    <tr>
+                        <td class="col-icon">
+                            <a
+                                href="#"
+                                data-contextmenu-trigger="click"
+                                data-contextmenu-table="sys_category"
+                                data-contextmenu-uid="{item.uid}"
+                                title="id={item.uid}"
+                            >
+                                <core:iconForRecord table="sys_category" row="{item}"/>
+                            </a>
+                        </td>
+                        <td class="col-title">{item.title} <code>[{item.uid}]</code></td>
+                    </tr>
+                </f:for>
+            </table>
+        </div>
     </f:if>
 </f:section>
 
@@ -169,16 +182,18 @@
 
 <f:section name="pageTypes">
     <f:if condition="{pageTypes}">
-        <table class="table table-sm table-hover">
-            <f:for each="{pageTypes}" as="item">
-                <tr>
-                    <td class="col-icon"><core:icon identifier="{item.icon}"/></td>
-                    <td class="col-title">
-                        <f:if condition="{item.label}">{f:translate(key:item.label,default:item.label)}</f:if>
-                    </td>
-                </tr>
-            </f:for>
-        </table>
+        <div class="table-fit">
+            <table class="table table-hover">
+                <f:for each="{pageTypes}" as="item">
+                    <tr>
+                        <td class="col-icon"><core:icon identifier="{item.icon}"/></td>
+                        <td class="col-title">
+                            <f:if condition="{item.label}">{f:translate(key:item.label,default:item.label)}</f:if>
+                        </td>
+                    </tr>
+                </f:for>
+            </table>
+        </div>
     </f:if>
 </f:section>
 
@@ -188,62 +203,64 @@
 
 <f:section name="modules">
     <f:if condition="{modules}">
-        <table class="table table-hover table-sm">
-            <f:if condition="{showHeadline}">
-                <thead>
-                <tr>
-                    <th><f:translate key="modules" /></th>
-                </tr>
-                </thead>
-            </f:if>
-            <tbody>
-            <f:for each="{modules}" as="module">
-                <tr>
-                    <td class="col-icon"><core:icon identifier="{module.iconIdentifier}" /></td>
-                    <td class="col-title">{f:translate(key: module.title, default: module.title)} [{module.identifier}]</td>
-                </tr>
-            </f:for>
-            </tbody>
-        </table>
+        <div class="table-fit">
+            <table class="table table-hover">
+                <f:if condition="{showHeadline}">
+                    <thead>
+                    <tr>
+                        <th><f:translate key="modules" /></th>
+                    </tr>
+                    </thead>
+                </f:if>
+                <tbody>
+                <f:for each="{modules}" as="module">
+                    <tr>
+                        <td class="col-icon"><core:icon identifier="{module.iconIdentifier}" /></td>
+                        <td class="col-title">{f:translate(key: module.title, default: module.title)} <code>[{module.identifier}]</code></td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
     </f:if>
 </f:section>
 
 <f:section name="tables">
     <f:if condition="{tables.all}">
-    <div class="table-fit">
-    <table class="table table-bordered table-hover table-sm">
-        <thead>
-        <tr>
-            <th><f:if condition="{showHeadline}"><f:translate key="tableModes" /></f:if></th>
-            <th class="text-center"><f:translate key="tableModes.select" /></th>
-            <th class="text-center"><f:translate key="tableModes.modify" /></th>
-        </tr>
-        </thead>
-        <tbody>
-        <f:for each="{tables.all}" key="table" as="label">
-            <tr>
-                <td class="col-title col-responsive nowrap">
-                    <f:if condition="{label}">{f:translate(key:label,default:label)}</f:if> [{table}]
-                </td>
-                <td class="text-center">
-                    <bu:display.tableAccess table="{table}" select="{tables.tables_select}" modify="{tables.tables_modify}">
-                        <f:then><span class="text-success"><core:icon identifier="actions-check" size="small" /></span>
-                        </f:then>
-                        <f:else><span class="text-danger"><core:icon identifier="actions-close" size="small" /></span></f:else>
-                    </bu:display.tableAccess>
-                </td>
-                <td class="text-center">
-                    <bu:display.tableAccess table="{table}" modify="{tables.tables_modify}">
-                        <f:then><span class="text-success"><core:icon identifier="actions-check" size="small" /></span>
-                        </f:then>
-                        <f:else><span class="text-danger"><core:icon identifier="actions-close" size="small" /></span></f:else>
-                    </bu:display.tableAccess>
-                </td>
-            </tr>
-        </f:for>
-        </tbody>
-    </table>
-    </div>
+        <div class="table-fit">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th><f:if condition="{showHeadline}"><f:translate key="tableModes" /></f:if></th>
+                    <th class="text-center"><f:translate key="tableModes.select" /></th>
+                    <th class="text-center"><f:translate key="tableModes.modify" /></th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for each="{tables.all}" key="table" as="label">
+                    <tr>
+                        <td class="col-title col-responsive nowrap">
+                            <f:if condition="{label}">{f:translate(key:label,default:label)}</f:if> <code>[{table}]</code>
+                        </td>
+                        <td class="text-center">
+                            <beuser:display.tableAccess table="{table}" select="{tables.tables_select}" modify="{tables.tables_modify}">
+                                <f:then><span class="text-success"><core:icon identifier="actions-check" size="small" /></span>
+                                </f:then>
+                                <f:else><span class="text-danger"><core:icon identifier="actions-close" size="small" /></span></f:else>
+                            </beuser:display.tableAccess>
+                        </td>
+                        <td class="text-center">
+                            <beuser:display.tableAccess table="{table}" modify="{tables.tables_modify}">
+                                <f:then><span class="text-success"><core:icon identifier="actions-check" size="small" /></span>
+                                </f:then>
+                                <f:else><span class="text-danger"><core:icon identifier="actions-close" size="small" /></span></f:else>
+                            </beuser:display.tableAccess>
+                        </td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
     </f:if>
 </f:section>
 
@@ -253,13 +270,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="{tableName}-{id}-heading">
                     <a data-bs-toggle="collapse" title="{item.linkTitle}" href="#{tableName}-{id}" aria-expanded="false" aria-controls="{tableName}-{id}">
-                        <f:if condition="{table.label}">{f:translate(key:table.label,default:table.label)}</f:if> [{tableName}]
+                        <f:if condition="{table.label}">{f:translate(key:table.label,default:table.label)}</f:if> <code>[{tableName}]</code>
                     </a>
                 </div>
                 <div id="{tableName}-{id}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{tableName}-{id}-heading">
                         <div class="panel-body">
                             <f:for each="{table.fields}" as="label" key="field">
-                                <f:if condition="{label}">{f:translate(key:label,default:label)}</f:if> [{field}]<br>
+                                <f:if condition="{label}">{f:translate(key:label,default:label)}</f:if> <code>[{field}]</code><br>
                             </f:for>
                         </div>
                 </div>
@@ -269,22 +286,15 @@
 </f:section>
 
 <f:section name="tsconfig">
-    <f:if condition="tsconfig">
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="tsconfig-{id}-heading">
-                <a data-bs-toggle="collapse" href="#tsconfig-{id}" aria-expanded="false" aria-controls="tsconfig-{id}">
-                    {f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig')}
-                </a>
-            </div>
-            <div id="tsconfig-{id}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tsconfig-{id}-heading">
-                <div class="panel-body">
-                    <f:render
-                        section="userTsConfigTree"
-                        arguments="{
-                            treeArray: tsconfig
-                        }"
-                    />
-                </div>
+    <f:if condition="{tsconfig}">
+        <div class="panel">
+            <div class="panel-body">
+                <f:render
+                    section="userTsConfigTree"
+                    arguments="{
+                        treeArray: tsconfig
+                    }"
+                />
             </div>
         </div>
     </f:if>
@@ -296,12 +306,12 @@
             <li>
                 <span class="treelist-group treelist-group-monospace">
                     <span class="treelist-label">{key}</span>
-                    <f:if condition="!{bu:isArray(value: value)}">
+                    <f:if condition="!{beuser:isArray(value: value)}">
                         <span class="treelist-operator">=</span>
                         <span class="treelist-value">{value}</span>
                     </f:if>
                 </span>
-                <f:if condition="{bu:isArray(value: value)}">
+                <f:if condition="{beuser:isArray(value: value)}">
                     <f:render
                         section="userTsConfigTree"
                         arguments="{

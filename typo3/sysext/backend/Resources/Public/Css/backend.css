@@ -3298,8 +3298,8 @@ to{opacity:1;transform:translate3d(0,0,0)}
 .table .col-word-break{word-wrap:break-word;word-break:break-all}
 }
 .table-transparent{--bs-table-bg:transparent}
-.table-vertical-top td,.table-vertical-top th{vertical-align:top}
-.table-center td,.table-center th{text-align:center}
+.table-vertical-top td,.table-vertical-top th{vertical-align:top!important}
+.table-center td,.table-center th{text-align:center!important}
 .table-fit{width:100%;border-radius:var(--typo3-component-border-radius);box-shadow:var(--typo3-component-box-shadow);margin-bottom:var(--typo3-component-spacing);overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;-ms-overflow-style:-ms-autohiding-scrollbar;border:1px solid #ccc}
 .table-fit .table-bordered>:not(caption)>*{border-width:0}
 .table-fit .table-bordered>:not(caption)>*>*{border-top:0;border-width:1px}

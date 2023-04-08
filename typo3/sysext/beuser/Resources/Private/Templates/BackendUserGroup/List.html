@@ -1,0 +1,66 @@
+<html
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+<f:section name="Content">
+
+    <h1><f:translate key="backendUserGroup.list.title" /></h1>
+
+    <f:if condition="{compareGroupList}">
+        <h2>{f:translate(key: 'section.compare', default: 'Compare')}</h2>
+        <div class="table-fit">
+            <table id="typo3-backend-user-list-compare" class="table table-striped table-hover">
+                <tbody>
+                <f:for each="{compareGroupList}" as="compareGroup">
+                    <tr>
+                        <td class="col-icon">
+                            <a
+                                href="#"
+                                data-contextmenu-trigger="click"
+                                data-contextmenu-table="be_usergroup"
+                                data-contextmenu-uid="{compareGroup.uid}"
+                                title="id={compareGroup.uid}"
+                            >
+                                <core:iconForRecord table="be_groups" row="{compareGroup}"/>
+                            </a>
+                        </td>
+                        <td class="col-title">
+                            {compareGroup.title}
+                        </td>
+                        <td class="col-control">
+                            <backend:link.editRecord class="btn btn-default" table="be_groups" uid="{compareGroup.uid}" title="{f:translate(key:'edit')}">
+                                <core:icon identifier="actions-open" />
+                            </backend:link.editRecord>
+                            <f:link.action action="removeGroupFromCompareList" arguments="{uid: compareGroup.uid}" class="btn btn-default" title="{f:translate(key: 'remove')}">
+                                <core:icon identifier="actions-minus" />
+                            </f:link.action>
+                        </td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
+        <div class="mb-4">
+            <f:link.action action="compareGroups" class="btn btn-default t3js-acceptance-compare">
+                <core:icon identifier="actions-code-compare" />
+                {f:translate(key: 'compareBackendUsersGroups')}
+            </f:link.action>
+            <f:link.action action="removeAllGroupsFromCompareList" class="btn btn-default">
+                <core:icon identifier="actions-selection-delete" />
+                {f:translate(key: 'clearCompareList')}
+            </f:link.action>
+        </div>
+
+        <h2>{f:translate(key: 'section.allUserGroups', default: 'All backend user groups')}</h2>
+    </f:if>
+
+    <f:render partial="BackendUserGroup/Filter" arguments="{userGroupDto: userGroupDto, backendUserGroups: backendUserGroups}" />
+    <f:render partial="BackendUserGroup/PaginatedList" arguments="{_all}" />
+
+</f:section>
+
+</html>

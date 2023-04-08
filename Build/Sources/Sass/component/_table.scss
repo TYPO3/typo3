@@ -161,14 +161,14 @@
 .table-vertical-top {
     th,
     td {
-        vertical-align: top;
+        vertical-align: top !important;
     }
 }
 
 .table-center {
     th,
     td {
-        text-align: center;
+        text-align: center !important;
     }
 }
 

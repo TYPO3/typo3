@@ -194,7 +194,7 @@ final class UsersCest extends AbstractCest
 
         $I->waitForElementVisible($this->inModuleHeader . ' [name=BackendUserModuleMenu]');
         $I->selectOption($this->inModuleHeader . ' [name=BackendUserModuleMenu]', ['text'=>'Backend user groups']);
-        $I->waitForText('Backend User Group Listing');
+        $I->waitForText('Backend user groups');
         $I->click('//table/tbody/tr[descendant::a[@data-contextmenu-uid="' . $userGroupId . '"]]/td[2]/a');
         $I->waitForElementVisible('#EditDocumentController');
         $I->click('//form[@id="EditDocumentController"]//ul/li[2]/a');
@@ -210,7 +210,7 @@ final class UsersCest extends AbstractCest
         $I->click($this->inModuleHeader . ' .btn[title="Save"]');
         $I->wait(0.5);
         $I->click($this->inModuleHeader . ' .btn[title="Close"]');
-        $I->waitForText('Backend User Group Listing');
+        $I->waitForText('Backend user groups');
     }
 
     private function setUserTsConfig(ApplicationTester $I, int $userId, string $userTsConfig): void
