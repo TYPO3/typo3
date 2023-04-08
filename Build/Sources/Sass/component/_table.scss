@@ -212,8 +212,22 @@ td.selected {
             border-width: 0;
 
             > * {
+                border-top: 0;
                 border-width: $table-border-width;
             }
+        }
+    }
+
+    caption {
+        border-top: $table-border-width solid $table-border-color;
+        padding-left: var(--typo3-component-padding-x);
+        padding-right: var(--typo3-component-padding-x);
+    }
+
+    .caption-top {
+        caption {
+            border-top: 0;
+            border-bottom: $table-border-width solid $table-border-color;
         }
     }
 
@@ -240,8 +254,12 @@ td.selected {
             > td:last-child {
                 border-right: 0 !important;
             }
+        }
 
-            &:last-child {
+        tbody:last-child,
+        tfoot:last-child {
+            tr:last-child {
+                th,
                 td {
                     border-bottom: 0 !important;
                 }
