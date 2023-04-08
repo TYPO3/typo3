@@ -590,7 +590,7 @@ class FileQueueItem {
     // Set a disabled checkbox to the selector column, if available
     if (this.$selector) {
       this.$selector.html(
-        '<span class="form-check form-toggle">' +
+        '<span class="form-check form-check-type-toggle">' +
         '<input type="checkbox" class="form-check-input t3js-multi-record-selection-check" disabled/>' +
         '</span>'
       );

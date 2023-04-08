@@ -14,7 +14,6 @@
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import PersistentStorage from './storage/persistent';
-import '@typo3/backend/element/icon-element';
 
 enum IdentifierEnum {
   hiddenElements = '.t3js-hidden-record',
@@ -40,14 +39,7 @@ class PageActions {
   private toggleContentElementVisibility(e: Event): void {
     const me = e.target as HTMLInputElement;
     const hiddenElements = document.querySelectorAll(IdentifierEnum.hiddenElements) as NodeListOf<HTMLElement>;
-
-    // show a spinner to show activity
-    const spinner = document.createElement('span');
-    spinner.classList.add('form-check-spinner');
-    spinner.append(document.createRange().createContextualFragment('<typo3-backend-icon identifier="spinner-circle" size="small"></typo3-backend-icon>'));
-
-    me.hidden = true;
-    me.insertAdjacentElement('afterend', spinner);
+    me.disabled = true;
 
     for (const hiddenElement of hiddenElements) {
       hiddenElement.style.display = 'block';
@@ -78,8 +70,7 @@ class PageActions {
     }
 
     PersistentStorage.set('moduleData.web_layout.showHidden', me.checked ? '1' : '0').then((): void => {
-      me.hidden = false;
-      spinner.remove();
+      me.disabled = false;
     });
   }
 }

@@ -99,13 +99,13 @@ class CheckboxElement extends AbstractFormElement
         $cols = (int)($this->data['parameterArray']['fieldConf']['config']['cols'] ?? 0);
         if ($cols > 1) {
             [$colClass, $colClear] = $this->calculateColumnMarkup($cols);
-            $elementHtml .= '<div class="checkbox-row row">';
+            $elementHtml .= '<div class="row">';
             $counter = 0;
             // $itemKey is important here, because items could have been removed via TSConfig
             foreach ($items as $itemKey => $itemDefinition) {
                 $label = $itemDefinition['label'];
                 $elementHtml .=
-                    '<div class="checkbox-column ' . $colClass . '">'
+                    '<div class="' . $colClass . '">'
                     . $this->renderSingleCheckboxElement($label, $itemKey, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled) .
                     '</div>';
                 ++$counter;
@@ -207,7 +207,7 @@ class CheckboxElement extends AbstractFormElement
                         <span class="form-check-label-icon-checked">' . $iconChecked . '</span>
                         <span class="form-check-label-icon-unchecked">' . $iconUnchecked . '</span>
                     </span>
-                    <span class="form-check-label-text">' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '</span>
+                    ' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '
                 </label>
             </div>';
     }

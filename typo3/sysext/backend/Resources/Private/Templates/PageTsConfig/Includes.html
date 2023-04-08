@@ -351,18 +351,16 @@
                                         <label class="form-check-label" for="pageTsConfigCondition{condition.hash}">
                                             <f:if condition="{condition.originalValue}">
                                                 <f:then>
-                                                    <span style="display: inline;">
-                                                        <span class="text-monospace">[{condition.value}]</span>
-                                                        <span class="diff-item-result diff-item-result-inline text-monospace p-0">
-                                                            <f:format.raw>
-                                                                <f:translate
-                                                                    key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.info.conditionWithConstant"
-                                                                    arguments="{
-                                                                        0: '{backend:typoScript.fineDiff(from: condition.originalValue, to: condition.value)}'
-                                                                    }"
-                                                                />
-                                                            </f:format.raw>
-                                                        </span>
+                                                    <span class="text-monospace">[{condition.value}]</span>
+                                                    <span class="diff-item-result diff-item-result-inline text-monospace p-0">
+                                                        <f:format.raw>
+                                                            <f:translate
+                                                                key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.info.conditionWithConstant"
+                                                                arguments="{
+                                                                    0: '{backend:typoScript.fineDiff(from: condition.originalValue, to: condition.value)}'
+                                                                }"
+                                                            />
+                                                        </f:format.raw>
                                                     </span>
                                                 </f:then>
                                                 <f:else>

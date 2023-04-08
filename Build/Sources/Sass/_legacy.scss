@@ -51,17 +51,7 @@
 @mixin form-control-validation($text-color: #555, $border-color: #ccc, $background-color: #f5f5f5) {
     // Color the label and help text
     .help-block,
-    .control-label,
-    .form-check-input,
-    .radio,
-    .checkbox,
-    .radio-inline,
-    .checkbox-inline,
-    &.form-check-label,
-    &.radio label,
-    &.checkbox label,
-    &.radio-inline label,
-    &.checkbox-inline label {
+    .control-label {
         color: $text-color;
     }
     // Set the border and box shadow on specific inputs to match

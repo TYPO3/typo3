@@ -6,16 +6,16 @@
             <div id="{element.uniqueIdentifier}" class="inputs-list">
                 <div class="form-group">
                     <f:for each="{element.properties.options}" as="label" key="value" iteration="idIterator">
-                        <div class="radio">
-                            <label for="{element.uniqueIdentifier}-{idIterator.index}">
-                                <f:form.radio
-                                    property="{element.identifier}"
-                                    id="{element.uniqueIdentifier}-{idIterator.index}"
-                                    class="{element.properties.elementClassAttribute} form-check-input"
-                                    value="{value}"
-                                    errorClass="{element.properties.elementErrorClassAttribute}"
-                                    additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
-                                />
+                        <div class="form-check">
+                            <f:form.radio
+                                property="{element.identifier}"
+                                id="{element.uniqueIdentifier}-{idIterator.index}"
+                                class="{element.properties.elementClassAttribute} form-check-input"
+                                value="{value}"
+                                errorClass="{element.properties.elementErrorClassAttribute}"
+                                additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
+                            />
+                            <label class="form-check-label" for="{element.uniqueIdentifier}-{idIterator.index}">
                                 <span>{formvh:translateElementProperty(element: element, property: '{0: \'options\', 1: value}')}</span>
                             </label>
                         </div>

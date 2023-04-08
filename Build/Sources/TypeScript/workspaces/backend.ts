@@ -681,7 +681,7 @@ class Backend extends Workspaces {
           ),
         );
       }
-      const $checkbox = $('<span />', { class: 'form-check form-toggle' }).append(
+      const $checkbox = $('<span />', { class: 'form-check form-check-type-toggle' }).append(
         $('<input />', { type: 'checkbox', class: 'form-check-input t3js-multi-record-selection-check' })
       );
 

@@ -144,11 +144,11 @@ class FolderUtilityRenderer
         $markup[] = '<div class="col col-6">';
         $markup[] = '   <h4>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle')) . '</h4>';
         $markup[] = '</div>';
-        $markup[] = '<div class="col col-6">';
-        $markup[] = '<div class="form-check form-switch float-end">';
+        $markup[] = '<div class="col col-6 text-end">';
+        $markup[] = '<div class="form-check form-switch">';
         $markup[] = '    <input class="form-check-input" type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" />';
         $markup[] = '    <label class="form-check-label" for="overwriteExistingFiles">';
-        $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:overwriteExistingFiles'));
+        $markup[] =          htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:overwriteExistingFiles'));
         $markup[] = '    </label>';
         $markup[] = '</div>';
         $markup[] = '</div>';

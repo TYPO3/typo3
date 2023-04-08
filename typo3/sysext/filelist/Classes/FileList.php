@@ -766,7 +766,7 @@ class FileList
             'checked' => $checkboxConfig['checked'],
         ];
 
-        return '<span class="form-check form-toggle">'
+        return '<span class="form-check form-check-type-toggle">'
             . '<input ' . GeneralUtility::implodeAttributes($attributes, true) . ' />'
             . '</span>';
     }

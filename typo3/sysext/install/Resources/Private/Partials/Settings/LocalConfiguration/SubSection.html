@@ -65,7 +65,7 @@
                                                 {f:if(condition: '!{isWritable}', then: 'disabled')}
                                             />
                                             <label class="form-check-label" for="{sectionName}_{item.key}">
-                                                <span class="form-check-label-text">{item.description -> f:format.raw()}</span>
+                                                {item.description -> f:format.raw()}
                                             </label>
                                         </div>
                                     </f:if>

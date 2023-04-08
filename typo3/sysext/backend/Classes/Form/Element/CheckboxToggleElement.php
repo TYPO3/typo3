@@ -85,14 +85,14 @@ class CheckboxToggleElement extends AbstractFormElement
         $cols = (int)($this->data['parameterArray']['fieldConf']['config']['cols'] ?? 0);
         if ($cols > 1) {
             [$colClass, $colClear] = $this->calculateColumnMarkup($cols);
-            $elementHtml .= '<div class="checkbox-row row">';
+            $elementHtml .= '<div class="row">';
             $counter = 0;
             // $itemKey is important here, because items could have been removed via TSConfig
             foreach ($items as $itemKey => $itemDefinition) {
                 $label = $itemDefinition['label'];
                 $elementHtml .=
-                    '<div class="checkbox-column ' . $colClass . '">'
-                    . $this->renderSingleCheckboxElement($label, $itemKey, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled) .
+                    '<div class="' . $colClass . '">'
+                        . $this->renderSingleCheckboxElement($label, $itemKey, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled) .
                     '</div>';
                 ++$counter;
                 if ($counter < $numberOfItems && !empty($colClear)) {
@@ -170,7 +170,7 @@ class CheckboxToggleElement extends AbstractFormElement
         $uniqueId = StringUtility::getUniqueId('_');
         $checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter . $uniqueId;
         return '
-            <div class="form-check form-switch' . ($inline ? ' form-check-inline' : '') . (!$disabled ? '' : ' disabled') . '">
+            <div class="form-check form-switch' . (!$disabled ? '' : ' disabled') . '">
                 <input type="checkbox"
                     class="form-check-input"
                     value="1"
@@ -179,7 +179,7 @@ class CheckboxToggleElement extends AbstractFormElement
                     ' . (!$disabled ? '' : ' disabled="disabled"') . '
                     id="' . $checkboxId . '" />
                 <label class="form-check-label" for="' . $checkboxId . '">
-                    <span class="form-check-label-text">' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '</span>
+                    ' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '
                 </label>
             </div>';
     }

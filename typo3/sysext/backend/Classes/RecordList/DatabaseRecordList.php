@@ -1795,7 +1795,7 @@ class DatabaseRecordList
         // In case clipObj is not set, just add a checkbox without any clipboard functionality
         if ($this->clipObj === null) {
             return '
-                <span class="form-check form-toggle">
+                <span class="form-check form-check-type-toggle">
                     <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" />
                 </span>';
         }
@@ -1812,7 +1812,7 @@ class DatabaseRecordList
         }
         // Adding the checkbox to the panel:
         return '
-            <span class="form-check form-toggle">
+            <span class="form-check form-check-type-toggle">
                 <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" name="CBC[' . $identifier . ']" value="1" ' . ($isSelected ? 'checked="checked" ' : '') . '/>
             </span>';
     }

@@ -14,7 +14,6 @@
 .form-control-wrap{margin:0;padding:.5rem 0}
 .form-control-wrap .table{margin:0}
 .form-control-wrap .help-block{margin-bottom:0}
-.form-check.form-switch{margin-bottom:0;padding-bottom:.5rem}
 .form-group-select{padding-bottom:.5rem}
 .form-group-select .form-control-wrap{padding:0}
 .form-group-select .t3-form-add-collection-element{padding-bottom:0}
@@ -97,7 +96,6 @@
 .property-grid .sort-row-field{cursor:move}
 .property-grid .form-sortable-drag td{border:none}
 .property-grid .form-sortable-ghost{height:45px;border-left:1px solid var(--module-docheader-border)!important;border-right:1px solid var(--module-docheader-border)!important;outline-offset:-5px!important}
-.property-grid .form-check{padding-left:3.2em}
 #t3-form-stage-inner-container{position:relative;left:-5px;display:inline-block;width:90%;max-width:800px;text-align:left}
 #t3-form-stage-container{overflow:auto;position:relative;height:calc(100% - var(--module-docheader-height));max-height:100%;text-align:center}
 #t3-form-stage-container ol,#t3-form-stage-container ul{list-style:none}

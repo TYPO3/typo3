@@ -84,13 +84,13 @@ class CheckboxLabeledToggleElement extends AbstractFormElement
         $cols = (int)($this->data['parameterArray']['fieldConf']['config']['cols'] ?? 0);
         if ($cols > 1) {
             [$colClass, $colClear] = $this->calculateColumnMarkup($cols);
-            $elementHtml .= '<div class="checkbox-row row">';
+            $elementHtml .= '<div class="row">';
             $counter = 0;
             // $itemKey is important here, because items could have been removed via TSConfig
             foreach ($items as $itemKey => $itemDefinition) {
                 $label = $itemDefinition['label'];
                 $elementHtml .=
-                    '<div class="checkbox-column ' . $colClass . '">'
+                    '<div class="' . $colClass . '">'
                     . $this->renderSingleCheckboxElement($label, $itemKey, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled) .
                     '</div>';
                 ++$counter;
@@ -173,20 +173,14 @@ class CheckboxLabeledToggleElement extends AbstractFormElement
                 <input type="checkbox"
                     class="form-check-input"
                     value="1"
+                    data-form-check-label-checked="' . $config['items'][$itemCounter]['labelChecked'] . '"
+                    data-form-check-label-unchecked="' . $config['items'][$itemCounter]['labelUnchecked'] . '"
                     data-formengine-input-name="' . htmlspecialchars($additionalInformation['itemFormElName']) . '"
                     ' . $checkboxParameters . '
                     ' . (!$disabled ? '' : ' disabled="disabled"') . '
                     id="' . $checkboxId . '" />
                 <label class="form-check-label" for="' . $checkboxId . '">
-                    <span class="form-check-label-switch">
-                        <span class="form-check-label-switch-checked">
-                            ' . $config['items'][$itemCounter]['labelChecked'] . '
-                        </span>
-                        <span class="form-check-label-switch-unchecked">
-                            ' . $config['items'][$itemCounter]['labelUnchecked'] . '
-                        </span>
-                    </span>
-                    <span class="form-check-label-text">' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '</span>
+                    ' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '
                 </label>
             </div>';
     }

@@ -136,7 +136,7 @@ export class ColumnSelectorButton extends LitElement {
     columns.forEach((column: HTMLInputElement) => {
       const columnContainer: HTMLDivElement = column.closest(Selectors.columnsContainerSelector);
       if (!column.disabled && columnContainer !== null) {
-        const filterValue: string = columnContainer.querySelector('.form-check-label-text')?.textContent;
+        const filterValue: string = columnContainer.querySelector('.form-check-label')?.textContent;
         if (filterValue && filterValue.length) {
           columnContainer.classList.toggle(
             'hidden',

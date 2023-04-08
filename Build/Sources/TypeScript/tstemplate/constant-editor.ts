@@ -58,7 +58,6 @@ class ConstantEditor {
     if (toggleState === 'edit') {
       defaultDiv.style.display = 'none';
       userDiv.style.removeProperty('display');
-      userDiv.querySelectorAll('input').forEach((element: HTMLInputElement): void => {element.style.background = '#fdf8bd';});
       checkBox.removeAttribute('disabled');
     } else if (toggleState === 'undo') {
       userDiv.style.display = 'none';

@@ -266,10 +266,10 @@
             </div>
             <f:if condition="{showHitCounter}">
                 <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input" name="demand[max_hits]" id="demand-never-hit" value="1" data-on-change="submit" {f:if(condition: demand.maxHits, then: 'checked="checked"')}>
                     <label class="form-check-label" for="demand-never-hit">
                         <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.neverHit"/>
                     </label>
-                    <input type="checkbox" class="form-check-input" name="demand[max_hits]" id="demand-never-hit" value="1" data-on-change="submit" {f:if(condition: demand.maxHits, then: 'checked="checked"')}>
                 </div>
             </f:if>
             <div class="col">

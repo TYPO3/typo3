@@ -1933,13 +1933,13 @@ class DatabaseIntegrityController
         $lineHTML[] =     $this->mkTypeSelect($fieldPrefix . '[type]', $fieldName);
         $lineHTML[] = '</div>';
         $lineHTML[] = '<div class="col mb-sm-2">';
-        $lineHTML[] = '	 <div class="input-group">';
-        $lineHTML[] =      $this->mkCompSelect($fieldPrefix . '[comparison]', (string)$conf['comparison'], ($conf['negate'] ?? null) ? 1 : 0);
-        $lineHTML[] = '	   <span class="input-group-addon">';
-        $lineHTML[] = '		 <input type="checkbox" class="checkbox t3js-submit-click"' . (($conf['negate'] ?? null) ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
-        $lineHTML[] = '	   </span>';
-        $lineHTML[] = '  </div>';
-        $lineHTML[] = '	</div>';
+        $lineHTML[] = '    <div class="input-group">';
+        $lineHTML[] =          $this->mkCompSelect($fieldPrefix . '[comparison]', (string)$conf['comparison'], ($conf['negate'] ?? null) ? 1 : 0);
+        $lineHTML[] = '        <span class="input-group-addon">';
+        $lineHTML[] = '            <input type="checkbox" class="checkbox t3js-submit-click"' . (($conf['negate'] ?? null) ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
+        $lineHTML[] = '        </span>';
+        $lineHTML[] = '    </div>';
+        $lineHTML[] = '</div>';
         return implode(LF, $lineHTML);
     }
 

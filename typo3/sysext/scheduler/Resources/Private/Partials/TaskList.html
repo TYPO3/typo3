@@ -261,7 +261,7 @@
                             <f:for each="{taskGroup.tasks}" as="task">
                                 <tr class="{f:if(condition:'{task.disabled}', then: 'disabled')} taskGroup_{taskGroupId}" data-task-id="{task.uid}" data-multi-record-selection-element="true">
                                     <td class="col-selector nowrap">
-                                        <span class="form-check form-toggle">
+                                        <span class="form-check form-check-type-toggle">
                                             <input class="form-check-input t3js-multi-record-selection-check" type="checkbox">
                                         </span>
                                     </td>

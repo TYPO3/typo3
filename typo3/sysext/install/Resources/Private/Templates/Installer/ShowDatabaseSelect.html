@@ -19,9 +19,9 @@
         <form method="post" id="stepInstaller-databaseSelect" spellcheck="false">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="radio">
-                        <label for="t3-install-form-db-select-type-existing">
-                            <input id="t3-install-form-db-select-type-existing" type="radio" name="install[values][type]" value="existing" class="radio" checked="checked" />
+                    <div class="form-check">
+                        <input class="form-check-input" id="t3-install-form-db-select-type-existing" type="radio" name="install[values][type]" value="existing" class="radio" checked="checked" />
+                        <label class="form-check-label" for="t3-install-form-db-select-type-existing">
                             Use an existing empty database:
                         </label>
                     </div>
@@ -50,15 +50,15 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="radio">
-                        <label for="t3-install-step-database-new">
-                            <input
-                                id="t3-install-form-db-select-type-new"
-                                type="radio"
-                                name="install[values][type]"
-                                value="new"
-                                class="radio"
-                            />
+                    <div class="form-check">
+                        <input
+                            id="t3-install-form-db-select-type-new"
+                            type="radio"
+                            name="install[values][type]"
+                            value="new"
+                            class="form-check-input"
+                        />
+                        <label class="form-check-label" for="t3-install-step-database-new">
                             Create a new database:
                         </label>
                     </div>

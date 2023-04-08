@@ -58,19 +58,17 @@
                                 <core:icon identifier="miscellaneous-placeholder" size="small" alternativeMarkupIdentifier="inline" />
                             </span>
                         </span>
-                        <span class="form-check-label-text">
-                            <f:if condition="{column.pseudo} && {column.label}">
-                                <f:then>
-                                    <span><i>{column.label}</i></span>
-                                </f:then>
-                                <f:else>
-                                    <f:if condition="{column.label}">
-                                        <span>{column.label}</span>
-                                    </f:if>
-                                    <span class="text-muted text-monospace">[{column.name}]</span>
-                                </f:else>
-                            </f:if>
-                        </span>
+                        <f:if condition="{column.pseudo} && {column.label}">
+                            <f:then>
+                                <span><i>{column.label}</i></span>
+                            </f:then>
+                            <f:else>
+                                <f:if condition="{column.label}">
+                                    <span>{column.label}</span>
+                                </f:if>
+                                <span class="text-muted text-monospace">[{column.name}]</span>
+                            </f:else>
+                        </f:if>
                     </label>
                 </div>
                 <f:if condition="{column.disabled}">

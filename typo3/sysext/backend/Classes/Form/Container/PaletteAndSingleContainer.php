@@ -307,7 +307,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                     4 => 'd-sm-block d-md-block d-xl-none',
                 ];
             } elseif ($colWidth <= 2) {
-                $colClass = 'checkbox-column col col-sm-6 col-md-3 col-lg-2';
+                $colClass = 'col col-sm-6 col-md-3 col-lg-2';
                 $colClear = [
                     2 => 'd-sm-block',
                     4 => 'd-sm-block d-md-none',

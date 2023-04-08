@@ -451,56 +451,6 @@ select {
 }
 
 //
-// Radio & Checkbox
-//
-.radio-row,
-.checkbox-row {
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
-
-.radio-column,
-.checkbox-column {
-    margin-bottom: 5px;
-
-    > .form-check-input,
-    > .radio,
-    > .checkbox {
-        margin: 0;
-    }
-}
-
-.radio-inline,
-.checkbox-inline {
-    &.form-check-input,
-    &.radio,
-    &.checkbox {
-        display: block;
-        margin-left: 0;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        padding: 0;
-
-        @media (max-width: $screen-xs-max) {
-            & + .form-check-in,
-            & + .radio,
-            & + .checkbox {
-                margin-top: -5px;
-            }
-        }
-
-        @media (min-width: $screen-sm-min) {
-            display: inline-block;
-            margin-top: 10px;
-
-            label {
-                white-space: nowrap;
-            }
-        }
-    }
-}
-
-//
 // Autoresize for Textareas
 //
 // no manual resizing for textareas (works on non-IE browser only anyways)
@@ -530,47 +480,6 @@ textarea {
 
 .form-control.hidden + .close {
     display: none;
-}
-
-/**
- * A toggle checkbox. Using TYPO3 icons.
- */
-$form-toggle-color: rgba(0, 0, 0, .25) !default;
-$form-toggle-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><g class='icon-color'><path d='M13 2c.6 0 1 .4 1 1v10c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h10m0-1H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2z'/></g></svg>") !default;
-$form-toggle-checked-color: $component-active-color !default;
-$form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><g class='icon-color'><path d='M12.1 5.3l-.4-.3c-.1-.1-.3-.1-.4 0L6.6 9.8l-2-2c-.1-.1-.3-.1-.4 0l-.3.4c-.1.1-.1.3 0 .4L6 10.7l.4.3c.1.1.3.1.4 0l.4-.4 4.9-4.9c.1-.1.1-.3 0-.4z'/><path d='M13 2c.6 0 1 .4 1 1v10c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h10m0-1H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2z'/></g></svg>") !default;
-
-.form-toggle {
-    color: $form-toggle-color;
-
-    &:hover {
-        cursor: pointer;
-    }
-
-    input[type="checkbox"] {
-        border: 0;
-        width: 16px;
-        height: 16px;
-        background-size: contain;
-        background-image: escape-svg($form-toggle-bg-image);
-
-        &:hover {
-            cursor: pointer;
-        }
-
-        &:active {
-            filter: brightness(100%);
-        }
-
-        &:checked {
-            background-image: escape-svg($form-toggle-checked-bg-image);
-            background-color: $form-toggle-checked-color;
-        }
-
-        &:disabled {
-            opacity: .25;
-        }
-    }
 }
 
 /**

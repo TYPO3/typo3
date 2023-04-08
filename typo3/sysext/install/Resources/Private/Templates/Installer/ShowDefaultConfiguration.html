@@ -22,22 +22,22 @@
         <form method="post" spellcheck="false">
             <div class="form-group">
                 <f:if condition="!{composerMode}">
-                    <div class="radio">
-                        <label for="load-distributions">
-                            <input type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
+                        <label class="form-check-label" for="load-distributions">
                             Yes, download the list of distributions
                         </label>
                     </div>
                 </f:if>
-                <div class="radio">
-                    <label for="create-site">
-                        <input type="radio" id="create-site" name="install[values][sitesetup]" value="createsite" />
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="create-site" name="install[values][sitesetup]" value="createsite" />
+                    <label class="form-check-label" for="create-site">
                         Create empty starting page
                     </label>
                 </div>
-                <div class="radio">
-                    <label for="do-nothing">
-                        <input type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" checked="checked" />
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" checked="checked" />
+                    <label class="form-check-label" for="do-nothing">
                         Take me straight to the backend
                     </label>
                 </div>
