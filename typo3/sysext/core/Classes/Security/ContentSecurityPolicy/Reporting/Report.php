@@ -38,12 +38,12 @@ class Report implements \JsonSerializable
     {
         $meta = json_decode($array['meta'] ?? '', true, 16, JSON_THROW_ON_ERROR);
         $meta = array_combine(
-            array_map('self::toCamelCase', array_keys($meta)),
+            array_map(self::toCamelCase(...), array_keys($meta)),
             array_values($meta)
         );
         $details = json_decode($array['details'] ?? '', true, 16, JSON_THROW_ON_ERROR);
         $details = array_combine(
-            array_map('self::toCamelCase', array_keys($details)),
+            array_map(self::toCamelCase(...), array_keys($details)),
             array_values($details)
         );
         return new static(
