@@ -90,10 +90,12 @@ class UuidElement extends AbstractFormElement
             $uuidElement = '
                 <div class="input-group">
                     ' . $uuidElement . '
-                    <typo3-copy-to-clipboard text="' . $itemValue . '">
-                        <button type="button" class="btn btn-default" title="' . htmlspecialchars(sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf:copyToClipboard.title'), 'UUID')) . '">
-                            ' . $this->iconFactory->getIcon('actions-clipboard', Icon::SIZE_SMALL) . '
-                        </button>
+                    <typo3-copy-to-clipboard
+                        class="btn btn-default"
+                        title="' . htmlspecialchars(sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf:copyToClipboard.title'), 'UUID')) . '"
+                        text="' . $itemValue . '"
+                    >
+                        ' . $this->iconFactory->getIcon('actions-clipboard', Icon::SIZE_SMALL) . '
                     </typo3-copy-to-clipboard>
                 </div>';
 

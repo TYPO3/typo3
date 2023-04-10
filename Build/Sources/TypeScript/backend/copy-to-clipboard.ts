@@ -24,7 +24,7 @@ import { lll } from '@typo3/core/lit-helper';
  *
  * @example
  * <typo3-copy-to-clipboard text="some text">
- *   <button>Copy to clipboard</button>
+ *   Copy to clipboard
  * </typo3-copy-to-clipboard>
  */
 @customElement('typo3-copy-to-clipboard')
