@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -52,31 +54,28 @@ class Icon
 
     /**
      * The identifier which the PHP code that calls the IconFactory hands over
-     *
-     * @var string
      */
-    protected $identifier;
+    protected string $identifier;
+
+    /**
+     * The title rendered to the icon
+     */
+    protected ?string $title = null;
 
     /**
      * The identifier for a possible overlay icon
-     *
-     * @var Icon|null
      */
-    protected $overlayIcon;
+    protected ?Icon $overlayIcon = null;
 
     /**
      * Contains the size string ("large", "small" or "default")
-     *
-     * @var string
      */
-    protected $size = '';
+    protected string $size = '';
 
     /**
      * Flag to indicate if the icon has a spinning animation
-     *
-     * @var bool
      */
-    protected $spinning = false;
+    protected bool $spinning = false;
 
     /**
      * Contains the state information
@@ -102,12 +101,8 @@ class Icon
 
     /**
      * @internal this method is used for internal processing, to get the prepared and final markup use render()
-     *
-     * @param string $alternativeMarkupIdentifier
-     *
-     * @return string
      */
-    public function getMarkup($alternativeMarkupIdentifier = null)
+    public function getMarkup(?string $alternativeMarkupIdentifier = null): string
     {
         if ($alternativeMarkupIdentifier !== null && isset($this->alternativeMarkups[$alternativeMarkupIdentifier])) {
             return $this->alternativeMarkups[$alternativeMarkupIdentifier];
@@ -116,68 +111,71 @@ class Icon
     }
 
     /**
-     * @param string $markup
+     * @return $this
      */
-    public function setMarkup($markup)
+    public function setMarkup(string $markup): self
     {
         $this->markup = $markup;
+        return $this;
     }
 
-    /**
-     * @param string $markupIdentifier
-     *
-     * @return string
-     */
-    public function getAlternativeMarkup($markupIdentifier)
+    public function getAlternativeMarkup(string $markupIdentifier): string
     {
-        return $this->alternativeMarkups[$markupIdentifier];
+        return $this->alternativeMarkups[$markupIdentifier] ?: '';
     }
 
     /**
-     * @param string $markupIdentifier
-     * @param string $markup
+     * @return $this
      */
-    public function setAlternativeMarkup($markupIdentifier, $markup)
+    public function setAlternativeMarkup(string $markupIdentifier, string $markup): self
     {
         $this->alternativeMarkups[$markupIdentifier] = $markup;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
     /**
-     * @param string $identifier
+     * @return $this
      */
-    public function setIdentifier($identifier)
+    public function setIdentifier(string $identifier): self
     {
         $this->identifier = $identifier;
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
     }
 
     /**
-     * @return Icon|null
+     * @return $this
      */
-    public function getOverlayIcon()
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    public function getOverlayIcon(): ?Icon
     {
         return $this->overlayIcon;
     }
 
     /**
-     * @param Icon $overlayIcon
+     * @return $this
      */
-    public function setOverlayIcon($overlayIcon)
+    public function setOverlayIcon(?Icon $overlayIcon): self
     {
         $this->overlayIcon = $overlayIcon;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSize()
+    public function getSize(): string
     {
         return $this->size;
     }
@@ -185,62 +183,49 @@ class Icon
     /**
      * Sets the size and creates the new dimension
      *
-     * @param string $size
+     * @return $this
      */
-    public function setSize($size)
+    public function setSize(string $size): self
     {
         $this->size = $size;
         $this->dimension = GeneralUtility::makeInstance(Dimension::class, $size);
+        return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSpinning()
+    public function isSpinning(): bool
     {
         return $this->spinning;
     }
 
     /**
-     * @param bool $spinning
+     * @return $this
      */
-    public function setSpinning($spinning)
+    public function setSpinning(bool $spinning): self
     {
         $this->spinning = $spinning;
+        return $this;
     }
 
-    /**
-     * @return IconState
-     */
-    public function getState()
+    public function getState(): IconState
     {
         return $this->state;
     }
 
     /**
-     * Sets the state of the icon
+     * @return $this
      */
-    public function setState(IconState $state)
+    public function setState(IconState $state): self
     {
         $this->state = $state;
+        return $this;
     }
 
-    /**
-     * @return Dimension
-     */
-    public function getDimension()
+    public function getDimension(): Dimension
     {
         return $this->dimension;
     }
 
-    /**
-     * Render the icon as HTML code
-     *
-     * @param string $alternativeMarkupIdentifier
-     *
-     * @return string
-     */
-    public function render($alternativeMarkupIdentifier = null)
+    public function render(?string $alternativeMarkupIdentifier = null): string
     {
         $overlayIconMarkup = '';
         if ($this->overlayIcon !== null) {
@@ -249,24 +234,15 @@ class Icon
         return str_replace('{overlayMarkup}', $overlayIconMarkup, $this->wrappedIcon($alternativeMarkupIdentifier));
     }
 
-    /**
-     * Render the icon as HTML code
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render();
     }
 
     /**
      * Wrap icon markup in unified HTML code
-     *
-     * @param string $alternativeMarkupIdentifier
-     *
-     * @return string
      */
-    protected function wrappedIcon($alternativeMarkupIdentifier = null)
+    protected function wrappedIcon(?string $alternativeMarkupIdentifier = null): string
     {
         $classes = [];
         $classes[] = 't3js-icon';
@@ -278,8 +254,13 @@ class Icon
             $classes[] = 'icon-spin';
         }
 
+        $attributes = [];
+        $attributes['title'] = $this->getTitle();
+        $attributes['class'] = implode(' ', $classes);
+        $attributes['data-identifier'] = $this->getIdentifier();
+
         $markup = [];
-        $markup[] = '<span class="' . htmlspecialchars(implode(' ', $classes)) . '" data-identifier="' . htmlspecialchars($this->getIdentifier()) . '">';
+        $markup[] = '<span ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
         $markup[] = '	<span class="icon-markup">';
         $markup[] = $this->getMarkup($alternativeMarkupIdentifier);
         $markup[] = '	</span>';
