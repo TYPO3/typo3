@@ -56,7 +56,7 @@ class PasswordGenerator extends AbstractNode
         }
 
         return [
-            'iconIdentifier' => 'actions-refresh',
+            'iconIdentifier' => 'actions-dice',
             'title' => $title,
             'linkAttributes' => $linkAttributes,
             'javaScriptModules' => [
