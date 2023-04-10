@@ -143,19 +143,17 @@ class CategoryElement extends AbstractFormElement
         ];
 
         $resultArray['html'] =
-            '<typo3-formengine-element-category ' . GeneralUtility::implodeAttributes(['recordFieldId' => $fieldId, 'treeWrapperId' => $treeWrapperId], true) . '>
-                <div class="formengine-field-item t3js-formengine-field-item">
-                    ' . $fieldInformationHtml . '
-                    <div class="form-control-wrap">
-                        <div class="form-wizards-wrap">
-                            <div class="form-wizards-element">
-                                <div class="typo3-tceforms-tree">
-                                    <input ' . GeneralUtility::implodeAttributes(array_map('strval', $recordElementAttributes), true, true) . '/>
-                                </div>
-                                <div id="' . htmlspecialchars($treeWrapperId) . '" class="svg-tree-element" style="height: ' . $heightInPx . 'px;"></div>
+            '<typo3-formengine-element-category ' . GeneralUtility::implodeAttributes(['class' => 'formengine-field-item t3js-formengine-field-item', 'recordFieldId' => $fieldId, 'treeWrapperId' => $treeWrapperId], true) . '>
+                ' . $fieldInformationHtml . '
+                <div class="form-control-wrap">
+                    <div class="form-wizards-wrap">
+                        <div class="form-wizards-element">
+                            <div class="typo3-tceforms-tree">
+                                <input ' . GeneralUtility::implodeAttributes(array_map('strval', $recordElementAttributes), true, true) . '/>
                             </div>
-                            ' . $fieldWizardHtml . '
+                            <div id="' . htmlspecialchars($treeWrapperId) . '" class="svg-tree-element" style="height: ' . $heightInPx . 'px;"></div>
                         </div>
+                        ' . $fieldWizardHtml . '
                     </div>
                 </div>
             </typo3-formengine-element-category>';

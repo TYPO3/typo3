@@ -3933,10 +3933,10 @@ label .icon img{pointer-events:none}
 .form-control-holder{position:relative}
 ::-ms-reveal{display:none}
 .row>.form-group>.form-control-wrap{margin-bottom:0}
-.form-group .t3js-formengine-field-item{position:relative}
-.form-group .t3js-formengine-field-item>.t3js-charcounter-wrapper{left:0;position:absolute;top:100%;display:flex;margin:0 -2px}
-.form-group .t3js-formengine-field-item>.t3js-charcounter-wrapper .t3js-charcounter{margin:0 2px}
-.form-group .t3js-formengine-field-item>.t3js-charcounter-wrapper .t3js-charcounter-min{margin:0 2px}
+.formengine-field-item{display:block;position:relative}
+.formengine-field-item>.t3js-charcounter-wrapper{left:0;position:absolute;top:100%;display:flex;margin:0 -2px}
+.formengine-field-item>.t3js-charcounter-wrapper .t3js-charcounter{margin:0 2px}
+.formengine-field-item>.t3js-charcounter-wrapper .t3js-charcounter-min{margin:0 2px}
 .form-group>.form-label,.form-group>label{font-weight:600;margin:0 0 .25rem;word-break:break-all}
 .form-group .panel,.form-group .panel-group{overflow:visible}
 .form-control[disabled],.form-control[readonly],fieldset[disabled] .form-control{color:#737373}

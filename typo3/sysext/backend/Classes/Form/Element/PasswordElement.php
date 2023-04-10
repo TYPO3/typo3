@@ -215,14 +215,15 @@ class PasswordElement extends AbstractFormElement
             $passwordPolicyInfo = $this->renderPasswordPolicyRequirements($passwordPolicyValidator, $fieldId);
         }
 
+        $passwordElementAttributes['class'] = 'formengine-field-item t3js-formengine-field-item';
         $passwordElementAttributes['recordFieldId'] = $fieldId;
         $passwordElementAttributes['passwordPolicy'] = $passwordPolicy;
 
         $resultArray['html'] = '
             <typo3-formengine-element-password ' . GeneralUtility::implodeAttributes($passwordElementAttributes, true) . '>
-                <div class="formengine-field-item t3js-formengine-field-item">
-                    ' . $fieldInformationHtml . $fullElement . $passwordPolicyInfo . '
-                </div>
+                ' . $fieldInformationHtml . '
+                ' . $fullElement . '
+                ' . $passwordPolicyInfo . '
             </typo3-formengine-element-password>';
 
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(

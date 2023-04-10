@@ -274,10 +274,9 @@ class DatetimeElement extends AbstractFormElement
         }
 
         $resultArray['html'] = '
-            <typo3-formengine-element-datetime recordFieldId="' . htmlspecialchars($fieldId) . '">
-                <div class="formengine-field-item t3js-formengine-field-item">
-                    ' . $fieldInformationHtml . $fullElement . '
-                </div>
+            <typo3-formengine-element-datetime class="formengine-field-item t3js-formengine-field-item" recordFieldId="' . htmlspecialchars($fieldId) . '">
+                ' . $fieldInformationHtml . '
+                ' . $fullElement . '
             </typo3-formengine-element-datetime>';
 
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/datetime-element.js');

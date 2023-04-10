@@ -85,27 +85,28 @@ label {
     }
 }
 
-.form-group {
-    .t3js-formengine-field-item {
-        position: relative;
+.formengine-field-item {
+    display: block;
+    position: relative;
 
-        > .t3js-charcounter-wrapper {
-            left: 0;
-            position: absolute;
-            top: 100%;
-            display: flex;
-            margin: 0 -2px;
+    > .t3js-charcounter-wrapper {
+        left: 0;
+        position: absolute;
+        top: 100%;
+        display: flex;
+        margin: 0 -2px;
 
-            .t3js-charcounter {
-                margin: 0 2px;
-            }
+        .t3js-charcounter {
+            margin: 0 2px;
+        }
 
-            .t3js-charcounter-min {
-                margin: 0 2px;
-            }
+        .t3js-charcounter-min {
+            margin: 0 2px;
         }
     }
+}
 
+.form-group {
     > label,
     > .form-label {
         font-weight: 600;

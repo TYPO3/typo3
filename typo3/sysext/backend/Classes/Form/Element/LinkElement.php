@@ -283,10 +283,9 @@ class LinkElement extends AbstractFormElement
         }
 
         $resultArray['html'] = '
-            <typo3-formengine-element-link recordFieldId="' . htmlspecialchars($fieldId) . '">
-                <div class="formengine-field-item t3js-formengine-field-item">
-                    ' . $fieldInformationHtml . $fullElement . '
-                </div>
+            <typo3-formengine-element-link class="formengine-field-item t3js-formengine-field-item" recordFieldId="' . htmlspecialchars($fieldId) . '">
+                ' . $fieldInformationHtml . '
+                ' . $fullElement . '
             </typo3-formengine-element-link>';
 
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/link-element.js');
