@@ -154,13 +154,13 @@
 				<source>You can also run the check as a shell script using CLI if the processing takes longer than the PHP max_execution_time allows.</source>
 			</trans-unit>
 			<trans-unit id="checkScript_check_description" resname="checkScript_check_description">
-				<source>To check the reference index use</source>
+				<source>To check the reference index use:</source>
 			</trans-unit>
 			<trans-unit id="checkScript_update_description" resname="checkScript_update_description">
-				<source>To update the reference index use</source>
+				<source>To update the reference index use:</source>
 			</trans-unit>
 			<trans-unit id="checkScript_moreDetails" resname="checkScript_moreDetails">
-				<source>For more details see</source>
+				<source>For more details see:</source>
 			</trans-unit>
 			<trans-unit id="updateRefIndex" resname="updateRefIndex">
 				<source>Update reference index</source>

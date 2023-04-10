@@ -33,7 +33,7 @@
     </f:if>
 
     <form action="" method="post" id="DatabaseIntegrityView" name="queryform">
-        <div class="t3js-reference-index-actions">
+        <div class="t3js-reference-index-actions mb-4">
             <button type="submit" class="btn btn-default" name="checkOnly" value="1">
                 {f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:referenceIndex_buttonCheck')}
             </button>
@@ -43,23 +43,24 @@
         </div>
     </form>
 
-    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_headline')}</h2>
-    <p>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript')}</p>
-
-    <h3>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_check_description')}</h3>
-    <p>
-        <code>php {binaryPath} referenceindex:update -c</code>
-    </p>
-
-    <h3>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_update_description')}</h3>
-    <p>
-        <code>php {binaryPath} referenceindex:update</code>
-    </p>
-
-    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_moreDetails')}</h2>
-    <p>
-        <a href="{ReadmeLink}" target="_new">{ReadmeLocation}</a>
-    </p>
+    <f:be.infobox
+        title="{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_headline')}"
+        state="-1"
+    >
+        <p>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript')}</p>
+        <p>
+            {f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_check_description')}<br>
+            <code>php {binaryPath} referenceindex:update -c</code>
+        </p>
+        <p>
+            {f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_update_description')}<br>
+            <code>php {binaryPath} referenceindex:update</code>
+        </p>
+        <p>
+            {f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_moreDetails')}
+            <a href="{ReadmeLink}" target="_blank">{ReadmeLocation}</a>
+        </p>
+    </f:be.infobox>
 
 </f:section>
 
