@@ -18,6 +18,7 @@ import { until } from 'lit/directives/until';
 import { Sizes, States, MarkupIdentifiers } from '../enum/icon-types';
 import Icons, { IconStyles } from '../icons';
 import '@typo3/backend/element/spinner-element';
+import { styleTag } from '@typo3/core/lit-helper';
 
 /**
  * Module: @typo3/backend/element/icon-element
@@ -57,9 +58,7 @@ export class IconElement extends LitElement {
     const icon = Icons.getIcon(this.identifier, this.size, this.overlay, this.state, this.markup)
       .then((markup: string) => {
         return html`
-          <style>
-            ${IconStyles.getStyles()}
-          </style>
+          ${styleTag(IconStyles.getStyles())}
           <div class="icon-wrapper">
             ${unsafeHTML(markup)}
           </div>

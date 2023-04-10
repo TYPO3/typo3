@@ -15,6 +15,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { Sizes } from '../enum/icon-types';
 import { IconStyles } from '@typo3/backend/icons';
+import { styleTag } from '@typo3/core/lit-helper';
 
 enum Variant {
   light = 'light',
@@ -35,15 +36,15 @@ export class SpinnerElement extends LitElement {
 
   public render(): TemplateResult {
     return html`
-      <style>
-        ${IconStyles.getStyles()}
+      ${styleTag(IconStyles.getStyles())}
+      ${styleTag`
         :host([variant=dark]) svg {
           fill: #212121;
         }
         :host([variant=light]) svg {
           fill: #fff;
         }
-      </style>
+      `}
       <div class="icon-wrapper">
         <span class="icon icon-size-small icon-state-default icon-spin">
           <span class="icon-markup">

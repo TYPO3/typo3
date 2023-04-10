@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, HTMLTemplateResult, render, TemplateResult } from 'lit';
+import { CSSResultArray, html, HTMLTemplateResult, render, TemplateResult } from 'lit';
 import { ClassInfo } from 'lit/directives/class-map';
 
 interface LitNonceWindow extends Window {
@@ -79,7 +79,7 @@ export const classesArrayToClassInfo = (classes: Array<string>): ClassInfo => {
  *    <div class="my-style">...</div>
  * ```
  */
-export const styleTag = (strings: TemplateStringsArray): HTMLTemplateResult => {
+export const styleTag = (strings: TemplateStringsArray|CSSResultArray): HTMLTemplateResult => {
   const nonce = (window as LitNonceWindow).litNonce;
   if (nonce) {
     return html`<style nonce="${nonce}">${strings}</style>`;
