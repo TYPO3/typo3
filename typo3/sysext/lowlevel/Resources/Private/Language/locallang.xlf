@@ -268,7 +268,10 @@
 				<source>Relations</source>
 			</trans-unit>
 			<trans-unit id="relations_description" resname="relations_description">
-				<source>This will analyze the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</source>
+				<source>The module gives some overview of missing relations in fields of the TCA types 'select' and 'group'.</source>
+			</trans-unit>
+			<trans-unit id="relations_noRecordsFound" resname="relations_noRecordsFound">
+				<source>No records found.</source>
 			</trans-unit>
 			<trans-unit id="select_db" resname="select_db">
 				<source>Select fields</source>

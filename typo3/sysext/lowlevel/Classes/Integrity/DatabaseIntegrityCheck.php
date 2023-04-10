@@ -528,7 +528,7 @@ class DatabaseIntegrityCheck
                         }
                     }
                     foreach ($dbArr as $theId => $theC) {
-                        $rows[] = 'There are ' . $theC . ' records pointing to this missing or deleted record; <code>[' . $table . '][' . $theId . ']</code>';
+                        $rows[] = 'There are ' . $theC . ' records pointing to this missing or deleted record: <code>[' . $table . '][' . $theId . ']</code>';
                     }
                 }
             } else {
@@ -536,7 +536,7 @@ class DatabaseIntegrityCheck
             }
         }
 
-        return $rows !== [] ? '<ul class="list-unstyled">' . implode(LF, array_map(static fn (string $row): string => '<li>' . $row . '</li>', $rows)) . '</ul>' : '';
+        return $rows !== [] ? '<ul class="list-unstyled" role="list">' . implode(LF, array_map(static fn (string $row): string => '<li>' . $row . '</li>', $rows)) . '</ul>' : '';
     }
 
     public function getPageIdArray(): array

@@ -8,12 +8,44 @@
 <f:section name="Content">
 
     <h1>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:relations')}</h1>
+    <p class="lead"><f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:relations_description" /></p>
 
-    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:select_db')}</h2>
-    <f:format.raw>{select_db}</f:format.raw>
-
-    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:group_db')}</h2>
-    <f:format.raw>{group_db}</f:format.raw>
+    <div class="card-container">
+        <div class="card card-size-medium">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:select_db" />
+                </h2>
+                <div class="card-text">
+                    <f:if condition="{select_db}">
+                        <f:then>
+                            <f:format.raw>{select_db}</f:format.raw>
+                        </f:then>
+                        <f:else>
+                            <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:relations_noRecordsFound" />
+                        </f:else>
+                    </f:if>
+                </div>
+            </div>
+        </div>
+        <div class="card card-size-medium">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:group_db" />
+                </h2>
+                <div class="card-text">
+                    <f:if condition="{group_db}">
+                        <f:then>
+                            <f:format.raw>{group_db}</f:format.raw>
+                        </f:then>
+                        <f:else>
+                            <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:relations_noRecordsFound" />
+                        </f:else>
+                    </f:if>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </f:section>
 
