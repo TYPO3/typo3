@@ -33,7 +33,7 @@ It is now possible to load a list of all countries via PHP:
     $countryProvider = GeneralUtility::makeInstance(CountryProvider:php);
     $france = $countryProvider->getByIsoCode('FR');
     // or
-    $france = $countryProvider->getByName('France');
+    $france = $countryProvider->getByEnglishName('France');
     // or
     $france = $countryProvider->getByAlpha3IsoCode('FRA');
     // or
