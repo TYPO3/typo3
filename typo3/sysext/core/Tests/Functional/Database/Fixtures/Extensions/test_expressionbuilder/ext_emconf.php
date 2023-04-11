@@ -4,14 +4,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'ExpressionBuilder Test',
     'description' => 'ExpressionBuilder Test',
     'category' => 'example',
-    'version' => '10.4.37',
+    'version' => '10.4.38',
     'state' => 'beta',
     'clearCacheOnLoad' => 0,
     'author' => 'Christian Kuhn',
     'author_email' => 'lolli@schwarzbu.ch',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.37',
+            'typo3' => '10.4.38',
         ],
         'conflicts' => [],
         'suggests' => [],
