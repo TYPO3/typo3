@@ -205,14 +205,6 @@
     typo3-backend-icon {
         --icon-color-primary: var(--treelist-color);
     }
-
-    &[aria-expanded="true"] typo3-backend-icon[identifier="actions-chevron-right"] {
-        display: none;
-    }
-
-    &[aria-expanded="false"] typo3-backend-icon[identifier="actions-chevron-down"] {
-        display: none;
-    }
 }
 
 .treelist-root {
