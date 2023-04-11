@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PolicyProviderTest extends FunctionalTestCase
+final class PolicyProviderTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
