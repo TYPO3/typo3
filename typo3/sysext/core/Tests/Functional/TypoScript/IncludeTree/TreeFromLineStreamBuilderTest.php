@@ -1053,6 +1053,32 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
             $expectedTree,
         ];
 
+        $includeTyposcriptStatement = '<INCLUDE_TYPOSCRIPT: source="DIR:EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/IncludeTyposcript/ExtImport/Scenario6">';
+        $includeTyposcriptStatementLineStream = (new LosslessTokenizer())->tokenize($includeTyposcriptStatement);
+        $includeTyposcriptStatementLineStreamLine = iterator_to_array((new LosslessTokenizer())->tokenize($includeTyposcriptStatement)->getNextLine())[0];
+        $expectedTree = new FileInclude();
+        $expectedTree->setLineStream($includeTyposcriptStatementLineStream);
+        $expectedTree->setSplit();
+        $subNode = new IncludeTyposcriptInclude();
+        $subNode->setName('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/IncludeTyposcript/ExtImport/Scenario6/setup.typoscript');
+        $subNode->setLineStream((new LosslessTokenizer())->tokenize("setup.typoscript\n"));
+        $subNode->setOriginalLine($includeTyposcriptStatementLineStreamLine);
+        $expectedTree->addChild($subNode);
+        $subNode = new IncludeTyposcriptInclude();
+        $subNode->setName('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/IncludeTyposcript/ExtImport/Scenario6/SubDir/sub.typoscript');
+        $subNode->setLineStream((new LosslessTokenizer())->tokenize("sub.typoscript\n"));
+        $subNode->setOriginalLine($includeTyposcriptStatementLineStreamLine);
+        $expectedTree->addChild($subNode);
+        $subNode = new IncludeTyposcriptInclude();
+        $subNode->setName('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/IncludeTyposcript/ExtImport/Scenario6/SubDir/SubSubDir/subsub.typoscript');
+        $subNode->setLineStream((new LosslessTokenizer())->tokenize("subsub.typoscript\n"));
+        $subNode->setOriginalLine($includeTyposcriptStatementLineStreamLine);
+        $expectedTree->addChild($subNode);
+        yield 'INCLUDE_TYPOSCRIPT DIR EXT files with auto include sub dirs recursive' => [
+            $includeTyposcriptStatementLineStream,
+            $expectedTree,
+        ];
+
         $includeTyposcriptStatement = '<INCLUDE_TYPOSCRIPT: extensions="typoscript,txt" source="DIR:EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/IncludeTyposcript/ExtImport/Scenario5">';
         $includeTyposcriptStatementLineStream = (new LosslessTokenizer())->tokenize($includeTyposcriptStatement);
         $includeTyposcriptStatementLineStreamLine = iterator_to_array((new LosslessTokenizer())->tokenize($includeTyposcriptStatement)->getNextLine())[0];
@@ -1090,7 +1116,7 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $subNode->setLineStream((new LosslessTokenizer())->tokenize("setup2.typoscript\n"));
         $subNode->setOriginalLine($includeTyposcriptStatementLineStreamLine);
         $expectedTree->addChild($subNode);
-        yield 'INCLUDE_TYPOSCRIPT DIR fileamin files' => [
+        yield 'INCLUDE_TYPOSCRIPT DIR fileadmin files' => [
             $includeTyposcriptStatementLineStream,
             $expectedTree,
         ];

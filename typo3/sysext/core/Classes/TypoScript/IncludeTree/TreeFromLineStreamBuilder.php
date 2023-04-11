@@ -436,49 +436,8 @@ final class TreeFromLineStreamBuilder
             if ($absoluteDirName === '' || !is_dir($absoluteDirName)) {
                 return;
             }
-            $filesAndDirs = scandir($absoluteDirName);
-            $subDirs = [];
             $nodeToAddTo = $this->processConditionalIncludeTyposcript($node, $condition, $dirName);
-            foreach ($filesAndDirs as $potentialInclude) {
-                // Handle files in this dir and remember possible sub-dirs
-                if ($potentialInclude === '.' || $potentialInclude === '..') {
-                    continue;
-                }
-                if (is_dir($absoluteDirName . '/' . $potentialInclude)) {
-                    $subDirs[] = $potentialInclude;
-                    continue;
-                }
-                if (!$this->fileNameValidator->isValid($absoluteDirName . '/' . $potentialInclude)) {
-                    continue;
-                }
-                if (!empty($extensions)) {
-                    // Check if file is allowed by allowed 'extensions' setting if given
-                    $fileEnding = GeneralUtility::revExplode('.', $potentialInclude, 2)[1] ?? null;
-                    if (!$fileEnding || !in_array($fileEnding, $extensions)) {
-                        continue;
-                    }
-                }
-                $identifier = rtrim($dirName, '/') . '/' . $potentialInclude;
-                $absoluteFileName = $absoluteDirName . '/' . $potentialInclude;
-                $this->addSingleIncludeTyposcriptFile($nodeToAddTo, $absoluteFileName, $identifier, $importKeywordOldLine);
-            }
-            foreach ($subDirs as $subDir) {
-                // Handle found subdirectories and include for these, too.
-                $filesAndDirs = scandir($absoluteDirName . '/' . $subDir);
-                foreach ($filesAndDirs as $potentialInclude) {
-                    if ($potentialInclude === '.' || $potentialInclude === '..') {
-                        continue;
-                    }
-                    if (!is_file($absoluteDirName . '/' . $subDir . '/' . $potentialInclude)
-                        || !$this->fileNameValidator->isValid($absoluteDirName . '/' . $subDir . $potentialInclude)
-                    ) {
-                        continue;
-                    }
-                    $absoluteFileName = $absoluteDirName . '/' . $subDir . '/' . $potentialInclude;
-                    $identifier = rtrim($dirName, '/') . '/' . $subDir . '/' . $potentialInclude;
-                    $this->addSingleIncludeTyposcriptFile($nodeToAddTo, $absoluteFileName, $identifier, $importKeywordOldLine);
-                }
-            }
+            $this->importIncludeTyposcriptDirectoryRecursive($nodeToAddTo, $importKeywordOldLine, $dirName, $absoluteDirName, $extensions);
         }
     }
 
@@ -500,6 +459,49 @@ final class TreeFromLineStreamBuilder
             $nodeToAddTo = $conditionNode;
         }
         return $nodeToAddTo;
+    }
+
+    private function importIncludeTyposcriptDirectoryRecursive(
+        IncludeInterface $nodeToAddTo,
+        LineInterface $importKeywordOldLine,
+        string $dirName,
+        string $absoluteDirName,
+        array $extensions
+    ): void {
+        $filesAndDirs = scandir($absoluteDirName);
+        $subDirs = [];
+        foreach ($filesAndDirs as $potentialInclude) {
+            // Handle files in this dir and remember possible sub-dirs
+            if ($potentialInclude === '.' || $potentialInclude === '..') {
+                continue;
+            }
+            if (is_dir($absoluteDirName . '/' . $potentialInclude)) {
+                $subDirs[] = $potentialInclude;
+                continue;
+            }
+            if (!$this->fileNameValidator->isValid($absoluteDirName . '/' . $potentialInclude)) {
+                continue;
+            }
+            if (!empty($extensions)) {
+                // Check if file is allowed by allowed 'extensions' setting if given
+                $fileEnding = GeneralUtility::revExplode('.', $potentialInclude, 2)[1] ?? null;
+                if (!$fileEnding || !in_array($fileEnding, $extensions)) {
+                    continue;
+                }
+            }
+            $identifier = rtrim($dirName, '/') . '/' . $potentialInclude;
+            $absoluteFileName = $absoluteDirName . '/' . $potentialInclude;
+            $this->addSingleIncludeTyposcriptFile($nodeToAddTo, $absoluteFileName, $identifier, $importKeywordOldLine);
+        }
+        foreach ($subDirs as $subDir) {
+            $this->importIncludeTyposcriptDirectoryRecursive(
+                $nodeToAddTo,
+                $importKeywordOldLine,
+                $dirName . '/' . $subDir,
+                $absoluteDirName . '/' . $subDir,
+                $extensions
+            );
+        }
     }
 
     /**
