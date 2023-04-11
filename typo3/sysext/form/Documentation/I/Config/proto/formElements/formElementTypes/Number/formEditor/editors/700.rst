@@ -7,7 +7,7 @@ formEditor.editors.700
       TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Number.formEditor.editors.700
 
 :aspect:`Data type`
-      array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+      array/ :ref:`[GridColumnViewPortConfigurationEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.gridcolumnviewportconfigurationeditor>`
 
 :aspect:`Needed by`
       Backend (form editor)
@@ -27,10 +27,25 @@ formEditor.editors.700
            formEditor:
              editors:
                700:
-                 identifier: step
-                 templateName: Inspector-TextEditor
-                 label: formEditor.elements.TextMixin.editor.step.label
-                 propertyPath: properties.fluidAdditionalAttributes.step
-                 propertyValidators:
-                   10: Integer
+                 identifier: gridColumnViewPortConfiguration
+                 templateName: Inspector-GridColumnViewPortConfigurationEditor
+                 label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                 configurationOptions:
+                   viewPorts:
+                     10:
+                       viewPortIdentifier: xs
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                     20:
+                       viewPortIdentifier: sm
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                     30:
+                       viewPortIdentifier: md
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                     40:
+                       viewPortIdentifier: lg
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                   numbersOfColumnsToUse:
+                     label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                     propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                     fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
 
