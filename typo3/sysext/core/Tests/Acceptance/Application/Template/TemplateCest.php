@@ -108,10 +108,10 @@ final class TemplateCest
         $I->waitForText('Setup');
         // find and open page in tree
         $I->waitForText('page = PAGE');
-        $I->click('//span[@class="treelist-label"]/a[text()=\'page\']/../../../a');
+        $I->click('//span[@class="treelist-label"]/a[text()=\'page\']/../../../typo3-backend-tree-node-toggle');
         // find and open page.10 in tree
         $I->waitForText('10 = TEXT');
-        $I->click('//span[@class="treelist-label"]/a[text()=\'page\']/../../../div/ul//span[@class="treelist-label"]/a[text()=\'10\']/../../../a');
+        $I->click('//span[@class="treelist-label"]/a[text()=\'page\']/../../../div/ul//span[@class="treelist-label"]/a[text()=\'10\']/../../../typo3-backend-tree-node-toggle');
         // find and edit page.10.value in tree
         $I->waitForText('value = Hello Acceptance Test!');
         $I->click('//span[@class="treelist-label"]/a[text()=\'10\']/../../../div/ul//span[@class="treelist-label"]/a[text()=\'value\']');

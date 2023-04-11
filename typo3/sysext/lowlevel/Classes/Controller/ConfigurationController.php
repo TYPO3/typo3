@@ -101,10 +101,13 @@ final class ConfigurationController
             $newIdentifier = '';
             if ($isValueIterable && !empty($value)) {
                 $newIdentifier = hash('xxh3', $incomingIdentifier . $key);
-                $html .= '<a class="treelist-control collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-list-' . $newIdentifier . '" aria-expanded="false">' .
-                    '<typo3-backend-icon size="small" identifier="actions-chevron-right"></typo3-backend-icon>' .
-                    '<typo3-backend-icon size="small" identifier="actions-chevron-down"></typo3-backend-icon>' .
-                    '</a>';
+                $html .= '
+                    <typo3-backend-tree-node-toggle
+                        class="treelist-control collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse-list-' . $newIdentifier . '"
+                        aria-expanded="false">
+                    </typo3-backend-tree-node-toggle>';
             }
             $html .= '<span class="treelist-group treelist-group-monospace">';
             $html .= '<span class="treelist-label">' . htmlspecialchars((string)$key) . '</span>';

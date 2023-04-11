@@ -31,15 +31,12 @@
     </f:if>
     <li>
         <f:if condition="{child.children}">
-            <a
+            <typo3-backend-tree-node-toggle
                 class="treelist-control collapsed"
                 data-bs-toggle="collapse"
                 data-bs-target="#collapse-list-{child.identifier}"
-                aria-expanded="false"
-            >
-                <typo3-backend-icon size="small" identifier="actions-chevron-right"></typo3-backend-icon>
-                <typo3-backend-icon size="small"identifier="actions-chevron-down"></typo3-backend-icon>
-            </a>
+                aria-expanded="false">
+            </typo3-backend-tree-node-toggle>
         </f:if>
         <span class="treelist-group treelist-group-monospace">
 

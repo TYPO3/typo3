@@ -3840,8 +3840,6 @@ typo3-backend-live-search-result-item-action>* .livesearch-result-item-title .sm
 .treelist-control:before,.treelist-control:target:before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:var(--treelist-control-size);height:var(--treelist-control-size);background-color:var(--treelist-bg)}
 .treelist-control:active,.treelist-control:focus,.treelist-control:hover{cursor:pointer;outline:0;text-decoration:none}
 .treelist-control typo3-backend-icon{--icon-color-primary:var(--treelist-color)}
-.treelist-control[aria-expanded=true] typo3-backend-icon[identifier=actions-chevron-right]{display:none}
-.treelist-control[aria-expanded=false] typo3-backend-icon[identifier=actions-chevron-down]{display:none}
 .treelist-root{padding-left:0}
 .treelist-root:before{display:none}
 .treelist-root>li{padding-left:var(--treelist-control-size)}
