@@ -21,6 +21,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Webhooks\Message\PageModificationMessage;
@@ -50,7 +51,13 @@ class PageModificationListener
         if (!MathUtility::canBeInterpretedAsInteger($id)) {
             $id = $dataHandler->substNEWwithIDs[$id];
         }
-        $site = $this->siteFinder->getSiteByPageId($id);
+        try {
+            $id = (int)$id;
+            $site = $this->siteFinder->getSiteByPageId($id);
+        } catch (SiteNotFoundException) {
+            // The ID did not have a proper connection to a site, so this is skipped (e.g. when creating a fully new page tree)
+            return;
+        }
         if ($status === 'new') {
             $message = new PageModificationMessage(
                 'new',
