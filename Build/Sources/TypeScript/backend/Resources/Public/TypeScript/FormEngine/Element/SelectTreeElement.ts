@@ -70,14 +70,15 @@ export class SelectTreeElement {
    * becomes visible.
    */
   private listenForVisibleTree(): void {
-    if (!this.tree.offsetParent) {
-      // Search for the parents that are tab containers
-      let idOfTabContainer = this.tree.closest('.tab-pane').getAttribute('id');
-      if (idOfTabContainer) {
-        let btn = document.querySelector('[aria-controls="' + idOfTabContainer + '"]');
-        btn.addEventListener('shown.bs.tab', () => { this.tree.dispatchEvent(new Event('svg-tree:visible')); });
-      }
-    }
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          this.tree.dispatchEvent(new Event('svg-tree:visible'));
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+    observer.observe(this.tree);
   }
 
   private generateRequestUrl(): string {
