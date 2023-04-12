@@ -973,7 +973,7 @@ class EditDocumentController
             $this->formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
 
             // Creating the editing form, wrap it with buttons, document selector etc.
-            $editForm = $this->makeEditForm($view);
+            $editForm = $this->makeEditForm($request, $view);
             if ($editForm) {
                 $this->firstEl = $this->elementsData ? reset($this->elementsData) : null;
                 // Checking if the currently open document is stored in the list of "open documents" - if not, add it:
@@ -1049,7 +1049,7 @@ class EditDocumentController
      *
      * @return string HTML form elements wrapped in tables
      */
-    protected function makeEditForm(ModuleTemplate $view): string
+    protected function makeEditForm(ServerRequestInterface $request, ModuleTemplate $view): string
     {
         // Initialize variables
         $this->elementsData = [];
@@ -1091,6 +1091,7 @@ class EditDocumentController
                         $this->viewId = 0;
 
                         $formDataCompilerInput = [
+                            'request' => $request,
                             'tableName' => $table,
                             'vanillaUid' => (int)$theUid,
                             'command' => $command,

@@ -88,6 +88,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
         }
 
         $formDataCompilerInput = [
+            'request' => $request,
             'command' => 'new',
             'tableName' => self::FILE_REFERENCE_TABLE,
             'vanillaUid' => $fileReferenceVanillaUid,
@@ -170,6 +171,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
 
         $fileReference = $inlineStackProcessor->getUnstableStructure();
         $fileReferenceData = $this->compileFileReference(
+            $request,
             $parentData,
             $parentFieldName,
             (int)$fileReference['uid'],
@@ -224,6 +226,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
             $processedTca['columns'][$parentFieldName]['config'] = $parentConfig;
 
             $formDataCompilerInputForParent = [
+                'request' => $request,
                 'vanillaUid' => (int)$parent['uid'],
                 'command' => 'edit',
                 'tableName' => $parent['table'],
@@ -300,7 +303,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
 
             $localizedItems = array_diff($newItems, $oldItems);
             foreach ($localizedItems as $i => $localizedFileReferenceUid) {
-                $fileReferenceData = $this->compileFileReference($parentData, $parentFieldName, (int)$localizedFileReferenceUid, $inlineStackProcessor->getStructure());
+                $fileReferenceData = $this->compileFileReference($request, $parentData, $parentFieldName, (int)$localizedFileReferenceUid, $inlineStackProcessor->getStructure());
                 $fileReferenceData['inlineParentUid'] = (int)$parent['uid'];
                 $fileReferenceData['renderType'] = FileReferenceContainer::NODE_TYPE_IDENTIFIER;
 
@@ -375,7 +378,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
         return $this->jsonResponse();
     }
 
-    protected function compileFileReference(array $parentData, $parentFieldName, $fileReferenceUid, array $inlineStructure): array
+    protected function compileFileReference(ServerRequestInterface $request, array $parentData, $parentFieldName, $fileReferenceUid, array $inlineStructure): array
     {
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($inlineStructure);
@@ -385,6 +388,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
             FormDataCompiler::class,
             GeneralUtility::makeInstance(TcaDatabaseRecord::class)
         )->compile([
+            'request' => $request,
             'command' => 'edit',
             'tableName' => self::FILE_REFERENCE_TABLE,
             'vanillaUid' => (int)$fileReferenceUid,

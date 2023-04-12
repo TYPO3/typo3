@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Controller\Remote;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
@@ -84,7 +85,7 @@ class RemoteServer
      * @param \stdClass $parameter
      * @return array $data
      */
-    public function getWorkspaceInfos($parameter)
+    public function getWorkspaceInfos($parameter, ServerRequestInterface $request)
     {
         // To avoid too much work we use -1 to indicate that every page is relevant
         $pageId = $parameter->id > 0 ? $parameter->id : -1;
@@ -103,7 +104,7 @@ class RemoteServer
             'tables_select',
             $parameter->language
         );
-        $data = $this->gridDataService->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace());
+        $data = $this->gridDataService->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace(), $request);
         return $data;
     }
 
@@ -113,7 +114,7 @@ class RemoteServer
      * @param \stdClass $parameter
      * @return array $data
      */
-    public function getRowDetails($parameter)
+    public function getRowDetails($parameter, ServerRequestInterface $request)
     {
         $diffReturnArray = [];
         $liveReturnArray = [];
@@ -126,7 +127,7 @@ class RemoteServer
         $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
         $isNewOrDeletePlaceholder = $versionState->equals(VersionState::NEW_PLACEHOLDER) || $versionState->equals(VersionState::DELETE_PLACEHOLDER);
-        $suitableFields = ($isNewOrDeletePlaceholder && ($parameter->filterFields ?? false)) ? array_flip($this->getSuitableFields($parameter->table, $parameter->t3ver_oid)) : [];
+        $suitableFields = ($isNewOrDeletePlaceholder && ($parameter->filterFields ?? false)) ? array_flip($this->getSuitableFields($parameter->table, $parameter->t3ver_oid, $request)) : [];
         foreach ($fieldsOfRecords as $fieldName) {
             if (
                 empty($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config'])
@@ -543,7 +544,7 @@ class RemoteServer
     /**
      * Gets the fields suitable for being displayed in new and delete diff views
      */
-    protected function getSuitableFields(string $table, int $uid): array
+    protected function getSuitableFields(string $table, int $uid, ServerRequestInterface $request): array
     {
         $formDataCompiler = GeneralUtility::makeInstance(
             FormDataCompiler::class,
@@ -551,7 +552,12 @@ class RemoteServer
         );
 
         try {
-            $result = $formDataCompiler->compile(['command' => 'edit', 'tableName' => $table, 'vanillaUid' => $uid]);
+            $result = $formDataCompiler->compile([
+                'request' => $request,
+                'command' => 'edit',
+                'tableName' => $table,
+                'vanillaUid' => $uid,
+            ]);
             $fieldList = array_unique(array_values($result['columnsToProcess']));
         } catch (\Exception $exception) {
             $fieldList = [];

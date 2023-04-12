@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Form;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -37,6 +38,7 @@ class FormTestService
         $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
 
         $formDataCompilerInput = [
+            'request' => new ServerRequest(),
             'tableName' => $table,
             'vanillaUid' => 0,
             'command' => 'new',

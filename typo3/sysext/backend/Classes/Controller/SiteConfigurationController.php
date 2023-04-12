@@ -151,6 +151,7 @@ class SiteConfigurationController
         $formDataGroup = GeneralUtility::makeInstance(SiteConfigurationDataGroup::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
+            'request' => $request,
             'tableName' => 'site',
             'vanillaUid' => $isNewConfig ? $pageUid : $allSites[$siteIdentifier]->getRootPageId(),
             'command' => $isNewConfig ? 'new' : 'edit',

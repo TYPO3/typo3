@@ -71,6 +71,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
+            'request' => $request,
             'tableName' => $tableName,
             'vanillaUid' => (int)$vanillaUid,
             'command' => $command,

@@ -26,8 +26,10 @@ use TYPO3\CMS\Workspaces\Controller\Remote\MassActionHandler;
 use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
 
 /**
- * Implements the AJAX functionality for the various asynchronous calls
+ * Implements the AJAX functionality for the various asynchronous calls.
+ *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
+ * @todo: The entire workspace modul ajax routing is a mess and needs a rewrite.
  */
 class AjaxDispatcher
 {
@@ -51,6 +53,11 @@ class AjaxDispatcher
             $className = $this->classMap[$call->action];
             $method = $call->method;
             $parameters = $call->data;
+            if ($parameters[1] === null) {
+                // Hack to have $request as second argument.
+                unset($parameters[1]);
+            }
+            $parameters[] = $request;
             $instance = GeneralUtility::makeInstance($className);
             $results[] = $this->buildResultFromResponse($instance->$method(...$parameters), $call);
         }

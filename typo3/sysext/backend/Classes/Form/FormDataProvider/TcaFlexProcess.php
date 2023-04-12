@@ -431,6 +431,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                     }
 
                                     $inputToFlexFormSegment = [
+                                        'request' => $result['request'],
                                         'tableName' => $result['tableName'],
                                         'command' => '',
                                         // It is currently not possible to have pageTsConfig for section container
@@ -505,6 +506,7 @@ class TcaFlexProcess implements FormDataProviderInterface
 
             // process the tca columns for the current sheet
             $inputToFlexFormSegment = [
+                'request' => $result['request'],
                 'tableName' => $result['tableName'],
                 'command' => '',
                 'pageTsConfig' => $pageTsConfig,
@@ -584,6 +586,7 @@ class TcaFlexProcess implements FormDataProviderInterface
             $formDataGroup = GeneralUtility::makeInstance(FlexFormSegment::class);
             $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
             $inputToFlexFormSegment = [
+                'request' => $result['request'],
                 'tableName' => $result['tableName'],
                 'command' => 'new',
                 // It is currently not possible to have pageTsConfig for section container

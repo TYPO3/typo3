@@ -163,6 +163,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
         $formDataGroup = GeneralUtility::makeInstance(SiteConfigurationDataGroup::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
+            'request' => $result['request'],
             'command' => 'edit',
             'tableName' => $childTableName,
             'vanillaUid' => $childUid,

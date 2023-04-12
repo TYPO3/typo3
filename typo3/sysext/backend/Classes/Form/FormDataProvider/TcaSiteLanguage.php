@@ -211,6 +211,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
             FormDataCompiler::class,
             GeneralUtility::makeInstance(SiteConfigurationDataGroup::class)
         )->compile([
+            'request' => $result['request'],
             'command' => 'new',
             'tableName' => self::FOREIGN_TABLE,
             'vanillaUid' => $result['inlineFirstPid'],
@@ -241,6 +242,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
             FormDataCompiler::class,
             GeneralUtility::makeInstance(SiteConfigurationDataGroup::class)
         )->compile([
+            'request' => $result['request'],
             'command' => 'edit',
             'tableName' => self::FOREIGN_TABLE,
             'vanillaUid' => $childUid,
@@ -269,6 +271,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
             FormDataCompiler::class,
             $formDataGroup
         )->compile([
+            'request' => $result['request'],
             'command' => 'new',
             'tableName' => self::FOREIGN_TABLE,
             'pageTsConfig' => $result['pageTsConfig'],

@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -141,6 +142,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataSetsSheetTitleFromPageTsConfig(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'effectivePid' => 1,
             'selectTreeCompileItems' => false,
@@ -223,6 +225,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataSetsSheetDescriptionFromPageTsConfig(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'effectivePid' => 1,
             'selectTreeCompileItems' => false,
@@ -305,6 +308,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataSetsSheetShortDescriptionFromPageTsConfig(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'effectivePid' => 1,
             'selectTreeCompileItems' => false,
@@ -387,6 +391,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataSetsSheetShortDescriptionForSingleSheetFromPageTsConfig(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'effectivePid' => 1,
             'selectTreeCompileItems' => false,
@@ -469,6 +474,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataRemovesExcludeFieldFromDataStructure(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'effectivePid' => 1,
             'selectTreeCompileItems' => false,
@@ -535,6 +541,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataKeepsExcludeFieldInDataStructureWithUserAccess(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'effectivePid' => 1,
             'selectTreeCompileItems' => false,
@@ -609,6 +616,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataKeepsExcludeFieldInDataStructureForAdminUser(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'effectivePid' => 1,
             'selectTreeCompileItems' => false,
@@ -683,6 +691,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataRemovesPageTsDisabledFieldFromDataStructure(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'selectTreeCompileItems' => false,
             'effectivePid' => 1,
@@ -759,6 +768,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataHandlesPageTsConfigSettingsOfSingleFlexField(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'selectTreeCompileItems' => false,
             'effectivePid' => 1,
@@ -867,6 +877,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataSetsDefaultValueFromFlexTcaForField(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'effectivePid' => 1,
             'selectTreeCompileItems' => false,
@@ -1032,6 +1043,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataSetsValuesAndStructureForSectionContainerElements(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'effectivePid' => 1,
             'selectTreeCompileItems' => false,
@@ -1385,6 +1397,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataCallsFlexFormSegmentGroupForFieldAndAddsFlexParentDatabaseRow(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'selectTreeCompileItems' => false,
             'effectivePid' => 1,
@@ -1443,6 +1456,7 @@ final class TcaFlexProcessTest extends UnitTestCase
     public function addDataCallsFlexFormSegmentGroupForDummyContainerAndAddsFlexParentDatabaseRow(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'aTable',
             'selectTreeCompileItems' => false,
             'effectivePid' => 1,

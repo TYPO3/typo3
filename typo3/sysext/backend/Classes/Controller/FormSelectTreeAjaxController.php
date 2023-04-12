@@ -154,6 +154,7 @@ class FormSelectTreeAjaxController
         $formDataGroup = GeneralUtility::makeInstance(TcaSelectTreeAjaxFieldData::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
+            'request' => $request,
             'tableName' => $tableName,
             'vanillaUid' => (int)$request->getQueryParams()['uid'],
             'command' => $request->getQueryParams()['command'],

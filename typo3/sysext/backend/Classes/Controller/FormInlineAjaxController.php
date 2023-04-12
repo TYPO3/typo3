@@ -85,6 +85,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
+            'request' => $request,
             'command' => 'new',
             'tableName' => $childTableName,
             'vanillaUid' => $childVanillaUid,
@@ -114,11 +115,12 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 $childData['databaseRow'][$parentConfig['foreign_selector']] = [
                     $childChildUid,
                 ];
-                $childData['combinationChild'] = $this->compileChildChild($childData, $parentConfig, $inlineStackProcessor->getStructure());
+                $childData['combinationChild'] = $this->compileChildChild($request, $childData, $parentConfig, $inlineStackProcessor->getStructure());
             } else {
                 $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
                 $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
                 $formDataCompilerInput = [
+                    'request' => $request,
                     'command' => 'new',
                     'tableName' => $childData['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['foreign_table'],
                     'vanillaUid' => $inlineFirstPid,
@@ -198,7 +200,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         // Child, a record from this table should be rendered
         $child = $inlineStackProcessor->getUnstableStructure();
 
-        $childData = $this->compileChild($parentData, $parentFieldName, (int)$child['uid'], $inlineStackProcessor->getStructure());
+        $childData = $this->compileChild($request, $parentData, $parentFieldName, (int)$child['uid'], $inlineStackProcessor->getStructure());
 
         $childData['inlineParentUid'] = (int)$parent['uid'];
         $childData['renderType'] = 'inlineRecordContainer';
@@ -254,6 +256,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             $processedTca['columns'][$parentFieldName]['config'] = $parentConfig;
 
             $formDataCompilerInputForParent = [
+                'request' => $request,
                 'vanillaUid' => (int)$parent['uid'],
                 'command' => 'edit',
                 'tableName' => $parent['table'],
@@ -330,7 +333,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
             $localizedItems = array_diff($newItems, $oldItems);
             foreach ($localizedItems as $i => $childUid) {
-                $childData = $this->compileChild($parentData, $parentFieldName, (int)$childUid, $inlineStackProcessor->getStructure());
+                $childData = $this->compileChild($request, $parentData, $parentFieldName, (int)$childUid, $inlineStackProcessor->getStructure());
 
                 $childData['inlineParentUid'] = (int)$parent['uid'];
                 $childData['renderType'] = 'inlineRecordContainer';
@@ -432,7 +435,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      * @todo: This clones methods compileChild from TcaInline Provider. Find a better abstraction
      * @todo: to also encapsulate the more complex scenarios with combination child and friends.
      */
-    protected function compileChild(array $parentData, $parentFieldName, $childUid, array $inlineStructure)
+    protected function compileChild(ServerRequestInterface $request, array $parentData, $parentFieldName, $childUid, array $inlineStructure)
     {
         $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
 
@@ -447,6 +450,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
+            'request' => $request,
             'command' => 'edit',
             'tableName' => $childTableName,
             'vanillaUid' => (int)$childUid,
@@ -474,7 +478,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $mainChild = $formDataCompiler->compile($formDataCompilerInput);
         if (($parentConfig['foreign_selector'] ?? false) && ($parentConfig['appearance']['useCombination'] ?? false)) {
             // This kicks in if opening an existing mainChild that has a child-child set
-            $mainChild['combinationChild'] = $this->compileChildChild($mainChild, $parentConfig, $inlineStructure);
+            $mainChild['combinationChild'] = $this->compileChildChild($request, $mainChild, $parentConfig, $inlineStructure);
         }
         return $mainChild;
     }
@@ -488,7 +492,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      * @param array $inlineStructure Current inline structure
      * @return array Full data array of child
      */
-    protected function compileChildChild(array $child, array $parentConfig, array $inlineStructure)
+    protected function compileChildChild(ServerRequestInterface $request, array $child, array $parentConfig, array $inlineStructure)
     {
         // foreign_selector on intermediate is probably type=select, so data provider of this table resolved that to the uid already
         $childChildUid = $child['databaseRow'][$parentConfig['foreign_selector']][0];
@@ -497,6 +501,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
+            'request' => $request,
             'command' => 'edit',
             'tableName' => $childChildTableName,
             'vanillaUid' => (int)$childChildUid,

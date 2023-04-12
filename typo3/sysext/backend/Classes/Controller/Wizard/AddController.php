@@ -82,6 +82,7 @@ class AddController extends AbstractWizardController
                 $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
                 $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
                 $input = [
+                    'request' => $request,
                     'tableName' => $this->P['table'],
                     'vanillaUid' => (int)$this->P['uid'],
                     'command' => 'edit',

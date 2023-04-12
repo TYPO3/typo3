@@ -143,7 +143,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
             ) {
                 $possibleUids = $this->getPossibleUidsByCurrentSysLanguage($possibleUids, $foreignTableName, $result['currentSysLanguage']);
             }
-            $relatedFormData = $this->getRelatedFormData($foreignTableName, $possibleUids[0], $fieldNameArray[0]);
+            $relatedFormData = $this->getRelatedFormData($result, $foreignTableName, $possibleUids[0], $fieldNameArray[0]);
             if (!empty($GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField'])
                 && isset($result['databaseRow'][$GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField']])
             ) {
@@ -166,9 +166,10 @@ class TcaInputPlaceholders implements FormDataProviderInterface
      * @param string $columnToProcess The column that is required from the record
      * @return array The compiled formdata
      */
-    protected function getRelatedFormData($tableName, $uid, $columnToProcess)
+    protected function getRelatedFormData(array $result, $tableName, $uid, $columnToProcess)
     {
         $fakeDataInput = [
+            'request' => $result['request'],
             'command' => 'edit',
             'vanillaUid' => (int)$uid,
             'tableName' => $tableName,

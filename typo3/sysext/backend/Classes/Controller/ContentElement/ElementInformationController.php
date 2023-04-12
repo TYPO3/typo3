@@ -142,7 +142,7 @@ class ElementInformationController
         $view->setTitle($pageTitle['table'] . ': ' . $pageTitle['title']);
         $view->assignMultiple($pageTitle);
         $view->assignMultiple($this->getPreview());
-        $view->assignMultiple($this->getPropertiesForTable());
+        $view->assignMultiple($this->getPropertiesForTable($request));
         $view->assignMultiple($this->getReferences($request, $uid));
         $view->assign('returnUrl', GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl'] ?? ''));
         $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
@@ -210,14 +210,14 @@ class ElementInformationController
     /**
      * Get property array for html table
      */
-    protected function getPropertiesForTable(): array
+    protected function getPropertiesForTable(ServerRequestInterface $request): array
     {
         $lang = $this->getLanguageService();
         $propertiesForTable = [];
         $propertiesForTable['extraFields'] = $this->getExtraFields();
 
         // Traverse the list of fields to display for the record:
-        $fieldList = $this->getFieldList($this->table, (int)($this->row['uid'] ?? 0));
+        $fieldList = $this->getFieldList($request, $this->table, (int)($this->row['uid'] ?? 0));
 
         foreach ($fieldList as $name) {
             $name = trim($name);
@@ -296,7 +296,7 @@ class ElementInformationController
                 $metaDataRepository = GeneralUtility::makeInstance(MetaDataRepository::class);
                 /** @var array<string, string> $metaData */
                 $metaData = $metaDataRepository->findByFileUid($this->row['uid']);
-                $allowedFields = $this->getFieldList($table, (int)$metaData['uid']);
+                $allowedFields = $this->getFieldList($request, $table, (int)$metaData['uid']);
 
                 foreach ($metaData as $name => $value) {
                     if (in_array($name, $allowedFields, true)) {
@@ -327,11 +327,12 @@ class ElementInformationController
     /**
      * Get the list of fields that should be shown for the given table
      */
-    protected function getFieldList(string $table, int $uid): array
+    protected function getFieldList(ServerRequestInterface $request, string $table, int $uid): array
     {
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
+            'request' => $request,
             'command' => 'edit',
             'tableName' => $table,
             'vanillaUid' => $uid,

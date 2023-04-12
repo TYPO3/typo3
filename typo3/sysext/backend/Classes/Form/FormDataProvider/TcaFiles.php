@@ -266,6 +266,7 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0) ?: [];
 
         return GeneralUtility::makeInstance(FormDataCompiler::class, GeneralUtility::makeInstance(TcaDatabaseRecord::class))->compile([
+            'request' => $result['request'],
             'command' => 'edit',
             'tableName' => self::FILE_REFERENCE_TABLE,
             'vanillaUid' => $childUid,

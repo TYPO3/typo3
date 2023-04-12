@@ -126,6 +126,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         $formDataGroup = GeneralUtility::makeInstance(SiteConfigurationDataGroup::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
+            'request' => $request,
             'command' => 'new',
             'tableName' => $childTableName,
             'vanillaUid' => $childVanillaUid,
@@ -219,7 +220,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         // Child, a record from this table should be rendered
         $child = $inlineStackProcessor->getUnstableStructure();
 
-        $childData = $this->compileChild($parentData, $parentFieldName, (int)$child['uid'], $inlineStackProcessor->getStructure());
+        $childData = $this->compileChild($request, $parentData, $parentFieldName, (int)$child['uid'], $inlineStackProcessor->getStructure());
 
         $childData['inlineParentUid'] = (int)$parent['uid'];
         $childData['renderType'] = 'inlineRecordContainer';
@@ -251,7 +252,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
      * @todo: This clones methods compileChild from TcaInline Provider. Find a better abstraction
      * @todo: to also encapsulate the more complex scenarios with combination child and friends.
      */
-    protected function compileChild(array $parentData, string $parentFieldName, int $childUid, array $inlineStructure): array
+    protected function compileChild(ServerRequestInterface $request, array $parentData, string $parentFieldName, int $childUid, array $inlineStructure): array
     {
         $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
 
@@ -266,6 +267,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         $formDataGroup = GeneralUtility::makeInstance(SiteConfigurationDataGroup::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
+            'request' => $request,
             'command' => 'edit',
             'tableName' => $childTableName,
             'vanillaUid' => (int)$childUid,

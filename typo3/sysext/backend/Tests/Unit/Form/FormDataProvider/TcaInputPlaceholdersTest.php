@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -117,7 +118,9 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
      */
     public function addDataReturnsValueFromSelectTypeRelation(): void
     {
+        $request = new ServerRequest();
         $input = [
+            'request' => $request,
             'tableName' => 'aTable',
             'databaseRow' => [
                 'aField' => '',
@@ -142,6 +145,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         ];
 
         $aForeignTableInput = [
+            'request' => $request,
             'tableName' => 'aForeignTable',
             'databaseRow' => [
                 'aForeignField' => 'aForeignValue',
@@ -160,6 +164,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $formDataCompilerMock = $this->createMock(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerMock);
         $formDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
+            'request' => $request,
             'command' => 'edit',
             'vanillaUid' => 42,
             'tableName' => 'aForeignTable',
@@ -214,7 +219,9 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
      */
     public function addDataReturnsValueFromGroupTypeRelation(): void
     {
+        $request = new ServerRequest();
         $input = [
+            'request' => $request,
             'tableName' => 'aTable',
             'databaseRow' => [
                 'aField' => '',
@@ -248,6 +255,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         ];
 
         $sysFileMockResult = [
+            'request' => $request,
             'tableName' => 'sys_file',
             'databaseRow' => [
                 'sha1' => 'aSha1Value',
@@ -266,6 +274,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $formDataCompilerMock = $this->createMock(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerMock);
         $formDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
+            'request' => $request,
             'command' => 'edit',
             'vanillaUid' => 3,
             'tableName' => 'sys_file',
@@ -285,7 +294,9 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
      */
     public function addDataReturnsValueFromInlineTypeRelation(): void
     {
+        $request = new ServerRequest();
         $input = [
+            'request' => $request,
             'tableName' => 'aTable',
             'databaseRow' => [
                 'aField' => '',
@@ -312,6 +323,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         ];
 
         $sysFileMetadataMockResult = [
+            'request' => $request,
             'tableName' => 'sys_file_metadata',
             'databaseRow' => [
                 'title' => 'aTitle',
@@ -330,6 +342,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $formDataCompilerMock = $this->createMock(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerMock);
         $formDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
+            'request' => $request,
             'command' => 'edit',
             'vanillaUid' => 2,
             'tableName' => 'sys_file_metadata',
@@ -349,7 +362,9 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
      */
     public function addDataReturnsValueFromRelationsRecursively(): void
     {
+        $request = new ServerRequest();
         $input = [
+            'request' => $request,
             'tableName' => 'aTable',
             'databaseRow' => [
                 'aField' => '',
@@ -383,6 +398,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         ];
 
         $sysFileMockResult = [
+            'request' => $request,
             'tableName' => 'sys_file',
             'databaseRow' => [
                 'metadata' => '7',
@@ -402,6 +418,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         ];
 
         $sysFileMetadataMockResult = [
+            'request' => $request,
             'tableName' => 'sys_file_metadata',
             'databaseRow' => [
                 'title' => 'aTitle',
@@ -420,6 +437,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $sysFileFormDataCompilerMock = $this->createMock(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $sysFileFormDataCompilerMock);
         $sysFileFormDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
+            'request' => $request,
             'command' => 'edit',
             'vanillaUid' => 3,
             'tableName' => 'sys_file',
@@ -431,6 +449,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $sysFileMetaDataFormDataCompilerMock = $this->createMock(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $sysFileMetaDataFormDataCompilerMock);
         $sysFileMetaDataFormDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
+            'request' => $request,
             'command' => 'edit',
             'vanillaUid' => 7,
             'tableName' => 'sys_file_metadata',

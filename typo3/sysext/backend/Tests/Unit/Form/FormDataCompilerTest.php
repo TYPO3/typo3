@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FormDataCompilerTest extends UnitTestCase
@@ -106,6 +107,7 @@ final class FormDataCompilerTest extends UnitTestCase
     public function compileReturnsResultArrayWithInputDataSet(): void
     {
         $input = [
+            'request' => new ServerRequest(),
             'tableName' => 'pages',
             'vanillaUid' => 123,
             'command' => 'edit',
@@ -127,7 +129,9 @@ final class FormDataCompilerTest extends UnitTestCase
             $result['databaseRow'] = 'newData';
             return $result;
         });
-        $result = $this->subject->compile([]);
+        $result = $this->subject->compile([
+            'request' => new ServerRequest(),
+        ]);
         self::assertEquals('newData', $result['databaseRow']);
     }
 
@@ -139,7 +143,9 @@ final class FormDataCompilerTest extends UnitTestCase
         $this->formDataGroupMock->method('compile')->with(self::anything())->willReturn(null);
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1446664764);
-        $this->subject->compile([]);
+        $this->subject->compile([
+            'request' => new ServerRequest(),
+        ]);
     }
 
     /**
@@ -152,7 +158,9 @@ final class FormDataCompilerTest extends UnitTestCase
         ]);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1485201279);
-        $this->subject->compile([]);
+        $this->subject->compile([
+            'request' => new ServerRequest(),
+        ]);
     }
 
     /**
@@ -167,7 +175,9 @@ final class FormDataCompilerTest extends UnitTestCase
         });
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438079402);
-        $this->subject->compile([]);
+        $this->subject->compile([
+            'request' => new ServerRequest(),
+        ]);
     }
 
     /**
@@ -182,6 +192,8 @@ final class FormDataCompilerTest extends UnitTestCase
         });
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438079402);
-        $this->subject->compile([]);
+        $this->subject->compile([
+            'request' => new ServerRequest(),
+        ]);
     }
 }

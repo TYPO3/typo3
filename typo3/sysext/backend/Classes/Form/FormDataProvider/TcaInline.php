@@ -275,6 +275,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         if ($selectorOrUniqueConfiguration['config']['type'] === 'select') {
             // Compile child table data for this field only
             $selectDataInput = [
+                'request' => $result['request'],
                 'tableName' => $result['processedTca']['columns'][$fieldName]['config']['foreign_table'],
                 'command' => 'new',
                 // Since there is no existing record that may have a type, it does not make sense to
@@ -325,6 +326,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $formDataCompilerInput = [
+            'request' => $result['request'],
             'command' => 'edit',
             'tableName' => $childTableName,
             'vanillaUid' => (int)$childUid,
@@ -394,6 +396,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
 
         $formDataCompilerInput = [
+            'request' => $child['request'],
             'command' => 'edit',
             'tableName' => $childChildTableName,
             'vanillaUid' => (int)$childChildUid,

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Workspaces\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
@@ -102,7 +103,7 @@ class GridDataService implements LoggerAwareInterface
      * @return array Version record information (filtered, sorted and limited)
      * @throws \InvalidArgumentException
      */
-    public function generateGridListFromVersions($versions, $parameter, $currentWorkspace)
+    public function generateGridListFromVersions($versions, $parameter, $currentWorkspace, ServerRequestInterface $request)
     {
         // Read the given parameters from grid. If the parameter is not set use default values.
         $filterTxt = $parameter->filterTxt ?? '';
@@ -115,7 +116,7 @@ class GridDataService implements LoggerAwareInterface
         } else {
             throw new \InvalidArgumentException('No such workspace defined', 1476048304);
         }
-        $this->generateDataArray($versions, $filterTxt);
+        $this->generateDataArray($versions, $filterTxt, $request);
         return [
             // Only count parent records for pagination
             'total' => count(array_filter($this->dataArray, static function ($element) {
@@ -131,7 +132,7 @@ class GridDataService implements LoggerAwareInterface
      * @param array $versions All available version records
      * @param string $filterTxt Text to be used to filter record result
      */
-    protected function generateDataArray(array $versions, $filterTxt)
+    protected function generateDataArray(array $versions, $filterTxt, ServerRequestInterface $request)
     {
         $backendUser = $this->getBackendUser();
         $workspaceAccess = $backendUser->checkWorkspace($backendUser->workspace);
@@ -158,7 +159,7 @@ class GridDataService implements LoggerAwareInterface
                     $origRecord = (array)BackendUtility::getRecord($table, $record['t3ver_oid']);
                     $versionRecord = (array)BackendUtility::getRecord($table, $record['uid']);
                     $combinedRecord = CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
-                    $hasDiff = $this->versionIsModified($combinedRecord);
+                    $hasDiff = $this->versionIsModified($combinedRecord, $request);
                     $this->getIntegrityService()->checkElement($combinedRecord);
 
                     if ($hiddenField !== null) {
@@ -268,7 +269,7 @@ class GridDataService implements LoggerAwareInterface
         $this->resolveDataArrayDependencies();
     }
 
-    protected function versionIsModified(CombinedRecord $combinedRecord): bool
+    protected function versionIsModified(CombinedRecord $combinedRecord, ServerRequestInterface $request): bool
     {
         $remoteServer = GeneralUtility::makeInstance(RemoteServer::class);
 
@@ -278,7 +279,7 @@ class GridDataService implements LoggerAwareInterface
         $params->table = $combinedRecord->getLiveRecord()->getTable();
         $params->uid = $combinedRecord->getVersionRecord()->getUid();
 
-        $result = $remoteServer->getRowDetails($params);
+        $result = $remoteServer->getRowDetails($params, $request);
         return !empty($result['data'][0]['diff']);
     }
 

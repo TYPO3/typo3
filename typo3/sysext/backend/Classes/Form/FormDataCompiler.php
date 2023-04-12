@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -72,6 +73,15 @@ class FormDataCompiler
             $result[$dataKey] = $dataValue;
         }
 
+        if (!$result['request'] instanceof ServerRequestInterface) {
+            // @deprecated since v12: Throw a \RuntimeException in v13 instead.
+            trigger_error(
+                'When using FormDataCompiler, the current ServerRequestInterface object must be provided.',
+                E_USER_DEPRECATED
+            );
+            $result['request'] = $GLOBALS['TYPO3_REQUEST'];
+        }
+
         // Call the data group provider but take care it does not add or remove result keys
         // This is basically a safety measure against data providers colliding with our array "contract"
         $resultKeysBeforeFormDataGroup = array_keys($result);
@@ -107,6 +117,9 @@ class FormDataCompiler
     private function initializeResultArray(): array
     {
         return [
+            // Current ServerRequestInterface. Controllers using FormDataCompiler must provide the current
+            // request object, various data providers and nodes rely on this.
+            'request' => null,
             // Either "edit" or "new"
             'command' => '',
             // Table name of the handled row
