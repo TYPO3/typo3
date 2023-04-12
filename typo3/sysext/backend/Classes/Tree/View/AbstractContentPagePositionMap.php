@@ -29,6 +29,9 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
+ */
 abstract class AbstractContentPagePositionMap
 {
     /**

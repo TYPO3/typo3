@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Position map class for moving pages.
+ *
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class PageMovingPagePositionMap extends PagePositionMap
@@ -58,6 +59,7 @@ class PageMovingPagePositionMap extends PagePositionMap
                 'table' => $queryParams['table'] ?? '',
                 'uid' => (int)($rec['uid'] ?? 0),
                 'moveUid' => $this->moveUid,
+                'makeCopy' => $queryParams['makeCopy'] ?? 0,
                 'returnUrl' => $queryParams['returnUrl'] ?? '',
             ]
         );

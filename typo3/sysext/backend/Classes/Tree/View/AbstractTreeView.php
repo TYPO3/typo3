@@ -33,6 +33,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Base class for creating a browsable array/page/folder tree in HTML
+ *
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 abstract class AbstractTreeView
 {

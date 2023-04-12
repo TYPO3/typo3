@@ -189,7 +189,11 @@ return [
         'target' => Controller\ContentElement\NewContentElementController::class . '::handleRequest',
     ],
 
-    // Register move element module
+    // Register move page + move content element view
+    'move_page' => [
+        'path' => '/page/move',
+        'target' => Controller\Page\MovePageController::class . '::mainAction',
+    ],
     'move_element' => [
         'path' => '/record/move',
         'target' => Controller\ContentElement\MoveElementController::class . '::mainAction',

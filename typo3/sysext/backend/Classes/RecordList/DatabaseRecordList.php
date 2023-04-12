@@ -1394,11 +1394,18 @@ class DatabaseRecordList
         if ($permsEdit && ($table === 'tt_content' || $table === 'pages') && $this->isEditable($table)) {
             if ($isL10nOverlay || $isDeletePlaceHolder) {
                 $moveAction = $this->spaceIcon;
+            } elseif ($table === 'pages') {
+                $linkTitleLL = htmlspecialchars($this->getLanguageService()->getLL('move_page'));
+                $icon = $this->iconFactory->getIcon('actions-page-move', Icon::SIZE_SMALL);
+                $url = (string)$this->uriBuilder->buildUriFromRoute('move_page', [
+                    'uid' => $row['uid'],
+                    'returnUrl' => $this->listURL(),
+                ]);
+                $moveAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" aria-label="' . $linkTitleLL . '">' . $icon->render() . '</a>';
             } else {
-                $linkTitleLL = htmlspecialchars($this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page')));
-                $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-move', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL));
+                $linkTitleLL = htmlspecialchars($this->getLanguageService()->getLL('move_record'));
+                $icon = $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL);
                 $url = (string)$this->uriBuilder->buildUriFromRoute('move_element', [
-                    'table' => $table,
                     'uid' => $row['uid'],
                     'returnUrl' => $this->listURL(),
                 ]);

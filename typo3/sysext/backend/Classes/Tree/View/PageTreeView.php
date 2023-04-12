@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Generate a page-tree, non-browsable.
+ *
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class PageTreeView extends AbstractTreeView
 {
