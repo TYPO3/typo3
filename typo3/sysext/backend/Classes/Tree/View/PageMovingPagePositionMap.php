@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Tree\View;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -47,9 +48,19 @@ class PageMovingPagePositionMap extends PagePositionMap
      * @param array $rec Page record (?)
      * @return string Wrapped title.
      */
-    public function linkPageTitle($str, $rec)
+    public function linkPageTitle($str, $rec, ServerRequestInterface $request)
     {
-        $url = GeneralUtility::linkThisScript(['uid' => (int)$rec['uid'], 'moveUid' => $this->moveUid]);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $queryParams = $request->getQueryParams();
+        $url = $uriBuilder->buildUriFromRoute(
+            'move_element',
+            [
+                'table' => $queryParams['table'] ?? '',
+                'uid' => (int)($rec['uid'] ?? 0),
+                'moveUid' => $this->moveUid,
+                'returnUrl' => $queryParams['returnUrl'] ?? '',
+            ]
+        );
         return '<a href="' . htmlspecialchars($url) . '">' . $str . '</a>';
     }
 

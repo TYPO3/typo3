@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Tree\View;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -108,7 +109,7 @@ class PagePositionMap
      * @param string $R_URI Current REQUEST_URI
      * @return string HTML code for the tree.
      */
-    public function positionTree($id, $pageinfo, $perms_clause, $R_URI)
+    public function positionTree($id, $pageinfo, $perms_clause, $R_URI, ServerRequestInterface $request)
     {
         // Make page tree object
         if ($this->pageTreeClassName === NewRecordPageTreeView::class) {
@@ -180,7 +181,16 @@ class PagePositionMap
                 . $this->iconFactory->getIconForRecord('pages', $dat['row'], Icon::SIZE_SMALL)->render()
                 . '</span>';
 
-            $lines[] = '<span class="text-nowrap">' . $icon . ' ' . $this->linkPageTitle($this->boldTitle(htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], (int)$this->getBackendUser()->uc['titleLen'])), $dat, $id), $dat['row']) . '</span>';
+            $lines[] = '<span class="text-nowrap">' . $icon . ' ' .
+                $this->linkPageTitle(
+                    $this->boldTitle(
+                        htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], (int)$this->getBackendUser()->uc['titleLen'])),
+                        $dat,
+                        $id
+                    ),
+                    $dat['row'],
+                    $request
+                ) . '</span>';
         }
         // If the current page was the last in the tree:
         $prev_dat = end($pageTree->tree);
@@ -285,7 +295,7 @@ class PagePositionMap
      * @param array $rec Page record (?)
      * @return string Wrapped title.
      */
-    public function linkPageTitle($str, $rec)
+    public function linkPageTitle($str, $rec, ServerRequestInterface $request)
     {
         return $str;
     }

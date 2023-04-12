@@ -176,7 +176,8 @@ class NewRecordController
             $this->id,
             $this->pageinfo,
             $this->perms_clause,
-            $this->returnUrl
+            $this->returnUrl,
+            $request
         );
         $this->view->assign('pagePositionMapForPagesOnly', $content);
         // Setting up the buttons and markers for docheader (done after permissions are checked)

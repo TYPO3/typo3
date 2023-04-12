@@ -74,14 +74,14 @@ class MoveElementController
         $this->getButtons($view);
         // Build the <body> for the module
         $view->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:movingElement'));
-        $view->assignMultiple($this->getContentVariables());
+        $view->assignMultiple($this->getContentVariables($request));
         return $view->renderResponse('ContentElement/MoveElement');
     }
 
     /**
      * Assign main body content to view.
      */
-    protected function getContentVariables(): array
+    protected function getContentVariables(ServerRequestInterface $request): array
     {
         if (!$this->page_id) {
             return [];
@@ -127,7 +127,7 @@ class MoveElementController
                         }
                     }
                     // Create the position tree:
-                    $assigns['positionTree'] = $pagePositionMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
+                    $assigns['positionTree'] = $pagePositionMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI, $request);
                     break;
                 case 'tt_content':
                     // Initialize the content position map:
@@ -158,7 +158,7 @@ class MoveElementController
                     }
                     // Create the position tree (for pages) without insert lines:
                     $pagePositionMap->dontPrintPageInsertIcons = 1;
-                    $assigns['positionTree'] = $pagePositionMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
+                    $assigns['positionTree'] = $pagePositionMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI, $request);
             }
         }
         return $assigns;
