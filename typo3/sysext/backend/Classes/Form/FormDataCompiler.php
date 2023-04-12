@@ -23,28 +23,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class FormDataCompiler
 {
-    /**
-     * Data group that provides data
-     *
-     * @var FormDataGroupInterface
-     */
-    protected $formDataGroup;
-
-    /**
-     * List of top level array elements to be unset from
-     * result array before final result is returned.
-     *
-     * @var array
-     */
-    protected $removeKeysFromFinalResultArray = [
-    ];
-
-    /**
-     * Get form data group injected
-     */
-    public function __construct(FormDataGroupInterface $formDataGroup)
+    public function __construct(private readonly FormDataGroupInterface $formDataGroup)
     {
-        $this->formDataGroup = $formDataGroup;
     }
 
     /**
@@ -52,11 +32,10 @@ class FormDataCompiler
      * crucial input parameters and calls compile on FormDataGroupInterface.
      *
      * @param array $initialData Initial set of data to map into result array
-     * @return array Result with data
      * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
      */
-    public function compile(array $initialData)
+    public function compile(array $initialData): array
     {
         $result = $this->initializeResultArray();
 
@@ -122,19 +101,10 @@ class FormDataCompiler
             );
         }
 
-        // Remove some data elements form result that are data provider internal and should
-        // not be exposed to calling object.
-        foreach ($this->removeKeysFromFinalResultArray as $key) {
-            unset($result[$key]);
-        }
-
         return $result;
     }
 
-    /**
-     * @return array
-     */
-    protected function initializeResultArray()
+    private function initializeResultArray(): array
     {
         return [
             // Either "edit" or "new"
