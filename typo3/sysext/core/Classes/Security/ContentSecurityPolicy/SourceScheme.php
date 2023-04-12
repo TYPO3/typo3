@@ -27,4 +27,6 @@ enum SourceScheme: string implements SourceInterface
     case data = 'data';
     case http = 'http';
     case https = 'https';
+    case ws = 'ws';
+    case wss = 'wss';
 }
