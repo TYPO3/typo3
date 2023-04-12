@@ -825,29 +825,9 @@ class DatabaseIntegrityController
                             ],
                         ],
                     ],
-                    'redirect' => GeneralUtility::linkThisScript(),
+                    'redirect' => (string)$uriBuilder->buildUriFromRoute('system_dbint'),
                 ])) . '" title="' . htmlspecialchars($languageService->getLL('undelete_only')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render() . '</a>';
-            $formEngineParameters = [
-                'edit' => [
-                    $table => [
-                        $row['uid'] => 'edit',
-                    ],
-                ],
-                'returnUrl' => GeneralUtility::linkThisScript(),
-            ];
-            $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $formEngineParameters);
-            $out .= '<a class="btn btn-default" href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tce_db', [
-                    'cmd' => [
-                        $table => [
-                            $row['uid'] => [
-                                'undelete' => 1,
-                            ],
-                        ],
-                    ],
-                    'redirect' => $redirectUrl,
-                ])) . '" title="' . htmlspecialchars($languageService->getLL('undelete_and_edit')) . '">';
-            $out .= $this->iconFactory->getIcon('actions-delete-edit', Icon::SIZE_SMALL)->render() . '</a>';
             $out .= '</div>';
         }
         $_params = [$table => $row];
