@@ -63,6 +63,18 @@ return [
         'methods' => ['POST'],
         'target' => Controller\ResetPasswordController::class . '::passwordResetFinishAction',
     ],
+    'sudo_mode_module' => [
+        'path' => '/sudo-mode/module',
+        'target' =>  Controller\Security\SudoModeController::class . '::moduleAction',
+    ],
+    'sudo_mode_apply' => [
+        'path' => '/sudo-mode/apply',
+        'target' =>  Controller\Security\SudoModeController::class . '::applyAction',
+    ],
+    'sudo_mode_error' => [
+        'path' => '/sudo-mode/error',
+        'target' =>  Controller\Security\SudoModeController::class . '::errorAction',
+    ],
 
     // Register login frameset
     'login_frameset' => [

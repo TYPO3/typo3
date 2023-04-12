@@ -37,12 +37,16 @@ class Module extends BaseModule implements ModuleInterface
 
         if ($this->routes !== []) {
             foreach ($this->routes as $routeIdentifier => $routeOptions) {
-                $defaultRouteOptions[$routeIdentifier] = array_replace($routeOptions, [
-                    'module' => $this,
-                    'packageName' => $this->packageName,
-                    'absolutePackagePath' => $this->absolutePackagePath,
-                    'access' => $this->access,
-                ]);
+                $defaultRouteOptions[$routeIdentifier] = array_replace_recursive(
+                    $this->routeOptions,
+                    $routeOptions,
+                    [
+                        'module' => $this,
+                        'packageName' => $this->packageName,
+                        'absolutePackagePath' => $this->absolutePackagePath,
+                        'access' => $this->access,
+                    ]
+                );
             }
         } elseif ($this->hasSubModules()) {
             // In case no routes are defined but the module has submodules,

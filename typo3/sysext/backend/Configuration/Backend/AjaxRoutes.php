@@ -396,4 +396,9 @@ return [
         'path' => '/security/csp/control',
         'target' => \TYPO3\CMS\Backend\Security\ContentSecurityPolicy\CspAjaxController::class . '::handleRequest',
     ],
+
+    'sudo_mode_control' => [
+        'path' => '/sudo-mode/verify',
+        'target' =>  Controller\Security\SudoModeController::class . '::verifyAction',
+    ],
 ];

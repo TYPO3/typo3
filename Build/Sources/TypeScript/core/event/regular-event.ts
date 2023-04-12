@@ -26,11 +26,19 @@ class RegularEvent implements EventInterface {
   }
 
   public bindTo(element: EventTarget): void {
+    if (!element) {
+      console.warn(`Binding event ${this.eventName} failed, element was not found.`);
+      return;
+    }
     this.boundElement = element;
     element.addEventListener(this.eventName, this.callback, this.options);
   }
 
   public delegateTo(element: EventTarget, selector: string): void {
+    if (!element) {
+      console.warn(`Delegating event ${this.eventName} failed, element was not found.`);
+      return;
+    }
     this.boundElement = element;
     element.addEventListener(this.eventName, (e: Event): void => {
       for (let targetElement: Node = <Element>e.target; targetElement && targetElement !== this.boundElement; targetElement = targetElement.parentNode) {

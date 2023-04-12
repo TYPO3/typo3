@@ -1,0 +1,34 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+    <f:variable name="LLL" value="LLL:EXT:backend/Resources/Private/Language/SudoMode.xlf" />
+    <div class="modal-backdrop in"></div>
+    <div id="sudo-mode-verification-error" class="modal modal-severity-warning modal-size-small" tabindex="-1" role="dialog" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <f:translate key="{LLL}:verificationFailed" />
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="alert alert-warning">
+                            <f:translate key="{LLL}:verificationExpired" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <f:if condition="{cancelUri}">
+                        <a href="{cancelUri}" class="btn btn-default" role="button" target="{cancelTarget}">
+                            <f:translate key="{LLL}:cancel" />
+                        </a>
+                    </f:if>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</html>

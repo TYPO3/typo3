@@ -31,6 +31,13 @@ final class GetExtensionsCest
 
         $I->click('Extensions', '#modulemenu');
         $I->switchToContentFrame();
+
+        if ($I->tryToSeeElement('#sudo-mode-verification')) {
+            $I->see('Verify with user password');
+            $I->fillField('//input[@name="password"]', 'password');
+            $I->click('//button[@type="submit"]');
+        }
+
         $I->waitForElementVisible('#typo3-extension-list');
 
         $I->selectOption('[name="ExtensionManagerModuleMenu"]', 'Get Extensions');

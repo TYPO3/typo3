@@ -188,6 +188,11 @@ Module configuration options
 |                                                          | aliases can also be used for references in other modules, e.g.   |
 |                                                          | to specify a modules' :php:`parent`.                             |
 +----------------------------------------------------------+------------------------------------------------------------------+
+| routeOptions (:php:`array`)                              | Generic side information that will be merged with each generated |
+|                                                          | `\TYPO3\CMS\Backend\Routing\Route::$options` array. This can be  |
+|                                                          | used for information, that is not relevant for a module aspect,  |
+|                                                          | but more relevant for the routing aspect (e.g. sudo-mode).       |
++----------------------------------------------------------+------------------------------------------------------------------+
 
 Module-dependent configuration options
 --------------------------------------

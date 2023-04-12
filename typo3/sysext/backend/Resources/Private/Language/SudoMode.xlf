@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/SudoMode.xlf" date="2023-04-08T00:00:00Z" product-name="backend">
+		<header/>
+		<body>
+			<trans-unit id="cancel" resname="cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="verify" resname="verify">
+				<source>Verify</source>
+			</trans-unit>
+			<trans-unit id="password" resname="password">
+				<source>Password</source>
+			</trans-unit>
+			<trans-unit id="verifyWithUserPassword" resname="verifyWithUserPassword">
+				<source>Verify with user password</source>
+			</trans-unit>
+			<trans-unit id="verifyWithInstallToolPassword" resname="verifyWithInstallToolPassword">
+				<source>Verify with Install Tool password</source>
+			</trans-unit>
+			<trans-unit id="accessGranted" resname="accessGranted">
+				<source>Access granted</source>
+			</trans-unit>
+			<trans-unit id="invalidPassword" resname="invalidPassword">
+				<source>Invalid password</source>
+			</trans-unit>
+			<trans-unit id="userPasswordMode" resname="userPasswordMode">
+				<source>Use user password instead</source>
+			</trans-unit>
+			<trans-unit id="installToolPasswordMode" resname="installToolPasswordMode">
+				<source>Use Install Tool password instead</source>
+			</trans-unit>
+			<trans-unit id="verificationFailed" resname="verificationFailed">
+				<source>Verification failed</source>
+			</trans-unit>
+			<trans-unit id="verificationExpired" resname="verificationExpired">
+				<source>Confirmation has expired. Please try again.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

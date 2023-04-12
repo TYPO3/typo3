@@ -144,6 +144,15 @@ services:
         identifier: 'backend-user-permissions'
         method: 'addUserPermissionsToCategoryTreeData'
 
+  TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory:
+    public: true
+
+  TYPO3\CMS\Backend\Security\SudoMode\Access\AccessHandler:
+    public: true
+
+  TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage:
+    public: true
+
   # Listener to provide information about column without a colPos set
   TYPO3\CMS\Backend\View\PageLayoutViewDrawEmptyColposContent:
     tags:

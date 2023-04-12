@@ -21,6 +21,8 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Http\RouteDispatcher;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory;
+use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage;
 use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherClassFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherClassInvokeFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherClassWithoutInvokeFixture;
@@ -48,6 +50,8 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $accessFactoryMock = $this->createMock(AccessFactory::class);
+        $accessStorageMock = $this->createMock(AccessStorage::class);
 
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('has')->with(self::anything())->willReturn(false);
@@ -58,7 +62,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'referrer' => false, 'target' => 42]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $containerMock);
+        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
         $subject->dispatch($request);
     }
 
@@ -71,6 +75,8 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $accessFactoryMock = $this->createMock(AccessFactory::class);
+        $accessStorageMock = $this->createMock(AccessStorage::class);
 
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('has')->with(self::anything())->willReturn(false);
@@ -85,7 +91,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $containerMock);
+        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
         $subject->dispatch($request);
     }
 
@@ -98,6 +104,8 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $accessFactoryMock = $this->createMock(AccessFactory::class);
+        $accessStorageMock = $this->createMock(AccessStorage::class);
 
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('has')->with(self::anything())->willReturn(false);
@@ -111,7 +119,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $containerMock);
+        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
         $subject->dispatch($request);
     }
 
@@ -124,6 +132,8 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $accessFactoryMock = $this->createMock(AccessFactory::class);
+        $accessStorageMock = $this->createMock(AccessStorage::class);
 
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('has')->with(self::anything())->willReturn(false);
@@ -135,7 +145,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $containerMock);
+        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
         $subject->dispatch($request);
     }
 
@@ -148,6 +158,8 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $accessFactoryMock = $this->createMock(AccessFactory::class);
+        $accessStorageMock = $this->createMock(AccessStorage::class);
 
         $target = 'routedispatcher.classinvokefixture';
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
@@ -160,7 +172,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756623);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $containerMock);
+        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
         $subject->dispatch($request);
     }
 
@@ -173,6 +185,8 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $accessFactoryMock = $this->createMock(AccessFactory::class);
+        $accessStorageMock = $this->createMock(AccessStorage::class);
 
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('has')->with(self::anything())->willReturn(false);
@@ -184,7 +198,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $containerMock);
+        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
         $subject->dispatch($request);
     }
 
@@ -197,6 +211,8 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $accessFactoryMock = $this->createMock(AccessFactory::class);
+        $accessStorageMock = $this->createMock(AccessStorage::class);
 
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('has')->with(self::anything())->willReturn(false);
@@ -208,7 +224,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $containerMock);
+        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
         $subject->dispatch($request);
     }
 
@@ -221,6 +237,8 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $accessFactoryMock = $this->createMock(AccessFactory::class);
+        $accessStorageMock = $this->createMock(AccessStorage::class);
 
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('has')->with(self::anything())->willReturn(false);
@@ -232,7 +250,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $containerMock);
+        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
         $subject->dispatch($request);
     }
 }

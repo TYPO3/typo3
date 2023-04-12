@@ -29,6 +29,8 @@ use TYPO3\CMS\Backend\Module\ModuleRegistry;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory;
+use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
@@ -113,6 +115,8 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, RouteDispatcher::class, [
             $container->get(FormProtectionFactory::class),
+            $container->get(AccessFactory::class),
+            $container->get(AccessStorage::class),
             $container,
         ]);
     }

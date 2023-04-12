@@ -1,5 +1,6 @@
 <?php
 
+use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessLifetime;
 use TYPO3\CMS\Extensionmanager\Controller\ActionController;
 use TYPO3\CMS\Extensionmanager\Controller\DistributionController;
 use TYPO3\CMS\Extensionmanager\Controller\DownloadController;
@@ -39,6 +40,12 @@ return [
             ],
             ExtensionComposerStatusController::class => [
                 'list', 'detail',
+            ],
+        ],
+        'routeOptions' => [
+            'sudoMode' => [
+                'group' => 'systemMaintainer',
+                'lifetime' => AccessLifetime::medium,
             ],
         ],
         'moduleData' => [

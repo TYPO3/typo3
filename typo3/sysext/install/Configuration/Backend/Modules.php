@@ -1,5 +1,6 @@
 <?php
 
+use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessLifetime;
 use TYPO3\CMS\Install\Controller\BackendModuleController;
 
 /**
@@ -17,6 +18,12 @@ return [
                 'target' => BackendModuleController::class . '::maintenanceAction',
             ],
         ],
+        'routeOptions' => [
+            'sudoMode' => [
+                'group' => 'systemMaintainer',
+                'lifetime' => AccessLifetime::medium,
+            ],
+        ],
     ],
     'tools_toolssettings' => [
         'parent' => 'tools',
@@ -27,6 +34,12 @@ return [
         'routes' => [
             '_default' => [
                 'target' => BackendModuleController::class . '::settingsAction',
+            ],
+        ],
+        'routeOptions' => [
+            'sudoMode' => [
+                'group' => 'systemMaintainer',
+                'lifetime' => AccessLifetime::medium,
             ],
         ],
     ],
@@ -41,6 +54,12 @@ return [
                 'target' => BackendModuleController::class . '::upgradeAction',
             ],
         ],
+        'routeOptions' => [
+            'sudoMode' => [
+                'group' => 'systemMaintainer',
+                'lifetime' => AccessLifetime::medium,
+            ],
+        ],
     ],
     'tools_toolsenvironment' => [
         'parent' => 'tools',
@@ -51,6 +70,12 @@ return [
         'routes' => [
             '_default' => [
                 'target' => BackendModuleController::class . '::environmentAction',
+            ],
+        ],
+        'routeOptions' => [
+            'sudoMode' => [
+                'group' => 'systemMaintainer',
+                'lifetime' => AccessLifetime::medium,
             ],
         ],
     ],

@@ -19,15 +19,9 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UriInterface;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Authentication\AbstractAuthenticationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -46,65 +40,11 @@ use TYPO3\CMS\Install\Service\SessionService;
  */
 class BackendModuleController
 {
-    protected const FLAG_CONFIRMATION_REQUEST = 1;
-    protected const FLAG_INSTALL_TOOL_PASSWORD = 2;
-    protected const ALLOWED_ACTIONS = ['maintenance', 'settings', 'upgrade', 'environment'];
-
     protected ?SessionService $sessionService = null;
 
     public function __construct(
-        protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory
     ) {
-    }
-
-    /**
-     * Shows and handles backend user session confirmation ("sudo mode") for
-     * accessing a particular Install Tool controller (as given in `$targetController`).
-     */
-    public function backendUserConfirmationAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $flags = (int)($request->getQueryParams()['flags'] ?? 0);
-        $targetController = (string)($request->getQueryParams()['targetController'] ?? '');
-        $targetHash = (string)($request->getQueryParams()['targetHash'] ?? '');
-        $expectedTargetHash = GeneralUtility::hmac($targetController, BackendModuleController::class);
-        $flagInstallToolPassword = (bool)($flags & self::FLAG_INSTALL_TOOL_PASSWORD);
-        $flagInvalidPassword = false;
-
-        if (!in_array($targetController, self::ALLOWED_ACTIONS, true)
-            || !hash_equals($expectedTargetHash, $targetHash)) {
-            return new HtmlResponse('', 403);
-        }
-        if ($flags & self::FLAG_CONFIRMATION_REQUEST) {
-            if ($flagInstallToolPassword && $this->verifyInstallToolPassword($request)) {
-                return $this->setAuthorizedAndRedirect($targetController, $request);
-            }
-            if (!$flagInstallToolPassword && $this->verifyBackendUserPassword($request)) {
-                return $this->setAuthorizedAndRedirect($targetController, $request);
-            }
-            $flagInvalidPassword = true;
-        }
-
-        $view = $this->moduleTemplateFactory->create($request);
-        $view->assignMultiple([
-            'flagInvalidPassword' => $flagInvalidPassword,
-            'flagInstallToolPassword' => $flagInstallToolPassword,
-            'passwordModeUri' => $this->getBackendUserConfirmationUri([
-                'targetController' => $targetController,
-                'targetHash' => $targetHash,
-                // current flags, unset FLAG_CONFIRMATION_REQUEST, toggle FLAG_INSTALL_TOOL_PASSWORD
-                'flags' => $flags & ~self::FLAG_CONFIRMATION_REQUEST ^ self::FLAG_INSTALL_TOOL_PASSWORD,
-            ]),
-            'verifyUri' => $this->getBackendUserConfirmationUri([
-                'targetController' => $targetController,
-                'targetHash' => $targetHash,
-                // current flags, add FLAG_CONFIRMATION_REQUEST
-                'flags' => $flags | self::FLAG_CONFIRMATION_REQUEST,
-            ]),
-        ]);
-
-        $view->setModuleName('tools_tools' . $targetController);
-        return $view->renderResponse('BackendModule/BackendUserConfirmation');
     }
 
     /**
@@ -112,8 +52,7 @@ class BackendModuleController
      */
     public function maintenanceAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->getBackendUserConfirmationRedirect('maintenance', $request)
-            ?? $this->setAuthorizedAndRedirect('maintenance', $request);
+        return $this->setAuthorizedAndRedirect('maintenance', $request);
     }
 
     /**
@@ -121,8 +60,7 @@ class BackendModuleController
      */
     public function settingsAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->getBackendUserConfirmationRedirect('settings', $request)
-            ?? $this->setAuthorizedAndRedirect('settings', $request);
+        return $this->setAuthorizedAndRedirect('settings', $request);
     }
 
     /**
@@ -130,8 +68,7 @@ class BackendModuleController
      */
     public function upgradeAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->getBackendUserConfirmationRedirect('upgrade', $request)
-            ?? $this->setAuthorizedAndRedirect('upgrade', $request);
+        return $this->setAuthorizedAndRedirect('upgrade', $request);
     }
 
     /**
@@ -139,34 +76,7 @@ class BackendModuleController
      */
     public function environmentAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->getBackendUserConfirmationRedirect('environment', $request)
-            ?? $this->setAuthorizedAndRedirect('environment', $request);
-    }
-
-    /**
-     * Creates redirect response to backend user confirmation (if required).
-     */
-    protected function getBackendUserConfirmationRedirect(string $targetController, ServerRequestInterface $request): ?ResponseInterface
-    {
-        if ($this->getSessionService()->isAuthorizedBackendUserSession($request)) {
-            return null;
-        }
-        if (Environment::getContext()->isDevelopment()) {
-            return null;
-        }
-        $redirectUri = $this->getBackendUserConfirmationUri([
-            'targetController' => $targetController,
-            'targetHash' => GeneralUtility::hmac($targetController, BackendModuleController::class),
-        ]);
-        return new RedirectResponse((string)$redirectUri, 403);
-    }
-
-    protected function getBackendUserConfirmationUri(array $parameters): UriInterface
-    {
-        return $this->uriBuilder->buildUriFromRoute(
-            'install.backend-user-confirmation',
-            $parameters
-        );
+        return $this->setAuthorizedAndRedirect('environment', $request);
     }
 
     /**
@@ -180,90 +90,6 @@ class BackendModuleController
         $entryPointResolver = GeneralUtility::makeInstance(BackendEntryPointResolver::class);
         $redirectLocation = $entryPointResolver->getUriFromRequest($request, 'install.php')->withQuery('?install[controller]=' . $controller . '&install[context]=backend');
         return new RedirectResponse($redirectLocation, 303);
-    }
-
-    /**
-     * Verifies that provided password matches Install Tool password.
-     */
-    protected function verifyInstallToolPassword(ServerRequestInterface $request): bool
-    {
-        $parsedBody = $request->getParsedBody();
-        $password = $parsedBody['confirmationPassword'] ?? null;
-        $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] ?? null;
-        if (!is_string($password) || empty($installToolPassword)) {
-            return false;
-        }
-
-        try {
-            $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
-            $hashInstance = $hashFactory->get($installToolPassword, 'BE');
-            return $hashInstance->checkPassword($password, $installToolPassword);
-        } catch (InvalidPasswordHashException $exception) {
-            return false;
-        }
-    }
-
-    /**
-     * Verifies that provided password is actually correct for current backend user
-     * by stepping through authentication chain in `$GLOBALS['BE_USER]`.
-     */
-    protected function verifyBackendUserPassword(ServerRequestInterface $request): bool
-    {
-        $parsedBody = $request->getParsedBody();
-        $password = $parsedBody['confirmationPassword'] ?? null;
-        if (!is_string($password)) {
-            return false;
-        }
-
-        // clone current backend user object to avoid
-        // possible side effects for the real instance
-        $backendUser = clone $this->getBackendUser();
-        $loginData = [
-            'status' => 'sudo-mode',
-            'origin' => BackendModuleController::class,
-            'uname'  => $backendUser->user['username'],
-            'uident' => $password,
-        ];
-        // currently there is no dedicated API to perform authentication
-        // that's why this process partially has to be simulated here
-        $loginData = $backendUser->processLoginData($loginData, $request);
-        $authInfo = $backendUser->getAuthInfoArray($request);
-
-        $authenticated = false;
-        /** @var AbstractAuthenticationService $service or any other service (sic!) */
-        foreach ($this->getAuthServices($backendUser, $loginData, $authInfo) as $service) {
-            $ret = (int)$service->authUser($backendUser->user);
-            if ($ret <= 0) {
-                return false;
-            }
-            if ($ret >= 200) {
-                return true;
-            }
-            if ($ret < 100) {
-                $authenticated = true;
-                continue;
-            }
-        }
-        return $authenticated;
-    }
-
-    /**
-     * Initializes authentication services to be used in a foreach loop
-     *
-     * @return \Generator<int, object>
-     */
-    protected function getAuthServices(BackendUserAuthentication $backendUser, array $loginData, array $authInfo): \Generator
-    {
-        $serviceChain = [];
-        $subType = 'authUserBE';
-        while ($service = GeneralUtility::makeInstanceService('auth', $subType, $serviceChain)) {
-            $serviceChain[] = $service->getServiceKey();
-            if (!is_object($service)) {
-                break;
-            }
-            $service->initAuth($subType, $loginData, $authInfo, $backendUser);
-            yield $service;
-        }
     }
 
     protected function getBackendUser(): BackendUserAuthentication

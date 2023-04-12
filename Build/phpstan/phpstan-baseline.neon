@@ -2881,16 +2881,6 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Utility/DoubleMetaPhoneUtility.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractAuthenticationService\\:\\:authUser\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Controller/BackendModuleController.php
-
-		-
-			message: "#^Cannot call method getServiceKey\\(\\) on array\\<string\\>\\|object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Controller/BackendModuleController.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\CodeStatistics\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/CodeStatistics.php

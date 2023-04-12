@@ -38,6 +38,7 @@ abstract class BaseModule
     protected string $workspaceAccess = '*';
     protected string $parent = '';
     protected ?ModuleInterface $parentModule = null;
+    /** @var array<string, ModuleInterface> */
     protected array $subModules = [];
     protected bool $standalone = false;
     protected string $component = '@typo3/backend/module/iframe';
@@ -45,6 +46,7 @@ abstract class BaseModule
     protected array $defaultModuleData = [];
     protected array $aliases = [];
     protected bool $inheritNavigationComponent = true;
+    protected array $routeOptions = [];
 
     final protected function __construct(string $identifier)
     {
@@ -161,6 +163,9 @@ abstract class BaseModule
         unset($this->subModules[$identifier]);
     }
 
+    /**
+     * @return array<string, ModuleInterface>
+     */
     public function getSubModules(): array
     {
         return $this->subModules;
@@ -249,6 +254,9 @@ abstract class BaseModule
             $obj->navigationComponent = (string)$configuration['navigationComponent'];
         } elseif (isset($configuration['navigationComponentId'])) {
             $obj->navigationComponent = (string)$configuration['navigationComponentId'];
+        }
+        if (is_array($configuration['routeOptions'] ?? null)) {
+            $obj->routeOptions = $configuration['routeOptions'];
         }
 
         return $obj;

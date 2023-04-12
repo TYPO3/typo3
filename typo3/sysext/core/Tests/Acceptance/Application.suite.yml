@@ -1,4 +1,9 @@
 actor: ApplicationTester
+
+step_decorators:
+  - \Codeception\Step\ConditionalAssertion
+  - \Codeception\Step\TryTo
+
 modules:
   enabled:
     - WebDriver:

@@ -74,10 +74,16 @@ return [
                 'typo3/cms-backend/authentication',
             ],
         ],
+        'typo3/cms-backend/sudo-mode-interceptor' => [
+            'target' => \TYPO3\CMS\Backend\Middleware\SudoModeInterceptor::class,
+            'after' => [
+                'typo3/cms-backend/backend-module-validator',
+            ],
+        ],
         'typo3/cms-backend/site-resolver' => [
             'target' => \TYPO3\CMS\Backend\Middleware\SiteResolver::class,
             'after' => [
-                'typo3/cms-backend/backend-module-validator',
+                'typo3/cms-backend/sudo-mode-interceptor',
             ],
         ],
         /** internal: do not use or reference this middleware in your own code */
