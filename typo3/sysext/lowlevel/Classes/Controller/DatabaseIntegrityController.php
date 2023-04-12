@@ -1712,10 +1712,10 @@ class DatabaseIntegrityController
                     }
                     $optGroupOpen = true;
                     $out[] = '<optgroup label="' . htmlspecialchars($value) . '">';
-                } elseif (GeneralUtility::inList($conf['inputValue'], $val['value'])) {
-                    $out[] = '<option value="' . htmlspecialchars($val['value']) . '" selected>' . htmlspecialchars($value) . '</option>';
+                } elseif (GeneralUtility::inList($conf['inputValue'], (string)$val['value'])) {
+                    $out[] = '<option value="' . htmlspecialchars((string)$val['value']) . '" selected>' . htmlspecialchars($value) . '</option>';
                 } else {
-                    $out[] = '<option value="' . htmlspecialchars($val['value']) . '">' . htmlspecialchars($value) . '</option>';
+                    $out[] = '<option value="' . htmlspecialchars((string)$val['value']) . '">' . htmlspecialchars($value) . '</option>';
                 }
             }
             if ($optGroupOpen) {
