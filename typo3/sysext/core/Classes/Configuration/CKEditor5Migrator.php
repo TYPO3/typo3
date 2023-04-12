@@ -194,6 +194,7 @@ class CKEditor5Migrator
         $this->migrateRemoveButtonsFromToolbar();
         $this->migrateFormatTagsToHeadings();
         $this->migrateStylesSetToStyleDefinitions();
+        $this->migrateContentsCssToArray();
         // configure plugins
         $this->handleAlignmentPlugin();
         $this->handleWhitespacePlugin();
@@ -537,6 +538,30 @@ class CKEditor5Migrator
             // remove legacy configuration after migration
             unset($this->configuration['stylesSet']);
             $this->configuration['style']['definitions'] = $styleDefinitions;
+        }
+    }
+
+    protected function migrateContentsCssToArray(): void
+    {
+        if (isset($this->configuration['contentsCss'])) {
+            if (!is_array($this->configuration['contentsCss'])) {
+                if (empty($this->configuration['contentsCss'])) {
+                    unset($this->configuration['contentsCss']);
+                    return;
+                }
+                $this->configuration['contentsCss'] = (array)$this->configuration['contentsCss'];
+            }
+
+            $this->configuration['contentsCss'] = array_map(static function (mixed $styleSrc) {
+                // Trim values, if input is a string, otherwise leave as-is (will be filtered out)
+                return is_string($styleSrc) ? trim($styleSrc) : $styleSrc;
+            }, $this->configuration['contentsCss']);
+            $this->configuration['contentsCss'] = array_values(
+                array_filter($this->configuration['contentsCss'], static function (mixed $styleSrc): bool {
+                    // We care for non-empty strings only
+                    return is_string($styleSrc) && $styleSrc !== '';
+                })
+            );
         }
     }
 

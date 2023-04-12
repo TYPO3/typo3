@@ -183,7 +183,9 @@ final class RichtextTest extends UnitTestCase
                 ],
                 'editor.' => [
                     'config.' => [
-                        'contentsCss' => 'my.css',
+                        'contentsCss.' => [
+                            '0' => 'my.css',
+                        ],
                     ],
                 ],
             ],
@@ -194,7 +196,9 @@ final class RichtextTest extends UnitTestCase
             ],
             'editor.' => [
                 'config.' => [
-                    'contentsCss' => 'my.css',
+                    'contentsCss.' => [
+                        '0' => 'my.css',
+                    ],
                 ],
             ],
             'preset' => 'default',
@@ -211,7 +215,9 @@ final class RichtextTest extends UnitTestCase
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
-                    'contentsCss' => 'my.css',
+                    'contentsCss' => [
+                        'my.css',
+                    ],
                     'removePlugins' => [],
                     'toolbar' => [
                         'items' => [
@@ -264,7 +270,9 @@ final class RichtextTest extends UnitTestCase
                         ],
                         'editor.' => [
                             'config.' => [
-                                'contentsCss' => 'my.css',
+                                'contentsCss.' => [
+                                    '0' => 'my.css',
+                                ],
                             ],
                         ],
                     ],
@@ -278,7 +286,9 @@ final class RichtextTest extends UnitTestCase
             ],
             'editor.' => [
                 'config.' => [
-                    'contentsCss' => 'my.css',
+                    'contentsCss.' => [
+                        '0' => 'my.css',
+                    ],
                 ],
             ],
             'preset' => 'default',
@@ -296,7 +306,9 @@ final class RichtextTest extends UnitTestCase
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
-                    'contentsCss' => 'my.css',
+                    'contentsCss' => [
+                        'my.css',
+                    ],
                     'removePlugins' => [],
                     'toolbar' => [
                         'items' => [
@@ -349,7 +361,9 @@ final class RichtextTest extends UnitTestCase
                         ],
                         'editor.' => [
                             'config.' => [
-                                'contentsCss' => 'my.css',
+                                'contentsCss.' => [
+                                    '0' => 'my.css',
+                                ],
                             ],
                         ],
                         'types.' => [
@@ -359,7 +373,9 @@ final class RichtextTest extends UnitTestCase
                                 ],
                                 'editor.' => [
                                     'config.' => [
-                                        'contentsCss' => 'your.css',
+                                        'contentsCss.' => [
+                                            '0' => 'your.css',
+                                        ],
                                     ],
                                 ],
                             ],
@@ -375,7 +391,9 @@ final class RichtextTest extends UnitTestCase
             ],
             'editor.' => [
                 'config.' => [
-                    'contentsCss' => 'your.css',
+                    'contentsCss.' => [
+                        '0' => 'your.css',
+                    ],
                 ],
             ],
             'preset' => 'default',
@@ -393,7 +411,9 @@ final class RichtextTest extends UnitTestCase
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
-                    'contentsCss' => 'your.css',
+                    'contentsCss' => [
+                        'your.css',
+                    ],
                     'removePlugins' => [],
                     'toolbar' => [
                         'items' => [

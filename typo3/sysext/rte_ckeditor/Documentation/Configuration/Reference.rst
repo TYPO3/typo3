@@ -71,12 +71,11 @@ editor.config
 
    Example::
 
-      editor.config.contentsCss: "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
+      editor.config.contentsCss:
+        - "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
 
    This is the default, as defined in `EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml
    <https://github.com/typo3/typo3/blob/main/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Base.yaml>`__.
-
-.. todo: change url to Base.yaml after branching main to 10.4
 
 .. option:: editor.config.style
 

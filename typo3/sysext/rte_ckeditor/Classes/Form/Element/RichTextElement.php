@@ -127,8 +127,8 @@ class RichTextElement extends AbstractFormElement
         $this->rteConfiguration = $config['richtextConfiguration']['editor'] ?? [];
         $ckeditorConfiguration = $this->resolveCkEditorConfiguration();
 
-        $styleSrc = (string)($ckeditorConfiguration['options']['contentsCss'] ?? '');
-        if ($styleSrc !== '') {
+        $styleSources = (array)($ckeditorConfiguration['options']['contentsCss'] ?? []);
+        foreach ($styleSources as $styleSrc) {
             $styleSrcParams = json_encode([
                 'styleSrc' => $styleSrc,
                 'cssPrefix' => sprintf('#%sckeditor5 .ck-content', $fieldId),
@@ -138,9 +138,9 @@ class RichTextElement extends AbstractFormElement
             $styleSrcLoader = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
                 'rteckeditor_resource_stylesheet',
                 [
-                'params' => $styleSrcParams,
-                'hmac' => GeneralUtility::makeInstance(ResourceController::class)->hmac($styleSrcParams, 'stylesheet'),
-            ]
+                    'params' => $styleSrcParams,
+                    'hmac' => GeneralUtility::makeInstance(ResourceController::class)->hmac($styleSrcParams, 'stylesheet'),
+                ]
             ) . '#' . sha1_file(Environment::getPublicPath() . $styleSrc);
             $resultArray['stylesheetFiles'][] = $styleSrcLoader;
         }

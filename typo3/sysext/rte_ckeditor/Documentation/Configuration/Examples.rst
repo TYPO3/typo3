@@ -67,7 +67,8 @@ In :file:`Configuration/RTE/MyPreset.yaml`, create your configuration, for examp
    editor:
      config:
        # Include custom CSS
-       contentsCss: "EXT:my_extension/Resources/Public/Css/rte.css"
+       contentsCss:
+         - "EXT:my_extension/Resources/Public/Css/rte.css"
 
 How Do I Customize the Toolbar?
 ===============================

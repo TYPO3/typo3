@@ -680,6 +680,99 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
+            'Migrate contentsCss to array' => [
+                [
+                    'contentsCss' => 'EXT:example/Resources/Public/Css/ckeditor.css',
+                ],
+                [
+                    'contentsCss' => [
+                        'EXT:example/Resources/Public/Css/ckeditor.css',
+                    ],
+                    'removePlugins' => [],
+                    'toolbar' => [
+                        'items' => [
+                            'softhyphen',
+                        ],
+                        'removeItems' => [],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-start'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-end'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
+                ],
+            ],
+            'Remove contentsCss if empty' => [
+                [
+                    'contentsCss' => '',
+                ],
+                [
+                    'removePlugins' => [],
+                    'toolbar' => [
+                        'items' => [
+                            'softhyphen',
+                        ],
+                        'removeItems' => [],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-start'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-end'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
+                ],
+            ],
+            'Migrate contentsCss to a clean array with mixed values' => [
+                [
+                    'contentsCss' => [
+                        'EXT:example/Resources/Public/Css/ckeditor.css  ', // trailing whitespaces are on purpose
+                        '',
+                        'EXT:example/Resources/Public/Css/ckeditor2.css',
+                        42,
+                    ],
+                ],
+                [
+                    'contentsCss' => [
+                        'EXT:example/Resources/Public/Css/ckeditor.css',
+                        'EXT:example/Resources/Public/Css/ckeditor2.css',
+                    ],
+                    'removePlugins' => [],
+                    'toolbar' => [
+                        'items' => [
+                            'softhyphen',
+                        ],
+                        'removeItems' => [],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-start'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-end'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
+                ],
+            ],
 
             // Plugin Alignment Handling
             'Remove Alignment Plugin' => [
