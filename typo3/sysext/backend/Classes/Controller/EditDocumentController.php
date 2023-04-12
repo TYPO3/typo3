@@ -1985,13 +1985,24 @@ class EditDocumentController
                             } else {
                                 // Build the link to add the localization
                                 $selectorOptionLabel .= ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
-                                $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
-                                    'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId,
-                                    'returnUrl' => $this->retUrl,
-                                ]);
-                                $href = BackendUtility::getLinkToDataHandlerAction(
-                                    '&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $languageId,
-                                    $redirectUrl
+                                $href = (string)$this->uriBuilder->buildUriFromRoute(
+                                    'tce_db',
+                                    [
+                                        'cmd' => [
+                                            $table => [
+                                                $rowsByLang[0]['uid'] => [
+                                                    'localize' => $languageId,
+                                                ],
+                                            ],
+                                        ],
+                                        'redirect' => (string)$this->uriBuilder->buildUriFromRoute(
+                                            'record_edit',
+                                            [
+                                                'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId,
+                                                'returnUrl' => $this->retUrl,
+                                            ]
+                                        ),
+                                    ]
                                 );
                             }
                         } else {

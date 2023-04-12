@@ -1178,15 +1178,24 @@ class FileList
                 $title = sprintf($this->getLanguageService()->getLL('createMetadataForLanguage'), $language['title']);
                 $actionType = 'new';
                 $metaDataRecordId = (int)($metaDataRecord['uid'] ?? 0);
-                $url = BackendUtility::getLinkToDataHandlerAction(
-                    '&cmd[sys_file_metadata][' . $metaDataRecordId . '][localize]=' . $languageId,
-                    (string)$this->uriBuilder->buildUriFromRoute(
-                        'record_edit',
-                        [
-                            'justLocalized' => 'sys_file_metadata:' . $metaDataRecordId . ':' . $languageId,
-                            'returnUrl' => $this->createModuleUri(),
-                        ]
-                    )
+                $url = (string)$this->uriBuilder->buildUriFromRoute(
+                    'tce_db',
+                    [
+                        'cmd' => [
+                            'sys_file_metadata' => [
+                                $metaDataRecordId => [
+                                    'localize' => $languageId,
+                                ],
+                            ],
+                        ],
+                        'redirect' => (string)$this->uriBuilder->buildUriFromRoute(
+                            'record_edit',
+                            [
+                                'justLocalized' => 'sys_file_metadata:' . $metaDataRecordId . ':' . $languageId,
+                                'returnUrl' => $this->createModuleUri(),
+                            ]
+                        ),
+                    ]
                 );
             }
 

@@ -123,8 +123,19 @@ class GridColumnItem extends AbstractGridObject
 
     public function getDeleteUrl(): string
     {
-        $params = '&cmd[tt_content][' . $this->record['uid'] . '][delete]=1';
-        return BackendUtility::getLinkToDataHandlerAction($params);
+        return (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+            'tce_db',
+            [
+                'cmd' => [
+                    'tt_content' => [
+                        $this->record['uid'] => [
+                            'delete' => 1,
+                        ],
+                    ],
+                ],
+                'redirect' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+            ]
+        );
     }
 
     public function getDeleteMessage(): string
@@ -284,9 +295,19 @@ class GridColumnItem extends AbstractGridObject
         } else {
             $value = 1;
         }
-        $params = '&data[tt_content][' . (($this->record['_ORIG_uid'] ?? false) ?: ($this->record['uid'] ?? 0))
-            . '][' . $hiddenField . ']=' . $value;
-        return BackendUtility::getLinkToDataHandlerAction($params) . '#element-tt_content-' . $this->record['uid'];
+        return GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+            'tce_db',
+            [
+                'data' => [
+                    'tt_content' => [
+                        (($this->record['_ORIG_uid'] ?? false) ?: ($this->record['uid'] ?? 0)) => [
+                            $hiddenField => $value,
+                        ],
+                    ],
+                ],
+                'redirect' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+            ]
+        ) . '#element-tt_content-' . $this->record['uid'];
     }
 
     public function getVisibilityToggleTitle(): string

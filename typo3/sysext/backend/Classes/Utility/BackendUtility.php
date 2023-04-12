@@ -1092,8 +1092,15 @@ class BackendUtility
         return $thumbData ? '<div class="preview-thumbnails" style="--preview-thumbnails-size: ' . $size . 'px">' . $thumbData . '</div>' : '';
     }
 
+    /**
+     * @deprecated since TYPO3 v12.4. Will be removed in TYPO3 v13.0 - use the ResourceFactory API instead.
+     */
     public static function getThumbnailUrl(int $fileId, array $configuration): string
     {
+        trigger_error(
+            'BackendUtility::getThumbnailUrl() will be removed in TYPO3 v13.0. The ResourceFactory API should be used instead.',
+            E_USER_DEPRECATED
+        );
         $taskType = $configuration['_context'] ?? ProcessedFile::CONTEXT_IMAGEPREVIEW;
         unset($configuration['_context']);
 
@@ -2094,9 +2101,14 @@ class BackendUtility
      * @param string $parameters Set of GET params to send. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
      * @param string $redirectUrl Redirect URL, default is to use $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
      * @return string
+     * @deprecated since TYPO3 v12.4. Will be removed in TYPO3 v13.0 - use the UriBuilder API instead.
      */
     public static function getLinkToDataHandlerAction($parameters, $redirectUrl = '')
     {
+        trigger_error(
+            'BackendUtility::getLinkToDataHandlerAction() will be removed in TYPO3 v13.0. The UriBuilder API should be used instead.',
+            E_USER_DEPRECATED
+        );
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $url = (string)$uriBuilder->buildUriFromRoute('tce_db') . $parameters . '&redirect=';
         $url .= rawurlencode($redirectUrl ?: $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri());

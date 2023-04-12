@@ -1478,6 +1478,20 @@ return [
             'Deprecation-100459-BackendUtilitygetRecordToolTip.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getThumbnailUrl' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-100597-BackendUtilityMethodsGetThumbnailUrlAndGetLinkToDataHandlerAction.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-100597-BackendUtilityMethodsGetThumbnailUrlAndGetLinkToDataHandlerAction.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,

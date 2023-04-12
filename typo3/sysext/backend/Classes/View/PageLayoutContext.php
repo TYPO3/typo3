@@ -336,17 +336,26 @@ class PageLayoutContext
                 // Build localize command URL to DataHandler (tce_db)
                 // which redirects to FormEngine (record_edit)
                 // which, when finished editing should return back to the current page (returnUrl)
-                $parameters = [
-                    'justLocalized' => 'pages:' . $id . ':' . $languageUid,
-                    'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-                ];
                 $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);
-                $targetUrl = BackendUtility::getLinkToDataHandlerAction(
-                    '&cmd[pages][' . $id . '][localize]=' . $languageUid,
-                    $redirectUrl
+                $targetUrl = (string)$uriBuilder->buildUriFromRoute(
+                    'tce_db',
+                    [
+                        'cmd' => [
+                            'pages' => [
+                                $id => [
+                                    'localize' => $languageUid,
+                                ],
+                            ],
+                        ],
+                        'redirect' => (string)$uriBuilder->buildUriFromRoute(
+                            'record_edit',
+                            [
+                                'justLocalized' => 'pages:' . $id . ':' . $languageUid,
+                                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+                            ]
+                        ),
+                    ]
                 );
-
                 $options[$targetUrl] = $languageTitle;
             }
         }
