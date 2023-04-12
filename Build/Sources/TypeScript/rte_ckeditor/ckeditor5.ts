@@ -137,7 +137,6 @@ export class CKEditor5Element extends LitElement {
             this.handleWordCountPlugin(editor);
             this.applyReadOnly(editor);
             editor.model.document.on('change:data', (): void => {
-              editor.updateSourceElement();
               this.target.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
             });
 
