@@ -2872,7 +2872,6 @@ a.dropdown-toggle{text-decoration:none}
 .panel-collapse>.form-section,.panel-collapse>.tab-content>.form-section,.panel-collapse>.tab-content>.tab-pane>.form-section,.panel-collapse>[role=tabpanel]>.tab-content>.form-section,.panel-collapse>[role=tabpanel]>.tab-content>.tab-pane>.form-section,.panel>.form-section,.panel>.tab-content>.form-section,.panel>.tab-content>.tab-pane>.form-section,.panel>[role=tabpanel]>.tab-content>.form-section,.panel>[role=tabpanel]>.tab-content>.tab-pane>.form-section{border-left:0;border-right:0;border-bottom:0}
 .panel-collapse>.nav-tabs,.panel-collapse>[role=tabpanel]>.nav-tabs,.panel>.nav-tabs,.panel>[role=tabpanel]>.nav-tabs{border-top:1px solid #ccc;padding-top:8px}
 .panel-collapse>.nav-tabs>li,.panel-collapse>[role=tabpanel]>.nav-tabs>li,.panel>.nav-tabs>li,.panel>[role=tabpanel]>.nav-tabs>li{margin-left:-1px}
-.panel label,.panel-collapse label{margin-bottom:0}
 .form-check .form-check-label{margin-bottom:0}
 .form-check-input:not(:disabled),.form-check-input:not(:disabled)~.form-check-label{cursor:pointer}
 .form-check.form-check-type-labeled-toggle{display:flex;align-items:center;padding-left:0;gap:.5em}
@@ -3352,7 +3351,6 @@ to{opacity:1;transform:translate3d(0,0,0)}
 .modal-image-manipulation .panel-heading .is-active{pointer-events:none}
 .modal-image-manipulation .panel{margin-bottom:0}
 .modal-image-manipulation .panel-body{border-left:2px solid #ff8700}
-.modal-image-manipulation .panel-body label{margin-bottom:4px}
 .modal-type-iframe{padding:0}
 .modal-type-iframe .modal-body{padding:0}
 .modal-iframe{display:block;border:0;height:100%;width:100%;position:absolute;top:0;left:0}
@@ -3565,7 +3563,7 @@ typo3-backend-live-search-result-item-action>* .livesearch-result-item-title .sm
 .treelist-group-monospace{font-family:var(--typo3-font-family-monospace)}
 .treelist-operator{opacity:.5}
 .treelist-value{font-weight:700}
-.treelist-icon{top:-2px}
+.treelist-icon{top:-1px}
 .treelist-show{position:relative;display:inline-block;width:var(--treelist-control-size);text-align:center;margin-left:-2px}
 .treelist-control{position:absolute;top:calc(var(--treelist-item-line-height)/ 2);transform:translate(-50%,-50%);left:0;display:block;text-align:center;line-height:var(--treelist-control-size);width:var(--treelist-control-size);height:var(--treelist-control-size);-webkit-user-select:none;-moz-user-select:none;user-select:none}
 .treelist-control:before,.treelist-control:target:before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:var(--treelist-control-size);height:var(--treelist-control-size);background-color:var(--treelist-bg)}
@@ -3580,7 +3578,9 @@ typo3-backend-live-search-result-item-action>* .livesearch-result-item-title .sm
 .treelist-root>li>.treelist-group>.treelist-control{margin-left:calc(var(--treelist-control-size) * -1)}
 .treelist-root>li>.treelist-group>.treelist-control:before{background-color:transparent}
 .treelist-root-clean>li{padding-left:0}
-.panel-tab{--treelist-bg:#fafafa}
+.form-section{--treelist-bg:#fafafa}
+.indent{--indent-base:16px;--indent-level:0;margin-left:calc(var(--indent-base) * var(--indent-level))}
+.indent-inline-block{display:inline-block}
 typo3-backend-editable-page-title{display:block;white-space:nowrap;text-overflow:ellipsis}
 typo3-backend-new-content-element-wizard{--typo3-component-color:var(--typo3-light-color);--typo3-component-bg:var(--typo3-light-bg);--typo3-component-border-color:var(--typo3-light-border-color);--typo3-component-link-color:var(--typo3-light-link-color);--typo3-component-link-hover-color:var(--typo3-light-link-hover-color);--typo3-component-hover-color:var(--typo3-light-hover-color);--typo3-component-hover-bg:var(--typo3-light-hover-bg);--typo3-component-hover-border-color:var(--typo3-light-hover-border-color);--typo3-component-focus-color:var(--typo3-light-focus-color);--typo3-component-focus-bg:var(--typo3-light-focus-bg);--typo3-component-focus-border-color:var(--typo3-light-focus-border-color);--typo3-component-active-color:var(--typo3-light-active-color);--typo3-component-active-bg:var(--typo3-light-active-bg);--typo3-component-active-border-color:var(--typo3-light-active-border-color);--typo3-component-disabled-color:var(--typo3-light-disabled-color);--typo3-component-disabled-bg:var(--typo3-light-disabled-bg);--typo3-component-disabled-border-color:var(--typo3-light-disabled-border-color)}
 .collapse-horizontal{height:auto;width:0;vertical-align:middle;overflow:hidden}

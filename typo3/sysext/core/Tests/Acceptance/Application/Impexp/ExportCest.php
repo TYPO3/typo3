@@ -32,7 +32,6 @@ final class ExportCest extends AbstractCest
     private string $inModuleHeader = '.module-docheader';
     private string $inModuleTabs = '#ImportExportController .nav-tabs';
     private string $inModuleTabsBody = '#ImportExportController .tab-content';
-    private string $inModulePreview = '#ImportExportController > div:last-child';
     private string $inTabConfiguration = '#export-configuration';
     private string $inFlashMessages = '.typo3-messages';
 
@@ -50,7 +49,6 @@ final class ExportCest extends AbstractCest
 
         $selectedPageTitle = 'elements t3editor';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
-        $buttonUpdate = '.btn[value=Update]';
 
         $I->click($selectedPageIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
@@ -59,7 +57,7 @@ final class ExportCest extends AbstractCest
         $I->waitForElementNotVisible('#nprogress');
         $I->see($selectedPageTitle, $this->inModuleHeader);
 
-        $I->click($buttonUpdate, $this->inTabConfiguration);
+        $I->click('Update', $this->inTabConfiguration);
         $this->timeoutForAjaxRequest($I);
         $I->see($selectedPageTitle, $this->inModuleHeader);
     }
@@ -71,7 +69,6 @@ final class ExportCest extends AbstractCest
         $tableTitle = 'Form engine elements - t3editor';
         $listModuleHeader = '.module-docheader';
         $listModuleBtnExport = 'a[title="Export"]';
-        $buttonUpdate = '.btn[value=Update]';
 
         $pageTree->openPath(['styleguide TCA demo']);
         $I->waitForElement($this->inPageTree . ' .node', 5);
@@ -89,7 +86,7 @@ final class ExportCest extends AbstractCest
         $I->see($rootPageTitle, $this->inModuleHeader);
         $I->dontSee($tablePageTitle, $this->inModuleHeader);
 
-        $I->click($buttonUpdate, $this->inTabConfiguration);
+        $I->click('Update', $this->inTabConfiguration);
         $this->timeoutForAjaxRequest($I);
         $I->see($rootPageTitle, $this->inModuleHeader);
         $I->dontSee($tablePageTitle, $this->inModuleHeader);
@@ -101,7 +98,6 @@ final class ExportCest extends AbstractCest
         $recordPageTitle = 'elements t3editor';
         $recordTable = '#recordlist-tx_styleguide_elements_t3editor';
         $recordIcon = 'tr:first-child a[data-contextmenu-trigger]';
-        $buttonUpdate = '.btn[value=Update]';
 
         $pageTree->openPath(['styleguide TCA demo']);
         $I->waitForElement($this->inPageTree . ' .node', 5);
@@ -117,7 +113,7 @@ final class ExportCest extends AbstractCest
         $I->see($rootPageTitle, $this->inModuleHeader);
         $I->dontSee($recordPageTitle, $this->inModuleHeader);
 
-        $I->click($buttonUpdate, $this->inTabConfiguration);
+        $I->click('Update', $this->inTabConfiguration);
         $this->timeoutForAjaxRequest($I);
         $I->see($rootPageTitle, $this->inModuleHeader);
         $I->dontSee($recordPageTitle, $this->inModuleHeader);
@@ -196,8 +192,8 @@ final class ExportCest extends AbstractCest
         $I->waitForElementNotVisible('#nprogress');
 
         $I->cantSee('No tree exported - only tables on the page.', $this->inModuleTabsBody);
-        $I->see('Inside pagetree', $this->inModulePreview);
-        $I->dontSee('Outside pagetree', $this->inModulePreview);
+        $I->see('Inside pagetree');
+        $I->dontSee('Outside pagetree');
         $I->click($tabExport, $this->inModuleTabs);
         $I->waitForElementVisible($contentExport, 5);
         $I->click($buttonSaveToFile, $this->inModuleTabsBody);
@@ -232,8 +228,8 @@ final class ExportCest extends AbstractCest
         $I->waitForElementVisible($tabExport, 5);
         $I->canSee('No tree exported - only tables on the page.', $this->inModuleTabsBody);
         $I->canSee('Export tables from pages', $this->inModuleTabsBody);
-        $I->dontSee('Inside pagetree', $this->inModulePreview);
-        $I->see('Outside pagetree', $this->inModulePreview);
+        $I->dontSee('Inside pagetree');
+        $I->see('Outside pagetree');
         $I->click($tabExport, $this->inModuleTabs);
         $I->waitForElementVisible($contentExport, 5);
         $I->click($buttonSaveToFile, $this->inModuleTabsBody);
@@ -266,8 +262,8 @@ final class ExportCest extends AbstractCest
         $I->waitForElementVisible($tabExport, 5);
         $I->canSee('No tree exported - only tables on the page.', $this->inModuleTabsBody);
         $I->canSee('Export single record', $this->inModuleTabsBody);
-        $I->dontSee('Inside pagetree', $this->inModulePreview);
-        $I->see('Outside pagetree', $this->inModulePreview);
+        $I->dontSee('Inside pagetree');
+        $I->see('Outside pagetree');
         $I->click($tabExport, $this->inModuleTabs);
         $I->waitForElementVisible($contentExport, 5);
         $I->click($buttonSaveToFile, $this->inModuleTabsBody);

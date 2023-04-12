@@ -1,0 +1,18 @@
+//
+// indent
+//
+// Examples
+// -------------
+//
+// <span class="indent" style="--indent-level: 1"></span>
+// <span class="indent indent-inline-block" style="--indent-level: 1"></span>
+//
+.indent {
+    --indent-base: 16px;
+    --indent-level: 0;
+    margin-left: calc(var(--indent-base) * var(--indent-level));
+}
+
+.indent-inline-block {
+    display: inline-block;
+}

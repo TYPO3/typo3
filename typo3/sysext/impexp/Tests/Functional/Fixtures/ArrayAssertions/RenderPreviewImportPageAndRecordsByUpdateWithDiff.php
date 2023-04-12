@@ -23,16 +23,16 @@ return [
       'ref' => 'pages:0',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span title="pages:0"><span class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">' . "\n"
+      'preCode' => '<span title="pages:0" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'title' => '',
       'active' => 'active',
       'updatePath' => '<strong>NEW!</strong>',
-      'updateMode' => sprintf('<select name="tx_impexp[import_mode][pages:0]"><option value="0">Insert</option><option value="%s">Force UID [0] (Admin)</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_FORCE_UID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
+      'updateMode' => sprintf('<select class="form-select form-select-sm" name="tx_impexp[import_mode][pages:0]" style="width: 100px"><option value="0">Insert</option><option value="%s">Force UID [0] (Admin)</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_FORCE_UID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
       'showDiffContent' => 'ERROR: One of the inputs were not an array!',
       'controls' => '',
       'message' => '',
@@ -42,12 +42,12 @@ return [
       'ref' => 'sys_file:1',
       'type' => 'record',
       'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-media-image" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'title' => 'used-1.jpg',
       'active' => 'active',
       'updatePath' => '/',
@@ -68,12 +68,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -82,12 +82,12 @@ return [
       'ref' => 'sys_file:2',
       'type' => 'record',
       'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-media-image" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'title' => 'used-2.jpg',
       'active' => 'active',
       'updatePath' => '/',
@@ -108,12 +108,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -122,16 +122,16 @@ return [
       'ref' => 'sys_file_storage:1',
       'type' => 'record',
       'msg' => 'TABLE "sys_file_storage" will be inserted on ROOT LEVEL! ',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-sys_file_storage" data-identifier="mimetypes-x-sys_file_storage">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-sys_file_storage" data-identifier="mimetypes-x-sys_file_storage">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-sys_file_storage" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'title' => 'fileadmin',
       'active' => 'active',
       'updatePath' => '/',
-      'updateMode' => sprintf('<select name="tx_impexp[import_mode][sys_file_storage:1]"><option value="0">Update</option><option value="%s">Import as new</option><option value="%s">Ignore PID</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_AS_NEW, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_IGNORE_PID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
+      'updateMode' => sprintf('<select class="form-select form-select-sm" name="tx_impexp[import_mode][sys_file_storage:1]" style="width: 100px"><option value="0">Update</option><option value="%s">Import as new</option><option value="%s">Ignore PID</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_AS_NEW, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_IGNORE_PID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
       'showDiffContent' => '<strong class="text-nowrap">[sys_file_storage:1 =&gt; 1]:</strong>' . "\n"
           . '<table class="table table-striped table-hover">' . "\n"
           . '<tr><td>Driver Configuration (configuration)</td><td>' . "\n\n"
@@ -162,16 +162,16 @@ return [
       'ref' => 'tt_content:1',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="tt_content:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text-picture" data-identifier="mimetypes-x-content-text-picture">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="tt_content:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text-picture" data-identifier="mimetypes-x-content-text-picture">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text-picture" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'title' => 'CE 1 first image',
       'active' => 'active',
       'updatePath' => '/Root/',
-      'updateMode' => sprintf('<select name="tx_impexp[import_mode][tt_content:1]"><option value="0">Update</option><option value="%s">Import as new</option><option value="%s">Ignore PID</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_AS_NEW, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_IGNORE_PID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
+      'updateMode' => sprintf('<select class="form-select form-select-sm" name="tx_impexp[import_mode][tt_content:1]" style="width: 100px"><option value="0">Update</option><option value="%s">Import as new</option><option value="%s">Ignore PID</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_AS_NEW, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_IGNORE_PID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
       'showDiffContent' => '<strong class="text-nowrap">[tt_content:1 =&gt; 2]:</strong>
 <table class="table table-striped table-hover">
 <tr><td>Type (CType)</td><td><del>Text &amp; Images</del><ins>Text</ins></td></tr>
@@ -187,12 +187,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/Root/">used-1.jpg</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_reference:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_reference:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -202,12 +202,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">used-1.jpg</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -217,12 +217,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 4"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -231,16 +231,16 @@ return [
       'ref' => 'tt_content:2',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="tt_content:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text-picture" data-identifier="mimetypes-x-content-text-picture">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="tt_content:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text-picture" data-identifier="mimetypes-x-content-text-picture">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text-picture" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'title' => 'CE 2 second image',
       'active' => 'active',
       'updatePath' => '/Root/',
-      'updateMode' => sprintf('<select name="tx_impexp[import_mode][tt_content:2]"><option value="0">Update</option><option value="%s">Import as new</option><option value="%s">Ignore PID</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_AS_NEW, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_IGNORE_PID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
+      'updateMode' => sprintf('<select class="form-select form-select-sm" name="tx_impexp[import_mode][tt_content:2]" style="width: 100px"><option value="0">Update</option><option value="%s">Import as new</option><option value="%s">Ignore PID</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_AS_NEW, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_IGNORE_PID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
       'showDiffContent' => '<strong class="text-nowrap">[tt_content:2 =&gt; 1]:</strong>' . "\n"
           . '<table class="table table-striped table-hover">' . "\n"
           . '<tr><td>Type (CType)</td><td><del>Text &amp; Images</del><ins>Text</ins></td></tr>' . "\n"
@@ -256,12 +256,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/Root/">used-2.jpg</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_reference:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_reference:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -271,12 +271,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">used-2.jpg</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -286,12 +286,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 4"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -300,16 +300,16 @@ return [
       'ref' => 'tt_content:3',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="tt_content:3"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text-picture" data-identifier="mimetypes-x-content-text-picture">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="tt_content:3" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text-picture" data-identifier="mimetypes-x-content-text-picture">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text-picture" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'title' => 'CE 3 second image',
       'active' => 'active',
       'updatePath' => '<strong>NEW!</strong>',
-      'updateMode' => sprintf('<select name="tx_impexp[import_mode][tt_content:3]"><option value="0">Insert</option><option value="%s">Force UID [3] (Admin)</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_FORCE_UID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
+      'updateMode' => sprintf('<select class="form-select form-select-sm" name="tx_impexp[import_mode][tt_content:3]" style="width: 100px"><option value="0">Insert</option><option value="%s">Force UID [3] (Admin)</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_FORCE_UID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
       'showDiffContent' => 'ERROR: One of the inputs were not an array!',
       'controls' => '',
       'message' => '',
@@ -320,12 +320,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/Root/">used-2.jpg</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_reference:3"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_reference:3" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -335,12 +335,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">used-2.jpg</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -350,12 +350,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 4"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -364,16 +364,16 @@ return [
       'ref' => 'sys_file_reference:1',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file_reference:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_reference:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-other-other" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'title' => 'used-1.jpg',
       'active' => 'active',
       'updatePath' => '<strong>NEW!</strong>',
-      'updateMode' => sprintf('<select name="tx_impexp[import_mode][sys_file_reference:1]"><option value="0">Insert</option><option value="%s">Force UID [1] (Admin)</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_FORCE_UID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
+      'updateMode' => sprintf('<select class="form-select form-select-sm" name="tx_impexp[import_mode][sys_file_reference:1]" style="width: 100px"><option value="0">Insert</option><option value="%s">Force UID [1] (Admin)</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_FORCE_UID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
       'showDiffContent' => 'ERROR: One of the inputs were not an array!',
       'controls' => '',
       'message' => '',
@@ -384,12 +384,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">used-1.jpg</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -399,12 +399,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -413,16 +413,16 @@ return [
       'ref' => 'sys_file_reference:2',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file_reference:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_reference:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-other-other" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'title' => 'used-2.jpg',
       'active' => 'active',
       'updatePath' => '<strong>NEW!</strong>',
-      'updateMode' => sprintf('<select name="tx_impexp[import_mode][sys_file_reference:2]"><option value="0">Insert</option><option value="%s">Force UID [2] (Admin)</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_FORCE_UID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
+      'updateMode' => sprintf('<select class="form-select form-select-sm" name="tx_impexp[import_mode][sys_file_reference:2]" style="width: 100px"><option value="0">Insert</option><option value="%s">Force UID [2] (Admin)</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_FORCE_UID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
       'showDiffContent' => 'ERROR: One of the inputs were not an array!',
       'controls' => '',
       'message' => '',
@@ -433,12 +433,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">used-2.jpg</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -448,12 +448,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -462,16 +462,16 @@ return [
       'ref' => 'sys_file_reference:3',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file_reference:3"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_reference:3" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-other-other" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'title' => 'used-2.jpg',
       'active' => 'active',
       'updatePath' => '<strong>NEW!</strong>',
-      'updateMode' => sprintf('<select name="tx_impexp[import_mode][sys_file_reference:3]"><option value="0">Insert</option><option value="%s">Force UID [3] (Admin)</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_FORCE_UID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
+      'updateMode' => sprintf('<select class="form-select form-select-sm" name="tx_impexp[import_mode][sys_file_reference:3]" style="width: 100px"><option value="0">Insert</option><option value="%s">Force UID [3] (Admin)</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_FORCE_UID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
       'showDiffContent' => 'ERROR: One of the inputs were not an array!',
       'controls' => '',
       'message' => '',
@@ -482,12 +482,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">used-2.jpg</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -497,12 +497,12 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'controls' => '',
       'message' => '',
     ],
@@ -511,16 +511,16 @@ return [
       'ref' => 'pages:1',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="pages:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">' . "\n"
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="pages:1" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">' . "\n"
           . "\t" . '<span class="icon-markup">' . "\n"
           . '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>' . "\n"
           . "\t" . '</span>' . "\n"
           . "\t\n"
-          . '</span></span>',
+          . '</span>',
       'title' => '<a href="#" >Root</a>',
       'active' => 'active',
       'updatePath' => '/',
-      'updateMode' => sprintf('<select name="tx_impexp[import_mode][pages:1]"><option value="0">Update</option><option value="%s">Import as new</option><option value="%s">Ignore PID</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_AS_NEW, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_IGNORE_PID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
+      'updateMode' => sprintf('<select class="form-select form-select-sm" name="tx_impexp[import_mode][pages:1]" style="width: 100px"><option value="0">Update</option><option value="%s">Import as new</option><option value="%s">Ignore PID</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_AS_NEW, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_IGNORE_PID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
       'showDiffContent' => '<strong class="text-nowrap">[pages:1 =&gt; 1]:</strong>' . "\n"
           . 'Match',
       'controls' => '',

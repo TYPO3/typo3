@@ -376,7 +376,7 @@ abstract class ImportExport
                     $table = (string)$table;
                     if ($table !== 'pages') {
                         foreach (array_keys($records) as $uid) {
-                            $this->addRecord($table, (int)$uid, $lines, $indent + 2);
+                            $this->addRecord($table, (int)$uid, $lines, $indent + 1);
                         }
                     }
                 }
@@ -385,7 +385,7 @@ abstract class ImportExport
 
             // Add subtree
             if (is_array($page['subrow'] ?? null)) {
-                $this->traversePageTree($page['subrow'], $lines, $indent + 2);
+                $this->traversePageTree($page['subrow'], $lines, $indent + 1);
             }
         }
     }
@@ -527,17 +527,16 @@ abstract class ImportExport
             $line['msg'] = 'UNKNOWN TABLE "' . $line['ref'] . '"';
         } else {
             $pidRecord = $this->getPidRecord();
-            $icon = $this->iconFactory->getIconForRecord(
-                $table,
-                (array)($this->dat['records'][$table . ':' . $uid]['data'] ?? []),
-                Icon::SIZE_SMALL
-            )->render();
-            $line['preCode'] = sprintf(
-                '%s<span title="%s">%s</span>',
-                $this->renderIndent($indent),
-                htmlspecialchars($line['ref']),
-                $icon
-            );
+            $line['preCode'] = ''
+                . $this->renderIndent($indent)
+                . $this->iconFactory
+                    ->getIconForRecord(
+                        $table,
+                        (array)($this->dat['records'][$table . ':' . $uid]['data'] ?? []),
+                        Icon::SIZE_SMALL
+                    )
+                    ->setTitle($line['ref'])
+                    ->render();
             $line['title'] = htmlspecialchars($record['title'] ?? '');
             // Link to page view
             if ($table === 'pages') {
@@ -647,7 +646,6 @@ abstract class ImportExport
                 continue;
             }
             $iconName = 'status-status-checked';
-            $iconClass = '';
             $staticFixed = false;
             $record = null;
             if ($uid > 0) {
@@ -656,7 +654,6 @@ abstract class ImportExport
                     if ($this->isTableStatic($table) || $this->isRecordExcluded($table, (int)$uid)
                         || ($relation['tokenID'] ?? '') && !$this->isSoftRefIncluded($relation['tokenID'] ?? '')) {
                         $line['title'] = htmlspecialchars('STATIC: ' . $line['ref']);
-                        $iconClass = 'text-info';
                         $staticFixed = true;
                     } else {
                         $databaseRecord = $this->getRecordFromDatabase($table, (int)$uid);
@@ -667,7 +664,6 @@ abstract class ImportExport
                             htmlspecialchars($line['ref'])
                         );
                         $line['msg'] = 'LOST RELATION' . ($databaseRecord === null ? ' (Record not found!)' : ' (Path: ' . $recordPath . ')');
-                        $iconClass = 'text-danger';
                         $iconName = 'status-dialog-warning';
                     }
                 } else {
@@ -686,14 +682,12 @@ abstract class ImportExport
                 $staticFixed = true;
             }
 
-            $icon = $this->iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render();
-            $line['preCode'] = sprintf(
-                '%s<span class="%s" title="%s">%s</span>',
-                $this->renderIndent($indent + 2),
-                $iconClass,
-                htmlspecialchars($line['ref']),
-                $icon
-            );
+            $line['preCode'] = ''
+                . $this->renderIndent($indent + 1)
+                . $this->iconFactory
+                    ->getIcon($iconName, Icon::SIZE_SMALL)
+                    ->setTitle($line['ref'])
+                    ->render();
             if (!$staticFixed || $this->showStaticRelations) {
                 $lines[] = $line;
                 if (is_array($record) && is_array($record['rels'] ?? null)) {
@@ -731,12 +725,12 @@ abstract class ImportExport
             }
             $line['ref'] = 'FILE';
             $line['type'] = 'file';
-            $line['preCode'] = sprintf(
-                '%s<span title="%s">%s</span>',
-                $this->renderIndent($indent + 2),
-                htmlspecialchars($line['ref']),
-                $this->iconFactory->getIcon('status-reference-hard', Icon::SIZE_SMALL)->render()
-            );
+            $line['preCode'] = ''
+                . $this->renderIndent($indent + 1)
+                . $this->iconFactory
+                    ->getIcon('status-reference-hard', Icon::SIZE_SMALL)
+                    ->setTitle($line['ref'])
+                    ->render();
             $line['title'] = htmlspecialchars($fileInfo['filename']);
             $line['showDiffContent'] = PathUtility::stripPathSitePrefix((string)($this->fileIdMap[$ID] ?? ''));
             // If import mode and there is a non-RTE soft reference, check the destination directory.
@@ -748,7 +742,7 @@ abstract class ImportExport
                     $origDirPrefix = PathUtility::dirname($fileInfo['relFileName']) . '/';
                     $dirPrefix = $this->resolveStoragePath($origDirPrefix);
                     if ($dirPrefix === null) {
-                        $line['msg'] = 'ERROR: There are no available file mounts to write file in! ';
+                        $line['msg'] = 'ERROR: There are no available file mounts to write file in!';
                     } elseif ($origDirPrefix !== $dirPrefix) {
                         $line['msg'] = 'File will be attempted written to "' . $dirPrefix . '". ';
                     }
@@ -756,7 +750,7 @@ abstract class ImportExport
                 // Check file existence
                 if (file_exists(Environment::getPublicPath() . '/' . $fileInfo['relFileName'])) {
                     if ($this->update) {
-                        $line['updatePath'] .= 'File exists.';
+                        $line['updatePath'] = 'File exists.';
                     } else {
                         $line['msg'] .= 'File already exists! ';
                     }
@@ -786,12 +780,12 @@ abstract class ImportExport
                 }
                 $line['ref'] = 'FILE';
                 $line['type'] = 'file';
-                $line['preCode'] = sprintf(
-                    '%s<span title="%s">%s</span>',
-                    $this->renderIndent($indent + 4),
-                    htmlspecialchars($line['ref']),
-                    $this->iconFactory->getIcon('status-reference-hard', Icon::SIZE_SMALL)->render()
-                );
+                $line['preCode'] = ''
+                    . $this->renderIndent($indent + 1)
+                    . $this->iconFactory
+                        ->getIcon('status-reference-hard', Icon::SIZE_SMALL)
+                        ->setTitle($line['ref'])
+                        ->render();
                 $line['title'] = htmlspecialchars($fileInfo['filename']) . ' <em>(Original)</em>';
                 $line['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIdMap[$ID]);
                 $lines[] = $line;
@@ -811,12 +805,12 @@ abstract class ImportExport
                     }
                     $line['ref'] = 'FILE';
                     $line['type'] = 'file';
-                    $line['preCode'] = sprintf(
-                        '%s<span title="%s">%s</span>',
-                        $this->renderIndent($indent + 4),
-                        htmlspecialchars($line['ref']),
-                        $this->iconFactory->getIcon('actions-insert-reference', Icon::SIZE_SMALL)->render()
-                    );
+                    $line['preCode'] = ''
+                        . $this->renderIndent($indent + 1)
+                        . $this->iconFactory
+                            ->getIcon('actions-insert-reference', Icon::SIZE_SMALL)
+                            ->setTitle($line['ref'])
+                            ->render();
                     $line['title'] = htmlspecialchars($fileInfo['filename']) . ' <em>(Resource)</em>';
                     $line['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIdMap[$extID]);
                     $lines[] = $line;
@@ -842,14 +836,14 @@ abstract class ImportExport
             $line['ref'] = 'SOFTREF';
             $line['type'] = 'softref';
             $line['msg'] = '';
-            $line['preCode'] = sprintf(
-                '%s<span title="%s">%s</span>',
-                $this->renderIndent($indent + 2),
-                htmlspecialchars($line['ref']),
-                $this->iconFactory->getIcon('status-reference-soft', Icon::SIZE_SMALL)->render()
-            );
+            $line['preCode'] = ''
+                . $this->renderIndent($indent)
+                . $this->iconFactory
+                    ->getIcon('status-reference-soft', Icon::SIZE_SMALL)
+                    ->setTitle($line['ref'])
+                    ->render();
             $line['title'] = sprintf(
-                '<em>%s, "%s"</em> : <span title="%s">%s</span>',
+                '<em>%s, "%s"</em>: <span title="%s">%s</span>',
                 $softref['field'],
                 $softref['spKey'],
                 htmlspecialchars($softref['matchString'] ?? ''),
@@ -858,38 +852,38 @@ abstract class ImportExport
             if ($softref['subst']['type'] ?? false) {
                 if ($softref['subst']['title'] ?? false) {
                     $line['title'] .= sprintf(
-                        '<br/>%s<strong>%s</strong> %s',
-                        $this->renderIndent($indent + 4),
+                        '<br>%s <strong>%s</strong> %s',
+                        $this->renderIndent($indent + 1),
                         htmlspecialchars($this->lang->getLL('impexpcore_singlereco_title')),
                         htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['subst']['title'], 60))
                     );
                 }
                 if ($softref['subst']['description'] ?? false) {
                     $line['title'] .= sprintf(
-                        '<br/>%s<strong>%s</strong> %s',
-                        $this->renderIndent($indent + 4),
+                        '<br>%s <strong>%s</strong> %s',
+                        $this->renderIndent($indent + 1),
                         htmlspecialchars($this->lang->getLL('impexpcore_singlereco_descr')),
                         htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['subst']['description'], 60))
                     );
                 }
                 if ($softref['subst']['type'] === 'db') {
                     $line['title'] .= sprintf(
-                        '<br/>%s%s <strong>%s</strong>',
-                        $this->renderIndent($indent + 4),
+                        '<br>%s <strong>%s</strong> %s',
+                        $this->renderIndent($indent + 1),
                         htmlspecialchars($this->lang->getLL('impexpcore_softrefsel_record')),
                         $softref['subst']['recordRef']
                     );
                 } elseif ($softref['subst']['type'] === 'file') {
                     $line['title'] .= sprintf(
-                        '<br/>%s%s <strong>%s</strong>',
-                        $this->renderIndent($indent + 4),
+                        '<br>%s <strong>%s</strong> %s',
+                        $this->renderIndent($indent + 1),
                         htmlspecialchars($this->lang->getLL('impexpcore_singlereco_filename')),
                         $softref['subst']['relFileName']
                     );
                 } elseif ($softref['subst']['type'] === 'string') {
                     $line['title'] .= sprintf(
-                        '<br/>%s%s <strong>%s</strong>',
-                        $this->renderIndent($indent + 4),
+                        '<br>%s <strong>%s</strong> %s',
+                        $this->renderIndent($indent + 1),
                         htmlspecialchars($this->lang->getLL('impexpcore_singlereco_value')),
                         $softref['subst']['tokenValue']
                     );
@@ -906,19 +900,19 @@ abstract class ImportExport
             if (($softref['subst']['type'] ?? '') === 'db') {
                 [$referencedTable, $referencedUid] = explode(':', $softref['subst']['recordRef']);
                 $relations = [['table' => $referencedTable, 'id' => $referencedUid, 'tokenID' => $softref['subst']['tokenID']]];
-                $this->addRelations($relations, $lines, $indent + 4);
+                $this->addRelations($relations, $lines, $indent + 1);
             }
             // Add files relations
             if (($softref['subst']['type'] ?? '') === 'file') {
                 $relations = [$softref['file_ID']];
-                $this->addFiles($relations, $lines, $indent + 4, $softref['subst']['tokenID']);
+                $this->addFiles($relations, $lines, $indent + 1, $softref['subst']['tokenID']);
             }
         }
     }
 
     protected function renderIndent(int $indent): string
     {
-        return str_repeat('&nbsp;&nbsp;', $indent);
+        return $indent > 0 ? '<span class="indent indent-inline-block" style="--indent-level: ' . $indent . '"></span>' : '';
     }
 
     /**
@@ -964,13 +958,11 @@ abstract class ImportExport
      */
     protected function renderRecordExcludeCheckbox(string $recordRef): string
     {
-        return sprintf(
-            '
-            <input type="checkbox" class="t3js-exclude-checkbox" name="tx_impexp[exclude][%1$s]" id="checkExclude%1$s" value="1" />
-            <label for="checkExclude%1$s">%2$s</label>',
-            $recordRef,
-            htmlspecialchars($this->lang->getLL('impexpcore_singlereco_exclude'))
-        );
+        return ''
+            . '<div class="form-check mb-0">'
+            . '<input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][' . $recordRef . ']" id="checkExclude' . $recordRef . '" value="1" />'
+            . '<label class="form-check-label" for="checkExclude' . $recordRef . '">' . htmlspecialchars($this->lang->getLL('impexpcore_singlereco_exclude')) . '</label>'
+            . '</div>';
     }
 
     /**
@@ -987,9 +979,9 @@ abstract class ImportExport
             if (($cfg['mode'] ?? '') === Import::SOFTREF_IMPORT_MODE_EDITABLE) {
                 $html = '';
                 if ($cfg['title'] ?? false) {
-                    $html .= '<strong>' . htmlspecialchars((string)$cfg['title']) . '</strong><br/>';
+                    $html .= '<strong>' . htmlspecialchars((string)$cfg['title']) . '</strong><br>';
                 }
-                $html .= htmlspecialchars((string)$cfg['description']) . '<br/>';
+                $html .= htmlspecialchars((string)$cfg['description']) . '<br>';
                 $html .= sprintf(
                     '<input type="text" name="tx_impexp[softrefInputValues][%s]" value="%s" />',
                     $tokenID,
@@ -1023,14 +1015,14 @@ abstract class ImportExport
                 'tx_impexp[softrefCfg][' . $softref['subst']['tokenID'] . '][mode]',
                 $value,
                 $options
-            ) . '<br/>';
+            );
             $textFieldHtml = '';
             if ($value === Import::SOFTREF_IMPORT_MODE_EDITABLE) {
                 if ($softref['subst']['title'] ?? false) {
                     $textFieldHtml .= sprintf(
                         '
                         <input type="hidden" name="tx_impexp[softrefCfg][%1$s][title]" value="%2$s" />
-                        <strong>%2$s</strong><br/>',
+                        <strong>%2$s</strong><br>',
                         $softref['subst']['tokenID'],
                         htmlspecialchars($softref['subst']['title'])
                     );
@@ -1038,7 +1030,7 @@ abstract class ImportExport
                 if (!($softref['subst']['description'] ?? false)) {
                     $textFieldHtml .= sprintf(
                         '
-                        %s<br/>
+                        %s<br>
                         <input type="text" name="tx_impexp[softrefCfg][%s][description]" value="%s" />',
                         htmlspecialchars($this->lang->getLL('impexpcore_printerror_description')),
                         $softref['subst']['tokenID'],
@@ -1135,7 +1127,7 @@ abstract class ImportExport
             );
         }
 
-        return '<select name="' . $name . '">' . $optionsHtml . '</select>';
+        return '<select class="form-select form-select-sm" name="' . $name . '" style="width: 100px">' . $optionsHtml . '</select>';
     }
 
     public function getFileadminFolderName(): string

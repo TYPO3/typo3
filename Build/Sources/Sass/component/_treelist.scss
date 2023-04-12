@@ -159,7 +159,7 @@
 }
 
 .treelist-icon {
-    top: -2px;
+    top: -1px;
 }
 
 .treelist-show {
@@ -250,6 +250,6 @@
 //
 // Tree Variations
 //
-.panel-tab {
-    --treelist-bg: #{$nav-tabs-active-link-bg};
+.form-section {
+    --treelist-bg: #fafafa;
 }

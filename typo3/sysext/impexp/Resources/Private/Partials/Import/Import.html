@@ -1,190 +1,213 @@
 <html
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<h3>
-    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_selectFileToImport"/>
-</h3>
-<div class="form-group">
-    <label for="impexp-file">
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_file"/>
-    </label>
-    <select
-        name="tx_impexp[file]"
-        class="form-select"
-        id="impexp-file"
-    >
-        <f:for each="{fileSelectOptions}" as="optionLabel" key="optionValue">
-            <option value="{optionValue}" {f:if(condition:'{optionValue} == {inData.file}', then:'selected="selected"')}>{optionLabel}</option>
-        </f:for>
-    </select>
-    <div class="form-text">
-        <f:if condition="{importFolder}">
-            <f:then>
-                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_fromPathS" arguments="{0: importFolder}" />
-            </f:then>
+
+<div class="form-section">
+
+    <h3 class="form-section-headline">
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_selectFileToImport" />
+    </h3>
+    <div class="form-group">
+        <label class="form-label" for="impexp-file">
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_file" />
+        </label>
+        <select
+            name="tx_impexp[file]"
+            class="form-select"
+            id="impexp-file"
+        >
+            <f:for each="{fileSelectOptions}" as="optionLabel" key="optionValue">
+                <option value="{optionValue}" {f:if(condition:'{optionValue} == {inData.file}', then:'selected="selected"')}>{optionLabel}</option>
+            </f:for>
+        </select>
+        <div class="form-text">
+            <f:if condition="{importFolder}">
+                <f:then>
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_fromPathS" arguments="{0: importFolder}" />
+                </f:then>
+                <f:else>
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_no_default_upload_folder" />
+                </f:else>
+            </f:if>
+        </div>
+        <f:if condition="{import.decompressionAvailable}">
             <f:else>
-                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_no_default_upload_folder" />
+                <span class="text-danger"><f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_noteNoDecompressorAvailable"/></span>
             </f:else>
         </f:if>
     </div>
-    <f:if condition="{import.decompressionAvailable}">
-        <f:else>
-            <span class="text-danger"><f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_noteNoDecompressorAvailable"/></span>
-        </f:else>
-    </f:if>
-</div>
 
-<h3>
-    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_importOptions"/>
-</h3>
-<h4>
-    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_update"/>
-</h4>
-<div class="form-group">
-    <label for="checkDo_update">
-        <input type="hidden" name="tx_impexp[do_update]" value="">
-        <input
-            type="checkbox"
-            name="tx_impexp[do_update]"
-            value="1"
-            id="checkDo_update"
-            {f:if(condition:'{inData.do_update} == 1', then:'checked="checked"')}
-        >
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_updateRecords"/>
-    </label>
-    <div class="form-text">
-        (<f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_thisOptionRequiresThat"/>)
-    </div>
 </div>
-<f:if condition="{inData.do_update}">
+<div class="form-section">
+
+    <h3 class="form-section-headline">
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_importOptions"/>
+    </h3>
+    <h4>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_update"/>
+    </h4>
     <div class="form-group">
-        <label for="checkGlobal_ignore_pid">
-            <input type="hidden" name="tx_impexp[global_ignore_pid]" value="">
+        <div class="form-check">
+            <input type="hidden" name="tx_impexp[do_update]" value="">
             <input
+                class="form-check-input"
                 type="checkbox"
-                name="tx_impexp[global_ignore_pid]"
+                name="tx_impexp[do_update]"
                 value="1"
-                id="checkGlobal_ignore_pid"
-                {f:if(condition:'{inData.global_ignore_pid} == 1', then:'checked="checked"')}
+                id="checkDo_update"
+                {f:if(condition:'{inData.do_update} == 1', then:'checked="checked"')}
             >
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_ignorePidDifferencesGlobally"/>
-        </label>
-        <div class="form-text">
-            (<f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_ifYouSetThis"/>)
+            <label class="form-check-label" for="checkDo_update">
+                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_updateRecords"/>
+                <br><small class="form-text"><f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_thisOptionRequiresThat"/></small>
+            </label>
         </div>
     </div>
-</f:if>
-<h4>
-    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_options"/>
-</h4>
-<div class="form-group">
-    <label for="checkNotShowDiff">
-        <input type="hidden" name="tx_impexp[notShowDiff]" value="">
-        <input
-            type="checkbox"
-            name="tx_impexp[notShowDiff]"
-            value="1"
-            id="checkNotShowDiff"
-            {f:if(condition:'{inData.notShowDiff} == 1', then:'checked="checked"')}
-        >
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_doNotShowDifferences"/>
-    </label>
-    <div class="form-text">
-        (<f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_greenValuesAreFrom"/>)
-    </div>
-</div>
-<f:if condition="{isAdmin}">
-    <f:if condition="!{inData.do_update}">
+    <f:if condition="{inData.do_update}">
         <div class="form-group">
-            <label for="checkForce_all_UIDS">
-                <input type="hidden" name="tx_impexp[force_all_UIDS]" value="">
+            <div class="form-check">
+                <input type="hidden" name="tx_impexp[global_ignore_pid]" value="">
                 <input
+                    class="form-check-input"
                     type="checkbox"
-                    name="tx_impexp[force_all_UIDS]"
+                    name="tx_impexp[global_ignore_pid]"
                     value="1"
-                    id="checkForce_all_UIDS"
-                    {f:if(condition:'{inData.force_all_UIDS} == 1', then:'checked="checked"')}
+                    id="checkGlobal_ignore_pid"
+                    {f:if(condition:'{inData.global_ignore_pid} == 1', then:'checked="checked"')}
                 >
-                <span class="text-danger">
-                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_force_all_UIDS"/>
-                </span>
-            </label>
-            <div class="form-text">
-                (<f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_force_all_UIDS_descr"/>)
+                <label class="form-check-label" for="checkGlobal_ignore_pid">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_ignorePidDifferencesGlobally"/>
+                    <br><small class="text-muted"><f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_ifYouSetThis"/></small>
+                </label>
             </div>
         </div>
     </f:if>
-</f:if>
 
-<h4>
-    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_action"/>
-</h4>
-<f:if condition="{inData.import_file}">
-    <f:then>
-        <input
-            type="submit"
-            name="tx_impexp[new_import]"
-            value="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_newImport')}"
-            class="btn btn-default"
-        />
-    </f:then>
-    <f:else>
-        <input
-            type="submit"
-            class="btn btn-default"
-            value="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_preview')}"
-        />
-        <f:if condition="{inData.file}">
-            <input type="hidden" name="not-set" value="1" id="t3js-submit-field"/>
-            <f:if condition="{inData.do_update}">
-                <f:then>
-                    <button
-                        type="button"
-                        name="tx_impexp[import_file]"
-                        class="btn btn-default t3js-confirm-trigger"
-                        data-title="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:pleaseConfirm')}"
-                        data-message="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_areYouSure')}"
-                    >
-                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_update"/>
-                    </button>
-                </f:then>
-                <f:else>
-                    <button
-                        type="button"
-                        name="tx_impexp[import_file]"
-                        class="btn btn-default t3js-confirm-trigger"
-                        data-title="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:pleaseConfirm')}"
-                        data-message="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_areYouSure')}"
-                    >
-                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_import"/>
-                    </button>
-                </f:else>
-            </f:if>
-        </f:if>
-    </f:else>
-</f:if>
-
-<input type="hidden" name="tx_impexp[action]" value="import" />
-
-<h4>
-    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_enableLogging"/>
-</h4>
-<div class="form-group">
-    <label for="checkEnableLogging">
-        <input type="hidden" name="tx_impexp[enableLogging]" value="">
-        <input
-            type="checkbox"
-            name="tx_impexp[enableLogging]"
-            value="1"
-            id="checkEnableLogging"
-            {f:if(condition:'{inData.enableLogging} == 1', then:'checked="checked"')}
-        >
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_writeIndividualDbActions"/>
-    </label>
-    <div class="form-text">
-        (<f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_thisIsDisabledBy"/>)
+    <h4>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_options"/>
+    </h4>
+    <div class="form-group">
+        <div class="form-check">
+            <input type="hidden" name="tx_impexp[notShowDiff]" value="">
+            <input
+                class="form-check-input"
+                type="checkbox"
+                name="tx_impexp[notShowDiff]"
+                value="1"
+                id="checkNotShowDiff"
+                {f:if(condition:'{inData.notShowDiff} == 1', then:'checked="checked"')}
+            >
+            <label class="form-check-label" for="checkNotShowDiff">
+                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_doNotShowDifferences"/>
+                <br><small class="text-muted"><f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_greenValuesAreFrom"/></small>
+            </label>
+        </div>
     </div>
+    <f:if condition="{isAdmin}">
+        <f:if condition="!{inData.do_update}">
+            <div class="form-group">
+                <div class="form-check">
+                    <input type="hidden" name="tx_impexp[force_all_UIDS]" value="">
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="tx_impexp[force_all_UIDS]"
+                        value="1"
+                        id="checkForce_all_UIDS"
+                        {f:if(condition:'{inData.force_all_UIDS} == 1', then:'checked="checked"')}
+                    >
+                    <label for="checkForce_all_UIDS">
+                        <span class="text-danger"><f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_force_all_UIDS"/></span>
+                        <br><small class="text-muted"><f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_force_all_UIDS_descr"/></small>
+                    </label>
+                </div>
+            </div>
+        </f:if>
+    </f:if>
+
+    <h4>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_enableLogging"/>
+    </h4>
+    <div class="form-group">
+        <div class="form-check">
+            <input type="hidden" name="tx_impexp[enableLogging]" value="">
+            <input
+                class="form-check-input"
+                type="checkbox"
+                name="tx_impexp[enableLogging]"
+                value="1"
+                id="checkEnableLogging"
+                {f:if(condition:'{inData.enableLogging} == 1', then:'checked="checked"')}
+            >
+            <label class="form-check-label" for="checkEnableLogging">
+                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_writeIndividualDbActions"/>
+                <br><small class="text-muted"><f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_thisIsDisabledBy"/></small>
+            </label>
+        </div>
+    </div>
+
+    <h4>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_action"/>
+    </h4>
+    <div class="form-group">
+        <f:if condition="{inData.import_file}">
+            <f:then>
+                <button
+                    type="submit"
+                    name="tx_impexp[new_import]"
+                    class="btn btn-default"
+                    value="1"
+                >
+                    <core:icon identifier="actions-upload" size="small" />
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_newImport"/>
+                </button>
+            </f:then>
+            <f:else>
+                <button
+                    type="submit"
+                    class="btn btn-default"
+                >
+                    <core:icon identifier="actions-view" size="small" />
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_preview"/>
+                </button>
+                <f:if condition="{inData.file}">
+                    <input type="hidden" name="not-set" value="1" id="t3js-submit-field"/>
+                    <f:if condition="{inData.do_update}">
+                        <f:then>
+                            <button
+                                type="button"
+                                name="tx_impexp[import_file]"
+                                class="btn btn-default t3js-confirm-trigger"
+                                data-title="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:pleaseConfirm')}"
+                                data-message="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_areYouSure')}"
+                                value="1"
+                            >
+                                <core:icon identifier="actions-upload" size="small" />
+                                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_update" />
+                            </button>
+                        </f:then>
+                        <f:else>
+                            <button
+                                type="button"
+                                name="tx_impexp[import_file]"
+                                class="btn btn-default t3js-confirm-trigger"
+                                data-title="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:pleaseConfirm')}"
+                                data-message="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_areYouSure')}"
+                                value="1"
+                            >
+                                <core:icon identifier="actions-upload" size="small" />
+                                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_import" />
+                            </button>
+                        </f:else>
+                    </f:if>
+                </f:if>
+            </f:else>
+        </f:if>
+        <input type="hidden" name="tx_impexp[action]" value="import" />
+    </div>
+
 </div>
 
 </html>

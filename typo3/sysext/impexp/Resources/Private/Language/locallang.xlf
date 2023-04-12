@@ -171,9 +171,6 @@
 			<trans-unit id="makesavefo_outputOptions" resname="makesavefo_outputOptions">
 				<source>Output options</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_metaData" resname="makesavefo_metaData">
-				<source>Meta data</source>
-			</trans-unit>
 			<trans-unit id="makesavefo_title" resname="makesavefo_title">
 				<source>Title</source>
 			</trans-unit>
@@ -211,7 +208,7 @@
 				<source>File</source>
 			</trans-unit>
 			<trans-unit id="importdata_fromPathS" resname="importdata_fromPathS">
-				<source>(From path: %s)</source>
+				<source>From path: %s</source>
 			</trans-unit>
 			<trans-unit id="importdata_noteNoDecompressorAvailable" resname="importdata_noteNoDecompressorAvailable">
 				<source>NOTE: No decompressor available for compressed files!</source>

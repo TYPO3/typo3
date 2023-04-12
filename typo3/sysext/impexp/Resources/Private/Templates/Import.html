@@ -5,8 +5,8 @@
 >
 
 <f:layout name="Module" />
-
 <f:section name="Content">
+
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/context-menu.js',
@@ -20,7 +20,7 @@
         <input type="hidden" name="id" value="{id}" />
 
         <h1>
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:title_import"/>
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:title_import" />
         </h1>
 
         <ul class="nav nav-tabs" role="tablist">
@@ -54,46 +54,30 @@
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="import-import">
-                <div class="panel panel-tab">
-                    <div class="panel-body">
-                        <f:render partial="Import/Import" arguments="{_all}"/>
-                    </div>
-                </div>
+                <f:render partial="Import/Import" arguments="{_all}" />
             </div>
             <f:if condition="{importFolder}">
                 <div role="tabpanel" class="tab-pane" id="import-upload">
-                    <div class="panel panel-tab">
-                        <div class="panel-body">
-                            <f:render partial="Import/Upload" arguments="{_all}"/>
-                        </div>
-                    </div>
+                    <f:render partial="Import/Upload" arguments="{_all}" />
                 </div>
             </f:if>
             <f:if condition="{import.metaData}">
                 <div role="tabpanel" class="tab-pane" id="import-metadata">
-                    <div class="panel panel-tab">
-                        <div class="panel-body">
-                            <f:render partial="Import/MetaData" arguments="{_all}"/>
-                        </div>
-                    </div>
+                    <f:render partial="Import/MetaData" arguments="{_all}" />
                 </div>
             </f:if>
             <f:if condition="{errors -> f:count()} > 0">
                 <div role="tabpanel" class="tab-pane" id="import-errors">
-                    <div class="panel panel-tab">
-                        <div class="panel-body">
-                            <div class="callout callout-danger">
-                                <f:for each="{errors}" as="error">
-                                    <p>{error}</p>
-                                </f:for>
-                            </div>
-                        </div>
+                    <div class="callout callout-danger">
+                        <f:for each="{errors}" as="error">
+                            <p>{error}</p>
+                        </f:for>
                     </div>
                 </div>
             </f:if>
         </div>
 
-        <f:render partial="Preview" arguments="{_all}"/>
+        <f:render partial="Preview" arguments="{_all}" />
     </form>
 
 </f:section>

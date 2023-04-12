@@ -5,7 +5,6 @@
 >
 
 <f:layout name="Module" />
-
 <f:section name="Content">
 
     <f:be.pageRenderer
@@ -21,7 +20,7 @@
         <input type="hidden" name="id" value="{id}" />
 
         <h1>
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:title_export"/>
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:title_export" />
         </h1>
 
         <ul class="nav nav-tabs" role="tablist">
@@ -51,42 +50,26 @@
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="export-configuration">
-                <div class="panel panel-tab">
-                    <div class="panel-body">
-                        <f:render partial="Export/Configuration" arguments="{_all}"/>
-                    </div>
-                </div>
+                <f:render partial="Export/Configuration" arguments="{_all}" />
             </div>
             <div role="tabpanel" class="tab-pane" id="export-filepreset">
-                <div class="panel panel-tab">
-                    <div class="panel-body">
-                        <f:render partial="Export/Save" arguments="{_all}"/>
-                    </div>
-                </div>
+                <f:render partial="Export/Save" arguments="{_all}" />
             </div>
             <div role="tabpanel" class="tab-pane" id="export-advancedoptions">
-                <div class="panel panel-tab">
-                    <div class="panel-body">
-                        <f:render partial="Export/AdvancedOptions" arguments="{_all}"/>
-                    </div>
-                </div>
+                <f:render partial="Export/AdvancedOptions" arguments="{_all}" />
             </div>
             <f:if condition="{errors -> f:count()} > 0">
                 <div role="tabpanel" class="tab-pane" id="export-errors">
-                    <div class="panel panel-tab">
-                        <div class="panel-body">
-                            <div class="callout callout-danger">
-                                <f:for each="{errors}" as="error">
-                                    <p>{error}</p>
-                                </f:for>
-                            </div>
-                        </div>
+                    <div class="callout callout-danger">
+                        <f:for each="{errors}" as="error">
+                            <p>{error}</p>
+                        </f:for>
                     </div>
                 </div>
             </f:if>
         </div>
 
-        <f:render partial="Preview" arguments="{_all}"/>
+        <f:render partial="Preview" arguments="{_all}" />
     </form>
 
 </f:section>

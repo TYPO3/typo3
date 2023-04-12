@@ -42,9 +42,8 @@ final class ImportCest extends AbstractCest
     private string $inputUploadFile = 'input[type=file]';
     private string $checkboxOverwriteFile = 'input#checkOverwriteExistingFiles';
     private string $buttonUploadFile = '_upload';
-    private string $buttonPreview = '.btn[value=Preview]';
     private string $buttonImport = 'button[name="tx_impexp[import_file]"]';
-    private string $buttonNewImport = 'input[name="tx_impexp[new_import]"]';
+    private string $buttonNewImport = 'button[name="tx_impexp[new_import]"]';
 
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -76,7 +75,7 @@ final class ImportCest extends AbstractCest
         $I->switchToContentFrame();
         $I->see($pageInPageTreeTitle, $this->inModuleHeader);
 
-        $I->click($this->buttonPreview, $this->inTabImport);
+        $I->click('Preview', $this->inTabImport);
         $this->timeoutForAjaxRequest($I);
         $I->see($pageInPageTreeTitle, $this->inModuleHeader);
     }

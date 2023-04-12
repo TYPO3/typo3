@@ -1,182 +1,189 @@
 <html
+    xmlns:impexp="http://typo3.org/ns/TYPO3/CMS/Impexp/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:i="http://typo3.org/ns/TYPO3/CMS/Impexp/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
-<h3>
-    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportPagetreeConfiguration"/>
-</h3>
+<div class="form-section">
 
-<div class="row">
-    <div class="col-sm-2">
-        <label class="form-label">
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_pageId"/>
-        </label>
-    </div>
-    <div class="col-sm-10">
-        {inData.pagetree.id}
-        <input type="hidden" name="tx_impexp[pagetree][id]" value="{inData.pagetree.id}" />
-    </div>
-</div>
+    <h3 class="form-section-headline">
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportPagetreeConfiguration" />
+    </h3>
 
-<div class="row">
-    <div class="col-sm-2">
-        <label class="form-label">
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_tree"/>
-        </label>
-    </div>
-    <div class="col-sm-10">
-        <f:if condition="{treeHTML}">
-            <f:then>
-                <f:format.raw>{treeHTML}</f:format.raw>
-            </f:then>
-            <f:else>
-                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_noTreeExportedOnly"/>
-            </f:else>
-        </f:if>
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="pagetreeLevels">
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_levels"/>
-    </label>
-    <select
-        id="pagetreeLevels"
-        class="form-select"
-        name="tx_impexp[pagetree][levels]"
-    >
-        <f:for each="{levelSelectOptions}" as="optionLabel" key="optionValue">
-            <option value="{optionValue}" {f:if(condition:'{optionValue} == {inData.pagetree.levels}', then:'selected="selected"')}>{optionLabel}</option>
-        </f:for>
-    </select>
-</div>
-
-<div class="form-group">
-    <label for="pagetreeTables">
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_includeTables"/>
-    </label>
-    <select
-        id="pagetreeTables"
-        class="form-select"
-        name="tx_impexp[pagetree][tables][]"
-        multiple="multiple"
-        size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}"
-    >
-        <f:for each="{tableSelectOptions}" as="optionLabel" key="optionValue">
-            <option value="{optionValue}" {i:inArray(needle:optionValue, haystack:inData.pagetree.tables, then:'selected="selected"')}>{optionLabel}</option>
-        </f:for>
-    </select>
-</div>
-
-<f:if condition="{records -> f:count()} > 0">
-    <h4>
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportSingleRecord"/>
-    </h4>
     <div class="row">
         <div class="col-sm-2">
-            <label>
-                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_record"/>
+            <label class="form-label">
+                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_pageId" />
             </label>
         </div>
         <div class="col-sm-10">
-            <f:for each="{records}" as="record">
-                <f:format.raw>{record.icon}</f:format.raw>
-                {record.title}
-                <input type="hidden" name="tx_impexp[record][]" value="{record.tableName}:{record.recordUid}" />
-                <br/>
-            </f:for>
+            {inData.pagetree.id}
+            <input type="hidden" name="tx_impexp[pagetree][id]" value="{inData.pagetree.id}" />
         </div>
     </div>
-</f:if>
 
-<f:if condition="{tableList -> f:count()} > 0">
-    <h4>
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportTablesFromPages"/>
-    </h4>
     <div class="row">
         <div class="col-sm-2">
-            <label>
-                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_tablePids"/>
+            <label class="form-label">
+                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_tree" />
             </label>
         </div>
         <div class="col-sm-10">
-            <f:for each="{tableList}" as="table">
-                <f:format.raw>{table.iconAndTitle}</f:format.raw>
-                <input type="hidden" name="tx_impexp[list][]" value="{table.reference}" />
-                <br/>
-            </f:for>
+            <f:if condition="{treeHTML}">
+                <f:then>
+                    <f:format.raw>{treeHTML}</f:format.raw>
+                </f:then>
+                <f:else>
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_noTreeExportedOnly" />
+                </f:else>
+            </f:if>
         </div>
     </div>
-</f:if>
 
-<h4>
-    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_relationsAndExclusions"/>
-</h4>
+    <div class="form-group">
+        <label class="form-label" for="pagetreeLevels">
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_levels" />
+        </label>
+        <select
+            id="pagetreeLevels"
+            class="form-select"
+            name="tx_impexp[pagetree][levels]"
+        >
+            <f:for each="{levelSelectOptions}" as="optionLabel" key="optionValue">
+                <option value="{optionValue}" {f:if(condition:'{optionValue} == {inData.pagetree.levels}', then:'selected="selected"')}>{optionLabel}</option>
+            </f:for>
+        </select>
+    </div>
 
-<div class="form-group">
-    <label for="externalRefTables">
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_includeRelationsToTables"/>
-    </label>
-    <select
-        id="externalRefTables"
-        class="form-select"
-        name="tx_impexp[external_ref][tables][]"
-        multiple="multiple"
-        size="{f:if(condition: '{externalReferenceTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}"
-    >
-        <f:for each="{externalReferenceTableSelectOptions}" as="optionLabel" key="optionValue">
-            <option value="{optionValue}" {i:inArray(needle:optionValue, haystack:inData.external_ref.tables, then:'selected="selected"')}>{optionLabel}</option>
-        </f:for>
-    </select>
-</div>
+    <div class="form-group">
+        <label class="form-label" for="pagetreeTables">
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_includeTables"/>
+        </label>
+        <select
+            id="pagetreeTables"
+            class="form-select"
+            name="tx_impexp[pagetree][tables][]"
+            multiple="multiple"
+            size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}"
+        >
+            <f:for each="{tableSelectOptions}" as="optionLabel" key="optionValue">
+                <option value="{optionValue}" {impexp:inArray(needle:optionValue, haystack:inData.pagetree.tables, then:'selected="selected"')}>{optionLabel}</option>
+            </f:for>
+        </select>
+    </div>
 
-<div class="form-group">
-    <label for="externalStaticTables">
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_useStaticRelationsFor"/>
-    </label>
-    <select
-        id="externalStaticTables"
-        class="form-select"
-        name="tx_impexp[external_static][tables][]"
-        multiple="multiple"
-        size="{f:if(condition: '{externalStaticTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}"
-    >
-        <f:for each="{externalStaticTableSelectOptions}" as="optionLabel" key="optionValue">
-            <option value="{optionValue}" {i:inArray(needle:optionValue, haystack:inData.external_static.tables, then:'selected="selected"')}>{optionLabel}</option>
-        </f:for>
-    </select>
-</div>
+    <f:if condition="{records -> f:count()} > 0">
+        <h4>
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportSingleRecord"/>
+        </h4>
+        <div class="row">
+            <div class="col-sm-2">
+                <label>
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_record"/>
+                </label>
+            </div>
+            <div class="col-sm-10">
+                <f:for each="{records}" as="record" iteration="iterator">
+                    <f:format.raw>{record.icon}</f:format.raw>
+                    {record.title}
+                    <input type="hidden" name="tx_impexp[record][]" value="{record.tableName}:{record.recordUid}" />
+                    <f:if condition="{iterator.isLast}"><f:else><br></f:else></f:if>
+                </f:for>
+            </div>
+        </div>
+    </f:if>
 
-<div class="form-group">
-    <label for="checkShowStaticRelations">
-        <input type="hidden" name="tx_impexp[showStaticRelations]" value="" />
-        <input
-            type="checkbox"
-            id="checkShowStaticRelations"
-            name="tx_impexp[showStaticRelations]"
-            value="1"
-            {f:if(condition:'{inData.showStaticRelations} == 1', then:'checked="checked"')}
-        />
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_showStaticRelations"/>
-    </label>
-</div>
+    <f:if condition="{tableList -> f:count()} > 0">
+        <h4>
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportTablesFromPages"/>
+        </h4>
+        <div class="row">
+            <div class="col-sm-2">
+                <label>
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_tablePids"/>
+                </label>
+            </div>
+            <div class="col-sm-10">
+                <f:for each="{tableList}" as="table">
+                    <f:format.raw>{table.iconAndTitle}</f:format.raw>
+                    <input type="hidden" name="tx_impexp[list][]" value="{table.reference}" />
+                    <br>
+                </f:for>
+            </div>
+        </div>
+    </f:if>
 
-<div class="form-group">
-    <label class="form-label">
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_excludeElements"/>
-    </label>
-    <p class="form-control-static">
+    <h4>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_relationsAndExclusions"/>
+    </h4>
+
+    <div class="form-group">
+        <label class="form-label" for="externalRefTables">
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_includeRelationsToTables"/>
+        </label>
+        <select
+            id="externalRefTables"
+            class="form-select"
+            name="tx_impexp[external_ref][tables][]"
+            multiple="multiple"
+            size="{f:if(condition: '{externalReferenceTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}"
+        >
+            <f:for each="{externalReferenceTableSelectOptions}" as="optionLabel" key="optionValue">
+                <option value="{optionValue}" {impexp:inArray(needle:optionValue, haystack:inData.external_ref.tables, then:'selected="selected"')}>{optionLabel}</option>
+            </f:for>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label" for="externalStaticTables">
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_useStaticRelationsFor"/>
+        </label>
+        <select
+            id="externalStaticTables"
+            class="form-select"
+            name="tx_impexp[external_static][tables][]"
+            multiple="multiple"
+            size="{f:if(condition: '{externalStaticTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}"
+        >
+            <f:for each="{externalStaticTableSelectOptions}" as="optionLabel" key="optionValue">
+                <option value="{optionValue}" {impexp:inArray(needle:optionValue, haystack:inData.external_static.tables, then:'selected="selected"')}>{optionLabel}</option>
+            </f:for>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <div class="form-check">
+            <input type="hidden" name="tx_impexp[showStaticRelations]" value="" />
+            <input
+                class="form-check-input"
+                type="checkbox"
+                id="checkShowStaticRelations"
+                name="tx_impexp[showStaticRelations]"
+                value="1"
+                {f:if(condition:'{inData.showStaticRelations} == 1', then:'checked="checked"')}
+            />
+            <label class="form-check-label" for="checkShowStaticRelations">
+                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_showStaticRelations"/>
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_excludeElements"/>
+        </label>
         <f:if condition="{inData.exclude -> f:count()} > 0">
             <f:then>
-                <f:for each="{inData.exclude}" key="key" as="value" iteration="index">
-                    <input type="hidden" name="tx_impexp[exclude][{key}]" value="1" />
-                    <f:if condition="{index.isLast}">
-                        <f:then>{key}</f:then>
-                        <f:else>{key},</f:else>
-                    </f:if>
-                </f:for>
+                <p class="form-description">
+                    <f:for each="{inData.exclude}" key="key" as="value" iteration="index">
+                        <input type="hidden" name="tx_impexp[exclude][{key}]" value="1" />
+                        <f:if condition="{index.isLast}">
+                            <f:then>{key}</f:then>
+                            <f:else>{key},</f:else>
+                        </f:if>
+                    </f:for>
+                </p>
                 <div class="form-check">
                     <input type="checkbox" name="tx_impexp[resetExclude]" id="checkResetExclude" value="1" class="form-check-input" />
                     <label for="checkResetExclude" class="form-check-label">
@@ -185,17 +192,17 @@
                 </div>
             </f:then>
             <f:else>
-                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_noManuallyExcludedElementsYet"/>
+                <p class="form-description">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_noManuallyExcludedElementsYet"/>
+                </p>
             </f:else>
         </f:if>
-    </p>
-    <p class="form-control-static">
         <div class="form-check">
             <input type="hidden" name="tx_impexp[excludeDisabled]" value="" />
             <input
+                class="form-check-input"
                 type="checkbox"
                 id="checkExcludeDisabled"
-                class="form-check-input"
                 name="tx_impexp[excludeDisabled]"
                 value="1"
                 {f:if(condition:'{inData.excludeDisabled} == 1', then:'checked="checked"')}
@@ -204,15 +211,18 @@
                 <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_excludeDisabledElements" />
             </label>
         </div>
-    </p>
-</div>
+    </div>
 
-<div class="form-group">
-    <input
-        type="submit"
-        class="btn btn-default"
-        value="{f:translate(key:'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeadvanc_update')}"
-    />
+    <div class="form-group">
+        <button
+            type="submit"
+            class="btn btn-default"
+        >
+            <core:icon identifier="actions-refresh" size="small" />
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeadvanc_update" />
+        </button>
+    </div>
+
 </div>
 
 </html>

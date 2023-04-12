@@ -2881,11 +2881,6 @@ parameters:
 			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
 
 		-
-			message: "#^Offset 'updatePath' does not exist on array\\{msg\\: string, ref\\: 'FILE', type\\: 'file', preCode\\: non\\-falsy\\-string, title\\: string, showDiffContent\\: string\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/impexp/Tests/Functional/Export/ExportPageTreeViewTest.php

@@ -26,17 +26,15 @@ return [
       'ref' => 'tt_content:1',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span title="tt_content:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
+      'preCode' => '<span title="tt_content:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
 	</span>
 	
-</span></span>',
+</span>',
       'title' => 'Test content',
       'active' => 'active',
-      'controls' => '
-            <input type="checkbox" class="t3js-exclude-checkbox" name="tx_impexp[exclude][tt_content:1]" id="checkExcludett_content:1" value="1" />
-            <label for="checkExcludett_content:1">Exclude</label>',
+      'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][tt_content:1]" id="checkExcludett_content:1" value="1" /><label class="form-check-label" for="checkExcludett_content:1">Exclude</label></div>',
       'message' => '',
     ],
     1 =>
@@ -44,13 +42,13 @@ return [
       'ref' => 'SOFTREF',
       'type' => 'softref',
       'msg' => '',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="SOFTREF"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
+      'preCode' => '<span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
 	</span>
 	
-</span></span>',
-      'title' => '<em>header_link, "typolink"</em> : <span title="file:2">file:2</span><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record <strong>sys_file:2</strong>',
+</span>',
+      'title' => '<em>header_link, "typolink"</em>: <span title="file:2">file:2</span><br><span class="indent indent-inline-block" style="--indent-level: 1"></span> <strong>Record</strong> sys_file:2',
       '_softRefInfo' =>
       [
         'field' => 'header_link',
@@ -64,7 +62,7 @@ return [
           'tokenValue' => 'file:2',
         ],
       ],
-      'controls' => '<select name="tx_impexp[softrefCfg][2487ce518ed56d22f20f259928ff43f1][mode]"><option value="" selected="selected"></option><option value="editable">Editable</option><option value="exclude">Exclude</option></select><br/>',
+      'controls' => '<select class="form-select form-select-sm" name="tx_impexp[softrefCfg][2487ce518ed56d22f20f259928ff43f1][mode]" style="width: 100px"><option value="" selected="selected"></option><option value="editable">Editable</option><option value="exclude">Exclude</option></select>',
       'message' => '',
     ],
     2 =>
@@ -73,12 +71,12 @@ return [
       'type' => 'rel',
       'msg' => 'LOST RELATION (Path: /)',
       'title' => '<span title="/">sys_file:2</span>',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-danger" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
 	</span>
 	
-</span></span>',
+</span>',
       'controls' => '',
       'message' => '<span class="text-danger">LOST RELATION (Path: /)</span>',
     ],
@@ -87,17 +85,15 @@ return [
       'ref' => 'tt_content:2',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span title="tt_content:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
+      'preCode' => '<span title="tt_content:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
 	</span>
 	
-</span></span>',
+</span>',
       'title' => 'Test content 2',
       'active' => 'active',
-      'controls' => '
-            <input type="checkbox" class="t3js-exclude-checkbox" name="tx_impexp[exclude][tt_content:2]" id="checkExcludett_content:2" value="1" />
-            <label for="checkExcludett_content:2">Exclude</label>',
+      'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][tt_content:2]" id="checkExcludett_content:2" value="1" /><label class="form-check-label" for="checkExcludett_content:2">Exclude</label></div>',
       'message' => '',
     ],
     4 =>
@@ -105,13 +101,13 @@ return [
       'ref' => 'SOFTREF',
       'type' => 'softref',
       'msg' => '',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="SOFTREF"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
+      'preCode' => '<span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
 	</span>
 	
-</span></span>',
-      'title' => '<em>header_link, "typolink"</em> : <span title="file:4">file:4</span><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record <strong>sys_file:4</strong>',
+</span>',
+      'title' => '<em>header_link, "typolink"</em>: <span title="file:4">file:4</span><br><span class="indent indent-inline-block" style="--indent-level: 1"></span> <strong>Record</strong> sys_file:4',
       '_softRefInfo' =>
       [
         'field' => 'header_link',
@@ -125,7 +121,7 @@ return [
           'tokenValue' => 'file:4',
         ],
       ],
-      'controls' => '<select name="tx_impexp[softrefCfg][81b8b33df54ef433f1cbc7c3e513e6c4][mode]"><option value="" selected="selected"></option><option value="editable">Editable</option><option value="exclude">Exclude</option></select><br/>',
+      'controls' => '<select class="form-select form-select-sm" name="tx_impexp[softrefCfg][81b8b33df54ef433f1cbc7c3e513e6c4][mode]" style="width: 100px"><option value="" selected="selected"></option><option value="editable">Editable</option><option value="exclude">Exclude</option></select>',
       'message' => '',
     ],
     5 =>
@@ -134,12 +130,12 @@ return [
       'type' => 'rel',
       'title' => '<span title="/">sys_file:4</span>',
       'msg' => 'LOST RELATION (Path: /)',
-      'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-danger" title="sys_file:4"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file:4" class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
 	</span>
 	
-</span></span>',
+</span>',
       'controls' => '',
       'message' => '<span class="text-danger">LOST RELATION (Path: /)</span>',
     ],
