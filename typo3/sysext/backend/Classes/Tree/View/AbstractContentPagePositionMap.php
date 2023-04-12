@@ -291,8 +291,8 @@ abstract class AbstractContentPagePositionMap
         // Prepare the columns configuration (using named keys, etc.)
         foreach ($columnsConfiguration as &$item) {
             $item = [
-                'title' => $item[0],
-                'colPos' => (int)$item[1],
+                'title' => $item['label'] ?? '',
+                'colPos' => (int)($item['value'] ?? 0),
                 'isRestricted' => false,
             ];
         }
