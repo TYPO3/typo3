@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\ExpressionLanguage;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Routing\RouteResultInterface;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
@@ -81,8 +81,8 @@ class RequestWrapper
         return $this->request->getAttribute('normalizedParams');
     }
 
-    public function getPageArguments(): ?RouteResultInterface
+    public function getPageArguments(): ?PageArguments
     {
-        return $this->request->getAttribute('routing');
+        return ($routing = $this->request->getAttribute('routing')) instanceof PageArguments ? $routing : null;
     }
 }

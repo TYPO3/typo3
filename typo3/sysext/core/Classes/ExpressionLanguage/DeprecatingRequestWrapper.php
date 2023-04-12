@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\ExpressionLanguage;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Routing\RouteResultInterface;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
@@ -127,7 +127,7 @@ class DeprecatingRequestWrapper extends RequestWrapper
         return $this->request->getAttribute('normalizedParams');
     }
 
-    public function getPageArguments(): ?RouteResultInterface
+    public function getPageArguments(): ?PageArguments
     {
         trigger_error(
             'Using conditions based on request data within page TSconfig or user TSconfig has been deprecated' .

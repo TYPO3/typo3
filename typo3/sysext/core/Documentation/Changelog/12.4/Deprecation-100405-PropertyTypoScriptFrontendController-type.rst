@@ -47,7 +47,7 @@ the request object is not available.
 Within TypoScript, conditions and getData properties need to be adapted:
 
 Before: :typoscript:`[getTSFE() && getTSFE().type == 13]`
-After: :typoscript:`[request.getPageArguments().getPageType() == 13]`
+After: :typoscript:`[request.getPageArguments()?.getPageType() == 13]`
 
 In Typoscript getData attributes:
 
