@@ -30,10 +30,10 @@ class EmailLinkHandler implements LinkHandlingInterface
         $queryParameters = [];
         foreach (['subject', 'cc', 'bcc', 'body'] as $additionalInfo) {
             if (isset($parameters[$additionalInfo])) {
-                $queryParameters[$additionalInfo] = rawurldecode($parameters[$additionalInfo]);
+                $queryParameters[$additionalInfo] = rawurldecode(trim($parameters[$additionalInfo]));
             }
         }
-        $result = 'mailto:' . $parameters['email'];
+        $result = 'mailto:' . trim($parameters['email']);
         if ($queryParameters !== []) {
             // We need to percent-encode additional parameters (RFC 3986)
             $result .= '?' . http_build_query($queryParameters, '', '&', PHP_QUERY_RFC3986);
@@ -48,13 +48,13 @@ class EmailLinkHandler implements LinkHandlingInterface
     public function resolveHandlerData(array $data): array
     {
         $linkParts = parse_url($data['email'] ?? '');
-        $data['email'] = $linkParts['path'];
+        $data['email'] = trim($linkParts['path'] ?? '');
         if (isset($linkParts['query'])) {
             $result = [];
             parse_str($linkParts['query'], $result);
             foreach (['subject', 'cc', 'bcc', 'body'] as $additionalInfo) {
                 if (isset($result[$additionalInfo])) {
-                    $data[$additionalInfo] = $result[$additionalInfo];
+                    $data[$additionalInfo] = trim($result[$additionalInfo]);
                 }
             }
         }
