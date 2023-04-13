@@ -86,7 +86,7 @@ class EmailFinisher extends AbstractFinisher
             $this->options['addHtmlPart'] = false;
         }
 
-        $subject = $this->parseOption('subject');
+        $subject = (string)$this->parseOption('subject');
         $recipients = $this->getRecipients('recipients');
         $senderAddress = $this->parseOption('senderAddress');
         $senderAddress = is_string($senderAddress) ? $senderAddress : '';
@@ -97,10 +97,9 @@ class EmailFinisher extends AbstractFinisher
         $blindCarbonCopyRecipients = $this->getRecipients('blindCarbonCopyRecipients');
         $addHtmlPart = $this->parseOption('addHtmlPart') ? true : false;
         $attachUploads = $this->parseOption('attachUploads');
-        $title = $this->parseOption('title');
-        $title = is_string($title) && $title !== '' ? $title : $subject;
+        $title = (string)$this->parseOption('title') ?: $subject;
 
-        if (empty($subject)) {
+        if ($subject === '') {
             throw new FinisherException('The option "subject" must be set for the EmailFinisher.', 1327060320);
         }
         if (empty($recipients)) {
