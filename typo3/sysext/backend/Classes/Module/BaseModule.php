@@ -243,7 +243,9 @@ abstract class BaseModule
 
         if (isset($configuration['inheritNavigationComponentFromMainModule'])) {
             $obj->inheritNavigationComponent = (bool)$configuration['inheritNavigationComponentFromMainModule'];
-        } elseif (isset($configuration['navigationComponent'])) {
+        }
+
+        if (isset($configuration['navigationComponent'])) {
             $obj->navigationComponent = (string)$configuration['navigationComponent'];
         } elseif (isset($configuration['navigationComponentId'])) {
             $obj->navigationComponent = (string)$configuration['navigationComponentId'];
