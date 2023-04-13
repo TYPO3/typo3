@@ -85,8 +85,8 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
                 if (($arguments['tsfe'] ?? null) instanceof TypoScriptFrontendController) {
                     return $arguments['tsfe'];
                 }
-                // If TSFE is not given as argument, evaluate to false.
-                return false;
+                // If TSFE is not given as argument, return null.
+                return null;
             }
         );
     }
