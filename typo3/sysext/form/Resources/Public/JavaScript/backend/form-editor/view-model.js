@@ -387,7 +387,7 @@ function factory($, TreeComponent, ModalsComponent, InspectorComponent, StageCom
 
         regex = /\{([a-z0-9-_]+)?\}/gi;
         match = regex.exec(formElement.get(propertyPath));
-        if (match && ((match[1] && !getFormEditorApp().isFormElementIdentifierUsed(match[1])) || !match[1])) {
+        if (match && ((match[1] && match[1] !== '__currentTimestamp' && !getFormEditorApp().isFormElementIdentifierUsed(match[1])) || !match[1])) {
           return getFormEditorApp().getFormElementPropertyValidatorDefinition('FormElementIdentifierWithinCurlyBracesInclusive')['errorMessage'] || 'invalid value';
         }
       });
@@ -401,7 +401,7 @@ function factory($, TreeComponent, ModalsComponent, InspectorComponent, StageCom
 
         regex = /^\{([a-z0-9-_]+)?\}$/i;
         match = regex.exec(formElement.get(propertyPath));
-        if (!match || ((match[1] && !getFormEditorApp().isFormElementIdentifierUsed(match[1])) || !match[1])) {
+        if (!match || ((match[1] && match[1] !== '__currentTimestamp' && !getFormEditorApp().isFormElementIdentifierUsed(match[1])) || !match[1])) {
           return getFormEditorApp().getFormElementPropertyValidatorDefinition('FormElementIdentifierWithinCurlyBracesInclusive')['errorMessage'] || 'invalid value';
         }
       });
