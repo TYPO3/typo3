@@ -232,7 +232,7 @@ class UserInformationService
                 continue;
             }
             $label = $specialItem['label'];
-            $icon = $this->iconFactory->mapRecordTypeToIconIdentifier('pages', ['doktype' => $specialItem[1]]);
+            $icon = $this->iconFactory->mapRecordTypeToIconIdentifier('pages', ['doktype' => $specialItem['icon']]);
             $data['pageTypes'][] = ['label' => $label, 'value' => $value, 'icon' => $icon];
         }
 
