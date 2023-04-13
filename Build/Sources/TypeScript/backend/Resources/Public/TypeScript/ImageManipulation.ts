@@ -78,7 +78,7 @@ class ImageManipulation {
   private cropInfoSelector: string = '.t3js-cropper-info-crop';
   private focusAreaSelector: string = '#t3js-cropper-focus-area';
   private focusArea: any;
-  private cropBox: JQuery;
+  private cropBox: JQuery = $();
   private cropper: Cropper;
   private currentCropVariant: CropVariant;
   private data: any;
