@@ -10,127 +10,129 @@
     </div>
 </f:if>
 <div class="t3-grid-container">
-    <table class="t3-page-columns t3-grid-table t3js-page-columns">
-        <tr>
-            <f:for each="{languageColumns}" as="languageColumn">
-                <td valign="top"
-                    class="t3-page-column t3-page-column-lang-name"
-                    data-language-uid="{languageColumn.context.siteLanguage.languageId}"
-                    data-language-title="{languageColumn.context.siteLanguage.title}"
-                    data-flag-identifier="{languageColumn.context.siteLanguage.flagIdentifier}"
-                >
-                    <h2>{languageColumn.context.siteLanguage.title}</h2>
-                    <f:if condition="{languageColumn.context.languageMode}">
-                        <span class="badge badge-{languageColumn.context.languageModeLabelClass}">{languageColumn.context.languageMode}</span>
-                    </f:if>
-                </td>
-            </f:for>
-        </tr>
-        <tr>
-            <f:for each="{languageColumns}" as="languageColumn">
-                <td class="t3-page-column t3-page-lang-label nowrap">
-                    <div class="btn-group">
-                        <f:if condition="{languageColumn.allowViewPage}">
-                            <a href="#" class="btn btn-default btn-sm" {languageColumn.previewUrlAttributes -> f:format.raw()} title="{languageColumn.viewPageLinkTitle}">
-                                <core:icon identifier="actions-view" />
-                            </a>
+    <div class="t3-grid-container-inner">
+        <table class="t3-page-columns t3-grid-table t3js-page-columns">
+            <tr>
+                <f:for each="{languageColumns}" as="languageColumn">
+                    <td valign="top"
+                        class="t3-page-column t3-page-column-lang-name"
+                        data-language-uid="{languageColumn.context.siteLanguage.languageId}"
+                        data-language-title="{languageColumn.context.siteLanguage.title}"
+                        data-flag-identifier="{languageColumn.context.siteLanguage.flagIdentifier}"
+                    >
+                        <h2>{languageColumn.context.siteLanguage.title}</h2>
+                        <f:if condition="{languageColumn.context.languageMode}">
+                            <span class="badge badge-{languageColumn.context.languageModeLabelClass}">{languageColumn.context.languageMode}</span>
                         </f:if>
-                        <f:if condition="{languageColumn.allowEditPage}">
-                            <a href="{languageColumn.pageEditUrl}" class="btn btn-default btn-sm" title="{languageColumn.pageEditTitle}">
-                                <core:icon identifier="actions-open" />
-                            </a>
-                        </f:if>
-                        <f:if condition="{allowEditContent} && {languageColumn.context.siteLanguage.languageId} && {languageColumn.translationData.untranslatedRecordUids}">
-                            <a href="#" class="btn btn-default btn-sm t3js-localize disabled"
-                                title="{languageColumn.context.translatePageTitle}"
-                                data-page="{languageColumn.context.localizedPageRecord.title}"
-                                data-has-elements="{languageColumn.translationData.hasTranslations as integer}"
-                                data-allow-copy="{languageColumn.allowTranslateCopy as integer}"
-                                data-allow-translate="{languageColumn.allowTranslate as integer}"
-                                data-table="tt_content"
-                                data-page-id="{context.pageId}"
-                                data-language-id="{languageColumn.context.siteLanguage.languageId}"
-                                data-language-name="{languageColumn.context.siteLanguage.title}">
-                                <core:icon identifier="actions-localize" />
-                                {languageColumn.translatePageTitle}
-                            </a>
-                        </f:if>
-                    </div>
-                    {languageColumn.pageIcon -> f:format.raw()}
-                    {languageColumn.context.localizedPageTitle -> f:format.crop(maxCharacters: maxTitleLength)}
-                </td>
-            </f:for>
-        </tr>
-        <f:if condition="{context.drawingConfiguration.defaultLanguageBinding}">
-            <f:then>
-                <f:variable name="grid" value="{languageColumns.0.grid}" />
-                <f:for each="{context.drawingConfiguration.activeColumns}" as="columnNumber">
-                    <tr>
-                        <f:for each="{languageColumns}" as="languageColumn">
-                            <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
-                            <td data-colpos="{column.columnNumber}" valign="top">
-                                <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
-                            </td>
-                        </f:for>
-                    </tr>
-                    <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumns.0, columnNumber: columnNumber)}" />
-                    <f:for each="{column.items}" as="gridItem" iteration="itemIterator">
+                    </td>
+                </f:for>
+            </tr>
+            <tr>
+                <f:for each="{languageColumns}" as="languageColumn">
+                    <td class="t3-page-column t3-page-lang-label nowrap">
+                        <div class="btn-group">
+                            <f:if condition="{languageColumn.allowViewPage}">
+                                <a href="#" class="btn btn-default btn-sm" {languageColumn.previewUrlAttributes -> f:format.raw()} title="{languageColumn.viewPageLinkTitle}">
+                                    <core:icon identifier="actions-view" />
+                                </a>
+                            </f:if>
+                            <f:if condition="{languageColumn.allowEditPage}">
+                                <a href="{languageColumn.pageEditUrl}" class="btn btn-default btn-sm" title="{languageColumn.pageEditTitle}">
+                                    <core:icon identifier="actions-open" />
+                                </a>
+                            </f:if>
+                            <f:if condition="{allowEditContent} && {languageColumn.context.siteLanguage.languageId} && {languageColumn.translationData.untranslatedRecordUids}">
+                                <a href="#" class="btn btn-default btn-sm t3js-localize disabled"
+                                    title="{languageColumn.context.translatePageTitle}"
+                                    data-page="{languageColumn.context.localizedPageRecord.title}"
+                                    data-has-elements="{languageColumn.translationData.hasTranslations as integer}"
+                                    data-allow-copy="{languageColumn.allowTranslateCopy as integer}"
+                                    data-allow-translate="{languageColumn.allowTranslate as integer}"
+                                    data-table="tt_content"
+                                    data-page-id="{context.pageId}"
+                                    data-language-id="{languageColumn.context.siteLanguage.languageId}"
+                                    data-language-name="{languageColumn.context.siteLanguage.title}">
+                                    <core:icon identifier="actions-localize" />
+                                    {languageColumn.translatePageTitle}
+                                </a>
+                            </f:if>
+                        </div>
+                        {languageColumn.pageIcon -> f:format.raw()}
+                        {languageColumn.context.localizedPageTitle -> f:format.crop(maxCharacters: maxTitleLength)}
+                    </td>
+                </f:for>
+            </tr>
+            <f:if condition="{context.drawingConfiguration.defaultLanguageBinding}">
+                <f:then>
+                    <f:variable name="grid" value="{languageColumns.0.grid}" />
+                    <f:for each="{context.drawingConfiguration.activeColumns}" as="columnNumber">
                         <tr>
-                            <td class="t3-grid-cell" valign="top" data-colpos="{column.columnNumber}">
-                                <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumns.0, columnNumber: columnNumber)}" />
-                                <f:variable name="item" value="{gridItem}" />
-                                <f:render partial="PageLayout/Record" arguments="{_all}" />
-                            </td>
                             <f:for each="{languageColumns}" as="languageColumn">
-                                <f:if condition="{languageColumn.context.siteLanguage.languageId} > 0">
-                                    <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
-                                    <td class="t3-grid-cell" valign="top" data-colpos="{column.columnNumber}">
-                                        <f:variable name="languageId" value="{languageColumn.context.siteLanguage.languageId}" />
-                                        <f:if condition="{languageColumn.translationData.mode} == 'connected'">
-                                            <f:then>
-                                                <f:if condition="{gridItem.translations.{languageId}}">
-                                                    <f:variable name="item" value="{gridItem.translations.{languageId}}" />
-                                                    <f:render partial="PageLayout/Record" arguments="{_all}" />
-                                                </f:if>
-                                            </f:then>
-                                            <f:else>
-                                                <f:if condition="{itemIterator.isFirst}">
-                                                    <f:variable name="languageColumnNonConnected">{languageColumns.{languageId}}</f:variable>
-                                                    <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumnNonConnected, columnNumber: columnNumber)}" />
-                                                    <f:for each="{column.items}" as="item">
+                                <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
+                                <td data-colpos="{column.columnNumber}" valign="top">
+                                    <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
+                                </td>
+                            </f:for>
+                        </tr>
+                        <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumns.0, columnNumber: columnNumber)}" />
+                        <f:for each="{column.items}" as="gridItem" iteration="itemIterator">
+                            <tr>
+                                <td class="t3-grid-cell" valign="top" data-colpos="{column.columnNumber}">
+                                    <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumns.0, columnNumber: columnNumber)}" />
+                                    <f:variable name="item" value="{gridItem}" />
+                                    <f:render partial="PageLayout/Record" arguments="{_all}" />
+                                </td>
+                                <f:for each="{languageColumns}" as="languageColumn">
+                                    <f:if condition="{languageColumn.context.siteLanguage.languageId} > 0">
+                                        <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
+                                        <td class="t3-grid-cell" valign="top" data-colpos="{column.columnNumber}">
+                                            <f:variable name="languageId" value="{languageColumn.context.siteLanguage.languageId}" />
+                                            <f:if condition="{languageColumn.translationData.mode} == 'connected'">
+                                                <f:then>
+                                                    <f:if condition="{gridItem.translations.{languageId}}">
+                                                        <f:variable name="item" value="{gridItem.translations.{languageId}}" />
                                                         <f:render partial="PageLayout/Record" arguments="{_all}" />
-                                                    </f:for>
-                                                </f:if>
-                                            </f:else>
-                                        </f:if>
-                                    </td>
+                                                    </f:if>
+                                                </f:then>
+                                                <f:else>
+                                                    <f:if condition="{itemIterator.isFirst}">
+                                                        <f:variable name="languageColumnNonConnected">{languageColumns.{languageId}}</f:variable>
+                                                        <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumnNonConnected, columnNumber: columnNumber)}" />
+                                                        <f:for each="{column.items}" as="item">
+                                                            <f:render partial="PageLayout/Record" arguments="{_all}" />
+                                                        </f:for>
+                                                    </f:if>
+                                                </f:else>
+                                            </f:if>
+                                        </td>
+                                    </f:if>
+                                </f:for>
+                            </tr>
+                        </f:for>
+                        <tr>
+                            <f:for each="{languageColumns}" as="languageColumn">
+                                <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
+                                <td data-colpos="{column.columnNumber}" valign="top">
+                                    <f:format.raw>{column.afterSectionMarkup}</f:format.raw>
+                                </td>
+                            </f:for>
+                        </tr>
+                    </f:for>
+                </f:then>
+                <f:else>
+                    <f:for each="{context.drawingConfiguration.activeColumns}" as="columnNumber">
+                        <tr>
+                            <f:for each="{languageColumns}" as="languageColumn">
+                                <f:if condition="{languageColumn.grid.columns}">
+                                    <f:variable name="grid" value="{languageColumn.grid}" />
+                                    <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
+                                    <f:render partial="PageLayout/Grid/Column" arguments="{_all}" />
                                 </f:if>
                             </f:for>
                         </tr>
                     </f:for>
-                    <tr>
-                        <f:for each="{languageColumns}" as="languageColumn">
-                            <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
-                            <td data-colpos="{column.columnNumber}" valign="top">
-                                <f:format.raw>{column.afterSectionMarkup}</f:format.raw>
-                            </td>
-                        </f:for>
-                    </tr>
-                </f:for>
-            </f:then>
-            <f:else>
-                <f:for each="{context.drawingConfiguration.activeColumns}" as="columnNumber">
-                    <tr>
-                        <f:for each="{languageColumns}" as="languageColumn">
-                            <f:if condition="{languageColumn.grid.columns}">
-                                <f:variable name="grid" value="{languageColumn.grid}" />
-                                <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
-                                <f:render partial="PageLayout/Grid/Column" arguments="{_all}" />
-                            </f:if>
-                        </f:for>
-                    </tr>
-                </f:for>
-            </f:else>
-        </f:if>
-    </table>
+                </f:else>
+            </f:if>
+        </table>
+    </div>
 </div>

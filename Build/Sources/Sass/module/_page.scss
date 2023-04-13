@@ -45,7 +45,12 @@ html {
 }
 
 .t3-grid-container {
-    margin: 0 calc(var(--pagemodule-grid-spacing) * -1);
+    overflow: hidden;
+    margin-bottom: var(--typo3-component-spacing);
+}
+
+.t3-grid-container-inner {
+    margin: calc(var(--pagemodule-grid-spacing) * -1);
 }
 
 .t3-grid-cell {
