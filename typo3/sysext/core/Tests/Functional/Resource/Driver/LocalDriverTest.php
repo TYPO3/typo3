@@ -1384,26 +1384,4 @@ final class LocalDriverTest extends FunctionalTestCase
         $subject->processConfiguration();
         $subject->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
     }
-
-    /**
-     * @test
-     */
-    public function applyFilterMethodsToDirectoryItemCallsFilterMethodIfName(): void
-    {
-        $dummyObject = $this->getMockBuilder(\stdClass::class)->addMethods(['dummy'])->getMock();
-        $method = [
-            $dummyObject,
-            'dummy',
-        ];
-        $dummyObject->expects(self::once())->method('dummy');
-        $filterMethods = [
-            $method,
-        ];
-        $driverConfiguration = [
-            'basePath' => $this->baseDirectory,
-        ];
-        $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
-        $subject->processConfiguration();
-        $subject->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
-    }
 }
