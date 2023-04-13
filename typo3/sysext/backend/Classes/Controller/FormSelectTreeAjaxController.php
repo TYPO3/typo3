@@ -151,8 +151,7 @@ class FormSelectTreeAjaxController
             $processedTca['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;
         }
 
-        $formDataGroup = GeneralUtility::makeInstance(TcaSelectTreeAjaxFieldData::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'tableName' => $tableName,
@@ -169,7 +168,7 @@ class FormSelectTreeAjaxController
         if (!empty($request->getQueryParams()['defaultValues'])) {
             $formDataCompilerInput['defaultValues'] = json_decode($request->getQueryParams()['defaultValues'], true);
         }
-        $formData = $formDataCompiler->compile($formDataCompilerInput);
+        $formData = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaSelectTreeAjaxFieldData::class));
 
         if ($formData['processedTca']['columns'][$fieldName]['config']['type'] === 'flex') {
             if (empty($flexFormContainerFieldName)) {

@@ -265,24 +265,28 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
         $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0) ?: [];
 
-        return GeneralUtility::makeInstance(FormDataCompiler::class, GeneralUtility::makeInstance(TcaDatabaseRecord::class))->compile([
-            'request' => $result['request'],
-            'command' => 'edit',
-            'tableName' => self::FILE_REFERENCE_TABLE,
-            'vanillaUid' => $childUid,
-            'returnUrl' => $result['returnUrl'],
-            'isInlineChild' => true,
-            'inlineStructure' => $result['inlineStructure'],
-            'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
-            'inlineFirstPid' => $result['inlineFirstPid'],
-            'inlineParentConfig' => $result['processedTca']['columns'][$parentFieldName]['config'],
-            'inlineParentUid' => $result['databaseRow']['uid'],
-            'inlineParentTableName' => $result['tableName'],
-            'inlineParentFieldName' => $parentFieldName,
-            'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: $inlineTopMostParent['uid'] ?? '',
-            'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'] ?: $inlineTopMostParent['table'] ?? '',
-            'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: $inlineTopMostParent['field'] ?? '',
-        ]);
+        return GeneralUtility::makeInstance(FormDataCompiler::class)
+            ->compile(
+                [
+                    'request' => $result['request'],
+                    'command' => 'edit',
+                    'tableName' => self::FILE_REFERENCE_TABLE,
+                    'vanillaUid' => $childUid,
+                    'returnUrl' => $result['returnUrl'],
+                    'isInlineChild' => true,
+                    'inlineStructure' => $result['inlineStructure'],
+                    'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
+                    'inlineFirstPid' => $result['inlineFirstPid'],
+                    'inlineParentConfig' => $result['processedTca']['columns'][$parentFieldName]['config'],
+                    'inlineParentUid' => $result['databaseRow']['uid'],
+                    'inlineParentTableName' => $result['tableName'],
+                    'inlineParentFieldName' => $parentFieldName,
+                    'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: $inlineTopMostParent['uid'] ?? '',
+                    'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'] ?: $inlineTopMostParent['table'] ?? '',
+                    'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: $inlineTopMostParent['field'] ?? '',
+                ],
+                GeneralUtility::makeInstance(TcaDatabaseRecord::class)
+            );
     }
 
     /**

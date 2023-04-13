@@ -107,10 +107,8 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
             $formDataCompilerInput['inlineChildChildUid'] = $fileId;
         }
 
-        $fileReferenceData = GeneralUtility::makeInstance(
-            FormDataCompiler::class,
-            GeneralUtility::makeInstance(TcaDatabaseRecord::class)
-        )->compile($formDataCompilerInput);
+        $fileReferenceData = GeneralUtility::makeInstance(FormDataCompiler::class)
+            ->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
 
         $fileReferenceData['inlineParentUid'] = $parent['uid'];
         $fileReferenceData['renderType'] = FileReferenceContainer::NODE_TYPE_IDENTIFIER;
@@ -241,10 +239,8 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
                 'inlineCompileExistingChildren' => false,
             ];
             // Full TcaDatabaseRecord is required here to have the list of connected uids $oldItemList
-            $parentData = GeneralUtility::makeInstance(
-                FormDataCompiler::class,
-                GeneralUtility::makeInstance(TcaDatabaseRecord::class)
-            )->compile($formDataCompilerInputForParent);
+            $parentData = GeneralUtility::makeInstance(FormDataCompiler::class)
+                ->compile($formDataCompilerInputForParent, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
             $parentLanguageField = $parentData['processedTca']['ctrl']['languageField'];
             $parentLanguage = $parentData['databaseRow'][$parentLanguageField];
             $oldItemList = $parentData['databaseRow'][$parentFieldName];
@@ -384,27 +380,28 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
         $inlineStackProcessor->initializeByGivenStructure($inlineStructure);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
 
-        return GeneralUtility::makeInstance(
-            FormDataCompiler::class,
-            GeneralUtility::makeInstance(TcaDatabaseRecord::class)
-        )->compile([
-            'request' => $request,
-            'command' => 'edit',
-            'tableName' => self::FILE_REFERENCE_TABLE,
-            'vanillaUid' => (int)$fileReferenceUid,
-            'returnUrl' => $parentData['returnUrl'],
-            'isInlineChild' => true,
-            'inlineStructure' => $inlineStructure,
-            'inlineFirstPid' => $parentData['inlineFirstPid'],
-            'inlineParentConfig' => $parentData['processedTca']['columns'][$parentFieldName]['config'],
-            'isInlineAjaxOpeningContext' => true,
-            'inlineParentUid' => $parentData['databaseRow']['uid'] ?? $parentData['uid'],
-            'inlineParentTableName' => $parentData['tableName'],
-            'inlineParentFieldName' => $parentFieldName,
-            'inlineTopMostParentUid' => $inlineTopMostParent['uid'],
-            'inlineTopMostParentTableName' => $inlineTopMostParent['table'],
-            'inlineTopMostParentFieldName' => $inlineTopMostParent['field'],
-        ]);
+        return GeneralUtility::makeInstance(FormDataCompiler::class)
+            ->compile(
+                [
+                    'request' => $request,
+                    'command' => 'edit',
+                    'tableName' => self::FILE_REFERENCE_TABLE,
+                    'vanillaUid' => (int)$fileReferenceUid,
+                    'returnUrl' => $parentData['returnUrl'],
+                    'isInlineChild' => true,
+                    'inlineStructure' => $inlineStructure,
+                    'inlineFirstPid' => $parentData['inlineFirstPid'],
+                    'inlineParentConfig' => $parentData['processedTca']['columns'][$parentFieldName]['config'],
+                    'isInlineAjaxOpeningContext' => true,
+                    'inlineParentUid' => $parentData['databaseRow']['uid'] ?? $parentData['uid'],
+                    'inlineParentTableName' => $parentData['tableName'],
+                    'inlineParentFieldName' => $parentFieldName,
+                    'inlineTopMostParentUid' => $inlineTopMostParent['uid'],
+                    'inlineTopMostParentTableName' => $inlineTopMostParent['table'],
+                    'inlineTopMostParentFieldName' => $inlineTopMostParent['field'],
+                ],
+                GeneralUtility::makeInstance(TcaDatabaseRecord::class)
+            );
     }
 
     /**

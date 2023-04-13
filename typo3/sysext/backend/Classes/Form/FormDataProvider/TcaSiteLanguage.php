@@ -207,29 +207,30 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
         $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
 
-        return GeneralUtility::makeInstance(
-            FormDataCompiler::class,
-            GeneralUtility::makeInstance(SiteConfigurationDataGroup::class)
-        )->compile([
-            'request' => $result['request'],
-            'command' => 'new',
-            'tableName' => self::FOREIGN_TABLE,
-            'vanillaUid' => $result['inlineFirstPid'],
-            'databaseRow' => $this->getDefaultDatabaseRow(),
-            'returnUrl' => $result['returnUrl'],
-            'isInlineChild' => true,
-            'inlineStructure' => [],
-            'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
-            'inlineFirstPid' => $result['inlineFirstPid'],
-            'inlineParentConfig' => $result['processedTca']['columns'][$parentFieldName]['config'],
-            'inlineParentUid' => $result['databaseRow']['uid'],
-            'inlineParentTableName' => $result['tableName'],
-            'inlineParentFieldName' => $parentFieldName,
-            'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: ($inlineTopMostParent['uid'] ?? null),
-            'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'] ?: ($inlineTopMostParent['table'] ?? ''),
-            'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: ($inlineTopMostParent['field'] ?? ''),
-            'inlineChildChildUid' => 0,
-        ]);
+        return GeneralUtility::makeInstance(FormDataCompiler::class)
+            ->compile(
+                [
+                    'request' => $result['request'],
+                    'command' => 'new',
+                    'tableName' => self::FOREIGN_TABLE,
+                    'vanillaUid' => $result['inlineFirstPid'],
+                    'databaseRow' => $this->getDefaultDatabaseRow(),
+                    'returnUrl' => $result['returnUrl'],
+                    'isInlineChild' => true,
+                    'inlineStructure' => [],
+                    'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
+                    'inlineFirstPid' => $result['inlineFirstPid'],
+                    'inlineParentConfig' => $result['processedTca']['columns'][$parentFieldName]['config'],
+                    'inlineParentUid' => $result['databaseRow']['uid'],
+                    'inlineParentTableName' => $result['tableName'],
+                    'inlineParentFieldName' => $parentFieldName,
+                    'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: ($inlineTopMostParent['uid'] ?? null),
+                    'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'] ?: ($inlineTopMostParent['table'] ?? ''),
+                    'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: ($inlineTopMostParent['field'] ?? ''),
+                    'inlineChildChildUid' => 0,
+                ],
+                GeneralUtility::makeInstance(SiteConfigurationDataGroup::class)
+            );
     }
 
     protected function compileChild(array $result, string $parentFieldName, int $childUid): array
@@ -238,27 +239,28 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
         $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
 
-        return GeneralUtility::makeInstance(
-            FormDataCompiler::class,
-            GeneralUtility::makeInstance(SiteConfigurationDataGroup::class)
-        )->compile([
-            'request' => $result['request'],
-            'command' => 'edit',
-            'tableName' => self::FOREIGN_TABLE,
-            'vanillaUid' => $childUid,
-            'returnUrl' => $result['returnUrl'],
-            'isInlineChild' => true,
-            'inlineStructure' => $result['inlineStructure'],
-            'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
-            'inlineFirstPid' => $result['inlineFirstPid'],
-            'inlineParentConfig' => $result['processedTca']['columns'][$parentFieldName]['config'],
-            'inlineParentUid' => $result['databaseRow']['uid'],
-            'inlineParentTableName' => $result['tableName'],
-            'inlineParentFieldName' => $parentFieldName,
-            'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: ($inlineTopMostParent['uid'] ?? null),
-            'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'] ?: ($inlineTopMostParent['table'] ?? ''),
-            'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: ($inlineTopMostParent['field'] ?? ''),
-        ]);
+        return GeneralUtility::makeInstance(FormDataCompiler::class)
+            ->compile(
+                [
+                    'request' => $result['request'],
+                    'command' => 'edit',
+                    'tableName' => self::FOREIGN_TABLE,
+                    'vanillaUid' => $childUid,
+                    'returnUrl' => $result['returnUrl'],
+                    'isInlineChild' => true,
+                    'inlineStructure' => $result['inlineStructure'],
+                    'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
+                    'inlineFirstPid' => $result['inlineFirstPid'],
+                    'inlineParentConfig' => $result['processedTca']['columns'][$parentFieldName]['config'],
+                    'inlineParentUid' => $result['databaseRow']['uid'],
+                    'inlineParentTableName' => $result['tableName'],
+                    'inlineParentFieldName' => $parentFieldName,
+                    'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: ($inlineTopMostParent['uid'] ?? null),
+                    'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'] ?: ($inlineTopMostParent['table'] ?? ''),
+                    'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: ($inlineTopMostParent['field'] ?? ''),
+                ],
+                GeneralUtility::makeInstance(SiteConfigurationDataGroup::class)
+            );
     }
 
     protected function addUniquePossibleRecords(array $result, string $fieldName): array
@@ -267,26 +269,27 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
         $formDataGroup->setProviderList([TcaSelectItems::class]);
 
         // Add unique possible records, so they can be used in the selector field
-        $result['processedTca']['columns'][$fieldName]['config']['uniquePossibleRecords'] = GeneralUtility::makeInstance(
-            FormDataCompiler::class,
-            $formDataGroup
-        )->compile([
-            'request' => $result['request'],
-            'command' => 'new',
-            'tableName' => self::FOREIGN_TABLE,
-            'pageTsConfig' => $result['pageTsConfig'],
-            'userTsConfig' => $result['userTsConfig'],
-            'databaseRow' => $result['databaseRow'],
-            'processedTca' => [
-                'ctrl' => [],
-                'columns' => [
-                    self::FOREIGN_FIELD => [
-                        'config' => $GLOBALS['TCA'][self::FOREIGN_TABLE]['columns'][self::FOREIGN_FIELD]['config'],
+        $result['processedTca']['columns'][$fieldName]['config']['uniquePossibleRecords'] = GeneralUtility::makeInstance(FormDataCompiler::class)
+            ->compile(
+                [
+                    'request' => $result['request'],
+                    'command' => 'new',
+                    'tableName' => self::FOREIGN_TABLE,
+                    'pageTsConfig' => $result['pageTsConfig'],
+                    'userTsConfig' => $result['userTsConfig'],
+                    'databaseRow' => $result['databaseRow'],
+                    'processedTca' => [
+                        'ctrl' => [],
+                        'columns' => [
+                            self::FOREIGN_FIELD => [
+                                'config' => $GLOBALS['TCA'][self::FOREIGN_TABLE]['columns'][self::FOREIGN_FIELD]['config'],
+                            ],
+                        ],
                     ],
+                    'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
                 ],
-            ],
-            'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
-        ])['processedTca']['columns'][self::FOREIGN_FIELD]['config']['items'] ?? [];
+                $formDataGroup
+            )['processedTca']['columns'][self::FOREIGN_FIELD]['config']['items'] ?? [];
 
         return $result;
     }

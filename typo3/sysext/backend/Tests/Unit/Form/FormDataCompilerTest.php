@@ -32,7 +32,7 @@ final class FormDataCompilerTest extends UnitTestCase
     {
         parent::setUp();
         $this->formDataGroupMock = $this->createMock(FormDataGroupInterface::class);
-        $this->subject = new FormDataCompiler($this->formDataGroupMock);
+        $this->subject = new FormDataCompiler();
     }
 
     /**
@@ -45,7 +45,7 @@ final class FormDataCompilerTest extends UnitTestCase
         ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1440601540);
-        $this->subject->compile($input);
+        $this->subject->compile($input, $this->formDataGroupMock);
     }
 
     /**
@@ -58,7 +58,7 @@ final class FormDataCompilerTest extends UnitTestCase
         ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1437653136);
-        $this->subject->compile($input);
+        $this->subject->compile($input, $this->formDataGroupMock);
     }
 
     /**
@@ -71,7 +71,7 @@ final class FormDataCompilerTest extends UnitTestCase
         ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1437654409);
-        $this->subject->compile($input);
+        $this->subject->compile($input, $this->formDataGroupMock);
     }
 
     /**
@@ -84,7 +84,7 @@ final class FormDataCompilerTest extends UnitTestCase
         ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1437654247);
-        $this->subject->compile($input);
+        $this->subject->compile($input, $this->formDataGroupMock);
     }
 
     /**
@@ -98,7 +98,7 @@ final class FormDataCompilerTest extends UnitTestCase
         ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1437654332);
-        $this->subject->compile($input);
+        $this->subject->compile($input, $this->formDataGroupMock);
     }
 
     /**
@@ -113,7 +113,7 @@ final class FormDataCompilerTest extends UnitTestCase
             'command' => 'edit',
         ];
         $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnArgument(0);
-        $result = $this->subject->compile($input);
+        $result = $this->subject->compile($input, $this->formDataGroupMock);
         self::assertEquals('pages', $result['tableName']);
         self::assertEquals(123, $result['vanillaUid']);
         self::assertEquals('edit', $result['command']);
@@ -129,9 +129,12 @@ final class FormDataCompilerTest extends UnitTestCase
             $result['databaseRow'] = 'newData';
             return $result;
         });
-        $result = $this->subject->compile([
-            'request' => new ServerRequest(),
-        ]);
+        $result = $this->subject->compile(
+            [
+                'request' => new ServerRequest(),
+            ],
+            $this->formDataGroupMock
+        );
         self::assertEquals('newData', $result['databaseRow']);
     }
 
@@ -143,9 +146,12 @@ final class FormDataCompilerTest extends UnitTestCase
         $this->formDataGroupMock->method('compile')->with(self::anything())->willReturn(null);
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1446664764);
-        $this->subject->compile([
-            'request' => new ServerRequest(),
-        ]);
+        $this->subject->compile(
+            [
+                'request' => new ServerRequest(),
+            ],
+            $this->formDataGroupMock
+        );
     }
 
     /**
@@ -158,9 +164,12 @@ final class FormDataCompilerTest extends UnitTestCase
         ]);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1485201279);
-        $this->subject->compile([
-            'request' => new ServerRequest(),
-        ]);
+        $this->subject->compile(
+            [
+                'request' => new ServerRequest(),
+            ],
+            $this->formDataGroupMock
+        );
     }
 
     /**
@@ -175,9 +184,12 @@ final class FormDataCompilerTest extends UnitTestCase
         });
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438079402);
-        $this->subject->compile([
-            'request' => new ServerRequest(),
-        ]);
+        $this->subject->compile(
+            [
+                'request' => new ServerRequest(),
+            ],
+            $this->formDataGroupMock
+        );
     }
 
     /**
@@ -192,8 +204,11 @@ final class FormDataCompilerTest extends UnitTestCase
         });
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438079402);
-        $this->subject->compile([
-            'request' => new ServerRequest(),
-        ]);
+        $this->subject->compile(
+            [
+                'request' => new ServerRequest(),
+            ],
+            $this->formDataGroupMock
+        );
     }
 }

@@ -329,8 +329,7 @@ class ElementInformationController
      */
     protected function getFieldList(ServerRequestInterface $request, string $table, int $uid): array
     {
-        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'command' => 'edit',
@@ -338,7 +337,7 @@ class ElementInformationController
             'vanillaUid' => $uid,
         ];
         try {
-            $result = $formDataCompiler->compile($formDataCompilerInput);
+            $result = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
             $fieldList = array_unique(array_values($result['columnsToProcess']));
 
             $ctrlKeysOfUnneededFields = ['origUid', 'transOrigPointerField', 'transOrigDiffSourceField'];

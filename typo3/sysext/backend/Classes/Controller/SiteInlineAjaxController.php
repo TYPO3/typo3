@@ -123,8 +123,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
             }
         }
 
-        $formDataGroup = GeneralUtility::makeInstance(SiteConfigurationDataGroup::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'command' => 'new',
@@ -145,7 +144,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         if ($childChildUid) {
             $formDataCompilerInput['inlineChildChildUid'] = $childChildUid;
         }
-        $childData = $formDataCompiler->compile($formDataCompilerInput);
+        $childData = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(SiteConfigurationDataGroup::class));
 
         if (($parentConfig['foreign_selector'] ?? false) && ($parentConfig['appearance']['useCombination'] ?? false)) {
             throw new \RuntimeException('useCombination not implemented in sites module', 1522493094);
@@ -264,8 +263,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         $child = $inlineStackProcessor->getUnstableStructure();
         $childTableName = $child['table'];
 
-        $formDataGroup = GeneralUtility::makeInstance(SiteConfigurationDataGroup::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'command' => 'edit',
@@ -292,7 +290,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         if (($parentConfig['foreign_selector'] ?? false) && ($parentConfig['appearance']['useCombination'] ?? false)) {
             throw new \RuntimeException('useCombination not implemented in sites module', 1522493095);
         }
-        return $formDataCompiler->compile($formDataCompilerInput);
+        return $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(SiteConfigurationDataGroup::class));
     }
 
     /**

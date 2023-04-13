@@ -1083,8 +1083,7 @@ class EditDocumentController
                     }
 
                     try {
-                        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-                        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+                        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
                         $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
 
                         // Reset viewId - it should hold data of last entry only
@@ -1104,7 +1103,7 @@ class EditDocumentController
                             $formDataCompilerInput['defaultValues'] = $this->defVals;
                         }
 
-                        $formData = $formDataCompiler->compile($formDataCompilerInput);
+                        $formData = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
 
                         // Set this->viewId if possible
                         if ($command === 'new'

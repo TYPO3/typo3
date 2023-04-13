@@ -33,8 +33,7 @@ class FormTestService
      */
     public function createNewRecordForm(string $table, array $defaults = []): array
     {
-        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
 
         $formDataCompilerInput = [
@@ -44,7 +43,7 @@ class FormTestService
             'command' => 'new',
             'databaseRow' => $defaults,
         ];
-        $formData = $formDataCompiler->compile($formDataCompilerInput);
+        $formData = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
 
         $formData['renderType'] = 'outerWrapContainer';
         return $nodeFactory->create($formData)->render();

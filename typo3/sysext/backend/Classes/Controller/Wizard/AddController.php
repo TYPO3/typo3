@@ -79,15 +79,14 @@ class AddController extends AbstractWizardController
             if ($this->processDataFlag) {
                 // Because OnTheFly can't handle MM relations with intermediate tables we use TcaDatabaseRecord here
                 // Otherwise already stored relations are overwritten with the new entry
-                $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-                $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+                $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
                 $input = [
                     'request' => $request,
                     'tableName' => $this->P['table'],
                     'vanillaUid' => (int)$this->P['uid'],
                     'command' => 'edit',
                 ];
-                $result = $formDataCompiler->compile($input);
+                $result = $formDataCompiler->compile($input, $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class));
                 $currentParentRow = $result['databaseRow'];
 
                 // If that record was found (should absolutely be...), then init DataHandler and set, prepend or append

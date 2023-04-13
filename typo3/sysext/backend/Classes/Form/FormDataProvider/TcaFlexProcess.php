@@ -357,7 +357,7 @@ class TcaFlexProcess implements FormDataProviderInterface
         }
 
         $formDataGroup = GeneralUtility::makeInstance(FlexFormSegment::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
 
         foreach ($dataStructure['sheets'] as $dataStructureSheetName => $dataStructureSheetDefinition) {
             if (!isset($dataStructureSheetDefinition['ROOT']['el']) || !is_array($dataStructureSheetDefinition['ROOT']['el'])) {
@@ -455,7 +455,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                         // fields that may just have been added to the data structure but are not yet initialized as data value.
                                         $inputToFlexFormSegment['command'] = 'new';
                                         $inputToFlexFormSegment['processedTca']['columns'] = $newColumns;
-                                        $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
+                                        $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment, $formDataGroup);
                                         foreach ($newColumns as $singleFieldName => $_) {
                                             // Set data value result to feed it to "edit" next
                                             $valueArray[$singleFieldName] = $flexSegmentResult['databaseRow'][$singleFieldName];
@@ -465,7 +465,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                     if (!empty($editColumns)) {
                                         $inputToFlexFormSegment['command'] = 'edit';
                                         $inputToFlexFormSegment['processedTca']['columns'] = $editColumns;
-                                        $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
+                                        $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment, $formDataGroup);
                                         foreach ($editColumns as $singleFieldName => $_) {
                                             $result['databaseRow'][$fieldName]
                                                 ['data'][$dataStructureSheetName]['lDEF'][$dataStructureFieldName]
@@ -525,7 +525,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                 // @todo: this has the same problem in scenario "a field was added later" as flex section container
                 $inputToFlexFormSegment['command'] = 'new';
                 $inputToFlexFormSegment['processedTca']['columns'] = $tcaNewColumns;
-                $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
+                $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment, $formDataGroup);
 
                 foreach ($tcaNewColumns as $dataStructureFieldName => $_) {
                     // Set data value result
@@ -544,7 +544,7 @@ class TcaFlexProcess implements FormDataProviderInterface
             if (!empty($tcaEditColumns)) {
                 $inputToFlexFormSegment['command'] = 'edit';
                 $inputToFlexFormSegment['processedTca']['columns'] = $tcaEditColumns;
-                $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
+                $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment, $formDataGroup);
 
                 foreach ($tcaEditColumns as $dataStructureFieldName => $_) {
                     // Set data value result
@@ -583,8 +583,7 @@ class TcaFlexProcess implements FormDataProviderInterface
             ['sheets'][$flexFormSheetName]['ROOT']['el'][$flexFormFieldName]['el'][$flexFormContainerName] ?? [];
 
         if (isset($containerConfiguration['el']) && is_array($containerConfiguration['el'])) {
-            $formDataGroup = GeneralUtility::makeInstance(FlexFormSegment::class);
-            $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+            $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
             $inputToFlexFormSegment = [
                 'request' => $result['request'],
                 'tableName' => $result['tableName'],
@@ -602,7 +601,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                 'flexParentDatabaseRow' => $result['databaseRow'],
                 'effectivePid' => $result['effectivePid'],
             ];
-            $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
+            $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment, GeneralUtility::makeInstance(FlexFormSegment::class));
 
             foreach ($containerConfiguration['el'] as $singleFieldName => $singleFieldConfiguration) {
                 // Set 'data structures for this new container' to 'children'

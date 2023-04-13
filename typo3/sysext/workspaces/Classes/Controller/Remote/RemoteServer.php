@@ -546,20 +546,21 @@ class RemoteServer
      */
     protected function getSuitableFields(string $table, int $uid, ServerRequestInterface $request): array
     {
-        $formDataCompiler = GeneralUtility::makeInstance(
-            FormDataCompiler::class,
-            GeneralUtility::makeInstance(TcaDatabaseRecord::class)
-        );
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
 
         try {
-            $result = $formDataCompiler->compile([
-                'request' => $request,
-                'command' => 'edit',
-                'tableName' => $table,
-                'vanillaUid' => $uid,
-            ]);
+            $result = $formDataCompiler->compile(
+                [
+                    'request' => $request,
+                    'command' => 'edit',
+                    'tableName' => $table,
+                    'vanillaUid' => $uid,
+                ],
+                GeneralUtility::makeInstance(TcaDatabaseRecord::class)
+            );
             $fieldList = array_unique(array_values($result['columnsToProcess']));
         } catch (\Exception $exception) {
+            // @todo: Avoid this general exception and catch something specific to not hide-away errors.
             $fieldList = [];
         }
 

@@ -296,8 +296,8 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             ];
             $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
             $formDataGroup->setProviderList([TcaSelectItems::class]);
-            $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-            $compilerResult = $formDataCompiler->compile($selectDataInput);
+            $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
+            $compilerResult = $formDataCompiler->compile($selectDataInput, $formDataGroup);
             $selectorOrUniquePossibleRecords = $compilerResult['processedTca']['columns'][$foreignFieldName]['config']['items'];
         }
 
@@ -323,8 +323,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0) ?: [];
 
-        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $result['request'],
             'command' => 'edit',
@@ -355,7 +354,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         // For foreign_selector with useCombination $mainChild is the mm record
         // and $combinationChild is the child-child. For 1:n "normal" relations,
         // $mainChild is just the normal child record and $combinationChild is empty.
-        $mainChild = $formDataCompiler->compile($formDataCompilerInput);
+        $mainChild = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
         if (($parentConfig['foreign_selector'] ?? false) && ($parentConfig['appearance']['useCombination'] ?? false)) {
             try {
                 $mainChild['combinationChild'] = $this->compileChildChild($mainChild, $parentConfig);
@@ -392,8 +391,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         $childChildUid = $child['databaseRow'][$parentConfig['foreign_selector']][0];
         // child-child table name is set in child tca "the selector field" foreign_table
         $childChildTableName = $child['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['foreign_table'];
-        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
 
         $formDataCompilerInput = [
             'request' => $child['request'],
@@ -410,7 +408,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             'inlineTopMostParentTableName' => $child['inlineTopMostParentTableName'],
             'inlineTopMostParentFieldName' => $child['inlineTopMostParentFieldName'],
         ];
-        $childChild = $formDataCompiler->compile($formDataCompilerInput);
+        $childChild = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
         return $childChild;
     }
 

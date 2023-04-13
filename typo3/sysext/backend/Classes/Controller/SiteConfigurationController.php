@@ -148,8 +148,7 @@ class SiteConfigurationController
 
         $returnUrl = $this->uriBuilder->buildUriFromRoute('site_configuration');
 
-        $formDataGroup = GeneralUtility::makeInstance(SiteConfigurationDataGroup::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'tableName' => 'site',
@@ -161,7 +160,7 @@ class SiteConfigurationController
             ],
             'defaultValues' => $defaultValues,
         ];
-        $formData = $formDataCompiler->compile($formDataCompilerInput);
+        $formData = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(SiteConfigurationDataGroup::class));
         $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
         $formData['renderType'] = 'outerWrapContainer';
         $formResult = $nodeFactory->create($formData)->render();

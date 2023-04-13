@@ -68,8 +68,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
             'flexFormContainerIdentifier' => $flexFormContainerIdentifier,
         ];
 
-        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'tableName' => $tableName,
@@ -104,7 +103,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
                 $formDataCompilerInput['databaseRow'][$subtypeValueField] = $subtypeValue;
             }
         }
-        $formData = $formDataCompiler->compile($formDataCompilerInput);
+        $formData = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
 
         $dataStructure = $formData['processedTca']['columns'][$fieldName]['config']['ds'];
         $formData['fieldName'] = $fieldName;

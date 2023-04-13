@@ -82,8 +82,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
         $childTableName = $parentConfig['foreign_table'];
 
-        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'command' => 'new',
@@ -103,7 +102,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         if ($childChildUid) {
             $formDataCompilerInput['inlineChildChildUid'] = $childChildUid;
         }
-        $childData = $formDataCompiler->compile($formDataCompilerInput);
+        $childData = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
 
         if (($parentConfig['foreign_selector'] ?? false) && ($parentConfig['appearance']['useCombination'] ?? false)) {
             // We have a foreign_selector. So, we just created a new record on an intermediate table in $childData.
@@ -117,8 +116,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 ];
                 $childData['combinationChild'] = $this->compileChildChild($request, $childData, $parentConfig, $inlineStackProcessor->getStructure());
             } else {
-                $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-                $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+                $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
                 $formDataCompilerInput = [
                     'request' => $request,
                     'command' => 'new',
@@ -129,7 +127,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                     'inlineStructure' => $inlineStackProcessor->getStructure(),
                     'inlineFirstPid' => $inlineFirstPid,
                 ];
-                $childData['combinationChild'] = $formDataCompiler->compile($formDataCompilerInput);
+                $childData['combinationChild'] = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
             }
         }
 
@@ -271,9 +269,8 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 'inlineCompileExistingChildren' => false,
             ];
             // Full TcaDatabaseRecord is required here to have the list of connected uids $oldItemList
-            $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-            $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-            $parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
+            $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
+            $parentData = $formDataCompiler->compile($formDataCompilerInputForParent, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
             $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
             $parentLanguageField = $parentData['processedTca']['ctrl']['languageField'];
             $parentLanguage = $parentData['databaseRow'][$parentLanguageField];
@@ -447,8 +444,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $child = $inlineStackProcessor->getUnstableStructure();
         $childTableName = $child['table'];
 
-        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'command' => 'edit',
@@ -475,7 +471,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         // For foreign_selector with useCombination $mainChild is the mm record
         // and $combinationChild is the child-child. For "normal" relations, $mainChild
         // is just the normal child record and $combinationChild is empty.
-        $mainChild = $formDataCompiler->compile($formDataCompilerInput);
+        $mainChild = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
         if (($parentConfig['foreign_selector'] ?? false) && ($parentConfig['appearance']['useCombination'] ?? false)) {
             // This kicks in if opening an existing mainChild that has a child-child set
             $mainChild['combinationChild'] = $this->compileChildChild($request, $mainChild, $parentConfig, $inlineStructure);
@@ -498,8 +494,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $childChildUid = $child['databaseRow'][$parentConfig['foreign_selector']][0];
         // child-child table name is set in child tca "the selector field" foreign_table
         $childChildTableName = $child['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['foreign_table'];
-        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'command' => 'edit',
@@ -515,7 +510,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             'inlineTopMostParentTableName' => $child['inlineTopMostParentTableName'],
             'inlineTopMostParentFieldName' => $child['inlineTopMostParentFieldName'],
         ];
-        return $formDataCompiler->compile($formDataCompilerInput);
+        return $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
     }
 
     /**
