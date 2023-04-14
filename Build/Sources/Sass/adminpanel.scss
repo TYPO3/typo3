@@ -7,8 +7,9 @@
 // Load Variables
 //
 @import "../../node_modules/bootstrap/scss/functions";
-@import "../../node_modules/bootstrap/scss/variables";
 @import "variables/main";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
 
 //
 // Variables
@@ -215,7 +216,7 @@ body.typo3-adminPanel-noscroll {
         .typo3-adminPanel-module-trigger-label {
             display: none;
 
-            @media (min-width: $screen-sm) {
+            @include media-breakpoint-up('md') {
                 display: block;
             }
         }
@@ -305,7 +306,7 @@ body.typo3-adminPanel-noscroll {
         display: none;
         opacity: .5;
 
-        @media (min-width: $screen-sm) {
+        @include media-breakpoint-up('md') {
             display: block;
         }
     }

@@ -161,7 +161,7 @@
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected>.panel-heading .btn{background-color:#fff;border-color:#fff}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected>.panel-heading .btn.active,#t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected>.panel-heading .btn:focus,#t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected>.panel-heading .btn:hover{background-color:#ebf3fb}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected>.panel-heading .btn .icon svg path{fill:#0078e6}
-@media (max-width:1199px){
+@media (max-width:1199.98px){
 #t3-form-stage-container.t3-form-stage-viewmode-preview #t3-form-stage-inner-container{width:600px}
 }
 #t3-form-stage-container.t3-form-stage-viewmode-preview input[type=date],#t3-form-stage-container.t3-form-stage-viewmode-preview input[type=password],#t3-form-stage-container.t3-form-stage-viewmode-preview input[type=text],#t3-form-stage-container.t3-form-stage-viewmode-preview select,#t3-form-stage-container.t3-form-stage-viewmode-preview textarea{color:#000;background-color:#e5e5e5}

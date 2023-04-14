@@ -133,7 +133,7 @@
     }
 
     .col-word-break {
-        @media (min-width: $screen-sm-min) {
+        @include media-breakpoint-up('md') {
             word-wrap: break-word;
             word-break: break-all;
         }

@@ -67,7 +67,7 @@ $login-container-padding-horizontal: 2.5em;
     display: block;
     color: #666;
 
-    @media (min-width: $screen-sm-min) {
+    @include media-breakpoint-up('md') {
         flex: none;
         position: absolute;
         bottom: 1.5em;
@@ -167,7 +167,7 @@ $login-container-padding-horizontal: 2.5em;
         font-weight: bold;
     }
 
-    @media (max-width: $screen-xs-max) {
+    @include media-breakpoint-down('md') {
         margin-bottom: 0;
     }
 

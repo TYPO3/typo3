@@ -255,17 +255,17 @@ a.card:hover {
 }
 
 .card-size-small {
-    @media (min-width: $screen-sm-min) {
+    @include media-breakpoint-up('md') {
         width: calc(50% - #{$card-spacing*2});
     }
 
-    @media (min-width: $screen-md-min) {
+    @include media-breakpoint-up('lg') {
         width: calc(25% - #{$card-spacing*2});
     }
 }
 
 .card-size-medium {
-    @media (min-width: $screen-sm-min) {
+    @include media-breakpoint-up('md') {
         width: calc(50% - #{$card-spacing*2});
     }
 }
@@ -276,11 +276,11 @@ a.card:hover {
 .card-size-fixed-small {
     width: calc(100% - #{$card-spacing*2});
 
-    @media (min-width: $screen-ms-min) {
+    @include media-breakpoint-up('sm') {
         width: calc(50% - #{$card-spacing*2});
     }
 
-    @media (min-width: $screen-sm-min) {
+    @include media-breakpoint-up('md') {
         width: 300px;
     }
 }

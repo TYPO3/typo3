@@ -11,6 +11,7 @@
 @import "../../node_modules/bootstrap/scss/functions";
 @import "variables/main";
 @import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
 
 //
 // Variables
@@ -20,7 +21,6 @@ $stage-abstract-element-height: 62px;
 $stage-abstract-element-toolbar-height: 35px;
 $stage-icon-container-width: 40px;
 $stage-validation-list-width: 100px;
-$stage-breakpoint-max: $screen-lg - 1;
 $stage-validation-transition-time-in: .2s;
 $stage-validation-transition-time-out: .3s;
 $navigation-bg: $gray-100;
@@ -901,7 +901,7 @@ $tree-line-height: 20px;
     // Preview
     &.t3-form-stage-viewmode-preview {
         #t3-form-stage-inner-container {
-            @media (max-width: $stage-breakpoint-max) {
+            @include media-breakpoint-down('xl') {
                 width: 600px;
             }
         }

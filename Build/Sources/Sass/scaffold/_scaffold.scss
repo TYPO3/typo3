@@ -6,8 +6,6 @@
 //
 // Variables
 //
-$scaffold-breakpoint-max: ($screen-md - 1);
-$scaffold-breakpoint: $screen-md;
 $scaffold-overlay-bg: rgba(0, 0, 0, .65);
 $scaffold-overlay-zindex: $zindex-modal-backdrop;
 $scaffold-bg: #f5f5f5;
@@ -100,7 +98,7 @@ body {
     position: absolute;
     z-index: $scaffold-overlay-zindex + 1;
 
-    @media (min-width: $scaffold-breakpoint) {
+    @include media-breakpoint-up('lg') {
         z-index: $scaffold-modulemenu-zindex;
         position: sticky;
     }
@@ -132,7 +130,7 @@ body {
     }
     display: none;
 
-    @media (min-width: $scaffold-breakpoint) {
+    @include media-breakpoint-up('lg') {
         overflow: visible;
         background-color: transparent;
         height: $scaffold-topbar-height;
@@ -148,7 +146,7 @@ body {
             background-color: $scaffold-modulemenu-bg;
         }
 
-        @media (max-width: $scaffold-breakpoint-max) {
+        @include media-breakpoint-down('lg') {
             .toolbar-item {
                 padding: 4px;
             }
@@ -223,7 +221,7 @@ body {
     .scaffold-content-overlay {
         display: block;
 
-        @media (min-width: $scaffold-breakpoint) {
+        @include media-breakpoint-up('lg') {
             display: none;
         }
     }
@@ -234,7 +232,7 @@ body {
 //
 .scaffold {
     .scaffold-modulemenu {
-        @media (max-width: $scaffold-breakpoint-max) {
+        @include media-breakpoint-down('lg') {
             display: none;
         }
     }
@@ -244,7 +242,7 @@ body {
     .scaffold-modulemenu {
         width: $scaffold-modulemenu-expanded-width;
 
-        @media (max-width: $scaffold-breakpoint-max) {
+        @include media-breakpoint-down('lg') {
             display: block;
         }
     }

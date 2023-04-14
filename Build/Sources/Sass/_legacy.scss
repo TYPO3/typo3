@@ -75,7 +75,6 @@
 
 //// Variables
 $line-height-computed: floor(($font-size-base * $line-height-base)) !default; // ~20px
-$grid-float-breakpoint: $screen-sm-min !default;
 $input-height-base: ($line-height-computed + ($padding-base-vertical * 2) + 2) !default;
 
 .hidden,

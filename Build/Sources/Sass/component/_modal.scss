@@ -115,7 +115,7 @@ $modal-sidebar-button-space: $padding-small-vertical;
     .modal-body {
         padding: 0;
 
-        @media (min-width: $screen-sm-min) {
+        @include media-breakpoint-up('md') {
             display: flex;
             flex-direction: row;
         }
@@ -134,11 +134,11 @@ $modal-sidebar-button-space: $padding-small-vertical;
         // event to adjust the image width to the current view port
         width: 100%;
 
-        @media (min-width: $screen-sm-min) {
+        @include media-breakpoint-up('md') {
             width: calc(100% - #{$modal-sidebar-sm});
         }
 
-        @media (min-width: $screen-md-min) {
+        @include media-breakpoint-up('lg') {
             width: calc(100% - #{$modal-sidebar-md});
         }
 
@@ -158,11 +158,11 @@ $modal-sidebar-button-space: $padding-small-vertical;
         -webkit-overflow-scrolling: touch;
         width: 100%;
 
-        @media (min-width: $screen-sm-min) {
+        @include media-breakpoint-up('md') {
             width: $modal-sidebar-sm;
         }
 
-        @media (min-width: $screen-md-min) {
+        @include media-breakpoint-up('lg') {
             width: $modal-sidebar-md;
         }
     }

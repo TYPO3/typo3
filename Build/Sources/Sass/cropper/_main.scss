@@ -196,21 +196,21 @@
         opacity: 0;
     }
 
-    @media (min-width: $screen-sm) {
+    @include media-breakpoint-up('md') {
         &.point-se {
             height: 15px;
             width: 15px;
         }
     }
 
-    @media (min-width: $screen-md) {
+    @include media-breakpoint-up('lg') {
         &.point-se {
             height: 10px;
             width: 10px;
         }
     }
 
-    @media (min-width: $screen-lg) {
+    @include media-breakpoint-up('xl') {
         &.point-se {
             height: 5px;
             width: 5px;

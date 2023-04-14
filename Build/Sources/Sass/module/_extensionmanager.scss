@@ -105,7 +105,7 @@
         width: 50px;
         display: block;
 
-        @media (min-width: $screen-sm-min) {
+        @include media-breakpoint-up('md') {
             width: 64px;
         }
     }
@@ -122,7 +122,7 @@
     margin-bottom: 2em;
     max-width: 100%;
 
-    @media (min-width: $screen-sm-min) {
+    @include media-breakpoint-up('md') {
         float: left;
         margin-right: 3em;
     }

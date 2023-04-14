@@ -65,7 +65,7 @@
         max-width: 1000px;
         max-height: calc(100vh - 250px);
 
-        @media (min-width: $screen-md-min) {
+        @include media-breakpoint-up('lg') {
             max-height: 100%;
         }
     }

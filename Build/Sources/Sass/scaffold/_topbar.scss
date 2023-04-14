@@ -65,7 +65,7 @@ $toolbar-item-padding-horizontal: 15px;
     &.topbar-button-modulemenu {
         left: 0;
 
-        @media (min-width: $scaffold-breakpoint) {
+        @include media-breakpoint-up('lg') {
             background-color: $topbar-button-active-bg;
         }
     }
@@ -96,7 +96,7 @@ $toolbar-item-padding-horizontal: 15px;
     display: inline-flex;
 }
 
-@media (min-width: $scaffold-breakpoint) {
+@include media-breakpoint-up('lg') {
     .topbar-button-toolbar,
     .topbar-button-search {
         display: none;
@@ -109,7 +109,7 @@ $toolbar-item-padding-horizontal: 15px;
 .topbar-header {
     padding-left: $topbar-button-width;
 
-    @media (max-width: $scaffold-breakpoint-max) {
+    @include media-breakpoint-down('lg') {
         padding-right: ($topbar-button-width) !important;
     }
 }
