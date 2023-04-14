@@ -71,13 +71,11 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             $serverParameters,
             static::normalizeUploadedFiles($_FILES)
         );
-
         if (!empty($_COOKIE)) {
             $request = $request->withCookieParams($_COOKIE);
         }
-        $queryParameters = GeneralUtility::_GET();
-        if (!empty($queryParameters)) {
-            $request = $request->withQueryParams($queryParameters);
+        if (!empty($_GET)) {
+            $request = $request->withQueryParams($_GET);
         }
         $parsedBody = $_POST;
         if (empty($parsedBody) && in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
