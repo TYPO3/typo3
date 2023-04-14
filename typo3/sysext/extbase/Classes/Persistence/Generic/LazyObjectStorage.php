@@ -103,16 +103,18 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      */
     protected function initialize()
     {
-        if (!$this->isInitialized) {
-            $this->isInitialized = true;
-            $objects = $this->dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, false);
-            foreach ($objects as $object) {
-                parent::attach($object);
-            }
-            $this->_memorizeCleanState();
-            if (!$this->isStorageAlreadyMemorizedInParentCleanState()) {
-                $this->parentObject->_memorizeCleanState($this->propertyName);
-            }
+        if ($this->isInitialized) {
+            return;
+        }
+
+        $this->isInitialized = true;
+        $objects = $this->dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, false);
+        foreach ($objects as $object) {
+            parent::attach($object);
+        }
+        $this->_memorizeCleanState();
+        if (!$this->isStorageAlreadyMemorizedInParentCleanState()) {
+            $this->parentObject->_memorizeCleanState($this->propertyName);
         }
     }
 
