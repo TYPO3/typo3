@@ -44,7 +44,7 @@
     <p id="loginNewsItem-{item.uid}" class="typo3-login-news-heading">{item.header}</p>
     {item.content -> f:transform.html() -> f:sanitize.html()}
     <f:if condition="{item.date}">
-        <p class="text-muted">
+        <p class="text-body-secondary">
             <span class="visually-hidden"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.date"/></span>{item.date}
         </p>
     </f:if>

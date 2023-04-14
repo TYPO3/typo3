@@ -444,8 +444,8 @@ class SetupModuleController
 
                     if ($fieldName === 'password' && $this->passwordPolicyValidator->isEnabled() && $this->passwordPolicyValidator->hasRequirements()) {
                         $description = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_password_policy.xlf:passwordRequirements.description');
-                        $html .= '<p class="mt-2 mb-1 text-muted">' . htmlspecialchars($description) . '</p>';
-                        $html .= '<ul class="mb-0"><li class="text-muted">' . implode('</li><li class="text-muted">', $this->passwordPolicyValidator->getRequirements()) . '</li></ul>';
+                        $html .= '<p class="mt-2 mb-1 text-body-secondary">' . htmlspecialchars($description) . '</p>';
+                        $html .= '<ul class="mb-0"><li class="text-body-secondary">' . implode('</li><li class="text-body-secondary">', $this->passwordPolicyValidator->getRequirements()) . '</li></ul>';
                     }
 
                     break;
@@ -563,7 +563,7 @@ class SetupModuleController
                             $html .= ' <span class="badge badge-success">' . htmlspecialchars($lang->getLL('mfaProviders.enabled')) . '</span>';
                         }
                     }
-                    $html .= '<p class="text-muted">' . nl2br(htmlspecialchars($lang->getLL('mfaProviders.description'))) . '</p>';
+                    $html .= '<p class="text-body-secondary">' . nl2br(htmlspecialchars($lang->getLL('mfaProviders.description'))) . '</p>';
                     if (!$this->mfaProviderRegistry->hasProviders()) {
                         $html .= '<span class="badge badge-danger">' . htmlspecialchars($lang->getLL('mfaProviders.notAvailable')) . '</span>';
                         break;

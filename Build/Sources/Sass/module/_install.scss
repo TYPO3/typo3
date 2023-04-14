@@ -83,11 +83,6 @@
         display: block;
     }
 
-    // Grey line on hr tags in modals
-    hr {
-        border-top: 1px solid $panel-default-heading-bg;
-    }
-
     // Styles for specific modals: language pack handling
     .table .t3-languagePacks-inactive,
     .table .t3-languagePacks-inactive td {

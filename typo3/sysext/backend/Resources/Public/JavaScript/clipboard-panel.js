@@ -44,7 +44,7 @@ var ClipboardPanel_1,CopyMode,__decorate=function(t,e,a,o){var n,i=arguments.len
               ${t.title}
               ${t.info}`:html`
               <typo3-backend-icon identifier="actions-circle" size="small"></typo3-backend-icon>
-              <span class="text-muted">
+              <span class="text-body-secondary">
                 ${t.title}
                 ${t.info}
               </span>

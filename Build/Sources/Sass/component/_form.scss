@@ -9,9 +9,7 @@
 // Label
 //
 .form-label {
-    font-weight: 600;
     word-break: break-all;
-    margin-bottom: .25rem;
 }
 
 //
@@ -19,7 +17,21 @@
 //
 .form-description {
     opacity: .75;
-    margin-bottom: .25rem;
+    margin-bottom: $form-label-margin-bottom;
+}
+
+//
+// Form group
+//
+.form-group {
+    margin-bottom: var(--typo3-spacing);
+}
+
+.form-group-dashed {
+    & + .form-group-dashed {
+        padding-top: var(--typo3-spacing);
+        border-top: 1px dashed rgba(0, 0, 0, .15);
+    }
 }
 
 //

@@ -3,14 +3,12 @@
     <div class="t3-form-x-component-inner-wrapper">
         <f:for each="{insertRenderablesPanelConfiguration}" as="insertRenderablePanelConfiguration">
             <f:if condition="{insertRenderablePanelConfiguration.key} == 'page'">
+                <h3 class="t3-form-group-{insertRenderablePanelConfiguration.key}">
+                    <span>{insertRenderablePanelConfiguration.label}</span>
+                </h3>
                 <div class="row">
-                    <div class="col-sm-12">
-                        <h3 class="t3-form-group-{insertRenderablePanelConfiguration.key}">
-                            <span>{insertRenderablePanelConfiguration.label}</span>
-                        </h3>
-                    </div>
                     <f:for each="{insertRenderablePanelConfiguration.elements}" as="element">
-                        <div class="col-sm-4 btn-group">
+                        <div class="col-sm-4">
                             <a class="t3-form-group-{insertRenderablePanelConfiguration.key} t3-form-type-{element.cssKey} btn btn-default d-block" title="{element.key}" data-element-type="{element.key}">
                                 <span class="float-start">
                                     <core:icon identifier="{element.iconIdentifier}" alternativeMarkupIdentifier="inline" />
@@ -18,7 +16,6 @@
                                 </span>
                                 <span class="clearfix"></span>
                             </a>
-                            <hr>
                         </div>
                     </f:for>
                 </div>

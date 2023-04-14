@@ -12,23 +12,24 @@
 </p>
 
 <div class="t3js-module-content" data-clear-tables-clear-token="{clearTablesClearToken}">
-    <div class="t3js-clearTables-output"></div>
 
-    <div class="form-group">
-        <div class="t3js-clearTables-stat-container"></div>
-    </div>
+    <div class="t3js-clearTables-output mt-4"></div>
+    <div class="t3js-clearTables-stat-container mt-4"></div>
 
     <div style="display:none;">
         <div class="t3js-clearTables-stat-template">
-            <p class="t3js-clearTables-stat-description">{clearTableStatistic.description}</p>
-            <span
-                class="btn btn-warning t3js-clearTables-clear gap-0"
-                type="button"
-            >
-                Delete&nbsp;<span class="t3js-clearTables-stat-rows"></span>&nbsp;row(s)
-                from table "<pre><span class="t3js-clearTables-stat-name"></span></pre>"
-            </span>
-            <hr class="t3js-clearTables-stat-lastRuler">
+            <div class="form-group form-group-dashed">
+                <p class="t3js-clearTables-stat-description">{clearTableStatistic.description}</p>
+                <span
+                    class="btn btn-warning t3js-clearTables-clear gap-0"
+                    type="button"
+                >
+                    <span>
+                        Delete <strong class="t3js-clearTables-stat-rows"></strong> row(s)
+                        from table "<strong class="t3js-clearTables-stat-name"></strong>"
+                    </span>
+                </span>
+            </div>
         </div>
     </div>
 

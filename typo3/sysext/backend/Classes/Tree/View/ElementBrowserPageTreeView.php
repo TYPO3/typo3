@@ -70,7 +70,7 @@ class ElementBrowserPageTreeView extends BrowseTreeView
             $url = GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => (int)$v['uid']]);
             return '<span class="treelist-title"><a href="' . htmlspecialchars($url) . '" class="t3js-pageLink">' . $title . '</a></span>';
         }
-        return '<span class="treelist-title text-muted">' . $title . '</span>';
+        return '<span class="treelist-title text-body-secondary">' . $title . '</span>';
     }
 
     /**

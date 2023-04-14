@@ -478,8 +478,8 @@ class DragUploaderPlugin {
       size: ModalSizes.large,
       callback: (modal: ModalElement): void => {
         $(modal).find('.modal-footer').prepend(
-          $('<span/>').addClass('form-inline').append(
-            $('<label/>').text(TYPO3.lang['file_upload.actions.all.label']),
+          $('<label/>').text(TYPO3.lang['file_upload.actions.all.label']),
+          $('<span/>').append(
             $('<select/>', { class: 'form-select t3js-actions-all' }).append(
               $('<option/>').val('').text(TYPO3.lang['file_upload.actions.all.empty']),
               (this.irreObjectUid ? $('<option/>').val(Action.USE_EXISTING).text(TYPO3.lang['file_upload.actions.all.use_existing']) : ''),

@@ -53,7 +53,7 @@
 #t3-form-inspector h2,#t3-form-inspector h3,#t3-form-inspector h4{margin:0;padding:.1em .2em .2em .5em;border-top:1px solid var(--module-docheader-border);clear:both;font:inherit;font-weight:700}
 #t3-form-inspector h2{padding-bottom:1em;border:none;border-bottom:1px solid var(--module-docheader-border)}
 #t3-form-inspector>h2:first-child{border-top:none}
-#t3-form-inspector h3{color:#000;padding-top:.3em;border:none}
+#t3-form-inspector h3{padding-top:.3em;border:none}
 #t3-form-inspector h4{padding:.8em 3.5em .8em 2.8em;font-weight:500;background-color:#ddd}
 #t3-form-inspector h4 span[data-template-property=label]{vertical-align:top}
 #t3-form-inspector .form-section-headline{padding:0}

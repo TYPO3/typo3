@@ -78,7 +78,7 @@ class Localization {
               + '<br>' + TYPO3.lang['localize.wizard.button.translate'] + '</label>'
               + '</div>'
               + '<div class="col-sm-9">'
-              + '<p class="t3js-helptext t3js-helptext-translate text-muted">' + TYPO3.lang['localize.educate.translate'] + '</p>'
+              + '<p class="t3js-helptext t3js-helptext-translate text-body-secondary">' + TYPO3.lang['localize.educate.translate'] + '</p>'
               + '</div>'
               + '</div>',
             );
@@ -95,7 +95,7 @@ class Localization {
               + '<br>' + TYPO3.lang['localize.wizard.button.copy'] + '</label>'
               + '</div>'
               + '<div class="col-sm-9">'
-              + '<p class="t3js-helptext t3js-helptext-copy text-muted">' + TYPO3.lang['localize.educate.copy'] + '</p>'
+              + '<p class="t3js-helptext t3js-helptext-copy text-body-secondary">' + TYPO3.lang['localize.educate.copy'] + '</p>'
               + '</div>'
               + '</div>',
             );
@@ -121,7 +121,7 @@ class Localization {
             );
           }
 
-          slideStep1 += '<div data-bs-toggle="buttons">' + actions.join('<hr>') + '</div>';
+          slideStep1 += '<div data-bs-toggle="buttons">' + actions.join('') + '</div>';
           Wizard.addSlide(
             'localize-choose-action',
             TYPO3.lang['localize.wizard.header_page']
@@ -320,9 +320,9 @@ class Localization {
               if ($me.data('helptext')) {
                 const $container = $(optionEvt.delegateTarget);
                 $container.find('.t3js-localization-option').removeClass('active');
-                $container.find('.t3js-helptext').addClass('text-muted');
+                $container.find('.t3js-helptext').addClass('text-body-secondary');
                 $me.addClass('active');
-                $container.find($me.data('helptext')).removeClass('text-muted');
+                $container.find($me.data('helptext')).removeClass('text-body-secondary');
               }
               this.localizationMode = $radio.val();
               Wizard.unlockNextStep();

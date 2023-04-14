@@ -73,8 +73,7 @@ class DebugUtility
 							"width=600,height=400,menubar=0,toolbar=1,status=0,scrollbars=1,resizable=1"
 						);
 						if (newWindow.document.body.innerHTML) {
-							newWindow.document.body.innerHTML = newWindow.document.body.innerHTML +
-								"<hr />" + debugMessage;
+							newWindow.document.body.innerHTML = newWindow.document.body.innerHTML + debugMessage;
 						} else {
 							newWindow.document.writeln(
 								"<html><head><title>Debug: " + header + "(" + group + ")</title></head>"

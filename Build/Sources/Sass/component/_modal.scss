@@ -283,21 +283,6 @@ $modal-sidebar-button-space: $padding-small-vertical;
 }
 
 //
-// T3JS-Modal
-//
-.t3js-modal-footer {
-    .form-inline {
-        display: block;
-        margin: 1em 0;
-        width: 100%;
-    }
-
-    label {
-        margin-right: 10px;
-    }
-}
-
-//
 // MultiStepWizard-Modal
 //
 .modal-multi-step-wizard {
@@ -324,7 +309,7 @@ $modal-sidebar-button-space: $padding-small-vertical;
         .progress-bar {
             &.inactive {
                 background: none;
-                color: $text-color;
+                color: $body-color;
             }
         }
     }

@@ -67,10 +67,6 @@
         background-color: $background-color;
         border-color: $border-color;
     }
-    // Optional feedback icon
-    .form-control-feedback {
-        color: $text-color;
-    }
 }
 
 //// Variables
@@ -80,10 +76,6 @@ $input-height-base: ($line-height-computed + ($padding-base-vertical * 2) + 2) !
 .hidden,
 .hide {
     display: none !important;
-}
-
-.form-group {
-    margin-bottom: .5rem;
 }
 
 .caret {
@@ -135,10 +127,6 @@ $input-height-base: ($line-height-computed + ($padding-base-vertical * 2) + 2) !
     padding: .625rem 1rem;
     margin: 2rem 0 1rem;
     border-bottom: 1px solid $gray-700;
-}
-
-.form-inline .form-group {
-    display: inline-block;
 }
 
 .modal-backdrop.in {

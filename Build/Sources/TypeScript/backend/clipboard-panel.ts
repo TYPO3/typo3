@@ -134,7 +134,7 @@ export class ClipboardPanel extends LitElement {
               ${tab.title}
               ${tab.info}` : html`
               <typo3-backend-icon identifier="actions-circle" size="small"></typo3-backend-icon>
-              <span class="text-muted">
+              <span class="text-body-secondary">
                 ${tab.title}
                 ${tab.info}
               </span>

@@ -38,7 +38,7 @@
     </div>
 
     <div class="t3js-upgradeWizards-list-template">
-        <h4>Upgrade status</h4>
+        <h4 class="mt-4">Upgrade status</h4>
         <p>Progress of upgrade wizards:</p>
         <div class="progress">
             <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
@@ -47,15 +47,14 @@
                 <span>0%</span>
             </div>
         </div>
-        <div class="t3js-upgradeWizards-list-rows"></div>
+        <div class="t3js-upgradeWizards-list-rows mt-4"></div>
     </div>
-    <div class="t3js-upgradeWizards-list-row-template mt-3">
+    <div class="t3js-upgradeWizards-list-row-template form-group form-group-dashed">
         <h4 class="t3js-upgradeWizards-list-row-title"></h4>
-        <div class="row-explanation t3js-upgradeWizards-list-row-explanation"></div>
+        <p class="row-explanation t3js-upgradeWizards-list-row-explanation"></p>
         <button class="btn btn-default t3js-upgradeWizards-list-row-execute" type="button">
             Execute
         </button>
-        <hr />
     </div>
 
     <div class="t3js-upgradeWizards-input">
@@ -97,14 +96,10 @@
     </div>
 </div>
 
-<hr>
-
 <div class="t3js-upgrade-status-section">
     <div class="upgradeWizards-wizards-output t3js-upgradeWizards-wizards-output"></div>
 
-    <hr>
-
-    <h4>Wizards marked as done</h4>
+    <h4 class="mt-4">Wizards marked as done</h4>
     <p>
         Some wizards fully automatically check whether they should be executed, while others just
         set a flag in the system registry if they have been executed once. This "I have been executed"

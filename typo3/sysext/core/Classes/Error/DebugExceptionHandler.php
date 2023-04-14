@@ -168,7 +168,7 @@ HTML;
             <div class="trace">
                 <div class="trace-head">
                     <h3 class="trace-class">
-                        <span class="text-muted">({$index}/{$total})</span>
+                        <span class="text-body-secondary">({$index}/{$total})</span>
                         <span class="exception-title">{$exceptionCode}{$exceptionTitle}</span>
                     </h3>
                     <p class="trace-message break-long-words">{$exceptionMessage}</p>
@@ -325,7 +325,7 @@ HTML;
                 margin: 0;
             }
 
-            .exception-page .text-muted {
+            .exception-page .text-body-secondary {
                 opacity: 0.5;
             }
 

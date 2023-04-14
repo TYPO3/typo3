@@ -11,7 +11,7 @@ $dashboard-button-hover-color: #fff;
 $dashboard-button-padding: 8px;
 
 // Widget
-$widget-color: $text-color;
+$widget-color: $body-color;
 $widget-border-radius: 2px;
 $widget-background: #fff;
 $widget-shadow: 0 2px 2px 0 rgba(0, 0, 0, .15);
@@ -34,7 +34,7 @@ $widget-cta-hover-color: #fff;
 $widget-cta-padding: 8px;
 
 // Widget Table
-$widget-table-color: $text-color;
+$widget-table-color: $body-color;
 $widget-table-head-background: transparent;
 $widget-table-odd-background: transparent;
 $widget-table-even-background: #f2f2f2;
@@ -53,6 +53,6 @@ $dashboard-header-background: #dadada;
 $dashboard-header-tab-border-radius: 5px;
 $dashboard-header-tab-padding: 12px;
 $dashboard-header-tab-background: #bababa;
-$dashboard-header-tab-color: $text-color;
+$dashboard-header-tab-color: $body-color;
 $dashboard-header-tab-active-background: #ff8700;
 $dashboard-header-tab-active-color: #fff;

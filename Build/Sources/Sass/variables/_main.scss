@@ -7,20 +7,20 @@
 // =========
 //
 
-// Colors
+// gray-color-variables
 $white: #fff;
-$gray-900: rgb(30, 30, 30);
-$gray-800: rgb(51, 51, 51);
-$gray-700: rgb(90, 90, 90);
-$gray-600: rgb(115, 115, 115);
-$gray-500: rgb(187, 187, 187);
-$gray-400: rgb(204, 204, 204);
-$gray-300: rgb(215, 215, 215);
-$gray-200: rgb(238, 238, 238);
 $gray-100: rgb(245, 245, 245);
+$gray-200: rgb(238, 238, 238);
+$gray-300: rgb(215, 215, 215);
+$gray-400: rgb(204, 204, 204);
+$gray-500: rgb(187, 187, 187);
+$gray-600: rgb(115, 115, 115);
+$gray-700: rgb(90, 90, 90);
+$gray-800: rgb(51, 51, 51);
+$gray-900: rgb(30, 30, 30);
 $black: #000;
 
-//
+// color-variables
 $blue: #0078e6;
 $indigo: #6610f2;
 $purple: #8661c5;
@@ -32,7 +32,7 @@ $green: #107c10;
 $teal: #008575;
 $cyan: #17a2b8;
 
-//
+// theme-color-variables
 $primary: $blue;
 $secondary: $gray-600;
 $success: $green;
@@ -45,7 +45,7 @@ $notice: $gray-800;
 $dark: $gray-900;
 $min-contrast-ratio: 3;
 
-// Theme colors
+// theme-colors-map
 $theme-colors: (
     "primary": $primary,
     "secondary": $secondary,
@@ -61,24 +61,20 @@ $theme-colors: (
 
 // Options
 $enable-shadows: true;
-$theme-color-interval: 10%;
 
-// Scaffolding
+// Body
 $body-bg: #fff;
 $body-color: $black;
-$text-body: $black;
-$text-color: $black;
+
+// Links
 $link-color: #212424;
-$link-disabled-color: $gray-300;
-$link-hover-color: #000;
 $link-decoration: none;
 $link-hover-decoration: underline;
 
 // Typography
-$font-size-root: 16px;
 $font-family-sans-serif: Verdana, Arial, Helvetica, sans-serif;
-$font-family-serif: Georgia, Times, "Times New Roman", serif;
 $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+$font-size-root: 16px;
 $font-size-base: 12px;
 $font-size-large: ceil(($font-size-base * 1.25)); // ~15px
 $font-size-small: 11px; // ~11px
@@ -87,7 +83,6 @@ $h2-font-size: $font-size-base * 1.6;
 $h3-font-size: $font-size-base * 1.4;
 $h4-font-size: $font-size-base * 1.25;
 $headings-line-height: 1.1;
-$line-height-base: 1.5;
 
 // Paragraphs
 $paragraph-margin-bottom: .5rem;
@@ -116,9 +111,6 @@ $table-hover-bg-factor: .035;
 $table-active-bg-factor: .045;
 $table-border-factor: .1;
 
-// Pill
-$rounded-pill: .625rem;
-
 // Forms
 $input-bg: #fefefe;
 $input-color: #333;
@@ -128,8 +120,7 @@ $input-color-placeholder: $gray-300;
 $input-color-disabled: $gray-600;
 $input-height-large: (ceil($font-size-large * $line-height-large) + ($padding-large-vertical * 1.6) + 2);
 $input-border-color: $gray-500;
-$form-label-font-weight: 400;
-$form-label-margin-bottom: .25rem;
+$form-label-font-weight: 600;
 
 // Navbar
 $navbar-height: 45px;
@@ -172,23 +163,15 @@ $alert-bg-scale: -85%;
 $alert-border-scale: -60%;
 $alert-color-scale: 100%;
 
-// Tooltips
-$tooltip-bg: #333;
-$tooltip-opacity: 1;
-$tooltip-arrow-width: 3px;
-
 // Panels
 $panel-default-border: #ccc;
 $panel-default-heading-bg: #ddd;
 
 // Badges
-$badge-bg: $gray-600;
+$badge-font-size: calc(1em / 12 * 10);
 $badge-border-radius: .125rem;
 
 // Type
-$text-muted: lighten($text-color, 45%);
-$headings-small-color: $gray-600;
-$dl-horizontal-offset: 90px;
 $hr-border: #7a7a7a;
 $hr-opacity: 1;
 
@@ -227,10 +210,6 @@ $dropdown-item-padding-x: var(--typo3-list-item-padding-x);
 $dropdown-header-color: var(--typo3-component-color);
 $dropdown-header-padding-x: var(--typo3-list-item-padding-x);
 $dropdown-header-padding-y: var(--typo3-list-item-padding-y);
-
-// CSS Caret
-$caret-width: .4em;
-$caret-vertical-align: $caret-width * .38;
 
 // Card
 $card-cap-bg: transparent;

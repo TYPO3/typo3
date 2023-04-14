@@ -140,7 +140,7 @@ fieldset[disabled] .form-control {
 // Form group validation states
 //
 .form-group.has-error {
-    label:before {
+    .form-label:before {
         @include icon-background($icon-actions-exclamation-circle, $danger);
         border-radius: 50%;
         width: 14px;
@@ -233,12 +233,6 @@ select {
     }
 }
 
-.form-inline {
-    .form-control-clearable {
-        display: inline-block;
-    }
-}
-
 //
 // Styles for the "capslock" jquery plugin.
 //
@@ -256,16 +250,6 @@ select {
     > img {
         display: block;
         opacity: .5;
-    }
-}
-
-//
-// Form group additions
-//
-.form-group-dashed {
-    & + .form-group-dashed {
-        padding-top: 15px;
-        border-top: 1px dashed #ccc;
     }
 }
 

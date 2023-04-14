@@ -22,10 +22,10 @@
                 required
             />
             <f:if condition="{passwordPolicyRequirements}">
-                <p class="mt-2 mb-1 text-muted">The password must match the following requirements:</p>
+                <p class="mt-2 mb-1 text-body-secondary">The password must match the following requirements:</p>
                 <ul>
                     <f:for each="{passwordPolicyRequirements}" as="requirement">
-                        <li class="text-muted">{requirement}</li>
+                        <li class="text-body-secondary">{requirement}</li>
                     </f:for>
                 </ul>
             </f:if>

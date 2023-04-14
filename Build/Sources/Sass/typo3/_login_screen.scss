@@ -94,14 +94,9 @@ $login-container-padding-horizontal: 2.5em;
     margin-top: 20px;
     margin-bottom: 20px;
 
-    .disabled {
-        cursor: not-allowed !important;
-        text-decoration: none !important;
-        color: $text-muted !important;
-
-        span {
-            cursor: inherit;
-        }
+    a {
+        display: flex;
+        gap: .5rem;
     }
 }
 

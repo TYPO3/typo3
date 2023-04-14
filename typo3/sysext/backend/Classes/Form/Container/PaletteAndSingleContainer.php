@@ -364,7 +364,7 @@ class PaletteAndSingleContainer extends AbstractContainer
         }
 
         if (!empty($description)) {
-            $result[] = '<p class="form-section-description text-muted">' . htmlspecialchars($description) . '</p>';
+            $result[] = '<p class="form-section-description text-body-secondary">' . htmlspecialchars($description) . '</p>';
         }
 
         $result[] = $content;
