@@ -42,24 +42,24 @@ class SvgSanitizerTest extends FunctionalTestCase
         $data = [];
         foreach ($finder as $file) {
             $fileName = $file->getFilename();
-            $data[$fileName] = ['DirtySVG/' . $fileName, 'CleanSVG/' . $fileName];
+            $data[$fileName] = [
+                $basePath . 'DirtySVG/' . $fileName,
+                $basePath . 'CleanSVG/' . $fileName,
+            ];
         }
         return $data;
     }
 
     /**
-     * @param string $filePath
-     * @param string $sanitizedFilePath
      * @test
      * @dataProvider svgContentIsSanitizedDataProvider
      */
-    public function svgContentIsSanitized($filePath, $sanitizedFilePath): void
+    public function svgContentIsSanitized(string $filePath, string $sanitizedFilePath): void
     {
-        $basePath = dirname(__FILE__, 2) . '/Fixtures/';
         $sanitizer = new SvgSanitizer();
         self::assertStringEqualsFile(
-            $basePath . $sanitizedFilePath,
-            $sanitizer->sanitizeContent(file_get_contents($basePath . $filePath))
+            $sanitizedFilePath,
+            $sanitizer->sanitizeContent(file_get_contents($filePath))
         );
     }
 }
