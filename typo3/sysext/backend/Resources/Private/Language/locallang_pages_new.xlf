@@ -39,6 +39,9 @@
 			<trans-unit id="newSubPages" resname="newSubPages">
 				<source>New page structure</source>
 			</trans-unit>
+			<trans-unit id="newSubPages.pageTitle" resname="newSubPages.pageTitle">
+				<source>Page title</source>
+			</trans-unit>
 			<trans-unit id="noPagesCreated.title" resname="noPagesCreated.title">
 				<source>No pages added</source>
 			</trans-unit>

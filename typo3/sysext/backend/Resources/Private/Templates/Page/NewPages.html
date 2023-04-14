@@ -47,16 +47,51 @@
                             />
                         </f:else>
                     </f:if>
+
                     <f:if condition="{visiblePages}">
-                        <div class="form-group">
-                            <h2>
-                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:newSubPages"/>
-                            </h2>
-                            <f:for each="{visiblePages}" as="page">
-                                <core:iconForRecord table="pages" row="{page}" />
-                                {page.title -> f:format.crop(maxCharacters: maxTitleLength)}
-                                <br />
-                            </f:for>
+                        <h2 class="mt-4">
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:newSubPages"/>
+                        </h2>
+                        <div class="table-fit">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:newSubPages.pageTitle" /></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <f:for each="{visiblePages}" as="page" iteration="pageIterator">
+                                        <tr>
+                                            <td>
+                                                <span class="treeline-icon treeline-icon-join{f:if(condition: '{pageIterator.isLast}', then: 'bottom')}"></span>
+                                                <span title="id={page.uid}"><f:spaceless>
+                                                    <a href="#"
+                                                        data-contextmenu-trigger="click"
+                                                        data-contextmenu-table="pages"
+                                                        data-contextmenu-uid="{page.uid}"
+                                                    >
+                                                        <core:iconForRecord table="pages" row="{page}" />
+                                                    </a>
+                                                    {page.title -> f:format.crop(maxCharacters: maxTitleLength)}
+                                                </f:spaceless></span>
+                                            </td>
+                                            <td class="col-control">
+                                                <div class="btn-group">
+                                                    <be:link.editRecord
+                                                        table="pages"
+                                                        uid="{page.uid}"
+                                                        title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}"
+                                                        class="btn btn-default"
+                                                    >
+                                                        <core:icon identifier="actions-page-open" />
+                                                    </be:link.editRecord>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </f:for>
+                                </tbody>
+                            </table>
                         </div>
                     </f:if>
                 </f:then>
@@ -83,29 +118,59 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="createInListEnd" id="createInListEnd" value="1" />
-                                <label for="createInListEnd" class="form-check-label">
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:listEnd" />
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="hidePages" id="hidePages" value="1" />
-                                <label for="hidePages" class="form-check-label">
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:hidePages" />
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="hidePagesInMenus" id="hidePagesInMenus" value="1" />
-                                <label for="hidePagesInMenus" class="form-check-label">
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:hidePagesInMenus" />
-                                </label>
+                            <div class="formengine-field-item">
+                                <div class="form-wizards-wrap">
+                                    <div class="form-wizards-element">
+                                        <div class="form-check form-check-type-icon-toggle">
+                                            <input type="checkbox" class="form-check-input" name="createInListEnd" id="createInListEnd" value="1" />
+                                            <label for="createInListEnd" class="form-check-label">
+                                                <span class="form-check-label-icon">
+                                                    <span class="form-check-label-icon-checked">
+                                                        <core:icon identifier="actions-check" size="small" alternativeMarkupIdentifier="inline" />
+                                                    </span>
+                                                    <span class="form-check-label-icon-unchecked">
+                                                        <core:icon identifier="miscellaneous-placeholder" size="small" alternativeMarkupIdentifier="inline" />
+                                                    </span>
+                                                </span>
+                                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:listEnd" />
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-type-icon-toggle">
+                                            <input type="checkbox" class="form-check-input" name="hidePages" id="hidePages" value="1" />
+                                            <label for="hidePages" class="form-check-label">
+                                                <span class="form-check-label-icon">
+                                                    <span class="form-check-label-icon-checked">
+                                                        <core:icon identifier="actions-check" size="small" alternativeMarkupIdentifier="inline" />
+                                                    </span>
+                                                    <span class="form-check-label-icon-unchecked">
+                                                        <core:icon identifier="miscellaneous-placeholder" size="small" alternativeMarkupIdentifier="inline" />
+                                                    </span>
+                                                </span>
+                                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:hidePages" />
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-type-icon-toggle">
+                                            <input type="checkbox" class="form-check-input" name="hidePagesInMenus" id="hidePagesInMenus" value="1" />
+                                            <label for="hidePagesInMenus" class="form-check-label">
+                                                <span class="form-check-label-icon">
+                                                    <span class="form-check-label-icon-checked">
+                                                        <core:icon identifier="actions-check" size="small" alternativeMarkupIdentifier="inline" />
+                                                    </span>
+                                                    <span class="form-check-label-icon-unchecked">
+                                                        <core:icon identifier="miscellaneous-placeholder" size="small" alternativeMarkupIdentifier="inline" />
+                                                    </span>
+                                                </span>
+                                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:hidePagesInMenus" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <input
-                                class="btn btn-default"
+                                class="btn btn-primary"
                                 type="submit"
                                 name="create"
                                 value="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:create')}"
@@ -124,39 +189,59 @@
 </f:section>
 
 <f:section name="FormLine">
-    <div class="form-section" id="form-line-{line.index}">
+    <fieldset class="form-section" id="form-line-{line.index}">
         <div class="row">
             <div class="form-group col-8">
-                <label for="page_new_{line.index}">
-                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:newPage"/> {line.label}:
+                <label class="form-label" for="page_new_{line.index}">
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:newPage"/> {line.label}
                 </label>
-                <div class="form-control-wrap">
-                    <input class="form-control t3js-newmultiplepages-page-title" type="text" id="page_new_{line.index}" name="pages[NEW{line.index}][title]" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.title')}" />
+                <div class="formengine-field-item t3js-formengine-field-item">
+                    <div class="form-control-wrap">
+                        <div class="form-wizards-wrap">
+                            <div class="form-wizards-element">
+                                <div class="form-control-clearable">
+                                    <input
+                                        class="form-control t3js-newmultiplepages-page-title"
+                                        type="text"
+                                        id="page_new_{line.index}"
+                                        name="pages[NEW{line.index}][title]"
+                                        placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.title')}"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="form-group col-4">
-                <label for="page_new_select_{line.index}">
+                <label class="form-label" for="page_new_select_{line.index}">
                     <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.type"/>
                 </label>
-                <div class="form-control-wrap">
-                    <div class="input-group">
-                        <div id="page_new_icon_{line.index}" class="input-group-addon input-group-icon">
-                            <core:iconForRecord table="pages" row="{id: '0'}" />
+                <div class="formengine-field-item t3js-formengine-field-item">
+                    <div class="form-control-wrap">
+                        <div class="form-wizards-wrap">
+                            <div class="form-wizards-element">
+                                <div class="input-group">
+                                    <span class="input-group-addon input-group-icon" id="page_new_icon_{line.index}">
+                                        <core:iconForRecord table="pages" row="{id: '0'}" />
+                                    </span>
+                                    <select id="page_new_select_{line.index}" class="form-select t3js-newmultiplepages-select-doktype" name="pages[NEW{line.index}][doktype]" data-target="#page_new_icon_{line.index}">
+                                        <f:for each="{line.pageTypes}" as="typegroup" key="group">
+                                            <optgroup label="{f:translate(key: '{group}')}">
+                                                <f:for each="{typegroup}" as="type">
+                                                    <option data-icon='{core:icon(identifier: "{type.icon}")}' value="{type.value}">{f:translate(key: '{type.label}')}</option>
+                                                </f:for>
+                                            </optgroup>
+                                        </f:for>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <select id="page_new_select_{line.index}" class="form-select t3js-newmultiplepages-select-doktype" name="pages[NEW{line.index}][doktype]" data-target="#page_new_icon_{line.index}">
-                            <f:for each="{line.pageTypes}" as="typegroup" key="group">
-                                <optgroup label="{f:translate(key: '{group}')}">
-                                    <f:for each="{typegroup}" as="type">
-                                        <option data-icon='{core:icon(identifier: "{type.icon}")}' value="{type.value}">{f:translate(key: '{type.label}')}</option>
-                                    </f:for>
-                                </optgroup>
-                            </f:for>
-                        </select>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </fieldset>
 </f:section>
 
 </html>
