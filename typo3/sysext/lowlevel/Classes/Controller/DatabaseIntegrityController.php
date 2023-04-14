@@ -698,7 +698,7 @@ class DatabaseIntegrityController
                 }
                 if (!empty($rowArr)) {
                     $cPR['header'] = 'Result';
-                    $out .= '<textarea name="whatever" rows="20" class="text-monospace" style="width:100%">'
+                    $out .= '<textarea name="whatever" rows="20" class="font-monospace" style="width:100%">'
                         . htmlspecialchars(implode(LF, $rowArr))
                         . '</textarea>';
                     if (!$this->noDownloadB) {

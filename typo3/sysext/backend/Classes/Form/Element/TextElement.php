@@ -170,7 +170,7 @@ class TextElement extends AbstractFormElement
             'formengine-textarea',
         ];
         if ($config['fixedFont'] ?? false) {
-            $classes[] = 'text-monospace';
+            $classes[] = 'font-monospace';
         }
         if ($config['enableTabulator'] ?? false) {
             $classes[] = 't3js-enable-tab';
@@ -293,7 +293,7 @@ class TextElement extends AbstractFormElement
             $fullElement[] = '<div class="t3js-formengine-placeholder-placeholder">';
             $fullElement[] =    '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
             $fullElement[] =        '<textarea';
-            $fullElement[] =            ' class="form-control formengine-textarea' . (isset($config['fixedFont']) ? ' text-monospace' : '') . '"';
+            $fullElement[] =            ' class="form-control formengine-textarea' . (isset($config['fixedFont']) ? ' font-monospace' : '') . '"';
             $fullElement[] =            ' disabled="disabled"';
             $fullElement[] =            ' rows="' . htmlspecialchars($attributes['rows']) . '"';
             $fullElement[] =            ' wrap="' . htmlspecialchars($attributes['wrap']) . '"';

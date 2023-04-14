@@ -115,7 +115,7 @@ class JsonElement extends AbstractFormElement
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
-            $html[] =               '<textarea class="form-control text-monospace" rows="' . $rows . '" disabled>';
+            $html[] =               '<textarea class="form-control font-monospace" rows="' . $rows . '" disabled>';
             $html[] =                   htmlspecialchars($itemValue);
             $html[] =               '</textarea>';
             $html[] =           '</div>';
@@ -133,7 +133,7 @@ class JsonElement extends AbstractFormElement
             'name' => $itemName,
             'wrap' => 'off',
             'rows' => (string)$rows,
-            'class' => 'form-control text-monospace',
+            'class' => 'form-control font-monospace',
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
         ];
 

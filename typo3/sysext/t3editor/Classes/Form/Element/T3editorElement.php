@@ -118,7 +118,7 @@ class T3editorElement extends AbstractFormElement
 
         $editorHtml = $this->getHTMLCodeForEditor(
             $parameterArray['itemFormElName'],
-            'form-control text-monospace enable-tab',
+            'form-control font-monospace enable-tab',
             $parameterArray['itemFormElValue'],
             $attributes,
             $settings,

@@ -166,7 +166,7 @@ class TextTableElement extends AbstractFormElement
             'formengine-textarea',
         ];
         if ($config['fixedFont'] ?? false) {
-            $classes[] = 'text-monospace';
+            $classes[] = 'font-monospace';
         }
         if ($config['enableTabulator'] ?? false) {
             $classes[] = 't3js-enable-tab';
