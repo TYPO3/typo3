@@ -11,7 +11,7 @@ See :issue:`100584`
 Description
 ===========
 
-The method :php:`\TYPO3\CMS\Backend\Utility\GeneralUtility::linkThisScript()`
+The method :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript()`
 has been marked as deprecated and should not be used any longer.
 
 The method uses the super global :php:`$_GET` which should be avoided by

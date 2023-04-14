@@ -96,41 +96,6 @@ final class GeneralUtilityTest extends UnitTestCase
         return $path;
     }
 
-    ////////////////////////
-    // Tests concerning _GET
-    ////////////////////////
-    /**
-     * Data provider for canRetrieveGlobalInputsThroughGet
-     * and canRetrieveGlobalInputsThroughPost
-     */
-    public static function getAndPostDataProvider(): array
-    {
-        return [
-            'canRetrieveGlobalInputsThroughPosted input data doesn\'t exist' => ['cake', [], null],
-            'No key will return entire input data' => [null, ['cake' => 'l\\ie'], ['cake' => 'l\\ie']],
-            'Can retrieve specific input' => ['cake', ['cake' => 'l\\ie', 'foo'], 'l\\ie'],
-            'Can retrieve nested input data' => ['cake', ['cake' => ['is a' => 'l\\ie']], ['is a' => 'l\\ie']],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider getAndPostDataProvider
-     */
-    public function canRetrieveGlobalInputsThroughGet($key, $get, $expected): void
-    {
-        $_GET = $get;
-        self::assertSame($expected, GeneralUtility::_GET($key));
-    }
-
-    ///////////////////////////
-    // Tests concerning cmpIPv4
-    ///////////////////////////
-    /**
-     * Data provider for cmpIPv4ReturnsTrueForMatchingAddress
-     *
-     * @return array Data sets
-     */
     public static function cmpIPv4DataProviderMatching(): array
     {
         return [

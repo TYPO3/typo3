@@ -70,6 +70,16 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider getAndPostDataProvider
      */
+    public function canRetrieveGlobalInputsThroughGet($key, $get, $expected): void
+    {
+        $_GET = $get;
+        self::assertSame($expected, GeneralUtility::_GET($key));
+    }
+
+    /**
+     * @test
+     * @dataProvider getAndPostDataProvider
+     */
     public function canRetrieveGlobalInputsThroughPost($key, $post, $expected): void
     {
         $_POST = $post;

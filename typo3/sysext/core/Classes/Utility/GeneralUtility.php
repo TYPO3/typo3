@@ -151,9 +151,15 @@ class GeneralUtility
      *
      * @param string $var Optional pointer to value in GET array (basically name of GET var)
      * @return mixed If $var is set it returns the value of $_GET[$var]. If $var is NULL (default), returns $_GET itself.
+     * @deprecated since TYPO3 v12.4. will be removed in TYPO3 v13.0.
      */
     public static function _GET($var = null)
     {
+        trigger_error(
+            'GeneralUtility::_GET() will be removed in TYPO3 v13.0, retrieve request related' .
+            ' details from PSR-7 ServerRequestInterface instead.',
+            E_USER_DEPRECATED
+        );
         $value = $var === null
             ? $_GET
             : (empty($var) ? null : ($_GET[$var] ?? null));

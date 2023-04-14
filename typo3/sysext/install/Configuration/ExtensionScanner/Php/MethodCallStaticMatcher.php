@@ -1485,4 +1485,11 @@ return [
             'Deprecation-100584-GeneralUtilitylinkThisScript.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::_GET' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100596-GeneralUtility_GET.rst',
+        ],
+    ],
 ];

@@ -11,7 +11,7 @@ See :issue:`99615`
 Description
 ===========
 
-The method :php:`\TYPO3\CMS\Backend\Utility\GeneralUtility::_GPmerged()` has
+The method :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged()` has
 been marked as deprecated and should not be used any longer.
 
 Modern code should access `GET` and `POST` data from the PSR-7
@@ -54,7 +54,7 @@ Typical code:
 
 ..  code-block:: php
 
-    use TYPO3\CMS\Backend\Utility\GeneralUtility;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
     use TYPO3\CMS\Core\Utility\ArrayUtility;
 
     // Before
