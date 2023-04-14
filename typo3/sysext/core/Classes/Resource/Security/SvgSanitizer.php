@@ -45,8 +45,13 @@ class SvgSanitizer
      */
     public function sanitizeContent(string $svg): string
     {
+        // @todo: Simplify again when https://github.com/darylldoyle/svg-sanitizer/pull/90 is merged and released.
+        $previousXmlErrorHandling = libxml_use_internal_errors(true);
         $sanitizer = new Sanitizer();
         $sanitizer->removeRemoteReferences(true);
-        return $sanitizer->sanitize($svg) ?: '';
+        $sanitizedString = $sanitizer->sanitize($svg) ?: '';
+        libxml_clear_errors();
+        libxml_use_internal_errors($previousXmlErrorHandling);
+        return $sanitizedString;
     }
 }
