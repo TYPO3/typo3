@@ -47,11 +47,13 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
         }
 
         $additionalFields = [];
+        $fieldCode = '<input type="number" class="form-control" name="tx_scheduler[RecyclerCleanerPeriod]" value="' . ($taskInfo['RecyclerCleanerPeriod'] ?? 0) . '" min="1">';
         $additionalFields['period'] = [
-            'code' => '<input type="number" class="form-control" name="tx_scheduler[RecyclerCleanerPeriod]" value="' . ($taskInfo['RecyclerCleanerPeriod'] ?? 0) . '" min="1">',
+            'code' => $fieldCode,
             'label' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskPeriod',
             'cshKey' => '',
             'cshLabel' => 'task_recyclerCleaner_selectedPeriod',
+            'type' => 'input',
         ];
 
         $additionalFields['tca'] = [
@@ -59,6 +61,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
             'label' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskTCA',
             'cshKey' => '',
             'cshLabel' => 'task_recyclerCleaner_selectedTables',
+            'type' => 'select',
         ];
 
         return $additionalFields;

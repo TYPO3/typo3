@@ -57,13 +57,15 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractA
         $fieldName = 'tx_scheduler[scheduler_cachingFrameworkGarbageCollection_selectedBackends][]';
         $fieldId = 'task_cachingFrameworkGarbageCollection_selectedBackends';
         $fieldOptions = $this->getCacheBackendOptions($taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends']);
-        $fieldHtml = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '" class="from-control" size="10" multiple="multiple">' . $fieldOptions . '</select>';
+        $fieldHtml = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '" size="10" multiple="multiple">'
+            . $fieldOptions . '</select>';
         $additionalFields = [];
         $additionalFields[$fieldId] = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.cachingFrameworkGarbageCollection.selectBackends',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId,
+            'type' => 'select',
         ];
         return $additionalFields;
     }

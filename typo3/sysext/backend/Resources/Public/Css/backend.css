@@ -4409,7 +4409,7 @@ html{scroll-behavior:smooth}
 .scheduler-group-dragitem [editable=true],.scheduler-group-dragitem a,.scheduler-group-dragitem button{cursor:initial}
 .task-form .form-wizards-wrap{margin-bottom:.5rem!important}
 @media (min-width:992px){
-.task-form .form-group{width:50%}
+.task-form .row>.form-group{width:50%}
 }
 @media (min-width:992px){
 #task_end_col,#task_start_col{width:25%}

@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Reports\Task;
 
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -66,7 +64,8 @@ class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFie
         $fieldName = $this->getFullFieldName('notificationEmail');
         $fieldId = 'task_' . $fieldName;
         $fieldContent = $taskInfo[$fieldName] ?? '';
-        $fieldHtml = '<textarea class="form-control" rows="5" cols="50" name="tx_scheduler[' . $fieldName . ']" id="' . $fieldId . '" >' . htmlspecialchars($fieldContent) . '</textarea>';
+        $fieldHtml = '<textarea class="form-control" rows="3" cols="50" name="tx_scheduler[' . $fieldName . ']"'
+            . ' id="' . $fieldId . '" >' . htmlspecialchars($fieldContent) . '</textarea>';
 
         $additionalFields = [];
         $additionalFields[$fieldId] = [
@@ -74,29 +73,22 @@ class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFie
             'label' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationEmails',
             'cshKey' => '',
             'cshLabel' => $fieldId,
+            'type' => 'textarea',
         ];
 
         // build html for additional mail all checkbox field
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $fieldName = $this->getFullFieldName('notificationAll');
         $fieldId = 'task_' . $fieldName;
         $fieldChecked = (bool)($taskInfo[$fieldName] ?? false);
-        $fieldHtml = '<div class="form-check form-check-type-icon-toggle">'
-            . '<input type="checkbox" class="form-check-input" name="tx_scheduler[' . $fieldName . ']" id="'
-            . $fieldId . '" value="1"' . ($fieldChecked ? ' checked="checked"' : '') . '>'
-            . '<label class="form-check-label" for="' . $fieldId . '"><span class="form-check-label-icon">'
-            . '<span class="form-check-label-icon-checked">'
-            . $iconFactory->getIcon('actions-check', Icon::SIZE_SMALL)->render() . '</span>'
-            . '<span class="form-check-label-icon-unchecked">'
-            . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>'
-            . '</span></label>'
-            . '</div>';
+        $fieldHtml = '<input type="checkbox" class="form-check-input" name="tx_scheduler[' . $fieldName . ']" id="'
+            . $fieldId . '" value="1"' . ($fieldChecked ? ' checked="checked"' : '') . '>';
 
         $additionalFields[$fieldId] = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationAll',
             'cshKey' => '',
             'cshLabel' => $fieldId,
+            'type' => 'checkToggle',
         ];
 
         return $additionalFields;

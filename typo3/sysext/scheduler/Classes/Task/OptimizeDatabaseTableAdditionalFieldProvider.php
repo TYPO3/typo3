@@ -61,17 +61,15 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
         $fieldName = 'tx_scheduler[scheduler_optimizeDatabaseTables_selectedTables][]';
         $fieldId = 'scheduler_optimizeDatabaseTables_selectedTables';
         $fieldOptions = $this->getDatabaseTableOptions($taskInfo['scheduler_optimizeDatabaseTables_selectedTables']);
-        $fieldHtml = '<select class="form-select" name="' . $fieldName
-            . '" id="' . $fieldId
-            . '" class="from-control" size="10" multiple="multiple">'
-            . $fieldOptions
-            . '</select>';
+        $fieldHtml = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '" size="10"'
+            . ' multiple="multiple">' . $fieldOptions . '</select>';
         $additionalFields = [];
         $additionalFields[$fieldId] = [
             'code' => $fieldHtml,
             'label' => $this->languageFile . ':label.optimizeDatabaseTables.selectTables',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId,
+            'type' => 'select',
         ];
 
         return $additionalFields;

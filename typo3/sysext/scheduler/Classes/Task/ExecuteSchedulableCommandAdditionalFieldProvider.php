@@ -242,9 +242,11 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         foreach ($this->schedulableCommands as $commandIdentifier => $command) {
             $options[$commandIdentifier] = $commandIdentifier . ': ' . $command->getDescription();
         }
+        $fieldCode = $this->renderSelectField($options, $currentlySelectedCommand);
         return [
-            'code' => $this->renderSelectField($options, $currentlySelectedCommand),
+            'code' => $fieldCode,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.schedulableCommandName',
+            'type' => 'select',
         ];
     }
 

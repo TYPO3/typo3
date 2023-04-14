@@ -35,11 +35,17 @@
             <f:render partial="AddEditDisableField" arguments="{currentData: currentData}" />
             <div class="row">
                 <div class="form-group">
-                    <label for="task_class"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.class"/></label>
-                    <div class="form-control-wrap">
-                        <select class="form-select" disabled>
-                            <option selected>{currentData.taskName}</option>
-                        </select>
+                    <label class="form-label" for="task_class"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.class"/></label>
+                    <div class="formengine-field-item">
+                        <div class="form-control-wrap">
+                            <div class="form-wizards-wrap">
+                                <div class="form-wizards-element">
+                                    <select class="form-select" disabled>
+                                        <option selected>{currentData.taskName}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

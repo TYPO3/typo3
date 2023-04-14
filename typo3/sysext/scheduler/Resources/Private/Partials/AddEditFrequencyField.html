@@ -1,10 +1,17 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
 <div class="row" id="task_frequency_row">
     <div class="form-group">
-        <label for="task_frequency"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.frequency.long"/></label>
+        <label class="form-label" for="task_frequency"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.frequency.long"/></label>
         <div class="form-control-wrap">
             <div class="form-wizards-wrap">
                 <div class="form-wizards-element">
-                    <input type="text" name="tx_scheduler[frequency]" class="form-control" id="task_frequency" value="{currentData.frequency}">
+                    <div class="form-control-clearable">
+                        <input type="text" name="tx_scheduler[frequency]" class="form-control" id="task_frequency" value="{currentData.frequency}">
+                    </div>
                 </div>
                 <f:if condition="{frequencyOptions}">
                     <div class="form-wizards-items-aside form-wizards-items-aside--field-control">
@@ -22,3 +29,5 @@
         </div>
     </div>
 </div>
+
+</html>

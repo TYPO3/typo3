@@ -71,13 +71,15 @@ class FileStorageIndexingAdditionalFieldProvider implements AdditionalFieldProvi
 
         $fieldName = 'tx_scheduler[scheduler_fileStorageIndexing_storage]';
         $fieldId = 'scheduler_fileStorageIndexing_storage';
-        $fieldHtml = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '">' . implode("\n", $options) . '</select>';
+        $fieldHtml = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '">'
+            . implode("\n", $options) . '</select>';
 
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageIndexing.storage',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId,
+            'type' => 'select',
         ];
         return $fieldConfiguration;
     }

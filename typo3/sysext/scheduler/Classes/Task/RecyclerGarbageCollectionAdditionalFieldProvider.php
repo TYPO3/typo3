@@ -60,13 +60,15 @@ class RecyclerGarbageCollectionAdditionalFieldProvider extends AbstractAdditiona
         $fieldName = 'tx_scheduler[scheduler_recyclerGarbageCollection_numberOfDays]';
         $fieldId = 'task_recyclerGarbageCollection_numberOfDays';
         $fieldValue = (string)(int)$taskInfo['scheduler_recyclerGarbageCollection_numberOfDays'];
-        $fieldHtml = '<input class="form-control" type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '">';
+        $fieldHtml = '<input class="form-control" type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="'
+            . htmlspecialchars($fieldValue) . '">';
         $additionalFields = [];
         $additionalFields[$fieldId] = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.recyclerGarbageCollection.numberOfDays',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId,
+            'type' => 'input',
         ];
         return $additionalFields;
     }

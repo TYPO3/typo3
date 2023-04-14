@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Scheduler\Task;
 
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -84,23 +82,16 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
             $checked = '';
         }
 
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_allTables]';
         $fieldId = 'task_tableGarbageCollection_allTables';
-        $fieldHtml = '<div class="form-check form-check-type-icon-toggle"><input class="form-check-input"'
-            . ' type="checkbox" class="form-check-input" ' . $checked . ' name="' . $fieldName . '" id="' . $fieldId . '">'
-            . '<label class="form-check-label" for="' . $fieldId . '"><span class="form-check-label-icon">'
-            . '<span class="form-check-label-icon-checked">'
-            . $iconFactory->getIcon('actions-check', Icon::SIZE_SMALL)->render() . '</span>'
-            . '<span class="form-check-label-icon-unchecked">'
-            . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>'
-            . '</span></label>'
-            . '</div>';
+        $fieldHtml = '<input class="form-check-input" type="checkbox" ' . $checked . ' name="' . $fieldName . '" id="'
+            . $fieldId . '">';
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.allTables',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId,
+            'type' => 'check',
         ];
 
         return $fieldConfiguration;
@@ -140,13 +131,15 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
         $fieldId = 'task_tableGarbageCollection_table';
         $fieldHtml = [];
         // Add table drop down html
-        $fieldHtml[] = '<select class="form-select" name="' . $fieldName . '"' . $disabled . ' id="' . $fieldId . '">' . implode(LF, $options) . '</select>';
+        $fieldHtml[] = '<select class="form-select" name="' . $fieldName . '"' . $disabled . ' id="' . $fieldId . '">'
+            . implode(LF, $options) . '</select>';
         // Add js array for default 'number of days' values
         $fieldConfiguration = [
             'code' => implode(LF, $fieldHtml),
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.table',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId,
+            'type' => 'select',
         ];
         return $fieldConfiguration;
     }
@@ -196,6 +189,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.numberOfDays',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId,
+            'type' => 'input',
         ];
         return $fieldConfiguration;
     }

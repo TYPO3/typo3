@@ -77,12 +77,14 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
         $fieldId = 'task_ipAnonymization_table';
         $fieldHtml = [];
         // Add table drop down html
-        $fieldHtml[] = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '">' . implode(LF, $options) . '</select>';
+        $fieldHtml[] = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '">'
+            . implode(LF, $options) . '</select>';
         $fieldConfiguration = [
             'code' => implode(LF, $fieldHtml),
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.table',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId,
+            'type' => 'select',
         ];
         return $fieldConfiguration;
     }
@@ -102,12 +104,14 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
             $taskInfo[$fieldId] = $task->numberOfDays ?? 180;
         }
         $fieldName = 'tx_scheduler[' . $fieldId . ']';
-        $fieldHtml = '<input class="form-control" type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . (int)$taskInfo[$fieldId] . '" size="4">';
+        $fieldHtml = '<input class="form-control" type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="'
+            . (int)$taskInfo[$fieldId] . '" size="4">';
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.numberOfDays',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId,
+            'type' => 'input',
         ];
         return $fieldConfiguration;
     }
@@ -136,13 +140,15 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
                 . '</option>';
         }
 
-        $fieldHtml = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '">' . $fieldHtml . '</select>';
+        $fieldHtml = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '">' . $fieldHtml
+            . '</select>';
 
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.mask',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId,
+            'type' => 'select',
         ];
         return $fieldConfiguration;
     }

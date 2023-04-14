@@ -196,7 +196,7 @@
 				<source>Amount of tasks that are not assigned to any scheduler task group</source>
 			</trans-unit>
 			<trans-unit id="label.group.isDisabled" resname="label.group.isDisabled">
-				<source>Disabled</source>
+				<source>disabled</source>
 			</trans-unit>
 			<trans-unit id="label.group.unused" resname="label.noGroup">
 				<source>Unused task groups</source>

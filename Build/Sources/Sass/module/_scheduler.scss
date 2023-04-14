@@ -15,7 +15,7 @@
     margin-bottom: .5rem !important;
 }
 
-.task-form .form-group {
+.task-form .row > .form-group {
     @include media-breakpoint-up('lg') {
         width: 50%;
     }

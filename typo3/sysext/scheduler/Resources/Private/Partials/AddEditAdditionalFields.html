@@ -1,3 +1,9 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
 <f:for each="{additionalFields}" as="field">
     <div
         class="row extraFields extra_fields_{field.htmlClassName}"
@@ -5,40 +11,120 @@
         id="{field.fieldID}_row"
     >
         <div class="form-group">
-            <label for="{field.fieldID}">{field.langLabel}</label>
+            <f:if condition="{field.type} == 'check'">
+                <f:then>
+                    <label class="form-label">{field.langLabel}</label>
+                </f:then>
+                <f:else>
+                    <label class="form-label" for="{field.fieldID}">{field.langLabel}</label>
+                </f:else>
+            </f:if>
             <f:if condition="{field.browser} == 'page'">
                 <f:then>
                     <f:comment><!--  A page browser button. Used in ext:linkvalidator task. See issue #12211. --></f:comment>
-                    <div class="form-wizards-wrap">
-                        <div class="form-wizards-element">
-                            {field.code -> f:format.raw()}
-                        </div>
-                        <div class="form-wizards-items-aside form-wizards-items-aside--field-control">
-                            <div class="btn-group-vertical">
-                                <f:be.link
-                                    route="wizard_element_browser"
-                                    class="btn btn-default t3js-element-browser"
-                                    data="{trigger-for: field.fieldID, mode:'db'}"
-                                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_db')}"
-                                >
-                                    <core:icon identifier="actions-insert-record" />
-                                </f:be.link>
-                                <span
-                                    title="{f:translate(key: 'LLL:EXT:typo3/sysext/core/Resources/Private/Language/locallang_core.xlf:labels.browse_db')}"
-                                    id="page_{field.fieldID}"
-                                >
-                                    {field.pageTitle}
-                                </span>
+                    <div class="formengine-field-item">
+                        <div class="form-wizards-wrap">
+                            <div class="form-wizards-element">
+                                {field.code -> f:format.raw()}
+                            </div>
+                            <div class="form-wizards-items-aside form-wizards-items-aside--field-control">
+                                <div class="btn-group-vertical">
+                                    <f:be.link
+                                        route="wizard_element_browser"
+                                        class="btn btn-default t3js-element-browser"
+                                        data="{trigger-for: field.fieldID, mode:'db'}"
+                                        title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_db')}"
+                                    >
+                                        <core:icon identifier="actions-insert-record" />
+                                    </f:be.link>
+                                    <span
+                                        title="{f:translate(key: 'LLL:EXT:typo3/sysext/core/Resources/Private/Language/locallang_core.xlf:labels.browse_db')}"
+                                        id="page_{field.fieldID}"
+                                    >
+                                        {field.pageTitle}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </f:then>
                 <f:else>
-                    <div class="form-control-wrap">
-                        {field.code -> f:format.raw()}
-                    </div>
+                    <f:if condition="{field.type} == 'select'">
+                        <f:then>
+                            <div class="formengine-field-item t3js-formengine-field-item">
+                                <div class="form-control-wrap">
+                                    <div class="form-wizards-wrap">
+                                        <div class="form-wizards-element">
+                                            {field.code -> f:format.raw()}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </f:then>
+                        <f:else if="{field.type} == 'input'">
+                            <div class="formengine-field-item t3js-formengine-field-item">
+                                <div class="form-control-wrap">
+                                    <div class="form-wizards-wrap">
+                                        <div class="form-wizards-element">
+                                            <div class="form-control-clearable">
+                                                {field.code -> f:format.raw()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </f:else>
+                        <f:else if="{field.type} == 'textarea'">
+                            <typo3-formengine-element-text class="formengine-field-item t3js-formengine-field-item">
+                                <div class="form-control-wrap">
+                                    <div class="form-wizards-wrap">
+                                        <div class="form-wizards-element">
+                                            {field.code -> f:format.raw()}
+                                        </div>
+                                    </div>
+                                </div>
+                            </typo3-formengine-element-text>
+                        </f:else>
+                        <f:else if="{field.type} == 'check'">
+                            <div class="formengine-field-item t3js-formengine-field-item">
+                                <div class="form-wizards-wrap">
+                                    <div class="form-wizards-element">
+                                        <div class="form-check form-check-type-icon-toggle">
+                                            {field.code -> f:format.raw()}
+                                            <label class="form-check-label" for="{field.fieldID}">
+                                                <span class="form-check-label-icon">
+                                                    <span class="form-check-label-icon-checked">
+                                                        <core:icon identifier="actions-check" size="small" alternativeMarkupIdentifier="inline" />
+                                                    </span>
+                                                    <span class="form-check-label-icon-unchecked">
+                                                        <core:icon identifier="miscellaneous-placeholder" size="small" alternativeMarkupIdentifier="inline" />
+                                                    </span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </f:else>
+                        <f:else if="{field.type} == 'checkToggle'">
+                            <div class="formengine-field-item t3js-formengine-field-item">
+                                <div class="form-wizards-wrap">
+                                    <div class="form-wizards-element">
+                                        <div class="form-check form-switch">
+                                            {field.code -> f:format.raw()}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </f:else>
+                        <f:else>
+                            {field.code -> f:format.raw()}
+                        </f:else>
+                    </f:if>
                 </f:else>
             </f:if>
         </div>
     </div>
 </f:for>
+
+</html>

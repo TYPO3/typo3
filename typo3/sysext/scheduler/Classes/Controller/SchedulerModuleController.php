@@ -791,6 +791,7 @@ class SchedulerModuleController
                 'langLabel' => $this->getLanguageService()->sL($fieldInfo['label'] ?? ''),
                 'browser' => $fieldInfo['browser'] ?? '',
                 'pageTitle' => $fieldInfo['pageTitle'] ?? '',
+                'type' => $fieldInfo['type'] ?? '',
             ];
         }
         return $currentAdditionalFields;

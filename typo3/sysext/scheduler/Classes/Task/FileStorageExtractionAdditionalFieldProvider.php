@@ -73,13 +73,15 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
 
         $fieldName = 'tx_scheduler[scheduler_fileStorageIndexing_storage]';
         $fieldId = 'scheduler_fileStorageIndexing_storage';
-        $fieldHtml = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '">' . implode("\n", $options) . '</select>';
+        $fieldHtml = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '">'
+            . implode("\n", $options) . '</select>';
 
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageIndexing.storage',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId,
+            'type' => 'select',
         ];
         return $fieldConfiguration;
     }
@@ -95,13 +97,15 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
         $fieldName = 'tx_scheduler[scheduler_fileStorageIndexing_fileCount]';
         $fieldId = 'scheduler_fileStorageIndexing_fileCount';
         $fieldValue = (string)($task !== null ? (int)$task->maxFileCount : 100);
-        $fieldHtml = '<input type="text" class="form-control" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '">';
+        $fieldHtml = '<input type="text" class="form-control" name="' . $fieldName . '" id="' . $fieldId
+            . '" value="' . htmlspecialchars($fieldValue) . '">';
 
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.fileCount',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId,
+            'type' => 'input',
         ];
         return $fieldConfiguration;
     }

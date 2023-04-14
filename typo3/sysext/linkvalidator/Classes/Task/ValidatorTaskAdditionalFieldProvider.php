@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Linkvalidator\Task;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -120,11 +118,11 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             }
         }
         $fieldId = 'task_page';
-        $fieldCode = '<div class="form-wizards-element"><input type="number" min="0" class="form-control" name="tx_scheduler[linkvalidator][page]" id="'
+        $fieldCode = '<input type="number" min="0" class="form-control" name="tx_scheduler[linkvalidator][page]" id="'
             . $fieldId
             . '" value="'
             . htmlspecialchars((string)$taskInfo['page'])
-            . '"></div>';
+            . '">';
         $label = $lang->sL($this->languageFile . ':tasks.validate.page');
         $pageTitle = '';
         if (!empty($taskInfo['page'])) {
@@ -163,13 +161,12 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'cshKey' => 'linkvalidator',
             'cshLabel' => $fieldId,
             'label' => $label,
+            'type' => 'select',
         ];
         $fieldId = 'task_languages';
-        $fieldCode = '<input class="form-control" type="text"  name="tx_scheduler[linkvalidator][languages]" '
-            . 'id="'
-            . $fieldId
-            . '" value="'
-            . htmlspecialchars((string)$taskInfo['languages'])
+        $fieldCode = '<input class="form-control" type="text"  name="tx_scheduler[linkvalidator][languages]"'
+            . ' id="' . $fieldId
+            . '" value="' . htmlspecialchars((string)$taskInfo['languages'])
             . '">';
         $label = $lang->sL($this->languageFile . ':tasks.validate.languages');
         $additionalFields[$fieldId] = [
@@ -177,11 +174,11 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'cshKey' => 'linkvalidator',
             'cshLabel' => $fieldId,
             'label' => $label,
+            'type' => 'input',
         ];
         $fieldId = 'task_configuration';
-        $fieldCode = '<textarea class="form-control" name="tx_scheduler[linkvalidator][configuration]" id="'
-            . $fieldId
-            . '" >'
+        $fieldCode = '<textarea class="form-control" rows="5" name="tx_scheduler[linkvalidator][configuration]" id="'
+            . $fieldId . '">'
             . htmlspecialchars((string)$taskInfo['configuration'])
             . '</textarea>';
         $label = $lang->sL($this->languageFile . ':tasks.validate.conf');
@@ -190,11 +187,11 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'cshKey' => 'linkvalidator',
             'cshLabel' => $fieldId,
             'label' => $label,
+            'type' => 'textarea',
         ];
         $fieldId = 'task_email';
-        $fieldCode = '<textarea class="form-control" rows="5" cols="50" name="tx_scheduler[linkvalidator][email]" id="'
-            . $fieldId
-            . '">'
+        $fieldCode = '<textarea class="form-control" rows="3" cols="50" name="tx_scheduler[linkvalidator][email]" id="'
+            . $fieldId . '">'
             . htmlspecialchars((string)$taskInfo['email'])
             . '</textarea>';
         $label = $lang->sL($this->languageFile . ':tasks.validate.email');
@@ -203,32 +200,23 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'cshKey' => 'linkvalidator',
             'cshLabel' => $fieldId,
             'label' => $label,
+            'type' => 'textarea',
         ];
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $fieldId = 'task_emailOnBrokenLinkOnly';
-        $fieldCode = '<div class="form-check form-check-type-icon-toggle">'
-            . '<input type="checkbox" class="form-check-input" name="tx_scheduler[linkvalidator][emailOnBrokenLinkOnly]" '
-            . 'id="' . $fieldId . '" ' . ((bool)$taskInfo['emailOnBrokenLinkOnly'] ? 'checked="checked"' : '') . '>'
-            . '<label class="form-check-label" for="' . $fieldId . '"><span class="form-check-label-icon">'
-            . '<span class="form-check-label-icon-checked">'
-            . $iconFactory->getIcon('actions-check', Icon::SIZE_SMALL)->render() . '</span>'
-            . '<span class="form-check-label-icon-unchecked">'
-            . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>'
-            . '</span></label>'
-            . '</div>';
+        $fieldCode = '<input type="checkbox" class="form-check-input" name="tx_scheduler[linkvalidator][emailOnBrokenLinkOnly]" '
+            . 'id="' . $fieldId . '" ' . ((bool)$taskInfo['emailOnBrokenLinkOnly'] ? 'checked="checked"' : '') . '>';
         $label = $lang->sL($this->languageFile . ':tasks.validate.emailOnBrokenLinkOnly');
         $additionalFields[$fieldId] = [
             'code' => $fieldCode,
             'cshKey' => 'linkvalidator',
             'cshLabel' => $fieldId,
             'label' => $label,
+            'type' => 'checkToggle',
         ];
         $fieldId = 'task_emailTemplateName';
         $fieldCode = '<input class="form-control" type="text"  name="tx_scheduler[linkvalidator][emailTemplateName]" '
-            . 'id="'
-            . $fieldId
-            . '" value="'
-            . htmlspecialchars((string)$taskInfo['emailTemplateName'])
+            . 'id="' . $fieldId
+            . '" value="' . htmlspecialchars((string)$taskInfo['emailTemplateName'])
             . '">';
         $label = $lang->sL($this->languageFile . ':tasks.validate.emailTemplateName');
         $additionalFields[$fieldId] = [
@@ -236,6 +224,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'cshKey' => 'linkvalidator',
             'cshLabel' => $fieldId,
             'label' => $label,
+            'type' => 'input',
         ];
         return $additionalFields;
     }
