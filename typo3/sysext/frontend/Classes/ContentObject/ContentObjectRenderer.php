@@ -4184,6 +4184,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         if ($key === 'hreflang') {
                             $key = 'locale:full';
                         }
+                        // Harmonizing the namings from the site configuration value with the TypoScript setting
+                        if ($key === 'flag') {
+                            $key = 'flagIdentifier';
+                        }
                         // Special handling for the locale object
                         if (str_starts_with($key, 'locale')) {
                             $localeObject = $siteLanguage->getLocale();

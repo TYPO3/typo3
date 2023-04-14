@@ -471,6 +471,8 @@ class LanguageMenuProcessor implements DataProcessorInterface
         $languageObject = $site->getLanguageById((int)$conf['language']);
         if ($languageObject->enabled()) {
             $language = $languageObject->toArray();
+            // Harmonizing the namings from the site configuration value with the TypoScript setting
+            $language['flag'] = $language['flagIdentifier'];
         } else {
             return $this->jsonEncode(null);
         }
