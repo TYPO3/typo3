@@ -4501,6 +4501,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     case 'sitelanguage':
                         $siteLanguage = $this->getTypoScriptFrontendController()->getLanguage();
                         $config = $siteLanguage->toArray();
+                        // Harmonizing the namings from the site configuration value with the TypoScript setting
+                        if ($key === 'flag') {
+                            $key = 'flagIdentifier';
+                        }
                         if (isset($config[$key])) {
                             $retVal = $config[$key] ?? '';
                         }
