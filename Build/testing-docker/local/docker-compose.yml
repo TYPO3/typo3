@@ -1168,7 +1168,7 @@ services:
           set -x
         fi
         php -v | grep '^PHP'
-        composer req --dev --no-progress --no-interaction phpunit/phpunit:^10 -w
+        composer req --dev --no-progress --no-interaction phpunit/phpunit:~10.0.19 -w
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/phpunit/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
@@ -1236,7 +1236,7 @@ services:
           set -x
         fi
         php -v | grep '^PHP'
-        composer req --dev --no-progress --no-interaction phpunit/phpunit:^10 -w
+        composer req --dev --no-progress --no-interaction phpunit/phpunit:~10.0.19 -w
         COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/phpunit/FunctionalTestsDeprecated-10.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" $${COMMAND};
@@ -1404,7 +1404,7 @@ services:
           set -x
         fi
         php -v | grep '^PHP'
-        composer req --dev --no-progress --no-interaction phpunit/phpunit:^10 -w
+        composer req --dev --no-progress --no-interaction phpunit/phpunit:~10.0.19 -w
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" \
           vendor/phpunit/phpunit/phpunit -c Build/phpunit/UnitTests-10.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
@@ -1457,7 +1457,7 @@ services:
           set -x
         fi
         php -v | grep '^PHP'
-        composer req --dev --no-progress --no-interaction phpunit/phpunit:^10 -w
+        composer req --dev --no-progress --no-interaction phpunit/phpunit:~10.0.19 -w
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" \
           vendor/phpunit/phpunit/phpunit -c Build/phpunit/UnitTestsDeprecated-10.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
