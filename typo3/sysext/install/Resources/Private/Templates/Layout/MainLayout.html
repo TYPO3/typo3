@@ -1,4 +1,8 @@
-<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers" data-namespace-typo3-fluid="true">
+<html
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
 <f:if condition="{context} == 'backend'">
     <f:then>
@@ -57,11 +61,61 @@
             <div class="scaffold-modulemenu t3js-scaffold-modulemenu">
                 <div class="modulemenu t3js-modulemenu" role="menubar" data-role="modulemenu" id="modulemenu">
                     <ul class="modulemenu-group-container">
-                        <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'maintenance', label: 'Maintenance'}" />
-                        <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'settings', label: 'Settings'}" />
-                        <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'upgrade', label: 'Upgrade'}" />
-                        <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'environment', label: 'Environment'}" />
+                        <li data-level="1">
+                            <a
+                                href="install.php?{f:format.urlencode(value: 'install[controller]')}=maintenance"
+                                title="Maintenance"
+                                class="modulemenu-action"
+                                role="menuitem"
+                                data-installroute-controller="maintenance"
+                            >
+                                <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="module-install-maintenance" size="medium" alternativeMarkupIdentifier="inline"/></span>
+                                <span class="modulemenu-name">Maintenance</span>
+                                <span class="modulemenu-indicator" aria-hidden="true"></span>
+                            </a>
+                        </li>
+                        <li data-level="1">
+                            <a
+                                href="install.php?{f:format.urlencode(value: 'install[controller]')}=settings"
+                                title="Settings"
+                                class="modulemenu-action"
+                                role="menuitem"
+                                data-installroute-controller="settings"
+                            >
+                                <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="module-install-settings" size="medium" alternativeMarkupIdentifier="inline"/></span>
+                                <span class="modulemenu-name">Settings</span>
+                                <span class="modulemenu-indicator" aria-hidden="true"></span>
+                            </a>
+                        </li>
+                        <li data-level="1">
+                            <a
+                                href="install.php?{f:format.urlencode(value: 'install[controller]')}=upgrade"
+                                title="Upgrade"
+                                class="modulemenu-action"
+                                role="menuitem"
+                                data-installroute-controller="upgrade"
+                            >
+                                <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="module-install-upgrade" size="medium" alternativeMarkupIdentifier="inline"/></span>
+                                <span class="modulemenu-name">Upgrade</span>
+                                <span class="modulemenu-indicator" aria-hidden="true"></span>
+                            </a>
+                        </li>
+                        <li data-level="1">
+                            <a
+                                href="install.php?{f:format.urlencode(value: 'install[controller]')}=environment"
+                                title="Environment"
+                                class="modulemenu-action"
+                                role="menuitem"
+                                data-installroute-controller="environment"
+                            >
+                                <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="module-install-environment" size="medium" alternativeMarkupIdentifier="inline"/></span>
+                                <span class="modulemenu-name">Environment</span>
+                                <span class="modulemenu-indicator" aria-hidden="true"></span>
+                            </a>
+                        </li>
+
                         <li class="modulemenu-group-spacer"></li>
+
                         <li data-level="1">
                             <a
                                 href="index.php"
@@ -86,7 +140,9 @@
                                 <span class="modulemenu-indicator" aria-hidden="true"></span>
                             </a>
                         </li>
+
                         <li class="modulemenu-group-spacer"></li>
+
                         <li data-level="1">
                             <a
                                 title="Logout"

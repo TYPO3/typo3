@@ -59,8 +59,8 @@ use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 
 /**
  * Install step controller, dispatcher class of step actions.
- * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  *
+ * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  * @phpstan-import-type Params from DriverManager
  */
 final class InstallerController

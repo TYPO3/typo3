@@ -38,24 +38,18 @@ use TYPO3\CMS\Install\Service\SilentTemplateFileUpgradeService;
  *
  * Renders a first "load the Javascript in <head>" view, and the
  * main layout of the install tool in second action.
+ *
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class LayoutController extends AbstractController
 {
     use ControllerTrait;
 
-    private FailsafePackageManager $packageManager;
-    private SilentConfigurationUpgradeService $silentConfigurationUpgradeService;
-    private SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService;
-
     public function __construct(
-        FailsafePackageManager $packageManager,
-        SilentConfigurationUpgradeService $silentConfigurationUpgradeService,
-        SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService
+        private readonly FailsafePackageManager $packageManager,
+        private readonly SilentConfigurationUpgradeService $silentConfigurationUpgradeService,
+        private readonly SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService
     ) {
-        $this->packageManager = $packageManager;
-        $this->silentConfigurationUpgradeService = $silentConfigurationUpgradeService;
-        $this->silentTemplateFileUpgradeService = $silentTemplateFileUpgradeService;
     }
 
     /**
