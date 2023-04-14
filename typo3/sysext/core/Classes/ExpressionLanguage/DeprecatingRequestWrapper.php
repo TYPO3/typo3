@@ -135,6 +135,6 @@ class DeprecatingRequestWrapper extends RequestWrapper
             ' based on the backend user object.',
             E_USER_DEPRECATED
         );
-        return $this->request->getAttribute('routing');
+        return ($routing = $this->request->getAttribute('routing')) instanceof PageArguments ? $routing : null;
     }
 }
