@@ -207,7 +207,7 @@ class CheckboxElement extends AbstractFormElement
                         <span class="form-check-label-icon-checked">' . $iconChecked . '</span>
                         <span class="form-check-label-icon-unchecked">' . $iconUnchecked . '</span>
                     </span>
-                    ' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '
+                    ' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : ''), $formElementValue) . '
                 </label>
             </div>';
     }

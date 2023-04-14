@@ -179,7 +179,7 @@ class CheckboxToggleElement extends AbstractFormElement
                     ' . (!$disabled ? '' : ' disabled="disabled"') . '
                     id="' . $checkboxId . '" />
                 <label class="form-check-label" for="' . $checkboxId . '">
-                    ' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '
+                    ' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : ''), $formElementValue) . '
                 </label>
             </div>';
     }

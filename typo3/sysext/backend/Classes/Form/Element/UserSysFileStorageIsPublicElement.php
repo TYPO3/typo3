@@ -114,7 +114,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
         $html[] =                   $isPublic ? ' checked="checked"' : '';
         $html[] =               '/>';
         $html[] =               '<label class="form-check-label" for="' . htmlspecialchars($checkboxId, ENT_QUOTES) . '">';
-        $html[] =                   $this->appendValueToLabelInDebugMode('&nbsp;', $isPublicAsString);
+        $html[] =                   $this->appendValueToLabelInDebugMode('', $isPublicAsString);
         $html[] =               '</label>';
         $html[] =               '<input type="hidden"';
         $html[] =                   ' name="' . htmlspecialchars($parameterArray['itemFormElName'], ENT_QUOTES) . '"';

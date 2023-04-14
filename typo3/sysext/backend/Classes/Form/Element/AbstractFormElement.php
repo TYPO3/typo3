@@ -441,17 +441,14 @@ abstract class AbstractFormElement extends AbstractNode
 
     /**
      * Append the value of a form field to its label
-     *
-     * @param string|int $label The label which can also be an integer
-     * @param string|int $value The value which can also be an integer
      */
-    protected function appendValueToLabelInDebugMode($label, $value): string
+    protected function appendValueToLabelInDebugMode(string|int $label, string|int $value): string
     {
         if ($value !== '' && $this->getBackendUser()->shallDisplayDebugInformation()) {
-            return $label . ' [' . $value . ']';
+            return trim($label . ' [' . $value . ']');
         }
 
-        return (string)$label;
+        return trim((string)$label);
     }
 
     protected function getLanguageService(): LanguageService
