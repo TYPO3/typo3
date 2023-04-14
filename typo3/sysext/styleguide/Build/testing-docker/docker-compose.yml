@@ -243,12 +243,7 @@ services:
           set -x
         fi
         php -v | grep '^PHP';
-        if [ ${DOCKER_PHP_IMAGE} = "php82" ]; then
-          # @todo: Needed until prophecy (req by phpunit) allows PHP 8.2, https://github.com/phpspec/prophecy/issues/556
-          composer update --no-progress --no-interaction --ignore-platform-req=php+
-        else
-          composer update --no-progress --no-interaction;
-        fi
+        composer update --no-progress --no-interaction;
       "
 
   composer_validate:
