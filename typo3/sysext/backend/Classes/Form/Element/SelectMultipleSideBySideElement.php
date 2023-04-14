@@ -93,7 +93,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
     protected function renderFieldControl(): array
     {
         $alternativeResult =  [
-            // @todo deprecate inline JavaScript in TYPO3 v12.0
+            // @deprecated since TYPO3 v12.4. will be removed in TYPO3 v13.0.
             'additionalJavaScriptPost' => [],
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],

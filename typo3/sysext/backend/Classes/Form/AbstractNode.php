@@ -93,7 +93,7 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
         /** @var list<\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction> */
         $requireJsModules = [];
         return [
-            // @todo deprecate inline JavaScript in TYPO3 v12.0
+            // @deprecated since TYPO3 v12.4. will be removed in TYPO3 v13.0.
             'additionalJavaScriptPost' => [],
             // @todo deprecate additionalHiddenFields in TYPO3 v12.0 - this return key is essentially
             //       useless. Elements can simply submit their hidden HTML fields in the html key.
@@ -123,7 +123,7 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
         if ($mergeHtml && !empty($childReturn['html'])) {
             $existing['html'] .= LF . $childReturn['html'];
         }
-        // @todo deprecate inline JavaScript in TYPO3 v12.0
+        // @deprecated since TYPO3 v12.4. will be removed in TYPO3 v13.0.
         foreach ($childReturn['additionalJavaScriptPost'] ?? [] as $value) {
             $existing['additionalJavaScriptPost'][] = $value;
         }
