@@ -17,14 +17,19 @@
 -->
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd"
     backupGlobals="true"
     bootstrap="UnitTestsBootstrap.php"
     cacheResult="false"
     colors="true"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
+    displayDetailsOnTestsThatTriggerErrors="true"
+    displayDetailsOnTestsThatTriggerNotices="true"
+    displayDetailsOnTestsThatTriggerWarnings="true"
     beStrictAboutTestsThatDoNotTestAnything="false"
-    failOnWarning="true"
+    failOnNotice="true"
     failOnRisky="true"
+    failOnWarning="true"
     cacheDirectory=".phpunit.cache"
 >
   <testsuites>
@@ -32,14 +37,14 @@
       <directory>../../typo3/sysext/*/Tests/UnitDeprecated/</directory>
     </testsuite>
   </testsuites>
-  <coverage>
-    <include>
-      <directory>../../typo3/sysext/*/Classes/</directory>
-    </include>
-  </coverage>
   <php>
     <ini name="display_errors" value="1"/>
     <ini name="error_reporting" value="E_ALL"/>
     <env name="TYPO3_CONTEXT" value="Testing"/>
   </php>
+  <source>
+    <include>
+      <directory>../../typo3/sysext/*/Classes/</directory>
+    </include>
+  </source>
 </phpunit>

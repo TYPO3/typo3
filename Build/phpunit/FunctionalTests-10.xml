@@ -13,14 +13,20 @@
 -->
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd"
     backupGlobals="true"
     bootstrap="FunctionalTestsBootstrap.php"
     cacheResult="false"
     colors="true"
     beStrictAboutTestsThatDoNotTestAnything="false"
-    failOnWarning="true"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
+    displayDetailsOnTestsThatTriggerErrors="true"
+    displayDetailsOnTestsThatTriggerNotices="true"
+    displayDetailsOnTestsThatTriggerWarnings="true"
+    failOnDeprecation="true"
+    failOnNotice="true"
     failOnRisky="true"
+    failOnWarning="true"
     cacheDirectory=".phpunit.cache"
 >
   <testsuites>
