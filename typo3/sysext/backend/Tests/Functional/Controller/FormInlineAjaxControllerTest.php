@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -82,7 +81,6 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
 
         $request = new ServerRequest();
         $request = $request->withParsedBody($parsedBody);
-        $response = new Response();
 
         $response = $this->subject->createAction($request);
         $body = (string)$response->getBody();
@@ -106,8 +104,6 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
         $request = new ServerRequest();
         $request = $request->withParsedBody($parsedBody);
 
-        $response = new Response();
-
         $response = $this->subject->createAction($request);
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
@@ -129,7 +125,6 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
 
         $request = new ServerRequest();
         $request = $request->withParsedBody($parsedBody);
-        $response = new Response();
 
         $response = $this->subject->createAction($request);
         $body = (string)$response->getBody();
@@ -156,7 +151,6 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
 
         $request = new ServerRequest();
         $request = $request->withParsedBody($parsedBody);
-        $response = new Response();
 
         $response = $this->subject->createAction($request);
         $body = (string)$response->getBody();

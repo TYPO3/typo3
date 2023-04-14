@@ -2212,12 +2212,6 @@ class GeneralUtility
         return $script;
     }
 
-    /*************************
-     *
-     * SYSTEM INFORMATION
-     *
-     *************************/
-
     /**
      * Returns the link-url to the current script.
      * In $getParams you can set associative keys corresponding to the GET-vars you wish to add to the URL. If you set them empty, they will remove existing GET-vars from the current URL.
@@ -2225,9 +2219,15 @@ class GeneralUtility
      *
      * @param array $getParams Array of GET parameters to include
      * @return string
+     * @deprecated since TYPO3 v12.4. will be removed in TYPO3 v13.0.
      */
     public static function linkThisScript(array $getParams = [])
     {
+        trigger_error(
+            'GeneralUtility::linkThisScript() will be removed in TYPO3 v13.0, retrieve request related' .
+            ' details from PSR-7 ServerRequestInterface instead.',
+            E_USER_DEPRECATED
+        );
         $parts = self::getIndpEnv('SCRIPT_NAME');
         $params = self::_GET();
         foreach ($getParams as $key => $value) {

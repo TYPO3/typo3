@@ -86,6 +86,9 @@ services:
     tags:
       - { name: 'livesearch.provider', priority: 60 }
 
+  TYPO3\CMS\Backend\Form\FormDataProvider\ReturnUrl:
+    public: true
+
   TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow:
     public: true
 

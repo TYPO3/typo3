@@ -1478,4 +1478,11 @@ return [
             'Deprecation-100459-BackendUtilitygetRecordToolTip.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100584-GeneralUtilitylinkThisScript.rst',
+        ],
+    ],
 ];
