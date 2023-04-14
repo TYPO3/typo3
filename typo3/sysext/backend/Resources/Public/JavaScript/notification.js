@@ -27,7 +27,7 @@ var __decorate=function(t,i,e,o){var n,a=arguments.length,s=a<3?i:null===o?o=Obj
           </div>
           <div class="media-body">
             <h4 class="alert-title">${this.notificationTitle}</h4>
-            <p class="alert-message text-pre-wrap">${this.notificationMessage?this.notificationMessage:""}</p>
+            <p class="alert-message">${this.notificationMessage?this.notificationMessage:""}</p>
           </div>
         </div>
         ${0===this.actions.length?"":html`

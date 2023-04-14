@@ -2595,6 +2595,7 @@ button[aria-expanded=true]:not(:disabled) .modulemenu-indicator:after{transform:
 .alert-body,.alert-message{margin:0;font-size:.9em}
 .alert-body>:last-child,.alert-message>:last-child{margin-bottom:0}
 .alert-body>ul,.alert-message>ul{padding-left:1.5em}
+.alert-message{white-space:pre-wrap}
 .alert-dismissible .close{background:0 0;border:none;color:inherit;font-size:1.125rem;line-height:1;padding:0;position:absolute;right:.625rem;top:.625rem;opacity:.5}
 .alert-dismissible .close:hover{color:inherit;opacity:1}
 .alert-dismissible .alert-actions{margin-right:-3rem}
@@ -3790,9 +3791,6 @@ span.dragIcon{display:inline-block;height:16px}
 .typo3-install-content-spacer{margin-top:2em}
 .typo3-install-content-spacer-small{margin-top:1em}
 .extensionConfiguration-form .tab-content{margin-bottom:15px}
-.text-normal{font-weight:400}
-.text-pre-wrap{white-space:pre-wrap}
-.text-wrap-allowed{word-break:break-all;overflow-wrap:break-word}
 a.disabled{color:#d7d7d7;pointer-events:none;opacity:.4}
 .media-new-content-element-wizard .media-left input{margin-left:2px}
 .history-block{border-left:5px solid #a9a9a9;border-bottom:1px dotted #a9a9a9}

@@ -219,7 +219,7 @@ export class NotificationMessage extends LitElement {
           </div>
           <div class="media-body">
             <h4 class="alert-title">${this.notificationTitle}</h4>
-            <p class="alert-message text-pre-wrap">${this.notificationMessage ? this.notificationMessage : ''}</p>
+            <p class="alert-message">${this.notificationMessage ? this.notificationMessage : ''}</p>
           </div>
         </div>
         ${this.actions.length === 0 ? '' : html`
