@@ -22,7 +22,7 @@
 				<source>Simulate backend user</source>
 			</trans-unit>
 			<trans-unit id="opening" resname="opening">
-				<source>Startup</source>
+				<source>Backend appearance</source>
 			</trans-unit>
 			<trans-unit id="personal_data" resname="personal_data">
 				<source>Personal data</source>
@@ -37,7 +37,7 @@
 				<source>Show help text when applicable</source>
 			</trans-unit>
 			<trans-unit id="maxTitleLen" resname="maxTitleLen">
-				<source>Max. Title Length</source>
+				<source>Max. title length</source>
 			</trans-unit>
 			<trans-unit id="edit_docModuleUpload" resname="edit_docModuleUpload">
 				<source>File upload directly in Doc-module</source>
@@ -46,19 +46,16 @@
 				<source>Show hidden files and folders in the filelist</source>
 			</trans-unit>
 			<trans-unit id="editFunctionsTab" resname="editFunctionsTab">
-				<source>Edit and Advanced functions</source>
-			</trans-unit>
-			<trans-unit id="edit_functions" resname="edit_functions">
-				<source>Edit</source>
+				<source>Edit and advanced functions</source>
 			</trans-unit>
 			<trans-unit id="setToStandard" resname="setToStandard">
-				<source>Reset all Values to default</source>
+				<source>Reset all values to default</source>
 			</trans-unit>
-			<trans-unit id="resetSectionHeader" resname="resetSectionHeader">
-				<source>Reset Settings</source>
+			<trans-unit id="resetTab" resname="resetTab">
+				<source>Reset configuration</source>
 			</trans-unit>
 			<trans-unit id="resetConfiguration" resname="resetConfiguration">
-				<source>Reset Configuration and Clear Temporary Data</source>
+				<source>Reset configuration and clear temporary data</source>
 			</trans-unit>
 			<trans-unit id="resetConfigurationButton" resname="resetConfigurationButton">
 				<source>Reset user settings to default state</source>
@@ -70,7 +67,7 @@
 				<source>Advanced functions</source>
 			</trans-unit>
 			<trans-unit id="copyLevels" resname="copyLevels">
-				<source>Recursive Copy: Enter the number of page sublevels to include, when a page is copied</source>
+				<source>Recursive copy: Enter the number of page sublevels to include, when a page is copied</source>
 			</trans-unit>
 			<trans-unit id="activateChanges" resname="activateChanges">
 				<source>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</source>
@@ -88,13 +85,13 @@
 				<source>Your email address</source>
 			</trans-unit>
 			<trans-unit id="save" resname="save">
-				<source>Save Configuration</source>
+				<source>Save configuration</source>
 			</trans-unit>
 			<trans-unit id="newPassword" resname="newPassword">
 				<source>New password</source>
 			</trans-unit>
 			<trans-unit id="newPasswordAgain" resname="newPasswordAgain">
-				<source>New password, again</source>
+				<source>New password (repetition)</source>
 			</trans-unit>
 			<trans-unit id="newPassword_ok" resname="newPassword_ok">
 				<source>Password was updated.</source>
@@ -137,33 +134,6 @@
 			</trans-unit>
 			<trans-unit id="oldPassword_failed" resname="oldPassword_failed">
 				<source>Password was NOT updated because you didn't enter the correct current password.</source>
-			</trans-unit>
-			<trans-unit id="enableInstallTool.label" resname="enableInstallTool.label">
-				<source>Install Tool Access</source>
-			</trans-unit>
-			<trans-unit id="enableInstallTool.createFile" resname="enableInstallTool.createFile">
-				<source>Create Install Tool Enable File</source>
-			</trans-unit>
-			<trans-unit id="enableInstallTool.file" resname="enableInstallTool.file">
-				<source>Install Tool Enable file</source>
-			</trans-unit>
-			<trans-unit id="enableInstallTool.fileCreate_ok" resname="enableInstallTool.fileCreate_ok">
-				<source>The Install Tool Enable file has been created.</source>
-			</trans-unit>
-			<trans-unit id="enableInstallTool.fileCreate_failed" resname="enableInstallTool.fileCreate_failed">
-				<source>The Install Tool Enable file could not be created.</source>
-			</trans-unit>
-			<trans-unit id="enableInstallTool.deleteFile" resname="enableInstallTool.deleteFile">
-				<source>Delete Install Tool Enable File</source>
-			</trans-unit>
-			<trans-unit id="enableInstallTool.fileDelete_ok" resname="enableInstallTool.fileDelete_ok">
-				<source>The Install Tool Enable file has been deleted.</source>
-			</trans-unit>
-			<trans-unit id="enableInstallTool.fileDelete_failed" resname="enableInstallTool.fileDelete_failed">
-				<source>The Install Tool Enable file could not be deleted!</source>
-			</trans-unit>
-			<trans-unit id="enableInstallTool.fileHasKeep" resname="enableInstallTool.fileHasKeep">
-				<source>The Install Tool file has the content "KEEP_FILE" and can not be deleted!</source>
 			</trans-unit>
 			<trans-unit id="settingsAreReset" resname="settingsAreReset">
 				<source>The user settings have been reset to default values and temporary data has been cleared.</source>

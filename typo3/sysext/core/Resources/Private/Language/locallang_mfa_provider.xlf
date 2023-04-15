@@ -134,10 +134,7 @@
 				<source>Setup not possible</source>
 			</trans-unit>
 			<trans-unit id="setup.recoveryCodes.noActiveProviders.message" resname="setup.recoveryCodes.noActiveProviders.message">
-				<source>
-					Recovery codes are only meant as a fallback if you lose access to your main multi-factor
-					authentication credentials. Therefore, please activate a comprehensive MFA provider first.
-				</source>
+				<source>Recovery codes are only meant as a fallback if you lose access to your main multi-factorauthentication credentials. Therefore, please activate a comprehensive MFA provider first.</source>
 			</trans-unit>
 			<trans-unit id="setup.totpAuthUrlButton.title" resname="setup.totpAuthUrlButton.title">
 				<source>Show authentication URL</source>

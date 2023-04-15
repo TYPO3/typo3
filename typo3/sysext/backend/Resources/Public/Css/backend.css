@@ -4414,6 +4414,10 @@ html{scroll-behavior:smooth}
 @media (min-width:992px){
 #task_end_col,#task_start_col{width:25%}
 }
+#SetupModuleController .form-wizards-wrap{margin-bottom:.5rem!important}
+@media (min-width:992px){
+#SetupModuleController .row>.form-group{width:50%}
+}
 .typo3-module-viewpage{background-color:#494949}
 .typo3-module-viewpage .module{background-color:transparent}
 .typo3-module-viewpage .module-body{text-align:center}

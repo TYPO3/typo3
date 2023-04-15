@@ -452,14 +452,13 @@ class SetupModuleController
 
                     break;
                 case 'check':
-                    $html = $label . '<div class="form-check form-switch"><input id="field_' . htmlspecialchars($fieldName) . '"
+                    $html = '<input id="field_' . htmlspecialchars($fieldName) . '"
                         type="checkbox"
                         class="form-check-input"
                         name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' .
                         ($value ? ' checked="checked"' : '') .
                         $more .
-                        ' /></div>';
-                    $label = '';
+                        ' />';
                     break;
                 case 'language':
                     $html = $this->renderLanguageSelect();
@@ -494,7 +493,7 @@ class SetupModuleController
                             $buttonAttributes['data-event-name'] = htmlspecialchars($clickData['eventName']);
                             $buttonAttributes['data-event-payload'] = htmlspecialchars($fieldName);
                         }
-                        $html = '<br><input '
+                        $html = '<input '
                             . GeneralUtility::implodeAttributes($buttonAttributes, false) . ' />';
                     }
                     if (!empty($config['confirm'])) {
@@ -513,45 +512,50 @@ class SetupModuleController
                             $buttonAttributes['data-event-name'] = htmlspecialchars($confirmData['eventName']);
                             $buttonAttributes['data-event-payload'] = htmlspecialchars($fieldName);
                         }
-                        $html = '<br><input '
+                        $html = '<input '
                             . GeneralUtility::implodeAttributes($buttonAttributes, false) . ' />';
                     }
                     break;
                 case 'avatar':
                     // Get current avatar image
-                    $html = '<br>';
+                    $html = '';
                     $avatarFileUid = $this->getAvatarFileUid($backendUser->user['uid']);
 
                     if ($avatarFileUid) {
                         $defaultAvatarProvider = GeneralUtility::makeInstance(DefaultAvatarProvider::class);
                         $avatarImage = $defaultAvatarProvider->getImage($backendUser->user, 32);
                         if ($avatarImage) {
-                            $icon = '<span class="avatar avatar-size-medium"><span class="avatar-image">' .
+                            $icon = '<span class="avatar avatar-size-medium mb-2"><span class="avatar-image">' .
                                 '<img alt="" src="' . htmlspecialchars($avatarImage->getUrl()) . '"' .
                                 ' width="' . (int)$avatarImage->getWidth() . '"' .
                                 ' height="' . (int)$avatarImage->getHeight() . '" />' .
                                 '</span></span>';
-                            $html .= '<span class="float-start" style="padding-right: 10px" id="image_' . htmlspecialchars($fieldName) . '">' . $icon . ' </span>';
+                            $html .= '<span id="image_' . htmlspecialchars($fieldName) . '">' . $icon . ' </span>';
                         }
                     }
                     $html .= '<input id="field_' . htmlspecialchars($fieldName) . '" type="hidden" ' .
                             'name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' . $more .
                             ' value="' . $avatarFileUid . '" data-setup-avatar-field="' . htmlspecialchars($fieldName) . '" />';
 
-                    $html .= '<div class="btn-group">';
+                    $html .= '<typo3-formengine-container-files><div class="form-group"><div class="form-group"><div class="form-control-wrap">';
+                    $html .= '<button type="button" id="add_button_' . htmlspecialchars($fieldName)
+                        . '" class="btn btn-default"'
+                        . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.openFileBrowser')) . '"'
+                        . ' data-setup-avatar-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||-0-be_users-avatar-avatar'])) . '"'
+                        . '>' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
+                        . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.openFileBrowser'))
+                        . '</button>';
                     if ($avatarFileUid) {
-                        $html .=
-                            '<button type="button" id="clear_button_' . htmlspecialchars($fieldName) . '" aria-label="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.clear')) . '" '
-                                . ' class="btn btn-default">'
-                                . $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)
-                            . '</button>';
+                        // Keep space between both buttons with a whitespace (like for other buttons)
+                        $html .= ' ';
+                        $html .= '<button type="button" id="clear_button_' . htmlspecialchars($fieldName)
+                        . '" class="btn btn-default"'
+                        . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.clear')) . '" '
+                        . '>' . $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)
+                        . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.clear'))
+                        . '</button>';
                     }
-                    $html .=
-                        '<button type="button" id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar"'
-                            . ' aria-label="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.openFileBrowser')) . '"'
-                            . ' data-setup-avatar-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||-0-be_users-avatar-avatar'])) . '"'
-                            . '>' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
-                            . '</button></div>';
+                    $html .= '</div></div></div></typo3-formengine-container-files>';
                     break;
                 case 'mfa':
                     $label = $this->getLabel($config['label'] ?? '');
@@ -565,24 +569,51 @@ class SetupModuleController
                             $html .= ' <span class="badge badge-success">' . htmlspecialchars($lang->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders.enabled')) . '</span>';
                         }
                     }
-                    $html .= '<p class="text-body-secondary">' . nl2br(htmlspecialchars($lang->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders.description'))) . '</p>';
+                    $html .= '<div class="formengine-field-item t3js-formengine-field-item">';
+                    $html .= '<div class="form-description">' . nl2br(htmlspecialchars($lang->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders.description'))) . '</div>';
                     if (!$this->mfaProviderRegistry->hasProviders()) {
                         $html .= '<span class="badge badge-danger">' . htmlspecialchars($lang->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders.notAvailable')) . '</span>';
                         break;
                     }
-                    $html .= '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('mfa')) . '" class="btn btn-' . ($hasActiveProviders ? 'default' : 'success') . '">';
-                    $html .=    $this->iconFactory->getIcon($hasActiveProviders ? 'actions-cog' : 'actions-plus', Icon::SIZE_SMALL);
-                    $html .=    ' <span>' . htmlspecialchars($lang->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders.' . ($hasActiveProviders ? 'manageLinkTitle' : 'setupLinkTitle'))) . '</span>';
+                    $html .= '<div class="form-group"><div class="form-group"><div class="form-control-wrap t3js-file-controls">';
+                    $html .= '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('mfa')) . '" class="btn btn-default">';
+                    $html .=  htmlspecialchars($lang->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders.' . ($hasActiveProviders ? 'manageLinkTitle' : 'setupLinkTitle')));
                     $html .= '</a>';
+                    $html .= '</div></div></div></div>';
                     break;
                 default:
                     $html = '';
             }
 
-            $code[] = '<div class="form-section"><div class="row"><div class="form-group t3js-formengine-field-item col-md-12">' .
-                $label .
-                $html .
-                '</div></div></div>';
+            $htmlPrepended = '';
+            $htmlAppended = '';
+            if ($type === 'button') {
+                $htmlPrepended = '<div class="formengine-field-item t3js-formengine-field-item"><div class="form-group">'
+                    . '<div class="form-group"><div class="form-control-wrap t3js-file-controls">';
+                $htmlAppended = '</div></div></div></div>';
+            }
+            if ($type === 'check') {
+                $htmlPrepended = '<div class="formengine-field-item t3js-formengine-field-item"><div class="form-wizards-wrap">'
+                    . '<div class="form-wizards-element"><div class="form-check form-switch">';
+                $htmlAppended = '</div></div></div></div>';
+            }
+            if ($type === 'select' || $type === 'language') {
+                $htmlPrepended = '<div class="formengine-field-item t3js-formengine-field-item"><div class="form-control-wrap">'
+                    . '<div class="form-wizards-wrap"><div class="form-wizards-element"><div class="input-group">';
+                $htmlAppended = '</div></div></div></div></div>';
+            }
+            if ($type === 'text' || $type === 'number' || $type === 'email' || $type === 'password') {
+                $htmlPrepended = '<div class="formengine-field-item t3js-formengine-field-item"><div class="form-control-wrap">'
+                    . '<div class="form-wizards-wrap"><div class="form-wizards-element"><div class="form-control-clearable">';
+                $htmlAppended = '</div></div></div></div></div>';
+            }
+
+            $code[] = '<fieldset class="form-section"><div class="row"><div class="form-group col-md-12">'
+                . $label
+                . $htmlPrepended
+                . $html
+                . $htmlAppended
+                . '</div></div></fieldset>';
         }
 
         $result[] = [
@@ -626,8 +657,8 @@ class SetupModuleController
         }
         $content = '<select id="field_lang" name="data[be_users][lang]" class="form-select">' . $content . '</select>';
         if ($currentSelectedLanguage !== 'default' && !@is_dir(Environment::getLabelsPath() . '/' . $currentSelectedLanguage)) {
-            $languageUnavailableWarning = htmlspecialchars(sprintf($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:languageUnavailable'), $languageService->sL($officialLanguages->getLabelIdentifier($currentSelectedLanguage)))) . '&nbsp;&nbsp;<br />&nbsp;&nbsp;' . htmlspecialchars($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:languageUnavailable.' . ($backendUser->isAdmin() ? 'admin' : 'user')));
-            $content = '<br /><span class="badge badge-danger">' . $languageUnavailableWarning . '</span><br /><br />' . $content;
+            $languageUnavailableWarning = htmlspecialchars(sprintf($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:languageUnavailable'), $languageService->sL($officialLanguages->getLabelIdentifier($currentSelectedLanguage)))) . '&nbsp;&nbsp;<br>&nbsp;&nbsp;' . htmlspecialchars($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:languageUnavailable.' . ($backendUser->isAdmin() ? 'admin' : 'user')));
+            $content = '<br><span class="badge badge-danger">' . $languageUnavailableWarning . '</span><br><br>' . $content;
         }
         return $content;
     }
@@ -703,9 +734,9 @@ class SetupModuleController
         }
         if ($addLabelTag) {
             if ($key !== '') {
-                $out = '<label for="field_' . htmlspecialchars($key) . '">' . $out . '</label>';
+                $out = '<label class="form-label t3js-formengine-label" for="field_' . htmlspecialchars($key) . '">' . $out . '</label>';
             } else {
-                $out = '<label>' . $out . '</label>';
+                $out = '<label class="form-label t3js-formengine-label">' . $out . '</label>';
             }
         }
         return $out;

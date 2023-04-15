@@ -1,0 +1,12 @@
+//
+// User settings
+//
+#SetupModuleController .form-wizards-wrap {
+    margin-bottom: .5rem !important;
+}
+
+#SetupModuleController .row > .form-group {
+    @include media-breakpoint-up('lg') {
+        width: 50%;
+    }
+}
