@@ -61,7 +61,7 @@
                             type="submit"
                             name="updateValue"
                             value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.editProperty.btn')}"
-                            class="btn btn-primary"
+                            class="btn btn-default"
                         />
                     </div>
                 </div>
@@ -86,25 +86,21 @@
                             type="submit"
                             name="addChild"
                             value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.addProperty.btn')}"
-                            class="btn btn-primary"
+                            class="btn btn-default"
                         />
                     </div>
                 </div>
 
                 <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.clearObject.headline" /></h2>
                 <p>
-                    <f:translate
-                        key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.clearObject.infotextWithProperty"
-                        arguments="{
-                            0: '{currentObjectPath}'
-                        }"
-                    />
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.clearObject.infotextWithProperty" />
+                    <code>{currentObjectPath} ></code>
                 </p>
                 <input
                     type="submit"
                     name="clear"
                     value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.clearObject.btn')}"
-                    class="btn btn-primary"
+                    class="btn btn-default"
                 />
             </form>
         </f:else>

@@ -38,10 +38,10 @@
     <p><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:submodule.description" /></p>
 
     <f:if condition="{f:count(subject: allTemplatesOnPage)} > 1">
-        <div class="row row-cols-auto align-items-end g-3 mb-4">
-            <div class="col col-md-2 col-4">
+        <div class="row g-3 mb-4">
+            <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
                 <form action="{f:be.uri(route: 'web_typoscript_infomodify', parameters: '{id: pageUid}')}" method="post">
-                    <label class="form-select-label" for="selectedTemplate">
+                    <label class="form-label" for="selectedTemplate">
                         <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:options.selectedRecord" />
                     </label>
                     <select

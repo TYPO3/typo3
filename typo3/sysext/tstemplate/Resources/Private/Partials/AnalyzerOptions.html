@@ -4,35 +4,33 @@
     data-namespace-typo3-fluid="true"
 >
 
-<div id="analyzer-index" class="tx_tstemplate_analyzer">
-    <div class="row row-cols-auto align-items-end g-3 mb-4">
-        <f:if condition="{f:count(subject: allTemplatesOnPage)} > 1">
-            <div class="col col-md-2 col-4">
-                <form action="{f:be.uri(route: 'web_typoscript_analyzer', parameters: '{id: pageUid}')}" method="post">
-                    <label class="form-select-label" for="selectedTemplate">
-                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:options.selectedRecord" />
-                    </label>
-                    <select
-                        name="selectedTemplate"
-                        id="selectedTemplate"
-                        class="form-select"
-                        data-global-event="change"
-                        data-action-navigate="$data=~s/$value/"
-                        data-action-submit="$form"
-                    >
-                        <f:for each="{allTemplatesOnPage}" as="template">
-                            <option
-                                value="{template.uid}"
-                                {f:if(condition:'{selectedTemplateUid} == {template.uid}', then:'selected="selected"')}
-                            >
-                            {template.title}
-                            </option>
-                        </f:for>
-                    </select>
-                </form>
-            </div>
-        </f:if>
+<f:if condition="{f:count(subject: allTemplatesOnPage)} > 1">
+    <div class="row g-3 mb-4">
+        <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <form action="{f:be.uri(route: 'web_typoscript_analyzer', parameters: '{id: pageUid}')}" method="post">
+                <label class="form-label" for="selectedTemplate">
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:options.selectedRecord" />
+                </label>
+                <select
+                    name="selectedTemplate"
+                    id="selectedTemplate"
+                    class="form-select"
+                    data-global-event="change"
+                    data-action-navigate="$data=~s/$value/"
+                    data-action-submit="$form"
+                >
+                    <f:for each="{allTemplatesOnPage}" as="template">
+                        <option
+                            value="{template.uid}"
+                            {f:if(condition:'{selectedTemplateUid} == {template.uid}', then:'selected="selected"')}
+                        >
+                        {template.title}
+                        </option>
+                    </f:for>
+                </select>
+            </form>
+        </div>
     </div>
-</div>
+</f:if>
 
 </html>

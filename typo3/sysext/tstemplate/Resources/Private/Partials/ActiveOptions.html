@@ -4,9 +4,9 @@
     data-namespace-typo3-fluid="true"
 >
 
-<div class="row row-cols-auto align-items-end g-3 mb-4">
+<div class="row row-cols-auto align-items-end g-3 mb-4{f:if(condition: '{f:count(subject: allTemplatesOnPage)} < 2', then: ' pt-2')}">
     <f:if condition="{f:count(subject: allTemplatesOnPage)} > 1">
-        <div class="col col-md-2 col-4">
+        <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
             <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
                 <label class="form-label" for="selectedTemplate">
                     <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.selectedRecord" />
@@ -31,7 +31,7 @@
             </form>
         </div>
     </f:if>
-    <div class="col">
+    <div class="col col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
         <form action="#">
             <div class="input-group">
                 <input
@@ -49,67 +49,71 @@
         </form>
     </div>
     <div class="col">
-        <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
-            <input type="hidden" name="displayConstantSubstitutions" value="0" />
-            <div class="form-check form-switch">
-                <input
-                    type="checkbox"
-                    class="form-check-input"
-                    name="displayConstantSubstitutions"
-                    id="displayConstantSubstitutions"
-                    value="1"
-                    {f:if(condition: displayConstantSubstitutions, then:'checked="checked"')}
-                    data-global-event="change"
-                    data-action-submit="$form"
-                    data-value-selector="input[name='displayConstantSubstitutions']"
-                />
-                <label class="form-check-label" for="displayConstantSubstitutions">
-                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.displayConstantSubstitutions" />
-                </label>
+        <div class="row row-cols-md-auto pb-1">
+            <div class="col col-12 col-sm-12">
+                <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
+                    <input type="hidden" name="displayConstantSubstitutions" value="0" />
+                    <div class="form-check form-switch">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            name="displayConstantSubstitutions"
+                            id="displayConstantSubstitutions"
+                            value="1"
+                            {f:if(condition: displayConstantSubstitutions, then:'checked="checked"')}
+                            data-global-event="change"
+                            data-action-submit="$form"
+                            data-value-selector="input[name='displayConstantSubstitutions']"
+                        />
+                        <label class="form-check-label" for="displayConstantSubstitutions">
+                            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.displayConstantSubstitutions" />
+                        </label>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
-    <div class="col">
-        <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
-            <input type="hidden" name="displayComments" value="0" />
-            <div class="form-check form-switch">
-                <input
-                    type="checkbox"
-                    class="form-check-input"
-                    name="displayComments"
-                    id="displayComments"
-                    value="1"
-                    {f:if(condition: displayComments, then:'checked="checked"')}
-                    data-global-event="change"
-                    data-action-submit="$form"
-                    data-value-selector="input[name='displayComments']"
-                />
-                <label class="form-check-label" for="displayComments">
-                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.displayComments" />
-                </label>
+            <div class="col col-12 col-sm-12">
+                <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
+                    <input type="hidden" name="displayComments" value="0" />
+                    <div class="form-check form-switch">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            name="displayComments"
+                            id="displayComments"
+                            value="1"
+                            {f:if(condition: displayComments, then:'checked="checked"')}
+                            data-global-event="change"
+                            data-action-submit="$form"
+                            data-value-selector="input[name='displayComments']"
+                        />
+                        <label class="form-check-label" for="displayComments">
+                            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.displayComments" />
+                        </label>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
-    <div class="col">
-        <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
-            <input type="hidden" name="sortAlphabetically" value="0" />
-            <div class="form-check form-switch">
-                <input
-                    type="checkbox"
-                    class="form-check-input"
-                    name="sortAlphabetically"
-                    id="sortAlphabetically"
-                    value="1"
-                    {f:if(condition: sortAlphabetically, then:'checked="checked"')}
-                    data-global-event="change"
-                    data-action-submit="$form"
-                    data-value-selector="input[name='sortAlphabetically']"
-                />
-                <label class="form-check-label" for="sortAlphabetically">
-                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.sortAlphabetically" />
-                </label>
+            <div class="col col-12 col-sm-12">
+                <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
+                    <input type="hidden" name="sortAlphabetically" value="0" />
+                    <div class="form-check form-switch">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            name="sortAlphabetically"
+                            id="sortAlphabetically"
+                            value="1"
+                            {f:if(condition: sortAlphabetically, then:'checked="checked"')}
+                            data-global-event="change"
+                            data-action-submit="$form"
+                            data-value-selector="input[name='sortAlphabetically']"
+                        />
+                        <label class="form-check-label" for="sortAlphabetically">
+                            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.sortAlphabetically" />
+                        </label>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 

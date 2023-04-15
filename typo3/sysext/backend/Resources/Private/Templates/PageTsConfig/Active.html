@@ -89,8 +89,8 @@
 </f:section>
 
 <f:section name="Options">
-    <div class="row row-cols-auto align-items-end g-3 mb-3">
-        <div class="col">
+    <div class="row row-cols-auto align-items-end g-3 mb-4 pt-2">
+        <div class="col col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
             <form action="#">
                 <div class="input-group">
                     <input
@@ -106,70 +106,74 @@
                 </div>
             </form>
         </div>
-        <f:if condition="{siteSettingsAst}">
-            <div class="col">
-                <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
-                    <input type="hidden" name="displayConstantSubstitutions" value="0" />
-                    <div class="form-check form-switch">
-                        <input
-                            type="checkbox"
-                            class="form-check-input"
-                            name="displayConstantSubstitutions"
-                            id="displayConstantSubstitutions"
-                            value="1"
-                            data-global-event="change"
-                            data-action-submit="$form"
-                            data-value-selector="input[name='displayConstantSubstitutions']"
-                            {f:if(condition: displayConstantSubstitutions, then: 'checked="checked"')}
-                        />
-                        <label class="form-check-label" for="displayConstantSubstitutions">
-                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.displayConstantSubstitutions" />
-                        </label>
+        <div class="col">
+            <div class="row row-cols-md-auto pb-1">
+                <f:if condition="{siteSettingsAst}">
+                    <div class="col col-12 col-sm-12">
+                        <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
+                            <input type="hidden" name="displayConstantSubstitutions" value="0" />
+                            <div class="form-check form-switch">
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    name="displayConstantSubstitutions"
+                                    id="displayConstantSubstitutions"
+                                    value="1"
+                                    data-global-event="change"
+                                    data-action-submit="$form"
+                                    data-value-selector="input[name='displayConstantSubstitutions']"
+                                    {f:if(condition: displayConstantSubstitutions, then: 'checked="checked"')}
+                                />
+                                <label class="form-check-label" for="displayConstantSubstitutions">
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.displayConstantSubstitutions" />
+                                </label>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </f:if>
+                <div class="col col-12 col-sm-12">
+                    <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
+                        <input type="hidden" name="displayComments" value="0" />
+                        <div class="form-check form-switch">
+                            <input
+                                type="checkbox"
+                                class="form-check-input"
+                                name="displayComments"
+                                id="displayComments"
+                                value="1"
+                                data-global-event="change"
+                                data-action-submit="$form"
+                                data-value-selector="input[name='displayComments']"
+                                {f:if(condition: displayComments, then: 'checked="checked"')}
+                            />
+                            <label class="form-check-label" for="displayComments">
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.displayComments" />
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="col col-12 col-sm-12">
+                    <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
+                        <input type="hidden" name="sortAlphabetically" value="0" />
+                        <div class="form-check form-switch">
+                            <input
+                                type="checkbox"
+                                class="form-check-input"
+                                name="sortAlphabetically"
+                                id="sortAlphabetically"
+                                value="1"
+                                data-global-event="change"
+                                data-action-submit="$form"
+                                data-value-selector="input[name='sortAlphabetically']"
+                                {f:if(condition: sortAlphabetically, then: 'checked="checked"')}
+                            />
+                            <label class="form-check-label" for="sortAlphabetically">
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.sortAlphabetically" />
+                            </label>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </f:if>
-        <div class="col">
-            <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
-                <input type="hidden" name="displayComments" value="0" />
-                <div class="form-check form-switch">
-                    <input
-                        type="checkbox"
-                        class="form-check-input"
-                        name="displayComments"
-                        id="displayComments"
-                        value="1"
-                        data-global-event="change"
-                        data-action-submit="$form"
-                        data-value-selector="input[name='displayComments']"
-                        {f:if(condition: displayComments, then: 'checked="checked"')}
-                    />
-                    <label class="form-check-label" for="displayComments">
-                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.displayComments" />
-                    </label>
-                </div>
-            </form>
-        </div>
-        <div class="col">
-            <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
-                <input type="hidden" name="sortAlphabetically" value="0" />
-                <div class="form-check form-switch">
-                    <input
-                        type="checkbox"
-                        class="form-check-input"
-                        name="sortAlphabetically"
-                        id="sortAlphabetically"
-                        value="1"
-                        data-global-event="change"
-                        data-action-submit="$form"
-                        data-value-selector="input[name='sortAlphabetically']"
-                        {f:if(condition: sortAlphabetically, then: 'checked="checked"')}
-                    />
-                    <label class="form-check-label" for="sortAlphabetically">
-                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.sortAlphabetically" />
-                    </label>
-                </div>
-            </form>
         </div>
     </div>
 </f:section>

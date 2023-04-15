@@ -84,7 +84,7 @@
 				<source>Clear the object</source>
 			</trans-unit>
 			<trans-unit id="editAction.clearObject.infotextWithProperty" resname="editAction.clearObject.infotextWithProperty">
-				<source>Info: The object is cleared via the statement "%s >".</source>
+				<source>The object will be cleared via the statement:</source>
 			</trans-unit>
 			<trans-unit id="editAction.clearObject.btn" resname="editAction.clearObject.btn">
 				<source>Clear now</source>
