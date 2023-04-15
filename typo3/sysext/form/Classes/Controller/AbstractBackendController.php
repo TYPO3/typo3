@@ -41,8 +41,13 @@ abstract class AbstractBackendController extends ActionController
 
     public function initializeObject()
     {
-        $this->formSettings = GeneralUtility::makeInstance(ConfigurationManagerInterface::class)
-            ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+        $this->formSettings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
+        if (!isset($this->formSettings['formManager'])) {
+            // Config sub array formManager is crucial and should always exist. If it does
+            // not, this indicates an issue in config loading logic. Except in this case.
+            throw new \LogicException('Configuration could not be loaded', 1681549038);
+        }
     }
 
     /**

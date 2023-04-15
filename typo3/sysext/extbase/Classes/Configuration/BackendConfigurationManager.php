@@ -215,29 +215,33 @@ class BackendConfigurationManager implements SingletonInterface
         $site = $request?->getAttribute('site');
 
         $rootLine = [];
+        $sysTemplateFakeRow = [
+            'uid' => 0,
+            'pid' => 0,
+            'title' => 'Fake sys_template row to force extension statics loading',
+            'root' => 1,
+            'clear' => 3,
+            'include_static_file' => '',
+            'basedOn' => '',
+            'includeStaticAfterBasedOn' => 0,
+            'static_file_mode' => false,
+            'constants' => '',
+            'config' => '',
+            'deleted' => 0,
+            'hidden' => 0,
+            'starttime' => 0,
+            'endtime' => 0,
+            'sorting' => 0,
+        ];
         if ($pageId > 0) {
             $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
             $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
             ksort($rootLine);
-        } else {
-            $sysTemplateRows[] = [
-                'uid' => 0,
-                'pid' => 0,
-                'title' => 'Fake sys_template row to force extension statics loading',
-                'root' => 1,
-                'clear' => 3,
-                'include_static_file' => '',
-                'basedOn' => '',
-                'includeStaticAfterBasedOn' => 0,
-                'static_file_mode' => false,
-                'constants' => '',
-                'config' => '',
-                'deleted' => 0,
-                'hidden' => 0,
-                'starttime' => 0,
-                'endtime' => 0,
-                'sorting' => 0,
-            ];
+        }
+        if (empty($sysTemplateRows)) {
+            // If there is no page (pid 0 only), or if the first 'is_siteroot' site has no sys_template record,
+            // then we "fake" a sys_template row: This triggers inclusion of 'global' and 'extension static' TypoScript.
+            $sysTemplateRows[] = $sysTemplateFakeRow;
         }
 
         // We do cache tree and tokens, but don't cache full ast in this backend context for now:
