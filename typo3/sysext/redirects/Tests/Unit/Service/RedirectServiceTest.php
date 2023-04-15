@@ -640,6 +640,7 @@ final class RedirectServiceTest extends UnitTestCase
         $linkDetails = [
             'pageuid' => 13,
             'type' => LinkService::TYPE_PAGE,
+            'typoLinkParameter' => $pageRecord,
         ];
         $this->linkServiceMock->method('resolve')->with($pageRecord)->willReturn($linkDetails);
 

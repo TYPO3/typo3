@@ -64,6 +64,11 @@ class LegacyLinkNotationConverter
         }
 
         $result = [];
+        // @todo If resolved result (linkDetails) are later used to build an uri using LinkBuilder->build(), it's needed
+        //       to have the original $linkParameter in the result array. Otherwise, places may break like e.g. the
+        //       DatabaseRecordLinkBuilder. Can we safely set this here directly and avoiding calls before build like
+        //       "$linkDetails['typoLinkParameter'] = $redirectTarget;" - e.g. like in the ext:redirects
+        //       TYPO3\CMS\Redirects\Service\RedirectService::resolveLinkDetailsFromLinkTarget() and other places.
 
         // Resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
         if (stripos($linkParameter, 'file:') === 0) {
