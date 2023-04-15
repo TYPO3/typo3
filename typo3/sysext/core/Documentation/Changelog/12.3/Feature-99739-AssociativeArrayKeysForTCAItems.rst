@@ -61,7 +61,7 @@ Examples:
             ],
         ],
         'radio' => [
-            'label => 'My radio field',
+            'label' => 'My radio field',
             'config' => [
                 'type' => 'radio',
                 'items' => [
