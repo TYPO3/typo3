@@ -593,7 +593,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function cObjGet($setup, $addKey = '')
     {
-        if (!is_array($setup)) {
+        if (!is_array($setup) || $setup === []) {
             return '';
         }
         $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($setup);
