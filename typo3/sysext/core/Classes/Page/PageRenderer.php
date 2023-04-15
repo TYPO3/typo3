@@ -43,6 +43,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * TYPO3 pageRender class
  * This class render the HTML of a webpage, usable for BE and FE
+ *
+ * @todo mark this class final in TYPO3 v13.0
  */
 class PageRenderer implements SingletonInterface
 {
@@ -306,6 +308,7 @@ class PageRenderer implements SingletonInterface
 
     /**
      * @var array{0: string, 1: string}
+     * @deprecated since TYPO3 v12.4, will be removed in TYPO3 v13.0 - use method `wrapInlineScript` instead
      */
     protected $inlineJavascriptWrap = [
         '<script>' . LF . '/*<![CDATA[*/' . LF,
@@ -314,6 +317,7 @@ class PageRenderer implements SingletonInterface
 
     /**
      * @var array
+     * @deprecated since TYPO3 v12.4, will be removed in TYPO3 v13.0 - use method `wrapInlineStyle` instead
      */
     protected $inlineCssWrap = [
         '<style>' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
@@ -467,13 +471,6 @@ class PageRenderer implements SingletonInterface
     {
         trigger_error('PageRenderer->setRenderXhtml() will be removed in TYPO3 v13.0. Use PageRenderer->setDocType() instead.', E_USER_DEPRECATED);
         $this->renderXhtml = $enable;
-
-        // Whenever XHTML gets disabled, remove the "text/javascript" type from the wrap
-        // since this is not needed and may lead to validation errors in the future.
-        $this->inlineJavascriptWrap = [
-            '<script' . ($enable ? ' type="text/javascript" ' : '') . '>' . LF . '/*<![CDATA[*/' . LF,
-            '/*]]>*/' . LF . '</script>' . LF,
-        ];
     }
 
     /**
@@ -848,13 +845,6 @@ class PageRenderer implements SingletonInterface
         $this->xmlPrologAndDocType = $docType->getDoctypeDeclaration();
         $this->metaCharsetTag = str_replace('utf-8', '|', $docType->getMetaCharsetTag());
         $this->setDefaultHtmlTag();
-
-        // Whenever HTML5 is used, remove the "text/javascript" type from the wrap
-        // since this is not needed and may lead to validation errors in the future.
-        $this->inlineJavascriptWrap = [
-            '<script' . ($docType !== DocType::html5 ? ' type="text/javascript" ' : '') . '>' . LF . '/*<![CDATA[*/' . LF,
-            '/*]]>*/' . LF . '</script>' . LF,
-        ];
     }
 
     public function getDocType(): DocType
@@ -2150,16 +2140,16 @@ class PageRenderer implements SingletonInterface
                 $this->javaScriptRenderer->addGlobalAssignment(['TYPO3' => $assignments]);
             } else {
                 // @todo apply nonce for CSP (means dropping static `inlineJavascriptWrap`)
-                $out .= sprintf(
-                    "%svar TYPO3 = Object.assign(TYPO3 || {}, %s);\r\n%s",
-                    $this->inlineJavascriptWrap[0],
-                    // filter potential prototype pollution
+                $out .= $this->wrapInlineScript(
                     sprintf(
-                        'Object.fromEntries(Object.entries(%s).filter((entry) => '
+                        "var TYPO3 = Object.assign(TYPO3 || {}, %s);\r\n",
+                        // filter potential prototype pollution
+                        sprintf(
+                            'Object.fromEntries(Object.entries(%s).filter((entry) => '
                             . "!['__proto__', 'prototype', 'constructor'].includes(entry[0])))",
-                        json_encode($assignments)
-                    ),
-                    $this->inlineJavascriptWrap[1],
+                            json_encode($assignments)
+                        )
+                    )
                 );
             }
         }
@@ -2347,7 +2337,7 @@ class PageRenderer implements SingletonInterface
                     $cssInline .= $cssCode;
                 }
             }
-            $cssInline = $this->inlineCssWrap[0] . $cssInline . $this->inlineCssWrap[1];
+            $cssInline = $this->wrapInlineStyle($cssInline);
         }
         return $cssInline;
     }
@@ -2500,10 +2490,10 @@ class PageRenderer implements SingletonInterface
             }
         }
         if ($jsInline) {
-            $jsInline = $this->inlineJavascriptWrap[0] . $jsInline . $this->inlineJavascriptWrap[1];
+            $jsInline = $this->wrapInlineScript($jsInline);
         }
         if ($jsFooterInline) {
-            $jsFooterInline = $this->inlineJavascriptWrap[0] . $jsFooterInline . $this->inlineJavascriptWrap[1];
+            $jsFooterInline = $this->wrapInlineScript($jsFooterInline);
         }
         if ($this->moveJsFromHeaderToFooter) {
             $jsFooterInline = $jsInline . $jsFooterInline;
@@ -2892,6 +2882,34 @@ class PageRenderer implements SingletonInterface
             . '/*<![CDATA[*/' . LF . '<!-- ' . LF
             . $cssInlineFix
             . '-->' . LF . '/*]]>*/' . LF . '</style>' . LF;
+    }
+
+    protected function wrapInlineStyle(string $content, array $attributes = []): string
+    {
+        $attributesList = GeneralUtility::implodeAttributes($attributes, true);
+        return sprintf(
+            "<style%s>\n/*<![CDATA[*/\n<!-- \n%s-->\n/*]]>*/\n</style>\n",
+            $attributesList !== '' ? ' ' . $attributesList : '',
+            $content
+        );
+    }
+
+    protected function wrapInlineScript(string $content, array $attributes = []): string
+    {
+        // * Whenever HTML5 is used, remove the "text/javascript" type from the wrap
+        //   since this is not needed and may lead to validation errors in the future.
+        // * Whenever XHTML gets disabled, remove the "text/javascript" type from the wrap
+        //   since this is not needed and may lead to validation errors in the future.
+        if ($this->docType !== DocType::html5 || $this->renderXhtml) {
+            $attributes['type'] = 'text/javascript';
+        }
+
+        $attributesList = GeneralUtility::implodeAttributes($attributes, true);
+        return sprintf(
+            "<script%s>\n/*<![CDATA[*/\n%s/*]]>*/\n</script>\n",
+            $attributesList !== '' ? ' ' . $attributesList : '',
+            $content
+        );
     }
 
     /**
