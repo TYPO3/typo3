@@ -35,28 +35,29 @@
                     <div class="table-fit">
                         <table class="table table-striped table-hover">
                             <thead>
-                            <tr>
-                                <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_pages.pagename" /></th>
-                                <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_pages.written_tsconfig_lines" /></th>
-                            </tr>
+                                <tr>
+                                    <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_pages.pagetitle" /></th>
+                                    <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_pages.written_tsconfig_lines" /></th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <f:for each="{overviewOfPagesUsingTSConfig}" as="line">
                                     <tr>
-                                        <td class="text-nowrap" style="padding-left: {line.padding}px">
-                                            <f:if condition="{line.link}">
-                                                <f:then>
-                                                    <a href="{line.link}" title="{line.title}">
+                                        <td class="align-top nowrap"><f:spaceless>
+                                            <span style="margin-left: {line.padding}px">
+                                                <a
+                                                    href="#"
+                                                    data-contextmenu-trigger="click"
+                                                    data-contextmenu-table="pages"
+                                                    data-contextmenu-uid="{line.title}"
+                                                >
+                                                    <span title="id={line.title}">
                                                         <f:format.raw>{line.icon}</f:format.raw>
-                                                        <f:format.raw>{line.pageTitle}</f:format.raw>
-                                                    </a>
-                                                </f:then>
-                                                <f:else>
-                                                    <f:format.raw>{line.icon}</f:format.raw>
-                                                    <f:format.raw>{line.pageTitle}</f:format.raw>
-                                                </f:else>
-                                            </f:if>
-                                        </td>
+                                                    </span>
+                                                </a>
+                                                <f:format.raw>{line.pageTitle}</f:format.raw>
+                                            </span>
+                                        </f:spaceless></td>
                                         <td>{line.lines}</td>
                                     </tr>
                                 </f:for>

@@ -361,7 +361,7 @@
 				<source>Recycler</source>
 			</trans-unit>
 			<trans-unit id="title" resname="title">
-				<source>Pagetitle</source>
+				<source>Page title</source>
 			</trans-unit>
 			<trans-unit id="php_tree_stop" resname="php_tree_stop">
 				<source>Hide child pages in page tree</source>

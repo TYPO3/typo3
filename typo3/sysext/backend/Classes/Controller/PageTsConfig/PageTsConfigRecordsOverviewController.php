@@ -180,17 +180,16 @@ final class PageTsConfigRecordsOverviewController
                 continue;
             }
             $line = [];
-            $line['padding'] = ($pageDepth * 20) + 10;
+            $line['padding'] = ($pageDepth * 20);
+            $line['title'] = $identifier;
             if (isset($pageArray[$identifier . '_'])) {
                 $line['link'] = $this->uriBuilder->buildUriFromRoute($currentModule->getIdentifier(), ['id' => $identifier]);
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();
-                $line['title'] = 'ID: ' . $identifier;
                 $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($title, 30);
                 $line['lines'] = ($pageArray[$identifier . '_']['writtenLines'] === 0 ? '' : $pageArray[$identifier . '_']['writtenLines']);
             } else {
                 $line['link'] = '';
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();
-                $line['title'] = '';
                 $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($title, 30);
                 $line['lines'] = '';
             }

@@ -28,11 +28,11 @@
 			<trans-unit id="module.pagetsconfig_pages.noRecords" resname="module.pagetsconfig_pages.noRecords">
 				<source>There are no pages containing page TSconfig settings in the page configuration.</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_pages.pagename" resname="module.pagetsconfig_pages.pagename">
-				<source>Page name</source>
+			<trans-unit id="module.pagetsconfig_pages.pagetitle" resname="module.pagetsconfig_pages.pagetitle">
+				<source>Page title</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_pages.written_tsconfig_lines" resname="module.pagetsconfig_pages.written_tsconfig_lines">
-				<source>Lines</source>
+				<source>Number of lines of code in field "TSconfig"</source>
 			</trans-unit>
 
 			<trans-unit id="module.pagetsconfig_active" resname="module.pagetsconfig_active">
