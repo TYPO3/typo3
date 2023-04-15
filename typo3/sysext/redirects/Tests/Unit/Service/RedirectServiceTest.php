@@ -602,6 +602,7 @@ class RedirectServiceTest extends UnitTestCase
         $linkDetails = [
             'pageuid' => 13,
             'type' => LinkService::TYPE_PAGE,
+            'typoLinkParameter' => $pageRecord,
         ];
         $this->linkServiceProphecy->resolve($pageRecord)->willReturn($linkDetails);
 

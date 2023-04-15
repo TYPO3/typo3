@@ -183,6 +183,14 @@ class RedirectService implements LoggerAwareInterface
     {
         try {
             $linkDetails = $this->linkService->resolve($redirectTarget);
+            // Having the `typoLinkParameter` in the linkDetails is required, if the linkDetails are used to generate
+            // an url out of it. Therefore, this should be set in `getUriFromCustomLinkDetails()` before calling the
+            // LinkBuilder->build() method. We have a really tight execution context here, so we can safely set it here
+            // for now.
+            // @todo This simply reflects the used value to resolve the details. Other places in core set this to the
+            //       array before building an url. This looks kind of unfinished. We should check, if we should not set
+            //       that linkDetail value directly in the LinkService()->resolve() method generally.
+            $linkDetails['typoLinkParameter'] = $redirectTarget;
             switch ($linkDetails['type']) {
                 case LinkService::TYPE_URL:
                     // all set up, nothing to do
