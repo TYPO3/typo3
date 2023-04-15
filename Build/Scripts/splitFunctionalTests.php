@@ -111,7 +111,7 @@ class SplitFunctionalTests
                 if (isset($test['dataProvider'])) {
                     // Test uses a data provider - get number of data sets
                     $dataProviderMethodName = $test['dataProvider'];
-                    $methods = (new $fqcn())->$dataProviderMethodName();
+                    $methods = $fqcn::$dataProviderMethodName();
                     if ($methods instanceof Generator) {
                         $numberOfDataSets = iterator_count($methods);
                     } else {
@@ -144,7 +144,7 @@ class SplitFunctionalTests
             asort($numberOfTestsPerChunk);
             reset($numberOfTestsPerChunk);
             $jobFileNumber = key($numberOfTestsPerChunk);
-            $xml[$jobFileNumber]->testsuites->testsuite->addChild('directory', $testFile);
+            $xml[$jobFileNumber]->testsuites->testsuite->addChild('file', $testFile);
             $numberOfTestsPerChunk[$jobFileNumber] = $numberOfTestsPerChunk[$jobFileNumber] + $numberOfTestsInFile;
         }
 

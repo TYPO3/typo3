@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <!--
 	Unit test suite setup
 
@@ -12,39 +13,30 @@
 -->
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd"
     backupGlobals="true"
     bootstrap="UnitTestsBootstrap.php"
     cacheResult="false"
     colors="true"
-    convertDeprecationsToExceptions="true"
-    convertErrorsToExceptions="true"
-    convertWarningsToExceptions="true"
-    convertNoticesToExceptions="true"
-    forceCoversAnnotation="false"
-    processIsolation="false"
-    stopOnError="false"
-    stopOnFailure="false"
-    stopOnIncomplete="false"
-    stopOnSkipped="false"
-    verbose="false"
     beStrictAboutTestsThatDoNotTestAnything="false"
-    failOnWarning="true"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
+    displayDetailsOnTestsThatTriggerErrors="true"
+    displayDetailsOnTestsThatTriggerNotices="true"
+    displayDetailsOnTestsThatTriggerWarnings="true"
+    failOnDeprecation="true"
+    failOnNotice="true"
     failOnRisky="true"
+    failOnWarning="true"
+    cacheDirectory=".phpunit.cache"
 >
-    <testsuites>
-        <testsuite name="Core tests">
-            <directory>../../typo3/sysext/*/Tests/Unit/</directory>
-        </testsuite>
-    </testsuites>
-    <coverage>
-        <include>
-            <directory>../../typo3/sysext/*/Classes/</directory>
-        </include>
-    </coverage>
-    <php>
-        <ini name="display_errors" value="1" />
-        <ini name="error_reporting" value="E_ALL" />
-        <env name="TYPO3_CONTEXT" value="Testing" />
-    </php>
+  <testsuites>
+    <testsuite name="Core tests">
+      <directory>../../typo3/sysext/*/Tests/Unit/</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <ini name="display_errors" value="1"/>
+    <ini name="error_reporting" value="E_ALL"/>
+    <env name="TYPO3_CONTEXT" value="Testing"/>
+  </php>
 </phpunit>

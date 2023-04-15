@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Locking;
 
-use PHPUnit\Framework\SkippedTestError;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
 use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
@@ -83,10 +82,7 @@ final class SimpleLockStrategyTest extends UnitTestCase
         self::assertFalse(is_file($pathOfLockFile));
     }
 
-    /**
-     * Dataprovider for releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory
-     */
-    public static function invalidFileReferences(): array
+    public static function releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectoryDataProvider(): array
     {
         return [
             'not within project path' => [tempnam(sys_get_temp_dir(), 'foo')],
@@ -97,11 +93,9 @@ final class SimpleLockStrategyTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider invalidFileReferences
-     * @param string $file
-     * @throws SkippedTestError
+     * @dataProvider releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectoryDataProvider
      */
-    public function releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory($file): void
+    public function releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory(string $file): void
     {
         // Create test file
         @touch($file);
