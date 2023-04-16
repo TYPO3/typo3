@@ -2278,4 +2278,9 @@ return [
             'Deprecation-100454-LegacyTreeImplementations.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\Service\MagicImageService' => [
+        'restFiles' => [
+            'Deprecation-99237-MagicImageService.rst',
+        ],
+    ],
 ];

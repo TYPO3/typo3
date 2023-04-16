@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Magic image service
+ * @deprecated since v12. Will be removed with v13.
  */
 class MagicImageService
 {
@@ -38,6 +39,11 @@ class MagicImageService
      * @var int
      */
     protected $magicImageMaximumHeight = 1000;
+
+    public function __construct()
+    {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v13.', E_USER_DEPRECATED);
+    }
 
     /**
      * Creates a magic image
