@@ -72,7 +72,6 @@ class AddController extends AbstractWizardController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
         $this->init($request);
 
         if ($this->returnEditConf) {

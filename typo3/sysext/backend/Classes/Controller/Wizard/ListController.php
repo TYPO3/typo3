@@ -35,8 +35,6 @@ class ListController extends AbstractWizardController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
-
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
