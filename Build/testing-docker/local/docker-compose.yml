@@ -28,7 +28,7 @@ services:
       - /var/lib/postgresql/data:rw,noexec,nosuid
 
   web:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     stop_grace_period: 1s
     volumes:
@@ -55,7 +55,7 @@ services:
     image: memcached:1.5-alpine
 
   acceptance_split:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -80,7 +80,7 @@ services:
         echo Database is up;
       "
   acceptance_application_mariadb:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     environment:
       typo3DatabaseName: func_test
@@ -134,7 +134,7 @@ services:
         echo Database is up;
       "
   acceptance_application_mysql:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     environment:
       typo3DatabaseName: func_test
@@ -188,7 +188,7 @@ services:
         echo Database is up;
       "
   acceptance_application_postgres:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -238,7 +238,7 @@ services:
       "
 
   acceptance_application_sqlite:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -291,7 +291,7 @@ services:
         echo Database is up;
       "
   acceptance_install_mysql:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     environment:
       typo3InstallMysqlDatabaseHost: mysql
@@ -338,7 +338,7 @@ services:
         echo Database is up;
       "
   acceptance_install_mariadb:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     environment:
       typo3InstallMysqlDatabaseHost: mariadb
@@ -385,7 +385,7 @@ services:
         echo Database is up;
       "
   acceptance_install_postgres:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     environment:
       typo3InstallPostgresqlDatabaseHost: postgres
@@ -424,7 +424,7 @@ services:
         sleep 1;
       "
   acceptance_install_sqlite:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -449,7 +449,7 @@ services:
       "
 
   build_css:
-    image: typo3/core-testing-nodejs16:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs16:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -467,7 +467,7 @@ services:
       "
 
   build_javascript:
-    image: typo3/core-testing-nodejs16:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs16:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -485,7 +485,7 @@ services:
       "
 
   cgl_git:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -499,7 +499,7 @@ services:
       "
 
   cgl_all:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -513,7 +513,7 @@ services:
       "
 
   cgl_header_git:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -527,7 +527,7 @@ services:
       "
 
   cgl_header_all:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -542,7 +542,7 @@ services:
       "
 
   check_annotations:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -556,7 +556,7 @@ services:
       "
 
   check_test_class_final:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -570,7 +570,7 @@ services:
       "
 
   check_test_methods_prefix:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -584,7 +584,7 @@ services:
       "
 
   check_bom:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -598,7 +598,7 @@ services:
       "
 
   check_composer:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -612,7 +612,7 @@ services:
       "
 
   check_exception_codes:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -626,7 +626,7 @@ services:
       "
 
   check_extension_scanner_rst:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -640,7 +640,7 @@ services:
       "
 
   check_file_path_length:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -654,7 +654,7 @@ services:
       "
 
   check_git_submodule:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -671,7 +671,7 @@ services:
       "
 
   check_grunt_clean:
-    image: typo3/core-testing-nodejs16:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs16:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -693,7 +693,7 @@ services:
       "
 
   check_namespace_integrity:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -707,7 +707,7 @@ services:
       "
 
   check_permissions:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -721,7 +721,7 @@ services:
       "
 
   check_rst:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -735,7 +735,7 @@ services:
       "
 
   composer_install:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -751,7 +751,7 @@ services:
       "
 
   composer_install_max:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -769,7 +769,7 @@ services:
       "
 
   composer_install_min:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -787,7 +787,7 @@ services:
       "
 
   composer_test_distribution:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -806,7 +806,7 @@ services:
       "
 
   composer_validate:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -820,7 +820,7 @@ services:
       "
 
   functional_split:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -849,7 +849,7 @@ services:
         echo Database is up;
       "
   functional_mariadb:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -886,7 +886,7 @@ services:
         fi
       "
   functional_deprecated_mariadb:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -936,7 +936,7 @@ services:
         echo Database is up;
       "
   functional_mysql:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -973,7 +973,7 @@ services:
         fi
       "
   functional_deprecated_mysql:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -1023,7 +1023,7 @@ services:
         echo Database is up;
       "
   functional_postgres:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -1060,7 +1060,7 @@ services:
         fi
       "
   functional_deprecated_postgres:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -1102,7 +1102,7 @@ services:
         sleep 1;
       "
   functional_sqlite:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     tmpfs:
       - ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}
@@ -1137,7 +1137,7 @@ services:
         fi
       "
   functional_deprecated_sqlite:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     tmpfs:
       - ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}
@@ -1168,7 +1168,7 @@ services:
       "
 
   lint_php:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -1183,7 +1183,7 @@ services:
       "
 
   lint_scss:
-    image: typo3/core-testing-nodejs16:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs16:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -1201,7 +1201,7 @@ services:
       "
 
   lint_html:
-    image: typo3/core-testing-nodejs16:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs16:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -1219,7 +1219,7 @@ services:
       "
 
   lint_typescript:
-    image: typo3/core-testing-nodejs16:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs16:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -1237,7 +1237,7 @@ services:
       "
 
   list_exception_codes:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -1251,7 +1251,7 @@ services:
       "
 
   phpstan:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -1267,7 +1267,7 @@ services:
       "
 
   phpstan_generate_baseline:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -1283,7 +1283,7 @@ services:
       "
 
   unit:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -1308,7 +1308,7 @@ services:
       "
 
   unitDeprecated:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -1333,7 +1333,7 @@ services:
       "
 
   unitJavascript:
-    image: typo3/core-testing-nodejs16-chrome:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs16-chrome:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -1352,7 +1352,7 @@ services:
       "
 
   unitRandom:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
