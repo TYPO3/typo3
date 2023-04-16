@@ -16,6 +16,7 @@ import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import RegularEvent from '@typo3/core/event/regular-event';
 import { lll } from '@typo3/core/lit-helper';
 
 enum CspReportAttribute {
@@ -94,9 +95,23 @@ export class CspReports extends LitElement {
   @state() selectedReport: SummarizedCspReport | null = null;
   @state() suggestions: MutationSuggestion[] = [];
 
+  private peripheralEvent: RegularEvent;
+
   connectedCallback() {
     super.connectedCallback();
     this.fetchReports();
+    this.peripheralEvent = new RegularEvent('click', (evt: Event, target: HTMLElement) => {
+      if (target.dataset.cspReportsHandler === 'refresh') {
+        evt.preventDefault();
+        this.fetchReports();
+      }
+    });
+    this.peripheralEvent.delegateTo(document, '[data-csp-reports-handler]');
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.peripheralEvent?.release();
   }
 
   protected createRenderRoot(): HTMLElement | ShadowRoot {
