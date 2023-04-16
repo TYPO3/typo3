@@ -65,7 +65,8 @@ interface ConfigurationManagerInterface extends SingletonInterface
      * This is an INTERNAL API used throughout Extbase and Fluid for providing backwards-compatibility.
      * Do not use it in your custom code!
      *
-     * @param string $featureName
+     * @internal
+     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
      */
     public function isFeatureEnabled(string $featureName): bool;
 }

@@ -524,6 +524,8 @@ class UriBuilder
             $pluginName = $this->request->getPluginName();
         }
         if ($isFrontend && $this->configurationManager->isFeatureEnabled('skipDefaultArguments')) {
+            // @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
+            //             Remove if() with body, remove removeDefaultControllerAndAction() method.
             $controllerArguments = $this->removeDefaultControllerAndAction($controllerArguments, $extensionName, $pluginName);
         }
         if ($this->targetPageUid === null && $isFrontend) {
@@ -535,6 +537,8 @@ class UriBuilder
         if ($this->argumentPrefix !== null) {
             $prefixedControllerArguments = [$this->argumentPrefix => $controllerArguments];
         } elseif (!$isFrontend && !$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend')) {
+            // @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
+            //             Remove "&& !$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend')" from if()
             $prefixedControllerArguments = $controllerArguments;
         } else {
             $pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
@@ -553,9 +557,14 @@ class UriBuilder
      * @param array $controllerArguments the current controller arguments to be modified
      * @param string $extensionName target extension name
      * @param string $pluginName target plugin name
+     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
      */
     protected function removeDefaultControllerAndAction(array $controllerArguments, string $extensionName, string $pluginName): array
     {
+        trigger_error(
+            'Extbase feature toggle skipDefaultArguments=1 is deprecated. Use routing to "configure-away" default arguments',
+            E_USER_DEPRECATED
+        );
         $defaultControllerName = $this->extensionService->getDefaultControllerNameByPlugin($extensionName, $pluginName);
         if (isset($controllerArguments['action'])) {
             $defaultActionName = $this->extensionService->getDefaultActionNameByPluginAndController($extensionName, $pluginName, $controllerArguments['controller']);
@@ -623,6 +632,8 @@ class UriBuilder
         $routeIdentifier = $arguments['route'] ?? null;
         unset($arguments['route'], $arguments['token']);
 
+        // @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
+        //             Remove if below, keep body.
         $useArgumentsWithoutNamespace = !$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend');
         if ($useArgumentsWithoutNamespace) {
             // In case the current route identifier is an identifier of a sub route, remove the sub route

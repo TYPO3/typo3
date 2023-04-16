@@ -53,18 +53,10 @@ final class UriBuilderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $mockConfigurationManager;
-
-    protected ContentObjectRenderer&MockObject $mockContentObject;
-
-    protected Request&MockObject $mockRequest;
-
-    protected ExtensionService&MockObject $mockExtensionService;
-
-    protected UriBuilder&MockObject&AccessibleObjectInterface $uriBuilder;
+    private ContentObjectRenderer&MockObject $mockContentObject;
+    private Request&MockObject $mockRequest;
+    private ExtensionService&MockObject $mockExtensionService;
+    private UriBuilder&MockObject&AccessibleObjectInterface $subject;
 
     /**
      * @throws \InvalidArgumentException
@@ -77,13 +69,12 @@ final class UriBuilderTest extends UnitTestCase
         $this->mockContentObject = $this->createMock(ContentObjectRenderer::class);
         $this->mockRequest = $this->createMock(Request::class);
         $this->mockExtensionService = $this->createMock(ExtensionService::class);
-        $this->mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $this->uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['build']);
-        $this->uriBuilder->setRequest($this->mockRequest);
-        $this->uriBuilder->injectConfigurationManager($this->mockConfigurationManager);
-        $this->uriBuilder->injectExtensionService($this->mockExtensionService);
-        $this->uriBuilder->initializeObject();
-        $this->uriBuilder->_set('contentObject', $this->mockContentObject);
+        $this->subject = $this->getAccessibleMock(UriBuilder::class, ['build']);
+        $this->subject->setRequest($this->mockRequest);
+        $this->subject->injectConfigurationManager($this->createMock(ConfigurationManagerInterface::class));
+        $this->subject->injectExtensionService($this->mockExtensionService);
+        $this->subject->initializeObject();
+        $this->subject->_set('contentObject', $this->mockContentObject);
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
         $router = new Router($requestContextFactory);
         $router->addRoute('module_key', new Route('/test/Path', []));
@@ -96,12 +87,17 @@ final class UriBuilderTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(BackendUriBuilder::class, new BackendUriBuilder($router, $formProtectionFactory, $requestContextFactory));
     }
 
+    private function getRequestWithRouteAttribute(string $routeIdentifier = 'module_key', string $baseUri = ''): ServerRequestInterface
+    {
+        return (new ServerRequest(new Uri($baseUri)))->withAttribute('route', new Route('/test/Path', ['_identifier' => $routeIdentifier]));
+    }
+
     /**
      * @test
      */
     public function settersAndGettersWorkAsExpected(): void
     {
-        $this->uriBuilder
+        $this->subject
             ->reset()
             ->setArguments(['test' => 'arguments'])
             ->setSection('testSection')
@@ -115,18 +111,18 @@ final class UriBuilderTest extends UnitTestCase
             ->setTargetPageUid(123)
             ->setTargetPageType(321)
             ->setNoCache(true);
-        self::assertEquals(['test' => 'arguments'], $this->uriBuilder->getArguments());
-        self::assertEquals('testSection', $this->uriBuilder->getSection());
-        self::assertEquals('testFormat', $this->uriBuilder->getFormat());
-        self::assertTrue($this->uriBuilder->getCreateAbsoluteUri());
-        self::assertEquals('https', $this->uriBuilder->getAbsoluteUriScheme());
-        self::assertTrue($this->uriBuilder->getAddQueryString());
-        self::assertEquals(['test' => 'addQueryStringExcludeArguments'], $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
-        self::assertEquals('testArgumentPrefix', $this->uriBuilder->getArgumentPrefix());
-        self::assertTrue($this->uriBuilder->getLinkAccessRestrictedPages());
-        self::assertEquals(123, $this->uriBuilder->getTargetPageUid());
-        self::assertEquals(321, $this->uriBuilder->getTargetPageType());
-        self::assertTrue($this->uriBuilder->getNoCache());
+        self::assertEquals(['test' => 'arguments'], $this->subject->getArguments());
+        self::assertEquals('testSection', $this->subject->getSection());
+        self::assertEquals('testFormat', $this->subject->getFormat());
+        self::assertTrue($this->subject->getCreateAbsoluteUri());
+        self::assertEquals('https', $this->subject->getAbsoluteUriScheme());
+        self::assertTrue($this->subject->getAddQueryString());
+        self::assertEquals(['test' => 'addQueryStringExcludeArguments'], $this->subject->getArgumentsToBeExcludedFromQueryString());
+        self::assertEquals('testArgumentPrefix', $this->subject->getArgumentPrefix());
+        self::assertTrue($this->subject->getLinkAccessRestrictedPages());
+        self::assertEquals(123, $this->subject->getTargetPageUid());
+        self::assertEquals(321, $this->subject->getTargetPageType());
+        self::assertTrue($this->subject->getNoCache());
     }
 
     /**
@@ -137,8 +133,8 @@ final class UriBuilderTest extends UnitTestCase
         $expectedArguments =['foo' => 'bar', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController'];
         $GLOBALS['TSFE'] = null;
         $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $this->uriBuilder->uriFor(null, ['foo' => 'bar', 'baz' => ['extbase' => 'fluid']], 'SomeController', 'SomeExtension', 'SomePlugin');
-        self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
+        $this->subject->uriFor(null, ['foo' => 'bar', 'baz' => ['extbase' => 'fluid']], 'SomeController', 'SomeExtension', 'SomePlugin');
+        self::assertEquals($expectedArguments, $this->subject->getArguments());
     }
 
     /**
@@ -150,9 +146,9 @@ final class UriBuilderTest extends UnitTestCase
         $controllerArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid']];
         $expectedArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController', 'additionalParam' => 'additionalValue'];
         $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $this->uriBuilder->setArguments($arguments);
-        $this->uriBuilder->uriFor(null, $controllerArguments, 'SomeController', 'SomeExtension', 'SomePlugin');
-        self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
+        $this->subject->setArguments($arguments);
+        $this->subject->uriFor(null, $controllerArguments, 'SomeController', 'SomeExtension', 'SomePlugin');
+        self::assertEquals($expectedArguments, $this->subject->getArguments());
     }
 
     /**
@@ -162,8 +158,8 @@ final class UriBuilderTest extends UnitTestCase
     {
         $expectedArguments = ['controller' => 'SomeController'];
         $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $this->uriBuilder->uriFor(null, [], 'SomeController', 'SomeExtension', 'SomePlugin');
-        self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
+        $this->subject->uriFor(null, [], 'SomeController', 'SomeExtension', 'SomePlugin');
+        self::assertEquals($expectedArguments, $this->subject->getArguments());
     }
 
     /**
@@ -174,8 +170,8 @@ final class UriBuilderTest extends UnitTestCase
         $this->mockRequest->expects(self::once())->method('getControllerName')->willReturn('SomeControllerFromRequest');
         $expectedArguments = ['controller' => 'SomeControllerFromRequest'];
         $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $this->uriBuilder->uriFor(null, [], null, 'SomeExtension', 'SomePlugin');
-        self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
+        $this->subject->uriFor(null, [], null, 'SomeExtension', 'SomePlugin');
+        self::assertEquals($expectedArguments, $this->subject->getArguments());
     }
 
     /**
@@ -186,8 +182,8 @@ final class UriBuilderTest extends UnitTestCase
         $this->mockRequest->expects(self::once())->method('getControllerExtensionName')->willReturn('SomeExtensionNameFromRequest');
         $expectedArguments = ['controller' => 'SomeController'];
         $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $this->uriBuilder->uriFor(null, [], 'SomeController', null, 'SomePlugin');
-        self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
+        $this->subject->uriFor(null, [], 'SomeController', null, 'SomePlugin');
+        self::assertEquals($expectedArguments, $this->subject->getArguments());
     }
 
     /**
@@ -199,8 +195,8 @@ final class UriBuilderTest extends UnitTestCase
         $this->mockRequest->expects(self::once())->method('getPluginName')->willReturn('SomePluginNameFromRequest');
         $expectedArguments = ['tx_someextension_somepluginnamefromrequest' => ['controller' => 'SomeController']];
         $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $this->uriBuilder->uriFor(null, [], 'SomeController', 'SomeExtension');
-        self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
+        $this->subject->uriFor(null, [], 'SomeController', 'SomeExtension');
+        self::assertEquals($expectedArguments, $this->subject->getArguments());
     }
     /**
      * @test
@@ -210,8 +206,8 @@ final class UriBuilderTest extends UnitTestCase
         $this->mockRequest->expects(self::once())->method('getPluginName')->willReturn('SomePluginNameFromRequest');
         $expectedArguments = ['controller' => 'SomeController'];
         $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $this->uriBuilder->uriFor(null, [], 'SomeController', 'SomeExtension');
-        self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
+        $this->subject->uriFor(null, [], 'SomeController', 'SomeExtension');
+        self::assertEquals($expectedArguments, $this->subject->getArguments());
     }
 
     /**
@@ -223,10 +219,10 @@ final class UriBuilderTest extends UnitTestCase
         $serverRequest = $this->getRequestWithRouteAttribute()->withQueryParams(['id' => 'pageId', 'foo' => 'bar'])
             ->withAttribute('extbase', $extbaseParameters);
         $request =  new Request($serverRequest);
-        $this->uriBuilder->setRequest($request);
-        $this->uriBuilder->setAddQueryString(true);
+        $this->subject->setRequest($request);
+        $this->subject->setAddQueryString(true);
         $expectedResult = '/typo3/test/Path?token=dummyToken&id=pageId&foo=bar';
-        $actualResult = $this->uriBuilder->buildBackendUri();
+        $actualResult = $this->subject->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -240,16 +236,13 @@ final class UriBuilderTest extends UnitTestCase
             ->withQueryParams(['route' => 'module_key', 'id' => 'pageId', 'foo' => 'bar'])
             ->withAttribute('extbase', $extbaseParameters);
         $request =  new Request($serverRequest);
-        $this->uriBuilder->setRequest($request);
-        $this->uriBuilder->setAddQueryString(true);
+        $this->subject->setRequest($request);
+        $this->subject->setAddQueryString(true);
         $expectedResult = '/typo3/test/Path2?token=dummyToken&id=pageId&foo=bar';
-        $actualResult = $this->uriBuilder->buildBackendUri();
+        $actualResult = $this->subject->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * return array
-     */
     public static function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSetDataProvider(): array
     {
         return [
@@ -322,10 +315,10 @@ final class UriBuilderTest extends UnitTestCase
             ->withQueryParams($parameters)
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request =  new Request($serverRequest);
-        $this->uriBuilder->setRequest($request);
-        $this->uriBuilder->setAddQueryString(true);
-        $this->uriBuilder->setArgumentsToBeExcludedFromQueryString($excluded);
-        $actualResult = $this->uriBuilder->buildBackendUri();
+        $this->subject->setRequest($request);
+        $this->subject->setAddQueryString(true);
+        $this->subject->setArgumentsToBeExcludedFromQueryString($excluded);
+        $actualResult = $this->subject->buildBackendUri();
         self::assertEquals($expected, $actualResult);
     }
 
@@ -339,9 +332,9 @@ final class UriBuilderTest extends UnitTestCase
             ->withAttribute('extbase', new ExtbaseRequestParameters())
         ;
         $request =  new Request($serverRequest);
-        $this->uriBuilder->setRequest($request);
+        $this->subject->setRequest($request);
         $expectedResult = '/typo3/test/Path?token=dummyToken&id=pageId';
-        $actualResult = $this->uriBuilder->buildBackendUri();
+        $actualResult = $this->subject->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -354,10 +347,10 @@ final class UriBuilderTest extends UnitTestCase
             ->withQueryParams(['id' => 'pageId', 'foo' => 'bar'])
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request =  new Request($serverRequest);
-        $this->uriBuilder->setRequest($request);
-        $this->uriBuilder->setArguments(['route' => 'module_key2', 'somePrefix' => ['bar' => 'baz']]);
+        $this->subject->setRequest($request);
+        $this->subject->setArguments(['route' => 'module_key2', 'somePrefix' => ['bar' => 'baz']]);
         $expectedResult = '/typo3/test/Path2?token=dummyToken&id=pageId&somePrefix%5Bbar%5D=baz';
-        $actualResult = $this->uriBuilder->buildBackendUri();
+        $actualResult = $this->subject->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -369,12 +362,12 @@ final class UriBuilderTest extends UnitTestCase
         $serverRequest = $this->getRequestWithRouteAttribute()
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request =  new Request($serverRequest);
-        $this->uriBuilder->setRequest($request);
+        $this->subject->setRequest($request);
         $mockDomainObject = $this->getAccessibleMock(AbstractEntity::class, null);
         $mockDomainObject->_set('uid', '123');
-        $this->uriBuilder->setArguments(['somePrefix' => ['someDomainObject' => $mockDomainObject]]);
+        $this->subject->setArguments(['somePrefix' => ['someDomainObject' => $mockDomainObject]]);
         $expectedResult = '/typo3/test/Path?token=dummyToken&somePrefix%5BsomeDomainObject%5D=123';
-        $actualResult = $this->uriBuilder->buildBackendUri();
+        $actualResult = $this->subject->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -386,10 +379,10 @@ final class UriBuilderTest extends UnitTestCase
         $serverRequest = $this->getRequestWithRouteAttribute()
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request =  new Request($serverRequest);
-        $this->uriBuilder->setRequest($request);
-        $this->uriBuilder->setSection('someSection');
+        $this->subject->setRequest($request);
+        $this->subject->setSection('someSection');
         $expectedResult = '/typo3/test/Path?token=dummyToken#someSection';
-        $actualResult = $this->uriBuilder->buildBackendUri();
+        $actualResult = $this->subject->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -403,13 +396,13 @@ final class UriBuilderTest extends UnitTestCase
             ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams($_SERVER))
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $mvcRequest = new Request($request);
-        $this->uriBuilder->setRequest($mvcRequest);
-        $this->uriBuilder->setCreateAbsoluteUri(true);
-        $this->uriBuilder->setArguments(['route' => 'module_key']);
+        $this->subject->setRequest($mvcRequest);
+        $this->subject->setCreateAbsoluteUri(true);
+        $this->subject->setArguments(['route' => 'module_key']);
         $backendUriBuilder = GeneralUtility::makeInstance(BackendUriBuilder::class);
         $backendUriBuilder->setRequestContext(new RequestContext(host: 'baseuri/typo3'));
         $expectedResult = 'http://baseuri/typo3/test/Path?token=dummyToken';
-        $actualResult = $this->uriBuilder->buildBackendUri();
+        $actualResult = $this->subject->buildBackendUri();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -422,10 +415,10 @@ final class UriBuilderTest extends UnitTestCase
             ->getRequestWithRouteAttribute()
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
-        $this->uriBuilder->setRequest($request);
-        $this->uriBuilder->setArguments(['controller' => 'controller', 'action' => 'action']);
+        $this->subject->setRequest($request);
+        $this->subject->setArguments(['controller' => 'controller', 'action' => 'action']);
         $expectedResult = '/typo3/test/Path/Controller/action?token=dummyToken';
-        $actualResult = $this->uriBuilder->buildBackendUri();
+        $actualResult = $this->subject->buildBackendUri();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -438,10 +431,10 @@ final class UriBuilderTest extends UnitTestCase
             ->getRequestWithRouteAttribute('module_key.controller_action')
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
-        $this->uriBuilder->setRequest($request);
-        $this->uriBuilder->setArguments(['controller' => 'controller2', 'action' => 'action2']);
+        $this->subject->setRequest($request);
+        $this->subject->setArguments(['controller' => 'controller2', 'action' => 'action2']);
         $expectedResult = '/typo3/test/Path/Controller2/action2?token=dummyToken';
-        $actualResult = $this->uriBuilder->buildBackendUri();
+        $actualResult = $this->subject->buildBackendUri();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -464,7 +457,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $this->mockContentObject->expects(self::once())->method('createUrl')->willReturn('relative/uri');
         $expectedResult = 'relative/uri';
-        $actualResult = $this->uriBuilder->buildFrontendUri();
+        $actualResult = $this->subject->buildFrontendUri();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -475,7 +468,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $this->mockContentObject->expects(self::once())->method('createUrl')->willReturn('/relative/uri');
         $expectedResult = '/relative/uri';
-        $actualResult = $this->uriBuilder->buildFrontendUri();
+        $actualResult = $this->subject->buildFrontendUri();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -531,7 +524,7 @@ final class UriBuilderTest extends UnitTestCase
      */
     public function resetSetsAllOptionsToTheirDefaultValue(): void
     {
-        $this->uriBuilder
+        $this->subject
             ->setArguments(['test' => 'arguments'])
             ->setSection('testSection')
             ->setFormat('someFormat')
@@ -546,20 +539,20 @@ final class UriBuilderTest extends UnitTestCase
             ->setAbsoluteUriScheme('test')
         ;
 
-        $this->uriBuilder->reset();
-        self::assertEquals([], $this->uriBuilder->getArguments());
-        self::assertEquals('', $this->uriBuilder->getSection());
-        self::assertEquals('', $this->uriBuilder->getFormat());
-        self::assertFalse($this->uriBuilder->getCreateAbsoluteUri());
-        self::assertFalse($this->uriBuilder->getAddQueryString());
-        self::assertEquals([], $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
-        self::assertEquals('', $this->uriBuilder->getArgumentPrefix());
-        self::assertFalse($this->uriBuilder->getLinkAccessRestrictedPages());
-        self::assertNull($this->uriBuilder->getTargetPageUid());
-        self::assertEquals(0, $this->uriBuilder->getTargetPageType());
-        self::assertFalse($this->uriBuilder->getNoCache());
-        self::assertFalse($this->uriBuilder->getNoCache());
-        self::assertNull($this->uriBuilder->getAbsoluteUriScheme());
+        $this->subject->reset();
+        self::assertEquals([], $this->subject->getArguments());
+        self::assertEquals('', $this->subject->getSection());
+        self::assertEquals('', $this->subject->getFormat());
+        self::assertFalse($this->subject->getCreateAbsoluteUri());
+        self::assertFalse($this->subject->getAddQueryString());
+        self::assertEquals([], $this->subject->getArgumentsToBeExcludedFromQueryString());
+        self::assertEquals('', $this->subject->getArgumentPrefix());
+        self::assertFalse($this->subject->getLinkAccessRestrictedPages());
+        self::assertNull($this->subject->getTargetPageUid());
+        self::assertEquals(0, $this->subject->getTargetPageType());
+        self::assertFalse($this->subject->getNoCache());
+        self::assertFalse($this->subject->getNoCache());
+        self::assertNull($this->subject->getAbsoluteUriScheme());
     }
 
     /**
@@ -568,9 +561,9 @@ final class UriBuilderTest extends UnitTestCase
     public function buildTypolinkConfigurationRespectsSpecifiedTargetPageUid(): void
     {
         $GLOBALS['TSFE']->id = 123;
-        $this->uriBuilder->setTargetPageUid(321);
+        $this->subject->setTargetPageUid(321);
         $expectedConfiguration = ['parameter' => 321];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+        $actualConfiguration = $this->subject->_call('buildTypolinkConfiguration');
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }
 
@@ -581,7 +574,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $GLOBALS['TSFE']->id = 123;
         $expectedConfiguration = ['parameter' => 123];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+        $actualConfiguration = $this->subject->_call('buildTypolinkConfiguration');
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }
 
@@ -590,10 +583,10 @@ final class UriBuilderTest extends UnitTestCase
      */
     public function buildTypolinkConfigurationProperlySetsAdditionalArguments(): void
     {
-        $this->uriBuilder->setTargetPageUid(123);
-        $this->uriBuilder->setArguments(['foo' => 'bar', 'baz' => ['extbase' => 'fluid']]);
+        $this->subject->setTargetPageUid(123);
+        $this->subject->setArguments(['foo' => 'bar', 'baz' => ['extbase' => 'fluid']]);
         $expectedConfiguration = ['parameter' => 123, 'additionalParams' => '&foo=bar&baz%5Bextbase%5D=fluid'];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+        $actualConfiguration = $this->subject->_call('buildTypolinkConfiguration');
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }
 
@@ -602,10 +595,10 @@ final class UriBuilderTest extends UnitTestCase
      */
     public function buildTypolinkConfigurationProperlySetsAddQueryString(): void
     {
-        $this->uriBuilder->setTargetPageUid(123);
-        $this->uriBuilder->setAddQueryString(true);
+        $this->subject->setTargetPageUid(123);
+        $this->subject->setAddQueryString(true);
         $expectedConfiguration = ['parameter' => 123, 'addQueryString' => 1];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+        $actualConfiguration = $this->subject->_call('buildTypolinkConfiguration');
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }
 
@@ -618,10 +611,10 @@ final class UriBuilderTest extends UnitTestCase
         $mockDomainObject1->_set('uid', '123');
         $mockDomainObject2 = $this->getAccessibleMock(AbstractEntity::class, null);
         $mockDomainObject2->_set('uid', '321');
-        $this->uriBuilder->setTargetPageUid(123);
-        $this->uriBuilder->setArguments(['someDomainObject' => $mockDomainObject1, 'baz' => ['someOtherDomainObject' => $mockDomainObject2]]);
+        $this->subject->setTargetPageUid(123);
+        $this->subject->setArguments(['someDomainObject' => $mockDomainObject1, 'baz' => ['someOtherDomainObject' => $mockDomainObject2]]);
         $expectedConfiguration = ['parameter' => 123, 'additionalParams' => '&someDomainObject=123&baz%5BsomeOtherDomainObject%5D=321'];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+        $actualConfiguration = $this->subject->_call('buildTypolinkConfiguration');
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }
 
@@ -630,21 +623,21 @@ final class UriBuilderTest extends UnitTestCase
      */
     public function buildTypolinkConfigurationResolvesPageTypeFromFormat(): void
     {
-        $this->uriBuilder->setTargetPageUid(123);
-        $this->uriBuilder->setFormat('txt');
+        $this->subject->setTargetPageUid(123);
+        $this->subject->setFormat('txt');
         $this->mockRequest->expects(self::once())->method('getControllerExtensionName')->willReturn('SomeExtensionNameFromRequest');
 
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $mockConfigurationManager->method('getConfiguration')
             ->willReturn(['formatToPageTypeMapping' => ['txt' => 2]]);
-        $this->uriBuilder->injectConfigurationManager($mockConfigurationManager);
+        $this->subject->injectConfigurationManager($mockConfigurationManager);
 
         $this->mockExtensionService->method('getTargetPageTypeByFormat')
             ->with('SomeExtensionNameFromRequest', 'txt')
             ->willReturn(2);
 
         $expectedConfiguration = ['parameter' => '123,2'];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+        $actualConfiguration = $this->subject->_call('buildTypolinkConfiguration');
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }
 
@@ -653,19 +646,19 @@ final class UriBuilderTest extends UnitTestCase
      */
     public function buildTypolinkConfigurationResolvesDefaultPageTypeFromFormatIfNoMappingIsConfigured(): void
     {
-        $this->uriBuilder->setTargetPageUid(123);
-        $this->uriBuilder->setFormat('txt');
+        $this->subject->setTargetPageUid(123);
+        $this->subject->setFormat('txt');
 
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn([]);
-        $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
+        $this->subject->_set('configurationManager', $mockConfigurationManager);
 
         $this->mockExtensionService->method('getTargetPageTypeByFormat')
             ->with(null, 'txt')
             ->willReturn(0);
 
         $expectedConfiguration = ['parameter' => '123,0'];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+        $actualConfiguration = $this->subject->_call('buildTypolinkConfiguration');
 
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }
@@ -675,20 +668,20 @@ final class UriBuilderTest extends UnitTestCase
      */
     public function buildTypolinkConfigurationResolvesDefaultPageTypeFromFormatIfFormatIsNotMapped(): void
     {
-        $this->uriBuilder->setTargetPageUid(123);
-        $this->uriBuilder->setFormat('txt');
+        $this->subject->setTargetPageUid(123);
+        $this->subject->setFormat('txt');
 
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $mockConfigurationManager->method('getConfiguration')
             ->willReturn(['formatToPageTypeMapping' => ['pdf' => 2]]);
-        $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
+        $this->subject->_set('configurationManager', $mockConfigurationManager);
 
         $this->mockExtensionService->method('getTargetPageTypeByFormat')
             ->with(null, 'txt')
             ->willReturn(0);
 
         $expectedConfiguration = ['parameter' => '123,0'];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+        $actualConfiguration = $this->subject->_call('buildTypolinkConfiguration');
 
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }
@@ -698,10 +691,10 @@ final class UriBuilderTest extends UnitTestCase
      */
     public function buildTypolinkConfigurationDisablesCacheHashIfNoCacheIsSet(): void
     {
-        $this->uriBuilder->setTargetPageUid(123);
-        $this->uriBuilder->setNoCache(true);
+        $this->subject->setTargetPageUid(123);
+        $this->subject->setNoCache(true);
         $expectedConfiguration = ['parameter' => 123, 'no_cache' => 1];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+        $actualConfiguration = $this->subject->_call('buildTypolinkConfiguration');
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }
 
@@ -710,10 +703,10 @@ final class UriBuilderTest extends UnitTestCase
      */
     public function buildTypolinkConfigurationConsidersSection(): void
     {
-        $this->uriBuilder->setTargetPageUid(123);
-        $this->uriBuilder->setSection('SomeSection');
+        $this->subject->setTargetPageUid(123);
+        $this->subject->setSection('SomeSection');
         $expectedConfiguration = ['parameter' => 123, 'section' => 'SomeSection'];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+        $actualConfiguration = $this->subject->_call('buildTypolinkConfiguration');
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }
 
@@ -722,10 +715,10 @@ final class UriBuilderTest extends UnitTestCase
      */
     public function buildTypolinkConfigurationLinkAccessRestrictedPagesSetting(): void
     {
-        $this->uriBuilder->setTargetPageUid(123);
-        $this->uriBuilder->setLinkAccessRestrictedPages(true);
+        $this->subject->setTargetPageUid(123);
+        $this->subject->setLinkAccessRestrictedPages(true);
         $expectedConfiguration = ['parameter' => 123, 'linkAccessRestrictedPages' => 1];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+        $actualConfiguration = $this->subject->_call('buildTypolinkConfiguration');
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }
 
@@ -739,7 +732,7 @@ final class UriBuilderTest extends UnitTestCase
         $mockDomainObject2 = $this->getAccessibleMock(AbstractEntity::class, null);
         $mockDomainObject2->_set('uid', '321');
         $expectedResult = ['foo' => ['bar' => 'baz'], 'domainObject1' => '123', 'second' => ['domainObject2' => '321']];
-        $actualResult = $this->uriBuilder->_call('convertDomainObjectsToIdentityArrays', ['foo' => ['bar' => 'baz'], 'domainObject1' => $mockDomainObject1, 'second' => ['domainObject2' => $mockDomainObject2]]);
+        $actualResult = $this->subject->_call('convertDomainObjectsToIdentityArrays', ['foo' => ['bar' => 'baz'], 'domainObject1' => $mockDomainObject1, 'second' => ['domainObject2' => $mockDomainObject2]]);
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -753,7 +746,7 @@ final class UriBuilderTest extends UnitTestCase
         $mockChildObject1->_set('uid', '123');
         $objectStorage->attach($mockChildObject1);
         $expectedResult = ['foo' => ['bar' => 'baz'], 'objectStorage' => ['123']];
-        $actualResult = $this->uriBuilder->_call('convertDomainObjectsToIdentityArrays', ['foo' => ['bar' => 'baz'], 'objectStorage' => $objectStorage]);
+        $actualResult = $this->subject->_call('convertDomainObjectsToIdentityArrays', ['foo' => ['bar' => 'baz'], 'objectStorage' => $objectStorage]);
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -855,66 +848,6 @@ final class UriBuilderTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
-    public function removeDefaultControllerAndActionDoesNotModifyArgumentsIfSpecifiedControllerAndActionIsNotEqualToDefaults(): void
-    {
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->willReturn('DefaultController');
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'SomeController')->willReturn('defaultAction');
-        $arguments = ['controller' => 'SomeController', 'action' => 'someAction', 'foo' => 'bar'];
-        $extensionName = 'ExtensionName';
-        $pluginName = 'PluginName';
-        $expectedResult = ['controller' => 'SomeController', 'action' => 'someAction', 'foo' => 'bar'];
-        $actualResult = $this->uriBuilder->_call('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function removeDefaultControllerAndActionRemovesControllerIfItIsEqualToTheDefault(): void
-    {
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->willReturn('DefaultController');
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'DefaultController')->willReturn('defaultAction');
-        $arguments = ['controller' => 'DefaultController', 'action' => 'someAction', 'foo' => 'bar'];
-        $extensionName = 'ExtensionName';
-        $pluginName = 'PluginName';
-        $expectedResult = ['action' => 'someAction', 'foo' => 'bar'];
-        $actualResult = $this->uriBuilder->_call('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function removeDefaultControllerAndActionRemovesActionIfItIsEqualToTheDefault(): void
-    {
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->willReturn('DefaultController');
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'SomeController')->willReturn('defaultAction');
-        $arguments = ['controller' => 'SomeController', 'action' => 'defaultAction', 'foo' => 'bar'];
-        $extensionName = 'ExtensionName';
-        $pluginName = 'PluginName';
-        $expectedResult = ['controller' => 'SomeController', 'foo' => 'bar'];
-        $actualResult = $this->uriBuilder->_call('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function removeDefaultControllerAndActionRemovesControllerAndActionIfBothAreEqualToTheDefault(): void
-    {
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->willReturn('DefaultController');
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'DefaultController')->willReturn('defaultAction');
-        $arguments = ['controller' => 'DefaultController', 'action' => 'defaultAction', 'foo' => 'bar'];
-        $extensionName = 'ExtensionName';
-        $pluginName = 'PluginName';
-        $expectedResult = ['foo' => 'bar'];
-        $actualResult = $this->uriBuilder->_call('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
     public static function convertIteratorToArrayConvertsIteratorsToArrayProvider(): array
     {
         return [
@@ -930,12 +863,7 @@ final class UriBuilderTest extends UnitTestCase
      */
     public function convertIteratorToArrayConvertsIteratorsToArray($iterator): void
     {
-        $result = $this->uriBuilder->_call('convertIteratorToArray', $iterator);
+        $result = $this->subject->_call('convertIteratorToArray', $iterator);
         self::assertIsArray($result);
-    }
-
-    protected function getRequestWithRouteAttribute(string $routeIdentifier = 'module_key', string $baseUri = ''): ServerRequestInterface
-    {
-        return (new ServerRequest(new Uri($baseUri)))->withAttribute('route', new Route('/test/Path', ['_identifier' => $routeIdentifier]));
     }
 }

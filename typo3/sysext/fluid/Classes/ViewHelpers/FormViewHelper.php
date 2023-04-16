@@ -409,7 +409,9 @@ class FormViewHelper extends AbstractFormViewHelper
         $renderingContext = $this->renderingContext;
         /** @var RequestInterface $request */
         $request = $renderingContext->getRequest();
-        // New Backend URLs doe not have a prefix anymore
+        // New Backend URLs does not have a prefix anymore
+        // @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
+        //             Remove "!$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend')" from if()
         if (!$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend')
             && $request instanceof ServerRequestInterface
             && $request->getAttribute('applicationType')

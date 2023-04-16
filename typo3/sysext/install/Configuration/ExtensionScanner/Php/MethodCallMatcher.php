@@ -5701,4 +5701,11 @@ return [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface->isFeatureEnabled' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100622-ExtbaseFeatureToggles.rst',
+        ],
+    ],
 ];

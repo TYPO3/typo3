@@ -74,7 +74,14 @@ class Typo3QuerySettings implements QuerySettingsInterface
         $this->configurationManager = $configurationManager;
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-            && $this->configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')) {
+            && $this->configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')
+        ) {
+            // @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
+            trigger_error(
+                'Extbase feature toggle ignoreAllEnableFieldsInBe=1 is deprecated. Use explicit call to setIgnoreEnableFields(true) in' .
+                ' repositories or backend controllers instead.',
+                E_USER_DEPRECATED
+            );
             $this->setIgnoreEnableFields(true);
         }
         $this->languageAspect = $this->context->getAspect('language');

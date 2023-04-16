@@ -84,6 +84,15 @@ class RequestBuilder implements SingletonInterface
                 'controllerConfiguration' => $module->getControllerActions(),
             ];
             $useArgumentsWithoutNamespace = !$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend');
+            if (!$useArgumentsWithoutNamespace) {
+                // @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
+                //             Remove "$useArgumentsWithoutNamespace" from if() below.
+                trigger_error(
+                    'Extbase feature toggle enableNamespacedArgumentsForBackend = 1 is deprecated.' .
+                    ' Change backend modules to not expect namespaced arguments.',
+                    E_USER_DEPRECATED
+                );
+            }
             // Ensure the "controller" and "action" information are added as fallback
             // parameters in case "enableNamespacedArgumentsForBackend" is turned off.
             if ($useArgumentsWithoutNamespace && ($routeOptions = $mainRequest->getAttribute('route')?->getOptions())) {

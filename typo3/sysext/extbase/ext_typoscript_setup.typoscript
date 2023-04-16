@@ -2,10 +2,11 @@ config.tx_extbase {
 	mvc {
 		throwPageNotFoundExceptionIfActionCantBeResolved = 0
 	}
-	persistence{
+	persistence {
 		enableAutomaticCacheClearing = 1
 		updateReferenceIndex = 0
 	}
+	// @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
 	features {
 		# if enabled, default controller and/or action is skipped when creating URIs through the URI Builder (see https://docs.typo3.org/m/typo3/book-extbasefluid/main/en-us/b-ExtbaseReference/Index.html#features)
 		skipDefaultArguments = 0
