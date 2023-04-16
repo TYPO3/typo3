@@ -2969,9 +2969,9 @@ class DatabaseRecordList
 
         return '
             <div class="btn-group dropdown">
-                <a href="javascript:;" class="dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                <button type="button" class="dropdown-toggle btn btn-link p-0 t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
                     ' . $this->iconFactory->getIcon('actions-selection', Icon::SIZE_SMALL) . '
-                </a>
+                </button>
                 <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                     ' . implode(PHP_EOL, $dropdownItems) . '
                 </ul>

@@ -615,10 +615,11 @@ class FileList
 
         $attributes = [];
         $attributes['title'] = $resourceView->getName();
-        $attributes['href'] = 'javascript:;';
+        $attributes['type'] = 'button';
+        $attributes['class'] = 'btn btn-link p-0';
         $attributes['data-filelist-action'] = 'primary';
 
-        $output = '<a ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $resourceName . '</a>';
+        $output = '<button ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $resourceName . '</button>';
         if ($resourceView->isMissing()) {
             $label = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'));
             $output = '<span class="badge badge-danger">' . $label . '</span> ' . $output;
@@ -1014,10 +1015,9 @@ class FileList
             return null;
         }
 
-        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button = GeneralUtility::makeInstance(GenericButton::class);
         $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename'));
-        $button->setHref('javascript:;');
-        $button->setDataAttributes(['filelist-action' => 'rename']);
+        $button->setAttributes(['type' => 'button', 'data-filelist-action' => 'rename']);
         $button->setIcon($this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL));
 
         return $button;
@@ -1033,12 +1033,12 @@ class FileList
             return null;
         }
 
-        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button = GeneralUtility::makeInstance(GenericButton::class);
         $button->setTitle($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download'));
-        $button->setHref('javascript:;');
-        $button->setDataAttributes([
-            'filelist-action' => 'download',
-            'filelist-action-url' => $this->uriBuilder->buildUriFromRoute('file_download'),
+        $button->setAttributes([
+            'type' => 'button',
+            'data-filelist-action' => 'download',
+            'data-filelist-action-url' => $this->uriBuilder->buildUriFromRoute('file_download'),
         ]);
         $button->setIcon($this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL));
 
@@ -1067,10 +1067,12 @@ class FileList
             return null;
         }
 
-        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button = GeneralUtility::makeInstance(GenericButton::class);
         $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info'));
-        $button->setHref('javascript:;');
-        $button->setDataAttributes(['filelist-action' => 'show']);
+        $button->setAttributes([
+            'type' => 'button',
+            'data-filelist-action' => 'show',
+        ]);
         $button->setIcon($this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL));
 
         return $button;
@@ -1100,18 +1102,19 @@ class FileList
         }
 
         $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete');
-        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button = GeneralUtility::makeInstance(GenericButton::class);
         $button->setTitle($title);
-        $button->setHref('javascript:;');
         $button->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL));
-        $button->setDataAttributes([
-            'title' => $title,
-            'bs-content' => sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'), trim($recordInfo)) . $referenceCountText,
-            'filelist-delete' => 'true',
-            'filelist-delete-identifier' => $resourceView->getIdentifier(),
-            'filelist-delete-url' => $this->uriBuilder->buildUriFromRoute('tce_file'),
-            'filelist-delete-type' => $deleteType,
-            'filelist-delete-check' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE) ? '1' : '0',
+        $button->setAttributes([
+            'type' => 'button',
+            'data-title' => $title,
+            'data-bs-content' => sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'), trim($recordInfo)) . $referenceCountText,
+            'data-filelist-action' => 'delete',
+            'data-filelist-delete' => 'true',
+            'data-filelist-delete-identifier' => $resourceView->getIdentifier(),
+            'data-filelist-delete-url' => $this->uriBuilder->buildUriFromRoute('tce_file'),
+            'data-filelist-delete-type' => $deleteType,
+            'data-filelist-delete-check' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE) ? '1' : '0',
         ]);
 
         return $button;
@@ -1361,9 +1364,9 @@ class FileList
 
         return '
             <div class="btn-group dropdown">
-                <a href="javascript:;" class="dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                <button type="button" class="dropdown-toggle btn btn-link p-0 t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
                     ' . $this->iconFactory->getIcon('actions-selection', Icon::SIZE_SMALL) . '
-                </a>
+                </button>
                 <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                     ' . implode(PHP_EOL, $dropdownItems) . '
                 </ul>

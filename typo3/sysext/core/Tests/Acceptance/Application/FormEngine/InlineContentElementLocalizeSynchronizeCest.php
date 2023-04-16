@@ -59,8 +59,8 @@ final class InlineContentElementLocalizeSynchronizeCest
         });
         // Add an image, closes modal again
         $context->findElement(WebDriverBy::cssSelector('text.node-name'))->click();
-        $I->waitForElementVisible('[data-filelist-name="telephone_box.jpg"] a[data-filelist-action="primary"]');
-        $I->click('[data-filelist-name="telephone_box.jpg"] a[data-filelist-action="primary"]');
+        $I->waitForElementVisible('[data-filelist-name="telephone_box.jpg"] [data-filelist-action="primary"]');
+        $I->click('[data-filelist-name="telephone_box.jpg"] [data-filelist-action="primary"]');
         // Save, go back to page
         $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();
@@ -99,8 +99,8 @@ final class InlineContentElementLocalizeSynchronizeCest
         });
         // Add an image, closes modal again
         $context->findElement(WebDriverBy::cssSelector('text.node-name'))->click();
-        $I->waitForElementVisible('[data-filelist-name="underground.jpg"] a[data-filelist-action="primary"]');
-        $I->click('[data-filelist-name="underground.jpg"] a[data-filelist-action="primary"]');
+        $I->waitForElementVisible('[data-filelist-name="underground.jpg"] [data-filelist-action="primary"]');
+        $I->click('[data-filelist-name="underground.jpg"] [data-filelist-action="primary"]');
         // Save, go back to page
         $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();

@@ -52,8 +52,8 @@ final class InlinePagesLocalizeResourceCest
         });
         // Add an image, closes modal again
         $context->findElement(WebDriverBy::cssSelector('text.node-name'))->click();
-        $I->waitForElementVisible('[data-filelist-name="telephone_box.jpg"] a[data-filelist-action="primary"]');
-        $I->click('[data-filelist-name="telephone_box.jpg"] a[data-filelist-action="primary"]');
+        $I->waitForElementVisible('[data-filelist-name="telephone_box.jpg"] [data-filelist-action="primary"]');
+        $I->click('[data-filelist-name="telephone_box.jpg"] [data-filelist-action="primary"]');
         // Save, go back to list
         $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();

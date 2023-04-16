@@ -70,7 +70,17 @@
     border: 1px solid var(--resource-tile-border-color);
     border-radius: var(--resource-tile-border-radius);
 
-    a {
+    a,
+    button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        outline: none;
         color: inherit;
     }
 }
@@ -125,18 +135,6 @@
     .resource-tile-checkbox {
         display: block;
     }
-}
-
-.resource-tile a {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    outline: none;
 }
 
 .resource-tile-label {

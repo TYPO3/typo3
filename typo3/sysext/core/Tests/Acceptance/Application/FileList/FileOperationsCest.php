@@ -64,7 +64,7 @@ final class FileOperationsCest
 
         // Delete file
         $I->amGoingTo('delete the file');
-        $I->clickWithRightButton('[data-filelist-identifier="1:/' . $fileName . '"] a[data-filelist-action="primary"]');
+        $I->clickWithRightButton('[data-filelist-identifier="1:/' . $fileName . '"] [data-filelist-action="primary"]');
         $I->click('[data-title="Delete"]');
         $modalDialog->canSeeDialog();
         $modalDialog->clickButtonInDialog('Yes, delete this file');
