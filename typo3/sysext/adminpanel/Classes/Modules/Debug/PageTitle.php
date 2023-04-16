@@ -95,7 +95,6 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
         $view->setTemplatePathAndFilename(
             'EXT:adminpanel/Resources/Private/Templates/Modules/Debug/PageTitle.html'
         );
-        $this->getLanguageService()->includeLLFile('EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf');
         $view->assignMultiple($data->getArrayCopy());
         $view->assign('languageKey', $this->getBackendUser()->user['lang'] ?? null);
         return $view->render();

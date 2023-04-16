@@ -81,7 +81,6 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
         $view->setTemplatePathAndFilename(
             'EXT:adminpanel/Resources/Private/Templates/Modules/Debug/QueryInformation.html'
         );
-        $this->getLanguageService()->includeLLFile('EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf');
         $view->assignMultiple($data->getArrayCopy());
         $view->assign('languageKey', $this->getBackendUser()->user['lang'] ?? null);
         return $view->render();
