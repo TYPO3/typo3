@@ -2029,10 +2029,8 @@ function factory($) {
         }
 
         _runningAjaxRequests['saveForm'] = $.post(_dataBackendEndpoints['saveForm'], {
-          tx_form_web_formformbuilder: {
-            formPersistenceIdentifier: _dataBackendPersistenceIdentifier,
-            formDefinition: JSON.stringify(utility().convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition')))
-          }
+          formPersistenceIdentifier: _dataBackendPersistenceIdentifier,
+          formDefinition: JSON.stringify(utility().convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition')))
         }, function(data, textStatus, jqXHR) {
           if (_runningAjaxRequests['saveForm'] !== jqXHR) {
             return;
@@ -2068,11 +2066,9 @@ function factory($) {
         }
 
         _runningAjaxRequests['renderFormDefinitionPage'] = $.post(_dataBackendEndpoints['formPageRenderer'], {
-          tx_form_web_formformbuilder: {
-            formDefinition: JSON.stringify(utility().convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition'))),
-            pageIndex: pageIndex,
-            prototypeName: _dataBackendPrototypeName
-          }
+          formDefinition: JSON.stringify(utility().convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition'))),
+          pageIndex: pageIndex,
+          prototypeName: _dataBackendPrototypeName
         }, function(data, textStatus, jqXHR) {
           if (_runningAjaxRequests['renderFormDefinitionPage'] !== jqXHR) {
             return;

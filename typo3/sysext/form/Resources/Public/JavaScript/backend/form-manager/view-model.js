@@ -462,12 +462,10 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
          */
         MultiStepWizard.addFinalProcessingSlide(function() {
           $.post(_formManagerApp.getAjaxEndpoint('create'), {
-            tx_form_web_formformbuilder: {
-              formName: MultiStepWizard.setup.settings['formName'],
-              templatePath: MultiStepWizard.setup.settings['templatePath'],
-              prototypeName: MultiStepWizard.setup.settings['prototypeName'],
-              savePath: MultiStepWizard.setup.settings['savePath']
-            }
+            formName: MultiStepWizard.setup.settings['formName'],
+            templatePath: MultiStepWizard.setup.settings['templatePath'],
+            prototypeName: MultiStepWizard.setup.settings['prototypeName'],
+            savePath: MultiStepWizard.setup.settings['savePath']
           }, function(data, textStatus, jqXHR) {
             if (data['status'] === 'success') {
               document.location = data.url;
@@ -521,7 +519,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
           btnClass: 'btn-warning',
           name: 'createform',
           trigger: function(e, modal) {
-            document.location = _formManagerApp.getAjaxEndpoint('delete') + '&tx_form_web_formformbuilder[formPersistenceIdentifier]=' + that.data('formPersistenceIdentifier');
+            document.location = _formManagerApp.getAjaxEndpoint('delete') + '&formPersistenceIdentifier=' + that.data('formPersistenceIdentifier');
             modal.hideModal();
           }
         });
@@ -718,11 +716,9 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
          */
         MultiStepWizard.addFinalProcessingSlide(function() {
           $.post(_formManagerApp.getAjaxEndpoint('duplicate'), {
-            tx_form_web_formformbuilder: {
-              formName: MultiStepWizard.setup.settings['formName'],
-              formPersistenceIdentifier: MultiStepWizard.setup.settings['formPersistenceIdentifier'],
-              savePath: MultiStepWizard.setup.settings['savePath']
-            }
+            formName: MultiStepWizard.setup.settings['formName'],
+            formPersistenceIdentifier: MultiStepWizard.setup.settings['formPersistenceIdentifier'],
+            savePath: MultiStepWizard.setup.settings['savePath']
           }, function(data, textStatus, jqXHR) {
             if (data['status'] === 'success') {
               document.location = data.url;
@@ -759,7 +755,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
 
         e.preventDefault();
         that = this;
-        url = _formManagerApp.getAjaxEndpoint('references') + '&tx_form_web_formformbuilder[formPersistenceIdentifier]=' + $(this).data('formPersistenceIdentifier');
+        url = _formManagerApp.getAjaxEndpoint('references') + '&formPersistenceIdentifier=' + $(this).data('formPersistenceIdentifier');
 
         $.get(url, function(data, textStatus, jqXHR) {
           var html, modalButtons = [], referencesLength;
