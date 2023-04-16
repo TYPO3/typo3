@@ -37,6 +37,8 @@ setUpDockerComposeDotEnv() {
         echo "CHUNKS=${CHUNKS}"
         echo "THISCHUNK=${THISCHUNK}"
         echo "DOCKER_SELENIUM_IMAGE=${DOCKER_SELENIUM_IMAGE}"
+        echo "IS_CORE_CI=${IS_CORE_CI}"
+        echo "IMAGE_PREFIX=${IMAGE_PREFIX}"
     } > .env
 }
 
@@ -343,6 +345,16 @@ POSTGRES_VERSION="10"
 CHUNKS=0
 THISCHUNK=0
 DOCKER_SELENIUM_IMAGE="selenium/standalone-chrome:3.12"
+IS_CORE_CI=0
+IMAGE_PREFIX="ghcr.io/typo3/"
+
+# ENV var "CI" is set by gitlab-ci. We use it here to distinct 'local' and 'CI' environment.
+if [ "$CI" == "true" ]; then
+    IS_CORE_CI=1
+
+    # Set to empty to use docker hub (default) again. CI only until image cache issue has been solved in infrastructure.
+    IMAGE_PREFIX="typo3/"
+fi
 
 # Detect arm64 and use a seleniarm image.
 # In a perfect world selenium would have a arm64 integrated, but that is not on the horizon.
@@ -777,12 +789,12 @@ case ${TEST_SUITE} in
         docker volume ls -q -f driver=local -f dangling=true | awk '$0 ~ /^[0-9a-f]{64}$/ { print }' | xargs -I {} docker volume rm {}
         echo ""
         # pull typo3/core-testing-*:latest versions of those ones that exist locally
-        echo "> pull typo3/core-testing-*:latest versions of those ones that exist locally"
-        docker images typo3/core-testing-*:latest --format "{{.Repository}}:latest" | xargs -I {} docker pull {}
+        echo "> pull ${IMAGE_PREFIX}core-testing-*:latest versions of those ones that exist locally"
+        docker images ${IMAGE_PREFIX}core-testing-*:latest --format "{{.Repository}}:latest" | xargs -I {} docker pull {}
         echo ""
         # remove "dangling" typo3/core-testing-* images (those tagged as <none>)
-        echo "> remove \"dangling\" typo3/core-testing-* images (those tagged as <none>)"
-        docker images typo3/core-testing-* --filter "dangling=true" --format "{{.ID}}" | xargs -I {} docker rmi {}
+        echo "> remove \"dangling\" ${IMAGE_PREFIX}core-testing-* images (those tagged as <none>)"
+        docker images ${IMAGE_PREFIX}core-testing-* --filter "dangling=true" --format "{{.ID}}" | xargs -I {} docker rmi {}
         echo ""
         ;;
     *)
