@@ -141,10 +141,10 @@ class FolderUtilityRenderer
         $markup[] = '<input type="hidden" name="data[upload][0][data]" value="0" />';
         $markup[] = '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
         $markup[] = '<div class="row">';
-        $markup[] = '<div class="col col-6">';
+        $markup[] = '<div class="col-auto me-auto">';
         $markup[] = '   <h4>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle')) . '</h4>';
         $markup[] = '</div>';
-        $markup[] = '<div class="col col-6 text-end">';
+        $markup[] = '<div class="col-auto">';
         $markup[] = '<div class="form-check form-switch">';
         $markup[] = '    <input class="form-check-input" type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" />';
         $markup[] = '    <label class="form-check-label" for="overwriteExistingFiles">';
@@ -152,7 +152,7 @@ class FolderUtilityRenderer
         $markup[] = '    </label>';
         $markup[] = '</div>';
         $markup[] = '</div>';
-        $markup[] = '<div class="col">';
+        $markup[] = '<div class="col-12">';
         $markup[] = '<div class="input-group">';
         $markup[] = '<input type="file" multiple="multiple" name="upload_0[]" class="form-control" />';
         $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
