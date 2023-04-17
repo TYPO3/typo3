@@ -45,6 +45,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * can of course be overridden in the extension classes (that is the point...)
  *
  * @internal This class is not maintained anymore and may be removed in future versions.
+ * @deprecated since TYPO3 v12.4. Will be removed in TYPO3 v13.0.
  */
 class AbstractPlugin
 {
@@ -225,6 +226,10 @@ class AbstractPlugin
      */
     public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
     {
+        trigger_error(
+            'AbstractPlugin "pibase" is deprecated since TYPO3 v12.4 and will be removed with v13.0',
+            E_USER_DEPRECATED
+        );
         $this->frontendController = $frontendController ?: $GLOBALS['TSFE'];
         $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         // Setting piVars:
