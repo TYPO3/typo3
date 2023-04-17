@@ -1261,17 +1261,26 @@ tt_content.' . $key . $suffix . ' {
     public static function getExtensionIcon(string $extensionPath, bool $returnFullPath = false): string
     {
         $icon = '';
+        // @deprecated In v13 remove the boolean array value and use the file location string as value again
         $locationsToCheckFor = [
-            'Resources/Public/Icons/Extension.svg',
-            'Resources/Public/Icons/Extension.png',
-            'Resources/Public/Icons/Extension.gif',
-            'ext_icon.svg',
-            'ext_icon.png',
-            'ext_icon.gif',
+            'Resources/Public/Icons/Extension.svg' => false,
+            'Resources/Public/Icons/Extension.png' => false,
+            'Resources/Public/Icons/Extension.gif' => false,
+            'ext_icon.svg' => true,
+            'ext_icon.png' => true,
+            'ext_icon.gif' => true,
         ];
-        foreach ($locationsToCheckFor as $fileLocation) {
+        foreach ($locationsToCheckFor as $fileLocation => $legacyLocation) {
             if (file_exists($extensionPath . $fileLocation)) {
                 $icon = $fileLocation;
+                if ($legacyLocation) {
+                    trigger_error(
+                        'Usage of ' . $fileLocation . ' for the extension icon is deprecated since v12 and will ' .
+                        'stop working with TYPO3 v13. Add your icon as Resources/Public/Icons/Extension.' .
+                        substr($fileLocation, -3, 3) . ' instead.',
+                        E_USER_DEPRECATED
+                    );
+                }
                 break;
             }
         }
