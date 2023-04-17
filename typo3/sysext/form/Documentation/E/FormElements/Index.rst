@@ -392,7 +392,7 @@ to the :ref:`default<form-elements-settings>`. Additional settings:
 .. _form-elements-select-elements-country-select:
 
 Country select
-============
+==============
 
 An element to create a country select. The settings for this element adhere
 to the :ref:`default<form-elements-settings>`. Additional settings:
