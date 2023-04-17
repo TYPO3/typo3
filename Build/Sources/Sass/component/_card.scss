@@ -201,47 +201,69 @@
 //
 
 //
-// Header
-//
-
-//
 // Variables
 //
-$card-spacing: 10px;
-$card-padding: 1.5em;
-$card-base-color: #000;
-$card-border-color: lighten($card-base-color, 80);
-$card-border-hover-color: lighten($card-base-color, 70);
-$card-shadow-color: transparentize($card-base-color, .8);
-$card-shadow-hover-color: transparentize($card-base-color, .7);
+$card-bg-scale: -95%;
+$card-border-scale: -60%;
+$card-hover-border-scale: -40%;
+
+:root {
+    --typo3-card-grid-gap: 1rem;
+    --typo3-card-color: #{$body-color};
+    --typo3-card-padding: 1rem;
+    --typo3-card-bg: #{$body-bg};
+    --typo3-card-border-color: #{shade-color($body-bg, 20%)};
+    --typo3-card-hover-border-color: #{shade-color($body-bg, 30%)};
+}
 
 //
 // Component
 //
 .card {
+    --#{$prefix}body-color: var(--typo3-card-color);
+    --#{$prefix}card-bg: var(--typo3-card-bg);
+    --#{$prefix}card-border-color: var(--typo3-card-border-color);
+    --#{$prefix}card-box-shadow: var(--typo3-component-box-shadow);
+    --#{$prefix}card-border-radius: var(--typo3-component-border-radius);
     overflow: hidden;
-    box-shadow: 0 1px 1px $card-shadow-color;
-    border-color: $card-border-color;
-    margin-bottom: ($card-spacing*2);
+    margin-bottom: var(--typo3-spacing);
     transition: all .2s ease-in-out;
     transition-property: box-shadow, border, transform;
+
+    .table-fit {
+        box-shadow: none;
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 0;
+        margin-bottom: 0;
+    }
+
+    .table-fit:not(:first-child) {
+        margin-top: var(--typo3-card-padding);
+    }
 }
 
-a.card:hover {
-    text-decoration: none;
-    border: 1px solid $card-border-hover-color;
-    transform: translate(0, -1px);
-    box-shadow: 0 2px 1px $card-shadow-hover-color;
+a.card {
+    &:hover {
+        --typo3-card-border-color: var(--typo3-card-hover-border-color);
+        text-decoration: none;
+        transform: translate(0, -1px);
+    }
 }
 
 .card-container {
     display: flex;
     flex-wrap: wrap;
-    margin: $card-spacing #{ - $card-spacing};
+    gap: var(--typo3-card-grid-gap) 0;
+    margin-left: calc(var(--typo3-card-grid-gap) / 2 * -1);
+    margin-right: calc(var(--typo3-card-grid-gap) / 2 * -1);
+    margin-bottom: var(--typo3-spacing);
 
     .card {
-        margin-left: $card-spacing;
-        margin-right: $card-spacing;
+        margin-left: calc(var(--typo3-card-grid-gap) / 2);
+        margin-right: calc(var(--typo3-card-grid-gap) / 2);
+        margin-bottom: 0;
     }
 }
 
@@ -251,22 +273,22 @@ a.card:hover {
 .card-size-small,
 .card-size-medium,
 .card-size-large {
-    width: calc(100% - #{$card-spacing*2});
+    width: calc(100% - var(--typo3-card-grid-gap));
 }
 
 .card-size-small {
     @include media-breakpoint-up('md') {
-        width: calc(50% - #{$card-spacing*2});
+        width: calc(50% - var(--typo3-card-grid-gap));
     }
 
     @include media-breakpoint-up('lg') {
-        width: calc(25% - #{$card-spacing*2});
+        width: calc(25% - var(--typo3-card-grid-gap));
     }
 }
 
 .card-size-medium {
     @include media-breakpoint-up('md') {
-        width: calc(50% - #{$card-spacing*2});
+        width: calc(50% - var(--typo3-card-grid-gap));
     }
 }
 
@@ -274,22 +296,15 @@ a.card:hover {
 // Fixed sizes
 //
 .card-size-fixed-small {
-    width: calc(100% - #{$card-spacing*2});
+    width: calc(100% - var(--typo3-card-grid-gap));
 
     @include media-breakpoint-up('sm') {
-        width: calc(50% - #{$card-spacing*2});
+        width: calc(50% - var(--typo3-card-grid-gap));
     }
 
     @include media-breakpoint-up('md') {
         width: 300px;
     }
-}
-
-//
-// Disabled Cards
-//
-.card-disabled {
-    opacity: .4;
 }
 
 //
@@ -299,10 +314,10 @@ a.card:hover {
 .card-header,
 .card-body,
 .card-footer {
-    padding: $card-padding $card-padding 0 $card-padding;
+    padding: var(--typo3-card-padding) var(--typo3-card-padding) 0 var(--typo3-card-padding);
 
     &:last-child {
-        padding-bottom: $card-padding;
+        padding-bottom: var(--typo3-card-padding);
     }
 
     *:first-child {
@@ -326,7 +341,7 @@ a.card:hover {
         padding-top: 0;
 
         .card-image-badge {
-            top: $card-padding * .5;
+            top: calc(var(--typo3-card-padding) * .5);
         }
     }
 
@@ -336,8 +351,8 @@ a.card:hover {
 
     .card-image-badge {
         position: absolute;
-        top: $card-padding;
-        right: $card-padding * .5;
+        top: var(--typo3-card-padding);
+        right: calc(var(--typo3-card-padding) * .5);
     }
 
     img {
@@ -356,7 +371,7 @@ a.card:hover {
 
     .card-icon {
         float: left;
-        margin-right: $card-padding * .5;
+        margin-right: calc(var(--typo3-card-padding) * .5);
     }
 
     .card-header-body {
@@ -394,16 +409,48 @@ a.card:hover {
 }
 
 //
-// Table
+// Variants
 //
-.card-table {
-    th:first-child,
-    td:first-child {
-        padding-left: $card-padding;
-    }
+.card-disabled {
+    opacity: .4;
+}
 
-    th:last-child,
-    td:last-child {
-        padding-right: $card-padding;
+//
+// Color Variants
+//
+@mixin card-variant($background, $border, $border-hover, $text-color) {
+    --typo3-card-color: #{$text-color};
+    --typo3-card-bg: #{$background};
+    --typo3-card-border-color: #{$border};
+    --typo3-card-hover-border-color: #{$border-hover};
+}
+
+@each $state, $value in $theme-colors {
+    @if $state != light and $state != default {
+        $card-background: shift-color($value, $card-bg-scale);
+        $card-border: shift-color($value, $card-border-scale);
+        $card-hover-border: shift-color($value, $card-hover-border-scale);
+        $card-color: color-contrast($card-background);
+
+        .card-#{$state} {
+            @include card-variant($card-background, $card-border, $card-hover-border, $card-color);
+        }
     }
+}
+
+//
+// The light variants have problems beeing generated, they need manual correction.
+//
+.card-light {
+    --typo3-card-color: #{$body-color};
+    --typo3-card-bg: #{$light};
+    --typo3-card-border-color: #{shade-color($light, 10%)};
+    --typo3-card-hover-border-color: #{shade-color($light, 20%)};
+}
+
+.card-default {
+    --typo3-card-color: #{$body-color};
+    --typo3-card-bg: #{$default};
+    --typo3-card-border-color: #{shade-color($default, 10%)};
+    --typo3-card-hover-border-color: #{shade-color($default, 20%)};
 }

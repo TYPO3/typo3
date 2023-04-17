@@ -45,7 +45,7 @@
 
 <f:section name="Item">
     <f:variable name="providerTitle" value="{provider.title -> f:translate(key: provider.title, default: provider.title)}"/>
-    <div class="card card-size-fixed-small {f:if(condition: '{recommendedProvider} == {provider.identifier}', then: 'border-success shadow')}" id="{provider.identifier}-provider">
+    <div class="card card-size-fixed-small {f:if(condition: '{recommendedProvider} == {provider.identifier}', then: 'card-success')}" id="{provider.identifier}-provider">
         <div class="card-header">
             <div class="card-icon">
                 <core:icon identifier="{provider.iconIdentifier}" size="large"/>

@@ -8,41 +8,43 @@
                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension_list_info" />
             </p>
         </div>
-        <table class="table card-table mt-3 mb-0">
-            <thead>
-                <tr>
-                    <th width="60%"><f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension" /></th>
-                    <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension_author" /></th>
-                </tr>
-            </thead>
-            <tbody>
-                <f:for each="{loadedExtensions}" as="loadedExtension">
+        <div class="table-fit">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            {loadedExtension.title} ({loadedExtension.key})
-                        </td>
-                        <td>
-                            <f:for each="{loadedExtension.authors}" as="extensionAuthor" iteration="i">
-                                <f:if condition="{extensionAuthor.email}">
-                                    <f:then>
-                                        <f:link.email
-                                            email="{extensionAuthor.email}?subject={f:format.urlencode(value:'Thanks for your {loadedExtension.title} extension')}"
-                                        >
-                                            {extensionAuthor.name}
-                                        </f:link.email>
-                                    </f:then>
-                                    <f:else>
-                                        {extensionAuthor.name}
-                                    </f:else>
-                                </f:if>
-                                <f:if condition="{i.isLast} == false">
-                                    <br>
-                                </f:if>
-                            </f:for>
-                        </td>
+                        <th width="60%"><f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension" /></th>
+                        <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension_author" /></th>
                     </tr>
-                </f:for>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <f:for each="{loadedExtensions}" as="loadedExtension">
+                        <tr>
+                            <td>
+                                {loadedExtension.title} ({loadedExtension.key})
+                            </td>
+                            <td>
+                                <f:for each="{loadedExtension.authors}" as="extensionAuthor" iteration="i">
+                                    <f:if condition="{extensionAuthor.email}">
+                                        <f:then>
+                                            <f:link.email
+                                                email="{extensionAuthor.email}?subject={f:format.urlencode(value:'Thanks for your {loadedExtension.title} extension')}"
+                                            >
+                                                {extensionAuthor.name}
+                                            </f:link.email>
+                                        </f:then>
+                                        <f:else>
+                                            {extensionAuthor.name}
+                                        </f:else>
+                                    </f:if>
+                                    <f:if condition="{i.isLast} == false">
+                                        <br>
+                                    </f:if>
+                                </f:for>
+                            </td>
+                        </tr>
+                    </f:for>
+                </tbody>
+            </table>
+        </div>
     </div>
 </f:if>
