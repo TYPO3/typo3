@@ -84,6 +84,8 @@ class MenuProcessor implements DataProcessorInterface
      * @var array
      */
     public $allowedConfigurationKeys = [
+        'cache',
+        'cache.',
         'cache_period',
         'entryLevel',
         'entryLevel.',
