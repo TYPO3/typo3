@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserRegistry;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Localization\LanguageService;
 
 /**
  * Script class for the Element Browser window.
@@ -56,7 +55,6 @@ class ElementBrowserController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_browse_links.xlf');
         $this->mode = $request->getQueryParams()['mode'] ?? $request->getQueryParams()['mode'] ?? '';
         return new HtmlResponse($this->main($request));
     }
@@ -79,11 +77,6 @@ class ElementBrowserController
         $backendUser->pushModuleData('browse_links.php', $modData);
 
         return $browser->render();
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 
     protected function getBackendUser(): BackendUserAuthentication
