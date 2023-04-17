@@ -133,7 +133,6 @@ abstract class AbstractContentPagePositionMap
     protected function printRecordMap(array $lines, array $tcaColumnsConfiguration, int $pid): string
     {
         $lang = $this->getLanguageService();
-        $lang->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
         $hideRestrictedColumns = (bool)(BackendUtility::getPagesTSconfig($pid)['mod.']['web_layout.']['hideRestrictedCols'] ?? false);
         $backendLayout = $this->backendLayoutView->getSelectedBackendLayout($pid);
 
@@ -196,7 +195,7 @@ abstract class AbstractContentPagePositionMap
                         } else {
                             $cellContent = '
                                 <p>
-                                    ' . $columnTitle . ' <em>(' . htmlspecialchars($lang->getLL('noAccess')) . ')</em>
+                                    ' . $columnTitle . ' <em>(' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:noAccess')) . ')</em>
                                 </p>';
                             $tableCellAttributes['class'] .= ' bg-danger bg-opacity-25';
                         }
@@ -208,7 +207,7 @@ abstract class AbstractContentPagePositionMap
                             $cellContent = '
                                 <em>
                                     ' . htmlspecialchars($lang->sL($columnConfig['name']) ?: '') . '
-                                    ' . ' (' . htmlspecialchars($lang->getLL('notAssigned')) . ')' . '
+                                    ' . ' (' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:notAssigned')) . ')' . '
                                 </em>';
                             $tableCellAttributes['class'] .= ' bg-warning bg-opacity-25';
                         }
@@ -250,7 +249,7 @@ abstract class AbstractContentPagePositionMap
                     $tableCellClasses .= ' bg-danger bg-opacity-25';
                     $cellContent = '
                         <p>
-                            ' . $columnTitle . ' <em>(' . htmlspecialchars($lang->getLL('noAccess')) . ')</em>
+                            ' . $columnTitle . ' <em>(' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:noAccess')) . ')</em>
                         </p>';
                 } else {
                     // If not restricted, wrap column title and render list (if available)
