@@ -32,9 +32,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Script Class for adding new items to a group/select field. Performs proper redirection as needed.
  * Script is typically called after new child record was added and then adds the new child to select value of parent.
+ *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
-class AddController extends AbstractWizardController
+class AddController
 {
     /**
      * If set, the DataHandler class is loaded and used to add the returning ID to the parent record.
