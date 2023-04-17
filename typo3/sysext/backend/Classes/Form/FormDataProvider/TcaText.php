@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -42,8 +41,8 @@ class TcaText implements FormDataProviderInterface
                 continue;
             }
 
-            // Check if richtext is enabled for the field and the user did not disable RTE in general
-            if (($fieldConfig['config']['enableRichtext'] ?? false) && $this->getBackendUser()->isRTE()) {
+            // Check if richtext is enabled for the field
+            if ($fieldConfig['config']['enableRichtext'] ?? false) {
                 $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
                 $richtextConfiguration = $richtextConfigurationProvider->getConfiguration(
                     $result['tableName'],
@@ -69,10 +68,5 @@ class TcaText implements FormDataProviderInterface
         }
 
         return $result;
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

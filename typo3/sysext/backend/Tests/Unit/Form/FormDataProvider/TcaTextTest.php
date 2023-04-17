@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaText;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -31,10 +30,6 @@ final class TcaTextTest extends UnitTestCase
      */
     public function addDataSetsRichtextConfigurationAndTransformsContent(): void
     {
-        $beUserMock = $this->createMock(BackendUserAuthentication::class);
-        $beUserMock->method('isRTE')->willReturn(true);
-        $GLOBALS['BE_USER'] = $beUserMock;
-
         $input = [
             'tableName' => 'aTable',
             'effectivePid' => 42,
@@ -110,10 +105,6 @@ final class TcaTextTest extends UnitTestCase
      */
     public function addDataDoesNotTransformsContentWhenRichtextIsNotSet(): void
     {
-        $beUserMock = $this->createMock(BackendUserAuthentication::class);
-        $beUserMock->method('isRTE')->willReturn(true);
-        $GLOBALS['BE_USER'] = $beUserMock;
-
         $input = [
             'tableName' => 'aTable',
             'effectivePid' => 42,
@@ -142,10 +133,6 @@ final class TcaTextTest extends UnitTestCase
      */
     public function addDataDoesNotTransformsContentWhenRichtextIsDisabledInConfiguration(): void
     {
-        $beUserMock = $this->createMock(BackendUserAuthentication::class);
-        $beUserMock->method('isRTE')->willReturn(true);
-        $GLOBALS['BE_USER'] = $beUserMock;
-
         $input = [
             'tableName' => 'aTable',
             'effectivePid' => 42,
@@ -181,39 +168,6 @@ final class TcaTextTest extends UnitTestCase
                 ]
             )
             ->willReturn(['disabled' => '1']);
-
-        // No processing should be performed
-        $expected = $input;
-        self::assertSame($expected, (new TcaText())->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function addDataDoesNotTransformsContentWhenRichtextIsDisabledForUser(): void
-    {
-        $beUserMock = $this->createMock(BackendUserAuthentication::class);
-        $beUserMock->method('isRTE')->willReturn(false);
-        $GLOBALS['BE_USER'] = $beUserMock;
-
-        $input = [
-            'tableName' => 'aTable',
-            'effectivePid' => 42,
-            'recordTypeValue' => 23,
-            'databaseRow' => [
-                'aField' => 'notProcessedContent',
-            ],
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'text',
-                            'enableRichtext' => true,
-                        ],
-                    ],
-                ],
-            ],
-        ];
 
         // No processing should be performed
         $expected = $input;

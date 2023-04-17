@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,7 +19,6 @@ namespace TYPO3\CMS\RteCKEditor\Form\Resolver;
 
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\NodeResolverInterface;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\RteCKEditor\Form\Element\RichTextElement;
 
 /**
@@ -49,11 +50,8 @@ class RichTextNodeResolver implements NodeResolverInterface
     public function resolve()
     {
         $parameterArray = $this->data['parameterArray'];
-        $backendUser = $this->getBackendUserAuthentication();
-        if (// If RTE is generally enabled by user settings and RTE object registry can return something valid
-            $backendUser->isRTE()
-            // If RTE is enabled for field
-            && (bool)($parameterArray['fieldConf']['config']['enableRichtext'] ?? false) === true
+        if (// If RTE is enabled for field
+            (bool)($parameterArray['fieldConf']['config']['enableRichtext'] ?? false) === true
             // If RTE config is found (prepared by TcaText data provider)
             && is_array($parameterArray['fieldConf']['config']['richtextConfiguration'] ?? null)
             // If RTE is not disabled on configuration level
@@ -62,10 +60,5 @@ class RichTextNodeResolver implements NodeResolverInterface
             return RichTextElement::class;
         }
         return null;
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

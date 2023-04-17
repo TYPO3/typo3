@@ -241,7 +241,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // user-data for the modules
         'emailMeAtLogin' => 0,
         'titleLen' => 50,
-        'edit_RTE' => '1',
         'edit_docModuleUpload' => '1',
     ];
 
@@ -578,16 +577,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $out = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return $out;
-    }
-
-    /**
-     * Returns TRUE if the RTE (Rich Text Editor) is enabled for the user.
-     *
-     * @internal should only be used from within TYPO3 Core
-     */
-    public function isRTE(): bool
-    {
-        return (bool)($this->uc['edit_RTE'] ?? false);
     }
 
     /**

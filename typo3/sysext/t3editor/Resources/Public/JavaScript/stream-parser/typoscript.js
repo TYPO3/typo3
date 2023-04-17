@@ -279,7 +279,6 @@ function createTypoScriptMode() {
         'edit': A,
         'edit_access': A,
         'edit_docModuleUpload': kw('edit_docModuleUpload'),
-        'edit_RTE': kw('edit_RTE'),
         'EFFECT': kw('EFFECT'),
         'elements': kw('elements'),
         'else': B,

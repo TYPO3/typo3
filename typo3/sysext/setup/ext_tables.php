@@ -60,10 +60,6 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'class' => 'form-control-adapt',
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:maxTitleLen',
         ],
-        'edit_RTE' => [
-            'type' => 'check',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:edit_RTE',
-        ],
         'edit_docModuleUpload' => [
             'type' => 'check',
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:edit_docModuleUpload',
@@ -103,5 +99,5 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
     'showitem' => '--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personal_data,realName,email,emailMeAtLogin,avatar,lang,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:accountSecurity,passwordCurrent,password,password2,mfaProviders,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:opening,startModule,
-            --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:editFunctionsTab,edit_RTE,titleLen,backendTitleFormat,edit_docModuleUpload,showHiddenFilesAndFolders,copyLevels,resetConfiguration',
+            --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:editFunctionsTab,titleLen,backendTitleFormat,edit_docModuleUpload,showHiddenFilesAndFolders,copyLevels,resetConfiguration',
 ];

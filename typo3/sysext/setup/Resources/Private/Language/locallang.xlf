@@ -252,9 +252,6 @@
 			<trans-unit id="maxTitleLen" resname="maxTitleLen">
 				<source>Max. Title Length</source>
 			</trans-unit>
-			<trans-unit id="edit_RTE" resname="edit_RTE">
-				<source>Enable Rich Text Editor (if available)</source>
-			</trans-unit>
 			<trans-unit id="edit_docModuleUpload" resname="edit_docModuleUpload">
 				<source>File upload directly in Doc-module</source>
 			</trans-unit>
