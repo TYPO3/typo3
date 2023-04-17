@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -45,13 +47,14 @@ use TYPO3\CMS\FrontendLogin\Service\ValidatorResolverService;
 /**
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-class PasswordRecoveryController extends AbstractLoginFormController
+class PasswordRecoveryController extends ActionController
 {
     public function __construct(
         protected RecoveryService $recoveryService,
         protected FrontendUserRepository $userRepository,
         protected RecoveryConfiguration $recoveryConfiguration,
         protected readonly Features $features,
+        protected readonly PageRepository $pageRepository,
     ) {
     }
 
@@ -65,10 +68,11 @@ class PasswordRecoveryController extends AbstractLoginFormController
             return $this->htmlResponse();
         }
 
-        $userData = $this->userRepository->findUserByUsernameOrEmailOnPages(
-            $userIdentifier,
-            $this->getStorageFolders()
-        );
+        $storagePageIds = ($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false)
+            ? $this->pageRepository->getPageIdsRecursive(GeneralUtility::intExplode(',', (string)($this->settings['pages'] ?? ''), true), (int)($this->settings['recursive'] ?? 0))
+            : [];
+
+        $userData = $this->userRepository->findUserByUsernameOrEmailOnPages($userIdentifier, $storagePageIds);
 
         if ($userData && GeneralUtility::validEmail($userData['email'])) {
             $hash = $this->recoveryConfiguration->getForgotHash();

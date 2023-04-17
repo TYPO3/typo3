@@ -21,8 +21,11 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Security\RequestToken;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
 use TYPO3\CMS\FrontendLogin\Event\BeforeRedirectEvent;
 use TYPO3\CMS\FrontendLogin\Event\LoginConfirmedEvent;
@@ -38,7 +41,7 @@ use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
  *
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-class LoginController extends AbstractLoginFormController
+class LoginController extends ActionController
 {
     public const MESSAGEKEY_DEFAULT = 'welcome';
     public const MESSAGEKEY_ERROR = 'error';
@@ -53,7 +56,8 @@ class LoginController extends AbstractLoginFormController
         protected RedirectHandler $redirectHandler,
         protected UserService $userService,
         protected RedirectUrlValidator $redirectUrlValidator,
-        protected Context $context
+        protected Context $context,
+        protected readonly PageRepository $pageRepository
     ) {
         $this->userAspect = $context->getAspect('frontend.user');
     }
@@ -96,6 +100,10 @@ class LoginController extends AbstractLoginFormController
 
         $this->eventDispatcher->dispatch(new ModifyLoginFormViewEvent($this->view));
 
+        $storagePageIds = ($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false)
+            ? $this->pageRepository->getPageIdsRecursive(GeneralUtility::intExplode(',', (string)($this->settings['pages'] ?? ''), true), (int)($this->settings['recursive'] ?? 0))
+            : [];
+
         $this->view->assignMultiple(
             [
                 'messageKey' => $this->getStatusMessageKey(),
@@ -105,7 +113,7 @@ class LoginController extends AbstractLoginFormController
                 'referer' => $this->getRefererForLoginForm(),
                 'noRedirect' => $this->isRedirectDisabled(),
                 'requestToken' => RequestToken::create('core/user-auth/fe')
-                    ->withMergedParams(['pid' => implode(',', $this->getStorageFolders())]),
+                    ->withMergedParams(['pid' => implode(',', $storagePageIds)]),
             ]
         );
 
