@@ -48,6 +48,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.500:
 .. include:: Number/formEditor/editors/500.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.550:
+.. include:: Number/formEditor/editors/550.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.700:
 .. include:: Number/formEditor/editors/700.rst
 

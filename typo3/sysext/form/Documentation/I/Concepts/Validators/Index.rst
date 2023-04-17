@@ -292,6 +292,6 @@ Override the default value within your ``form definition``:
              yourCustomOption: 'Mathias'
 
 As mentioned above EXT:form implements Extbase validators. That said,
-your own validators should extend ``TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator``.
-Read more about this topic in the Extbase documentation:
-:ref:`t3extbasebook:validating-domain-objects`.
+your own validators should extend :php:`\TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator`.
+Read more about this topic in "TYPO3 Explained":
+:ref:`t3coreapi:extbase_domain_validator`.
