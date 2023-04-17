@@ -349,7 +349,8 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     {
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $subject = new ContentObjectRenderer($tsfe);
-        $subject->start([], 'tt_content', $this->getPreparedRequest());
+        $subject->setRequest($this->getPreparedRequest());
+        $subject->start([], 'tt_content');
 
         $expected = '';
         $actual = $subject->searchWhere('ab', 'header,bodytext', 'tt_content');

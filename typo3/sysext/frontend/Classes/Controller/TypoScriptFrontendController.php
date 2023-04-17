@@ -2451,7 +2451,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function newCObj(ServerRequestInterface $request = null)
     {
         $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
-        $this->cObj->start($this->page, 'pages', $request);
+        $this->cObj->setRequest($request);
+        $this->cObj->start($this->page, 'pages');
     }
 
     /**

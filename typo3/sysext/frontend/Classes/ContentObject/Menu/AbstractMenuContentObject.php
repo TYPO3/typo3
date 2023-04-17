@@ -159,7 +159,7 @@ abstract class AbstractMenuContentObject
      */
     protected $I;
 
-    protected ?ServerRequestInterface $request = null;
+    protected ServerRequestInterface $request;
 
     /**
      * Can be set to contain menu item arrays for sub-levels.
@@ -1296,7 +1296,7 @@ abstract class AbstractMenuContentObject
                     $submenu->alternativeMenuTempArray = $altArray;
                 }
                 // @deprecated since v12, will be removed in v13: Hand over null as first argument.
-                if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, $objSuffix)) {
+                if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, $objSuffix, $this->request)) {
                     $submenu->makeMenu();
                     // Memorize the current menu item count
                     $tsfe = $this->getTypoScriptFrontendController();

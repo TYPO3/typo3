@@ -172,7 +172,8 @@ final class HtmlViewHelper extends AbstractViewHelper
         }
 
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $contentObject->start($data, $table, $request);
+        $contentObject->setRequest($request);
+        $contentObject->start($data, $table);
 
         if ($current !== null) {
             $contentObject->setCurrentVal($current);

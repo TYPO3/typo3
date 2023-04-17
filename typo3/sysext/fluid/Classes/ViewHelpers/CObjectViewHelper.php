@@ -126,7 +126,9 @@ final class CObjectViewHelper extends AbstractViewHelper
         $currentValueKey = $arguments['currentValueKey'];
         $table = $arguments['table'];
         /** @var RenderingContext $renderingContext */
-        $contentObjectRenderer = self::getContentObjectRenderer($renderingContext->getRequest());
+        $request = $renderingContext->getRequest();
+        $contentObjectRenderer = self::getContentObjectRenderer($request);
+        $contentObjectRenderer->setRequest($request);
         $tsfeBackup = null;
         if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
             $tsfeBackup = self::simulateFrontendEnvironment();

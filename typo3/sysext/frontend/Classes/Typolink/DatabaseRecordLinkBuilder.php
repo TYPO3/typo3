@@ -100,7 +100,8 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         // Build the full link to the record by calling LinkFactory again ("inception")
         $request = $this->contentObjectRenderer->getRequest();
         $localContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $localContentObjectRenderer->start($record, $databaseTable, $request);
+        $localContentObjectRenderer->setRequest($request);
+        $localContentObjectRenderer->start($record, $databaseTable);
         $localContentObjectRenderer->parameters = $this->contentObjectRenderer->parameters;
         return $localContentObjectRenderer->createLink($linkText, $typoScriptConfiguration);
     }

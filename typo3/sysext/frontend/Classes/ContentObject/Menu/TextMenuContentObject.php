@@ -48,7 +48,8 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $frontendController->register['count_MENUOBJ']++;
 
             // Initialize the cObj with the page record of the menu item
-            $cObjectForCurrentMenu->start($this->menuArr[$key], 'pages', $this->request);
+            $cObjectForCurrentMenu->setRequest($this->request);
+            $cObjectForCurrentMenu->start($this->menuArr[$key], 'pages');
             $this->I = [];
             $this->I['key'] = $key;
             $this->I['val'] = $val;

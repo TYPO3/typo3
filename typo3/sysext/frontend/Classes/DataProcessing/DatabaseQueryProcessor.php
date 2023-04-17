@@ -87,7 +87,8 @@ class DatabaseQueryProcessor implements DataProcessorInterface
         $processedRecordVariables = [];
         foreach ($records as $key => $record) {
             $recordContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-            $recordContentObjectRenderer->start($record, $tableName, $request);
+            $recordContentObjectRenderer->setRequest($request);
+            $recordContentObjectRenderer->start($record, $tableName);
             $processedRecordVariables[$key] = ['data' => $record];
             $processedRecordVariables[$key] = $this->contentDataProcessor->process($recordContentObjectRenderer, $processorConfiguration, $processedRecordVariables[$key]);
         }

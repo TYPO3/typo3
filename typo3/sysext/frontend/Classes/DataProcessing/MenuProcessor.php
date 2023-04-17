@@ -484,7 +484,8 @@ class MenuProcessor implements DataProcessorInterface
         }
         $request = $this->cObj->getRequest();
         $recordContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $recordContentObjectRenderer->start($page['data'] ?? [], 'pages', $request);
+        $recordContentObjectRenderer->setRequest($request);
+        $recordContentObjectRenderer->start($page['data'] ?? [], 'pages');
 
         return $this->contentDataProcessor->process($recordContentObjectRenderer, $processorConfiguration, $page);
     }
