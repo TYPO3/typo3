@@ -52,7 +52,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Output::
  *
  *    <a href="/typo3/record/edit?edit[a_table][-17]=new&returnUrl=foo/bar">
- *        Edit record
+ *        New record
  *    </a>
  *
  * Link to create a new record of a_table on root page::
@@ -62,7 +62,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Output::
  *
  *    <a href="/typo3/record/edit?edit[a_table][]=new&returnUrl=foo/bar">
- *        Edit record
+ *        New record
  *    </a>
  *
  * Link to create a new record of a_table on page 17::
@@ -72,7 +72,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Output::
  *
  *    <a href="/typo3/record/edit?edit[a_table][17]=new&returnUrl=foo/bar">
- *        Edit record
+ *        New record
  *    </a>
  *
  * Link to create a new record then return back to the BE module "web_MyextensionList"::
@@ -82,7 +82,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Output::
  *
  *    <a href="/typo3/record/edit?edit[a_table][17]=new&returnUrl=/typo3/module/web/MyextensionList">
- *        Edit record
+ *        New record
  *    </a>
  *
  * Link to create a new record of a_table on page 17 with a default value::
@@ -92,7 +92,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Output::
  *
  *    <a href="/typo3/record/edit?edit[a_table][17]=new&returnUrl=foo/bar&defVals[a_table][a_field]=value">
- *        Edit record
+ *        New record
  *    </a>
  */
 final class NewRecordViewHelper extends AbstractTagBasedViewHelper
@@ -109,7 +109,7 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('uid', 'int', 'uid < 0 will insert the record after the given uid', false);
         $this->registerArgument('pid', 'int', 'the page id where the record will be created', false);
         $this->registerArgument('table', 'string', 'target database table', true);
-        $this->registerArgument('returnUrl', 'string', 'return to this URL after closing the edit dialog', false, '');
+        $this->registerArgument('returnUrl', 'string', 'return to this URL after closing the new record dialog', false, '');
         $this->registerArgument('defaultValues', 'array', 'default values for fields of the new record', false, []);
     }
 
