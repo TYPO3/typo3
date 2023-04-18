@@ -240,7 +240,7 @@ class ExportController extends ImportExportController
         if (!empty($inData['filetype'])) {
             $this->export->setExportFileType((string)$inData['filetype']);
         }
-        $this->export->setExportFileName($inData['filename'] ?? '');
+        $this->export->setExportFileName((string)($inData['filename'] ?? ''));
 
         // Static tables:
         if (is_array($inData['external_static']['tables'] ?? null)) {

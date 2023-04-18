@@ -1049,7 +1049,9 @@ class Import extends ImportExport
                         // @see fixUidLocalInSysFileReferenceRecords()
                         // If it's empty or a uid to another record the FileExtensionFilter will throw an exception or
                         // delete the reference record if the file extension of the related record doesn't match.
-                        if (!($table === 'sys_file_reference' && $field === 'uid_local')) {
+                        if (!($table === 'sys_file_reference' && $field === 'uid_local')
+                            && is_array($GLOBALS['TCA'][$table]['columns'][$field]['config'] ?? false)
+                        ) {
                             $importData[$table][$ID][$field] = $this->getReferenceDefaultValue($GLOBALS['TCA'][$table]['columns'][$field]['config']);
                         }
                         break;
@@ -1459,7 +1461,7 @@ class Import extends ImportExport
                 if (isset($GLOBALS['TCA'][$table])) {
                     foreach ($records as $uid => $record) {
                         if (is_array($record['softrefs'] ?? null)) {
-                            $actualUid = BackendUtility::wsMapId($table, $this->importMapId[$table][$uid]);
+                            $actualUid = BackendUtility::wsMapId($table, $this->importMapId[$table][$uid] ?? 0);
                             // First, group soft references by record field ...
                             // (this could probably also have been done with $this->dat['records'] instead of $this->dat['header'])
                             $softrefs = [];
