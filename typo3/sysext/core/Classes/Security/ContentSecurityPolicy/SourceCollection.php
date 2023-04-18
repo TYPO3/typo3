@@ -52,21 +52,28 @@ final class SourceCollection
 
     public function with(SourceInterface ...$subjects): self
     {
-        $subjects = array_filter(
-            $subjects,
-            fn ($subject) => !in_array($subject, $this->sources, true)
-        );
-        if ($subjects === []) {
+        $uniqueSubjects = [];
+        foreach ($subjects as $subject) {
+            if (!(in_array($subject, $uniqueSubjects, true)
+                    || ($subject instanceof EqualityInterface && $this->hasEqualSource($subject, ...$uniqueSubjects)))
+                && !(in_array($subject, $this->sources, true)
+                    || ($subject instanceof EqualityInterface && $this->hasEqualSource($subject, ...$this->sources)))
+            ) {
+                $uniqueSubjects[] = $subject;
+            }
+        }
+        if ($uniqueSubjects === []) {
             return $this;
         }
-        return new self(...array_merge($this->sources, $subjects));
+        return new self(...array_merge($this->sources, $uniqueSubjects));
     }
 
     public function without(SourceInterface ...$subjects): self
     {
         $sources = array_filter(
             $this->sources,
-            fn ($source) => !in_array($source, $subjects, true)
+            fn ($source) => !(in_array($source, $subjects, true)
+                || ($source instanceof EqualityInterface && $this->hasEqualSource($source, ...$subjects)))
         );
         if (count($this->sources) === count($sources)) {
             return $this;
@@ -99,7 +106,7 @@ final class SourceCollection
         }
         foreach ($subjects as $subject) {
             if ($subject instanceof EqualityInterface) {
-                if (!$this->hasEqualSource($subject)) {
+                if (!$this->hasEqualSource($subject, ...$this->sources)) {
                     return false;
                 }
             } elseif (!in_array($subject, $this->sources, true)) {
@@ -143,9 +150,9 @@ final class SourceCollection
         return false;
     }
 
-    private function hasEqualSource(EqualityInterface $subject): bool
+    private function hasEqualSource(EqualityInterface $subject, SourceInterface ...$sources): bool
     {
-        foreach ($this->sources as $source) {
+        foreach ($sources as $source) {
             if ($source instanceof EqualityInterface && $source->equals($subject)) {
                 return true;
             }
