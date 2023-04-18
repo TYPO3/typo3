@@ -337,8 +337,10 @@ class RedirectService implements LoggerAwareInterface
                 $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
             }
             $result = $linkBuilder->build($linkDetails, '', '', $configuration);
+            $this->cleanupTSFE();
             return new Uri($result->getUrl());
         } catch (UnableToLinkException $e) {
+            $this->cleanupTSFE();
             return null;
         }
     }
@@ -424,5 +426,19 @@ class RedirectService implements LoggerAwareInterface
         }
 
         return null;
+    }
+
+    /**
+     * @todo: Needs to vanish. The existence of this method is a side-effect of the technical debt that
+     *        a TSFE has to be set up for link generation, see the comment on bootFrontendController()
+     *        for more details.
+     */
+    private function cleanupTSFE(): void
+    {
+        $context = GeneralUtility::makeInstance(Context::class);
+        $context->unsetAspect('language');
+        $context->unsetAspect('typoscript');
+        $context->unsetAspect('frontend.preview');
+        unset($GLOBALS['TSFE']);
     }
 }
