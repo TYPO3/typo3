@@ -87,7 +87,7 @@ function factory($, Helper, Icons) {
         abstractType: 'data-element-abstract-type'
       },
       domElementDataAttributeValues: {
-        collapse: 'actions-pagetree-collapse',
+        collapse: 'actions-chevron-right',
         expander: 'treeExpander',
         title: 'treeTitle'
       },
