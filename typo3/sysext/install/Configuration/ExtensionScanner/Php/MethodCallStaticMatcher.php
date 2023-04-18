@@ -1506,4 +1506,25 @@ return [
             'Deprecation-100596-GeneralUtility_GET.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\DebugUtility::debugRows' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-100653-DeprecatedSomeMethodsInDebugUtility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\DebugUtility::printArray' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100653-DeprecatedSomeMethodsInDebugUtility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\DebugUtility::debugInPopUpWindow' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-100653-DeprecatedSomeMethodsInDebugUtility.rst',
+        ],
+    ],
 ];

@@ -58,9 +58,11 @@ class DebugUtility
 
     /**
      * Opens a debug message inside a popup window
+     * @deprecated since v12, will be removed in v13.
      */
     public static function debugInPopUpWindow(mixed $debugVariable, string $header = 'Debug', string $group = 'Debug'): void
     {
+        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.', E_USER_DEPRECATED);
         $debugString = self::renderDump($debugVariable, sprintf('%s (%s)', $header, $group));
         $script = '
 			(function debug() {
@@ -131,9 +133,11 @@ class DebugUtility
      *
      * @param array $rows Array of arrays with similar keys
      * @param string $header Table header
+     * @deprecated since v12, will be removed in v13.
      */
     public static function debugRows(array $rows, string $header = ''): void
     {
+        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 in favor of ' . __CLASS__ . '::debug and will be removed with v13.', E_USER_DEPRECATED);
         self::debug($rows, $header);
     }
 
@@ -174,9 +178,11 @@ class DebugUtility
      *
      * @param mixed $array_in Array to print visually (in a table).
      * @see viewArray()
+     * @deprecated since v12, will be removed in v13.
      */
     public static function printArray(mixed $array_in): void
     {
+        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 in favor of ' . __CLASS__ . '::viewArray and will be removed with v13.', E_USER_DEPRECATED);
         echo self::renderDump($array_in);
     }
 
