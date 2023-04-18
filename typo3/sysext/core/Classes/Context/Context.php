@@ -164,4 +164,16 @@ class Context implements SingletonInterface
     {
         $this->aspects[$name] = $aspect;
     }
+
+    /**
+     * @internal Using this method is a sign of a technical debt. It is used by RedirectService,
+     *           but may vanish any time when this is fixed, and thus internal.
+     *           In general, Context aspects should never have to be unset.
+     *           When a middleware has to use this method, it is either located
+     *           at the wrong position in the chain, or has some other dependency issue.
+     */
+    public function unsetAspect(string $name): void
+    {
+        unset($this->aspects[$name]);
+    }
 }

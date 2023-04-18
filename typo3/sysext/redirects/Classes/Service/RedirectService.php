@@ -338,6 +338,7 @@ class RedirectService implements LoggerAwareInterface
                 $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
             }
             $result = $linkBuilder->build($linkDetails, '', '', $configuration);
+            $this->cleanupTSFE();
             if (is_array($result)) {
                 return new Uri($result[0] ?? '');
             }
@@ -348,6 +349,7 @@ class RedirectService implements LoggerAwareInterface
         } catch (UnableToLinkException $e) {
             // This exception is also thrown by the DatabaseRecordTypolinkBuilder
             $url = $controller->cObj->lastTypoLinkUrl;
+            $this->cleanupTSFE();
             if (!empty($url)) {
                 return new Uri($url);
             }
@@ -430,5 +432,19 @@ class RedirectService implements LoggerAwareInterface
         }
 
         return null;
+    }
+
+    /**
+     * @todo: Needs to vanish. The existence of this method is a side-effect of the technical debt that
+     *        a TSFE has to be set up for link generation, see the comment on bootFrontendController()
+     *        for more details.
+     */
+    private function cleanupTSFE(): void
+    {
+        $context = GeneralUtility::makeInstance(Context::class);
+        $context->unsetAspect('language');
+        $context->unsetAspect('typoscript');
+        $context->unsetAspect('frontend.preview');
+        unset($GLOBALS['TSFE']);
     }
 }
