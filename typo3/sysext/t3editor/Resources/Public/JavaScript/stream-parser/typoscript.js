@@ -198,7 +198,6 @@ function createTypoScriptMode() {
         'count_menuItems': kw('count_menuItems'),
         'count_MENUOBJ': kw('count_MENUOBJ'),
         'create': kw('create'),
-        'createFoldersInEB': kw('createFoldersInEB'),
         'crop': kw('crop'),
         'csConv': kw('csConv'),
         'CType': kw('CType'),

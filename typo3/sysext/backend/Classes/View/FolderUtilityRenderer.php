@@ -53,14 +53,9 @@ class FolderUtilityRenderer
      */
     public function createFolder(Folder $folderObject)
     {
-        $backendUser = $this->getBackendUser();
-        $userTsConfig = $backendUser->getTSConfig();
         $lang = $this->getLanguageService();
 
-        if (!$folderObject->checkActionPermission('write')
-            || (!$backendUser->isAdmin() && !($userTsConfig['options.']['createFoldersInEB'] ?? false))
-            || ($userTsConfig['options.']['folderTree.']['hideCreateFolder'] ?? false)
-        ) {
+        if (!$folderObject->checkActionPermission('write')) {
             // Do not show create folder form if it is denied
             return '';
         }
