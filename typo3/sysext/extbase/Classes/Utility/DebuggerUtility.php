@@ -445,7 +445,8 @@ class DebuggerUtility
     {
         $dump = '';
         foreach ($collection as $key => $value) {
-            $key = (string)$key;
+            // Note: Due to the TYPO3\CMS\Core\Type\Map implementation, the key can also be an object.
+            $key = is_object($key) ? get_class($key) : (string)$key;
 
             $dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level);
             if ($plainText) {
