@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{loadModule}from"@typo3/core/java-script-item-processor.js";export class Helper{static dispatchFormEditor(o,e){Promise.all([loadModule(o.app),loadModule(o.mediator),loadModule(o.viewModel)]).then((o=>((o,a,d)=>{window.TYPO3.FORMEDITOR_APP=o.getInstance(e,a,d).run()})(...o)))}static dispatchFormManager(o,e){Promise.all([loadModule(o.app),loadModule(o.viewModel)]).then((o=>((o,a)=>{window.TYPO3.FORMMANAGER_APP=o.getInstance(e,a).run()})(...o)))}}
+import{loadModule}from"@typo3/core/java-script-item-processor.js";import DocumentService from"@typo3/core/document-service.js";export class Helper{static dispatchFormEditor(e,o){DocumentService.ready().then((()=>{Promise.all([loadModule(e.app),loadModule(e.mediator),loadModule(e.viewModel)]).then((e=>((e,t,r)=>{window.TYPO3.FORMEDITOR_APP=e.getInstance(o,t,r).run()})(...e)))}))}static dispatchFormManager(e,o){DocumentService.ready().then((()=>{Promise.all([loadModule(e.app),loadModule(e.viewModel)]).then((e=>((e,t)=>{window.TYPO3.FORMMANAGER_APP=e.getInstance(o,t).run()})(...e)))}))}}
