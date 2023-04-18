@@ -191,7 +191,6 @@ class NewRecordController
     protected function init(ServerRequestInterface $request): void
     {
         $this->view = $this->moduleTemplateFactory->create($request);
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $beUser = $this->getBackendUserAuthentication();
         // Page-selection permission clause (reading)
         $this->perms_clause = $beUser->getPagePermsClause(Permission::PAGE_SHOW);
@@ -409,7 +408,7 @@ class NewRecordController
                     }
                     if (!empty($newPageLinks)) {
                         $groupedLinksOnTop['pages'] = [
-                            'title' => $lang->getLL('createNewPage'),
+                            'title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:createNewPage'),
                             'icon' => 'actions-page-new',
                             'items' => $newPageLinks,
                         ];
@@ -556,7 +555,7 @@ class NewRecordController
         return '
             <a href="' . htmlspecialchars($url) . '" class="list-group-item list-group-item-action">
                 ' . $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render() . '
-                ' . htmlspecialchars($this->getLanguageService()->getLL('pageSelectPosition')) . '
+                ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:pageSelectPosition')) . '
             </a>';
     }
 
