@@ -217,24 +217,24 @@ class ExportController
         if (!empty($inputData['filetype'])) {
             $export->setExportFileType((string)$inputData['filetype']);
         }
-        $export->setExportFileName($inputData['filename'] ?? '');
-        $export->setRelStaticTables($inputData['external_static']['tables']);
-        $export->setRelOnlyTables($inputData['external_ref']['tables']);
+        $export->setExportFileName((string)($inputData['filename'] ?? ''));
+        $export->setRelStaticTables((($inputData['external_static']['tables'] ?? '') === '') ? [] : (array)$inputData['external_static']['tables']);
+        $export->setRelOnlyTables((($inputData['external_ref']['tables'] ?? '') === '') ? [] : (array)$inputData['external_ref']['tables']);
         if (isset($inputData['save_export'], $inputData['saveFilesOutsideExportFile']) && $inputData['saveFilesOutsideExportFile'] === '1') {
             $export->setSaveFilesOutsideExportFile(true);
         }
-        $export->setTitle($inputData['meta']['title']);
-        $export->setDescription($inputData['meta']['description']);
-        $export->setNotes($inputData['meta']['notes']);
-        $export->setRecord($inputData['record']);
-        $export->setList($inputData['list']);
+        $export->setTitle((string)($inputData['meta']['title'] ?? ''));
+        $export->setDescription((string)($inputData['meta']['description'] ?? ''));
+        $export->setNotes((string)($inputData['meta']['notes'] ?? ''));
+        $export->setRecord((($inputData['record'] ?? '') === '') ? [] : (array)$inputData['record']);
+        $export->setList((($inputData['list'] ?? '') === '') ? [] : (array)$inputData['list']);
         if (MathUtility::canBeInterpretedAsInteger($inputData['pagetree']['id'] ?? null)) {
             $export->setPid((int)$inputData['pagetree']['id']);
         }
         if (MathUtility::canBeInterpretedAsInteger($inputData['pagetree']['levels'] ?? null)) {
             $export->setLevels((int)$inputData['pagetree']['levels']);
         }
-        $export->setTables($inputData['pagetree']['tables']);
+        $export->setTables((($inputData['pagetree']['tables'] ?? '') === '') ? [] : (array)$inputData['pagetree']['tables']);
         return $export;
     }
 
