@@ -39,14 +39,14 @@ class ResourceFileExtensionMatcher implements MatcherInterface
      */
     public function setExtensions(array $extensions): self
     {
-        $this->extensions = $extensions;
+        $this->extensions = array_map(strtolower(...), $extensions);
 
         return $this;
     }
 
     public function addExtension(string $extension): self
     {
-        $this->extensions[] = $extension;
+        $this->extensions[] = strtolower($extension);
 
         return $this;
     }
@@ -56,14 +56,14 @@ class ResourceFileExtensionMatcher implements MatcherInterface
      */
     public function setIgnoredExtensions(array $ignoredExtensions): self
     {
-        $this->ignoredExtensions = $ignoredExtensions;
+        $this->ignoredExtensions = array_map(strtolower(...), $ignoredExtensions);
 
         return $this;
     }
 
     public function addIgnoredExtension(string $ignoredExtension): self
     {
-        $this->ignoredExtensions[] = $ignoredExtension;
+        $this->ignoredExtensions[] = strtolower($ignoredExtension);
 
         return $this;
     }
@@ -79,11 +79,11 @@ class ResourceFileExtensionMatcher implements MatcherInterface
             return false;
         }
 
-        if (in_array($item->getExtension(), $this->ignoredExtensions)) {
+        if (in_array($item->getExtension(), $this->ignoredExtensions, true)) {
             return false;
         }
 
-        if (in_array('*', $this->extensions) || in_array($item->getExtension(), $this->extensions)) {
+        if (in_array('*', $this->extensions, true) || in_array($item->getExtension(), $this->extensions, true)) {
             return true;
         }
 
