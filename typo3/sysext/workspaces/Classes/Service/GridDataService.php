@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -91,6 +92,7 @@ class GridDataService implements LoggerAwareInterface
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly WorkspaceService $workspaceService,
+        private readonly ModuleProvider $moduleProvider,
     ) {
     }
 
@@ -514,9 +516,9 @@ class GridDataService implements LoggerAwareInterface
      */
     protected function isPageModuleAllowed(): bool
     {
-        return $this->getBackendUser()->check(
-            'modules',
-            trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? 'web_layout')
+        return $this->moduleProvider->accessGranted(
+            trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? 'web_layout'),
+            $this->getBackendUser()
         );
     }
 

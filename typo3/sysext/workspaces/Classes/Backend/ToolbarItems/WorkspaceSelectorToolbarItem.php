@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Workspaces\Backend\ToolbarItems;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -37,6 +38,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface, RequestAware
         private readonly WorkspaceService $workspaceService,
         private readonly UriBuilder $uriBuilder,
         private readonly BackendViewFactory $backendViewFactory,
+        private readonly ModuleProvider $moduleProvider,
     ) {
         $this->availableWorkspaces = $workspaceService->getAvailableWorkspaces();
     }
@@ -93,7 +95,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface, RequestAware
             }
         }
         // Add the "Go to workspace module" link if there is at least one icon on top and if the access rights are there
-        if ($topItem !== null && $backendUser->check('modules', 'workspaces_admin')) {
+        if ($topItem !== null && $this->moduleProvider->accessGranted('workspaces_admin', $backendUser)) {
             $view->assign('showLinkToModule', true);
         }
         $view->assign('topItem', $topItem);

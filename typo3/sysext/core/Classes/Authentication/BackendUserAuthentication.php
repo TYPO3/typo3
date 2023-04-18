@@ -417,7 +417,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // If $conf['access'] is set but not with 'admin' then we return TRUE, if the module is found in the modList
         $acs = false;
         if ($moduleName && !str_contains($conf['access'] ?? '', 'admin')) {
-            $acs = $this->check('modules', $moduleName);
+            $acs = GeneralUtility::makeInstance(ModuleProvider::class)->accessGranted($moduleName, $this);
         }
         if (!$acs) {
             throw new \RuntimeException('Access Error: You don\'t have access to this module.', 1294586448);
