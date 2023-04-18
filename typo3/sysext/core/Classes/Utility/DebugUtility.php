@@ -89,7 +89,7 @@ class DebugUtility
 				if (top && typeof top.TYPO3 !== "undefined" && typeof top.TYPO3.Modal !== "undefined") {
 					top.TYPO3.Modal.show(
 						"Debug: " + header + " (" + group + ")",
-						debugMessage,
+						document.createRange().createContextualFragment(debugMessage),
 						top.TYPO3.Severity.notice
 					);
 				} else {
