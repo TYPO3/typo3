@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\RteCKEditor\Form\Resolver;
 
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\NodeResolverInterface;
 use TYPO3\CMS\RteCKEditor\Form\Element\RichTextElement;
 
@@ -27,17 +26,9 @@ use TYPO3\CMS\RteCKEditor\Form\Element\RichTextElement;
  */
 class RichTextNodeResolver implements NodeResolverInterface
 {
-    /**
-     * Global options from NodeFactory
-     *
-     * @var array
-     */
-    protected $data;
+    protected array $data;
 
-    /**
-     * Default constructor receives full data array
-     */
-    public function __construct(NodeFactory $nodeFactory, array $data)
+    public function setData(array $data): void
     {
         $this->data = $data;
     }
@@ -47,7 +38,7 @@ class RichTextNodeResolver implements NodeResolverInterface
      *
      * @return string|null New class name or null if this resolver does not change current class name.
      */
-    public function resolve()
+    public function resolve(): ?string
     {
         $parameterArray = $this->data['parameterArray'];
         if (// If RTE is enabled for field

@@ -21,14 +21,20 @@ namespace TYPO3\CMS\Backend\Form;
 interface NodeInterface
 {
     /**
-     * All nodes get an instance of the NodeFactory and the main data array
+     * Retrieve the current data array from NodeFactory.
+     *
+     * @todo: Enable this interface method in v13. Enable implementation in AbstractNode.
+     *        Also, add a compiler pass to register all classes implementing
+     *        NodeInterface as public in v13.
      */
-    public function __construct(NodeFactory $nodeFactory, array $data);
+    // public function setData(array $data): void;
 
     /**
      * Main render method
      *
      * @return array As defined in initializeResultArray() of AbstractNode
+     * @todo: Change to "public function render(): array;" in v13.
+     * @todo: Declare most (if not all) implementing non-abstract core classes final in v13.
      */
     public function render();
 }

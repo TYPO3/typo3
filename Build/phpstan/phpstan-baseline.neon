@@ -246,26 +246,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
 
 		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeElements\\\\BarElement has an unused parameter \\$data\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeElements/BarElement.php
-
-		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeElements\\\\BarElement has an unused parameter \\$nodeFactory\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeElements/BarElement.php
-
-		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeElements\\\\FooElement has an unused parameter \\$data\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeElements/FooElement.php
-
-		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeElements\\\\FooElement has an unused parameter \\$nodeFactory\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeElements/FooElement.php
-
-		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeResolvers\\\\BarResolver has an unused parameter \\$data\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeResolvers/BarResolver.php
@@ -3179,11 +3159,6 @@ parameters:
 			message: "#^Right side of && is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/rte_ckeditor/Classes/Controller/BrowseLinksController.php
-
-		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\RteCKEditor\\\\Form\\\\Resolver\\\\RichTextNodeResolver has an unused parameter \\$nodeFactory\\.$#"
-			count: 1
-			path: ../../typo3/sysext/rte_ckeditor/Classes/Form/Resolver/RichTextNodeResolver.php
 
 		-
 			message: "#^Negated boolean expression is always true\\.$#"

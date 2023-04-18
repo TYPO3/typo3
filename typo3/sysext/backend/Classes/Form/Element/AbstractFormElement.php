@@ -61,13 +61,16 @@ abstract class AbstractFormElement extends AbstractNode
 
     /**
      * @var IconFactory
+     * @deprecated since TYPO3 v12.4. will be removed in TYPO3 v13.0.
      */
     protected $iconFactory;
 
     /**
      * Container objects give $nodeFactory down to other containers.
+     *
+     * @deprecated since TYPO3 v12.4. Default constructor will be removed in v13.
      */
-    public function __construct(NodeFactory $nodeFactory, array $data)
+    public function __construct(NodeFactory $nodeFactory = null, array $data = [])
     {
         parent::__construct($nodeFactory, $data);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);

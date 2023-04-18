@@ -33,6 +33,7 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
      * Instance of the node factory to create sub elements, container and single element expansions.
      *
      * @var NodeFactory
+     * @deprecated since TYPO3 v12.4. will be removed in TYPO3 v13.0.
      */
     protected $nodeFactory;
 
@@ -66,12 +67,26 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
 
     /**
      * Set data to data array and register node factory to render sub elements
+     *
+     * @deprecated since TYPO3 v12.4. Default constructor will be removed in v13.
      */
-    public function __construct(NodeFactory $nodeFactory, array $data)
+    public function __construct(NodeFactory $nodeFactory = null, array $data = [])
     {
         $this->data = $data;
         $this->nodeFactory = $nodeFactory;
     }
+
+    /**
+     * Retrieve the current data array from NodeFactory.
+     *
+     * @todo: Enable this method in v13. Enable interface method in NodeInterface.
+     */
+    /*
+    public function setData(array $data): void
+    {
+        $this->data = $data;
+    }
+    */
 
     /**
      * Handler for single nodes

@@ -26,7 +26,6 @@ use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeElements\BarEleme
 use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeElements\FooElement;
 use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeResolvers\BarResolver;
 use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeResolvers\FooResolver;
-use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeResolvers\InvalidNodeResolverClass;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -272,22 +271,6 @@ final class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createThrowsExceptionIfNodeDoesNotImplementNodeInterface(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1431872546);
-        $mockNode = new \stdClass();
-        $mockSubject = $this->getMockBuilder(NodeFactory::class)
-            ->onlyMethods(['instantiate'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockSubject->expects(self::once())->method('instantiate')->willReturn($mockNode);
-        $mockSubject->create(['renderType' => 'foo']);
-    }
-
-    /**
-     * @test
-     */
     public function createReturnsInstanceOfUnknownElementIfTypeIsNotRegistered(): void
     {
         $unknownElementMock = $this->createMock(UnknownElement::class);
@@ -391,25 +374,6 @@ final class NodeFactoryTest extends UnitTestCase
         ];
         $subject = new NodeFactory();
         self::assertInstanceOf(FooElement::class, ($subject->create($data)));
-    }
-
-    /**
-     * @test
-     */
-    public function createThrowsExceptionIfResolverDoesNotImplementNodeResolverInterface(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1433157422);
-        $data = ['renderType' => 'foo'];
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
-            1433156887 => [
-                'nodeName' => 'foo',
-                'priority' => 10,
-                'class' => InvalidNodeResolverClass::class,
-            ],
-        ];
-        $subject = new NodeFactory();
-        $subject->create($data);
     }
 
     /**

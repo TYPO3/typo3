@@ -21,16 +21,17 @@ namespace TYPO3\CMS\Backend\Form;
 interface NodeResolverInterface
 {
     /**
-     * Main data array is received by NodeFactory
+     * Retrieve the current data array from NodeFactory.
      *
-     * @param array $data Main data array
+     * @todo: Enable this interface method in v13.
      */
-    public function __construct(NodeFactory $nodeFactory, array $data);
+    // public function setData(array $data): void;
 
     /**
      * Main resolver method
      *
-     * @return string|void New class name or void if this resolver does not change current class name.
+     * @return string|null New class name or null if this resolver does not change current class name.
+     * @todo: Change to "public function resolve(): ?string;" in v13.
      */
     public function resolve();
 }

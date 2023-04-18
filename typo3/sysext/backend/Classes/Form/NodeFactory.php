@@ -33,23 +33,21 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * own renderTypes by extensions, existing renderTypes can be overridden, and
  * - for complex cases - it is possible to register own resolver classes for single
  * renderTypes that can return a node class name to override the default lookup list.
+ *
+ * @todo: Declare final in v13.
  */
 class NodeFactory
 {
     /**
      * Node resolver classes
      * Nested array with nodeName as key, (sorted) priority as sub key and class as value
-     *
-     * @var array
      */
-    protected $nodeResolver = [];
+    protected array $nodeResolver = [];
 
     /**
      * Default registry of node name to handling class
-     *
-     * @var array
      */
-    protected $nodeTypes = [
+    protected array $nodeTypes = [
         // Default container classes
         'flex' => Container\FlexFormEntryContainer::class,
         'flexFormContainerContainer' => Container\FlexFormContainerContainer::class,
@@ -146,17 +144,16 @@ class NodeFactory
     public function __construct()
     {
         $this->registerAdditionalNodeTypesFromConfiguration();
-        $this->initializeNodeResolver();
+        $this->registerNodeResolvers();
     }
 
     /**
      * Create a node depending on type
      *
      * @param array $data All information to decide which class should be instantiated and given down to sub nodes
-     * @return NodeInterface
      * @throws Exception
      */
-    public function create(array $data)
+    public function create(array $data): NodeInterface
     {
         if (empty($data['renderType'])) {
             throw new Exception(
@@ -169,17 +166,10 @@ class NodeFactory
         $className = $this->nodeTypes[$type] ?? $this->nodeTypes['unknown'];
 
         if (!empty($this->nodeResolver[$type])) {
-            // Resolver with highest priority is called first. If it returns with a new class name,
+            // Resolver with the highest priority is called first. If it returns with a new class name,
             // it will be taken and loop is aborted, otherwise resolver with next lower priority is called.
             foreach ($this->nodeResolver[$type] as $priority => $resolverClassName) {
-                /** @var NodeResolverInterface $resolver */
-                $resolver = $this->instantiate($resolverClassName, $data);
-                if (!$resolver instanceof NodeResolverInterface) {
-                    throw new Exception(
-                        'Node resolver for type ' . $type . ' at priority ' . $priority . ' must implement NodeResolverInterface',
-                        1433157422
-                    );
-                }
+                $resolver = $this->initializeNodeResolverClass($resolverClassName, $data);
                 // Resolver classes do NOT receive the name of the already resolved class. Single
                 // resolvers should not have dependencies to each other or the default implementation,
                 // so they also shouldn't know the output of a different resolving class.
@@ -193,12 +183,7 @@ class NodeFactory
             }
         }
 
-        /** @var AbstractNode $nodeInstance */
-        $nodeInstance = $this->instantiate($className, $data);
-        if (!$nodeInstance instanceof NodeInterface) {
-            throw new Exception('Node of type ' . get_class($nodeInstance) . ' must implement NodeInterface', 1431872546);
-        }
-        return $nodeInstance;
+        return $this->initializeNodeClass($className, $data);
     }
 
     /**
@@ -208,7 +193,7 @@ class NodeFactory
      *
      * @throws Exception if configuration is incomplete or two nodes with identical priorities are registered
      */
-    protected function registerAdditionalNodeTypesFromConfiguration()
+    protected function registerAdditionalNodeTypesFromConfiguration(): void
     {
         // List of additional or override nodes
         $registeredTypeOverrides = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'];
@@ -235,7 +220,7 @@ class NodeFactory
             }
             $registeredPrioritiesForNodeNames[$override['nodeName']][$override['priority']] = '';
         }
-        // Add element with highest priority to registry
+        // Add element with the highest priority to registry
         $highestPriority = [];
         foreach ($registeredTypeOverrides as $override) {
             if (!isset($highestPriority[$override['nodeName']]) || $override['priority'] > $highestPriority[$override['nodeName']]) {
@@ -251,7 +236,7 @@ class NodeFactory
      *
      * @throws Exception if configuration is incomplete or two resolver with identical priorities are registered
      */
-    protected function initializeNodeResolver()
+    protected function registerNodeResolvers(): void
     {
         // List of node resolver
         $registeredNodeResolvers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'];
@@ -286,14 +271,32 @@ class NodeFactory
     }
 
     /**
-     * Instantiate given class name
+     * Instantiate a NodeInterface class and set data.
      *
-     * @param string $className Given class name
      * @param array $data Main data array
-     * @return object
      */
-    protected function instantiate($className, array $data)
+    protected function initializeNodeClass(string $className, array $data): NodeInterface
     {
+        if (method_exists($className, 'setData')) {
+            $node = GeneralUtility::makeInstance($className);
+            $node->setData($data);
+            return $node;
+        }
+        return GeneralUtility::makeInstance($className, $this, $data);
+    }
+
+    /**
+     * Instantiate a NodeResolverInterface class and set data.
+     *
+     * @param array $data Main data array
+     */
+    protected function initializeNodeResolverClass(string $className, array $data): NodeResolverInterface
+    {
+        if (method_exists($className, 'setData')) {
+            $node = GeneralUtility::makeInstance($className);
+            $node->setData($data);
+            return $node;
+        }
         return GeneralUtility::makeInstance($className, $this, $data);
     }
 }
