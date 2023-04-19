@@ -44,8 +44,6 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
         $status = [];
         $extensionsWithComposerDeficit = $this->composerDeficitDetector->getExtensionsWithComposerDeficit();
         $languageService = $this->getLanguageService();
-        $languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
-        $labelPrefix = 'report.status.composerManifest.';
         $deficits = [
             ComposerDeficitDetector::EXTENSION_COMPOSER_MANIFEST_MISSING => 'composerJsonMissing',
             ComposerDeficitDetector::EXTENSION_KEY_MISSING => 'extensionKeyMissing',
@@ -74,7 +72,7 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
             }));
 
             if ($extensionsToReport) {
-                $title = $languageService->getLL($labelPrefix . 'update');
+                $title = $languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.composerManifest.update');
                 $attributes = GeneralUtility::implodeAttributes([
                     'type' => 'button',
                     'title' => $title,
@@ -83,14 +81,14 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
                     'data-dispatch-action' => $dispatchAction,
                     'data-dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute($dispatchArgs),
                 ], true);
-                $message = sprintf($languageService->getLL($labelPrefix . $deficit . '.message'), $extensionsToReport)
+                $message = sprintf($languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.composerManifest.' . $deficit . '.message'), $extensionsToReport)
                     . '<br /><button ' . $attributes . '>' . htmlspecialchars($title) . '</button>';
             }
 
             $status[] = GeneralUtility::makeInstance(
                 ReportStatus::class,
-                $this->getLanguageService()->getLL($labelPrefix . $deficit),
-                $this->getLanguageService()->getLL($extensionsToReport ? 'status_checkFailed' : 'status_none'),
+                $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.composerManifest.' . $deficit),
+                $this->getLanguageService()->sL($extensionsToReport ? 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_checkFailed' : 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_none'),
                 $message,
                 $extensionsToReport ? ContextualFeedbackSeverity::WARNING : ContextualFeedbackSeverity::OK
             );

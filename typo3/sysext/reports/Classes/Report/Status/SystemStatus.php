@@ -69,23 +69,23 @@ class SystemStatus implements StatusProviderInterface
                     }
                 }
                 if ($detectedSubmodules === false) {
-                    $missingPhpModules[] = sprintf($this->getLanguageService()->getLL('status_phpModulesGroup'), '(' . implode(', ', $module) . ')');
+                    $missingPhpModules[] = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_phpModulesGroup'), '(' . implode(', ', $module) . ')');
                 }
             } elseif (!extension_loaded($module)) {
                 $missingPhpModules[] = $module;
             }
         }
         if (!empty($missingPhpModules)) {
-            $value = $this->getLanguageService()->getLL('status_phpModulesMissing');
-            $message = sprintf($this->getLanguageService()->getLL('status_phpModulesList'), implode(', ', $missingPhpModules));
-            $message .= ' ' . $this->getLanguageService()->getLL('status_phpModulesInfo');
+            $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_phpModulesMissing');
+            $message = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_phpModulesList'), implode(', ', $missingPhpModules));
+            $message .= ' ' . $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_phpModulesInfo');
             $severity = ContextualFeedbackSeverity::ERROR;
         } else {
-            $value = $this->getLanguageService()->getLL('status_phpModulesPresent');
+            $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_phpModulesPresent');
             $message = '';
             $severity = ContextualFeedbackSeverity::OK;
         }
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_phpModules'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_phpModules'), $value, $message, $severity);
     }
 
     protected function getLanguageService(): LanguageService

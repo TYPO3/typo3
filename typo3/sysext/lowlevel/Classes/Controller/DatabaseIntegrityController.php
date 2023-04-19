@@ -229,7 +229,6 @@ class DatabaseIntegrityController
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $languageService->includeLLFile('EXT:lowlevel/Resources/Private/Language/locallang.xlf');
 
         $this->menuConfig($request);
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
@@ -238,16 +237,16 @@ class DatabaseIntegrityController
         $title = $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.dbint.title');
         switch ($this->MOD_SETTINGS['function']) {
             case 'search':
-                $moduleTemplate->setTitle($title, $languageService->getLL('fullSearch'));
+                $moduleTemplate->setTitle($title, $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch'));
                 return $this->searchAction($moduleTemplate, $request);
             case 'records':
-                $moduleTemplate->setTitle($title, $languageService->getLL('recordStatistics'));
+                $moduleTemplate->setTitle($title, $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:recordStatistics'));
                 return $this->recordStatisticsAction($moduleTemplate, $request);
             case 'relations':
-                $moduleTemplate->setTitle($title, $languageService->getLL('databaseRelations'));
+                $moduleTemplate->setTitle($title, $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:databaseRelations'));
                 return $this->relationsAction($moduleTemplate);
             default:
-                $moduleTemplate->setTitle($title, $languageService->getLL('manageRefIndex'));
+                $moduleTemplate->setTitle($title, $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:manageRefIndex'));
                 return $this->referenceIndexAction($moduleTemplate, $request);
         }
     }
@@ -267,14 +266,14 @@ class DatabaseIntegrityController
         // Values NOT in this array will not be saved in the settings-array for the module.
         $this->MOD_MENU = [
             'function' => [
-                'refindex' => htmlspecialchars($lang->getLL('manageRefIndex')),
-                'records' => htmlspecialchars($lang->getLL('recordStatistics')),
-                'relations' => htmlspecialchars($lang->getLL('databaseRelations')),
-                'search' => htmlspecialchars($lang->getLL('fullSearch')),
+                'refindex' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:manageRefIndex')),
+                'records' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:recordStatistics')),
+                'relations' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:databaseRelations')),
+                'search' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch')),
             ],
             'search' => [
-                'raw' => htmlspecialchars($lang->getLL('rawSearch')),
-                'query' => htmlspecialchars($lang->getLL('advancedQuery')),
+                'raw' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:rawSearch')),
+                'query' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:advancedQuery')),
             ],
             'search_query_smallparts' => '',
             'search_result_labels' => '',
@@ -304,10 +303,10 @@ class DatabaseIntegrityController
             'storeQueryConfigs' => '',
             // Used to store the available Query configs in memory
             'search_query_makeQuery' => [
-                'all' => htmlspecialchars($lang->getLL('selectRecords')),
-                'count' => htmlspecialchars($lang->getLL('countResults')),
-                'explain' => htmlspecialchars($lang->getLL('explainQuery')),
-                'csv' => htmlspecialchars($lang->getLL('csvExport')),
+                'all' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:selectRecords')),
+                'count' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:countResults')),
+                'explain' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:explainQuery')),
+                'csv' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:csvExport')),
             ],
             'sword' => '',
         ];
@@ -419,7 +418,6 @@ class DatabaseIntegrityController
     protected function searchAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
         $lang = $this->getLanguageService();
-        $lang->includeLLFile('EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf');
         $this->showFieldAndTableNames = $this->getBackendUserAuthentication()->shallDisplayDebugInformation();
         $searchMode = $this->MOD_SETTINGS['search'];
         $this->setFormName('queryform');
@@ -430,11 +428,11 @@ class DatabaseIntegrityController
         }
         $submenu .= '</div>';
         if ($this->MOD_SETTINGS['search'] === 'query') {
-            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', $request, '', '', 'id="checkSearch_query_smallparts"') . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->getLL('showSQL') . '</label></div>';
-            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', $request, '', '', 'id="checkSearch_result_labels"') . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->getLL('useFormattedStrings') . '</label></div>';
-            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'] ?? '', $request, '', '', 'id="checkLabels_noprefix"') . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->getLL('dontUseOrigValues') . '</label></div>';
-            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', $request, '', '', 'id="checkOptions_sortlabel"') . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->getLL('sortOptions') . '</label></div>';
-            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, $request, '', '', 'id="checkShow_deleted"') . '<label class="form-check-label" for="checkShow_deleted">' . $lang->getLL('showDeleted') . '</label></div>';
+            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', $request, '', '', 'id="checkSearch_query_smallparts"') . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:showSQL') . '</label></div>';
+            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', $request, '', '', 'id="checkSearch_result_labels"') . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:useFormattedStrings') . '</label></div>';
+            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'] ?? '', $request, '', '', 'id="checkLabels_noprefix"') . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:dontUseOrigValues') . '</label></div>';
+            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', $request, '', '', 'id="checkOptions_sortlabel"') . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:sortOptions') . '</label></div>';
+            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, $request, '', '', 'id="checkShow_deleted"') . '<label class="form-check-label" for="checkShow_deleted">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:showDeleted') . '</label></div>';
         }
         $view->assign('submenu', $submenu);
         $view->assign('searchMode', $searchMode);
@@ -826,7 +824,7 @@ class DatabaseIntegrityController
                         ],
                     ],
                     'redirect' => (string)$uriBuilder->buildUriFromRoute('system_dbint'),
-                ])) . '" title="' . htmlspecialchars($languageService->getLL('undelete_only')) . '">';
+                ])) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:undelete_only')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render() . '</a>';
             $out .= '</div>';
         }
@@ -2378,7 +2376,7 @@ class DatabaseIntegrityController
                     $saveStoreArray = 1;
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        sprintf($languageService->getLL('query_loaded'), $storeArray[$storeIndex])
+                        sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:query_loaded'), $storeArray[$storeIndex])
                     );
                 }
             } elseif ($storeControl['SAVE'] ?? false) {
@@ -2394,14 +2392,14 @@ class DatabaseIntegrityController
                     $saveStoreArray = 1;
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        $languageService->getLL('query_saved')
+                        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:query_saved')
                     );
                 }
             } elseif ($storeControl['REMOVE'] ?? false) {
                 if ($storeIndex > 0) {
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        sprintf($languageService->getLL('query_removed'), $storeArray[$storeControl['STORE']])
+                        sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:query_removed'), $storeArray[$storeControl['STORE']])
                     );
                     // Removing
                     unset($storeArray[$storeControl['STORE']]);
@@ -2680,7 +2678,7 @@ class DatabaseIntegrityController
                             );
                             $lostRecordList[] =
                                 '<div class="record">' .
-                                    '<a href="' . htmlspecialchars($fixLink) . '" title="' . htmlspecialchars($languageService->getLL('fixLostRecord')) . '">' .
+                                    '<a href="' . htmlspecialchars($fixLink) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fixLostRecord')) . '">' .
                                         $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() .
                                     '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) .
                                 '</div>';

@@ -59,8 +59,8 @@ final class SecurityStatusReport implements RequestAwareStatusProviderInterface
     private function getInstallToolProtectionStatus(): Status
     {
         $enableInstallToolFile = EnableFileService::getBestLocationForInstallToolEnableFile();
-        // @todo: Note $this->getLanguageService() is declared to allow null. Calling ->getLL() may fatal?!
-        $value = $this->getLanguageService()->getLL('status_disabled');
+        // @todo: Note $this->getLanguageService() is declared to allow null. Calling ->sL() may fatal?!
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_disabled');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
         if (EnableFileService::installToolEnableFileExists()) {

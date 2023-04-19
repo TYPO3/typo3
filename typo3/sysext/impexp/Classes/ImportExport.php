@@ -267,7 +267,6 @@ abstract class ImportExport
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->lang = $this->getLanguageService();
-        $this->lang->includeLLFile('EXT:impexp/Resources/Private/Language/locallang.xlf');
         $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
 
         $this->fetchStorages();
@@ -519,7 +518,7 @@ abstract class ImportExport
         if ($table === '_SOFTREF_') {
             // Record is a soft reference
             $line['preCode'] = $this->renderIndent($indent);
-            $line['title'] = '<em>' . htmlspecialchars($this->lang->getLL('impexpcore_singlereco_softReferencesFiles')) . '</em>';
+            $line['title'] = '<em>' . htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_softReferencesFiles')) . '</em>';
         } elseif (!isset($GLOBALS['TCA'][$table])) {
             // Record is of unknown table
             $line['preCode'] = $this->renderIndent($indent);
@@ -854,7 +853,7 @@ abstract class ImportExport
                     $line['title'] .= sprintf(
                         '<br>%s <strong>%s</strong> %s',
                         $this->renderIndent($indent + 1),
-                        htmlspecialchars($this->lang->getLL('impexpcore_singlereco_title')),
+                        htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_title')),
                         htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['subst']['title'], 60))
                     );
                 }
@@ -862,7 +861,7 @@ abstract class ImportExport
                     $line['title'] .= sprintf(
                         '<br>%s <strong>%s</strong> %s',
                         $this->renderIndent($indent + 1),
-                        htmlspecialchars($this->lang->getLL('impexpcore_singlereco_descr')),
+                        htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_descr')),
                         htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['subst']['description'], 60))
                     );
                 }
@@ -870,21 +869,21 @@ abstract class ImportExport
                     $line['title'] .= sprintf(
                         '<br>%s <strong>%s</strong> %s',
                         $this->renderIndent($indent + 1),
-                        htmlspecialchars($this->lang->getLL('impexpcore_softrefsel_record')),
+                        htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_softrefsel_record')),
                         $softref['subst']['recordRef']
                     );
                 } elseif ($softref['subst']['type'] === 'file') {
                     $line['title'] .= sprintf(
                         '<br>%s <strong>%s</strong> %s',
                         $this->renderIndent($indent + 1),
-                        htmlspecialchars($this->lang->getLL('impexpcore_singlereco_filename')),
+                        htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_filename')),
                         $softref['subst']['relFileName']
                     );
                 } elseif ($softref['subst']['type'] === 'string') {
                     $line['title'] .= sprintf(
                         '<br>%s <strong>%s</strong> %s',
                         $this->renderIndent($indent + 1),
-                        htmlspecialchars($this->lang->getLL('impexpcore_singlereco_value')),
+                        htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_value')),
                         $softref['subst']['tokenValue']
                     );
                 }
@@ -961,7 +960,7 @@ abstract class ImportExport
         return ''
             . '<div class="form-check mb-0">'
             . '<input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][' . $recordRef . ']" id="checkExclude' . $recordRef . '" value="1" />'
-            . '<label class="form-check-label" for="checkExclude' . $recordRef . '">' . htmlspecialchars($this->lang->getLL('impexpcore_singlereco_exclude')) . '</label>'
+            . '<label class="form-check-label" for="checkExclude' . $recordRef . '">' . htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_exclude')) . '</label>'
             . '</div>';
     }
 
@@ -1008,8 +1007,8 @@ abstract class ImportExport
         if (isset($softref['subst']['tokenID']) && !isset($fileInfo['RTE_ORIG_ID'])) {
             $options = [];
             $options[''] = '';
-            $options[Import::SOFTREF_IMPORT_MODE_EDITABLE] = $this->lang->getLL('impexpcore_softrefsel_editable');
-            $options[Import::SOFTREF_IMPORT_MODE_EXCLUDE] = $this->lang->getLL('impexpcore_softrefsel_exclude');
+            $options[Import::SOFTREF_IMPORT_MODE_EDITABLE] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_softrefsel_editable');
+            $options[Import::SOFTREF_IMPORT_MODE_EXCLUDE] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_softrefsel_exclude');
             $value = $this->softrefCfg[$softref['subst']['tokenID']]['mode'] ?? '';
             $selectHtml = $this->renderSelectBox(
                 'tx_impexp[softrefCfg][' . $softref['subst']['tokenID'] . '][mode]',
@@ -1032,7 +1031,7 @@ abstract class ImportExport
                         '
                         %s<br>
                         <input type="text" name="tx_impexp[softrefCfg][%s][description]" value="%s" />',
-                        htmlspecialchars($this->lang->getLL('impexpcore_printerror_description')),
+                        htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_printerror_description')),
                         $softref['subst']['tokenID'],
                         htmlspecialchars($this->softrefCfg[$softref['subst']['tokenID']]['description'] ?? '')
                     );
@@ -1068,20 +1067,20 @@ abstract class ImportExport
     {
         $options = [];
         if (!$doesRecordExist) {
-            $options[] = $this->lang->getLL('impexpcore_singlereco_insert');
+            $options[] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_insert');
             if ($this->getBackendUser()->isAdmin()) {
-                $options[Import::IMPORT_MODE_FORCE_UID] = sprintf($this->lang->getLL('impexpcore_singlereco_forceUidSAdmin'), $uid);
+                $options[Import::IMPORT_MODE_FORCE_UID] = sprintf($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_forceUidSAdmin'), $uid);
             }
         } else {
-            $options[] = $this->lang->getLL('impexpcore_singlereco_update');
-            $options[Import::IMPORT_MODE_AS_NEW] = $this->lang->getLL('impexpcore_singlereco_importAsNew');
+            $options[] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_update');
+            $options[Import::IMPORT_MODE_AS_NEW] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_importAsNew');
             if (!$this->globalIgnorePid) {
-                $options[Import::IMPORT_MODE_IGNORE_PID] = $this->lang->getLL('impexpcore_singlereco_ignorePid');
+                $options[Import::IMPORT_MODE_IGNORE_PID] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_ignorePid');
             } else {
-                $options[Import::IMPORT_MODE_RESPECT_PID] = $this->lang->getLL('impexpcore_singlereco_respectPid');
+                $options[Import::IMPORT_MODE_RESPECT_PID] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_respectPid');
             }
         }
-        $options[Import::IMPORT_MODE_EXCLUDE] = $this->lang->getLL('impexpcore_singlereco_exclude');
+        $options[Import::IMPORT_MODE_EXCLUDE] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_exclude');
         return $this->renderSelectBox(
             'tx_impexp[import_mode][' . $table . ':' . $uid . ']',
             (string)($this->importMode[$table . ':' . $uid] ?? ''),

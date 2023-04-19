@@ -175,8 +175,6 @@ class FileList
         $this->clipObj = GeneralUtility::makeInstance(Clipboard::class);
         $this->clipObj->initializeClipboard($request);
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $this->getLanguageService()->includeLLFile('EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf');
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_common.xlf');
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         // Initialize Resource Download
@@ -410,11 +408,14 @@ class FileList
     public function getFolderInfo(): string
     {
         if ($this->totalItems == 1) {
-            $fileLabel = $this->getLanguageService()->getLL('file');
+            $fileLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:file');
         } else {
-            $fileLabel = $this->getLanguageService()->getLL('files');
+            $fileLabel = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:files');
         }
-        return $this->totalItems . ' ' . htmlspecialchars($fileLabel) . ', ' . GeneralUtility::formatSize($this->totalbytes, htmlspecialchars($this->getLanguageService()->getLL('byteSizeUnits')));
+        return $this->totalItems . ' ' . htmlspecialchars($fileLabel) . ', ' . GeneralUtility::formatSize(
+            $this->totalbytes,
+            htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:byteSizeUnits'))
+        );
     }
 
     protected function renderListTableHeader(): string
@@ -659,7 +660,8 @@ class FileList
      */
     protected function renderType(ResourceView $resourceView): string
     {
-        $content = $this->getLanguageService()->getLL($resourceView->getType());
+        $type = $resourceView->getType();
+        $content = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:' . $type);
         if ($resourceView->resource instanceof File && $resourceView->resource->getExtension() !== '') {
             $content .= ' (' . strtoupper($resourceView->resource->getExtension()) . ')';
         }
@@ -691,7 +693,7 @@ class FileList
     protected function renderSize(ResourceView $resourceView): string
     {
         if ($resourceView->resource instanceof File) {
-            return GeneralUtility::formatSize((int)$resourceView->resource->getSize(), htmlspecialchars($this->getLanguageService()->getLL('byteSizeUnits')));
+            return GeneralUtility::formatSize((int)$resourceView->resource->getSize(), htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:byteSizeUnits')));
         }
 
         if ($resourceView->resource instanceof Folder) {
@@ -700,8 +702,10 @@ class FileList
             } catch (InsufficientFolderAccessPermissionsException $e) {
                 $numFiles = 0;
             }
-
-            return $numFiles . ' ' . htmlspecialchars($this->getLanguageService()->getLL(($numFiles === 1 ? 'file' : 'files')));
+            if ($numFiles === 1) {
+                return $numFiles . ' ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:file'));
+            }
+                return $numFiles . ' ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:files'));
         }
 
         return '';
@@ -713,8 +717,8 @@ class FileList
     protected function renderPermission(ResourceView $resourceView): string
     {
         return '<strong class="text-danger">'
-            . htmlspecialchars($this->getLanguageService()->getLL('read'))
-            . ($resourceView->canWrite() ? htmlspecialchars($this->getLanguageService()->getLL('write')) : '')
+            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:read'))
+            . ($resourceView->canWrite() ? htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:write')) : '')
             . '</strong>';
     }
 
@@ -1163,7 +1167,7 @@ class FileList
 
             if (isset($existingTranslations[$languageId])) {
                 // Set options for edit action of an existing translation
-                $title = sprintf($this->getLanguageService()->getLL('editMetadataForLanguage'), $language['title']);
+                $title = sprintf($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMetadataForLanguage'), $language['title']);
                 $actionType = 'edit';
                 $url = (string)$this->uriBuilder->buildUriFromRoute(
                     'record_edit',
@@ -1178,7 +1182,7 @@ class FileList
                 );
             } else {
                 // Set options for "create new" action of a new translation
-                $title = sprintf($this->getLanguageService()->getLL('createMetadataForLanguage'), $language['title']);
+                $title = sprintf($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:createMetadataForLanguage'), $language['title']);
                 $actionType = 'new';
                 $metaDataRecordId = (int)($metaDataRecord['uid'] ?? 0);
                 $url = (string)$this->uriBuilder->buildUriFromRoute(
@@ -1286,7 +1290,7 @@ class FileList
             $elementsToConfirm[$key] = $clipBoardElement->getName();
         }
 
-        $pasteTitle = $this->getLanguageService()->getLL('clip_pasteInto');
+        $pasteTitle = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_pasteInto');
         $button = GeneralUtility::makeInstance(LinkButton::class);
         $button->setTitle($pasteTitle);
         $button->setHref($this->clipObj->pasteUrl('_FILE', $resourceView->getIdentifier()));
@@ -1621,7 +1625,7 @@ class FileList
         if ($specialLabel = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $field)) {
             return $specialLabel;
         }
-        if ($customLabel = $lang->getLL('c_' . $field)) {
+        if ($customLabel = $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:c_' . $field)) {
             return $customLabel;
         }
 

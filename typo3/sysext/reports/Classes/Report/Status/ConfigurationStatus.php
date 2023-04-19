@@ -70,7 +70,7 @@ class ConfigurationStatus implements StatusProviderInterface
      */
     protected function getReferenceIndexStatus()
     {
-        $value = $this->getLanguageService()->getLL('status_ok');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
 
@@ -86,12 +86,12 @@ class ConfigurationStatus implements StatusProviderInterface
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         if (!$count && $lastRefIndexUpdate) {
-            $value = $this->getLanguageService()->getLL('status_empty');
+            $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_empty');
             $severity = ContextualFeedbackSeverity::WARNING;
             $url = (string)$uriBuilder->buildUriFromRoute('system_dbint', ['id' => 0, 'SET' => ['function' => 'refindex']]);
             $message = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', BackendUtility::datetime($lastRefIndexUpdate));
         }
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_referenceIndex'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_referenceIndex'), $value, $message, $severity);
     }
 
     /**
@@ -138,7 +138,7 @@ class ConfigurationStatus implements StatusProviderInterface
      */
     protected function getMemcachedConnectionStatus()
     {
-        $value = $this->getLanguageService()->getLL('status_ok');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
         $failedConnections = [];
@@ -172,11 +172,11 @@ class ConfigurationStatus implements StatusProviderInterface
             }
         }
         if (!empty($failedConnections)) {
-            $value = $this->getLanguageService()->getLL('status_connectionFailed');
+            $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_connectionFailed');
             $severity = ContextualFeedbackSeverity::WARNING;
             $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.memcache_not_usable') . '<br /><br /><ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';
         }
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_memcachedConfiguration'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_memcachedConfiguration'), $value, $message, $severity);
     }
 
     /**
@@ -186,15 +186,15 @@ class ConfigurationStatus implements StatusProviderInterface
      */
     protected function getCreatedFilesWorldWritableStatus()
     {
-        $value = $this->getLanguageService()->getLL('status_ok');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] % 10 & 2) {
             $value = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'];
             $severity = ContextualFeedbackSeverity::WARNING;
-            $message = $this->getLanguageService()->getLL('status_CreatedFilePermissions.writable');
+            $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_CreatedFilePermissions.writable');
         }
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_CreatedFilePermissions'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_CreatedFilePermissions'), $value, $message, $severity);
     }
 
     /**
@@ -204,15 +204,15 @@ class ConfigurationStatus implements StatusProviderInterface
      */
     protected function getCreatedDirectoriesWorldWritableStatus()
     {
-        $value = $this->getLanguageService()->getLL('status_ok');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] % 10 & 2) {
             $value = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'];
             $severity = ContextualFeedbackSeverity::WARNING;
-            $message = $this->getLanguageService()->getLL('status_CreatedDirectoryPermissions.writable');
+            $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_CreatedDirectoryPermissions.writable');
         }
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_CreatedDirectoryPermissions'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_CreatedDirectoryPermissions'), $value, $message, $severity);
     }
 
     /**
@@ -253,7 +253,7 @@ class ConfigurationStatus implements StatusProviderInterface
             ->fetchOne();
 
         $severity = ContextualFeedbackSeverity::OK;
-        $statusValue = $this->getLanguageService()->getLL('status_ok');
+        $statusValue = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         // also allow utf8mb4
         if (!str_starts_with($defaultDatabaseCharset, 'utf8')) {
             // If the default character set is e.g. latin1, BUT all tables in the system are UTF-8,
@@ -272,16 +272,16 @@ class ConfigurationStatus implements StatusProviderInterface
 
             if ($nonUtf8TableCollationsFound->rowCount() > 0) {
                 $message = sprintf($this->getLanguageService()
-                    ->getLL('status_MysqlDatabaseCharacterSet_Unsupported'), $defaultDatabaseCharset);
+                    ->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_MysqlDatabaseCharacterSet_Unsupported'), $defaultDatabaseCharset);
                 $severity = ContextualFeedbackSeverity::ERROR;
-                $statusValue = $this->getLanguageService()->getLL('status_wrongValue');
+                $statusValue = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_wrongValue');
             } else {
-                $message = $this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Info');
+                $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_MysqlDatabaseCharacterSet_Info');
                 $severity = ContextualFeedbackSeverity::INFO;
-                $statusValue = $this->getLanguageService()->getLL('status_info');
+                $statusValue = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_info');
             }
         } elseif (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['tableoptions'])) {
-            $message = $this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Ok');
+            $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_MysqlDatabaseCharacterSet_Ok');
 
             $tableOptions = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['tableoptions'];
             if (isset($tableOptions['collate'])) {
@@ -306,9 +306,9 @@ class ConfigurationStatus implements StatusProviderInterface
                     ->executeQuery();
 
                 if ($wrongCollationTablesFound->rowCount() > 0) {
-                    $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_MixedCollations'), $charset);
+                    $message = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_MysqlDatabaseCharacterSet_MixedCollations'), $charset);
                     $severity = ContextualFeedbackSeverity::ERROR;
-                    $statusValue = $this->getLanguageService()->getLL('status_checkFailed');
+                    $statusValue = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_checkFailed');
                 } else {
                     if (isset($tableOptions['collate'])) {
                         $collationConstraint = $queryBuilder->expr()->neq('collation_name', $queryBuilder->quote($tableOptions['collate']));
@@ -329,19 +329,19 @@ class ConfigurationStatus implements StatusProviderInterface
                         ->executeQuery();
 
                     if ($wrongCollationColumnsFound->rowCount() > 0) {
-                        $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_MixedCollations'), $charset);
+                        $message = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_MysqlDatabaseCharacterSet_MixedCollations'), $charset);
                         $severity = ContextualFeedbackSeverity::ERROR;
-                        $statusValue = $this->getLanguageService()->getLL('status_checkFailed');
+                        $statusValue = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_checkFailed');
                     }
                 }
             }
         } else {
-            $message = $this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Ok');
+            $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_MysqlDatabaseCharacterSet_Ok');
         }
 
         return GeneralUtility::makeInstance(
             ReportStatus::class,
-            $this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet'),
+            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_MysqlDatabaseCharacterSet'),
             $statusValue,
             $message,
             $severity

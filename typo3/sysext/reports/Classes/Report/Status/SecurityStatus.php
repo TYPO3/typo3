@@ -81,19 +81,19 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
      */
     protected function getEncryptedConnectionStatus(ServerRequestInterface $request): ReportStatus
     {
-        $value = $this->getLanguageService()->getLL('status_ok');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
 
         $normalizedParams = $request->getAttribute('normalizedParams');
 
         if (!$normalizedParams->isHttps()) {
-            $value = $this->getLanguageService()->getLL('status_insecure');
+            $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_insecure');
             $severity = ContextualFeedbackSeverity::WARNING;
             $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_encryptedConnectionStatus_insecure');
         }
 
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_encryptedConnectionStatus'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_encryptedConnectionStatus'), $value, $message, $severity);
     }
 
     /**
@@ -104,17 +104,17 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         $normalizedParams = $request->getAttribute('normalizedParams');
 
         if ($normalizedParams->isHttps()) {
-            $value = $this->getLanguageService()->getLL('status_ok');
+            $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
             $message = '';
             $severity = ContextualFeedbackSeverity::OK;
 
             if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) {
-                $value = $this->getLanguageService()->getLL('status_insecure');
-                $message = $this->getLanguageService()->getLL('status_lockSslStatus_insecure');
+                $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_insecure');
+                $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_lockSslStatus_insecure');
                 $severity = ContextualFeedbackSeverity::WARNING;
             }
 
-            return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_lockSslStatus'), $value, $message, $severity);
+            return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_lockSslStatus'), $value, $message, $severity);
         }
 
         return null;
@@ -127,17 +127,17 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
      */
     protected function getTrustedHostsPatternStatus(): ReportStatus
     {
-        $value = $this->getLanguageService()->getLL('status_ok');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
 
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === VerifyHostHeader::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
-            $value = $this->getLanguageService()->getLL('status_insecure');
+            $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_insecure');
             $severity = ContextualFeedbackSeverity::ERROR;
             $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_trustedhosts');
         }
 
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_trustedHostsPattern'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_trustedHostsPattern'), $value, $message, $severity);
     }
 
     /**
@@ -147,7 +147,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
      */
     protected function getAdminAccountStatus(): ReportStatus
     {
-        $value = $this->getLanguageService()->getLL('status_ok');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
 
@@ -175,7 +175,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
                     // If the password for 'admin' user is 'password': bad idea!
                     // We're checking since the (very) old installer created instances like this in dark old times.
                     $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                    $value = $this->getLanguageService()->getLL('status_insecure');
+                    $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_insecure');
                     $severity = ContextualFeedbackSeverity::ERROR;
                     $editUserAccountUrl = (string)$uriBuilder->buildUriFromRoute(
                         'record_edit',
@@ -195,7 +195,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
             }
         }
 
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_adminUserAccount'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_adminUserAccount'), $value, $message, $severity);
     }
 
     /**
@@ -205,13 +205,13 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
      */
     protected function getFileDenyPatternStatus(): ReportStatus
     {
-        $value = $this->getLanguageService()->getLL('status_ok');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
 
         $fileAccessCheck = GeneralUtility::makeInstance(FileNameValidator::class);
         if ($fileAccessCheck->missingImportantPatterns()) {
-            $value = $this->getLanguageService()->getLL('status_insecure');
+            $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_insecure');
             $severity = ContextualFeedbackSeverity::ERROR;
             $message = sprintf(
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_deny_pattern_partsNotPresent'),
@@ -219,7 +219,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
             );
         }
 
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_fileDenyPattern'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_fileDenyPattern'), $value, $message, $severity);
     }
 
     /**
@@ -230,43 +230,43 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
      */
     protected function getHtaccessUploadStatus(): ReportStatus
     {
-        $value = $this->getLanguageService()->getLL('status_ok');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
 
         $fileNameAccess = GeneralUtility::makeInstance(FileNameValidator::class);
         if ($fileNameAccess->customFileDenyPatternConfigured()
             && $fileNameAccess->isValid('.htaccess')) {
-            $value = $this->getLanguageService()->getLL('status_insecure');
+            $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_insecure');
             $severity = ContextualFeedbackSeverity::ERROR;
             $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_deny_htaccess');
         }
 
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_htaccessUploadProtection'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_htaccessUploadProtection'), $value, $message, $severity);
     }
 
     protected function getExceptionHandlerStatus(): ReportStatus
     {
-        $value = $this->getLanguageService()->getLL('status_ok');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
         if (
             str_contains($GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'], 'Debug') ||
             (Environment::getContext()->isProduction() && (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] === 1)
         ) {
-            $value = $this->getLanguageService()->getLL('status_insecure');
+            $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_insecure');
             $severity = ContextualFeedbackSeverity::ERROR;
-            $message = $this->getLanguageService()->getLL('status_exceptionHandler_errorMessage');
+            $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_exceptionHandler_errorMessage');
         } elseif ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] === 1) {
             $severity = ContextualFeedbackSeverity::WARNING;
-            $message = $this->getLanguageService()->getLL('status_exceptionHandler_warningMessage');
+            $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_exceptionHandler_warningMessage');
         }
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_exceptionHandler'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_exceptionHandler'), $value, $message, $severity);
     }
 
     protected function getExportedFilesStatus(): ReportStatus
     {
-        $value = $this->getLanguageService()->getLL('status_ok');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
 
@@ -299,14 +299,14 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
                 $files[] = '<li>' . htmlspecialchars($exportedFile['storage'] . ':' . $exportedFile['identifier']) . '</li>';
             }
 
-            $value = $this->getLanguageService()->getLL('status_insecure');
+            $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_insecure');
             $severity = ContextualFeedbackSeverity::WARNING;
-            $message = $this->getLanguageService()->getLL('status_exportedFiles_warningMessage');
+            $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_exportedFiles_warningMessage');
             $message .= '<ul>' . implode(PHP_EOL, $files) . '</ul>';
-            $message .= $this->getLanguageService()->getLL('status_exportedFiles_warningRecommendation');
+            $message .= $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_exportedFiles_warningRecommendation');
         }
 
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_exportedFiles'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_exportedFiles'), $value, $message, $severity);
     }
 
     protected function getLanguageService(): LanguageService

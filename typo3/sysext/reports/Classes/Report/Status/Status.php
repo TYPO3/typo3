@@ -39,6 +39,7 @@ class Status implements RequestAwareReportInterface
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly StatusRegistry $statusRegistry
     ) {
+        // This needs to be kept during v12 as backwards-compatibility for people still using getLL() in their status reports
         $this->getLanguageService()->includeLLFile('EXT:reports/Resources/Private/Language/locallang_reports.xlf');
     }
 
@@ -182,10 +183,10 @@ class Status implements RequestAwareReportInterface
         // that must appear on top of the status report
         // Change their keys to localized collection titles
         $primaryStatuses = [
-            $this->getLanguageService()->getLL('status_typo3') => $statusCollection['typo3'],
-            $this->getLanguageService()->getLL('status_system') => $statusCollection['system'],
-            $this->getLanguageService()->getLL('status_security') => $statusCollection['security'],
-            $this->getLanguageService()->getLL('status_configuration') => $statusCollection['configuration'],
+            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_typo3') => $statusCollection['typo3'],
+            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_system') => $statusCollection['system'],
+            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_security') => $statusCollection['security'],
+            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_configuration') => $statusCollection['configuration'],
         ];
         unset($statusCollection['typo3'], $statusCollection['system'], $statusCollection['security'], $statusCollection['configuration']);
         // Assemble list of secondary status collections with left-over collections
@@ -197,7 +198,8 @@ class Status implements RequestAwareReportInterface
                 $label = $this->getLanguageService()->sL($statusProviderId);
             } else {
                 // Generic label
-                $label = $this->getLanguageService()->getLL('status_' . $statusProviderId);
+                // @todo phase this out
+                $label = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_' . $statusProviderId);
             }
             $providerLabel = empty($label) ? $statusProviderId : $label;
             $secondaryStatuses[$providerLabel] = $collection;

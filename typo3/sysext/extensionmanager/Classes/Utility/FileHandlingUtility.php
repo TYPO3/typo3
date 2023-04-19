@@ -70,7 +70,6 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
     public function initializeObject()
     {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
-        $this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
     }
 
     /**
@@ -131,7 +130,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
             GeneralUtility::mkdir_deep($directory);
         } catch (\RuntimeException $exception) {
             throw new ExtensionManagerException(
-                sprintf($this->languageService->getLL('fileHandling.couldNotCreateDirectory'), $this->getRelativePath($directory)),
+                sprintf($this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:fileHandling.couldNotCreateDirectory'), $this->getRelativePath($directory)),
                 1337280416
             );
         }
@@ -182,7 +181,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
         $path = $paths[$pathType] ?? '';
         if (!$path || !is_dir($path) || !$extensionKey) {
             throw new ExtensionManagerException(
-                sprintf($this->languageService->getLL('fileHandling.installPathWasNoDirectory'), $this->getRelativePath($path)),
+                sprintf($this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:fileHandling.installPathWasNoDirectory'), $this->getRelativePath($path)),
                 1337280417
             );
         }
@@ -201,7 +200,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
         GeneralUtility::mkdir($extDirPath);
         if (!is_dir($extDirPath)) {
             throw new ExtensionManagerException(
-                sprintf($this->languageService->getLL('fileHandling.couldNotCreateDirectory'), $this->getRelativePath($extDirPath)),
+                sprintf($this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:fileHandling.couldNotCreateDirectory'), $this->getRelativePath($extDirPath)),
                 1337280418
             );
         }
@@ -224,7 +223,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
         }
         if ($result === false) {
             throw new ExtensionManagerException(
-                sprintf($this->languageService->getLL('fileHandling.couldNotRemoveDirectory'), $this->getRelativePath($extDirPath)),
+                sprintf($this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:fileHandling.couldNotRemoveDirectory'), $this->getRelativePath($extDirPath)),
                 1337280415
             );
         }

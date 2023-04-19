@@ -107,12 +107,12 @@ class SystemStatusUpdateTask extends AbstractTask
         foreach ($notificationEmails as $notificationEmail) {
             $sendEmailsTo[] = new Address($notificationEmail);
         }
-        $subject = sprintf($this->getLanguageService()->getLL('status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-        $message = sprintf($this->getLanguageService()->getLL($this->getNotificationAll() ? 'status_allNotification' : 'status_problemNotification'), '', '');
+        $subject = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+        $message = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:' . ($this->getNotificationAll() ? 'status_allNotification' : 'status_problemNotification')), '', '');
         $message .= CRLF . CRLF;
-        $message .= $this->getLanguageService()->getLL('status_updateTask_email_site') . ': ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+        $message .= $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTask_email_site') . ': ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $message .= CRLF . CRLF;
-        $message .= $this->getLanguageService()->getLL('status_updateTask_email_issues') . ': ' . CRLF;
+        $message .= $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTask_email_issues') . ': ' . CRLF;
         $message .= implode(CRLF, $systemIssues);
         $message .= CRLF . CRLF;
 

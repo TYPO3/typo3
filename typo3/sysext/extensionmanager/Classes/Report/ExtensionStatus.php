@@ -43,7 +43,6 @@ class ExtensionStatus implements StatusProviderInterface
         protected readonly LanguageServiceFactory $languageServiceFactory,
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
-        $this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
     }
 
     /**
@@ -81,22 +80,22 @@ class ExtensionStatus implements StatusProviderInterface
     protected function getMainRepositoryStatus()
     {
         if (!$this->remoteRegistry->hasDefaultRemote()) {
-            $value = $this->languageService->getLL('report.status.mainRepository.notFound.value');
-            $message = $this->languageService->getLL('report.status.mainRepository.notFound.message');
+            $value = $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.mainRepository.notFound.value');
+            $message = $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.mainRepository.notFound.message');
             $severity = ContextualFeedbackSeverity::ERROR;
         } elseif ($this->remoteRegistry->getDefaultRemote()->needsUpdate()) {
-            $value = $this->languageService->getLL('report.status.mainRepository.notUpToDate.value');
-            $message = $this->languageService->getLL('report.status.mainRepository.notUpToDate.message');
+            $value = $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.mainRepository.notUpToDate.value');
+            $message = $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.mainRepository.notUpToDate.message');
             $severity = ContextualFeedbackSeverity::NOTICE;
         } else {
-            $value = $this->languageService->getLL('report.status.mainRepository.upToDate.value');
+            $value = $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.mainRepository.upToDate.value');
             $message = '';
             $severity = ContextualFeedbackSeverity::OK;
         }
 
         $status = GeneralUtility::makeInstance(
             Status::class,
-            $this->languageService->getLL('report.status.mainRepository.title'),
+            $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.mainRepository.title'),
             $value,
             $message,
             $severity
@@ -161,124 +160,124 @@ class ExtensionStatus implements StatusProviderInterface
         $result = new \stdClass();
 
         if (empty($loadedInsecure)) {
-            $value = $this->languageService->getLL('report.status.loadedExtensions.noInsecureExtensionLoaded.value');
+            $value = $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedExtensions.noInsecureExtensionLoaded.value');
             $message = '';
             $severity = ContextualFeedbackSeverity::OK;
         } else {
             $value = sprintf(
-                $this->languageService->getLL('report.status.loadedExtensions.insecureExtensionLoaded.value'),
+                $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedExtensions.insecureExtensionLoaded.value'),
                 count($loadedInsecure)
             );
             $extensionList = [];
             foreach ($loadedInsecure as $insecureExtension) {
                 $extensionList[] = sprintf(
-                    $this->languageService->getLL('report.status.loadedExtensions.insecureExtensionLoaded.message.extension'),
+                    $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedExtensions.insecureExtensionLoaded.message.extension'),
                     $insecureExtension['extensionKey'],
                     $insecureExtension['version']
                 );
             }
             $message = sprintf(
-                $this->languageService->getLL('report.status.loadedExtensions.insecureExtensionLoaded.message'),
+                $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedExtensions.insecureExtensionLoaded.message'),
                 implode('', $extensionList)
             );
             $severity = ContextualFeedbackSeverity::ERROR;
         }
         $result->loaded = GeneralUtility::makeInstance(
             Status::class,
-            $this->languageService->getLL('report.status.loadedExtensions.title'),
+            $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedExtensions.title'),
             $value,
             $message,
             $severity
         );
 
         if (empty($existingInsecure)) {
-            $value = $this->languageService->getLL('report.status.existingExtensions.noInsecureExtensionExists.value');
+            $value = $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingExtensions.noInsecureExtensionExists.value');
             $message = '';
             $severity = ContextualFeedbackSeverity::OK;
         } else {
             $value = sprintf(
-                $this->languageService->getLL('report.status.existingExtensions.insecureExtensionExists.value'),
+                $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingExtensions.insecureExtensionExists.value'),
                 count($existingInsecure)
             );
             $extensionList = [];
             foreach ($existingInsecure as $insecureExtension) {
                 $extensionList[] = sprintf(
-                    $this->languageService->getLL('report.status.existingExtensions.insecureExtensionExists.message.extension'),
+                    $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingExtensions.insecureExtensionExists.message.extension'),
                     $insecureExtension['extensionKey'],
                     $insecureExtension['version']
                 );
             }
             $message = sprintf(
-                $this->languageService->getLL('report.status.existingExtensions.insecureExtensionExists.message'),
+                $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingExtensions.insecureExtensionExists.message'),
                 implode('', $extensionList)
             );
             $severity = ContextualFeedbackSeverity::WARNING;
         }
         $result->existing = GeneralUtility::makeInstance(
             Status::class,
-            $this->languageService->getLL('report.status.existingExtensions.title'),
+            $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingExtensions.title'),
             $value,
             $message,
             $severity
         );
 
         if (empty($loadedOutdated)) {
-            $value = $this->languageService->getLL('report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value');
+            $value = $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value');
             $message = '';
             $severity = ContextualFeedbackSeverity::OK;
         } else {
             $value = sprintf(
-                $this->languageService->getLL('report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value'),
+                $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value'),
                 count($loadedOutdated)
             );
             $extensionList = [];
             foreach ($loadedOutdated as $outdatedExtension) {
                 $extensionList[] = sprintf(
-                    $this->languageService->getLL('report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension'),
+                    $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension'),
                     $outdatedExtension['extensionKey'],
                     $outdatedExtension['version']
                 );
             }
             $message = sprintf(
-                $this->languageService->getLL('report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message'),
+                $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message'),
                 implode('', $extensionList)
             );
             $severity = ContextualFeedbackSeverity::WARNING;
         }
         $result->loadedoutdated = GeneralUtility::makeInstance(
             Status::class,
-            $this->languageService->getLL('report.status.loadedOutdatedExtensions.title'),
+            $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedOutdatedExtensions.title'),
             $value,
             $message,
             $severity
         );
 
         if (empty($existingOutdated)) {
-            $value = $this->languageService->getLL('report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value');
+            $value = $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value');
             $message = '';
             $severity = ContextualFeedbackSeverity::OK;
         } else {
             $value = sprintf(
-                $this->languageService->getLL('report.status.existingOutdatedExtensions.outdatedExtensionExists.value'),
+                $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingOutdatedExtensions.outdatedExtensionExists.value'),
                 count($existingOutdated)
             );
             $extensionList = [];
             foreach ($existingOutdated as $outdatedExtension) {
                 $extensionList[] = sprintf(
-                    $this->languageService->getLL('report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension'),
+                    $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension'),
                     $outdatedExtension['extensionKey'],
                     $outdatedExtension['version']
                 );
             }
             $message = sprintf(
-                $this->languageService->getLL('report.status.existingOutdatedExtensions.outdatedExtensionExists.message'),
+                $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingOutdatedExtensions.outdatedExtensionExists.message'),
                 implode('', $extensionList)
             );
             $severity = ContextualFeedbackSeverity::WARNING;
         }
         $result->existingoutdated = GeneralUtility::makeInstance(
             Status::class,
-            $this->languageService->getLL('report.status.existingOutdatedExtensions.title'),
+            $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingOutdatedExtensions.title'),
             $value,
             $message,
             $severity

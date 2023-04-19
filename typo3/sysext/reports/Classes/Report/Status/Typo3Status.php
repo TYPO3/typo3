@@ -53,7 +53,7 @@ class Typo3Status implements StatusProviderInterface
     protected function getRegisteredXclassStatus()
     {
         $message = '';
-        $value = $this->getLanguageService()->getLL('status_none');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_none');
         $severity = ContextualFeedbackSeverity::OK;
 
         $xclassFoundArray = [];
@@ -65,12 +65,12 @@ class Typo3Status implements StatusProviderInterface
             }
         }
         if (!empty($xclassFoundArray)) {
-            $value = $this->getLanguageService()->getLL('status_xclassUsageFound');
-            $message = $this->getLanguageService()->getLL('status_xclassUsageFound_message') . '<br />';
+            $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_xclassUsageFound');
+            $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_xclassUsageFound_message') . '<br />';
             $message .= '<ol>';
             foreach ($xclassFoundArray as $originalClass => $xClassName) {
                 $messageDetail = sprintf(
-                    (string)($this->getLanguageService()->getLL('status_xclassUsageFound_message_detail')),
+                    (string)($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_xclassUsageFound_message_detail')),
                     '<code>' . htmlspecialchars((string)$originalClass) . '</code>',
                     '<code>' . htmlspecialchars((string)$xClassName) . '</code>'
                 );
@@ -82,7 +82,7 @@ class Typo3Status implements StatusProviderInterface
 
         return GeneralUtility::makeInstance(
             ReportStatus::class,
-            $this->getLanguageService()->getLL('status_xclassUsage'),
+            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_xclassUsage'),
             $value,
             $message,
             $severity

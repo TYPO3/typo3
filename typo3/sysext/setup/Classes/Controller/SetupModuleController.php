@@ -143,8 +143,7 @@ class SetupModuleController
         $this->pageRenderer->addInlineLanguageLabelArray([
             'FormEngine.remainingCharacters' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
         ]);
-        $languageService->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
-        $view->setTitle($languageService->getLL('UserSettings'));
+        $view->setTitle($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:UserSettings'));
         // Getting the 'override' values as set might be set in user TSconfig
         $this->overrideConf = $backendUser->getTSConfig()['setup.']['override.'] ?? [];
         // Getting the disabled fields might be set in user TSconfig (eg setup.fields.password.disabled=1)
@@ -542,14 +541,14 @@ class SetupModuleController
                     $html .= '<div class="btn-group">';
                     if ($avatarFileUid) {
                         $html .=
-                            '<button type="button" id="clear_button_' . htmlspecialchars($fieldName) . '" aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.clear')) . '" '
+                            '<button type="button" id="clear_button_' . htmlspecialchars($fieldName) . '" aria-label="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.clear')) . '" '
                                 . ' class="btn btn-default">'
                                 . $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)
                             . '</button>';
                     }
                     $html .=
                         '<button type="button" id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar"'
-                            . ' aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.openFileBrowser')) . '"'
+                            . ' aria-label="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.openFileBrowser')) . '"'
                             . ' data-setup-avatar-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||-0-be_users-avatar-avatar'])) . '"'
                             . '>' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
                             . '</button></div>';
@@ -561,19 +560,19 @@ class SetupModuleController
                     $hasActiveProviders = $this->mfaProviderRegistry->hasActiveProviders($backendUser);
                     if ($hasActiveProviders) {
                         if ($this->mfaProviderRegistry->hasLockedProviders($backendUser)) {
-                            $html .= ' <span class="badge badge-danger">' . htmlspecialchars($lang->getLL('mfaProviders.lockedMfaProviders')) . '</span>';
+                            $html .= ' <span class="badge badge-danger">' . htmlspecialchars($lang->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders.lockedMfaProviders')) . '</span>';
                         } else {
-                            $html .= ' <span class="badge badge-success">' . htmlspecialchars($lang->getLL('mfaProviders.enabled')) . '</span>';
+                            $html .= ' <span class="badge badge-success">' . htmlspecialchars($lang->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders.enabled')) . '</span>';
                         }
                     }
-                    $html .= '<p class="text-body-secondary">' . nl2br(htmlspecialchars($lang->getLL('mfaProviders.description'))) . '</p>';
+                    $html .= '<p class="text-body-secondary">' . nl2br(htmlspecialchars($lang->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders.description'))) . '</p>';
                     if (!$this->mfaProviderRegistry->hasProviders()) {
-                        $html .= '<span class="badge badge-danger">' . htmlspecialchars($lang->getLL('mfaProviders.notAvailable')) . '</span>';
+                        $html .= '<span class="badge badge-danger">' . htmlspecialchars($lang->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders.notAvailable')) . '</span>';
                         break;
                     }
                     $html .= '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('mfa')) . '" class="btn btn-' . ($hasActiveProviders ? 'default' : 'success') . '">';
                     $html .=    $this->iconFactory->getIcon($hasActiveProviders ? 'actions-cog' : 'actions-plus', Icon::SIZE_SMALL);
-                    $html .=    ' <span>' . htmlspecialchars($lang->getLL('mfaProviders.' . ($hasActiveProviders ? 'manageLinkTitle' : 'setupLinkTitle'))) . '</span>';
+                    $html .=    ' <span>' . htmlspecialchars($lang->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders.' . ($hasActiveProviders ? 'manageLinkTitle' : 'setupLinkTitle'))) . '</span>';
                     $html .= '</a>';
                     break;
                 default:
@@ -627,7 +626,7 @@ class SetupModuleController
         }
         $content = '<select id="field_lang" name="data[be_users][lang]" class="form-select">' . $content . '</select>';
         if ($currentSelectedLanguage !== 'default' && !@is_dir(Environment::getLabelsPath() . '/' . $currentSelectedLanguage)) {
-            $languageUnavailableWarning = htmlspecialchars(sprintf($languageService->getLL('languageUnavailable'), $languageService->getLL('lang_' . $currentSelectedLanguage))) . '&nbsp;&nbsp;<br />&nbsp;&nbsp;' . htmlspecialchars($languageService->getLL('languageUnavailable.' . ($backendUser->isAdmin() ? 'admin' : 'user')));
+            $languageUnavailableWarning = htmlspecialchars(sprintf($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:languageUnavailable'), $languageService->sL($officialLanguages->getLabelIdentifier($currentSelectedLanguage)))) . '&nbsp;&nbsp;<br />&nbsp;&nbsp;' . htmlspecialchars($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:languageUnavailable.' . ($backendUser->isAdmin() ? 'admin' : 'user')));
             $content = '<br /><span class="badge badge-danger">' . $languageUnavailableWarning . '</span><br /><br />' . $content;
         }
         return $content;
@@ -642,7 +641,7 @@ class SetupModuleController
     public function renderStartModuleSelect(): string
     {
         // Load available backend modules
-        $startModuleSelect = '<option value="">' . htmlspecialchars($this->getLanguageService()->getLL('startModule.firstInMenu')) . '</option>';
+        $startModuleSelect = '<option value="">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:startModule.firstInMenu')) . '</option>';
         foreach ($this->moduleProvider->getModules($this->getBackendUser(), false) as $identifier => $module) {
             if ($module->hasSubModules() || $module->isStandalone()) {
                 $modules = '';
@@ -689,7 +688,7 @@ class SetupModuleController
     }
 
     /**
-     * Returns the label $str from getLL() and grays out the value if the $str/$key is found in $this->overrideConf array
+     * Returns the label $str from sL() and grays out the value if the $str/$key is found in $this->overrideConf array
      *
      * @param string $str Locallang key
      * @param string $key Alternative override-config key
@@ -866,27 +865,27 @@ class SetupModuleController
     {
         $languageService = $this->getLanguageService();
         if ($this->setupIsUpdated && !$this->settingsAreResetToDefault) {
-            $view->addFlashMessage($languageService->getLL('setupWasUpdated'), $languageService->getLL('UserSettings'));
+            $view->addFlashMessage($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:setupWasUpdated'), $languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:UserSettings'));
         }
         if ($this->settingsAreResetToDefault) {
-            $view->addFlashMessage($languageService->getLL('settingsAreReset'), $languageService->getLL('resetConfiguration'));
+            $view->addFlashMessage($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:settingsAreReset'), $languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetConfiguration'));
         }
         if ($this->setupIsUpdated || $this->settingsAreResetToDefault) {
-            $view->addFlashMessage($languageService->getLL('activateChanges'), '', ContextualFeedbackSeverity::INFO);
+            $view->addFlashMessage($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:activateChanges'), '', ContextualFeedbackSeverity::INFO);
         }
         if ($this->passwordIsSubmitted) {
             switch ($this->passwordIsUpdated) {
                 case self::PASSWORD_OLD_WRONG:
-                    $view->addFlashMessage($languageService->getLL('oldPassword_failed'), $languageService->getLL('newPassword'), ContextualFeedbackSeverity::ERROR);
+                    $view->addFlashMessage($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:oldPassword_failed'), $languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:newPassword'), ContextualFeedbackSeverity::ERROR);
                     break;
                 case self::PASSWORD_NOT_THE_SAME:
-                    $view->addFlashMessage($languageService->getLL('newPassword_failed'), $languageService->getLL('newPassword'), ContextualFeedbackSeverity::ERROR);
+                    $view->addFlashMessage($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:newPassword_failed'), $languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:newPassword'), ContextualFeedbackSeverity::ERROR);
                     break;
                 case self::PASSWORD_UPDATED:
-                    $view->addFlashMessage($languageService->getLL('newPassword_ok'), $languageService->getLL('newPassword'));
+                    $view->addFlashMessage($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:newPassword_ok'), $languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:newPassword'));
                     break;
                 case self::PASSWORD_POLICY_FAILED:
-                    $view->addFlashMessage($languageService->getLL('passwordPolicyFailed'), $languageService->getLL('newPassword'), ContextualFeedbackSeverity::ERROR);
+                    $view->addFlashMessage($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:passwordPolicyFailed'), $languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:newPassword'), ContextualFeedbackSeverity::ERROR);
                     break;
             }
         }

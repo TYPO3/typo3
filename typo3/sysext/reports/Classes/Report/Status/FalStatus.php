@@ -55,7 +55,7 @@ class FalStatus implements StatusProviderInterface
      */
     protected function getMissingFilesStatus()
     {
-        $value = $this->getLanguageService()->getLL('status_none');
+        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_none');
         $count = 0;
         $maxFilesToShow = 100;
         $message = '';
@@ -92,7 +92,7 @@ class FalStatus implements StatusProviderInterface
         }
 
         if ($count) {
-            $value = sprintf($this->getLanguageService()->getLL('status_missingFilesCount'), $count);
+            $value = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_missingFilesCount'), $count);
             $severity = ContextualFeedbackSeverity::WARNING;
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file');
@@ -113,7 +113,7 @@ class FalStatus implements StatusProviderInterface
                 ->executeQuery()
                 ->fetchAllAssociative();
 
-            $message = '<p>' . $this->getLanguageService()->getLL('status_missingFilesMessage') . '</p>';
+            $message = '<p>' . $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_missingFilesMessage') . '</p>';
             foreach ($files as $file) {
                 $message .= $storages[$file['storage']]->getName() . ' ' . $file['identifier'] . '<br />';
             }
@@ -123,7 +123,7 @@ class FalStatus implements StatusProviderInterface
             }
         }
 
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_missingFiles'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_missingFiles'), $value, $message, $severity);
     }
 
     protected function getLanguageService(): LanguageService
