@@ -45,6 +45,7 @@ class FrontendConfigurationManager implements SingletonInterface
 
     /**
      * @var ContentObjectRenderer
+     * @deprecated since v12. Remove in v13.
      */
     protected $contentObject;
 
@@ -69,6 +70,11 @@ class FrontendConfigurationManager implements SingletonInterface
      */
     protected $configurationCache = [];
 
+    /**
+     * @todo: In v13, this shouldn't be nullable, FE context *always* has a request.
+     */
+    private ?ServerRequestInterface $request = null;
+
     public function __construct(
         protected TypoScriptService $typoScriptService,
         protected FlexFormService $flexFormService,
@@ -77,8 +83,13 @@ class FrontendConfigurationManager implements SingletonInterface
     ) {
     }
 
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
+
     /**
-     * @todo: See note on getContentObject() below.
+     * @deprecated since v12. Remove in v13.
      */
     public function setContentObject(ContentObjectRenderer $contentObject): void
     {
@@ -86,12 +97,7 @@ class FrontendConfigurationManager implements SingletonInterface
     }
 
     /**
-     * @todo: This dependency to ContentObjectRenderer on a singleton object is unfortunate:
-     *      The current instance is set through USER cObj and extbase Bootstrap, its null in Backend.
-     *      This getter is misused to retrieve current ContentObjectRenderer state by some extensions (eg. ext:form).
-     *      This dependency should be removed altogether.
-     *      Although the current implementation *always* returns an instance of ContentObjectRenderer, we do not want to
-     *      hard-expect consuming classes on that, since this methods needs to be dropped anyways, so potential null return is kept.
+     * @deprecated since v12. Remove in v13.
      */
     public function getContentObject(): ?ContentObjectRenderer
     {
@@ -189,9 +195,9 @@ class FrontendConfigurationManager implements SingletonInterface
      */
     public function getTypoScriptSetup(): array
     {
-        // @todo: This class obviously has a dependency to request ... it should get it hand over!
+        // @todo: Avoid $GLOBALS['TYPO3_REQUEST'] in v13.
         /** @var ServerRequestInterface $request */
-        $request = $GLOBALS['TYPO3_REQUEST'];
+        $request = $this->request ?? $GLOBALS['TYPO3_REQUEST'];
         $frontendTypoScript = $request->getAttribute('frontend.typoscript');
         try {
             return $frontendTypoScript->getSetupArray();
@@ -318,10 +324,12 @@ class FrontendConfigurationManager implements SingletonInterface
      */
     protected function overrideStoragePidIfStartingPointIsSet(array $frameworkConfiguration): array
     {
-        $pages = (string)($this->contentObject->data['pages'] ?? '');
+        // @deprecated: Remove fallback to $this->contentObject in v13.
+        $contentObject = $this->request?->getAttribute('currentContentObject') ?? $this->contentObject;
+        $pages = (string)($contentObject->data['pages'] ?? '');
         if ($pages !== '') {
             $storagePids = GeneralUtility::intExplode(',', $pages, true);
-            $recursionDepth = (int)($this->contentObject->data['recursive'] ?? 0);
+            $recursionDepth = (int)($contentObject->data['recursive'] ?? 0);
             $recursiveStoragePids = $this->pageRepository->getPageIdsRecursive($storagePids, $recursionDepth);
             $pages = implode(',', $recursiveStoragePids);
             ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, [
@@ -365,7 +373,9 @@ class FrontendConfigurationManager implements SingletonInterface
      */
     protected function overrideConfigurationFromFlexForm(array $frameworkConfiguration): array
     {
-        $flexFormConfiguration = $this->contentObject->data['pi_flexform'] ?? [];
+        // @todo: Remove fallback to $this->contentObject in v13.
+        $contentObject = $this->request?->getAttribute('currentContentObject') ?? $this->contentObject;
+        $flexFormConfiguration = $contentObject->data['pi_flexform'] ?? [];
         if (is_string($flexFormConfiguration)) {
             if ($flexFormConfiguration !== '') {
                 $flexFormConfiguration = $this->flexFormService->convertFlexFormContentToArray($flexFormConfiguration);

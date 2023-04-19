@@ -112,15 +112,21 @@ class Bootstrap
             $request = $request->withAttribute('currentContentObject', $this->cObj);
         }
         $this->cObj->setRequest($request);
+        // @deprecated since v12. Remove in v13.
         $this->configurationManager->setContentObject($this->cObj);
+        if (method_exists($this->configurationManager, 'setRequest')) {
+            // @todo: Avoid method_exists() when setRequest() has been added to interface.
+            $this->configurationManager->setRequest($request);
+        }
         $this->configurationManager->setConfiguration($configuration);
         return $request;
-        // todo: Shouldn't the configuration manager object – which is a singleton – be stateless?
-        // todo: At this point we give the configuration manager a state, while we could directly pass the
-        // todo: configuration (i.e. controllerName, actionName and such), directly to the request
-        // todo: handler, which then creates stateful request objects.
-        // todo: Once this has changed, \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::loadDefaultValues does not need
-        // todo: to fetch this configuration from the configuration manager.
+        // todo: Outdated todo, recheck in v13.
+        //       Shouldn't the configuration manager object – which is a singleton – be stateless?
+        //       At this point we give the configuration manager a state, while we could directly pass the
+        //       configuration (i.e. controllerName, actionName and such), directly to the request
+        //       handler, which then creates stateful request objects.
+        //       Once this has changed, \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::loadDefaultValues does not need
+        //       to fetch this configuration from the configuration manager.
     }
 
     /**

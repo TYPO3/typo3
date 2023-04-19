@@ -33,7 +33,12 @@ class ConfigurationManager implements ConfigurationManagerInterface
 {
     private ContainerInterface $container;
 
+    /**
+     * @todo: Make nullable and private(?) in v13.
+     */
     protected FrontendConfigurationManager|BackendConfigurationManager $concreteConfigurationManager;
+
+    private ?ServerRequestInterface $request = null;
 
     public function __construct(ContainerInterface $container)
     {
@@ -43,6 +48,19 @@ class ConfigurationManager implements ConfigurationManagerInterface
 
     protected function initializeConcreteConfigurationManager(): void
     {
+        // @todo: Move into getConfiguration() in v13.
+        //        This will allow getting rid of $GLOBALS['TYPO3_REQUEST'] here, and the
+        //        concrete ConfigurationManager is created "late" in getConfiguration().
+        //        Check $this->concreteConfigurationManager for null. If null, fetch request from
+        //        $this->request() (and *maybe* check TYPO3_REQUEST as b/w layer, better not), if still
+        //        null, fall back to BackendConfigurationManager.
+        //        Background: People tend to inject ConfigurationManager into non-extbase bootstrapped
+        //        classes since the getConfiguration() API is so convenient. If request has not been set
+        //        via setRequest(), this *may* indicate a CLI call. Extbase in general needs requests for
+        //        controllers, but we *may* want to allow getting ConfigurationManager injected as
+        //        "standalone" feature in CLI as well? OTOH, we could avoid this, when the TypoScript
+        //        factories have been refactored far enough to be easily usable. If so, the request
+        //        properties should be made non-nullable.
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
         ) {
@@ -52,13 +70,34 @@ class ConfigurationManager implements ConfigurationManagerInterface
         }
     }
 
+    /**
+     * @internal
+     */
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+        // @todo: Move to getConfiguration() together with "late" creation of $this->concreteConfigurationManager
+        $this->concreteConfigurationManager->setRequest($this->request);
+    }
+
+    /**
+     * @deprecated since v12. Remove in v13.
+     */
     public function setContentObject(ContentObjectRenderer $contentObject): void
     {
         $this->concreteConfigurationManager->setContentObject($contentObject);
     }
 
+    /**
+     * @deprecated since v12. Remove in v13.
+     */
     public function getContentObject(): ?ContentObjectRenderer
     {
+        trigger_error(
+            'ConfigurationManager->getContentObject() is deprecated since TYPO3 v12.4 and will be removed in v13.0.' .
+            ' Fetch the current content object from request attribute "currentContentObject" instead',
+            E_USER_DEPRECATED
+        );
         return $this->concreteConfigurationManager->getContentObject();
     }
 
@@ -67,10 +106,13 @@ class ConfigurationManager implements ConfigurationManagerInterface
      * Note that this is a low level method and only makes sense to be used by Extbase internally.
      *
      * @param array $configuration The new configuration
-     * @internal
+     * @internal Set by extbase bootstrap internally. Must be called *after* setRequest() has been called.
      */
     public function setConfiguration(array $configuration = []): void
     {
+        // @todo: If really needed in v13 and if it can't be refactored out, park
+        //        state in a property and $this->concreteConfigurationManager->setConfiguration()
+        //        after concreteConfigurationManager has been created in getConfiguration().
         $this->concreteConfigurationManager->setConfiguration($configuration);
     }
 

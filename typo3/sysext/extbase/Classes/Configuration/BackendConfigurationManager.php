@@ -73,6 +73,9 @@ class BackendConfigurationManager implements SingletonInterface
      */
     protected array $configuration = [];
 
+    /**
+     * @deprecated since v12. Remove in v13.
+     */
     protected ?ContentObjectRenderer $contentObject = null;
 
     /**
@@ -90,6 +93,12 @@ class BackendConfigurationManager implements SingletonInterface
      */
     protected ?int $currentPageId = null;
 
+    /**
+     * @todo: In CLI context, BE configuration manager might be triggered without request.
+     *        See comment on this in ConfigurationManager.
+     */
+    private ?ServerRequestInterface $request = null;
+
     public function __construct(
         private readonly TypoScriptService $typoScriptService,
         private readonly PhpFrontend $typoScriptCache,
@@ -101,8 +110,13 @@ class BackendConfigurationManager implements SingletonInterface
     ) {
     }
 
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
+
     /**
-     * @todo: See note on getContentObject() below.
+     * @deprecated since v12. Remove in v13.
      */
     public function setContentObject(ContentObjectRenderer $contentObject): void
     {
@@ -110,12 +124,7 @@ class BackendConfigurationManager implements SingletonInterface
     }
 
     /**
-     * @todo: This dependency to ContentObjectRenderer on a singleton object is unfortunate:
-     *      The current instance is set through USER cObj and extbase Bootstrap, its null in Backend.
-     *      This getter is misused to retrieve current ContentObjectRenderer state by some extensions (eg. ext:form).
-     *      This dependency should be removed altogether.
-     *      Although the current implementation *always* returns an instance of ContentObjectRenderer, we do not want to
-     *      hard-expect consuming classes on that, since this methods needs to be dropped anyways, so potential null return is kept.
+     * @deprecated since v12. Remove in v13.
      */
     public function getContentObject(): ContentObjectRenderer
     {
@@ -151,9 +160,9 @@ class BackendConfigurationManager implements SingletonInterface
      */
     public function getConfiguration(?string $extensionName = null, ?string $pluginName = null): array
     {
-        // @todo: This class obviously has a dependency to request ... it should get it hand over!
+        // @todo: Avoid $GLOBALS['TYPO3_REQUEST'] in v13.
         /** @var ServerRequestInterface|null $request */
-        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $request = $this->request ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
 
         $frameworkConfiguration = $this->getExtbaseConfiguration();
         if (!isset($frameworkConfiguration['persistence']['storagePid'])) {
@@ -200,9 +209,9 @@ class BackendConfigurationManager implements SingletonInterface
      */
     public function getTypoScriptSetup(): array
     {
-        // @todo: This class obviously has a dependency to request ... it should get it hand over!
+        // @todo: Avoid $GLOBALS['TYPO3_REQUEST'] in v13.
         /** @var ServerRequestInterface|null $request */
-        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $request = $this->request ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
 
         $pageId = $this->getCurrentPageId($request);
 
