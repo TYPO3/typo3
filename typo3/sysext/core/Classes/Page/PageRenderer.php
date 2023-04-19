@@ -334,6 +334,7 @@ class PageRenderer implements SingletonInterface
     protected JavaScriptRenderer $javaScriptRenderer;
     protected ?Nonce $nonce = null;
     protected DocType $docType = DocType::html5;
+    protected bool $applyNonceHint = false;
 
     public function __construct(
         protected readonly FrontendInterface $assetsCache,
@@ -648,6 +649,11 @@ class PageRenderer implements SingletonInterface
             );
         }
         return [];
+    }
+
+    public function setApplyNonceHint(bool $applyNonceHint): void
+    {
+        $this->applyNonceHint = $applyNonceHint;
     }
 
     /*****************************************************/
@@ -2103,7 +2109,7 @@ class PageRenderer implements SingletonInterface
 
         // adds a nonce hint/work-around for lit-elements (which is only applied automatically in ShadowDOM)
         // see https://lit.dev/docs/api/ReactiveElement/#ReactiveElement.styles)
-        if ($this->nonce instanceof Nonce) {
+        if ($this->applyNonceHint && $this->nonce !== null) {
             $out .= GeneralUtility::wrapJS(
                 sprintf('window.litNonce = %s;', GeneralUtility::quoteJSvalue($this->nonce->b64)),
                 ['nonce' => $this->nonce->b64]

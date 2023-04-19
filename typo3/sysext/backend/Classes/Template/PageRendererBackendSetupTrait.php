@@ -58,6 +58,7 @@ trait PageRendererBackendSetupTrait
         $nonce = $request->getAttribute('nonce');
         if ($nonce !== null) {
             $pageRenderer->setNonce($nonce);
+            $pageRenderer->setApplyNonceHint(true);
         }
         $this->loadStylesheets($pageRenderer);
     }
