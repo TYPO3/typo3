@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\AST\Node;
 
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ReferenceChildNode;
-use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ChildNodeTest extends UnitTestCase

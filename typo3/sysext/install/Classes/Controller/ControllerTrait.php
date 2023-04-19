@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Policy;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceScheme;
-use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

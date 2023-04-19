@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Session;
 
-use Firebase\JWT\JWT;
 use TYPO3\CMS\Core\Security\JwtTrait;
 
 /**

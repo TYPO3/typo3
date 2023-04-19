@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Redirects\RedirectUpdate;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
 

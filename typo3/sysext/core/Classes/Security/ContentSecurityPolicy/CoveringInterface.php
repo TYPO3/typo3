@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
-use TYPO3\CMS\Core\Http\Uri;
-
 /**
  * Interface to determine whether a value is covered by some other value in the scope of CSP,
  * e.g. URI `*.example.com` would "cover" URI `https://specific.example.com/path/file.js`
