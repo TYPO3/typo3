@@ -222,13 +222,13 @@ class ResetPasswordController
     {
         $languageService = $this->getLanguageService();
         if (($backgroundImageStyles = $this->authenticationStyleInformation->getBackgroundImageStyles()) !== '') {
-            $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles);
+            $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles, useNonce: true);
         }
         if (($footerNote = $this->authenticationStyleInformation->getFooterNote()) !== '') {
             $this->view->assign('loginFootnote', $footerNote);
         }
         if (($highlightColorStyles = $this->authenticationStyleInformation->getHighlightColorStyles()) !== '') {
-            $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles);
+            $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles, useNonce: true);
         }
         if (($logo = $this->authenticationStyleInformation->getLogo()) !== '') {
             $logoAlt = $this->authenticationStyleInformation->getLogoAlt()
@@ -236,7 +236,7 @@ class ResetPasswordController
         } else {
             $logo = $this->authenticationStyleInformation->getDefaultLogo();
             $logoAlt = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
-            $this->pageRenderer->addCssInlineBlock('loginLogo', $this->authenticationStyleInformation->getDefaultLogoStyles());
+            $this->pageRenderer->addCssInlineBlock('loginLogo', $this->authenticationStyleInformation->getDefaultLogoStyles(), useNonce: true);
         }
         $this->view->assignMultiple([
             'logo' => $logo,

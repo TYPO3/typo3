@@ -3331,6 +3331,17 @@ class GeneralUtility
     }
 
     /**
+     * Very, very, very basic CSS sanitizer which removes `{`, `}`, `\n`, `\r`
+     * from CSS variable values and encodes potential HTML entities `<`+`>`.
+     */
+    public static function sanitizeCssVariableValue(string $value): string
+    {
+        $value = str_replace(['{', '}', "\n", "\r"], '', $value);
+        // keep quotes, e.g. for `background: url("/res/background.png")`
+        return htmlspecialchars($value, ENT_SUBSTITUTE);
+    }
+
+    /**
      * @return LoggerInterface
      */
     protected static function getLogger()
