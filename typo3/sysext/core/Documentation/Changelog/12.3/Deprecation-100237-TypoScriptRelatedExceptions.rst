@@ -52,7 +52,7 @@ No direct migration available.
     that "TSFE" is available before accessing its properties. A missing "TSFE",
     e.g. in backend context, does no longer automatically evaluate the whole
     condition to :php:`FALSE`. Instead, the function returns :php:`NULL`,
-    which can be checked using either :typoscript:`getTsfe() && getTsfe().id`
-    or the null-safe operator :typoscript:`getTsfe()?.id`.
+    which can be checked using either :typoscript:`[getTSFE() && getTSFE().id == 42]`
+    or the null-safe operator :typoscript:`[getTSFE()?.id == 42]`.
 
 .. index:: PHP-API, FullyScanned, ext:core
