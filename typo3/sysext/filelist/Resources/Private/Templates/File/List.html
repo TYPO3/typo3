@@ -46,14 +46,12 @@
             <div class="form-row">
                 <div class="form-group">
                     <div class="input-group">
-                        <button class="btn btn-default" type="submit" name="search">
-                            <core:icon identifier="actions-search" size="small" />
-                        </button>
+                        <input type="search" id="filelist-searchterm" name="searchTerm" class="form-control" value="{searchTerm}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}" />
                         <label for="filelist-searchterm" class="visually-hidden">
                             <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
                         </label>
                         <input type="hidden" name="pointer" value="0" />
-                        <input type="search" id="filelist-searchterm" name="searchTerm" class="form-control" value="{searchTerm}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}" />
+                        <button type="submit" class="btn btn-default" name="search"><core:icon identifier="actions-search" /></button>
                     </div>
                 </div>
             </div>
