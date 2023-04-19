@@ -1905,6 +1905,23 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expectation, GeneralUtility::jsonEncodeForJavaScript($value));
     }
 
+    public static function sanitizeCssVariableValueDataProvider(): \Generator
+    {
+        yield 'double quotes' => ['url("/my-background.png")', 'url("/my-background.png")'];
+        yield 'single quotes' => ["url('/my-background.png')", "url('/my-background.png')"];
+        yield 'newline chars' => ["url('/my-background.png'\r\n\r\n)", "url('/my-background.png')"];
+        yield 'HTML markup' => ['url(</style>)', 'url(&lt;/style&gt;)'];
+    }
+
+    /**
+     * @test
+     * @dataProvider sanitizeCssVariableValueDataProvider
+     */
+    public function sanitizeCssVariableValue(string $value, string $expectation): void
+    {
+        self::assertSame($expectation, GeneralUtility::sanitizeCssVariableValue($value));
+    }
+
     ///////////////////////////////
     // Tests concerning fixPermissions
     ///////////////////////////////

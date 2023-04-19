@@ -1310,7 +1310,7 @@ class PageRenderer implements SingletonInterface
      * @param bool $compress
      * @param bool $forceOnTop
      */
-    public function addJsInlineCode($name, $block, $compress = true, $forceOnTop = false)
+    public function addJsInlineCode($name, $block, $compress = true, $forceOnTop = false, bool $useNonce = false)
     {
         if (!isset($this->jsInline[$name]) && !empty($block)) {
             $this->jsInline[$name] = [
@@ -1318,6 +1318,7 @@ class PageRenderer implements SingletonInterface
                 'section' => self::PART_HEADER,
                 'compress' => $compress,
                 'forceOnTop' => $forceOnTop,
+                'useNonce' => $useNonce,
             ];
         }
     }
@@ -1330,7 +1331,7 @@ class PageRenderer implements SingletonInterface
      * @param bool $compress
      * @param bool $forceOnTop
      */
-    public function addJsFooterInlineCode($name, $block, $compress = true, $forceOnTop = false)
+    public function addJsFooterInlineCode($name, $block, $compress = true, $forceOnTop = false, bool $useNonce = false)
     {
         if (!isset($this->jsInline[$name]) && !empty($block)) {
             $this->jsInline[$name] = [
@@ -1338,6 +1339,7 @@ class PageRenderer implements SingletonInterface
                 'section' => self::PART_FOOTER,
                 'compress' => $compress,
                 'forceOnTop' => $forceOnTop,
+                'useNonce' => $useNonce,
             ];
         }
     }
@@ -1418,13 +1420,14 @@ class PageRenderer implements SingletonInterface
      * @param bool $compress
      * @param bool $forceOnTop
      */
-    public function addCssInlineBlock($name, $block, $compress = false, $forceOnTop = false)
+    public function addCssInlineBlock($name, $block, $compress = false, $forceOnTop = false, bool $useNonce = false)
     {
         if (!isset($this->cssInline[$name]) && !empty($block)) {
             $this->cssInline[$name] = [
                 'code' => $block,
                 'compress' => $compress,
                 'forceOnTop' => $forceOnTop,
+                'useNonce' => $useNonce,
             ];
         }
     }
@@ -2156,7 +2159,6 @@ class PageRenderer implements SingletonInterface
             if ($this->getApplicationType() === 'BE') {
                 $this->javaScriptRenderer->addGlobalAssignment(['TYPO3' => $assignments]);
             } else {
-                // @todo apply nonce for CSP (means dropping static `inlineJavascriptWrap`)
                 $out .= $this->wrapInlineScript(
                     sprintf(
                         "var TYPO3 = Object.assign(TYPO3 || {}, %s);\r\n",
@@ -2166,7 +2168,8 @@ class PageRenderer implements SingletonInterface
                             . "!['__proto__', 'prototype', 'constructor'].includes(entry[0])))",
                             json_encode($assignments)
                         )
-                    )
+                    ),
+                    $this->nonce !== null ? ['nonce' => $this->nonce->consume()] : []
                 );
             }
         }
@@ -2345,19 +2348,25 @@ class PageRenderer implements SingletonInterface
      */
     protected function renderCssInline()
     {
-        $cssInline = '';
-        if (!empty($this->cssInline)) {
-            foreach ($this->cssInline as $name => $properties) {
-                $cssCode = '/*' . htmlspecialchars($name) . '*/' . LF . ($properties['code'] ?? '') . LF;
-                if ($properties['forceOnTop'] ?? false) {
-                    $cssInline = $cssCode . $cssInline;
-                } else {
-                    $cssInline .= $cssCode;
-                }
-            }
-            $cssInline = $this->wrapInlineStyle($cssInline);
+        if (empty($this->cssInline)) {
+            return '';
         }
-        return $cssInline;
+        $cssItems = [0 => [], 1 => []];
+        foreach ($this->cssInline as $name => $properties) {
+            $nonceKey = (int)(!empty($properties['useNonce']));
+            $cssCode = '/*' . htmlspecialchars($name) . '*/' . LF . ($properties['code'] ?? '') . LF;
+            if ($properties['forceOnTop'] ?? false) {
+                array_unshift($cssItems[$nonceKey], $cssCode);
+            } else {
+                $cssItems[$nonceKey][] = $cssCode;
+            }
+        }
+        $cssItems = array_filter($cssItems);
+        foreach ($cssItems as $useNonce => $items) {
+            $attributes = $useNonce && $this->nonce !== null ? ['nonce' => $this->nonce->consume()] : [];
+            $cssItems[$useNonce] = $this->wrapInlineStyle(implode('', $items), $attributes);
+        }
+        return implode(LF, $cssItems);
     }
 
     /**
@@ -2491,35 +2500,43 @@ class PageRenderer implements SingletonInterface
      */
     protected function renderInlineJavaScript()
     {
-        $jsInline = '';
-        $jsFooterInline = '';
-        if (!empty($this->jsInline)) {
-            foreach ($this->jsInline as $name => $properties) {
-                $jsCode = '/*' . htmlspecialchars($name) . '*/' . LF . ($properties['code'] ?? '') . LF;
-                if ($properties['forceOnTop'] ?? false) {
-                    if (($properties['section'] ?? 0) === self::PART_HEADER) {
-                        $jsInline = $jsCode . $jsInline;
-                    } else {
-                        $jsFooterInline = $jsCode . $jsFooterInline;
-                    }
-                } elseif (($properties['section'] ?? 0) === self::PART_HEADER) {
-                    $jsInline .= $jsCode;
+        if (empty($this->jsInline)) {
+            return ['', ''];
+        }
+        $regularItems = [0 => [], 1 => []];
+        $footerItems = [0 => [], 1 => []];
+        foreach ($this->jsInline as $name => $properties) {
+            $nonceKey = (int)(!empty($properties['useNonce'])); // 0 or 1
+            $jsCode = '/*' . htmlspecialchars($name) . '*/' . LF . ($properties['code'] ?? '') . LF;
+            if ($properties['forceOnTop'] ?? false) {
+                if (($properties['section'] ?? 0) === self::PART_HEADER) {
+                    array_unshift($regularItems[$nonceKey], $jsCode);
                 } else {
-                    $jsFooterInline .= $jsCode;
+                    array_unshift($footerItems[$nonceKey], $jsCode);
                 }
+            } elseif (($properties['section'] ?? 0) === self::PART_HEADER) {
+                $regularItems[$nonceKey][] = $jsCode;
+            } else {
+                $footerItems[$nonceKey][] = $jsCode;
             }
         }
-        if ($jsInline) {
-            $jsInline = $this->wrapInlineScript($jsInline);
+        $regularItems = array_filter($regularItems);
+        $footerItems = array_filter($footerItems);
+        foreach ($regularItems as $useNonce => $items) {
+            $attributes = $useNonce && $this->nonce !== null ? ['nonce' => $this->nonce->consume()] : [];
+            $regularItems[$useNonce] = $this->wrapInlineScript(implode('', $items), $attributes);
         }
-        if ($jsFooterInline) {
-            $jsFooterInline = $this->wrapInlineScript($jsFooterInline);
+        foreach ($footerItems as $useNonce => $items) {
+            $attributes = $useNonce && $this->nonce !== null ? ['nonce' => $this->nonce->consume()] : [];
+            $footerItems[$useNonce] = $this->wrapInlineScript(implode('', $items), $attributes);
         }
+        $regularCode = implode(LF, $regularItems);
+        $footerCode = implode(LF, $footerItems);
         if ($this->moveJsFromHeaderToFooter) {
-            $jsFooterInline = $jsInline . $jsFooterInline;
-            $jsInline = '';
+            $footerCode = $regularCode . $footerCode;
+            $regularCode = '';
         }
-        return [$jsInline, $jsFooterInline];
+        return [$regularCode, $footerCode];
     }
 
     /**
