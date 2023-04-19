@@ -15,15 +15,15 @@ import LinkBrowser, { LinkAttributes } from '@typo3/backend/link-browser';
 import Modal from '@typo3/backend/modal';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { Typo3LinkDict, LINK_ALLOWED_ATTRIBUTES, addLinkPrefix } from '@typo3/rte-ckeditor/plugin/typo3-link';
-import type { EditorWithUI } from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
 import Position from '@ckeditor/ckeditor5-engine/src/model/position';
+import { Core } from '@typo3/ckeditor5-bundle';
 
 /**
  * Module: @typo3/rte-ckeditor/rte-link-browser
  * LinkBrowser communication with parent window
  */
 class RteLinkBrowser {
-  protected editor: EditorWithUI = null;
+  protected editor: Core.Editor = null;
   protected selectionStartPosition: Position = null;
   protected selectionEndPosition: Position = null;
 
@@ -57,6 +57,8 @@ class RteLinkBrowser {
     const linkAttrs = this.convertAttributes(attributes, linkText);
 
     this.restoreSelection();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     this.editor.execute('link', this.sanitizeLink(link, queryParams), linkAttrs);
 
     Modal.dismiss();

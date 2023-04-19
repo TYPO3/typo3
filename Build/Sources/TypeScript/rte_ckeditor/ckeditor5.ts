@@ -1,8 +1,7 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators';
-import { CKEditor5, Core } from '@typo3/ckeditor5-bundle';
 import type { PluginInterface } from '@ckeditor/ckeditor5-core/src/plugin';
-import type { EditorWithUI } from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
+import { CKEditor5, Core, WordCount } from '@typo3/ckeditor5-bundle';
 
 interface CKEditor5Config {
   // in TYPO3 always `items` property is used, skipping `string[]`
@@ -92,7 +91,7 @@ export class CKEditor5Element extends LitElement {
           .filter((module) => module.default)
           .map((module) => module.default);
         // all declared plugins (builtinPlugins + importedPlugins)
-        const declaredPlugins = (CKEditor5.builtinPlugins as PluginInterface<Core.Plugin>[]).concat(importedPlugins);
+        const declaredPlugins = CKEditor5.builtinPlugins.concat(importedPlugins);
         // plugins that were overridden by other custom plugin implementations
         const overriddenPlugins = [].concat(...declaredPlugins
           .filter((plugin: Typo3Plugin) => plugin.overrides?.length > 0)
@@ -147,9 +146,9 @@ export class CKEditor5Element extends LitElement {
       });
   }
 
-  private applyEditableElementStyles(editor: EditorWithUI): void {
+  private applyEditableElementStyles(editor: Core.Editor): void {
     const view = editor.editing.view;
-    const styles: any = {
+    const styles: Record<string, any> = {
       'min-height': this.options.height,
       'min-width': this.options.width,
     };
@@ -170,9 +169,9 @@ export class CKEditor5Element extends LitElement {
   /**
    * see https://ckeditor.com/docs/ckeditor5/latest/features/word-count.html
    */
-  private handleWordCountPlugin(editor: EditorWithUI): void {
+  private handleWordCountPlugin(editor: Core.Editor): void {
     if (editor.plugins.has('WordCount') && (this.options?.wordCount?.displayWords || this.options?.wordCount?.displayCharacters)) {
-      const wordCountPlugin = editor.plugins.get('WordCount');
+      const wordCountPlugin = editor.plugins.get('WordCount') as WordCount;
       this.renderRoot.appendChild(wordCountPlugin.wordCountContainer);
     }
   }

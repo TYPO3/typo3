@@ -1,7 +1,7 @@
 import { UI, Core, Engine, Typing, Link, LinkUtils, LinkActionsView, Widget, Utils } from '@typo3/ckeditor5-bundle';
 import { default as modalObject, ModalElement } from '@typo3/backend/modal';
-import type { EditorWithUI } from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
 import type AttributeElement from '@ckeditor/ckeditor5-engine/src/view/attributeelement';
+import { ViewElement } from '@ckeditor/ckeditor5-engine';
 const linkIcon = '<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="m11.077 15 .991-1.416a.75.75 0 1 1 1.229.86l-1.148 1.64a.748.748 0 0 1-.217.206 5.251 5.251 0 0 1-8.503-5.955.741.741 0 0 1 .12-.274l1.147-1.639a.75.75 0 1 1 1.228.86L4.933 10.7l.006.003a3.75 3.75 0 0 0 6.132 4.294l.006.004zm5.494-5.335a.748.748 0 0 1-.12.274l-1.147 1.639a.75.75 0 1 1-1.228-.86l.86-1.23a3.75 3.75 0 0 0-6.144-4.301l-.86 1.229a.75.75 0 0 1-1.229-.86l1.148-1.64a.748.748 0 0 1 .217-.206 5.251 5.251 0 0 1 8.503 5.955zm-4.563-2.532a.75.75 0 0 1 .184 1.045l-3.155 4.505a.75.75 0 1 1-1.229-.86l3.155-4.506a.75.75 0 0 1 1.045-.184z"/></svg>';
 
 export const LINK_ALLOWED_ATTRIBUTES = ['href', 'title', 'class', 'target', 'rel'];
@@ -50,10 +50,10 @@ export class Typo3LinkCommand extends Core.Command {
     // A check for any integration that allows linking elements (e.g. `LinkImage`).
     // Currently the selection reads attributes from text nodes only. See #7429 and #7465.
     if (LinkUtils.isLinkableElement(selectedElement, model.schema)) {
-      this.value = selectedElement.getAttribute('linkHref');
+      this.value = selectedElement.getAttribute('linkHref') as string;
       this.isEnabled = model.schema.checkAttribute(selectedElement, 'linkHref');
     } else {
-      this.value = selection.getAttribute('linkHref');
+      this.value = selection.getAttribute('linkHref') as string;
       this.isEnabled = model.schema.checkAttributeInSelection(selection, 'linkHref');
     }
   }
@@ -187,7 +187,7 @@ export class Typo3LinkEditing extends Core.Plugin {
   static readonly pluginName = 'Typo3LinkEditing';
 
   init(): void {
-    const editor = this.editor as EditorWithUI;
+    const editor = this.editor;
     (window as any).editor = editor;
 
     // @todo for whatever reason, `a.target` is not persisted
@@ -197,7 +197,7 @@ export class Typo3LinkEditing extends Core.Plugin {
     // linkTitle <=> title
     editor.conversion.for('downcast').attributeToElement({
       model: 'linkTitle',
-      view: (value, { writer }) => {
+      view: (value: string|null, { writer }) => {
         const linkElement = writer.createAttributeElement('a', { title: value }, { priority: 5 });
         writer.setCustomProperty('linkTitle', true, linkElement);
         return linkElement;
@@ -205,7 +205,7 @@ export class Typo3LinkEditing extends Core.Plugin {
     });
     editor.conversion.for('upcast').elementToAttribute({
       view: { name: 'a', attributes: { title: true } },
-      model: { key: 'linkTitle', value: (viewElement) => viewElement.getAttribute('title') }
+      model: { key: 'linkTitle', value: (viewElement: ViewElement) => viewElement.getAttribute('title') }
     });
     // linkClass <=> class
     editor.conversion.for('downcast').attributeToElement({
@@ -218,7 +218,7 @@ export class Typo3LinkEditing extends Core.Plugin {
     });
     editor.conversion.for('upcast').elementToAttribute({
       view: { name: 'a', attributes: { title: true } },
-      model: { key: 'linkClass', value: (viewElement) => viewElement.getAttribute('class') }
+      model: { key: 'linkClass', value: (viewElement: ViewElement) => viewElement.getAttribute('class') }
     });
     // linkTarget <=> target
     editor.conversion.for('downcast').attributeToElement({
@@ -231,7 +231,7 @@ export class Typo3LinkEditing extends Core.Plugin {
     });
     editor.conversion.for('upcast').elementToAttribute({
       view: { name: 'a', attributes: { title: true } },
-      model: { key: 'linkTarget', value: (viewElement) => viewElement.getAttribute('target') }
+      model: { key: 'linkTarget', value: (viewElement: ViewElement) => viewElement.getAttribute('target') }
     });
     // linkRel <=> rel
     editor.conversion.for('downcast').attributeToElement({
@@ -244,22 +244,24 @@ export class Typo3LinkEditing extends Core.Plugin {
     });
     editor.conversion.for('upcast').elementToAttribute({
       view: { name: 'a', attributes: { title: true } },
-      model: { key: 'linkRel', value: (viewElement) => viewElement.getAttribute('rel') }
+      model: { key: 'linkRel', value: (viewElement: ViewElement) => viewElement.getAttribute('rel') }
     });
 
     // overrides 'link' command, 'unlink' command is taken from CKEditor5's `LinkEditing`
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     editor.commands.add('link', new Typo3LinkCommand(editor));
     editor.commands.add('unlink', new Typo3UnlinkCommand(editor));
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export class Typo3LinkActionsView extends LinkActionsView {
   _createPreviewButton() {
     const textView = new Typo3TextView(this.locale);
     const t = this.t;
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     textView.bind('text').to(this, 'href', href => {
       return href || t('This link has no URL');
     });
@@ -278,7 +280,7 @@ export class Typo3LinkUI extends Core.Plugin {
   actionsView: Typo3LinkActionsView;
 
   init() {
-    const editor = this.editor as EditorWithUI;
+    const editor = this.editor;
     editor.editing.view.addObserver(Engine.ClickObserver);
 
     this.actionsView = this.createActionsView();
@@ -317,7 +319,7 @@ export class Typo3LinkUI extends Core.Plugin {
 
     // Open LinkBrowser after clicking on the "Edit" button.
     this.listenTo(actionsView, 'edit', () => {
-      this.openLinkBrowser(this.editor as EditorWithUI);
+      this.openLinkBrowser(editor);
     });
 
     // Execute unlink command after clicking on the "Unlink" button.
@@ -336,8 +338,8 @@ export class Typo3LinkUI extends Core.Plugin {
   }
 
   private createToolbarLinkButtons() {
-    const editor = this.editor as EditorWithUI;
-    const linkCommand = editor.commands.get('link') as Typo3LinkCommand;
+    const editor = this.editor;
+    const linkCommand = editor.commands.get('link');
     const t = editor.t;
 
     // Handle the `Ctrl+K` keystroke and show the panel.
@@ -399,7 +401,7 @@ export class Typo3LinkUI extends Core.Plugin {
       return;
     }
 
-    const editor = this.editor as EditorWithUI;
+    const editor = this.editor;
     this.stopListening(editor.ui, 'update');
     this.stopListening(this.balloon, 'change:visibleView');
     editor.editing.view.focus();
@@ -410,7 +412,7 @@ export class Typo3LinkUI extends Core.Plugin {
   private showUI(): void {
     if (!this.getSelectedLinkElement()) {
       this.showFakeVisualSelection();
-      this.openLinkBrowser(this.editor as EditorWithUI);
+      this.openLinkBrowser(this.editor);
     } else {
       this.addActionsView();
       this.balloon.showStack('main');
@@ -420,7 +422,7 @@ export class Typo3LinkUI extends Core.Plugin {
   }
 
   private startUpdatingUI(): void {
-    const editor = this.editor as EditorWithUI;
+    const editor = this.editor;
     const viewDocument = editor.editing.view.document;
 
     let prevSelectedLink = this.getSelectedLinkElement();
@@ -577,7 +579,7 @@ export class Typo3LinkUI extends Core.Plugin {
     return position.getAncestors().find((ancestor: any) => LinkUtils.isLinkElement(ancestor));
   }
 
-  private openLinkBrowser(editor: EditorWithUI): void {
+  private openLinkBrowser(editor: Core.Editor): void {
     const element = this.getSelectedLinkElement();
     let additionalParameters = '';
     if (element) {
@@ -594,12 +596,12 @@ export class Typo3LinkUI extends Core.Plugin {
       'Link',
       this.makeUrlFromModulePath(
         editor,
-        editor.config.get('typo3link')?.routeUrl,
+        (editor.config.get('typo3link') as any)?.routeUrl,
         additionalParameters
       ));
   }
 
-  private makeUrlFromModulePath(editor: EditorWithUI, routeUrl: string, parameters: string) {
+  private makeUrlFromModulePath(editor: Core.Editor, routeUrl: string, parameters: string) {
     return routeUrl
       + (routeUrl.indexOf('?') === -1 ? '?' : '&')
       + '&contentsLanguage=' + 'en'// editor.config.contentsLanguage
@@ -607,7 +609,7 @@ export class Typo3LinkUI extends Core.Plugin {
       + (parameters ? parameters : '');
   }
 
-  private openElementBrowser(editor: EditorWithUI, title: string, url: string) {
+  private openElementBrowser(editor: Core.Editor, title: string, url: string) {
     modalObject.advanced({
       type: modalObject.types.iframe,
       title: title,

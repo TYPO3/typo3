@@ -1,5 +1,4 @@
 import { Core, UI, Utils } from '@typo3/ckeditor5-bundle';
-import type { EditorWithUI } from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
 
 /**
  * CKEditor5 Whitespace Plugin
@@ -21,7 +20,7 @@ export default class Whitespace extends Core.Plugin {
   static readonly pluginName = 'Whitespace';
 
   public init(): void {
-    const editor = this.editor as EditorWithUI;
+    const editor = this.editor;
 
     editor.ui.componentFactory.add('softhyphen', locale => {
       const button = new UI.ButtonView(locale);
@@ -60,7 +59,7 @@ export default class Whitespace extends Core.Plugin {
           .filter((value: string) => value !== '');
         let currentPosition = data.range.start;
 
-        chunks.forEach((chunk) => {
+        chunks.forEach((chunk: string) => {
           viewWriter.insert(
             conversionApi.mapper.toViewPosition(currentPosition),
             viewWriter.createText(chunk)
@@ -83,7 +82,7 @@ export default class Whitespace extends Core.Plugin {
   }
 
   private insertNonBreakingSpace(): void {
-    const editor = this.editor as EditorWithUI;
+    const editor = this.editor;
 
     editor.model.change(writer => {
       const insertPosition = editor.model.document.selection.getFirstPosition();
@@ -92,7 +91,7 @@ export default class Whitespace extends Core.Plugin {
   }
 
   private insertSoftHyphen(): void {
-    const editor = this.editor as EditorWithUI;
+    const editor = this.editor;
 
     editor.model.change(writer => {
       const insertPosition = editor.model.document.selection.getFirstPosition();
