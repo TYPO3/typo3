@@ -22,7 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\ContextMenu\ContextMenu;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,14 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ContextMenuController
 {
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
-    }
-
     /**
      * Renders a context menu
      */
@@ -67,10 +58,5 @@ class ContextMenuController
 
         $clipboard->endClipboard();
         return new JsonResponse([]);
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

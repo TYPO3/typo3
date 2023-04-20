@@ -74,7 +74,6 @@ class LinkAnalyzer
         protected readonly SoftReferenceParserFactory $softReferenceParserFactory,
         protected readonly LinktypeRegistry $linktypeRegistry,
     ) {
-        $this->getLanguageService()->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
     }
 
     /**

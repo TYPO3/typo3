@@ -46,13 +46,6 @@ use TYPO3\CMS\Form\Service\TranslationService;
  */
 class DataStructureIdentifierListener
 {
-    private const L10N_PREFIX = 'LLL:EXT:form/Resources/Private/Language/Database.xlf:';
-
-    public function __construct()
-    {
-        $this->getLanguageService()->includeLLFile('EXT:form/Resources/Private/Language/Database.xlf');
-    }
-
     /**
      * The data structure depends on a current form selection (persistenceIdentifier)
      * and if the field "overrideFinishers" is active. Add both to the identifier to
@@ -134,7 +127,7 @@ class DataStructureIdentifierListener
             if (!empty($identifier['ext-form-persistenceIdentifier']) && !$formIsAccessible) {
                 $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'][] = [
                     'label' => sprintf(
-                        $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
+                        $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:tt_content.preview.inaccessiblePersistenceIdentifier'),
                         $identifier['ext-form-persistenceIdentifier']
                     ),
                     'value' => $identifier['ext-form-persistenceIdentifier'],
@@ -290,7 +283,7 @@ class DataStructureIdentifierListener
         if (!empty($persistenceIdentifier)) {
             $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'][] = [
                 'label' => sprintf(
-                    $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
+                    $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:tt_content.preview.inaccessiblePersistenceIdentifier'),
                     $persistenceIdentifier
                 ),
                 'value' => $persistenceIdentifier,
@@ -303,7 +296,7 @@ class DataStructureIdentifierListener
     protected function addInvalidFrameworkConfigurationFlashMessage(\Exception $e): void
     {
         $messageText = sprintf(
-            $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.text'),
+            $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:tt_content.preview.invalidFrameworkConfiguration.text'),
             $e->getMessage()
         );
 
@@ -313,7 +306,7 @@ class DataStructureIdentifierListener
                 GeneralUtility::makeInstance(
                     FlashMessage::class,
                     $messageText,
-                    $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.title'),
+                    $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:tt_content.preview.invalidFrameworkConfiguration.title'),
                     ContextualFeedbackSeverity::ERROR,
                     true
                 )

@@ -71,7 +71,6 @@ class InfoModuleController
     {
         $this->id = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
         $this->view = $this->moduleTemplateFactory->create($request);
-        $this->getLanguageService()->includeLLFile('EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf');
         $this->currentModule = $request->getAttribute('module');
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
         $this->view->setTitle(

@@ -93,7 +93,6 @@ class RecordListController
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
-        $languageService->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
 
         BackendUtility::lockRecords();

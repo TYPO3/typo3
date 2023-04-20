@@ -139,8 +139,6 @@ final class TableListViewHelper extends AbstractBackendViewHelper
             $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
             $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/context-menu.js');
         }
-        // We need to include the language file, since DatabaseRecordList is heavily using ->getLL
-        $languageService->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
 
         $pageId = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         $pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
