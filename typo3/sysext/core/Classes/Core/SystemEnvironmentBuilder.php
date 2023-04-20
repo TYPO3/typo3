@@ -33,9 +33,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * The script aborts execution with an error message if
  * some part fails or conditions are not met.
  *
- * This script is internal code and subject to change.
- * DO NOT use it in own code, or be prepared your code might
- * break in future versions of the core.
+ * @internal This script is internal code and subject to change.
  */
 class SystemEnvironmentBuilder
 {
