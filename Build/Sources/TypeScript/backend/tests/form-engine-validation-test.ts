@@ -164,13 +164,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
   /**
    * @test
    */
-  xdescribe('tests for validateField', () => {
-    /* tslint:disable:no-empty */
-  });
-
-  /**
-   * @test
-   */
   describe('tests for trimExplode', () => {
     it('works for comma as separator and list without spaces', () => {
       expect(FormEngineValidation.trimExplode(',', 'foo,bar,baz')).toEqual(['foo', 'bar', 'baz']);
@@ -265,34 +258,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     it('works for value null', () => {
       expect(FormEngineValidation.parseDouble(null)).toBe('0.00');
     });
-  });
-
-  /**
-   * @test
-   */
-  xdescribe('tests for parseDateTime', () => {
-    /* tslint:disable:no-empty */
-  });
-
-  /**
-   * @test
-   */
-  xdescribe('tests for parseDate', () => {
-    /* tslint:disable:no-empty */
-  });
-
-  /**
-   * @test
-   */
-  xdescribe('tests for parseTime', () => {
-    /* tslint:disable:no-empty */
-  });
-
-  /**
-   * @test
-   */
-  xdescribe('tests for parseYear', () => {
-    /* tslint:disable:no-empty */
   });
 
   /**
