@@ -2846,8 +2846,9 @@ hr.spacer{border-top:none;margin-top:var(--typo3-spacing);margin-bottom:var(--ty
 #alert-container{width:400px;position:fixed;right:5px;top:46px;z-index:10000}
 #alert-container .alert{box-shadow:var(--typo3-component-box-shadow);position:relative;margin:5px auto}
 #alert-container .alert.fade.in{opacity:1}
-.alert-light{--bs-alert-bg:rgb(245, 245, 245);--bs-alert-border-color:#dddddd}
-.alert-default{--bs-alert-bg:rgb(238, 238, 238);--bs-alert-border-color:#d6d6d6}
+.alert-light{--bs-alert-color:#000;--bs-alert-bg:rgb(245, 245, 245);--bs-alert-border-color:#dddddd;--bs-alert-link-color:#000}
+.alert-default{--bs-alert-color:#000;--bs-alert-bg:rgb(238, 238, 238);--bs-alert-border-color:#d6d6d6;--bs-alert-link-color:#000}
+.alert-notice{--bs-alert-color:#000;--bs-alert-bg:rgb(215, 215, 215);--bs-alert-border-color:#c2c2c2;--bs-alert-link-color:#000}
 typo3-backend-formengine-suggest-result-container{position:absolute;left:0;z-index:1000;max-width:calc(100vw - 20px)}
 typo3-backend-formengine-suggest-result-list{display:flex;flex-direction:column;gap:1px;background-color:var(--typo3-component-bg);border:var(--typo3-component-border-width) solid var(--typo3-component-border-color);border-radius:var(--typo3-component-border-radius);box-shadow:var(--typo3-component-box-shadow);font-size:var(--typo3-component-font-size);line-height:var(--typo3-component-line-height)}
 typo3-backend-formengine-suggest-result-item{display:flex;gap:.5em;font-size:var(--typo3-component-font-size);line-height:var(--typo3-component-line-height);padding:var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);border-radius:calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));color:#000;background-color:#fff;cursor:pointer}

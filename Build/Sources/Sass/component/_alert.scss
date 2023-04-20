@@ -115,11 +115,30 @@
 // The light variants have problems beeing generated, they need manual correction.
 //
 .alert-light {
+    --#{$prefix}alert-color: #{$body-color};
     --#{$prefix}alert-bg: #{$light};
     --#{$prefix}alert-border-color: #{shade-color($light, 10%)};
+    --#{$prefix}alert-link-color: #{$body-color};
 }
 
 .alert-default {
+    --#{$prefix}alert-color: #{$body-color};
     --#{$prefix}alert-bg: #{$default};
     --#{$prefix}alert-border-color: #{shade-color($default, 10%)};
+    --#{$prefix}alert-link-color: #{$body-color};
+}
+
+// Notice is currently not beeing generated correctly
+// Bootstrap 5.3 introduced new color maps:
+// - $theme-colors-border-subtle
+// - $theme-colors-bg-subtle
+// - $theme-colors-text
+//
+// While the maps exist we wait for the final release to adopt
+// since we need to define a lot more colors here.
+.alert-notice {
+    --#{$prefix}alert-color: #{$body-color};
+    --#{$prefix}alert-bg: #{$gray-300};
+    --#{$prefix}alert-border-color: #{shade-color($gray-300, 10%)};
+    --#{$prefix}alert-link-color: #{$body-color};
 }
