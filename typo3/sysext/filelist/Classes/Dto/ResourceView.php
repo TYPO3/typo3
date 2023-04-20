@@ -103,7 +103,7 @@ class ResourceView
     public function getPath(): string
     {
         $resource = $this->resource;
-        if ($resource instanceof File) {
+        if ($resource instanceof File && !$resource->isMissing()) {
             $resource = $resource->getParentFolder();
         }
         if ($resource instanceof Folder) {
