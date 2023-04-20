@@ -89,7 +89,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $id = (int)$this->linkParts['url']['pageuid'];
         $pageTitle = BackendUtility::getRecordWSOL('pages', $id, 'title')['title'] ?? '';
 
-        return $lang->getLL('page')
+        return $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:page')
             . ($pageTitle ? ' \'' . GeneralUtility::fixed_lgd_cs($pageTitle, $titleLen) . '\'' : '')
             . ' (ID: ' . $id . (!empty($this->linkParts['url']['fragment']) ? ', #' . $this->linkParts['url']['fragment'] : '') . ')';
     }
@@ -245,13 +245,13 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             $fieldDefinitions['pageIdSelector'] = '
 				<form><div class="row mt-3">
 					<label class="col-3 col-form-label">
-						' . htmlspecialchars($this->getLanguageService()->getLL('page_id')) . '
+						' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:page_id')) . '
 						</label>
 					<div class="col-2">
 						<input type="number" size="6" name="luid" id="luid" class="form-control" />
 					</div>
 					<div class="col-7">
-						<input class="btn btn-default t3js-pageLink" type="submit" value="' . htmlspecialchars($this->getLanguageService()->getLL('setLink')) . '" />
+						<input class="btn btn-default t3js-pageLink" type="submit" value="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:setLink')) . '" />
 					</div>
 				</div></form>';
         }

@@ -103,7 +103,7 @@ class LanguageColumn extends AbstractGridObject
 
     public function getTranslatePageTitle(): string
     {
-        return $this->getLanguageService()->getLL('newPageContent_translate');
+        return $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPageContent_translate');
     }
 
     public function getAllowEditPage(): bool
@@ -114,7 +114,7 @@ class LanguageColumn extends AbstractGridObject
 
     public function getPageEditTitle(): string
     {
-        return $this->getLanguageService()->getLL('edit');
+        return $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:edit');
     }
 
     public function getPageEditUrl(): string

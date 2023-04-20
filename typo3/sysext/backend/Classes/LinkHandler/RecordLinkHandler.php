@@ -112,7 +112,7 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         $table = $this->configuration['table'];
         $record = BackendUtility::getRecord($table, $data['uid']);
         if ($record === null) {
-            $linkParts['title'] = $this->getLanguageService()->getLL('recordNotFound');
+            $linkParts['title'] = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:recordNotFound');
         } else {
             $linkParts['pid'] = (int)$record['pid'];
             $linkParts['title'] = !empty($linkParts['title']) ? $linkParts['title'] : BackendUtility::getRecordTitle($table, $record);

@@ -39,7 +39,6 @@ final class ExternalLinktypeTest extends UnitTestCase
     private function buildLanguageServiceMock(): MockObject
     {
         $languageServiceMock = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
-        $languageServiceMock->method('getLL')->with(self::anything())->willReturn('translation string');
         return $languageServiceMock;
     }
 

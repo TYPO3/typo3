@@ -287,7 +287,7 @@ class RecordProvider extends AbstractProvider
             $url = (string)$uriBuilder->buildUriFromRoute('new_content_element_wizard', $urlParameters);
             $attributes += [
                 'data-new-wizard-url' => htmlspecialchars($url),
-                'data-title' => $this->languageService->getLL('newContentElement'),
+                'data-title' => $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement'),
             ];
         }
         if ($itemName === 'delete') {

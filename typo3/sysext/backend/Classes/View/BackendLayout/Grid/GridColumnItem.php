@@ -313,7 +313,10 @@ class GridColumnItem extends AbstractGridObject
     public function getVisibilityToggleTitle(): string
     {
         $hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
-        return $this->getLanguageService()->getLL($this->record[$hiddenField] ? 'unhide' : 'hide');
+        if ($this->record[$hiddenField]) {
+            return $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:unhide');
+        }
+        return $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:hide');
     }
 
     public function getVisibilityToggleIconName(): string

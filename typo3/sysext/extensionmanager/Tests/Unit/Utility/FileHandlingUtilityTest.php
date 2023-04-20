@@ -105,8 +105,6 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory']);
         $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('includeLLFile')->with(self::anything())->willReturn([]);
-        $languageServiceMock->method('getLL')->with(self::anything())->willReturn('');
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
         $fileHandlerMock->injectLanguageServiceFactory($languageServiceFactoryMock);

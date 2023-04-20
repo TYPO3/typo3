@@ -257,24 +257,24 @@ class ExternalLinktype extends AbstractLinktype
                 // in this case error is HTTP status code
                 switch ($errno) {
                     case 300:
-                        $message = $lang->getLL('list.report.error.httpstatuscode.300');
+                        $message = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.error.httpstatuscode.300');
                         break;
                     case 305:
-                        $message = $lang->getLL('list.report.error.httpstatuscode.305');
+                        $message = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.error.httpstatuscode.305');
                         break;
                     case 403:
-                        $message = $lang->getLL('list.report.pageforbidden403');
+                        $message = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.pageforbidden403');
                         break;
                     case 404:
-                        $message = $lang->getLL('list.report.pagenotfound404');
+                        $message = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.pagenotfound404');
                         break;
                     case 500:
-                        $message = $lang->getLL('list.report.internalerror500');
+                        $message = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.internalerror500');
                         break;
                     default:
                         if ($errno) {
                             // show generic error message with HTTP status code
-                            $message = sprintf($lang->getLL('list.report.externalerror'), $errno);
+                            $message = sprintf($lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.externalerror'), $errno);
                         }
                 }
                 break;
@@ -282,10 +282,10 @@ class ExternalLinktype extends AbstractLinktype
             case self::ERROR_TYPE_LOWLEVEL_LIBCURL_ERRNO:
                 if ($errno) {
                     // get localized error message
-                    $message = $lang->getLL('list.report.error.libcurl.' . $errorParams['errno']);
+                    $message = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.error.libcurl.' . $errorParams['errno']);
                 } else {
                     // fallback to  generic error message and show exception
-                    $message = $lang->getLL('list.report.networkexception');
+                    $message = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.networkexception');
                     if ($exception !== '') {
                         $message .= ' ('
                             . $errorParams['exception']
@@ -296,19 +296,19 @@ class ExternalLinktype extends AbstractLinktype
 
             case 'loop':
                 $message = sprintf(
-                    $lang->getLL('list.report.redirectloop'),
+                    $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.redirectloop'),
                     ($errorParams['exception'] ?? ''),
                     ''
                 );
                 break;
 
             case 'tooManyRedirects':
-                $message = $lang->getLL('list.report.tooManyRedirects');
+                $message = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.tooManyRedirects');
                 break;
 
             case 'exception':
                 if ($exception) {
-                    $message = sprintf($lang->getLL('list.report.httpexception'), $exception);
+                    $message = sprintf($lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.httpexception'), $exception);
                 }
                 break;
         }
@@ -316,9 +316,9 @@ class ExternalLinktype extends AbstractLinktype
             // use generic error message as fallback
             if ($exception) {
                 // Show exception, if available
-                $message = sprintf($lang->getLL('list.report.httpexception'), $exception);
+                $message = sprintf($lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.httpexception'), $exception);
             } else {
-                $message = $lang->getLL('linkcheck.error.external.generic');
+                $message = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:linkcheck.error.external.generic');
             }
         }
         return $message;

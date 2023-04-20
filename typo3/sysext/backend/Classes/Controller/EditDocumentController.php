@@ -359,8 +359,6 @@ class EditDocumentController
         $view->setUiBlock(true);
         $view->setTitle($this->getShortcutTitle($request));
 
-        $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
-
         // Unlock all locked records
         BackendUtility::lockRecords();
         if ($response = $this->preInit($request)) {
@@ -535,7 +533,6 @@ class EditDocumentController
                 $beUser->user['lang'] = $newLanguageKey;
                 // Re-create LANG to have the current request updated the translated page as well
                 $this->getLanguageService()->init($newLanguageKey);
-                $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
                 BackendUtility::setUpdateSignal('updateModuleMenu');
                 BackendUtility::setUpdateSignal('updateTopbar');
             }
@@ -675,20 +672,23 @@ class EditDocumentController
                             }
                         }
                         $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $row), (int)$this->getBackendUser()->uc['titleLen']);
-                        $messages[] = sprintf($this->getLanguageService()->getLL('notification.record_saved.message'), $recordTitle);
+                        $messages[] = sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:notification.record_saved.message'), $recordTitle);
                     }
                 }
             }
 
             // Add messages to the flash message container only if the request is a save action (excludes "duplicate")
             if ($messages !== []) {
-                $title = count($messages) === 1 ? 'notification.record_saved.title.singular' : 'notification.record_saved.title.plural';
+                $label = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:notification.record_saved.title.plural');
+                if (count($messages) === 1) {
+                    $label = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:notification.record_saved.title.singular');
+                }
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier(FlashMessageQueue::NOTIFICATION_QUEUE);
                 $flashMessage = GeneralUtility::makeInstance(
                     FlashMessage::class,
                     implode(LF, $messages),
-                    $this->getLanguageService()->getLL($title),
+                    $label,
                     ContextualFeedbackSeverity::OK,
                     true
                 );
@@ -1001,8 +1001,8 @@ class EditDocumentController
             // info box and remove the spinner, since it will never be resolved by FormEngine.
             $view->setUiBlock(false);
             $body .= $this->getInfobox(
-                $this->getLanguageService()->getLL('noEditForm.message'),
-                $this->getLanguageService()->getLL('noEditForm'),
+                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:noEditForm.message'),
+                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:noEditForm'),
             );
         }
 
@@ -1577,7 +1577,7 @@ class EditDocumentController
                 ->setHref($deleteUrl)
                 ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
                 ->setShowLabelText(true)
-                ->setTitle($this->getLanguageService()->getLL('deleteItem'));
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteItem'));
             $buttonBar->addButton($deleteButton, $position, $group);
         }
     }
@@ -1597,7 +1597,7 @@ class EditDocumentController
             ]);
             $historyButton = $buttonBar->makeLinkButton()
                 ->setHref($historyUrl)
-                ->setTitle($this->getLanguageService()->getLL('recordHistory'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:recordHistory'))
                 ->setIcon($this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL));
             $buttonBar->addButton($historyButton, $position, $group);
         }
@@ -1613,7 +1613,7 @@ class EditDocumentController
         ) {
             $columnsOnlyButton = $buttonBar->makeLinkButton()
                 ->setHref($this->R_URI . '&columnsOnly=')
-                ->setTitle($this->getLanguageService()->getLL('editWholeRecord'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:editWholeRecord'))
                 ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL));
 

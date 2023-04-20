@@ -152,7 +152,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                         $out .= '<div class="alert alert-danger">' . htmlspecialchars($message) . '</div>';
                     }
                 } else {
-                    $out .= '<div class="alert alert-warning">' . $languageService->getLL('noPluginSelected') . '</div>';
+                    $out .= '<div class="alert alert-warning">' . $languageService->sL('LLL:EXT:typo3/sysext/backend/Resources/Private/Language/locallang_layout.xlf:noPluginSelected') . '</div>';
                 }
                 break;
             default:
@@ -375,7 +375,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             ];
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-            return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $linkText . '</a>';
+            return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:typo3/sysext/backend/Resources/Private/Language/locallang_layout.xlf:edit')) . '">' . $linkText . '</a>';
         }
         return $linkText;
     }

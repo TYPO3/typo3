@@ -81,7 +81,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
         // Use CodeMirror if available
         if (ExtensionManagementUtility::isLoaded('t3editor')) {
             $codeMirrorConfig = [
-                'label' => $lang->getLL('buttons.pageTsConfig'),
+                'label' => $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.pageTsConfig'),
                 'panel' => 'top',
                 'mode' => GeneralUtility::jsonEncodeForHtmlAttribute(JavaScriptModuleInstruction::create('@typo3/t3editor/language/typoscript.js', 'typoscript')->invoke(), false),
                 'nolazyload' => 'true',
@@ -95,7 +95,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
             $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/t3editor/element/code-mirror-element.js');
         } else {
             $editor = '
-                <label>' . htmlspecialchars($lang->getLL('buttons.pageTsConfig')) . '</label>
+                <label>' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.pageTsConfig')) . '</label>
                 <div class="t3js-grideditor-preview-config grideditor-preview">
                     <textarea class="t3js-tsconfig-preview-area form-control" rows="25" readonly></textarea>
                 </div>';
@@ -118,11 +118,11 @@ class BackendLayoutWizardElement extends AbstractFormElement
             $html[] =               '<div class="grideditor-control grideditor-control-top">';
             $html[] =                   '<div class="btn-group">';
             $html[] =                       '<a class="btn btn-default btn-sm t3js-grideditor-addrow-top" href="#"';
-            $html[] =                           ' title="' . htmlspecialchars($lang->getLL('grid_addRow')) . '">';
+            $html[] =                           ' title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:grid_addRow')) . '">';
             $html[] =                           $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render();
             $html[] =                       '</a>';
             $html[] =                       '<a class="btn btn-default btn-sm t3js-grideditor-removerow-top" href="#"';
-            $html[] =                           ' title="' . htmlspecialchars($lang->getLL('grid_removeRow')) . '">';
+            $html[] =                           ' title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:grid_removeRow')) . '">';
             $html[] =                           $this->iconFactory->getIcon('actions-minus', Icon::SIZE_SMALL)->render();
             $html[] =                       '</a>';
             $html[] =                   '</div>';
@@ -143,11 +143,11 @@ class BackendLayoutWizardElement extends AbstractFormElement
             $html[] =               '<div class="grideditor-control grideditor-control-right">';
             $html[] =                   '<div class="btn-group-vertical">';
             $html[] =                       '<a class="btn btn-default btn-sm t3js-grideditor-addcolumn" href="#"';
-            $html[] =                           ' title="' . htmlspecialchars($lang->getLL('grid_addColumn')) . '">';
+            $html[] =                           ' title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:grid_addColumn')) . '">';
             $html[] =                           $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render();
             $html[] =                       '</a>';
             $html[] =                       '<a class="btn btn-default btn-sm t3js-grideditor-removecolumn" href="#"';
-            $html[] =                           ' title="' . htmlspecialchars($lang->getLL('grid_removeColumn')) . '">';
+            $html[] =                           ' title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:grid_removeColumn')) . '">';
             $html[] =                           $this->iconFactory->getIcon('actions-minus', Icon::SIZE_SMALL)->render();
             $html[] =                       '</a>';
             $html[] =                   '</div>';
@@ -155,11 +155,11 @@ class BackendLayoutWizardElement extends AbstractFormElement
             $html[] =               '<div class="grideditor-control grideditor-control-bottom">';
             $html[] =                   '<div class="btn-group">';
             $html[] =                       '<a class="btn btn-default btn-sm t3js-grideditor-addrow-bottom" href="#"';
-            $html[] =                           ' title="' . htmlspecialchars($lang->getLL('grid_addRow')) . '">';
+            $html[] =                           ' title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:grid_addRow')) . '">';
             $html[] =                           $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render();
             $html[] =                       '</a>';
             $html[] =                       '<a class="btn btn-default btn-sm t3js-grideditor-removerow-bottom" href="#"';
-            $html[] =                           ' title="' . htmlspecialchars($lang->getLL('grid_removeRow')) . '">';
+            $html[] =                           ' title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:grid_removeRow')) . '">';
             $html[] =                           $this->iconFactory->getIcon('actions-minus', Icon::SIZE_SMALL)->render();
             $html[] =                       '</a>';
             $html[] =                   '</div>';

@@ -96,7 +96,6 @@ class PageLayoutController
     protected function initialize(ServerRequestInterface $request): void
     {
         $backendUser = $this->getBackendUser();
-        $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
         $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         $this->moduleData = $request->getAttribute('moduleData');
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
@@ -190,7 +189,7 @@ class PageLayoutController
                 2 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.language_comparison'),
             ],
             'language' => [
-                0 => isset($this->availableLanguages[0]) ? $this->availableLanguages[0]->getTitle() : $languageService->getLL('m_default'),
+                0 => isset($this->availableLanguages[0]) ? $this->availableLanguages[0]->getTitle() : $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:m_default'),
             ],
         ];
 
@@ -666,7 +665,7 @@ class PageLayoutController
 
         return $buttonBar->makeLinkButton()
             ->setHref((string)$this->uriBuilder->buildUriFromRoute('record_edit', $params))
-            ->setTitle($this->getLanguageService()->getLL('editPageProperties'))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties'))
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
     }

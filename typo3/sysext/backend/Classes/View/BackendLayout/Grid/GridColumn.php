@@ -206,12 +206,12 @@ class GridColumn extends AbstractGridObject
 
     public function getTitleInaccessible(): string
     {
-        return $this->getLanguageService()->sL($this->columnName) . ' (' . $this->getLanguageService()->getLL('noAccess') . ')';
+        return $this->getLanguageService()->sL($this->columnName) . ' (' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:noAccess') . ')';
     }
 
     public function getTitleUnassigned(): string
     {
-        return $this->getLanguageService()->sL($this->columnName) . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')';
+        return $this->getLanguageService()->sL($this->columnName) . ' (' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:notAssigned') . ')';
     }
 
     public function getBeforeSectionMarkup(): string

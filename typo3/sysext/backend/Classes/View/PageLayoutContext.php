@@ -273,13 +273,13 @@ class PageLayoutContext
     {
         switch ($this->getLanguageModeIdentifier()) {
             case 'mixed':
-                $languageMode = $this->getLanguageService()->getLL('languageModeMixed');
+                $languageMode = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageModeMixed');
                 break;
             case 'connected':
-                $languageMode = $this->getLanguageService()->getLL('languageModeConnected');
+                $languageMode = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageModeConnected');
                 break;
             case 'free':
-                $languageMode = $this->getLanguageService()->getLL('languageModeFree');
+                $languageMode = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageModeFree');
                 break;
             default:
                 $languageMode = '';
@@ -331,7 +331,7 @@ class PageLayoutContext
         // If any languages are left, make selector:
         $options = [];
         if (!empty($availableTranslations)) {
-            $options[] = $this->getLanguageService()->getLL('new_language');
+            $options[] = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:new_language');
             foreach ($availableTranslations as $languageUid => $languageTitle) {
                 // Build localize command URL to DataHandler (tce_db)
                 // which redirects to FormEngine (record_edit)

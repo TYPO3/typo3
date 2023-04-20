@@ -57,8 +57,8 @@ class ElementBrowserRecordList extends DatabaseRecordList
         }
         $title = BackendUtility::getRecordTitle($table, $row, false, true);
 
-        $ATag = '<a href="#" data-close="0" title="' . htmlspecialchars($this->getLanguageService()->getLL('addToList')) . '">';
-        $ATag_alt = '<a href="#" data-close="1" title="' . htmlspecialchars($this->getLanguageService()->getLL('addToList')) . '">';
+        $ATag = '<a href="#" data-close="0" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:addToList')) . '">';
+        $ATag_alt = '<a href="#" data-close="1" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:addToList')) . '">';
         $ATag_e = '</a>';
         $out = '<span data-uid="' . htmlspecialchars($row['uid']) . '" data-table="' . htmlspecialchars($table) . '" data-title="' . htmlspecialchars($title) . '">';
         $out .= $ATag . $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render() . $ATag_e . $ATag_alt . $code . $ATag_e;

@@ -192,8 +192,8 @@ class ContentFetcher
 
                 $message = GeneralUtility::makeInstance(
                     FlashMessage::class,
-                    $this->getLanguageService()->getLL('staleTranslationWarning'),
-                    sprintf($this->getLanguageService()->getLL('staleTranslationWarningTitle'), $siteLanguage->getTitle()),
+                    $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:staleTranslationWarning'),
+                    sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:staleTranslationWarningTitle'), $siteLanguage->getTitle()),
                     ContextualFeedbackSeverity::WARNING
                 );
                 $service = GeneralUtility::makeInstance(FlashMessageService::class);

@@ -71,7 +71,7 @@ class FileLinktype extends AbstractLinktype
      */
     public function getErrorMessage($errorParams)
     {
-        return $this->getLanguageService()->getLL('list.report.filenotexisting');
+        return $this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.filenotexisting');
     }
 
     /**

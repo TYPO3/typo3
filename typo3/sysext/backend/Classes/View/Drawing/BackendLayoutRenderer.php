@@ -94,8 +94,8 @@ class BackendLayoutRenderer
         $view->assignMultiple([
             'context' => $pageLayoutContext,
             'hideRestrictedColumns' => (bool)(BackendUtility::getPagesTSconfig($pageLayoutContext->getPageId())['mod.']['web_layout.']['hideRestrictedCols'] ?? false),
-            'newContentTitle' => $this->getLanguageService()->getLL('newContentElement'),
-            'newContentTitleShort' => $this->getLanguageService()->getLL('content'),
+            'newContentTitle' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement'),
+            'newContentTitleShort' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content'),
             'allowEditContent' => $backendUser->check('tables_modify', 'tt_content'),
             'maxTitleLength' => $backendUser->uc['titleLen'] ?? 20,
         ]);
@@ -130,8 +130,8 @@ class BackendLayoutRenderer
             if (!empty($unusedRecords)) {
                 $unusedElementsMessage = GeneralUtility::makeInstance(
                     FlashMessage::class,
-                    $this->getLanguageService()->getLL('staleUnusedElementsWarning'),
-                    $this->getLanguageService()->getLL('staleUnusedElementsWarningTitle'),
+                    $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:staleUnusedElementsWarning'),
+                    $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:staleUnusedElementsWarningTitle'),
                     ContextualFeedbackSeverity::WARNING
                 );
                 $service = GeneralUtility::makeInstance(FlashMessageService::class);

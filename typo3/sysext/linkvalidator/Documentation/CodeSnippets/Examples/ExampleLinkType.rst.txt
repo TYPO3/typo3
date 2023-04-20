@@ -19,11 +19,11 @@
             $lang = $this->getLanguageService();
             switch ($errorParams['errno'] ?? 0) {
                 case 404:
-                    $message = $lang->getLL('list.report.pagenotfound404');
+                    $message = $lang->sL('LLL:EXT:typo3/sysext/linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.pagenotfound404');
                     break;
                 default:
                     // fall back to generic error message
-                    $message = sprintf($lang->getLL('list.report.externalerror'), $errorParams['errno']);
+                    $message = sprintf($lang->sL('LLL:EXT:typo3/sysext/linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.externalerror'), $errorParams['errno']);
             }
             return $message;
         }

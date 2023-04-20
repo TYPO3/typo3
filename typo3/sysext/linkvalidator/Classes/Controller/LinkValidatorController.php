@@ -99,7 +99,6 @@ class LinkValidatorController
     {
         $backendUser = $this->getBackendUser();
         $languageService = $this->getLanguageService();
-        $languageService->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
 
         $this->request = $request;
         $this->id = (int)($this->request->getQueryParams()['id'] ?? 0);
@@ -138,7 +137,7 @@ class LinkValidatorController
         $view->setTitle($this->getModuleTitle());
 
         if ($backendUser->workspace !== 0 || !(($this->id && $this->pageRecord !== []) || (!$this->id && $backendUser->isAdmin()))) {
-            $view->addFlashMessage($languageService->getLL('no.access'), $languageService->getLL('no.access.title'), ContextualFeedbackSeverity::ERROR);
+            $view->addFlashMessage($languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:no.access'), $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:no.access.title'), ContextualFeedbackSeverity::ERROR);
             return $view->renderResponse('Backend/Empty');
         }
 
@@ -164,12 +163,12 @@ class LinkValidatorController
                 'selectedLevel' => $this->searchLevel['report'],
                 'options' => $this->getCheckOptions('report'),
                 'brokenLinks' => $this->getBrokenLinks(),
-                'tableheadPath' => $languageService->getLL('list.tableHead.path'),
-                'tableheadElement' => $languageService->getLL('list.tableHead.element'),
-                'tableheadHeadlink' => $languageService->getLL('list.tableHead.headlink'),
-                'tableheadLinktarget' => $languageService->getLL('list.tableHead.linktarget'),
-                'tableheadLinkmessage' => $languageService->getLL('list.tableHead.linkmessage'),
-                'tableheadLastcheck' => $languageService->getLL('list.tableHead.lastCheck'),
+                'tableheadPath' =>        $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.path'),
+                'tableheadElement' =>     $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.element'),
+                'tableheadHeadlink' =>    $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.headlink'),
+                'tableheadLinktarget' =>  $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.linktarget'),
+                'tableheadLinkmessage' => $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.linkmessage'),
+                'tableheadLastcheck' =>   $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.lastCheck'),
             ]);
             return $view->renderResponse('Backend/Report');
         }
@@ -352,8 +351,8 @@ class LinkValidatorController
         $languageService = $this->getLanguageService();
         $message = GeneralUtility::makeInstance(
             FlashMessage::class,
-            $languageService->getLL('list.no.broken.links'),
-            $languageService->getLL('list.no.broken.links.title'),
+            $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.no.broken.links'),
+            $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.no.broken.links.title'),
             ContextualFeedbackSeverity::OK,
             false
         );
@@ -385,14 +384,14 @@ class LinkValidatorController
             'title' => $table . ':' . $row['record_uid'],
             'icon' => $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
             'headline' => $row['headline'],
-            'label' => sprintf($languageService->getLL('list.field'), $fieldLabel),
+            'label' => sprintf($languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.field'), $fieldLabel),
             'path' => BackendUtility::getRecordPath($row['record_pid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0),
             'linkTitle' => $row['link_title'],
             'linkTarget' => $hookObj?->getBrokenUrl($row),
             'linkStatus' => (bool)($row['url_response']['valid'] ?? false),
             'linkMessage' => $hookObj?->getErrorMessage($row['url_response']['errorParams']),
             'lastCheck' => sprintf(
-                $languageService->getLL('list.msg.lastRun'),
+                $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.msg.lastRun'),
                 date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $row['last_check']),
                 date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row['last_check'])
             ),
@@ -427,7 +426,7 @@ class LinkValidatorController
     {
         $brokenLinksInformation = $this->linkAnalyzer->getLinkCounts();
         $options = [
-            'totalCountLabel' => $this->getLanguageService()->getLL('overviews.nbtotal'),
+            'totalCountLabel' => $this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:overviews.nbtotal'),
             'totalCount' => $brokenLinksInformation['total'] ?: '0',
             'optionsByType' => [],
         ];
@@ -439,7 +438,7 @@ class LinkValidatorController
             $options['optionsByType'][$type] = [
                 'id' => $prefix . '_SET_' . $type,
                 'name' => $prefix . '_SET[' . $type . ']',
-                'label' => $this->getLanguageService()->getLL('hooks.' . $type) ?: $type,
+                'label' => $this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:hooks.' . $type) ?: $type,
                 'checked' => !empty($this->checkOpt[$prefix][$type]) ? ' checked="checked"' : '',
                 'count' => (!empty($brokenLinksInformation[$type]) ? $brokenLinksInformation[$type] : '0'),
             ];
@@ -464,13 +463,13 @@ class LinkValidatorController
         $actionMenu->setIdentifier('reportLinkvalidatorSelector');
         $actionMenu->addMenuItem(
             $actionMenu->makeMenuItem()
-                ->setTitle($languageService->getLL('Report'))
+                ->setTitle($languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:Report'))
                 ->setHref($this->getModuleUri('report'))
                 ->setActive($currentAction === 'report')
         );
         $actionMenu->addMenuItem(
             $actionMenu->makeMenuItem()
-                ->setTitle($languageService->getLL('CheckLink'))
+                ->setTitle($languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:CheckLink'))
                 ->setHref($this->getModuleUri('check'))
                 ->setActive($currentAction === 'check')
         );

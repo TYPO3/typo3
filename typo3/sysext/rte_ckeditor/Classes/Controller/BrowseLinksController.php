@@ -319,7 +319,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         return '
             <div class="element-browser-form-group">
                 <label for="lrel" class="form-label">' .
-                    htmlspecialchars($this->getLanguageService()->getLL('linkRelationship')) .
+                    htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:linkRelationship')) .
                 '</label>
                 <input type="text" name="lrel" class="form-control" value="' . htmlspecialchars($currentRel) . '" />
             </div>
@@ -343,15 +343,15 @@ class BrowseLinksController extends AbstractLinkBrowserController
         return '
             <div class="element-browser-form-group">
                 <label for="ltarget" class="form-label">
-                    ' . htmlspecialchars($lang->getLL('target')) . '
+                    ' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:target')) . '
                 </label>
                 <span class="input-group">
                     <input id="ltarget" type="text" name="ltarget" class="t3js-linkTarget form-control"
                         value="' . htmlspecialchars($target) . '" />
                     <select name="ltarget_type" class="t3js-targetPreselect form-select">
                         <option value=""></option>
-                        <option value="_top">' . htmlspecialchars($lang->getLL('top')) . '</option>
-                        <option value="_blank">' . htmlspecialchars($lang->getLL('newWindow')) . '</option>
+                        <option value="_top">' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:top')) . '</option>
+                        <option value="_blank">' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:newWindow')) . '</option>
                     </select>
                 </span>
             </div>';
@@ -371,7 +371,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         return '
             <div class="element-browser-form-group">
                 <label for="lclass" class="form-label">
-                    ' . htmlspecialchars($this->getLanguageService()->getLL('class')) . '
+                    ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:class')) . '
                 </label>
                 <select id="lclass" name="lclass" class="t3js-class-selector form-select">
                     ' . $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] . '
