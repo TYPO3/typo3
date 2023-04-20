@@ -57,15 +57,15 @@
 		"doctrine/lexer": "^2.0 || ^3.0",
 		"egulias/email-validator": "^4.0",
 		"enshrined/svg-sanitize": "^0.15.4",
-		"firebase/php-jwt": "^6.3.1",
-		"guzzlehttp/guzzle": "^7.5.0",
+		"firebase/php-jwt": "^6.4.0",
+		"guzzlehttp/guzzle": "^7.5.1",
 		"guzzlehttp/promises": "^1.5.2",
 		"guzzlehttp/psr7": "^2.5.0",
 		"lolli42/finediff": "^1.0.2",
 		"masterminds/html5": "^2.7.6",
-		"nikic/php-parser": "^4.15.1",
+		"nikic/php-parser": "^4.15.4",
 		"phpdocumentor/reflection-docblock": "^5.2",
-		"phpdocumentor/type-resolver": "^1.4",
+		"phpdocumentor/type-resolver": "^1.7.1",
 		"psr/container": "^2.0",
 		"psr/event-dispatcher": "^1.0",
 		"psr/http-client": "^1.0",
@@ -99,7 +99,7 @@
 		"typo3/cms-cli": "^3.1",
 		"typo3/cms-composer-installers": "^5.0",
 		"typo3/html-sanitizer": "^2.1.1",
-		"typo3fluid/fluid": "^2.7.3"
+		"typo3fluid/fluid": "^2.7.4"
 	},
 	"require-dev": {
 		"bnf/phpstan-psr-container": "^1.0.1",

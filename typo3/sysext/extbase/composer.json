@@ -21,7 +21,7 @@
 	"require": {
 		"doctrine/instantiator": "^2.0",
 		"phpdocumentor/reflection-docblock": "^5.2",
-		"phpdocumentor/type-resolver": "^1.4",
+		"phpdocumentor/type-resolver": "^1.7.1",
 		"symfony/dependency-injection": "^6.2",
 		"symfony/property-access": "^6.2",
 		"symfony/property-info": "^6.2",
