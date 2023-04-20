@@ -2008,11 +2008,11 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function renameFile($file, $targetFileName, $conflictMode = DuplicationBehavior::RENAME)
     {
-        // The name should be different from the current.
-        if ($file->getName() === $targetFileName) {
+        $sanitizedTargetFileName = $this->driver->sanitizeFileName($targetFileName);
+        // The new name should be different from the current.
+        if ($file->getName() === $sanitizedTargetFileName) {
             return $file;
         }
-        $sanitizedTargetFileName = $this->driver->sanitizeFileName($targetFileName);
         $this->assureFileRenamePermissions($file, $sanitizedTargetFileName);
         $this->eventDispatcher->dispatch(
             new BeforeFileRenamedEvent($file, $sanitizedTargetFileName)

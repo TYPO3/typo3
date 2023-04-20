@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -110,6 +111,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         $localDriver->method('getPermissions')->willReturn($permissionsFromDriver);
         $mockedResourceFactory = $this->createMock(ResourceFactory::class);
         $mockedFolder = $this->createMock(Folder::class);
+
         // Let all other checks pass
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->onlyMethods(['isWritable', 'isBrowsable', 'checkUserActionPermission', 'getResourceFactoryInstance'])
@@ -252,4 +254,40 @@ final class ResourceStorageTest extends FunctionalTestCase
         $subject->_set('driver', $mockedDriver);
         $subject->deleteFolder($folderMock);
     }
+
+    /**
+     * @test
+     */
+    public function renameFileWillCallRenameFileIfUnsanitizedAndNoChangeInTargetFilename(): void
+    {
+        $driverMock = $this->getMockBuilder(LocalDriver::class)
+            ->onlyMethods(['renameFile', 'sanitizeFileName'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $driverMock->method('sanitizeFileName')
+            ->willReturn('a_b.jpg');
+        $driverMock->expects(self::once())
+            ->method('renameFile')
+            ->with('/a b.jpg', 'a_b.jpg');
+        $indexerMock = $this->getMockBuilder(Indexer::class)
+            ->onlyMethods(['updateIndexEntry'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $subject = $this->getMockBuilder(ResourceStorage::class)
+            ->onlyMethods(['assureFileRenamePermissions', 'getIndexer'])
+            ->setConstructorArgs([$driverMock, ['name' => 'testing'], new NoopEventDispatcher()])
+            ->getMock();
+        $subject->method('getIndexer')
+            ->willReturn($indexerMock);
+        $file = new File(
+            [
+                'identifier' => '/a b.jpg',
+                'name' => 'a b.jpg',
+            ],
+            $subject,
+        );
+        $subject->renameFile($file, 'a b.jpg');
+    }
+
 }
