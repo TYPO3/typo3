@@ -568,6 +568,34 @@ module.exports = function (grunt) {
             'Sources/JavaScript/core/Resources/Public/JavaScript/Contrib/bootstrap.js'
           ]
         }
+      },
+      'chart.js': {
+        options: {
+          preserveModules: false,
+          plugins: () => [
+            {
+              name: 'terser',
+              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
+            },
+            {
+              name: 'externals',
+              resolveId: (source) => {
+                if (source === 'chunks/helpers.segment.js') {
+                  return { id: 'node_modules/chart.js/dist/chunks/helpers.segment.js' }
+                }
+                if (source === '@kurkle/color') {
+                  return { id: 'node_modules/@kurkle/color/dist/color.esm.js' }
+                }
+                return null
+              }
+            }
+          ]
+        },
+        files: {
+          '<%= paths.dashboard %>Public/JavaScript/Contrib/chartjs.js': [
+            'node_modules/chart.js/dist/chart.js'
+          ]
+        }
       }
     },
     npmcopy: {
@@ -608,15 +636,6 @@ module.exports = function (grunt) {
         },
         files: {
           'JavaScript/Contrib/muuri.js': 'muuri/dist/muuri.min.js'
-        }
-      },
-      dashboard: {
-        options: {
-          destPrefix: '<%= paths.dashboard %>Public',
-        },
-        files: {
-          'JavaScript/Contrib/chartjs.js': 'chart.js/dist/chart.js',
-          'JavaScript/Contrib/chunks/helpers.segment.js': 'chart.js/dist/chunks/helpers.segment.js'
         }
       },
       umdToEs6: {
@@ -763,8 +782,6 @@ module.exports = function (grunt) {
           '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js'],
-          '<%= paths.dashboard %>Public/JavaScript/Contrib/chartjs.js': ['<%= paths.dashboard %>Public/JavaScript/Contrib/chartjs.js'],
-          '<%= paths.dashboard %>Public/JavaScript/Contrib/chunks/helpers.segment.js': ['<%= paths.dashboard %>Public/JavaScript/Contrib/chunks/helpers.segment.js'],
           '<%= paths.install %>Public/JavaScript/chosen.jquery.min.js': ['<%= paths.install %>Public/JavaScript/chosen.jquery.min.js']
         }
       },
@@ -815,7 +832,7 @@ module.exports = function (grunt) {
       }
     },
     concurrent: {
-      npmcopy: ['npmcopy:dashboard', 'npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:jqueryUi', 'npmcopy:install', 'npmcopy:all'],
+      npmcopy: ['npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:jqueryUi', 'npmcopy:install', 'npmcopy:all'],
       lint: ['eslint', 'stylelint', 'exec:lintspaces'],
       compile_assets: ['scripts', 'css'],
       compile_flags: ['flags-build'],
