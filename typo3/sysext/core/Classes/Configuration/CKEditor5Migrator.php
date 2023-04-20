@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @internal
  */
@@ -185,22 +187,29 @@ class CKEditor5Migrator
     ];
 
     /**
-     * @param array $configuration `editor.config` configuration
+     * @param array $configuration Richtext configuration
      */
     public function __construct(protected array $configuration)
     {
-        $this->migrateRemovePlugins();
-        $this->migrateToolbar();
-        $this->migrateRemoveButtonsFromToolbar();
-        $this->migrateFormatTagsToHeadings();
-        $this->migrateStylesSetToStyleDefinitions();
-        $this->migrateContentsCssToArray();
-        // configure plugins
-        $this->handleAlignmentPlugin();
-        $this->handleWhitespacePlugin();
-        $this->handleWordCountPlugin();
-        // sort by key
-        ksort($this->configuration);
+        if (isset($this->configuration['editor']['config'])) {
+            $this->migrateRemovePlugins();
+            $this->migrateToolbar();
+            $this->migrateRemoveButtonsFromToolbar();
+            $this->migrateFormatTagsToHeadings();
+            $this->migrateStylesSetToStyleDefinitions();
+            $this->migrateContentsCssToArray();
+            // configure plugins
+            $this->handleAlignmentPlugin();
+            $this->handleWhitespacePlugin();
+            $this->handleWordCountPlugin();
+
+            // sort by key
+            ksort($this->configuration['editor']['config']);
+        }
+
+        if (isset($this->configuration['buttons']['link'])) {
+            $this->addLinkClassesToStyleSets();
+        }
     }
 
     public function get(): array
@@ -210,20 +219,20 @@ class CKEditor5Migrator
 
     protected function migrateRemovePlugins(): void
     {
-        if (!isset($this->configuration['removePlugins'])) {
-            $this->configuration['removePlugins'] = [];
+        if (!isset($this->configuration['editor']['config']['removePlugins'])) {
+            $this->configuration['editor']['config']['removePlugins'] = [];
             return;
         }
 
         // Handle custom plugin names to ckeditor
-        $this->configuration['removePlugins'] = array_map(function ($entry) {
+        $this->configuration['editor']['config']['removePlugins'] = array_map(function ($entry) {
             if (isset(self::PLUGIN_MAP[$entry])) {
                 return self::PLUGIN_MAP[$entry];
             }
             return $entry;
-        }, $this->configuration['removePlugins']);
+        }, $this->configuration['editor']['config']['removePlugins']);
 
-        $this->configuration['removePlugins'] = $this->getUniqueArrayValues($this->configuration['removePlugins']);
+        $this->configuration['editor']['config']['removePlugins'] = $this->getUniqueArrayValues($this->configuration['editor']['config']['removePlugins']);
     }
 
     /**
@@ -246,29 +255,29 @@ class CKEditor5Migrator
         // There can only be one configuration at a time, if 'toolbarGroups' is set
         // we prefer this definition above the toolbar definition.
         // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-toolbarGroups
-        if (is_array($this->configuration['toolbarGroups'] ?? null)) {
-            $toolbar['items'] = $this->configuration['toolbarGroups'];
-            unset($this->configuration['toolbar'], $this->configuration['toolbarGroups']);
+        if (is_array($this->configuration['editor']['config']['toolbarGroups'] ?? null)) {
+            $toolbar['items'] = $this->configuration['editor']['config']['toolbarGroups'];
+            unset($this->configuration['editor']['config']['toolbar'], $this->configuration['editor']['config']['toolbarGroups']);
         }
 
         // Migrate CKEditor4 toolbar templates
         // Resolve toolbar template and override current toolbar
         // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-toolbar
-        if (is_string($this->configuration['toolbar'] ?? null)) {
-            $toolbarName = 'toolbar_' . trim($this->configuration['toolbar']);
-            if (is_array($this->configuration[$toolbarName] ?? null)) {
-                $toolbar['items'] = $this->configuration[$toolbarName];
-                unset($this->configuration['toolbar'], $this->configuration[$toolbarName]);
+        if (is_string($this->configuration['editor']['config']['toolbar'] ?? null)) {
+            $toolbarName = 'toolbar_' . trim($this->configuration['editor']['config']['toolbar']);
+            if (is_array($this->configuration['editor']['config'][$toolbarName] ?? null)) {
+                $toolbar['items'] = $this->configuration['editor']['config'][$toolbarName];
+                unset($this->configuration['editor']['config']['toolbar'], $this->configuration['editor']['config'][$toolbarName]);
             }
         }
 
         // Collect toolbar items
-        if (is_array($this->configuration['toolbar'] ?? null)) {
-            $toolbar['items'] = $this->configuration['toolbar']['items'] ?? $this->configuration['toolbar'];
+        if (is_array($this->configuration['editor']['config']['toolbar'] ?? null)) {
+            $toolbar['items'] = $this->configuration['editor']['config']['toolbar']['items'] ?? $this->configuration['editor']['config']['toolbar'];
         }
 
         $toolbar['items'] = $this->migrateToolbarItems($toolbar['items']);
-        $this->configuration['toolbar'] = $toolbar;
+        $this->configuration['editor']['config']['toolbar'] = $toolbar;
     }
 
     protected function migrateToolbarItems(array $items): array
@@ -436,12 +445,12 @@ class CKEditor5Migrator
 
     protected function migrateRemoveButtonsFromToolbar(): void
     {
-        if (!isset($this->configuration['removeButtons'])) {
+        if (!isset($this->configuration['editor']['config']['removeButtons'])) {
             return;
         }
 
         $removeItems = [];
-        foreach ($this->configuration['removeButtons'] as $buttonName) {
+        foreach ($this->configuration['editor']['config']['removeButtons'] as $buttonName) {
             if (array_key_exists($buttonName, self::BUTTON_MAP)) {
                 if (self::BUTTON_MAP[$buttonName] !== null) {
                     $removeItems[] = self::BUTTON_MAP[$buttonName];
@@ -456,20 +465,20 @@ class CKEditor5Migrator
         }
 
         // Cleanup final configuration after migration
-        unset($this->configuration['removeButtons']);
+        unset($this->configuration['editor']['config']['removeButtons']);
     }
 
     protected function migrateFormatTagsToHeadings(): void
     {
         // new definition is in place, no migration is done
-        if (isset($this->configuration['heading']['options'])) {
+        if (isset($this->configuration['editor']['config']['heading']['options'])) {
             // discard legacy configuration if new configuration exists
-            unset($this->configuration['format_tags']);
+            unset($this->configuration['editor']['config']['format_tags']);
             return;
         }
         // migrate format_tags to custom buttons
-        if (isset($this->configuration['format_tags'])) {
-            $formatTags = explode(';', $this->configuration['format_tags']);
+        if (isset($this->configuration['editor']['config']['format_tags'])) {
+            $formatTags = explode(';', $this->configuration['editor']['config']['format_tags']);
             $allowedHeadings = [];
             foreach ($formatTags as $paragraphTag) {
                 switch (strtolower($paragraphTag)) {
@@ -502,23 +511,23 @@ class CKEditor5Migrator
             }
 
             // remove legacy configuration after migration
-            unset($this->configuration['format_tags']);
-            $this->configuration['heading']['options'] = $allowedHeadings;
+            unset($this->configuration['editor']['config']['format_tags']);
+            $this->configuration['editor']['config']['heading']['options'] = $allowedHeadings;
         }
     }
 
     protected function migrateStylesSetToStyleDefinitions(): void
     {
         // new definition is in place, no migration is done
-        if (isset($this->configuration['style']['definitions'])) {
+        if (isset($this->configuration['editor']['config']['style']['definitions'])) {
             // discard legacy configuration if new configuration exists
-            unset($this->configuration['stylesSet']);
+            unset($this->configuration['editor']['config']['stylesSet']);
             return;
         }
         // Migrate 'stylesSet' to 'styles' => 'definitions'
-        if (isset($this->configuration['stylesSet'])) {
+        if (isset($this->configuration['editor']['config']['stylesSet'])) {
             $styleDefinitions = [];
-            foreach ($this->configuration['stylesSet'] as $styleSet) {
+            foreach ($this->configuration['editor']['config']['stylesSet'] as $styleSet) {
                 if (!isset($styleSet['name'], $styleSet['element'])) {
                     // @todo: log
                     continue;
@@ -536,28 +545,28 @@ class CKEditor5Migrator
             }
 
             // remove legacy configuration after migration
-            unset($this->configuration['stylesSet']);
-            $this->configuration['style']['definitions'] = $styleDefinitions;
+            unset($this->configuration['editor']['config']['stylesSet']);
+            $this->configuration['editor']['config']['style']['definitions'] = $styleDefinitions;
         }
     }
 
     protected function migrateContentsCssToArray(): void
     {
-        if (isset($this->configuration['contentsCss'])) {
-            if (!is_array($this->configuration['contentsCss'])) {
-                if (empty($this->configuration['contentsCss'])) {
-                    unset($this->configuration['contentsCss']);
+        if (isset($this->configuration['editor']['config']['contentsCss'])) {
+            if (!is_array($this->configuration['editor']['config']['contentsCss'])) {
+                if (empty($this->configuration['editor']['config']['contentsCss'])) {
+                    unset($this->configuration['editor']['config']['contentsCss']);
                     return;
                 }
-                $this->configuration['contentsCss'] = (array)$this->configuration['contentsCss'];
+                $this->configuration['editor']['config']['contentsCss'] = (array)$this->configuration['editor']['config']['contentsCss'];
             }
 
-            $this->configuration['contentsCss'] = array_map(static function (mixed $styleSrc) {
+            $this->configuration['editor']['config']['contentsCss'] = array_map(static function (mixed $styleSrc) {
                 // Trim values, if input is a string, otherwise leave as-is (will be filtered out)
                 return is_string($styleSrc) ? trim($styleSrc) : $styleSrc;
-            }, $this->configuration['contentsCss']);
-            $this->configuration['contentsCss'] = array_values(
-                array_filter($this->configuration['contentsCss'], static function (mixed $styleSrc): bool {
+            }, $this->configuration['editor']['config']['contentsCss']);
+            $this->configuration['editor']['config']['contentsCss'] = array_values(
+                array_filter($this->configuration['editor']['config']['contentsCss'], static function (mixed $styleSrc): bool {
                     // We care for non-empty strings only
                     return is_string($styleSrc) && $styleSrc !== '';
                 })
@@ -569,9 +578,9 @@ class CKEditor5Migrator
     {
         // Migrate legacy configuration
         // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-justifyClasses
-        if (isset($this->configuration['justifyClasses'])) {
-            if (!isset($this->configuration['alignment'])) {
-                $legacyConfig = $this->configuration['justifyClasses'];
+        if (isset($this->configuration['editor']['config']['justifyClasses'])) {
+            if (!isset($this->configuration['editor']['config']['alignment'])) {
+                $legacyConfig = $this->configuration['editor']['config']['justifyClasses'];
                 $indexMap = [
                     0 => 'left',
                     1 => 'center',
@@ -584,15 +593,15 @@ class CKEditor5Migrator
                         $itemConfig['name'] = $indexMap[$index];
                     }
                     $itemConfig['className'] = $class;
-                    $this->configuration['alignment']['options'][] = $itemConfig;
+                    $this->configuration['editor']['config']['alignment']['options'][] = $itemConfig;
                 }
             }
-            unset($this->configuration['justifyClasses']);
+            unset($this->configuration['editor']['config']['justifyClasses']);
         }
         $this->removeExtraPlugin('justify');
 
         // Remove related configuration if plugin should not be loaded
-        if (array_search('Alignment', $this->configuration['removePlugins']) !== false) {
+        if (array_search('Alignment', $this->configuration['editor']['config']['removePlugins']) !== false) {
             // Remove all related plugins
             $this->removePlugin('Alignment');
 
@@ -604,16 +613,16 @@ class CKEditor5Migrator
             $this->removeToolbarItem('alignment:justify');
 
             // Remove config
-            if (isset($this->configuration['alignment'])) {
-                unset($this->configuration['alignment']);
+            if (isset($this->configuration['editor']['config']['alignment'])) {
+                unset($this->configuration['editor']['config']['alignment']);
             }
 
             return;
         }
 
-        if (is_array($this->configuration['alignment']['options'] ?? null)) {
+        if (is_array($this->configuration['editor']['config']['alignment']['options'] ?? null)) {
             $classMap = [];
-            foreach ($this->configuration['alignment']['options'] as $option) {
+            foreach ($this->configuration['editor']['config']['alignment']['options'] as $option) {
                 if (is_string($option['name'] ?? null)
                     && is_string($option['className'] ?? null)
                     && in_array($option['name'], ['left', 'center', 'right', 'justify'])) {
@@ -623,7 +632,7 @@ class CKEditor5Migrator
         }
 
         // Default config
-        $this->configuration['alignment'] = [
+        $this->configuration['editor']['config']['alignment'] = [
             'options' => [
                 ['name' => 'left', 'className' => $classMap['left'] ?? 'text-start'],
                 ['name' => 'center', 'className' => $classMap['center'] ?? 'text-center'],
@@ -636,7 +645,7 @@ class CKEditor5Migrator
     protected function handleWhitespacePlugin(): void
     {
         // Remove related configuration if plugin should not be loaded
-        if (in_array('Whitespace', $this->configuration['removePlugins'], true)) {
+        if (in_array('Whitespace', $this->configuration['editor']['config']['removePlugins'], true)) {
             // Remove all related plugins
             $this->removePlugin('Whitespace');
 
@@ -647,8 +656,8 @@ class CKEditor5Migrator
         }
 
         // Add button if missing
-        if (!in_array('softhyphen', $this->configuration['toolbar']['items'], true)) {
-            $this->configuration['toolbar']['items'][] = 'softhyphen';
+        if (!in_array('softhyphen', $this->configuration['editor']['config']['toolbar']['items'], true)) {
+            $this->configuration['editor']['config']['toolbar']['items'][] = 'softhyphen';
         }
     }
 
@@ -660,67 +669,106 @@ class CKEditor5Migrator
         // The amount of properties has been reduced.
         //
         // see https://ckeditor.com/docs/ckeditor5/latest/features/word-count.html
-        if (isset($this->configuration['wordcount'])) {
-            if (!isset($this->configuration['wordCount'])) {
-                $legacyConfig = $this->configuration['wordcount'];
+        if (isset($this->configuration['editor']['config']['wordcount'])) {
+            if (!isset($this->configuration['editor']['config']['wordCount'])) {
+                $legacyConfig = $this->configuration['editor']['config']['wordcount'];
                 if (isset($legacyConfig['showCharCount'])) {
-                    $this->configuration['wordCount']['displayCharacters'] = !empty($legacyConfig['showCharCount']);
+                    $this->configuration['editor']['config']['wordCount']['displayCharacters'] = !empty($legacyConfig['showCharCount']);
                 }
                 if (isset($legacyConfig['showWordCount'])) {
-                    $this->configuration['wordCount']['displayWords'] = !empty($legacyConfig['showWordCount']);
+                    $this->configuration['editor']['config']['wordCount']['displayWords'] = !empty($legacyConfig['showWordCount']);
                 }
             }
-            unset($this->configuration['wordcount']);
+            unset($this->configuration['editor']['config']['wordcount']);
         }
 
         // Remove related configuration if plugin should not be loaded
-        if (in_array('WordCount', $this->configuration['removePlugins'], true)) {
+        if (in_array('WordCount', $this->configuration['editor']['config']['removePlugins'], true)) {
             // Remove all related plugins
             $this->removePlugin('WordCount');
 
             // Remove config
-            if (isset($this->configuration['wordCount'])) {
-                unset($this->configuration['wordCount']);
+            if (isset($this->configuration['editor']['config']['wordCount'])) {
+                unset($this->configuration['editor']['config']['wordCount']);
             }
 
             return;
         }
 
         // Default config
-        $this->configuration['wordCount'] = [
-            'displayCharacters' => $this->configuration['wordCount']['displayCharacters'] ?? true,
-            'displayWords' => $this->configuration['wordCount']['displayWords'] ?? true,
+        $this->configuration['editor']['config']['wordCount'] = [
+            'displayCharacters' => $this->configuration['editor']['config']['wordCount']['displayCharacters'] ?? true,
+            'displayWords' => $this->configuration['editor']['config']['wordCount']['displayWords'] ?? true,
         ];
+    }
+
+    protected function addLinkClassesToStyleSets(): void
+    {
+        if (!isset($this->configuration['buttons']['link']['properties']['class']['allowedClasses'])) {
+            return;
+        }
+
+        // Ensure editor.config.style.definitions exists
+        $this->configuration['editor']['config']['style']['definitions'] ??= [];
+
+        $allowedClasses = is_array($this->configuration['buttons']['link']['properties']['class']['allowedClasses'])
+            ? $this->configuration['buttons']['link']['properties']['class']['allowedClasses']
+            : GeneralUtility::trimExplode(',', $this->configuration['buttons']['link']['properties']['class']['allowedClasses'], true);
+
+        // Determine index where link classes should be added at to keep styles grouped
+        $indexToInsertElementsAt = array_key_last($this->configuration['editor']['config']['style']['definitions']) + 1;
+        foreach ($this->configuration['editor']['config']['style']['definitions'] as $index => $styleSetDefinition) {
+            if ($styleSetDefinition['element'] === 'a') {
+                $indexToInsertElementsAt = $index + 1;
+            }
+        }
+
+        foreach ($allowedClasses as $allowedClass) {
+            foreach ($this->configuration['editor']['config']['style']['definitions'] as $styleSetDefinition) {
+                if ($styleSetDefinition['element'] === 'a' && $styleSetDefinition['classes'] === [$allowedClass]) {
+                    // allowedClass is already configured, continue with next one
+                    continue 2;
+                }
+            }
+
+            // We're still here, this means $allowedClass wasn't found
+            array_splice($this->configuration['editor']['config']['style']['definitions'], $indexToInsertElementsAt, 0, [[
+                'classes' => [$allowedClass],
+                'element' => 'a',
+                'name' => $allowedClass, // we lack a human-readable name here...
+            ]]);
+            $indexToInsertElementsAt++;
+        }
     }
 
     private function removeToolbarItem(string $name): void
     {
-        $this->configuration['toolbar']['removeItems'][] = $name;
-        $this->configuration['toolbar']['removeItems'] = $this->getUniqueArrayValues($this->configuration['toolbar']['removeItems']);
+        $this->configuration['editor']['config']['toolbar']['removeItems'][] = $name;
+        $this->configuration['editor']['config']['toolbar']['removeItems'] = $this->getUniqueArrayValues($this->configuration['editor']['config']['toolbar']['removeItems']);
     }
 
     private function removePlugin(string $name): void
     {
-        $this->configuration['removePlugins'][] = $name;
-        $this->configuration['removePlugins'] = $this->getUniqueArrayValues($this->configuration['removePlugins']);
+        $this->configuration['editor']['config']['removePlugins'][] = $name;
+        $this->configuration['editor']['config']['removePlugins'] = $this->getUniqueArrayValues($this->configuration['editor']['config']['removePlugins']);
     }
 
     private function removeExtraPlugin(string $name): void
     {
-        if (!isset($this->configuration['extraPlugins'])) {
+        if (!isset($this->configuration['editor']['config']['extraPlugins'])) {
             return;
         }
 
-        $this->configuration['extraPlugins'] = array_filter($this->configuration['extraPlugins'], function ($value) use ($name) {
+        $this->configuration['editor']['config']['extraPlugins'] = array_filter($this->configuration['editor']['config']['extraPlugins'], function ($value) use ($name) {
             return $value !== $name;
         });
 
-        if (empty($this->configuration['extraPlugins'])) {
-            unset($this->configuration['extraPlugins']);
+        if (empty($this->configuration['editor']['config']['extraPlugins'])) {
+            unset($this->configuration['editor']['config']['extraPlugins']);
             return;
         }
 
-        $this->configuration['extraPlugins'] = $this->getUniqueArrayValues($this->configuration['extraPlugins']);
+        $this->configuration['editor']['config']['extraPlugins'] = $this->getUniqueArrayValues($this->configuration['editor']['config']['extraPlugins']);
     }
 
     /**

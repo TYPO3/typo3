@@ -27,27 +27,36 @@ final class CKEditor5MigratorTest extends UnitTestCase
     {
         return [
             'empty' => [
-                [],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
-                        ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
+                    'editor' => [
+                        'config' => [
                         ],
                     ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -55,28 +64,36 @@ final class CKEditor5MigratorTest extends UnitTestCase
             // Remove Plugins
             'Remove plugins mapping' => [
                 [
-                    'removePlugins' => ['image'],
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => ['image'],
+                        ],
+                    ],
                 ],
                 [
-                    'removePlugins' => ['Image'],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => ['Image'],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
@@ -84,41 +101,49 @@ final class CKEditor5MigratorTest extends UnitTestCase
             // Remove Buttons
             'Remove buttons mapping' => [
                 [
-                    'removeButtons' => [
-                        'Anchor',
-                        'Superscript',
-                        'Subscript',
-                        'Underline',
-                        'Strike',
-                        'Styles',
+                    'editor' => [
+                        'config' => [
+                            'removeButtons' => [
+                                'Anchor',
+                                'Superscript',
+                                'Subscript',
+                                'Underline',
+                                'Strike',
+                                'Styles',
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [
+                                    'superscript',
+                                    'subscript',
+                                    'underline',
+                                    'strikethrough',
+                                    'style',
+                                ],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [
-                            'superscript',
-                            'subscript',
-                            'underline',
-                            'strikethrough',
-                            'style',
-                        ],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
@@ -126,352 +151,408 @@ final class CKEditor5MigratorTest extends UnitTestCase
             // Toolbar migration
             'CKEditor4 Toolbar Basic' => [
                 [
-                    'toolbar' => [
-                        ['Bold', 'Italic', '-', 'Underline', 'Strike'],
-                        ['Subscript', 'Superscript', 'SoftHyphen'],
-                        '/',
-                        ['NumberedList', 'BulletedList'],
+                    'editor' => [
+                        'config' => [
+                            'toolbar' => [
+                                ['Bold', 'Italic', '-', 'Underline', 'Strike'],
+                                ['Subscript', 'Superscript', 'SoftHyphen'],
+                                '/',
+                                ['NumberedList', 'BulletedList'],
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'bold',
-                            'italic',
-                            '|',
-                            'underline',
-                            'strikethrough',
-                            '|',
-                            'subscript',
-                            'superscript',
-                            'softhyphen',
-                            '-',
-                            'numberedList',
-                            'bulletedList',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'bold',
+                                    'italic',
+                                    '|',
+                                    'underline',
+                                    'strikethrough',
+                                    '|',
+                                    'subscript',
+                                    'superscript',
+                                    'softhyphen',
+                                    '-',
+                                    'numberedList',
+                                    'bulletedList',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'CKEditor4 Toolbar Advanced' => [
                 [
-                    'toolbar' => [
-                        [
-                            'name' => 'basicstyles',
-                            'items' => [
-                                'Bold',
-                                'Italic',
-                                '-',
-                                'Underline',
-                                'Strike',
-                                '-',
-                                'Subscript',
-                                'Superscript',
-                                'SoftHyphen',
-                            ],
-                        ],
-                        '/',
-                        [
-                            'name' => 'list',
-                            'items' => [
-                                'NumberedList', 'BulletedList',
+                    'editor' => [
+                        'config' => [
+                            'toolbar' => [
+                                [
+                                    'name' => 'basicstyles',
+                                    'items' => [
+                                        'Bold',
+                                        'Italic',
+                                        '-',
+                                        'Underline',
+                                        'Strike',
+                                        '-',
+                                        'Subscript',
+                                        'Superscript',
+                                        'SoftHyphen',
+                                    ],
+                                ],
+                                '/',
+                                [
+                                    'name' => 'list',
+                                    'items' => [
+                                        'NumberedList', 'BulletedList',
+                                    ],
+                                ],
                             ],
                         ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'bold',
-                            'italic',
-                            '|',
-                            'underline',
-                            'strikethrough',
-                            '|',
-                            'subscript',
-                            'superscript',
-                            'softhyphen',
-                            '-',
-                            'numberedList',
-                            'bulletedList',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'bold',
+                                    'italic',
+                                    '|',
+                                    'underline',
+                                    'strikethrough',
+                                    '|',
+                                    'subscript',
+                                    'superscript',
+                                    'softhyphen',
+                                    '-',
+                                    'numberedList',
+                                    'bulletedList',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'CKEditor4 ToolbarGroups' => [
                 [
-                    'toolbarGroups' => [
-                        [
-                            'name' => 'basicstyles',
-                            'groups' => ['basicstyles'],
-                        ],
-                        '/',
-                        [
-                            'name' => 'paragraph',
-                            'groups' => ['list', '-', 'indent', 'blocks', '-', 'align'],
+                    'editor' => [
+                        'config' => [
+                            'toolbarGroups' => [
+                                [
+                                    'name' => 'basicstyles',
+                                    'groups' => ['basicstyles'],
+                                ],
+                                '/',
+                                [
+                                    'name' => 'paragraph',
+                                    'groups' => ['list', '-', 'indent', 'blocks', '-', 'align'],
+                                ],
+                            ],
                         ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'bold',
-                            'italic',
-                            'underline',
-                            'strikethrough',
-                            'subscript',
-                            'superscript',
-                            'softhyphen',
-                            '-',
-                            'numberedList',
-                            'bulletedList',
-                            '|',
-                            'indent',
-                            'outdent',
-                            '|',
-                            'blockQuote',
-                            '|',
-                            'alignment:left',
-                            'alignment:center',
-                            'alignment:right',
-                            'alignment:justify',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'bold',
+                                    'italic',
+                                    'underline',
+                                    'strikethrough',
+                                    'subscript',
+                                    'superscript',
+                                    'softhyphen',
+                                    '-',
+                                    'numberedList',
+                                    'bulletedList',
+                                    '|',
+                                    'indent',
+                                    'outdent',
+                                    '|',
+                                    'blockQuote',
+                                    '|',
+                                    'alignment:left',
+                                    'alignment:center',
+                                    'alignment:right',
+                                    'alignment:justify',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'CKEditor4 ToolbarReference' => [
                 [
-                    'toolbar' => 'Basic',
-                    'toolbar_Basic' => [
-                        ['Bold', 'Italic', '-', 'Underline', 'Strike'],
-                        ['Subscript', 'Superscript', 'SoftHyphen'],
-                        '/',
-                        ['NumberedList', 'BulletedList'],
+                    'editor' => [
+                        'config' => [
+                            'toolbar' => 'Basic',
+                            'toolbar_Basic' => [
+                                ['Bold', 'Italic', '-', 'Underline', 'Strike'],
+                                ['Subscript', 'Superscript', 'SoftHyphen'],
+                                '/',
+                                ['NumberedList', 'BulletedList'],
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'bold',
-                            'italic',
-                            '|',
-                            'underline',
-                            'strikethrough',
-                            '|',
-                            'subscript',
-                            'superscript',
-                            'softhyphen',
-                            '-',
-                            'numberedList',
-                            'bulletedList',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'bold',
+                                    'italic',
+                                    '|',
+                                    'underline',
+                                    'strikethrough',
+                                    '|',
+                                    'subscript',
+                                    'superscript',
+                                    'softhyphen',
+                                    '-',
+                                    'numberedList',
+                                    'bulletedList',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'CKEditor5 Flat' => [
                 [
-                    'toolbar' => [
-                        'bold',
-                        'italic',
-                        '|',
-                        'underline',
-                        'strikethrough',
-                        '|',
-                        'subscript',
-                        'superscript',
-                        'softhyphen',
-                        '-',
-                        'numberedList',
-                        'bulletedList',
+                    'editor' => [
+                        'config' => [
+                            'toolbar' => [
+                                'bold',
+                                'italic',
+                                '|',
+                                'underline',
+                                'strikethrough',
+                                '|',
+                                'subscript',
+                                'superscript',
+                                'softhyphen',
+                                '-',
+                                'numberedList',
+                                'bulletedList',
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'bold',
-                            'italic',
-                            '|',
-                            'underline',
-                            'strikethrough',
-                            '|',
-                            'subscript',
-                            'superscript',
-                            'softhyphen',
-                            '-',
-                            'numberedList',
-                            'bulletedList',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'bold',
+                                    'italic',
+                                    '|',
+                                    'underline',
+                                    'strikethrough',
+                                    '|',
+                                    'subscript',
+                                    'superscript',
+                                    'softhyphen',
+                                    '-',
+                                    'numberedList',
+                                    'bulletedList',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'CKEditor5 Nested' => [
                 [
-                    'toolbar' => [
-                        'items' => [
-                            'bold',
-                            'italic',
-                            '|',
-                            'underline',
-                            'strikethrough',
-                            '|',
-                            'subscript',
-                            'superscript',
-                            'softhyphen',
-                            '-',
-                            'numberedList',
-                            'bulletedList',
+                    'editor' => [
+                        'config' => [
+                            'toolbar' => [
+                                'items' => [
+                                    'bold',
+                                    'italic',
+                                    '|',
+                                    'underline',
+                                    'strikethrough',
+                                    '|',
+                                    'subscript',
+                                    'superscript',
+                                    'softhyphen',
+                                    '-',
+                                    'numberedList',
+                                    'bulletedList',
+                                ],
+                            ],
                         ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'bold',
-                            'italic',
-                            '|',
-                            'underline',
-                            'strikethrough',
-                            '|',
-                            'subscript',
-                            'superscript',
-                            'softhyphen',
-                            '-',
-                            'numberedList',
-                            'bulletedList',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'bold',
+                                    'italic',
+                                    '|',
+                                    'underline',
+                                    'strikethrough',
+                                    '|',
+                                    'subscript',
+                                    'superscript',
+                                    'softhyphen',
+                                    '-',
+                                    'numberedList',
+                                    'bulletedList',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'CKEditor5 Grouped' => [
                 [
-                    'toolbar' => [
-                        'items' => [
-                            'bold',
-                            'italic',
-                            [
-                                'label' => 'More basic styles',
-                                'icon' => 'threeVerticalDots',
-                                'items' => ['strikethrough', 'superscript', 'subscript'],
+                    'editor' => [
+                        'config' => [
+                            'toolbar' => [
+                                'items' => [
+                                    'bold',
+                                    'italic',
+                                    [
+                                        'label' => 'More basic styles',
+                                        'icon' => 'threeVerticalDots',
+                                        'items' => ['strikethrough', 'superscript', 'subscript'],
+                                    ],
+                                ],
                             ],
                         ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'bold',
-                            'italic',
-                            [
-                                'label' => 'More basic styles',
-                                'icon' => 'threeVerticalDots',
-                                'items' => ['strikethrough', 'superscript', 'subscript'],
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'bold',
+                                    'italic',
+                                    [
+                                        'label' => 'More basic styles',
+                                        'icon' => 'threeVerticalDots',
+                                        'items' => ['strikethrough', 'superscript', 'subscript'],
+                                    ],
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
                             ],
-                            'softhyphen',
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
@@ -479,297 +560,345 @@ final class CKEditor5MigratorTest extends UnitTestCase
             // TYPO3 11.5 Toolbar Presets
             'CKEditor4 Toolbar Default' => [
                 [
-                    'toolbarGroups' => [
-                        ['name' => 'styles', 'groups' => ['styles', 'format']],
-                        ['name' => 'basicstyles', 'groups' => ['basicstyles']],
-                        ['name' => 'paragraph', 'groups' => ['list', 'indent', 'blocks', 'align']],
-                        ['name' => 'links', 'groups' => ['links']],
-                        ['name' => 'clipboard', 'groups' => ['clipboard', 'cleanup', 'undo']],
-                        ['name' => 'editing', 'groups' => ['spellchecker']],
-                        ['name' => 'insert', 'groups' => ['insert']],
-                        ['name' => 'tools', 'groups' => ['table', 'specialchar', 'insertcharacters']],
-                        ['name' => 'document', 'groups' => ['mode']],
+                    'editor' => [
+                        'config' => [
+                            'toolbarGroups' => [
+                                ['name' => 'styles', 'groups' => ['styles', 'format']],
+                                ['name' => 'basicstyles', 'groups' => ['basicstyles']],
+                                ['name' => 'paragraph', 'groups' => ['list', 'indent', 'blocks', 'align']],
+                                ['name' => 'links', 'groups' => ['links']],
+                                ['name' => 'clipboard', 'groups' => ['clipboard', 'cleanup', 'undo']],
+                                ['name' => 'editing', 'groups' => ['spellchecker']],
+                                ['name' => 'insert', 'groups' => ['insert']],
+                                ['name' => 'tools', 'groups' => ['table', 'specialchar', 'insertcharacters']],
+                                ['name' => 'document', 'groups' => ['mode']],
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'style',
-                            'heading',
-                            '|',
-                            'bold',
-                            'italic',
-                            'underline',
-                            'strikethrough',
-                            'subscript',
-                            'superscript',
-                            'softhyphen',
-                            '|',
-                            'numberedList',
-                            'bulletedList',
-                            '|',
-                            'indent',
-                            'outdent',
-                            '|',
-                            'blockQuote',
-                            '|',
-                            'alignment:left',
-                            'alignment:center',
-                            'alignment:right',
-                            'alignment:justify',
-                            '|',
-                            'link',
-                            '|',
-                            'removeFormat',
-                            '|',
-                            'undo',
-                            'redo',
-                            '|',
-                            'insertImage',
-                            'insertTable',
-                            'horizontalLine',
-                            'specialCharacters',
-                            'pageBreak',
-                            '|',
-                            'insertcharacters',
-                            '|',
-                            'sourceEditing',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'style',
+                                    'heading',
+                                    '|',
+                                    'bold',
+                                    'italic',
+                                    'underline',
+                                    'strikethrough',
+                                    'subscript',
+                                    'superscript',
+                                    'softhyphen',
+                                    '|',
+                                    'numberedList',
+                                    'bulletedList',
+                                    '|',
+                                    'indent',
+                                    'outdent',
+                                    '|',
+                                    'blockQuote',
+                                    '|',
+                                    'alignment:left',
+                                    'alignment:center',
+                                    'alignment:right',
+                                    'alignment:justify',
+                                    '|',
+                                    'link',
+                                    '|',
+                                    'removeFormat',
+                                    '|',
+                                    'undo',
+                                    'redo',
+                                    '|',
+                                    'insertImage',
+                                    'insertTable',
+                                    'horizontalLine',
+                                    'specialCharacters',
+                                    'pageBreak',
+                                    '|',
+                                    'insertcharacters',
+                                    '|',
+                                    'sourceEditing',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'CKEditor4 Toolbar Full' => [
                 [
-                    'toolbarGroups' => [
-                        ['name' => 'clipboard', 'groups' => ['clipboard', 'undo']],
-                        ['name' => 'editing', 'groups' => ['find', 'selection', 'spellchecker']],
-                        ['name' => 'links'],
-                        ['name' => 'insert'],
-                        ['name' => 'tools'],
-                        ['name' => 'table'],
-                        ['name' => 'tabletools'],
-                        ['name' => 'document', 'groups' => ['mode', 'document', 'doctools']],
-                        ['name' => 'others'],
-                        '/',
-                        ['name' => 'basicstyles', 'groups' => ['basicstyles', 'align', 'cleanup']],
-                        ['name' => 'document', 'groups' => ['list', 'indent', 'blocks', 'align', 'bidi']],
-                        ['name' => 'specialcharacters', 'groups' => ['insertcharacters']],
-                        '/',
-                        ['name' => 'styles'],
+                    'editor' => [
+                        'config' => [
+                            'toolbarGroups' => [
+                                ['name' => 'clipboard', 'groups' => ['clipboard', 'undo']],
+                                ['name' => 'editing', 'groups' => ['find', 'selection', 'spellchecker']],
+                                ['name' => 'links'],
+                                ['name' => 'insert'],
+                                ['name' => 'tools'],
+                                ['name' => 'table'],
+                                ['name' => 'tabletools'],
+                                ['name' => 'document', 'groups' => ['mode', 'document', 'doctools']],
+                                ['name' => 'others'],
+                                '/',
+                                ['name' => 'basicstyles', 'groups' => ['basicstyles', 'align', 'cleanup']],
+                                ['name' => 'document', 'groups' => ['list', 'indent', 'blocks', 'align', 'bidi']],
+                                ['name' => 'specialcharacters', 'groups' => ['insertcharacters']],
+                                '/',
+                                ['name' => 'styles'],
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'undo',
-                            'redo',
-                            '|',
-                            'findAndReplace',
-                            '|',
-                            'selectAll',
-                            '|',
-                            'link',
-                            '|',
-                            'insertImage',
-                            'insertTable',
-                            'horizontalLine',
-                            'specialCharacters',
-                            'pageBreak',
-                            '|',
-                            'sourceEditing',
-                            '-',
-                            'bold',
-                            'italic',
-                            'underline',
-                            'strikethrough',
-                            'subscript',
-                            'superscript',
-                            'softhyphen',
-                            '|',
-                            'alignment:left',
-                            'alignment:center',
-                            'alignment:right',
-                            'alignment:justify',
-                            '|',
-                            'removeFormat',
-                            '|',
-                            'numberedList',
-                            'bulletedList',
-                            '|',
-                            'indent',
-                            'outdent',
-                            '|',
-                            'blockQuote',
-                            '|',
-                            'textPartLanguage',
-                            '|',
-                            'insertcharacters',
-                            '-',
-                            'style',
-                            'heading',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'undo',
+                                    'redo',
+                                    '|',
+                                    'findAndReplace',
+                                    '|',
+                                    'selectAll',
+                                    '|',
+                                    'link',
+                                    '|',
+                                    'insertImage',
+                                    'insertTable',
+                                    'horizontalLine',
+                                    'specialCharacters',
+                                    'pageBreak',
+                                    '|',
+                                    'sourceEditing',
+                                    '-',
+                                    'bold',
+                                    'italic',
+                                    'underline',
+                                    'strikethrough',
+                                    'subscript',
+                                    'superscript',
+                                    'softhyphen',
+                                    '|',
+                                    'alignment:left',
+                                    'alignment:center',
+                                    'alignment:right',
+                                    'alignment:justify',
+                                    '|',
+                                    'removeFormat',
+                                    '|',
+                                    'numberedList',
+                                    'bulletedList',
+                                    '|',
+                                    'indent',
+                                    'outdent',
+                                    '|',
+                                    'blockQuote',
+                                    '|',
+                                    'textPartLanguage',
+                                    '|',
+                                    'insertcharacters',
+                                    '-',
+                                    'style',
+                                    'heading',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'CKEditor4 Toolbar Minimal' => [
                 [
-                    'toolbarGroups' => [
-                        ['name' => 'basicstyles', 'groups' => ['basicstyles']],
-                        ['name' => 'clipboard', 'groups' => ['clipboard', 'undo']],
+                    'editor' => [
+                        'config' => [
+                            'toolbarGroups' => [
+                                ['name' => 'basicstyles', 'groups' => ['basicstyles']],
+                                ['name' => 'clipboard', 'groups' => ['clipboard', 'undo']],
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'bold',
-                            'italic',
-                            'underline',
-                            'strikethrough',
-                            'subscript',
-                            'superscript',
-                            'softhyphen',
-                            '|',
-                            'undo',
-                            'redo',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'bold',
+                                    'italic',
+                                    'underline',
+                                    'strikethrough',
+                                    'subscript',
+                                    'superscript',
+                                    'softhyphen',
+                                    '|',
+                                    'undo',
+                                    'redo',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'Migrate contentsCss to array' => [
                 [
-                    'contentsCss' => 'EXT:example/Resources/Public/Css/ckeditor.css',
+                    'editor' => [
+                        'config' => [
+                            'contentsCss' => 'EXT:example/Resources/Public/Css/ckeditor.css',
+                        ],
+                    ],
                 ],
                 [
-                    'contentsCss' => [
-                        'EXT:example/Resources/Public/Css/ckeditor.css',
-                    ],
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'contentsCss' => [
+                                'EXT:example/Resources/Public/Css/ckeditor.css',
+                            ],
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'Remove contentsCss if empty' => [
                 [
-                    'contentsCss' => '',
+                    'editor' => [
+                        'config' => [
+                            'contentsCss' => '',
+                        ],
+                    ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'Migrate contentsCss to a clean array with mixed values' => [
                 [
-                    'contentsCss' => [
-                        'EXT:example/Resources/Public/Css/ckeditor.css  ', // trailing whitespaces are on purpose
-                        '',
-                        'EXT:example/Resources/Public/Css/ckeditor2.css',
-                        42,
+                    'editor' => [
+                        'config' => [
+                            'contentsCss' => [
+                                'EXT:example/Resources/Public/Css/ckeditor.css  ', // trailing whitespaces are on purpose
+                                '',
+                                'EXT:example/Resources/Public/Css/ckeditor2.css',
+                                42,
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'contentsCss' => [
-                        'EXT:example/Resources/Public/Css/ckeditor.css',
-                        'EXT:example/Resources/Public/Css/ckeditor2.css',
-                    ],
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'contentsCss' => [
+                                'EXT:example/Resources/Public/Css/ckeditor.css',
+                                'EXT:example/Resources/Public/Css/ckeditor2.css',
+                            ],
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
@@ -777,154 +906,194 @@ final class CKEditor5MigratorTest extends UnitTestCase
             // Plugin Alignment Handling
             'Remove Alignment Plugin' => [
                 [
-                    'removePlugins' => ['Alignment'],
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => ['Alignment'],
+                        ],
+                    ],
                 ],
                 [
-                    'removePlugins' => ['Alignment'],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => ['Alignment'],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [
+                                    'alignment',
+                                    'alignment:left',
+                                    'alignment:right',
+                                    'alignment:center',
+                                    'alignment:justify',
+                                ],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [
-                            'alignment',
-                            'alignment:left',
-                            'alignment:right',
-                            'alignment:center',
-                            'alignment:justify',
-                        ],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'Configure Alignment like CKEditor4' => [
                 [
-                    'justifyClasses' => [
-                        'left',
-                        'center',
-                        'right',
-                        'justify',
+                    'editor' => [
+                        'config' => [
+                            'justifyClasses' => [
+                                'left',
+                                'center',
+                                'right',
+                                'justify',
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'left'],
+                                    ['name' => 'center', 'className' => 'center'],
+                                    ['name' => 'right', 'className' => 'right'],
+                                    ['name' => 'justify', 'className' => 'justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'left'],
-                            ['name' => 'center', 'className' => 'center'],
-                            ['name' => 'right', 'className' => 'right'],
-                            ['name' => 'justify', 'className' => 'justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'Configure Alignment like CKEditor4 Partially' => [
                 [
-                    'justifyClasses' => [
-                        'left',
-                        'center',
+                    'editor' => [
+                        'config' => [
+                            'justifyClasses' => [
+                                'left',
+                                'center',
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'left'],
+                                    ['name' => 'center', 'className' => 'center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'left'],
-                            ['name' => 'center', 'className' => 'center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'Configure Alignment like CKEditor5' => [
                 [
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'left'],
-                            ['name' => 'center', 'className' => 'center'],
-                            ['name' => 'right', 'className' => 'right'],
-                            ['name' => 'justify', 'className' => 'justify'],
+                    'editor' => [
+                        'config' => [
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'left'],
+                                    ['name' => 'center', 'className' => 'center'],
+                                    ['name' => 'right', 'className' => 'right'],
+                                    ['name' => 'justify', 'className' => 'justify'],
+                                ],
+                            ],
                         ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'left'],
+                                    ['name' => 'center', 'className' => 'center'],
+                                    ['name' => 'right', 'className' => 'right'],
+                                    ['name' => 'justify', 'className' => 'justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'left'],
-                            ['name' => 'center', 'className' => 'center'],
-                            ['name' => 'right', 'className' => 'right'],
-                            ['name' => 'justify', 'className' => 'justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'Configure Alignment like CKEditor5 Partially' => [
                 [
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'center', 'className' => 'center'],
-                            ['name' => 'justify', 'className' => 'justify'],
+                    'editor' => [
+                        'config' => [
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'center', 'className' => 'center'],
+                                    ['name' => 'justify', 'className' => 'justify'],
+                                ],
+                            ],
                         ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
@@ -932,92 +1101,116 @@ final class CKEditor5MigratorTest extends UnitTestCase
             // Plugin Whitespace Handling
             'Remove Whitespace Plugin' => [
                 [
-                    'removePlugins' => [
-                        'whitespace',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [
+                                'whitespace',
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => ['Whitespace'],
-                    'toolbar' => [
-                        'items' => [],
-                        'removeItems' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => ['Whitespace'],
+                            'toolbar' => [
+                                'items' => [],
+                                'removeItems' => [
+                                    'softhyphen',
+                                ],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'Remove Whitespace Plugin (Legacy Name)' => [
                 [
-                    'removePlugins' => [
-                        'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [
+                                'softhyphen',
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => ['Whitespace'],
-                    'toolbar' => [
-                        'items' => [],
-                        'removeItems' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => ['Whitespace'],
+                            'toolbar' => [
+                                'items' => [],
+                                'removeItems' => [
+                                    'softhyphen',
+                                ],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'Toolbaritem softhyphen not added when exists in toolbar' => [
                 [
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
-                            'bold',
+                    'editor' => [
+                        'config' => [
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                    'bold',
+                                ],
+                            ],
                         ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
-                            'bold',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                    'bold',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => true,
-                        'displayWords' => true,
                     ],
                 ],
             ],
@@ -1025,142 +1218,275 @@ final class CKEditor5MigratorTest extends UnitTestCase
             // Plugin WordCount Handling
             'Remove WordCount Plugin' => [
                 [
-                    'removePlugins' => ['WordCount'],
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => ['WordCount'],
+                        ],
+                    ],
                 ],
                 [
-                    'removePlugins' => ['WordCount'],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
-                        ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => ['WordCount'],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
                         ],
                     ],
                 ],
             ],
             'Configure WordCount like CKEditor4' => [
                 [
-                    'wordcount' => [
-                        'showCharCount' => false,
-                        'showWordCount' => false,
+                    'editor' => [
+                        'config' => [
+                            'wordcount' => [
+                                'showCharCount' => false,
+                                'showWordCount' => false,
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => false,
+                                'displayWords' => false,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => false,
-                        'displayWords' => false,
                     ],
                 ],
             ],
             'Configure WordCount like CKEditor4 Partially' => [
                 [
-                    'wordcount' => [
-                        'showCharCount' => false,
+                    'editor' => [
+                        'config' => [
+                            'wordcount' => [
+                                'showCharCount' => false,
+                            ],
+                        ],
                     ],
+
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => false,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => false,
-                        'displayWords' => true,
                     ],
                 ],
             ],
             'Configure WordCount like CKEditor5' => [
                 [
-                    'wordCount' => [
-                        'displayCharacters' => false,
-                        'displayWords' => false,
+                    'editor' => [
+                        'config' => [
+                            'wordCount' => [
+                                'displayCharacters' => false,
+                                'displayWords' => false,
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => false,
+                                'displayWords' => false,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
-                    ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
-                        ],
-                    ],
-                    'wordCount' => [
-                        'displayCharacters' => false,
-                        'displayWords' => false,
                     ],
                 ],
             ],
             'Configure WordCount like CKEditor5 Partially' => [
                 [
-                    'wordCount' => [
-                        'displayCharacters' => false,
+                    'editor' => [
+                        'config' => [
+                            'wordCount' => [
+                                'displayCharacters' => false,
+                            ],
+                        ],
                     ],
                 ],
                 [
-                    'removePlugins' => [],
-                    'toolbar' => [
-                        'items' => [
-                            'softhyphen',
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => false,
+                                'displayWords' => true,
+                            ],
                         ],
-                        'removeItems' => [],
-                        'shouldNotGroupWhenFull' => true,
                     ],
-                    'alignment' => [
-                        'options' => [
-                            ['name' => 'left', 'className' => 'text-start'],
-                            ['name' => 'center', 'className' => 'text-center'],
-                            ['name' => 'right', 'className' => 'text-end'],
-                            ['name' => 'justify', 'className' => 'text-justify'],
+                ],
+            ],
+
+            // Add link classes to ckeditor styles
+            'Add missing link classes to ckeditor styles' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'style' => [
+                                'definitions' => [
+                                    [
+                                        'classes' => ['link-arrow'],
+                                        'element' => 'a',
+                                        'name' => 'Link Arrow',
+                                    ],
+                                    [
+                                        'classes' => ['class-karl'],
+                                        'element' => 'p',
+                                        'name' => 'Class Karl',
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
-                    'wordCount' => [
-                        'displayCharacters' => false,
-                        'displayWords' => true,
+                    'buttons' => [
+                        'link' => [
+                            'properties' => [
+                                'class' => [
+                                    'allowedClasses' => 'link-arrow, link-chevron, class-karl',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'style' => [
+                                'definitions' => [
+                                    [
+                                        'classes' => ['link-arrow'],
+                                        'element' => 'a',
+                                        'name' => 'Link Arrow',
+                                    ],
+                                    [
+                                        'classes' => ['link-chevron'],
+                                        'element' => 'a',
+                                        'name' => 'link-chevron',
+                                    ],
+                                    [
+                                        'classes' => ['class-karl'],
+                                        'element' => 'a',
+                                        'name' => 'class-karl',
+                                    ],
+                                    [
+                                        'classes' => ['class-karl'],
+                                        'element' => 'p',
+                                        'name' => 'Class Karl',
+                                    ],
+                                ],
+                            ],
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                        ],
+                    ],
+                    'buttons' => [
+                        'link' => [
+                            'properties' => [
+                                'class' => [
+                                    'allowedClasses' => 'link-arrow, link-chevron, class-karl',
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],

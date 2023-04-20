@@ -77,14 +77,10 @@ class Richtext
             $configuration['proc.']['overruleMode'] = 'default';
         }
 
-        if (is_array($configuration['editor']['config'] ?? null)) {
-            $configuration['editor']['config'] = GeneralUtility::makeInstance(
-                CKEditor5Migrator::class,
-                $configuration['editor']['config']
-            )->get();
-        }
-
-        return $configuration;
+        return GeneralUtility::makeInstance(
+            CKEditor5Migrator::class,
+            $configuration
+        )->get();
     }
 
     /**
