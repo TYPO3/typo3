@@ -566,16 +566,16 @@ And another one';
         ];
 
         // @todo Error: Object of class TYPO3\CMS\Core\Resource\FileReference could not be converted to string
-//        $altUrlConfiguration = $defaultConfiguration;
-//        $altUrlConfiguration['JSwindow.']['altUrl'] = '/alternative-url';
-//        yield 'JSwindow.altUrl forces an alternative url.' => [
-//            'content' => $imageTag,
-//            'configuration' => $altUrlConfiguration,
-//            'expected' => [
-//                '<a href="/alternative-url' => true,
-//                'data-window-url="/alternative-url' => true,
-//            ],
-//        ];
+        //        $altUrlConfiguration = $defaultConfiguration;
+        //        $altUrlConfiguration['JSwindow.']['altUrl'] = '/alternative-url';
+        //        yield 'JSwindow.altUrl forces an alternative url.' => [
+        //            'content' => $imageTag,
+        //            'configuration' => $altUrlConfiguration,
+        //            'expected' => [
+        //                '<a href="/alternative-url' => true,
+        //                'data-window-url="/alternative-url' => true,
+        //            ],
+        //        ];
 
         $altUrlConfigurationNoDefault = $defaultConfiguration;
         $altUrlConfigurationNoDefault['JSwindow.']['altUrl'] = '/alternative-url';
