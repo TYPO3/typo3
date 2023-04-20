@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Page;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Page\Event\ResolveJavaScriptImportEvent;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -114,7 +115,7 @@ class ImportMap
 
     public function render(
         string $urlPrefix,
-        ?string $nonce,
+        null|string|ConsumableString $nonce,
         bool $includePolyfill = true
     ): string {
         if (count($this->extensionsToLoad) === 0 || count($this->getImportMaps()) === 0) {
@@ -128,7 +129,7 @@ class ImportMap
             $importMap,
             JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_THROW_ON_ERROR
         );
-        $nonceAttr = $nonce !== null ? ' nonce="' . htmlspecialchars($nonce) . '"' : '';
+        $nonceAttr = $nonce !== null ? ' nonce="' . htmlspecialchars((string)$nonce) . '"' : '';
         $html[] = sprintf('<script type="importmap"%s>%s</script>', $nonceAttr, $json);
 
         if ($includePolyfill) {

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http\Security;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Security\InvalidReferrerException;
 use TYPO3\CMS\Core\Http\Security\MissingReferrerException;
@@ -213,7 +214,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
         $request = $this->createMock(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnCallback(static fn (string $name): mixed => match ($name) {
             'normalizedParams' => $normalizedParams,
-            'nonce' => $nonce,
+            'nonce' => $nonce !== null ? new ConsumableString($nonce->b64) : null,
             default => null,
         });
         $request->method('getServerParams')->willReturn(['HTTP_REFERER' => $referrer]);

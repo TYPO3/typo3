@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
+use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -34,7 +35,9 @@ final class PageRendererTest extends UnitTestCase
     {
         parent::setUp();
         $importMapMock = $this->createMock(ImportMap::class);
-        $importMapMock->method('render')->with(self::isType('string'), self::isType('string'))->willReturn('');
+        $importMapMock->method('render')
+            ->with(self::isType('string'), self::isInstanceOf(ConsumableString::class))
+            ->willReturn('');
         $importMapFactoryMock = $this->createMock(ImportMapFactory::class);
         $importMapFactoryMock->method('create')->willReturn($importMapMock);
         GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryMock);

@@ -24,6 +24,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\RequestId;
+use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
@@ -45,7 +46,7 @@ final class ContentSecurityPolicyHeaders implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request = $request->withAttribute('nonce', $this->requestId->nonce);
+        $request = $request->withAttribute('nonce', new ConsumableString($this->requestId->nonce->b64));
         $response = $handler->handle($request);
 
         if (!$this->features->isFeatureEnabled('security.frontend.enforceContentSecurityPolicy')) {

@@ -19,9 +19,9 @@ namespace TYPO3\CMS\Core\Http\Security;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
-use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -85,8 +85,8 @@ class ReferrerEnforcer
                 'EXT:core/Resources/Public/JavaScript/ReferrerRefresh.js'
             );
             $attributes = ['src' => $scriptUri];
-            if ($nonce instanceof Nonce) {
-                $attributes['nonce'] = $nonce->b64;
+            if ($nonce instanceof ConsumableString) {
+                $attributes['nonce'] = $nonce->consume();
             }
             // simulating navigate event by clicking anchor link
             // since meta-refresh won't change `document.referrer` in e.g. Firefox
