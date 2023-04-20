@@ -2275,18 +2275,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $timeTracker->push($label);
                     $nonCacheableContent = '';
                     $contentObjectRendererForNonCacheable = unserialize($nonCacheableData[$nonCacheableKey]['cObj']);
-                    /* @var ContentObjectRenderer $contentObjectRendererForNonCacheable */
-                    $contentObjectRendererForNonCacheable->setRequest($request->withAttribute('currentContentObject', $contentObjectRendererForNonCacheable));
-                    switch ($nonCacheableData[$nonCacheableKey]['type']) {
-                        case 'COA':
-                            $nonCacheableContent = $contentObjectRendererForNonCacheable->cObjGetSingle('COA', $nonCacheableData[$nonCacheableKey]['conf']);
-                            break;
-                        case 'FUNC':
-                            $nonCacheableContent = $contentObjectRendererForNonCacheable->cObjGetSingle('USER', $nonCacheableData[$nonCacheableKey]['conf']);
-                            break;
-                        case 'POSTUSERFUNC':
-                            $nonCacheableContent = $contentObjectRendererForNonCacheable->callUserFunction($nonCacheableData[$nonCacheableKey]['postUserFunc'], $nonCacheableData[$nonCacheableKey]['conf'], $nonCacheableData[$nonCacheableKey]['content']);
-                            break;
+                    if ($contentObjectRendererForNonCacheable instanceof ContentObjectRenderer) {
+                        $contentObjectRendererForNonCacheable->setRequest($request->withAttribute('currentContentObject', $contentObjectRendererForNonCacheable));
+                        $nonCacheableContent = match ($nonCacheableData[$nonCacheableKey]['type']) {
+                            'COA' => $contentObjectRendererForNonCacheable->cObjGetSingle('COA', $nonCacheableData[$nonCacheableKey]['conf']),
+                            'FUNC' => $contentObjectRendererForNonCacheable->cObjGetSingle('USER', $nonCacheableData[$nonCacheableKey]['conf']),
+                            'POSTUSERFUNC' => $contentObjectRendererForNonCacheable->callUserFunction($nonCacheableData[$nonCacheableKey]['postUserFunc'], $nonCacheableData[$nonCacheableKey]['conf'], $nonCacheableData[$nonCacheableKey]['content']),
+                            default => '',
+                        };
                     }
                     $this->content .= $nonCacheableContent;
                     $this->content .= substr($contentPart, 35);
@@ -2300,6 +2296,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             } else {
                 $this->content .= $contentPart;
             }
+        }
+        // invokes permanent, general handlers
+        foreach ($nonCacheableData as $item) {
+            if (empty($item['permanent']) || empty($item['target'])) {
+                continue;
+            }
+            $parameters = array_merge($item['parameters'] ?? [], ['content' => $this->content]);
+            $this->content = GeneralUtility::callUserFunction($item['target'], $parameters) ?? $this->content;
         }
     }
 

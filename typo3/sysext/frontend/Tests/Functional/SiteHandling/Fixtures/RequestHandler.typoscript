@@ -1,0 +1,15 @@
+config {
+  debug = 1
+  no_cache = 0
+}
+
+page = PAGE
+page {
+  typeNum = 0
+  includeCSS {
+    app = fileadmin/app.css
+  }
+  includeJS {
+    app = fileadmin/app.js
+  }
+}

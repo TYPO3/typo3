@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Frontend\Cache\NonceValueSubstitution;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent;
@@ -112,6 +113,11 @@ class RequestHandler implements RequestHandlerInterface
         // Generate page
         if ($controller->isGeneratePage()) {
             $this->timeTracker->push('Page generation');
+
+            // forward `ConsumableString` containing a nonce to `PageRenderer`
+            $nonce = $request->getAttribute('nonce');
+            $this->getPageRenderer()->setNonce($nonce);
+
             $controller->generatePage_preProcessing();
             $controller->preparePageContentGeneration($request);
 
@@ -130,6 +136,18 @@ class RequestHandler implements RequestHandlerInterface
 
             $this->timeTracker->pull($this->timeTracker->LR ? $controller->content : '');
             $this->timeTracker->decStackPointer();
+
+            // in case the nonce value was actually consumed during the rendering process, add a
+            // permanent substitution of the current value (that will be cached), with a future
+            // value (that will be generated and issued in the HTTP CSP header)
+            if (count($nonce) > 0) {
+                // nonce was consumed
+                $controller->config['INTincScript'][] = [
+                    'target' => NonceValueSubstitution::class . '->substituteNonce',
+                    'parameters' => ['nonce' => $nonce->value],
+                    'permanent' => true,
+                ];
+            }
 
             $controller->generatePage_postProcessing($request);
             $this->timeTracker->pull();
