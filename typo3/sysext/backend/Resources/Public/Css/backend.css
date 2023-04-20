@@ -3802,7 +3802,6 @@ typo3-backend-live-search-result-item-action>* .livesearch-result-item-title .sm
   }
 }
 .resource-tile{position:relative;padding-top:98%;color:var(--resource-tile-color);background-color:var(--resource-tile-bg);border:1px solid var(--resource-tile-border-color);border-radius:var(--resource-tile-border-radius)}
-.resource-tile a,.resource-tile button{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;text-decoration:none;outline:0;color:inherit}
 .resource-tile:hover{--resource-tile-color:var(--resource-tile-hover-color);--resource-tile-bg:var(--resource-tile-hover-bg);--resource-tile-border-color:var(--resource-tile-hover-border-color);text-decoration:none}
 .resource-tile:focus-within{--resource-tile-color:var(--resource-tile-focus-color);--resource-tile-bg:var(--resource-tile-focus-bg);--resource-tile-border-color:var(--resource-tile-focus-border-color)}
 .resource-tile.active{--resource-tile-color:var(--resource-tile-active-color);--resource-tile-bg:var(--resource-tile-active-bg);--resource-tile-border-color:var(--resource-tile-active-border-color)}
@@ -3811,6 +3810,7 @@ typo3-backend-live-search-result-item-action>* .livesearch-result-item-title .sm
 .resource-tile.danger{--resource-tile-color:var(--resource-tile-danger-color);--resource-tile-bg:var(--resource-tile-danger-bg);--resource-tile-border-color:var(--resource-tile-danger-border-color)}
 .resource-tile.warning{--resource-tile-color:var(--resource-tile-warning-color);--resource-tile-bg:var(--resource-tile-warning-bg);--resource-tile-border-color:var(--resource-tile-warning-border-color)}
 .resource-tile.active .resource-tile-checkbox,.resource-tile.selected .resource-tile-checkbox,.resource-tile:hover .resource-tile-checkbox{display:block}
+.resource-tile>a,.resource-tile>button{color:inherit;border:none;background:0 0;padding:0;position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;text-decoration:none;outline:0;align-items:unset}
 .resource-tile-label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 .resource-tile-preview{flex:1;position:relative;margin:var(--resource-tile-spacing);margin-bottom:0}
 .resource-tile-preview-content{position:absolute;top:0;left:0;height:100%;width:100%}

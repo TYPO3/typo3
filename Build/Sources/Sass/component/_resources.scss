@@ -69,20 +69,6 @@
     background-color: var(--resource-tile-bg);
     border: 1px solid var(--resource-tile-border-color);
     border-radius: var(--resource-tile-border-radius);
-
-    a,
-    button {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        flex-direction: column;
-        text-decoration: none;
-        outline: none;
-        color: inherit;
-    }
 }
 
 .resource-tile:hover {
@@ -135,6 +121,24 @@
     .resource-tile-checkbox {
         display: block;
     }
+}
+
+.resource-tile > a,
+.resource-tile > button {
+    color: inherit;
+    border: none;
+    background: none;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    outline: none;
+    align-items: unset;
 }
 
 .resource-tile-label {
