@@ -164,7 +164,7 @@ class PathUtility
      */
     public static function getCommonPrefix(array $paths): ?string
     {
-        $paths = array_map([GeneralUtility::class, 'fixWindowsFilePath'], $paths);
+        $paths = array_map(GeneralUtility::fixWindowsFilePath(...), $paths);
         $commonPath = null;
         if (count($paths) === 1) {
             $commonPath = array_shift($paths);

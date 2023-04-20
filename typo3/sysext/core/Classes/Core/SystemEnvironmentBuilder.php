@@ -114,7 +114,7 @@ class SystemEnvironmentBuilder
     {
         $isCli = self::isCliRequestType($requestType);
         // Absolute path of the entry script that was called
-        $scriptPath = GeneralUtility::fixWindowsFilePath(self::getPathThisScript($isCli));
+        $scriptPath = GeneralUtility::fixWindowsFilePath((string)self::getPathThisScript($isCli));
         $rootPath = self::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
         // Check if the root path has been set in the environment (e.g. by the composer installer)
         $rootPathFromEnvironment = self::getDefinedPathRoot();
@@ -160,7 +160,7 @@ class SystemEnvironmentBuilder
         }
         $isCli = self::isCliRequestType($requestType);
         // Absolute path of the entry script that was called
-        $scriptPath = GeneralUtility::fixWindowsFilePath(self::getPathThisScript($isCli));
+        $scriptPath = GeneralUtility::fixWindowsFilePath((string)self::getPathThisScript($isCli));
         return self::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
     }
 

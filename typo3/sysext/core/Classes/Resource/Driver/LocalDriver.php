@@ -1087,7 +1087,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             /** @var \RecursiveDirectoryIterator $current */
             $current = $iterator->current();
             $fileName = $current->getFilename();
-            $itemSubPath = GeneralUtility::fixWindowsFilePath($iterator->getSubPathname());
+            $itemSubPath = GeneralUtility::fixWindowsFilePath((string)$iterator->getSubPathname());
             if ($current->isDir() && !($fileName === '..' || $fileName === '.')) {
                 GeneralUtility::mkdir($targetFolderPath . '/' . $itemSubPath);
             } elseif ($current->isFile()) {

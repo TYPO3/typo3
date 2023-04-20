@@ -50,7 +50,7 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
         $this->type = (string)$type;
         $this->addMultiple($parts);
         $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $callingFile = GeneralUtility::fixWindowsFilePath($backTrace[0]['file'] ?? '');
+        $callingFile = GeneralUtility::fixWindowsFilePath((string)($backTrace[0]['file'] ?? ''));
         if ($callingFile !== GeneralUtility::fixWindowsFilePath(__FILE__)) {
             trigger_error(
                 'Do not use CompositeExpression constructor directly, use static and() and or() factory methods.',
@@ -68,7 +68,7 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
     public function add($part): self
     {
         $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $callingFile = GeneralUtility::fixWindowsFilePath($backTrace[0]['file'] ?? '');
+        $callingFile = GeneralUtility::fixWindowsFilePath((string)($backTrace[0]['file'] ?? ''));
         if ($callingFile !== GeneralUtility::fixWindowsFilePath(__FILE__)
             && !str_contains($callingFile, 'doctrine/dbal/src/Query/Expression/CompositeExpression.php')
         ) {
@@ -98,7 +98,7 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
     public function addMultiple(array $parts = []): self
     {
         $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $callingFile = GeneralUtility::fixWindowsFilePath($backTrace[0]['file'] ?? '');
+        $callingFile = GeneralUtility::fixWindowsFilePath((string)($backTrace[0]['file'] ?? ''));
         if ($callingFile !== GeneralUtility::fixWindowsFilePath(__FILE__)
             && !str_contains($callingFile, 'doctrine/dbal/src/Query/Expression/CompositeExpression.php')
         ) {

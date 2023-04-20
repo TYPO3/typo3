@@ -214,7 +214,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
      */
     public function removeDirectory($extDirPath)
     {
-        $extDirPath = GeneralUtility::fixWindowsFilePath($extDirPath);
+        $extDirPath = GeneralUtility::fixWindowsFilePath((string)$extDirPath);
         $extensionPathWithoutTrailingSlash = rtrim($extDirPath, '/');
         if (is_link($extensionPathWithoutTrailingSlash) && !Environment::isWindows()) {
             $result = unlink($extensionPathWithoutTrailingSlash);

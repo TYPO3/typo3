@@ -252,7 +252,7 @@ EOF;
      */
     protected function makePathRelative($packagePath, $realPathOfClassFile, $relativeToRoot = true)
     {
-        $realPathOfClassFile = GeneralUtility::fixWindowsFilePath($realPathOfClassFile);
+        $realPathOfClassFile = GeneralUtility::fixWindowsFilePath((string)$realPathOfClassFile);
         $packageRealPath = GeneralUtility::fixWindowsFilePath((string)realpath($packagePath));
         $relativePackagePath = rtrim(substr($packagePath, strlen($this->installationRoot)), '/');
         if ($relativeToRoot) {

@@ -142,7 +142,7 @@ abstract class AbstractImagePreset extends AbstractPreset
      */
     protected function cleanUpPath($path)
     {
-        $path = GeneralUtility::fixWindowsFilePath($path);
+        $path = GeneralUtility::fixWindowsFilePath((string)$path);
         // Add trailing slash if missing
         if (!preg_match('/[\\/]$/', $path)) {
             $path .= '/';

@@ -100,7 +100,7 @@ class CommandUtility
         $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
         $isExt = Environment::isWindows() ? '.exe' : '';
         if (!$path) {
-            $path = $gfxConf['processor_path'];
+            $path = (string)($gfxConf['processor_path'] ?? '');
         }
         $path = GeneralUtility::fixWindowsFilePath($path);
         // This is only used internally, has no effect outside

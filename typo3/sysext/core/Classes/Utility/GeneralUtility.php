@@ -2001,11 +2001,8 @@ class GeneralUtility
 
     /**
      * Fixes a path for windows-backslashes and reduces double-slashes to single slashes
-     *
-     * @param string $theFile File path to process
-     * @return string
      */
-    public static function fixWindowsFilePath($theFile)
+    public static function fixWindowsFilePath(string $theFile): string
     {
         return str_replace(['\\', '//'], '/', $theFile);
     }
@@ -2668,7 +2665,7 @@ class GeneralUtility
             );
             /** @var \SplFileInfo $item */
             foreach ($iterator as $item) {
-                $target = $destination . '/' . static::fixWindowsFilePath($iterator->getSubPathName());
+                $target = $destination . '/' . static::fixWindowsFilePath((string)$iterator->getSubPathName());
                 if ($item->isDir()) {
                     static::mkdir($target);
                 } else {
@@ -2794,7 +2791,7 @@ class GeneralUtility
     public static function unlink_tempfile($uploadedTempFileName)
     {
         if ($uploadedTempFileName) {
-            $uploadedTempFileName = self::fixWindowsFilePath($uploadedTempFileName);
+            $uploadedTempFileName = self::fixWindowsFilePath((string)$uploadedTempFileName);
             if (
                 self::validPathStr($uploadedTempFileName)
                 && (
