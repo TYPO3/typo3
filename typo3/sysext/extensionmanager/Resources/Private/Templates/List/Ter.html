@@ -19,8 +19,8 @@
 
     <h1><f:translate key="getExtensions">Get Extensions</f:translate></h1>
     <f:render partial="List/UploadForm" />
-    <div class="row row-cols-auto align-items-end justify-content-between g-3">
-        <div class="col">
+    <div class="form-row justify-content-between">
+        <div class="form-group">
             <f:form class="typo3-extensionmanager-searchTerForm" action="ter">
                 <div class="input-group">
                     <f:form.textfield name="search" value="{search}" class="form-control" placeholder="{f:translate(key:'extensionList.search')}" />
@@ -30,7 +30,7 @@
                 </div>
             </f:form>
         </div>
-        <div class="col">
+        <div class="form-group">
             <f:render partial="List/UpdateFromTer" />
         </div>
     </div>

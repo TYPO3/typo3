@@ -57,7 +57,7 @@ class PasswordGenerator {
         // Also remove clearable possibility
         if (this.humanReadableField.isClearable || this.humanReadableField.classList.contains('t3js-clearable')) {
           this.humanReadableField.classList.remove('t3js-clearable');
-          const clearableContainer = <HTMLDivElement>this.humanReadableField.closest('div.form-control-clearable');
+          const clearableContainer = <HTMLDivElement>this.humanReadableField.closest('div.form-control-clearable-wrapper');
           if (clearableContainer) {
             clearableContainer.classList.remove('form-control-clearable');
             const closeButton = <HTMLButtonElement>clearableContainer.querySelector('button.close');

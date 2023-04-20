@@ -1,0 +1,13 @@
+//
+// Spacer
+//
+// Usage
+// -----
+//
+// <hr class="spacer">
+//
+hr.spacer {
+    border-top: none;
+    margin-top: var(--typo3-spacing);
+    margin-bottom: var(--typo3-spacing);
+}

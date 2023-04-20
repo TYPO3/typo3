@@ -5,8 +5,7 @@
 
 <f:layout name="Module"/>
 
-<f:section name="Content">
-
+<f:section name="Before">
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/context-menu.js',
@@ -19,11 +18,15 @@
             'collapse-state-search.numberOfSearchMatches': 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:panel.header.numberOfSearchMatches'
         }"
     />
-
     <f:variable name="args" value="{0: 'web', 1: pageUid}" />
-    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+    <typo3-immediate-action
+        action="TYPO3.Backend.Storage.ModuleStateStorage.update"
+        args="{args -> f:format.json() -> f:format.htmlspecialchars()}"
+    ></typo3-immediate-action>
+</f:section>
 
-    <f:comment><!-- Heading --></f:comment>
+<f:section name="Content">
+
     <h1>
         <f:if condition="{templateTitle}">
             <f:then>

@@ -118,6 +118,7 @@ class EmailElement extends AbstractFormElement
             'maxlength' => '254',
             'class' => implode(' ', [
                 'form-control',
+                'form-control-clearable',
                 't3js-clearable',
                 'hasDefaultValue',
             ]),

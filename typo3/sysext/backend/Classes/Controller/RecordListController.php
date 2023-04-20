@@ -195,7 +195,7 @@ class RecordListController
         }
         $clipboardHtml = '';
         if ($this->allowClipboard && $this->moduleData->get('clipBoard') && ($tableListHtml || $clipboard->hasElements())) {
-            $clipboardHtml = '<typo3-backend-clipboard-panel return-url="' . htmlspecialchars($dbList->listURL()) . '"></typo3-backend-clipboard-panel>';
+            $clipboardHtml = '<hr class="spacer"><typo3-backend-clipboard-panel return-url="' . htmlspecialchars($dbList->listURL()) . '"></typo3-backend-clipboard-panel>';
         }
 
         $view->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:mlang_tabs_tab'), $title);
@@ -519,10 +519,14 @@ class RecordListController
                 $output .= '<option value="' . htmlspecialchars($targetUrl) . '">' . htmlspecialchars($languageTitle) . '</option>';
             }
 
-            return '<div class="row row-cols-auto align-items-end g-3 mb-4"><div class="col"><div class="form-group">'
-                . '<select class="form-select" name="createNewLanguage" data-global-event="change" data-action-navigate="$value">'
-                . $output
-                . '</select></div></div></div>';
+            return ''
+                . '<div class="form-row">'
+                    . '<div class="form-group">'
+                        . '<select class="form-select" name="createNewLanguage" data-global-event="change" data-action-navigate="$value">'
+                        . $output
+                        . '</select>'
+                    . '</div>'
+                . '</div>';
         }
         return '';
     }

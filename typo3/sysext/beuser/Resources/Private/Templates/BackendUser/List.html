@@ -55,16 +55,14 @@
                 </tbody>
             </table>
         </div>
-        <div class="mb-4">
-            <f:link.action action="compare" title="{f:translate(key: 'compareUserList', default: 'Compare user list')}" class="btn btn-default t3js-acceptance-compare">
-                <core:icon identifier="actions-code-compare" />
-                {f:translate(key: 'compareUserList', default: 'Compare user list')}
-            </f:link.action>
-            <f:link.action action="removeAllFromCompareList" class="btn btn-default">
-                <core:icon identifier="actions-selection-delete" />
-                {f:translate(key: 'clearCompareList')}
-            </f:link.action>
-        </div>
+        <f:link.action action="compare" title="{f:translate(key: 'compareUserList', default: 'Compare user list')}" class="btn btn-default t3js-acceptance-compare">
+            <core:icon identifier="actions-code-compare" />
+            {f:translate(key: 'compareUserList', default: 'Compare user list')}
+        </f:link.action>
+        <f:link.action action="removeAllFromCompareList" class="btn btn-default">
+            <core:icon identifier="actions-selection-delete" />
+            {f:translate(key: 'clearCompareList')}
+        </f:link.action>
 
         <h2>{f:translate(key: 'section.allUsers', default: 'All backend users')}</h2>
     </f:if>

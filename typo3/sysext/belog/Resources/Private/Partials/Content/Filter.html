@@ -5,9 +5,9 @@
     data-namespace-typo3-fluid="true">
 
 <f:form object="{constraint}" action="list" name="constraint" class="belog-filter-form">
-    <div class="row row-cols-auto align-items-end g-3 mb-4">
+    <div class="form-row">
 
-        <div class="col">
+        <div class="form-group">
             <label for="belog-users" class="form-label"><f:translate key="users" /></label>
             <f:form.select
                 property="userOrGroup"
@@ -17,7 +17,7 @@
             />
         </div>
 
-        <div class="col">
+        <div class="form-group">
             <label for="belog-max" class="form-label"><f:translate key="max" /></label>
             <f:form.select
                 property="number"
@@ -28,7 +28,7 @@
         </div>
 
         <f:if condition="{showWorkspaceSelector}">
-            <div class="col">
+            <div class="form-group">
                 <label for="belog-workspaces" class="form-label"><f:translate key="workspace" /></label>
                 <f:form.select
                     property="workspaceUid"
@@ -39,7 +39,7 @@
             </div>
         </f:if>
 
-        <div class="col">
+        <div class="form-group">
             <label for="belog-pageId" class="form-label"><f:translate key="chLog_menuPageId" /></label>
             <div class="input-group">
                 <f:form.textfield
@@ -62,7 +62,7 @@
         </div>
 
         <f:if condition="{pageId}">
-            <div class="col">
+            <div class="form-group">
                 <label for="belog-depth" class="form-label"><f:translate key="chLog_menuDepth" /></label>
                 <f:form.select
                     property="depth"
@@ -73,7 +73,7 @@
             </div>
         </f:if>
 
-        <div class="col">
+        <div class="form-group">
             <label for="belog-channel" class="form-label"><f:translate key="channel" /></label>
             <f:form.select
                 property="channel"
@@ -86,7 +86,7 @@
             />
         </div>
 
-        <div class="col">
+        <div class="form-group">
             <label for="belog-level" class="form-label"><f:translate key="levels" /></label>
             <f:form.select
                 property="level"
@@ -99,7 +99,7 @@
             />
         </div>
 
-        <div class="col">
+        <div class="form-group">
             <label for="manualDateStart" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:from" /></label>
             <div class="input-group">
                 <f:form.textfield
@@ -107,7 +107,7 @@
                     value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'{settings.dateTimeFormat}', date: '{constraint.manualDateStart}')}\")}"
                     id="manualDateStart"
                     additionalAttributes="{'autocomplete': 'off'}"
-                    class="form-control t3js-datetimepicker t3js-clearable"
+                    class="form-control form-control-clearable t3js-datetimepicker t3js-clearable"
                     data="{date-type: 'datetime'}"
                 />
                 <f:form.hidden
@@ -120,7 +120,7 @@
             </div>
         </div>
 
-        <div class="col">
+        <div class="form-group">
             <label for="manualDateStop" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:to" /></label>
             <div class="input-group">
                 <f:form.textfield
@@ -128,7 +128,7 @@
                     value="{f:format.date(format:'{settings.dateTimeFormat}', date: '{constraint.manualDateStop}')}"
                     additionalAttributes="{'autocomplete': 'off'}"
                     id="manualDateStop"
-                    class="form-control t3js-datetimepicker t3js-clearable"
+                    class="form-control form-control-clearable t3js-datetimepicker t3js-clearable"
                     data="{date-type: 'datetime'}"
                 />
                 <f:form.hidden
@@ -141,8 +141,8 @@
             </div>
         </div>
 
-        <div class="col">
-            <f:form.button type="submit" name="operation" value="filter" class="btn btn-light">{f:translate(key: 'set')}</f:form.button>
+        <div class="form-group align-self-end">
+            <f:form.button type="submit" name="operation" value="filter" class="btn btn-default">{f:translate(key: 'set')}</f:form.button>
             <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-link">{f:translate(key: 'reset')}</f:form.button>
         </div>
     </div>

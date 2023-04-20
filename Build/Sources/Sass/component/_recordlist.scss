@@ -7,7 +7,7 @@
     box-shadow: var(--panel-box-shadow);
     border-radius: var(--panel-border-radius);
     border: var(--panel-border-width) solid var(--panel-default-border-color);
-    margin-bottom: var(--panel-spacing);
+    margin-bottom: var(--typo3-spacing);
 
     table tr {
         td.deletePlaceholder {
@@ -26,6 +26,10 @@
 
     .pagination {
         display: inline-flex;
+    }
+
+    + .recordlist {
+        margin-top: calc(var(--typo3-spacing) * 1.5);
     }
 }
 

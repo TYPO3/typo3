@@ -61,46 +61,42 @@
         >
             <div class="panel-body">
                 <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
-                    <div class="row">
-                        <div class="col-12">
-                            <f:for each="{conditions}" as="condition">
-                                <input type="hidden" name="{type}Conditions[{condition.hash}]" value="0" />
-                                <div class="form-check form-switch">
-                                    <input
-                                        type="checkbox"
-                                        class="form-check-input"
-                                        name="{type}Conditions[{condition.hash}]"
-                                        id="{type}Condition{condition.hash}"
-                                        value="1"
-                                        {f:if(condition: condition.active, then:'checked="checked"')}
-                                        data-global-event="change"
-                                        data-action-submit="$form"
-                                        data-value-selector="input[name='{type}Conditions[{condition.hash}]']"
-                                    />
-                                    <label class="form-check-label" for="{type}Condition{condition.hash}">
-                                        <f:if condition="{displayConstantSubstitutions} && {condition.originalValue}">
-                                            <f:then>
-                                                <span class="font-monospace">[{condition.value}]</span>
-                                                <span class="diff-item-result diff-item-result-inline font-monospace p-0">
-                                                    <f:format.raw>
-                                                        <f:translate
-                                                            key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:panel.info.conditionWithConstant"
-                                                            arguments="{
-                                                                0: '{backend:typoScript.fineDiff(from: condition.originalValue, to: condition.value)}'
-                                                            }"
-                                                        />
-                                                    </f:format.raw>
-                                                </span>
-                                            </f:then>
-                                            <f:else>
-                                                <span class="font-monospace">[{condition.value}]</span>
-                                            </f:else>
-                                        </f:if>
-                                    </label>
-                                </div>
-                            </f:for>
+                    <f:for each="{conditions}" as="condition">
+                        <input type="hidden" name="{type}Conditions[{condition.hash}]" value="0" />
+                        <div class="form-check form-switch">
+                            <input
+                                type="checkbox"
+                                class="form-check-input"
+                                name="{type}Conditions[{condition.hash}]"
+                                id="{type}Condition{condition.hash}"
+                                value="1"
+                                {f:if(condition: condition.active, then:'checked="checked"')}
+                                data-global-event="change"
+                                data-action-submit="$form"
+                                data-value-selector="input[name='{type}Conditions[{condition.hash}]']"
+                            />
+                            <label class="form-check-label" for="{type}Condition{condition.hash}">
+                                <f:if condition="{displayConstantSubstitutions} && {condition.originalValue}">
+                                    <f:then>
+                                        <span class="font-monospace">[{condition.value}]</span>
+                                        <span class="diff-item-result diff-item-result-inline font-monospace p-0">
+                                            <f:format.raw>
+                                                <f:translate
+                                                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:panel.info.conditionWithConstant"
+                                                    arguments="{
+                                                        0: '{backend:typoScript.fineDiff(from: condition.originalValue, to: condition.value)}'
+                                                    }"
+                                                />
+                                            </f:format.raw>
+                                        </span>
+                                    </f:then>
+                                    <f:else>
+                                        <span class="font-monospace">[{condition.value}]</span>
+                                    </f:else>
+                                </f:if>
+                            </label>
                         </div>
-                    </div>
+                    </f:for>
                 </form>
             </div>
         </div>

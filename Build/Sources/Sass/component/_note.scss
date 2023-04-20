@@ -68,8 +68,8 @@ $note-padding: 1rem;
 //
 .note-list {
     display: grid;
-    gap: calc(var(--typo3-component-spacing) / 2);
-    margin-bottom: var(--typo3-component-spacing);
+    gap: var(--typo3-spacing);
+    margin-bottom: var(--typo3-spacing);
 
     .note {
         margin-bottom: 0;
@@ -83,7 +83,7 @@ $note-padding: 1rem;
     color: var(--note-color);
     background-color: var(--note-bg);
     border-radius: var(--typo3-component-border-radius);
-    margin-bottom: var(--typo3-component-spacing);
+    margin-bottom: var(--typo3-spacing);
     box-shadow: var(--typo3-component-box-shadow);
 
     @include note-use-variant('default');

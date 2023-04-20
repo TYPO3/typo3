@@ -76,16 +76,16 @@ $font-family-sans-serif: Verdana, Arial, Helvetica, sans-serif;
 $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 $font-size-root: 16px;
 $font-size-base: 12px;
-$font-size-large: ceil(($font-size-base * 1.25)); // ~15px
-$font-size-small: 11px; // ~11px
-$h1-font-size: $font-size-base * 2.25;
-$h2-font-size: $font-size-base * 1.6;
-$h3-font-size: $font-size-base * 1.4;
-$h4-font-size: $font-size-base * 1.25;
-$headings-line-height: 1.1;
+$font-size-large: 16px;
+$font-size-small: 11px;
+$h1-font-size: 28px;
+$h2-font-size: 20px;
+$h3-font-size: 16px;
+$h4-font-size: 14px;
 
-// Paragraphs
-$paragraph-margin-bottom: .5rem;
+// Spacings
+$headings-margin-bottom: calc(var(--typo3-spacing) / 2);
+$paragraph-margin-bottom: var(--typo3-spacing);
 
 // Components
 $padding-base-vertical: 6px;

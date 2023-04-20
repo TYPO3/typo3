@@ -720,10 +720,10 @@ export default (function() {
    */
   FormEngine.reinitialize = function(): void {
     // Apply "close" button to all input / datetime fields
-    const clearables = Array.from(document.querySelectorAll('.t3js-clearable'));
+    const clearables = document.querySelectorAll('.t3js-clearable') as NodeListOf<HTMLInputElement>;
     if (clearables.length > 0) {
       import('@typo3/backend/input/clearable').then(function() {
-        clearables.forEach(clearableField => (clearableField as any).clearable());
+        clearables.forEach(clearableField => clearableField.clearable());
       });
     }
 

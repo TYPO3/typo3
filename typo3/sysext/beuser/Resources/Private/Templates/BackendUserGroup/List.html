@@ -44,16 +44,14 @@
                 </tbody>
             </table>
         </div>
-        <div class="mb-4">
-            <f:link.action action="compareGroups" class="btn btn-default t3js-acceptance-compare">
-                <core:icon identifier="actions-code-compare" />
-                {f:translate(key: 'compareBackendUsersGroups')}
-            </f:link.action>
-            <f:link.action action="removeAllGroupsFromCompareList" class="btn btn-default">
-                <core:icon identifier="actions-selection-delete" />
-                {f:translate(key: 'clearCompareList')}
-            </f:link.action>
-        </div>
+        <f:link.action action="compareGroups" class="btn btn-default t3js-acceptance-compare">
+            <core:icon identifier="actions-code-compare" />
+            {f:translate(key: 'compareBackendUsersGroups')}
+        </f:link.action>
+        <f:link.action action="removeAllGroupsFromCompareList" class="btn btn-default">
+            <core:icon identifier="actions-selection-delete" />
+            {f:translate(key: 'clearCompareList')}
+        </f:link.action>
 
         <h2>{f:translate(key: 'section.allUserGroups', default: 'All backend user groups')}</h2>
     </f:if>

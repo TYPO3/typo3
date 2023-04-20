@@ -7,7 +7,7 @@
 
 <f:layout name="Module"/>
 
-<f:section name="Content">
+<f:section name="Before">
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/context-menu.js',
@@ -17,10 +17,14 @@
             4: '@typo3/backend/pagetsconfig/pagetsconfig-includes.js'
         }"
     />
-
     <f:variable name="args" value="{0: 'web', 1: pageUid}" />
-    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+    <typo3-immediate-action
+        action="TYPO3.Backend.Storage.ModuleStateStorage.update"
+        args="{args -> f:format.json() -> f:format.htmlspecialchars()}"
+    ></typo3-immediate-action>
+</f:section>
 
+<f:section name="Content">
     <h1>
         <f:translate
             key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.headline"
@@ -330,46 +334,42 @@
             >
                 <div class="panel-body">
                     <form action="{f:be.uri(route: 'pagetsconfig_includes', parameters: '{id: pageUid}')}" method="post">
-                        <div class="row">
-                            <div class="col-12">
-                                <f:for each="{conditions}" as="condition">
-                                    <input type="hidden" name="pageTsConfigConditions[{condition.hash}]" value="0" />
-                                    <div class="form-check form-switch">
-                                        <input
-                                            type="checkbox"
-                                            class="form-check-input"
-                                            name="pageTsConfigConditions[{condition.hash}]"
-                                            id="pageTsConfigCondition{condition.hash}"
-                                            value="1"
-                                            data-global-event="change"
-                                            data-action-submit="$form"
-                                            data-value-selector="input[name='pageTsConfigConditions[{condition.hash}]']"
-                                            {f:if(condition: condition.active, then:'checked="checked"')}
-                                        />
-                                        <label class="form-check-label" for="pageTsConfigCondition{condition.hash}">
-                                            <f:if condition="{condition.originalValue}">
-                                                <f:then>
-                                                    <span class="font-monospace">[{condition.value}]</span>
-                                                    <span class="diff-item-result diff-item-result-inline font-monospace p-0">
-                                                        <f:format.raw>
-                                                            <f:translate
-                                                                key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.info.conditionWithConstant"
-                                                                arguments="{
-                                                                    0: '{backend:typoScript.fineDiff(from: condition.originalValue, to: condition.value)}'
-                                                                }"
-                                                            />
-                                                        </f:format.raw>
-                                                    </span>
-                                                </f:then>
-                                                <f:else>
-                                                    <span class="font-monospace">[{condition.value}]</span>
-                                                </f:else>
-                                            </f:if>
-                                        </label>
-                                    </div>
-                                </f:for>
+                        <f:for each="{conditions}" as="condition">
+                            <input type="hidden" name="pageTsConfigConditions[{condition.hash}]" value="0" />
+                            <div class="form-check form-switch">
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    name="pageTsConfigConditions[{condition.hash}]"
+                                    id="pageTsConfigCondition{condition.hash}"
+                                    value="1"
+                                    data-global-event="change"
+                                    data-action-submit="$form"
+                                    data-value-selector="input[name='pageTsConfigConditions[{condition.hash}]']"
+                                    {f:if(condition: condition.active, then:'checked="checked"')}
+                                />
+                                <label class="form-check-label" for="pageTsConfigCondition{condition.hash}">
+                                    <f:if condition="{condition.originalValue}">
+                                        <f:then>
+                                            <span class="font-monospace">[{condition.value}]</span>
+                                            <span class="diff-item-result diff-item-result-inline font-monospace p-0">
+                                                <f:format.raw>
+                                                    <f:translate
+                                                        key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.info.conditionWithConstant"
+                                                        arguments="{
+                                                            0: '{backend:typoScript.fineDiff(from: condition.originalValue, to: condition.value)}'
+                                                        }"
+                                                    />
+                                                </f:format.raw>
+                                            </span>
+                                        </f:then>
+                                        <f:else>
+                                            <span class="font-monospace">[{condition.value}]</span>
+                                        </f:else>
+                                    </f:if>
+                                </label>
                             </div>
-                        </div>
+                        </f:for>
                     </form>
                 </div>
             </div>

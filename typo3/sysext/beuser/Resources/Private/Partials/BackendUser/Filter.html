@@ -4,8 +4,8 @@
 >
 
 <f:form action="index" objectName="demand" object="{demand}">
-    <div class="row row-cols-auto align-items-end g-3 mb-4">
-        <div class="col">
+    <div class="form-row">
+        <div class="form-group">
             <label for="tx_Beuser_username" class="form-label"><f:translate key="userName">Username</f:translate></label>
             <f:form.textfield
                 id="tx_Beuser_username"
@@ -13,7 +13,7 @@
                 property="userName"
             />
         </div>
-        <div class="col">
+        <div class="form-group">
             <label for="tx_Beuser_usertype" class="form-label"><f:translate key="admin">Admin</f:translate></label>
             <f:form.select
                 id="tx_Beuser_usertype"
@@ -22,7 +22,7 @@
                 options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"adminOnly\")}', 2: '{f:translate(key:\"normalUserOnly\")}'}"
             />
         </div>
-        <div class="col">
+        <div class="form-group">
             <label for="tx_Beuser_status" class="form-label"><f:translate key="status">Status</f:translate></label>
             <f:form.select
                 id="tx_Beuser_status"
@@ -31,7 +31,7 @@
                 options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"activeOnly\")}', 2: '{f:translate(key:\"inactiveOnly\")}'}"
             />
         </div>
-        <div class="col">
+        <div class="form-group">
             <label for="tx_Beuser_logins" class="form-label"><f:translate key="login">Login</f:translate></label>
             <f:form.select
                 id="tx_Beuser_logins"
@@ -40,7 +40,7 @@
                 options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"loginBefore\")}', 2: '{f:translate(key:\"neverLoggedIn\")}'}"
             />
         </div>
-        <div class="col">
+        <div class="form-group">
             <label for="tx_beuser_backendUserGroup" class="form-label"><f:translate key="backendUserGroup">User Group</f:translate></label>
             <f:form.select
                 id="tx_beuser_backendUserGroup"
@@ -51,8 +51,8 @@
                 optionValueField="uid"
             />
         </div>
-        <div class="col">
-            <f:form.button type="submit" name="operation" value="filter" class="btn btn-light">{f:translate(key: 'filter')}</f:form.button>
+        <div class="form-group align-self-end">
+            <f:form.button type="submit" name="operation" value="filter" class="btn btn-default">{f:translate(key: 'filter')}</f:form.button>
             <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-link">{f:translate(key: 'reset')}</f:form.button>
         </div>
     </div>

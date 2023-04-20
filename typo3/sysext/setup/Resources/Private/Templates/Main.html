@@ -5,19 +5,23 @@
 
 <f:layout name="Module" />
 
-<f:section name="Content">
-
+<f:section name="Before">
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/tabs.js'
         }"
     />
-
     <f:if condition="{isLanguageUpdate}">
         <typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>
         <typo3-immediate-action action="TYPO3.Backend.Topbar.refresh"></typo3-immediate-action>
     </f:if>
+</f:section>
 
+<f:section name="Content">
+
+    <h1>
+        <f:translate key="LLL:EXT:setup/Resources/Private/Language/locallang.xlf:UserSettings" />
+    </h1>
     <form
         action="{f:be.uri(route: 'user_setup')}"
         method="post"
@@ -27,10 +31,6 @@
         spellcheck="false"
     >
         <div id="user-setup-wrapper">
-            <h1>
-                <f:translate key="LLL:EXT:setup/Resources/Private/Language/locallang.xlf:UserSettings" />
-            </h1>
-
             <div role="tabpanel">
                 <ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-{menuId}" data-store-last-tab="1">
                     <f:for each="{menuItems}" as="item" iteration="iteration">

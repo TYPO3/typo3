@@ -45,7 +45,7 @@
 /* clean-css ignore:start */
 .resource-tiles-container {
     container-type: inline-size;
-    margin-bottom: var(--typo3-component-spacing);
+    margin-bottom: var(--typo3-spacing);
 }
 
 @container (min-width: 480px) {
@@ -200,6 +200,7 @@
     padding: var(--resource-tile-spacing);
     text-align: center;
     font-size: var(--resource-tile-nameplate-size);
+    width: 100%;
 }
 
 .resource-tile-nameplate-label {

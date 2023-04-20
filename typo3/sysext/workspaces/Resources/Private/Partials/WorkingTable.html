@@ -5,8 +5,8 @@
 >
     <div class="workspace-panel" id="workspace-panel">
         <form id="workspace-settings-form">
-            <div class="row row-cols-auto align-items-end g-3 mb-4">
-                <div class="col">
+            <div class="form-row">
+                <div class="form-group">
                     <label for="depth" class="form-label"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:workingTable.depth" /></label>
                     <select name="depth" id="depth" class="form-select">
                         <option value="0" {f:if(condition: '{selectedDepth} == 0', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
@@ -17,7 +17,7 @@
                         <option value="999" {f:if(condition: '{selectedDepth} == 999', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi" /></option>
                     </select>
                 </div>
-                <div class="col">
+                <div class="form-group">
                     <label for="languages" class="form-label"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:workingTable.languages" /></label>
                     <div class="input-group">
                         <span class="input-group-addon input-group-icon">
@@ -30,7 +30,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col">
+                <div class="form-group">
                     <label for="stageFilter" class="form-label"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:workingTable.stages" /></label>
                     <select name="stages" id="stageFilter" class="form-select">
                         <f:for each="{availableSelectStages}" as="availableSelectStage">
@@ -38,9 +38,9 @@
                         </f:for>
                     </select>
                 </div>
-                <div class="col">
+                <div class="form-group align-self-end">
                     <div class="input-group">
-                        <input class="form-control t3js-clearable" type="text" name="search-text" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}">
+                        <input class="form-control form-control-clearable t3js-clearable" type="text" name="search-text" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}">
                         <button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
                     </div>
                 </div>

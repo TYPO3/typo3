@@ -5,8 +5,7 @@
 
 <f:layout name="Module"/>
 
-<f:section name="Content">
-
+<f:section name="Before">
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/context-menu.js',
@@ -14,29 +13,39 @@
             2: '@typo3/info/translation-status.js'
         }"
     />
+    <f:if condition="{accessContent}">
+        <f:variable name="args" value="{0: 'web', 1: id}" />
+        <typo3-immediate-action
+            action="TYPO3.Backend.Storage.ModuleStateStorage.update"
+            args="{args -> f:format.json() -> f:format.htmlspecialchars()}"
+        ></typo3-immediate-action>
+    </f:if>
+</f:section>
+
+<f:section name="Content">
 
     <f:if condition="{accessContent}">
         <f:then>
-            <f:variable name="args" value="{0: 'web', 1: id}" />
-            <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
             <h1><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_title" /></h1>
             <f:if condition="{content}">
-                <form action="{f:be.uri(route: 'web_info_translations', parameters: '{id: pageUid}')}" method="post" id="InfoModuleController" name="webinfoForm"><div class="row row-cols-auto mb-3 g-3 align-items-center">
-                    <div class="col">
-                        <label class="form-label" for="depth">
-                            <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth" />
-                        </label>
-                        <f:render partial="DropdownMenu" arguments="{name: 'depth', id: 'depth', options: depthDropdownOptions, currentValue: depthDropdownCurrentValue}"/>
-                    </div>
-                    <f:if condition="{displayLangDropdown}">
-                        <div class="col">
-                            <label class="form-label" for="lang">
-                                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.lang" />
+                <form action="{f:be.uri(route: 'web_info_translations', parameters: '{id: pageUid}')}" method="post" id="InfoModuleController" name="webinfoForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="depth">
+                                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth" />
                             </label>
-                            <f:render partial="DropdownMenu" arguments="{name: 'lang', id: 'lang', options: langDropdownOptions, currentValue: langDropdownCurrentValue}"/>
+                            <f:render partial="DropdownMenu" arguments="{name: 'depth', id: 'depth', options: depthDropdownOptions, currentValue: depthDropdownCurrentValue}"/>
                         </div>
-                    </f:if>
-                </div><f:format.raw>{content}</f:format.raw>
+                        <f:if condition="{displayLangDropdown}">
+                            <div class="form-group">
+                                <label class="form-label" for="lang">
+                                    <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.lang" />
+                                </label>
+                                <f:render partial="DropdownMenu" arguments="{name: 'lang', id: 'lang', options: langDropdownOptions, currentValue: langDropdownCurrentValue}"/>
+                            </div>
+                        </f:if>
+                    </div>
+                    <f:format.raw>{content}</f:format.raw>
                 </form>
             </f:if>
         </f:then>

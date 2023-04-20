@@ -94,11 +94,11 @@ final class DbCheckModuleCest
     {
         $this->goToPageAndSeeHeadline($I, 'Full search', 'Search whole Database');
         $I->see('Search options', 'h2');
-        $I->see('Result', 'h2');
 
         // Fill in search phrase and check results
         $I->fillField('input[name="SET[sword]"]', 'styleguide demo group 1');
         $I->click('Search All Records');
+        $I->see('Result', 'h2');
         $I->see('styleguide demo group 1', 'td');
         $I->dontSee('styleguide demo group 2', 'td');
 

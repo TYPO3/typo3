@@ -5,8 +5,8 @@
 >
 
 <f:layout name="Module" />
-<f:section name="Content">
 
+<f:section name="Before">
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/context-menu.js',
@@ -14,15 +14,20 @@
             2: '@typo3/backend/element/immediate-action-element.js'
         }"
     />
+    <f:variable name="args" value="{0: 'web', 1: id}" />
+    <typo3-immediate-action
+        action="TYPO3.Backend.Storage.ModuleStateStorage.update"
+        args="{args -> f:format.json() -> f:format.htmlspecialchars()}"
+    ></typo3-immediate-action>
+</f:section>
+
+<f:section name="Content">
+
+    <h1>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:title_export" />
+    </h1>
     <form action="{f:be.uri(route:'tx_impexp_export')}" method="post" id="ImportExportController">
-        <f:variable name="args" value="{0: 'web', 1: id}" />
-        <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
         <input type="hidden" name="id" value="{id}" />
-
-        <h1>
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:title_export" />
-        </h1>
-
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="nav-item">
                 <a class="nav-link text-capitalize active" href="#export-configuration" aria-controls="export-configuration" role="tab" data-bs-toggle="tab">
@@ -68,7 +73,6 @@
                 </div>
             </f:if>
         </div>
-
         <f:render partial="Preview" arguments="{_all}" />
     </form>
 

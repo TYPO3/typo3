@@ -1,6 +1,34 @@
 //
 // Code
 //
+pre,
+code {
+    hyphens: none;
+}
+
+pre[class*="language-"],
+code[class*="language-"] {
+    color: inherit;
+    background: none;
+    font-size: 1em;
+    text-align: start;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+    tab-size: 4;
+    hyphens: none;
+}
+
 pre[class*="language-"] {
-    margin-bottom: var(--typo3-component-spacing);
+    border-radius: 4px;
+    padding: 1em;
+    overflow: auto;
+    margin-bottom: var(--typo3-spacing);
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+    background-color: rgba(0, 0, 0, .05);
 }

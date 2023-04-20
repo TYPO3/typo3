@@ -87,7 +87,7 @@ $panel-heading-bg-scale: -85%;
     display: flex;
     flex-flow: column;
     overflow: hidden;
-    margin-bottom: var(--panel-spacing);
+    margin-bottom: var(--typo3-spacing);
     border-radius: var(--panel-border-radius);
     box-shadow: var(--panel-box-shadow);
 
@@ -124,7 +124,7 @@ $panel-heading-bg-scale: -85%;
     border: var(--panel-border-width) solid var(--panel-border-color);
     border-radius: var(--panel-border-radius);
     box-shadow: var(--panel-box-shadow);
-    margin-bottom: var(--panel-spacing);
+    margin-bottom: var(--typo3-spacing);
     transition: all .2s ease-in-out;
     transition-property: box-shadow, border, transform;
 

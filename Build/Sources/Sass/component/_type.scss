@@ -1,0 +1,26 @@
+//
+// Type Adjustments
+//
+h1 {
+    font-family: var(--typo3-header-font-family);
+    font-variant: normal;
+    font-weight: 400;
+}
+
+h1,
+h2,
+h3 {
+    &.headline-spaced,
+    &:not(:first-child):not([class]) {
+        margin-top: calc(var(--typo3-spacing) * 2);
+    }
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-family: inherit;
+}

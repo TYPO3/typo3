@@ -5,8 +5,7 @@
 
 <f:layout name="Module" />
 
-<f:section name="Content">
-
+<f:section name="Before">
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/clear-cache.js',
@@ -18,9 +17,14 @@
             6: '@typo3/backend/element/editable-page-title.js'
         }"
     />
-
     <f:variable name="immediateActionArgs" value="{0: 'web', 1: pageId, 2: 1}" />
-    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.updateWithCurrentMount" args="{immediateActionArgs -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+    <typo3-immediate-action
+        action="TYPO3.Backend.Storage.ModuleStateStorage.updateWithCurrentMount"
+        args="{immediateActionArgs -> f:format.json() -> f:format.htmlspecialchars()}"
+    ></typo3-immediate-action>
+</f:section>
+
+<f:section name="Content">
 
     <f:for each="{infoBoxes}" as="infoBox">
         <f:be.infobox state="{infoBox.state}">

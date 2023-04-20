@@ -409,6 +409,7 @@ class DatabaseIntegrityController
             'binaryPath' => ExtensionManagementUtility::extPath('core', 'bin/typo3'),
             'referenceIndexResult' => $referenceIndexResult,
         ]);
+
         return $view->renderResponse('ReferenceIndex');
     }
 
@@ -421,18 +422,21 @@ class DatabaseIntegrityController
         $this->showFieldAndTableNames = $this->getBackendUserAuthentication()->shallDisplayDebugInformation();
         $searchMode = $this->MOD_SETTINGS['search'];
         $this->setFormName('queryform');
-        $submenu = '<div class="row row-cols-auto align-items-end g-3 mb-4">';
-        $submenu .= '<div class="col">' . self::getDropdownMenu(0, 'SET[search]', $searchMode, $this->MOD_MENU['search'], $request) . '</div>';
+        $submenu = '';
+        $submenu .= '<div class="form-row">';
+        $submenu .= '<div class="form-group">' . self::getDropdownMenu(0, 'SET[search]', $searchMode, $this->MOD_MENU['search'], $request) . '</div>';
         if ($this->MOD_SETTINGS['search'] === 'query') {
-            $submenu .= '<div class="col">' . self::getDropdownMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery'], $request) . '</div>';
+            $submenu .= '<div class="form-group">' . self::getDropdownMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery'], $request) . '</div>';
         }
         $submenu .= '</div>';
         if ($this->MOD_SETTINGS['search'] === 'query') {
+            $submenu .= '<div class="form-group">';
             $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', $request, '', '', 'id="checkSearch_query_smallparts"') . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:showSQL') . '</label></div>';
             $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', $request, '', '', 'id="checkSearch_result_labels"') . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:useFormattedStrings') . '</label></div>';
             $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'] ?? '', $request, '', '', 'id="checkLabels_noprefix"') . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:dontUseOrigValues') . '</label></div>';
             $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', $request, '', '', 'id="checkOptions_sortlabel"') . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:sortOptions') . '</label></div>';
             $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, $request, '', '', 'id="checkShow_deleted"') . '<label class="form-check-label" for="checkShow_deleted">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:showDeleted') . '</label></div>';
+            $submenu .= '</div>';
         }
         $view->assign('submenu', $submenu);
         $view->assign('searchMode', $searchMode);
@@ -445,6 +449,7 @@ class DatabaseIntegrityController
                 $view->assign('searchOptions', $this->form());
                 $view->assign('results', $this->search($request));
         }
+
         return $view->renderResponse('CustomSearch');
     }
 
@@ -460,8 +465,8 @@ class DatabaseIntegrityController
         $msg = $this->procesStoreControl($request);
         $userTsConfig = $this->getBackendUserAuthentication()->getTSConfig();
         if (!($userTsConfig['mod.']['dbint.']['disableStoreControl'] ?? false)) {
-            $output .= '<h2>Load/Save Query</h2>';
-            $output .= '<div>' . $this->makeStoreControl() . '</div>';
+            $output .= '<h2 class="headline-spaced">Load/Save Query</h2>';
+            $output .= $this->makeStoreControl();
             $output .= $msg;
         }
         // Query Maker:
@@ -469,8 +474,8 @@ class DatabaseIntegrityController
         if ($this->formName) {
             $this->setFormName($this->formName);
         }
-        $tmpCode = $this->makeSelectorTable($this->MOD_SETTINGS, $request);
-        $output .= '<div id="query"></div><h2>Make query</h2><div>' . $tmpCode . '</div>';
+        $output .= '<h2>Make query</h2>';
+        $output .= $this->makeSelectorTable($this->MOD_SETTINGS, $request);
         $mQ = $this->MOD_SETTINGS['search_query_makeQuery'] ?? '';
         // Make form elements:
         if ($this->table && is_array($GLOBALS['TCA'][$this->table])) {
@@ -505,22 +510,38 @@ class DatabaseIntegrityController
                         $dataRows = $connection->executeQuery($selectQueryString)->fetchAllAssociative();
                     }
                     if (!($userTsConfig['mod.']['dbint.']['disableShowSQLQuery'] ?? false)) {
-                        $output .= '<h2>SQL query</h2><div><code>' . htmlspecialchars($fullQueryString) . '</code></div>';
+                        $output .= '<h2>SQL query</h2>';
+                        $output .= '<pre class="language-sql">';
+                        $output .=   '<code class="language-sql">';
+                        $output .=     htmlspecialchars($fullQueryString);
+                        $output .=   '</code>';
+                        $output .= '</pre>';
                     }
                     $cPR = $this->getQueryResultCode($mQ, $dataRows, $this->table, $request);
-                    $output .= '<h2>' . ($cPR['header'] ?? '') . '</h2><div>' . $cPR['content'] . '</div>';
+                    if ($cPR['header'] ?? null) {
+                        $output .= '<h2>' . $cPR['header'] . '</h2>';
+                    }
+                    if ($cPR['content'] ?? null) {
+                        $output .= $cPR['content'];
+                    }
                 } catch (DBALException $e) {
                     if (!($userTsConfig['mod.']['dbint.']['disableShowSQLQuery'] ?? false)) {
-                        $output .= '<h2>SQL query</h2><div><code>' . htmlspecialchars($fullQueryString) . '</code></div>';
+                        $output .= '<h2>SQL query</h2>';
+                        $output .= '<pre class="language-sql">';
+                        $output .=   '<code class="language-sql">';
+                        $output .=     htmlspecialchars($fullQueryString);
+                        $output .=   '</code>';
+                        $output .= '</pre>';
                     }
-                    $out = '<p><strong>Error: <span class="text-danger">'
-                        . htmlspecialchars($e->getMessage())
-                        . '</span></strong></p>';
-                    $output .= '<h2>SQL error</h2><div>' . $out . '</div>';
+                    $output .= '<h2>SQL error</h2>';
+                    $output .= '<div class="alert alert-danger">';
+                    $output .= '<p class="alert-message"><strong>Error:</strong> ' . htmlspecialchars($e->getMessage()) . '</p>';
+                    $output .= '</div>';
                 }
             }
         }
-        return '<div class="database-query-builder">' . $output . '</div>';
+
+        return $output;
     }
 
     protected function getSelectQuery(string $qString = ''): string
@@ -646,6 +667,7 @@ class DatabaseIntegrityController
                 }
             }
         }
+
         return $theList;
     }
 
@@ -660,7 +682,7 @@ class DatabaseIntegrityController
         switch ($type) {
             case 'count':
                 $cPR['header'] = 'Count';
-                $cPR['content'] = '<br><strong>' . (int)$dataRows[0] . '</strong> records selected.';
+                $cPR['content'] = '<p><strong>' . (int)$dataRows[0] . '</strong> records selected.</p>';
                 break;
             case 'all':
                 $rowArr = [];
@@ -675,9 +697,11 @@ class DatabaseIntegrityController
                 }
                 if (!empty($rowArr)) {
                     $cPR['header'] = 'Result';
-                    $out .= '<div class="table-fit"><table class="table table-striped table-hover">'
-                        . $this->resultRowTitles((array)$dataRow, $GLOBALS['TCA'][$table]) . implode(LF, $rowArr)
-                        . '</table></div>';
+                    $out .= '<div class="table-fit">';
+                    $out .= '<table class="table table-striped table-hover">';
+                    $out .= $this->resultRowTitles((array)$dataRow, $GLOBALS['TCA'][$table]) . implode(LF, $rowArr);
+                    $out .= '</table>';
+                    $out .= '</div>';
                 } else {
                     $this->renderNoResultsFoundMessage();
                 }
@@ -696,12 +720,16 @@ class DatabaseIntegrityController
                 }
                 if (!empty($rowArr)) {
                     $cPR['header'] = 'Result';
-                    $out .= '<textarea name="whatever" rows="20" class="font-monospace" style="width:100%">'
-                        . htmlspecialchars(implode(LF, $rowArr))
-                        . '</textarea>';
+                    $out .= '<div class="form-group">';
+                    $out .= '<textarea class="form-control" name="whatever" rows="20" class="font-monospace" style="width:100%">';
+                    $out .= htmlspecialchars(implode(LF, $rowArr));
+                    $out .= '</textarea>';
+                    $out .= '</div>';
                     if (!$this->noDownloadB) {
-                        $out .= '<br><input class="btn btn-default" type="submit" name="download_file" '
-                            . 'value="Click to download file">';
+                        $out .= '<button class="btn btn-default" type="submit" name="download_file" value="Click to download file">';
+                        $out .=    $this->iconFactory->getIcon('actions-file-csv-download', Icon::SIZE_SMALL)->render();
+                        $out .= '  Click to download file';
+                        $out .= '</button>';
                     }
                     // Downloads file:
                     // @todo: args. routing anyone?
@@ -721,11 +749,12 @@ class DatabaseIntegrityController
             case 'explain':
             default:
                 foreach ($dataRows as $dataRow) {
-                    $out .= '<br />' . DebugUtility::viewArray($dataRow);
+                    $out .= DebugUtility::viewArray($dataRow);
                 }
                 $cPR['header'] = 'Explain SQL query';
                 $cPR['content'] = $out;
         }
+
         return $cPR;
     }
 
@@ -737,6 +766,7 @@ class DatabaseIntegrityController
                 $valueArray[$key] = $this->getProcessedValueExtra($table, $key, (string)$val, $conf, ';');
             }
         }
+
         return CsvUtility::csvValues($valueArray, $delim, $quote);
     }
 
@@ -768,6 +798,7 @@ class DatabaseIntegrityController
         $tableHeader[] = '<th></th>';
         // Close header row
         $tableHeader[] = '</tr></thead>';
+
         return implode(LF, $tableHeader);
     }
 
@@ -789,7 +820,7 @@ class DatabaseIntegrityController
                 $out .= '<td>' . $fVnew . '</td>';
             }
         }
-        $out .= '<td>';
+        $out .= '<td class="col-control">';
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         if (!($row['deleted'] ?? false)) {
@@ -804,7 +835,8 @@ class DatabaseIntegrityController
                     . HttpUtility::buildQueryString(['SET' => $request->getParsedBody()['SET'] ?? []], '&'),
             ]);
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'
-                . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
+                . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render()
+                . '</a>';
             $out .= '</div><div class="btn-group" role="group">';
             $out .= sprintf(
                 '<a class="btn btn-default" href="#" data-dispatch-action="%s" data-dispatch-args-list="%s">%s</a>',
@@ -835,6 +867,7 @@ class DatabaseIntegrityController
             }
         }
         $out .= '</td></tr>';
+
         return $out;
     }
 
@@ -957,6 +990,7 @@ class DatabaseIntegrityController
             default:
                 $out = htmlspecialchars($fieldValue);
         }
+
         return $out;
     }
 
@@ -1144,6 +1178,7 @@ class DatabaseIntegrityController
                 }
             }
         }
+
         return $out;
     }
 
@@ -1179,6 +1214,7 @@ class DatabaseIntegrityController
             }
             $first = false;
         }
+
         return $qs;
     }
 
@@ -1228,6 +1264,7 @@ class DatabaseIntegrityController
             $qsTmp = str_replace('#VALUE1#', trim($queryBuilder->quote((string)$inputVal), '\''), $qsTmp);
         }
         $qs .= trim((string)$qsTmp);
+
         return $qs;
     }
 
@@ -1261,6 +1298,7 @@ class DatabaseIntegrityController
             // fallback to float casting, the whole class smells like it needs a refactoring.
             $inputVal = (float)($var ?? 0.0);
         }
+
         return $inputVal;
     }
 
@@ -1286,6 +1324,7 @@ class DatabaseIntegrityController
         }
         $format = 'Y-m-d\\TH:i:s\\Z';
         $formattedDate = \DateTime::createFromFormat($format, (string)$date);
+
         return $formattedDate && $formattedDate->format($format) === $date;
     }
 
@@ -1298,12 +1337,8 @@ class DatabaseIntegrityController
         // Make output
         if (in_array('table', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectATable'] ?? false)) {
             $out[] = '<div class="form-group">';
-            $out[] =     '<label for="SET[queryTable]">Select a table:</label>';
-            $out[] =     '<div class="row row-cols-auto">';
-            $out[] =         '<div class="col">';
-            $out[] =             $this->mkTableSelect('SET[queryTable]', $this->table);
-            $out[] =         '</div>';
-            $out[] =     '</div>';
+            $out[] =     '<label class="form-label" for="SET[queryTable]">Select a table:</label>';
+            $out[] =     $this->mkTableSelect('SET[queryTable]', $this->table);
             $out[] = '</div>';
         }
         if ($this->table) {
@@ -1341,67 +1376,61 @@ class DatabaseIntegrityController
             $codeArr = $this->getFormElements();
             $queryCode = $this->printCodeArray($codeArr);
             if (in_array('fields', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectFields'] ?? false)) {
-                $out[] = '<div class="form-group form-group-with-button-addon">';
-                $out[] = '	<label for="SET[queryFields]">Select fields:</label>';
+                $out[] = '<div class="form-group">';
+                $out[] =   '<label class="form-label" for="SET[queryFields]">Select fields:</label>';
                 $out[] =    $this->mkFieldToInputSelect('SET[queryFields]', $this->extFieldLists['queryFields']);
                 $out[] = '</div>';
             }
             if (in_array('query', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableMakeQuery'] ?? false)) {
                 $out[] = '<div class="form-group">';
-                $out[] = '	<label>Make Query:</label>';
+                $out[] =   '<label class="form-label">Make Query:</label>';
                 $out[] =    $queryCode;
                 $out[] = '</div>';
             }
             if (in_array('group', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableGroupBy'] ?? false)) {
                 $out[] = '<div class="form-group">';
-                $out[] =    '<label for="SET[queryGroup]">Group By:</label>';
-                $out[] =     '<div class="row row-cols-auto">';
-                $out[] =         '<div class="col">';
-                $out[] =             $this->mkTypeSelect('SET[queryGroup]', $this->extFieldLists['queryGroup'], '');
-                $out[] =         '</div>';
-                $out[] =     '</div>';
+                $out[] =   '<label class="form-label" for="SET[queryGroup]">Group By:</label>';
+                $out[] =   $this->mkTypeSelect('SET[queryGroup]', $this->extFieldLists['queryGroup'], '');
                 $out[] = '</div>';
             }
             if (in_array('order', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableOrderBy'] ?? false)) {
                 $orderByArr = explode(',', $this->extFieldLists['queryOrder']);
                 $orderBy = [];
-                $orderBy[] = '<div class="row row-cols-auto align-items-center">';
-                $orderBy[] =     '<div class="col">';
-                $orderBy[] =         $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '');
+                $orderBy[] = '<div class="form-group">';
+                $orderBy[] =   '<div class="input-group">';
+                $orderBy[] =     $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '');
+                $orderBy[] =     '<div class="input-group-text">';
+                $orderBy[] =       '<div class="form-check form-check-type-toggle">';
+                $orderBy[] =         self::getFuncCheck(0, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'] ?? '', $request, '', '', 'id="checkQueryOrderDesc"');
+                $orderBy[] =         '<label class="form-check-label" for="checkQueryOrderDesc">Descending</label>';
+                $orderBy[] =       '</div>';
                 $orderBy[] =     '</div>';
-                $orderBy[] =     '<div class="col mt-2">';
-                $orderBy[] =         '<div class="form-check">';
-                $orderBy[] =              self::getFuncCheck(0, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'] ?? '', $request, '', '', 'id="checkQueryOrderDesc"');
-                $orderBy[] =              '<label class="form-check-label" for="checkQueryOrderDesc">Descending</label>';
-                $orderBy[] =         '</div>';
-                $orderBy[] =     '</div>';
+                $orderBy[] =   '</div>';
                 $orderBy[] = '</div>';
 
                 if ($orderByArr[0]) {
-                    $orderBy[] = '<div class="row row-cols-auto align-items-center mt-2">';
-                    $orderBy[] =     '<div class="col">';
-                    $orderBy[] =         '<div class="input-group">';
-                    $orderBy[] =             $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1] ?? '', '');
-                    $orderBy[] =         '</div>';
+                    $orderBy[] = '<div class="form-group">';
+                    $orderBy[] =   '<div class="input-group">';
+                    $orderBy[] =     $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1] ?? '', '');
+                    $orderBy[] =     '<div class="input-group-text">';
+                    $orderBy[] =       '<div class="form-check form-check-type-toggle">';
+                    $orderBy[] =         self::getFuncCheck(0, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'] ?? false, $request, '', '', 'id="checkQueryOrder2Desc"');
+                    $orderBy[] =         '<label class="form-check-label" for="checkQueryOrder2Desc">Descending</label>';
+                    $orderBy[] =       '</div>';
                     $orderBy[] =     '</div>';
-                    $orderBy[] =     '<div class="col mt-2">';
-                    $orderBy[] =         '<div class="form-check">';
-                    $orderBy[] =             self::getFuncCheck(0, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'] ?? false, $request, '', '', 'id="checkQueryOrder2Desc"');
-                    $orderBy[] =             '<label class="form-check-label" for="checkQueryOrder2Desc">Descending</label>';
-                    $orderBy[] =         '</div>';
-                    $orderBy[] =     '</div>';
+                    $orderBy[] =   '</div>';
                     $orderBy[] = '</div>';
                 }
                 $out[] = '<div class="form-group">';
-                $out[] = '	<label>Order By:</label>';
-                $out[] =     implode(LF, $orderBy);
+                $out[] = '  <label class="form-label">Order By:</label>';
+                $out[] =    implode(LF, $orderBy);
                 $out[] = '</div>';
             }
             if (in_array('limit', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableLimit'] ?? false)) {
                 $limit = [];
                 $limit[] = '<div class="input-group">';
-                $limit[] = $this->updateIcon();
-                $limit[] = '<input type="text" class="form-control" value="' . htmlspecialchars($this->extFieldLists['queryLimit']) . '" name="SET[queryLimit]" id="queryLimit">';
+                $limit[] =   $this->updateIcon();
+                $limit[] =   '<input type="text" class="form-control" value="' . htmlspecialchars($this->extFieldLists['queryLimit']) . '" name="SET[queryLimit]" id="queryLimit">';
                 $limit[] = '</div>';
 
                 $prevLimit = $limitBegin - $limitLength < 0 ? 0 : $limitBegin - $limitLength;
@@ -1424,29 +1453,30 @@ class DatabaseIntegrityController
                 }
 
                 $out[] = '<div class="form-group">';
-                $out[] = '	<label>Limit:</label>';
-                $out[] = '	<div class="row row-cols-auto">';
-                $out[] = '   <div class="col">';
+                $out[] = '  <label class="form-label">Limit:</label>';
+                $out[] = '  <div class="form-row">';
+                $out[] = '    <div class="form-group">';
                 $out[] =        implode(LF, $limit);
-                $out[] = '   </div>';
-                $out[] = '   <div class="col">';
-                $out[] = '		<div class="btn-group t3js-limit-submit">';
-                $out[] =            $prevButton;
-                $out[] =            $nextButton;
-                $out[] = '		</div>';
-                $out[] = '   </div>';
-                $out[] = '   <div class="col">';
-                $out[] = '		<div class="btn-group t3js-limit-submit">';
-                $out[] = '			<input type="button" class="btn btn-default" data-value="10" value="10">';
-                $out[] = '			<input type="button" class="btn btn-default" data-value="20" value="20">';
-                $out[] = '			<input type="button" class="btn btn-default" data-value="50" value="50">';
-                $out[] = '			<input type="button" class="btn btn-default" data-value="100" value="100">';
-                $out[] = '		</div>';
-                $out[] = '   </div>';
-                $out[] = '	</div>';
+                $out[] = '    </div>';
+                $out[] = '    <div class="form-group">';
+                $out[] = '      <div class="btn-group t3js-limit-submit">';
+                $out[] =          $prevButton;
+                $out[] =          $nextButton;
+                $out[] = '      </div>';
+                $out[] = '    </div>';
+                $out[] = '    <div class="form-group">';
+                $out[] = '      <div class="btn-group t3js-limit-submit">';
+                $out[] = '        <input type="button" class="btn btn-default" data-value="10" value="10">';
+                $out[] = '        <input type="button" class="btn btn-default" data-value="20" value="20">';
+                $out[] = '        <input type="button" class="btn btn-default" data-value="50" value="50">';
+                $out[] = '        <input type="button" class="btn btn-default" data-value="100" value="100">';
+                $out[] = '      </div>';
+                $out[] = '    </div>';
+                $out[] = '  </div>';
                 $out[] = '</div>';
             }
         }
+
         return implode(LF, $out);
     }
 
@@ -1492,6 +1522,7 @@ class DatabaseIntegrityController
                     $queryConfig[$key]['inputValue1'] = $this->cleanInputVal($queryConfig[$key], '1');
             }
         }
+
         return $queryConfig;
     }
 
@@ -1506,6 +1537,7 @@ class DatabaseIntegrityController
                 return $key;
             }
         }
+
         return $first;
     }
 
@@ -1524,6 +1556,7 @@ class DatabaseIntegrityController
                 return $i;
             }
         }
+
         return $first;
     }
 
@@ -1575,7 +1608,7 @@ class DatabaseIntegrityController
                     $lineHTML[] = '';
                     break;
                 case 'date':
-                    $lineHTML[] = '<div class="row row-cols-auto mb-2 mb-sm-0">';
+                    $lineHTML[] = '<div class="form-row">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
                     if ($conf['comparison'] === 100 || $conf['comparison'] === 101) {
                         // between
@@ -1587,7 +1620,7 @@ class DatabaseIntegrityController
                     $lineHTML[] = '</div>';
                     break;
                 case 'time':
-                    $lineHTML[] = '<div class="row row-cols-auto mb-2 mb-sm-0">';
+                    $lineHTML[] = '<div class="form-row">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
                     if ($conf['comparison'] === 100 || $conf['comparison'] === 101) {
                         // between:
@@ -1601,16 +1634,16 @@ class DatabaseIntegrityController
                 case 'multiple':
                 case 'binary':
                 case 'relation':
-                    $lineHTML[] = '<div class="row row-cols-auto mb-2 mb-sm-0">';
+                    $lineHTML[] = '<div class="form-row">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-                    $lineHTML[] = '<div class="col mb-sm-2">';
+                    $lineHTML[] = '<div class="form-group">';
                     if ($conf['comparison'] === 68 || $conf['comparison'] === 69 || $conf['comparison'] === 162 || $conf['comparison'] === 163) {
                         $lineHTML[] = '<select class="form-select" name="' . $fieldPrefix . '[inputValue][]" multiple="multiple">';
                     } elseif ($conf['comparison'] === 66 || $conf['comparison'] === 67) {
                         if (is_array($conf['inputValue'])) {
                             $conf['inputValue'] = implode(',', $conf['inputValue']);
                         }
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '<input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
                     } elseif ($conf['comparison'] === 64) {
                         if (is_array($conf['inputValue'])) {
                             $conf['inputValue'] = $conf['inputValue'][0];
@@ -1627,41 +1660,60 @@ class DatabaseIntegrityController
                     $lineHTML[] = '</div>';
                     break;
                 case 'boolean':
-                    $lineHTML[] = '<div class="row row-cols-auto mb-2 mb-sm-0">';
+                    $lineHTML[] = '<div class="form-row">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
                     $lineHTML[] = '<input type="hidden" value="1" name="' . $fieldPrefix . '[inputValue]">';
                     $lineHTML[] = '</div>';
                     break;
                 default:
-                    $lineHTML[] = '<div class="row row-cols-auto mb-2 mb-sm-0">';
+                    $lineHTML[] = '<div class="form-row">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-                    $lineHTML[] = '<div class="col mb-sm-2">';
                     if ($conf['comparison'] === 37 || $conf['comparison'] === 36) {
                         // between:
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue1'] ?? '') . '" name="' . $fieldPrefix . '[inputValue1]">';
+                        $lineHTML[] = '<div class="form-group">';
+                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '</div>';
+                        $lineHTML[] = '<div class="form-group">';
+                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue1'] ?? '') . '" name="' . $fieldPrefix . '[inputValue1]">';
+                        $lineHTML[] = '</div>';
                     } else {
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '<div class="form-group">';
+                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '</div>';
                     }
-                    $lineHTML[] = '</div>';
                     $lineHTML[] = '</div>';
             }
             if ($fieldType !== 'ignore') {
-                $lineHTML[] = '<div class="row row-cols-auto mb-2">';
+                $lineHTML[] = '<div class="form-row">';
                 $lineHTML[] = '<div class="btn-group">';
                 $lineHTML[] = $this->updateIcon();
                 if ($loopCount) {
-                    $lineHTML[] = '<button class="btn btn-default" title="Remove condition" name="qG_del' . htmlspecialchars($subscript) . '">' . $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)->render() . '</button>';
+                    $lineHTML[] = ''
+                        . '<button class="btn btn-default" title="Remove condition" name="qG_del' . htmlspecialchars($subscript) . '">'
+                        . $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)->render()
+                        . '</button>';
                 }
-                $lineHTML[] = '<button class="btn btn-default" title="Add condition" name="qG_ins' . htmlspecialchars($subscript) . '">' . $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render() . '</button>';
+                $lineHTML[] = ''
+                    . '<button class="btn btn-default" title="Add condition" name="qG_ins' . htmlspecialchars($subscript) . '">'
+                    . $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render()
+                    . '</button>';
                 if ($c != 0) {
-                    $lineHTML[] = '<button class="btn btn-default" title="Move up" name="qG_up' . htmlspecialchars($subscript) . '">' . $this->iconFactory->getIcon('actions-chevron-up', Icon::SIZE_SMALL)->render() . '</button>';
+                    $lineHTML[] = ''
+                        . '<button class="btn btn-default" title="Move up" name="qG_up' . htmlspecialchars($subscript) . '">'
+                        . $this->iconFactory->getIcon('actions-chevron-up', Icon::SIZE_SMALL)->render()
+                        . '</button>';
                 }
                 if ($c != 0 && $fieldType !== 'newlevel') {
-                    $lineHTML[] = '<button class="btn btn-default" title="New level" name="qG_nl' . htmlspecialchars($subscript) . '">' . $this->iconFactory->getIcon('actions-chevron-right', Icon::SIZE_SMALL)->render() . '</button>';
+                    $lineHTML[] = ''
+                        . '<button class="btn btn-default" title="New level" name="qG_nl' . htmlspecialchars($subscript) . '">'
+                        . $this->iconFactory->getIcon('actions-chevron-right', Icon::SIZE_SMALL)->render()
+                        . '</button>';
                 }
                 if ($fieldType === 'newlevel') {
-                    $lineHTML[] = '<button class="btn btn-default" title="Collapse new level" name="qG_remnl' . htmlspecialchars($subscript) . '">' . $this->iconFactory->getIcon('actions-chevron-left', Icon::SIZE_SMALL)->render() . '</button>';
+                    $lineHTML[] = ''
+                        . '<button class="btn btn-default" title="Collapse new level" name="qG_remnl' . htmlspecialchars($subscript) . '">'
+                        . $this->iconFactory->getIcon('actions-chevron-left', Icon::SIZE_SMALL)->render()
+                        . '</button>';
                 }
                 $lineHTML[] = '</div>';
                 $lineHTML[] = '</div>';
@@ -1673,6 +1725,7 @@ class DatabaseIntegrityController
             $loopCount = 1;
         }
         $this->queryConfig = $queryConfig;
+
         return $codeArr;
     }
 
@@ -1681,15 +1734,16 @@ class DatabaseIntegrityController
         $value = strtotime($timestamp) ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)strtotime($timestamp)) : '';
         $id = StringUtility::getUniqueId('dt_');
         $html = [];
-        $html[] = '<div class="col mb-sm-2">';
+        $html[] = '<div class="form-group">';
         $html[] = '  <div class="input-group" id="' . $id . '-wrapper">';
-        $html[] = '	   <input data-formengine-input-name="' . htmlspecialchars($name) . '" value="' . $value . '" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" type="text" id="' . $id . '">';
+        $html[] = '	   <input data-formengine-input-name="' . htmlspecialchars($name) . '" value="' . $value . '" class="form-control form-control-clearable t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" type="text" id="' . $id . '">';
         $html[] = '	   <input name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($timestamp) . '" type="hidden">';
         $html[] = '	   <button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#' . $id . '">';
         $html[] =          $this->iconFactory->getIcon('actions-calendar-alternative', Icon::SIZE_SMALL)->render();
         $html[] = '    </button>';
         $html[] = '  </div>';
         $html[] = '</div>';
+
         return implode(LF, $html);
     }
 
@@ -1882,6 +1936,7 @@ class DatabaseIntegrityController
                 }
             }
         }
+
         return implode(LF, $out);
     }
 
@@ -1889,17 +1944,16 @@ class DatabaseIntegrityController
     {
         $out = [];
         if ($draw) {
-            $out[] = '<div class="row row-cols-auto mb-2">';
-            $out[] = '	<div class="col">';
-            $out[] = '    <select class="form-select' . ($submit ? ' t3js-submit-change' : '') . '" name="' . htmlspecialchars($name) . '[operator]">';
-            $out[] = '	    <option value="AND"' . (!$op || $op === 'AND' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['AND']) . '</option>';
-            $out[] = '	    <option value="OR"' . ($op === 'OR' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['OR']) . '</option>';
-            $out[] = '    </select>';
-            $out[] = '	</div>';
+            $out[] = '<div class="form-group">';
+            $out[] = '  <select class="form-select' . ($submit ? ' t3js-submit-change' : '') . '" name="' . htmlspecialchars($name) . '[operator]">';
+            $out[] = '    <option value="AND"' . (!$op || $op === 'AND' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['AND']) . '</option>';
+            $out[] = '    <option value="OR"' . ($op === 'OR' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['OR']) . '</option>';
+            $out[] = '  </select>';
             $out[] = '</div>';
         } else {
             $out[] = '<input type="hidden" value="' . htmlspecialchars($op) . '" name="' . htmlspecialchars($name) . '[operator]">';
         }
+
         return implode(LF, $out);
     }
 
@@ -1907,17 +1961,20 @@ class DatabaseIntegrityController
     {
         $fieldPrefix = $this->name . $subscript;
         $lineHTML = [];
-        $lineHTML[] = '<div class="col mb-sm-2">';
-        $lineHTML[] =     $this->mkTypeSelect($fieldPrefix . '[type]', $fieldName);
+        $lineHTML[] = '<div class="form-group">';
+        $lineHTML[] =    $this->mkTypeSelect($fieldPrefix . '[type]', $fieldName);
         $lineHTML[] = '</div>';
-        $lineHTML[] = '<div class="col mb-sm-2">';
-        $lineHTML[] = '    <div class="input-group">';
-        $lineHTML[] =          $this->mkCompSelect($fieldPrefix . '[comparison]', (string)$conf['comparison'], ($conf['negate'] ?? null) ? 1 : 0);
-        $lineHTML[] = '        <span class="input-group-addon">';
-        $lineHTML[] = '            <input type="checkbox" class="checkbox t3js-submit-click"' . (($conf['negate'] ?? null) ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
-        $lineHTML[] = '        </span>';
-        $lineHTML[] = '    </div>';
+        $lineHTML[] = '<div class="form-group">';
+        $lineHTML[] = '  <div class="input-group">';
+        $lineHTML[] =      $this->mkCompSelect($fieldPrefix . '[comparison]', (string)$conf['comparison'], ($conf['negate'] ?? null) ? 1 : 0);
+        $lineHTML[] = '    <span class="input-group-addon">';
+        $lineHTML[] = '      <div class="form-check form-check-type-toggle">';
+        $lineHTML[] = '        <input type="checkbox" class="form-check-input t3js-submit-click"' . (($conf['negate'] ?? null) ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
+        $lineHTML[] = '      </div>';
+        $lineHTML[] = '    </span>';
+        $lineHTML[] = '  </div>';
         $lineHTML[] = '</div>';
+
         return implode(LF, $lineHTML);
     }
 
@@ -1932,6 +1989,7 @@ class DatabaseIntegrityController
             }
         }
         $out[] = '</select>';
+
         return implode(LF, $out);
     }
 
@@ -1940,37 +1998,33 @@ class DatabaseIntegrityController
         $out = [];
         foreach (array_values($codeArr) as $queryComponent) {
             $out[] = '<div class="card">';
-            $out[] =     '<div class="card-body pb-2">';
+            $out[] =     '<div class="card-body">';
             $out[] =         $queryComponent['html'];
 
             if ($this->enableQueryParts) {
-                $out[] = '<div class="row row-cols-auto mb-2">';
-                $out[] =     '<div class="col">';
-                $out[] =         '<code class="m-0">';
-                $out[] =             htmlspecialchars($queryComponent['query']);
-                $out[] =         '</code>';
-                $out[] =     '</div>';
-                $out[] = '</div>';
+                $out[] = '<pre class="language-sql">';
+                $out[] =   '<code class="language-sql">';
+                $out[] =     htmlspecialchars($queryComponent['query']);
+                $out[] =   '</code>';
+                $out[] = '</pre>';
             }
             if (is_array($queryComponent['sub'] ?? null)) {
-                $out[] = '<div class="mb-2">';
-                $out[] =     $this->printCodeArray($queryComponent['sub'], $recursionLevel + 1);
-                $out[] = '</div>';
+                $out[] = $this->printCodeArray($queryComponent['sub'], $recursionLevel + 1);
             }
             $out[] =     '</div>';
             $out[] = '</div>';
         }
+
         return implode(LF, $out);
     }
 
     protected function mkFieldToInputSelect(string $name, string $fieldName): string
     {
         $out = [];
-        $out[] = '<div class="input-group mb-2">';
-        $out[] = $this->updateIcon();
-        $out[] = '<input type="text" class="form-control t3js-clearable" value="' . htmlspecialchars($fieldName) . '" name="' . htmlspecialchars($name) . '">';
+        $out[] = '<div class="input-group mb-1">';
+        $out[] =   $this->updateIcon();
+        $out[] =   '<input type="text" class="form-control form-control-clearable t3js-clearable" value="' . htmlspecialchars($fieldName) . '" name="' . htmlspecialchars($name) . '">';
         $out[] = '</div>';
-
         $out[] = '<select class="form-select t3js-addfield" name="_fieldListDummy" size="5" data-field="' . htmlspecialchars($name) . '">';
         foreach ($this->fields as $key => $value) {
             if (!$value['exclude'] || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
@@ -1982,6 +2036,7 @@ class DatabaseIntegrityController
             }
         }
         $out[] = '</select>';
+
         return implode(LF, $out);
     }
 
@@ -2101,6 +2156,7 @@ class DatabaseIntegrityController
                 break;
             }
         }
+
         return $retArr;
     }
 
@@ -2124,6 +2180,7 @@ class DatabaseIntegrityController
             }
         }
         $out[] = '</select>';
+
         return implode(LF, $out);
     }
 
@@ -2159,6 +2216,7 @@ class DatabaseIntegrityController
             }
         }
         $out[] = '</select>';
+
         return implode(LF, $out);
     }
 
@@ -2321,6 +2379,7 @@ class DatabaseIntegrityController
                 $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['sortby'];
             }
         }
+
         return implode(',', $fieldListArr);
     }
 
@@ -2335,23 +2394,26 @@ class DatabaseIntegrityController
         }
 
         $markup = [];
-        $markup[] = '<div class="load-queries">';
-        $markup[] = '  <div class="row row-cols-auto">';
-        $markup[] = '    <div class="col">';
-        $markup[] = '      <select class="form-select" name="storeControl[STORE]" data-assign-store-control-title>' . implode(LF, $opt) . '</select>';
-        $markup[] = '    </div>';
-        $markup[] = '    <div class="col">';
-        $markup[] = '      <input class="form-control" name="storeControl[title]" value="" type="text" max="80">';
-        $markup[] = '    </div>';
-        $markup[] = '    <div class="col">';
-        $markup[] = '      <input class="btn btn-default" type="submit" name="storeControl[LOAD]" value="Load">';
-        $markup[] = '    </div>';
-        $markup[] = '    <div class="col">';
-        $markup[] = '      <input class="btn btn-default" type="submit" name="storeControl[SAVE]" value="Save">';
-        $markup[] = '    </div>';
-        $markup[] = '    <div class="col">';
-        $markup[] = '      <input class="btn btn-default" type="submit" name="storeControl[REMOVE]" value="Remove">';
-        $markup[] = '    </div>';
+        $markup[] = '<div class="form-row">';
+        $markup[] = '  <div class="form-group">';
+        $markup[] = '    <select class="form-select" name="storeControl[STORE]" data-assign-store-control-title>' . implode(LF, $opt) . '</select>';
+        $markup[] = '  </div>';
+        $markup[] = '  <div class="form-group">';
+        $markup[] = '    <input class="form-control" name="storeControl[title]" value="" type="text" max="80">';
+        $markup[] = '  </div>';
+        $markup[] = '  <div class="form-group">';
+        $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[LOAD]" value="Load">';
+        $markup[] =        $this->iconFactory->getIcon('actions-upload', Icon::SIZE_SMALL)->render();
+        $markup[] = '      Load';
+        $markup[] = '    </button>';
+        $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[SAVE]" value="Save">';
+        $markup[] =        $this->iconFactory->getIcon('actions-save', Icon::SIZE_SMALL)->render();
+        $markup[] = '      Save';
+        $markup[] = '    </button>';
+        $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[REMOVE]" value="Remove">';
+        $markup[] =        $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)->render();
+        $markup[] = '      Remove';
+        $markup[] = '    </button>';
         $markup[] = '  </div>';
         $markup[] = '</div>';
 
@@ -2425,6 +2487,7 @@ class DatabaseIntegrityController
                 'ses'
             );
         }
+
         return $msg;
     }
 
@@ -2437,6 +2500,7 @@ class DatabaseIntegrityController
                 }
             }
         }
+
         return $storeQueryConfigs;
     }
 
@@ -2447,6 +2511,7 @@ class DatabaseIntegrityController
         foreach ($keyArr as $k) {
             $storeQueryConfigs[$index][$k] = $this->MOD_SETTINGS[$k] ?? null;
         }
+
         return $storeQueryConfigs;
     }
 
@@ -2458,6 +2523,7 @@ class DatabaseIntegrityController
                 $writeArray[$k] = $storeQueryConfigs[$storeIndex][$k];
             }
         }
+
         return $writeArray;
     }
 
@@ -2470,6 +2536,7 @@ class DatabaseIntegrityController
         if (is_array($savedStoreArray)) {
             $storeArray = array_merge($storeArray, $savedStoreArray);
         }
+
         return $storeArray;
     }
 
@@ -2477,12 +2544,12 @@ class DatabaseIntegrityController
     {
         $markup = [];
         $markup[] = '<div class="form-group">';
-        $markup[] = '<input placeholder="Search Word" class="form-control" type="search" name="SET[sword]" value="'
-            . htmlspecialchars($this->MOD_SETTINGS['sword'] ?? '') . '">';
+        $markup[] =   '<input placeholder="Search Word" class="form-control" type="search" name="SET[sword]" value="' . htmlspecialchars($this->MOD_SETTINGS['sword'] ?? '') . '">';
         $markup[] = '</div>';
         $markup[] = '<div class="form-group">';
-        $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="Search All Records">';
+        $markup[] =   '<input class="btn btn-default" type="submit" name="submit" value="Search All Records">';
         $markup[] = '</div>';
+
         return implode(LF, $markup);
     }
 
@@ -2587,6 +2654,7 @@ class DatabaseIntegrityController
                 }
             }
         }
+
         return $out;
     }
 
@@ -2704,6 +2772,7 @@ class DatabaseIntegrityController
             'doktypes' => $doktypes,
             'tables' => $tableStatistic,
         ]);
+
         return $view->renderResponse('RecordStatistics');
     }
 
@@ -2718,6 +2787,7 @@ class DatabaseIntegrityController
             'select_db' => $databaseIntegrityCheck->testDBRefs($databaseIntegrityCheck->getCheckSelectDBRefs()),
             'group_db' => $databaseIntegrityCheck->testDBRefs($databaseIntegrityCheck->getCheckGroupDBRefs()),
         ]);
+
         return $view->renderResponse('Relations');
     }
 
@@ -2782,13 +2852,11 @@ class DatabaseIntegrityController
             'data-action-navigate' => '$data=~s/$value/',
             'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
         ], $additionalAttributes), true);
+
         return '
-        <div class="input-group">
-            <!-- Function Menu of module -->
             <select class="form-select" ' . $attributes . '>
                 ' . implode(LF, $options) . '
-            </select>
-        </div>';
+            </select>';
     }
 
     /**
@@ -2825,6 +2893,7 @@ class DatabaseIntegrityController
             'data-navigate-value' => sprintf('%s&%s=${value}', $scriptUrl, $elementName),
             'data-empty-value' => '0',
         ], true);
+
         return
             '<input ' . $attributes .
             ($currentValue ? ' checked="checked"' : '') .

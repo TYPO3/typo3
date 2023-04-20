@@ -20,14 +20,14 @@
     <h1><f:translate key="installedExtensions" /></h1>
     <f:render partial="List/UploadForm" />
     <form>
-        <div class="row row-cols-auto align-items-end justify-content-between g-3">
-            <div class="col">
+        <div class="form-row justify-content-between">
+            <div class="form-group">
                 <div class="input-group">
                     <f:form.textfield name="Tx_Extensionmanager_extensionkey" placeholder="{f:translate(key:'extensionList.search')}" id="Tx_Extensionmanager_extensionkey" value="{search}" class="form-control extension-list-search" />
                     <button type="submit" class="btn btn-default"><core:icon identifier="actions-search" /></button>
                 </div>
             </div>
-            <div class="col">
+            <div class="form-group">
                 <div class="btn-group">
                     <f:link.action
                         action="index"

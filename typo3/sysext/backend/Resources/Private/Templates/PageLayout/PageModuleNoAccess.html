@@ -5,13 +5,17 @@
 
 <f:layout name="Module" />
 
+<f:section name="Before">
+    <f:variable name="immediateActionArgs" value="{0: 'web', 1: pageId}" />
+    <typo3-immediate-action
+        action="TYPO3.Backend.Storage.ModuleStateStorage.update"
+        args="{immediateActionArgs -> f:format.json() -> f:format.htmlspecialchars()}"
+    ></typo3-immediate-action>
+</f:section>
+
 <f:section name="Content">
 
-    <f:variable name="immediateActionArgs" value="{0: 'web', 1: pageId}" />
-    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{immediateActionArgs -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
-
     <h1>{siteName}</h1>
-
     <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:clickAPage_content')}" state="-1" />
 
 </f:section>

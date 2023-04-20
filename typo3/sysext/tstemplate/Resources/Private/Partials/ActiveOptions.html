@@ -4,9 +4,9 @@
     data-namespace-typo3-fluid="true"
 >
 
-<div class="row row-cols-auto align-items-end g-3 mb-4{f:if(condition: '{f:count(subject: allTemplatesOnPage)} < 2', then: ' pt-2')}">
+<div class="form-row-md">
     <f:if condition="{f:count(subject: allTemplatesOnPage)} > 1">
-        <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+        <div class="form-group">
             <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
                 <label class="form-label" for="selectedTemplate">
                     <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.selectedRecord" />
@@ -31,12 +31,12 @@
             </form>
         </div>
     </f:if>
-    <div class="col col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
+    <div class="form-group">
         <form action="#">
             <div class="input-group">
                 <input
                     type="text"
-                    class="form-control t3js-collapse-search-term"
+                    class="form-control form-control-clearable t3js-collapse-search-term"
                     name="searchValue"
                     id="searchValue"
                     data-persist-collapse-search-key="collapse-search-term-typoscript-active"
@@ -48,12 +48,12 @@
             </div>
         </form>
     </div>
-    <div class="col">
-        <div class="row row-cols-md-auto pb-1">
-            <div class="col col-12 col-sm-12">
+    <div class="form-group">
+        <div class="form-row-md">
+            <div class="form-group">
                 <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
                     <input type="hidden" name="displayConstantSubstitutions" value="0" />
-                    <div class="form-check form-switch">
+                    <div class="form-check form-switch form-check-size-input">
                         <input
                             type="checkbox"
                             class="form-check-input"
@@ -71,10 +71,10 @@
                     </div>
                 </form>
             </div>
-            <div class="col col-12 col-sm-12">
+            <div class="form-group">
                 <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
                     <input type="hidden" name="displayComments" value="0" />
-                    <div class="form-check form-switch">
+                    <div class="form-check form-switch form-check-size-input">
                         <input
                             type="checkbox"
                             class="form-check-input"
@@ -92,10 +92,10 @@
                     </div>
                 </form>
             </div>
-            <div class="col col-12 col-sm-12">
+            <div class="form-group">
                 <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
                     <input type="hidden" name="sortAlphabetically" value="0" />
-                    <div class="form-check form-switch">
+                    <div class="form-check form-switch form-check-size-input">
                         <input
                             type="checkbox"
                             class="form-check-input"

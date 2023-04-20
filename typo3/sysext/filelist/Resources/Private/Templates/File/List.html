@@ -43,8 +43,8 @@
     <form method="post" name="fileListForm" action="{listUrl}">
         <input type="hidden" name="cmd"/>
         <f:if condition="{searchTerm} || {totalItems}">
-            <div class="row mb-3">
-                <div class="col-6">
+            <div class="form-row">
+                <div class="form-group">
                     <div class="input-group">
                         <button class="btn btn-default" type="submit" name="search">
                             <core:icon identifier="actions-search" size="small" />
@@ -143,6 +143,7 @@
 
     <f:if condition="{listHtml}">
         <f:if condition="{showClipboardPanel}">
+            <hr class="spacer">
             <typo3-backend-clipboard-panel return-url="{listUrl}" table="_FILE"></typo3-backend-clipboard-panel>
         </f:if>
     </f:if>

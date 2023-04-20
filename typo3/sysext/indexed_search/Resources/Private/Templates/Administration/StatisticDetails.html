@@ -31,22 +31,22 @@
             <f:render section="wordlisting" arguments="{words:topFrequency,phash:phash,title:'topFrequency'}" />
 
             <f:if condition="{debug}">
-                <h4>
+                <h3>
                     <f:translate key="administration.statistics.debug" />
-                </h4>
+                </h3>
                 <f:debug inline="1" title="">{debug}</f:debug>
             </f:if>
             <f:if condition="{lexer}">
-                <h4>
+                <h3>
                     <f:translate key="administration.statistics.lexer" />
-                </h4>
+                </h3>
                 <f:format.raw>{lexer}</f:format.raw>
             </f:if>
 
             <f:if condition="{metaphone}">
-                <h4>
+                <h3>
                     <f:translate key="administration.statistics.metaphone" />
-                </h4>
+                </h3>
                 <div class="table-fit">
                     <table class="table table-striped table-hover">
                         <thead>
@@ -81,7 +81,7 @@
                 </div>
             </f:if>
             <f:if condition="{sections}">
-                <h4><f:translate key="administration.statistics.sectionRecords" /></h4>
+                <h3><f:translate key="administration.statistics.sectionRecords" /></h3>
                 <div class="table-fit">
                     <table class="table table-striped table-hover">
                         <thead>
@@ -117,12 +117,12 @@
 </f:section>
 
 <f:section name="wordlisting">
-    <h4>
+    <h3>
         <f:translate key="administration.document.{title}" />
         <f:if condition="{title}=='words'">
             ({f:count(subject:words)})
         </f:if>
-    </h4>
+    </h3>
     <f:if condition="{words}">
         <f:form class="form" method="post" action="saveStopwordsKeywords" name="stopwordskeywords" arguments="{pageHash:phash}">
             <f:form.hidden name="pageHash" value="{phash}" />

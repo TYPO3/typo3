@@ -24,13 +24,13 @@
 
         <h2>{treeName}</h2>
 
-        <div id="lowlevel-config" class="row row-cols-auto mb-3">
-            <div class="col">
+        <div id="lowlevel-config" class="form-row">
+            <div class="form-group">
                 <form action="#">
                     <div class="input-group">
                         <input
                             type="text"
-                            class="form-control t3js-collapse-search-term"
+                            class="form-control form-control-clearable t3js-collapse-search-term"
                             name="searchValue"
                             id="searchValue"
                             data-persist-collapse-search-key="collapse-search-term-lowlevel-configuration-{treeLabelHash}"
@@ -42,12 +42,12 @@
                     </div>
                 </form>
             </div>
-            <div class="col d-flex align-items-center">
+            <div class="d-flex align-items-center">
                 <span class="badge badge-success hidden t3js-collapse-states-search-numberOfSearchMatches"></span>
             </div>
         </div>
 
-        <div class="nowrap t3js-collapse-states-search-tree">
+        <div class="t3js-collapse-states-search-tree">
             <f:format.raw>{tree}</f:format.raw>
         </div>
     </form>

@@ -136,6 +136,7 @@ class LinkElement extends AbstractFormElement
             'id' => $fieldId,
             'class' => implode(' ', [
                 'form-control',
+                'form-control-clearable',
                 't3js-clearable',
                 't3js-form-field-link-input',
                 'hidden',

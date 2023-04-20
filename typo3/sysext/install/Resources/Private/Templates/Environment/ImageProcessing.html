@@ -1,36 +1,12 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
-<div style="display:none;">
-    <div class="t3js-imageProcessing-twinImage-template">
-        <div class="t3-install-displaytwinimageimages t3js-imageProcessing-images" style="display:none;">
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <h4>Reference</h4>
-                    <div class="bg-transparent-emulation">
-                        <img class="reference"/>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <h4>Your system</h4>
-                    <div class="bg-transparent-emulation">
-                        <img class="result"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="t3-install-displaytwinimagetextarea t3js-imageProcessing-command" style="display:none;">
-            <pre class="mt-2"><code class="language-bash t3js-imageProcessing-command-text"></code></pre>
-        </div>
-    </div>
-</div>
-
-<h3>True type font tests</h3>
+<h2>True type font tests</h2>
 <f:be.infobox title="FreeType2 hint" state="-1">
     <p>If the two images below do not look the same, please check your FreeType 2 module.</p>
 </f:be.infobox>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingTrueType"></div>
 
-<h3 class="mt-4">Convert image formats to jpg</h3>
+<h2>Convert image formats to jpg</h2>
 <p>
     This verifies that your ImageMagick installation is able to read the default
     formats <code>jpg</code>, <code>gif</code>, <code>png</code>, <code>tif</code>, <code>pdf</code> and
@@ -45,84 +21,84 @@
     </p>
 </f:be.infobox>
 
-<h4 class="mt-4">Read jpg</h4>
+<h3>Read jpg</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingReadJpg"></div>
 
-<h4 class="mt-4">Read gif</h4>
+<h3>Read gif</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingReadGif"></div>
 
-<h4 class="mt-4">Read png</h4>
+<h3>Read png</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingReadPng"></div>
 
-<h4 class="mt-4">Read tif</h4>
+<h3>Read tif</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingReadTif"></div>
 
-<h4 class="mt-4">Read pdf</h4>
+<h3>Read pdf</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingReadPdf"></div>
 
-<h4 class="mt-4">Read ai</h4>
+<h3>Read ai</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingReadAi"></div>
 
-<h3 class="mt-4">Writing gif, png, webp</h3>
+<h2>Writing gif, png, webp</h2>
 <p>
     This verifies that ImageMagick is able to write GIF and PNG and WEBP files.
     The GIF-file is attempted compressed by the
     <code>\TYPO3\CMS\Core\Imaging\GraphicalFunctions::gifCompress()</code> function.
 </p>
 
-<h4 class="mt-4">Write gif</h4>
+<h3>Write gif</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingWriteGif"></div>
 
-<h4 class="mt-4">Write png</h4>
+<h3>Write png</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingWritePng"></div>
 
-<h4 class="mt-4">Write webp</h4>
+<h3>Write webp</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingWriteWebp"></div>
 
-<h3 class="mt-4">Scaling images</h3>
+<h2>Scaling images</h2>
 <p>
     This shows how ImageMagick reacts when scaling transparent GIF and PNG files.
 </p>
 
-<h4 class="mt-4">gif to gif</h4>
+<h3>gif to gif</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGifToGif"></div>
 
-<h4 class="mt-4">png to png</h4>
+<h3>png to png</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingPngToPng"></div>
 
-<h4 class="mt-4">gif to jpg</h4>
+<h3>gif to jpg</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGifToJpg"></div>
 
-<h4 class="mt-4">jpg to webp</h4>
+<h3>jpg to webp</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingJpgToWebp"></div>
 
-<h3 class="mt-4">Combining images</h3>
+<h2>Combining images</h2>
 <p>
     This verifies that the ImageMagick tools, <code>combine</code>, <code>composite</code>, are able to
     combine two images through a grayscale mask.
 </p>
 
-<h4 class="mt-4">Combine using a GIF mask with only black and white</h4>
+<h3>Combine using a GIF mask with only black and white</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingCombineGifMask"></div>
 
-<h4 class="mt-4">Combine using a JPG mask with graylevels</h4>
+<h3>Combine using a JPG mask with graylevels</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingCombineJpgMask"></div>
 
-<h3 class="mt-4">GDlib</h3>
+<h2>GDlib</h2>
 <p>
     This verifies that the GDLib installation works properly.
 </p>
 
-<h4 class="mt-4">Create simple image</h4>
+<h3>Create simple image</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGdlibSimple"></div>
 
-<h4 class="mt-4">Create image from file</h4>
+<h3>Create image from file</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGdlibFromFile"></div>
 
-<h4 class="mt-4">Render text with TrueType font</h4>
+<h3>Render text with TrueType font</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGdlibRenderText"></div>
 
-<h4 class="mt-4">Render text with TrueType font using 'niceText' option</h4>
+<h3>Render text with TrueType font using 'niceText' option</h3>
 <f:be.infobox title="Note on 'niceText'" state="-1">
     <p>
         'niceText' is a concept that tries to improve the antialiasing of the rendered type by actually
@@ -132,7 +108,7 @@
 </f:be.infobox>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGdlibNiceText"></div>
 
-<h4 class="mt-4">Render 'niceText' with a shadow under</h4>
+<h3>Render 'niceText' with a shadow under</h3>
 <f:be.infobox title="Note on 'shadow'" state="-1">
     <p>
         This test makes sense only if the above test had a correct output. But if so, you may not see
@@ -142,7 +118,7 @@
 </f:be.infobox>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGdlibNiceTextShadow"></div>
 
-<div class="panel-group mt-4" id="accordion" role="tablist" aria-multiselectable="true">
+<div class="panel-group mb-0" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingConfiguration">
             <h4 class="panel-title">
@@ -150,11 +126,10 @@
                     <span class="caret"></span>
                     Current configuration
                 </a>
-            </h4>
+            </h3>
         </div>
         <div id="collapseConfiguration" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingConfiguration">
-            <div class="panel-body">
-
+            <div class="table-fit">
                 <table class="table table-striped">
                     <tr>
                         <td>{imageProcessingProcessor} enabled:</td>
@@ -200,11 +175,11 @@
                     <span class="caret"></span>
                     Verify test results
                 </a>
-            </h4>
+            </h3>
         </div>
         <div id="collapseVerify" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingVerify">
             <div class="panel-body">
-                <h4>Verify test results</h4>
+                <h3>Verify test results</h3>
                 <p>
                     This page performs image processing and displays the result. It's a thorough check
                     that everything you've configured is working correctly.
@@ -229,7 +204,7 @@
                     <span class="caret"></span>
                     About image handling
                 </a>
-            </h4>
+            </h3>
         </div>
         <div id="collapseAbout" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAbout">
             <div class="panel-body">
@@ -288,7 +263,7 @@
                     <span class="caret"></span>
                     About test images
                 </a>
-            </h4>
+            </h3>
         </div>
         <div id="collapseTestImages" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTestImages">
             <div class="panel-body">
@@ -298,6 +273,30 @@
                     <a href="https://commons.wikimedia.org/wiki/File%3AFuBK-Testbild.png">via Wikimedia Commons</a>
                 </p>
             </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none;">
+    <div class="t3js-imageProcessing-twinImage-template">
+        <div class="t3-install-displaytwinimageimages t3js-imageProcessing-images" style="display:none;">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <h3>Reference</h3>
+                    <div class="bg-transparent-emulation">
+                        <img class="reference"/>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <h3>Your system</h3>
+                    <div class="bg-transparent-emulation">
+                        <img class="result"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="t3-install-displaytwinimagetextarea t3js-imageProcessing-command" style="display:none;">
+            <pre class="language-bash"><code class="language-bash t3js-imageProcessing-command-text"></code></pre>
         </div>
     </div>
 </div>

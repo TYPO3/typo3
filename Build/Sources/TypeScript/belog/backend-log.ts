@@ -29,7 +29,7 @@ class BackendLog {
 
   constructor() {
     DocumentService.ready().then((): void => {
-      this.clearableElements = document.querySelectorAll('.t3js-clearable');
+      this.clearableElements = document.querySelectorAll('.t3js-clearable') as NodeListOf<HTMLInputElement>;
       this.dateTimePickerElements = document.querySelectorAll('.t3js-datetimepicker');
       this.elementBrowserElements = document.querySelectorAll('.t3js-element-browser');
       this.initializeClearableElements();
@@ -41,7 +41,7 @@ class BackendLog {
 
   private initializeClearableElements(): void {
     this.clearableElements.forEach(
-      (clearableField: HTMLInputElement) => clearableField.clearable()
+      (clearableField) => clearableField.clearable()
     );
   }
 

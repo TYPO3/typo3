@@ -11,55 +11,52 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import '@typo3/backend/input/clearable';
 import DateTimePicker from '@typo3/backend/date-time-picker';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 /**
  * Module: @typo3/lowlevel/query-generator
  * This module handle the QueryGenerator forms.
  */
 class QueryGenerator {
-  private form: JQuery = null;
-  private limitField: JQuery = null;
+  private form: HTMLFormElement = null;
+  private limitField: HTMLInputElement = null;
 
   constructor() {
-    this.initialize();
-  }
+    this.form = document.querySelector('form[name="queryform"]');
+    this.limitField = document.querySelector('input#queryLimit');
 
-  /**
-   * Initialize the QueryGenerator object
-   */
-  private initialize(): void {
-    this.form = $('form[name="queryform"]');
-    this.limitField = $('#queryLimit');
-    this.form.on('click', '.t3js-submit-click', (e: JQueryEventObject): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event) => {
+      event.preventDefault();
       this.doSubmit();
-    });
-    this.form.on('change', '.t3js-submit-change', (e: JQueryEventObject): void => {
-      e.preventDefault();
+    }).delegateTo(this.form, '.t3js-submit-click');
+
+    new RegularEvent('change', (event: Event) => {
+      event.preventDefault();
       this.doSubmit();
-    });
-    this.form.on('click', '.t3js-limit-submit input[type="button"]', (e: JQueryEventObject): void => {
-      e.preventDefault();
-      this.setLimit($(e.currentTarget).data('value'));
+    }).delegateTo(this.form, '.t3js-submit-change');
+
+    new RegularEvent('click', (event: Event, element: HTMLButtonElement) => {
+      event.preventDefault();
+      this.setLimit(element.value);
       this.doSubmit();
-    });
-    this.form.on('click', '.t3js-addfield', (e: JQueryEventObject): void => {
-      e.preventDefault();
-      const $field = $(e.currentTarget);
-      this.addValueToField($field.data('field'), $field.val());
-    });
-    this.form.on('change', '[data-assign-store-control-title]', (evt: JQueryEventObject): void => {
-      const $currentTarget = $(evt.currentTarget);
-      const $titleField = this.form.find('[name="storeControl[title]"]');
-      if ($currentTarget.val() !== '0') {
-        $titleField.val($currentTarget.find('option:selected').text());
+    }).delegateTo(this.form, '.t3js-limit-submit input[type="button"]');
+
+    new RegularEvent('click', (event: Event, element: HTMLButtonElement) => {
+      event.preventDefault();
+      this.addValueToField(element.dataset.field, element.value);
+    }).delegateTo(this.form, '.t3js-addfield');
+
+    new RegularEvent('change', (event: Event, element: HTMLSelectElement) => {
+      const titleField = <HTMLInputElement>this.form.querySelector('input[name="storeControl[title]"]');
+      if (element.value !== '0') {
+        titleField.value = element.querySelector('option:selected').textContent;
       } else {
-        $titleField.val('');
+        titleField.value = '';
       }
-    });
+    }).delegateTo(this.form, 'select.t3js-addfield');
+
     (<NodeListOf<HTMLInputElement>>document.querySelectorAll('form[name="queryform"] .t3js-clearable')).forEach(
       (clearableField: HTMLInputElement) => clearableField.clearable({
         onClear: (): void => {
@@ -76,7 +73,7 @@ class QueryGenerator {
    * Submit the form
    */
   private doSubmit(): void {
-    this.form.trigger('submit');
+    this.form.submit();
   }
 
   /**
@@ -85,7 +82,7 @@ class QueryGenerator {
    * @param {String} value
    */
   private setLimit(value: string): void {
-    this.limitField.val(value);
+    this.limitField.value = value;
   }
 
   /**
@@ -95,9 +92,15 @@ class QueryGenerator {
    * @param {String} value the value to add
    */
   private addValueToField(field: string, value: string): void {
-    const $target = this.form.find('[name="' + field + '"]');
-    const currentValue = $target.val();
-    $target.val(currentValue + ',' + value);
+    const target = <HTMLInputElement>this.form.querySelector('[name="' + field + '"]');
+    value = target.value + ',' + value;
+    target.value = value
+      .split(',')
+      // Remove whitespace from fields
+      .map(fieldName => fieldName.trim())
+      // Ensure fields only exist once
+      .filter((value, index, array) => array.indexOf(value) === index)
+      .join(',');
   }
 }
 

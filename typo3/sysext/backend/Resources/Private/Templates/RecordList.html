@@ -5,8 +5,7 @@
 
 <f:layout name="Module" />
 
-<f:section name="Content">
-
+<f:section name="Before">
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/recordlist.js',
@@ -23,10 +22,14 @@
             11: '@typo3/backend/element/editable-page-title.js'
         }"
     />
-
     <f:variable name="immediateActionArgs" value="{0: 'web', 1: pageId}" />
-    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{immediateActionArgs -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+    <typo3-immediate-action
+        action="TYPO3.Backend.Storage.ModuleStateStorage.update"
+        args="{immediateActionArgs -> f:format.json() -> f:format.htmlspecialchars()}"
+    ></typo3-immediate-action>
+</f:section>
 
+<f:section name="Content">
     <typo3-backend-editable-page-title
         pageTitle="{pageTitle}"
         pageId="{pageId}"
@@ -34,7 +37,6 @@
     >
         {pageTitle}
     </typo3-backend-editable-page-title>
-
     <f:format.raw>{additionalContentTop}</f:format.raw>
     <f:format.raw>{languageSelectorHtml}</f:format.raw>
     <f:format.raw>{searchBoxHtml}</f:format.raw>

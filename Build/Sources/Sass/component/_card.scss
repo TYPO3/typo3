@@ -320,11 +320,11 @@ a.card {
         padding-bottom: var(--typo3-card-padding);
     }
 
-    *:first-child {
+    > *:first-child:not(.row) {
         margin-top: 0;
     }
 
-    *:last-child {
+    > *:last-child {
         margin-bottom: 0;
     }
 }

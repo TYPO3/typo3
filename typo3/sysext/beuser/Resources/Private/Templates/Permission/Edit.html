@@ -22,17 +22,17 @@
 
     <form action="{formAction}" method="post" name="editform" id="PermissionControllerEdit">
 
-        <div class="row row-cols-auto align-items-end g-3 mb-4">
-            <div class="col">
-                <label for="selectOwner"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Owner" /></label>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label" for="selectOwner"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Owner" /></label>
                 <select class="form-select" name="data[pages][{id}][perms_userid]" id="selectOwner">
                     <f:for each="{beUserData}" key="userId" as="user">
                         <option value="{userId}" {f:if(condition: '{userId} == {currentBeUser}', then: 'selected')}>{user}</option>
                     </f:for>
                 </select>
             </div>
-            <div class="col">
-                <label for="selectGroup"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Group" /></label>
+            <div class="form-group">
+                <label class="form-label" for="selectGroup"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Group" /></label>
                 <f:if condition="{f:count(subject:beGroupData)} > 1">
                     <f:then>
                         <select class="form-select" name="data[pages][{id}][perms_groupid]" id="selectGroup">
@@ -46,8 +46,8 @@
                     </f:else>
                 </f:if>
             </div>
-            <div class="col">
-                <label for="recursionLevel"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Depth" /></label>
+            <div class="form-group">
+                <label class="form-label" for="recursionLevel"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Depth" /></label>
                 <select class="form-select" name="mirror[pages][{id}]" id="recursionLevel">
                     <f:for each="{recursiveSelectOptions}" key="depth" as="depthLabel">
                         <option value="{depth}" {f:if(condition: '{depth} == {currentBeUser}', then: 'selected')}>{depthLabel}</option>
@@ -71,27 +71,87 @@
                 <tbody>
                     <tr>
                         <td><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Owner" /></strong></td>
-                        <td><input type="checkbox" name="check[perms_user][]" value="{base ^ 0}" data-check-change-permissions="check[perms_user],data[pages][{id}][perms_user]" /></td>
-                        <td><input type="checkbox" name="check[perms_user][]" value="{base ^ 4}" data-check-change-permissions="check[perms_user],data[pages][{id}][perms_user]" /></td>
-                        <td><input type="checkbox" name="check[perms_user][]" value="{base ^ 1}" data-check-change-permissions="check[perms_user],data[pages][{id}][perms_user]" /></td>
-                        <td><input type="checkbox" name="check[perms_user][]" value="{base ^ 2}" data-check-change-permissions="check[perms_user],data[pages][{id}][perms_user]" /></td>
-                        <td><input type="checkbox" name="check[perms_user][]" value="{base ^ 3}" data-check-change-permissions="check[perms_user],data[pages][{id}][perms_user]" /></td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_user][]" value="{base ^ 0}" data-check-change-permissions="check[perms_user],data[pages][{id}][perms_user]" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_user][]" value="{base ^ 4}" data-check-change-permissions="check[perms_user],data[pages][{id}][perms_user]" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_user][]" value="{base ^ 1}" data-check-change-permissions="check[perms_user],data[pages][{id}][perms_user]" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_user][]" value="{base ^ 2}" data-check-change-permissions="check[perms_user],data[pages][{id}][perms_user]" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_user][]" value="{base ^ 3}" data-check-change-permissions="check[perms_user],data[pages][{id}][perms_user]" />
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Group" /></strong></td>
-                        <td><input type="checkbox" name="check[perms_group][]" value="{base ^ 0}" data-check-change-permissions="check[perms_group],data[pages][{id}][perms_group]" /></td>
-                        <td><input type="checkbox" name="check[perms_group][]" value="{base ^ 4}" data-check-change-permissions="check[perms_group],data[pages][{id}][perms_group]" /></td>
-                        <td><input type="checkbox" name="check[perms_group][]" value="{base ^ 1}" data-check-change-permissions="check[perms_group],data[pages][{id}][perms_group]" /></td>
-                        <td><input type="checkbox" name="check[perms_group][]" value="{base ^ 2}" data-check-change-permissions="check[perms_group],data[pages][{id}][perms_group]" /></td>
-                        <td><input type="checkbox" name="check[perms_group][]" value="{base ^ 3}" data-check-change-permissions="check[perms_group],data[pages][{id}][perms_group]" /></td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_group][]" value="{base ^ 0}" data-check-change-permissions="check[perms_group],data[pages][{id}][perms_group]" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_group][]" value="{base ^ 4}" data-check-change-permissions="check[perms_group],data[pages][{id}][perms_group]" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_group][]" value="{base ^ 1}" data-check-change-permissions="check[perms_group],data[pages][{id}][perms_group]" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_group][]" value="{base ^ 2}" data-check-change-permissions="check[perms_group],data[pages][{id}][perms_group]" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_group][]" value="{base ^ 3}" data-check-change-permissions="check[perms_group],data[pages][{id}][perms_group]" />
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Everybody" /></strong></td>
-                        <td><input type="checkbox" name="check[perms_everybody][]" value="{base ^ 0}" data-check-change-permissions="check[perms_everybody],data[pages][{id}][perms_everybody]" /></td>
-                        <td><input type="checkbox" name="check[perms_everybody][]" value="{base ^ 4}" data-check-change-permissions="check[perms_everybody],data[pages][{id}][perms_everybody]" /></td>
-                        <td><input type="checkbox" name="check[perms_everybody][]" value="{base ^ 1}" data-check-change-permissions="check[perms_everybody],data[pages][{id}][perms_everybody]" /></td>
-                        <td><input type="checkbox" name="check[perms_everybody][]" value="{base ^ 2}" data-check-change-permissions="check[perms_everybody],data[pages][{id}][perms_everybody]" /></td>
-                        <td><input type="checkbox" name="check[perms_everybody][]" value="{base ^ 3}" data-check-change-permissions="check[perms_everybody],data[pages][{id}][perms_everybody]" /></td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_everybody][]" value="{base ^ 0}" data-check-change-permissions="check[perms_everybody],data[pages][{id}][perms_everybody]" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_everybody][]" value="{base ^ 4}" data-check-change-permissions="check[perms_everybody],data[pages][{id}][perms_everybody]" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_everybody][]" value="{base ^ 1}" data-check-change-permissions="check[perms_everybody],data[pages][{id}][perms_everybody]" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_everybody][]" value="{base ^ 2}" data-check-change-permissions="check[perms_everybody],data[pages][{id}][perms_everybody]" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-type-toggle">
+                                <input class="form-check-input" type="checkbox" name="check[perms_everybody][]" value="{base ^ 3}" data-check-change-permissions="check[perms_everybody],data[pages][{id}][perms_everybody]" />
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>

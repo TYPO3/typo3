@@ -176,7 +176,7 @@ class BackendLogin {
   private initializeEvents(): void {
     new RegularEvent('submit', this.handleSubmit.bind(this)).bindTo(document.querySelector(this.options.loginForm));
 
-    (<NodeListOf<HTMLInputElement>>document.querySelectorAll('.t3js-clearable')).forEach(
+    (document.querySelectorAll('.t3js-clearable') as NodeListOf<HTMLInputElement>).forEach(
       (clearableField: HTMLInputElement) => clearableField.clearable(),
     );
   }

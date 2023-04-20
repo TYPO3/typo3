@@ -3,6 +3,8 @@
     data-namespace-typo3-fluid="true"
 >
 
+<f:render section="Before" arguments="{_all}" optional="true" />
+
 <div class="module {moduleClass}" data-module-id="{moduleId}" data-module-name="{moduleName}">
     <f:if condition="{formTag}">
         <f:then>
@@ -29,5 +31,7 @@
         </f:then>
     </f:if>
 </div>
+
+<f:render section="After" arguments="{_all}" optional="true" />
 
 </html>

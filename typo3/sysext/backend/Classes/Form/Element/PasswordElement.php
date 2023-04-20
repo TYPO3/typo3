@@ -114,6 +114,7 @@ class PasswordElement extends AbstractFormElement
             'spellcheck' => 'false',
             'class' => implode(' ', [
                 'form-control',
+                'form-control-clearable',
                 't3js-clearable',
                 'hasDefaultValue',
             ]),

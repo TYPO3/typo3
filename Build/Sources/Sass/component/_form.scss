@@ -2,7 +2,35 @@
 // Form
 //
 .form {
-    margin-bottom: var(--typo3-component-spacing);
+    margin-bottom: var(--typo3-spacing);
+}
+
+//
+// Row
+//
+@mixin make-form-row() {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--typo3-spacing);
+    margin-bottom: var(--typo3-spacing);
+
+    > .form-group {
+        margin-bottom: 0;
+
+        > [class*="form-row"] {
+            margin-bottom: 0;
+        }
+    }
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
+        .form-row#{$infix} {
+            @include make-form-row();
+        }
+    }
 }
 
 //
@@ -18,6 +46,10 @@
 .form-description {
     opacity: .75;
     margin-bottom: $form-label-margin-bottom;
+}
+
+.form-label + .form-description {
+    margin-top: calc($form-label-margin-bottom / 2 * -1);
 }
 
 //

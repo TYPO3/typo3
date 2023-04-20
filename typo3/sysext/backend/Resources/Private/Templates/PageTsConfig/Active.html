@@ -7,7 +7,7 @@
 
 <f:layout name="Module"/>
 
-<f:section name="Content">
+<f:section name="Before">
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/context-menu.js',
@@ -20,10 +20,14 @@
             'collapse-state-search.numberOfSearchMatches': 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.header.numberOfSearchMatches'
         }"
     />
-
     <f:variable name="args" value="{0: 'web', 1: pageUid}" />
-    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+    <typo3-immediate-action
+        action="TYPO3.Backend.Storage.ModuleStateStorage.update"
+        args="{args -> f:format.json() -> f:format.htmlspecialchars()}"
+    ></typo3-immediate-action>
+</f:section>
 
+<f:section name="Content">
     <h1>
         <f:translate
             key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.headline"
@@ -89,13 +93,13 @@
 </f:section>
 
 <f:section name="Options">
-    <div class="row row-cols-auto align-items-end g-3 mb-4 pt-2">
-        <div class="col col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
+    <div class="form-row-md">
+        <div class="form-group">
             <form action="#">
                 <div class="input-group">
                     <input
                         type="text"
-                        class="form-control t3js-collapse-search-term"
+                        class="form-control form-control-clearable t3js-collapse-search-term"
                         name="searchValue"
                         data-persist-collapse-search-key="collapse-search-term-pagets"
                         value=""
@@ -106,13 +110,13 @@
                 </div>
             </form>
         </div>
-        <div class="col">
-            <div class="row row-cols-md-auto pb-1">
+        <div class="form-group">
+            <div class="form-row-sm">
                 <f:if condition="{siteSettingsAst}">
-                    <div class="col col-12 col-sm-12">
+                    <div class="form-group">
                         <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
                             <input type="hidden" name="displayConstantSubstitutions" value="0" />
-                            <div class="form-check form-switch">
+                            <div class="form-check form-switch form-check-size-input">
                                 <input
                                     type="checkbox"
                                     class="form-check-input"
@@ -131,10 +135,10 @@
                         </form>
                     </div>
                 </f:if>
-                <div class="col col-12 col-sm-12">
+                <div class="form-group">
                     <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
                         <input type="hidden" name="displayComments" value="0" />
-                        <div class="form-check form-switch">
+                        <div class="form-check form-switch form-check-size-input">
                             <input
                                 type="checkbox"
                                 class="form-check-input"
@@ -152,10 +156,10 @@
                         </div>
                     </form>
                 </div>
-                <div class="col col-12 col-sm-12">
+                <div class="form-group">
                     <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
                         <input type="hidden" name="sortAlphabetically" value="0" />
-                        <div class="form-check form-switch">
+                        <div class="form-check form-switch form-check-size-input">
                             <input
                                 type="checkbox"
                                 class="form-check-input"
@@ -236,46 +240,42 @@
         >
             <div class="panel-body">
                 <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
-                    <div class="row">
-                        <div class="col-12">
-                            <f:for each="{conditions}" as="condition">
-                                <input type="hidden" name="pageTsConfigConditions[{condition.hash}]" value="0" />
-                                <div class="form-check form-switch">
-                                    <input
-                                        type="checkbox"
-                                        class="form-check-input"
-                                        id="condition{condition.hash}"
-                                        name="pageTsConfigConditions[{condition.hash}]"
-                                        value="1"
-                                        data-global-event="change"
-                                        data-action-submit="$form"
-                                        data-value-selector="input[name='pageTsConfigConditions[{condition.hash}]']"
-                                        {f:if(condition: condition.active, then: 'checked="checked"')}
-                                    />
-                                    <label class="form-check-label" for="condition{condition.hash}">
-                                        <f:if condition="{displayConstantSubstitutions} && {condition.originalValue}">
-                                            <f:then>
-                                                <span class="font-monospace">[{condition.value}]</span>
-                                                <span class="diff-item-result diff-item-result-inline font-monospace p-0">
-                                                    <f:format.raw>
-                                                        <f:translate
-                                                            key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.info.conditionWithConstant"
-                                                            arguments="{
-                                                                0: '{backend:typoScript.fineDiff(from: condition.originalValue, to: condition.value)}'
-                                                            }"
-                                                        />
-                                                    </f:format.raw>
-                                                </span>
-                                            </f:then>
-                                            <f:else>
-                                                <span class="font-monospace">[{condition.value}]</span>
-                                            </f:else>
-                                        </f:if>
-                                    </label>
-                                </div>
-                            </f:for>
+                    <f:for each="{conditions}" as="condition">
+                        <input type="hidden" name="pageTsConfigConditions[{condition.hash}]" value="0" />
+                        <div class="form-check form-switch">
+                            <input
+                                type="checkbox"
+                                class="form-check-input"
+                                id="condition{condition.hash}"
+                                name="pageTsConfigConditions[{condition.hash}]"
+                                value="1"
+                                data-global-event="change"
+                                data-action-submit="$form"
+                                data-value-selector="input[name='pageTsConfigConditions[{condition.hash}]']"
+                                {f:if(condition: condition.active, then: 'checked="checked"')}
+                            />
+                            <label class="form-check-label" for="condition{condition.hash}">
+                                <f:if condition="{displayConstantSubstitutions} && {condition.originalValue}">
+                                    <f:then>
+                                        <span class="font-monospace">[{condition.value}]</span>
+                                        <span class="diff-item-result diff-item-result-inline font-monospace p-0">
+                                            <f:format.raw>
+                                                <f:translate
+                                                    key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.info.conditionWithConstant"
+                                                    arguments="{
+                                                        0: '{backend:typoScript.fineDiff(from: condition.originalValue, to: condition.value)}'
+                                                    }"
+                                                />
+                                            </f:format.raw>
+                                        </span>
+                                    </f:then>
+                                    <f:else>
+                                        <span class="font-monospace">[{condition.value}]</span>
+                                    </f:else>
+                                </f:if>
+                            </label>
                         </div>
-                    </div>
+                    </f:for>
                 </form>
             </div>
         </div>

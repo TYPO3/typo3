@@ -68,8 +68,10 @@ class Clearable {
         throw new Error('Passed options must be an object, ' + typeof options + ' given');
       }
 
+      this.classList.add('form-control-clearable');
+
       const wrap = document.createElement('div');
-      wrap.classList.add('form-control-clearable');
+      wrap.classList.add('form-control-clearable-wrapper');
       this.parentNode.insertBefore(wrap, this);
       wrap.appendChild(this);
 

@@ -1,12 +1,6 @@
 //
 // TYPO3 styles for basic elements
 //
-h1 {
-    font-family: var(--typo3-header-font-family);
-    font-variant: normal;
-    font-weight: 400;
-}
-
 video {
     background-color: #000;
 }
@@ -20,13 +14,6 @@ video {
 
 .nowrap-disabled {
     white-space: normal !important;
-}
-
-//
-// TYPO3 styles for basic elements
-//
-em {
-    font-style: italic;
 }
 
 //

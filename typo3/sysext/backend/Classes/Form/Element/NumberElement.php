@@ -128,6 +128,7 @@ class NumberElement extends AbstractFormElement
             'id' => $fieldId,
             'class' => implode(' ', [
                 'form-control',
+                'form-control-clearable',
                 't3js-clearable',
                 'hasDefaultValue',
             ]),

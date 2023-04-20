@@ -46,10 +46,10 @@ final class RecordDownloadCest
         $modalDialog->canSeeDialog();
         $I->canSee('Download Page:', ModalDialog::$openedModalSelector . ' .modal-title');
         $I->fillField(ModalDialog::$openedModalSelector . ' input[name="filename"]', 'test-download');
-        $I->canSee('CSV options', ModalDialog::$openedModalSelector . ' .modal-body h5');
+        $I->canSee('CSV options', ModalDialog::$openedModalSelector . ' .modal-body h2');
         $I->selectOption(ModalDialog::$openedModalSelector . ' select[name="format"]', 'json');
-        $I->dontSee('CSV options', ModalDialog::$openedModalSelector . ' .modal-body h5');
-        $I->see('JSON options', ModalDialog::$openedModalSelector . ' .modal-body h5');
+        $I->dontSee('CSV options', ModalDialog::$openedModalSelector . ' .modal-body h2');
+        $I->see('JSON options', ModalDialog::$openedModalSelector . ' .modal-body h2');
         $I->selectOption(ModalDialog::$openedModalSelector . ' select[name="json[meta]"]', 'full');
         $I->click('button[name="download"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
