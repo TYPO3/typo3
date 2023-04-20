@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -30,29 +32,25 @@ class Message implements MessageInterface
 {
     /**
      * The HTTP Protocol version, defaults to 1.1
-     * @var string
      */
-    protected $protocolVersion = '1.1';
+    protected string $protocolVersion = '1.1';
 
     /**
      * Associative array containing all headers of this Message
      * This is a mixed-case list of the headers (as due to the specification)
-     * @var array
      */
-    protected $headers = [];
+    protected array $headers = [];
 
     /**
      * Lowercased version of all headers, in order to check if a header is set or not
      * this way a lot of checks are easier to be set
-     * @var array
      */
-    protected $lowercasedHeaderNames = [];
+    protected array $lowercasedHeaderNames = [];
 
     /**
      * The body as a Stream object
-     * @var StreamInterface|null
      */
-    protected $body;
+    protected ?StreamInterface $body = null;
 
     /**
      * Retrieves the HTTP protocol version as a string.
@@ -61,7 +59,7 @@ class Message implements MessageInterface
      *
      * @return string HTTP protocol version.
      */
-    public function getProtocolVersion()
+    public function getProtocolVersion(): string
     {
         return $this->protocolVersion;
     }
@@ -79,7 +77,7 @@ class Message implements MessageInterface
      * @param string $version HTTP protocol version
      * @return static
      */
-    public function withProtocolVersion($version)
+    public function withProtocolVersion(string $version): MessageInterface
     {
         $clonedObject = clone $this;
         $clonedObject->protocolVersion = $version;
@@ -113,7 +111,7 @@ class Message implements MessageInterface
      *     key MUST be a header name, and each value MUST be an array of strings
      *     for that header.
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
@@ -126,7 +124,7 @@ class Message implements MessageInterface
      *     name using a case-insensitive string comparison. Returns false if
      *     no matching header name is found in the message.
      */
-    public function hasHeader($name)
+    public function hasHeader(string $name): bool
     {
         return isset($this->lowercasedHeaderNames[strtolower($name)]);
     }
@@ -145,7 +143,7 @@ class Message implements MessageInterface
      *    header. If the header does not appear in the message, this method MUST
      *    return an empty array.
      */
-    public function getHeader($name)
+    public function getHeader(string $name): array
     {
         if (!$this->hasHeader($name)) {
             return [];
@@ -177,7 +175,7 @@ class Message implements MessageInterface
      *    concatenated together using a comma. If the header does not appear in
      *    the message, this method MUST return an empty string.
      */
-    public function getHeaderLine($name)
+    public function getHeaderLine(string $name): string
     {
         $headerValue = $this->getHeader($name);
         if (empty($headerValue)) {
@@ -201,7 +199,7 @@ class Message implements MessageInterface
      * @return static
      * @throws \InvalidArgumentException for invalid header names or values.
      */
-    public function withHeader($name, $value)
+    public function withHeader(string $name, $value): MessageInterface
     {
         if (is_string($value)) {
             $value = [$value];
@@ -237,7 +235,7 @@ class Message implements MessageInterface
      * @return static
      * @throws \InvalidArgumentException for invalid header names or values.
      */
-    public function withAddedHeader($name, $value)
+    public function withAddedHeader(string $name, $value): MessageInterface
     {
         if (is_string($value)) {
             $value = [$value];
@@ -268,7 +266,7 @@ class Message implements MessageInterface
      * @param string $name Case-insensitive header field name to remove.
      * @return static
      */
-    public function withoutHeader($name)
+    public function withoutHeader(string $name): MessageInterface
     {
         if (!$this->hasHeader($name)) {
             return clone $this;
@@ -284,9 +282,9 @@ class Message implements MessageInterface
     /**
      * Gets the body of the message.
      *
-     * @return \Psr\Http\Message\StreamInterface Returns the body as a stream.
+     * @return StreamInterface Returns the body as a stream.
      */
-    public function getBody()
+    public function getBody(): StreamInterface
     {
         if ($this->body === null) {
             $this->body = new Stream('php://temp', 'r+');
@@ -303,11 +301,10 @@ class Message implements MessageInterface
      * immutability of the message, and MUST return a new instance that has the
      * new body stream.
      *
-     * @param \Psr\Http\Message\StreamInterface $body Body.
      * @return static
      * @throws \InvalidArgumentException When the body is not valid.
      */
-    public function withBody(StreamInterface $body)
+    public function withBody(StreamInterface $body): MessageInterface
     {
         $clonedObject = clone $this;
         $clonedObject->body = $body;
@@ -319,7 +316,7 @@ class Message implements MessageInterface
      *
      * @throws \InvalidArgumentException
      */
-    protected function assertHeaders(array $headers)
+    protected function assertHeaders(array $headers): void
     {
         foreach ($headers as $name => $headerValues) {
             $this->validateHeaderName($name);
@@ -340,7 +337,7 @@ class Message implements MessageInterface
      * @param array $originalHeaders Headers to filter.
      * @return array Filtered headers and names.
      */
-    protected function filterHeaders(array $originalHeaders)
+    protected function filterHeaders(array $originalHeaders): array
     {
         $headerNames = $headers = [];
         foreach ($originalHeaders as $header => $value) {
@@ -358,10 +355,8 @@ class Message implements MessageInterface
 
     /**
      * Helper function to test if an array contains only strings
-     *
-     * @return bool
      */
-    protected function arrayContainsOnlyStrings(array $data)
+    protected function arrayContainsOnlyStrings(array $data): bool
     {
         return array_reduce($data, static function ($original, $item) {
             return is_string($item) ? $original : false;
@@ -375,7 +370,7 @@ class Message implements MessageInterface
      * @param string[] $values
      * @throws \InvalidArgumentException
      */
-    protected function validateHeaderValues(array $values)
+    protected function validateHeaderValues(array $values): void
     {
         array_walk($values, static function ($value, $key, Message $messageObject) {
             if (!$messageObject->isValidHeaderValue($value)) {
@@ -397,12 +392,10 @@ class Message implements MessageInterface
      * lossy.
      *
      * @see http://en.wikipedia.org/wiki/HTTP_response_splitting
-     * @param string $value
-     * @return string
+     * @todo: Unused? And why is this public? Maybe align with zend-diactoros again
      */
-    public function filter($value)
+    public function filter(string $value): string
     {
-        $value  = (string)$value;
         $length = strlen($value);
         $string = '';
         for ($i = 0; $i < $length; $i += 1) {
@@ -435,13 +428,13 @@ class Message implements MessageInterface
     }
 
     /**
-     * Check whether or not a header name is valid and throw an exception.
+     * Check whether a header name is valid and throw an exception.
      *
      * @see https://tools.ietf.org/html/rfc7230#section-3.2
-     * @param string $name
      * @throws \InvalidArgumentException
+     * @todo: Review. Should be protected / private, maybe align with zend-diactoros again
      */
-    public function validateHeaderName($name)
+    public function validateHeaderName(string $name): void
     {
         if (!preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/', $name)) {
             throw new \InvalidArgumentException('Invalid header name, given "' . $name . '"', 1436717270);
@@ -456,13 +449,10 @@ class Message implements MessageInterface
      * a single CRLF sequence followed by a space or horizontal tab.
      *
      * @see http://en.wikipedia.org/wiki/HTTP_response_splitting
-     * @param string $value
-     * @return bool
+     * @todo: Review. Should be protected / private, maybe align with zend-diactoros again
      */
-    public function isValidHeaderValue($value)
+    public function isValidHeaderValue(string $value): bool
     {
-        $value = (string)$value;
-
         // Any occurrence of \r or \n is invalid
         if (strpbrk($value, "\r\n") !== false) {
             return false;

@@ -626,11 +626,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Http/NormalizedParams.php
 
 		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Http/RedirectResponse.php
-
-		-
 			message: "#^Call to function is_resource\\(\\) with Psr\\\\Http\\\\Message\\\\StreamInterface will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Http/Response.php
@@ -644,11 +639,6 @@ parameters:
 			message: "#^Access to an undefined property Psr\\\\Http\\\\Message\\\\StreamInterface\\:\\:\\$stream\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Http/SelfEmittableLazyOpenStream.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Http/UploadedFile.php
 
 		-
 			message: "#^If condition is always true\\.$#"
@@ -1374,11 +1364,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$stream of class TYPO3\\\\CMS\\\\Core\\\\Http\\\\Stream constructor expects resource\\|string, array\\<int, string\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Http/StreamTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$port of method TYPO3\\\\CMS\\\\Core\\\\Http\\\\Uri\\:\\:withPort\\(\\) expects int\\|null, true given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Http/UriTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$data of method TYPO3\\\\CMS\\\\Core\\\\LinkHandling\\\\EmailLinkHandler\\:\\:resolveHandlerData\\(\\) expects array, string given\\.$#"

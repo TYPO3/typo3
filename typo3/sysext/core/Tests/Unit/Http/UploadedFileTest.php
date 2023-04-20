@@ -22,11 +22,6 @@ use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for \TYPO3\CMS\Core\Http\UploadedFile
- *
- * Adapted from https://github.com/phly/http/
- */
 final class UploadedFileTest extends UnitTestCase
 {
     protected $tmpFile;
@@ -48,9 +43,6 @@ final class UploadedFileTest extends UnitTestCase
     public static function invalidStreamsDataProvider(): array
     {
         return [
-            'null'   => [null],
-            'true'   => [true],
-            'false'  => [false],
             'int'    => [1],
             'float'  => [1.1],
             /* Have not figured out a valid way to test an invalid path yet; null byte injection
@@ -72,40 +64,9 @@ final class UploadedFileTest extends UnitTestCase
         new UploadedFile($streamOrFile, 0, UPLOAD_ERR_OK);
     }
 
-    public static function invalidSizesDataProvider(): array
-    {
-        return [
-            'null'   => [null],
-            'true'   => [true],
-            'false'  => [false],
-            'float'  => [1.1],
-            'string' => ['1'],
-            'array'  => [[1]],
-            'object' => [(object)[1]],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidSizesDataProvider
-     * @test
-     */
-    public function constructorRaisesExceptionOnInvalidSize($size): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1436717302);
-        new UploadedFile(fopen('php://temp', 'wb+'), $size, UPLOAD_ERR_OK);
-    }
-
     public static function invalidErrorStatusesDataProvider(): array
     {
         return [
-            'null'     => [null],
-            'true'     => [true],
-            'false'    => [false],
-            'float'    => [1.1],
-            'string'   => ['1'],
-            'array'    => [[1]],
-            'object'   => [(object)[1]],
             'negative' => [-1],
             'too-big'  => [9],
         ];
@@ -120,40 +81,6 @@ final class UploadedFileTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717303);
         new UploadedFile(fopen('php://temp', 'wb+'), 0, $status);
-    }
-
-    public static function invalidFilenamesAndMediaTypesDataProvider(): array
-    {
-        return [
-            'true'   => [true],
-            'false'  => [false],
-            'int'    => [1],
-            'float'  => [1.1],
-            'array'  => [['string']],
-            'object' => [(object)['string']],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidFilenamesAndMediaTypesDataProvider
-     * @test
-     */
-    public function constructorRaisesExceptionOnInvalidClientFilename($filename): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1436717304);
-        new UploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, $filename);
-    }
-
-    /**
-     * @dataProvider invalidFilenamesAndMediaTypesDataProvider
-     * @test
-     */
-    public function constructorRaisesExceptionOnInvalidClientMediaType($mediaType): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1436717305);
-        new UploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, 'foobar.baz', $mediaType);
     }
 
     /**
@@ -205,34 +132,17 @@ final class UploadedFileTest extends UnitTestCase
         self::assertEquals($stream->__toString(), $contents);
     }
 
-    public static function invalidMovePathsDataProvider(): array
-    {
-        return [
-            'null'   => [null],
-            'true'   => [true],
-            'false'  => [false],
-            'int'    => [1],
-            'float'  => [1.1],
-            'empty'  => [''],
-            'array'  => [['filename']],
-            'object' => [(object)['filename']],
-        ];
-    }
-
     /**
-     * @dataProvider invalidMovePathsDataProvider
      * @test
      */
-    public function moveToRaisesExceptionForInvalidPath($path): void
+    public function moveToRaisesExceptionForEmptyPath(): void
     {
         $stream = new Stream('php://temp', 'wb+');
         $stream->write('Foo bar!');
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
-
-        $this->tmpFile = $path;
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717307);
-        $upload->moveTo($path);
+        $upload->moveTo('');
     }
 
     /**

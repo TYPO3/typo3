@@ -20,11 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for \TYPO3\CMS\Core\Http\Uri
- *
- * Adapted from https://github.com/phly/http/
- */
 final class UriTest extends UnitTestCase
 {
     /**
@@ -123,8 +118,9 @@ final class UriTest extends UnitTestCase
     public static function validPortsDataProvider(): array
     {
         return [
-            'int'    => [3000],
-            'string' => ['3000'],
+            'int 1' => [1],
+            'int 3000' => [3000],
+            'int 65535' => [65535],
         ];
     }
 
@@ -144,28 +140,6 @@ final class UriTest extends UnitTestCase
         );
     }
 
-    public static function invalidPortsDataProviderType(): array
-    {
-        return [
-            'false'     => [false],
-            'string'    => ['string'],
-            'array'     => [[3000]],
-            'object'    => [(object)[3000]],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidPortsDataProviderType
-     * @test
-     */
-    public function withPortRaisesExceptionForInvalidPortsByType($port): void
-    {
-        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1436717324);
-        $uri->withPort($port);
-    }
-
     public static function invalidPortsDataProviderRange(): array
     {
         return [
@@ -173,21 +147,6 @@ final class UriTest extends UnitTestCase
             'too-small' => [-1],
             'too-big'   => [65536],
         ];
-    }
-
-    /**
-     * @test
-     * @todo: Currently, boolean true is interpreted as 1 by canBeInterpretedAsInteger().
-     * @todo: This test shows that, but there is an inconsistency and maybe it would be better
-     * @todo: if the code would not accept 'true' as valid port but throw an exception instead.
-     * @todo: If that is changed, 'true' should be added to the 'invalid type' data provider above.
-     */
-    public function withPortAcceptsBooleanTrueAsPortOne(): void
-    {
-        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $new = $uri->withPort(true);
-        self::assertNotSame($uri, $new);
-        self::assertEquals(1, $new->getPort());
     }
 
     /**
@@ -241,29 +200,6 @@ final class UriTest extends UnitTestCase
         self::assertEquals('https://user:pass@local.example.com:3001/bar/baz?bar=baz#quz', (string)$new);
     }
 
-    public static function invalidPathsDataProvider(): array
-    {
-        return [
-            'null'     => [null],
-            'true'     => [true],
-            'false'    => [false],
-            'array'    => [['/bar/baz']],
-            'object'   => [(object)['/bar/baz']],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidPathsDataProvider
-     * @test
-     */
-    public function withPathRaisesExceptionForInvalidPaths($path): void
-    {
-        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1436717328);
-        $uri->withPath($path);
-    }
-
     /**
      * @test
      */
@@ -296,29 +232,6 @@ final class UriTest extends UnitTestCase
         self::assertNotSame($uri, $new);
         self::assertEquals('baz=bat', $new->getQuery());
         self::assertEquals('https://user:pass@local.example.com:3001/foo?baz=bat#quz', (string)$new);
-    }
-
-    public static function invalidQueryStringsDataProvider(): array
-    {
-        return [
-            'null'     => [null],
-            'true'     => [true],
-            'false'    => [false],
-            'array'    => [['baz=bat']],
-            'object'   => [(object)['baz=bat']],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidQueryStringsDataProvider
-     * @test
-     */
-    public function withQueryRaisesExceptionForInvalidQueryStringsByType($query): void
-    {
-        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1436717334);
-        $uri->withQuery($query);
     }
 
     /**

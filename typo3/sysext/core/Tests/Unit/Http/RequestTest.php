@@ -58,14 +58,6 @@ final class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getUriIsNullByDefault(): void
-    {
-        self::assertNull($this->request->getUri());
-    }
-
-    /**
-     * @test
-     */
     public function withUriReturnsNewInstanceWithNewUri(): void
     {
         $request = $this->request->withUri(new Uri('https://example.com:10082/foo/bar?baz=bat'));

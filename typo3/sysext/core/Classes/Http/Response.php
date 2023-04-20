@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -30,21 +32,19 @@ class Response extends Message implements ResponseInterface
 {
     /**
      * The HTTP status code of the response
-     * @var int $statusCode
      */
-    protected $statusCode;
+    protected int $statusCode;
 
     /**
      * The reason phrase of the response
-     * @var string $reasonPhrase
      */
-    protected $reasonPhrase = '';
+    protected string $reasonPhrase = '';
 
     /**
      * The standardized and other important HTTP Status Codes
      * @var array
      */
-    protected $availableStatusCodes = [
+    protected array $availableStatusCodes = [
         // INFORMATIONAL CODES
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -120,11 +120,9 @@ class Response extends Message implements ResponseInterface
      * Constructor for generating new responses
      *
      * @param StreamInterface|string|null $body
-     * @param int $statusCode
-     * @param array $headers
      * @throws \InvalidArgumentException if any of the given arguments are given
      */
-    public function __construct($body = 'php://temp', $statusCode = 200, $headers = [], string $reasonPhrase = '')
+    public function __construct($body = 'php://temp', int $statusCode = 200, array $headers = [], string $reasonPhrase = '')
     {
         // Build a streamable object for the body
         if ($body !== null && !is_string($body) && !is_resource($body) && !$body instanceof StreamInterface) {
@@ -139,7 +137,7 @@ class Response extends Message implements ResponseInterface
         if (MathUtility::canBeInterpretedAsInteger($statusCode) === false || !array_key_exists((int)$statusCode, $this->availableStatusCodes)) {
             throw new \InvalidArgumentException('The given status code is not a valid HTTP status code.', 1436717278);
         }
-        $this->statusCode = (int)$statusCode;
+        $this->statusCode = $statusCode;
 
         $this->reasonPhrase = $reasonPhrase === '' ? $this->availableStatusCodes[$this->statusCode] : $reasonPhrase;
         [$this->lowercasedHeaderNames, $headers] = $this->filterHeaders($headers);
@@ -155,7 +153,7 @@ class Response extends Message implements ResponseInterface
      *
      * @return int Status code.
      */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
@@ -181,9 +179,9 @@ class Response extends Message implements ResponseInterface
      * @return static
      * @throws \InvalidArgumentException For invalid status code arguments.
      */
-    public function withStatus($code, $reasonPhrase = '')
+    public function withStatus(int $code, string $reasonPhrase = ''): ResponseInterface
     {
-        if (MathUtility::canBeInterpretedAsInteger($code) === false || !array_key_exists((int)$code, $this->availableStatusCodes)) {
+        if (!array_key_exists((int)$code, $this->availableStatusCodes)) {
             throw new \InvalidArgumentException('The given status code is not a valid HTTP status code', 1436717279);
         }
         $clonedObject = clone $this;
@@ -205,7 +203,7 @@ class Response extends Message implements ResponseInterface
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      * @return string Reason phrase; must return an empty string if none present.
      */
-    public function getReasonPhrase()
+    public function getReasonPhrase(): string
     {
         return $this->reasonPhrase;
     }

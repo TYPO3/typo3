@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -107,7 +109,7 @@ class Request extends Message implements RequestInterface
         $this->validateMethod($method);
 
         $this->method = $method;
-        $this->uri    = $uri;
+        $this->uri = $uri;
         [$this->lowercasedHeaderNames, $headers] = $this->filterHeaders($headers);
         $this->assertHeaders($headers);
         $this->headers = $headers;
@@ -158,17 +160,17 @@ class Request extends Message implements RequestInterface
      * If the header does not appear in the message, this method MUST return an
      * empty array.
      *
-     * @param string $header Case-insensitive header field name.
+     * @param string $name Case-insensitive header field name.
      * @return string[] An array of string values as provided for the given
      *    header. If the header does not appear in the message, this method MUST
      *    return an empty array.
      */
-    public function getHeader($header): array
+    public function getHeader(string $name): array
     {
-        if (!$this->hasHeader($header) && strtolower($header) === 'host' && ($this->uri?->getHost())) {
+        if (!$this->hasHeader($name) && strtolower($name) === 'host' && ($this->uri?->getHost())) {
             return [$this->getHostFromUri()];
         }
-        return parent::getHeader($header);
+        return parent::getHeader($name);
     }
 
     /**
@@ -264,7 +266,7 @@ class Request extends Message implements RequestInterface
      * @param string $method Case-sensitive method.
      * @throws \InvalidArgumentException for invalid HTTP methods.
      */
-    public function withMethod($method): static
+    public function withMethod(string $method): static
     {
         $clonedObject = clone $this;
         $clonedObject->method = $method;
@@ -276,14 +278,11 @@ class Request extends Message implements RequestInterface
      *
      * This method MUST return a UriInterface instance.
      *
-     * @todo This method currently may return null instead. This is
-     * a PSR-7 spec violation that should be corrected.
-     *
      * @link https://tools.ietf.org/html/rfc3986#section-4.3
-     * @return \Psr\Http\Message\UriInterface|null Returns a UriInterface instance
+     * @return UriInterface Returns a UriInterface instance
      *     representing the URI of the request.
      */
-    public function getUri(): ?UriInterface
+    public function getUri(): UriInterface
     {
         return $this->uri;
     }
@@ -315,10 +314,10 @@ class Request extends Message implements RequestInterface
      *
      * @link https://tools.ietf.org/html/rfc3986#section-4.3
      *
-     * @param \Psr\Http\Message\UriInterface $uri New request URI to use.
+     * @param UriInterface $uri New request URI to use.
      * @param bool $preserveHost Preserve the original state of the Host header.
      */
-    public function withUri(UriInterface $uri, $preserveHost = false): static
+    public function withUri(UriInterface $uri, bool $preserveHost = false): static
     {
         $clonedObject = clone $this;
         $clonedObject->uri = $uri;

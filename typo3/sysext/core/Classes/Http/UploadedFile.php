@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -30,40 +32,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class UploadedFile implements UploadedFileInterface
 {
-    /**
-     * @var string|null
-     */
-    protected $file;
-
-    /**
-     * @var StreamInterface|null
-     */
-    protected $stream;
-
-    /**
-     * @var string|null
-     */
-    protected $clientFilename;
-
-    /**
-     * @var string|null
-     */
-    protected $clientMediaType;
-
-    /**
-     * @var int
-     */
-    protected $error;
-
-    /**
-     * @var bool
-     */
-    protected $moved = false;
-
-    /**
-     * @var int
-     */
-    protected $size;
+    protected ?string $file = null;
+    protected ?StreamInterface $stream = null;
+    protected ?string $clientFilename;
+    protected ?string $clientMediaType;
+    protected int $error;
+    protected bool $moved = false;
+    protected int $size;
 
     /**
      * Constructor method
@@ -71,12 +46,12 @@ class UploadedFile implements UploadedFileInterface
      * @param string|resource|StreamInterface $input is either a stream or a filename
      * @param int $size see $_FILES['size'] from PHP
      * @param int $errorStatus see $_FILES['error']
-     * @param string $clientFilename the original filename handed over from the client
-     * @param string $clientMediaType the media type (optional)
+     * @param string|null $clientFilename the original filename handed over from the client
+     * @param string|null $clientMediaType the media type (optional)
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($input, $size, $errorStatus, $clientFilename = null, $clientMediaType = null)
+    public function __construct($input, int $size, int $errorStatus, ?string $clientFilename = null, ?string $clientMediaType = null)
     {
         if (is_string($input)) {
             $this->file = $input;
@@ -92,24 +67,14 @@ class UploadedFile implements UploadedFileInterface
             throw new \InvalidArgumentException('The input given was not a valid stream or file.', 1436717301);
         }
 
-        if (!is_int($size)) {
-            throw new \InvalidArgumentException('The size provided for an uploaded file must be an integer.', 1436717302);
-        }
         $this->size = $size;
 
-        if (!is_int($errorStatus) || $errorStatus < 0 || $errorStatus > 8) {
+        if ($errorStatus < 0 || $errorStatus > 8) {
             throw new \InvalidArgumentException('Invalid error status for an uploaded file. See UPLOAD_ERR_* constant in PHP.', 1436717303);
         }
         $this->error = $errorStatus;
 
-        if ($clientFilename !== null && !is_string($clientFilename)) {
-            throw new \InvalidArgumentException('Invalid client filename provided for an uploaded file.', 1436717304);
-        }
         $this->clientFilename = $clientFilename;
-
-        if ($clientMediaType !== null && !is_string($clientMediaType)) {
-            throw new \InvalidArgumentException('Invalid client media type provided for an uploaded file.', 1436717305);
-        }
         $this->clientMediaType = $clientMediaType;
     }
 
@@ -125,7 +90,7 @@ class UploadedFile implements UploadedFileInterface
      * @return StreamInterface Stream representation of the uploaded file.
      * @throws \RuntimeException in cases when no stream is available or can be created.
      */
-    public function getStream()
+    public function getStream(): StreamInterface
     {
         if ($this->moved) {
             throw new \RuntimeException('Cannot retrieve stream as it was moved.', 1436717306);
@@ -170,9 +135,9 @@ class UploadedFile implements UploadedFileInterface
      * @throws \InvalidArgumentException if the $path specified is invalid.
      * @throws \RuntimeException on any error during the move operation, or on the second or subsequent call to the method.
      */
-    public function moveTo($targetPath)
+    public function moveTo(string $targetPath): void
     {
-        if (!is_string($targetPath) || empty($targetPath)) {
+        if (empty($targetPath)) {
             throw new \InvalidArgumentException('Invalid path while moving an uploaded file.', 1436717307);
         }
 
@@ -222,7 +187,7 @@ class UploadedFile implements UploadedFileInterface
      *
      * @return int|null The file size in bytes or null if unknown.
      */
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
@@ -240,7 +205,7 @@ class UploadedFile implements UploadedFileInterface
      * @see https://php.net/manual/en/features.file-upload.errors.php
      * @return int One of PHP's UPLOAD_ERR_XXX constants.
      */
-    public function getError()
+    public function getError(): int
     {
         return $this->error;
     }
@@ -256,7 +221,7 @@ class UploadedFile implements UploadedFileInterface
      *
      * @return string|null The filename sent by the client or null if none was provided.
      */
-    public function getClientFilename()
+    public function getClientFilename(): ?string
     {
         return $this->clientFilename;
     }
@@ -286,7 +251,7 @@ class UploadedFile implements UploadedFileInterface
      *
      * @return string|null The media type sent by the client or null if none was provided.
      */
-    public function getClientMediaType()
+    public function getClientMediaType(): ?string
     {
         return $this->clientMediaType;
     }

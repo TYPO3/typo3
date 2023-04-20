@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -31,7 +33,7 @@ class HtmlResponse extends Response
      * @param int $status status code for the response; defaults to 200.
      * @param array $headers Additional headers to be set.
      */
-    public function __construct($content, $status = 200, array $headers = [])
+    public function __construct(string $content, int $status = 200, array $headers = [])
     {
         $body = new Stream('php://temp', 'wb+');
         $body->write($content);

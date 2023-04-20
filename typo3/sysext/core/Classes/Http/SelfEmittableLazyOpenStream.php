@@ -31,18 +31,15 @@ use Psr\Http\Message\StreamInterface;
 class SelfEmittableLazyOpenStream implements SelfEmittableStreamInterface
 {
     use StreamDecoratorTrait;
-    protected string $filename;
-    protected LazyOpenStream $stream;
+
+    protected readonly LazyOpenStream $stream;
 
     /**
      * Constructor setting up the PHP resource
-     *
-     * @param string $filename
      */
-    public function __construct($filename)
+    public function __construct(protected readonly string $filename)
     {
         $this->stream = new LazyOpenStream($filename, 'r');
-        $this->filename = $filename;
     }
 
     /**
@@ -50,7 +47,7 @@ class SelfEmittableLazyOpenStream implements SelfEmittableStreamInterface
      */
     public function emit()
     {
-        readfile($this->filename, false);
+        readfile($this->filename);
     }
 
     public function isWritable(): bool
@@ -59,10 +56,9 @@ class SelfEmittableLazyOpenStream implements SelfEmittableStreamInterface
     }
 
     /**
-     * @param string $string
      * @throws \RuntimeException on failure.
      */
-    public function write($string)
+    public function write(string $string): int
     {
         throw new \RuntimeException('Cannot write to a ' . self::class, 1538331833);
     }

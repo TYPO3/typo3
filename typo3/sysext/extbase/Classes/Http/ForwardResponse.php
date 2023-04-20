@@ -22,15 +22,13 @@ use TYPO3\CMS\Extbase\Error\Result;
 
 class ForwardResponse extends Response
 {
-    private string $actionName;
     private ?string $controllerName = null;
     private ?string $extensionName = null;
     private ?array $arguments = null;
     private Result $argumentsValidationResult;
 
-    public function __construct(string $actionName)
+    public function __construct(private readonly string $actionName)
     {
-        $this->actionName = $actionName;
         $this->argumentsValidationResult = new Result();
         parent::__construct('php://temp', 204);
     }

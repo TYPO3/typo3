@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -35,35 +37,16 @@ use Psr\Http\Message\UriInterface;
  */
 class ServerRequest extends Request implements ServerRequestInterface
 {
-    /**
-     * @var array
-     */
-    protected $attributes = [];
-
-    /**
-     * @var array
-     */
-    protected $cookieParams = [];
+    protected array $attributes = [];
+    protected array $cookieParams = [];
+    protected array $queryParams = [];
+    protected array $serverParams = [];
+    protected array $uploadedFiles = [];
 
     /**
      * @var array|object|null
      */
     protected $parsedBody;
-
-    /**
-     * @var array
-     */
-    protected $queryParams = [];
-
-    /**
-     * @var array
-     */
-    protected $serverParams = [];
-
-    /**
-     * @var array
-     */
-    protected $uploadedFiles = [];
 
     /**
      * Constructor, the only place to set all parameters of this Message/Request
@@ -73,10 +56,10 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @param string|resource|StreamInterface|null $body Message body, if any.
      * @param array $headers Headers for the message, if any.
      * @param array $serverParams Server parameters, typically from $_SERVER
-     * @param array $uploadedFiles Upload file information, a tree of UploadedFiles
+     * @param array|null $uploadedFiles Upload file information, a tree of UploadedFiles
      * @throws \InvalidArgumentException for any invalid value.
      */
-    public function __construct($uri = null, $method = null, $body = 'php://input', array $headers = [], array $serverParams = [], array $uploadedFiles = null)
+    public function __construct(string|UriInterface|null $uri = null, $method = null, $body = 'php://input', array $headers = [], array $serverParams = [], array $uploadedFiles = null)
     {
         if ($uploadedFiles !== null) {
             $this->validateUploadedFiles($uploadedFiles);
@@ -84,7 +67,7 @@ class ServerRequest extends Request implements ServerRequestInterface
 
         parent::__construct($uri, $method ?? 'GET', $body, $headers);
 
-        $this->serverParams  = $serverParams;
+        $this->serverParams = $serverParams;
         $this->uploadedFiles = $uploadedFiles ?? [];
     }
 
@@ -94,10 +77,8 @@ class ServerRequest extends Request implements ServerRequestInterface
      * Retrieves data related to the incoming request environment,
      * typically derived from PHP's $_SERVER superglobal. The data IS NOT
      * REQUIRED to originate from $_SERVER.
-     *
-     * @return array
      */
-    public function getServerParams()
+    public function getServerParams(): array
     {
         return $this->serverParams;
     }
@@ -108,11 +89,9 @@ class ServerRequest extends Request implements ServerRequestInterface
      * Retrieves cookies sent by the client to the server.
      *
      * The data MUST be compatible with the structure of the $_COOKIE
-     * superglobal.
-     *
-     * @return array
+     * super global.
      */
-    public function getCookieParams()
+    public function getCookieParams(): array
     {
         return $this->cookieParams;
     }
@@ -134,7 +113,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @param array $cookies Array of key/value pairs representing cookies.
      * @return static
      */
-    public function withCookieParams(array $cookies)
+    public function withCookieParams(array $cookies): ServerRequestInterface
     {
         $clonedObject = clone $this;
         $clonedObject->cookieParams = $cookies;
@@ -150,10 +129,8 @@ class ServerRequest extends Request implements ServerRequestInterface
      * params. If you need to ensure you are only getting the original
      * values, you may need to parse the query string from `getUri()->getQuery()`
      * or from the `QUERY_STRING` server param.
-     *
-     * @return array
      */
-    public function getQueryParams()
+    public function getQueryParams(): array
     {
         return $this->queryParams;
     }
@@ -180,7 +157,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *     $_GET.
      * @return static
      */
-    public function withQueryParams(array $query)
+    public function withQueryParams(array $query): ServerRequestInterface
     {
         $clonedObject = clone $this;
         $clonedObject->queryParams = $query;
@@ -199,7 +176,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @return array An array tree of UploadedFileInterface instances; an empty
      *     array MUST be returned if no data is present.
      */
-    public function getUploadedFiles()
+    public function getUploadedFiles(): array
     {
         return $this->uploadedFiles;
     }
@@ -215,7 +192,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @return static
      * @throws \InvalidArgumentException if an invalid structure is provided.
      */
-    public function withUploadedFiles(array $uploadedFiles)
+    public function withUploadedFiles(array $uploadedFiles): ServerRequestInterface
     {
         $this->validateUploadedFiles($uploadedFiles);
         $clonedObject = clone $this;
@@ -271,7 +248,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @throws \InvalidArgumentException if an unsupported argument type is
      *     provided.
      */
-    public function withParsedBody($data)
+    public function withParsedBody($data): ServerRequestInterface
     {
         $clonedObject = clone $this;
         $clonedObject->parsedBody = $data;
@@ -289,7 +266,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @return array Attributes derived from the request.
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -310,7 +287,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @param mixed $default Default value to return if the attribute does not exist.
      * @return mixed
      */
-    public function getAttribute($name, $default = null)
+    public function getAttribute(string $name, $default = null)
     {
         return $this->attributes[$name] ?? $default;
     }
@@ -331,7 +308,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @param mixed $value The value of the attribute.
      * @return static
      */
-    public function withAttribute($name, $value)
+    public function withAttribute(string $name, $value): ServerRequestInterface
     {
         $clonedObject = clone $this;
         $clonedObject->attributes[$name] = $value;
@@ -353,7 +330,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @param string $name The attribute name.
      * @return static
      */
-    public function withoutAttribute($name)
+    public function withoutAttribute(string $name): ServerRequestInterface
     {
         $clonedObject = clone $this;
         if (!isset($clonedObject->attributes[$name])) {
@@ -368,7 +345,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @throws \InvalidArgumentException if any leaf is not an UploadedFileInterface instance.
      */
-    protected function validateUploadedFiles(array $uploadedFiles)
+    protected function validateUploadedFiles(array $uploadedFiles): void
     {
         foreach ($uploadedFiles as $file) {
             if (is_array($file)) {

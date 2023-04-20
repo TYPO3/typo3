@@ -21,11 +21,6 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for \TYPO3\CMS\Core\Http\Response
- *
- * Adapted from https://github.com/phly/http/
- */
 final class ResponseTest extends UnitTestCase
 {
     protected ?Response $response;
@@ -59,11 +54,6 @@ final class ResponseTest extends UnitTestCase
         return [
             'too-low'  => [99],
             'too-high' => [600],
-            'null'     => [null],
-            'bool'     => [true],
-            'string'   => ['foo'],
-            'array'    => [[200]],
-            'object'   => [(object)[200]],
         ];
     }
 
@@ -124,12 +114,6 @@ final class ResponseTest extends UnitTestCase
     public static function invalidStatusDataProvider(): array
     {
         return [
-            'true'       => [true],
-            'false'      => [false],
-            'float'      => [100.1],
-            'bad-string' => ['Two hundred'],
-            'array'      => [[200]],
-            'object'     => [(object)['statusCode' => 200]],
             'too-small'  => [1],
             'too-big'    => [600],
         ];

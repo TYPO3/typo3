@@ -33,26 +33,11 @@ class FalDumpFileContentsDecoratorStream implements StreamInterface, SelfEmittab
 {
     use StreamDecoratorTrait;
 
-    /**
-     * @var string
-     */
-    protected $identifier;
-
-    /**
-     * @var DriverInterface
-     */
-    protected $driver;
-
-    /**
-     * @var int
-     */
-    protected $size;
-
-    public function __construct(string $identifier, DriverInterface $driver, int $size)
-    {
-        $this->identifier = $identifier;
-        $this->driver = $driver;
-        $this->size = $size;
+    public function __construct(
+        protected readonly string $identifier,
+        protected readonly DriverInterface $driver,
+        protected readonly int $size
+    ) {
     }
 
     /**
@@ -86,10 +71,9 @@ class FalDumpFileContentsDecoratorStream implements StreamInterface, SelfEmittab
     }
 
     /**
-     * @param string $string
-     * @throws \RuntimeException on failure.
+     * @throws \RuntimeException
      */
-    public function write($string)
+    public function write(string $string): int
     {
         throw new \RuntimeException('Cannot write to a ' . self::class, 1538331852);
     }

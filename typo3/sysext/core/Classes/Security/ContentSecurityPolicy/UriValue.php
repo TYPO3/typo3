@@ -85,7 +85,7 @@ final class UriValue extends Uri implements \Stringable, EqualityInterface, Cove
         return $this->domainName;
     }
 
-    protected function parseUri($uri): void
+    protected function parseUri(string $uri): void
     {
         parent::parseUri($uri);
         // ignore fragments per default

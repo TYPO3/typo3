@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -45,7 +47,7 @@ class Stream implements StreamInterface
      * @param string $mode Mode with which to open stream
      * @throws \InvalidArgumentException
      */
-    public function __construct($stream, $mode = 'r')
+    public function __construct($stream, string $mode = 'r')
     {
         $this->stream = $stream;
         if (is_resource($stream)) {
@@ -71,7 +73,7 @@ class Stream implements StreamInterface
      * @see https://php.net/manual/en/language.oop5.magic.php#object.tostring
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         if (!$this->isReadable()) {
             return '';
@@ -87,7 +89,7 @@ class Stream implements StreamInterface
     /**
      * Closes the stream and any underlying resources.
      */
-    public function close()
+    public function close(): void
     {
         if (!is_resource($this->resource)) {
             return;
@@ -118,7 +120,7 @@ class Stream implements StreamInterface
      *
      * @return int|null Returns the size in bytes if known, or null if unknown.
      */
-    public function getSize()
+    public function getSize(): ?int
     {
         if ($this->resource === null) {
             return null;
@@ -133,7 +135,7 @@ class Stream implements StreamInterface
      * @return int Position of the file pointer
      * @throws \RuntimeException on error.
      */
-    public function tell()
+    public function tell(): int
     {
         if (!is_resource($this->resource)) {
             throw new \RuntimeException('No resource available; cannot tell position', 1436717285);
@@ -147,10 +149,8 @@ class Stream implements StreamInterface
 
     /**
      * Returns true if the stream is at the end of the stream.
-     *
-     * @return bool
      */
-    public function eof()
+    public function eof(): bool
     {
         if (!is_resource($this->resource)) {
             return true;
@@ -159,11 +159,9 @@ class Stream implements StreamInterface
     }
 
     /**
-     * Returns whether or not the stream is seekable.
-     *
-     * @return bool
+     * Returns whether the stream is seekable.
      */
-    public function isSeekable()
+    public function isSeekable(): bool
     {
         if (!is_resource($this->resource)) {
             return false;
@@ -185,7 +183,7 @@ class Stream implements StreamInterface
      *
      * @throws \RuntimeException on failure.
      */
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek(int $offset, int $whence = SEEK_SET): void
     {
         if (!is_resource($this->resource)) {
             throw new \RuntimeException('No resource available; cannot seek position', 1436717287);
@@ -210,17 +208,15 @@ class Stream implements StreamInterface
      * @link http://www.php.net/manual/en/function.fseek.php
      * @throws \RuntimeException on failure.
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->seek(0);
     }
 
     /**
-     * Returns whether or not the stream is writable.
-     *
-     * @return bool
+     * Returns whether the stream is writable.
      */
-    public function isWritable()
+    public function isWritable(): bool
     {
         if (!is_resource($this->resource)) {
             return false;
@@ -236,7 +232,7 @@ class Stream implements StreamInterface
      * @return int Returns the number of bytes written to the stream.
      * @throws \RuntimeException on failure.
      */
-    public function write($string)
+    public function write(string $string): int
     {
         if (!is_resource($this->resource)) {
             throw new \RuntimeException('No resource available; cannot write', 1436717290);
@@ -249,11 +245,9 @@ class Stream implements StreamInterface
     }
 
     /**
-     * Returns whether or not the stream is readable.
-     *
-     * @return bool
+     * Returns whether the stream is readable.
      */
-    public function isReadable()
+    public function isReadable(): bool
     {
         if (!is_resource($this->resource)) {
             return false;
@@ -272,7 +266,7 @@ class Stream implements StreamInterface
      *     if no bytes are available.
      * @throws \RuntimeException if an error occurs.
      */
-    public function read($length)
+    public function read(int $length): string
     {
         if (!is_resource($this->resource)) {
             throw new \RuntimeException('No resource available; cannot read', 1436717292);
@@ -290,11 +284,9 @@ class Stream implements StreamInterface
     /**
      * Returns the remaining contents in a string
      *
-     * @return string
-     * @throws \RuntimeException if unable to read or an error occurs while
-     *     reading.
+     * @throws \RuntimeException if unable to read or an error occurs while reading.
      */
-    public function getContents()
+    public function getContents(): string
     {
         if (!is_resource($this->resource) || !$this->isReadable()) {
             return '';
@@ -320,7 +312,7 @@ class Stream implements StreamInterface
      *     provided. Returns a specific key value if a key is provided and the
      *     value is found, or null if the key is not found.
      */
-    public function getMetadata($key = null)
+    public function getMetadata(?string $key = null)
     {
         if (!is_resource($this->resource)) {
             return null;
@@ -343,7 +335,7 @@ class Stream implements StreamInterface
      * @throws \InvalidArgumentException for stream identifier that cannot be cast to a resource
      * @throws \InvalidArgumentException for non-resource stream
      */
-    public function attach($resource, $mode = 'r')
+    public function attach($resource, string $mode = 'r')
     {
         $error = null;
         if (!is_resource($resource) && is_string($resource)) {

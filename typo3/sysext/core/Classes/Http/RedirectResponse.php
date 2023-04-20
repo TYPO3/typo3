@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -34,14 +36,8 @@ class RedirectResponse extends Response
      * @param int $status status code for the redirect; defaults to 302.
      * @param array $headers Additional headers to be set.
      */
-    public function __construct($uri, $status = 302, array $headers = [])
+    public function __construct(string|UriInterface $uri, int $status = 302, array $headers = [])
     {
-        if (!is_string($uri) && !($uri instanceof UriInterface)) {
-            throw new \InvalidArgumentException(
-                'The given uri be a string or UriInterface - ' . get_debug_type($uri) . ' given',
-                1504814459
-            );
-        }
         $headers['location'] = [(string)$uri];
         parent::__construct('php://temp', $status, $headers);
     }
