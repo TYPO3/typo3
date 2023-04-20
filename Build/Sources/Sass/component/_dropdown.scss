@@ -190,6 +190,13 @@ h4.dropdown-headline {
     }
 }
 
+// Replicate link styling
+button.dropdown-toggle-link {
+    border: 0;
+    padding: 0;
+    background: none;
+}
+
 // Avoid unwanted underlines in dropdown toggles
 a.dropdown-toggle {
     text-decoration: none;
