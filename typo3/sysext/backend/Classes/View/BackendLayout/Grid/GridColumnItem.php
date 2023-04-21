@@ -185,7 +185,10 @@ class GridColumnItem extends AbstractGridObject
         $row = $this->record;
         $icons = [];
 
-        $icon = '<span title="' . BackendUtility::getRecordIconAltText($row, $table) . '">' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
+        $icon = $this->iconFactory
+            ->getIconForRecord($table, $row, Icon::SIZE_SMALL)
+            ->setTitle(BackendUtility::getRecordIconAltText($row, $table))
+            ->render();
         if ($this->getBackendUser()->recordEditAccessInternals($table, $row)) {
             $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']);
         }

@@ -310,10 +310,10 @@ class Clipboard
                     }
                     $records[] = [
                         'identifier' => '_FILE|' . md5($value),
-                        'icon' => '<span title="' . htmlspecialchars($fileObject->getName() . ' ' . $size) . '">' . $this->iconFactory->getIconForResource(
-                            $fileObject,
-                            Icon::SIZE_SMALL
-                        )->render() . '</span>',
+                        'icon' => $this->iconFactory
+                            ->getIconForResource($fileObject, Icon::SIZE_SMALL)
+                            ->setTitle($fileObject->getName() . ' ' . $size)
+                            ->render(),
                         'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(
                             $fileObject->getName(),
                             (int)$this->getBackendUser()->uc['titleLen']

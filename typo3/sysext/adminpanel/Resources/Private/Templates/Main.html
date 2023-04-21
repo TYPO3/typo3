@@ -66,13 +66,8 @@
         <div class="typo3-adminPanel-module">
             <div class="typo3-adminPanel-module-trigger">
                 <a href="{backendUrl}" class="typo3-adminPanel-backend-url" target="typo3-backend">
-                    <f:variable name="icon">
-                        <core:icon identifier="actions-window-open" alternativeMarkupIdentifier="inline" />
-                    </f:variable>
-                    <span class="typo3-adminPanel-module-trigger-icon">{icon -> f:format.raw()}</span>
-                    <span class="typo3-adminPanel-module-trigger-label">
-                <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.openBackendUrlLabel" languageKey="{languageKey}" />
-            </span>
+                    <span class="typo3-adminPanel-module-trigger-icon"><core:icon identifier="actions-window-open" alternativeMarkupIdentifier="inline" /></span>
+                    <span class="typo3-adminPanel-module-trigger-label"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.openBackendUrlLabel" languageKey="{languageKey}" /></span>
                     <span class="typo3-adminPanel-module-trigger-information">{information}</span>
                 </a>
             </div>

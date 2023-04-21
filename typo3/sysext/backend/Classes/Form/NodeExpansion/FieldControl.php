@@ -128,9 +128,7 @@ class FieldControl extends AbstractNode
 
             $html = [];
             $html[] = '<a ' . GeneralUtility::implodeAttributes($linkAttributes, true) . '>';
-            $html[] =   '<span title="' . htmlspecialchars($title) . '">';
-            $html[] =       $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render();
-            $html[] =   '</span>';
+            $html[] =     $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->setTitle($title)->render();
             $html[] = '</a>';
 
             $finalControlResult = $this->initializeResultArray();

@@ -3520,10 +3520,9 @@ to{opacity:1;transform:translate3d(0,0,0)}
 .table .pagination{margin:0}
 .table td:first-child,.table th:first-child{padding-left:var(--typo3-component-padding-x)}
 .table td:last-child,.table th:last-child{padding-right:var(--typo3-component-padding-x)}
-.table .col-icon{text-align:center}
 .table .col-avatar,.table .col-checkbox,.table .col-icon{padding-right:0}
 .table .col-task,.table .col-title{width:99%}
-.table .col-icon{width:16px;box-sizing:content-box}
+.table .col-icon{width:16px;min-width:16px;box-sizing:content-box}
 .table .col-time{width:8ch;white-space:nowrap;box-sizing:content-box}
 .table .col-datetime{width:14ch;white-space:nowrap;box-sizing:content-box}
 .table .col-avatar{width:32px;box-sizing:content-box}

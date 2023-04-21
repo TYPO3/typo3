@@ -205,17 +205,17 @@ class InlineRecordContainer extends AbstractContainer
             $ariaControls = htmlspecialchars($objectId . '_fields', ENT_QUOTES | ENT_HTML5);
             $ariaAttributesString = 'aria-expanded="' . $ariaExpanded . '" aria-controls="' . $ariaControls . '"';
             $html = '
-				<div ' . GeneralUtility::implodeAttributes($containerAttributes, true) . '>
-					<div class="panel-heading" data-bs-toggle="formengine-inline" id="' . htmlspecialchars($hashedObjectId, ENT_QUOTES | ENT_HTML5) . '_header" data-expandSingle="' . (($inlineConfig['appearance']['expandSingle'] ?? false) ? 1 : 0) . '">
-						<div class="form-irre-header">
-							<div class="form-irre-header-cell form-irre-header-icon">
-								<span class="caret"></span>
-							</div>
-							' . $this->renderForeignRecordHeader($data, $ariaAttributesString) . '
-						</div>
-					</div>
-					<div class="panel-collapse" id="' . $ariaControls . '">' . $html . $hiddenFieldHtml . $combinationHtml . '</div>
-				</div>';
+                <div ' . GeneralUtility::implodeAttributes($containerAttributes, true) . '>
+                    <div class="panel-heading" data-bs-toggle="formengine-inline" id="' . htmlspecialchars($hashedObjectId, ENT_QUOTES | ENT_HTML5) . '_header" data-expandSingle="' . (($inlineConfig['appearance']['expandSingle'] ?? false) ? 1 : 0) . '">
+                        <div class="form-irre-header">
+                            <div class="form-irre-header-cell form-irre-header-icon">
+                                <span class="caret"></span>
+                            </div>
+                            ' . $this->renderForeignRecordHeader($data, $ariaAttributesString) . '
+                        </div>
+                    </div>
+                    <div class="panel-collapse" id="' . $ariaControls . '">' . $html . $hiddenFieldHtml . $combinationHtml . '</div>
+                </div>';
         }
 
         $resultArray['html'] = $html;
@@ -343,9 +343,7 @@ class InlineRecordContainer extends AbstractContainer
         return '
             <button class="form-irre-header-cell form-irre-header-button" ' . $ariaAttributesString . '>
                 <div class="form-irre-header-icon" id="' . $objectId . '_iconcontainer">
-                    <span title="' . BackendUtility::getRecordIconAltText($record, $foreignTable) . '" id="' . $objectId . '_icon">
-                        ' . $this->iconFactory->getIconForRecord($foreignTable, $record, Icon::SIZE_SMALL)->render() . '
-                    </span>
+                    ' . $this->iconFactory->getIconForRecord($foreignTable, $record, Icon::SIZE_SMALL)->setTitle(BackendUtility::getRecordIconAltText($record, $foreignTable))->render() . '
                 </div>
                 <div class="form-irre-header-body"><span id="' . $objectId . '_label">' . $recordTitle . '</span></div>
             </button>
@@ -405,9 +403,10 @@ class InlineRecordContainer extends AbstractContainer
         // The event contains all controls and their state (enabled / disabled), which might got modified by listeners
         $event = $this->eventDispatcher->dispatch(new ModifyInlineElementEnabledControlsEvent($data, $rec));
         if ($data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
-            $cells['localize'] = '<span title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize.isLocalizable')) . '">
-                    ' . $this->iconFactory->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)->render() . '
-                </span>';
+            $cells['localize'] = $this->iconFactory
+                ->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)
+                ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize.isLocalizable'))
+                ->render();
         }
         // "Info": (All records)
         if ($event->isControlEnabled('info')) {

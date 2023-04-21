@@ -279,9 +279,10 @@ class FileReferenceContainer extends AbstractContainer
         } else {
             $headerImage = '
                 <div class="form-irre-header-icon" id="' . $objectId . '_iconcontainer">
-                    <span title="' . $altText . '" id="' . htmlspecialchars($objectId) . '_icon">
-                        ' . $this->iconFactory->getIconForRecord(self::FILE_REFERENCE_TABLE, $databaseRow, Icon::SIZE_SMALL)->render() . '
-                    </span>
+                    ' . $this->iconFactory
+                        ->getIconForRecord(self::FILE_REFERENCE_TABLE, $databaseRow, Icon::SIZE_SMALL)
+                        ->setTitle($altText)
+                        ->render() . '
                 </div>';
         }
 
@@ -323,10 +324,10 @@ class FileReferenceContainer extends AbstractContainer
             new ModifyFileReferenceEnabledControlsEvent($this->data, $databaseRow)
         );
         if ($this->data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
-            $controls['localize'] = '
-                <span title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize.isLocalizable')) . '">
-                    ' . $this->iconFactory->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)->render() . '
-                </span>';
+            $controls['localize'] = $this->iconFactory
+                ->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)
+                ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize.isLocalizable'))
+                ->render();
         }
         if ($event->isControlEnabled('info')) {
             if ($isNewItem) {

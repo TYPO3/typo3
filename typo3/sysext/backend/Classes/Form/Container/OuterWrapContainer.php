@@ -65,7 +65,10 @@ class OuterWrapContainer extends AbstractContainer
         }
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon = '<span title="' . htmlspecialchars($recordPath) . '">' . $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
+        $icon = $iconFactory
+            ->getIconForRecord($table, $row, Icon::SIZE_SMALL)
+            ->setTitle($recordPath)
+            ->render();
 
         // @todo: Could this be done in a more clever way? Does it work at all?
         $tableTitle = $languageService->sL($this->data['processedTca']['ctrl']['title']);

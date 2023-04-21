@@ -37,6 +37,7 @@ final class FieldControlTest extends UnitTestCase
         $iconFactoryMock = $this->createMock(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
         $iconMock = $this->createMock(Icon::class);
+        $iconMock->expects(self::atLeastOnce())->method('setTitle')->willReturn($iconMock);
         $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('');
         $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')->with(self::anything())
             ->willReturn($iconMock);

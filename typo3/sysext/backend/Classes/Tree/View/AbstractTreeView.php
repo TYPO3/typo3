@@ -378,7 +378,7 @@ abstract class AbstractTreeView
         $title = $this->getTitleAttrib($row);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $icon = $row['is_siteroot'] ? $iconFactory->getIcon('apps-pagetree-folder-root', Icon::SIZE_SMALL) : $iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL);
-        return '<span title="' . $title . '">' . $icon->render() . '</span>';
+        return $icon->setTitle($title)->render();
     }
 
     /**

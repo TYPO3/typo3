@@ -203,17 +203,23 @@ class MetaInformation
                 $title = $fileMountTitle ?: $this->resource->getName();
                 // If this is a folder but not in within file mount boundaries this is the root folder
                 if ($this->resource instanceof FolderInterface && !$this->resource->getStorage()->isWithinFileMountBoundaries($this->resource)) {
-                    $theIcon = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource(
-                        $this->resource,
-                        Icon::SIZE_SMALL,
-                        null,
-                        ['mount-root' => true]
-                    )->render() . '</span>';
+                    $theIcon = $iconFactory
+                        ->getIconForResource(
+                            $this->resource,
+                            Icon::SIZE_SMALL,
+                            null,
+                            ['mount-root' => true]
+                        )
+                        ->setTitle($title)
+                        ->render();
                 } else {
-                    $theIcon = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource(
-                        $this->resource,
-                        Icon::SIZE_SMALL
-                    )->render() . '</span>';
+                    $theIcon = $iconFactory
+                        ->getIconForResource(
+                            $this->resource,
+                            Icon::SIZE_SMALL
+                        )
+                        ->setTitle($title)
+                        ->render();
                 }
                 $tableName = ($this->resource->getIdentifier() === $this->resource->getStorage()->getRootLevelFolder()->getIdentifier())
                     ? 'sys_filemounts' : 'sys_file';
@@ -225,7 +231,10 @@ class MetaInformation
             }
         } elseif (is_array($pageRecord) && !empty($pageRecord['uid'])) {
             // If there IS a real page
-            $theIcon = '<span title="' . BackendUtility::getRecordIconAltText($pageRecord) . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
+            $theIcon = $iconFactory
+                ->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)
+                ->setTitle(BackendUtility::getRecordIconAltText($pageRecord))
+                ->render();
             // Make Icon:
             $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid']);
             $uid = $pageRecord['uid'];
@@ -233,10 +242,10 @@ class MetaInformation
         } else {
             // On root-level of page tree
             // Make Icon
-            $theIcon = '<span title="' .
-                htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) .
-                '">' .
-                $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . '</span>';
+            $theIcon = $iconFactory
+                ->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)
+                ->setTitle($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
+                ->render();
             if ($this->getBackendUser()->isAdmin()) {
                 $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages');
             }

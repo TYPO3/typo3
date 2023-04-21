@@ -620,8 +620,14 @@ class DatabaseRecordList
             $theData[$titleCol] = $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>)';
         } else {
             $icon = $this->table // @todo separate table header from contract/expand link
-                ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:contractView')) . '">' . $this->iconFactory->getIcon('actions-view-table-collapse', Icon::SIZE_SMALL)->render() . '</span>'
-                : '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:expandView')) . '">' . $this->iconFactory->getIcon('actions-view-table-expand', Icon::SIZE_SMALL)->render() . '</span>';
+                ? $this->iconFactory
+                    ->getIcon('actions-view-table-collapse', Icon::SIZE_SMALL)
+                    ->setTitle($lang->getLL('contractView'))
+                    ->render()
+                : $this->iconFactory
+                    ->getIcon('actions-view-table-expand', Icon::SIZE_SMALL)
+                    ->setTitle($lang->getLL('expandView'))
+                    ->render();
             $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>) ' . $icon);
         }
         $tableActions = '';
@@ -728,7 +734,7 @@ class DatabaseRecordList
                             BackendUtility::workspaceOL($table, $lRow, $backendUser->workspace, true);
                             if (is_array($lRow) && $backendUser->checkLanguageAccess($lRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
                                 $currentIdList[] = $lRow['uid'];
-                                $rowOutput .= $this->renderListRow($table, $lRow, 18, [], false);
+                                $rowOutput .= $this->renderListRow($table, $lRow, 16, [], false);
                             }
                         }
                     }
@@ -743,7 +749,7 @@ class DatabaseRecordList
                 $rowOutput .= '
                     <tr data-multi-record-selection-element="true">
                         <td colspan="' . (count($this->fieldArray)) . '">
-                            <a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($tableIdentifier)) . '" class="btn btn-default">
+                            <a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($tableIdentifier)) . '" class="btn btn-sm btn-default">
                                 ' . $this->iconFactory->getIcon('actions-caret-down', Icon::SIZE_SMALL)->render() . '
                                 ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.expandTable') . '
                             </a>
@@ -1023,11 +1029,13 @@ class DatabaseRecordList
                     array_splice($this->fieldArray, 0, 1);
                 }
             } elseif ($fCol === 'icon') {
-                $iconImg = '
-                    <span title="' . BackendUtility::getRecordIconAltText($row, $table) . '" ' . ($indent ? ' style="margin-left: ' . $indent . 'px;"' : '') . '>
-                        ' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '
-                    </span>';
-                $theData[$fCol] = ($this->clickMenuEnabled && !$this->isRecordDeletePlaceholder($row)) ? BackendUtility::wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
+                $icon = $this->iconFactory
+                    ->getIconForRecord($table, $row, Icon::SIZE_SMALL)
+                    ->setTitle(BackendUtility::getRecordIconAltText($row, $table))
+                    ->render();
+                $theData[$fCol] = ''
+                    . ($indent ? '<span style="margin-left: ' . $indent . 'px;"></span>' : '')
+                    . (($this->clickMenuEnabled && !$this->isRecordDeletePlaceholder($row)) ? BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']) : $icon);
             } elseif ($fCol === '_PATH_') {
                 $theData[$fCol] = $this->recPath($row['pid']);
             } elseif ($fCol === '_REF_') {
@@ -2908,12 +2916,12 @@ class DatabaseRecordList
         $languageUid = (int)($row[$GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null] ?? 0);
         $languageInformation = $this->translateTools->getSystemLanguages($pageId);
         $title = htmlspecialchars($languageInformation[$languageUid]['title'] ?? '');
-        $indent = ($table !== 'pages' && $this->isLocalized($table, $row)) ? ' style="margin-left: 16px;"' : '';
+        $indent = $this->isLocalized($table, $row) ? '<span class="indent indent-inline-block" style="--indent-level: 1"></span> ' : '';
         if ($languageInformation[$languageUid]['flagIcon'] ?? false) {
-            return '<span title="' . $title . '"' . $indent . '>' . $this->iconFactory->getIcon(
-                $languageInformation[$languageUid]['flagIcon'],
-                Icon::SIZE_SMALL
-            )->render() . '</span>&nbsp;' . $title;
+            return $indent . $this->iconFactory
+                ->getIcon($languageInformation[$languageUid]['flagIcon'], Icon::SIZE_SMALL)
+                ->setTitle($title)
+                ->render() . ' ' . $title;
         }
         return $title;
     }
@@ -3008,10 +3016,15 @@ class DatabaseRecordList
                 'returnUrl' =>  $this->listURL(),
             ], true);
             $actions['edit'] = '
-                <button type="button" class="btn btn-sm btn-default" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="' . $editActionConfiguration . '">
-                    <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '">
-                        ' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '
-                    </span>
+                <button
+                    type="button"
+                    title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '"
+                    class="btn btn-sm btn-default"
+                    data-multi-record-selection-action="edit"
+                    data-multi-record-selection-action-config="' . $editActionConfiguration . '"
+                >
+                    ' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '
+                    ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '
                 </button>';
 
             if (!(bool)trim(($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? false))) {
@@ -3022,10 +3035,16 @@ class DatabaseRecordList
                     'content' => sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
                 ], true);
                 $actions['delete'] = '
-                    <button type="button" class="btn btn-sm btn-default" data-multi-record-selection-action="delete" data-multi-record-selection-action-config="' . $deleteActionConfiguration . '" aria-haspopup="dialog">
-                        <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete')) . '">
-                            ' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete')) . '
-                        </span>
+                    <button
+                        type="button"
+                        title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete')) . '"
+                        class="btn btn-sm btn-default"
+                        data-multi-record-selection-action="delete"
+                        data-multi-record-selection-action-config="' . $deleteActionConfiguration . '"
+                        aria-haspopup="dialog"
+                    >
+                        ' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '
+                        ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete')) . '
                     </button>';
             }
         }
@@ -3036,7 +3055,8 @@ class DatabaseRecordList
                 <button type="button"
                     class="btn btn-sm btn-default ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '"
                     title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '"
-                    data-multi-record-selection-action="copyMarked">
+                    data-multi-record-selection-action="copyMarked"
+                >
                     ' . $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render() . '
                     ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '
                 </button>';
@@ -3044,7 +3064,8 @@ class DatabaseRecordList
                 <button type="button"
                     class="btn btn-sm btn-default ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '"
                     title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '"
-                    data-multi-record-selection-action="removeMarked">
+                    data-multi-record-selection-action="removeMarked"
+                >
                     ' . $this->iconFactory->getIcon('actions-minus', Icon::SIZE_SMALL)->render() . '
                     ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '
                 </button>';

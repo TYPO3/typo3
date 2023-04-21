@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var ClipboardPanel_1,CopyMode,__decorate=function(t,e,a,o){var n,i=arguments.length,l=i<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,a):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)l=Reflect.decorate(t,e,a,o);else for(var r=t.length-1;r>=0;r--)(n=t[r])&&(l=(i<3?n(l):i>3?n(e,a,l):n(e,a))||l);return i>3&&l&&Object.defineProperty(e,a,l),l};import{html,LitElement,nothing}from"lit";import{customElement,property}from"lit/decorators.js";import{until}from"lit/directives/until.js";import{unsafeHTML}from"lit/directives/unsafe-html.js";import{classMap}from"lit/directives/class-map.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import Notification from"@typo3/backend/notification.js";import"@typo3/backend/element/spinner-element.js";import"@typo3/backend/element/icon-element.js";!function(t){t.cut="cut",t.copy="copy"}(CopyMode||(CopyMode={}));let ClipboardPanel=ClipboardPanel_1=class extends LitElement{constructor(){super(...arguments),this.returnUrl="",this.table=""}static renderLoader(){return html`
+var ClipboardPanel_1,CopyMode,__decorate=function(t,e,o,a){var i,n=arguments.length,l=n<3?e:null===a?a=Object.getOwnPropertyDescriptor(e,o):a;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)l=Reflect.decorate(t,e,o,a);else for(var r=t.length-1;r>=0;r--)(i=t[r])&&(l=(n<3?i(l):n>3?i(e,o,l):i(e,o))||l);return n>3&&l&&Object.defineProperty(e,o,l),l};import{html,LitElement,nothing}from"lit";import{customElement,property}from"lit/decorators.js";import{until}from"lit/directives/until.js";import{unsafeHTML}from"lit/directives/unsafe-html.js";import{classMap}from"lit/directives/class-map.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import Notification from"@typo3/backend/notification.js";import"@typo3/backend/element/spinner-element.js";import"@typo3/backend/element/icon-element.js";!function(t){t.cut="cut",t.copy="copy"}(CopyMode||(CopyMode={}));let ClipboardPanel=ClipboardPanel_1=class extends LitElement{constructor(){super(...arguments),this.returnUrl="",this.table=""}static renderLoader(){return html`
       <div class="panel panel-default">
         <div class="panel-loader">
           <typo3-backend-spinner size="small" variant="dark"></typo3-backend-spinner>
@@ -73,34 +73,30 @@ var ClipboardPanel_1,CopyMode,__decorate=function(t,e,a,o){var n,i=arguments.len
           `}
         </td>
       </tr>
-      ${e.current===t.identifier&&t.items?t.items.map((a=>this.renderTabItem(a,t.identifier,e))):nothing}
-    `}renderTabItem(t,e,a){return html`
+      ${e.current===t.identifier&&t.items?t.items.map((o=>this.renderTabItem(o,t.identifier,e))):nothing}
+    `}renderTabItem(t,e,o){return html`
       <tr>
         <td class="col-icon nowrap ${classMap({"ps-4":!t.identifier})}">
           ${unsafeHTML(t.icon)}
         </td>
         <td class="nowrap" style="width: 95%">
           ${unsafeHTML(t.title)}
-          ${"normal"===e?html`<strong>(${a.copyMode===CopyMode.copy?html`${a.labels.copy}`:html`${a.labels.cut}`})</strong>`:nothing}
+          ${"normal"===e?html`<strong>(${o.copyMode===CopyMode.copy?html`${o.labels.copy}`:html`${o.labels.cut}`})</strong>`:nothing}
           ${t.thumb?html`<div class="d-block">${unsafeHTML(t.thumb)}</div>`:nothing}
         </td>
         <td class="col-control nowrap">
           <div class="btn-group">
             ${t.infoDataDispatch?html`
-              <button type="button" class="btn btn-default btn-sm" data-dispatch-action="${t.infoDataDispatch.action}" data-dispatch-args="${t.infoDataDispatch.args}" title="${a.labels.info}">
-                <span>
-                  <typo3-backend-icon identifier="actions-document-info" size="small"></typo3-backend-icon>
-                </span>
+              <button type="button" class="btn btn-default btn-sm" data-dispatch-action="${t.infoDataDispatch.action}" data-dispatch-args="${t.infoDataDispatch.args}" title="${o.labels.info}">
+                <typo3-backend-icon identifier="actions-document-info" size="small"></typo3-backend-icon>
               </button>
             `:nothing}
             ${t.identifier?html`
-              <button type="button" class="btn btn-default btn-sm" title="${a.labels.removeItem}" data-action="remove" @click="${e=>this.updateClipboard(e,{CB:{remove:t.identifier}})}">
-                <span>
-                    <typo3-backend-icon identifier="actions-minus" size="small"></typo3-backend-icon>
-                    ${a.labels.removeItem}
-                </span>
+              <button type="button" class="btn btn-default btn-sm" title="${o.labels.removeItem}" data-action="remove" @click="${e=>this.updateClipboard(e,{CB:{remove:t.identifier}})}">
+                <typo3-backend-icon identifier="actions-minus" size="small"></typo3-backend-icon>
+                ${o.labels.removeItem}
               </button>
             `:nothing}
           </div>
         </td>
-      </tr>`}updateClipboard(t,e){t.preventDefault();const a=t.currentTarget;new AjaxRequest(top.TYPO3.settings.Clipboard.moduleUrl).post(e).then((async t=>{const o=await t.resolve();!0===o.success?(a.dataset.action&&a.dispatchEvent(new CustomEvent("typo3:clipboard:"+a.dataset.action,{detail:{payload:e,response:o},bubbles:!0,cancelable:!1})),this.reloadModule()):Notification.error("Clipboard data could not be updated")})).catch((()=>{Notification.error("An error occurred while updating clipboard data")}))}reloadModule(){this.returnUrl?this.ownerDocument.location.href=this.returnUrl:this.ownerDocument.location.reload()}};__decorate([property({type:String,attribute:"return-url"})],ClipboardPanel.prototype,"returnUrl",void 0),__decorate([property({type:String})],ClipboardPanel.prototype,"table",void 0),ClipboardPanel=ClipboardPanel_1=__decorate([customElement("typo3-backend-clipboard-panel")],ClipboardPanel);export{ClipboardPanel};
+      </tr>`}updateClipboard(t,e){t.preventDefault();const o=t.currentTarget;new AjaxRequest(top.TYPO3.settings.Clipboard.moduleUrl).post(e).then((async t=>{const a=await t.resolve();!0===a.success?(o.dataset.action&&o.dispatchEvent(new CustomEvent("typo3:clipboard:"+o.dataset.action,{detail:{payload:e,response:a},bubbles:!0,cancelable:!1})),this.reloadModule()):Notification.error("Clipboard data could not be updated")})).catch((()=>{Notification.error("An error occurred while updating clipboard data")}))}reloadModule(){this.returnUrl?this.ownerDocument.location.href=this.returnUrl:this.ownerDocument.location.reload()}};__decorate([property({type:String,attribute:"return-url"})],ClipboardPanel.prototype,"returnUrl",void 0),__decorate([property({type:String})],ClipboardPanel.prototype,"table",void 0),ClipboardPanel=ClipboardPanel_1=__decorate([customElement("typo3-backend-clipboard-panel")],ClipboardPanel);export{ClipboardPanel};

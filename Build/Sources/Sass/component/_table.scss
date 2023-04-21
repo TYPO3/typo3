@@ -60,10 +60,6 @@
         }
     }
 
-    .col-icon {
-        text-align: center;
-    }
-
     .col-icon,
     .col-checkbox,
     .col-avatar {
@@ -77,6 +73,7 @@
 
     .col-icon {
         width: 16px;
+        min-width: 16px;
         box-sizing: content-box;
     }
 

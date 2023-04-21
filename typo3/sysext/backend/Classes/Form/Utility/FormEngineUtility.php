@@ -148,8 +148,9 @@ class FormEngineUtility
         }
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        return '<span title="' . htmlspecialchars($title) . '">'
-            . $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render()
-            . '</span>';
+        return $iconFactory
+            ->getIcon($icon, Icon::SIZE_SMALL)
+            ->setTitle($title)
+            ->render();
     }
 }

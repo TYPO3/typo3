@@ -182,17 +182,13 @@ export class ClipboardPanel extends LitElement {
           <div class="btn-group">
             ${!tabItem.infoDataDispatch ? nothing : html`
               <button type="button" class="btn btn-default btn-sm" data-dispatch-action="${tabItem.infoDataDispatch.action}" data-dispatch-args="${tabItem.infoDataDispatch.args}" title="${clipboardData.labels.info}">
-                <span>
-                  <typo3-backend-icon identifier="actions-document-info" size="small"></typo3-backend-icon>
-                </span>
+                <typo3-backend-icon identifier="actions-document-info" size="small"></typo3-backend-icon>
               </button>
             `}
             ${!tabItem.identifier ? nothing : html`
               <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeItem}" data-action="remove" @click="${(event: PointerEvent) => this.updateClipboard(event,{ CB: { 'remove': tabItem.identifier } })}">
-                <span>
-                    <typo3-backend-icon identifier="actions-minus" size="small"></typo3-backend-icon>
-                    ${clipboardData.labels.removeItem}
-                </span>
+                <typo3-backend-icon identifier="actions-minus" size="small"></typo3-backend-icon>
+                ${clipboardData.labels.removeItem}
               </button>
             `}
           </div>

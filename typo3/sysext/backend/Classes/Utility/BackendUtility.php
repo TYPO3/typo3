@@ -1058,13 +1058,10 @@ class BackendUtility
                     $thumbData .= ''
                         . '<div class="preview-thumbnails-element">'
                             . '<div class="preview-thumbnails-element-image">'
-                                . '<span title="'
-                                    . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
-                                    . ' '
-                                    . htmlspecialchars($fileObject->getName())
-                                . '">'
-                                    . $iconFactory->getIcon('mimetypes-other-other', Icon::SIZE_MEDIUM, 'overlay-missing')->render()
-                                . '</span>'
+                                . $iconFactory
+                                    ->getIcon('mimetypes-other-other', Icon::SIZE_MEDIUM, 'overlay-missing')
+                                    ->setTitle(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing') . ' ' . $fileObject->getName())
+                                    ->render()
                             . '</div>'
                         . '</div>';
                     continue;
@@ -1099,9 +1096,10 @@ class BackendUtility
                     $imgTag = '<img ' . GeneralUtility::implodeAttributes($attributes, true) . $tparams . '/>';
                 } else {
                     // Icon
-                    $imgTag = '<span title="' . htmlspecialchars($fileObject->getName()) . '">'
-                        . $iconFactory->getIconForResource($fileObject, Icon::SIZE_MEDIUM)->render()
-                        . '</span>';
+                    $imgTag = $iconFactory
+                        ->getIconForResource($fileObject, Icon::SIZE_MEDIUM)
+                        ->setTitle($fileObject->getName())
+                        ->render();
                 }
                 if ($linkInfoPopup) {
                     // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
