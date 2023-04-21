@@ -568,7 +568,7 @@ class FileQueueItem {
     this.$row = $('<tr />').addClass('upload-queue-item uploading');
     if (!this.dragUploader.manualTable) {
       // Add selector cell, if this is a real table (e.g. not in FormEngine)
-      this.$selector = $('<td />').addClass('col-selector').appendTo(this.$row);
+      this.$selector = $('<td />').addClass('col-checkbox').appendTo(this.$row);
     }
     this.$iconCol = $('<td />', { 'class': 'col-icon' }).appendTo(this.$row);
     this.$fileName = $('<td />', { 'class': 'col-title col-responsive' }).text(file.name).appendTo(this.$row);

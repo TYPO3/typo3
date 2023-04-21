@@ -126,7 +126,7 @@ class FileList
      */
     public array $addElement_tdCssClass = [
         '_CONTROL_' => 'col-control',
-        '_SELECTOR_' => 'col-selector',
+        '_SELECTOR_' => 'col-checkbox',
         'icon' => 'col-icon',
         'name' => 'col-title col-responsive',
     ];

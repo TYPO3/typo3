@@ -41,12 +41,12 @@
             <table class="table table-hover" id="itemsInRecycler">
                 <thead>
                     <tr>
-                        <th><f:render section="multiRecordSelectionCheckboxActions" /></th>
+                        <th class="col-checkbox"><f:render section="multiRecordSelectionCheckboxActions" /></th>
                         <th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.record" /></th>
-                        <th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.tstamp" /></th>
+                        <th class="col-datetime"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.tstamp" /></th>
                         <th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.uid" /></th>
                         <th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.pid" /></th>
-                        <th></th>
+                        <th class="col-control"></th>
                     </tr>
                 </thead>
                 <tbody data-multi-record-selection-row-selection="true">

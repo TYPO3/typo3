@@ -63,7 +63,7 @@
         <table class="table table-striped table-hover">
             <thead>
             <tr>
-                <th><f:render section="multiRecordSelectionCheckboxActions" /></th>
+                <th class="col-checkbox"><f:render section="multiRecordSelectionCheckboxActions" /></th>
                 <th colspan="2"><f:render section="listHeaderSorting" arguments="{field: 'name', label: 'sys_webhook.name', demand: demand}"/></th>
                 <th><f:render section="listHeaderSorting" arguments="{field: 'webhook_type', label: 'sys_webhook.webhook_type', demand: demand}"/></th>
                 <th>URL</th>
@@ -74,7 +74,7 @@
             <f:for each="{webhookRecords}" key="webhookId" as="webhook">
                 <f:variable name="webhookRecord" value="{webhook as array}"/>
                 <tr data-uid="{webhook.uid}" data-multi-record-selection-element="true">
-                    <td class="col-selector nowrap">
+                    <td class="col-checkbox">
                         <span class="form-check form-check-type-toggle">
                             <input class="form-check-input t3js-multi-record-selection-check" type="checkbox"/>
                         </span>

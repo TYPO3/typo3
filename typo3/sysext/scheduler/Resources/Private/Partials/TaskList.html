@@ -181,7 +181,7 @@
                         <table class="table table-striped table-hover" data-scheduler-table>
                             <thead>
                                 <tr class="taskGroup_{taskGroup.groupUid}">
-                                    <th class="col-selector nowrap" data-sort-method="none">
+                                    <th class="col-checkbox" data-sort-method="none">
                                         <div class="btn-group dropdown">
                                             <button type="button"
                                                 class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle"
@@ -254,13 +254,13 @@
                                     <th class="col-min"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.parallel"/></th>
                                     <th class="col-min"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.lastExecution"/></th>
                                     <th class="col-min"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.nextExecution"/></th>
-                                    <th data-sort-method="none"></th>
+                                    <th class="col-control" data-sort-method="none"></th>
                                 </tr>
                             </thead>
                             <tbody data-multi-record-selection-row-selection="true">
                             <f:for each="{taskGroup.tasks}" as="task">
                                 <tr class="{f:if(condition:'{task.disabled}', then: 'disabled')} taskGroup_{taskGroupId}" data-task-id="{task.uid}" data-multi-record-selection-element="true">
-                                    <td class="col-selector nowrap">
+                                    <td class="col-checkbox">
                                         <span class="form-check form-check-type-toggle">
                                             <input class="form-check-input t3js-multi-record-selection-check" type="checkbox">
                                         </span>
@@ -386,7 +386,7 @@
                                             </f:else>
                                         </f:if>
                                     </td>
-                                    <td class="align-top col-control nowrap text-end">
+                                    <td class="col-control align-top">
                                         <f:if condition="{task.isRunning}">
                                             <f:then>
                                                 <div class="btn-group" role="group">

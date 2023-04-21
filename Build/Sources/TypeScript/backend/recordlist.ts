@@ -178,7 +178,7 @@ class Recordlist {
       columnsOnly = target.dataset.columnsOnly || '';
       // Check if there are selected records, which would limit the records to edit
       const selection: NodeListOf<HTMLElement> = tableContainer.querySelectorAll(
-        this.identifier.entity + '[data-uid][data-table="' + tableName + '"] td.col-selector input[type="checkbox"]:checked'
+        this.identifier.entity + '[data-uid][data-table="' + tableName + '"] td.col-checkbox input[type="checkbox"]:checked'
       );
       if (selection.length) {
         // If there are selected records, only those are added to the list

@@ -1063,7 +1063,7 @@ class DatabaseRecordList
             $this->id = $id_orig;
         }
         // Add classes to table cells
-        $this->addElement_tdCssClass['_SELECTOR_'] = 'col-selector';
+        $this->addElement_tdCssClass['_SELECTOR_'] = 'col-checkbox';
         $this->addElement_tdCssClass[$titleCol] = 'col-title col-responsive' . $deletePlaceholderClass;
         $this->addElement_tdCssClass['__label'] = $this->addElement_tdCssClass[$titleCol];
         $this->addElement_tdCssClass['icon'] = 'col-icon';

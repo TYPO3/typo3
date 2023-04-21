@@ -711,7 +711,7 @@ class Backend extends Workspaces {
 
       this.elements.$tableBody.append(
         $('<tr />', rowConfiguration).append(
-          $('<td />', { class: 'col-selector' }).empty().append($checkbox),
+          $('<td />', { class: 'col-checkbox' }).empty().append($checkbox),
           $('<td />', {
             class: 't3js-title-workspace',
             style: item.Workspaces_CollectionLevel > 0
