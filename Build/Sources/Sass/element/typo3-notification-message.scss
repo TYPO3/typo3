@@ -1,0 +1,28 @@
+//
+// CSS for custom element:
+// typo3-notification-message
+//
+// <div id="#alert-container">
+//  <typo3-notification-message />
+// </div>
+//
+#alert-container {
+    width: 400px;
+    position: fixed;
+    right: 5px;
+    top: 45px;
+    z-index: 10000;
+
+    typo3-notification-message {
+        margin-top: 5px;
+    }
+}
+
+typo3-notification-message {
+    display: block;
+
+    .alert {
+        box-shadow: var(--typo3-component-box-shadow);
+        margin: 0;
+    }
+}

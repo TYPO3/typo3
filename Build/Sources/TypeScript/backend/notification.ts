@@ -139,7 +139,6 @@ export class NotificationMessage extends LitElement {
   @property({ type: Number, attribute: 'notification-duration' }) notificationDuration: number = 0;
   @property({ type: Array, attribute: false }) actions: Array<Action> = [];
 
-  @state() visible: boolean = false;
   @state() executingAction: number = -1;
 
   createRenderRoot(): Element|ShadowRoot {
@@ -148,7 +147,6 @@ export class NotificationMessage extends LitElement {
 
   async firstUpdated() {
     await new Promise(resolve => window.setTimeout(resolve, 200));
-    this.visible = true;
     await this.requestUpdate();
     if (this.notificationDuration > 0) {
       await new Promise(resolve => window.setTimeout(resolve, this.notificationDuration * 1000));
@@ -157,7 +155,6 @@ export class NotificationMessage extends LitElement {
   }
 
   async close(): Promise<void> {
-    this.visible = false;
     const onfinish = () => {
       this.parentNode && this.parentNode.removeChild(this);
     };
@@ -169,7 +166,7 @@ export class NotificationMessage extends LitElement {
       this.animate(
         [
           { height: this.getBoundingClientRect().height + 'px' },
-          { height: 0 },
+          { height: 0, opacity: 0, marginTop: 0 },
         ], {
           duration: 400,
           easing: 'cubic-bezier(.02, .01, .47, 1)'
@@ -205,7 +202,7 @@ export class NotificationMessage extends LitElement {
     return html`
       <div
         id="${ifDefined(this.notificationId || undefined)}"
-        class="${'alert alert-' + className + ' alert-dismissible fade' + (this.visible ? ' in' : '')}"
+        class="alert alert-${className} alert-dismissible"
         role="alert">
         <button type="button" class="close" @click="${async () => this.close()}">
           <span aria-hidden="true"><typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon></span>

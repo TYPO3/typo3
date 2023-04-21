@@ -90,27 +90,6 @@
 }
 
 //
-// JavaScript Flashmessages
-//
-#alert-container {
-    width: 400px;
-    position: fixed;
-    right: 5px;
-    top: 46px;
-    z-index: 10000;
-
-    .alert {
-        box-shadow: var(--typo3-component-box-shadow);
-        position: relative;
-        margin: 5px auto;
-
-        &.fade.in {
-            opacity: 1;
-        }
-    }
-}
-
-//
 // Variants
 // The light variants have problems beeing generated, they need manual correction.
 //
