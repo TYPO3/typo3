@@ -358,17 +358,15 @@
                                     <td class="align-top col-min">
                                         <f:if condition="{task.lastExecutionTime}">
                                             <f:then>
-                                                <f:format.date format="{dateFormat.day} {dateFormat.time}" date="{task.lastExecutionTime}" />
-                                                (
+                                                <f:format.date format="{dateFormat.day} {dateFormat.time}" date="{task.lastExecutionTime}" /><br>
                                                 <f:if condition="{task.lastExecutionContext} == 'CLI'">
                                                     <f:then>
-                                                        <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.cron" />
+                                                        <span class="text-body-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.cron" /></span>
                                                     </f:then>
                                                     <f:else>
-                                                        <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.manual" />
+                                                        <span class="text-body-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.manual" /></span>
                                                     </f:else>
                                                 </f:if>
-                                                )
                                             </f:then>
                                             <f:else>-</f:else>
                                         </f:if>
