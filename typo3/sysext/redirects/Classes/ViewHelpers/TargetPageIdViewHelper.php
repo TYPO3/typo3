@@ -52,7 +52,7 @@ final class TargetPageIdViewHelper extends AbstractViewHelper
         try {
             $linkService = GeneralUtility::makeInstance(LinkService::class);
             $resolvedLink = $linkService->resolveByStringRepresentation($arguments['target']);
-            return $resolvedLink['pageuid'] ?? '';
+            return (string)($resolvedLink['pageuid'] ?? '');
         } catch (UnknownUrnException|UnknownLinkHandlerException $e) {
             return '';
         }
