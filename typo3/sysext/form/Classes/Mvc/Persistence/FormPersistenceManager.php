@@ -546,7 +546,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 );
             }
         }
-        return  $identifier;
+        return $identifier;
     }
 
     /**

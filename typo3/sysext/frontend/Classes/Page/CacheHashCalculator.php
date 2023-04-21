@@ -80,7 +80,7 @@ class CacheHashCalculator implements SingletonInterface
                 $parameterName
             );
             if ($hasRequiredParameter) {
-                return  true;
+                return true;
             }
         }
         return false;

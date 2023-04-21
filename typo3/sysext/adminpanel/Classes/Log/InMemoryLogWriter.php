@@ -47,7 +47,7 @@ final class InMemoryLogWriter extends AbstractWriter implements SingletonInterfa
     {
         // Do not log if CLI, if not frontend, or memory limit has been reached.
         if (Environment::isCli()
-            || !(($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof  ServerRequestInterface)
+            || !(($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface)
             || !ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
             || $this->memoryLock === true
         ) {

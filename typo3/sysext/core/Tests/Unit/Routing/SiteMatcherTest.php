@@ -197,17 +197,17 @@ final class SiteMatcherTest extends UnitTestCase
 
     public static function bestMatchingUrlIsUsedDataProvider(): \Generator
     {
-        yield  ['https://example.org/page', '1-main', 'en-US'];
-        yield  ['https://example.org/', '1-main', 'en-US'];
-        yield  ['https://example.org/f', '1-main', 'en-US'];
-        yield  ['https://example.org/fr', '3-fr', 'fr-FR'];
-        yield  ['https://example.org/friendly-page', '1-main', 'en-US'];
-        yield  ['https://example.org/fr/', '3-fr', 'fr-FR'];
-        yield  ['https://example.org/fr/page', '3-fr', 'fr-FR'];
-        yield  ['https://example.org/de', '1-main', 'de-DE'];
-        yield  ['https://example.org/deterministic', '1-main', 'en-US'];
-        yield  ['https://example.org/dk', '2-dk', 'da-DK'];
-        yield  ['https://example.org/dkother', '1-main', 'en-US'];
+        yield ['https://example.org/page', '1-main', 'en-US'];
+        yield ['https://example.org/', '1-main', 'en-US'];
+        yield ['https://example.org/f', '1-main', 'en-US'];
+        yield ['https://example.org/fr', '3-fr', 'fr-FR'];
+        yield ['https://example.org/friendly-page', '1-main', 'en-US'];
+        yield ['https://example.org/fr/', '3-fr', 'fr-FR'];
+        yield ['https://example.org/fr/page', '3-fr', 'fr-FR'];
+        yield ['https://example.org/de', '1-main', 'de-DE'];
+        yield ['https://example.org/deterministic', '1-main', 'en-US'];
+        yield ['https://example.org/dk', '2-dk', 'da-DK'];
+        yield ['https://example.org/dkother', '1-main', 'en-US'];
     }
 
     /**

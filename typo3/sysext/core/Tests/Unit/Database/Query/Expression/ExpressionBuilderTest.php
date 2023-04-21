@@ -748,7 +748,7 @@ final class ExpressionBuilderTest extends UnitTestCase
 
     public static function trimQuotesIdentifierDataProvider(): array
     {
-        return  [
+        return [
             'trim leading character' => [
                 TrimMode::LEADING,
                 'x',

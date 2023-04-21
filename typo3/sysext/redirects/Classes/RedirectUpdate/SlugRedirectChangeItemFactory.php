@@ -45,7 +45,7 @@ final class SlugRedirectChangeItemFactory
         $defaultLanguagePageId = (int)$original['sys_language_uid'] > 0 ? (int)$original['l10n_parent'] : $pageId;
         try {
             $site = $this->siteFinder->getSiteByPageId($defaultLanguagePageId);
-        } catch(SiteNotFoundException) {
+        } catch (SiteNotFoundException) {
             // "autoCreateRedirects" and "autoUpdateSlugs" are site configuration settings. Not finding one
             // means that we should not handle the creation of them, thus no need to create a change item.
             return null;

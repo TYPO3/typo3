@@ -8473,7 +8473,7 @@ class DataHandler implements LoggerAwareInterface
         // No NULL values are allowed, this is the regular behaviour.
         // Thus, check whether strings are the same or whether integer values are empty ("0" or "").
         if (!$allowNull) {
-            switch($storedType) {
+            switch ($storedType) {
                 case 'json':
                     $result = $submittedValue === $storedValue;
                     break;

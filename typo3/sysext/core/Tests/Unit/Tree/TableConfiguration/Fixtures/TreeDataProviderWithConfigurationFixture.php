@@ -38,6 +38,6 @@ class TreeDataProviderWithConfigurationFixture
         if ($configuration !== $tcaConfiguration) {
             throw new \Exception('Failed asserting that the constructor arguments are correctly passed', 1438875248);
         }
-        throw new  \RuntimeException('This must be thrown', 1438875249);
+        throw new \RuntimeException('This must be thrown', 1438875249);
     }
 }

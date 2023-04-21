@@ -89,7 +89,7 @@ class CorrelationId implements \JsonSerializable
         $target->scope = $matches['scope'] ?? null;
         $target->version = $flags >> 10;
         $target->capabilities = $flags & ((1 << 10) - 1);
-        return  $target;
+        return $target;
     }
 
     /**

@@ -151,7 +151,7 @@ final class FileViewHelper extends AbstractTagBasedViewHelper
 
         $parameters['token'] = GeneralUtility::hmac(implode('|', $parameters), 'resourceStorageDumpFile');
 
-        return  GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'))
+        return GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'))
             . '?' . http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
     }
 

@@ -626,7 +626,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         $result = $subject->getDescendantPageIdsRecursive(1, 2, excludePageIds: [3]);
         self::assertEquals([2, 5, 7, 4, 10], $result);
         // Include Page ID 6
-        $result = $subject->getDescendantPageIdsRecursive(1, 2, bypassEnableFieldsCheck:true);
+        $result = $subject->getDescendantPageIdsRecursive(1, 2, bypassEnableFieldsCheck: true);
         self::assertEquals([2, 5, 6, 7, 3, 8, 9, 4, 10], $result);
     }
 

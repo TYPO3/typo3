@@ -119,7 +119,7 @@ class AbstractController extends ActionController
         $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('ExtensionManagerModuleMenu');
 
-        foreach ($menuItems as  $menuItemConfig) {
+        foreach ($menuItems as $menuItemConfig) {
             if ($request->getControllerName() === $menuItemConfig['controller']) {
                 $isActive = $request->getControllerActionName() === $menuItemConfig['action'];
             } else {
