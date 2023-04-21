@@ -26,12 +26,6 @@
 
 <f:section name="Content">
 
-    <f:for each="{infoBoxes}" as="infoBox">
-        <f:be.infobox state="{infoBox.state}">
-            <f:format.raw>{infoBox.message}</f:format.raw>
-        </f:be.infobox>
-    </f:for>
-
     <typo3-backend-editable-page-title
         pageTitle="{localizedPageTitle}"
         pageId="{pageId}"
@@ -40,6 +34,12 @@
     >
         {localizedPageTitle}
     </typo3-backend-editable-page-title>
+
+    <f:for each="{infoBoxes}" as="infoBox">
+        <f:be.infobox state="{infoBox.state}">
+            <f:format.raw>{infoBox.message}</f:format.raw>
+        </f:be.infobox>
+    </f:for>
 
     <f:format.raw>{eventContentHtmlTop}</f:format.raw>
 
