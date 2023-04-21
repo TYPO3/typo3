@@ -157,20 +157,24 @@ final class TranslateViewHelper extends AbstractViewHelper
 
         if (!$request instanceof ExtbaseRequestInterface) {
             // Straight resolving via core LanguageService in non-extbase context
-            if (!str_starts_with($id, 'LLL:EXT:') && empty($default)) {
+            if (!str_starts_with($id, 'LLL:EXT:')) {
                 // Resolve "short key" without LLL:EXT: syntax given, if an extension name is given.
                 // @todo: We could consider to deprecate this case. It is mostly implemented for a more
                 //        smooth transition when (backend) controllers no longer feed an extbase request.
-                if (empty($extensionName)) {
+                if (!empty($extensionName)) {
+                    $id = 'LLL:EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Private/Language/locallang.xlf:' . $id;
+                } elseif (empty($default)) {
+                    // Throw exception in case neither an extension key nor a default value
+                    // are given, since the "short key" shouldn't be considered as a label.
                     throw new \RuntimeException(
                         'ViewHelper f:translate in non-extbase context needs attribute "extensionName" to resolve'
                         . ' key="' . $id . '" without path. Either set attribute "extensionName" together with the short'
                         . ' key "yourKey" to result in a lookup "LLL:EXT:your_extension/Resources/Private/Language/locallang.xlf:yourKey",'
-                        . ' or (better) use a full LLL reference like key="LLL:EXT:your_extension/Resources/Private/Language/yourFile.xlf:yourKey"',
+                        . ' or (better) use a full LLL reference like key="LLL:EXT:your_extension/Resources/Private/Language/yourFile.xlf:yourKey".'
+                        . ' Alternatively, you can also define a default value.',
                         1639828178
                     );
                 }
-                $id = 'LLL:EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Private/Language/locallang.xlf:' . $id;
             }
             $value = self::getLanguageService($request)->sL($id);
             if (empty($value) || (!str_starts_with($id, 'LLL:EXT:') && $value === $id)) {

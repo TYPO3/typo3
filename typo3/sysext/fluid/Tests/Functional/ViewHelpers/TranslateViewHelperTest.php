@@ -47,7 +47,19 @@ final class TranslateViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderThrowsExceptionInNonExtbaseContextWithoutExtensionName(): void
+    public function renderThrowsExceptionIfOnlyDefaultValueIsGiven(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1351584844);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:translate default="myDefault" />');
+        (new TemplateView($context))->render();
+    }
+
+    /**
+     * @test
+     */
+    public function renderThrowsExceptionInNonExtbaseContextWithoutExtensionNameAndDefaultValue(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1639828178);
@@ -90,6 +102,14 @@ final class TranslateViewHelperTest extends FunctionalTestCase
             'key and CamelCased extensionName given' => [
                 '<f:translate key="form.legend" extensionName="IndexedSearch" />',
                 'Search form',
+            ],
+            'valid id and extensionName with default value given' => [
+                '<f:translate id="form.legend" extensionName="IndexedSearch" default="myDefault" />',
+                'Search form',
+            ],
+            'invalid id and extensionName given with default value given' => [
+                '<f:translate key="invalid" extensionName="IndexedSearch" default="myDefault" />',
+                'myDefault',
             ],
             'full LLL syntax for not existing label' => [
                 '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:iDoNotExist" />',
