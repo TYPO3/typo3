@@ -334,6 +334,10 @@
         <source>Chamic languages</source>
         <target>Idiomas châmicos</target>
       </trans-unit>
+      <trans-unit id="cnr" resname="cnr" approved="yes">
+        <source>Montenegrin</source>
+        <target>Montenegrino</target>
+      </trans-unit>
       <trans-unit id="co" resname="co" approved="yes">
         <source>Corsican</source>
         <target>córsico</target>

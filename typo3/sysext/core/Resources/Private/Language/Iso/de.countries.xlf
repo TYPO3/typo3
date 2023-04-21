@@ -228,11 +228,11 @@
       </trans-unit>
       <trans-unit id="BY.name" resname="BY.name" approved="yes">
         <source>Belarus</source>
-        <target>Weißrussland</target>
+        <target>Belarus</target>
       </trans-unit>
       <trans-unit id="BY.official_name" resname="BY.official_name" approved="yes">
         <source>Republic of Belarus</source>
-        <target>Republik Weißrussland</target>
+        <target>Republik Belarus</target>
       </trans-unit>
       <trans-unit id="BZ.name" resname="BZ.name" approved="yes">
         <source>Belize</source>
@@ -332,11 +332,11 @@
       </trans-unit>
       <trans-unit id="CV.name" resname="CV.name" approved="yes">
         <source>Cabo Verde</source>
-        <target>Cabo Verde</target>
+        <target>Kap Verde</target>
       </trans-unit>
       <trans-unit id="CV.official_name" resname="CV.official_name" approved="yes">
         <source>Republic of Cabo Verde</source>
-        <target>Republik Cabo Verde</target>
+        <target>Republik Kap Verde</target>
       </trans-unit>
       <trans-unit id="CW.name" resname="CW.name" approved="yes">
         <source>Curaçao</source>

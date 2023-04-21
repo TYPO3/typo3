@@ -740,6 +740,7 @@ class CountryProvider
         ],
         'IR' => [
             'alpha_3' => 'IRN',
+            'common_name' => 'Iran',
             'flag' => '🇮🇷',
             'name' => 'Iran, Islamic Republic of',
             'numeric' => '364',
@@ -862,6 +863,7 @@ class CountryProvider
         ],
         'LA' => [
             'alpha_3' => 'LAO',
+            'common_name' => 'Laos',
             'flag' => '🇱🇦',
             'name' => 'Lao People\'s Democratic Republic',
             'numeric' => '418',
@@ -1445,6 +1447,7 @@ class CountryProvider
         ],
         'SY' => [
             'alpha_3' => 'SYR',
+            'common_name' => 'Syria',
             'flag' => '🇸🇾',
             'name' => 'Syrian Arab Republic',
             'numeric' => '760',

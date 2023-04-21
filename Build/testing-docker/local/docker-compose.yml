@@ -692,6 +692,25 @@ services:
         git status | grep -q \"nothing to commit, working tree clean\"
       "
 
+  check_iso_database:
+    image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        git checkout -- composer.json
+        git checkout -- composer.lock
+        php -dxdebug.mode=off Build/Scripts/updateIsoDatabase.php
+        git add *;
+        git status;
+        git status | grep -q \"nothing to commit, working tree clean\"
+      "
+
   check_namespace_integrity:
     image: ${IMAGE_PREFIX}core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"

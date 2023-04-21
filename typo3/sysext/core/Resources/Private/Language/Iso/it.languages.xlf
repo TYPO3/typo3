@@ -280,7 +280,7 @@
       </trans-unit>
       <trans-unit id="ce" resname="ce" approved="yes">
         <source>Chechen</source>
-        <target>Chechen</target>
+        <target>Ceceno</target>
       </trans-unit>
       <trans-unit id="ceb" resname="ceb" approved="yes">
         <source>Cebuano</source>
@@ -334,6 +334,10 @@
         <source>Chamic languages</source>
         <target>Lingue chamic</target>
       </trans-unit>
+      <trans-unit id="cnr" resname="cnr" approved="yes">
+        <source>Montenegrin</source>
+        <target>Montenegrino</target>
+      </trans-unit>
       <trans-unit id="co" resname="co" approved="yes">
         <source>Corsican</source>
         <target>Corso</target>
@@ -376,7 +380,7 @@
       </trans-unit>
       <trans-unit id="cu" resname="cu" approved="yes">
         <source>Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic</source>
-        <target>Slavo ecclesiasito; Slavo antico; Bulgaro antico; Slavo ecclesiastico antico</target>
+        <target>Slavo ecclesiastico; Slavo antico; Bulgaro antico; Slavo ecclesiastico antico</target>
       </trans-unit>
       <trans-unit id="cus" resname="cus" approved="yes">
         <source>Cushitic languages</source>
@@ -432,7 +436,7 @@
       </trans-unit>
       <trans-unit id="dra" resname="dra" approved="yes">
         <source>Dravidian languages</source>
-        <target>Lingue dravidiane</target>
+        <target>Lingue dravidiche</target>
       </trans-unit>
       <trans-unit id="dsb" resname="dsb" approved="yes">
         <source>Lower Sorbian</source>
@@ -536,7 +540,7 @@
       </trans-unit>
       <trans-unit id="fiu" resname="fiu" approved="yes">
         <source>Finno-Ugrian languages</source>
-        <target>Lingue finno-ungrian</target>
+        <target>Lingue ugrofinniche</target>
       </trans-unit>
       <trans-unit id="fj" resname="fj" approved="yes">
         <source>Fijian</source>
@@ -768,15 +772,15 @@
       </trans-unit>
       <trans-unit id="inc" resname="inc" approved="yes">
         <source>Indic languages</source>
-        <target>Lingue indic</target>
+        <target>Lingue indoarie</target>
       </trans-unit>
       <trans-unit id="ine" resname="ine" approved="yes">
         <source>Indo-European languages</source>
-        <target>Lingue indo-europee</target>
+        <target>Lingue indoeuropee</target>
       </trans-unit>
       <trans-unit id="inh" resname="inh" approved="yes">
         <source>Ingush</source>
-        <target>Ingush</target>
+        <target>Inguscio</target>
       </trans-unit>
       <trans-unit id="io" resname="io" approved="yes">
         <source>Ido</source>
@@ -784,7 +788,7 @@
       </trans-unit>
       <trans-unit id="ira" resname="ira" approved="yes">
         <source>Iranian languages</source>
-        <target>Lingue iraniane</target>
+        <target>Lingue iraniche</target>
       </trans-unit>
       <trans-unit id="iro" resname="iro" approved="yes">
         <source>Iroquoian languages</source>
@@ -820,7 +824,7 @@
       </trans-unit>
       <trans-unit id="jv" resname="jv" approved="yes">
         <source>Javanese</source>
-        <target>Javanese</target>
+        <target>Giavanese</target>
       </trans-unit>
       <trans-unit id="ka" resname="ka" approved="yes">
         <source>Georgian</source>
@@ -924,7 +928,7 @@
       </trans-unit>
       <trans-unit id="krl" resname="krl" approved="yes">
         <source>Karelian</source>
-        <target>Karelian</target>
+        <target>Careliano</target>
       </trans-unit>
       <trans-unit id="kro" resname="kro" approved="yes">
         <source>Kru languages</source>
@@ -992,7 +996,7 @@
       </trans-unit>
       <trans-unit id="li" resname="li" approved="yes">
         <source>Limburgan; Limburger; Limburgish</source>
-        <target>Limburgan</target>
+        <target>Limburghese</target>
       </trans-unit>
       <trans-unit id="ln" resname="ln" approved="yes">
         <source>Lingala</source>
@@ -1064,7 +1068,7 @@
       </trans-unit>
       <trans-unit id="map" resname="map" approved="yes">
         <source>Austronesian languages</source>
-        <target>Lingue austro-indonesiane</target>
+        <target>Lingue austronesiane</target>
       </trans-unit>
       <trans-unit id="mas" resname="mas" approved="yes">
         <source>Masai</source>
@@ -1152,7 +1156,7 @@
       </trans-unit>
       <trans-unit id="ms" resname="ms" approved="yes">
         <source>Malay</source>
-        <target>Malay</target>
+        <target>Malese</target>
       </trans-unit>
       <trans-unit id="mt" resname="mt" approved="yes">
         <source>Maltese</source>
@@ -1180,7 +1184,7 @@
       </trans-unit>
       <trans-unit id="my" resname="my" approved="yes">
         <source>Burmese</source>
-        <target>Burmese</target>
+        <target>Birmano</target>
       </trans-unit>
       <trans-unit id="myn" resname="myn" approved="yes">
         <source>Mayan languages</source>
@@ -1196,7 +1200,7 @@
       </trans-unit>
       <trans-unit id="nah" resname="nah" approved="yes">
         <source>Nahuatl languages</source>
-        <target>Lingue salish</target>
+        <target>Lingue nahuatl</target>
       </trans-unit>
       <trans-unit id="nai" resname="nai" approved="yes">
         <source>North American Indian languages</source>
@@ -1216,7 +1220,7 @@
       </trans-unit>
       <trans-unit id="nds" resname="nds" approved="yes">
         <source>Low German; Low Saxon; German, Low; Saxon, Low</source>
-        <target>Tedesco inferiore; Sassone inferiore</target>
+        <target>Basso tedesco; Basso sassone</target>
       </trans-unit>
       <trans-unit id="ne" resname="ne" approved="yes">
         <source>Nepali</source>
@@ -1236,11 +1240,11 @@
       </trans-unit>
       <trans-unit id="nic" resname="nic" approved="yes">
         <source>Niger-Kordofanian languages</source>
-        <target>Lingue niger-kordofanian</target>
+        <target>Lingue niger-kordofaniane</target>
       </trans-unit>
       <trans-unit id="niu" resname="niu" approved="yes">
         <source>Niuean</source>
-        <target>Niuean</target>
+        <target>Niueano, niveano</target>
       </trans-unit>
       <trans-unit id="nl" resname="nl" approved="yes">
         <source>Dutch; Flemish</source>
@@ -1260,7 +1264,7 @@
       </trans-unit>
       <trans-unit id="non" resname="non" approved="yes">
         <source>Norse, Old</source>
-        <target>Norse antico</target>
+        <target>Norreno antico</target>
       </trans-unit>
       <trans-unit id="nqo" resname="nqo" approved="yes">
         <source>N'Ko</source>
@@ -1284,7 +1288,7 @@
       </trans-unit>
       <trans-unit id="nwc" resname="nwc" approved="yes">
         <source>Classical Newari; Old Newari; Classical Nepal Bhasa</source>
-        <target>Newari calssico; Newsari antico; Nepal Bhasa classico</target>
+        <target>Newari classico; Newari antico; Nepal Bhasa classico</target>
       </trans-unit>
       <trans-unit id="ny" resname="ny" approved="yes">
         <source>Chichewa; Chewa; Nyanja</source>
@@ -1336,15 +1340,15 @@
       </trans-unit>
       <trans-unit id="oto" resname="oto" approved="yes">
         <source>Otomian languages</source>
-        <target>Lingue ottomanne</target>
+        <target>Lingue otomí</target>
       </trans-unit>
       <trans-unit id="pa" resname="pa" approved="yes">
         <source>Panjabi; Punjabi</source>
-        <target>Panjabi; Punjabi</target>
+        <target>Pangiabi; Punjabi</target>
       </trans-unit>
       <trans-unit id="paa" resname="paa" approved="yes">
         <source>Papuan languages</source>
-        <target>Lungue papuane</target>
+        <target>Lingue papuasiche</target>
       </trans-unit>
       <trans-unit id="pag" resname="pag" approved="yes">
         <source>Pangasinan</source>
@@ -1400,7 +1404,7 @@
       </trans-unit>
       <trans-unit id="ps" resname="ps" approved="yes">
         <source>Pushto; Pashto</source>
-        <target>Pasthu; Afgano</target>
+        <target>Pashtu; Afgano</target>
       </trans-unit>
       <trans-unit id="pt" resname="pt" approved="yes">
         <source>Portuguese</source>
@@ -1424,11 +1428,11 @@
       </trans-unit>
       <trans-unit id="rar" resname="rar" approved="yes">
         <source>Rarotongan; Cook Islands Maori</source>
-        <target>Rarotongan; Maori dell'Isola di Cook</target>
+        <target>Rarotongan; Māori delle isole Cook</target>
       </trans-unit>
       <trans-unit id="rm" resname="rm" approved="yes">
         <source>Romansh</source>
-        <target>Romansh</target>
+        <target>Romancio</target>
       </trans-unit>
       <trans-unit id="rn" resname="rn" approved="yes">
         <source>Rundi</source>
@@ -1444,7 +1448,7 @@
       </trans-unit>
       <trans-unit id="rom" resname="rom" approved="yes">
         <source>Romany</source>
-        <target>Romany</target>
+        <target>Romaní</target>
       </trans-unit>
       <trans-unit id="ru" resname="ru" approved="yes">
         <source>Russian</source>
@@ -1452,7 +1456,7 @@
       </trans-unit>
       <trans-unit id="rup" resname="rup" approved="yes">
         <source>Aromanian; Arumanian; Macedo-Romanian</source>
-        <target>Macedone-Romeno</target>
+        <target>Arumeno; Aromeno; Macedorumeno</target>
       </trans-unit>
       <trans-unit id="rw" resname="rw" approved="yes">
         <source>Kinyarwanda</source>

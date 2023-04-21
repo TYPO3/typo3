@@ -54,6 +54,19 @@ integration various:
     - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.1
     - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 8.1
 
+iso database max:
+  stage: integrity
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
+    - Build/Scripts/runTests.sh -s checkIsoDatabase -p 8.1
+
 lint php 8.1:
   stage: integrity
   needs: []

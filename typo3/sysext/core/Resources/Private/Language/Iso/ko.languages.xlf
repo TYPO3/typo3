@@ -334,6 +334,10 @@
         <source>Chamic languages</source>
         <target>참어</target>
       </trans-unit>
+      <trans-unit id="cnr" resname="cnr" approved="yes">
+        <source>Montenegrin</source>
+        <target>몬테네그로어</target>
+      </trans-unit>
       <trans-unit id="co" resname="co" approved="yes">
         <source>Corsican</source>
         <target>코르시카어</target>
@@ -1192,7 +1196,7 @@
       </trans-unit>
       <trans-unit id="na" resname="na" approved="yes">
         <source>Nauru</source>
-        <target>나우루</target>
+        <target>나우루어</target>
       </trans-unit>
       <trans-unit id="nah" resname="nah" approved="yes">
         <source>Nahuatl languages</source>
@@ -1208,7 +1212,7 @@
       </trans-unit>
       <trans-unit id="nb" resname="nb" approved="yes">
         <source>Bokmål, Norwegian; Norwegian Bokmål</source>
-        <target>보크몰</target>
+        <target>노르웨이어</target>
       </trans-unit>
       <trans-unit id="nd" resname="nd" approved="yes">
         <source>Ndebele, North; North Ndebele</source>
@@ -1780,7 +1784,7 @@
       </trans-unit>
       <trans-unit id="tvl" resname="tvl" approved="yes">
         <source>Tuvalu</source>
-        <target>투발루</target>
+        <target>투발루어</target>
       </trans-unit>
       <trans-unit id="tw" resname="tw" approved="yes">
         <source>Twi</source>

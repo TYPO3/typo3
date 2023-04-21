@@ -116,7 +116,7 @@
       </trans-unit>
       <trans-unit id="BD.official_name" resname="BD.official_name" approved="yes">
         <source>People's Republic of Bangladesh</source>
-        <target>Repubblica popolare del Bangladesh</target>
+        <target>Repubblica Popolare del Bangladesh</target>
       </trans-unit>
       <trans-unit id="BE.name" resname="BE.name" approved="yes">
         <source>Belgium</source>
@@ -164,7 +164,7 @@
       </trans-unit>
       <trans-unit id="BL.name" resname="BL.name" approved="yes">
         <source>Saint Barthélemy</source>
-        <target>Saint Barts</target>
+        <target>Saint-Barthélemy</target>
       </trans-unit>
       <trans-unit id="BM.name" resname="BM.name" approved="yes">
         <source>Bermuda</source>

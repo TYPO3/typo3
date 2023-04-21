@@ -334,6 +334,10 @@
         <source>Chamic languages</source>
         <target>čamské jazyky</target>
       </trans-unit>
+      <trans-unit id="cnr" resname="cnr" approved="yes">
+        <source>Montenegrin</source>
+        <target>černohorština</target>
+      </trans-unit>
       <trans-unit id="co" resname="co" approved="yes">
         <source>Corsican</source>
         <target>korsičtina</target>

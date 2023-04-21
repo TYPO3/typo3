@@ -12,7 +12,7 @@
       </trans-unit>
       <trans-unit id="AE.name" resname="AE.name" approved="yes">
         <source>United Arab Emirates</source>
-        <target>Unió dels Emirats Àrabs</target>
+        <target>Emirats Àrabs Units</target>
       </trans-unit>
       <trans-unit id="AF.name" resname="AF.name" approved="yes">
         <source>Afghanistan</source>
@@ -92,7 +92,7 @@
       </trans-unit>
       <trans-unit id="AZ.name" resname="AZ.name" approved="yes">
         <source>Azerbaijan</source>
-        <target>Azerbaitjan</target>
+        <target>Azerbaidjan</target>
       </trans-unit>
       <trans-unit id="AZ.official_name" resname="AZ.official_name" approved="yes">
         <source>Republic of Azerbaijan</source>
@@ -168,7 +168,7 @@
       </trans-unit>
       <trans-unit id="BM.name" resname="BM.name" approved="yes">
         <source>Bermuda</source>
-        <target>Bermuda</target>
+        <target>Bermudes</target>
       </trans-unit>
       <trans-unit id="BN.name" resname="BN.name" approved="yes">
         <source>Brunei Darussalam</source>
@@ -444,7 +444,7 @@
       </trans-unit>
       <trans-unit id="ER.official_name" resname="ER.official_name" approved="yes">
         <source>the State of Eritrea</source>
-        <target>Estat d'eritrea</target>
+        <target>Estat d'Eritrea</target>
       </trans-unit>
       <trans-unit id="ES.name" resname="ES.name" approved="yes">
         <source>Spain</source>
@@ -996,7 +996,7 @@
       </trans-unit>
       <trans-unit id="MP.name" resname="MP.name" approved="yes">
         <source>Northern Mariana Islands</source>
-        <target>Illes Marianes del Nord</target>
+        <target>Illes Mariannes Septentrionals</target>
       </trans-unit>
       <trans-unit id="MP.official_name" resname="MP.official_name" approved="yes">
         <source>Commonwealth of the Northern Mariana Islands</source>
@@ -1268,7 +1268,7 @@
       </trans-unit>
       <trans-unit id="RE.name" resname="RE.name" approved="yes">
         <source>Réunion</source>
-        <target>Reunió</target>
+        <target>Illa de la Reunió</target>
       </trans-unit>
       <trans-unit id="RO.name" resname="RO.name" approved="yes">
         <source>Romania</source>
@@ -1288,7 +1288,7 @@
       </trans-unit>
       <trans-unit id="RW.name" resname="RW.name" approved="yes">
         <source>Rwanda</source>
-        <target>Rwanda</target>
+        <target>Ruanda</target>
       </trans-unit>
       <trans-unit id="RW.official_name" resname="RW.official_name" approved="yes">
         <source>Rwandese Republic</source>
@@ -1438,9 +1438,13 @@
         <source>Syrian Arab Republic</source>
         <target>República Àrab Síria</target>
       </trans-unit>
+      <trans-unit id="SZ.name" resname="SZ.name" approved="yes">
+        <source>Eswatini</source>
+        <target>Eswatini</target>
+      </trans-unit>
       <trans-unit id="SZ.official_name" resname="SZ.official_name" approved="yes">
         <source>Kingdom of Eswatini</source>
-        <target>Kingdom of Eswatini</target>
+        <target>Regne d'Eswatini</target>
       </trans-unit>
       <trans-unit id="TC.name" resname="TC.name" approved="yes">
         <source>Turks and Caicos Islands</source>
@@ -1514,9 +1518,13 @@
         <source>Kingdom of Tonga</source>
         <target>Regne de Tonga</target>
       </trans-unit>
+      <trans-unit id="TR.name" resname="TR.name" approved="yes">
+        <source>Türkiye</source>
+        <target>Turquia</target>
+      </trans-unit>
       <trans-unit id="TR.official_name" resname="TR.official_name" approved="yes">
         <source>Republic of Türkiye</source>
-        <target>Republic of Türkiye</target>
+        <target>República de Turquia</target>
       </trans-unit>
       <trans-unit id="TT.name" resname="TT.name" approved="yes">
         <source>Trinidad and Tobago</source>
@@ -1660,7 +1668,7 @@
       </trans-unit>
       <trans-unit id="ZA.name" resname="ZA.name" approved="yes">
         <source>South Africa</source>
-        <target>Sudàfrica</target>
+        <target>Sud-àfrica</target>
       </trans-unit>
       <trans-unit id="ZA.official_name" resname="ZA.official_name" approved="yes">
         <source>Republic of South Africa</source>
@@ -1676,7 +1684,7 @@
       </trans-unit>
       <trans-unit id="ZW.name" resname="ZW.name" approved="yes">
         <source>Zimbabwe</source>
-        <target>Zimbabwe</target>
+        <target>Zimbàbue</target>
       </trans-unit>
       <trans-unit id="ZW.official_name" resname="ZW.official_name" approved="yes">
         <source>Republic of Zimbabwe</source>

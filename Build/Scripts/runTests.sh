@@ -142,6 +142,7 @@ Options:
             - checkFilePathLength: test core file paths do not exceed maximum length
             - checkGitSubmodule: test core git has no sub modules defined
             - checkGruntClean: Verify "grunt build" is clean. Warning: Executes git commands! Usually used in CI only.
+            - checkIsoDatabase: Verify "updateIsoDatabase.php" does not change anything.
             - checkNamespaceIntegrity: Verify namespace integrity in class and test code files are in good shape.
             - checkPermissions: test some core files for correct executable bits
             - checkRst: test .rst files for integrity
@@ -643,6 +644,12 @@ case ${TEST_SUITE} in
     checkGruntClean)
         setUpDockerComposeDotEnv
         docker-compose run check_grunt_clean
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    checkIsoDatabase)
+        setUpDockerComposeDotEnv
+        docker-compose run check_iso_database
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
