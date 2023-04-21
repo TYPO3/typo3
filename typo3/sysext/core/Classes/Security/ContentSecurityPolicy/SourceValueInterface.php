@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+
 /**
  * Interface used for self-contained source value models.
  * The parent `SourceInterface` is basically just a type interface, since
@@ -42,7 +44,7 @@ interface SourceValueInterface extends SourceInterface
      * Compiled representation to be used for Content-Security-Policy HTTP header.
      * @return ?string `null` means "not applicable / skip"
      */
-    public function compile(): ?string;
+    public function compile(?FrontendInterface $cache = null): ?string;
 
     /**
      * Serialized representation to be used for persisting declaration (e.g. in database).

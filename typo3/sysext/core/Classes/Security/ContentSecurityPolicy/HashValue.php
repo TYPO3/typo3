@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+
 /**
  * Representation of Content-Security-Policy hash source value
  * see https://www.w3.org/TR/CSP3/#grammardef-hash-source
@@ -71,7 +73,7 @@ final class HashValue implements \Stringable, SourceValueInterface
         return sprintf("/^'(?P<type>%s)-(?P<value>.+)'$/", implode('|', $types));
     }
 
-    public function compile(): ?string
+    public function compile(?FrontendInterface $cache = null): ?string
     {
         return (string)$this;
     }

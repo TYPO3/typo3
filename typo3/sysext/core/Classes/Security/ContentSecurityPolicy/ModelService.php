@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Security\Nonce;
 
 /**
@@ -30,6 +31,13 @@ class ModelService
         HashProxy::class => 50,
         HashType::class => 50,
     ];
+
+    /**
+     * @param ?FrontendInterface $cache to be used for storing compiled CSP aspects (disabled in install tool)
+     */
+    public function __construct(private readonly ?FrontendInterface $cache = null)
+    {
+    }
 
     public function buildMutationSuggestionFromArray(array $array): MutationSuggestion
     {
@@ -122,7 +130,7 @@ class ModelService
                 $compiled = [];
             }
             if ($source instanceof SourceValueInterface) {
-                $compiled[] = $source->compile();
+                $compiled[] = $source->compile($this->cache);
             } else {
                 $compiled[] = $this->serializeSource($source, $nonce);
             }

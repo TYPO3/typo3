@@ -27,6 +27,10 @@ services:
     tags:
       - { name: 'console.command', command: 'backend:user:create', description: 'Create a backend user', schedulable: false }
 
+  TYPO3\CMS\Backend\Middleware\ContentSecurityPolicyHeaders:
+    arguments:
+      $cache: '@cache.assets'
+
   TYPO3\CMS\Backend\Backend\Avatar\Avatar:
     public: true
     arguments:

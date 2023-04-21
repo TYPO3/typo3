@@ -11,6 +11,10 @@ services:
     # (e.g. because factories are to be used instead)
     exclude: '../Classes/{Frontend/Controller/TypoScriptFrontendController.php}'
 
+  TYPO3\CMS\Frontend\Middleware\ContentSecurityPolicyHeaders:
+    arguments:
+      $cache: '@cache.assets'
+
   TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor:
     public: true
 

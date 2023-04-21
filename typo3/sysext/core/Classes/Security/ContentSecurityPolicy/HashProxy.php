@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
-use TYPO3\CMS\Core\Http\RequestFactory;
+use GuzzleHttp\Promise;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -27,6 +30,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class HashProxy implements \JsonSerializable, SourceValueInterface
 {
+    // one week
+    private const CACHE_LIFETIME = 604800;
     private HashType $type = HashType::sha256;
     private ?string $glob = null;
     /**
@@ -102,14 +107,14 @@ final class HashProxy implements \JsonSerializable, SourceValueInterface
         return $this->glob === null && $this->urls === null;
     }
 
-    public function compile(): ?string
+    public function compile(?FrontendInterface $cache = null): ?string
     {
         if ($this->isEmpty()) {
             return null;
         }
         $hashes = array_map(
             fn (string $hash): string => sprintf("'%s-%s'", $this->type->value, $hash),
-            $this->compileHashValues()
+            $this->compileHashValues($cache)
         );
         return implode(' ', $hashes);
     }
@@ -144,7 +149,7 @@ final class HashProxy implements \JsonSerializable, SourceValueInterface
         return basename($uri->getPath()) !== '';
     }
 
-    private function compileHashValues(): array
+    private function compileHashValues(?FrontendInterface $cache): array
     {
         if ($this->glob !== null) {
             $pattern = GeneralUtility::getFileAbsFileName($this->glob);
@@ -157,24 +162,62 @@ final class HashProxy implements \JsonSerializable, SourceValueInterface
             );
         }
         if ($this->urls !== null) {
-            $contents = array_filter(array_map([$this, 'fetchResponseBody'], $this->urls));
-            return array_map(
-                fn (string $content): string => base64_encode(
-                    hash($this->type->value, $content, true)
-                ),
-                $contents
-            );
+            $hashes = [];
+            $urls = $this->urls;
+            // try to resolve hashes from cache
+            if ($cache !== null) {
+                $urls = [];
+                $identifiers = [];
+                foreach ($this->urls as $url) {
+                    $identifiers[$url] = 'CspHashProxyUrl_' . sha1(json_encode([$this->type, $url]));
+                    $cachedHash = $cache->get($identifiers[$url]);
+                    if ($cachedHash === false) {
+                        // fetch content of URL & generate hash
+                        $urls[] = $url;
+                    } elseif ($cachedHash !== null) {
+                        // only use cached hash of URL that did not fail previously
+                        $hashes[] = $cachedHash;
+                    }
+                }
+            }
+            // process content of remaining URLs
+            $contents = $this->fetchUrlContents($urls);
+            foreach ($contents as $url => $content) {
+                $contentHash = $content !== null ? base64_encode(hash($this->type->value, $content, true)) : null;
+                if ($contentHash !== null) {
+                    $hashes[] = $contentHash;
+                }
+                if ($cache !== null && isset($identifiers[$url])) {
+                    $cache->set($identifiers[$url], $contentHash, ['CspHashProxyUrl'], self::CACHE_LIFETIME);
+                }
+            }
+            return $hashes;
         }
         return [];
     }
 
-    private function fetchResponseBody(string $url): string
+    /**
+     * @param list<string> $urls
+     * @return array<string, ?string> URL (key) and their response body contents of fulfilled requests (value)
+     */
+    private function fetchUrlContents(array $urls): array
     {
-        $factory = GeneralUtility::makeInstance(RequestFactory::class);
-        try {
-            return (string)$factory->request($url)->getBody();
-        } catch (\Throwable) {
-            return '';
+        $client = GeneralUtility::makeInstance(GuzzleClientFactory::class)->getClient();
+        $promises = [];
+
+        foreach ($urls as $url) {
+            $promises[$url] = $client->requestAsync('GET', $url);
         }
+
+        $resolvedPromises = Promise\Utils::settle($promises)->wait();
+        return array_map(
+            static function (array $response): ?string {
+                if ($response['state'] === 'fulfilled' && $response['value'] instanceof ResponseInterface) {
+                    return (string)$response['value']->getBody();
+                }
+                return null;
+            },
+            $resolvedPromises
+        );
     }
 }

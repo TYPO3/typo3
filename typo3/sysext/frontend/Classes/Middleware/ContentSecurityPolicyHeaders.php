@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Domain\ConsumableString;
@@ -40,6 +41,7 @@ final class ContentSecurityPolicyHeaders implements MiddlewareInterface
         private readonly Features $features,
         private readonly RequestId $requestId,
         private readonly LoggerInterface $logger,
+        private readonly FrontendInterface $cache,
         private readonly PolicyProvider $policyProvider,
     ) {
     }
@@ -71,6 +73,6 @@ final class ContentSecurityPolicyHeaders implements MiddlewareInterface
         if ($reportingUri !== null) {
             $policy = $policy->report(UriValue::fromUri($reportingUri));
         }
-        return $response->withHeader('Content-Security-Policy', $policy->compile($this->requestId->nonce));
+        return $response->withHeader('Content-Security-Policy', $policy->compile($this->requestId->nonce, $this->cache));
     }
 }
