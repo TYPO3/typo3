@@ -690,16 +690,36 @@ class BackendUtility
      *******************************************/
 
     /**
-     * Returns the page TSconfig for page with uid $pageUid
+     * Returns the page TSconfig for page with uid $pageUid.
+     *
+     * This method tends to be called by casual backend controllers multiple times
+     * with the same page uid, it has a runtime cache to short circuit this.
+     *
+     * The DataHandler however tends to also call this for different page uids when
+     * doing bulk operations like multi row updates or imports, for instance by
+     * the cache flush logic. FormEngine can trigger this as well when editing
+     * multiple pages at once.
+     *
+     * A single-level page uid -> PageTsConfig cache can be pretty memory
+     * hungry since the PageTsConfig object can be relatively huge. To prevent
+     * this method from being a memory hog, a two-level-cache is implemented:
+     * Many pages typically share the same page TSconfig. We get the rootline
+     * of a page, and create a hash from the two relevant TSconfig and
+     * tsconfig_includes fields, plus the attached site identifier. We then
+     * store a hash-to-object cache entry per different hash, and a
+     * page uid-to-hash pointer.
      *
      * @param int $pageUid
      */
     public static function getPagesTSconfig($pageUid): array
     {
         $runtimeCache = static::getRuntimeCache();
-        $pageTsConfig = $runtimeCache->get('pageTsConfig-' . $pageUid);
-        if ($pageTsConfig instanceof PageTsConfig) {
-            return $pageTsConfig->getPageTsConfigArray();
+        $pageTsConfigHash = $runtimeCache->get('pageTsConfig-pid-to-hash-' . $pageUid);
+        if ($pageTsConfigHash) {
+            $pageTsConfig = $runtimeCache->get('pageTsConfig-hash-to-object-' . $pageTsConfigHash);
+            if ($pageTsConfig instanceof PageTsConfig) {
+                return $pageTsConfig->getPageTsConfigArray();
+            }
         }
 
         $pageUid = (int)$pageUid;
@@ -713,10 +733,28 @@ class BackendUtility
             $site = new NullSite();
         }
 
+        $cacheRelevantData = $site->getIdentifier();
+        foreach ($fullRootLine as $rootLine) {
+            if (!empty($rootLine['TSconfig'])) {
+                $cacheRelevantData .= (string)$rootLine['TSconfig'];
+            }
+            if (!empty($rootLine['tsconfig_includes'])) {
+                $cacheRelevantData .= (string)$rootLine['tsconfig_includes'];
+            }
+        }
+        $cacheRelevantDataHash = hash('xxh3', $cacheRelevantData);
+
+        $pageTsConfig = $runtimeCache->get('pageTsConfig-hash-to-object-' . $cacheRelevantDataHash);
+        if ($pageTsConfig instanceof PageTsConfig) {
+            $runtimeCache->set('pageTsConfig-pid-to-hash-' . $pageUid, $cacheRelevantDataHash);
+            return $pageTsConfig->getPageTsConfigArray();
+        }
+
         $pageTsConfigFactory = GeneralUtility::makeInstance(PageTsConfigFactory::class);
         $pageTsConfig = $pageTsConfigFactory->create($fullRootLine, $site, static::getBackendUserAuthentication()?->getUserTsConfig());
 
-        $runtimeCache->set('pageTsConfig-' . $pageUid, $pageTsConfig);
+        $runtimeCache->set('pageTsConfig-pid-to-hash-' . $pageUid, $cacheRelevantDataHash);
+        $runtimeCache->set('pageTsConfig-hash-to-object-' . $cacheRelevantDataHash, $pageTsConfig);
         return $pageTsConfig->getPageTsConfigArray();
     }
 
