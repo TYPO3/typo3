@@ -108,7 +108,7 @@ final class PageViewHelper extends AbstractViewHelper
             return self::renderBackendLinkWithCoreContext($request, $arguments);
         }
         throw new \RuntimeException(
-            'ViewHelper f:uri.page can be used only in extbase context and needs a request implementing extbase RequestInterface.',
+            'The rendering context of ViewHelper f:uri.page is missing a valid request object.',
             1639820200
         );
     }
@@ -149,7 +149,7 @@ final class PageViewHelper extends AbstractViewHelper
             } else {
                 $uri = (string)$backendUriBuilder->buildUriFromRoute($routeName, $arguments, BackendUriBuilder::ABSOLUTE_PATH);
             }
-        } catch (RouteNotFoundException $e) {
+        } catch (RouteNotFoundException) {
             $uri = '';
         }
         if ($section !== '') {
@@ -208,7 +208,7 @@ final class PageViewHelper extends AbstractViewHelper
             $linkFactory = GeneralUtility::makeInstance(LinkFactory::class);
             $linkResult = $linkFactory->create((string)$renderChildrenClosure(), $typolinkConfiguration, $cObj);
             return $linkResult->getUrl();
-        } catch (UnableToLinkException $e) {
+        } catch (UnableToLinkException) {
             return (string)$renderChildrenClosure();
         }
     }

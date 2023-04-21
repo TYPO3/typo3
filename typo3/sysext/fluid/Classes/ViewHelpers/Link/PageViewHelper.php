@@ -130,7 +130,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
             return $result;
         }
         throw new \RuntimeException(
-            'ViewHelper f:link.page needs a request implementing ServerRequestInterface.',
+            'The rendering context of ViewHelper f:link.page is missing a valid request object.',
             1639819269
         );
     }
@@ -188,7 +188,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
             $this->tag->setContent($this->renderChildren());
             $this->tag->forceClosingTag(true);
             $result = $this->tag->render();
-        } catch (UnableToLinkException $e) {
+        } catch (UnableToLinkException) {
             $result = (string)$this->renderChildren();
         }
         return $result;
@@ -230,7 +230,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
             } else {
                 $uri = (string)$backendUriBuilder->buildUriFromRoute($routeName, $arguments, BackendUriBuilder::ABSOLUTE_PATH);
             }
-        } catch (RouteNotFoundException $e) {
+        } catch (RouteNotFoundException) {
             $uri = '';
         }
         if ($section !== '') {
