@@ -210,19 +210,19 @@ export class CspReports extends LitElement {
   protected renderNavigation(): TemplateResult {
     return html`
       <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="${lll('scope')}}">
-          ${null === this.selectedScope ? lll('all') || 'ALL' : this.selectedScope}
+        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="${lll('label.scope') || 'Scope'}">
+          ${null === this.selectedScope ? lll('label.all') || 'ALL' : this.selectedScope}
         </button>
         <ul class="dropdown-menu">
-          <button class="dropdown-item dropdown-item-spaced" title="${lll('all') || 'ALL'}" @click="${() => { this.selectScope(null); }}">
+          <button class="dropdown-item dropdown-item-spaced" title="${lll('label.all') || 'ALL'}" @click=${() => this.selectScope(null)}>
             <span class="${null === this.selectedScope ? 'text-primary' : '' }">
               <typo3-backend-icon identifier="${null === this.selectedScope ? 'actions-dot' : 'empty-empty'}" size="small"></typo3-backend-icon>
             </span>
-            ${lll('all') || 'ALL'}
+            ${lll('label.all') || 'ALL'}
           </button>
           ${this.scopes.map((scope: string) => html`
             <li>
-              <button class="dropdown-item dropdown-item-spaced" title="${scope}" @click="${() => { this.selectScope(scope); }}">
+              <button class="dropdown-item dropdown-item-spaced" title="${scope}" @click=${() => this.selectScope(scope)}>
                 <span class="${scope === this.selectedScope ? 'text-primary' : '' }">
                   <typo3-backend-icon identifier="${scope === this.selectedScope ? 'actions-dot' : 'empty-empty'}" size="small"></typo3-backend-icon>
                 </span>
@@ -230,6 +230,10 @@ export class CspReports extends LitElement {
               </button>
             </li>`)}
         </ul>
+        <button type="button" class="btn btn-danger mx-3" title="${lll('label.removeAll') || 'Remove all'}" @click=${() => this.invokeDeleteReportsAction()}>
+          ${lll('label.removeAll') || 'Remove all'}
+          ${this.selectedScope !== null ? html`"${this.selectedScope}"` : nothing}
+        </button>
       </div>`;
   }
 
@@ -377,16 +381,23 @@ export class CspReports extends LitElement {
 
   private invokeMuteReportAction(report: SummarizedCspReport): void {
     (new AjaxRequest(this.controlUri))
-      .post({ action: 'muteReport', summary: report.summary })
+      .post({ action: 'muteReport', summaries: [report.summary] })
       .then((response: AjaxResponse) => response.resolve('application/json'))
       .then((response: CspReportUuids) => this.filterReports(...response.uuids));
   }
 
   private invokeDeleteReportAction(report: SummarizedCspReport): void {
     (new AjaxRequest(this.controlUri))
-      .post({ action: 'deleteReport', summary: report.summary })
+      .post({ action: 'deleteReport', summaries: [report.summary] })
       .then((response: AjaxResponse) => response.resolve('application/json'))
       .then((response: CspReportUuids) => this.filterReports(...response.uuids));
+  }
+
+  private invokeDeleteReportsAction(): void {
+    (new AjaxRequest(this.controlUri))
+      .post({ action: 'deleteReports', scope: this.selectedScope || '' })
+      .then((response: AjaxResponse) => response.resolve('application/json'))
+      .then(() => this.fetchReports());
   }
 
   /*

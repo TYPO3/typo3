@@ -22,6 +22,7 @@ use Symfony\Component\Uid\UuidV4;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 
 /**
  * @internal
@@ -139,6 +140,14 @@ class ReportRepository
             self::TABLE_NAME,
             ['uuid' => (string)$uuid]
         ) === 1;
+    }
+
+    public function removeAll(?Scope $scope = null): int
+    {
+        if ($scope === null) {
+            return $this->getConnection()->truncate(self::TABLE_NAME);
+        }
+        return $this->getConnection()->delete(self::TABLE_NAME, ['scope' => (string)$scope]);
     }
 
     /**

@@ -89,6 +89,9 @@ class CspAjaxController
         if ($action === 'deleteReport' && is_array($summaries)) {
             return $this->deleteReportAction(...$summaries);
         }
+        if ($action === 'deleteReports') {
+            return $this->deleteReportsAction($scope);
+        }
         if ($action === 'handleReport' && $uuid instanceof UuidV4) {
             return $this->handleReportAction($uuid);
         }
@@ -141,6 +144,12 @@ class CspAjaxController
         $reportUuids = $this->resolveReportUuids(...$reports);
         $this->reportRepository->updateStatus(ReportStatus::Deleted, ...$reportUuids);
         return new JsonResponse(['uuids' => $reportUuids]);
+    }
+
+    protected function deleteReportsAction(?Scope $scope): ResponseInterface
+    {
+        $amount = $this->reportRepository->removeAll($scope);
+        return new JsonResponse(['amount' => $amount]);
     }
 
     protected function handleReportAction(UuidV4 $uuid): ResponseInterface

@@ -33,6 +33,9 @@
 			<trans-unit id="module.label.scope" resname="module.label.scope">
 				<source>Scope</source>
 			</trans-unit>
+			<trans-unit id="module.label.removeAll" resname="module.label.removeAll">
+				<source>Remove all</source>
+			</trans-unit>
 			<trans-unit id="module.label.violation" resname="module.label.violation">
 				<source>Violation</source>
 			</trans-unit>
