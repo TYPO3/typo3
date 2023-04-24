@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Functional\Configuration\SiteConfiguration;
+namespace TYPO3\CMS\Backend\Tests\Functional\SiteConfiguration;
 
 use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -27,8 +27,8 @@ final class SiteConfigurationOverridesTest extends FunctionalTestCase
     protected array $subject;
 
     protected array $testExtensionsToLoad = [
-        'typo3/sysext/backend/Tests/Functional/Configuration/SiteConfiguration/Fixtures/Extensions/conf_overriding/a',
-        'typo3/sysext/backend/Tests/Functional/Configuration/SiteConfiguration/Fixtures/Extensions/conf_overriding/b',
+        'typo3/sysext/backend/Tests/Functional/SiteConfiguration/Fixtures/Extensions/test_configoverride_first',
+        'typo3/sysext/backend/Tests/Functional/SiteConfiguration/Fixtures/Extensions/test_configoverride_second',
     ];
 
     /**

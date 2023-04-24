@@ -1,10 +1,10 @@
 {
-	"name": "typo3/cms-test-templates-a",
+	"name": "typo3tests/cms-test-templates-a",
 	"type": "typo3-cms-extension",
+	"require": {
+		"typo3/cms-core": "12.4.*@dev"
+	},
 	"extra": {
-		"branch-alias": {
-			"dev-main": "12.4.x-dev"
-		},
 		"typo3/cms": {
 			"extension-key": "test_templates_a"
 		}

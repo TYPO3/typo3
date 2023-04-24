@@ -1,14 +1,14 @@
 {
-	"name": "typo3tests/tca-select-items",
+	"name": "typo3tests/config-override-first",
 	"type": "typo3-cms-extension",
-	"description": "TcaSelectItems Test",
+	"description": "A test extension for site config override",
 	"license": "GPL-2.0-or-later",
 	"require": {
 		"typo3/cms-core": "12.4.*@dev"
 	},
 	"extra": {
 		"typo3/cms": {
-			"extension-key": "test_tca_select_items"
+			"extension-key": "test_configoverride_first"
 		}
 	}
 }

@@ -35,7 +35,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
      */
     public function createUsesTemplatePathsWithPackageGivenAsRouteOption()
     {
-        $request = (new ServerRequest())->withAttribute('route', new Route('testing', ['packageName' => 'typo3/cms-test-templates-a']));
+        $request = (new ServerRequest())->withAttribute('route', new Route('testing', ['packageName' => 'typo3tests/cms-test-templates-a']));
         $subject = $this->get(BackendViewFactory::class);
         $view = $subject->create($request);
         $result = $view->render('Foo');
@@ -51,7 +51,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', []));
         $subject = $this->get(BackendViewFactory::class);
-        $view = $subject->create($request, ['typo3/cms-test-templates-a']);
+        $view = $subject->create($request, ['typo3tests/cms-test-templates-a']);
         $result = $view->render('Foo');
         self::assertStringContainsString('Foo template from extension test_templates_a', $result);
         self::assertStringContainsString('Foo layout from extension test_templates_a', $result);
@@ -63,9 +63,9 @@ final class BackendViewFactoryTest extends FunctionalTestCase
      */
     public function createUsesOverrideTemplatePathsWithBasePackageNameFromRoute()
     {
-        $request = (new ServerRequest())->withAttribute('route', new Route('testing', ['packageName' => 'typo3/cms-test-templates-a']));
+        $request = (new ServerRequest())->withAttribute('route', new Route('testing', ['packageName' => 'typo3tests/cms-test-templates-a']));
         $subject = $this->get(BackendViewFactory::class);
-        $view = $subject->create($request, ['typo3/cms-test-templates-b']);
+        $view = $subject->create($request, ['typo3tests/cms-test-templates-b']);
         $result = $view->render('Foo');
         self::assertStringContainsString('Foo template from extension test_templates_b', $result);
         self::assertStringContainsString('Foo layout from extension test_templates_b', $result);
@@ -82,8 +82,8 @@ final class BackendViewFactoryTest extends FunctionalTestCase
         $view = $subject->create(
             $request,
             [
-                'typo3/cms-test-templates-a',
-                'typo3/cms-test-templates-b',
+                'typo3tests/cms-test-templates-a',
+                'typo3tests/cms-test-templates-b',
             ]
         );
         $result = $view->render('Foo');
@@ -102,8 +102,8 @@ final class BackendViewFactoryTest extends FunctionalTestCase
         $view = $subject->create(
             $request,
             [
-                'typo3/cms-test-templates-b',
-                'typo3/cms-test-templates-a',
+                'typo3tests/cms-test-templates-b',
+                'typo3tests/cms-test-templates-a',
             ]
         );
         $result = $view->render('Foo');
@@ -122,9 +122,9 @@ final class BackendViewFactoryTest extends FunctionalTestCase
         $view = $subject->create(
             $request,
             [
-                'typo3/cms-test-templates-b',
-                'typo3/cms-test-templates-a',
-                'typo3/cms-test-templates-c',
+                'typo3tests/cms-test-templates-b',
+                'typo3tests/cms-test-templates-a',
+                'typo3tests/cms-test-templates-c',
             ]
         );
         $result = $view->render('Foo');
@@ -140,7 +140,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendViewFactoryTestPages.csv');
         $request = (new ServerRequest())
-            ->withAttribute('route', new Route('testing', ['packageName' => 'typo3/cms-test-templates-a']))
+            ->withAttribute('route', new Route('testing', ['packageName' => 'typo3tests/cms-test-templates-a']))
             ->withQueryParams(['id' => 1]);
         $subject = $this->get(BackendViewFactory::class);
         $view = $subject->create($request);
@@ -157,7 +157,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendViewFactoryTestPagesWithFallback.csv');
         $request = (new ServerRequest())
-            ->withAttribute('route', new Route('testing', ['packageName' => 'typo3/cms-test-templates-a']))
+            ->withAttribute('route', new Route('testing', ['packageName' => 'typo3tests/cms-test-templates-a']))
             ->withQueryParams(['id' => 1]);
         $subject = $this->get(BackendViewFactory::class);
         $view = $subject->create($request);
