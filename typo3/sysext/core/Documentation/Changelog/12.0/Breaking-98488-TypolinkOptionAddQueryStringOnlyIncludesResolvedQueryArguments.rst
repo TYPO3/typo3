@@ -15,7 +15,9 @@ The Typolink option :typoscript:`typolink.addQueryString` previously set all giv
 GET parameters to a generated URL that were handed in to the request.
 
 This option is also used under the hood for the  Fluid ViewHelpers
-:html:`<f:link.typolink>` and :html:`<f:uri.typolink>`.
+:html:`<f:link.typolink>`, :html:`<f:uri.typolink>`, :html:`<f:link.page>`,
+:html:`<f:uri.page>`, :html:`<f:link.action>`, :html:`<f:link.action>` and
+:html:`<f:form>`.
 
 With TYPO3 v9 and routing, this option now only adds the query arguments that
 have been resolved during the routing process. This way, additional query arguments
@@ -46,6 +48,8 @@ However, to ensure the previous behaviour, the option
 :typoscript:`typolink.addQueryString` can be set to `untrusted` to add all given.
 
 The same value is also possible for the Fluid ViewHelpers
-:html:`<f:link.typolink>` and :html:`<f:uri.typolink>`.
+:html:`<f:link.typolink>`, :html:`<f:uri.typolink>`, :html:`<f:link.page>`,
+:html:`<f:uri.page>`, :html:`<f:link.action>`, :html:`<f:link.action>` and
+:html:`<f:form>`.
 
 .. index:: Fluid, TypoScript, NotScanned, ext:frontend

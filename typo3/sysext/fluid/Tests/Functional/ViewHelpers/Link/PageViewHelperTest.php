@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
@@ -34,6 +35,16 @@ final class PageViewHelperTest extends FunctionalTestCase
     use SiteBasedTestTrait;
 
     protected const LANGUAGE_PRESETS = [];
+
+    protected array $configurationToUseInTestInstance = [
+        'FE' => [
+            'cacheHash' => [
+                'excludedParameters' => [
+                    'untrusted',
+                ],
+            ],
+        ],
+    ];
 
     /**
      * @test
@@ -192,6 +203,10 @@ final class PageViewHelperTest extends FunctionalTestCase
                 '<f:link.page pageUid="1" section="c13">linkMe</f:link.page>',
                 '<a href="/#c13">linkMe</a>',
             ],
+            'link to root page with untrusted query arguments' => [
+                '<f:link.page addQueryString="untrusted"></f:link.page>',
+                '<a href="/?untrusted=123"></a>',
+            ],
             'link to page sub page' => [
                 '<f:link.page pageUid="3">linkMe</f:link.page>',
                 '<a href="/dummy-1-2/dummy-1-2-3">linkMe</a>',
@@ -220,6 +235,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         );
         $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $GLOBALS['TSFE']->id = 1;
@@ -244,6 +260,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         );
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($request);
         $GLOBALS['TYPO3_REQUEST'] = $request;

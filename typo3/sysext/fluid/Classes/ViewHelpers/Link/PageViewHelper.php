@@ -100,7 +100,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.');
         $this->registerArgument('additionalParams', 'array', 'Additional query parameters that won\'t be prefixed like $arguments (overrule $arguments)');
         $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute');
-        $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URI');
+        $this->registerArgument('addQueryString', 'string', 'If set, the current query parameters will be kept in the URL. If set to "untrusted", then ALL query parameters will be added. Be aware, that this might lead to problems when the generated link is cached.', false, false);
         $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE');
     }
 
@@ -145,7 +145,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         $linkAccessRestrictedPages = isset($this->arguments['linkAccessRestrictedPages']) && (bool)$this->arguments['linkAccessRestrictedPages'];
         $additionalParams = isset($this->arguments['additionalParams']) ? (array)$this->arguments['additionalParams'] : [];
         $absolute = isset($this->arguments['absolute']) && (bool)$this->arguments['absolute'];
-        $addQueryString = isset($this->arguments['addQueryString']) && (bool)$this->arguments['addQueryString'];
+        $addQueryString = $this->arguments['addQueryString'] ?? false;
         $argumentsToBeExcludedFromQueryString = isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [];
 
         $typolinkConfiguration = [
@@ -172,8 +172,8 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         if ($absolute) {
             $typolinkConfiguration['forceAbsoluteUrl'] = true;
         }
-        if ($addQueryString) {
-            $typolinkConfiguration['addQueryString'] = '1';
+        if ($addQueryString && $addQueryString !== 'false') {
+            $typolinkConfiguration['addQueryString'] = $addQueryString;
             if ($argumentsToBeExcludedFromQueryString !== []) {
                 $typolinkConfiguration['addQueryString.']['exclude'] = implode(',', $argumentsToBeExcludedFromQueryString);
             }
@@ -200,11 +200,11 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         $section = isset($this->arguments['section']) ? (string)$this->arguments['section'] : '';
         $additionalParams = isset($this->arguments['additionalParams']) ? (array)$this->arguments['additionalParams'] : [];
         $absolute = isset($this->arguments['absolute']) && (bool)$this->arguments['absolute'];
-        $addQueryString = isset($this->arguments['addQueryString']) && (bool)$this->arguments['addQueryString'];
+        $addQueryString = $this->arguments['addQueryString'] ?? false;
         $argumentsToBeExcludedFromQueryString = isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [];
 
         $arguments = [];
-        if ($addQueryString === true) {
+        if ($addQueryString && $addQueryString !== 'false') {
             $arguments = $request->getQueryParams();
             foreach ($argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
                 $argumentArrayToBeExcluded = [];
@@ -249,7 +249,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         $linkAccessRestrictedPages = isset($this->arguments['linkAccessRestrictedPages']) && (bool)$this->arguments['linkAccessRestrictedPages'];
         $additionalParams = isset($this->arguments['additionalParams']) ? (array)$this->arguments['additionalParams'] : [];
         $absolute = isset($this->arguments['absolute']) && (bool)$this->arguments['absolute'];
-        $addQueryString = isset($this->arguments['addQueryString']) && (bool)$this->arguments['addQueryString'];
+        $addQueryString = $this->arguments['addQueryString'] ?? false;
         $argumentsToBeExcludedFromQueryString = isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [];
 
         $uriBuilder = GeneralUtility::makeInstance(ExtbaseUriBuilder::class);

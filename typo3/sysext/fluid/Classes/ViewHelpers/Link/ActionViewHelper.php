@@ -67,7 +67,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.');
         $this->registerArgument('additionalParams', 'array', 'Additional query parameters that won\'t be prefixed like $arguments (overrule $arguments)');
         $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute');
-        $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URI');
+        $this->registerArgument('addQueryString', 'string', 'If set, the current query parameters will be kept in the URL. If set to "untrusted", then ALL query parameters will be added. Be aware, that this might lead to problems when the generated link is cached.', false, false);
         $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE');
         $this->registerArgument('arguments', 'array', 'Arguments for the controller action, associative array');
     }
@@ -96,7 +96,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
         $linkAccessRestrictedPages = (bool)$this->arguments['linkAccessRestrictedPages'];
         $additionalParams = (array)$this->arguments['additionalParams'];
         $absolute = (bool)$this->arguments['absolute'];
-        $addQueryString = (bool)$this->arguments['addQueryString'];
+        $addQueryString = $this->arguments['addQueryString'] ?? false;
         $argumentsToBeExcludedFromQueryString = (array)$this->arguments['argumentsToBeExcludedFromQueryString'];
         $parameters = $this->arguments['arguments'];
 

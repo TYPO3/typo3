@@ -217,10 +217,15 @@ final class UriBuilderTest extends UnitTestCase
         $extbaseParameters = new ExtbaseRequestParameters();
         $serverRequest = $this->getRequestWithRouteAttribute()->withQueryParams(['id' => 'pageId', 'foo' => 'bar'])
             ->withAttribute('extbase', $extbaseParameters);
-        $request =  new Request($serverRequest);
+        $request = new Request($serverRequest);
         $this->subject->setRequest($request);
         $this->subject->setAddQueryString(true);
         $expectedResult = '/typo3/test/Path?token=dummyToken&id=pageId&foo=bar';
+        $actualResult = $this->subject->buildBackendUri();
+        self::assertEquals($expectedResult, $actualResult);
+
+        // Check "untrusted" setting, which in BE context is the same as setting the property to TRUE
+        $this->subject->setAddQueryString('untrusted');
         $actualResult = $this->subject->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
@@ -234,10 +239,15 @@ final class UriBuilderTest extends UnitTestCase
         $serverRequest = $this->getRequestWithRouteAttribute('module_key2')
             ->withQueryParams(['route' => 'module_key', 'id' => 'pageId', 'foo' => 'bar'])
             ->withAttribute('extbase', $extbaseParameters);
-        $request =  new Request($serverRequest);
+        $request = new Request($serverRequest);
         $this->subject->setRequest($request);
         $this->subject->setAddQueryString(true);
         $expectedResult = '/typo3/test/Path2?token=dummyToken&id=pageId&foo=bar';
+        $actualResult = $this->subject->buildBackendUri();
+        self::assertEquals($expectedResult, $actualResult);
+
+        // Check "untrusted" setting, which in BE context is the same as setting the property to TRUE
+        $this->subject->setAddQueryString('untrusted');
         $actualResult = $this->subject->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
@@ -313,10 +323,15 @@ final class UriBuilderTest extends UnitTestCase
         $serverRequest = $this->getRequestWithRouteAttribute()
             ->withQueryParams($parameters)
             ->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request =  new Request($serverRequest);
+        $request = new Request($serverRequest);
         $this->subject->setRequest($request);
         $this->subject->setAddQueryString(true);
         $this->subject->setArgumentsToBeExcludedFromQueryString($excluded);
+        $actualResult = $this->subject->buildBackendUri();
+        self::assertEquals($expected, $actualResult);
+
+        // Check "untrusted" setting, which in BE context is the same as setting the property to TRUE
+        $this->subject->setAddQueryString('untrusted');
         $actualResult = $this->subject->buildBackendUri();
         self::assertEquals($expected, $actualResult);
     }
@@ -330,7 +345,7 @@ final class UriBuilderTest extends UnitTestCase
             ->withQueryParams(['id' => 'pageId', 'foo' => 'bar'])
             ->withAttribute('extbase', new ExtbaseRequestParameters())
         ;
-        $request =  new Request($serverRequest);
+        $request = new Request($serverRequest);
         $this->subject->setRequest($request);
         $expectedResult = '/typo3/test/Path?token=dummyToken&id=pageId';
         $actualResult = $this->subject->buildBackendUri();
@@ -589,14 +604,62 @@ final class UriBuilderTest extends UnitTestCase
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }
 
+    public static function buildTypolinkConfigurationProperlySetsAddQueryStringDataProvider(): \Generator
+    {
+        yield 'AddQueryString not set' => [
+            null,
+            ['parameter' => 123],
+        ];
+        yield 'AddQueryString set to FALSE' => [
+            false,
+            ['parameter' => 123],
+        ];
+        yield 'AddQueryString set to "FALSE"' => [
+            'false',
+            ['parameter' => 123],
+        ];
+        yield 'AddQueryString set to 0' => [
+            0,
+            ['parameter' => 123],
+        ];
+        yield 'AddQueryString set to "0"' => [
+            '0',
+            ['parameter' => 123],
+        ];
+        yield 'AddQueryString set to TRUE' => [
+            true,
+            ['parameter' => 123, 'addQueryString' => 1],
+        ];
+        yield 'AddQueryString set to "TRUE"' => [
+            'true',
+            ['parameter' => 123, 'addQueryString' => 'true'],
+        ];
+        yield 'AddQueryString set to 1' => [
+            1,
+            ['parameter' => 123, 'addQueryString' => 1],
+        ];
+        yield 'AddQueryString set to "1"' => [
+            '1',
+            ['parameter' => 123, 'addQueryString' => 1],
+        ];
+        yield 'AddQueryString set to \'untrusted\'' => [
+            'untrusted',
+            ['parameter' => 123, 'addQueryString' => 'untrusted'],
+        ];
+    }
+
     /**
      * @test
+     * @dataProvider buildTypolinkConfigurationProperlySetsAddQueryStringDataProvider
      */
-    public function buildTypolinkConfigurationProperlySetsAddQueryString(): void
-    {
+    public function buildTypolinkConfigurationProperlySetsAddQueryString(
+        bool|string|int|null $addQueryString,
+        array $expectedConfiguration
+    ): void {
         $this->subject->setTargetPageUid(123);
-        $this->subject->setAddQueryString(true);
-        $expectedConfiguration = ['parameter' => 123, 'addQueryString' => 1];
+        if ($addQueryString !== null) {
+            $this->subject->setAddQueryString($addQueryString);
+        }
         $actualConfiguration = $this->subject->_call('buildTypolinkConfiguration');
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }

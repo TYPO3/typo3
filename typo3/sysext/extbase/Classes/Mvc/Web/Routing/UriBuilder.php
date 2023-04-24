@@ -76,7 +76,7 @@ class UriBuilder
     protected $absoluteUriScheme;
 
     /**
-     * @var bool
+     * @var bool|string|int
      */
     protected $addQueryString = false;
 
@@ -293,12 +293,16 @@ class UriBuilder
     }
 
     /**
-     * If set, the current query parameters will be merged with $this->arguments. Defaults to FALSE.
+     * If set, the current query parameters will be merged with $this->arguments in backend context.
+     * In frontend context, setting this property will only include mapped query arguments from the
+     * Page Routing. To include any - possible "unsafe" - GET parameters, the property has to be set
+     * to "untrusted". Defaults to FALSE.
      *
+     * @param bool|string|int $addQueryString is set to "1", "true", "0", "false" or "untrusted"
      * @return static the current UriBuilder to allow method chaining
      * @see https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Functions/Typolink.html#addquerystring
      */
-    public function setAddQueryString(bool $addQueryString): UriBuilder
+    public function setAddQueryString(bool|string|int $addQueryString): UriBuilder
     {
         $this->addQueryString = $addQueryString;
         return $this;
@@ -307,7 +311,7 @@ class UriBuilder
     /**
      * @internal
      */
-    public function getAddQueryString(): bool
+    public function getAddQueryString(): bool|string|int
     {
         return $this->addQueryString;
     }
@@ -597,7 +601,7 @@ class UriBuilder
     {
         $arguments = [];
         $request = $this->getRequest();
-        if ($this->addQueryString === true) {
+        if ($this->addQueryString && $this->addQueryString !== 'false') {
             $arguments = $request?->getQueryParams() ?? [];
             foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
                 $argumentArrayToBeExcluded = [];
@@ -697,8 +701,8 @@ class UriBuilder
             $this->lastArguments = $arguments;
             $typolinkConfiguration['additionalParams'] = HttpUtility::buildQueryString($arguments, '&');
         }
-        if ($this->addQueryString === true) {
-            $typolinkConfiguration['addQueryString'] = 1;
+        if ($this->addQueryString && $this->addQueryString !== 'false') {
+            $typolinkConfiguration['addQueryString'] = $this->addQueryString;
             if (!empty($this->argumentsToBeExcludedFromQueryString)) {
                 $typolinkConfiguration['addQueryString.'] = [
                     'exclude' => implode(',', $this->argumentsToBeExcludedFromQueryString),

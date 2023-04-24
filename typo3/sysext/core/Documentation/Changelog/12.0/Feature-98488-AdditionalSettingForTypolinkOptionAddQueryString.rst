@@ -15,7 +15,9 @@ The Typolink option :typoscript:`typolink.addQueryString` now also accepts
 the value `untrusted` to be used to retrieve all GET parameters of the current request.
 
 This value can also used in the Fluid ViewHelpers
-:html:`<f:link.typolink>` and :html:`<f:uri.typolink>`.
+:html:`<f:link.typolink>`, :html:`<f:uri.typolink>`, :html:`<f:link.page>`,
+:html:`<f:uri.page>`, :html:`<f:link.action>`, :html:`<f:link.action>` and
+:html:`<f:form>`.
 
 Impact
 ======

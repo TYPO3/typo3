@@ -89,7 +89,7 @@ final class PageViewHelper extends AbstractViewHelper
         $this->registerArgument('section', 'string', 'the anchor to be added to the URI', false, '');
         $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.', false, false);
         $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute', false, false);
-        $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URI', false, false);
+        $this->registerArgument('addQueryString', 'string', 'If set, the current query parameters will be kept in the URL. If set to "untrusted", then ALL query parameters will be added. Be aware, that this might lead to problems when the generated link is cached.', false, false);
         $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'arguments to be removed from the URI. Only active if $addQueryString = TRUE', false, []);
     }
 
@@ -119,11 +119,11 @@ final class PageViewHelper extends AbstractViewHelper
         $section = isset($arguments['section']) ? (string)$arguments['section'] : '';
         $additionalParams = isset($arguments['additionalParams']) ? (array)$arguments['additionalParams'] : [];
         $absolute = isset($arguments['absolute']) && (bool)$arguments['absolute'];
-        $addQueryString = isset($arguments['addQueryString']) && (bool)$arguments['addQueryString'];
+        $addQueryString = $arguments['addQueryString'] ?? false;
         $argumentsToBeExcludedFromQueryString = isset($arguments['argumentsToBeExcludedFromQueryString']) ? (array)$arguments['argumentsToBeExcludedFromQueryString'] : [];
 
         $arguments = [];
-        if ($addQueryString === true) {
+        if ($addQueryString && $addQueryString !== 'false') {
             $arguments = $request->getQueryParams();
             foreach ($argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
                 $argumentArrayToBeExcluded = [];
@@ -168,7 +168,7 @@ final class PageViewHelper extends AbstractViewHelper
         $linkAccessRestrictedPages = isset($arguments['linkAccessRestrictedPages']) && (bool)$arguments['linkAccessRestrictedPages'];
         $additionalParams = isset($arguments['additionalParams']) ? (array)$arguments['additionalParams'] : [];
         $absolute = isset($arguments['absolute']) && (bool)$arguments['absolute'];
-        $addQueryString = isset($arguments['addQueryString']) && (bool)$arguments['addQueryString'];
+        $addQueryString = $arguments['addQueryString'] ?? false;
         $argumentsToBeExcludedFromQueryString = isset($arguments['argumentsToBeExcludedFromQueryString']) ? (array)$arguments['argumentsToBeExcludedFromQueryString'] : [];
 
         $typolinkConfiguration = [
@@ -195,8 +195,8 @@ final class PageViewHelper extends AbstractViewHelper
         if ($absolute) {
             $typolinkConfiguration['forceAbsoluteUrl'] = true;
         }
-        if ($addQueryString) {
-            $typolinkConfiguration['addQueryString'] = '1';
+        if ($addQueryString && $addQueryString !== 'false') {
+            $typolinkConfiguration['addQueryString'] = $addQueryString;
             if ($argumentsToBeExcludedFromQueryString !== []) {
                 $typolinkConfiguration['addQueryString.']['exclude'] = implode(',', $argumentsToBeExcludedFromQueryString);
             }
@@ -223,7 +223,7 @@ final class PageViewHelper extends AbstractViewHelper
         $language = $arguments['language'] ?? null;
         $linkAccessRestrictedPages = $arguments['linkAccessRestrictedPages'];
         $absolute = $arguments['absolute'];
-        $addQueryString = $arguments['addQueryString'];
+        $addQueryString = $arguments['addQueryString'] ?? false;
         $argumentsToBeExcludedFromQueryString = $arguments['argumentsToBeExcludedFromQueryString'];
 
         $uriBuilder = GeneralUtility::makeInstance(ExtbaseUriBuilder::class);
