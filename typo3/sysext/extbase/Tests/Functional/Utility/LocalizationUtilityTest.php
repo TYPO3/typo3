@@ -115,15 +115,6 @@ final class LocalizationUtilityTest extends FunctionalTestCase
 
             'placeholder and empty arguments in translation' =>
             ['keyWithPlaceholderAndNoArguments', 'da', '%d-%m-%Y', [], []],
-
-            'get translated key from primary language' =>
-            ['key1', 'da', 'Dansk label for key1', ['da_alt']],
-
-            'fallback to alternative language if translation is missing' =>
-            ['key2', 'da', 'Dansk alternative label for key2', ['da_alt']],
-
-            'fallback to English for label not translated in da and da_alt' =>
-            ['key3', 'da', 'English label for key3', ['da_alt']],
         ];
     }
 

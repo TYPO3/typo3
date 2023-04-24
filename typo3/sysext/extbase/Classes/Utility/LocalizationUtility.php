@@ -34,10 +34,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
  */
 class LocalizationUtility
 {
-    /**
-     * @var string
-     */
-    protected static $locallangPath = 'Resources/Private/Language/';
+    protected static string $locallangPath = 'Resources/Private/Language/';
 
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -50,11 +47,11 @@ class LocalizationUtility
      * @param string $key The key from the LOCAL_LANG array for which to return the value.
      * @param string|null $extensionName The name of the extension
      * @param array|null $arguments The arguments of the extension, being passed over to sprintf
-     * @param string|null $languageKey The language key or null for using the current language from the system
-     * @param string[]|null $alternativeLanguageKeys The alternative language keys if no translation was found.
+     * @param Locale|string|null $languageKey The language key or null for using the current language from the system
+     * @param string[]|null $alternativeLanguageKeys The alternative language keys if no translation was found. @deprecated will be removed in TYPO3 v12.0
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
      */
-    public static function translate(string $key, ?string $extensionName = null, array $arguments = null, string $languageKey = null, array $alternativeLanguageKeys = null): ?string
+    public static function translate(string $key, ?string $extensionName = null, array $arguments = null, Locale|string $languageKey = null, array $alternativeLanguageKeys = null): ?string
     {
         if ($key === '') {
             // Early return guard: returns null if the key was empty, because the key may be a dynamic value
@@ -77,6 +74,15 @@ class LocalizationUtility
         }
         if ($languageKey === null) {
             $languageKey = static::getLanguageKey();
+        }
+        if ($alternativeLanguageKeys !== null && $alternativeLanguageKeys !== []) {
+            trigger_error('Calling LocalizationUtility::translate() with the argument $alternativeLanguageKeys will be removed in TYPO3 v13.0. Use Locales instead.', E_USER_DEPRECATED);
+        }
+        if ($languageKey instanceof Locale) {
+            if ($alternativeLanguageKeys !== null && $alternativeLanguageKeys !== []) {
+                $alternativeLanguageKeys = $languageKey->getDependencies();
+            }
+            $languageKey = (string)$languageKey;
         }
         $languageService = static::initializeLocalization($languageFilePath, $languageKey, $alternativeLanguageKeys, $extensionName);
         $resolvedLabel = $languageService->sL('LLL:' . $languageFilePath . ':' . $key);

@@ -622,11 +622,11 @@ class DatabaseRecordList
             $icon = $this->table // @todo separate table header from contract/expand link
                 ? $this->iconFactory
                     ->getIcon('actions-view-table-collapse', Icon::SIZE_SMALL)
-                    ->setTitle($lang->getLL('contractView'))
+                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:contractView'))
                     ->render()
                 : $this->iconFactory
                     ->getIcon('actions-view-table-expand', Icon::SIZE_SMALL)
-                    ->setTitle($lang->getLL('expandView'))
+                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:expandView'))
                     ->render();
             $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>) ' . $icon);
         }

@@ -128,9 +128,11 @@ class LanguageService
      *
      * @param string $index Label key
      * @return string
+     * @deprecated will be removed in TYPO3 v13.0. Use sL() instead.
      */
     public function getLL($index)
     {
+        trigger_error('Calling LanguageService->getLL() will be removed in TYPO3 v13.0. Use LanguageService->sL() instead.', E_USER_DEPRECATED);
         return $this->getLLL($index, $this->labels);
     }
 
@@ -216,6 +218,7 @@ class LanguageService
      *
      * @param string $fileRef $fileRef is a file-reference
      * @return array returns the loaded label file
+     * @internal do not rely on this method as it is only used for internal purposes in TYPO3 v13.0.
      */
     public function includeLLFile(string $fileRef): array
     {

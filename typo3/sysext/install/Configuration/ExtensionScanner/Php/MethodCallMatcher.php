@@ -5715,4 +5715,11 @@ return [
             'Deprecation-100622-ExtbaseFeatureToggles.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Localization\LanguageService->getLL' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100721-LabelRelatedMethodsAndArguments.rst',
+        ],
+    ],
 ];

@@ -95,4 +95,10 @@ return [
             'Breaking-98069-DebugConsoleRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate' => [
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-100721-LabelRelatedMethodsAndArguments.rst',
+        ],
+    ],
 ];
