@@ -30,6 +30,9 @@
 			<trans-unit id="indexedsearch.config.fullTextDataLength" resname="indexedsearch.config.fullTextDataLength">
 				<source>Full Text Data Length: If set, the full text data stored will be limited to this byte length. It means you can save some database space but to the degree you cut the length down you also limit possibilities to search for sentences and the search result resume will be limited.</source>
 			</trans-unit>
+			<trans-unit id="indexedsearch.config.disableFrontendIndexing" resname="indexedsearch.config.disableFrontendIndexing">
+				<source>Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.</source>
+			</trans-unit>
 			<trans-unit id="indexedsearch.config.enableMetaphoneSearch" resname="indexedsearch.config.enableMetaphoneSearch">
 				<source>Enable metaphone search (sounds like): 0=disabled, 1=use internal metaphone parser, 2=use advanced doubleMetaphone parser.</source>
 			</trans-unit>
@@ -41,9 +44,6 @@
 			</trans-unit>
 			<trans-unit id="indexedsearch.config.maxExternalFiles" resname="indexedsearch.config.maxExternalFiles">
 				<source>Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.</source>
-			</trans-unit>
-			<trans-unit id="indexedsearch.config.useCrawlerForExternalFiles" resname="indexedsearch.config.useCrawlerForExternalFiles">
-				<source>Use "crawler" extension to index external files: When external files are found on a page they are added to the "crawler" extensions queue and indexed via the cronscript running the crawler. This eliminates problems with for example many PDF files on a page. Requires a proper configuration of the "crawler" extension.</source>
 			</trans-unit>
 			<trans-unit id="indexedsearch.config.flagBitMask" resname="indexedsearch.config.flagBitMask">
 				<source>Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of &lt;title&gt; (128), &lt;keywords&gt; (64) and &lt;description&gt; (32) content from HTML documents. By setting this to 0, none of these fields will have any importance over the other. The default value 192 means that title-tag content and meta-keywords will be flagged (and rated higher in search results)</source>
