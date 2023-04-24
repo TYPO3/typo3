@@ -17,14 +17,127 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for class \TYPO3\CMS\Core\Utility\StringUtility
- */
 final class StringUtilityTest extends UnitTestCase
 {
+    /**
+     * @return \Generator<string, array{0: mixed}>
+     */
+    public static function stringCastableValuesDataProvider(): \Generator
+    {
+        yield 'empty string' => [''];
+        yield 'string' => ['value'];
+        yield 'int' => [1];
+        yield 'float' => [1.2345];
+        yield 'bool' => [true];
+    }
+
+    /**
+     * @test
+     * @dataProvider stringCastableValuesDataProvider
+     */
+    public function castWithStringCastableReturnsValueCastToString(mixed $value): void
+    {
+        $expected = (string)$value;
+
+        self::assertSame($expected, StringUtility::cast($value, 'default'));
+    }
+
+    /**
+     * @return \Generator<string, array{0: mixed}>
+     */
+    public static function nonStringCastableValuesDataProvider(): \Generator
+    {
+        yield 'array' => [['1']];
+        yield 'null' => [null];
+        yield 'object' => [new \stdClass()];
+        yield 'string backed enum' => [ApplicationType::BACKEND];
+        yield 'closure' => [static fn (): string => 'fn'];
+        // PHP interprets it as `lim(x→0) log(x) = -∞`
+        yield 'infinite' => [log(0)];
+        // acos only supports values in range [-1; +1]
+        yield 'NaN' => [acos(2)];
+    }
+
+    /**
+     * @test
+     * @dataProvider nonStringCastableValuesDataProvider
+     */
+    public function castWithWithNonStringCastableReturnsDefault(mixed $value): void
+    {
+        $default = 'default';
+
+        self::assertSame($default, StringUtility::cast($value, $default));
+    }
+
+    /**
+     * @test
+     * @dataProvider nonStringCastableValuesDataProvider
+     */
+    public function castWithWithNonStringCastableAndNoDefaultProvidedReturnsNull(mixed $value): void
+    {
+        self::assertNull(StringUtility::cast($value));
+    }
+
+    /**
+     * @return \Generator<string, array{0: mixed}>
+     */
+    public static function nonStringValueToFilterDataProvider(): \Generator
+    {
+        yield 'int' => [1];
+        yield 'float' => [1.2345];
+        yield 'bool' => [true];
+        yield 'array' => [['1']];
+        yield 'null' => [null];
+        yield 'object' => [new \stdClass()];
+        yield 'string backed enum' => [ApplicationType::BACKEND];
+        yield 'closure' => [static fn (): string => 'fn'];
+        // PHP interprets it as `lim(x→0) log(x) = -∞`
+        yield 'infinite' => [log(0)];
+        // acos only supports values in range [-1; +1]
+        yield 'NaN' => [acos(2)];
+    }
+
+    /**
+     * @test
+     * @dataProvider nonStringValueToFilterDataProvider
+     */
+    public function filterForNonStringValueAndDefaultProvidedReturnsDefault(mixed $value): void
+    {
+        $default = 'default';
+
+        self::assertSame($default, StringUtility::filter($value, $default));
+    }
+
+    /**
+     * @test
+     * @dataProvider nonStringValueToFilterDataProvider
+     */
+    public function filterForNonStringValueAndNoDefaultProvidedReturnsNull(mixed $value): void
+    {
+        self::assertNull(StringUtility::filter($value));
+    }
+
+    /**
+     * @return \Generator<string, array{0: string}>
+     */
+    public static function stringValueToFilterDataProvider(): \Generator
+    {
+        yield 'empty string' => [''];
+        yield 'non-empty string' => ['value'];
+    }
+    /**
+     * @test
+     * @dataProvider stringValueToFilterDataProvider
+     */
+    public function filterForStringValuesReturnsProvidedValue(string $value): void
+    {
+        self::assertSame($value, StringUtility::filter($value, 'some default'));
+    }
+
     /**
      * @test
      */
