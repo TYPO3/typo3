@@ -51,7 +51,7 @@ In general the configuration for a particular route or module looks like this:
     // ...
     'sudoMode' => [
         'group' => 'individual-group-name',
-        'lifetime' => AccessLifetime::XS,
+        'lifetime' => AccessLifetime::veryShort,
     ],
 
 * `group` (optional): if given, grants access to other objects of the same `group`
@@ -61,8 +61,8 @@ In general the configuration for a particular route or module looks like this:
   grants access to the other automatically.
 * `lifetime`: enum value of :php:`\TYPO3\CMS\Backend\Security\SudoMode\Access\AccessLifetime`,
   defining the lifetime of a sudo mode verification, afterwards users have to go through
-  the process again - cases are `XS` (5 minutes), `S` (10 minutes), `M` (15 minutes),
-  `L` (30 minutes), `XL` (60 minutes)
+  the process again - cases are `veryShort` (5 minutes), `short` (10 minutes),
+  `medium` (15 minutes), `long` (30 minutes), `veryLong` (60 minutes)
 
 
 For backend routes declared via :file:`Configuration/Backend/Routes.php`, the
@@ -77,7 +77,7 @@ relevant configuration would look like this:
             'target' => MyHandler::class . '::process',
             'sudoMode' => [
                 'group' => 'mySudoModeGroup',
-                'lifetime' => AccessLifetime::S,
+                'lifetime' => AccessLifetime::short,
             ],
         ],
     ];
@@ -95,7 +95,7 @@ relevant configuration would look like this:
             'routeOptions' => [
                 'sudoMode' => [
                     'group' => 'systemMaintainer',
-                    'lifetime' => AccessLifetime::M,
+                    'lifetime' => AccessLifetime::medium,
                 ],
             ],
         ],
