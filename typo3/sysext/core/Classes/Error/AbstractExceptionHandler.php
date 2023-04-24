@@ -46,6 +46,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         1396795884, // Current host header value does not match the configured trusted hosts pattern
         1616175867, // Backend login request is rate limited
         1616175847, // Frontend login request is rate limited
+        1436717275, // Request with unsupported HTTP method
     ];
 
     public const IGNORED_HMAC_EXCEPTION_CODES = [
