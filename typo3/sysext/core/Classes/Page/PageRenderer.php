@@ -1985,13 +1985,13 @@ class PageRenderer implements SingletonInterface
             $jsInline = '';
         }
         // Use AssetRenderer to inject all JavaScripts and CSS files
-        $jsInline .= $this->assetRenderer->renderInlineJavaScript(true);
-        $jsFooterInline .= $this->assetRenderer->renderInlineJavaScript();
+        $jsInline .= $this->assetRenderer->renderInlineJavaScript(true, $this->nonce);
+        $jsFooterInline .= $this->assetRenderer->renderInlineJavaScript(false, $this->nonce);
         $jsFiles .= $this->assetRenderer->renderJavaScript(true);
         $jsFooterFiles .= $this->assetRenderer->renderJavaScript();
-        $cssInline .= $this->assetRenderer->renderInlineStyleSheets(true);
+        $cssInline .= $this->assetRenderer->renderInlineStyleSheets(true, $this->nonce);
         // append inline CSS to footer (as there is no cssFooterInline)
-        $jsFooterFiles .= $this->assetRenderer->renderInlineStyleSheets();
+        $jsFooterFiles .= $this->assetRenderer->renderInlineStyleSheets(false, $this->nonce);
         $cssLibs .= $this->assetRenderer->renderStyleSheets(true, $this->endingSlash);
         $cssFiles .= $this->assetRenderer->renderStyleSheets(false, $this->endingSlash);
 

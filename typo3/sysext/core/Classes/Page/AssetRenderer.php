@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Page;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Page\Event\BeforeJavaScriptsRenderingEvent;
 use TYPO3\CMS\Core\Page\Event\BeforeStylesheetsRenderingEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -44,7 +45,7 @@ class AssetRenderer
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
-    public function renderInlineJavaScript($priority = false): string
+    public function renderInlineJavaScript($priority = false, ?ConsumableString $nonce = null): string
     {
         $this->eventDispatcher->dispatch(
             new BeforeJavaScriptsRenderingEvent($this->assetCollector, true, $priority)
@@ -52,7 +53,7 @@ class AssetRenderer
 
         $template = '<script%attributes%>%source%</script>';
         $assets = $this->assetCollector->getInlineJavaScripts($priority);
-        return $this->render($assets, $template);
+        return $this->render($assets, $template, $nonce);
     }
 
     public function renderJavaScript($priority = false): string
@@ -69,7 +70,7 @@ class AssetRenderer
         return $this->render($assets, $template);
     }
 
-    public function renderInlineStyleSheets($priority = false): string
+    public function renderInlineStyleSheets($priority = false, ?ConsumableString $nonce = null): string
     {
         $this->eventDispatcher->dispatch(
             new BeforeStylesheetsRenderingEvent($this->assetCollector, true, $priority)
@@ -77,7 +78,7 @@ class AssetRenderer
 
         $template = '<style%attributes%>%source%</style>';
         $assets = $this->assetCollector->getInlineStyleSheets($priority);
-        return $this->render($assets, $template);
+        return $this->render($assets, $template, $nonce);
     }
 
     public function renderStyleSheets(bool $priority = false, string $endingSlash = ''): string
@@ -95,11 +96,14 @@ class AssetRenderer
         return $this->render($assets, $template);
     }
 
-    protected function render(array $assets, string $template): string
+    protected function render(array $assets, string $template, ?ConsumableString $nonce = null): string
     {
         $results = [];
         foreach ($assets as $assetData) {
             $attributes = $assetData['attributes'];
+            if ($nonce !== null && !empty($assetData['options']['useNonce'])) {
+                $attributes['nonce'] = $nonce->consume();
+            }
             $attributesString = count($attributes) ? ' ' . GeneralUtility::implodeAttributes($attributes, true) : '';
             $results[] = str_replace(
                 ['%attributes%', '%source%'],

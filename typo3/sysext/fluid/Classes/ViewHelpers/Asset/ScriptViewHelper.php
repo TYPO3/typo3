@@ -94,6 +94,7 @@ final class ScriptViewHelper extends AbstractTagBasedViewHelper
         $this->registerTagAttribute('referrerpolicy', 'string', 'Define which referrer is sent when fetching the resource.', false);
         $this->registerTagAttribute('src', 'string', 'Define the URI of the external resource.', false);
         $this->registerTagAttribute('type', 'string', 'Define the MIME type (usually \'text/javascript\').', false);
+        $this->registerArgument('useNonce', 'bool', 'Whether to use the global nonce value', false, false);
         $this->registerArgument(
             'identifier',
             'string',
@@ -125,6 +126,7 @@ final class ScriptViewHelper extends AbstractTagBasedViewHelper
         unset($attributes['src']);
         $options = [
             'priority' => $this->arguments['priority'],
+            'useNonce' => $this->arguments['useNonce'],
         ];
         if ($src !== null) {
             $this->assetCollector->addJavaScript($identifier, $src, $attributes, $options);
