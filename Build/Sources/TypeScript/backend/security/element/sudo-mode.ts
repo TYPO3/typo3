@@ -64,11 +64,9 @@ export class SudoMode extends LitElement {
                 ` : nothing}
                 <form method="post" class="form" id="verify-sudo-mode" spellcheck="false" @submit=${(evt: SubmitEvent) => this.verifyPassword(evt)}>
                   <div class="form-group">
-                    <div class="form-control-holder">
-                      <label for="password">${lll('password')}</label>
-                      <input required="required" class="form-control" id="password" type="password" name="password"
-                             autocomplete=${this.useInstallToolPassword ? 'section-install current-password' : 'current-password'}>
-                    </div>
+                    <label class="form-label" for="password">${lll('password')}</label>
+                    <input required="required" class="form-control" id="password" type="password" name="password"
+                            autocomplete=${this.useInstallToolPassword ? 'section-install current-password' : 'current-password'}>
                   </div>
                 </form>
                 <div class="text-end">

@@ -30,11 +30,9 @@ var __decorate=function(e,o,s,t){var r,l=arguments.length,a=l<3?o:null===t?t=Obj
                 `:nothing}
                 <form method="post" class="form" id="verify-sudo-mode" spellcheck="false" @submit=${e=>this.verifyPassword(e)}>
                   <div class="form-group">
-                    <div class="form-control-holder">
-                      <label for="password">${lll("password")}</label>
-                      <input required="required" class="form-control" id="password" type="password" name="password"
-                             autocomplete=${this.useInstallToolPassword?"section-install current-password":"current-password"}>
-                    </div>
+                    <label class="form-label" for="password">${lll("password")}</label>
+                    <input required="required" class="form-control" id="password" type="password" name="password"
+                            autocomplete=${this.useInstallToolPassword?"section-install current-password":"current-password"}>
                   </div>
                 </form>
                 <div class="text-end">

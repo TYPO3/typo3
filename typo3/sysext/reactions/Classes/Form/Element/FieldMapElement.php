@@ -62,7 +62,7 @@ class FieldMapElement extends AbstractFormElement
                 $fieldValue = is_array($itemValue) && isset($itemValue[$fieldName]) ? htmlspecialchars((string)$itemValue[$fieldName]) : '';
                 $fieldsHtml .= '
                     <div class="form-group">
-                        <label for="' . $fieldName . '">
+                        <label class="form-label" for="' . $fieldName . '">
                             ' . $languageService->sL($fieldConfig['label']) /** @todo This is not how a field label should be resolved **/ . '
                         </label>
                         <input type="text" class="form-control" id="' . $fieldName . '" name="' . htmlspecialchars($itemName) . '[' . $fieldName . ']" value="' . $fieldValue . '">

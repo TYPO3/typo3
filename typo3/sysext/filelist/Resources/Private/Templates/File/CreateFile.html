@@ -18,11 +18,9 @@
                     <div class="form-group">
                         <div class="form-section">
                             <div class="form-group">
-                                <label for="newMedia"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.label" /></label>
-                                <div class="form-control-wrap">
-                                    <input required class="form-control" type="text" id="newMedia" name="data[newMedia][0][url]"
-                                        placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')}" />
-                                </div>
+                                <label class="form-label" for="newMedia"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.label" /></label>
+                                <input required class="form-control" type="text" id="newMedia" name="data[newMedia][0][url]"
+                                    placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')}" />
                                 <div class="form-text">
                                     <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders" /><br>
                                     <f:for each="{fileExtList}" as="fileExt">
@@ -48,10 +46,8 @@
                     <div class="form-group">
                         <div class="form-section">
                             <div class="form-group">
-                                <label for="newfile"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.label_newfile" /></label>
-                                <div class="form-control-wrap">
-                                    <input required class="form-control" type="text" id="newfile" name="data[newfile][0][data]" />
-                                </div>
+                                <label class="form-label" for="newfile"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.label_newfile" /></label>
+                                <input required class="form-control" type="text" id="newfile" name="data[newfile][0][data]" />
                                 <div class="form-text">
                                     <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedEditableTextFileExtensions" /><br>
                                     <f:for each="{txtFileExtList}" as="fileExt">
