@@ -11,6 +11,12 @@
     }
 }
 
+.scheduler-group-panel {
+    + .scheduler-group-panel {
+        margin-top: calc(var(--typo3-spacing) * 1.5);
+    }
+}
+
 .task-form .form-wizards-wrap {
     margin-bottom: .5rem !important;
 }
