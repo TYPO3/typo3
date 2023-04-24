@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Install\WebserverType;
 
 /**
  * Factory returns default folder structure object hierarchy
@@ -30,9 +31,9 @@ class DefaultFactory
      *
      * @return StructureFacadeInterface
      */
-    public function getStructure()
+    public function getStructure(WebserverType $webserverType)
     {
-        $rootNode = new RootNode($this->getDefaultStructureDefinition(), null);
+        $rootNode = new RootNode($this->getDefaultStructureDefinition($webserverType), null);
         return new StructureFacade($rootNode);
     }
 
@@ -40,7 +41,7 @@ class DefaultFactory
      * Default definition of folder and file structure with dynamic
      * permission settings
      */
-    protected function getDefaultStructureDefinition(): array
+    protected function getDefaultStructureDefinition(WebserverType $webserverType): array
     {
         $filePermission = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'];
         $directoryPermission = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'];
@@ -129,14 +130,14 @@ class DefaultFactory
             ];
 
             // Have a default .htaccess if running apache web server or a default web.config if running IIS
-            if ($this->isApacheServer()) {
+            if ($webserverType->isApacheServer()) {
                 $structure['children'][] = [
                     'name' => '.htaccess',
                     'type' => FileNode::class,
                     'targetPermission' => $filePermission,
                     'targetContentFile' => self::TEMPLATE_PATH . '/root-htaccess',
                 ];
-            } elseif ($this->isMicrosoftIisServer()) {
+            } elseif ($webserverType->isMicrosoftInternetInformationServer()) {
                 $structure['children'][] = [
                     'name' => 'web.config',
                     'type' => FileNode::class,
@@ -172,14 +173,14 @@ class DefaultFactory
             ];
 
             // Have a default .htaccess if running apache web server or a default web.config if running IIS
-            if ($this->isApacheServer()) {
+            if ($webserverType->isApacheServer()) {
                 $publicPathSubStructure[] = [
                     'name' => '.htaccess',
                     'type' => FileNode::class,
                     'targetPermission' => $filePermission,
                     'targetContentFile' => self::TEMPLATE_PATH . '/root-htaccess',
                 ];
-            } elseif ($this->isMicrosoftIisServer()) {
+            } elseif ($webserverType->isMicrosoftInternetInformationServer()) {
                 $publicPathSubStructure[] = [
                     'name' => 'web.config',
                     'type' => FileNode::class,
@@ -397,15 +398,5 @@ class DefaultFactory
                 ],
             ],
         ];
-    }
-
-    protected function isApacheServer(): bool
-    {
-        return isset($_SERVER['SERVER_SOFTWARE']) && str_starts_with($_SERVER['SERVER_SOFTWARE'], 'Apache');
-    }
-
-    protected function isMicrosoftIisServer(): bool
-    {
-        return isset($_SERVER['SERVER_SOFTWARE']) && str_starts_with($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS');
     }
 }

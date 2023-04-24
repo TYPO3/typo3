@@ -73,6 +73,7 @@ use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\LoadTcaService;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
 use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
+use TYPO3\CMS\Install\WebserverType;
 
 /**
  * Upgrade controller
@@ -230,7 +231,10 @@ class UpgradeController extends AbstractController
     {
         $this->coreUpdateInitialize();
         return new JsonResponse([
-            'success' => $this->coreUpdateService->checkPreConditions($this->coreUpdateGetVersionToHandle($request)),
+            'success' => $this->coreUpdateService->checkPreConditions(
+                $this->coreUpdateGetVersionToHandle($request),
+                WebserverType::fromRequest($request),
+            ),
             'status' => $this->coreUpdateService->getMessages(),
         ]);
     }

@@ -44,6 +44,7 @@ use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
 use TYPO3\CMS\Install\SystemEnvironment\ServerResponse\ServerResponseCheck;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
+use TYPO3\CMS\Install\WebserverType;
 
 /**
  * Environment controller
@@ -153,7 +154,7 @@ class EnvironmentController extends AbstractController
     {
         $view = $this->initializeView($request);
         $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
-        $structureFacade = $folderStructureFactory->getStructure();
+        $structureFacade = $folderStructureFactory->getStructure(WebserverType::fromRequest($request));
 
         $structureMessages = $structureFacade->getStatus();
         $errorQueue = new FlashMessageQueue('install');
@@ -194,10 +195,10 @@ class EnvironmentController extends AbstractController
     /**
      * Try to fix folder structure errors
      */
-    public function folderStructureFixAction(): ResponseInterface
+    public function folderStructureFixAction(ServerRequestInterface $request): ResponseInterface
     {
         $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
-        $structureFacade = $folderStructureFactory->getStructure();
+        $structureFacade = $folderStructureFactory->getStructure(WebserverType::fromRequest($request));
         $fixedStatusObjects = $structureFacade->fix();
         return new JsonResponse([
             'success' => true,

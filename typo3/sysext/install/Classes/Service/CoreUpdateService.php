@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\CoreVersion\CoreRelease;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
+use TYPO3\CMS\Install\WebserverType;
 
 /**
  * Core update service.
@@ -126,14 +127,15 @@ class CoreUpdateService
      * Check if an update is possible at all
      *
      * @param CoreRelease $coreRelease The target core release
+     * @param WebserverType $webserverType The webserver type.
      * @return bool TRUE on success
      */
-    public function checkPreConditions(CoreRelease $coreRelease)
+    public function checkPreConditions(CoreRelease $coreRelease, WebserverType $webserverType)
     {
         $success = true;
 
         // Folder structure test: Update can be done only if folder structure returns no errors
-        $folderStructureFacade = GeneralUtility::makeInstance(DefaultFactory::class)->getStructure();
+        $folderStructureFacade = GeneralUtility::makeInstance(DefaultFactory::class)->getStructure($webserverType);
         $folderStructureMessageQueue = $folderStructureFacade->getStatus();
         $folderStructureErrors = $folderStructureMessageQueue->getAllMessages(ContextualFeedbackSeverity::ERROR);
         $folderStructureWarnings = $folderStructureMessageQueue->getAllMessages(ContextualFeedbackSeverity::WARNING);

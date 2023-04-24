@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\FolderStructure\StructureFacadeInterface;
+use TYPO3\CMS\Install\WebserverType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DefaultFactoryTest extends UnitTestCase
@@ -28,7 +29,8 @@ final class DefaultFactoryTest extends UnitTestCase
      */
     public function getStructureReturnsInstanceOfStructureFacadeInterface(): void
     {
+        $webserverType = WebserverType::fromType('i-dont-care');
         $object = new DefaultFactory();
-        self::assertInstanceOf(StructureFacadeInterface::class, $object->getStructure());
+        self::assertInstanceOf(StructureFacadeInterface::class, $object->getStructure($webserverType));
     }
 }
