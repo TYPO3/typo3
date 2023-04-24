@@ -43,6 +43,7 @@ use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Authentication of users in TYPO3
@@ -1142,9 +1143,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function getLoginFormData()
     {
         $loginData = [
-            'status' => GeneralUtility::_GP($this->formfield_status),
-            'uname'  => GeneralUtility::_POST($this->formfield_uname),
-            'uident' => GeneralUtility::_POST($this->formfield_uident),
+            'status' => StringUtility::filter(GeneralUtility::_GP($this->formfield_status)),
+            'uname'  => StringUtility::filter(GeneralUtility::_POST($this->formfield_uname), ''),
+            'uident' => StringUtility::filter(GeneralUtility::_POST($this->formfield_uident), ''),
         ];
         // Only process the login data if a login is requested
         if ($loginData['status'] === LoginType::LOGIN) {
