@@ -21,6 +21,38 @@ namespace TYPO3\CMS\Core\Utility;
 class StringUtility
 {
     /**
+     * Casts applicable types (string, bool, finite numeric) to string.
+     *
+     * Any other type will be replaced by the `$default` value.
+     *
+     * @param mixed $value
+     */
+    public static function cast($value, ?string $default = null): ?string
+    {
+        if (is_string($value)) {
+            return $value;
+        }
+
+        if (is_bool($value) || (is_numeric($value) && is_finite($value))) {
+            return (string)$value;
+        }
+
+        return $default;
+    }
+
+    /**
+     * Keeps only string types (filters out non-strings).
+     *
+     * Any other non-string type will be replaced by the `$default` value.
+     *
+     * @param mixed $value
+     */
+    public static function filter($value, ?string $default = null): ?string
+    {
+        return is_string($value) ? $value : $default;
+    }
+
+    /**
      * Returns TRUE if $haystack begins with $needle.
      * The input string is not trimmed before and search is done case sensitive.
      *
