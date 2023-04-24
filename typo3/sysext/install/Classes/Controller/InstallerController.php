@@ -55,6 +55,7 @@ use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Install\Service\SilentTemplateFileUpgradeService;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
+use TYPO3\CMS\Install\WebserverType;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 
 /**
@@ -151,7 +152,7 @@ final class InstallerController
     /**
      * Render "environment and folders"
      */
-    public function showEnvironmentAndFoldersAction(): ResponseInterface
+    public function showEnvironmentAndFoldersAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView();
         $systemCheckMessageQueue = new FlashMessageQueue('install');
@@ -164,7 +165,7 @@ final class InstallerController
             $systemCheckMessageQueue->enqueue($message);
         }
         $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
-        $structureFacade = $folderStructureFactory->getStructure();
+        $structureFacade = $folderStructureFactory->getStructure(WebserverType::fromRequest($request));
         $structureMessageQueue = $structureFacade->getStatus();
         return new JsonResponse([
             'success' => true,
@@ -178,10 +179,10 @@ final class InstallerController
     /**
      * Create main folder layout, LocalConfiguration, PackageStates
      */
-    public function executeEnvironmentAndFoldersAction(): ResponseInterface
+    public function executeEnvironmentAndFoldersAction(ServerRequestInterface $request): ResponseInterface
     {
         $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
-        $structureFacade = $folderStructureFactory->getStructure();
+        $structureFacade = $folderStructureFactory->getStructure(WebserverType::fromRequest($request));
         $structureFixMessageQueue = $structureFacade->fix();
         $errorsFromStructure = $structureFixMessageQueue->getAllMessages(ContextualFeedbackSeverity::ERROR);
 

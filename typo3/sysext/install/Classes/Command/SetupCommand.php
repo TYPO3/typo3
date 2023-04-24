@@ -35,6 +35,7 @@ use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SetupDatabaseService;
 use TYPO3\CMS\Install\Service\SetupService;
+use TYPO3\CMS\Install\WebserverType;
 
 /**
  * CLI command for setting up TYPO3 via CLI
@@ -58,6 +59,7 @@ class SetupCommand extends Command
         private readonly LateBootService $lateBootService
     ) {
         parent::__construct($name);
+
     }
 
     protected function configure()
@@ -140,6 +142,13 @@ class SetupCommand extends Command
                 false
             )
             ->addOption(
+                'server-type',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Define the web server the TYPO3 installation will be running on',
+                'other'
+            )
+            ->addOption(
                 'force',
                 null,
                 InputOption::VALUE_NONE,
@@ -171,6 +180,7 @@ TYPO3_SETUP_ADMIN_EMAIL=admin@example.com \
 TYPO3_SETUP_ADMIN_USERNAME=admin \
 TYPO3_SETUP_CREATE_SITE="https://your-typo3-site.com/" \
 TYPO3_PROJECT_NAME="Automated Setup" \
+TYPO3_SERVER_TYPE="apache" \
 ./bin/typo3 setup --force
 ---------------------------------
 
@@ -197,8 +207,9 @@ EOT
         $questionHelper = $this->getHelper('question');
 
         // Ensure all required files and folders exist
+        $serverType = $this->getServerType($questionHelper, $input, $output);
         $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
-        $folderStructureFactory->getStructure()->fix();
+        $folderStructureFactory->getStructure($serverType)->fix();
 
         try {
             $force = $input->getOption('force');
@@ -477,6 +488,28 @@ EOT
         }
 
         return $databaseConnectionOptions;
+    }
+
+    protected function getServerType(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): WebserverType
+    {
+        $serverTypeValidator = function (string $serverType): WebserverType {
+            if (!array_key_exists($serverType, WebserverType::getDescriptions())) {
+                throw new \RuntimeException(
+                    'Webserver must be any of ' . implode(', ', array_keys(WebserverType::getDescriptions())),
+                    1682329380,
+                );
+            }
+
+            return WebserverType::from($serverType);
+        };
+        $serverTypeFromCli = $this->getFallbackValueEnvOrOption($input, 'server-type', 'TYPO3_SERVER_TYPE');
+        if ($serverTypeFromCli === false && $input->isInteractive()) {
+            $questionServerType = new ChoiceQuestion('Which web server is used?', WebserverType::getDescriptions());
+            $questionServerType->setValidator($serverTypeValidator);
+            return $questionHelper->ask($input, $output, $questionServerType);
+        }
+
+        return $serverTypeValidator($serverTypeFromCli);
     }
 
     protected function getAdminUserName(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): string
