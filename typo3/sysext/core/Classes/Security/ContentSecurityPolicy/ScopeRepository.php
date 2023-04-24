@@ -15,9 +15,8 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting;
+namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
-use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
@@ -37,10 +36,18 @@ class ScopeRepository
     {
         return array_merge(
             [Scope::backend(), Scope::frontend()],
-            array_map(
-                static fn (SiteInterface $site) => Scope::frontendSiteIdentifier($site->getIdentifier()),
-                array_values($this->siteFinder->getAllSites())
-            )
+            array_values($this->findAllFrontendSites())
+        );
+    }
+
+    /**
+     * @return list<Scope>
+     */
+    public function findAllFrontendSites(): array
+    {
+        return array_map(
+            static fn (SiteInterface $site) => Scope::frontendSiteIdentifier($site->getIdentifier()),
+            array_values($this->siteFinder->getAllSites())
         );
     }
 }

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
 enum MutationOriginType: string
 {
+    case site = 'site';
     case package = 'package';
     case resolution = 'resolution';
 }

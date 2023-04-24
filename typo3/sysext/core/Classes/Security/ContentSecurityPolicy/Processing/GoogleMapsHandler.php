@@ -108,7 +108,6 @@ class GoogleMapsHandler
                 new UriValue('*.google.com'),
                 new UriValue('https://*.googleapis.com'),
                 new UriValue('https://*.gstatic.com'),
-                new UriValue('*.google.com'),
                 SourceScheme::blob, // thx Google!
                 SourceScheme::data, // thx Google!
             ),

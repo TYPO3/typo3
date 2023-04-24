@@ -33,6 +33,11 @@ final class Scope implements \Stringable, \JsonSerializable
      */
     private static array $singletons = [];
 
+    /**
+     * @deprecated actually just `@internal` - but it might be removed later
+     */
+    public readonly ?Site $site;
+
     public static function backend(): self
     {
         return self::asSingleton(new self(ApplicationType::BACKEND));
@@ -43,6 +48,9 @@ final class Scope implements \Stringable, \JsonSerializable
         return self::asSingleton(new self(ApplicationType::FRONTEND));
     }
 
+    /**
+     * @internal might be removed later
+     */
     public static function frontendSite(?SiteInterface $site): self
     {
         // PHPStan fails, see https://github.com/phpstan/phpstan/issues/8464
@@ -101,8 +109,9 @@ final class Scope implements \Stringable, \JsonSerializable
     private function __construct(
         public readonly ApplicationType $type,
         public readonly ?string $siteIdentifier = null,
-        public readonly ?Site $site = null,
+        ?Site $site = null,
     ) {
+        $this->site = $site;
     }
 
     public function __toString(): string

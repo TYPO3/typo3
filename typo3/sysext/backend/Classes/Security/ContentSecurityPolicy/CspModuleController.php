@@ -25,7 +25,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ScopeRepository;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ScopeRepository;
 
 /**
  * Content-Security-Policy backend module view, loading the CSP lit-element and providing the current context.
