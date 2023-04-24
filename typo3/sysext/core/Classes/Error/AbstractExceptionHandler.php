@@ -42,7 +42,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
 
     protected bool $logExceptionStackTrace = false;
 
-    public const IGNORED_EXCEPTION_CODES = [
+    protected const IGNORED_EXCEPTION_CODES = [
         1396795884, // Current host header value does not match the configured trusted hosts pattern
         1616175867, // Backend login request is rate limited
         1616175847, // Frontend login request is rate limited
