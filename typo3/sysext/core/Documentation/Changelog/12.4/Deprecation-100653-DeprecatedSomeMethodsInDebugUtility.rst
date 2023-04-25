@@ -11,7 +11,7 @@ See :issue:`100653`
 Description
 ===========
 
-The following methods in :php:`TYPO3\CMS\Core\Utility\DebugUtility` have been
+The following methods in :php:`\TYPO3\CMS\Core\Utility\DebugUtility` have been
 marked as deprecated:
 
 * :php:`debugInPopUpWindow()`
@@ -20,7 +20,7 @@ marked as deprecated:
 
 While :php:`debugRows()` and :php:`printArray()` duplicate already existing
 methods, :php:`debugInPopUpWindow()` is discouraged to use as either external
-debuggers, e.g. xdebug or :php:`TYPO3\CMS\Extbase\Utility\DebuggerUtility` may
+debuggers, e.g. Xdebug or :php:`\TYPO3\CMS\Extbase\Utility\DebuggerUtility` may
 be used instead.
 
 
@@ -48,6 +48,6 @@ the former method directly outputs the contents, which is not the case with
 
 The method :php:`debugInPopUpWindow()` is deprecated without a direct
 replacement, consider using an external debugger or
-:php:`TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump()` instead.
+:php:`\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump()` instead.
 
 .. index:: PHP-API, FullyScanned, ext:core

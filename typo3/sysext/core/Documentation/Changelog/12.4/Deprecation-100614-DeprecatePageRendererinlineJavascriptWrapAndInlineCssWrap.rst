@@ -19,7 +19,7 @@ shall not be used any longer.
 Impact
 ======
 
-`PageRenderer` specifics concerning rendering XHTML or non-HTML5 content are
+:php:`PageRenderer` specifics concerning rendering XHTML or non-HTML5 content are
 not working any longer in affected installations having custom code extending
 :php:`\TYPO3\CMS\Core\Page\PageRenderer`.
 
@@ -37,7 +37,7 @@ Migration
 
 Avoid using the protected properties :php:`$inlineJavascriptWrap` and
 :php:`$inlineCssWrap`. In case any custom code needs to wrap with inline
-:html:`<script>` or :html:`<style>` tags, the new protected methods
+:html:`<script>` or :html:`<style>` tags, use the new protected methods
 :php:`wrapInlineScript($content)` and :php:`wrapInlineStyle($content)`
 within :php:`\TYPO3\CMS\Core\Page\PageRenderer`.
 

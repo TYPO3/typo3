@@ -11,7 +11,7 @@ See :issue:`100459`
 Description
 ===========
 
-The method :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getRecordToolTip()`
+The method :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordToolTip()`
 has been marked as deprecated.
 
 
@@ -37,13 +37,13 @@ with a "title" attribute for the markup, the replacement is straightforward:
 
 Before:
 
-.. code-block:: php
+..  code-block:: php
 
     $link = '<a href="..." ' . BackendUtility::getRecordToolTip(...) . '>my link</a>';
 
 After:
 
-.. code-block:: php
+..  code-block:: php
 
     $link = '<a href="..." title="' . BackendUtility::getRecordIconAltText(...) . '">my link</a>';
 

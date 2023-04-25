@@ -38,14 +38,19 @@ second argument to :php:`compile()` and will not be optional anymore.
 Migration
 =========
 
-.. code-block:: php
+..  code-block:: php
 
     // before
-    $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, GeneralUtility::makeInstance(MyDataGroup::class));
+    $formDataCompiler = GeneralUtility::makeInstance(
+        FormDataCompiler::class, GeneralUtility::makeInstance(MyDataGroup::class)
+    );
     $formData = $formDataCompiler->compile($myFormDataCompilerInput);
 
     // after
     $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
-    $formData = $formDataCompiler->compile($myFormDataCompilerInput, GeneralUtility::makeInstance(MyDataGroup::class));
+    $formData = $formDataCompiler->compile(
+        $myFormDataCompilerInput,
+        GeneralUtility::makeInstance(MyDataGroup::class)
+    );
 
 .. index:: Backend, PHP-API, NotScanned, ext:backend

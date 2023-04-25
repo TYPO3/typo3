@@ -11,8 +11,8 @@ See :issue:`100597`
 Description
 ===========
 
-The methods :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getThumbnailUrl()`
-and :php:`TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction()`
+The methods :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getThumbnailUrl()`
+and :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction()`
 have been marked as deprecated.
 
 
@@ -33,9 +33,9 @@ Migration
 =========
 
 Instead of calling :php:`BackendUtility::getThumbnailUrl()`, inject and use
-the :php:`TYPO3\CMS\Core\Resource\ResourceFactory` directly:
+the :php:`\TYPO3\CMS\Core\Resource\ResourceFactory` directly:
 
-.. code-block::
+.. code-block:: php
 
     // before
     $url = BackendUtility::getThumbnailUrl(2004, [
@@ -51,9 +51,9 @@ the :php:`TYPO3\CMS\Core\Resource\ResourceFactory` directly:
         ->getPublicUrl();
 
 Instead of calling :php:`BackendUtility::getLinkToDataHandlerAction()`, inject
-and use the :php:`TYPO3\CMS\Backend\Routing\UriBuilder` directly:
+and use the :php:`\TYPO3\CMS\Backend\Routing\UriBuilder` directly:
 
-.. code-block::
+..  code-block:: php
 
     // before
     $url = BackendUtility::getLinkToDataHandlerAction(
@@ -77,8 +77,8 @@ and use the :php:`TYPO3\CMS\Backend\Routing\UriBuilder` directly:
     );
 
 In case the second paramter `$redirectUrl` was omitted,
-:php:`getLinkToDataHandlerAction` automatically used the current request uri
-as the return url. In case you relied on this, make sure the `redirect`
+:php:`getLinkToDataHandlerAction` automatically used the current request URI
+as the return URL. In case you relied on this, make sure the `redirect`
 parameter is set to :php:`$request->getAttribute('normalizedParams')->getRequestUri()`.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

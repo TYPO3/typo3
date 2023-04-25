@@ -3,7 +3,7 @@
 .. _deprecation-100670-1681916011:
 
 ================================================
-Deprecation: #100670 - DI aware FormEngine nodes
+Deprecation: #100670 - DI-aware FormEngine nodes
 ================================================
 
 See :issue:`100670`
@@ -12,11 +12,11 @@ Description
 ===========
 
 When the FormEngine construct (used when editing records in the backend) has
-been rewritten back in TYPO3 v7, dependency injection for non-extbase
+been rewritten back in TYPO3 v7, dependency injection for non-Extbase
 constructs has not been a thing, yet.
 
-With dependency injection being part of the TYPO3 core extension since TYPO3 v10,
-and the extbase solution being out-phased, it is time to make FormEngine
+With dependency injection being part of the TYPO3 Core extension since TYPO3 v10,
+and the Extbase solution being out-phased, it is time to make FormEngine
 dependency injection aware as well.
 
 This has some impact on classes implementing
@@ -63,7 +63,7 @@ just keep their implementation as is.
 Compatibility with TYPO3 v12 and v13
 ------------------------------------
 
-Extensions that strive for both TYPO3 v12 compatibility, skipping v11, that
+Extensions that strive for TYPO3 v12 compatibility, skipping v11, that
 want to support v13 as well, must adapt their implementations.
 
 As main change, :php:`NodeInterface` no longer declares :php:`__construct()`,
@@ -75,7 +75,7 @@ or if :php:`setData()` should be called after object instantiation. Note
 
 A class with both TYPO3 v12 and v13 compatibility should look like this:
 
-.. code-block:: php
+..  code-block:: php
 
     public function __construct(
         // If the class creates sub elements
@@ -103,7 +103,7 @@ A class with both TYPO3 v12 and v13 compatibility should look like this:
 The class has to be registered for public DI in :file:`Services.yaml` as well, since
 it is instantiated by :php:`NodeFactory` using :php:`GeneralUtility::makeInstance()`:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     MyVendor\MyExtension\Form\Element\MyElementClass:
       public: true
@@ -123,7 +123,7 @@ so a :yaml:`public: true` entry in :file:`Services.yaml` can be skipped.
 
 A typical class extending :php:`AbstractNode` looks like this:
 
-.. code-block:: php
+..  code-block:: php
 
     public function __construct(
         private readonly NodeFactory $nodeFactory,

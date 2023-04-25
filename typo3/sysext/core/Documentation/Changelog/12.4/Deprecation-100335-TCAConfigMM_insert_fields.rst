@@ -59,9 +59,9 @@ definition.
 
 Note on the related option :php:`MM_match_fields`: This is important when an
 MM relation allows multiple "right" sides. In the example above, when a category
-is added to a tt_content record using the :sql:`categories` field, and when editing
-this relation from the "right" side (editing a tt_content record), then this option
-is used to select only relations for this tt_content/categories combination. The
+is added to a :sql:`tt_content` record using the :sql:`categories` field, and when editing
+this relation from the "right" side (editing a :sql:`tt_content` record), then this option
+is used to select only relations for this :sql:`tt_content.categories` combination. The
 TCA column :sql:`categories` thus uses :sql:`MM_match_fields` to restrict the
 query. Note :sql:`MM_match_fields` is *not* set for the "left-side" :sql:`sys_category`
 :sql:`items` fields, this would indicate a TCA misconfiguration.
@@ -70,7 +70,7 @@ Various extensions in the wild did not get these details right, and often simply
 set *both* :php:`MM_insert_fields` and :php:`MM_match_fields` to the same values.
 Removing :php:`MM_insert_fields` helps reducing confusion and simplifies this
 construct a bit. Affected extensions can simply remove the :php:`MM_insert_fields`
-configuration and keep the :php:`MM_match_fields`. Note the core strives to further
+configuration and keep the :php:`MM_match_fields`. Note the Core strives to further
 simplify these options and :php:`MM_match_fields` may become fully obsolete in the
 future as well.
 

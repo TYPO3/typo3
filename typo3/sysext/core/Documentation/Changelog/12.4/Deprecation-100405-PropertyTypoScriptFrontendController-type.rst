@@ -11,13 +11,13 @@ See :issue:`100405`
 Description
 ===========
 
-The public property :php:`type` of the main class in TYPO3 Frontend
-:php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` has been
+The public property :php:`type` of the main class in TYPO3 frontend
+:php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` has been
 marked as internal, as it should not be used outside of this PHP class anymore
 in the future.
 
 This is part of the overall part to reduce dependencies on this PHP class, as
-it isn't always available in TYPO3 Frontend.
+it is not always available in TYPO3 frontend.
 
 
 Impact
@@ -46,13 +46,23 @@ the request object is not available.
 
 Within TypoScript, conditions and getData properties need to be adapted:
 
-Before: :typoscript:`[getTSFE() && getTSFE().type == 13]`
-After: :typoscript:`[request.getPageArguments()?.getPageType() == 13]`
+..  code-block:: typoscript
 
-In Typoscript getData attributes:
+    # Before
+    [getTSFE() && getTSFE().type == 13]
 
-Before: :typoscript:`page.10.data = TSFE:type`
-After: :typoscript:`page.10.data = request:routing|pageType`
+    # After
+    [request.getPageArguments()?.getPageType() == 13]
+
+In TypoScript getData attributes:
+
+..  code-block:: typoscript
+
+    # Before
+    page.10.data = TSFE:type
+
+    # After
+    page.10.data = request:routing|pageType
 
 
 .. index:: Frontend, TypoScript, FullyScanned, ext:frontend

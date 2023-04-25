@@ -22,7 +22,7 @@ conditions based on the variables :typoscript:`frontend.user` and
 Impact
 ======
 
-Using the old conditions in Frontend TypoScript or TSconfig triggers a
+Using the old conditions in frontend TypoScript or TSconfig triggers a
 deprecation level log entry in TYPO3 v12 and will stop working with
 TYPO3 v13.
 
@@ -38,10 +38,10 @@ instances can be adapted quite easily.
 Migration
 =========
 
-There is a rather straight forward migration path. In general, switch to
+There is a rather straightforward migration path. In general, switch to
 either :typoscript:`frontend.user` to test for frontend user state
-(available in Frontend TypoScript), or to :typoscript:`backend.user` (available
-in Frontend TypoScript and TSconfig).
+(available in frontend TypoScript), or to :typoscript:`backend.user` (available
+in frontend TypoScript and TSconfig).
 
 Note the transition can be done in existing TYPO3 v11 projects already.
 

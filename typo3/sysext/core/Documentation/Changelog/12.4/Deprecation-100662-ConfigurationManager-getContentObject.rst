@@ -11,7 +11,7 @@ See :issue:`100662`
 Description
 ===========
 
-The extbase related method
+The Extbase-related method
 :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface->getContentObject()`
 has been marked as deprecated in TYPO3 v12 and should not be used anymore.
 
@@ -26,7 +26,7 @@ from the interface together with their implementations with TYPO3 v13.
 Affected installations
 ======================
 
-Instances with extbase extensions that use :php:`getContentObject()` on
+Instances with Extbase extensions that use :php:`getContentObject()` on
 injected :php:`ConfigurationManager` instances are affected. The extension
 scanner has not been configured to find these calls, since the method
 name is used in different scope as well and would trigger too many
@@ -36,12 +36,12 @@ false positives.
 Migration
 =========
 
-There may be instances with extbase controllers that need to retrieve
-data from the current content object that initiated the frontend extbase
+There may be instances with Extbase controllers that need to retrieve
+data from the current content object that initiated the frontend Extbase
 plugin call.
 
 In this case, controllers can access the current content object from the
-extbase request object using :php:`$request->getAttribute('currentContentObject')`
+Extbase request object using :php:`$request->getAttribute('currentContentObject')`
 instead.
 
 

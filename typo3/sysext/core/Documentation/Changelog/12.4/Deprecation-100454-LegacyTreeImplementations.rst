@@ -12,18 +12,19 @@ Description
 ===========
 
 Due to many refactorings in TYPO3's tree implementations in the past versions,
-many implementations and functionality of the legacy rendering :php:`AbstractTreeView`
+many implementations and functionality of the legacy rendering :php:`\TYPO3\CMS\Backend\Tree\AbstractTreeView`
 is not needed anymore.
 
 The following PHP classes are not in use anymore and have been marked as deprecated:
-* :php:`TYPO3\CMS\Backend\Tree\View\BrowseTreeView`
-* :php:`TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView`
+
+* :php:`\TYPO3\CMS\Backend\Tree\View\BrowseTreeView`
+* :php:`\TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView`
 
 The base class is still available, but discouraged to be used or extended,
 even though TYPO3 still uses this in a few places.
 
 The following properties and methods within the base class
-:php:`AbstractTreeView` have either been marked as deprectaed or
+:php:`AbstractTreeView` have either been marked as deprecated or
 declared as internal:
 
 * :php:`AbstractTreeView->thisScript`
@@ -51,7 +52,7 @@ Impact
 
 Instantiating the deprecated classes or calling the deprecated methods will
 trigger a PHP deprecation warning, except for
-:php:`AbstractTreeView->getThisScript()`, which is still used internaly by
+:php:`AbstractTreeView->getThisScript()`, which is still used internally by
 deprecated code.
 
 The Extension Scanner will find those usages and additionally also reports
@@ -70,7 +71,7 @@ Migration
 =========
 
 It is recommended to avoid generating the markup directly in PHP. Instead use
-one of various other tree functionalities (see e.g. PageTree implementations)
+one of various other tree functionalities (for example, see PageTree implementations)
 in PHP and render trees via web components or Fluid.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

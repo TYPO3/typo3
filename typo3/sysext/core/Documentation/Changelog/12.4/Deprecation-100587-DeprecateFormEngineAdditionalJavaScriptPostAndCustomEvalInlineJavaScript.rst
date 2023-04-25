@@ -12,7 +12,7 @@ Description
 ===========
 
 The result property `additionalJavaScriptPost` of the form engine result array
-is deprecated. It was used for instance in custom eval definitions, that provided
+is deprecated. It was used, for instance, in custom eval definitions, that provided
 inline JavaScript (configured via :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']`).
 
 
@@ -45,10 +45,11 @@ Example
 
 Deprecated custom eval implementation:
 
-.. code-block: php
+..  code-block:: php
 
     <?php
     namespace TYPO3\CMS\Redirects\Evaluation;
+
     class SourceHost
     {
         public function returnFieldJS(): string
@@ -66,10 +67,11 @@ Deprecated custom eval implementation:
 Migrated custom eval implementation (JavaScript is now bundled in module
 :js:`@typo3/redirects/form-engine-evaluation.js`):
 
-.. code-block: php
+..  code-block:: php
 
     <?php
     namespace TYPO3\CMS\Redirects\Evaluation;
+
     class SourceHost
     {
         public function returnFieldJS(): JavaScriptModuleInstruction

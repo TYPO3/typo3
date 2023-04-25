@@ -44,7 +44,7 @@ Migration
 =========
 
 :php:`GeneralUtility::_GET()` is a helper method that retrieves
-incoming HTTP `GET` query arguments returns the value.
+incoming HTTP `GET` query arguments and returns the value.
 
 The same result can be achieved by retrieving arguments from the request object.
 An instance of the PSR-7 :php:`ServerRequestInterface` is handed over to

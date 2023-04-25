@@ -11,12 +11,12 @@ See :issue:`98093`
 Description
 ===========
 
-Since :issue:`#77349` it is possible to place the extension icon, which is
+Since :issue:`77349` it is possible to place the extension icon, which is
 displayed at various places in the backend, e.g. in the extension manager, in
-an extensions' `Resources/Public/Icons/` directory. The `Resources/` directory
+an extension's :file:`Resources/Public/Icons/` directory. The :file:`Resources/` directory
 is :ref:`by convention <t3coreapi:extension-files-locations>` the place to
-store such files. To simplify extension registration and to fully follow the
-convention have the following file locations been deprecated:
+store such files. To simplify the extension registration and to fully follow the
+convention the following file locations have been deprecated:
 
 * :file:`ext_icon.png`
 * :file:`ext_icon.svg`
@@ -38,7 +38,7 @@ TYPO3 installations with custom extensions using the deprecated file locations.
 Migration
 =========
 
-Place your extension icon as `Extension.*` into `Resources/Public/Icons/`,
+Place your extension icon as :file:`Extension.*` into :file:`Resources/Public/Icons/`,
 as described in :ref:`Feature: #77349 - Additional locations for extension icons <feature-77349>`.
 
 .. index:: Backend, NotScanned, ext:core

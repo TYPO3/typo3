@@ -11,7 +11,7 @@ See :issue:`100355`
 Description
 ===========
 
-The following methods in the PSR-14 Event :php:`PasswordChangeEvent` of
+The following methods in the PSR-14 event :php:`PasswordChangeEvent` of
 ext:felogin have been marked as deprecated and should not be used any more:
 
 * :php:`setAsInvalid()`
@@ -31,7 +31,7 @@ message. The functionality is kept in TYPO3 v12 but will be removed in v13.
 Affected installations
 ======================
 
-Instances who use the PSR-14 Event :php:`PasswordChangeEvent` for password
+Instances who use the PSR-14 event :php:`PasswordChangeEvent` for password
 validation and who use one of the deprecated methods.
 
 The extension scanner reports usages as a weak match.

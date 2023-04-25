@@ -16,7 +16,7 @@ Introduction
 
 This document explains the intended way in which the Extbase ORM thaws/hydrates objects.
 
-Hydrating Objects
+Hydrating objects
 -----------------
 
 Hydrating (the term originates from `doctrine/orm`), or in Extbase terms thawing, is
@@ -25,15 +25,15 @@ is the :php:`DataMapper`. During the process of hydrating, the :php:`DataMapper`
 objects to map the raw database data onto.
 
 Before diving into the framework internals, let's take a look at models from the
-users perspective.
+user's perspective.
 
-Creating Objects with Constructor Arguments
+Creating objects with constructor arguments
 -------------------------------------------
 
-Imagine you have a table `tx_extension_domain_model_blog` and a corresponding model
+Imagine you have a table :sql:`tx_extension_domain_model_blog` and a corresponding model
 or entity (entity is used as a synonym here) :php:`Vendor\Extension\Domain\Model\Blog`.
 
-Now, also imagine there is a domain rule which states, that all Blogs must have a
+Now, also imagine there is a domain rule which states, that all blogs must have a
 title. This rule can easily be followed by letting the blog class have a constructor
 with a required argument :php:`string $title`.
 
@@ -49,15 +49,15 @@ with a required argument :php:`string $title`.
         }
     }
 
-This example also shows how the `posts` property is initialized. It is done in
+This example also shows how the :php:`posts` property is initialized. It is done in
 the constructor because PHP does not allow setting a default value that is of
 type object.
 
-Hydrating Objects with Constructor Arguments
+Hydrating objects with constructor arguments
 --------------------------------------------
 
 Whenever the user creates new blog objects in extension code, the aforementioned
-domain rule is followed. It's also possible to work on the `posts` `ObjectStorage`
+domain rule is followed. It is also possible to work on the :php:`posts` :php:`ObjectStorage`
 without further initialization. :php:`new Blog('title')` is all I need to create
 a blog object with a valid state.
 
@@ -69,12 +69,14 @@ corresponds to what property but only if there is an easy mapping, i.e. if the
 constructor takes argument :php:`string $title` and updates property `title` with it.
 
 To avoid possible errors due to guessing, the :php:`DataMapper` simply
-ignores the constructor at all. It does so with the help of the library `doctrine/instantiator`.
+ignores the constructor at all. It does so with the help of the library `doctrine/instantiator`_.
+
+..  _doctrine/instantiator: https://github.com/doctrine/instantiator
 
 This pretty much explains the title of this document in detail. But there is more
 to all this.
 
-Initializing Objects
+Initializing objects
 --------------------
 
 Have a look at the :php:`$posts` property in the example above. If the :php:`DataMapper`
@@ -128,7 +130,7 @@ method like this:
         }
     }
 
-Mutating Objects
+Mutating objects
 ----------------
 
 I'd like to add a few more words on mutators (setter, adder, etc.). One might think that
@@ -136,7 +138,7 @@ I'd like to add a few more words on mutators (setter, adder, etc.). One might th
 are the only way for the user (developer) to implement business rules besides
 using the constructor.
 
-The :php:`DataMapper` uses `@internal` method :php:`AbstractDomainObject::_setProperty()`
+The :php:`DataMapper` uses the `@internal` method :php:`AbstractDomainObject::_setProperty()`
 to update object properties. This looks a bit dirty and is a way around all business
 rules but that's what the :php:`DataMapper` needs in order to leave the `mutators` to
 the users.
@@ -145,10 +147,10 @@ the users.
 
     While :php:`DataMapper` does not use any mutators, other parts of Extbase do.
     Both, validation and property mapping, either use existing mutators or gather
-    type information from them. This will change in the future but as of TYPO3 12 LTS
+    type information from them. This will change in the future but as of TYPO3 v12 LTS
     this information is correct.
 
-Property Visibility
+Property visibility
 -------------------
 
 One important thing to know is that Extbase needs entity properties to be protected
@@ -158,14 +160,14 @@ private properties of child classes, hence the need to have protected or public
 properties.
 
 
-Dependency Injection
+Dependency injection
 --------------------
 
 Without digging too deep into this topic the following statements have to be made.
 Extbase expects entities to be so called prototypes, i.e. classes that do have a
-different state per instance. DataMapper DOES NOT use Dependency Injection for the
+different state per instance. DataMapper DOES NOT use dependency injection for the
 creation of entities, i.e. it does not query the object container. This also means,
-that Dependency Injection is not possible in entities.
+that dependency injection is not possible in entities.
 
 If you think that your entities need to use/access services, you need to find other
 ways to implement it.

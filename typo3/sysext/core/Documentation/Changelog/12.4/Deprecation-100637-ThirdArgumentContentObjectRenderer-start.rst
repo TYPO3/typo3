@@ -14,7 +14,7 @@ Description
 When creating instances of the
 :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer`, the
 third argument :php:`$request` when calling :php:`start()` should not be
-hand over anymore. Instead, :php:`setRequest()` should be used
+handed over anymore. Instead, :php:`setRequest()` should be used
 after creating the object.
 
 
@@ -31,16 +31,16 @@ Affected installations
 Instances with casual extensions are probably not affected by this: Instances
 of :php:`ContentObjectRenderer` are usually set-up framework internally.
 
-Using the third agument on :php:`start()` triggers a deprecation level log
+Using the third argument on :php:`start()` triggers a deprecation level log
 message. The extension scanner will *not* find usages, since the method
-same :php:`start()` is used in different context as well and would lead to
+name :php:`start()` is used in different context as well and would lead to
 too many false positives.
 
 
 Migration
 =========
 
-Ensure request is an instance of :php:`Psr\Http\Message\ServerRequestInterface`,
+Ensure the request is an instance of :php:`Psr\Http\Message\ServerRequestInterface`,
 and call :php:`setRequest()` after instantiation instead of calling
 :php:`start()` with three arguments.
 

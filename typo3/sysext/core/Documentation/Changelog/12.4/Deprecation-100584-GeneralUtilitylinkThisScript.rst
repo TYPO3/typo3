@@ -14,10 +14,10 @@ Description
 The method :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript()`
 has been marked as deprecated and should not be used any longer.
 
-The method uses the super global :php:`$_GET` which should be avoided by
-retrieving data from the PSR-7 :php:`ServerRequestInterface` instead.
+The method uses the super global :php:`$_GET` which should be avoided. Instead,
+data should be retrieved via the PSR-7 :php:`ServerRequestInterface`.
 
-Controllers should typically create urls using the :php:`\TYPO3\CMS\Backend\Routing\UriBuilder`.
+Controllers should typically create URLs using the :php:`\TYPO3\CMS\Backend\Routing\UriBuilder`.
 
 
 Impact
@@ -30,7 +30,7 @@ method will be removed with TYPO3 v13.
 Affected installations
 ======================
 
-The methods was typically used in backend context: Extensions with own
+The method was typically used in backend context: Extensions with own
 backend modules may be affected. The extension scanner finds usages
 with a strong match.
 

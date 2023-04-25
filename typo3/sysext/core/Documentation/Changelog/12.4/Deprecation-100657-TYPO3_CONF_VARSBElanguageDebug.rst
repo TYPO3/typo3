@@ -15,7 +15,7 @@ The configuration option :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['languageDebug'
 has been marked as deprecated in TYPO3 v12, it will be removed with TYPO3 v13
 along with the property :php:`\TYPO3\CMS\Core\Localization->debugKey`.
 
-Setting configuration option `languageDebug` to true adds the label name
+Setting the configuration option `languageDebug` to true adds the label name
 including the path to the :file:`.xlf` file to the output in the backend.
 
 The intention was to allow translators to see where a specific localized
@@ -29,7 +29,7 @@ a benefit at all.
 
 TYPO3 v12 cleaned up lots of label usages and makes them more unique.
 Translators should find single label usages much more easily by searching
-the code base for label names and label files. Also, many fluid templates are
+the code base for label names and label files. Also, many Fluid templates are
 located more transparently and are easier to find, localizing labels within
 PHP classes is also improving a lot. Translators should in general have
 less headaches to see where labels are used, and this will improve further.
@@ -38,7 +38,7 @@ less headaches to see where labels are used, and this will improve further.
 Impact
 ======
 
-The option has been marked as deprecated in TYPO3 v12 and not have any
+The option has been marked as deprecated in TYPO3 v12 and does not have any
 effect anymore with TYPO3 v13.
 
 
