@@ -219,7 +219,7 @@ abstract class AbstractGenerator
             }
 
             empty($data) ?: $dataHandler->process_datamap();
-            empty($commands) ?:$dataHandler->process_cmdmap();
+            empty($commands) ?: $dataHandler->process_cmdmap();
 
             // Update signal only if not running in cli mode
             if (!Environment::isCli()) {
