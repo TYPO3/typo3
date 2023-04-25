@@ -66,16 +66,16 @@ seconds for the system to crunch the data.
 With [composer based](https://docs.typo3.org/m/typo3/tutorial-getting-started/main/en-us/Installation/Install.html)
 TYPO3 installations, styleguide is easily added to the project.
 
+TYPO3 v12 based project:
+
+```
+composer require --dev typo3/cms-styleguide:^12
+```
+
 TYPO3 v11 based project:
 
 ```
 composer require --dev typo3/cms-styleguide:^11
-```
-
-TYPO3 v10 based project:
-
-```
-composer require --dev typo3/cms-styleguide:^10
 bin/typo3 extension:activate styleguide
 ```
 
@@ -141,10 +141,11 @@ used as TER upload comment.
 Example:
 
 ```
-composer install
-.Build/bin/tailor set-version 11.0.3
-git commit -am "[RELEASE] 11.0.3 Bug fixes and improved core v11 compatibility"
-git tag 11.0.3
+composer req --dev typo3/tailor
+.Build/bin/tailor set-version 12.0.0
+composer rem --dev typo3/tailor
+git commit -am "[RELEASE] 12.0.0 Core v12 compatibility"
+git tag 12.0.0
 git push
 git push --tags
 ```
