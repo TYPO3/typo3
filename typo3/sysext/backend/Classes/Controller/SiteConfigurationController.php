@@ -396,7 +396,8 @@ class SiteConfigurationController
             }
 
             $newSiteConfiguration = $this->validateFullStructure(
-                $this->getMergeSiteData($currentSiteConfiguration, $newSysSiteData)
+                $this->getMergeSiteData($currentSiteConfiguration, $newSysSiteData),
+                $isNewConfiguration
             );
 
             // Persist the configuration
@@ -563,10 +564,11 @@ class SiteConfigurationController
      * of full record, manipulate if possible, or throw exception if unfixable broken.
      *
      * @param array $newSysSiteData Incoming data
+     * @param bool $isNewConfiguration Flag whether site configuration is new
      * @return array Updated data if needed
      * @throws \RuntimeException
      */
-    protected function validateFullStructure(array $newSysSiteData): array
+    protected function validateFullStructure(array $newSysSiteData, bool $isNewConfiguration): array
     {
         $languageService = $this->getLanguageService();
         // Verify there are not two error handlers with the same error code
@@ -624,6 +626,11 @@ class SiteConfigurationController
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);
             }
+        }
+        // On new site configurations, ensure that the only existing language has the languageId set to 0
+        // @todo: this shouldn't be done here, but rather properly handled in saveAction() where 'siteLanguage' is handled
+        if ($isNewConfiguration && count($validChildren) === 1) {
+            $validChildren[0]['languageId'] = 0;
         }
         $newSysSiteData['languages'] = $validChildren;
 
