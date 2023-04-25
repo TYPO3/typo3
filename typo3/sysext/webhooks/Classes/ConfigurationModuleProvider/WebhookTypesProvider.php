@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Webhooks\ConfigurationModuleProvider;
 
+use Symfony\Component\DependencyInjection\ServiceLocator;
+use TYPO3\CMS\Core\Messaging\WebhookMessageInterface;
 use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\AbstractProvider;
+use TYPO3\CMS\Webhooks\Model\WebhookType;
 use TYPO3\CMS\Webhooks\WebhookTypesRegistry;
 
 /**
@@ -28,7 +31,8 @@ use TYPO3\CMS\Webhooks\WebhookTypesRegistry;
 class WebhookTypesProvider extends AbstractProvider
 {
     public function __construct(
-        private readonly WebhookTypesRegistry $webhookTypesRegistry
+        private readonly WebhookTypesRegistry $webhookTypesRegistry,
+        private readonly ServiceLocator $sendersLocator,
     ) {
     }
 
@@ -40,8 +44,29 @@ class WebhookTypesProvider extends AbstractProvider
                 'messageName' => $webhookType->getServiceName(),
                 'description' => $webhookType->getDescription(),
                 'connectedEvent' => $webhookType->getConnectedEvent() ?? 'none',
+                'transport' => $this->determineTransportForWebhook($webhookType),
             ];
         }
         return $configuration;
+    }
+
+    /**
+     * @param WebhookType $webhookType
+     * @return array{identifier: non-empty-string, serviceName: non-empty-string}
+     */
+    private function determineTransportForWebhook(WebhookType $webhookType): array
+    {
+        $transportName =
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['messenger']['routing'][$webhookType->getServiceName()]
+            ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['messenger']['routing'][WebhookMessageInterface::class]
+            ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['messenger']['routing']['*']
+            ?? 'undefined';
+
+        return [
+            'identifier' => $transportName,
+            'serviceName' => $this->sendersLocator->has($transportName)
+                ? get_class($this->sendersLocator->get($transportName))
+                : 'undefined',
+        ];
     }
 }
