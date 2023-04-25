@@ -88,7 +88,7 @@ class UserIntInformation extends AbstractSubModule implements DataProviderInterf
 
         foreach ($intScripts as $intScriptName => $intScriptConf) {
             $info = isset($intScriptConf['type']) ? ['TYPE' => $intScriptConf['type']] : [];
-            foreach ($intScriptConf['conf'] as $key => $conf) {
+            foreach (($intScriptConf['conf'] ?? []) as $key => $conf) {
                 if (is_array($conf)) {
                     $conf = ArrayUtility::flatten($conf);
                 }
