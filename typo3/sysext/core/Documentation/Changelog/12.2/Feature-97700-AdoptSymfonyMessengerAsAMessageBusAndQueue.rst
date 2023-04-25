@@ -170,7 +170,7 @@ respective identifier.
 
 ..  code-block:: php
 
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['queue'] = [
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['messenger'] = [
         'routing' => [
             // use "messenger.transport.demo" as transport for DemoMessage
             \TYPO3\CMS\Queue\Message\DemoMessage::class => 'demo',
