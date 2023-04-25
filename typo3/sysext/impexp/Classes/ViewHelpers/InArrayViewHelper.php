@@ -34,6 +34,6 @@ class InArrayViewHelper extends AbstractConditionViewHelper
 
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
-        return in_array($arguments['needle'], $arguments['haystack'], true);
+        return in_array($arguments['needle'], (array)$arguments['haystack'], true);
     }
 }
