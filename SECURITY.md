@@ -9,14 +9,13 @@ supported.
 
 | Version         | Supported          |
 | --------------- | ------------------ |
+|          12.4.x | :white_check_mark: |
+|          12.3.x | :x:                |
+|          12.2.x | :x:                |
+|          12.1.x | :x:                |
+|          12.0.x | :x:                |
 |          11.5.x | :white_check_mark: |
-|          11.4.x | :x:                |
-|          11.3.x | :x:                |
-|          11.2.x | :x:                |
-|          11.1.x | :x:                |
-|          11.0.x | :x:                |
-|          10.4.x | :white_check_mark: |
-|        < 10.4.0 | :x:                |
+|        < 11.5.0 | :x:                |
 
 ## Reporting a Vulnerability
 
