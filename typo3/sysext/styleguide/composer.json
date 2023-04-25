@@ -45,7 +45,7 @@
         "codeception/module-asserts": "^3.0",
         "codeception/module-cli": "^2.0",
         "codeception/module-webdriver": "^3.1",
-        "phpstan/phpstan": "^1.4.8",
+        "phpstan/phpstan": "^1.10.14",
         "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "^0.0.1",
         "typo3/cms-core": "~12.4@dev",
         "typo3/cms-frontend": "~12.4@dev",
