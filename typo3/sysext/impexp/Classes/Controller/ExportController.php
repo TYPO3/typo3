@@ -291,7 +291,7 @@ class ExportController
     protected function getRecordSelectOptions(array $inputData): array
     {
         $records = [];
-        foreach ($inputData['record'] as $tableNameColonUid) {
+        foreach ($inputData['record'] ?? [] as $tableNameColonUid) {
             [$tableName, $recordUid] = explode(':', $tableNameColonUid);
             if ($record = BackendUtility::getRecordWSOL((string)$tableName, (int)$recordUid)) {
                 $records[] = [
@@ -310,7 +310,7 @@ class ExportController
         $backendUser = $this->getBackendUser();
         $languageService = $this->getLanguageService();
         $tableList = [];
-        foreach ($inputData['list'] as $reference) {
+        foreach ($inputData['list'] ?? [] as $reference) {
             $referenceParts = explode(':', $reference);
             $tableName = $referenceParts[0];
             if ($backendUser->check('tables_select', $tableName)) {
