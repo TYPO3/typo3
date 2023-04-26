@@ -3010,7 +3010,7 @@ class DatabaseRecordList
                 }
                 $idList = array_merge($idList, $tree->ids);
             }
-            $runtimeCache->set($hash, $idList);
+            $runtimeCache->set($hash, array_unique($idList));
         }
 
         return $idList;
