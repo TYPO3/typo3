@@ -1911,15 +1911,12 @@ class DataHandler implements LoggerAwareInterface
                     ],
                     $realPid
                 );
-            }
 
-            // Password not valid for existing user
-            if (!$isValidPassword && !$isNewUser) {
-                return [];
-            }
-
-            // Password not valid for new user. To prevent empty passwords in the database, we set a random password.
-            if ($isNewUser) {
+                // Password not valid for existing user. Stopping here, password won't be changed
+                if (!$isNewUser) {
+                    return [];
+                }
+                // Password not valid for new user. To prevent empty passwords in the database, we set a random password.
                 $value = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(96);
             }
 
