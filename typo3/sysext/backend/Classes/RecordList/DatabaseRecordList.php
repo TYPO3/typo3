@@ -2731,7 +2731,7 @@ class DatabaseRecordList
             foreach ($pages as $page) {
                 $idList[] = (int)$page['uid'];
             }
-            $runtimeCache->set($hash, $idList);
+            $runtimeCache->set($hash, array_unique($idList));
         }
 
         return $idList;
