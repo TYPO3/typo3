@@ -484,8 +484,14 @@ final class TreeFromLineStreamBuilder
             }
             if (!empty($extensions)) {
                 // Check if file is allowed by allowed 'extensions' setting if given
-                $fileEnding = GeneralUtility::revExplode('.', $potentialInclude, 2)[1] ?? null;
-                if (!$fileEnding || !in_array($fileEnding, $extensions)) {
+                $fileIsAllowed = false;
+                foreach ($extensions as $extension) {
+                    if (str_ends_with($potentialInclude, $extension)) {
+                        $fileIsAllowed = true;
+                        break;
+                    }
+                }
+                if (!$fileIsAllowed) {
                     continue;
                 }
             }
