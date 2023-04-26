@@ -366,7 +366,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         $inputTag->addAttribute('type', 'text');
         $inputTag->addAttribute('name', $fieldName);
         $inputTag->addAttribute('value', $currentValue);
-        $inputTag->addAttribute('class', 'form-control');
+        $inputTag->addAttribute('class', 'form-control form-control-clearable t3js-clearable');
 
         return $inputTag->render();
     }
@@ -400,7 +400,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
             $inputTag->addAttribute('name', $valueFieldName);
             $inputTag->addAttribute('type', 'text');
             $inputTag->addAttribute('value', $currentValue);
-            $inputTag->addAttribute('class', 'form-control');
+            $inputTag->addAttribute('class', 'form-control form-control-clearable t3js-clearable');
             $html .= $inputTag->render();
         }
 

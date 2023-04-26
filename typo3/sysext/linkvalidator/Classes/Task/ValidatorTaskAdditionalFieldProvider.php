@@ -118,7 +118,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             }
         }
         $fieldId = 'task_page';
-        $fieldCode = '<input type="number" min="0" class="form-control" name="tx_scheduler[linkvalidator][page]" id="'
+        $fieldCode = '<input type="number" min="0" class="form-control form-control-clearable t3js-clearable" name="tx_scheduler[linkvalidator][page]" id="'
             . $fieldId
             . '" value="'
             . htmlspecialchars((string)$taskInfo['page'])
@@ -164,7 +164,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'type' => 'select',
         ];
         $fieldId = 'task_languages';
-        $fieldCode = '<input class="form-control" type="text"  name="tx_scheduler[linkvalidator][languages]"'
+        $fieldCode = '<input class="form-control form-control-clearable t3js-clearable" type="text"  name="tx_scheduler[linkvalidator][languages]"'
             . ' id="' . $fieldId
             . '" value="' . htmlspecialchars((string)$taskInfo['languages'])
             . '">';
@@ -214,7 +214,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'type' => 'checkToggle',
         ];
         $fieldId = 'task_emailTemplateName';
-        $fieldCode = '<input class="form-control" type="text"  name="tx_scheduler[linkvalidator][emailTemplateName]" '
+        $fieldCode = '<input class="form-control form-control-clearable t3js-clearable" type="text"  name="tx_scheduler[linkvalidator][emailTemplateName]" '
             . 'id="' . $fieldId
             . '" value="' . htmlspecialchars((string)$taskInfo['emailTemplateName'])
             . '">';

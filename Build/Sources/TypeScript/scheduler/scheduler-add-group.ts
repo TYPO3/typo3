@@ -35,7 +35,12 @@ class SchedulerAddGroups {
     if(element) {
       element.addEventListener('click', (button: MouseEvent) => {
         button.preventDefault();
-        const content: TemplateResult = html`<form name="scheduler-create-group" @submit=${this.createGroup}><label>Group name</label> <input required="" name="action[createGroup]" autofocus type="text" class="form-control"></form>`
+        const content: TemplateResult = html`
+          <form name="scheduler-create-group" @submit=${this.createGroup}>
+            <label class="form-label" for="actionCreateGroup">Group name</label>
+            <input class="form-control" id="actionCreateGroup" required="" name="action[createGroup]" autofocus type="text">
+          </form>
+        `;
 
         const modal = Modal.advanced({
           content: content,

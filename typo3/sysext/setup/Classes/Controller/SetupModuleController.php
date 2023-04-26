@@ -604,8 +604,8 @@ class SetupModuleController
             }
             if ($type === 'text' || $type === 'number' || $type === 'email' || $type === 'password') {
                 $htmlPrepended = '<div class="formengine-field-item t3js-formengine-field-item"><div class="form-control-wrap">'
-                    . '<div class="form-wizards-wrap"><div class="form-wizards-element"><div class="form-control-clearable">';
-                $htmlAppended = '</div></div></div></div></div>';
+                    . '<div class="form-wizards-wrap"><div class="form-wizards-element">';
+                $htmlAppended = '</div></div></div></div>';
             }
 
             $code[] = '<fieldset class="form-section"><div class="row"><div class="form-group col-md-12">'

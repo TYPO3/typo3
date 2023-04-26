@@ -47,6 +47,15 @@ class Scheduler {
     });
   }
 
+  private static updateClearableInputs(): void {
+    const clearables = document.querySelectorAll('.t3js-clearable') as NodeListOf<HTMLInputElement>;
+    if (clearables.length > 0) {
+      import('@typo3/backend/input/clearable').then(function() {
+        clearables.forEach(clearableField => clearableField.clearable());
+      });
+    }
+  }
+
   private static updateElementBrowserTriggers(): void {
     const triggers = document.querySelectorAll('.t3js-element-browser');
 
@@ -218,6 +227,7 @@ class Scheduler {
     const $taskClass = $('#task_class');
     if ($taskClass.length) {
       this.actOnChangedTaskClass($taskClass);
+      Scheduler.updateClearableInputs();
       Scheduler.updateElementBrowserTriggers();
     }
   }

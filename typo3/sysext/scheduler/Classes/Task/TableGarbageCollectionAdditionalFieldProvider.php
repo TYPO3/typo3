@@ -172,7 +172,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_numberOfDays]';
         $fieldId = 'task_tableGarbageCollection_numberOfDays';
         $attrs = [
-            'class' => 'form-control',
+            'class' => 'form-control form-control-clearable t3js-clearable',
             'type' => 'text',
             'name' => $fieldName,
             'id' => $fieldId,
