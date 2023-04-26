@@ -397,7 +397,8 @@ export class CspReports extends LitElement {
     (new AjaxRequest(this.controlUri))
       .post({ action: 'deleteReports', scope: this.selectedScope || '' })
       .then((response: AjaxResponse) => response.resolve('application/json'))
-      .then(() => this.fetchReports());
+      .then(() => this.fetchReports())
+      .then(() => this.selectReport(null));
   }
 
   /*
