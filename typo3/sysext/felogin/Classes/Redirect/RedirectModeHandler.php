@@ -166,11 +166,11 @@ class RedirectModeHandler
             $url = $this->getReferrer();
             // Is referring url allowed to redirect?
             $match = [];
-            if (preg_match('#^http://([[:alnum:]._-]+)/#', $url, $match)) {
+            if (preg_match('#^https?://([[:alnum:].-]+)/#', $url, $match)) {
                 $redirectDomain = $match[1];
                 $found = false;
                 foreach (GeneralUtility::trimExplode(',', $domains, true) as $domain) {
-                    if (preg_match('/(?:^|\\.)' . $domain . '$/', $redirectDomain)) {
+                    if (preg_match('/(?:^|\\.)' . preg_quote($domain, '/') . '$/', $redirectDomain)) {
                         $found = true;
                         break;
                     }
