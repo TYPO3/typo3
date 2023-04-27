@@ -1,2 +1,2 @@
 self.TYPO3 = {};
-import('@typo3/install/install');
+(window as any).importShim('@typo3/install/install.js');
