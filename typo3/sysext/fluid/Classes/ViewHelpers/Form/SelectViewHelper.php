@@ -225,39 +225,53 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
         $options = [];
         $optionsArgument = $this->arguments['options'];
         foreach ($optionsArgument as $key => $value) {
-            if (is_object($value) || is_array($value)) {
-                if ($this->hasArgument('optionValueField')) {
-                    $key = ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
-                    if (is_object($key)) {
-                        if (method_exists($key, '__toString')) {
-                            $key = (string)$key;
-                        } else {
-                            throw new Exception('Identifying value for object of class "' . get_debug_type($value) . '" was an object.', 1247827428);
-                        }
-                    }
-                } elseif ($this->persistenceManager->getIdentifierByObject($value) !== null) {
-                    // @todo use $this->persistenceManager->isNewObject() once it is implemented
-                    $key = $this->persistenceManager->getIdentifierByObject($value);
-                } elseif (is_object($value) && method_exists($value, '__toString')) {
-                    $key = (string)$value;
-                } elseif (is_object($value)) {
-                    throw new Exception('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
+            if (!is_object($value) && !is_array($value)) {
+                $options[$key] = $value;
+                continue;
+            }
+            if (is_array($value)) {
+                if (!$this->hasArgument('optionValueField')) {
+                    throw new \InvalidArgumentException('Missing parameter "optionValueField" in SelectViewHelper for array value options.', 1682693720);
                 }
-                if ($this->hasArgument('optionLabelField')) {
-                    $value = ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
-                    if (is_object($value)) {
-                        if (method_exists($value, '__toString')) {
-                            $value = (string)$value;
-                        } else {
-                            throw new Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
-                        }
-                    }
-                } elseif (is_object($value) && method_exists($value, '__toString')) {
-                    $value = (string)$value;
-                } elseif ($this->persistenceManager->getIdentifierByObject($value) !== null) {
-                    // @todo use $this->persistenceManager->isNewObject() once it is implemented
-                    $value = $this->persistenceManager->getIdentifierByObject($value);
+                if (!$this->hasArgument('optionLabelField')) {
+                    throw new \InvalidArgumentException('Missing parameter "optionLabelField" in SelectViewHelper for array value options.', 1682693721);
                 }
+                $key = ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
+                $value = ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
+                $options[$key] = $value;
+                continue;
+            }
+            if ($this->hasArgument('optionValueField')) {
+                $key = ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
+                if (is_object($key)) {
+                    if (method_exists($key, '__toString')) {
+                        $key = (string)$key;
+                    } else {
+                        throw new Exception('Identifying value for object of class "' . get_debug_type($value) . '" was an object.', 1247827428);
+                    }
+                }
+            } elseif ($this->persistenceManager->getIdentifierByObject($value) !== null) {
+                // @todo use $this->persistenceManager->isNewObject() once it is implemented
+                $key = $this->persistenceManager->getIdentifierByObject($value);
+            } elseif (is_object($value) && method_exists($value, '__toString')) {
+                $key = (string)$value;
+            } elseif (is_object($value)) {
+                throw new Exception('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
+            }
+            if ($this->hasArgument('optionLabelField')) {
+                $value = ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
+                if (is_object($value)) {
+                    if (method_exists($value, '__toString')) {
+                        $value = (string)$value;
+                    } else {
+                        throw new Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
+                    }
+                }
+            } elseif (is_object($value) && method_exists($value, '__toString')) {
+                $value = (string)$value;
+            } elseif ($this->persistenceManager->getIdentifierByObject($value) !== null) {
+                // @todo use $this->persistenceManager->isNewObject() once it is implemented
+                $value = $this->persistenceManager->getIdentifierByObject($value);
             }
             $options[$key] = $value;
         }
