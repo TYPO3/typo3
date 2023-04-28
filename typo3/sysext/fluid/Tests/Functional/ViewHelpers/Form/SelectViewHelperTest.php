@@ -113,6 +113,76 @@ EOT;
     /**
      * @test
      */
+    public function selectThrowsExceptionIfEitherOptionValueFieldIsNotSet(): void
+    {
+        $options = [
+            [
+                'uid' => 1,
+                'title' => 'Foo',
+            ],
+            [
+                'uid' => -1,
+                'title' => 'Bar',
+            ],
+            [
+                'title' => 'Baz',
+            ],
+            [
+                'uid' => '2',
+            ],
+        ];
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionLabelField="title" sortByOptionLabel="true" options="{options}" />');
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
+        $view = new TemplateView($context);
+        $view->assign('options', $options);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing parameter "optionValueField" in SelectViewHelper for array value options.');
+        $this->expectExceptionCode(1682693720);
+
+        $view->render();
+    }
+
+    /**
+     * @test
+     */
+    public function selectThrowsExceptionIfEitherOptionLabelFieldIsNotSet(): void
+    {
+        $options = [
+            [
+                'uid' => 1,
+                'title' => 'Foo',
+            ],
+            [
+                'uid' => -1,
+                'title' => 'Bar',
+            ],
+            [
+                'title' => 'Baz',
+            ],
+            [
+                'uid' => '2',
+            ],
+        ];
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionValueField="uid" sortByOptionLabel="true" options="{options}" />');
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
+        $view = new TemplateView($context);
+        $view->assign('options', $options);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing parameter "optionLabelField" in SelectViewHelper for array value options.');
+        $this->expectExceptionCode(1682693721);
+
+        $view->render();
+    }
+
+    /**
+     * @test
+     */
     public function selectCreatesExpectedOptionsWithStdClassesAndOptionValueFieldAndOptionLabelFieldSet(): void
     {
         $obj1 = new \stdClass();
