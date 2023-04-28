@@ -4,5 +4,5 @@ services:
     autoconfigure: true
     public: false
 
-  ExtbaseTeam\ActionControllerTest\Controller\TestController:
+  TYPO3Tests\ActionControllerTest\Controller\TestController:
     public: true

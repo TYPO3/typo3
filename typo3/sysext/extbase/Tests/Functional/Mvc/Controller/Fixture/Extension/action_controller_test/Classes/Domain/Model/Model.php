@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace ExtbaseTeam\ActionControllerTest\Domain\Model;
+namespace TYPO3Tests\ActionControllerTest\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 

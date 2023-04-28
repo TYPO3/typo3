@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace ExtbaseTeam\TypeConverterTest\Domain\Model;
+namespace TYPO3Tests\TypeConverterTest\Domain\Model;
 
 class Cat extends Animal
 {

@@ -17,12 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property;
 
-use ExtbaseTeam\BlogExample\Domain\Model\Blog;
-use ExtbaseTeam\TypeConverterTest\Domain\Model\Animal;
-use ExtbaseTeam\TypeConverterTest\Domain\Model\Cat;
-use ExtbaseTeam\TypeConverterTest\Domain\Model\Countable;
-use ExtbaseTeam\TypeConverterTest\Domain\Model\Dog;
-use ExtbaseTeam\TypeConverterTest\Domain\Model\ExtendedCountableInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -32,6 +26,12 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\BlogExample\Domain\Model\Blog;
+use TYPO3Tests\TypeConverterTest\Domain\Model\Animal;
+use TYPO3Tests\TypeConverterTest\Domain\Model\Cat;
+use TYPO3Tests\TypeConverterTest\Domain\Model\Countable;
+use TYPO3Tests\TypeConverterTest\Domain\Model\Dog;
+use TYPO3Tests\TypeConverterTest\Domain\Model\ExtendedCountableInterface;
 
 final class PropertyMapperTest extends FunctionalTestCase
 {
@@ -199,7 +199,7 @@ final class PropertyMapperTest extends FunctionalTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "boolean" to "ExtbaseTeam\TypeConverterTest\Domain\Model\Cat"');
+        $this->expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "boolean" to "TYPO3Tests\TypeConverterTest\Domain\Model\Cat"');
 
         $result = $this->get(PropertyMapper::class)->convert(false, Cat::class);
         self::assertNull($result);

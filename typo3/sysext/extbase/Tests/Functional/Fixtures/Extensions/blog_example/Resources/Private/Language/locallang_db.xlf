@@ -132,7 +132,7 @@
 			<trans-unit id="tx_blogexample_domain_model_dateexample" resname="tx_blogexample_domain_model_dateexample">
 				<source>Date example</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tx_extbase_type.ExtbaseTeam\BlogExample\Domain\Model\Administrator" resname="fe_users.tx_extbase_type.ExtbaseTeam\BlogExample\Domain\Model\Administrator">
+			<trans-unit id="fe_users.tx_extbase_type.TYPO3Tests\BlogExample\Domain\Model\Administrator" resname="fe_users.tx_extbase_type.TYPO3Tests\BlogExample\Domain\Model\Administrator">
 				<source>Blog Admin (BlogExample)</source>
 			</trans-unit>
 		</body>

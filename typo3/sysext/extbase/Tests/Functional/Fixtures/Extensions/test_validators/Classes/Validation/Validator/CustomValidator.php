@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace ExtbaseTeam\TestValidators\Validation\Validator;
+namespace TYPO3Tests\TestValidators\Validation\Validator;
 
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;

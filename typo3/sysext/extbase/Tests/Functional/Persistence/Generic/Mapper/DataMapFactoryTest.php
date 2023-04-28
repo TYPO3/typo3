@@ -17,13 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
-use ExtbaseTeam\BlogExample\Domain\Model\Administrator;
-use ExtbaseTeam\BlogExample\Domain\Model\TtContent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\BlogExample\Domain\Model\Administrator;
+use TYPO3Tests\BlogExample\Domain\Model\TtContent;
 
 final class DataMapFactoryTest extends FunctionalTestCase
 {
@@ -48,7 +48,7 @@ final class DataMapFactoryTest extends FunctionalTestCase
         $dataMap = $this->dataMapFactory->buildDataMap(Administrator::class);
 
         self::assertInstanceOf(DataMap::class, $dataMap);
-        self::assertEquals('ExtbaseTeam\BlogExample\Domain\Model\Administrator', $dataMap->getRecordType());
+        self::assertEquals('TYPO3Tests\BlogExample\Domain\Model\Administrator', $dataMap->getRecordType());
         self::assertEquals('fe_users', $dataMap->getTableName());
     }
 

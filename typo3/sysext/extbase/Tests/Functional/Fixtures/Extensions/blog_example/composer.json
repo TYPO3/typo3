@@ -1,0 +1,19 @@
+{
+	"name": "typo3tests/blog-example",
+	"type": "typo3-cms-extension",
+	"description": "A test extension for extbase",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "12.4.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "blog_example"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\BlogExample\\": "Classes/"
+		}
+	}
+}

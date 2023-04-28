@@ -15,11 +15,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace ExtbaseTeam\BlogExample\Domain\Validator;
+namespace TYPO3Tests\BlogExample\Domain\Validator;
 
-use ExtbaseTeam\BlogExample\Domain\Model\Post;
 use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+use TYPO3Tests\BlogExample\Domain\Model\Post;
 
 /**
  * A custom validator for blog posts.

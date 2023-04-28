@@ -17,13 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
-use ExtbaseTeam\BlogExample\Domain\Model\Blog;
-use ExtbaseTeam\BlogExample\Domain\Model\Category;
-use ExtbaseTeam\BlogExample\Domain\Model\Post;
-use ExtbaseTeam\BlogExample\Domain\Model\Tag;
-use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
-use ExtbaseTeam\BlogExample\Domain\Repository\PersonRepository;
-use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\Connection;
@@ -36,6 +29,13 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\BlogExample\Domain\Model\Blog;
+use TYPO3Tests\BlogExample\Domain\Model\Category;
+use TYPO3Tests\BlogExample\Domain\Model\Post;
+use TYPO3Tests\BlogExample\Domain\Model\Tag;
+use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
+use TYPO3Tests\BlogExample\Domain\Repository\PersonRepository;
+use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
 final class RelationTest extends FunctionalTestCase
 {

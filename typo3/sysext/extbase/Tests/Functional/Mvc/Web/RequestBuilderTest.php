@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Web;
 
-use ExtbaseTeam\BlogExample\Controller\BlogController;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ExtbaseModule;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -37,6 +36,7 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\TestingFramework\Core\Functional\Framework\FrameworkState;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\BlogExample\Controller\BlogController;
 
 final class RequestBuilderTest extends FunctionalTestCase
 {
@@ -485,7 +485,7 @@ final class RequestBuilderTest extends FunctionalTestCase
             'extensionName' => $extensionName,
             'controllerActions' => [
                 BlogController::class => ['list'],
-                'ExtbaseTeam\BlogExample\Controller\UserController' => ['list'],
+                'TYPO3Tests\BlogExample\Controller\UserController' => ['list'],
             ],
         ]);
 
@@ -513,7 +513,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $this->expectException(InvalidActionNameException::class);
         $this->expectExceptionCode(1313855175);
-        $this->expectExceptionMessage('The action "NonExistentAction" (controller "ExtbaseTeam\BlogExample\Controller\BlogController") is not allowed by this plugin / module. Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php / TYPO3\CMS\Extbase\Utility\ExtensionUtility::configureModule() in your ext_tables.php.');
+        $this->expectExceptionMessage('The action "NonExistentAction" (controller "TYPO3Tests\BlogExample\Controller\BlogController") is not allowed by this plugin / module. Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php / TYPO3\CMS\Extbase\Utility\ExtensionUtility::configureModule() in your ext_tables.php.');
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -653,7 +653,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1295479651);
-        $this->expectExceptionMessage('The default action can not be determined for controller "ExtbaseTeam\BlogExample\Controller\BlogController". Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php.');
+        $this->expectExceptionMessage('The default action can not be determined for controller "TYPO3Tests\BlogExample\Controller\BlogController". Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php.');
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';

@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
-use ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
+use TYPO3Tests\BlogExample\Domain\Repository\TtContentRepository;
 
 /**
  * Test case documenting an Extbase translation handling of tt_content consistent with Site Handling.

@@ -4,6 +4,6 @@ services:
     autoconfigure: true
     public: false
 
-  ExtbaseTeam\BlogExample\:
+  TYPO3Tests\BlogExample\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/{Model,Validator}'

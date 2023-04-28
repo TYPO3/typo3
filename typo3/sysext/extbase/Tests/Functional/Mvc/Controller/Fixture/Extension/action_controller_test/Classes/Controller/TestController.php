@@ -15,9 +15,8 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace ExtbaseTeam\ActionControllerTest\Controller;
+namespace TYPO3Tests\ActionControllerTest\Controller;
 
-use ExtbaseTeam\ActionControllerTest\Domain\Model\Model;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
@@ -26,6 +25,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3Fluid\Fluid\View\ViewInterface;
+use TYPO3Tests\ActionControllerTest\Domain\Model\Model;
 
 /**
  * Fixture controller with some test actions and making some abstract controller things public.

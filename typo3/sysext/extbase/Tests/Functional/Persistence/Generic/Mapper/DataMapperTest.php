@@ -17,11 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
-use ExtbaseTeam\BlogExample\Domain\Model\Blog;
-use ExtbaseTeam\BlogExample\Domain\Model\Comment;
-use ExtbaseTeam\BlogExample\Domain\Model\DateExample;
-use ExtbaseTeam\BlogExample\Domain\Model\DateTimeImmutableExample;
-use ExtbaseTeam\BlogExample\Domain\Model\Post;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -32,6 +27,11 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\UnknownPropertyTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\BlogExample\Domain\Model\Blog;
+use TYPO3Tests\BlogExample\Domain\Model\Comment;
+use TYPO3Tests\BlogExample\Domain\Model\DateExample;
+use TYPO3Tests\BlogExample\Domain\Model\DateTimeImmutableExample;
+use TYPO3Tests\BlogExample\Domain\Model\Post;
 use TYPO3Tests\TestDataMapper\Domain\Model\CustomDateTime;
 use TYPO3Tests\TestDataMapper\Domain\Model\Example;
 use TYPO3Tests\TestDataMapper\Domain\Model\TraversableDomainObjectExample;

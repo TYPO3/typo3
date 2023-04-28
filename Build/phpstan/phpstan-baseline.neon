@@ -1691,7 +1691,7 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_test/Classes/Controller/TestController.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\<ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\Post\\>\\:\\:between\\(\\)\\.$#"
+			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\<TYPO3Tests\\\\BlogExample\\\\Domain\\\\Model\\\\Post\\>\\:\\:between\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/OperatorTest.php
 

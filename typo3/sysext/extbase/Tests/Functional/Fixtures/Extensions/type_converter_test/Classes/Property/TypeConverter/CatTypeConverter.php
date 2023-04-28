@@ -15,11 +15,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace ExtbaseTeam\TypeConverterTest\Property\TypeConverter;
+namespace TYPO3Tests\TypeConverterTest\Property\TypeConverter;
 
-use ExtbaseTeam\TypeConverterTest\Domain\Model\Cat;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
+use TYPO3Tests\TypeConverterTest\Domain\Model\Cat;
 
 class CatTypeConverter extends AbstractTypeConverter
 {

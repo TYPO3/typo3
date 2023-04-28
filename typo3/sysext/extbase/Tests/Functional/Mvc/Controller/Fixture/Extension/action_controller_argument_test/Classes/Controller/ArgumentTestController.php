@@ -15,14 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace ExtbaseTeam\ActionControllerArgumentTest\Controller;
+namespace TYPO3Tests\ActionControllerArgumentTest\Controller;
 
-use ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\Model;
-use ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\ModelDto;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3Tests\ActionControllerArgumentTest\Domain\Model\Model;
+use TYPO3Tests\ActionControllerArgumentTest\Domain\Model\ModelDto;
 
 /**
  * Fixture controller
@@ -84,7 +84,7 @@ class ArgumentTestController extends ActionController
     }
 
     /**
-     * @Extbase\Validate("ExtbaseTeam.ActionControllerArgumentTest.Domain:FailingValidator", param="model")
+     * @Extbase\Validate("TYPO3Tests.ActionControllerArgumentTest.Domain:FailingValidator", param="model")
      */
     public function validateModelAction(Model $model): ResponseInterface
     {
@@ -95,7 +95,7 @@ class ArgumentTestController extends ActionController
     }
 
     /**
-     * @Extbase\Validate("ExtbaseTeam.ActionControllerArgumentTest.Domain:FailingValidator", param="dto")
+     * @Extbase\Validate("TYPO3Tests.ActionControllerArgumentTest.Domain:FailingValidator", param="dto")
      */
     public function validateDtoAction(ModelDto $dto): ResponseInterface
     {

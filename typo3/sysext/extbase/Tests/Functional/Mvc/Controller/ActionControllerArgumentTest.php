@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
-use ExtbaseTeam\ActionControllerArgumentTest\Controller\ArgumentTestController;
-use ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\Model;
-use ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\ModelDto;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -32,6 +29,9 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\ActionControllerArgumentTest\Controller\ArgumentTestController;
+use TYPO3Tests\ActionControllerArgumentTest\Domain\Model\Model;
+use TYPO3Tests\ActionControllerArgumentTest\Domain\Model\ModelDto;
 
 final class ActionControllerArgumentTest extends FunctionalTestCase
 {

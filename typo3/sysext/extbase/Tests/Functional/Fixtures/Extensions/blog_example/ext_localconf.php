@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use ExtbaseTeam\BlogExample\Controller\BlogController;
-use ExtbaseTeam\BlogExample\Controller\ContentController;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3Tests\BlogExample\Controller\BlogController;
+use TYPO3Tests\BlogExample\Controller\ContentController;
 
 defined('TYPO3') or die();
 

@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace ExtbaseTeam\ActionControllerArgumentTest\Domain\Model;
+namespace TYPO3Tests\ActionControllerArgumentTest\Domain\Model;
 
 /**
  * Fixture model data transfer object

@@ -4,5 +4,5 @@ services:
     autoconfigure: true
     public: false
 
-  ExtbaseTeam\TestValidators\:
+  TYPO3Tests\TestValidators\:
     resource: '../Classes/*'

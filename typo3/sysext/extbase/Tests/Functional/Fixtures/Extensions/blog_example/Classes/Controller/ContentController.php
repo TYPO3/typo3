@@ -15,9 +15,8 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace ExtbaseTeam\BlogExample\Controller;
+namespace TYPO3Tests\BlogExample\Controller;
 
-use ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -26,6 +25,7 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3Tests\BlogExample\Domain\Repository\TtContentRepository;
 
 class ContentController extends ActionController
 {

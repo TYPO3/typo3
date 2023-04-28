@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace ExtbaseTeam\ActionControllerArgumentTest\Domain\Validation\Validator;
+namespace TYPO3Tests\ActionControllerArgumentTest\Domain\Validation\Validator;
 
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 

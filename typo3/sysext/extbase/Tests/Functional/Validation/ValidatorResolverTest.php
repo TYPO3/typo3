@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation;
 
-use ExtbaseTeam\TestValidators\Domain\Model\AnotherModel;
-use ExtbaseTeam\TestValidators\Domain\Model\Model;
-use ExtbaseTeam\TestValidators\Validation\Validator\CustomValidator;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator;
@@ -29,6 +26,9 @@ use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\TestValidators\Domain\Model\AnotherModel;
+use TYPO3Tests\TestValidators\Domain\Model\Model;
+use TYPO3Tests\TestValidators\Validation\Validator\CustomValidator;
 
 final class ValidatorResolverTest extends FunctionalTestCase
 {

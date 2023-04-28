@@ -2,8 +2,8 @@
 ,"uid","pid","username","deleted","usergroup","disable","tx_extbase_type",
 ,1,0,"usera",0,1,0,,
 ,2,0,"userb",0,2,0,,
-,3,0,"administratora",0,"1,2",0,"ExtbaseTeam\BlogExample\Domain\Model\Administrator",
-,4,0,"administratorb",0,"1,2",0,"ExtbaseTeam\BlogExample\Domain\Model\Administrator",
+,3,0,"administratora",0,"1,2",0,"TYPO3Tests\BlogExample\Domain\Model\Administrator",
+,4,0,"administratorb",0,"1,2",0,"TYPO3Tests\BlogExample\Domain\Model\Administrator",
 "sys_refindex",,,,,,,,
 ,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
 ,"001cd2e4390e0152274a1a31cabbf067","fe_users",1,"usergroup",0,0,"fe_groups",1
