@@ -1234,7 +1234,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $expressionMatcherVariables = [
             'request' => $request,
             'pageId' => $this->id,
-            'page' => $this->rootLine[array_key_first($this->rootLine)],
+            // @todo We're using the full page row here to provide all necessary fields (e.g. "backend_layout"),
+            //       which are currently not included in the rows, RootlineUtility provides by default. We might
+            //       want to switch to $this->rootline as soon as it contains all fields.
+            'page' => $this->page,
             'fullRootLine' => $topDownRootLine,
             'localRootLine' => $localRootline,
             'site' => $site,
