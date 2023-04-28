@@ -179,11 +179,9 @@ class Backend implements BackendInterface, SingletonInterface
     {
         if ($object instanceof LazyLoadingProxy) {
             $object = $object->_loadRealInstance();
-            if (!is_object($object)) {
-                return null;
-            }
         }
-        return $this->session->getIdentifierByObject($object);
+
+        return is_object($object) ? $this->session->getIdentifierByObject($object) : null;
     }
 
     /**
