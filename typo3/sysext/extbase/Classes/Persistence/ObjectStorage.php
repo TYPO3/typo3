@@ -305,7 +305,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Returns this object storage as an array.
      *
-     * @return array The object storage
+     * @return list<TEntity>
      */
     public function toArray()
     {
@@ -322,7 +322,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * for example dotted paths, e.g., `ObjectAccess::getPropertyPath($object, 'children.array.123')`
      * to get exactly the 123rd item in the `children` property which is an `ObjectStorage`.
      *
-     * @return array
+     * @return list<TEntity>
      */
     public function getArray()
     {
