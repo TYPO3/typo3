@@ -27,6 +27,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
+use TYPO3\CMS\Extbase\Persistence\Generic\Session;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -92,6 +93,20 @@ class BackendTest extends UnitTestCase
         $fixture->_set('dataMapFactory', $dataMapFactory);
         $fixture->_set('storageBackend', $storageBackend);
         $fixture->_call('insertRelationInRelationtable', $domainObject, $domainObject, '');
+    }
+
+    /**
+     * @test
+     */
+    public function getIdentifierByObjectWithStringInsteadOfObjectReturnsNull(): void
+    {
+        $session = $this->createMock(Session::class);
+        $session->expects(self::never())->method('getIdentifierByObject');
+
+        $backend = $this->getAccessibleMock(Backend::class, null, [$this->createMock(ConfigurationManagerInterface::class)], '', false);
+        $backend->_set('session', $session);
+
+        self::assertNull($backend->getIdentifierByObject('invalidObject'));
     }
 
     /**

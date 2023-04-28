@@ -2516,6 +2516,11 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
 
 		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectMonitoringInterface\\:\\:_isDirty\\(\\) invoked with 1 parameter, 0 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
@@ -2999,6 +3004,11 @@ parameters:
 			message: "#^Constructor of class t3lib_object_tests_cyclic2 has an unused parameter \\$c\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/testclasses/t3lib_object_tests_cyclic2.php
+
+		-
+			message: "#^Parameter \\#1 \\$object of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Backend\\:\\:getIdentifierByObject\\(\\) expects object, string given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/BackendTest.php
 
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with object will always evaluate to false\\.$#"
