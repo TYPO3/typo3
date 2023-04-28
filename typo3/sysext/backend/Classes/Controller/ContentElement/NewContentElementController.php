@@ -327,6 +327,7 @@ class NewContentElementController
                     break;
                 }
                 // Add the parameter:
+                $wizardItems[$key]['tt_content_defValues'][$fieldName] = $this->getLanguageService()->sL($value);
                 $tmp = explode('_', $key);
                 $headersUsed[$tmp[0]] = $tmp[0];
             }
