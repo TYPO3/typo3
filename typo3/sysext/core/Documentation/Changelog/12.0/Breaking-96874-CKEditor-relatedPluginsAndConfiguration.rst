@@ -36,23 +36,20 @@ or relying on a specific logic to save data with specific contents
 Migration
 =========
 
-In general, it is advised to read the CKEditor 4 to 5 migration to understand the
-conceptual changes, also related to plugins - read more here:
-https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/migration-from-ckeditor-4.html#plugins
+In general, it is advised to read the `CKEditor 4 to 5 migration <https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/migration-from-ckeditor-4.html#plugins>`__
+to understand the conceptual changes, also related to plugins.
 
 Writing a custom plugin for CKEditor 5 can be done in TypeScript or JavaScript,
-using the CKEditor5 plugin system [https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/plugins.html].
+using the `CKEditor5 plugin system <https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/plugins.html>`__.
 
-Example - A timestamp plugin which adds a toolbar item to add the current timestamp
-into the editor.
+Example - A timestamp plugin :js:`@my-vendor/my-package/timestamp-plugin.js`
+which adds a toolbar item to add the current timestamp into the editor.
 
 ..  code-block:: javascript
 
     import {Core, UI} from '@typo3/ckeditor5-bundle';
-
     import {EditorWithUI} from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
 
-    // @todo Remove this class, it's just used as test plugin
     export default class Timestamp extends Core.Plugin {
       static readonly pluginName = 'Timestamp';
 
