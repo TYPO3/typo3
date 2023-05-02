@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use TYPO3\TestEid\Eid\EidAutoResponder;
+use TYPO3Tests\TestEid\Eid\EidAutoResponder;
 
 defined('TYPO3') or die();
 

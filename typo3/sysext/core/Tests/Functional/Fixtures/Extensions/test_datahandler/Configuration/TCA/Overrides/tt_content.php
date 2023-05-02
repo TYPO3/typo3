@@ -45,7 +45,7 @@ defined('TYPO3') or die();
                 'items' => [
                     ['label' => 'predefined label', 'value' => 'predefined value'],
                 ],
-                'itemsProcFunc' => \TYPO3\TestDatahandler\Classes\Tca\SelectElementItems::class . '->getItems',
+                'itemsProcFunc' => \TYPO3Tests\TestDatahandler\Tca\SelectElementItems::class . '->getItems',
                 'minitems' => 1,
                 'maxitems' => 10,
                 'autoSizeMax' => 10,
@@ -72,7 +72,7 @@ defined('TYPO3') or die();
                 'items' => [
                     ['label' => 'predefined label', 'value' => 'predefined value'],
                 ],
-                'itemsProcFunc' => \TYPO3\TestDatahandler\Classes\Tca\RadioElementItems::class . '->getItems',
+                'itemsProcFunc' => \TYPO3Tests\TestDatahandler\Tca\RadioElementItems::class . '->getItems',
                 'default' => '',
             ],
         ],
@@ -84,7 +84,7 @@ defined('TYPO3') or die();
                 'items' => [
                     ['label' => 'predefined label'],
                 ],
-                'itemsProcFunc' => \TYPO3\TestDatahandler\Classes\Tca\CheckboxElementItems::class . '->getItems',
+                'itemsProcFunc' => \TYPO3Tests\TestDatahandler\Tca\CheckboxElementItems::class . '->getItems',
                 'default' => '',
             ],
         ],

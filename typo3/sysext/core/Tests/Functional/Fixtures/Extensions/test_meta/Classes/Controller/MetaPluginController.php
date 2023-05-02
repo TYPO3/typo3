@@ -15,11 +15,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\TestMeta\Controller;
+namespace TYPO3Tests\TestMeta\Controller;
 
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\TestMeta\PageTitle\CustomPageTitleProvider;
+use TYPO3Tests\TestMeta\PageTitle\CustomPageTitleProvider;
 
 class MetaPluginController
 {
@@ -37,6 +37,6 @@ class MetaPluginController
             [],
             true
         );
-        return 'TYPO3\CMS\TestMeta\Controller::setMetaData';
+        return 'TYPO3Tests\TestMeta\Controller::setMetaData';
     }
 }

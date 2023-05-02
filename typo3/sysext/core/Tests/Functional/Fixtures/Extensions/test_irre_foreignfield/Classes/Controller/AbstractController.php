@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\TestIrreForeignfield\Controller;
+namespace TYPO3Tests\TestIrreForeignfield\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\TestIrreForeignfield\Service\QueueService;
+use TYPO3Tests\TestIrreForeignfield\Service\QueueService;
 
 /**
  * ContentController

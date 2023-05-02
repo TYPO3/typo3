@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace OliverHader\IrreTutorial\Service;
+namespace TYPO3Tests\IrreTutorial\Service;
 
 use TYPO3\CMS\Core\SingletonInterface;
 

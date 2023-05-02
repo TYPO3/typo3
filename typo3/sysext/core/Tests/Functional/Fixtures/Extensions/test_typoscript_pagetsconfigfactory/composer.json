@@ -1,0 +1,19 @@
+{
+	"name": "typo3tests/test-typoscript-pagetsconfigfactory",
+	"type": "typo3-cms-extension",
+	"description": "A test extension for core",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "12.4.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_typoscript_pagetsconfigfactory"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestTyposcriptPagetsconfigfactory\\": "Classes/"
+		}
+	}
+}

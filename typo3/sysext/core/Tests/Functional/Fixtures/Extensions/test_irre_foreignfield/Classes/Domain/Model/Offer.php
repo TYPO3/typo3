@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\TestIrreForeignfield\Domain\Model;
+namespace TYPO3Tests\TestIrreForeignfield\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -33,7 +33,7 @@ class Offer extends AbstractEntity
 
     /**
      * @Extbase\ORM\Lazy
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\TestIrreForeignfield\Domain\Model\Offer>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3Tests\TestIrreForeignfield\Domain\Model\Offer>
      */
     protected $prices;
 

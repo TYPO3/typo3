@@ -69,9 +69,9 @@ final class PluginsTest extends AbstractTestCase
         $body = (string)$response->getBody();
         self::assertStringContainsString('<h1>MetaData-Test</h1>', $body);
         if ($expectPluginOutput) {
-            self::assertStringContainsString('TYPO3\CMS\TestMeta\Controller::setMetaData', $body);
+            self::assertStringContainsString('TYPO3Tests\TestMeta\Controller::setMetaData', $body);
         } else {
-            self::assertStringNotContainsString('TYPO3\CMS\TestMeta\Controller::setMetaData', $body);
+            self::assertStringNotContainsString('TYPO3Tests\TestMeta\Controller::setMetaData', $body);
         }
     }
 

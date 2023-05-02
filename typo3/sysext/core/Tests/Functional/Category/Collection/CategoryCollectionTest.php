@@ -30,7 +30,7 @@ final class CategoryCollectionTest extends FunctionalTestCase
     private $collectionRecord = [];
 
     protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Category/Collection/Fixtures/Extensions/test',
+        'typo3/sysext/core/Tests/Functional/Category/Collection/Fixtures/Extensions/test_tca',
     ];
 
     /**

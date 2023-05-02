@@ -15,10 +15,8 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace OliverHader\IrreTutorial\Controller;
+namespace TYPO3Tests\IrreTutorial\Controller;
 
-use OliverHader\IrreTutorial\Domain\Repository\ContentRepository;
-use OliverHader\IrreTutorial\Service\QueueService;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Stream;
@@ -27,6 +25,8 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3Tests\IrreTutorial\Domain\Repository\ContentRepository;
+use TYPO3Tests\IrreTutorial\Service\QueueService;
 
 /**
  * ContentController
