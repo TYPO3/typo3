@@ -20,12 +20,7 @@ $EM_CONF[$_EXTKEY] = [
     ],
     'autoload' => [
         'psr-4' => [
-            'TYPO3Fluid\\FluidTest\\' => 'Classes',
-        ],
-    ],
-    'autoload-dev' => [
-        'psr-4' => [
-            'TYPO3Fluid\\FluidTest\\Tests\\' => 'Tests',
+            'TYPO3Tests\\FluidTest\\' => 'Classes',
         ],
     ],
 ];

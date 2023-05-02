@@ -15,11 +15,8 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3Fluid\FluidTest\ViewHelpers;
+namespace TYPO3Tests\FluidTest\ViewHelpers;
 
-/**
- * Class EscapeChildrenDisabledAndEscapeOutputDisabledViewHelper
- */
 class EscapeChildrenDisabledAndEscapeOutputDisabledViewHelper extends AbstractEscapingBaseViewHelper
 {
     protected $escapeChildren = false;

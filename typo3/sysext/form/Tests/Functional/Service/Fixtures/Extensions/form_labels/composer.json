@@ -1,19 +1,14 @@
 {
-	"name": "typo3tests/cms-form-caching-tests",
+	"name": "typo3tests/test-form-labels",
 	"type": "typo3-cms-extension",
 	"description": "",
 	"license": ["GPL-2.0-or-later"],
 	"require": {
 		"typo3/cms-core": "13.0.*@dev"
 	},
-	"autoload": {
-		"psr-4": {
-			"TYPO3Tests\\FormCachingTests\\": "Classes/"
-		}
-	},
 	"extra": {
 		"typo3/cms": {
-			"extension-key": "form_caching_tests"
+			"extension-key": "form_labels"
 		}
 	}
 }

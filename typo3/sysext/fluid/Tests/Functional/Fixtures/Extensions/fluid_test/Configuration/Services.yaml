@@ -4,5 +4,5 @@ services:
     autoconfigure: true
     public: false
 
-  TYPO3Fluid\FluidTest\:
+  TYPO3Tests\FluidTest\:
     resource: '../Classes/*'

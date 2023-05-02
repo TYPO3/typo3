@@ -1,16 +1,19 @@
 {
-    "name": "typo3/fixture-fluid-test",
-    "type": "typo3-cms-extension",
-    "description": "Some Fluid rendering tests",
-    "license": "GPL-2.0-or-later",
-    "autoload": {
-        "psr-4": {
-            "TYPO3Fluid\\FluidTest\\": "Classes"
-        }
-    },
-    "extra": {
-        "typo3/cms": {
-            "extension-key": "fluid_test"
-        }
-    }
+	"name": "typo3tests/fixture-fluid-test",
+	"type": "typo3-cms-extension",
+	"description": "Some Fluid rendering tests",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "13.0.*@dev"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\FluidTest\\": "Classes"
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "fluid_test"
+		}
+	}
 }

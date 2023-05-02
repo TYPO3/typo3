@@ -123,7 +123,7 @@ final class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($viewHelperTemplate);
-        $context->getViewHelperResolver()->addNamespace('ft', 'TYPO3Fluid\\FluidTest\\ViewHelpers');
+        $context->getViewHelperResolver()->addNamespace('ft', 'TYPO3Tests\\FluidTest\\ViewHelpers');
         $view = new TemplateView($context);
         $view->assign('settings', ['test' => '<strong>Bla</strong>']);
         self::assertSame($expectedOutput, $view->render());
