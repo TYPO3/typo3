@@ -1,0 +1,19 @@
+{
+	"name": "typo3tests/test-request-mirror",
+	"type": "typo3-cms-extension",
+	"description": "a fixture extension for fluid functional tests",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "12.4.*@dev"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\RequestMirror\\": "Classes"
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_request_mirror"
+		}
+	}
+}

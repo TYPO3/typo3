@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
-use TYPO3\CMS\FormCachingTests\Controller\FormCachingTestsController;
+use TYPO3Tests\FormCachingTests\Controller\FormCachingTestsController;
 
 defined('TYPO3') or die();
 
