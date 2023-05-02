@@ -44,7 +44,10 @@ class UriBuilder
 
     protected ExtensionService $extensionService;
 
-    protected ContentObjectRenderer $contentObject;
+    /**
+     * @deprecated Remove nullable in v13
+     */
+    protected ?ContentObjectRenderer $contentObject = null;
 
     protected ?RequestInterface $request = null;
 
@@ -676,7 +679,26 @@ class UriBuilder
                 $typolinkConfiguration['forceAbsoluteUrl.']['scheme'] = $this->absoluteUriScheme;
             }
         }
-        return $this->contentObject->createUrl($typolinkConfiguration);
+        return $this->getContentObject()->createUrl($typolinkConfiguration);
+    }
+
+    /**
+     * @deprecated Remove in v13 when contentObject is no longer nullable
+     */
+    protected function getContentObject(): ContentObjectRenderer
+    {
+        if ($this->contentObject !== null) {
+            return $this->contentObject;
+        }
+
+        trigger_error(
+            __CLASS__ . ' relies on the current content object which should be initialized by calling ->setRequest(). The automatic fallback will be removed with TYPO3 v13.',
+            E_USER_DEPRECATED
+        );
+
+        return ($contentObject = $this->getRequest()?->getArgument('currentContentObject')) instanceof ContentObjectRenderer
+            ? $contentObject
+            : GeneralUtility::makeInstance(ContentObjectRenderer::class);
     }
 
     /**

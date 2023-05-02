@@ -22,6 +22,12 @@ Impact
 Using the :php:`UriBuilder` class of Extbase without a local
 request object will trigger a PHP deprecation warning.
 
+Additionally, when using the :php:`UriBuilder` to build frontend URLs, the
+current content object is required. It is initialized from the handed in local
+request object. This means, in case extensions do set the request object,
+a automatic fallback is applied in v12, triggering a PHP deprecation warning, as
+it will be removed in v13, too.
+
 
 Affected installations
 ======================
