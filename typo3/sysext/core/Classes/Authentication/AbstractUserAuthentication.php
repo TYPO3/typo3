@@ -297,10 +297,14 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $this->checkAuthentication($request);
         } catch (MfaRequiredException $mfaRequiredException) {
             // Ensure the cookie is still set to keep the user session available
-            $this->setSessionCookie();
+            if ($this->shallSetSessionCookie()) {
+                $this->setSessionCookie();
+            }
             throw $mfaRequiredException;
         }
-        $this->setSessionCookie();
+        if ($this->shallSetSessionCookie()) {
+            $this->setSessionCookie();
+        }
         // Hook for alternative ways of filling the $this->user array (is used by the "timtaw" extension)
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'] ?? [] as $funcName) {
             $_params = [
@@ -340,17 +344,23 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
-     * Sets the setCookie directive to "Send" if generally enabled or if the current
-     * session is a non-session cookie (FE permalogin). This will then result in
-     * appending a new cookie to the PSR-7 response, see appendCookieToResponse().
+     * Sets the setCookie directive to "Send", which will then result in appending
+     * a new cookie to the PSR-7 response, see appendCookieToResponse().
+     * In case this method is called, the cookie needs to be set later.
      */
     protected function setSessionCookie()
     {
-        if (!$this->dontSetCookie
-            || SetCookieService::create($this->name, $this->loginType)->isRefreshTimeBasedCookie($this->userSession)
-        ) {
-            $this->setCookie = SetCookieBehavior::Send;
-        }
+        $this->setCookie = SetCookieBehavior::Send;
+    }
+
+    /**
+     * Determines whether setting the session cookie is generally enabled,
+     * or the current session is a non-session cookie (FE permalogin).
+     */
+    protected function shallSetSessionCookie(): bool
+    {
+        return !$this->dontSetCookie
+            || SetCookieService::create($this->name, $this->loginType)->isRefreshTimeBasedCookie($this->userSession);
     }
 
     /**
