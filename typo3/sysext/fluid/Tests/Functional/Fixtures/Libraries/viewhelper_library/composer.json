@@ -1,0 +1,11 @@
+{
+	"name": "typo3tests/viewhelper-library",
+	"description": "Standalone library to test viewhelpers without dependency injection",
+	"license": "GPL-2.0-or-later",
+	"type": "library",
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\ViewhelperLibrary\\": "src/"
+		}
+	}
+}
