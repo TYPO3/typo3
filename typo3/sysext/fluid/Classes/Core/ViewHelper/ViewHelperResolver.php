@@ -95,8 +95,13 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
             return $viewHelperInstance;
         }
 
-        /** @var ViewHelperInterface $viewHelperInstance */
-        $viewHelperInstance = $this->container->get($viewHelperClassName);
+        if ($this->container->has($viewHelperClassName)) {
+            /** @var ViewHelperInterface $viewHelperInstance */
+            $viewHelperInstance = $this->container->get($viewHelperClassName);
+        } else {
+            /** @var ViewHelperInterface $viewHelperInstance */
+            $viewHelperInstance = new $viewHelperClassName();
+        }
         return $viewHelperInstance;
     }
 
