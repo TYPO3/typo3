@@ -1,7 +1,7 @@
 # Fully cached page, two cached plugins
 config.pageTitleProviders {
   testMetaProvider {
-    provider = TYPO3\CMS\TestMeta\PageTitle\CustomPageTitleProvider
+    provider = TYPO3Tests\TestMeta\PageTitle\CustomPageTitleProvider
     before = record
   }
 }
@@ -13,13 +13,13 @@ page.5.stdWrap.wrap = <h1>|</h1>
 
 page.10 = USER
 page.10 {
-  userFunc = TYPO3\CMS\TestMeta\Controller\MetaPluginController->setMetaData
+  userFunc = TYPO3Tests\TestMeta\Controller\MetaPluginController->setMetaData
   pluginNumber = 10
   setTitle = 1
 }
 page.20 = USER
 page.20 {
-  userFunc = TYPO3\CMS\TestMeta\Controller\MetaPluginController->setMetaData
+  userFunc = TYPO3Tests\TestMeta\Controller\MetaPluginController->setMetaData
   pluginNumber = 20
   setTitle = 1
 }

@@ -4,5 +4,6 @@ services:
     autoconfigure: true
     public: false
 
-  TYPO3Tests\IrreTutorial\:
+  TYPO3Tests\TestMeta\:
     resource: '../Classes/*'
+

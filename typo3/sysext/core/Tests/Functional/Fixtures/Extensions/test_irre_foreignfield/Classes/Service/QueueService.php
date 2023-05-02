@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\TestIrreForeignfield\Service;
+namespace TYPO3Tests\TestIrreForeignfield\Service;
 
 use TYPO3\CMS\Core\SingletonInterface;
 

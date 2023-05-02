@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
-use TYPO3\TestIrreForeignfield\Controller\ContentController;
-use TYPO3\TestIrreForeignfield\Controller\QueueController;
+use TYPO3Tests\TestIrreForeignfield\Controller\ContentController;
+use TYPO3Tests\TestIrreForeignfield\Controller\QueueController;
 
 defined('TYPO3') or die();
 

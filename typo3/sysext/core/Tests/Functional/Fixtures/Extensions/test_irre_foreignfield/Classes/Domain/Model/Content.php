@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\TestIrreForeignfield\Domain\Model;
+namespace TYPO3Tests\TestIrreForeignfield\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -31,7 +31,7 @@ class Content extends AbstractEntity
     protected $header = '';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\TestIrreForeignfield\Domain\Model\Hotel>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3Tests\TestIrreForeignfield\Domain\Model\Hotel>
      */
     protected $hotels;
 

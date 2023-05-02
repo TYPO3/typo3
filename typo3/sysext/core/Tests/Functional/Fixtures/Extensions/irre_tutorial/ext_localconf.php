@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use OliverHader\IrreTutorial\Controller\QueueController;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3Tests\IrreTutorial\Controller\QueueController;
 
 defined('TYPO3') or die();
 

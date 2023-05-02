@@ -1,10 +1,10 @@
 <?php
 
 declare(strict_types=1);
-use TYPO3\TestIrreForeignfield\Domain\Model\Content;
-use TYPO3\TestIrreForeignfield\Domain\Model\Hotel;
-use TYPO3\TestIrreForeignfield\Domain\Model\Offer;
-use TYPO3\TestIrreForeignfield\Domain\Model\Price;
+use TYPO3Tests\TestIrreForeignfield\Domain\Model\Content;
+use TYPO3Tests\TestIrreForeignfield\Domain\Model\Hotel;
+use TYPO3Tests\TestIrreForeignfield\Domain\Model\Offer;
+use TYPO3Tests\TestIrreForeignfield\Domain\Model\Price;
 
 return [
     Content::class => [

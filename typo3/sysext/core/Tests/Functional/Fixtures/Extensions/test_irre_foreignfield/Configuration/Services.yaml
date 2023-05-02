@@ -4,6 +4,6 @@ services:
     autoconfigure: true
     public: false
 
-  TYPO3\TestIrreForeignfield\:
+  TYPO3Tests\TestIrreForeignfield\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/Model'
