@@ -3,7 +3,7 @@ annotations php 8.1 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "12.4"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s checkAnnotations -p 8.1
@@ -13,7 +13,7 @@ cgl pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "12.4"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s cglGit -n -p 8.1
@@ -24,7 +24,7 @@ grunt clean pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "12.4"
   cache:
     key: 12.4-js
     paths:
@@ -37,7 +37,7 @@ integration various pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "12.4"
   cache:
     key: 12.4-composer-phpmixed
     paths:
@@ -63,7 +63,7 @@ lint scss ts html pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "12.4"
   cache:
     key: 12.4-js
     paths:
@@ -78,7 +78,7 @@ phpstan php 8.1 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "12.4"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s phpstan -p 8.1
