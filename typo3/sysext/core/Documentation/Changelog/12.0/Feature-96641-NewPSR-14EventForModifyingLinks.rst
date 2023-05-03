@@ -62,7 +62,7 @@ The corresponding event listener class:
     {
         public function __invoke(AfterLinkIsGeneratedEvent $event): void
         {
-            $linkResult = $event->getLinkResult()->withAttribute('data-enable-lightbox', true);
+            $linkResult = $event->getLinkResult()->withAttribute('data-enable-lightbox', 'true');
             $event->setLinkResult($linkResult);
         }
     }
