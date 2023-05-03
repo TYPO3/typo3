@@ -44,7 +44,7 @@ final class UpgradeCest extends AbstractCest
 
     public function seeViewUpgradeDocumentation(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $versionPanel = '#version-1 .t3js-changelog-list > div:first-child';
+        $versionPanel = '#version-2 .t3js-changelog-list > div:first-child';
 
         $I->click('View Upgrade Documentation');
         $modalDialog->canSeeDialog();
@@ -53,16 +53,16 @@ final class UpgradeCest extends AbstractCest
         $I->see('View Upgrade Documentation', ModalDialog::$openedModalSelector);
 
         $I->amGoingTo('mark an item as read');
-        // pick first named version, master might be empty
-        $I->click('#heading-1 > h2:nth-child(1) > a:nth-child(1) > strong:nth-child(2)');
-        $I->waitForElement('#version-1', 5, ModalDialog::$openedModalSelector);
+        // pick 2nd named version (e.g. `12.4`), current dev versions might be empty (e.g. `13.0` and `12.4.x`)
+        $I->click('#heading-2 > h2:nth-child(1) > a:nth-child(1) > strong:nth-child(2)');
+        $I->waitForElement('#version-2', 5, ModalDialog::$openedModalSelector);
 
         $textCurrentFirstPanelHeading = $I->grabTextFrom($versionPanel . ' .panel-heading');
 
         $I->click($versionPanel . ' a[data-bs-toggle="collapse"]');
         $I->click($versionPanel . ' .t3js-upgradeDocs-markRead');
 
-        $I->dontSee($textCurrentFirstPanelHeading, '#version-1');
+        $I->dontSee($textCurrentFirstPanelHeading, '#version-2');
 
         $I->amGoingTo('mark an item as unread');
         $I->executeJS('document.querySelector(".t3js-modal-body").scrollTop = 100000;');
@@ -70,7 +70,7 @@ final class UpgradeCest extends AbstractCest
         $I->waitForElement('#collapseRead', 5, ModalDialog::$openedModalSelector);
         $I->see($textCurrentFirstPanelHeading, '#collapseRead');
         $I->click('#collapseRead .t3js-changelog-list > div:first-child .t3js-upgradeDocs-unmarkRead');
-        $I->see($textCurrentFirstPanelHeading, '#version-1');
+        $I->see($textCurrentFirstPanelHeading, '#version-2');
 
         $I->click('.t3js-modal-close');
     }

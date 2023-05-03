@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d826a06da83c04fc7e4a57ad3fd0d42",
+    "content-hash": "9803a8acd3e5294c2818e46aa925a45a",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8902,7 +8902,7 @@
             ],
             "support": {
                 "issues": "https://github.com/TYPO3/styleguide/issues",
-                "source": "https://github.com/TYPO3/styleguide/tree/main"
+                "source": "https://github.com/TYPO3/styleguide/tree/12.0.0"
             },
             "time": "2023-04-25T14:06:57+00:00"
         },
@@ -8926,12 +8926,12 @@
                 "php": "^8.1",
                 "phpunit/phpunit": "^10.1",
                 "psr/container": "^1.1.0 || ^2.0.0",
-                "typo3/cms-backend": "12.*.*@dev",
-                "typo3/cms-core": "12.*.*@dev",
-                "typo3/cms-extbase": "12.*.*@dev",
-                "typo3/cms-fluid": "12.*.*@dev",
-                "typo3/cms-frontend": "12.*.*@dev",
-                "typo3/cms-install": "12.*.*@dev"
+                "typo3/cms-backend": "12.*.*@dev || 13.*.*@dev",
+                "typo3/cms-core": "12.*.*@dev || 13.*.*@dev",
+                "typo3/cms-extbase": "12.*.*@dev || 13.*.*@dev",
+                "typo3/cms-fluid": "12.*.*@dev || 13.*.*@dev",
+                "typo3/cms-frontend": "12.*.*@dev || 13.*.*@dev",
+                "typo3/cms-install": "12.*.*@dev || 13.*.*@dev"
             },
             "replace": {
                 "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "*"
@@ -8940,7 +8940,7 @@
                 "friendsofphp/php-cs-fixer": "^3.11.0",
                 "phpstan/phpstan": "^1.9.2",
                 "phpstan/phpstan-phpunit": "^1.1.1",
-                "typo3/cms-workspaces": "12.*.*@dev"
+                "typo3/cms-workspaces": "12.*.*@dev || 13.*.*@dev"
             },
             "default-branch": true,
             "type": "library",
@@ -8977,7 +8977,7 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/8.0.0"
+                "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
             "time": "2023-04-25T12:42:00+00:00"
         }

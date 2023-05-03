@@ -4,10 +4,10 @@
 	"description": "A test extension for site config override",
 	"license": "GPL-2.0-or-later",
 	"require": {
-		"typo3/cms-core": "12.4.*@dev"
+		"typo3/cms-core": "13.0.*@dev"
 	},
 	"suggest": {
-		"typo3tests/config-override-first": "12.4.*@dev"
+		"typo3tests/config-override-first": "13.0.*@dev"
 	},
 	"extra": {
 		"typo3/cms": {
