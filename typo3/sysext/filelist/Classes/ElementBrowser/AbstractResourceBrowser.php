@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -108,7 +109,10 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
 
         // Select folder
         if ($this->expandFolder) {
-            $this->selectedFolder = $resourceFactory->getFolderObjectFromCombinedIdentifier($this->expandFolder);
+            try {
+                $this->selectedFolder = $resourceFactory->getFolderObjectFromCombinedIdentifier($this->expandFolder);
+            } catch (FolderDoesNotExistException $e) {
+            }
         }
 
         if (!$this->selectedFolder) {
