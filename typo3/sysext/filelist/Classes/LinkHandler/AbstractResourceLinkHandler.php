@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -175,7 +176,10 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
             }
         }
         if ($this->expandFolder) {
-            $this->selectedFolder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($this->expandFolder);
+            try {
+                $this->selectedFolder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($this->expandFolder);
+            } catch (FolderDoesNotExistException $e) {
+            }
         }
         if (!$this->selectedFolder) {
             $this->selectedFolder = $this->resourceFactory->getDefaultStorage()?->getRootLevelFolder() ?? null;
