@@ -26,7 +26,7 @@ grunt clean pre-merge:
       - schedules
       - main
   cache:
-    key: main-js
+    key: 12.4-js
     paths:
       - .cache
   script:
@@ -39,7 +39,7 @@ integration various pre-merge:
       - schedules
       - main
   cache:
-    key: main-composer-phpmixed
+    key: 12.4-composer-phpmixed
     paths:
       - .cache
   script:
@@ -65,7 +65,7 @@ lint scss ts html pre-merge:
       - schedules
       - main
   cache:
-    key: main-js
+    key: 12.4-js
     paths:
       - .cache
   script:

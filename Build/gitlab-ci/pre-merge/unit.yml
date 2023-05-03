@@ -5,7 +5,7 @@ unit javascript pre-merge:
       - schedules
       - main
   cache:
-    key: main-composer-js
+    key: 12.4-composer-js
     paths:
       - .cache
   script:

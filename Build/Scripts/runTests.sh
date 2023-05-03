@@ -13,6 +13,7 @@ setUpDockerComposeDotEnv() {
     # Set up a new .env file for docker-compose
     {
         echo "COMPOSE_PROJECT_NAME=local"
+        echo "COMPOSER_ROOT_VERSION=\"12.4.x-dev\""
         # To prevent access rights of files created by the testing, the docker image later
         # runs with the same user that is currently executing the script. docker-compose can't
         # use $UID directly itself since it is a shell variable and not an env variable, so

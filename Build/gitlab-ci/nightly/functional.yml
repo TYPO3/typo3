@@ -4,7 +4,7 @@ functional deprecated mariadb 10.10 php 8.2 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.4-composer-max
     paths:
       - .cache
   script:
@@ -16,7 +16,7 @@ functional deprecated mariadb 10.3 php 8.1 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 12.4-composer-min
     paths:
       - .cache
   script:
@@ -29,7 +29,7 @@ functional deprecated mysql 8.0 php 8.2 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.4-composer-max
     paths:
       - .cache
   script:
@@ -41,7 +41,7 @@ functional deprecated mysql 8.0 php 8.1 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 12.4-composer-min
     paths:
       - .cache
   script:
@@ -54,7 +54,7 @@ functional deprecated postgres 15 php 8.2 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.4-composer-max
     paths:
       - .cache
   script:
@@ -66,7 +66,7 @@ functional deprecated postgres 10 php 8.1 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 12.4-composer-min
     paths:
       - .cache
   script:
@@ -79,7 +79,7 @@ functional deprecated sqlite php 8.2 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.4-composer-max
     paths:
       - .cache
   script:
@@ -91,7 +91,7 @@ functional deprecated sqlite php 8.1 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 12.4-composer-min
     paths:
       - .cache
   script:
@@ -104,7 +104,7 @@ functional mariadb 10.10 php 8.2 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.4-composer-max
     paths:
       - .cache
   parallel: 6
@@ -117,7 +117,7 @@ functional mariadb 10.3 php 8.1 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 12.4-composer-min
     paths:
       - .cache
   parallel: 6
@@ -131,7 +131,7 @@ functional mysql 8.0 php 8.2 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.4-composer-max
     paths:
       - .cache
   parallel: 6
@@ -144,7 +144,7 @@ functional mysql 8.0 php 8.1 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 12.4-composer-min
     paths:
       - .cache
   parallel: 6
@@ -158,7 +158,7 @@ functional postgres 15 php 8.2 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.4-composer-max
     paths:
       - .cache
   parallel: 6
@@ -171,7 +171,7 @@ functional postgres 10 php 8.1 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 12.4-composer-min
     paths:
       - .cache
   parallel: 6
@@ -185,7 +185,7 @@ functional sqlite php 8.2 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.4-composer-max
     paths:
       - .cache
   parallel: 6
@@ -198,7 +198,7 @@ functional sqlite php 8.1 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 12.4-composer-min
     paths:
       - .cache
   parallel: 6
