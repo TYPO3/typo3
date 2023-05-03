@@ -1,7 +1,11 @@
 <div class="t3-page-ce-header row m-0 g-0 {f:if(condition: '{allowEditContent} && {item.dragAndDropAllowed}', then: 't3-page-ce-header-draggable t3js-page-ce-draghandle')}">
     <div class="col t3-page-ce-header-icons-left">
         {item.icons -> f:format.raw()}
-        <span class="t3js-flag" title="{item.siteLanguage.title}"><core:icon identifier="{item.siteLanguage.flagIdentifier}" /></span>
+        <f:if condition="{item.siteLanguage.flagIdentifier}">
+            <span class="t3js-flag" title="{item.siteLanguage.title}">
+                <core:icon identifier="{item.siteLanguage.flagIdentifier}" />
+            </span>
+        </f:if>
     </div>
     <div class="col-auto align-self-end t3-page-ce-header-icons-right">
         <f:if condition="{item.editable} && {allowEditContent}">
