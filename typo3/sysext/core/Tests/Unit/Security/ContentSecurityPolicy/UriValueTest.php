@@ -40,6 +40,7 @@ final class UriValueTest extends UnitTestCase
         yield ['//www.typo3.org'];
         yield ['www.typo3.org'];
         yield ['*.typo3.org'];
+        yield ['*'];
 
         // expected behavior, falls back to upstream parser´
         // (since e.g. query-param is given, which is not expected here in the scope of CSP with `UriValue`)
@@ -83,6 +84,7 @@ final class UriValueTest extends UnitTestCase
         yield ['example.com/path', 'example.com/path', true];
         yield ['example.com/path', 'example.com/other', false];
         yield ['*.example.com', '*.example.com', true];
+        yield ['*', '*.example.com', true];
 
         yield ['https://example.com/', 'https://example.com/path/file.css', true];
         yield ['example.com', 'https://example.com/path/file.css', true];
@@ -94,6 +96,7 @@ final class UriValueTest extends UnitTestCase
         yield ['*.sub.example.com', 'example.com', false];
         yield ['sub.example.com', '*.example.com', false];
         yield ['*.sub.example.com', '*.example.com', false];
+        yield ['*.example.com', '*', false];
     }
 
     /**
