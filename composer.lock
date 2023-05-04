@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d826a06da83c04fc7e4a57ad3fd0d42",
+    "content-hash": "6f547f49237b2cebafea52cc22ee63a6",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8836,16 +8836,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "dev-main",
+            "version": "12.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "ad141e12d28313637314fd0528a3ffcc31b95718"
+                "reference": "547fb4a75208d7b666683b5fb792e4afcf6a154b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/ad141e12d28313637314fd0528a3ffcc31b95718",
-                "reference": "ad141e12d28313637314fd0528a3ffcc31b95718",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/547fb4a75208d7b666683b5fb792e4afcf6a154b",
+                "reference": "547fb4a75208d7b666683b5fb792e4afcf6a154b",
                 "shasum": ""
             },
             "require-dev": {
@@ -8860,7 +8860,6 @@
                 "typo3/cms-install": "~12.4@dev",
                 "typo3/testing-framework": "^8.0"
             },
-            "default-branch": true,
             "type": "typo3-cms-extension",
             "extra": {
                 "typo3/cms": {
@@ -8902,13 +8901,13 @@
             ],
             "support": {
                 "issues": "https://github.com/TYPO3/styleguide/issues",
-                "source": "https://github.com/TYPO3/styleguide/tree/main"
+                "source": "https://github.com/TYPO3/styleguide/tree/12.0.0"
             },
-            "time": "2023-04-25T14:06:57+00:00"
+            "time": "2023-04-25T14:11:00+00:00"
         },
         {
             "name": "typo3/testing-framework",
-            "version": "dev-main",
+            "version": "8.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
@@ -8942,7 +8941,6 @@
                 "phpstan/phpstan-phpunit": "^1.1.1",
                 "typo3/cms-workspaces": "12.*.*@dev"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -8984,10 +8982,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "typo3/cms-styleguide": 20,
-        "typo3/testing-framework": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
