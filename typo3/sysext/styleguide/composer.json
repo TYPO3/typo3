@@ -46,10 +46,10 @@
         "codeception/module-webdriver": "^4.0",
         "friendsofphp/php-cs-fixer": "^3.16.0",
         "phpstan/phpstan": "^1.10.14",
-        "typo3/cms-core": "~12.4@dev",
-        "typo3/cms-frontend": "~12.4@dev",
-        "typo3/cms-install": "~12.4@dev",
-        "typo3/testing-framework": "^8.0"
+        "typo3/cms-core": "~13.0@dev",
+        "typo3/cms-frontend": "~13.0@dev",
+        "typo3/cms-install": "~13.0@dev",
+        "typo3/testing-framework": "dev-main"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -65,7 +65,7 @@
             "extension-key": "styleguide"
         },
         "branch-alias": {
-            "dev-main": "12.x.x-dev"
+            "dev-main": "13.x.x-dev"
         }
     }
 }
