@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Http\Uri;
 final class UriValue extends Uri implements \Stringable, EqualityInterface, CoveringInterface, SourceInterface
 {
     private string $domainName = '';
+    private bool $entireWildcard = false;
     private bool $domainWildcard = false;
 
     public static function fromUri(UriInterface $other): self
@@ -37,6 +38,9 @@ final class UriValue extends Uri implements \Stringable, EqualityInterface, Cove
 
     public function __toString(): string
     {
+        if ($this->entireWildcard) {
+            return '*';
+        }
         if ($this->domainName !== '') {
             return ($this->domainWildcard ? '*.' : '') . $this->domainName;
         }
@@ -52,6 +56,10 @@ final class UriValue extends Uri implements \Stringable, EqualityInterface, Cove
     {
         if (!$other instanceof self) {
             return false;
+        }
+        // `*` matches anything
+        if ($this->entireWildcard) {
+            return true;
         }
         // `*.example.com` or `example.com`
         if ($this->domainName !== '') {
@@ -87,6 +95,10 @@ final class UriValue extends Uri implements \Stringable, EqualityInterface, Cove
 
     protected function parseUri(string $uri): void
     {
+        if ($uri === '*') {
+            $this->entireWildcard = true;
+            return;
+        }
         parent::parseUri($uri);
         // ignore fragments per default
         $this->fragment = '';
