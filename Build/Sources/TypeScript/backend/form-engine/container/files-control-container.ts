@@ -139,7 +139,7 @@ class FilesControlContainer extends HTMLElement {
 
   public connectedCallback(): void {
     const identifier = this.getAttribute('identifier') || '' as string;
-    this.container = <HTMLElement>this.querySelector('#' + identifier);
+    this.container = <HTMLElement>this.querySelector('[id=\'' + identifier + '\']');
 
     if (this.container !== null) {
       this.ajaxDispatcher = new AjaxDispatcher(this.container.dataset.objectGroup);
