@@ -123,7 +123,7 @@ fieldset[disabled] .form-control {
 // Form group validation states
 //
 .form-group.has-error {
-    .form-label:before {
+    > .form-label:before {
         @include icon-background($icon-actions-exclamation-circle, $danger);
         border-radius: 50%;
         width: 14px;
