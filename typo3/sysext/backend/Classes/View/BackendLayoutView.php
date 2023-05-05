@@ -109,7 +109,7 @@ class BackendLayoutView implements SingletonInterface
      */
     protected function determinePageId($tableName, array $data)
     {
-        if (str_starts_with($data['uid'], 'NEW')) {
+        if (str_starts_with((string)$data['uid'], 'NEW')) {
             // negative uid_pid values of content elements indicate that the element
             // has been inserted after an existing element so there is no pid to get
             // the backendLayout for and we have to get that first
