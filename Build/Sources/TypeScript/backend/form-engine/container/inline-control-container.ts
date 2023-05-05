@@ -97,7 +97,7 @@ class InlineControlContainer {
   private ajaxDispatcher: AjaxDispatcher = null;
   private appearance: Appearance = null;
   private requestQueue: RequestQueue = {};
-  private progessQueue: ProgressQueue = {};
+  private progressQueue: ProgressQueue = {};
   private noTitleString: string = (TYPO3.lang ? TYPO3.lang['FormEngine.noRecordTitle'] : '[No title]');
 
   /**
@@ -567,7 +567,7 @@ class InlineControlContainer {
 
         request.then(async (response: InlineResponseInterface): Promise<void> => {
           delete this.requestQueue[objectId];
-          delete this.progessQueue[objectId];
+          delete this.progressQueue[objectId];
 
           recordContainer.classList.remove(States.notLoaded);
           recordFieldsContainer.innerHTML = response.data;
@@ -591,7 +591,7 @@ class InlineControlContainer {
         // Abort loading if collapsed again
         this.requestQueue[objectId].abort();
         delete this.requestQueue[objectId];
-        delete this.progessQueue[objectId];
+        delete this.progressQueue[objectId];
         progress.done();
       }
 
@@ -813,12 +813,12 @@ class InlineControlContainer {
     const headerIdentifier = '#' + objectIdHash + '_header';
     let progress: any;
 
-    if (typeof this.progessQueue[objectId] !== 'undefined') {
-      progress = this.progessQueue[objectId];
+    if (typeof this.progressQueue[objectId] !== 'undefined') {
+      progress = this.progressQueue[objectId];
     } else {
       progress = NProgress;
       progress.configure({ parent: headerIdentifier, showSpinner: false });
-      this.progessQueue[objectId] = progress;
+      this.progressQueue[objectId] = progress;
     }
 
     return progress;
