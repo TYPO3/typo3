@@ -129,7 +129,7 @@ fieldset[disabled] .form-control {
 // Form group validation states
 //
 .form-group.has-error {
-    label:before {
+    > label:before {
         font-family: FontAwesome;
         font-size: 12px;
         text-align: center;
