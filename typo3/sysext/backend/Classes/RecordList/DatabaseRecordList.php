@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -1516,7 +1518,7 @@ class DatabaseRecordList
                                 $titleLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newPage');
                             }
                         }
-                        $newLink = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
+                        $newLink = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
                         $newAction = '<a class="btn btn-default" href="' . htmlspecialchars($newLink) . '" title="' . htmlspecialchars($titleLabel) . '">'
                             . $icon->render() . '</a>';
                         $this->addActionToCellGroup($cells, $newAction, 'new');
@@ -1953,7 +1955,7 @@ class DatabaseRecordList
 
         $lang = $this->getLanguageService();
         $tableIdentifier = $table . (($table === 'pages' && $this->showOnlyTranslatedRecords) ? '_translated' : '');
-        $columnSelectorUrl = $this->uriBuilder->buildUriFromRoute(
+        $columnSelectorUrl = (string)$this->uriBuilder->buildUriFromRoute(
             'ajax_show_columns_selector',
             ['id' => $this->id, 'table' => $table]
         );
@@ -2505,7 +2507,7 @@ class DatabaseRecordList
             return '0=1';
         }
 
-        return $expressionBuilder->or(...$constraints);
+        return (string)$expressionBuilder->or(...$constraints);
     }
 
     /**
@@ -2568,7 +2570,7 @@ class DatabaseRecordList
                         ],
                         'returnUrl' => $this->listURL(),
                     ];
-                    $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
+                    $editLink = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
                     $label = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit'));
                     $code = '<a href="' . htmlspecialchars($editLink) . '"'
                         . ' title="' . $label . '"'
