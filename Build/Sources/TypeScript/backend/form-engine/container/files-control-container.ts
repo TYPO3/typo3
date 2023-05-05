@@ -80,68 +80,18 @@ interface Appearance {
  */
 class FilesControlContainer extends HTMLElement {
   private container: HTMLElement = null;
+  private recordsContainer: HTMLDivElement = null;
   private ajaxDispatcher: AjaxDispatcher = null;
   private appearance: Appearance = null;
   private requestQueue: RequestQueue = {};
   private progressQueue: ProgressQueue = {};
-  private noTitleString: string = (TYPO3.lang ? TYPO3.lang['FormEngine.noRecordTitle'] : '[No title]');
-
-  private static getFileReferenceContainer(objectId: string): HTMLDivElement {
-    return <HTMLDivElement>document.querySelector('[data-object-id="' + objectId + '"]');
-  }
-
-  private static getCollapseButton(objectId: string): HTMLButtonElement {
-    return <HTMLButtonElement>document.querySelector('[aria-controls="' + objectId + '_fields"]');
-  }
-
-  private static toggleElement(objectId: string): void {
-    const fileReferenceContainer = FilesControlContainer.getFileReferenceContainer(objectId);
-    if (fileReferenceContainer.classList.contains(States.collapsed)) {
-      FilesControlContainer.expandElement(fileReferenceContainer, objectId);
-    } else {
-      FilesControlContainer.collapseElement(fileReferenceContainer, objectId);
-    }
-  }
-
-  private static collapseElement(recordContainer: HTMLDivElement, objectId: string): void {
-    const collapseButton = FilesControlContainer.getCollapseButton(objectId);
-    recordContainer.classList.remove(States.visible);
-    recordContainer.classList.add(States.collapsed);
-    collapseButton.setAttribute('aria-expanded', 'false');
-  }
-
-  private static expandElement(recordContainer: HTMLDivElement, objectId: string): void {
-    const collapseButton = FilesControlContainer.getCollapseButton(objectId);
-    recordContainer.classList.remove(States.collapsed);
-    recordContainer.classList.add(States.visible);
-    collapseButton.setAttribute('aria-expanded', 'true');
-  }
-
-  private static isNewRecord(objectId: string): boolean {
-    const fileReferenceContainer = FilesControlContainer.getFileReferenceContainer(objectId);
-    return fileReferenceContainer.classList.contains(States.new);
-  }
-
-  private static updateExpandedCollapsedStateLocally(objectId: string, value: boolean): void {
-    const fileReferenceContainer = FilesControlContainer.getFileReferenceContainer(objectId);
-
-    const ucFormObj = document.getElementsByName(
-      'uc[inlineView]'
-      + '[' + fileReferenceContainer.dataset.topmostParentTable + ']'
-      + '[' + fileReferenceContainer.dataset.topmostParentUid + ']'
-      + fileReferenceContainer.dataset.fieldName
-    );
-
-    if (ucFormObj.length) {
-      (<HTMLInputElement>ucFormObj[0]).value = value ? '1' : '0';
-    }
-  }
 
   public connectedCallback(): void {
     const identifier = this.getAttribute('identifier') || '' as string;
-    this.container = <HTMLElement>this.querySelector('[id=\'' + identifier + '\']');
+    this.container = <HTMLElement>this.querySelector('[id="' + identifier + '"]');
 
     if (this.container !== null) {
+      this.recordsContainer = <HTMLDivElement>this.container.querySelector('[id="' + this.container.getAttribute('id') + '_records"]');
       this.ajaxDispatcher = new AjaxDispatcher(this.container.dataset.objectGroup);
       this.registerEvents();
     }
@@ -158,15 +108,58 @@ class FilesControlContainer extends HTMLElement {
     new RegularEvent('message', this.handlePostMessage).bindTo(window);
 
     if (this.getAppearance().useSortable) {
-      const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
       // tslint:disable-next-line:no-unused-expression
-      new Sortable(recordListContainer, {
-        group: recordListContainer.getAttribute('id'),
+      new Sortable(this.recordsContainer, {
+        group: this.recordsContainer.getAttribute('id'),
         handle: '.sortableHandle',
         onSort: (): void => {
           this.updateSorting();
         },
       });
+    }
+  }
+
+  private getFileReferenceContainer(objectId: string): HTMLDivElement {
+    return <HTMLDivElement>this.container.querySelector('[data-object-id="' + objectId + '"]');
+  }
+
+  private getCollapseButton(objectId: string): HTMLButtonElement {
+    return <HTMLButtonElement>this.container.querySelector('[aria-controls="' + objectId + '_fields"]');
+  }
+
+  private collapseElement(recordContainer: HTMLDivElement, objectId: string): void {
+    const collapseButton = this.getCollapseButton(objectId);
+    recordContainer.classList.remove(States.visible);
+    recordContainer.classList.add(States.collapsed);
+    collapseButton.setAttribute('aria-expanded', 'false');
+  }
+
+  private expandElement(recordContainer: HTMLDivElement, objectId: string): void {
+    const collapseButton = this.getCollapseButton(objectId);
+    recordContainer.classList.remove(States.collapsed);
+    recordContainer.classList.add(States.visible);
+    collapseButton.setAttribute('aria-expanded', 'true');
+  }
+
+  private isNewRecord(objectId: string): boolean {
+    const fileReferenceContainer = this.getFileReferenceContainer(objectId);
+    return fileReferenceContainer.classList.contains(States.new);
+  }
+
+  private updateExpandedCollapsedStateLocally(objectId: string, value: boolean): void {
+    const fileReferenceContainer = this.getFileReferenceContainer(objectId);
+
+    const ucFormObj = this.container.querySelectorAll(
+      '[name="'
+      + 'uc[inlineView]'
+      + '[' + fileReferenceContainer.dataset.topmostParentTable + ']'
+      + '[' + fileReferenceContainer.dataset.topmostParentUid + ']'
+      + fileReferenceContainer.dataset.fieldName
+      + '"]'
+    );
+
+    if (ucFormObj.length) {
+      (<HTMLInputElement>ucFormObj[0]).value = value ? '1' : '0';
     }
   }
 
@@ -229,10 +222,10 @@ class FilesControlContainer extends HTMLElement {
     }
 
     if (afterUid !== null) {
-      FilesControlContainer.getFileReferenceContainer(objectId).insertAdjacentHTML('afterend', markup);
+      this.getFileReferenceContainer(objectId).insertAdjacentHTML('afterend', markup);
       this.memorizeAddRecord(uid, afterUid);
     } else {
-      document.getElementById(this.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', markup);
+      this.recordsContainer.insertAdjacentHTML('beforeend', markup);
       this.memorizeAddRecord(uid, null);
     }
   }
@@ -258,10 +251,10 @@ class FilesControlContainer extends HTMLElement {
       e.stopImmediatePropagation();
 
       const objectId = (<HTMLDivElement>target.closest('[data-object-id]')).dataset.objectId;
-      const recordContainer = FilesControlContainer.getFileReferenceContainer(objectId);
+      const recordContainer = this.getFileReferenceContainer(objectId);
       const hiddenFieldName = 'data' + recordContainer.dataset.fieldName + '[' + target.dataset.hiddenField + ']';
-      const hiddenValueCheckBox = <HTMLInputElement>document.querySelector('[data-formengine-input-name="' + hiddenFieldName + '"');
-      const hiddenValueInput = <HTMLInputElement>document.querySelector('[name="' + hiddenFieldName + '"');
+      const hiddenValueCheckBox = <HTMLInputElement>this.recordsContainer.querySelector('[data-formengine-input-name="' + hiddenFieldName + '"');
+      const hiddenValueInput = <HTMLInputElement>this.recordsContainer.querySelector('[name="' + hiddenFieldName + '"');
 
       if (hiddenValueCheckBox !== null && hiddenValueInput !== null) {
         hiddenValueCheckBox.checked = !hiddenValueCheckBox.checked;
@@ -335,7 +328,7 @@ class FilesControlContainer extends HTMLElement {
         me.ajaxDispatcher.newRequest(me.ajaxDispatcher.getEndpoint('file_reference_synchronizelocalize')),
         [me.container.dataset.objectGroup, this.dataset.type],
       ).then(async (response: InlineResponseInterface): Promise<void> => {
-        document.getElementById(me.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', response.data);
+        me.recordsContainer.insertAdjacentHTML('beforeend', response.data);
 
         const objectIdPrefix = me.container.dataset.objectGroup + Separators.structureSeparator;
         for (const itemUid of response.compilerInput.delete) {
@@ -344,7 +337,7 @@ class FilesControlContainer extends HTMLElement {
 
         for (const item of Object.values(response.compilerInput.localize)) {
           if (typeof item.remove !== 'undefined') {
-            const removableRecordContainer = FilesControlContainer.getFileReferenceContainer(objectIdPrefix + item.remove);
+            const removableRecordContainer = me.getFileReferenceContainer(objectIdPrefix + item.remove);
             removableRecordContainer.parentElement.removeChild(removableRecordContainer);
           }
 
@@ -355,8 +348,8 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private loadRecordDetails(objectId: string): void {
-    const recordFieldsContainer = document.getElementById(objectId + '_fields');
-    const recordContainer = FilesControlContainer.getFileReferenceContainer(objectId);
+    const recordFieldsContainer = this.recordsContainer.querySelector('[id="' + objectId + '_fields"]');
+    const recordContainer = this.getFileReferenceContainer(objectId);
     const isLoading = typeof this.requestQueue[objectId] !== 'undefined';
     const isLoaded = recordFieldsContainer !== null && !recordContainer.classList.contains(States.notLoaded);
 
@@ -399,24 +392,28 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private collapseExpandRecord(objectId: string): void {
-    const recordElement = FilesControlContainer.getFileReferenceContainer(objectId);
+    const fileReferenceContainer = this.getFileReferenceContainer(objectId);
     const expandSingle = this.getAppearance().expandSingle === true;
-    const isCollapsed: boolean = recordElement.classList.contains(States.collapsed);
+    const isCollapsed: boolean = fileReferenceContainer.classList.contains(States.collapsed);
     let collapse: Array<string> = [];
     const expand: Array<string> = [];
 
     if (expandSingle && isCollapsed) {
-      collapse = this.collapseAllRecords(recordElement.dataset.objectUid);
+      collapse = this.collapseAllRecords(fileReferenceContainer.dataset.objectUid);
     }
 
-    FilesControlContainer.toggleElement(objectId);
+    if (fileReferenceContainer.classList.contains(States.collapsed)) {
+      this.expandElement(fileReferenceContainer, objectId);
+    } else {
+      this.collapseElement(fileReferenceContainer, objectId);
+    }
 
-    if (FilesControlContainer.isNewRecord(objectId)) {
-      FilesControlContainer.updateExpandedCollapsedStateLocally(objectId, isCollapsed);
+    if (this.isNewRecord(objectId)) {
+      this.updateExpandedCollapsedStateLocally(objectId, isCollapsed);
     } else if (isCollapsed) {
-      expand.push(recordElement.dataset.objectUid);
+      expand.push(fileReferenceContainer.dataset.objectUid);
     } else if (!isCollapsed) {
-      collapse.push(recordElement.dataset.objectUid);
+      collapse.push(fileReferenceContainer.dataset.objectUid);
     }
 
     this.ajaxDispatcher.send(
@@ -484,10 +481,9 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private changeSortingByButton(objectId: string, direction: SortDirections): void {
-    const fileReferenceContainer = FilesControlContainer.getFileReferenceContainer(objectId);
+    const fileReferenceContainer = this.getFileReferenceContainer(objectId);
     const objectUid = fileReferenceContainer.dataset.objectUid;
-    const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
-    const records = Array.from(recordListContainer.children).map((child: HTMLElement) => child.dataset.objectUid);
+    const records = Array.from(this.recordsContainer.children).map((child: HTMLElement) => child.dataset.objectUid);
     const position = records.indexOf(objectUid);
     let isChanged = false;
 
@@ -505,8 +501,8 @@ class FilesControlContainer extends HTMLElement {
       const objectIdPrefix = this.container.dataset.objectGroup + Separators.structureSeparator;
       const adjustment = direction === SortDirections.UP ? 1 : 0;
       fileReferenceContainer.parentElement.insertBefore(
-        FilesControlContainer.getFileReferenceContainer(objectIdPrefix + records[position - adjustment]),
-        FilesControlContainer.getFileReferenceContainer(objectIdPrefix + records[position + 1 - adjustment]),
+        this.getFileReferenceContainer(objectIdPrefix + records[position - adjustment]),
+        this.getFileReferenceContainer(objectIdPrefix + records[position + 1 - adjustment]),
       );
 
       this.updateSorting();
@@ -519,8 +515,7 @@ class FilesControlContainer extends HTMLElement {
       return;
     }
 
-    const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
-    const records = Array.from(recordListContainer.querySelectorAll('[data-object-parent-group="' + this.container.dataset.objectGroup + '"][data-placeholder-record="0"]'))
+    const records = Array.from(this.recordsContainer.querySelectorAll('[data-object-parent-group="' + this.container.dataset.objectGroup + '"][data-placeholder-record="0"]'))
       .map((child: HTMLElement) => child.dataset.objectUid);
 
     (<HTMLInputElement>formField).value = records.join(',');
@@ -532,12 +527,12 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private deleteRecord(objectId: string, forceDirectRemoval: boolean = false): void {
-    const recordContainer = FilesControlContainer.getFileReferenceContainer(objectId);
+    const recordContainer = this.getFileReferenceContainer(objectId);
     const objectUid = recordContainer.dataset.objectUid;
 
     recordContainer.classList.add('t3js-file-reference-deleted');
 
-    if (!FilesControlContainer.isNewRecord(objectId) && !forceDirectRemoval) {
+    if (!this.isNewRecord(objectId) && !forceDirectRemoval) {
       const deleteCommandInput = this.container.querySelector('[name="cmd' + recordContainer.dataset.fieldName + '[delete]"]');
       deleteCommandInput.removeAttribute('disabled');
 
@@ -596,12 +591,12 @@ class FilesControlContainer extends HTMLElement {
         }
 
         const recordObjectId = this.container.dataset.objectGroup + Separators.structureSeparator + recordUid;
-        const recordContainer = FilesControlContainer.getFileReferenceContainer(recordObjectId);
+        const recordContainer = this.getFileReferenceContainer(recordObjectId);
         if (recordContainer.classList.contains(States.visible)) {
-          FilesControlContainer.collapseElement(recordContainer, recordObjectId);
+          this.collapseElement(recordContainer, recordObjectId);
 
-          if (FilesControlContainer.isNewRecord(recordObjectId)) {
-            FilesControlContainer.updateExpandedCollapsedStateLocally(recordObjectId, false);
+          if (this.isNewRecord(recordObjectId)) {
+            this.updateExpandedCollapsedStateLocally(recordObjectId, false);
           } else {
             collapse.push(recordUid);
           }
@@ -613,7 +608,7 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private getFormFieldForElements(): HTMLInputElement | null {
-    const formFields = document.getElementsByName(this.container.dataset.formField);
+    const formFields = this.container.querySelectorAll('[name="' + this.container.dataset.formField + '"]');
     if (formFields.length > 0) {
       return <HTMLInputElement>formFields[0];
     }
@@ -634,9 +629,8 @@ class FilesControlContainer extends HTMLElement {
     }
 
     records.forEach((recordUid: string, index: number): void => {
-      const recordContainer = FilesControlContainer.getFileReferenceContainer(objectId + Separators.structureSeparator + recordUid);
-      const headerIdentifier = recordContainer.dataset.objectIdHash + '_header';
-      const headerElement = document.getElementById(headerIdentifier);
+      const recordContainer = this.getFileReferenceContainer(objectId + Separators.structureSeparator + recordUid);
+      const headerElement = this.container.querySelector('[id="' + recordContainer.dataset.objectIdHash + '_header"]');
       const sortUp = headerElement.querySelector('[data-action="sort"][data-direction="' + SortDirections.UP + '"]');
 
       if (sortUp !== null) {
