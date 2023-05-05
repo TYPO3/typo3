@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Security\SudoMode\Access;
 
 /**
- * Represenation of any granted access to a particular subject, having an expiration time.
+ * Representation of any granted access to a particular subject, having an expiration time.
  * The user successfully verified a previous `AccessClaim` by entering their password.
  *
  * @internal
