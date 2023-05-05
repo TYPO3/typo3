@@ -1642,7 +1642,7 @@ class DatabaseRecordList
             }
 
             // "Delete" link:
-            $disableDelete = (bool)\trim($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? false);
+            $disableDelete = (bool)\trim((string)($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? ''));
             if ($permsEdit
                 && !$disableDelete
                 && (($table === 'pages' && $localCalcPerms->deletePagePermissionIsGranted()) || ($table !== 'pages' && $this->calcPerms->editContentPermissionIsGranted()))
@@ -1671,7 +1671,7 @@ class DatabaseRecordList
                                 . ' aria-label="' . $linkTitle . '"'
                                 . ' aria-haspopup="dialog"'
                                 . ' data-button-ok-text="' . htmlspecialchars($linkTitle) . '"'
-                                . ' data-l10parent="' . ($l10nParentField ? htmlspecialchars($row[$l10nParentField]) : '') . '"'
+                                . ' data-l10parent="' . ($l10nParentField ? htmlspecialchars((string)$row[$l10nParentField]) : '') . '"'
                                 . ' data-params="' . htmlspecialchars($params) . '"'
                                 . ' data-message="' . htmlspecialchars($warningText) . '">'
                                 . $icon
@@ -3314,7 +3314,7 @@ class DatabaseRecordList
                     </span>
                 </button>';
 
-            if (!(bool)trim(($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? false))) {
+            if (!(bool)trim((string)($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? ''))) {
                 $deleteActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([
                     'idField' => 'uid',
                     'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
