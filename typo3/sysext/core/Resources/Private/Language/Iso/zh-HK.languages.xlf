@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="art" resname="art" approved="yes">
         <source>Artificial languages</source>
-        <target>人造語系</target>
+        <target>人工語言</target>
       </trans-unit>
       <trans-unit id="arw" resname="arw" approved="yes">
         <source>Arawak</source>
@@ -334,6 +334,10 @@
         <source>Chamic languages</source>
         <target>占語諸語言</target>
       </trans-unit>
+      <trans-unit id="cnr" resname="cnr" approved="yes">
+        <source>Montenegrin</source>
+        <target>黑山語</target>
+      </trans-unit>
       <trans-unit id="co" resname="co" approved="yes">
         <source>Corsican</source>
         <target>科西嘉語</target>
@@ -364,7 +368,7 @@
       </trans-unit>
       <trans-unit id="crp" resname="crp" approved="yes">
         <source>Creoles and pidgins</source>
-        <target>Creoles and pidgins</target>
+        <target>混合語</target>
       </trans-unit>
       <trans-unit id="cs" resname="cs" approved="yes">
         <source>Czech</source>
@@ -380,7 +384,7 @@
       </trans-unit>
       <trans-unit id="cus" resname="cus" approved="yes">
         <source>Cushitic languages</source>
-        <target>Cushitic languages</target>
+        <target>庫希特語系</target>
       </trans-unit>
       <trans-unit id="cv" resname="cv" approved="yes">
         <source>Chuvash</source>
@@ -432,11 +436,11 @@
       </trans-unit>
       <trans-unit id="dra" resname="dra" approved="yes">
         <source>Dravidian languages</source>
-        <target>Dravidian languages</target>
+        <target>達羅毗荼語系</target>
       </trans-unit>
       <trans-unit id="dsb" resname="dsb" approved="yes">
         <source>Lower Sorbian</source>
-        <target>低地文德語</target>
+        <target>低地索布語</target>
       </trans-unit>
       <trans-unit id="dua" resname="dua" approved="yes">
         <source>Duala</source>
@@ -536,7 +540,7 @@
       </trans-unit>
       <trans-unit id="fiu" resname="fiu" approved="yes">
         <source>Finno-Ugrian languages</source>
-        <target>Finno-Ugrian languages</target>
+        <target>芬蘭－烏戈爾語系</target>
       </trans-unit>
       <trans-unit id="fj" resname="fj" approved="yes">
         <source>Fijian</source>
@@ -686,6 +690,10 @@
         <source>Hiligaynon</source>
         <target>希利蓋農語</target>
       </trans-unit>
+      <trans-unit id="him" resname="him" approved="yes">
+        <source>Himachali languages; Western Pahari languages</source>
+        <target>喜馬偕爾諸語言；西帕哈爾諸語言</target>
+      </trans-unit>
       <trans-unit id="hit" resname="hit" approved="yes">
         <source>Hittite</source>
         <target>赫梯語</target>
@@ -704,7 +712,7 @@
       </trans-unit>
       <trans-unit id="hsb" resname="hsb" approved="yes">
         <source>Upper Sorbian</source>
-        <target>上索布語</target>
+        <target>高地索布語</target>
       </trans-unit>
       <trans-unit id="ht" resname="ht" approved="yes">
         <source>Haitian; Haitian Creole</source>
@@ -1112,7 +1120,7 @@
       </trans-unit>
       <trans-unit id="mkh" resname="mkh" approved="yes">
         <source>Mon-Khmer languages</source>
-        <target>南亞語系</target>
+        <target>孟高棉語系</target>
       </trans-unit>
       <trans-unit id="ml" resname="ml" approved="yes">
         <source>Malayalam</source>
@@ -1202,6 +1210,10 @@
         <source>Neapolitan</source>
         <target>拿坡里語</target>
       </trans-unit>
+      <trans-unit id="nb" resname="nb" approved="yes">
+        <source>Bokmål, Norwegian; Norwegian Bokmål</source>
+        <target>書面挪威語</target>
+      </trans-unit>
       <trans-unit id="nd" resname="nd" approved="yes">
         <source>Ndebele, North; North Ndebele</source>
         <target>北恩德貝勒語</target>
@@ -1213,6 +1225,10 @@
       <trans-unit id="ne" resname="ne" approved="yes">
         <source>Nepali</source>
         <target>尼泊爾語</target>
+      </trans-unit>
+      <trans-unit id="new" resname="new" approved="yes">
+        <source>Nepal Bhasa; Newari</source>
+        <target>尼瓦爾語</target>
       </trans-unit>
       <trans-unit id="ng" resname="ng" approved="yes">
         <source>Ndonga</source>
@@ -1240,7 +1256,7 @@
       </trans-unit>
       <trans-unit id="no" resname="no" approved="yes">
         <source>Norwegian</source>
-        <target>書面挪威語</target>
+        <target>挪威語</target>
       </trans-unit>
       <trans-unit id="nog" resname="nog" approved="yes">
         <source>Nogai</source>
@@ -1250,9 +1266,17 @@
         <source>Norse, Old</source>
         <target>古諾爾斯語</target>
       </trans-unit>
+      <trans-unit id="nqo" resname="nqo" approved="yes">
+        <source>N'Ko</source>
+        <target>西非書面語</target>
+      </trans-unit>
       <trans-unit id="nr" resname="nr" approved="yes">
         <source>Ndebele, South; South Ndebele</source>
         <target>南恩德貝勒語</target>
+      </trans-unit>
+      <trans-unit id="nso" resname="nso" approved="yes">
+        <source>Pedi; Sepedi; Northern Sotho</source>
+        <target>北索托語</target>
       </trans-unit>
       <trans-unit id="nub" resname="nub" approved="yes">
         <source>Nubian languages</source>
@@ -1334,6 +1358,10 @@
         <source>Pahlavi</source>
         <target>缽羅缽語</target>
       </trans-unit>
+      <trans-unit id="pam" resname="pam" approved="yes">
+        <source>Pampanga; Kapampangan</source>
+        <target>潘帕嘉語</target>
+      </trans-unit>
       <trans-unit id="pap" resname="pap" approved="yes">
         <source>Papiamento</source>
         <target>帕皮阿門托語</target>
@@ -1400,7 +1428,7 @@
       </trans-unit>
       <trans-unit id="rar" resname="rar" approved="yes">
         <source>Rarotongan; Cook Islands Maori</source>
-        <target>Rarotongan; Cook Islands Maori</target>
+        <target>拉羅湯加語／庫克羣島毛利語</target>
       </trans-unit>
       <trans-unit id="rm" resname="rm" approved="yes">
         <source>Romansh</source>
@@ -1448,7 +1476,7 @@
       </trans-unit>
       <trans-unit id="sai" resname="sai" approved="yes">
         <source>South American Indian (Other)</source>
-        <target>South American Indian (Other)</target>
+        <target>南美原居民語言（其他）</target>
       </trans-unit>
       <trans-unit id="sal" resname="sal" approved="yes">
         <source>Salishan languages</source>
@@ -1589,6 +1617,10 @@
       <trans-unit id="sr" resname="sr" approved="yes">
         <source>Serbian</source>
         <target>塞爾維亞文</target>
+      </trans-unit>
+      <trans-unit id="srn" resname="srn" approved="yes">
+        <source>Sranan Tongo</source>
+        <target>蘇利南語</target>
       </trans-unit>
       <trans-unit id="srr" resname="srr" approved="yes">
         <source>Serer</source>
@@ -1826,6 +1858,10 @@
         <source>Wakashan languages</source>
         <target>瓦卡什諸語言</target>
       </trans-unit>
+      <trans-unit id="wal" resname="wal" approved="yes">
+        <source>Walamo</source>
+        <target>瓦拉莫語</target>
+      </trans-unit>
       <trans-unit id="war" resname="war" approved="yes">
         <source>Waray</source>
         <target>瓦賴語</target>
@@ -1836,7 +1872,7 @@
       </trans-unit>
       <trans-unit id="wen" resname="wen" approved="yes">
         <source>Sorbian languages</source>
-        <target>索布諸語言</target>
+        <target>索布語系</target>
       </trans-unit>
       <trans-unit id="wo" resname="wo" approved="yes">
         <source>Wolof</source>
@@ -1878,9 +1914,17 @@
         <source>Zapotec</source>
         <target>薩波特克語</target>
       </trans-unit>
+      <trans-unit id="zbl" resname="zbl" approved="yes">
+        <source>Blissymbols; Blissymbolics; Bliss</source>
+        <target>布利斯符號</target>
+      </trans-unit>
       <trans-unit id="zen" resname="zen" approved="yes">
         <source>Zenaga</source>
         <target>哲納加語</target>
+      </trans-unit>
+      <trans-unit id="zgh" resname="zgh" approved="yes">
+        <source>Standard Moroccan Tamazight</source>
+        <target>摩洛哥標準柏柏語</target>
       </trans-unit>
       <trans-unit id="zh" resname="zh" approved="yes">
         <source>Chinese</source>

@@ -400,7 +400,7 @@
       </trans-unit>
       <trans-unit id="DO.name" resname="DO.name" approved="yes">
         <source>Dominican Republic</source>
-        <target>Dominikana</target>
+        <target>Republika Dominikańska</target>
       </trans-unit>
       <trans-unit id="DZ.name" resname="DZ.name" approved="yes">
         <source>Algeria</source>
@@ -708,7 +708,7 @@
       </trans-unit>
       <trans-unit id="IR.name" resname="IR.name" approved="yes">
         <source>Iran, Islamic Republic of</source>
-        <target>Iran</target>
+        <target>Iran, Islamska Republika</target>
       </trans-unit>
       <trans-unit id="IR.official_name" resname="IR.official_name" approved="yes">
         <source>Islamic Republic of Iran</source>
@@ -796,7 +796,7 @@
       </trans-unit>
       <trans-unit id="KP.name" resname="KP.name" approved="yes">
         <source>Korea, Democratic People's Republic of</source>
-        <target>Korea Północna</target>
+        <target>Korea - Republika Ludowo-Demokratyczna</target>
       </trans-unit>
       <trans-unit id="KP.official_name" resname="KP.official_name" approved="yes">
         <source>Democratic People's Republic of Korea</source>
@@ -804,7 +804,7 @@
       </trans-unit>
       <trans-unit id="KR.name" resname="KR.name" approved="yes">
         <source>Korea, Republic of</source>
-        <target>Korea Południowa</target>
+        <target>Republika Korei</target>
       </trans-unit>
       <trans-unit id="KW.name" resname="KW.name" approved="yes">
         <source>Kuwait</source>
@@ -828,7 +828,7 @@
       </trans-unit>
       <trans-unit id="LA.name" resname="LA.name" approved="yes">
         <source>Lao People's Democratic Republic</source>
-        <target>Laos</target>
+        <target>Laotańska Republika Ludowo-Demokratyczna</target>
       </trans-unit>
       <trans-unit id="LB.name" resname="LB.name" approved="yes">
         <source>Lebanon</source>
@@ -980,7 +980,7 @@
       </trans-unit>
       <trans-unit id="MM.official_name" resname="MM.official_name" approved="yes">
         <source>Republic of Myanmar</source>
-        <target>Związek Birmański</target>
+        <target>Republika Związku Mjanmy</target>
       </trans-unit>
       <trans-unit id="MN.name" resname="MN.name" approved="yes">
         <source>Mongolia</source>
@@ -1596,7 +1596,7 @@
       </trans-unit>
       <trans-unit id="VA.name" resname="VA.name" approved="yes">
         <source>Holy See (Vatican City State)</source>
-        <target>Watykan</target>
+        <target>Państwo Watykańskie (Stolica Apostolska)</target>
       </trans-unit>
       <trans-unit id="VC.name" resname="VC.name" approved="yes">
         <source>Saint Vincent and the Grenadines</source>
@@ -1668,7 +1668,7 @@
       </trans-unit>
       <trans-unit id="ZA.name" resname="ZA.name" approved="yes">
         <source>South Africa</source>
-        <target>Republika Południowej Afryki</target>
+        <target>Południowa Afryka</target>
       </trans-unit>
       <trans-unit id="ZA.official_name" resname="ZA.official_name" approved="yes">
         <source>Republic of South Africa</source>
