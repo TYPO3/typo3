@@ -836,7 +836,7 @@
       </trans-unit>
       <trans-unit id="sai" resname="sai" approved="yes">
         <source>South American Indian (Other)</source>
-        <target>South American Indian (Other)</target>
+        <target>южноамерикански индиански (други)</target>
       </trans-unit>
       <trans-unit id="sc" resname="sc" approved="yes">
         <source>Sardinian</source>

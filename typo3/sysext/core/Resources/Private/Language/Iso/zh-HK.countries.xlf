@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="AW.name" resname="AW.name" approved="yes">
         <source>Aruba</source>
-        <target>阿盧巴島</target>
+        <target>阿魯巴</target>
       </trans-unit>
       <trans-unit id="AX.name" resname="AX.name" approved="yes">
         <source>Åland Islands</source>
@@ -560,11 +560,11 @@
       </trans-unit>
       <trans-unit id="GN.name" resname="GN.name" approved="yes">
         <source>Guinea</source>
-        <target>畿內亞</target>
+        <target>幾內亞</target>
       </trans-unit>
       <trans-unit id="GN.official_name" resname="GN.official_name" approved="yes">
         <source>Republic of Guinea</source>
-        <target>畿內亞共和國</target>
+        <target>幾內亞共和國</target>
       </trans-unit>
       <trans-unit id="GP.name" resname="GP.name" approved="yes">
         <source>Guadeloupe</source>
@@ -572,11 +572,11 @@
       </trans-unit>
       <trans-unit id="GQ.name" resname="GQ.name" approved="yes">
         <source>Equatorial Guinea</source>
-        <target>赤道畿內亞</target>
+        <target>赤道幾內亞</target>
       </trans-unit>
       <trans-unit id="GQ.official_name" resname="GQ.official_name" approved="yes">
         <source>Republic of Equatorial Guinea</source>
-        <target>赤道畿內亞共和國</target>
+        <target>赤道幾內亞共和國</target>
       </trans-unit>
       <trans-unit id="GR.name" resname="GR.name" approved="yes">
         <source>Greece</source>
@@ -604,11 +604,11 @@
       </trans-unit>
       <trans-unit id="GW.name" resname="GW.name" approved="yes">
         <source>Guinea-Bissau</source>
-        <target>畿內亞比紹</target>
+        <target>幾內亞比紹</target>
       </trans-unit>
       <trans-unit id="GW.official_name" resname="GW.official_name" approved="yes">
         <source>Republic of Guinea-Bissau</source>
-        <target>畿內亞比紹共和國</target>
+        <target>幾內亞比紹共和國</target>
       </trans-unit>
       <trans-unit id="GY.name" resname="GY.name" approved="yes">
         <source>Guyana</source>
@@ -752,11 +752,11 @@
       </trans-unit>
       <trans-unit id="KE.name" resname="KE.name" approved="yes">
         <source>Kenya</source>
-        <target>肯雅</target>
+        <target>肯尼亞</target>
       </trans-unit>
       <trans-unit id="KE.official_name" resname="KE.official_name" approved="yes">
         <source>Republic of Kenya</source>
-        <target>肯雅共和國</target>
+        <target>肯尼亞共和國</target>
       </trans-unit>
       <trans-unit id="KG.name" resname="KG.name" approved="yes">
         <source>Kyrgyzstan</source>
@@ -940,7 +940,7 @@
       </trans-unit>
       <trans-unit id="MF.name" resname="MF.name" approved="yes">
         <source>Saint Martin (French part)</source>
-        <target>聖馬丁 (法屬)</target>
+        <target>聖馬丁（法屬）</target>
       </trans-unit>
       <trans-unit id="MG.name" resname="MG.name" approved="yes">
         <source>Madagascar</source>
@@ -1028,11 +1028,11 @@
       </trans-unit>
       <trans-unit id="MU.name" resname="MU.name" approved="yes">
         <source>Mauritius</source>
-        <target>毛里裘斯</target>
+        <target>毛里求斯</target>
       </trans-unit>
       <trans-unit id="MU.official_name" resname="MU.official_name" approved="yes">
         <source>Republic of Mauritius</source>
-        <target>毛里裘斯共和國</target>
+        <target>毛里求斯共和國</target>
       </trans-unit>
       <trans-unit id="MV.name" resname="MV.name" approved="yes">
         <source>Maldives</source>
@@ -1184,11 +1184,11 @@
       </trans-unit>
       <trans-unit id="PG.name" resname="PG.name" approved="yes">
         <source>Papua New Guinea</source>
-        <target>巴布亞新畿內亞</target>
+        <target>巴布亞新幾內亞</target>
       </trans-unit>
       <trans-unit id="PG.official_name" resname="PG.official_name" approved="yes">
         <source>Independent State of Papua New Guinea</source>
-        <target>巴布亞新畿內亞獨立國</target>
+        <target>巴布亞新幾內亞獨立國</target>
       </trans-unit>
       <trans-unit id="PH.name" resname="PH.name" approved="yes">
         <source>Philippines</source>
@@ -1460,7 +1460,7 @@
       </trans-unit>
       <trans-unit id="TF.name" resname="TF.name" approved="yes">
         <source>French Southern Territories</source>
-        <target>法屬南部屬地</target>
+        <target>法屬南半球領土</target>
       </trans-unit>
       <trans-unit id="TG.name" resname="TG.name" approved="yes">
         <source>Togo</source>
@@ -1518,9 +1518,13 @@
         <source>Kingdom of Tonga</source>
         <target>湯加王國</target>
       </trans-unit>
+      <trans-unit id="TR.name" resname="TR.name" approved="yes">
+        <source>Türkiye</source>
+        <target>土耳其</target>
+      </trans-unit>
       <trans-unit id="TR.official_name" resname="TR.official_name" approved="yes">
         <source>Republic of Türkiye</source>
-        <target>Republic of Türkiye</target>
+        <target>土耳其共和國</target>
       </trans-unit>
       <trans-unit id="TT.name" resname="TT.name" approved="yes">
         <source>Trinidad and Tobago</source>
@@ -1544,7 +1548,7 @@
       </trans-unit>
       <trans-unit id="TZ.name" resname="TZ.name" approved="yes">
         <source>Tanzania, United Republic of</source>
-        <target>坦桑尼亞</target>
+        <target>坦桑尼亞聯合共和國</target>
       </trans-unit>
       <trans-unit id="TZ.official_name" resname="TZ.official_name" approved="yes">
         <source>United Republic of Tanzania</source>

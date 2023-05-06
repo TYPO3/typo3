@@ -12,7 +12,7 @@
       </trans-unit>
       <trans-unit id="AE.name" resname="AE.name" approved="yes">
         <source>United Arab Emirates</source>
-        <target>Emiriaethau Arabaidd Unedig</target>
+        <target>Yr Emiradau Arabaidd Unedig</target>
       </trans-unit>
       <trans-unit id="AF.name" resname="AF.name" approved="yes">
         <source>Afghanistan</source>
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="AG.name" resname="AG.name" approved="yes">
         <source>Antigua and Barbuda</source>
-        <target>Antigua ac Barbuda</target>
+        <target>Antigua a Barbuda</target>
       </trans-unit>
       <trans-unit id="AI.name" resname="AI.name" approved="yes">
         <source>Anguilla</source>
@@ -68,7 +68,7 @@
       </trans-unit>
       <trans-unit id="AS.name" resname="AS.name" approved="yes">
         <source>American Samoa</source>
-        <target>American Samoa</target>
+        <target>Samoa America</target>
       </trans-unit>
       <trans-unit id="AT.name" resname="AT.name" approved="yes">
         <source>Austria</source>
@@ -100,7 +100,7 @@
       </trans-unit>
       <trans-unit id="BA.name" resname="BA.name" approved="yes">
         <source>Bosnia and Herzegovina</source>
-        <target>Bosnia a Herzegovina</target>
+        <target>Bosnia a Hercegovina</target>
       </trans-unit>
       <trans-unit id="BA.official_name" resname="BA.official_name" approved="yes">
         <source>Republic of Bosnia and Herzegovina</source>
@@ -148,7 +148,7 @@
       </trans-unit>
       <trans-unit id="BI.name" resname="BI.name" approved="yes">
         <source>Burundi</source>
-        <target>Burundi</target>
+        <target>Bwrwndi</target>
       </trans-unit>
       <trans-unit id="BI.official_name" resname="BI.official_name" approved="yes">
         <source>Republic of Burundi</source>
@@ -252,7 +252,7 @@
       </trans-unit>
       <trans-unit id="CF.name" resname="CF.name" approved="yes">
         <source>Central African Republic</source>
-        <target>Gweriniaeth Canol Affrica</target>
+        <target>Gweriniaeth Canolbarth Affrica</target>
       </trans-unit>
       <trans-unit id="CG.name" resname="CG.name" approved="yes">
         <source>Congo</source>
@@ -292,7 +292,7 @@
       </trans-unit>
       <trans-unit id="CM.name" resname="CM.name" approved="yes">
         <source>Cameroon</source>
-        <target>Cameroon</target>
+        <target>Camerŵn</target>
       </trans-unit>
       <trans-unit id="CM.official_name" resname="CM.official_name" approved="yes">
         <source>Republic of Cameroon</source>
@@ -304,7 +304,7 @@
       </trans-unit>
       <trans-unit id="CN.official_name" resname="CN.official_name" approved="yes">
         <source>People's Republic of China</source>
-        <target>Gweriniaeth Pobl Tseina</target>
+        <target>Gweriniaeth Pobl Tsieina</target>
       </trans-unit>
       <trans-unit id="CO.name" resname="CO.name" approved="yes">
         <source>Colombia</source>
@@ -364,7 +364,7 @@
       </trans-unit>
       <trans-unit id="CZ.official_name" resname="CZ.official_name" approved="yes">
         <source>Czech Republic</source>
-        <target>Y Weriniaeth Tsiec</target>
+        <target>Gweriniaeth Tsiec</target>
       </trans-unit>
       <trans-unit id="DE.name" resname="DE.name" approved="yes">
         <source>Germany</source>
@@ -492,7 +492,7 @@
       </trans-unit>
       <trans-unit id="FO.name" resname="FO.name" approved="yes">
         <source>Faroe Islands</source>
-        <target>Ynysoedd y Ffaro</target>
+        <target>Ynysoedd Ffaro</target>
       </trans-unit>
       <trans-unit id="FR.name" resname="FR.name" approved="yes">
         <source>France</source>
@@ -532,7 +532,7 @@
       </trans-unit>
       <trans-unit id="GG.name" resname="GG.name" approved="yes">
         <source>Guernsey</source>
-        <target>Guernsey</target>
+        <target>Ynys y Garn</target>
       </trans-unit>
       <trans-unit id="GH.name" resname="GH.name" approved="yes">
         <source>Ghana</source>
@@ -548,7 +548,7 @@
       </trans-unit>
       <trans-unit id="GL.name" resname="GL.name" approved="yes">
         <source>Greenland</source>
-        <target>Greenland</target>
+        <target>Yr Ynys Las</target>
       </trans-unit>
       <trans-unit id="GM.name" resname="GM.name" approved="yes">
         <source>Gambia</source>
@@ -572,7 +572,7 @@
       </trans-unit>
       <trans-unit id="GQ.name" resname="GQ.name" approved="yes">
         <source>Equatorial Guinea</source>
-        <target>Guinea Cyhydeddol</target>
+        <target>Guinea Gyhydeddol</target>
       </trans-unit>
       <trans-unit id="GQ.official_name" resname="GQ.official_name" approved="yes">
         <source>Republic of Equatorial Guinea</source>
@@ -588,7 +588,7 @@
       </trans-unit>
       <trans-unit id="GS.name" resname="GS.name" approved="yes">
         <source>South Georgia and the South Sandwich Islands</source>
-        <target>De Georgia ac Ynysoedd De Sandwich</target>
+        <target>De Georgia ac Ynysoedd Sandwich y De</target>
       </trans-unit>
       <trans-unit id="GT.name" resname="GT.name" approved="yes">
         <source>Guatemala</source>
@@ -628,7 +628,7 @@
       </trans-unit>
       <trans-unit id="HM.name" resname="HM.name" approved="yes">
         <source>Heard Island and McDonald Islands</source>
-        <target>Ynys Heard ac Ynysoedd McDonald</target>
+        <target>Ynysoedd Heard a McDonald</target>
       </trans-unit>
       <trans-unit id="HN.name" resname="HN.name" approved="yes">
         <source>Honduras</source>
@@ -696,7 +696,7 @@
       </trans-unit>
       <trans-unit id="IO.name" resname="IO.name" approved="yes">
         <source>British Indian Ocean Territory</source>
-        <target>British Indian Ocean Territory</target>
+        <target>Tiriogaeth Brydeinig Cefnfor India</target>
       </trans-unit>
       <trans-unit id="IQ.name" resname="IQ.name" approved="yes">
         <source>Iraq</source>
@@ -740,7 +740,7 @@
       </trans-unit>
       <trans-unit id="JO.name" resname="JO.name" approved="yes">
         <source>Jordan</source>
-        <target>Gwlad Yr Iorddonen</target>
+        <target>Gwlad Iorddonen</target>
       </trans-unit>
       <trans-unit id="JO.official_name" resname="JO.official_name" approved="yes">
         <source>Hashemite Kingdom of Jordan</source>
@@ -816,11 +816,11 @@
       </trans-unit>
       <trans-unit id="KY.name" resname="KY.name" approved="yes">
         <source>Cayman Islands</source>
-        <target>Ynysoedd y Cayman</target>
+        <target>Ynysoedd Cayman</target>
       </trans-unit>
       <trans-unit id="KZ.name" resname="KZ.name" approved="yes">
         <source>Kazakhstan</source>
-        <target>Kazakhstan</target>
+        <target>Kazakstan</target>
       </trans-unit>
       <trans-unit id="KZ.official_name" resname="KZ.official_name" approved="yes">
         <source>Republic of Kazakhstan</source>
@@ -832,7 +832,7 @@
       </trans-unit>
       <trans-unit id="LB.name" resname="LB.name" approved="yes">
         <source>Lebanon</source>
-        <target>Lebanon</target>
+        <target>Libanus</target>
       </trans-unit>
       <trans-unit id="LB.official_name" resname="LB.official_name" approved="yes">
         <source>Lebanese Republic</source>
@@ -996,7 +996,7 @@
       </trans-unit>
       <trans-unit id="MP.name" resname="MP.name" approved="yes">
         <source>Northern Mariana Islands</source>
-        <target>Ynysoedd Northern Mariana</target>
+        <target>Ynysoedd Gogledd Mariana</target>
       </trans-unit>
       <trans-unit id="MP.official_name" resname="MP.official_name" approved="yes">
         <source>Commonwealth of the Northern Mariana Islands</source>
@@ -1064,7 +1064,7 @@
       </trans-unit>
       <trans-unit id="MZ.name" resname="MZ.name" approved="yes">
         <source>Mozambique</source>
-        <target>Mozambique</target>
+        <target>Mosambic</target>
       </trans-unit>
       <trans-unit id="MZ.official_name" resname="MZ.official_name" approved="yes">
         <source>Republic of Mozambique</source>
@@ -1180,7 +1180,7 @@
       </trans-unit>
       <trans-unit id="PF.name" resname="PF.name" approved="yes">
         <source>French Polynesia</source>
-        <target>Polynesia Ffrangeg</target>
+        <target>Polynesia Ffrengig</target>
       </trans-unit>
       <trans-unit id="PG.name" resname="PG.name" approved="yes">
         <source>Papua New Guinea</source>
@@ -1192,7 +1192,7 @@
       </trans-unit>
       <trans-unit id="PH.name" resname="PH.name" approved="yes">
         <source>Philippines</source>
-        <target>Pilipinas</target>
+        <target>Y Philipinau</target>
       </trans-unit>
       <trans-unit id="PH.official_name" resname="PH.official_name" approved="yes">
         <source>Republic of the Philippines</source>
@@ -1448,11 +1448,11 @@
       </trans-unit>
       <trans-unit id="TC.name" resname="TC.name" approved="yes">
         <source>Turks and Caicos Islands</source>
-        <target>Ynysoedd y Turks a Caicos</target>
+        <target>Ynysoedd Turks a Caicos</target>
       </trans-unit>
       <trans-unit id="TD.name" resname="TD.name" approved="yes">
         <source>Chad</source>
-        <target>Chad</target>
+        <target>Tchad</target>
       </trans-unit>
       <trans-unit id="TD.official_name" resname="TD.official_name" approved="yes">
         <source>Republic of Chad</source>
@@ -1536,7 +1536,7 @@
       </trans-unit>
       <trans-unit id="TV.name" resname="TV.name" approved="yes">
         <source>Tuvalu</source>
-        <target>Tuvalu</target>
+        <target>Twfalw</target>
       </trans-unit>
       <trans-unit id="TW.name" resname="TW.name" approved="yes">
         <source>Taiwan, Province of China</source>
@@ -1568,7 +1568,7 @@
       </trans-unit>
       <trans-unit id="UM.name" resname="UM.name" approved="yes">
         <source>United States Minor Outlying Islands</source>
-        <target>Mân Ynysoedd Pellenig yr Unol Daleithiau</target>
+        <target>Ynysoedd Pellennig Bychain yr Unol Daleithiau</target>
       </trans-unit>
       <trans-unit id="US.name" resname="US.name" approved="yes">
         <source>United States</source>
@@ -1616,7 +1616,7 @@
       </trans-unit>
       <trans-unit id="VG.official_name" resname="VG.official_name" approved="yes">
         <source>British Virgin Islands</source>
-        <target>Ynysoedd Virgin Prydain</target>
+        <target>Ynysoedd Prydeinig y Wyryf</target>
       </trans-unit>
       <trans-unit id="VI.name" resname="VI.name" approved="yes">
         <source>Virgin Islands, U.S.</source>
