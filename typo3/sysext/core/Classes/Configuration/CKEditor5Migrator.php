@@ -449,6 +449,14 @@ class CKEditor5Migrator
             return;
         }
 
+        if (is_string($this->configuration['editor']['config']['removeButtons'])) {
+            $this->configuration['editor']['config']['removeButtons'] = GeneralUtility::trimExplode(
+                ',',
+                $this->configuration['editor']['config']['removeButtons'],
+                true
+            );
+        }
+
         $removeItems = [];
         foreach ($this->configuration['editor']['config']['removeButtons'] as $buttonName) {
             if (array_key_exists($buttonName, self::BUTTON_MAP)) {
