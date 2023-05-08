@@ -216,36 +216,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/ViewHelpers/ThumbnailViewHelper.php
 
 		-
-			message: "#^Offset string on array\\{\\} in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Clipboard/ClipboardTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Clipboard/ClipboardTest.php
-
-		-
-			message: "#^Offset string on array\\{\\} in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
-
-		-
-			message: "#^Offset string on array\\{\\} in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
-
-		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeResolvers\\\\BarResolver has an unused parameter \\$data\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeResolvers/BarResolver.php
@@ -2051,54 +2021,14 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Transform/HtmlViewHelper.php
 
 		-
-			message: "#^Offset string on array\\{\\} in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/CObjectViewHelperTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/CObjectViewHelperTest.php
-
-		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
 			count: 4
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Form/SelectViewHelperTest.php
 
 		-
-			message: "#^Offset string on array\\{\\} in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/EmailViewHelperTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/EmailViewHelperTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$input of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:retrieveFileOrFolderObject\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/FileViewHelperTest.php
-
-		-
-			message: "#^Offset string on array\\{\\} in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/PageViewHelperTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/PageViewHelperTest.php
-
-		-
-			message: "#^Offset string on array\\{\\} in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/PageViewHelperTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/PageViewHelperTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$fileObject of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:setCurrentFile\\(\\) expects string\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\|null, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface given\\.$#"
@@ -2641,29 +2571,9 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
 
 		-
-			message: "#^Offset string on array\\{\\} in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Authentication/FrontendUserAuthenticationTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Authentication/FrontendUserAuthenticationTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$conf of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:parseFunc\\(\\) expects non\\-empty\\-array\\<string, mixed\\>\\|null, array given\\.$#"
 			count: 5
 			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Offset string on array\\{\\} in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/FluidTemplateContentObjectTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/FluidTemplateContentObjectTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:isMissing\\(\\)\\.$#"
@@ -3031,16 +2941,6 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Updates/DatabaseRowsUpdateWizard.php
 
 		-
-			message: "#^Offset string on array\\{\\} in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Functional/Updates/RowUpdater/SysRedirectRootPageMoveMigrationTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Functional/Updates/RowUpdater/SysRedirectRootPageMoveMigrationTest.php
-
-		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Tests/Functional/ViewHelpers/Format/PhpErrorCodeViewHelperTest.php
@@ -3122,16 +3022,6 @@ parameters:
 
 		-
 			message: "#^Offset 1 does not exist on array\\<0, TYPO3\\\\CMS\\\\Redirects\\\\Event\\\\BeforeRedirectMatchDomainEvent\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
-
-		-
-			message: "#^Offset string on array\\{\\} in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
 
