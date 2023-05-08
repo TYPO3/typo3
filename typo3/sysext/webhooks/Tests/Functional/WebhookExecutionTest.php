@@ -103,8 +103,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
 
         // Catch any requests, evaluate their payload
         (new ActionService())->modifyRecord('pages', 10, ['title' => 'Dummy Modified']);
-        // @todo: this is a bug in DataHandler, because it triggers the option twice.
-        self::assertEquals(2, $numberOfRequestsFired);
+        self::assertEquals(1, $numberOfRequestsFired);
     }
 
     /**

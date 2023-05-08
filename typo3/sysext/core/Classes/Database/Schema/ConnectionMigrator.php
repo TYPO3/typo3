@@ -183,7 +183,7 @@ class ConnectionMigrator
                 $result[$statement] = $e->getPrevious()->getMessage();
             }
         }
-        GeneralUtility::makeInstance(ClearCacheService::class)->clearAll();
+        GeneralUtility::makeInstance(ClearCacheService::class)->clearAll(false);
         return $result;
     }
 
