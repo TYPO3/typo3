@@ -98,8 +98,8 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 ],
             ],
 
-            // Remove Buttons
-            'Remove buttons mapping' => [
+            // Remove Buttons. Configured as array
+            'Remove buttons mapping (array)' => [
                 [
                     'editor' => [
                         'config' => [
@@ -111,6 +111,49 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 'Strike',
                                 'Styles',
                             ],
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [
+                                    'superscript',
+                                    'subscript',
+                                    'underline',
+                                    'strikethrough',
+                                    'style',
+                                ],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // Remove Buttons. Configured as string
+            'Remove buttons mapping (string)' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'removeButtons' => 'Anchor,Superscript,Subscript,Underline,Strike,Styles',
                         ],
                     ],
                 ],
