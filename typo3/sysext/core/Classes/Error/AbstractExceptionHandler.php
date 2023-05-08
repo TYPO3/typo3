@@ -167,6 +167,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
                 'channel' => SystemLogType::toChannel(SystemLogType::ERROR),
                 'action' => SystemLogGenericAction::UNDEFINED,
                 'error' => SystemLogErrorClassification::SYSTEM_ERROR,
+                'level' => SystemLogType::toLevel(SystemLogType::ERROR),
                 'details_nr' => 0,
                 'details' => str_replace('%', '%%', $logMessage),
                 'log_data' => empty($data) ? '' : json_encode($data),
