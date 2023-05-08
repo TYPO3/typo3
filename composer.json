@@ -295,31 +295,29 @@
 			"TYPO3\\CMS\\RteCKEditor\\Tests\\": "typo3/sysext/rte_ckeditor/Tests/",
 			"TYPO3\\CMS\\Scheduler\\Tests\\": "typo3/sysext/scheduler/Tests/",
 			"TYPO3\\CMS\\Seo\\Tests\\": "typo3/sysext/seo/Tests/",
-			"TYPO3\\CMS\\Setup\\Tests\\": "typo3/sysext/setup/Tests/",
 			"TYPO3\\CMS\\SysNote\\Tests\\": "typo3/sysext/sys_note/Tests/",
 			"TYPO3\\CMS\\Webhooks\\Tests\\": "typo3/sysext/webhooks/Tests/",
 			"TYPO3\\CMS\\Workspaces\\Tests\\": "typo3/sysext/workspaces/Tests/",
 			"TYPO3\\CMS\\Recycler\\Tests\\": "typo3/sysext/recycler/Tests/",
 			"TYPO3\\CMS\\T3editor\\Tests\\": "typo3/sysext/t3editor/Tests/",
-			"TYPO3\\CMS\\Tstemplate\\Tests\\": "typo3/sysext/tstemplate/Tests/",
+			"TYPO3Tests\\ActionControllerArgumentTest\\": "typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_argument_test/Classes/",
+			"TYPO3Tests\\ActionControllerTest\\": "typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_test/Classes/",
+			"TYPO3Tests\\BlogExample\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/",
+			"TYPO3Tests\\TestEid\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_eid/Classes/",
 			"TYPO3Tests\\FluidTest\\": "typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/",
 			"TYPO3Tests\\FormCachingTests\\" : "typo3/sysext/form/Tests/Functional/RequestHandling/Fixtures/Extensions/form_caching_tests/Classes/",
+			"TYPO3Tests\\IrreTutorial\\" : "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial/Classes/",
 			"TYPO3Tests\\RequestMirror\\": "typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_request_mirror/Classes/",
+			"TYPO3Tests\\TestValidators\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_validators/Classes/",
+			"TYPO3Tests\\TestDatahandler\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler/Classes/",
 			"TYPO3Tests\\TestDataMapper\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_data_mapper/Classes/",
 			"TYPO3Tests\\TestFluidTemplate\\": "typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_fluid_template/Classes/",
+			"TYPO3Tests\\TestIrreForeignfield\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/",
 			"TYPO3Tests\\TestLogger\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_logger/Classes/",
-			"TYPO3Tests\\TestTcaSelectItems\\": "typo3/sysext/backend/Tests/Functional/Fixtures/Extensions/test_tca_select_items/Classes/",
-			"TYPO3Tests\\TestTcaSelectTreeItems\\": "typo3/sysext/backend/Tests/Functional/Fixtures/Extensions/test_tca_select_tree_items/Classes/",
+			"TYPO3Tests\\TestMeta\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta/Classes/",
 			"TYPO3Tests\\TestTyposcriptAstFunctionEvent\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_ast_function_event/Classes/",
-			"TYPO3Tests\\TestTyposcriptPagetsconfigfactory\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_pagetsconfigfactory/Classes/"
-		},
-		"classmap": [
-			"typo3/sysext/core/Tests/Unit/Core/Fixtures/test_extension/",
-			"typo3/sysext/core/Tests/Functional/Fixtures/",
-			"typo3/sysext/extbase/Tests/Functional/Fixtures/",
-			"typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/",
-			"typo3/sysext/form/Tests/Functional/RequestHandling/Fixtures/Extensions/form_caching_tests/Classes/",
-			"typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_request_mirror/Classes/"
-		]
+			"TYPO3Tests\\TestTyposcriptPagetsconfigfactory\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_pagetsconfigfactory/Classes/",
+			"TYPO3Tests\\TypeConverterTest\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/type_converter_test/Classes/"
+		}
 	}
 }
