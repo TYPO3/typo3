@@ -247,19 +247,6 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
                 }
             }
 
-            switch ($logLevel) {
-                case LogLevel::ERROR:
-                    $severity = 2;
-                    break;
-                case LogLevel::WARNING:
-                    $severity = 1;
-                    break;
-                case LogLevel::NOTICE:
-                default:
-                    $severity = 0;
-                    break;
-            }
-
             $connection->insert(
                 'sys_log',
                 [
@@ -268,7 +255,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
                     'channel' => SystemLogType::toChannel(SystemLogType::ERROR),
                     'action' => SystemLogGenericAction::UNDEFINED,
                     'error' => SystemLogErrorClassification::SYSTEM_ERROR,
-                    'level' => $severity,
+                    'level' => $logLevel,
                     'details_nr' => 0,
                     'details' => str_replace('%', '%%', $logMessage),
                     'log_data' => empty($data) ? '' : json_encode($data),
