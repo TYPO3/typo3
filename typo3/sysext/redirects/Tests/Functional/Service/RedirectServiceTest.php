@@ -42,7 +42,9 @@ final class RedirectServiceTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected const LANGUAGE_PRESETS = [];
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
 
     protected array $coreExtensionsToLoad = ['redirects'];
 

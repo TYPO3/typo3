@@ -31,7 +31,9 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
     use SiteBasedTestTrait;
 
     private const ROOT_PAGE_ID = 1;
-    protected const LANGUAGE_PRESETS = [];
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
 
     public function setUp(): void
     {
