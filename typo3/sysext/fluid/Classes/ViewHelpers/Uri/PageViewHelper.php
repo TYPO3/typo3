@@ -94,7 +94,7 @@ class PageViewHelper extends AbstractViewHelper
         }
         $pageUid = $arguments['pageUid'];
         $additionalParams = $arguments['additionalParams'];
-        $pageType = $arguments['pageType'];
+        $pageType = (int)($arguments['pageType'] ?? 0);
         $noCache = $arguments['noCache'];
         $section = $arguments['section'];
         $language = $arguments['language'] ?? null;

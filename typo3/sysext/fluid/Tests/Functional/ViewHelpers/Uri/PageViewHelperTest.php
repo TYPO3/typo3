@@ -43,6 +43,10 @@ class PageViewHelperTest extends FunctionalTestCase
                 '<f:uri.page pageUid="1" />',
                 '/',
             ],
+            'link to root page with page type' => [
+                '<f:uri.page pageUid="1" pageType="1234" />',
+                '/?type=1234',
+            ],
             'link to page sub page' => [
                 '<f:uri.page pageUid="3" />',
                 '/dummy-1-2/dummy-1-2-3',
