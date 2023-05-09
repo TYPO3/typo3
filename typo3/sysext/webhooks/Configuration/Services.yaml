@@ -28,13 +28,3 @@ services:
 
   TYPO3\CMS\Webhooks\Tca\ItemsProcFunc\WebhookTypesItemsProcFunc:
     public: true
-
-  lowlevel.configuration.module.provider.webhooks:
-    class: 'TYPO3\CMS\Webhooks\ConfigurationModuleProvider\WebhookTypesProvider'
-    arguments:
-      $sendersLocator: !tagged_locator { tag: 'messenger.sender', index_by: 'identifier' }
-    tags:
-      - name: 'lowlevel.configuration.module.provider'
-        identifier: 'webhooks'
-        label: 'LLL:EXT:webhooks/Resources/Private/Language/locallang_db.xlf:webhooks'
-        after: 'reactions'

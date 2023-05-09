@@ -84,13 +84,6 @@ services:
         identifier: 'form-framework/modify-data-structure'
         method: 'modifyDataStructure'
 
-  lowlevel.configuration.module.provider.formyamlconfiguration:
-    class: 'TYPO3\CMS\Form\ConfigurationModuleProvider\FormYamlProvider'
-    tags:
-      - name: 'lowlevel.configuration.module.provider'
-        identifier: 'formYamlConfiguration'
-        after: 'eventListeners'
-
   TYPO3\CMS\Form\SoftReference\FormPersistenceIdentifierSoftReferenceParser:
     tags:
       - name: softreference.parser
