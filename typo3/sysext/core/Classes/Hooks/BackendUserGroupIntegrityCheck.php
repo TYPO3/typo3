@@ -16,10 +16,9 @@
 namespace TYPO3\CMS\Core\Hooks;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\SysLog\Action\Database as SystemLogDatabaseAction;
+use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -28,12 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class BackendUserGroupIntegrityCheck
 {
-    /**
-     * @param string $_ unused
-     * @param string $table
-     * @param int $id
-     */
-    public function processDatamap_afterDatabaseOperations($_, $table, $id)
+    public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, DataHandler $dataHandler): void
     {
         if ($table !== 'be_groups') {
             return;
@@ -43,24 +37,17 @@ class BackendUserGroupIntegrityCheck
         foreach ($explicitAllowDenyFields as $value) {
             if ($value !== '' && str_starts_with($value, 'tt_content:list_type:')) {
                 if (!in_array('tt_content:CType:list', $explicitAllowDenyFields, true)) {
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
-                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.backendUserGroupListTypeError.message'),
-                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.backendUserGroupListTypeError.header'),
-                        ContextualFeedbackSeverity::WARNING,
-                        true
+                    $dataHandler->log(
+                        $table,
+                        $id,
+                        SystemLogDatabaseAction::UPDATE,
+                        0,
+                        SystemLogErrorClassification::WARNING,
+                        'Editing of at least one plugin was enabled but editing the page content type "Insert Plugin" is still disallowed. Group members won\'t be able to edit plugins unless you activate editing for the content type.',
                     );
-                    $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                    $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-                    $defaultFlashMessageQueue->enqueue($flashMessage);
                 }
                 return;
             }
         }
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }
