@@ -205,6 +205,10 @@ final class PageViewHelperTest extends FunctionalTestCase
                 '<f:uri.page pageUid="1" section="c13" />',
                 '/#c13',
             ],
+            'link to root page with page type' => [
+                '<f:uri.page pageUid="1" pageType="1234" />',
+                '/?type=1234',
+            ],
             'link to root page with untrusted query arguments' => [
                 '<f:uri.page pageUid="1" addQueryString="untrusted" />',
                 '/?untrusted=123',

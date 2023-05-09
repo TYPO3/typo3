@@ -205,6 +205,10 @@ final class PageViewHelperTest extends FunctionalTestCase
                 '<f:link.page pageUid="1" section="c13">linkMe</f:link.page>',
                 '<a href="/#c13">linkMe</a>',
             ],
+            'link to root page with page type' => [
+                '<f:link.page pageUid="1" pageType="1234">linkMe</f:link.page>',
+                '<a href="/?type=1234">linkMe</a>',
+            ],
             'link to root page with untrusted query arguments' => [
                 '<f:link.page addQueryString="untrusted"></f:link.page>',
                 '<a href="/?untrusted=123"></a>',
