@@ -719,7 +719,7 @@ class CKEditor5Migrator
         // Ensure editor.config.style.definitions exists
         $this->configuration['editor']['config']['style']['definitions'] ??= [];
 
-        $allowedClasses = is_array($this->configuration['buttons']['link']['properties']['class']['allowedClasses'])
+        $allowedClassSets = is_array($this->configuration['buttons']['link']['properties']['class']['allowedClasses'])
             ? $this->configuration['buttons']['link']['properties']['class']['allowedClasses']
             : GeneralUtility::trimExplode(',', $this->configuration['buttons']['link']['properties']['class']['allowedClasses'], true);
 
@@ -731,19 +731,20 @@ class CKEditor5Migrator
             }
         }
 
-        foreach ($allowedClasses as $allowedClass) {
+        foreach ($allowedClassSets as $classSet) {
+            $allowedClasses = GeneralUtility::trimExplode(' ', $classSet);
             foreach ($this->configuration['editor']['config']['style']['definitions'] as $styleSetDefinition) {
-                if ($styleSetDefinition['element'] === 'a' && $styleSetDefinition['classes'] === [$allowedClass]) {
-                    // allowedClass is already configured, continue with next one
+                if ($styleSetDefinition['element'] === 'a' && $styleSetDefinition['classes'] === $allowedClasses) {
+                    // allowedClasses is already configured, continue with next one
                     continue 2;
                 }
             }
 
-            // We're still here, this means $allowedClass wasn't found
+            // We're still here, this means $allowedClasses wasn't found
             array_splice($this->configuration['editor']['config']['style']['definitions'], $indexToInsertElementsAt, 0, [[
-                'classes' => [$allowedClass],
+                'classes' => $allowedClasses,
                 'element' => 'a',
-                'name' => $allowedClass, // we lack a human-readable name here...
+                'name' => implode(' ', $allowedClasses), // we lack a human-readable name here...
             ]]);
             $indexToInsertElementsAt++;
         }

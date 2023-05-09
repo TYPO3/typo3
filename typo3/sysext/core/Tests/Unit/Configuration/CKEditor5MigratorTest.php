@@ -1557,7 +1557,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                         'link' => [
                             'properties' => [
                                 'class' => [
-                                    'allowedClasses' => 'link-arrow, link-chevron, class-karl',
+                                    'allowedClasses' => 'link-arrow, btn btn-default, link-chevron, class-karl',
                                 ],
                             ],
                         ],
@@ -1572,6 +1572,11 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                         'classes' => ['link-arrow'],
                                         'element' => 'a',
                                         'name' => 'Link Arrow',
+                                    ],
+                                    [
+                                        'classes' => ['btn', 'btn-default'],
+                                        'element' => 'a',
+                                        'name' => 'btn btn-default',
                                     ],
                                     [
                                         'classes' => ['link-chevron'],
@@ -1616,7 +1621,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                         'link' => [
                             'properties' => [
                                 'class' => [
-                                    'allowedClasses' => 'link-arrow, link-chevron, class-karl',
+                                    'allowedClasses' => 'link-arrow, btn btn-default, link-chevron, class-karl',
                                 ],
                             ],
                         ],
