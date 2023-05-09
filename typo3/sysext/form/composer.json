@@ -25,7 +25,8 @@
 	},
 	"suggest": {
 		"typo3/cms-filelist": "Listing of files in the directory",
-		"typo3/cms-impexp": "Import and Export of records from TYPO3 in a custom serialized format (.T3D) for data exchange with other TYPO3 systems."
+		"typo3/cms-impexp": "Import and Export of records from TYPO3 in a custom serialized format (.T3D) for data exchange with other TYPO3 systems.",
+		"typo3/cms-lowlevel": "To display the YAML configuration in the configuration module"
 	},
 	"conflict": {
 		"typo3/cms": "*"
