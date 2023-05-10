@@ -740,7 +740,7 @@ export default (function() {
   FormEngine.initializeLocalizationStateSelector = function(): void {
     document.querySelectorAll('.t3js-l10n-state-container').forEach((el: HTMLElement) => {
       const input = el.closest('.t3js-formengine-field-item')?.querySelector('[data-formengine-input-name]') as HTMLInputElement|null;
-      if (input === undefined) {
+      if (input === undefined || input === null) {
         return;
       }
       const currentState = (el.querySelector('input[type="radio"]:checked') as HTMLInputElement).value;
