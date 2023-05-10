@@ -348,7 +348,7 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
                                 $selected = true;
                             }
                             $parsedCommentArray['labelValueArray'][] = [
-                                'label' => $label,
+                                'label' => $languageService->sL($label),
                                 'value' => $value,
                                 'selected' => $selected,
                             ];
