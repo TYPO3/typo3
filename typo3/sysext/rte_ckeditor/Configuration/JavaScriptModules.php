@@ -27,6 +27,7 @@ return [
         '@ckeditor/ckeditor5-enter' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-enter.js',
         '@ckeditor/ckeditor5-essentials' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-essentials.js',
         '@ckeditor/ckeditor5-find-and-replace' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-find-and-replace.js',
+        '@ckeditor/ckeditor5-font' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-font.js',
         '@ckeditor/ckeditor5-heading' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-heading.js',
         '@ckeditor/ckeditor5-horizontal-line' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-horizontal-line.js',
         '@ckeditor/ckeditor5-html-support' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-html-support.js',

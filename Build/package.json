@@ -101,6 +101,7 @@
     "@ckeditor/ckeditor5-engine": "^41.1.0",
     "@ckeditor/ckeditor5-essentials": "^41.1.0",
     "@ckeditor/ckeditor5-find-and-replace": "^41.1.0",
+    "@ckeditor/ckeditor5-font": "^41.1.0",
     "@ckeditor/ckeditor5-heading": "^41.1.0",
     "@ckeditor/ckeditor5-horizontal-line": "^41.1.0",
     "@ckeditor/ckeditor5-html-support": "^41.1.0",

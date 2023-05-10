@@ -154,6 +154,7 @@ export default {
             '@ckeditor/ckeditor5-enter': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-enter.js',
             '@ckeditor/ckeditor5-essentials': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-essentials.js',
             '@ckeditor/ckeditor5-find-and-replace': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-find-and-replace.js',
+            '@ckeditor/ckeditor5-font': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-font.js',
             '@ckeditor/ckeditor5-heading': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-heading.js',
             '@ckeditor/ckeditor5-horizontal-line': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-horizontal-line.js',
             '@ckeditor/ckeditor5-html-support': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-html-support.js',
