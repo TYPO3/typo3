@@ -28,8 +28,9 @@ Page Doktypes.
 Migration
 =========
 
-Use the new PageTypeRegistry class to register custom page types with their
-dependency what kind of records should be allowed for creation, or to read the
-information what record types are allowed on a specific pages.doktype.
+Use the new :php:`TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry` class to register 
+custom page types with their dependency what kind of records should be allowed for 
+creation, or to read the information what record types are allowed on a
+specific pages.doktype.
 
 .. index:: PHP-API, FullyScanned, ext:core
