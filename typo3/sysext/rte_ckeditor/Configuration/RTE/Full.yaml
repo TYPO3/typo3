@@ -70,6 +70,10 @@ editor:
         - '-'
         - style
         - heading
+        - fontFamily
+        - fontBackgroundColor
+        - fontColor
+        - fontSize
 
     alignment:
       options:
@@ -87,3 +91,29 @@ editor:
         - tableProperties
         - tableCellProperties
         - toggleTableCaption
+
+    fontColor:
+      colors:
+        - { label: 'Orange', color: '#ff8700' }
+        - { label: 'Blue', color: '#0080c9' }
+        - { label: 'Green', color: '#209d44' }
+
+    fontBackgroundColor:
+      colors:
+        - { label: 'Stage orange light', color: '#fab85c' }
+
+    fontFamily:
+      options:
+        - 'default'
+        - 'Arial, sans-serif'
+
+    fontSize:
+      options:
+        - 'default'
+        - 18
+        - 21
+
+    importModules:
+      - { 'module': '@ckeditor/ckeditor5-font', 'exports': ['Font'] }
+      - { 'module': '@ckeditor/ckeditor5-show-blocks', 'exports': ['ShowBlocks'] }
+      - { 'module': '@ckeditor/ckeditor5-word-count', 'exports': ['WordCount'] }

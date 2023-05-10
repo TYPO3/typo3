@@ -160,11 +160,11 @@ class CKEditor5Migrator
         // styles
         'Styles' => 'style',
         'Format' => 'heading',
-        'Font' => null,
-        'FontSize' => null,
+        'Font' => 'fontFamily',
+        'FontSize' => 'fontSize',
         // colors
-        'TextColor' => null,
-        'BGColor' => null,
+        'TextColor' => 'fontColor',
+        'BGColor' => 'fontBackgroundColor',
         // tools
         'Maximize' => null,
         'ShowBlocks' => null,
@@ -201,6 +201,14 @@ class CKEditor5Migrator
         'AutoLink' => [
             'module' => '@ckeditor/ckeditor5-link',
             'exports' => [ 'AutoLink' ],
+        ],
+        'font' => [
+            'module' => '@ckeditor/ckeditor5-font',
+            'exports' => [ 'Font' ],
+        ],
+        'Font' => [
+            'module' => '@ckeditor/ckeditor5-font',
+            'exports' => [ 'Font' ],
         ],
         'justify' => [
             'module' => '@ckeditor/ckeditor5-alignment',

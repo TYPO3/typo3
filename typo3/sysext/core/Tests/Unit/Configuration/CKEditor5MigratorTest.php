@@ -757,6 +757,8 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 'items' => [
                                     'style',
                                     'heading',
+                                    'fontFamily',
+                                    'fontSize',
                                     '|',
                                     'bold',
                                     'italic',
@@ -890,6 +892,8 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                     '-',
                                     'style',
                                     'heading',
+                                    'fontFamily',
+                                    'fontSize',
                                 ],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
