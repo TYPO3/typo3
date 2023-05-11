@@ -19,6 +19,7 @@ interface CKEditor5Config {
   language?: any;
   table?: any;
   ui?: any;
+  htmlSupport?: any;
 
   wordCount?: any;
   typo3link?: any;
@@ -115,6 +116,9 @@ export class CKEditor5Element extends LitElement {
         }
         if (this.options.ui) {
           config.ui = this.options.ui;
+        }
+        if (this.options.htmlSupport) {
+          config.htmlSupport = this.options.htmlSupport;
         }
 
         CKEditor5
