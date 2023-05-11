@@ -1594,22 +1594,32 @@ class PageRenderer implements SingletonInterface
         }
         $requireJsUri = $this->processJsFile($this->requireJsPath . 'require.js');
         // add (probably filtered) RequireJS configuration
+        $commonAttributes = $this->nonce !== null ? ['nonce' => $this->nonce->consume()] : [];
         if ($this->getApplicationType() === 'BE') {
             $html .= sprintf(
-                '<script src="%s"></script>' . "\n",
-                htmlspecialchars($requireJsUri)
+                '<script %s></script>' . "\n",
+                GeneralUtility::implodeAttributes([
+                    ...$commonAttributes,
+                    'src' => $requireJsUri,
+                ], true)
             );
             $html .= sprintf(
-                '<script src="%s">/* %s */</script>' . "\n",
-                htmlspecialchars($this->getStreamlinedFileName('EXT:core/Resources/Public/JavaScript/require-jsconfig-handler.js', true)),
+                '<script %s>/* %s */</script>' . "\n",
+                GeneralUtility::implodeAttributes([
+                    ...$commonAttributes,
+                    'src' => $this->getStreamlinedFileName('EXT:core/Resources/Public/JavaScript/require-jsconfig-handler.js'),
+                ], true),
                 (string)json_encode($requireJsConfig, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG)
             );
         } else {
             $html .= GeneralUtility::wrapJS('var require = ' . json_encode($requireJsConfig)) . LF;
             // directly after that, include the require.js file
             $html .= sprintf(
-                '<script src="%s"></script>' . "\n",
-                htmlspecialchars($requireJsUri)
+                '<script %s></script>' . "\n",
+                GeneralUtility::implodeAttributes([
+                    ...$commonAttributes,
+                    'src' => $requireJsUri,
+                ], true)
             );
         }
         // use (anonymous require.js loader). Used to shim ES6 modules and when not
@@ -1618,12 +1628,13 @@ class PageRenderer implements SingletonInterface
             ($this->getApplicationType() === 'BE' && $this->javaScriptRenderer->hasImportMap()) ||
             !empty($requireJsConfig['typo3BaseUrl'])
         ) {
-            $html .= '<script src="'
-                . $this->getStreamlinedFileName(
-                    'EXT:core/Resources/Public/JavaScript/requirejs-loader.js',
-                    true
-                )
-                . '"></script>' . LF;
+            $html .= sprintf(
+                '<script %s></script>' . "\n",
+                GeneralUtility::implodeAttributes([
+                    ...$commonAttributes,
+                    'src' => $this->getStreamlinedFileName('EXT:core/Resources/Public/JavaScript/requirejs-loader.js'),
+                ], true)
+            );
         }
 
         return $html;
