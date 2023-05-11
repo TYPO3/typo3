@@ -286,6 +286,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Authentication/AbstractUserAuthentication.php
 
 		-
+			message: "#^Parameter \\#2 \\$values of function vsprintf expects array\\<bool\\|float\\|int\\|string\\|null\\>, array\\<int\\|string, array\\<int, mixed\\>\\> given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Authentication/AuthenticationService.php
+
+		-
 			message: "#^Offset 'access' on array on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Authentication/BackendUserAuthentication.php
