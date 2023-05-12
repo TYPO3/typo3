@@ -112,6 +112,15 @@ editor.config
    <https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-removeButtons>`__
    for more information.
 
+.. option:: editor.config.debug
+
+   enables or disables the CKEditor Inspector.
+
+   Example::
+
+      debug: true
+
+
 editor.*
 ~~~~~~~~
 
