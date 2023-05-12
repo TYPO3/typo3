@@ -184,7 +184,7 @@ class SetupModuleController
         $d = $postData['data'] ?? null;
         $columns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'];
         $backendUser = $this->getBackendUser();
-        $beUserId = $backendUser->user['uid'];
+        $beUserId = (int)$backendUser->user['uid'];
         $storeRec = [];
         $doSaveData = false;
         $fieldList = $this->getFieldsFromShowItem();
@@ -519,7 +519,7 @@ class SetupModuleController
                 case 'avatar':
                     // Get current avatar image
                     $html = '';
-                    $avatarFileUid = $this->getAvatarFileUid($backendUser->user['uid']);
+                    $avatarFileUid = $this->getAvatarFileUid((int)$backendUser->user['uid']);
 
                     if ($avatarFileUid) {
                         $defaultAvatarProvider = GeneralUtility::makeInstance(DefaultAvatarProvider::class);
