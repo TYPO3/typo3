@@ -223,7 +223,7 @@ class SetupModuleController
         $d = $postData['data'] ?? null;
         $columns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'];
         $backendUser = $this->getBackendUser();
-        $beUserId = $backendUser->user['uid'];
+        $beUserId = (int)$backendUser->user['uid'];
         $storeRec = [];
         $fieldList = $this->getFieldsFromShowItem();
         if (is_array($d) && $this->formProtection->validateToken((string)($postData['formToken'] ?? ''), 'BE user setup', 'edit')) {
@@ -618,7 +618,7 @@ class SetupModuleController
                 case 'avatar':
                     // Get current avatar image
                     $html = '<br>';
-                    $avatarFileUid = $this->getAvatarFileUid($backendUser->user['uid']);
+                    $avatarFileUid = $this->getAvatarFileUid((int)$backendUser->user['uid']);
 
                     if ($avatarFileUid) {
                         $defaultAvatarProvider = GeneralUtility::makeInstance(DefaultAvatarProvider::class);

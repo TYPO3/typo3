@@ -83,7 +83,7 @@ class PresetRepository
         while ($presetCfg = $presets->fetchAssociative()) {
             $options[$presetCfg['uid']] = $presetCfg['title'] . ' [' . $presetCfg['uid'] . ']'
                 . ($presetCfg['public'] ? ' [Public]' : '')
-                . ($presetCfg['user_uid'] === $this->getBackendUser()->user['uid'] ? ' [Own]' : '');
+                . ((int)$presetCfg['user_uid'] === (int)$this->getBackendUser()->user['uid'] ? ' [Own]' : '');
         }
         return $options;
     }
@@ -148,7 +148,7 @@ class PresetRepository
     {
         $preset = $this->getPreset($uid);
 
-        if (!($this->getBackendUser()->isAdmin() || $preset['user_uid'] === $this->getBackendUser()->user['uid'])) {
+        if (!($this->getBackendUser()->isAdmin() || (int)$preset['user_uid'] === (int)$this->getBackendUser()->user['uid'])) {
             throw new InsufficientUserPermissionsException(
                 'ERROR: You were not the owner of the preset so you could not delete it.',
                 1604584766
@@ -200,7 +200,7 @@ class PresetRepository
     {
         $preset = $this->getPreset($uid);
 
-        if (!($this->getBackendUser()->isAdmin() || $preset['user_uid'] === $this->getBackendUser()->user['uid'])) {
+        if (!($this->getBackendUser()->isAdmin() || (int)$preset['user_uid'] === (int)$this->getBackendUser()->user['uid'])) {
             throw new InsufficientUserPermissionsException(
                 'ERROR: You were not the owner of the preset so you could not delete it.',
                 1604564346

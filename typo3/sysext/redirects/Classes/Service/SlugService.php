@@ -331,7 +331,7 @@ class SlugService implements LoggerAwareInterface
         return GeneralUtility::makeInstance(
             RecordHistoryStore::class,
             RecordHistoryStore::USER_BACKEND,
-            $backendUser->user['uid'],
+            (int)$backendUser->user['uid'],
             (int)$backendUser->getOriginalUserIdWhenInSwitchUserMode(),
             $this->context->getPropertyFromAspect('date', 'timestamp'),
             $backendUser->workspace ?? 0
