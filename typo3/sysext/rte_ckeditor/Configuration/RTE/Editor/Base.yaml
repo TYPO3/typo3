@@ -5,10 +5,5 @@ editor:
     # the CSS file to be used inside the editor
     contentsCss:
       - 'EXT:rte_ckeditor/Resources/Public/Css/contents.css'
-    language:
-      # will be overridden by the locale of the backend user
-      ui: 'en'
-      # will be overridden by the record (if a language is set)
-      content: 'en'
     height: 300
     width: 'auto'
