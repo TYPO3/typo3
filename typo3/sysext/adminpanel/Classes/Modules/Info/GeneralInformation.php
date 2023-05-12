@@ -23,6 +23,7 @@ use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -121,7 +122,8 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
         $count = 0;
         $totalImageSize = 0;
         foreach (GeneralUtility::makeInstance(AssetCollector::class)->getMedia() as $file => $information) {
-            $fileSize = (int)@filesize($file);
+            $filePath = Environment::getPublicPath() . '/' . ltrim(parse_url($file, PHP_URL_PATH), '/');
+            $fileSize = is_file($filePath) ? filesize($filePath) : 0;
             $imagesOnPage['files'][] = [
                 'name' => $file,
                 'size' => $fileSize,
