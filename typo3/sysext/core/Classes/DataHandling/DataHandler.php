@@ -633,7 +633,7 @@ class DataHandler implements LoggerAwareInterface
     {
         // Initializing BE_USER
         $this->BE_USER = is_object($altUserObject) ? $altUserObject : $GLOBALS['BE_USER'];
-        $this->userid = $this->BE_USER->user['uid'] ?? 0;
+        $this->userid = (int)($this->BE_USER->user['uid'] ?? 0);
         $this->admin = $this->BE_USER->user['admin'] ?? false;
 
         // set correlation id for each new set of data or commands
@@ -7911,7 +7911,7 @@ class DataHandler implements LoggerAwareInterface
         return GeneralUtility::makeInstance(
             RecordHistoryStore::class,
             RecordHistoryStore::USER_BACKEND,
-            $this->BE_USER->user['uid'],
+            (int)$this->BE_USER->user['uid'],
             (int)$this->BE_USER->getOriginalUserIdWhenInSwitchUserMode(),
             $GLOBALS['EXEC_TIME'],
             $this->BE_USER->workspace
