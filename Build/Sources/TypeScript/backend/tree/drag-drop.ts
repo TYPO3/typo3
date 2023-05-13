@@ -209,9 +209,15 @@ export class DragDrop {
    */
   public updatePositioningLine(hoveredNode: TreeNode): void
   {
+    let transform = `translate(${(this.tree.settings.indentWidth / 2 * -1)}, ${(hoveredNode.y - (this.tree.settings.nodeHeight / 2))})`;
+
+    if (hoveredNode.lastChild && this.tree.settings.nodeDragPosition === DraggablePositionEnum.AFTER) {
+      transform = `translate(${(this.tree.settings.indentWidth / 2 * -1)}, ${(hoveredNode.y + (this.tree.settings.nodeHeight / 2))})`;
+    }
+
     this.tree.nodesBgContainer
       .selectAll('.node-bg__border')
-      .attr('transform', 'translate(' + (this.tree.settings.indentWidth / 2 * -1) + ', ' + (hoveredNode.y - (this.tree.settings.nodeHeight / 2)) + ')')
+      .attr('transform', transform)
       .style('display', 'block');
   }
 
