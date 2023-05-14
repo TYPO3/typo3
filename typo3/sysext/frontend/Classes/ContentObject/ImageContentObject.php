@@ -214,14 +214,17 @@ class ImageContentObject extends AbstractContentObject
                     $sourceConfiguration['height'] = $sourceInfo[1];
 
                     $urlPrefix = '';
+                    $publicUrl = str_starts_with($sourceInfo[3], Environment::getPublicPath())
+                        ? PathUtility::stripPathSitePrefix($sourceInfo[3])
+                        : $sourceInfo[3];
 
                     // Prepend 'absRefPrefix' to file path only if file was not processed
                     // by FAL, e.g. GIFBUILDER
-                    if (!isset($sourceInfo['originalFile']) && is_file(Environment::getPublicPath() . '/' . $sourceInfo['3'])) {
+                    if (!isset($sourceInfo['originalFile']) && is_file(Environment::getPublicPath() . '/' . $publicUrl)) {
                         $urlPrefix = $tsfe->absRefPrefix;
                     }
 
-                    $sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $sourceInfo[3]);
+                    $sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $publicUrl);
                     $sourceConfiguration['selfClosingTagSlash'] = $this->getPageRenderer()->getDocType()->isXmlCompliant() ? ' /' : '';
 
                     $oneSourceCollection = $this->markerTemplateService->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', true, true);
