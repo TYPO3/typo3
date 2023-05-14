@@ -159,8 +159,11 @@ final class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->method('getName')->willReturn('mysql');
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->method('quote')->willReturnCallback(function (string $value): string {
+            return '"' . $value . '"';
+        });
         $result = $this->subject->like('aField', "'aValue%'");
-        self::assertSame("aField LIKE 'aValue%'", $result);
+        self::assertSame("aField LIKE 'aValue%' ESCAPE \"\\\"", $result);
     }
 
     /**
@@ -172,8 +175,11 @@ final class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->method('getName')->willReturn('mysql');
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->method('quote')->willReturnCallback(function (string $value): string {
+            return '"' . $value . '"';
+        });
         $result = $this->subject->notLike('aField', "'aValue%'");
-        self::assertSame("aField NOT LIKE 'aValue%'", $result);
+        self::assertSame("aField NOT LIKE 'aValue%' ESCAPE \"\\\"", $result);
     }
 
     /**
