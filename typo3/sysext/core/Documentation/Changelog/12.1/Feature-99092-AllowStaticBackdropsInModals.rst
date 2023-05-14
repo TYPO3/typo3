@@ -26,14 +26,14 @@ Example:
 
 ..  code-block:: js
 
-    import {default as Modal} from './modal';
+    import Modal from '@typo3/backend/modal';
 
-    Modal.advanced(
+    Modal.advanced({
       title: 'Hello',
       content: 'This modal is not closable via clicking the backdrop.',
       size: Modal.sizes.small,
       staticBackdrop: true
-    );
+    });
 
 Templates using the HTML class :html:`.t3js-modal-trigger` to initialize
 a modal dialog can also use the new option by adding the
