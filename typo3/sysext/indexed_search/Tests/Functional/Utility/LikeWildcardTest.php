@@ -51,6 +51,9 @@ class LikeWildcardTest extends FunctionalTestCase
             $expected = addcslashes($expected, '\\');
         }
         $expected = $connection->quoteIdentifier($fieldName) . ' ' . $expected;
+        if (! $connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+            $expected .= ' ESCAPE ' . $connection->quote('\\');
+        }
         self::assertSame($expected, $subject->getLikeQueryPart($tableName, $fieldName, $likeValue));
     }
 

@@ -169,9 +169,11 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('mysql');
         $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->quote(Argument::type('string'))->will(function ($args) {
+            return '"' . $args[0] . '"';
+        });
         $result = $this->subject->like('aField', "'aValue%'");
-        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
-        self::assertSame("aField LIKE 'aValue%'", $result);
+        self::assertSame("aField LIKE 'aValue%' ESCAPE \"\\\"", $result);
     }
 
     /**
@@ -182,9 +184,11 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('mysql');
         $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->quote(Argument::type('string'))->will(function ($args) {
+            return '"' . $args[0] . '"';
+        });
         $result = $this->subject->notLike('aField', "'aValue%'");
-        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
-        self::assertSame("aField NOT LIKE 'aValue%'", $result);
+        self::assertSame("aField NOT LIKE 'aValue%' ESCAPE \"\\\"", $result);
     }
 
     /**
@@ -399,20 +403,28 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('mssql');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('\'');
-
-        $this->connectionProphecy->quote('1', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
-        $this->connectionProphecy->quote('1,%', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'1,%'");
-        $this->connectionProphecy->quote('%,1', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'%,1'");
-        $this->connectionProphecy->quote('%,1,%', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'%,1,%'");
         $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '[' . $args[0] . ']';
+        });
+        $this->connectionProphecy->quote(Argument::cetera())->will(static function ($args) {
+            $value = (string)($args[0] ?? '');
+            $map = [
+                '1' => "'1'",
+                '1,%' => "'1,%'",
+                '%,1' => "'%,1'",
+                '%,1,%' => "'%,1,%'",
+            ];
+            if ($map[$value] ?? false) {
+                return $map[$value];
+            }
+            return "'" . $value . "'";
         });
 
         $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->inSet('aField', "'1'");
 
-        self::assertSame("([aField] = '1') OR ([aField] LIKE '1,%') OR ([aField] LIKE '%,1') OR ([aField] LIKE '%,1,%')", $result);
+        self::assertSame("([aField] = '1') OR ([aField] LIKE '1,%' ESCAPE '\') OR ([aField] LIKE '%,1' ESCAPE '\') OR ([aField] LIKE '%,1,%' ESCAPE '\')", $result);
     }
 
     /**
@@ -584,19 +596,28 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('mssql');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('\'');
 
-        $this->connectionProphecy->quote('1', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
-        $this->connectionProphecy->quote('1,%', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'1,%'");
-        $this->connectionProphecy->quote('%,1', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'%,1'");
-        $this->connectionProphecy->quote('%,1,%', Connection::PARAM_STR)->shouldBeCalled()->willReturn("'%,1,%'");
         $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '[' . $args[0] . ']';
+        });
+        $this->connectionProphecy->quote(Argument::cetera())->will(static function ($args) {
+            $value = (string)($args[0] ?? '');
+            $map = [
+                '1' => "'1'",
+                '1,%' => "'1,%'",
+                '%,1' => "'%,1'",
+                '%,1,%' => "'%,1,%'",
+            ];
+            if ($map[$value] ?? false) {
+                return $map[$value];
+            }
+            return "'" . $value . "'";
         });
 
         $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->inSet('aField', "'1'");
 
-        self::assertSame("([aField] = '1') OR ([aField] LIKE '1,%') OR ([aField] LIKE '%,1') OR ([aField] LIKE '%,1,%')", $result);
+        self::assertSame("([aField] = '1') OR ([aField] LIKE '1,%' ESCAPE '\') OR ([aField] LIKE '%,1' ESCAPE '\') OR ([aField] LIKE '%,1,%' ESCAPE '\')", $result);
     }
 
     /**

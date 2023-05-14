@@ -250,7 +250,8 @@ class ExpressionBuilder
         // Note: SQLite does not properly work with non-ascii letters as search word for case-insensitive
         //       matching, UPPER() and LOWER() have the same issue, it only works with ascii letters.
         //       See: https://www.sqlite.org/src/doc/trunk/ext/icu/README.txt
-        return $this->comparison($this->connection->quoteIdentifier($fieldName), 'LIKE', $value);
+        return $this->comparison($this->connection->quoteIdentifier($fieldName), 'LIKE', $value)
+            . sprintf(' ESCAPE %s', $this->connection->quote('\\'));
     }
 
     /**
@@ -269,7 +270,8 @@ class ExpressionBuilder
         // Note: SQLite does not properly work with non-ascii letters as search word for case-insensitive
         //       matching, UPPER() and LOWER() have the same issue, it only works with ascii letters.
         //       See: https://www.sqlite.org/src/doc/trunk/ext/icu/README.txt
-        return $this->comparison($this->connection->quoteIdentifier($fieldName), 'NOT LIKE', $value);
+        return $this->comparison($this->connection->quoteIdentifier($fieldName), 'NOT LIKE', $value)
+            . sprintf(' ESCAPE %s', $this->connection->quote('\\'));
     }
 
     /**

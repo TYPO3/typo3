@@ -756,7 +756,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             $platform = $queryBuilder->getConnection()->getDatabasePlatform();
             foreach ($excludePlatforms as $excludePlatform) {
                 if ($platform instanceof $excludePlatform) {
-                    self::markTestSkipped('Exculded platform ' . $excludePlatform);
+                    self::markTestSkipped('Excluded platform ' . $excludePlatform);
                 }
             }
         }
@@ -819,6 +819,134 @@ class ExpressionBuilderTest extends FunctionalTestCase
         ];
     }
 
+    public static function likeWithWildcardValueCanBeMatchedDataProvider(): \Generator
+    {
+        yield 'escaped value with underscore matches properly' => [
+            // addcslashes() is used in escapeLikeWildcards()
+            'searchWord' => '%' . addcslashes('underscore_escape_can_be_matched', '%_') . '%',
+            'expectedRows' => [
+                0 => [
+                    'uid' => 3,
+                    'aCsvField' => 'underscore_escape_can_be_matched,second_value',
+                ],
+            ],
+            'excludePlatforms' => [],
+        ];
+
+        yield 'escaped value with % matches properly' => [
+            // addcslashes() is used in escapeLikeWildcards()
+            'searchWord' => '%' . addcslashes('a % in', '%_') . '%',
+            'expectedRows' => [
+                0 => [
+                    'uid' => 5,
+                    'aCsvField' => 'Some value with a % in it',
+                ],
+            ],
+            'excludePlatforms' => [],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider likeWithWildcardValueCanBeMatchedDataProvider
+     */
+    public function likeWithWildcardValueCanBeMatched(string $searchWord, array $expectedRows, array $excludePlatforms): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderLikeAndNotLike.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        if ($excludePlatforms !== []) {
+            $platform = $queryBuilder->getConnection()->getDatabasePlatform();
+            foreach ($excludePlatforms as $excludePlatform) {
+                if ($platform instanceof $excludePlatform) {
+                    self::markTestSkipped('Excluded platform ' . $excludePlatform);
+                }
+            }
+        }
+        $rows = $queryBuilder
+            ->select('uid', 'aCsvField')
+            ->from('tx_expressionbuildertest')
+            ->where(
+                // narrow down result set
+                $queryBuilder->expr()->eq('aField', $queryBuilder->createNamedParameter('likeescape')),
+                // this is what we are testing
+                $queryBuilder->expr()->like('aCsvField', $queryBuilder->createNamedParameter($searchWord))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+        if (is_array($rows)) {
+            $rows = $this->ensureRowsUidAsInteger($rows);
+        }
+        self::assertSame($expectedRows, $rows);
+    }
+
+    public static function notLikeWithWildcardValueCanBeMatchedDataProvider(): \Generator
+    {
+        yield 'escaped value with underscore matches properly' => [
+            // addcslashes() is used in escapeLikeWildcards()
+            'searchWord' => '%' . addcslashes('underscore_escape_can_be_matched', '%_') . '%',
+            'expectedRows' => [
+                0 => [
+                    'uid' => 4,
+                    'aCsvField' => 'not_underscore_value',
+                ],
+                1 => [
+                    'uid' => 5,
+                    'aCsvField' => 'Some value with a % in it',
+                ],
+            ],
+            'excludePlatforms' => [],
+        ];
+
+        yield 'escaped value with wildcard search word matches properly' => [
+            // addcslashes() is used in escapeLikeWildcards()
+            'searchWord' => '%' . addcslashes('a % in', '%_') . '%',
+            'expectedRows' => [
+                0 => [
+                    'uid' => 3,
+                    'aCsvField' => 'underscore_escape_can_be_matched,second_value',
+                ],
+                1 => [
+                    'uid' => 4,
+                    'aCsvField' => 'not_underscore_value',
+                ],
+            ],
+            'excludePlatforms' => [],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider notLikeWithWildcardValueCanBeMatchedDataProvider
+     */
+    public function notLikeWithWildcardValueCanBeMatched(string $searchWord, array $expectedRows, array $excludePlatforms): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderLikeAndNotLike.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        if ($excludePlatforms !== []) {
+            $platform = $queryBuilder->getConnection()->getDatabasePlatform();
+            foreach ($excludePlatforms as $excludePlatform) {
+                if ($platform instanceof $excludePlatform) {
+                    self::markTestSkipped('Excluded platform ' . $excludePlatform);
+                }
+            }
+        }
+        $rows = $queryBuilder
+            ->select('uid', 'aCsvField')
+            ->from('tx_expressionbuildertest')
+            ->where(
+                // narrow down result set
+                $queryBuilder->expr()->eq('aField', $queryBuilder->createNamedParameter('likeescape')),
+                // this is what we are testing
+                $queryBuilder->expr()->notLike('aCsvField', $queryBuilder->createNamedParameter($searchWord))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+        if (is_array($rows)) {
+            $rows = $this->ensureRowsUidAsInteger($rows);
+        }
+        self::assertSame($expectedRows, $rows);
+    }
+
     /**
      * @test
      * @dataProvider notLikeReturnsExpectedDataSetsDataProvider
@@ -835,7 +963,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             $platform = $queryBuilder->getConnection()->getDatabasePlatform();
             foreach ($excludePlatforms as $excludePlatform) {
                 if ($platform instanceof $excludePlatform) {
-                    self::markTestSkipped('Exculded platform ' . $excludePlatform);
+                    self::markTestSkipped('Excluded platform ' . $excludePlatform);
                 }
             }
         }
