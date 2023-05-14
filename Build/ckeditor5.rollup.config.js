@@ -3,6 +3,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 import svg from 'rollup-plugin-svg';
 import * as path from 'path';
+import { buildConfigForTranslations } from './ckeditor5.rollup.helpers';
 
 const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 const postCssConfig = styles.getPostCssConfig({
@@ -57,6 +58,7 @@ export default [
         extensions: ['.js']
       }),
     ]
-  }
+  },
+  ...buildConfigForTranslations()
 ];
 

@@ -19,6 +19,10 @@ module.exports = function (grunt) {
   const sass = require('sass');
   const esModuleLexer = require('es-module-lexer');
 
+  grunt.registerTask('ckeditor:compile-locales', 'locale compilation for CKEditor', function() {
+    require('./Scripts/node/ckeditor-locale-compiler.js');
+  })
+
   /**
    * Grunt stylefmt task
    */
@@ -831,7 +835,7 @@ module.exports = function (grunt) {
    * this task does the following things:
    * - copy some components to a specific destinations because they need to be included via PHP
    */
-  grunt.registerTask('update', ['rollup', 'exec:ckeditor', 'concurrent:npmcopy']);
+  grunt.registerTask('update', ['ckeditor:compile-locales', 'rollup', 'exec:ckeditor', 'concurrent:npmcopy']);
 
   /**
    * grunt compile-typescript task
