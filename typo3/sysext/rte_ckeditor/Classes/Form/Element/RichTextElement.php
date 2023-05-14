@@ -190,6 +190,16 @@ class RichTextElement extends AbstractFormElement
             $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/ckeditor5-inspector.js');
         }
 
+        $uiLanguage = $ckeditorConfiguration['options']['language']['ui'];
+        if ($this->translationExists($uiLanguage)) {
+            $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/ckeditor5/translations/' . $uiLanguage . '.js');
+        }
+
+        $contentLanguage = $ckeditorConfiguration['options']['language']['content'];
+        if ($this->translationExists($contentLanguage)) {
+            $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/ckeditor5/translations/' . $contentLanguage . '.js');
+        }
+
         $resultArray['stylesheetFiles'][] = PathUtility::getPublicResourceWebPath('EXT:rte_ckeditor/Resources/Public/Css/editor.css');
 
         return $resultArray;
@@ -418,5 +428,11 @@ class RichTextElement extends AbstractFormElement
     {
         $fieldId = (string)preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $itemFormElementName);
         return htmlspecialchars((string)preg_replace('/^[^a-zA-Z]/', 'x', $fieldId));
+    }
+
+    protected function translationExists(string $language): bool
+    {
+        $fileName = GeneralUtility::getFileAbsFileName('EXT:rte_ckeditor/Resources/Public/Contrib/translations/' . $language . '.js');
+        return file_exists($fileName);
     }
 }
