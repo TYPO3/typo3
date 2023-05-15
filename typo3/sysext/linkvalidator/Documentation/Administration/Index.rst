@@ -15,13 +15,6 @@ requiring the package `typo3/cms-linkvalidator`:
 
     composer require typo3/cms-linkvalidator
 
-If you are using Composer and not working with the latest version of TYPO3
-you will need to add a version constraint:
-
-.. code-block:: bash
-
-    composer require typo3/cms-linkvalidator:"^10.4"
-
 If you want to use the LinkValidator in the Scheduler, the system extension
 :file:`scheduler` also needs to be installed:
 
