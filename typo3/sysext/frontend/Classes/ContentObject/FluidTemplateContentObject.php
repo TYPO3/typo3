@@ -85,7 +85,7 @@ class FluidTemplateContentObject extends AbstractContentObject
 
         $this->view->assignMultiple($variables);
 
-        $this->renderFluidTemplateAssetsIntoPageRenderer();
+        $this->renderFluidTemplateAssetsIntoPageRenderer($variables);
         $content = $this->renderFluidView();
         $content = $this->applyStandardWrapToRenderedContent($content, $conf);
 
@@ -98,11 +98,11 @@ class FluidTemplateContentObject extends AbstractContentObject
      * Fluid template, then adds each (if not empty) to either header or
      * footer, as appropriate, using PageRenderer.
      */
-    protected function renderFluidTemplateAssetsIntoPageRenderer()
+    protected function renderFluidTemplateAssetsIntoPageRenderer(array $variables)
     {
         $pageRenderer = $this->getPageRenderer();
-        $headerAssets = $this->view->renderSection('HeaderAssets', ['contentObject' => $this], true);
-        $footerAssets = $this->view->renderSection('FooterAssets', ['contentObject' => $this], true);
+        $headerAssets = $this->view->renderSection('HeaderAssets', [...$variables, 'contentObject' => $this], true);
+        $footerAssets = $this->view->renderSection('FooterAssets', [...$variables, 'contentObject' => $this], true);
         if (!empty(trim($headerAssets))) {
             $pageRenderer->addHeaderData($headerAssets);
         }
