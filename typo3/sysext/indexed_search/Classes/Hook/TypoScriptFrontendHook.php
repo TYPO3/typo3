@@ -116,7 +116,7 @@ class TypoScriptFrontendHook
         $configuration['mtime'] = $tsfe->register['SYS_LASTCHANGED'] ?? $tsfe->page['SYS_LASTCHANGED'];
         // Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
         // Configuration of behavior
-        $configuration['index_externals'] = $tsfe->config['config']['index_externals'];
+        $configuration['index_externals'] = $tsfe->config['config']['index_externals'] ?? true;
         // Whether to index external documents like PDF, DOC etc. (if possible)
         $configuration['index_descrLgd'] = $tsfe->config['config']['index_descrLgd'] ?? 0;
         // Length of description text (max 250, default 200)
