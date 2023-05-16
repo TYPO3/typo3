@@ -516,6 +516,31 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function versionNumberInFilenameSetToTrueStaysUntouched(): void
+    {
+        $testConfig = [
+            'FE' => [
+                'versionNumberInFilename' => true,
+            ],
+        ];
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->updateLocalConfiguration($testConfig);
+
+        $subject = $this->get(SilentConfigurationUpgradeService::class);
+        $exceptionCaught = false;
+        try {
+            $subject->execute();
+        } catch (ConfigurationChangedException) {
+            $exceptionCaught = true;
+        } finally {
+            self::assertTrue($exceptionCaught);
+            self::assertTrue($configurationManager->getLocalConfigurationValueByPath('FE/versionNumberInFilename'));
+        }
+    }
+
+    /**
+     * @test
+     */
     public function migrateSaltedPasswordsSettingsRemovesExtensionsConfigAndSetsNothingElseIfArgon2iIsAvailable(): void
     {
         $testConfig = [
