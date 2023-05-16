@@ -77,3 +77,7 @@ placeholders.
    :class: with-border
 
    The values used in a query run on the page
+
+..  note::
+    The list of SQL queries misses around 20 boot queries as they are executed
+    before logging is enabled.
