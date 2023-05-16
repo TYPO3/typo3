@@ -148,7 +148,7 @@ class AdministrationController extends ActionController
     {
         $this->pageUid = (int)($this->request->getQueryParams()['id'] ?? 0);
         $this->indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
-        $this->enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
+        $this->enableMetaphoneSearch = (bool)($this->indexerConfig['enableMetaphoneSearch'] ?? false);
 
         parent::initializeAction();
     }
