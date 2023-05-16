@@ -293,7 +293,7 @@ class AdministrationController extends ActionController
             }
         }
         $metaphoneRows = $metaphone = [];
-        $enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
+        $enableMetaphoneSearch = (bool)($this->indexerConfig['enableMetaphoneSearch'] ?? false);
         if ($enableMetaphoneSearch && is_array($wordRecords)) {
             // Group metaphone hash
             foreach ($wordRecords as $row) {
