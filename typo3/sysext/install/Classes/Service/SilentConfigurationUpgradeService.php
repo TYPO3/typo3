@@ -1121,6 +1121,9 @@ class SilentConfigurationUpgradeService
         try {
             $confManager = $this->configurationManager;
             $currentOption = $confManager->getLocalConfigurationValueByPath('FE/versionNumberInFilename');
+            if ($currentOption === true) {
+                return;
+            }
             if ($currentOption === 'embed') {
                 $confManager->setLocalConfigurationValueByPath('FE/versionNumberInFilename', true);
             } else {
