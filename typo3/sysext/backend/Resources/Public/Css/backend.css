@@ -3344,6 +3344,7 @@ th[aria-sort]:not([data-sort-method=none]):after{visibility:visible;opacity:.4}
 .flatpickr-next-month svg,.flatpickr-prev-month svg{display:block;width:14px;height:14px}
 .flatpickr-next-month svg path,.flatpickr-prev-month svg path{transition:fill .1s}
 .numInputWrapper{position:relative;height:auto}
+.numInputWrapper .numInput{-webkit-appearance:textfield;-moz-appearance:textfield;appearance:textfield}
 .numInputWrapper input,.numInputWrapper span{display:inline-block}
 .numInputWrapper input{width:100%;padding:0 .5em}
 .numInputWrapper span{color:inherit;position:absolute;right:2px;width:12px;padding:0 4px 0 2px;height:50%;line-height:50%;opacity:0;cursor:pointer}
@@ -3373,7 +3374,7 @@ th[aria-sort]:not([data-sort-method=none]):after{visibility:visible;opacity:.4}
 .flatpickr-day{display:block;position:relative;text-align:center;border:1px solid var(--flatpickr-day-border-color,transparent);border-radius:var(--typo3-component-border-radius);color:var(--flatpickr-day-color,inherit);background:var(--flatpickr-day-bg,transparent);font-weight:400;width:var(--flatpickr-grid-size);height:var(--flatpickr-grid-size);line-height:var(--flatpickr-grid-size)}
 .flatpickr-day.inRange,.flatpickr-day.nextMonthDay.inRange,.flatpickr-day.nextMonthDay.today.inRange,.flatpickr-day.nextMonthDay:hover,.flatpickr-day.prevMonthDay.inRange,.flatpickr-day.prevMonthDay.today.inRange,.flatpickr-day.prevMonthDay:hover,.flatpickr-day.today.inRange,.flatpickr-day:hover{cursor:pointer;--flatpickr-day-color:var(--typo3-component-hover-color);--flatpickr-day-bg:var(--typo3-component-hover-bg);--flatpickr-day-border-color:var(--typo3-component-hover-border-color)}
 .flatpickr-day.nextMonthDay:focus,.flatpickr-day.prevMonthDay:focus,.flatpickr-day:focus{cursor:pointer;--flatpickr-day-color:var(--typo3-component-focus-color);--flatpickr-day-bg:var(--typo3-component-focus-bg);--flatpickr-day-border-color:var(--typo3-component-focus-border-color)}
-.flatpickr-day.today{--flatpickr-day-color:var(--typo3-component-active-color);--flatpickr-day-bg:var(--typo3-component-active-bg);--flatpickr-day-border-color:var(--typo3-component-active-border-color)}
+.flatpickr-day.today{--flatpickr-day-bg:var(--typo3-component-disabled-bg);--flatpickr-day-border-color:var(--typo3-component-active-border-color)}
 .flatpickr-day.today:hover{--flatpickr-day-color:var(--typo3-component-hover-color);--flatpickr-day-bg:var(--typo3-component-hover-bg)}
 .flatpickr-day.today:focus{--flatpickr-day-color:var(--typo3-component-focus-color);--flatpickr-day-bg:var(--typo3-component-focus-bg)}
 .flatpickr-day.endRange,.flatpickr-day.endRange.inRange,.flatpickr-day.endRange.nextMonthDay,.flatpickr-day.endRange.prevMonthDay,.flatpickr-day.endRange:focus,.flatpickr-day.endRange:hover,.flatpickr-day.selected,.flatpickr-day.selected.inRange,.flatpickr-day.selected.nextMonthDay,.flatpickr-day.selected.prevMonthDay,.flatpickr-day.selected:focus,.flatpickr-day.selected:hover,.flatpickr-day.startRange,.flatpickr-day.startRange.inRange,.flatpickr-day.startRange.nextMonthDay,.flatpickr-day.startRange.prevMonthDay,.flatpickr-day.startRange:focus,.flatpickr-day.startRange:hover{--flatpickr-day-color:var(--typo3-component-active-color);--flatpickr-day-bg:var(--typo3-component-active-bg);--flatpickr-day-border-color:var(--typo3-component-active-border-color)}
@@ -3392,7 +3393,7 @@ th[aria-sort]:not([data-sort-method=none]):after{visibility:visible;opacity:.4}
 .flatpickr-time .numInputWrapper{flex:1;width:40%;height:var(--flatpickr-bar-size)}
 .flatpickr-time.hasSeconds .numInputWrapper{width:26%}
 .flatpickr-time.time24hr .numInputWrapper{width:49%}
-.flatpickr-time input{background:0 0;box-shadow:none;border:0;border-radius:0;text-align:center;margin:0;padding:0;height:inherit;line-height:inherit;color:var(--typo3-component-color);font-size:var(--typo3-component-font-size);position:relative;-webkit-appearance:textfield;-moz-appearance:textfield;appearance:textfield}
+.flatpickr-time input{background:0 0;box-shadow:none;border:0;border-radius:0;text-align:center;margin:0;padding:0;height:inherit;line-height:inherit;color:var(--typo3-component-color);font-size:var(--typo3-component-font-size);position:relative}
 .flatpickr-time .flatpickr-am-pm,.flatpickr-time .flatpickr-time-separator{height:var(--flatpickr-bar-size);line-height:var(--flatpickr-bar-size);color:var(--typo3-component-color);font-weight:700;width:2%;-webkit-user-select:none;-moz-user-select:none;user-select:none;align-self:center}
 .flatpickr-time .flatpickr-am-pm{width:18%;cursor:pointer;text-align:center;font-weight:400}
 .flatpickr-input[readonly]{cursor:pointer}
