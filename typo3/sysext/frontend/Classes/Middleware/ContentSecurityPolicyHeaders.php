@@ -48,12 +48,13 @@ final class ContentSecurityPolicyHeaders implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        // return early in case CSP shall not be used
+        if (!$this->features->isFeatureEnabled('security.frontend.enforceContentSecurityPolicy')) {
+            return $handler->handle($request);
+        }
+        // make sure, the nonce value is set before processing the remaining middlewares
         $request = $request->withAttribute('nonce', new ConsumableString($this->requestId->nonce->b64));
         $response = $handler->handle($request);
-
-        if (!$this->features->isFeatureEnabled('security.frontend.enforceContentSecurityPolicy')) {
-            return $response;
-        }
 
         $site = $request->getAttribute('site');
         $scope = Scope::frontendSite($site);

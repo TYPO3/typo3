@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Information\Typo3Information;
@@ -140,7 +141,7 @@ class RequestHandler implements RequestHandlerInterface
             // in case the nonce value was actually consumed during the rendering process, add a
             // permanent substitution of the current value (that will be cached), with a future
             // value (that will be generated and issued in the HTTP CSP header)
-            if (count($nonce) > 0) {
+            if ($nonce instanceof ConsumableString && count($nonce) > 0) {
                 // nonce was consumed
                 $controller->config['INTincScript'][] = [
                     'target' => NonceValueSubstitution::class . '->substituteNonce',
