@@ -24,7 +24,7 @@ This should either give you no result or something similar to:
 
 ..  code-block:: none
 
-    typo3/cms-adminpanel v11.5.9
+    typo3/cms-adminpanel v12.4.1
 
 If it is not installed yet, use the ``composer require`` command to install
 the extension:
