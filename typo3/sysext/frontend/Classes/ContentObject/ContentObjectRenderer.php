@@ -416,7 +416,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $this->container = $container;
     }
 
-    public function setRequest(ServerRequestInterface $request): void
+    public function setRequest(?ServerRequestInterface $request): void
     {
         $this->request = $request;
     }
