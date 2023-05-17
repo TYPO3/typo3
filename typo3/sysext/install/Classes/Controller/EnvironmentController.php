@@ -431,6 +431,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
@@ -483,6 +484,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
@@ -513,6 +515,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
@@ -544,6 +547,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
@@ -575,6 +579,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
@@ -606,6 +611,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
@@ -638,6 +644,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
@@ -669,6 +676,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
@@ -704,6 +712,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
@@ -830,6 +839,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
@@ -875,6 +885,7 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
@@ -968,11 +979,13 @@ class EnvironmentController extends AbstractController
     {
         if (!$this->isImageMagickEnabledAndConfigured()) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [$this->imageMagickDisabledMessage()],
             ]);
         }
         if (!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $inputFormat)) {
             return new JsonResponse([
+                'success' => true,
                 'status' => [
                     new FlashMessage(
                         'Handling format ' . $inputFormat . ' must be enabled in TYPO3_CONF_VARS[\'GFX\'][\'imagefile_ext\']',
