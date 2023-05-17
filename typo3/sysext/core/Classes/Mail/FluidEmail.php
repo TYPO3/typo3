@@ -98,6 +98,7 @@ class FluidEmail extends Email
      */
     public function setRequest(ServerRequestInterface $request): static
     {
+        $this->view->setRequest($request);
         $this->view->assign('request', $request);
         if ($request->getAttribute('normalizedParams') instanceof NormalizedParams) {
             $this->view->assign('normalizedParams', $request->getAttribute('normalizedParams'));
