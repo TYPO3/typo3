@@ -28,13 +28,9 @@ class DeleteIndexedData
 {
     public function delete(array $params): void
     {
-        if ($this->isEnabled()) {
+        if (isset($params['uid_page']) && $this->isEnabled()) {
             $administrationRepository = GeneralUtility::makeInstance(AdministrationRepository::class);
-
-            $pageIds = $params['pageIdArray'] ?? [];
-            foreach ($pageIds as $pageId) {
-                $administrationRepository->removeIndexedPhashRow('ALL', $pageId, 0);
-            }
+            $administrationRepository->removeIndexedPhashRow('ALL', $params['uid_page'], 0);
         }
     }
 

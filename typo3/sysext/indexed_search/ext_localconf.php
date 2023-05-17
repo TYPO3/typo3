@@ -20,7 +20,7 @@ ExtensionUtility::configurePlugin(
     [SearchController::class => 'form,search']
 );
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval']['indexed_search'] = DeleteIndexedData::class . '->delete';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['indexed_search'] = DeleteIndexedData::class . '->delete';
 
 // Configure default document parsers:
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] = [
