@@ -98,13 +98,13 @@ class PathUtility
     public static function getPublicResourceWebPath(string $resourcePath, bool $prefixWithSitePath = true): string
     {
         if (!self::isExtensionPath($resourcePath)) {
-            throw new InvalidFileException('Resource paths must start with "EXT:"', 1630089406);
+            throw new InvalidFileException(sprintf('Given resource path "%s" must start with "EXT:", but does not.', $resourcePath), 1630089406);
         }
         $absoluteFilePath = GeneralUtility::getFileAbsFileName($resourcePath);
         if (!str_contains($resourcePath, 'Resources/Public')) {
             if (!str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
                 // This will be thrown in Composer mode, when extension are installed in vendor folder
-                throw new InvalidFileException(sprintf('"%s" is expected to be in public directory, but is not', $resourcePath), 1635268969);
+                throw new InvalidFileException(sprintf('Given file "%s" is expected to be in public directory, but is not.', $resourcePath), 1635268969);
             }
             trigger_error(sprintf('Public resource "%s" is not in extension\'s Resources/Public folder. This is deprecated and will not be supported any more in future TYPO3 versions.', $resourcePath), E_USER_DEPRECATED);
         }
