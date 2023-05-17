@@ -869,7 +869,13 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         $pathInfo = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
         $pathInfo = is_string($pathInfo) ? $pathInfo : '';
         $dirName = rtrim($pathInfo, '/') . '/';
-        return array_key_exists($dirName, $this->getAccessibleFormStorageFolders());
+
+        foreach (array_keys($this->getAccessibleFormStorageFolders()) as $allowedPath) {
+            if (str_starts_with($dirName, $allowedPath)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected function isAccessibleExtensionFolder(string $folderName): bool
