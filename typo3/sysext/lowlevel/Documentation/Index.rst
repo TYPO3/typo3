@@ -88,6 +88,7 @@ pages and records.
    BackendModules/Index
    CommandLine/Index
    Configuration/Index
+   Events/Index
 
 .. Meta Menu
 
