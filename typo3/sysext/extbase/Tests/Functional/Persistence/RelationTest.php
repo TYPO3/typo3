@@ -97,7 +97,8 @@ final class RelationTest extends FunctionalTestCase
         $this->blog->addPost($newPost);
         $this->updateAndPersistBlog();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()->removeAll()->add(new WorkspaceRestriction(0));
         $countPosts  = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
@@ -110,7 +111,8 @@ final class RelationTest extends FunctionalTestCase
             ->fetchOne();
         self::assertEquals($countPostsOriginal + 1, $countPosts);
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()->removeAll()->add(new WorkspaceRestriction(0));
         $post = $queryBuilder
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
@@ -142,7 +144,9 @@ final class RelationTest extends FunctionalTestCase
             ->executeQuery()
             ->fetchOne();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
         $post = $queryBuilder
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
@@ -165,7 +169,9 @@ final class RelationTest extends FunctionalTestCase
         $this->blog->removePost($latestPost);
         $this->updateAndPersistBlog();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
         $countPosts = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
@@ -173,7 +179,9 @@ final class RelationTest extends FunctionalTestCase
             ->fetchOne();
         self::assertEquals($countPostsOriginal - 1, $countPosts);
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
         $post = $queryBuilder
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
@@ -187,7 +195,9 @@ final class RelationTest extends FunctionalTestCase
             ->fetchAssociative();
         self::assertNull($post['uid'] ?? null);
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
         $post = $queryBuilder
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
@@ -237,7 +247,9 @@ final class RelationTest extends FunctionalTestCase
         }
         $this->updateAndPersistBlog();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
         $countPosts = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
@@ -246,7 +258,9 @@ final class RelationTest extends FunctionalTestCase
         self::assertEquals($countPostsOriginal + 1, $countPosts);
 
         //last post
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
         $post = $queryBuilder
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
@@ -262,7 +276,9 @@ final class RelationTest extends FunctionalTestCase
         self::assertEquals(11, $post['sorting']);
 
         // check sorting of the post added in the middle
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
         $post = $queryBuilder
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
@@ -304,7 +320,9 @@ final class RelationTest extends FunctionalTestCase
         }
         $this->updateAndPersistBlog();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
         $countPosts = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
@@ -312,7 +330,9 @@ final class RelationTest extends FunctionalTestCase
             ->fetchOne();
         self::assertEquals($countPostsOriginal - 1, $countPosts);
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
         $post = $queryBuilder
             ->select('title', 'sorting')
             ->from('tx_blogexample_domain_model_post')
@@ -363,7 +383,9 @@ final class RelationTest extends FunctionalTestCase
         }
         $this->updateAndPersistBlog();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
         $countPosts = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
@@ -386,7 +408,9 @@ final class RelationTest extends FunctionalTestCase
         self::assertSame('Post9', $post['title']);
         self::assertEquals(10, $post['sorting']);
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
         $post = $queryBuilder
             ->select('title', 'uid')
             ->from('tx_blogexample_domain_model_post')
@@ -432,7 +456,9 @@ final class RelationTest extends FunctionalTestCase
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_tag');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $count = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_tag')
@@ -486,7 +512,9 @@ final class RelationTest extends FunctionalTestCase
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_tag');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
         $countTags = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_tag')
@@ -510,7 +538,9 @@ final class RelationTest extends FunctionalTestCase
             ->fetchAssociative();
         self::assertEquals(9, $tag['uid_foreign']);
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $tag = $queryBuilder
             ->select('uid_foreign')
             ->from('tx_blogexample_post_tag_mm')
@@ -569,7 +599,9 @@ final class RelationTest extends FunctionalTestCase
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $countTags = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_post_tag_mm')
@@ -580,7 +612,9 @@ final class RelationTest extends FunctionalTestCase
             ->fetchOne();
         self::assertEquals($countTagsOriginal + 1, $countTags);
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $tag = $queryBuilder
             ->select('uid_foreign')
             ->from('tx_blogexample_post_tag_mm')
@@ -594,7 +628,9 @@ final class RelationTest extends FunctionalTestCase
             ->fetchAssociative();
         self::assertEquals(10, $tag['uid_foreign']);
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $tag = $queryBuilder
             ->select('uid_foreign')
             ->from('tx_blogexample_post_tag_mm')
@@ -646,7 +682,9 @@ final class RelationTest extends FunctionalTestCase
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $countTags = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_post_tag_mm')
@@ -657,7 +695,9 @@ final class RelationTest extends FunctionalTestCase
             ->fetchOne();
         self::assertEquals(9, $countTags);
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $tag = $queryBuilder
             ->select('uid_foreign', 'sorting')
             ->from('tx_blogexample_post_tag_mm')
@@ -672,7 +712,9 @@ final class RelationTest extends FunctionalTestCase
         self::assertEquals(10, $tag['uid_foreign']);
         self::assertEquals(10, $tag['sorting']);
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $tag = $queryBuilder
             ->select('uid_foreign')
             ->from('tx_blogexample_post_tag_mm')
@@ -734,7 +776,9 @@ final class RelationTest extends FunctionalTestCase
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $countTags = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_post_tag_mm')
@@ -745,7 +789,9 @@ final class RelationTest extends FunctionalTestCase
             ->fetchOne();
         self::assertEquals(10, $countTags);
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $tag = $queryBuilder
             ->select('uid_foreign', 'sorting')
             ->from('tx_blogexample_post_tag_mm')
@@ -761,7 +807,9 @@ final class RelationTest extends FunctionalTestCase
         self::assertEquals(10, $tag['sorting']);
 
         $sorting = '6';
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $tag = $queryBuilder
             ->select('uid_foreign')
             ->from('tx_blogexample_post_tag_mm')
@@ -808,7 +856,9 @@ final class RelationTest extends FunctionalTestCase
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $rawPost2 = $queryBuilder
             ->select('*')
             ->from('tx_blogexample_domain_model_post')
@@ -919,7 +969,9 @@ final class RelationTest extends FunctionalTestCase
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
 
-        $queryBuilder->resetQueryParts();
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         $countCategories = $queryBuilder
             ->count('*')
             ->from('sys_category_record_mm')
