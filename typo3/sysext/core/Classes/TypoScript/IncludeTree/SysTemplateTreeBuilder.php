@@ -451,7 +451,7 @@ final class SysTemplateTreeBuilder
     private function addStaticMagicFromGlobals(IncludeInterface $parentNode, string $identifier): void
     {
         // defaultTypoScript_constants.' or defaultTypoScript_setup.'
-        $source = $GLOBALS['TYPO3_CONF_VARS ']['FE']['defaultTypoScript_' . $this->type . '.'][$identifier] ?? null;
+        $source = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $this->type . '.'][$identifier] ?? null;
         if (!empty($source)) {
             $node = new DefaultTypoScriptMagicKeyInclude();
             $node->setName('TYPO3_CONF_VARS globals_defaultTypoScript_' . $this->type . '.' . $identifier);
