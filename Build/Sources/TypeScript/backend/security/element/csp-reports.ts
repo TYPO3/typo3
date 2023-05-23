@@ -37,6 +37,10 @@ interface SummarizedCspReport {
   count: number,
   attributes: CspReportAttribute[],
   mutationHashes: string[];
+  meta: {
+    addr: string,
+    agent: string,
+  };
   details: {
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP#violation_report_syntax
     disposition: 'enforce' | 'report',
@@ -54,6 +58,7 @@ interface SummarizedCspReport {
      */
     violatedDirective: string,
 
+    sourceFile?: string,
     scriptSample?: string,
     columnNumber?: number,
     lineNumber?: number,
@@ -188,7 +193,7 @@ export class CspReports extends LitElement {
                     <td>${report.scope}</td>
                     <td>
                       <span class="badge bg-warning">${report.count}</span>
-                      ${report.details.violatedDirective}
+                      ${report.details.effectiveDirective}
                     </td>
                     <td>${this.shortenUri(report.details.blockedUri)}</td>
                     <td>${report.attributes.join(', ')}</td>
@@ -262,21 +267,25 @@ export class CspReports extends LitElement {
               <dt>${ lll('label.directive') || 'Directive'} / ${ lll('label.disposition') || 'Disposition'}</dt>
               <dd>${report.details.effectiveDirective} / ${report.details.disposition}</dd>
 
+              <dt>${ lll('label.document_uri') || 'Document URI'}</dt>
+              <dd>${report.details.documentUri} ${this.renderCodeLocation(report)}</dd>
+
+              ${report.details.sourceFile && report.details.sourceFile !== report.details.documentUri ? html`
+                <dt>${ lll('label.source_file') || 'Source File'}</dt>
+                <dd>${report.details.sourceFile}</dd>
+              ` : nothing}
+
               <dt>${ lll('label.blocked_uri') || 'Blocked URI'}</dt>
               <dd>${report.details.blockedUri}</dd>
 
-              <dt>${ lll('label.document_uri') || 'Document URI'}</dt>
-              <dd>
-                ${report.details.documentUri}
-                ${report.details.lineNumber ? html`
-                  (${report.details.lineNumber}:${report.details.columnNumber})
-                ` : nothing}</dd>
-
               ${report.details.scriptSample ? html`
                 <dt>${ lll('label.sample') || 'Sample'}</dt>
-                <dd><code>
-                  <pre>${report.details.scriptSample}</pre>
-                </code></dd>
+                <dd><code>${report.details.scriptSample}</code></dd>
+              ` : nothing}
+
+              ${report.meta.agent ? html`
+                <dt>${ lll('label.user_agent') || 'User Agent'}</dt>
+                <dd><code>${report.meta.agent}</code></dd>
               ` : nothing}
 
               <dt>${ lll('label.uuid') || 'UUID'}</dt>
@@ -324,6 +333,17 @@ export class CspReports extends LitElement {
         </div>
       </div>
     ` : nothing }`;
+  }
+
+  private renderCodeLocation(report: SummarizedCspReport): TemplateResult|symbol {
+    if (!report.details.lineNumber) {
+      return nothing
+    }
+    const parts = [report.details.lineNumber];
+    if (report.details.columnNumber) {
+      parts.push(report.details.columnNumber);
+    }
+    return html`(${parts.join(':')})`;
   }
 
   private selectReport(report: SummarizedCspReport): void {

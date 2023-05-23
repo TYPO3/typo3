@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var CspReportAttribute,__decorate=function(t,e,i,o){var l,s=arguments.length,n=s<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(t,e,i,o);else for(var r=t.length-1;r>=0;r--)(l=t[r])&&(n=(s<3?l(n):s>3?l(e,i,n):l(e,i))||n);return s>3&&n&&Object.defineProperty(e,i,n),n};import{customElement,property,state}from"lit/decorators.js";import{html,LitElement,nothing}from"lit";import{classMap}from"lit/directives/class-map.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import{styleTag,lll}from"@typo3/core/lit-helper.js";!function(t){t.fixable="fixable",t.irrelevant="irrelevant",t.suspicious="suspicious"}(CspReportAttribute||(CspReportAttribute={}));let CspReports=class extends LitElement{constructor(){super(...arguments),this.selectedScope=null,this.reports=[],this.selectedReport=null,this.suggestions=[]}createRenderRoot(){return this}connectedCallback(){super.connectedCallback(),this.fetchReports()}render(){return html`
+var CspReportAttribute,__decorate=function(e,t,i,o){var l,s=arguments.length,n=s<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(e,t,i,o);else for(var r=e.length-1;r>=0;r--)(l=e[r])&&(n=(s<3?l(n):s>3?l(t,i,n):l(t,i))||n);return s>3&&n&&Object.defineProperty(t,i,n),n};import{customElement,property,state}from"lit/decorators.js";import{html,LitElement,nothing}from"lit";import{classMap}from"lit/directives/class-map.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import{styleTag,lll}from"@typo3/core/lit-helper.js";!function(e){e.fixable="fixable",e.irrelevant="irrelevant",e.suspicious="suspicious"}(CspReportAttribute||(CspReportAttribute={}));let CspReports=class extends LitElement{constructor(){super(...arguments),this.selectedScope=null,this.reports=[],this.selectedReport=null,this.suggestions=[]}createRenderRoot(){return this}connectedCallback(){super.connectedCallback(),this.fetchReports()}render(){return html`
       ${styleTag`
         .infolist-container {
           container-type: inline-size;
@@ -91,17 +91,17 @@ var CspReportAttribute,__decorate=function(t,e,i,o){var l,s=arguments.length,n=s
                 ${0===this.reports.length?html`
                   <tr><td colspan="5">${lll("label.label.noEntriesAvailable")||"No entries available."}</td></tr>
                 `:nothing}
-                ${this.reports.map((t=>html`
-                  <tr class=${classMap({"table-info":this.selectedReport===t})} data-mutation-group=${t.mutationHashes.join("-")}
-                      @click=${()=>this.selectReport(t)}>
-                    <td>${t.created}</td>
-                    <td>${t.scope}</td>
+                ${this.reports.map((e=>html`
+                  <tr class=${classMap({"table-info":this.selectedReport===e})} data-mutation-group=${e.mutationHashes.join("-")}
+                      @click=${()=>this.selectReport(e)}>
+                    <td>${e.created}</td>
+                    <td>${e.scope}</td>
                     <td>
-                      <span class="badge bg-warning">${t.count}</span>
-                      ${t.details.violatedDirective}
+                      <span class="badge bg-warning">${e.count}</span>
+                      ${e.details.effectiveDirective}
                     </td>
-                    <td>${this.shortenUri(t.details.blockedUri)}</td>
-                    <td>${t.attributes.join(", ")}</td>
+                    <td>${this.shortenUri(e.details.blockedUri)}</td>
+                    <td>${e.attributes.join(", ")}</td>
                   </tr>
                 `))}
                 </tbody>
@@ -126,13 +126,13 @@ var CspReportAttribute,__decorate=function(t,e,i,o){var l,s=arguments.length,n=s
             </span>
             ${lll("label.all")||"ALL"}
           </button>
-          ${this.scopes.map((t=>html`
+          ${this.scopes.map((e=>html`
             <li>
-              <button class="dropdown-item dropdown-item-spaced" title="${t}" @click=${()=>this.selectScope(t)}>
-                <span class="${t===this.selectedScope?"text-primary":""}">
-                  <typo3-backend-icon identifier="${t===this.selectedScope?"actions-dot":"empty-empty"}" size="small"></typo3-backend-icon>
+              <button class="dropdown-item dropdown-item-spaced" title="${e}" @click=${()=>this.selectScope(e)}>
+                <span class="${e===this.selectedScope?"text-primary":""}">
+                  <typo3-backend-icon identifier="${e===this.selectedScope?"actions-dot":"empty-empty"}" size="small"></typo3-backend-icon>
                 </span>
-                ${t}
+                ${e}
               </button>
             </li>`))}
         </ul>
@@ -148,7 +148,7 @@ var CspReportAttribute,__decorate=function(t,e,i,o){var l,s=arguments.length,n=s
           </div>
         </div>
       </div>
-    `}`}renderSelectedReport(){const t=this.selectedReport;return html`${t?html`
+    `}`}renderSelectedReport(){const e=this.selectedReport;return html`${e?html`
       <div class="infolist-info-record">
         <div class="card mb-0">
           <div class="card-header">
@@ -157,30 +157,34 @@ var CspReportAttribute,__decorate=function(t,e,i,o){var l,s=arguments.length,n=s
           <div class="card-body">
             <dl>
               <dt>${lll("label.directive")||"Directive"} / ${lll("label.disposition")||"Disposition"}</dt>
-              <dd>${t.details.effectiveDirective} / ${t.details.disposition}</dd>
-
-              <dt>${lll("label.blocked_uri")||"Blocked URI"}</dt>
-              <dd>${t.details.blockedUri}</dd>
+              <dd>${e.details.effectiveDirective} / ${e.details.disposition}</dd>
 
               <dt>${lll("label.document_uri")||"Document URI"}</dt>
-              <dd>
-                ${t.details.documentUri}
-                ${t.details.lineNumber?html`
-                  (${t.details.lineNumber}:${t.details.columnNumber})
-                `:nothing}</dd>
+              <dd>${e.details.documentUri} ${this.renderCodeLocation(e)}</dd>
 
-              ${t.details.scriptSample?html`
+              ${e.details.sourceFile&&e.details.sourceFile!==e.details.documentUri?html`
+                <dt>${lll("label.source_file")||"Source File"}</dt>
+                <dd>${e.details.sourceFile}</dd>
+              `:nothing}
+
+              <dt>${lll("label.blocked_uri")||"Blocked URI"}</dt>
+              <dd>${e.details.blockedUri}</dd>
+
+              ${e.details.scriptSample?html`
                 <dt>${lll("label.sample")||"Sample"}</dt>
-                <dd><code>
-                  <pre>${t.details.scriptSample}</pre>
-                </code></dd>
+                <dd><code>${e.details.scriptSample}</code></dd>
+              `:nothing}
+
+              ${e.meta.agent?html`
+                <dt>${lll("label.user_agent")||"User Agent"}</dt>
+                <dd><code>${e.meta.agent}</code></dd>
               `:nothing}
 
               <dt>${lll("label.uuid")||"UUID"}</dt>
-              <dd><code>${t.uuid}</code></dd>
+              <dd><code>${e.uuid}</code></dd>
 
               <dt>${lll("label.summary")||"Summary"}</dt>
-              <dd><code>${t.summary}</code></dd>
+              <dd><code>${e.summary}</code></dd>
             </dl>
           </div>
           ${this.suggestions.length>0?html`
@@ -188,16 +192,16 @@ var CspReportAttribute,__decorate=function(t,e,i,o){var l,s=arguments.length,n=s
               <h3>${lll("label.suggestions")||"Suggestions"}</h3>
             </div>
           `:nothing}
-          ${this.suggestions.map((e=>html`
+          ${this.suggestions.map((t=>html`
             <div class="card-body">
-              <h4>${e.label||e.identifier}</h4>
-              ${e.collection.mutations.map((t=>html`
+              <h4>${t.label||t.identifier}</h4>
+              ${t.collection.mutations.map((e=>html`
                 <p>
-                  <i>${t.mode}</i>
-                  <code>${t.directive}: ${t.sources.join(" ")}</code>
+                  <i>${e.mode}</i>
+                  <code>${e.directive}: ${e.sources.join(" ")}</code>
                 </p>
               `))}
-              <button class="btn btn-primary" @click=${()=>this.invokeMutateReportAction(t,e)}>
+              <button class="btn btn-primary" @click=${()=>this.invokeMutateReportAction(e,t)}>
                 <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
                 ${lll("button.apply")||"Apply"}
               </button>
@@ -209,15 +213,15 @@ var CspReportAttribute,__decorate=function(t,e,i,o){var l,s=arguments.length,n=s
               <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
               ${lll("button.close")||"Close"}
             </button>
-            <button class="btn btn-default" @click=${()=>this.invokeMuteReportAction(t)}>
+            <button class="btn btn-default" @click=${()=>this.invokeMuteReportAction(e)}>
               <typo3-backend-icon identifier="actions-ban" size="small"></typo3-backend-icon>
               ${lll("button.mute")||"Mute"}
             </button>
-            <button class="btn btn-default" @click=${()=>this.invokeDeleteReportAction(t)}>
+            <button class="btn btn-default" @click=${()=>this.invokeDeleteReportAction(e)}>
               <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
               ${lll("button.delete")||"Delete"}
             </button>
           </div>
         </div>
       </div>
-    `:nothing}`}selectReport(t){this.suggestions=[],null!==t&&this.selectedReport!==t?(this.selectedReport=t,this.invokeHandleReportAction(t).then((t=>this.suggestions=t))):this.selectedReport=null}selectScope(t){this.selectedScope=t,this.fetchReports()}fetchReports(){this.invokeFetchReportsAction().then((t=>this.reports=t))}filterReports(...t){t.includes(this.selectedReport?.uuid)&&(this.selectedReport=null),this.reports=this.reports.filter((e=>!t.includes(e.uuid)))}invokeFetchReportsAction(){return new AjaxRequest(this.controlUri).post({action:"fetchReports",scope:this.selectedScope||""}).then((t=>t.resolve("application/json")))}invokeHandleReportAction(t){return new AjaxRequest(this.controlUri).post({action:"handleReport",uuid:t.uuid}).then((t=>t.resolve("application/json")))}invokeMutateReportAction(t,e){const i=this.reports.filter((t=>t.mutationHashes.includes(e.hash))).map((t=>t.summary));return new AjaxRequest(this.controlUri).post({action:"mutateReport",scope:t.scope,hmac:e.hmac,suggestion:e,summaries:i}).then((t=>t.resolve("application/json"))).then((t=>this.filterReports(...t.uuids)))}invokeMuteReportAction(t){new AjaxRequest(this.controlUri).post({action:"muteReport",summaries:[t.summary]}).then((t=>t.resolve("application/json"))).then((t=>this.filterReports(...t.uuids)))}invokeDeleteReportAction(t){new AjaxRequest(this.controlUri).post({action:"deleteReport",summaries:[t.summary]}).then((t=>t.resolve("application/json"))).then((t=>this.filterReports(...t.uuids)))}invokeDeleteReportsAction(){new AjaxRequest(this.controlUri).post({action:"deleteReports",scope:this.selectedScope||""}).then((t=>t.resolve("application/json"))).then((()=>this.fetchReports())).then((()=>this.selectReport(null)))}shortenUri(t){if("inline"===t)return t;try{return new URL(t).hostname}catch(e){return t}}};__decorate([property({type:Array})],CspReports.prototype,"scopes",void 0),__decorate([property({type:String})],CspReports.prototype,"controlUri",void 0),__decorate([state()],CspReports.prototype,"selectedScope",void 0),__decorate([state()],CspReports.prototype,"reports",void 0),__decorate([state()],CspReports.prototype,"selectedReport",void 0),__decorate([state()],CspReports.prototype,"suggestions",void 0),CspReports=__decorate([customElement("typo3-backend-security-csp-reports")],CspReports);export{CspReports};
+    `:nothing}`}renderCodeLocation(e){if(!e.details.lineNumber)return nothing;const t=[e.details.lineNumber];return e.details.columnNumber&&t.push(e.details.columnNumber),html`(${t.join(":")})`}selectReport(e){this.suggestions=[],null!==e&&this.selectedReport!==e?(this.selectedReport=e,this.invokeHandleReportAction(e).then((e=>this.suggestions=e))):this.selectedReport=null}selectScope(e){this.selectedScope=e,this.fetchReports()}fetchReports(){this.invokeFetchReportsAction().then((e=>this.reports=e))}filterReports(...e){e.includes(this.selectedReport?.uuid)&&(this.selectedReport=null),this.reports=this.reports.filter((t=>!e.includes(t.uuid)))}invokeFetchReportsAction(){return new AjaxRequest(this.controlUri).post({action:"fetchReports",scope:this.selectedScope||""}).then((e=>e.resolve("application/json")))}invokeHandleReportAction(e){return new AjaxRequest(this.controlUri).post({action:"handleReport",uuid:e.uuid}).then((e=>e.resolve("application/json")))}invokeMutateReportAction(e,t){const i=this.reports.filter((e=>e.mutationHashes.includes(t.hash))).map((e=>e.summary));return new AjaxRequest(this.controlUri).post({action:"mutateReport",scope:e.scope,hmac:t.hmac,suggestion:t,summaries:i}).then((e=>e.resolve("application/json"))).then((e=>this.filterReports(...e.uuids)))}invokeMuteReportAction(e){new AjaxRequest(this.controlUri).post({action:"muteReport",summaries:[e.summary]}).then((e=>e.resolve("application/json"))).then((e=>this.filterReports(...e.uuids)))}invokeDeleteReportAction(e){new AjaxRequest(this.controlUri).post({action:"deleteReport",summaries:[e.summary]}).then((e=>e.resolve("application/json"))).then((e=>this.filterReports(...e.uuids)))}invokeDeleteReportsAction(){new AjaxRequest(this.controlUri).post({action:"deleteReports",scope:this.selectedScope||""}).then((e=>e.resolve("application/json"))).then((()=>this.fetchReports())).then((()=>this.selectReport(null)))}shortenUri(e){if("inline"===e)return e;try{return new URL(e).hostname}catch(t){return e}}};__decorate([property({type:Array})],CspReports.prototype,"scopes",void 0),__decorate([property({type:String})],CspReports.prototype,"controlUri",void 0),__decorate([state()],CspReports.prototype,"selectedScope",void 0),__decorate([state()],CspReports.prototype,"reports",void 0),__decorate([state()],CspReports.prototype,"selectedReport",void 0),__decorate([state()],CspReports.prototype,"suggestions",void 0),CspReports=__decorate([customElement("typo3-backend-security-csp-reports")],CspReports);export{CspReports};

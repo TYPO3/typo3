@@ -22,6 +22,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\Report;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ReportDetails;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ReportRepository;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ReportStatus;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
@@ -53,8 +54,9 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
             'agent' => $normalizedParams->getHttpUserAgent(),
         ];
         $requestTime = (int)($request->getQueryParams()['requestTime'] ?? 0);
-        $details = json_decode($payload, true)['csp-report'] ?? [];
-        $details = $this->anonymizeDetails($details);
+        $originalDetails = json_decode($payload, true)['csp-report'] ?? [];
+        $originalDetails = $this->anonymizeDetails($originalDetails);
+        $details = new ReportDetails($originalDetails);
         $summary = $this->generateReportSummary($scope, $details);
         $report = new Report(
             $scope,
@@ -67,7 +69,7 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
         $this->reportRepository->add($report);
     }
 
-    protected function generateReportSummary(Scope $scope, array $details): string
+    protected function generateReportSummary(Scope $scope, ReportDetails $details): string
     {
         return GeneralUtility::hmac(
             json_encode([

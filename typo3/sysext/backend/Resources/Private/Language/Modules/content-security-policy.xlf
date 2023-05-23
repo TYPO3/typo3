@@ -63,8 +63,14 @@
 			<trans-unit id="module.label.sample" resname="module.label.sample">
 				<source>Sample</source>
 			</trans-unit>
+			<trans-unit id="module.label.user_agent" resname="module.label.user_agent">
+				<source>User Agent</source>
+			</trans-unit>
 			<trans-unit id="module.label.uuid" resname="module.label.uuid">
 				<source>UUID</source>
+			</trans-unit>
+			<trans-unit id="module.label.source_file" resname="module.label.source_file">
+				<source>Source File</source>
 			</trans-unit>
 			<trans-unit id="module.label.summary" resname="module.label.summary">
 				<source>Summary</source>
