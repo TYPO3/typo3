@@ -29,29 +29,16 @@ class Report implements \JsonSerializable
     public readonly \DateTimeImmutable $created;
     public readonly \DateTimeImmutable $changed;
 
-    protected static function toCamelCase(string $value): string
-    {
-        return lcfirst(str_replace('-', '', ucwords($value, '-')));
-    }
-
     public static function fromArray(array $array): static
     {
         $meta = json_decode($array['meta'] ?? '', true, 16, JSON_THROW_ON_ERROR);
-        $meta = array_combine(
-            array_map(self::toCamelCase(...), array_keys($meta)),
-            array_values($meta)
-        );
         $details = json_decode($array['details'] ?? '', true, 16, JSON_THROW_ON_ERROR);
-        $details = array_combine(
-            array_map(self::toCamelCase(...), array_keys($details)),
-            array_values($details)
-        );
         return new static(
             Scope::from($array['scope'] ?? ''),
             ReportStatus::from($array['status'] ?? 0),
             $array['request_time'] ?? 0,
             $meta ?: [],
-            $details ?: [],
+            new ReportDetails($details ?: []),
             $array['summary'] ?? '',
             UuidV4::fromString($array['uuid'] ?? ''),
             new \DateTimeImmutable('@' . ($array['created'] ?? '0')),
@@ -64,7 +51,7 @@ class Report implements \JsonSerializable
         public readonly ReportStatus $status,
         public readonly int $requestTime,
         public readonly array $meta,
-        public readonly array $details,
+        public readonly ReportDetails $details,
         public readonly string $summary = '',
         UuidV4 $uuid = null,
         \DateTimeImmutable $created = null,
@@ -100,7 +87,7 @@ class Report implements \JsonSerializable
             'scope' => (string)$this->scope,
             'request_time' => $this->requestTime,
             'meta' => json_encode($this->meta),
-            'details' => json_encode($this->details),
+            'details' => json_encode($this->details->getArrayCopy()),
             'summary' => $this->summary,
         ];
     }

@@ -27,7 +27,7 @@ trait HandlerTrait
     private function resolveBlockedUri(Report $report): ?UriInterface
     {
         try {
-            return new Uri($report?->details['blockedUri'] ?? '');
+            return new Uri($report?->details['blocked-uri'] ?? '');
         } catch (\InvalidArgumentException) {
             return null;
         }
@@ -39,6 +39,6 @@ trait HandlerTrait
      */
     private function resolveEffectiveDirective(Report $report): ?Directive
     {
-        return Directive::tryFrom($report?->details['effectiveDirective'] ?? '');
+        return Directive::tryFrom($report?->details['effective-directive'] ?? '');
     }
 }
