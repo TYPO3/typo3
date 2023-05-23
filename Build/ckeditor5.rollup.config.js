@@ -1,4 +1,5 @@
 import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 import svg from 'rollup-plugin-svg';
 import * as path from 'path';
@@ -37,6 +38,7 @@ export default [
       resolve({
         extensions: ['.js']
       }),
+      commonjs(),
       svg(),
     ]
   },
@@ -54,6 +56,7 @@ export default [
       resolve({
         extensions: ['.js']
       }),
+      commonjs(),
     ]
   }
 ];
