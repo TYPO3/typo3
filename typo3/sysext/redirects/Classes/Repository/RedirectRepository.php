@@ -43,11 +43,7 @@ class RedirectRepository
 
     public function countRedirectsByByDemand(Demand $demand): int
     {
-        return (int)$this->getQueryBuilderForDemand($demand)
-            // we need to remove the order by part to avoid aggregation field missing errors with PostgresSQL
-            ->resetQueryPart('orderBy')
-            // transform query to a count query
-            ->count('*')
+        return (int)$this->getQueryBuilderForDemand($demand, true)
             ->executeQuery()
             ->fetchOne();
     }
@@ -55,25 +51,31 @@ class RedirectRepository
     /**
      * Prepares the QueryBuilder with Constraints from the Demand
      */
-    protected function getQueryBuilderForDemand(Demand $demand): QueryBuilder
+    protected function getQueryBuilderForDemand(Demand $demand, bool $createCountQuery = false): QueryBuilder
     {
         $queryBuilder = $this->getQueryBuilder();
-        $queryBuilder
-            ->select('*')
-            ->from('sys_redirect');
 
-        $queryBuilder->orderBy(
-            $demand->getOrderField(),
-            $demand->getOrderDirection()
-        );
+        if ($createCountQuery) {
+            $queryBuilder->count('*');
+        } else {
+            $queryBuilder->select('*');
+        }
 
-        if ($demand->hasSecondaryOrdering()) {
-            $queryBuilder->addOrderBy($demand->getSecondaryOrderField());
+        $queryBuilder->from('sys_redirect');
+
+        if (!$createCountQuery) {
+            $queryBuilder->orderBy(
+                $demand->getOrderField(),
+                $demand->getOrderDirection()
+            );
+            if ($demand->hasSecondaryOrdering()) {
+                $queryBuilder->addOrderBy($demand->getSecondaryOrderField());
+            }
         }
 
         $constraints = [];
         if ($demand->hasSourceHosts()) {
-            $constraints[] =$queryBuilder->expr()->in(
+            $constraints[] = $queryBuilder->expr()->in(
                 'source_host',
                 $queryBuilder->createNamedParameter($demand->getSourceHosts(), Connection::PARAM_STR_ARRAY)
             );

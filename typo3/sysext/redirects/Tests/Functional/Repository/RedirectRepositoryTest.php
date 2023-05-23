@@ -99,6 +99,63 @@ final class RedirectRepositoryTest extends FunctionalTestCase
         self::assertSame($redirectAfterCleanup, $this->getRedirectCount());
     }
 
+    public static function countRedirectsByDemandCountsCorrectlyDataProvider(): iterable
+    {
+        yield 'default demand' => [
+            new Demand(),
+            6,
+        ];
+
+        yield 'configuration with hitCount' => [
+            new Demand(maxHits: 2),
+            5,
+        ];
+
+        yield 'configuration with statusCode 302' => [
+            new Demand(statusCodes: [302]),
+            1,
+        ];
+
+        yield 'demand with statusCode 302, 303' => [
+            new Demand(statusCodes: [302, 303]),
+            2,
+        ];
+
+        yield 'demand with domain' => [
+            new Demand(sourceHosts: ['foo.com']),
+            2,
+        ];
+
+        yield 'demand with domains' => [
+            new Demand(sourceHosts: ['foo.com', 'bar.com']),
+            4,
+        ];
+
+        yield 'demand with path' => [
+            new Demand(sourcePath: '/foo'),
+            5,
+        ];
+
+        yield 'demand with target' => [
+            new Demand(target: 'https://example.com/bar'),
+            5,
+        ];
+    }
+
+    /**
+     * @dataProvider countRedirectsByDemandCountsCorrectlyDataProvider
+     * @test
+     */
+    public function countRedirectsByDemandCountsCorrectly(Demand $demand, int $expectedCount): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectRepositoryTest_redirects.csv');
+
+        $repository = new RedirectRepository();
+        $redirectsCount = $repository->countRedirectsByByDemand($demand);
+
+        self::assertSame($expectedCount, $redirectsCount);
+    }
+
     private function getRedirectCount(): int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
