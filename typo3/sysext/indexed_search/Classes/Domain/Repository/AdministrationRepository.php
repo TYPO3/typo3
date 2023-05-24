@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
 
+use Doctrine\DBAL\ArrayParameterType;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -396,31 +397,31 @@ class AdministrationRepository
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('index_stat_word');
         $queryBuilder
-            ->select('word')
             ->from('index_stat_word')
-            ->addSelectLiteral($queryBuilder->expr()->count('*', 'c'))
             ->where(
                 $queryBuilder->expr()->eq(
                     'pageid',
                     $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)
                 )
-            )
-            ->groupBy('word')
-            ->orderBy('c', 'desc')
-            ->setMaxResults((int)$max);
+            );
 
         if (!empty($additionalWhere)) {
             $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($additionalWhere));
         }
 
-        $result = $queryBuilder->executeQuery();
         $countQueryBuilder = clone $queryBuilder;
-        $countQueryBuilder->resetQueryPart('orderBy');
+
+        $queryBuilder
+            ->select('word')
+            ->addSelectLiteral($queryBuilder->expr()->count('*', 'c'))
+            ->groupBy('word')
+            ->orderBy('c', 'desc')
+            ->setMaxResults((int)$max);
+
         $count = (int)$countQueryBuilder
             ->count('uid')
             ->executeQuery()
             ->fetchOne();
-        $result->free();
 
         // exist several statistics for this page?
         if ($count === 0) {
@@ -430,7 +431,7 @@ class AdministrationRepository
                     'pageid',
                     $queryBuilder->createNamedParameter(
                         $this->extGetTreeList((int)$pageUid),
-                        Connection::PARAM_INT_ARRAY
+                        ArrayParameterType::INTEGER
                     )
                 ),
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhere)
