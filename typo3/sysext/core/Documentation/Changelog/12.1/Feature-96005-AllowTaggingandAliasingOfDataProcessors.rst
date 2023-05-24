@@ -76,6 +76,11 @@ be used with their alias / identifier in your TypoScript configuration:
     enabling dependency injection by default. Otherwise the service would need
     to be set :yaml:`public`.
 
+..  note::
+
+    It might be that your data processor should not be shared. In such case
+    you need to set the :yaml:`shared: false` tag attribute for the service.
+
 Impact
 ======
 
