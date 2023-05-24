@@ -151,15 +151,18 @@ class SuggestWizardDefaultReceiver
         $this->params = &$params;
         $start = $recursionCounter * $maxQueryResults;
         $this->prepareSelectStatement();
-        $this->prepareOrderByStatement();
-        $result = $this->queryBuilder->select('*')
+
+        $selectQueryBuilder = clone $this->queryBuilder;
+        $selectQueryBuilder = $this->prepareOrderByStatement($selectQueryBuilder);
+        $result = $selectQueryBuilder->select('*')
             ->from($this->table)
             ->setFirstResult($start)
             ->setMaxResults($maxQueryResults)
             ->executeQuery();
-        $allRowsCount = $this->queryBuilder
+
+        $countQueryBuilder = clone $this->queryBuilder;
+        $allRowsCount = $countQueryBuilder
             ->count('uid')
-            ->resetQueryPart('orderBy')
             ->executeQuery()
             ->fetchOne();
         if ($allRowsCount) {
@@ -292,16 +295,17 @@ class SuggestWizardDefaultReceiver
      * Prepares the clause by which the result elements are sorted. See description of ORDER BY in
      * SQL standard for reference.
      */
-    protected function prepareOrderByStatement()
+    protected function prepareOrderByStatement(QueryBuilder $queryBuilder): QueryBuilder
     {
         if (empty($this->config['orderBy'])) {
-            $this->queryBuilder->addOrderBy($GLOBALS['TCA'][$this->table]['ctrl']['label']);
+            $queryBuilder->addOrderBy($GLOBALS['TCA'][$this->table]['ctrl']['label']);
         } else {
             foreach (QueryHelper::parseOrderBy($this->config['orderBy']) as $orderPair) {
                 [$fieldName, $order] = $orderPair;
-                $this->queryBuilder->addOrderBy($fieldName, $order);
+                $queryBuilder->addOrderBy($fieldName, $order);
             }
         }
+        return $queryBuilder;
     }
 
     /**
