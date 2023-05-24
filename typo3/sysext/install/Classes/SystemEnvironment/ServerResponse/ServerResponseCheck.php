@@ -20,9 +20,7 @@ namespace TYPO3\CMS\Install\SystemEnvironment\ServerResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\TransferException;
-
-use function GuzzleHttp\Promise\settle;
-
+use GuzzleHttp\Promise\Utils;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -267,7 +265,7 @@ class ServerResponseCheck implements CheckInterface
         foreach ($this->fileDeclarations as $fileDeclaration) {
             $promises[] = $client->requestAsync('GET', $fileDeclaration->getUrl());
         }
-        foreach (settle($promises)->wait() as $index => $response) {
+        foreach (Utils::settle($promises)->wait() as $index => $response) {
             $fileDeclaration = $this->fileDeclarations[$index];
             if (($response['reason'] ?? null) instanceof BadResponseException) {
                 $messageQueue->addMessage(
