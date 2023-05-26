@@ -360,8 +360,8 @@ class UserSessionManager implements LoggerAwareInterface
         $sessionManager = $sessionManager ?? GeneralUtility::makeInstance(SessionManager::class);
         $ipLocker = $ipLocker ?? GeneralUtility::makeInstance(
             IpLocker::class,
-            $GLOBALS['TYPO3_CONF_VARS'][$loginType]['lockIP'],
-            $GLOBALS['TYPO3_CONF_VARS'][$loginType]['lockIPv6']
+            (int)($GLOBALS['TYPO3_CONF_VARS'][$loginType]['lockIP'] ?? 0),
+            (int)($GLOBALS['TYPO3_CONF_VARS'][$loginType]['lockIPv6'] ?? 0)
         );
         $lifetime = (int)($GLOBALS['TYPO3_CONF_VARS'][$loginType]['lifetime'] ?? 0);
         $sessionLifetime = $sessionLifetime ?? (int)$GLOBALS['TYPO3_CONF_VARS'][$loginType]['sessionTimeout'];
