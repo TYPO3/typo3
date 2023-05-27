@@ -23,12 +23,12 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\IntegerType;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Service\ClearCacheService;
 
 /**
  * Helper methods to handle SQL files and transform them into individual statements
@@ -147,7 +147,8 @@ class SchemaMigrator
                 }
             }
         }
-        GeneralUtility::makeInstance(ClearCacheService::class)->clearAll(false);
+        Bootstrap::createCache('database_schema')->flush();
+
         return $result;
     }
 
@@ -181,6 +182,7 @@ class SchemaMigrator
             $lastResult = $connectionMigrator->install($createOnly);
             $result = array_merge($result, $lastResult);
         }
+        Bootstrap::createCache('database_schema')->flush();
 
         return $result;
     }
