@@ -219,8 +219,8 @@ return [
                     'groups' => ['system'],
                 ],
                 'fluid_template' => [
-                    'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
                     'frontend' => \TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache::class,
+                    'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
                     'groups' => ['system'],
                 ],
                 'extbase' => [
@@ -240,6 +240,11 @@ return [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
                     'groups' => ['pages'],
+                ],
+                'database_schema' => [
+                    'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+                    'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
+                    'groups' => ['system'],
                 ],
             ],
         ],

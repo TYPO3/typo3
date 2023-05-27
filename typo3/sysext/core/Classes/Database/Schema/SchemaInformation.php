@@ -18,51 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\ForeignKeyConstraint;
-use Doctrine\DBAL\Schema\Identifier;
-use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\SchemaConfig;
-use Doctrine\DBAL\Schema\Sequence;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\UniqueConstraint;
-use Doctrine\DBAL\Types\ArrayType;
-use Doctrine\DBAL\Types\AsciiStringType;
-use Doctrine\DBAL\Types\BigIntType;
-use Doctrine\DBAL\Types\BlobType;
-use Doctrine\DBAL\Types\BooleanType;
-use Doctrine\DBAL\Types\DateImmutableType;
-use Doctrine\DBAL\Types\DateIntervalType;
-use Doctrine\DBAL\Types\DateTimeImmutableType;
-use Doctrine\DBAL\Types\DateTimeType;
-use Doctrine\DBAL\Types\DateTimeTzImmutableType;
-use Doctrine\DBAL\Types\DateTimeTzType;
-use Doctrine\DBAL\Types\DateType;
-use Doctrine\DBAL\Types\DecimalType;
-use Doctrine\DBAL\Types\FloatType;
-use Doctrine\DBAL\Types\GuidType;
-use Doctrine\DBAL\Types\IntegerType;
-use Doctrine\DBAL\Types\JsonType;
-use Doctrine\DBAL\Types\ObjectType;
-use Doctrine\DBAL\Types\PhpDateTimeMappingType;
-use Doctrine\DBAL\Types\PhpIntegerMappingType;
-use Doctrine\DBAL\Types\SimpleArrayType;
-use Doctrine\DBAL\Types\SmallIntType;
-use Doctrine\DBAL\Types\StringType;
-use Doctrine\DBAL\Types\TextType;
-use Doctrine\DBAL\Types\TimeImmutableType;
-use Doctrine\DBAL\Types\TimeType;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\TypeRegistry;
-use Doctrine\DBAL\Types\VarDateTimeImmutableType;
-use Doctrine\DBAL\Types\VarDateTimeType;
-use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Database\Schema\Types\DateTimeType as CoreDateTimeType;
-use TYPO3\CMS\Core\Database\Schema\Types\DateType as CoreDateType;
-use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
-use TYPO3\CMS\Core\Database\Schema\Types\SetType;
-use TYPO3\CMS\Core\Database\Schema\Types\TimeType as CoreTimeType;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
 /**
  * This wrapper of SchemaManager contains some internal caches to avoid performance issues for recurring calls to
@@ -76,7 +34,7 @@ final class SchemaInformation
 
     public function __construct(
         private readonly Connection $connection,
-        private readonly PhpFrontend $coreCache
+        private readonly FrontendInterface $cache
     ) {
         $this->connectionIdentifier = sprintf(
             '%s-%s',
@@ -116,15 +74,13 @@ final class SchemaInformation
     public function introspectSchema(): Schema
     {
         $identifier = $this->connectionIdentifier . '-schema';
-        $schema = $this->coreCache->require($identifier);
-        if ($schema) {
+        $schema = $this->cache->get($identifier);
+        if ($schema instanceof Schema) {
             return $schema;
         }
-        $this->coreCache->set(
-            $identifier,
-            $this->createSerializedCacheValue($schema, $this->getAllowedClassesForCacheEntryUnserializeCall())
-        );
-        return $this->coreCache->require($identifier);
+        $schema = $this->connection->createSchemaManager()->introspectSchema();
+        $this->cache->set($identifier, $schema);
+        return $schema;
     }
 
     /**
@@ -136,96 +92,12 @@ final class SchemaInformation
     public function introspectTable(string $tableName): Table
     {
         $identifier = $this->connectionIdentifier . '-table-' . $tableName;
-        $table = $this->coreCache->require($identifier);
-        if ($table) {
+        $table = $this->cache->get($identifier);
+        if ($table instanceof Table) {
             return $table;
         }
         $table = $this->connection->createSchemaManager()->introspectTable($tableName);
-        $this->coreCache->set(
-            $identifier,
-            $this->createSerializedCacheValue($table, $this->getAllowedClassesForCacheEntryUnserializeCall())
-        );
+        $this->cache->set($identifier, $table);
         return $table;
-    }
-
-    /**
-     * Create a serialized cache value string, which can be used to add it
-     * into a code cache. The build value contains a return statement with
-     * the "unserialize()" call, covered with allowed classes.
-     */
-    private function createSerializedCacheValue(object|array $object, array $allowedClasses): string
-    {
-        array_walk($allowedClasses, static function (&$value) {
-            $value = '\'' . addcslashes($value, '\'\\') . '\'';
-        });
-        return 'return unserialize(\''
-            . addcslashes(serialize($object), '\'\\')
-            . '\', ['
-            . '\'allowed_classes\' => [' . implode(',', $allowedClasses) . ']'
-            . ']);';
-    }
-
-    /**
-     * This method returns the allowed classes for serialized schema information,
-     * which is set as 'allowed_classes' for the deserialization. Added to avoid
-     * security issues.
-     *
-     * @return string[]
-     */
-    private function getAllowedClassesForCacheEntryUnserializeCall(): array
-    {
-        // @todo: An event may be needed here: If an extension registers custom types - which
-        //        is currently unlikely - it needs to add it's class here.
-        //        Alternative: Loop over TypeRegistry registered types and auto-allow the implementing classes
-        //        to avoid a rather hidden cross-dependency event - other things like Table can't be overridden
-        //        anyways, so only custom types *may* be relevant.
-        return [
-            // doctrine/dbal classes and types
-            Column::class,
-            ForeignKeyConstraint::class,
-            Identifier::class,
-            Index::class,
-            SchemaConfig::class,
-            Schema::class,
-            Sequence::class,
-            Table::class,
-            UniqueConstraint::class,
-            ArrayType::class,
-            AsciiStringType::class,
-            BigIntType::class,
-            BlobType::class,
-            BooleanType::class,
-            DateImmutableType::class,
-            DateIntervalType::class,
-            DateTimeImmutableType::class,
-            DateTimeType::class,
-            DateTimeTzImmutableType::class,
-            DateTimeTzType::class,
-            DateType::class,
-            DecimalType::class,
-            FloatType::class,
-            GuidType::class,
-            IntegerType::class,
-            JsonType::class,
-            ObjectType::class,
-            PhpDateTimeMappingType::class,
-            PhpIntegerMappingType::class,
-            SimpleArrayType::class,
-            SmallIntType::class,
-            StringType::class,
-            TextType::class,
-            TimeImmutableType::class,
-            TimeType::class,
-            Type::class,
-            TypeRegistry::class,
-            VarDateTimeImmutableType::class,
-            VarDateTimeType::class,
-            // core classes and types
-            CoreDateTimeType::class,
-            CoreDateType::class,
-            CoreTimeType::class,
-            SetType::class,
-            EnumType::class,
-        ];
     }
 }

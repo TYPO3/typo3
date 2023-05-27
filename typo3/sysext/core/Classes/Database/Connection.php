@@ -25,7 +25,6 @@ use Doctrine\DBAL\Result;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -473,8 +472,9 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      */
     public function getSchemaInformation(): SchemaInformation
     {
-        /** @var PhpFrontend $coreCache */
-        $coreCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
-        return new SchemaInformation($this, $coreCache);
+        return new SchemaInformation(
+            $this,
+            GeneralUtility::makeInstance(CacheManager::class)->getCache('database_schema')
+        );
     }
 }

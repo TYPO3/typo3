@@ -62,7 +62,7 @@ class ClearCacheService
      * may register additional caches in the caching framework with different
      * backend, and will then clear them with the usual flush() method.
      */
-    public function clearAll(bool $reloadConfiguration = true): void
+    public function clearAll(): void
     {
         // Low level flush of legacy database cache tables
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -85,16 +85,14 @@ class ClearCacheService
             $diCacheBackend->forceFlush();
         }
 
-        if ($reloadConfiguration) {
-            // From this point on, the code may fatal, if some broken extension is loaded.
-            $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        // From this point on, the code may fatal, if some broken extension is loaded.
+        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
 
-            $extensionCaches = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
-            // Loose comparison on purpose to allow changed ordering of the array
-            if ($baseCaches != $extensionCaches) {
-                // When configuration has changed during loading of extensions (due to ext_localconf.php), flush all caches again
-                $this->flushCaches($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-            }
+        $extensionCaches = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
+        // Loose comparison on purpose to allow changed ordering of the array
+        if ($baseCaches != $extensionCaches) {
+            // When configuration has changed during loading of extensions (due to ext_localconf.php), flush all caches again
+            $this->flushCaches($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
         }
     }
 
