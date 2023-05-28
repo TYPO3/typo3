@@ -144,7 +144,9 @@ final class PropertyTest extends UnitTestCase
 
         self::assertSame(ObjectStorage::class, $propertyType->getClassName());
 
-        self::assertCount(0, $propertyType->getCollectionKeyTypes());
+        self::assertCount(2, $propertyType->getCollectionKeyTypes());
+        self::assertSame('string', $propertyType->getCollectionKeyTypes()[0]->getBuiltinType());
+        self::assertSame('int', $propertyType->getCollectionKeyTypes()[1]->getBuiltinType());
         self::assertCount(1, $propertyType->getCollectionValueTypes());
 
         self::assertSame(DummyClassWithAllTypesOfProperties::class, $propertyType->getCollectionValueTypes()[0]->getClassName());
