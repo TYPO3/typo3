@@ -89,7 +89,7 @@
 		"symfony/mime": "^6.2",
 		"symfony/options-resolver": "^6.2",
 		"symfony/property-access": "^6.2",
-		"symfony/property-info": "^6.2",
+		"symfony/property-info": "^6.2.11",
 		"symfony/rate-limiter": "^6.2",
 		"symfony/routing": "^6.2",
 		"symfony/uid": "^6.2",
