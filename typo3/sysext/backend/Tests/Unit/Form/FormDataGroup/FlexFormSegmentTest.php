@@ -58,16 +58,20 @@ final class FlexFormSegmentTest extends UnitTestCase
         GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
         $orderingServiceMock->method('orderByDependencies')->withAnyParameters()->willReturnArgument(0);
 
-        $formDataProviderMock = $this->createMock(FormDataProviderInterface::class);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
-            FormDataProviderInterface::class => [],
+            \stdClass::class => [],
         ];
-        GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderMock);
-        $providerResult = ['foo'];
-        $formDataProviderMock->expects(self::atLeastOnce())->method('addData')->with(self::anything())
-            ->willReturn($providerResult);
+        GeneralUtility::addInstance(
+            \stdClass::class,
+            new class () extends \stdClass implements FormDataProviderInterface {
+                public function addData(array $result)
+                {
+                    return ['foo'];
+                }
+            }
+        );
 
-        self::assertEquals($providerResult, $this->subject->compile([]));
+        self::assertEquals(['foo'], $this->subject->compile([]));
     }
 
     /**
