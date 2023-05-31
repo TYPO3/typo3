@@ -53,6 +53,13 @@ class OrderedProviderList implements FormDataGroupInterface
                 continue;
             }
 
+            if (!class_exists($providerClassName)) {
+                throw new \InvalidArgumentException(
+                    'Implementation class for data provider ' . $providerClassName . ' does not exist',
+                    1685542507
+                );
+            }
+
             /** @var FormDataProviderInterface $provider */
             $provider = GeneralUtility::makeInstance($providerClassName);
 

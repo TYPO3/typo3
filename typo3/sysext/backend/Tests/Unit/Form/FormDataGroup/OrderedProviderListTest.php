@@ -50,17 +50,20 @@ final class OrderedProviderListTest extends UnitTestCase
         GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
         $orderingServiceMock->method('orderByDependencies')->withAnyParameters()->willReturnArgument(0);
 
-        $formDataProviderMock = $this->createMock(FormDataProviderInterface::class);
-        GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderMock);
-        $providerResult = ['foo'];
-        $formDataProviderMock->expects(self::atLeastOnce())->method('addData')->with(self::anything())
-            ->willReturn($providerResult);
+        $formDataProvider = new class () extends \stdClass implements FormDataProviderInterface {
+            public function addData(array $result)
+            {
+                return ['foo'];
+            }
+        };
+
+        GeneralUtility::addInstance(\stdClass::class, $formDataProvider);
 
         $subject = new OrderedProviderList();
         $subject->setProviderList([
-            FormDataProviderInterface::class => [],
+            \stdClass::class => [],
         ]);
-        self::assertEquals($providerResult, $subject->compile([]));
+        self::assertEquals(['foo'], $subject->compile([]));
     }
 
     /**
@@ -80,6 +83,25 @@ final class OrderedProviderListTest extends UnitTestCase
         ]);
         $input = ['foo'];
         self::assertEquals($input, $subject->compile($input));
+    }
+
+    /**
+     * @test
+     */
+    public function compileThrowsExceptionIfImplementationClassDoesNotExist(): void
+    {
+        $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
+        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
+        $orderingServiceMock->method('orderByDependencies')->withAnyParameters()->willReturnArgument(0);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1685542507);
+
+        $subject = new OrderedProviderList();
+        $subject->setProviderList([
+            '\\Invalid\\Class\\String' => [],
+        ]);
+        $subject->compile([]);
     }
 
     /**
