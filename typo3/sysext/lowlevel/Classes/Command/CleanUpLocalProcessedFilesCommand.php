@@ -138,7 +138,8 @@ class CleanUpLocalProcessedFilesCommand extends Command
 
     protected function deleteFile(InputInterface $input, OutputInterface $output, array $files): array
     {
-        if (!$output->isVerbose()) {
+        $isVerbose = $output->isVerbose();
+        if (!$isVerbose) {
             $io = new SymfonyStyle($input, $output);
             $progressBar = $io->createProgressBar(count($files));
         }
@@ -149,10 +150,10 @@ class CleanUpLocalProcessedFilesCommand extends Command
             $path = PathUtility::stripPathSitePrefix($file->getRealPath());
             if (unlink($file->getRealPath()) === false) {
                 $error[] = $file;
-                $output->isVerbose() ? $output->writeln('[FILE] Failed to delete ' . $path) : $progressBar->advance();
+                $isVerbose ? $output->writeln('[FILE] Failed to delete ' . $path) : $progressBar->advance();
             } else {
                 $success[] = $file;
-                $output->isVerbose() ? $output->writeln('[FILE] Successfully deleted ' . $path) : $progressBar->advance();
+                $isVerbose ? $output->writeln('[FILE] Successfully deleted ' . $path) : $progressBar->advance();
             }
         }
 
