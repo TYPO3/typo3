@@ -323,16 +323,16 @@ class Clipboard
                             'height="' . htmlspecialchars((string)$processedFile->getProperty('height')) . '" ' .
                             'title="' . htmlspecialchars($processedFile->getName()) . '" alt="" />';
                     }
+                    $linkItemText = GeneralUtility::fixed_lgd_cs($fileObject->getName(), (int)($this->getBackendUser()->uc['titleLen'] ?? 0));
+                    $combinedIdentifier = ($parentFolder = $fileObject->getParentFolder()) instanceof Folder ? $parentFolder->getCombinedIdentifier() : '';
+                    $filesRequested = $currentTable === '_FILE';
                     $records[] = [
                         'identifier' => '_FILE|' . md5($value),
                         'icon' => '<span title="' . htmlspecialchars($fileObject->getName() . ' ' . $size) . '">' . $this->iconFactory->getIconForResource(
                             $fileObject,
                             Icon::SIZE_SMALL
                         )->render() . '</span>',
-                        'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(
-                            $fileObject->getName(),
-                            $this->getBackendUser()->uc['titleLen']
-                        )), $fileObject->getParentFolder()->getCombinedIdentifier(), $currentTable === '_FILE'),
+                        'title' => $this->linkItemText(htmlspecialchars($linkItemText), $combinedIdentifier, $filesRequested),
                         'thumb' => $thumb,
                         'infoDataDispatch' => [
                             'action' => 'TYPO3.InfoWindow.showItem',
