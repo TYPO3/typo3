@@ -30,7 +30,6 @@
 		},
 		"sort-packages": true,
 		"allow-plugins": {
-			"composer/package-versions-deprecated": true,
 			"typo3/class-alias-loader": true,
 			"typo3/cms-composer-installers": true
 		}
@@ -110,7 +109,6 @@
 		"codeception/module-filesystem": "^3.0.0",
 		"codeception/module-webdriver": "^4.0.0",
 		"composer/composer": "^2.5.5",
-		"composer/package-versions-deprecated": "^1.11.99.5",
 		"friendsofphp/php-cs-fixer": "^3.16.0",
 		"friendsoftypo3/phpstan-typo3": "^0.9.0",
 		"php-webdriver/webdriver": "^1.14.0",
