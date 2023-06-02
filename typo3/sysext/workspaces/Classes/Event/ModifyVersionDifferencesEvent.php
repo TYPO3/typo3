@@ -33,21 +33,45 @@ final class ModifyVersionDifferencesEvent
     ) {
     }
 
+    /**
+     * Get the version differences.
+     *
+     * This array contains the differences of each field with the following keys:
+     *
+     * - field: The corresponding field name
+     * - label: The corresponding field label
+     * - content: The field values difference
+     *
+     * @return list<array{field: string, label: string, content: string}>
+     */
     public function getVersionDifferences(): array
     {
         return $this->versionDifferences;
     }
 
+    /**
+     * Modifies the version differences data
+     *
+     * @param list<array{field: string, label: string, content: string}> $versionDifferences
+     */
     public function setVersionDifferences(array $versionDifferences): void
     {
         $this->versionDifferences = $versionDifferences;
     }
 
+    /**
+     * Returns the records live data (used to create the version difference)
+     *
+     * @return list<array{field: string, label: string, content: string}>
+     */
     public function getLiveRecordData(): array
     {
         return $this->liveRecordData;
     }
 
+    /**
+     * Returns meta information like current stage and current workspace
+     */
     public function getParameters(): \stdClass
     {
         return $this->parameters;
