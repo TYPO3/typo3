@@ -56,7 +56,7 @@ class AssetRenderer
         return $this->render($assets, $template, $nonce);
     }
 
-    public function renderJavaScript($priority = false): string
+    public function renderJavaScript($priority = false, ?ConsumableString $nonce = null): string
     {
         $this->eventDispatcher->dispatch(
             new BeforeJavaScriptsRenderingEvent($this->assetCollector, false, $priority)
@@ -67,7 +67,7 @@ class AssetRenderer
         foreach ($assets as &$assetData) {
             $assetData['attributes']['src'] = $this->getAbsoluteWebPath($assetData['source']);
         }
-        return $this->render($assets, $template);
+        return $this->render($assets, $template, $nonce);
     }
 
     public function renderInlineStyleSheets($priority = false, ?ConsumableString $nonce = null): string
@@ -81,7 +81,7 @@ class AssetRenderer
         return $this->render($assets, $template, $nonce);
     }
 
-    public function renderStyleSheets(bool $priority = false, string $endingSlash = ''): string
+    public function renderStyleSheets(bool $priority = false, string $endingSlash = '', ?ConsumableString $nonce = null): string
     {
         $this->eventDispatcher->dispatch(
             new BeforeStylesheetsRenderingEvent($this->assetCollector, false, $priority)
@@ -93,7 +93,7 @@ class AssetRenderer
             $assetData['attributes']['href'] = $this->getAbsoluteWebPath($assetData['source']);
             $assetData['attributes']['rel'] = $assetData['attributes']['rel'] ?? 'stylesheet';
         }
-        return $this->render($assets, $template);
+        return $this->render($assets, $template, $nonce);
     }
 
     protected function render(array $assets, string $template, ?ConsumableString $nonce = null): string

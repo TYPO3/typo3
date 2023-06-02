@@ -1998,13 +1998,13 @@ class PageRenderer implements SingletonInterface
         // Use AssetRenderer to inject all JavaScripts and CSS files
         $jsInline .= $this->assetRenderer->renderInlineJavaScript(true, $this->nonce);
         $jsFooterInline .= $this->assetRenderer->renderInlineJavaScript(false, $this->nonce);
-        $jsFiles .= $this->assetRenderer->renderJavaScript(true);
-        $jsFooterFiles .= $this->assetRenderer->renderJavaScript();
+        $jsFiles .= $this->assetRenderer->renderJavaScript(true, $this->nonce);
+        $jsFooterFiles .= $this->assetRenderer->renderJavaScript(false, $this->nonce);
         $cssInline .= $this->assetRenderer->renderInlineStyleSheets(true, $this->nonce);
         // append inline CSS to footer (as there is no cssFooterInline)
         $jsFooterFiles .= $this->assetRenderer->renderInlineStyleSheets(false, $this->nonce);
-        $cssLibs .= $this->assetRenderer->renderStyleSheets(true, $this->endingSlash);
-        $cssFiles .= $this->assetRenderer->renderStyleSheets(false, $this->endingSlash);
+        $cssLibs .= $this->assetRenderer->renderStyleSheets(true, $this->endingSlash, $this->nonce);
+        $cssFiles .= $this->assetRenderer->renderStyleSheets(false, $this->endingSlash, $this->nonce);
 
         $this->executePostRenderHook($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs);
         return [$jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs];
