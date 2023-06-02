@@ -41,6 +41,7 @@ granular editing and publishing process.
 
    Introduction/Index
    Administration/Index
+   Events/Index
    UsersGuide/Index
 
 .. Meta Menu
