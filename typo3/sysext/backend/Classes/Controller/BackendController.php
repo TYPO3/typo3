@@ -80,6 +80,8 @@ class BackendController
     {
         $backendUser = $this->getBackendUser();
         $pageRenderer = $this->pageRenderer;
+        // apply nonce hint for elements that are shown in a modal
+        $pageRenderer->setApplyNonceHint(true);
 
         $this->setUpBasicPageRendererForBackend($pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
 
