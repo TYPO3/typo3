@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Workspaces\Event;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
 
 /**
- * Used in the workspaces module to find all chacheable data of versions of a workspace.
+ * Used in the workspaces module to find all cacheable data of versions of a workspace.
  */
 final class AfterCompiledCacheableDataForWorkspaceEvent
 {
