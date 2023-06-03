@@ -20,11 +20,6 @@
 @import "cropper/cropper";
 
 //
-// JQuery UI Resizable
-//
-@import "libs/jquery-ui-resizable";
-
-//
 // Sortable.js
 //
 @import "libs/sortable";
@@ -64,6 +59,7 @@
 //
 // Elements
 //
+@import "element/typo3-backend-draggable-resizable";
 @import "element/typo3-backend-editable-page-title";
 @import "element/typo3-backend-new-content-element-wizard";
 @import "element/typo3-notification-message";

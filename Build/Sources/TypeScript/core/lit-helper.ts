@@ -79,8 +79,8 @@ export const classesArrayToClassInfo = (classes: Array<string>): ClassInfo => {
  *    <div class="my-style">...</div>
  * ```
  */
-export const styleTag = (strings: TemplateStringsArray|CSSResultArray): HTMLTemplateResult => {
-  const nonce = (window as LitNonceWindow).litNonce;
+export const styleTag = (strings: string[]|TemplateStringsArray|CSSResultArray, windowRef?: Window): HTMLTemplateResult => {
+  const nonce = ((windowRef || window) as LitNonceWindow).litNonce;
   if (nonce) {
     return html`<style nonce="${nonce}">${strings}</style>`;
   }
