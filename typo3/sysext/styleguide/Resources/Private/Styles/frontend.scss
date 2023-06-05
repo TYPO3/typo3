@@ -1,6 +1,12 @@
 /** Frontend styles only for EXT: styleguide */
 @import "../../../node_modules/bootstrap/scss/functions";
 @import "../../../node_modules/bootstrap/scss/variables";
+/**
+ * Darkmode is enabled by default. Disable this for now.
+ * Alternatively, darkmode can be enabled, but then further changes are necessary, e.g.
+ * @import "../../../node_modules/bootstrap/scss/_variables-dark";
+ */
+$enable-dark-mode: false;
 @import "../../../node_modules/bootstrap/scss/maps";
 @import "../../../node_modules/bootstrap/scss/mixins";
 @import "../../../node_modules/bootstrap/scss/utilities";
