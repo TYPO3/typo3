@@ -449,7 +449,7 @@ services:
       "
 
   build_css:
-    image: ${IMAGE_PREFIX}core-testing-nodejs16:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs18:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -467,7 +467,7 @@ services:
       "
 
   build_javascript:
-    image: ${IMAGE_PREFIX}core-testing-nodejs16:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs18:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -671,7 +671,7 @@ services:
       "
 
   check_grunt_clean:
-    image: ${IMAGE_PREFIX}core-testing-nodejs16:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs18:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -1202,7 +1202,7 @@ services:
       "
 
   lint_scss:
-    image: ${IMAGE_PREFIX}core-testing-nodejs16:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs18:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -1220,7 +1220,7 @@ services:
       "
 
   lint_html:
-    image: ${IMAGE_PREFIX}core-testing-nodejs16:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs18:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -1238,7 +1238,7 @@ services:
       "
 
   lint_typescript:
-    image: ${IMAGE_PREFIX}core-testing-nodejs16:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs18:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -1352,7 +1352,7 @@ services:
       "
 
   unitJavascript:
-    image: ${IMAGE_PREFIX}core-testing-nodejs16-chrome:latest
+    image: ${IMAGE_PREFIX}core-testing-nodejs18-chrome:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}

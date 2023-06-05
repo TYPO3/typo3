@@ -8,8 +8,8 @@
   "version": "11.0.0-dev",
   "license": "GPL-2.0+",
   "engines": {
-    "node": ">=14.15.0 <17.0.0",
-    "npm": ">=8.0.0 <10.0.0"
+    "node": ">=18.10.0 <19.0.0",
+    "npm": ">=9.0.0 <10.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.0",
