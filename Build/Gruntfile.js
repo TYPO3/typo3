@@ -693,93 +693,6 @@ module.exports = function (grunt) {
           'chosen.jquery.min.js': 'chosen-js/chosen.jquery.js',
         }
       },
-      jqueryUi: {
-        options: {
-          destPrefix: '<%= paths.core %>Public/JavaScript/Contrib',
-          copyOptions: {
-            process: (source, srcpath) => {
-              const imports = {
-                'data': ['version'],
-                'disable-selection': ['version'],
-                'ie': ['version'],
-                'plugin': ['version'],
-                'position': ['version'],
-                'safe-active-element': ['version'],
-                'safe-blur': ['version'],
-                'scroll-parent': ['version'],
-                'widget': ['version'],
-                'widgets/draggable': ['widgets/mouse', 'data', 'plugin', 'safe-active-element', 'safe-blur', 'scroll-parent', 'version', 'widget'],
-                'widgets/droppable': ['widgets/draggable', 'widgets/mouse', 'version', 'widget'],
-                'widgets/mouse': ['ie', 'version', 'widget'],
-                'widgets/resizable': ['core', 'mouse', 'widget'],
-                'widgets/selectable': ['core', 'mouse', 'widget'],
-                'widgets/sortable': ['core', 'mouse', 'widget'],
-                // just required by deprecated `core.js`
-                'focusable': ['version'],
-                'form': ['version'],
-                'keycode': ['version'],
-                'labels': ['version'],
-                'jquery-patch': ['version'],
-                'tabbable': ['version', 'focusable'],
-                'unique-id': ['version'],
-              };
-
-              const moduleName = require('path')
-                .relative('node_modules/jquery-ui/ui/', srcpath)
-                .replace(/\.js$/, '');
-
-              const code = [
-                "import jQuery from 'jquery';",
-              ];
-
-              if (moduleName in imports) {
-                imports[moduleName].forEach(importName => {
-                  code.push("import 'jquery-ui/" + importName + ".js';");
-                });
-              }
-
-              code.push('let define = null;');
-              code.push(source);
-
-              return code.join('\n');
-            }
-          }
-        },
-        files: {
-          'jquery-ui/data.js': 'jquery-ui/ui/data.js',
-          'jquery-ui/disable-selection.js': 'jquery-ui/ui/disable-selection.js',
-          'jquery-ui/ie.js': 'jquery-ui/ui/ie.js',
-          'jquery-ui/plugin.js': 'jquery-ui/ui/plugin.js',
-          'jquery-ui/position.js': 'jquery-ui/ui/position.js',
-          'jquery-ui/safe-active-element.js': 'jquery-ui/ui/safe-active-element.js',
-          'jquery-ui/safe-blur.js': 'jquery-ui/ui/safe-blur.js',
-          'jquery-ui/scroll-parent.js': 'jquery-ui/ui/scroll-parent.js',
-          'jquery-ui/widget.js': 'jquery-ui/ui/widget.js',
-          'jquery-ui/version.js': 'jquery-ui/ui/version.js',
-          'jquery-ui/widgets/mouse.js': 'jquery-ui/ui/widgets/mouse.js',
-          'jquery-ui/widgets/draggable.js': 'jquery-ui/ui/widgets/draggable.js',
-          'jquery-ui/widgets/droppable.js': 'jquery-ui/ui/widgets/droppable.js',
-          'jquery-ui/widgets/resizable.js': 'jquery-ui/ui/widgets/resizable.js',
-          'jquery-ui/widgets/selectable.js': 'jquery-ui/ui/widgets/selectable.js',
-          'jquery-ui/widgets/sortable.js': 'jquery-ui/ui/widgets/sortable.js',
-          // just required by deprecated `core.js`
-          'jquery-ui/focusable.js': 'jquery-ui/ui/focusable.js',
-          'jquery-ui/form.js': 'jquery-ui/ui/form.js',
-          'jquery-ui/keycode.js': 'jquery-ui/ui/keycode.js',
-          'jquery-ui/labels.js': 'jquery-ui/ui/labels.js',
-          'jquery-ui/jquery-patch.js': 'jquery-ui/ui/jquery-patch.js',
-          'jquery-ui/tabbable.js': 'jquery-ui/ui/tabbable.js',
-          'jquery-ui/unique-id.js': 'jquery-ui/ui/unique-id.js',
-          // static legacy modules for backward compatibility
-          'jquery-ui/core.js': '../Sources/JavaScript/jquery-ui/core.js',
-          'jquery-ui/draggable.js': '../Sources/JavaScript/jquery-ui/draggable.js',
-          'jquery-ui/droppable.js': '../Sources/JavaScript/jquery-ui/droppable.js',
-          'jquery-ui/mouse.js': '../Sources/JavaScript/jquery-ui/mouse.js',
-          'jquery-ui/resizable.js': '../Sources/JavaScript/jquery-ui/resizable.js',
-          'jquery-ui/selectable.js': '../Sources/JavaScript/jquery-ui/selectable.js',
-          'jquery-ui/sortable.js': '../Sources/JavaScript/jquery-ui/sortable.js',
-        }
-      },
       all: {
         options: {
           destPrefix: '<%= paths.core %>Public/JavaScript/Contrib'
@@ -811,36 +724,6 @@ module.exports = function (grunt) {
           '<%= paths.core %>Public/JavaScript/Contrib/require.js': ['<%= paths.core %>Public/JavaScript/Contrib/require.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': ['<%= paths.core %>Public/JavaScript/Contrib/nprogress.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/taboverride.js': ['<%= paths.core %>Public/JavaScript/Contrib/taboverride.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/data.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/data.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/disable-selection.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/disable-selection.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/droppable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/droppable.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/focusable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/focusable.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/form.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/form.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/ie.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/ie.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/jquery-patch.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/jquery-patch.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/keycode.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/keycode.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/labels.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/labels.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/mouse.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/mouse.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/plugin.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/plugin.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/safe-active-element.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/safe-active-element.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/safe-blur.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/safe-blur.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/scroll-parent.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/scroll-parent.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/tabbable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/tabbable.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/unique-id.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/unique-id.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/version.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/version.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widgets/draggable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widgets/draggable.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widgets/droppable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widgets/droppable.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widgets/mouse.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widgets/mouse.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widgets/resizable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widgets/resizable.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widgets/selectable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widgets/selectable.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widgets/sortable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widgets/sortable.js'],
           '<%= paths.install %>Public/JavaScript/chosen.jquery.min.js': ['<%= paths.install %>Public/JavaScript/chosen.jquery.min.js']
         }
       },
@@ -891,7 +774,7 @@ module.exports = function (grunt) {
       }
     },
     concurrent: {
-      npmcopy: ['npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:jqueryUi', 'npmcopy:install', 'npmcopy:all'],
+      npmcopy: ['npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:install', 'npmcopy:all'],
       lint: ['eslint', 'stylelint', 'exec:lintspaces'],
       compile_assets: ['scripts', 'css'],
       compile_flags: ['flags-build'],

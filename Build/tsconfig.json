@@ -100,7 +100,6 @@
             "d3-selection",
             "jasmine",
             "jquery",
-            "jqueryui",
             "bootstrap",
             "nprogress",
             "requirejs",
