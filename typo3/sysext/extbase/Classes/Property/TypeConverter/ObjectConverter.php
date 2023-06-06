@@ -186,7 +186,8 @@ class ObjectConverter extends AbstractTypeConverter
     }
 
     /**
-     * Determines the target type based on the source's (optional) __type key.
+     * Determines the target type based on the source's (optional) __type key and by evaluating possible
+     * XCLASS overrides of the target type.
      *
      * @param mixed $source
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidDataTypeException
@@ -214,7 +215,8 @@ class ObjectConverter extends AbstractTypeConverter
             }
         }
 
-        return $targetType;
+        // Respect XCLASSed object target type
+        return (string)GeneralUtility::getClassName($targetType);
     }
 
     /**
