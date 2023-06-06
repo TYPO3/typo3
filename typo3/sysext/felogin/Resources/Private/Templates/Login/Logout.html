@@ -13,13 +13,13 @@
             <f:translate key="logout"/>
         </legend>
         <div>
-            <label>
+            <label for="tx-felogin-input-logout">
                 <f:translate key="username"/>
             </label>
             {user.username}
         </div>
         <div>
-            <f:form.submit value="{f:translate(key: 'logout')}" name="submit"/>
+            <f:form.submit value="{f:translate(key: 'logout')}" name="submit" id="tx-felogin-input-logout"/>
         </div>
 
         <div class="felogin-hidden">
