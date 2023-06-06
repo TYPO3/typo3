@@ -57,6 +57,10 @@ label {
 //
 .form-control {
     min-width: 120px;
+
+    &::placeholder {
+        color: var(--typo3-input-color-placeholder);
+    }
 }
 
 .form-control-adapt {
