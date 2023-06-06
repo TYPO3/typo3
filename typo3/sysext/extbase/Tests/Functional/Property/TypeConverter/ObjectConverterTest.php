@@ -454,4 +454,28 @@ final class ObjectConverterTest extends FunctionalTestCase
             $propertyMapperConfiguration
         );
     }
+
+    /**
+     * @test
+     */
+    public function convertWithRegisteredSubclassReturnsInstanceOfRegisteredSubclass(): void
+    {
+        // XCLASS the animal class
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][Animal::class] = [
+            'className' => Cat::class,
+        ];
+
+        $propertyMapper = $this->get(PropertyMapper::class);
+
+        $propertyMapperConfiguration = new PropertyMappingConfiguration();
+        $propertyMapperConfiguration->allowAllProperties();
+
+        $object = $propertyMapper->convert(
+            ['name' => 'John Doe'],
+            Animal::class,
+            $propertyMapperConfiguration
+        );
+
+        self::assertInstanceOf(Cat::class, $object);
+    }
 }
