@@ -308,8 +308,8 @@ class SaveToDatabaseFinisher extends AbstractFinisher
     protected function saveToDatabase(array $databaseData, string $table, int $iterationCount)
     {
         if (!empty($databaseData)) {
-            if ($this->options['mode'] === 'update') {
-                $whereClause = $this->options['whereClause'];
+            if ($this->parseOption('mode') === 'update') {
+                $whereClause = $this->parseOption('whereClause');
                 foreach ($whereClause as $columnName => $columnValue) {
                     $whereClause[$columnName] = $this->parseOption('whereClause.' . $columnName);
                 }
@@ -339,8 +339,8 @@ class SaveToDatabaseFinisher extends AbstractFinisher
     protected function throwExceptionOnInconsistentConfiguration()
     {
         if (
-            $this->options['mode'] === 'update'
-            && empty($this->options['whereClause'])
+            $this->parseOption('mode') === 'update'
+            && empty($this->parseOption('whereClause'))
         ) {
             throw new FinisherException(
                 'An empty option "whereClause" is not allowed in update mode.',
