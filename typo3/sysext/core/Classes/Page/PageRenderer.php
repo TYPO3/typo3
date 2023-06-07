@@ -369,7 +369,9 @@ class PageRenderer implements SingletonInterface
                 case 'languageServiceFactory':
                 case 'responseFactory':
                 case 'streamFactory':
+                    break;
                 case 'nonce':
+                    $this->setNonce(new ConsumableString($value));
                     break;
                 case 'metaTagRegistry':
                     $this->metaTagRegistry->updateState($value);
@@ -401,7 +403,11 @@ class PageRenderer implements SingletonInterface
                 case 'languageServiceFactory':
                 case 'responseFactory':
                 case 'streamFactory':
+                    break;
                 case 'nonce':
+                    if ($value instanceof ConsumableString) {
+                        $state[$var] = $value->value;
+                    }
                     break;
                 case 'metaTagRegistry':
                     $state[$var] = $this->metaTagRegistry->getState();
