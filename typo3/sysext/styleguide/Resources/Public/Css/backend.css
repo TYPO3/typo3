@@ -207,35 +207,6 @@ pre[class*=language-] {
   color: #F8F8F2;
 }
 
-ul.fence {
-  padding-bottom: 0;
-  margin-bottom: 20px;
-}
-ul.fence li {
-  position: relative;
-  padding-bottom: 10px;
-}
-ul.fence li:last-child {
-  padding-bottom: 0;
-}
-ul.fence li .btn-round {
-  border-radius: 100%;
-  display: inline-block;
-  margin-right: 5px;
-  position: relative;
-  width: 50px;
-  z-index: 2;
-  padding: 12px 12px;
-}
-ul.fence li:before {
-  content: "";
-  border-left: 1px solid #333;
-  position: absolute;
-  margin-left: 24px;
-  height: 100%;
-  z-index: 1;
-}
-
 div.icon-container {
   border: 1px solid transparent;
   margin-bottom: 20px;
