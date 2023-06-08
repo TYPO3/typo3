@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\TypoScript;
 
 use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\ExpressionLanguage\DeprecatingRequestWrapper;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -116,16 +117,20 @@ final class PageTsConfigFactory
             $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($siteSettingsFlat);
             $includeTreeTraverserConditionVerdictAware->addVisitor($setupConditionConstantSubstitutionVisitor);
         }
-        $lastPage = [];
+        $lastPageFullRecord = [];
         $pageId = 0;
         if (!empty($fullRootLine)) {
             $lastPage = $fullRootLine[array_key_last($fullRootLine)];
             $pageId = $lastPage['uid'];
+            $lastPageFullRecord = BackendUtility::getRecord('pages', $pageId) ?: [];
         }
         $conditionMatcherVariables = [
             'fullRootLine' => $fullRootLine,
             'site' => $site,
-            'page' => $lastPage,
+            // @todo We're using the full page row here to provide all necessary fields (e.g. "backend_layout"),
+            //       which are currently not included in the rows, RootlineUtility provides by default. We might
+            //       want to switch to $fullRootLine[array_key_last($fullRootLine)] as soon as it contains all fields.
+            'page' => $lastPageFullRecord,
             'pageId' => $pageId,
             // @deprecated since v12, will be removed in v13.
             'request' => new DeprecatingRequestWrapper($GLOBALS['TYPO3_REQUEST'] ?? null),
