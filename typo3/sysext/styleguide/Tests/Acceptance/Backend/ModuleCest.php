@@ -58,10 +58,10 @@ class ModuleCest
      */
     public function creatingTcaDemoDataWorks(BackendTester $I): void
     {
-        $I->click('TCA / Records / Frontend');
-        $I->waitForText('TCA test records');
-        $I->click('Create styleguide page tree with data');
-        $this->seeResponse($I, 'A page tree with styleguide TCA test records was created.');
+        $I->click('Index');
+        $I->waitForText('Page tree including TCA demo records');
+        $I->click('#t3-tca-pagetree-create');
+        $this->seeResponse($I, 'A page tree with TCA demo records was created.');
     }
 
     /**
@@ -70,10 +70,10 @@ class ModuleCest
      */
     public function deletingTcaDemoDataWorks(BackendTester $I): void
     {
-        $I->click('TCA / Records / Frontend');
-        $I->waitForText('TCA test records');
-        $I->click('Delete styleguide page tree and all styleguide data records');
-        $this->seeResponse($I, 'The styleguide page tree and all styleguide records were deleted.');
+        $I->click('Index');
+        $I->waitForText('Page tree including TCA demo records');
+        $I->click('#t3-tca-pagetree-delete');
+        $this->seeResponse($I, 'The page tree and all related records were deleted.');
     }
 
     /**
@@ -82,10 +82,10 @@ class ModuleCest
      */
     public function creatingFrontendDemoDataWorks(BackendTester $I): void
     {
-        $I->click('TCA / Records / Frontend');
-        $I->waitForText('TCA test records');
-        $I->click('Create styleguide frontend');
-        $this->seeResponse($I, 'A page tree with styleguide frontend test records was created.');
+        $I->click('Index');
+        $I->waitForText('Page tree including content elements');
+        $I->click('#t3-ce-pagetree-create');
+        $this->seeResponse($I, 'A page tree with content elements was created.');
     }
 
     /**
@@ -94,10 +94,10 @@ class ModuleCest
      */
     public function deletingFrontendDemoDataWorks(BackendTester $I): void
     {
-        $I->click('TCA / Records / Frontend');
-        $I->waitForText('TCA test records');
-        $I->click('Delete styleguide frontend');
-        $this->seeResponse($I, 'The styleguide frontend page tree and all styleguide frontend records were deleted.');
+        $I->click('Index');
+        $I->waitForText('Page tree including content elements');
+        $I->click('#t3-ce-pagetree-delete');
+        $this->seeResponse($I, 'The page tree and all related records were deleted.');
     }
 
     private function seeResponse(BackendTester $I, string $message): void

@@ -48,7 +48,6 @@ class BackendController
      */
     private array $allowedActions = [
         'index',
-        'tca',
         'typography',
         'color',
         'trees',
@@ -104,11 +103,53 @@ class BackendController
         $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'index');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/processing-indicator.js');
+        $finder = GeneralUtility::makeInstance(RecordFinder::class);
+        $demoExists = count($finder->findUidsOfStyleguideEntryPages());
+        $demoFrontendExists = count($finder->findUidsOfFrontendPages());
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'index',
+            'demoExists' => $demoExists,
+            'demoFrontendExists' => $demoFrontendExists,
         ]);
         return $moduleTemplate->renderResponse('Backend/Index');
+    }
+
+    private function tcaCreateAction(): ResponseInterface
+    {
+        $finder = GeneralUtility::makeInstance(RecordFinder::class);
+        if (count($finder->findUidsOfStyleguideEntryPages())) {
+            // Tell something was done here
+            $json = [
+                'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionFailedTitle'),
+                'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionFailedBody'),
+                'status' => ContextualFeedbackSeverity::ERROR,
+            ];
+        } else {
+            $generator = GeneralUtility::makeInstance(Generator::class);
+            $generator->create();
+            // Tell something was done here
+            $json = [
+                'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionOkTitle'),
+                'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionOkBody'),
+                'status' => ContextualFeedbackSeverity::OK,
+            ];
+        }
+        // And redirect to display action
+        return new JsonResponse($json);
+    }
+
+    private function tcaDeleteAction(): ResponseInterface
+    {
+        $generator = GeneralUtility::makeInstance(Generator::class);
+        $generator->delete();
+        $json = [
+            'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkTitle'),
+            'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkBody'),
+            'status' => ContextualFeedbackSeverity::OK,
+        ];
+        return new JsonResponse($json);
     }
 
     private function buttonsAction(ServerRequestInterface $request): ResponseInterface
@@ -174,61 +215,6 @@ class BackendController
             'currentAction' => 'tables',
         ]);
         return $moduleTemplate->renderResponse('Backend/Tables');
-    }
-
-    private function tcaAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'tca');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/processing-indicator.js');
-        $finder = GeneralUtility::makeInstance(RecordFinder::class);
-        $demoExists = count($finder->findUidsOfStyleguideEntryPages());
-        $demoFrontendExists = count($finder->findUidsOfFrontendPages());
-        $moduleTemplate->assignMultiple([
-            'actions' => $this->allowedActions,
-            'currentAction' => 'tca',
-            'demoExists' => $demoExists,
-            'demoFrontendExists' => $demoFrontendExists,
-        ]);
-        return $moduleTemplate->renderResponse('Backend/Tca');
-    }
-
-    private function tcaCreateAction(): ResponseInterface
-    {
-        $finder = GeneralUtility::makeInstance(RecordFinder::class);
-        if (count($finder->findUidsOfStyleguideEntryPages())) {
-            // Tell something was done here
-            $json = [
-                'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionFailedTitle'),
-                'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionFailedBody'),
-                'status' => ContextualFeedbackSeverity::ERROR,
-            ];
-        } else {
-            $generator = GeneralUtility::makeInstance(Generator::class);
-            $generator->create();
-            // Tell something was done here
-            $json = [
-                'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionOkTitle'),
-                'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionOkBody'),
-                'status' => ContextualFeedbackSeverity::OK,
-            ];
-        }
-        // And redirect to display action
-        return new JsonResponse($json);
-    }
-
-    private function tcaDeleteAction(): ResponseInterface
-    {
-        $generator = GeneralUtility::makeInstance(Generator::class);
-        $generator->delete();
-        $json = [
-            'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkTitle'),
-            'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkBody'),
-            'status' => ContextualFeedbackSeverity::OK,
-        ];
-        return new JsonResponse($json);
     }
 
     private function frontendCreateAction(): ResponseInterface

@@ -14,10 +14,71 @@
     <div id="container-content">
         <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:backendStyleguide" /></h1>
         <p>Presents supported styles for TYPO3 backend modules.</p>
-        <p>
+
+        <f:be.infobox title="Info" state="-1">
             This styleguide is work in progress. It is not part of and does not represent the official documentation, yet.<br>
             Styleguide extension currently brings own css definitions that need to be integrated into TYPO3 CMS step by step.
-        </p>
+        </f:be.infobox>
+
+        <h2>Styleguide examples</h2>
+
+        <p>For information on supported styles and example code, see the link tree on the left.</p>
+
+        <h2>Example page trees</h2>
+
+        <div class="card-container">
+            <div class="card card-size-medium">
+                <div class="card-header">
+                    <div class="card-header-body">
+                        <h3 class="card-title">Page tree including TCA demo records</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <p>
+                            This extension comes with a huge set of TCA records to show and test different combinations
+                            of TCA possibilities. Here you can create a page tree with TCA demo records.
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button data-href="{f:be.uri(route: 'help_styleguide', parameters: '{action: \'tcaCreate\'}')}" class="btn btn-default{f:if(condition: '{demoExists} = true', then: ' disabled')} t3js-generator-action" id="t3-tca-pagetree-create">
+                        <i class="fa fa-plus fa-fw"></i>
+                        <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateButton" />
+                    </button>
+
+                    <button data-href="{f:be.uri(route: 'help_styleguide', parameters: '{action: \'tcaDelete\'}')}" class="btn btn-danger{f:if(condition: '{demoExists} != true', then: ' disabled')}  t3js-generator-action" id="t3-tca-pagetree-delete">
+                        <i class="fa fa-trash fa-fw"></i>
+                        <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteButton" />
+                    </button>
+                </div>
+            </div>
+            <div class="card card-size-medium">
+                <div class="card-header">
+                    <div class="card-header-body">
+                        <h3 class="card-title">Page tree including content elements</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <p>
+                            This creates a page tree with a page for each content element, a site configuration and files.
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button data-href="{f:be.uri(route:'help_styleguide', parameters: '{action: \'frontendCreate\'}')}" class="btn btn-default{f:if(condition: '{demoFrontendExists} = true', then: ' disabled')}  t3js-generator-action" id="t3-ce-pagetree-create">
+                        <i class="fa fa-plus fa-fw"></i>
+                        <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateButton" />
+                    </button>
+
+                    <button data-href="{f:be.uri(route:'help_styleguide', parameters: '{action: \'frontendDelete\'}')}" class="btn btn-danger{f:if(condition: '{demoFrontendExists} != true', then: ' disabled')}  t3js-generator-action" id="t3-ce-pagetree-delete">
+                        <i class="fa fa-trash fa-fw"></i>
+                        <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendDeleteButton" />
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
 </f:section>
