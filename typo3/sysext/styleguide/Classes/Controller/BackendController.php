@@ -49,7 +49,7 @@ class BackendController
     private array $allowedActions = [
         'index',
         'typography',
-        'color',
+        'colors',
         'trees',
         'tab',
         'tables',
