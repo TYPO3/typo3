@@ -216,7 +216,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
                     'TABLE_NAME',
-                    $queryBuilder->createNamedParameter($tableNames)
+                    $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY)
                 )
             );
         }
