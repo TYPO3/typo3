@@ -50,6 +50,7 @@ class BackendController
         'index',
         'tca',
         'typography',
+        'color',
         'trees',
         'tab',
         'tables',
@@ -134,6 +135,19 @@ class BackendController
             'currentAction' => 'typography',
         ]);
         return $moduleTemplate->renderResponse('Backend/Typography');
+    }
+
+    private function colorsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'colors');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'colors',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Colors');
     }
 
     private function treesAction(ServerRequestInterface $request): ResponseInterface
