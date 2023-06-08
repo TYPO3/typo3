@@ -40,7 +40,8 @@ Migration
 
 Stop extending the class. A simple way to migrate is by copying needed methods
 over to an own controller class. See
-:ref:`changelog-Breaking-98281-MakeAbstractPluginInternal` for more details on this.
+:ref:`changelog-Breaking-98281-MakeAbstractPluginInternal <breaking-98281-1662549900>` 
+for more details on this.
 
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend
