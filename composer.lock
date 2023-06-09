@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "970887def17bb135dbd01be8d77a7d3e",
+    "content-hash": "40df1db441c2876d1202a35a89ec2d98",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8764,12 +8764,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "ad141e12d28313637314fd0528a3ffcc31b95718"
+                "reference": "b24ca7d94f411cea1922148ad3dafe5ffbda57fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/ad141e12d28313637314fd0528a3ffcc31b95718",
-                "reference": "ad141e12d28313637314fd0528a3ffcc31b95718",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/b24ca7d94f411cea1922148ad3dafe5ffbda57fd",
+                "reference": "b24ca7d94f411cea1922148ad3dafe5ffbda57fd",
                 "shasum": ""
             },
             "require-dev": {
@@ -8779,10 +8779,10 @@
                 "codeception/module-webdriver": "^4.0",
                 "friendsofphp/php-cs-fixer": "^3.16.0",
                 "phpstan/phpstan": "^1.10.14",
-                "typo3/cms-core": "~12.4@dev",
-                "typo3/cms-frontend": "~12.4@dev",
-                "typo3/cms-install": "~12.4@dev",
-                "typo3/testing-framework": "^8.0"
+                "typo3/cms-core": "~13.0@dev",
+                "typo3/cms-frontend": "~13.0@dev",
+                "typo3/cms-install": "~13.0@dev",
+                "typo3/testing-framework": "dev-main"
             },
             "default-branch": true,
             "type": "typo3-cms-extension",
@@ -8793,7 +8793,7 @@
                     "extension-key": "styleguide"
                 },
                 "branch-alias": {
-                    "dev-main": "12.x.x-dev"
+                    "dev-main": "13.x.x-dev"
                 }
             },
             "autoload": {
@@ -8826,9 +8826,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TYPO3/styleguide/issues",
-                "source": "https://github.com/TYPO3/styleguide/tree/12.0.0"
+                "source": "https://github.com/TYPO3/styleguide/tree/main"
             },
-            "time": "2023-04-25T14:06:57+00:00"
+            "time": "2023-06-08T15:23:52+00:00"
         },
         {
             "name": "typo3/testing-framework",
