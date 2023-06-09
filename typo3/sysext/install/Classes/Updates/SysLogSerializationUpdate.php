@@ -58,6 +58,20 @@ class SysLogSerializationUpdate implements UpgradeWizardInterface
     {
         $connection = $this->getConnectionPool()->getConnectionForTable(self::TABLE_NAME);
 
+        // Perform fast update of a:0:{}, since it evaluates to []
+        $connection->update(
+            self::TABLE_NAME,
+            ['log_data' => '[]'],
+            ['log_data' => 'a:0:{}']
+        );
+
+        // Perform fast update of a:1:{i:0;s:0:"";}, since it evaluates to [""]
+        $connection->update(
+            self::TABLE_NAME,
+            ['log_data' => '[""]'],
+            ['log_data' => 'a:1:{i:0;s:0:"";}']
+        );
+
         foreach ($this->getRecordsToUpdate() as $record) {
             $logData = $this->unserializeLogData($record['log_data'] ?? '');
             $connection->update(
