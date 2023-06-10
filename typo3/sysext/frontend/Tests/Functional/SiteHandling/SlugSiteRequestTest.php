@@ -604,7 +604,7 @@ class SlugSiteRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function pageIsRenderedWithTrailingSlash(): void
+    public function pageWithTrailingSlashSlugIsRenderedIfRequestedWithSlash(): void
     {
         $uri = 'https://website.us/features/frontend-editing/';
 
@@ -622,6 +622,75 @@ class SlugSiteRequestTest extends AbstractTestCase
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
         self::assertSame(200, $response->getStatusCode());
         self::assertSame('EN: Frontend Editing', $responseStructure->getScopePath('page/title'));
+    }
+
+    /**
+     * @test
+     */
+    public function pageWithTrailingSlashSlugIsRenderedIfRequestedWithoutSlash(): void
+    {
+        $uri = 'https://website.us/features/frontend-editing';
+
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', 'https://website.us/'),
+                $this->buildLanguageConfiguration('FR', 'https://website.fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', 'https://website.ca/', ['FR', 'EN']),
+            ]
+        );
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        $responseStructure = ResponseContent::fromString((string)$response->getBody());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('EN: Frontend Editing', $responseStructure->getScopePath('page/title'));
+    }
+
+    /**
+     * @test
+     */
+    public function pageWithoutTrailingSlashSlugIsRenderedIfRequestedWithSlash(): void
+    {
+        $uri = 'https://website.us/features/';
+
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', 'https://website.us/'),
+                $this->buildLanguageConfiguration('FR', 'https://website.fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', 'https://website.ca/', ['FR', 'EN']),
+            ]
+        );
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        $responseStructure = ResponseContent::fromString((string)$response->getBody());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('EN: Features', $responseStructure->getScopePath('page/title'));
+    }
+
+    /**
+     * @test
+     */
+    public function pageWithoutTrailingSlashSlugIsRenderedIfRequestedWithoutSlash(): void
+    {
+        $uri = 'https://website.us/features';
+
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', 'https://website.us/'),
+                $this->buildLanguageConfiguration('FR', 'https://website.fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', 'https://website.ca/', ['FR', 'EN']),
+            ]
+        );
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        $responseStructure = ResponseContent::fromString((string)$response->getBody());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('EN: Features', $responseStructure->getScopePath('page/title'));
     }
 
     /**

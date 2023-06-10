@@ -1571,11 +1571,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Routing/PageRouter.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\PageRouter\\:\\:matchRequest\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Routing\\\\SiteRouteResult but returns TYPO3\\\\CMS\\\\Core\\\\Routing\\\\PageArguments\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Classes/Routing/PageRouter.php
-
-		-
 			message: "#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\AspectInterface\\)\\: mixed\\)\\|null, 'count' given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Routing/PageRouter.php

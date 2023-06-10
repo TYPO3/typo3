@@ -114,7 +114,7 @@ class PageRouter implements RouterInterface
      *
      * @param ServerRequestInterface $request
      * @param RouteResultInterface|SiteRouteResult|null $previousResult
-     * @return SiteRouteResult
+     * @return RouteResultInterface|PageArguments
      * @throws RouteNotFoundException
      */
     public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): RouteResultInterface
@@ -204,11 +204,26 @@ class PageRouter implements RouterInterface
                 return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
             }
         } catch (ResourceNotFoundException $e) {
-            // Second try, look for /my-page even though the request was called via /my-page/ and the slash
-            // was not part of the slug, but let's then check again
-            if (substr($prefixedUrlPath, -1) === '/') {
+            if (str_ends_with($prefixedUrlPath, '/')) {
+                // Second try, look for /my-page even though the request was called via /my-page/ and the slash
+                // was not part of the slug, but let's then check again
                 try {
                     $result = $matcher->match(rtrim($prefixedUrlPath, '/'));
+                    /** @var Route $matchedRoute */
+                    $matchedRoute = $fullCollection->get($result['_route']);
+                    // Only use route if page language variant matches current language, otherwise
+                    // handle it as route not found.
+                    if ($this->isRouteReallyValidForLanguage($matchedRoute, $language)) {
+                        return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
+                    }
+                } catch (ResourceNotFoundException $e) {
+                    // Do nothing
+                }
+            } else {
+                // Second try, look for /my-page/ even though the request was called via /my-page and the slash
+                // was part of the slug, but let's then check again
+                try {
+                    $result = $matcher->match($prefixedUrlPath . '/');
                     /** @var Route $matchedRoute */
                     $matchedRoute = $fullCollection->get($result['_route']);
                     // Only use route if page language variant matches current language, otherwise
