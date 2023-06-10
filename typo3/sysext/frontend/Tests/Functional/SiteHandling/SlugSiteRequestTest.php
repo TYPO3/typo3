@@ -546,7 +546,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function pageIsRenderedWithTrailingSlash(): void
+    public function pageWithTrailingSlashSlugIsRenderedIfRequestedWithSlash(): void
     {
         $uri = 'https://website.us/features/frontend-editing/';
 
@@ -564,6 +564,75 @@ final class SlugSiteRequestTest extends AbstractTestCase
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
         self::assertSame(200, $response->getStatusCode());
         self::assertSame('EN: Frontend Editing', $responseStructure->getScopePath('page/title'));
+    }
+
+    /**
+     * @test
+     */
+    public function pageWithTrailingSlashSlugIsRenderedIfRequestedWithoutSlash(): void
+    {
+        $uri = 'https://website.us/features/frontend-editing';
+
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', 'https://website.us/'),
+                $this->buildLanguageConfiguration('FR', 'https://website.fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', 'https://website.ca/', ['FR', 'EN']),
+            ]
+        );
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        $responseStructure = ResponseContent::fromString((string)$response->getBody());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('EN: Frontend Editing', $responseStructure->getScopePath('page/title'));
+    }
+
+    /**
+     * @test
+     */
+    public function pageWithoutTrailingSlashSlugIsRenderedIfRequestedWithSlash(): void
+    {
+        $uri = 'https://website.us/features/';
+
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', 'https://website.us/'),
+                $this->buildLanguageConfiguration('FR', 'https://website.fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', 'https://website.ca/', ['FR', 'EN']),
+            ]
+        );
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        $responseStructure = ResponseContent::fromString((string)$response->getBody());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('EN: Features', $responseStructure->getScopePath('page/title'));
+    }
+
+    /**
+     * @test
+     */
+    public function pageWithoutTrailingSlashSlugIsRenderedIfRequestedWithoutSlash(): void
+    {
+        $uri = 'https://website.us/features';
+
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', 'https://website.us/'),
+                $this->buildLanguageConfiguration('FR', 'https://website.fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', 'https://website.ca/', ['FR', 'EN']),
+            ]
+        );
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        $responseStructure = ResponseContent::fromString((string)$response->getBody());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('EN: Features', $responseStructure->getScopePath('page/title'));
     }
 
     public static function restrictedPageIsRenderedDataProvider(): array
@@ -1263,7 +1332,11 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
     public static function defaultLanguagePageNotResolvedForSiteLanguageBaseIfLanguagePageExistsDataProvider(): \Generator
     {
-        yield 'Default slug with default base resolves' => [
+        // ----------------------------------------------------------------
+        // #1 page slug without trailing slash, request with trailing slash
+        // ----------------------------------------------------------------
+
+        yield '#1 Default slug with default base resolves' => [
             'uri' => 'https://website.local/welcome/',
             'recordUpdates' => [],
             'fallbackIdentifiers' => [
@@ -1274,7 +1347,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
             'expectedPageTitle' => 'EN: Welcome',
         ];
 
-        yield 'FR slug with FR base resolves' => [
+        yield '#1 FR slug with FR base resolves' => [
             'uri' => 'https://website.local/fr-fr/bienvenue/',
             'recordUpdates' => [],
             'fallbackIdentifiers' => [
@@ -1286,7 +1359,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         ];
 
         // Using default language slug with language base should be page not found if language page is active.
-        yield 'Default slug with default base do not resolve' => [
+        yield '#1 Default slug with default base do not resolve' => [
             'uri' => 'https://website.local/fr-fr/welcome/',
             'recordUpdates' => [],
             'fallbackIdentifiers' => [
@@ -1298,8 +1371,484 @@ final class SlugSiteRequestTest extends AbstractTestCase
         ];
 
         // Using default language slug with language base resolves for inactive / hidden language page
-        yield 'Default slug with default base but inactive language page resolves' => [
+        yield '#1 Default slug with default base but inactive language page resolves' => [
             'uri' => 'https://website.local/fr-fr/welcome/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'hidden' => 1,
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        // -------------------------------------------------------------
+        // #2 page slug with trailing slash, request with trailing slash
+        // -------------------------------------------------------------
+
+        yield '#2 Default slug with default base resolves' => [
+            'uri' => 'https://website.local/welcome/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        yield '#2 FR slug with FR base resolves' => [
+            'uri' => 'https://website.local/fr-fr/bienvenue/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'FR: Welcome',
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield '#2 Default slug with default base do not resolve' => [
+            'uri' => 'https://website.local/fr-fr/welcome/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base resolves for inactive / hidden language page
+        yield '#2 Default slug with default base but inactive language page resolves' => [
+            'uri' => 'https://website.local/fr-fr/welcome/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                            'hidden' => 1,
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        // ----------------------------------------------------------------
+        // #3 page slug with trailing slash, request without trailing slash
+        // ----------------------------------------------------------------
+
+        yield '#3 Default slug with default base resolves' => [
+            'uri' => 'https://website.local/welcome',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        yield '#3 FR slug with FR base resolves' => [
+            'uri' => 'https://website.local/fr-fr/bienvenue',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'FR: Welcome',
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield '#3 Default slug with default base do not resolve' => [
+            'uri' => 'https://website.local/fr-fr/welcome',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base resolves for inactive / hidden language page
+        yield '#3 Default slug with default base but inactive language page resolves' => [
+            'uri' => 'https://website.local/fr-fr/welcome',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                            'hidden' => 1,
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        // -------------------------------------------------------------------
+        // #4 page slug without trailing slash, request without trailing slash
+        // -------------------------------------------------------------------
+
+        yield '#4 Default slug with default base resolves' => [
+            'uri' => 'https://website.local/welcome',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        yield '#4 FR slug with FR base resolves' => [
+            'uri' => 'https://website.local/fr-fr/bienvenue',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'FR: Welcome',
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield '#4 Default slug with default base do not resolve' => [
+            'uri' => 'https://website.local/fr-fr/welcome',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base resolves for inactive / hidden language page
+        yield '#4 Default slug with default base but inactive language page resolves' => [
+            'uri' => 'https://website.local/fr-fr/welcome',
             'recordUpdates' => [
                 'pages' => [
                     [
@@ -1370,7 +1919,11 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
     public static function defaultLanguagePageNotResolvedForSiteLanguageBaseWithNonDefaultLanguageShorterUriIfLanguagePageExistsDataProvider(): \Generator
     {
-        yield 'Default slug with default base resolves' => [
+        // ----------------------------------------------------------------
+        // #1 page slug without trailing slash, request with trailing slash
+        // ----------------------------------------------------------------
+
+        yield '#1 Default slug with default base resolves' => [
             'uri' => 'https://website.local/en-en/welcome/',
             'recordUpdates' => [],
             'fallbackIdentifiers' => [
@@ -1381,7 +1934,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
             'expectedPageTitle' => 'EN: Welcome',
         ];
 
-        yield 'FR slug with FR base resolves' => [
+        yield '#1 FR slug with FR base resolves' => [
             'uri' => 'https://website.local/bienvenue/',
             'recordUpdates' => [],
             'fallbackIdentifiers' => [
@@ -1393,7 +1946,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         ];
 
         // Using default language slug with language base should be page not found if language page is active.
-        yield 'Default slug with default base do not resolve' => [
+        yield '#1 Default slug with default base do not resolve' => [
             'uri' => 'https://website.local/welcome/',
             'recordUpdates' => [],
             'fallbackIdentifiers' => [
@@ -1405,7 +1958,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         ];
 
         // Using default language slug with language base should be page not found if language page is active.
-        yield 'Default slug with default base do not resolve strict without fallback' => [
+        yield '#1 Default slug with default base do not resolve strict without fallback' => [
             'uri' => 'https://website.local/welcome/',
             'recordUpdates' => [],
             'fallbackIdentifiers' => [],
@@ -1415,7 +1968,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         ];
 
         // Using default language slug with language base should be page not found if language page is active.
-        yield 'Default slug with default base do not resolve fallback' => [
+        yield '#1 Default slug with default base do not resolve fallback' => [
             'uri' => 'https://website.local/welcome/',
             'recordUpdates' => [],
             'fallbackIdentifiers' => [
@@ -1427,8 +1980,706 @@ final class SlugSiteRequestTest extends AbstractTestCase
         ];
 
         // Using default language slug with language base resolves for inactive / hidden language page
-        yield 'Default slug with default base but inactive language page resolves' => [
+        yield '#1 Default slug with default base but inactive language page resolves' => [
             'uri' => 'https://website.local/welcome/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'hidden' => 1,
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        // -------------------------------------------------------------
+        // #2 page slug with trailing slash, request with trailing slash
+        // -------------------------------------------------------------
+
+        yield '#2 Default slug with default base resolves' => [
+            'uri' => 'https://website.local/en-en/welcome/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        yield '#2 FR slug with FR base resolves' => [
+            'uri' => 'https://website.local/bienvenue/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'FR: Welcome',
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield '#2 Default slug with default base do not resolve' => [
+            'uri' => 'https://website.local/welcome/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield '#2 Default slug with default base do not resolve strict without fallback' => [
+            'uri' => 'https://website.local/welcome/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [],
+            'fallbackType' => 'fallback',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield '#2 Default slug with default base do not resolve fallback' => [
+            'uri' => 'https://website.local/welcome/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'fallback',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base resolves for inactive / hidden language page
+        yield '#2 Default slug with default base but inactive language page resolves' => [
+            'uri' => 'https://website.local/welcome/',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                            'hidden' => 1,
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        // ----------------------------------------------------------------
+        // #3 page slug with trailing slash, request without trailing slash
+        // ----------------------------------------------------------------
+
+        yield '#3 Default slug with default base resolves' => [
+            'uri' => 'https://website.local/en-en/welcome',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        yield '#3 FR slug with FR base resolves' => [
+            'uri' => 'https://website.local/bienvenue',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'FR: Welcome',
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield '#3 Default slug with default base do not resolve' => [
+            'uri' => 'https://website.local/welcome',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield '#3 Default slug with default base do not resolve strict without fallback' => [
+            'uri' => 'https://website.local/welcome',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [],
+            'fallbackType' => 'fallback',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield '#3 Default slug with default base do not resolve fallback' => [
+            'uri' => 'https://website.local/welcome',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'fallback',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base resolves for inactive / hidden language page
+        yield '#3 Default slug with default base but inactive language page resolves' => [
+            'uri' => 'https://website.local/welcome',
+            'recordUpdates' => [
+                'pages' => [
+                    [
+                        'data' => [
+                            'slug' => '/welcome/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1100,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                            'hidden' => 1,
+                        ],
+                        'identifiers' => [
+                            'uid' => 1101,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1102,
+                        ],
+                        'types' => [],
+                    ],
+                    [
+                        'data' => [
+                            'slug' => '/简-bienvenue/',
+                        ],
+                        'identifiers' => [
+                            'uid' => 1103,
+                        ],
+                        'types' => [],
+                    ],
+                ],
+            ],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        // -------------------------------------------------------------------
+        // #4 page slug without trailing slash, request without trailing slash
+        // -------------------------------------------------------------------
+
+        yield '#4 Default slug with default base resolves' => [
+            'uri' => 'https://website.local/en-en/welcome',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+        ];
+
+        yield '#4 FR slug with FR base resolves' => [
+            'uri' => 'https://website.local/bienvenue',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 200,
+            'expectedPageTitle' => 'FR: Welcome',
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield '#4 Default slug with default base do not resolve' => [
+            'uri' => 'https://website.local/welcome',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'strict',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield '#4 Default slug with default base do not resolve strict without fallback' => [
+            'uri' => 'https://website.local/welcome',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [],
+            'fallbackType' => 'fallback',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base should be page not found if language page is active.
+        yield '#4 Default slug with default base do not resolve fallback' => [
+            'uri' => 'https://website.local/welcome',
+            'recordUpdates' => [],
+            'fallbackIdentifiers' => [
+                'EN',
+            ],
+            'fallbackType' => 'fallback',
+            'expectedStatusCode' => 404,
+            'expectedPageTitle' => null,
+        ];
+
+        // Using default language slug with language base resolves for inactive / hidden language page
+        yield '#4 Default slug with default base but inactive language page resolves' => [
+            'uri' => 'https://website.local/welcome',
             'recordUpdates' => [
                 'pages' => [
                     [
