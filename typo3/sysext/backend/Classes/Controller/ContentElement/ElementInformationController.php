@@ -267,8 +267,9 @@ class ElementInformationController
 
             // folder
             $resourceObject = $this->fileObject ?: $this->folderObject;
+            $parentFolder = $resourceObject->getParentFolder();
             $propertiesForTable['fields']['folder'] = [
-                'fieldValue' => $resourceObject->getParentFolder()->getReadablePath(),
+                'fieldValue' => $parentFolder instanceof Folder ? $parentFolder->getReadablePath() : '',
                 'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder')),
             ];
 
