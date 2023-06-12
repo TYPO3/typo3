@@ -397,8 +397,6 @@ alert(yes);', $body);
         $this->executeFrontendSubRequest($request);
         self::assertSame($expectedRootLine, $GLOBALS['TSFE']->rootLine);
         self::assertSame($expectedConfigRootLine, $GLOBALS['TSFE']->config['rootLine']);
-        // @deprecated: b/w compat. Drop when TemplateService is removed.
-        self::assertSame($expectedConfigRootLine, $GLOBALS['TSFE']->tmpl->rootLine);
     }
 
     /**

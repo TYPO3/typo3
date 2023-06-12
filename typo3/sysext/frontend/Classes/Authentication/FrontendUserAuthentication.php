@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\SetCookieService;
 use TYPO3\CMS\Core\Session\UserSession;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -145,16 +144,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         'uid' => [],
         'pid' => [],
     ];
-
-    /**
-     * @deprecated since v12, remove in v13 together with fe_users & fe_groups TSconfig TCA
-     */
-    protected $TSdataArray = [];
-
-    /**
-     * @deprecated since v12, remove in v13 together with fe_users & fe_groups TSconfig TCA
-     */
-    protected array $userTS = [];
 
     /**
      * @var bool
@@ -287,22 +276,16 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     /**
      * Will select all fe_groups records that the current fe_user is member of.
      *
-     * It also accumulates the TSconfig for the fe_user/fe_groups in ->TSdataArray
-     *
      * @param ServerRequestInterface $request
      */
     public function fetchGroupData(ServerRequestInterface $request)
     {
-        $this->userTS = [];
         $this->userGroups = [];
         $this->groupData = [
             'title' => [],
             'uid' => [],
             'pid' => [],
         ];
-        // @deprecated since v12, remove next two lines in v13 together with fe_users & fe_groups TSconfig TCA
-        $this->TSdataArray = [];
-        $this->TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig'];
 
         $groupDataArr = [];
         if (is_array($this->user)) {
@@ -328,11 +311,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             $this->groupData['uid'][$groupId] = $groupData['uid'] ?? 0;
             $this->groupData['pid'][$groupId] = $groupData['pid'] ?? 0;
             $this->userGroups[$groupId] = $groupData;
-            // @deprecated since v12, remove next line in v13 together with fe_users & fe_groups TSconfig TCA
-            $this->TSdataArray[] = $groupData['TSconfig'] ?? '';
         }
-        // @deprecated since v12, remove next line in v13 together with fe_users & fe_groups TSconfig TCA
-        $this->TSdataArray[] = $this->user['TSconfig'] ?? '';
         // Sort information
         ksort($this->groupData['title']);
         ksort($this->groupData['uid']);
@@ -380,30 +359,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
 
         $this->logger->debug('Valid frontend usergroups: {groups}', ['groups' => implode(',', $userGroups)]);
         return GeneralUtility::makeInstance(UserAspect::class, $this, $userGroups);
-    }
-    /**
-     * Returns the parsed TSconfig for the fe_user
-     * The TSconfig will be cached in $this->userTS.
-     *
-     * @return array TSconfig array for the fe_user
-     * @deprecated since v12, remove in v13 together with fe_users & fe_groups TSconfig TCA
-     */
-    public function getUserTSconf()
-    {
-        trigger_error(
-            __CLASS__ . '->' . __METHOD__ . ' is deprecated since TYPO3 v12 and will be removed with v13: Database field TSconfig'
-            . ' will be removed in tables fe_users and fe_groups. Use an extension specific field for such configuration instead.',
-            E_USER_DEPRECATED
-        );
-        if ($this->userTS === [] && !empty($this->TSdataArray)) {
-            // Parsing the user TS (or getting from cache)
-            $this->TSdataArray = TypoScriptParser::checkIncludeLines_array($this->TSdataArray);
-            $userTS = implode(LF . '[GLOBAL]' . LF, $this->TSdataArray);
-            $parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
-            $parseObj->parse($userTS);
-            $this->userTS = $parseObj->setup;
-        }
-        return $this->userTS;
     }
 
     /*****************************************

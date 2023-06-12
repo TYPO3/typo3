@@ -57,22 +57,6 @@ services:
   TYPO3\CMS\Core\Http\MiddlewareDispatcher:
     autoconfigure: false
 
-  # @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
-  TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader:
-    public: true
-
-  # @deprecated since v12, will be removed with v13 together with class PageTsConfigParser.
-  TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser:
-    public: true
-    arguments:
-      $cache: '@cache.hash'
-
-  # @deprecated since v12, will be removed with v13 together with class PageTsConfig.
-  TYPO3\CMS\Core\Configuration\PageTsConfig:
-    public: true
-    arguments:
-      $cache: '@cache.runtime'
-
   TYPO3\CMS\Core\Database\Schema\SqlReader:
     public: true
 

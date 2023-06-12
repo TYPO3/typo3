@@ -13,7 +13,11 @@ Description
 
 The following PHP classes that have previously been marked as deprecated for v12 and were now removed:
 
-- :php:`\Full\Class\Name`
+- :php:`\TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader`
+- :php:`\TYPO3\CMS\Core\Configuration\PageTsConfig`
+- :php:`\TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser`
+- :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
+- :php:`\TYPO3\CMS\Core\TypoScript\TemplateService`
 
 The following PHP classes have been declared :php:`final`:
 
@@ -34,9 +38,11 @@ The following PHP class aliases that have previously been marked as deprecated f
 The following PHP class methods that have previously been marked as deprecated for v12 and were now removed:
 
 - :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
+- :php:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->getUserTSconf`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrlWrap`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkEnableFields`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->doWorkspacePreview`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getPagesTSconfig`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initUserGroups`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isBackendUserLoggedIn`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isUserOrGroupSet`
@@ -57,6 +63,7 @@ The following public class properties have been dropped:
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fileTarget`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->intTarget`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->spamProtectEmailAddresses`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tmpl`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->xhtmlDoctype`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->xhtmlVersion`
 
@@ -94,7 +101,7 @@ The following class constants have been dropped:
 
 The following global option handling have been dropped and are ignored:
 
-- :php:`$GLOBALS['TYPO3_CONF_VARS']['KEY']['subKey']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig']`
 
 The following global variables have been removed:
 
@@ -112,9 +119,9 @@ The following single field configurations have been removed from :php:`$GLOBALS[
 
 - :php:`dummy`
 
-The following signals have been removed:
+The following events have been removed:
 
-- :php:`\Full\Class\Name::signalName`
+- :php:`\TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent`
 
 The following features are now always enabled:
 
@@ -128,9 +135,10 @@ The following database tables have been removed:
 
 - :sql:`table`
 
-The following database tabel fields have been removed:
+The following database table fields have been removed:
 
-- :sql:`table.field`
+- :sql:`fe_users.TSconfig`
+- :sql:`fe_groups.TSconfig`
 
 The following Backend route identifiers have been removed:
 

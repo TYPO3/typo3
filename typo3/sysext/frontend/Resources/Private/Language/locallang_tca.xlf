@@ -417,9 +417,6 @@
 			<trans-unit id="fe_users.tabs.access" resname="fe_users.tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.options" resname="fe_users.tabs.options">
-				<source>Options</source>
-			</trans-unit>
 			<trans-unit id="fe_users.tabs.extended" resname="fe_users.tabs.extended">
 				<source>Extended</source>
 			</trans-unit>
@@ -431,9 +428,6 @@
 			</trans-unit>
 			<trans-unit id="fe_groups.subgroup" resname="fe_groups.subgroup">
 				<source>Subgroups</source>
-			</trans-unit>
-			<trans-unit id="fe_groups.tabs.options" resname="fe_groups.tabs.options">
-				<source>Options</source>
 			</trans-unit>
 			<trans-unit id="fe_groups.tabs.extended" resname="fe_groups.tabs.extended">
 				<source>Extended</source>

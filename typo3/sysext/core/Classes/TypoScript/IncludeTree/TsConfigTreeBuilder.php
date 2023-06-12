@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\TypoScript\IncludeTree;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent as LegacyModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent;
@@ -145,10 +144,6 @@ final class TsConfigTreeBuilder
                 $collectedPagesTsConfigArray['pagesTsConfig-page-' . $page['uid'] . '-tsConfig'] = $page['TSconfig'];
             }
         }
-
-        // @deprecated since TYPO3 v12, remove together with event class in v13.
-        $event = $this->eventDispatcher->dispatch(new LegacyModifyLoadedPageTsConfigEvent($collectedPagesTsConfigArray, $rootLine));
-        $collectedPagesTsConfigArray = $event->getTsConfig();
 
         $event = $this->eventDispatcher->dispatch(new ModifyLoadedPageTsConfigEvent($collectedPagesTsConfigArray, $rootLine));
         $collectedPagesTsConfigArray = $event->getTsConfig();

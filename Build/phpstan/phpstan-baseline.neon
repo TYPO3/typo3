@@ -316,11 +316,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Configuration/ExtensionConfiguration.php
 
 		-
-			message: "#^Variable \\$sectionsToMatch on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Configuration/Parser/PageTsConfigParser.php
-
-		-
 			message: "#^PHPDoc tag @param for parameter \\$referenceArray with type array\\|null is not subtype of native type array\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Configuration/Processor/Placeholder/EnvVariableProcessor.php
@@ -1129,16 +1124,6 @@ parameters:
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Type/Enumeration.php
-
-		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/TypoScript/TemplateService.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TemplateService\\:\\:getRootlineLevel\\(\\) should return int but returns false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/TypoScript/TemplateService.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\:\\:require\\(\\)\\.$#"

@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Configuration\PageTsConfig;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
@@ -69,7 +68,6 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionIncludeListAccumulatorVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -246,15 +244,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var array<string, mixed>
      */
     public $config = [];
-
-    /**
-     * The TypoScript template object. Used to parse the TypoScript template
-     *
-     * @var TemplateService
-     * @internal: Will get a proper deprecation in v12.x.
-     * @deprecated: TemplateService is kept for b/w compat in v12 but will be removed in v13.
-     */
-    public $tmpl;
 
     /**
      * Is set to the time-to-live time of cached pages. Default is 60*60*24, which is 24 hours.
@@ -1077,11 +1066,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
 
-        if (!$this->tmpl instanceof TemplateService) {
-            // @deprecated since v12, will be removed in v13: b/w compat. Remove when TemplateService is dropped.
-            $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context, null, $this);
-        }
-
         // Calculate "local" rootLine that stops at first root=1 template, will be set as $this->config['rootLine']
         $sysTemplateRowsIndexedByPid = array_combine(array_column($sysTemplateRows, 'pid'), $sysTemplateRows);
         $localRootline = [];
@@ -1093,8 +1077,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 break;
             }
         }
-        // @deprecated: since v12, will be removed in v13: b/w compat. Remove when TemplateService is dropped.
-        $this->tmpl->rootLine = $localRootline;
 
         $site = $this->getSite();
 
@@ -1419,11 +1401,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
             $this->config['rootLine'] = $localRootline;
             $frontendTypoScript->setSetupArray($setupArray);
-
-            // @deprecated: since v12, will be removed in v13: b/w compat. Remove when TemplateService is dropped.
-            $this->tmpl->setup = $setupArray;
-            $this->tmpl->loaded = true;
-            $this->tmpl->flatSetup = $flatConstants;
         }
 
         // Set $this->no_cache TRUE if the config.no_cache value is set!
@@ -2385,33 +2362,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $explanationText = $explanation !== '' ? ' - ' . $explanation : '';
         $this->getTimeTracker()->setTSlogMessage($typoScriptProperty . ' is deprecated.' . $explanationText, LogLevel::WARNING);
         trigger_error('TypoScript property ' . $typoScriptProperty . ' is deprecated' . $explanationText, E_USER_DEPRECATED);
-    }
-
-    /********************************************
-     *
-     * Various external API functions - for use in plugins etc.
-     *
-     *******************************************/
-    /**
-     * Returns the pages TSconfig array based on the current ->rootLine
-     *
-     * @deprecated since TYPO3 v12, will be removed in v13. Frontend should typically not depend on Backend TsConfig.
-     *             If really needed, use PageTsConfigFactory, see usage in DatabaseRecordLinkBuilder.
-     *             Remove together with class PageTsConfig.
-     */
-    public function getPagesTSconfig(): array
-    {
-        trigger_error('Method getPagesTSconfig() is deprecated since TYPO3 v12 and will be removed with TYPO3 v13.0.', E_USER_DEPRECATED);
-        if (!is_array($this->pagesTSconfig)) {
-            $matcher = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class, $this->context, $this->id, $this->rootLine);
-            $this->pagesTSconfig = GeneralUtility::makeInstance(PageTsConfig::class)
-                ->getForRootLine(
-                    array_reverse($this->rootLine),
-                    $this->site,
-                    $matcher
-                );
-        }
-        return $this->pagesTSconfig;
     }
 
     /**

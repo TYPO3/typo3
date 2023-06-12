@@ -13,12 +13,10 @@ CREATE TABLE cache_treelist (
 
 #
 # Table structure for table 'fe_groups'
-# @deprecated field TSconfig since v12, remove in v13 together with fe_users & fe_groups TSconfig TCA
 #
 CREATE TABLE fe_groups (
 	title varchar(50) DEFAULT '' NOT NULL,
-	subgroup tinytext,
-	TSconfig text
+	subgroup tinytext
 );
 
 
@@ -39,7 +37,6 @@ CREATE TABLE fe_sessions (
 
 #
 # Table structure for table 'fe_users'
-# @deprecated field TSconfig since v12, remove in v13 together with fe_users & fe_groups TSconfig TCA
 #
 CREATE TABLE fe_users (
 	username varchar(255) DEFAULT '' NOT NULL,
@@ -61,7 +58,6 @@ CREATE TABLE fe_users (
 	www varchar(80) DEFAULT '' NOT NULL,
 	company varchar(80) DEFAULT '' NOT NULL,
 	image tinytext,
-	TSconfig text,
 	is_online int(10) unsigned DEFAULT '0' NOT NULL,
 	mfa mediumblob,
 

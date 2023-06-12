@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -103,11 +102,6 @@ abstract class AbstractMenuContentObject
      * @var array
      */
     protected $mconf = [];
-
-    /**
-     * @deprecated since v12: Remove property and usages in v13 when TemplateService is removed
-     */
-    protected TemplateService|null $tmpl;
 
     /**
      * @var PageRepository
@@ -199,7 +193,7 @@ abstract class AbstractMenuContentObject
     /**
      * The initialization of the object. This just sets some internal variables.
      *
-     * @param TemplateService|null $_ Obsolete argument
+     * @param null $_ Obsolete argument
      * @param PageRepository $sys_page The $this->getTypoScriptFrontendController()->sys_page object
      * @param int|string $id A starting point page id. This should probably be blank since the 'entryLevel' value will be used then.
      * @param array $conf The TypoScript configuration for the HMENU cObject
@@ -215,10 +209,8 @@ abstract class AbstractMenuContentObject
         $this->menuNumber = $menuNumber;
         $this->mconf = $conf[$this->menuNumber . $objSuffix . '.'];
         $this->request = $request;
-        // Sets the internal vars. $tmpl MUST be the template-object. $sys_page MUST be the PageRepository object
+        // Sets the internal vars. $sys_page MUST be the PageRepository object
         if ($this->conf[$this->menuNumber . $objSuffix] && is_object($sys_page)) {
-            // @deprecated since v12, will be removed in v13: Remove assignment and property when TemplateService is removed
-            $this->tmpl = $_;
             $this->sys_page = $sys_page;
             // alwaysActivePIDlist initialized:
             $this->conf['alwaysActivePIDlist'] = (string)$this->parent_cObj->stdWrapValue('alwaysActivePIDlist', $this->conf ?? []);
@@ -1295,8 +1287,7 @@ abstract class AbstractMenuContentObject
                 if (is_array($altArray) && !empty($altArray)) {
                     $submenu->alternativeMenuTempArray = $altArray;
                 }
-                // @deprecated since v12, will be removed in v13: Hand over null as first argument.
-                if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, $objSuffix, $this->request)) {
+                if ($submenu->start(null, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, $objSuffix, $this->request)) {
                     $submenu->makeMenu();
                     // Memorize the current menu item count
                     $tsfe = $this->getTypoScriptFrontendController();

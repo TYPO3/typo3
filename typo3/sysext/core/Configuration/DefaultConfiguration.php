@@ -1402,7 +1402,6 @@ return [
         'cookieName' => 'fe_typo_user',
         'cookieSameSite' => 'lax',
         'contentSecurityPolicyReportingUrl' => '',
-        'defaultUserTSconfig' => '', // @deprecated since v12, remove in v13 together with fe_users & fe_groups TSconfig TCA, add to SilentConfigurationUpgradeService
         'defaultTypoScript_constants' => '',
         'defaultTypoScript_constants.' => [], // Lines of TS to include after a static template with the uid = the index in the array (Constants)
         'defaultTypoScript_setup' => '',

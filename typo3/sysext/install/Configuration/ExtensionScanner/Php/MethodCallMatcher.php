@@ -5383,6 +5383,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-99075-Fe_usersAndFe_groupsTSconfig.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Session\UserSessionManager->createFromGlobalCookieOrAnonymous' => [
@@ -5419,6 +5420,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-99120-DeprecateOldTypoScriptParser.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer->setRenderXhtml' => [

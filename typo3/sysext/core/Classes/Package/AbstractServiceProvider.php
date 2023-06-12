@@ -55,8 +55,6 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         return [
             'middlewares' => [ static::class, 'configureMiddlewares' ],
             'backend.routes' => [ static::class, 'configureBackendRoutes' ],
-            // @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
-            'globalPageTsConfig' => [ static::class, 'configureGlobalPageTsConfig' ],
             'backend.modules' => [ static::class, 'configureBackendModules' ],
             'content.security.policies' => [static::class, 'configureContentSecurityPolicies'],
             'icons' => [ static::class, 'configureIcons' ],
@@ -115,27 +113,6 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         }
 
         return $routes;
-    }
-
-    /**
-     * @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
-     */
-    public static function configureGlobalPageTsConfig(ContainerInterface $container, ArrayObject $tsConfigFiles, string $path = null): ArrayObject
-    {
-        $path = $path ?? static::getPackagePath();
-        $tsConfigFile = null;
-        if (file_exists($path . 'Configuration/page.tsconfig')) {
-            $tsConfigFile = $path . 'Configuration/page.tsconfig';
-        } elseif (file_exists($path . 'Configuration/Page.tsconfig')) {
-            $tsConfigFile = $path . 'Configuration/Page.tsconfig';
-        }
-        if ($tsConfigFile) {
-            $tsConfigContents = @file_get_contents($tsConfigFile);
-            if (!empty($tsConfigContents)) {
-                $tsConfigFiles->exchangeArray(array_merge($tsConfigFiles->getArrayCopy(), [$tsConfigContents]));
-            }
-        }
-        return $tsConfigFiles;
     }
 
     /**

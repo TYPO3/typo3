@@ -239,18 +239,6 @@ return [
                 'cols' => 48,
             ],
         ],
-        // @deprecated since v12, remove in v13 together with API in FrontendUserAuthentication, also remove in 'types' array below
-        'TSconfig' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig',
-            'config' => [
-                'type' => 'text',
-                'cols' => 40,
-                'rows' => 10,
-                'enableTabulator' => true,
-                'fixedFont' => true,
-            ],
-        ],
         'lastlogin' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.lastlogin',
@@ -268,8 +256,6 @@ return [
                     username,password,usergroup,lastlogin,
                 --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.tabs.personalData,
                     company, title, name, --palette--;;2, address, zip, city, country, telephone, fax, email, www, image,
-                --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.tabs.options,
-                    TSconfig,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                     disable,--palette--;;timeRestriction,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,

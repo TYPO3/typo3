@@ -24,7 +24,6 @@ use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use TYPO3\CMS\Core\Adapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -102,8 +101,6 @@ class ServiceProvider extends AbstractServiceProvider
             TypoScript\AST\Traverser\AstTraverser::class => [ static::class, 'getAstTraverser' ],
             TypoScript\AST\CommentAwareAstBuilder::class => [ static::class, 'getCommentAwareAstBuilder' ],
             TypoScript\Tokenizer\LosslessTokenizer::class => [ static::class, 'getLosslessTokenizer'],
-            // @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
-            'globalPageTsConfig' => [ static::class, 'getGlobalPageTsConfig' ],
             'icons' => [ static::class, 'getIcons' ],
             'middlewares' => [ static::class, 'getMiddlewares' ],
             'content.security.policies' => [ static::class, 'getContentSecurityPolicies' ],
@@ -115,8 +112,6 @@ class ServiceProvider extends AbstractServiceProvider
         return [
             Console\CommandRegistry::class => [ static::class, 'configureCommands' ],
             Imaging\IconRegistry::class => [ static::class, 'configureIconRegistry' ],
-            // @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
-            Configuration\Loader\PageTsConfigLoader::class => [ static::class, 'configurePageTsConfigLoader' ],
             EventDispatcherInterface::class => [ static::class, 'provideFallbackEventDispatcher' ],
             EventDispatcher\ListenerProvider::class => [ static::class, 'extendEventListenerProvider' ],
         ] + parent::getExtensions();
@@ -330,34 +325,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getIconRegistry(ContainerInterface $container): Imaging\IconRegistry
     {
         return self::new($container, Imaging\IconRegistry::class, [$container->get('cache.assets'), $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('BackendIcons')->toString()]);
-    }
-
-    /**
-     * @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
-     */
-    public static function getGlobalPageTsConfig(ContainerInterface $container): ArrayObject
-    {
-        return new ArrayObject();
-    }
-
-    /**
-     * @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
-     */
-    public static function configurePageTsConfigLoader(ContainerInterface $container, PageTsConfigLoader $configLoader): PageTsConfigLoader
-    {
-        $cache = $container->get('cache.core');
-
-        $cacheIdentifier = $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('globalPageTsConfig')->toString();
-        if (!$cache->has($cacheIdentifier)) {
-            $pageTsConfigFiles = $container->get('globalPageTsConfig')->getArrayCopy();
-            $pageTsConfigFiles = implode("\n", $pageTsConfigFiles);
-            $cache->set($cacheIdentifier, 'return ' . var_export($pageTsConfigFiles, true) . ';');
-        } else {
-            $pageTsConfigFiles = $cache->require($cacheIdentifier);
-        }
-
-        $configLoader->setGlobalTsConfig($pageTsConfigFiles);
-        return $configLoader;
     }
 
     public static function getLanguageServiceFactory(ContainerInterface $container): Localization\LanguageServiceFactory

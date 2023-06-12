@@ -156,16 +156,6 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function pageTsConfigLoadsFromLegacyEvent(): void
-    {
-        $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create([], new NullSite());
-        self::assertSame('loadedFromLegacyEvent', $pageTsConfig->getPageTsConfigArray()['loadedFromLegacyEvent']);
-    }
-
-    /**
-     * @test
-     */
     public function pageTsConfigCanBeOverloadedWithUserTsConfig(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/pageTsConfigTestFixture.csv');

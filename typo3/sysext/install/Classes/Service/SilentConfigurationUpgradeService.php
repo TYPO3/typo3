@@ -176,6 +176,8 @@ class SilentConfigurationUpgradeService
         'GFX/processor_path_lzw',
         // #98503
         'SYS/caching/cacheConfigurations/pagesection',
+        // #99075
+        'FE/defaultUserTSconfig',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager)
