@@ -33,6 +33,7 @@ The following PHP class aliases that have previously been marked as deprecated f
 
 The following PHP class methods that have previously been marked as deprecated for v12 and were now removed:
 
+- :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrlWrap`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkEnableFields`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->doWorkspacePreview`
