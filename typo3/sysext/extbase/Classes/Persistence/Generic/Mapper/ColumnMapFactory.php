@@ -228,10 +228,6 @@ class ColumnMapFactory
             if (isset($columnConfiguration['MM_match_fields']) && is_array($columnConfiguration['MM_match_fields'])) {
                 $columnMap->setRelationTableMatchFields($columnConfiguration['MM_match_fields']);
             }
-            // @deprecated since v12. Remove in v13 with other MM_insert_fields places.
-            if (isset($columnConfiguration['MM_insert_fields']) && is_array($columnConfiguration['MM_insert_fields'])) {
-                $columnMap->setRelationTableInsertFields($columnConfiguration['MM_insert_fields']);
-            }
             // todo: don't update column map if value(s) isn't/aren't set.
             if (!empty($columnConfiguration['MM_opposite_field'])) {
                 $columnMap->setParentKeyFieldName('uid_foreign');

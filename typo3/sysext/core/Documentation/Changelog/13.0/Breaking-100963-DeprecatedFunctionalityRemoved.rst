@@ -130,7 +130,7 @@ The following hooks have been removed:
 
 The following single field configurations have been removed from TCA:
 
-- :php:`dummy` (for TCA type :php:`dummy`)
+- :php:`MM_insert_fields` (for TCA fields with `MM` configuration)
 
 The following single field configurations have been removed from :php:`$GLOBALS['TYPO3_USER_SETTINGS']`:
 

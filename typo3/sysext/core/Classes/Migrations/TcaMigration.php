@@ -1456,10 +1456,7 @@ class TcaMigration
             }
             foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
                 if (isset($fieldConfig['config']['MM_insert_fields'])) {
-                    // @deprecated since v12.
-                    //             *Enable* the commented unset line in v13 when removing MM_insert_fields deprecations.
-                    //             *Enable* the disabled unit test set.
-                    // unset($tca[$table]['columns'][$fieldName]['config']['MM_insert_fields']);
+                    unset($tca[$table]['columns'][$fieldName]['config']['MM_insert_fields']);
                     $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
                         . '\'MM_insert_fields\'. This config key is obsolete and should be removed. '
                         . 'Please adjust your TCA accordingly.';

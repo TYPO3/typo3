@@ -80,16 +80,6 @@ class ColumnMap
 
     /**
      * todo: Check if this property should support null. If not, set default value.
-     * Array of field=>value pairs to insert when writing new MM relations
-     *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Group/Properties/Mm.html#confval-MM_insert_fields(type=%3Egroup)
-     * @var array|null
-     * @deprecated since v12. Remove in v13 with other MM_insert_fields places.
-     */
-    private $relationTableInsertFields;
-
-    /**
-     * todo: Check if this property should support null. If not, set default value.
      * The name of the field holding the parents key
      *
      * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignField.html
@@ -201,22 +191,6 @@ class ColumnMap
     public function getRelationTableMatchFields(): ?array
     {
         return $this->relationTableMatchFields;
-    }
-
-    /**
-     * @deprecated since v12. Remove in v13 with other MM_insert_fields places.
-     */
-    public function setRelationTableInsertFields(array $relationTableInsertFields): void
-    {
-        $this->relationTableInsertFields = $relationTableInsertFields;
-    }
-
-    /**
-     * @deprecated since v12. Remove in v13 with other MM_insert_fields places.
-     */
-    public function getRelationTableInsertFields(): ?array
-    {
-        return $this->relationTableInsertFields;
     }
 
     public function setParentKeyFieldName(?string $parentKeyFieldName): void

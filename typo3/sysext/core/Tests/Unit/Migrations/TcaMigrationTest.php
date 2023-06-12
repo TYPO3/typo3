@@ -3657,7 +3657,7 @@ final class TcaMigrationTest extends UnitTestCase
     }
 
     /**
-     * @deprecated since v12. Add @test when removing MM_insert_fields in v13.
+     * @test
      */
     public function migrationRemovesMmInsertFields(): void
     {
