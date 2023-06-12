@@ -4156,7 +4156,7 @@ final class ContentObjectRendererTest extends UnitTestCase
     /**
      * Data provider for stdWrap_br
      *
-     * @return string[][] Order expected, given, xhtmlDoctype
+     * @return string[][] Order expected, given, config.doctype
      */
     public static function stdWrapBrDataProvider(): array
     {
@@ -4189,15 +4189,15 @@ final class ContentObjectRendererTest extends UnitTestCase
      *
      * @param string $expected The expected value.
      * @param string $input The input value.
-     * @param string|null $xhtmlDoctype Xhtml document type.
+     * @param string|null $doctype document type.
      * @test
      * @dataProvider stdWrapBrDataProvider
      */
-    public function stdWrap_br(string $expected, string $input, ?string $xhtmlDoctype): void
+    public function stdWrap_br(string $expected, string $input, ?string $doctype): void
     {
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $pageRenderer->setLanguage('en');
-        $pageRenderer->setDocType(DocType::createFromConfigurationKey($xhtmlDoctype));
+        $pageRenderer->setDocType(DocType::createFromConfigurationKey($doctype));
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
         self::assertSame($expected, $this->subject->stdWrap_br($input));
     }

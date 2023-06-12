@@ -72,9 +72,9 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder implements LoggerAwareInt
         // no processing happened, therefore, the default processing kicks in
         $tsfe = $this->getTypoScriptFrontendController();
         $spamProtectEmailAddresses = (int)($tsfe->config['config']['spamProtectEmailAddresses'] ?? 0);
-        $spamProtectEmailAddresses = MathUtility::forceIntegerInRange($spamProtectEmailAddresses, -10, 10, 0);
+        $spamProtectEmailAddresses = MathUtility::forceIntegerInRange($spamProtectEmailAddresses, -10, 10);
 
-        if ($spamProtectEmailAddresses) {
+        if ($spamProtectEmailAddresses !== 0) {
             $mailToUrl = $this->encryptEmail($mailToUrl, $spamProtectEmailAddresses);
             $attributes = [
                 'data-mailto-token' => $mailToUrl,

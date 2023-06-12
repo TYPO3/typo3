@@ -347,7 +347,7 @@ final class ImageContentObjectTest extends UnitTestCase
     public function getImageSourceCollectionRendersDefinedLayoutKeyData(
         string $layoutKey,
         array $configuration,
-        string $xhtmlDoctype,
+        string $doctype,
         string $expectedHtml
     ): void {
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
@@ -359,7 +359,7 @@ final class ImageContentObjectTest extends UnitTestCase
         $file = 'testImageName';
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $pageRenderer->setLanguage('en');
-        $pageRenderer->setDocType(DocType::createFromConfigurationKey($xhtmlDoctype));
+        $pageRenderer->setDocType(DocType::createFromConfigurationKey($doctype));
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
 
         // Avoid calling of stdWrap

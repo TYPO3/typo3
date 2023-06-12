@@ -1894,10 +1894,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function preparePageContentGeneration(ServerRequestInterface $request)
     {
         $this->getTimeTracker()->push('Prepare page content generation');
-        if (($this->config['config']['spamProtectEmailAddresses'] ?? '') === 'ascii') {
-            $this->logDeprecatedTyposcript('config.spamProtectEmailAddresses = ascii', 'This setting has no effect anymore. Change it to a number between -10 and 10 or remove it completely');
-            $this->config['config']['spamProtectEmailAddresses'] = 0;
-        }
         // calculate the absolute path prefix
         if (!empty($this->absRefPrefix = trim($this->config['config']['absRefPrefix'] ?? ''))) {
             if ($this->absRefPrefix === 'auto') {
@@ -1913,14 +1909,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // linkVars
         $this->calculateLinkVars($request->getQueryParams());
-        // Setting XHTML-doctype from doctype
-        if (isset($this->config['config']['xhtmlDoctype']) && !isset($this->config['config']['doctype'])) {
-            $this->logDeprecatedTyposcript('config.xhtmlDoctype', 'config.xhtmlDoctype will be removed in favor of config.doctype');
-        }
-        $this->config['config']['xhtmlDoctype'] = $this->config['config']['xhtmlDoctype'] ?? $this->config['config']['doctype'] ?? '';
         // We need to set the doctype to "something defined" otherwise (because this method is called also during USER_INT renderings)
-        // we might have xhtmlDoctype set but doctype isn't and we get a deprecation again (even if originally neither one of them was set)
-        $this->config['config']['doctype'] ??= $this->config['config']['xhtmlDoctype'];
+        $this->config['config']['doctype'] ??= 'html5';
         $docType = DocType::createFromConfigurationKey($this->config['config']['doctype']);
         $this->pageRenderer->setDocType($docType);
 

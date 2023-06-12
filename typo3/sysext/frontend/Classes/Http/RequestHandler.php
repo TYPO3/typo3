@@ -311,11 +311,6 @@ class RequestHandler implements RequestHandlerInterface
         }
         $pageRenderer->setHeadTag($headTag);
         $pageRenderer->addInlineComment(GeneralUtility::makeInstance(Typo3Information::class)->getInlineHeaderComment());
-        $baseUrl = $controller->config['config']['baseURL'] ?? '';
-        if ($baseUrl) {
-            $controller->logDeprecatedTyposcript('config.baseURL', 'This setting will be removed in TYPO3 v13.0 - <base> tags are not supported anymore in TYPO3.');
-            $pageRenderer->setBaseUrl($baseUrl, true);
-        }
         if ($controller->pSetup['shortcutIcon'] ?? false) {
             try {
                 $favIcon = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($controller->pSetup['shortcutIcon']);
@@ -341,24 +336,6 @@ class RequestHandler implements RequestHandlerInterface
                     if (($iCSScode['_CSS_DEFAULT_STYLE'] ?? false) && empty($controller->config['config']['removeDefaultCss'])) {
                         $cssDefaultStyle = $controller->cObj->stdWrapValue('_CSS_DEFAULT_STYLE', $iCSScode ?? []);
                         $stylesFromPlugins .= '/* default styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssDefaultStyle . LF;
-                    }
-                    if (($iCSScode['_CSS_PAGE_STYLE'] ?? false) && empty($controller->config['config']['removePageCss'])) {
-                        // @deprecated since v12, remove with v13: Entire if().
-                        trigger_error(
-                            'Handling of TypoScript setup property "plugin._CSS_PAGE_STYLE" and "config.removePageCss" have been deprecated'
-                            . ' in TYPO3 v12 and will be removed with v13: Use "includeCSS" or "cssInline" of the "PAGE" object instead.',
-                            E_USER_DEPRECATED
-                        );
-                        if (is_array($iCSScode['_CSS_PAGE_STYLE'])) {
-                            $cssPageStyle = implode(LF, $iCSScode['_CSS_PAGE_STYLE']);
-                        } else {
-                            $cssPageStyle = $iCSScode['_CSS_PAGE_STYLE'];
-                        }
-                        if (isset($iCSScode['_CSS_PAGE_STYLE.'])) {
-                            $cssPageStyle = $controller->cObj->stdWrap($cssPageStyle, $iCSScode['_CSS_PAGE_STYLE.']);
-                        }
-                        $cssPageStyle = '/* specific page styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssPageStyle;
-                        $this->addCssToPageRenderer($controller, $cssPageStyle, true, 'InlinePageCss');
                     }
                 }
             }

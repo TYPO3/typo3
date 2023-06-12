@@ -333,10 +333,10 @@ Use this feature in templates supplying other content-types than HTML. That coul
 "xhtml_basic" for XHTML basic doctype.
 "xhtml_11" for XHTML 1.1 doctype.
 "xhtml+rdf_10" for XHTML+RDFa 1.0 doctype.
-"html5" for HTML5
+"html5" for HTML5 (default)
 "none" for NO doctype at all.
 
-Note that the keywords also change the way TYPO3 generates some of the XHTML tags to ensure valid XML. If you set doctype to a string, then you must also set config.xhtmlDoctype (see below).
+Note that the keywords also change the way TYPO3 generates some of the XHTML tags to ensure valid XML.
 
 See "config.htmlTag_setParams" for more details on the effect on the html tag.
 ]]></description>
@@ -640,31 +640,6 @@ Will create a link to page with id 29 and add GET parameters where the return UR
 		</property>
 		<property name="typolinkLinkAccessRestrictedPages_addParams" type="string">
 			<description><![CDATA[See "typolinkLinkAccessRestrictedPages" above]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="xhtmlDoctype" type="string">
-			<description><![CDATA[Sets the document type for the XHTML version of the generated page.
-
-If config.doctype is set to a string then config.xhtmlDoctype must be set to one of these keywords:
-
-"xhtml_trans" for XHTML 1.0 Transitional doctype.
-"xhtml_strict" for XHTML 1.0 Strict doctype.
-"xhtml_basic" for XHTML basic doctype.
-"xhtml_11" for XHTML 1.1 doctype.
-
-
-This is an example to use MathML 2.0 in an XHTML 1.1 document:
-
-config.doctype (
-<!DOCTYPE html
-PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
-"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
-)
-config.xhtmlDoctype = xhtml_11
-
-Default:
-same as config.doctype if set to a keyword]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

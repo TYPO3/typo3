@@ -134,7 +134,7 @@ enum DocType
     public static function createFromConfigurationKey(?string $key): self
     {
         return match ($key) {
-            // config.doctype options and config.xhtmlDoctype
+            // config.doctype options
             'xhtml_trans' => self::xhtmlTransitional,
             'xhtml_strict' => self::xhtmlStrict,
             'xhtml_basic' => self::xhtmlBasic,

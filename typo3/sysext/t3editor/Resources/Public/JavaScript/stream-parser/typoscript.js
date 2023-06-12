@@ -885,7 +885,6 @@ function createTypoScriptMode() {
         'wrapItemAndSub': kw('wrapItemAndSub'),
         'wrapNonWrappedLines': kw('wrapNonWrappedLines'),
         'wraps': kw('wraps'),
-        'xhtml_cleaning': kw('xhtml_cleaning'),
         'xhtml_strict': B,
         'xhtml_trans': B,
         'xmlprologue': kw('xmlprologue'),

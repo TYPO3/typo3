@@ -102,7 +102,11 @@ The following ViewHelpers have been changed or removed:
 
 The following TypoScript options have been dropped or adapted:
 
-- `typo.script.option`
+- :typoscript:`config.baseURL`
+- :typoscript:`config.removePageCss`
+- :typoscript:`config.spamProtectEmailAddresses` (only `ascii` value)
+- :typoscript:`config.xhtmlDoctype`
+- :typoscript:`plugin.[pluginName]._CSS_PAGE_STYLE`
 
 The following constants have been dropped:
 
