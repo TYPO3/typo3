@@ -2221,11 +2221,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectArrayContentObject.php
 
 		-
-			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:\\$where_hid_del\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
@@ -2263,11 +2258,6 @@ parameters:
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: "#^Offset 'additionalParams' on array\\{parameter\\: string, target\\: non\\-falsy\\-string, extTarget\\: non\\-falsy\\-string, fileTarget\\: non\\-falsy\\-string\\}\\|array\\{parameter\\: string\\} on left side of \\?\\? does not exist\\.$#"
-			count: 2
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
@@ -2312,7 +2302,7 @@ parameters:
 
 		-
 			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 20
+			count: 19
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-

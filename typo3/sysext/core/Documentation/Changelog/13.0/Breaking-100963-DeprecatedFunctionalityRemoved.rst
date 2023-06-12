@@ -28,7 +28,9 @@ The following PHP classes have been declared :php:`final`:
 
 The following PHP interfaces that have previously been marked as deprecated for v12 and were now removed:
 
-- :php:`\Full\Class\Name`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuFilterPagesHookInterface`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\TypolinkModifyLinkConfigForPageLinksHookInterface`
+- :php:`\TYPO3\CMS\Frontend\Http\UrlProcessorInterface`
 
 The following PHP interfaces changed:
 
@@ -36,7 +38,7 @@ The following PHP interfaces changed:
 
 The following PHP class aliases that have previously been marked as deprecated for v12 and were now removed:
 
-* :php:`\Full\Class\Name`
+- :php:`\TYPO3\CMS\Frontend\Typolink\LinkResultFactory`
 
 The following PHP class methods that have previously been marked as deprecated for v12 and were now removed:
 
@@ -60,6 +62,14 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isBackendUserLoggedIn`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isUserOrGroupSet`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->whichWorkspace`
+- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->createFromUriString`
+- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getATagParams`
+- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getTypoLink`
+- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getUrlToCurrentLocation`
+- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getTypoLink_URL`
+- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getMailTo`
+- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getQueryArguments`
+- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getTreeList`
 
 The following PHP static class methods that have previously been marked as deprecated for v12 and were now removed:
 
@@ -82,6 +92,9 @@ The following public class properties have been dropped:
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tmpl`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->xhtmlDoctype`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->xhtmlVersion`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkLD`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkTarget`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkUrl`
 
 The following class methods visibility have been changed to protected:
 

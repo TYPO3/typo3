@@ -941,16 +941,19 @@ return [
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkUrl' => [
         'restFiles' => [
             'Deprecation-97549-ContentObjectRenderer-lastTypoLinkProperties.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkTarget' => [
         'restFiles' => [
             'Deprecation-97549-ContentObjectRenderer-lastTypoLinkProperties.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkLD' => [
         'restFiles' => [
             'Deprecation-97549-ContentObjectRenderer-lastTypoLinkProperties.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->spamProtectEmailAddresses' => [

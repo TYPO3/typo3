@@ -1890,6 +1890,7 @@ return [
             'Deprecation-92508-UnusedInterfaceForFilterMenuPagesHook.rst',
             'Breaking-92508-RemovedHookForFilteringHMENUItems.rst',
             'Feature-92508-PSR-14EventForModifyingMenuItems.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\TypolinkModifyLinkConfigForPageLinksHookInterface' => [
@@ -1897,6 +1898,7 @@ return [
             'Deprecation-87616-UnusedInterfaceForTypolinkModifyLinkConfigForPageLinksHook.rst',
             'Breaking-87616-RemovedHookForAlteringPageLinks.rst',
             'Feature-87616-PSR-14EventForModifyingPageLinkGeneration.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface' => [
@@ -1972,6 +1974,7 @@ return [
         'restFiles' => [
             'Breaking-96641-TypoLinkRelatedHooksRemoved.rst',
             'Deprecation-96641-UnusedHookRelatedUrlProcessorInterface.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\ResourceUtility' => [
@@ -2192,6 +2195,7 @@ return [
     'TYPO3\CMS\Frontend\Typolink\LinkResultFactory' => [
         'restFiles' => [
             'Deprecation-97536-LinkResultFactory.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction' => [

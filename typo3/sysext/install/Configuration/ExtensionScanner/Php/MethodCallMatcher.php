@@ -5131,6 +5131,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-96500-ContentObjectRenderer-getMailTo.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\PageLayoutController->getModuleTemplate' => [
@@ -5223,6 +5224,7 @@ return [
         'maximumNumberOfArguments' => 8,
         'restFiles' => [
             'Deprecation-97027-ContentObjectRenderer-getTreeList.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->convOutputCharset' => [
@@ -5272,6 +5274,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-96641-LinkRelatedFunctionalityInContentObjectRenderer.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getTypoLink' => [
@@ -5279,6 +5282,7 @@ return [
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
             'Deprecation-96641-LinkRelatedFunctionalityInContentObjectRenderer.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getTypoLink_URL' => [
@@ -5286,6 +5290,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-96641-LinkRelatedFunctionalityInContentObjectRenderer.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getUrlToCurrentLocation' => [
@@ -5293,6 +5298,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-96641-LinkRelatedFunctionalityInContentObjectRenderer.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initUserGroups' => [
@@ -5375,6 +5381,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-98488-ContentObjectRenderer-getQueryArguments.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Typolink\LinkResultFactory->createFromUriString' => [
@@ -5382,6 +5389,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-97536-LinkResultFactory.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->getUserTSconf' => [

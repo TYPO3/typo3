@@ -99,9 +99,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->mockContentObject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->onlyMethods(['getTreeList'])
-            ->getMock();
+        $this->mockContentObject = $this->createMock(ContentObjectRenderer::class);
         $this->frontendConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             null,

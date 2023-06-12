@@ -62,7 +62,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -73,7 +72,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
-use TYPO3\CMS\Frontend\Typolink\EmailLinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
@@ -319,28 +317,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @var string|int
      */
     public $checkPid_badDoktypeList = PageRepository::DOKTYPE_RECYCLER;
-
-    /**
-     * This will be set by typoLink() to the url of the most recent link created.
-     *
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0. Use $this->lastTypoLinkResult or call LinkFactory directly
-     */
-    public $lastTypoLinkUrl = '';
-
-    /**
-     * DO. link target.
-     *
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0. Use $this->lastTypoLinkResult or call LinkFactory directly
-     */
-    public $lastTypoLinkTarget = '';
-
-    /**
-     * @var array
-     * @deprecated will be removed in TYPO3 v13.0. Use $this->lastTypoLinkResult or call LinkFactory directly
-     */
-    public $lastTypoLinkLD = [];
 
     public ?LinkResultInterface $lastTypoLinkResult = null;
 
@@ -1071,31 +1047,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($tstamp > (int)($tsfe->register['SYS_LASTCHANGED'] ?? 0)) {
             $tsfe->register['SYS_LASTCHANGED'] = $tstamp;
         }
-    }
-
-    /**
-     * An abstraction method to add parameters to an A tag.
-     * Uses the ATagParams property, also includes the global TypoScript config.ATagParams
-     *
-     * @param array $conf TypoScript configuration properties
-     * @return string String containing the parameters to the A tag (if non empty, with a leading space)
-     * @see typoLink()
-     * @deprecated will be removed in TYPO3 v13.0. Use LinkFactory functionality directly, available since TYPO3 v12.0.
-     */
-    public function getATagParams($conf)
-    {
-        trigger_error('$cObj->getATagParams is deprecated in favor of the unified LinkFactory API for generating links. This method will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
-        $aTagParams = $this->stdWrapValue('ATagParams', $conf ?? []);
-        // Add the global config.ATagParams
-        $globalParams = $this->getTypoScriptFrontendController() ? trim($this->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? '') : '';
-        $aTagParams = ' ' . trim($globalParams . ' ' . $aTagParams);
-        // Extend params
-        $aTagParams = trim($aTagParams);
-        if (!empty($aTagParams)) {
-            $aTagParams = ' ' . $aTagParams;
-        }
-
-        return $aTagParams;
     }
 
     /***********************************************
@@ -4475,8 +4426,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function createLink(string $linkText, array $conf): LinkResultInterface
     {
-        $this->lastTypoLinkUrl = '';
-        $this->lastTypoLinkTarget = '';
         $this->lastTypoLinkResult = null;
         try {
             $linkResult = GeneralUtility::makeInstance(LinkFactory::class)->create($linkText, $conf, $this);
@@ -4486,13 +4435,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         $this->lastTypoLinkResult = $linkResult;
-        // Now populate all legacy values
-        // @deprecated can be removed in TYPO3 13.0.
-        $this->lastTypoLinkTarget = $linkResult->getTarget();
-        $this->lastTypoLinkUrl = $linkResult->getUrl();
-        $this->lastTypoLinkLD['target'] = htmlspecialchars($linkResult->getTarget());
-        $this->lastTypoLinkLD['totalUrl'] = $linkResult->getUrl();
-        $this->lastTypoLinkLD['type'] = $linkResult->getType();
         return $linkResult;
     }
 
@@ -4525,132 +4467,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function typoLink_URL($conf)
     {
         return $this->createUrl($conf ?? []);
-    }
-
-    /**
-     * Returns a linked string made from typoLink parameters.
-     *
-     * This function takes $label as a string, wraps it in a link-tag based on the $params string, which should contain data like that you would normally pass to the popular <LINK>-tag in the TSFE.
-     * Optionally you can supply $urlParameters which is an array with key/value pairs that are rawurlencoded and appended to the resulting url.
-     *
-     * @param string $label Text string being wrapped by the link.
-     * @param string $params Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/example.txt" for file.
-     * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
-     * @param string $target Specific target set, if any. (Default is using the current)
-     * @return string The wrapped $label-text string
-     * @see getTypoLink_URL()
-     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0, use LinkFactory or cObj->typoLink() instead.
-     */
-    public function getTypoLink($label, $params, $urlParameters = [], $target = '')
-    {
-        trigger_error('$cObj->getTypoLink() is deprecated in favor of the unified LinkFactory API for generating links. This method will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
-        $conf = [];
-        $conf['parameter'] = $params;
-        if ($target) {
-            $conf['target'] = $target;
-            $conf['extTarget'] = $target;
-            $conf['fileTarget'] = $target;
-        }
-        if (is_array($urlParameters)) {
-            if (!empty($urlParameters)) {
-                $conf['additionalParams'] = ($conf['additionalParams'] ?? '') . HttpUtility::buildQueryString($urlParameters, '&');
-            }
-        } else {
-            $conf['additionalParams'] = ($conf['additionalParams'] ?? '') . $urlParameters;
-        }
-        $out = $this->typoLink((string)$label, $conf);
-        return $out;
-    }
-
-    /**
-     * Returns the canonical URL to the current "location", which include the current page ID and type
-     * and optionally the query string
-     *
-     * @param bool $addQueryString Whether additional GET arguments in the query string should be included or not
-     * @return string
-     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0, use LinkFactory or cObj->typoLink() instead.
-     */
-    public function getUrlToCurrentLocation($addQueryString = true)
-    {
-        trigger_error('$cObj->getUrlToCurrentLocation() is deprecated in favor of the unified LinkFactory API for generating links. This method will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
-        $conf = [];
-        $conf['parameter'] = $this->getTypoScriptFrontendController()->id . ',' . $this->getTypoScriptFrontendController()->getPageArguments()->getPageType();
-        if ($addQueryString) {
-            $conf['addQueryString'] = '1';
-            $linkVars = implode(',', array_keys(GeneralUtility::explodeUrl2Array($this->getTypoScriptFrontendController()->linkVars)));
-            $conf['addQueryString.'] = [
-                'exclude' => 'id,type,cHash' . ($linkVars ? ',' . $linkVars : ''),
-            ];
-        }
-
-        return $this->createUrl($conf);
-    }
-
-    /**
-     * Returns the URL of a "typolink" create from the input parameter string, url-parameters and target
-     *
-     * @param string $params Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/example.txt" for file.
-     * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
-     * @param string $target Specific target set, if any. (Default is using the current)
-     * @return string The URL
-     * @see getTypoLink()
-     * @deprecated since TYPO3 v12.0, will be removed in TYPO3 v13.0. Use LinkFactory API directly.
-     */
-    public function getTypoLink_URL($params, $urlParameters = [], $target = '')
-    {
-        trigger_error('$cObj->getTypoLink_URL() is deprecated in favor of the unified LinkFactory API for generating links. This method will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
-        $conf = [
-            'parameter' => $params,
-        ];
-        if ($target) {
-            $conf['target'] = $target;
-            $conf['extTarget'] = $target;
-            $conf['fileTarget'] = $target;
-        }
-        if (is_array($urlParameters)) {
-            if (!empty($urlParameters)) {
-                $conf['additionalParams'] = HttpUtility::buildQueryString($urlParameters, '&');
-            }
-        } else {
-            $conf['additionalParams'] = $urlParameters;
-        }
-        return $this->createUrl($conf);
-    }
-
-    /**
-     * @param string $mailAddress Email address
-     * @param string $linktxt Link text, default will be the email address.
-     * @return array{0: string, 1: string, 2: array<string, string>} A numerical array with three items
-     * @deprecated will be removed in TYPO3 v13.0. Use EmailLinkBuilder->processEmailLink() instead.
-     */
-    public function getMailTo($mailAddress, $linktxt)
-    {
-        trigger_error('ContentObjectRenderer->getMailTo() will be removed in TYPO3 v13.0, Use EmailLinkBuilder->processEmailLink() instead.', E_USER_DEPRECATED);
-        $linkBuilder = GeneralUtility::makeInstance(EmailLinkBuilder::class, $this, $this->getTypoScriptFrontendController());
-        return $linkBuilder->processEmailLink((string)$mailAddress, (string)$linktxt);
-    }
-
-    /**
-     * Gets the query arguments and assembles them for URLs.
-     * Arguments may be removed or set, depending on configuration.
-     *
-     * @param array $conf Configuration
-     * @return string The URL query part (starting with a &)
-     * @deprecated will be removed in TYPO3 v13.0
-     */
-    public function getQueryArguments($conf)
-    {
-        trigger_error('Calling ContentObjectRenderer->getQueryArguments() will be removed in TYPO3 v13.0. Use LinkFactory directly to create links', E_USER_DEPRECATED);
-        $currentQueryArray = $this->getRequest()->getQueryParams();
-        if ($conf['exclude'] ?? false) {
-            $excludeString = str_replace(',', '&', $conf['exclude']);
-            $excludedQueryParts = [];
-            parse_str($excludeString, $excludedQueryParts);
-            $newQueryArray = ArrayUtility::arrayDiffKeyRecursive($currentQueryArray, $excludedQueryParts);
-        } else {
-            $newQueryArray = $currentQueryArray;
-        }
-        return HttpUtility::buildQueryString($newQueryArray, '&');
     }
 
     /***********************************************
@@ -4924,55 +4740,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Database functions, making of queries
      *
      ***********************************************/
-    /**
-     * Generates a list of Page-uid's from $id. List does not include $id itself
-     * (unless the id specified is negative in which case it does!)
-     * The only pages WHICH PREVENTS DECENDING in a branch are
-     * - deleted pages,
-     * - pages in a recycler (doktype = 255) or of the Backend User Section (doktpe = 6) type
-     * - pages that has the extendToSubpages set, WHERE start/endtime, hidden
-     * and fe_users would hide the records.
-     * Apart from that, pages with enable-fields excluding them, will also be
-     * removed. HOWEVER $dontCheckEnableFields set will allow
-     * enableFields-excluded pages to be included anyway - including
-     * extendToSubpages sections!
-     * Mount Pages are also descended but notice that these ID numbers are not
-     * useful for links unless the correct MPvar is set.
-     *
-     * @param int $id The id of the start page from which point in the page tree to descend. IF NEGATIVE the id itself is included in the end of the list (only if $begin is 0) AND the output does NOT contain a last comma. Recommended since it will resolve the input ID for mount pages correctly and also check if the start ID actually exists!
-     * @param int $depth The number of levels to descend. If you want to descend infinitely, just set this to 100 or so. Should be at least "1" since zero will just make the function return (no descend...)
-     * @param int $begin Is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
-     * @param bool $dontCheckEnableFields See function description
-     * @param string $addSelectFields Additional fields to select. Syntax: ",[fieldname],[fieldname],...
-     * @param string $moreWhereClauses Additional where clauses. Syntax: " AND [fieldname]=[value] AND ...
-     * @param array $prevId_array array of IDs from previous recursions. In order to prevent infinite loops with mount pages.
-     * @param int $recursionLevel Internal: Zero for the first recursion, incremented for each recursive call.
-     * @return string Returns the list of ids as a comma separated string
-     * @deprecated since TYPO3 v12.0, will be removed in TYPO3 v13.0. Use PageRepository->getDescendantPageIdsRecursive() or PageRepository->getPageIdsRecursive() instead.
-     */
-    public function getTreeList($id, $depth, $begin = 0, $dontCheckEnableFields = false, $addSelectFields = '', $moreWhereClauses = '', array $prevId_array = [], $recursionLevel = 0)
-    {
-        trigger_error('ContentObjectRenderer->getTreeList() will be removed in TYPO3 v13.0. Use PageRepository->getDescendantPageIdsRecursive() or PageRepository->getPageIdsRecursive() instead.', E_USER_DEPRECATED);
-        $addCurrentPageId = false;
-        $id = (int)$id;
-        if ($id < 0) {
-            $id = abs($id);
-            $addCurrentPageId = true;
-        }
-        $pageRepository = $this->getTypoScriptFrontendController()->sys_page;
-        if ($dontCheckEnableFields) {
-            $backupEnableFields = $pageRepository->where_hid_del;
-            $pageRepository->where_hid_del = '';
-        }
-        $result = $pageRepository->getDescendantPageIdsRecursive($id, (int)$depth, (int)$begin, [], (bool)$dontCheckEnableFields);
-        if ($dontCheckEnableFields) {
-            $pageRepository->where_hid_del = $backupEnableFields;
-        }
-        if ($addCurrentPageId) {
-            $result = array_merge([$id], $result);
-        }
-        return implode(',', $result);
-    }
 
     /**
      * Generates a search where clause based on the input search words (AND operation - all search words must be found in record.)
