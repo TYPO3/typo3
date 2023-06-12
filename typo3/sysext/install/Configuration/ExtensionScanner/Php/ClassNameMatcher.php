@@ -2002,6 +2002,7 @@ return [
         'restFiles' => [
             'Breaking-98281-MakeAbstractPluginInternal.rst',
             'Deprecation-100639-DeprecateAbstractPlugin.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\View\PageLayoutView' => [

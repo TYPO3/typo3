@@ -2496,36 +2496,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Middleware/PreviewSimulator.php
 
 		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\Frontend\\\\Plugin\\\\AbstractPlugin has an unused parameter \\$_\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
-
-		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\Plugin\\\\AbstractPlugin\\:\\:pi_autoCache\\(\\) should return bool\\|null but returns int\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\Plugin\\\\AbstractPlugin\\:\\:pi_isOnlyFields\\(\\) should return bool\\|null but returns int\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
-
-		-
-			message: "#^Parameter \\#1 \\$content of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:wrap\\(\\) expects string, int given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
-
-		-
-			message: "#^Result of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
-
-		-
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Exception\\\\FileDoesNotExistException is never thrown in the try block\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Resource/FileCollector.php

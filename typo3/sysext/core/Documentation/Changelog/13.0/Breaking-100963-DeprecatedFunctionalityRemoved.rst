@@ -20,6 +20,7 @@ The following PHP classes that have previously been marked as deprecated for v12
 - :php:`\TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction`
 - :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
 - :php:`\TYPO3\CMS\Core\TypoScript\TemplateService`
+- :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin`
 
 The following PHP classes have been declared :php:`final`:
 
