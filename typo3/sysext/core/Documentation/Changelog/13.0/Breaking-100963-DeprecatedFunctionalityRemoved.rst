@@ -39,6 +39,14 @@ The following PHP class aliases that have previously been marked as deprecated f
 
 The following PHP class methods that have previously been marked as deprecated for v12 and were now removed:
 
+- :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getBodyTag`
+- :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getDynamicTabMenu`
+- :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getView`
+- :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->header`
+- :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->isUiBlock`
+- :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->registerModuleMenu`
+- :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->renderContent`
+- :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->setContent`
 - :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
 - :php:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->getUserTSconf`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrlWrap`

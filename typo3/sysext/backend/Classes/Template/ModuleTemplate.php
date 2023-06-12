@@ -37,8 +37,6 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ResponsableViewInterface;
 use TYPO3\CMS\Core\View\ViewInterface;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * A class taking care of the "outer" HTML of a module, especially
@@ -59,11 +57,6 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
 
     protected FlashMessageQueue $flashMessageQueue;
     protected DocHeaderComponent $docHeaderComponent;
-
-    /**
-     * @deprecated: Remove together with legacy view handling below in v13.
-     */
-    protected ?StandaloneView $legacyView = null;
 
     /**
      * Init PageRenderer and properties.
@@ -156,10 +149,6 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         if (!empty($updateSignalDetails['html'])) {
             $this->pageRenderer->addHeaderData(implode("\n", $updateSignalDetails['html']));
         }
-        // @deprecated will be removed in TYPO3 v13.0
-        if (!empty($updateSignalDetails['script'])) {
-            $this->pageRenderer->addJsFooterInlineCode('updateSignals', implode("\n", $updateSignalDetails['script']));
-        }
         $this->dispatchNotificationMessages();
     }
 
@@ -236,15 +225,9 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     /**
      * Creates a message object and adds it to the FlashMessageQueue.
      * These messages are automatically rendered when the view is rendered.
-     *
-     * @todo: Change $severity to allow ContextualFeedbackSeverity only in v13
      */
-    public function addFlashMessage(string $messageBody, string $messageTitle = '', int|ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK, bool $storeInSession = true): self
+    public function addFlashMessage(string $messageBody, string $messageTitle = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK, bool $storeInSession = true): self
     {
-        if (is_int($severity)) {
-            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
-            $severity = ContextualFeedbackSeverity::transform($severity);
-        }
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $messageBody, $messageTitle, $severity, $storeInSession);
         $this->flashMessageQueue->enqueue($flashMessage);
         return $this;
@@ -270,100 +253,6 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     public function setUiBlock(bool $uiBlock): self
     {
         $this->uiBlock = $uiBlock;
-        return $this;
-    }
-
-    /**
-     * @deprecated since v12, will be removed in v13.
-     */
-    public function getView(): StandaloneView
-    {
-        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.', E_USER_DEPRECATED);
-        $this->initLegacyView();
-        return $this->legacyView;
-    }
-
-    /**
-     * @deprecated since v12, will be removed in v13.
-     */
-    public function setContent(string $content): self
-    {
-        $this->initLegacyView();
-        $this->legacyView->assign('content', $content);
-        return $this;
-    }
-
-    /**
-     * @deprecated since v12, will be removed in v13. Remove together with $legacyView property and Templates/Module.html.
-     */
-    public function renderContent(): string
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.'
-            . ' Use assign(), assignMultiple(), render() or renderResponse() instead and use Module'
-            . ' as *layout* in templates.',
-            E_USER_DEPRECATED
-        );
-        $this->initLegacyView();
-        $this->legacyView->assignMultiple([
-            'docHeader' => $this->docHeaderComponent->docHeaderContent(),
-            'moduleId' => $this->moduleId,
-            'moduleName' => $this->moduleName,
-            'moduleClass' => $this->moduleClass,
-            'formTag' => $this->formTag,
-            'uiBlock' => $this->uiBlock,
-            'flashMessageQueueIdentifier' => $this->flashMessageQueue->getIdentifier(),
-        ]);
-        $this->pageRenderer->loadJavaScriptModule('bootstrap');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-help.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/document-header.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/action-dispatcher.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element/immediate-action-element.js');
-        $this->pageRenderer->addBodyContent($this->bodyTag . $this->legacyView->render('ModuleTemplate/Module.html'));
-        $this->pageRenderer->setTitle($this->title);
-        $updateSignalDetails = BackendUtility::getUpdateSignalDetails();
-        if (!empty($updateSignalDetails['html'])) {
-            $this->pageRenderer->addHeaderData(implode("\n", $updateSignalDetails['html']));
-        }
-        // @deprecated will be removed in TYPO3 v13.0
-        if (!empty($updateSignalDetails['script'])) {
-            $this->pageRenderer->addJsFooterInlineCode('updateSignals', implode("\n", $updateSignalDetails['script']));
-        }
-        $this->dispatchNotificationMessages();
-        return $this->pageRenderer->render();
-    }
-
-    /**
-     * @deprecated since v12, will be removed in v13.
-     */
-    protected function initLegacyView(): void
-    {
-        if ($this->legacyView === null) {
-            $this->legacyView = GeneralUtility::makeInstance(StandaloneView::class);
-            $this->legacyView->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-            $this->legacyView->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-            $this->legacyView->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        }
-    }
-
-    /**
-     * Returns the current body tag.
-     * @deprecated since v12, will be removed in v13.
-     */
-    public function getBodyTag(): string
-    {
-        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.', E_USER_DEPRECATED);
-        return $this->bodyTag;
-    }
-
-    /**
-     * Generates the Menu for things like Web->Info
-     * @deprecated since v12, will be removed in v13.
-     */
-    public function registerModuleMenu(string $moduleMenuIdentifier): self
-    {
-        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.', E_USER_DEPRECATED);
         return $this;
     }
 
@@ -408,64 +297,6 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     }
 
     /**
-     * Creates a tab menu where the tabs or collapsible are rendered with bootstrap markup
-     *
-     * @param array $menuItems Tab elements, each element is an array with "label" and "content"
-     * @param string $domId DOM id attribute, will be appended with an iteration number per tab.
-     * @param int $defaultTabIndex Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1
-     *                             (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing
-     *                             will result in no default tab open.
-     * @param bool $collapsible If set, the tabs are rendered as headers instead over each sheet. Effectively this means
-     *                          there is no tab menu, but rather a foldout/fold-in menu.
-     * @param bool $wrapContent If set, the content is wrapped in div structure which provides a padding and border
-     *                          style. Set this FALSE to get unstyled content pane with fullsize content area.
-     * @param bool $storeLastActiveTab If set, the last open tab is stored in local storage and will be re-open again.
-     *                                 If you don't need this feature, e.g. for wizards like import/export you can
-     *                                 disable this behaviour.
-     * @deprecated since v12, will be removed in v13.
-     */
-    public function getDynamicTabMenu(array $menuItems, string $domId, int $defaultTabIndex = 1, bool $collapsible = false, bool $wrapContent = true, bool $storeLastActiveTab = true): string
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.'
-            . ' Inline the HTML into your template.',
-            E_USER_DEPRECATED
-        );
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tabs.js');
-        $view = GeneralUtility::makeInstance(TemplateView::class);
-        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
-        $templatePaths->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
-        $templatePaths->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        $view->assignMultiple([
-            'id' => 'DTM-' . md5($domId),
-            'items' => $menuItems,
-            'defaultTabIndex' => $defaultTabIndex,
-            'wrapContent' => $wrapContent,
-            'storeLastActiveTab' => $storeLastActiveTab,
-        ]);
-        return $view->render($collapsible ? 'ModuleTemplate/Collapse' : 'ModuleTemplate/Tabs');
-    }
-
-    /**
-     * Returns the header-bar in the top of most backend modules
-     * Closes section if open.
-     *
-     * @param string $text The text string for the header
-     * @param bool $inlineEdit Whether the header should be editable (e.g. page title)
-     * @return string HTML content
-     * @deprecated since v12, will be removed in v13.
-     */
-    public function header(string $text, bool $inlineEdit = true): string
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.'
-            . ' Inline the HTML into your template.',
-            E_USER_DEPRECATED
-        );
-        return '<h1 ' . ($inlineEdit ? 'class="t3js-title-inlineedit"' : '') . '>' . htmlspecialchars($text) . '</h1>';
-    }
-
-    /**
      * Dispatches all messages in a special FlashMessageQueue to the PageRenderer to be rendered as inline notifications
      */
     protected function dispatchNotificationMessages(): void
@@ -476,15 +307,6 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
             $notificationInstruction->invoke('showMessage', $message->getTitle(), $message->getMessage(), $message->getSeverity());
             $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($notificationInstruction);
         }
-    }
-
-    /**
-     * @deprecated since v12, will be removed in v13.
-     */
-    public function isUiBlock(): bool
-    {
-        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.', E_USER_DEPRECATED);
-        return $this->uiBlock;
     }
 
     protected function getLanguageService(): LanguageService
