@@ -2807,9 +2807,7 @@ class DatabaseIntegrityController
     //################################
 
     /**
-     * Returns a selector box to switch the view
-     * Based on BackendUtility::getFuncMenu() but done as new function because it has another purpose.
-     * Mingling with getFuncMenu would harm the docHeader Menu.
+     * Returns a selector box to switch the view.
      *
      * @param mixed $mainParams The "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
      * @param string $elementName The form elements name, probably something like "SET[...]
@@ -2861,7 +2859,6 @@ class DatabaseIntegrityController
 
     /**
      * Checkbox function menu.
-     * Works like ->getFuncMenu() but takes no $menuItem array since this is a simple checkbox.
      *
      * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
      * @param string $elementName The form elements name, probably something like "SET[...]
@@ -2870,7 +2867,6 @@ class DatabaseIntegrityController
      * @param string $addParams Additional parameters to pass to the script.
      * @param string $tagParams Additional attributes for the checkbox input tag
      * @return string HTML code for checkbox
-     * @see getFuncMenu()
      */
     protected static function getFuncCheck(
         $mainParams,

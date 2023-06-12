@@ -50,7 +50,9 @@ The following PHP class methods that have previously been marked as deprecated f
 
 The following PHP static class methods that have previously been marked as deprecated for v12 and were now removed:
 
-- :php:`\Full\Class\Name::methodName`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getDropdownMenu`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu`
 
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:
 
