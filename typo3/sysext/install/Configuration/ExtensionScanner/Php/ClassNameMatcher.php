@@ -2196,11 +2196,13 @@ return [
     'TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction' => [
         'restFiles' => [
             'Deprecation-98996-DoctrineDBALBackendWorkspaceRestrictionAndFrontendWorkspaceRestriction.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction' => [
         'restFiles' => [
             'Deprecation-98996-DoctrineDBALBackendWorkspaceRestrictionAndFrontendWorkspaceRestriction.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService' => [

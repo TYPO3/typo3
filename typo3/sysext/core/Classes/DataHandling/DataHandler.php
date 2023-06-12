@@ -4985,7 +4985,7 @@ class DataHandler implements LoggerAwareInterface
         // In case the parent record is the default language record, fetch the localization
         if (empty($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
             // Fetch the live record
-            // @todo: this needs to be revisited, as getRecordLocalization() does a BackendWorkspaceRestriction
+            // @todo: this needs to be revisited, as getRecordLocalization() does a WorkspaceRestriction
             // based on $GLOBALS[BE_USER], which could differ from the $this->BE_USER->workspace value
             $parentRecordLocalization = BackendUtility::getRecordLocalization($table, $id, $command['language'], 'AND t3ver_oid=0');
             if (empty($parentRecordLocalization)) {

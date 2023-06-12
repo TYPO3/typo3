@@ -16,6 +16,8 @@ The following PHP classes that have previously been marked as deprecated for v12
 - :php:`\TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader`
 - :php:`\TYPO3\CMS\Core\Configuration\PageTsConfig`
 - :php:`\TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser`
+- :php:`\TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction`
+- :php:`\TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction`
 - :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
 - :php:`\TYPO3\CMS\Core\TypoScript\TemplateService`
 
