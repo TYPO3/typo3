@@ -1011,21 +1011,21 @@ abstract class AbstractMenuContentObject
             }
             // prev / next is found
             $prevnext_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($value_rec['pid'], '*', $sortingField, $additionalWhere, true, $this->disableGroupAccessCheck));
-            $lastKey = 0;
-            $nextActive = 0;
+            $nextActive = false;
             foreach ($prevnext_menu as $k_b => $v_b) {
                 if ($nextActive) {
                     $recArr['next'] = $v_b;
-                    $nextActive = 0;
+                    $nextActive = false;
                 }
                 if ($v_b['uid'] == $specialValue) {
-                    if ($lastKey) {
+                    if (isset($lastKey)) {
                         $recArr['prev'] = $prevnext_menu[$lastKey];
                     }
-                    $nextActive = 1;
+                    $nextActive = true;
                 }
                 $lastKey = $k_b;
             }
+            unset($lastKey);
 
             $recArr['first'] = reset($prevnext_menu);
             $recArr['last'] = end($prevnext_menu);
@@ -1033,29 +1033,29 @@ abstract class AbstractMenuContentObject
             // You can only do this, if there is a valid page two levels up!
             if (!empty($recArr['index']['uid'])) {
                 $prevnextsection_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($recArr['index']['uid'], '*', $sortingField, $additionalWhere, true, $this->disableGroupAccessCheck));
-                $lastKey = 0;
-                $nextActive = 0;
+                $nextActive = false;
                 foreach ($prevnextsection_menu as $k_b => $v_b) {
                     if ($nextActive) {
                         $sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($v_b['uid'], '*', $sortingField, $additionalWhere, true, $this->disableGroupAccessCheck));
                         if (!empty($sectionRec_temp)) {
                             $recArr['nextsection'] = reset($sectionRec_temp);
                             $recArr['nextsection_last'] = end($sectionRec_temp);
-                            $nextActive = 0;
+                            $nextActive = false;
                         }
                     }
                     if ($v_b['uid'] == $value_rec['pid']) {
-                        if ($lastKey) {
+                        if (isset($lastKey)) {
                             $sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'], '*', $sortingField, $additionalWhere, true, $this->disableGroupAccessCheck));
                             if (!empty($sectionRec_temp)) {
                                 $recArr['prevsection'] = reset($sectionRec_temp);
                                 $recArr['prevsection_last'] = end($sectionRec_temp);
                             }
                         }
-                        $nextActive = 1;
+                        $nextActive = true;
                     }
                     $lastKey = $k_b;
                 }
+                unset($lastKey);
             }
             if ($this->conf['special.']['items.']['prevnextToSection'] ?? false) {
                 if (!is_array($recArr['prev'] ?? false) && is_array($recArr['prevsection_last'] ?? false)) {
