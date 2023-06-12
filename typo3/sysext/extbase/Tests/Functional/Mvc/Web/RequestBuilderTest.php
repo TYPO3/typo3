@@ -868,9 +868,6 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        // Feature is turned off by default. We set it here explicitly to make the tests' intention clear
-        $configuration['features']['enableNamespacedArgumentsForBackend'] = '0';
-
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 

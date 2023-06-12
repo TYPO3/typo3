@@ -90,11 +90,6 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
             'mvc' => [
                 'throwPageNotFoundExceptionIfActionCantBeResolved' => '0',
             ],
-            'features' => [
-                'skipDefaultArguments' => 0,
-                'ignoreAllEnableFieldsInBe' => 0,
-                'enableNamespacedArgumentsForBackend' => 0,
-            ],
         ];
         self::assertEquals($expectedResult, $subject->getConfiguration('CurrentExtensionName'));
     }
@@ -128,11 +123,6 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
             'controllerConfiguration' => [],
             'mvc' => [
                 'throwPageNotFoundExceptionIfActionCantBeResolved' => '0',
-            ],
-            'features' => [
-                'skipDefaultArguments' => 0,
-                'ignoreAllEnableFieldsInBe' => 0,
-                'enableNamespacedArgumentsForBackend' => 0,
             ],
         ];
         self::assertEquals($expectedResult, $subject->getConfiguration('CurrentExtensionName', 'CurrentPluginName'));

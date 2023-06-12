@@ -518,11 +518,6 @@ class UriBuilder
         if ($pluginName === null) {
             $pluginName = $this->request->getPluginName();
         }
-        if ($isFrontend && $this->configurationManager->isFeatureEnabled('skipDefaultArguments')) {
-            // @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
-            //             Remove if() with body, remove removeDefaultControllerAndAction() method.
-            $controllerArguments = $this->removeDefaultControllerAndAction($controllerArguments, $extensionName, $pluginName);
-        }
         if ($this->targetPageUid === null && $isFrontend) {
             $this->targetPageUid = $this->extensionService->getTargetPidByPlugin($extensionName, $pluginName);
         }
@@ -531,9 +526,7 @@ class UriBuilder
         }
         if ($this->argumentPrefix !== null) {
             $prefixedControllerArguments = [$this->argumentPrefix => $controllerArguments];
-        } elseif (!$isFrontend && !$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend')) {
-            // @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
-            //             Remove "&& !$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend')" from if()
+        } elseif (!$isFrontend) {
             $prefixedControllerArguments = $controllerArguments;
         } else {
             $pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
@@ -541,36 +534,6 @@ class UriBuilder
         }
         ArrayUtility::mergeRecursiveWithOverrule($this->arguments, $prefixedControllerArguments);
         return $this->build();
-    }
-
-    /**
-     * This removes controller and/or action arguments from given controllerArguments
-     * if they are equal to the default controller/action of the target plugin.
-     * Note: This is only active in FE mode and if feature "skipDefaultArguments" is enabled
-     *
-     * @see \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::isFeatureEnabled()
-     * @param array $controllerArguments the current controller arguments to be modified
-     * @param string $extensionName target extension name
-     * @param string $pluginName target plugin name
-     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
-     */
-    protected function removeDefaultControllerAndAction(array $controllerArguments, string $extensionName, string $pluginName): array
-    {
-        trigger_error(
-            'Extbase feature toggle skipDefaultArguments=1 is deprecated. Use routing to "configure-away" default arguments',
-            E_USER_DEPRECATED
-        );
-        $defaultControllerName = $this->extensionService->getDefaultControllerNameByPlugin($extensionName, $pluginName);
-        if (isset($controllerArguments['action'])) {
-            $defaultActionName = $this->extensionService->getDefaultActionNameByPluginAndController($extensionName, $pluginName, $controllerArguments['controller']);
-            if ($controllerArguments['action'] === $defaultActionName) {
-                unset($controllerArguments['action']);
-            }
-        }
-        if ($controllerArguments['controller'] === $defaultControllerName) {
-            unset($controllerArguments['controller']);
-        }
-        return $controllerArguments;
     }
 
     /**
@@ -627,21 +590,16 @@ class UriBuilder
         $routeIdentifier = $arguments['route'] ?? null;
         unset($arguments['route'], $arguments['token']);
 
-        // @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
-        //             Remove if below, keep body.
-        $useArgumentsWithoutNamespace = !$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend');
-        if ($useArgumentsWithoutNamespace) {
-            // In case the current route identifier is an identifier of a sub route, remove the sub route
-            // part to be able to add the actually requested sub route based on the current arguments.
-            if ($routeIdentifier && str_contains($routeIdentifier, '.')) {
-                [$routeIdentifier] = explode('.', $routeIdentifier);
-            }
-            // Build route identifier to the actually requested sub route (controller / action pair) - if any -
-            // and unset corresponding arguments, because "enableNamespacedArgumentsForBackend" is turned off.
-            if ($routeIdentifier && isset($arguments['controller'], $arguments['action'])) {
-                $routeIdentifier .= '.' . $arguments['controller'] . '_' . $arguments['action'];
-                unset($arguments['controller'], $arguments['action']);
-            }
+        // In case the current route identifier is an identifier of a sub route, remove the sub route
+        // part to be able to add the actually requested sub route based on the current arguments.
+        if ($routeIdentifier && str_contains($routeIdentifier, '.')) {
+            [$routeIdentifier] = explode('.', $routeIdentifier);
+        }
+        // Build route identifier to the actually requested sub route (controller / action pair) - if any -
+        // and unset corresponding arguments.
+        if ($routeIdentifier && isset($arguments['controller'], $arguments['action'])) {
+            $routeIdentifier .= '.' . $arguments['controller'] . '_' . $arguments['action'];
+            unset($arguments['controller'], $arguments['action']);
         }
         $uri = '';
         if ($routeIdentifier) {

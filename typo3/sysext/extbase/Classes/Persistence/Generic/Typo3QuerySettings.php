@@ -15,10 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /**
@@ -72,18 +70,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
         // Currently this is only used for reading, but might be improved in the future
         $this->context = clone $context;
         $this->configurationManager = $configurationManager;
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-            && $this->configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')
-        ) {
-            // @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
-            trigger_error(
-                'Extbase feature toggle ignoreAllEnableFieldsInBe=1 is deprecated. Use explicit call to setIgnoreEnableFields(true) in' .
-                ' repositories or backend controllers instead.',
-                E_USER_DEPRECATED
-            );
-            $this->setIgnoreEnableFields(true);
-        }
         $this->languageAspect = $this->context->getAspect('language');
     }
 

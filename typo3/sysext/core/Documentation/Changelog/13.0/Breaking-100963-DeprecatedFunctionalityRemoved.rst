@@ -32,7 +32,7 @@ The following PHP interfaces that have previously been marked as deprecated for 
 
 The following PHP interfaces changed:
 
-- :php:`\Full\Class\Name`
+- :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface` method `isFeatureEnabled()` removed
 
 The following PHP class aliases that have previously been marked as deprecated for v12 and were now removed:
 
@@ -49,6 +49,7 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->renderContent`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->setContent`
 - :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
+- :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager->isFeatureEnabled`
 - :php:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->getUserTSconf`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrlWrap`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkEnableFields`
