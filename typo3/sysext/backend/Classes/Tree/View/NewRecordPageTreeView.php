@@ -23,10 +23,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
  */
 class NewRecordPageTreeView extends PageTreeView
 {
-    /**
-     * @var int
-     */
-    protected $currentPageId;
+    protected int $currentPageId;
 
     public function __construct(int $currentPageId)
     {

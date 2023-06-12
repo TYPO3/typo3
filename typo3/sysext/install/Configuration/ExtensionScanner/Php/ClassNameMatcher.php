@@ -2334,11 +2334,13 @@ return [
     'TYPO3\CMS\Backend\Tree\View\BrowseTreeView' => [
         'restFiles' => [
             'Deprecation-100237-TypoScriptRelatedExceptions.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView' => [
         'restFiles' => [
             'Deprecation-100454-LegacyTreeImplementations.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Service\MagicImageService' => [

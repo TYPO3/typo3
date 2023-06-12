@@ -5682,6 +5682,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100454-LegacyTreeImplementations.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getThisScript' => [
@@ -5689,6 +5690,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100454-LegacyTreeImplementations.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->addTagAttributes' => [
@@ -5696,6 +5698,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-100454-LegacyTreeImplementations.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getRootIcon' => [
@@ -5703,6 +5706,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-100454-LegacyTreeImplementations.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getRootRecord' => [
@@ -5710,6 +5714,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100454-LegacyTreeImplementations.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isSetSessionCookie' => [

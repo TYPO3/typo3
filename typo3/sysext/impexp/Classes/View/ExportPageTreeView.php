@@ -75,7 +75,7 @@ class ExportPageTreeView extends AbstractTreeView
      * @param array $row The table row.
      * @return string
      */
-    public function getTitleAttrib($row)
+    protected function getTitleAttrib($row)
     {
         return BackendUtility::titleAttribForPages($row, '1=1 ', false);
     }
@@ -83,7 +83,7 @@ class ExportPageTreeView extends AbstractTreeView
     /**
      * Wrapping Plus/Minus icon, unused in Export Page Tree
      */
-    public function PMicon($row, $a, $c, $nextCount, $isOpen)
+    protected function PMicon($row, $a, $c, $nextCount, $isOpen)
     {
         return '';
     }

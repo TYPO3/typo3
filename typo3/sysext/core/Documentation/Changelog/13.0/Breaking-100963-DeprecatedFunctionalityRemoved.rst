@@ -16,6 +16,8 @@ The following PHP classes that have previously been marked as deprecated for v12
 - :php:`\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher`
 - :php:`\TYPO3\CMS\Backend\EventListener\SilentSiteLanguageFlagMigration`
 - :php:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\HelpButton`
+- :php:`\TYPO3\CMS\Backend\Tree\View\BrowseTreeView`
+- :php:`\TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView`
 - :php:`\TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader`
 - :php:`\TYPO3\CMS\Core\Configuration\PageTsConfig`
 - :php:`\TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser`
@@ -111,6 +113,11 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->registerModuleMenu`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->renderContent`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->setContent`
+- :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->addTagAttributes`
+- :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->determineScriptUrl`
+- :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getRootIcon`
+- :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getRootRecord`
+- :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getThisScript`
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess`
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->add`
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->addMultiple`
@@ -212,6 +219,8 @@ The following methods changed signature according to previous deprecations in v1
 
 The following public class properties have been dropped:
 
+- :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->BE_USER`
+- :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->thisScript`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrl`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->extTarget`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fileTarget`

@@ -1001,11 +1001,13 @@ return [
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->thisScript' => [
         'restFiles' => [
             'Deprecation-100454-LegacyTreeImplementations.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->BE_USER' => [
         'restFiles' => [
             'Deprecation-100454-LegacyTreeImplementations.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Localization->debugKey' => [
