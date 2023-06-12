@@ -48,6 +48,7 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->registerModuleMenu`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->renderContent`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->setContent`
+- :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess`
 - :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager->isFeatureEnabled`
 - :php:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->getUserTSconf`
@@ -65,6 +66,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getDropdownMenu`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES`
 
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:
 

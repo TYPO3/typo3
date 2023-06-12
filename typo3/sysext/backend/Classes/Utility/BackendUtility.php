@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
-use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -2711,23 +2710,6 @@ class BackendUtility
     protected static function getRuntimeCache()
     {
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
-    }
-
-    /**
-     * Returns TRUE if $modName is set and is found as a main- or submodule in $TBE_MODULES array
-     *
-     * @param string $modName Module name
-     * @return bool
-     * @deprecated no longer in use. Will be removed in v13. Use the ModuleProvider API instead.
-     */
-    public static function isModuleSetInTBE_MODULES($modName)
-    {
-        trigger_error(
-            'BackendUtility::isModuleSetInTBE_MODULES() will be removed in TYPO3 v13.0. Use the ModuleProvider API instead.',
-            E_USER_DEPRECATED
-        );
-
-        return GeneralUtility::makeInstance(ModuleProvider::class)->isModuleRegistered((string)$modName);
     }
 
     /**

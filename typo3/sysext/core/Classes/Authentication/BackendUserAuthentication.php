@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Authentication;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -376,54 +375,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
         }
         return null;
-    }
-
-    /**
-     * Checks access to a backend module
-     *
-     * @param array $conf module configuration
-     * @throws \RuntimeException
-     * @return bool Will return TRUE if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return FALSE if the module name is not even registered
-     * @deprecated no longer in use. Will be removed in v13. Use the ModuleProvider API instead.
-     */
-    public function modAccess($conf)
-    {
-        trigger_error(
-            'BackendUserAuthentication->modAccess() will be removed in TYPO3 v13.0. Use the ModuleProvider API instead.',
-            E_USER_DEPRECATED
-        );
-
-        $moduleName = $conf['name'] ?? '';
-        if (!GeneralUtility::makeInstance(ModuleProvider::class)->isModuleRegistered($moduleName)) {
-            throw new \RuntimeException('Fatal Error: This module "' . $moduleName . '" is not registered.', 1294586446);
-        }
-        // Workspaces check:
-        if (
-            !empty($conf['workspaces'])
-            && ExtensionManagementUtility::isLoaded('workspaces')
-            && ($this->workspace !== 0 || !GeneralUtility::inList($conf['workspaces'], 'online'))
-            && ($this->workspace <= 0 || !GeneralUtility::inList($conf['workspaces'], 'custom'))
-        ) {
-            throw new \RuntimeException('Workspace Error: This module "' . $moduleName . '" is not available under the current workspace', 1294586447);
-        }
-        // Throws exception if conf[access] is set to system maintainer and the user is no system maintainer
-        if (str_contains($conf['access'] ?? '', self::ROLE_SYSTEMMAINTAINER) && !$this->isSystemMaintainer()) {
-            throw new \RuntimeException('This module "' . $moduleName . '" is only available as system maintainer', 1504804727);
-        }
-        // Returns TRUE if conf[access] is not set at all or if the user is admin
-        if (!($conf['access'] ?? false) || $this->isAdmin()) {
-            return true;
-        }
-        // If $conf['access'] is set but not with 'admin' then we return TRUE, if the module is found in the modList
-        $acs = false;
-        if ($moduleName && !str_contains($conf['access'] ?? '', 'admin')) {
-            $acs = GeneralUtility::makeInstance(ModuleProvider::class)->accessGranted($moduleName, $this);
-        }
-        if (!$acs) {
-            throw new \RuntimeException('Access Error: You don\'t have access to this module.', 1294586448);
-        }
-        // User has access (Otherwise an exception would haven been thrown)
-        return true;
     }
 
     /**
