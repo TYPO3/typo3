@@ -519,7 +519,7 @@ class AbstractPlugin
             '%s<a href="#" %s>%s',
             $matches[1],
             GeneralUtility::implodeAttributes([
-                'data-window-url' => $this->frontendController->baseUrlWrap($href, true),
+                'data-window-url' => $href,
                 'data-window-target' => $winName ?: md5($href),
                 'data-window-features' => $winParams,
             ], true),

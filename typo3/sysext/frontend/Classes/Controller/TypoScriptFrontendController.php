@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\PageTsConfig;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -104,18 +103,6 @@ use TYPO3\CMS\Frontend\Typolink\LinkVarsCalculator;
 class TypoScriptFrontendController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-    use PublicPropertyDeprecationTrait;
-
-    protected array $deprecatedPublicProperties = [
-        'intTarget' => '$TSFE->intTarget will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'intTarget\'] instead.',
-        'extTarget' => '$TSFE->extTarget will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'extTarget\'] instead.',
-        'fileTarget' => '$TSFE->fileTarget will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'fileTarget\'] instead.',
-        'spamProtectEmailAddresses' => '$TSFE->spamProtectEmailAddresses will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'spamProtectEmailAddresses\'] instead.',
-        'baseUrl' => '$TSFE->baseUrl will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'baseURL\'] instead.',
-        'xhtmlDoctype' => '$TSFE->xhtmlDoctype will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.',
-        'xhtmlVersion' => '$TSFE->xhtmlVersion will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.',
-        'type' => '$TSFE->type will be removed in TYPO3 v13.0. Use $TSFE->getPageArguments()->getPageType() instead.',
-    ];
 
     /**
      * The page id (int)
@@ -127,7 +114,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var int|string
      * @internal since TYPO3 v12. Use $TSFE->getPageArguments()->getPageType() instead
      */
-    protected $type = 0;
+    protected int|string $type = 0;
 
     protected Site $site;
     protected SiteLanguage $language;
@@ -339,33 +326,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $additionalFooterData = [];
 
     /**
-     * Default internal target
-     * @var string
-     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0.
-     */
-    protected $intTarget = '';
-
-    /**
-     * Default external target
-     * @var string
-     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0.
-     */
-    protected $extTarget = '';
-
-    /**
-     * Default file link target
-     * @var string
-     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0.
-     */
-    protected $fileTarget = '';
-
-    /**
-     * If set, typolink() function encrypts email addresses.
-     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0.
-     */
-    protected int $spamProtectEmailAddresses = 0;
-
-    /**
      * Absolute Reference prefix
      * @var string
      */
@@ -420,13 +380,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected string $uniqueString = '';
 
     /**
-     * The base URL set for the page header.
-     * @var string
-     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0.
-     */
-    protected $baseUrl = '';
-
-    /**
      * Page content render object
      *
      * @var ContentObjectRenderer
@@ -473,20 +426,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @internal Should only be used by TYPO3 core for now
      */
     protected string $contentType = 'text/html; charset=utf-8';
-
-    /**
-     * Doctype to use
-     *
-     * @var string
-     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Use PageRenderer->getDocType() instead.
-     */
-    protected $xhtmlDoctype = '';
-
-    /**
-     * @var int
-     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Use PageRenderer->getDocType() instead.
-     */
-    protected $xhtmlVersion;
 
     /**
      * Originally requested id from PageArguments
@@ -581,43 +520,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $this->pageCache = $cacheManager->getCache('pages');
-    }
-
-    /**
-     * Initializes the front-end user groups.
-     * Sets frontend.user aspect based on front-end user status.
-     * @deprecated will be removed in TYPO3 v13.0. Use the Context API directly.
-     */
-    public function initUserGroups()
-    {
-        trigger_error('TSFE->initUserGroups() will be removed in TYPO3 v13.0. Use the Context API directly.', E_USER_DEPRECATED);
-        $this->context->setAspect('frontend.user', $this->fe_user->createUserAspect());
-    }
-
-    /**
-     * Checking if a user is logged in or a group constellation different from "0,-1"
-     *
-     * @return bool TRUE if either a login user is found (array fe_user->user) OR if the gr_list is set to something else than '0,-1' (could be done even without a user being logged in!)
-     * @deprecated will be removed in TYPO3 v13.0. Use the Context API directly.
-     */
-    public function isUserOrGroupSet()
-    {
-        trigger_error('TSFE->isUserOrGroupSet() will be removed in TYPO3 v13.0. Use the Context API directly.', E_USER_DEPRECATED);
-        /** @var UserAspect $userAspect */
-        $userAspect = $this->context->getAspect('frontend.user');
-        return $userAspect->isUserOrGroupSet();
-    }
-
-    /**
-     * Checks if a backend user is logged in
-     *
-     * @return bool whether a backend user is logged in
-     * @deprecated will be removed in TYPO3 v13.0. Use the Context API directly.
-     */
-    public function isBackendUserLoggedIn()
-    {
-        trigger_error('TSFE->isBackendUserLoggedIn() will be removed in TYPO3 v13.0. Use the Context API directly.', E_USER_DEPRECATED);
-        return (bool)$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
     }
 
     /**
@@ -1040,25 +942,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
         return $removeTheRestFlag;
-    }
-
-    /**
-     * Checks page record for enableFields
-     * Returns TRUE if enableFields does not disable the page record.
-     * Takes notice of the includeHiddenPages visibility aspect flag and uses SIM_ACCESS_TIME for start/endtime evaluation
-     *
-     * @param array $row The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
-     * @param bool $bypassGroupCheck Bypass group-check
-     * @return bool TRUE, if record is viewable.
-     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Use RecordAccessVoter instead.
-     */
-    public function checkEnableFields($row, $bypassGroupCheck = false)
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13. Use RecordAccessVoter instead.',
-            E_USER_DEPRECATED
-        );
-        return GeneralUtility::makeInstance(RecordAccessVoter::class)->accessGranted('pages', $row, $this->context);
     }
 
     /**
@@ -2034,19 +1917,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function preparePageContentGeneration(ServerRequestInterface $request)
     {
         $this->getTimeTracker()->push('Prepare page content generation');
-        // @deprecated: these properties can be removed in TYPO3 v13.0
-        $this->baseUrl = (string)($this->config['config']['baseURL'] ?? '');
-        // Internal and External target defaults
-        $this->intTarget = (string)($this->config['config']['intTarget'] ?? '');
-        $this->extTarget = (string)($this->config['config']['extTarget'] ?? '');
-        $this->fileTarget = (string)($this->config['config']['fileTarget'] ?? '');
         if (($this->config['config']['spamProtectEmailAddresses'] ?? '') === 'ascii') {
             $this->logDeprecatedTyposcript('config.spamProtectEmailAddresses = ascii', 'This setting has no effect anymore. Change it to a number between -10 and 10 or remove it completely');
             $this->config['config']['spamProtectEmailAddresses'] = 0;
         }
-        // @deprecated: these properties can be removed in TYPO3 v13.0
-        $this->spamProtectEmailAddresses = (int)($this->config['config']['spamProtectEmailAddresses'] ?? 0);
-        $this->spamProtectEmailAddresses = MathUtility::forceIntegerInRange($this->spamProtectEmailAddresses, -10, 10, 0);
         // calculate the absolute path prefix
         if (!empty($this->absRefPrefix = trim($this->config['config']['absRefPrefix'] ?? ''))) {
             if ($this->absRefPrefix === 'auto') {
@@ -2071,8 +1945,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // we might have xhtmlDoctype set but doctype isn't and we get a deprecation again (even if originally neither one of them was set)
         $this->config['config']['doctype'] ??= $this->config['config']['xhtmlDoctype'];
         $docType = DocType::createFromConfigurationKey($this->config['config']['doctype']);
-        $this->xhtmlDoctype = $docType->getXhtmlDocType();
-        $this->xhtmlVersion = $docType->getXhtmlVersion();
         $this->pageRenderer->setDocType($docType);
 
         // Global content object
@@ -2501,30 +2373,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Prefixing the input URL with ->baseUrl If ->baseUrl is set and the input url is not absolute in some way.
-     * Designed as a wrapper functions for use with all frontend links that are processed by JavaScript (for "realurl" compatibility!). So each time a URL goes into window.open, window.location.href or otherwise, wrap it with this function!
-     *
-     * @param string $url Input URL, relative or absolute
-     * @param bool $internal used for TYPO3 Core to avoid deprecation errors in v12 when calling this method directly.
-     * @return string Processed input value.
-     * @internal only for TYPO3 Core internal purposes. Might be removed at a later point as it was related to RealURL functionality.
-     * @deprecated will be removed in TYPO3 v13.0 along with config.baseURL
-     */
-    public function baseUrlWrap($url, bool $internal = false)
-    {
-        if (!$internal) {
-            trigger_error('Calling $TSFE->baseUrlWrap will not work anymore in TYPO3 v13.0. Use SiteHandling and config.forceAbsoluteUrls anymore, or build your own <base> tag via TypoScript headerData.', E_USER_DEPRECATED);
-        }
-        if ($this->config['config']['baseURL'] ?? false) {
-            $urlParts = parse_url($url);
-            if (empty($urlParts['scheme']) && $url[0] !== '/') {
-                $url = $this->config['config']['baseURL'] . $url;
-            }
-        }
-        return $url;
-    }
-
-    /**
      * Logs access to deprecated TypoScript objects and properties.
      *
      * Dumps message to the TypoScript message log (admin panel) and the TYPO3 deprecation log.
@@ -2537,34 +2385,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $explanationText = $explanation !== '' ? ' - ' . $explanation : '';
         $this->getTimeTracker()->setTSlogMessage($typoScriptProperty . ' is deprecated.' . $explanationText, LogLevel::WARNING);
         trigger_error('TypoScript property ' . $typoScriptProperty . ' is deprecated' . $explanationText, E_USER_DEPRECATED);
-    }
-
-    /********************************************
-     * PUBLIC ACCESSIBLE WORKSPACES FUNCTIONS
-     *******************************************/
-
-    /**
-     * Returns TRUE if workspace preview is enabled
-     *
-     * @return bool Returns TRUE if workspace preview is enabled
-     * @deprecated will be removed in TYPO3 v13.0. Use the Context API directly.
-     */
-    public function doWorkspacePreview()
-    {
-        trigger_error('TSFE->doWorkspacePreview() will be removed in TYPO3 v13.0. Use the Context API directly.', E_USER_DEPRECATED);
-        return $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
-    }
-
-    /**
-     * Returns the uid of the current workspace
-     *
-     * @return int returns workspace integer for which workspace is being preview. 0 if none (= live workspace).
-     * @deprecated will be removed in TYPO3 v13.0. Use the Context API directly.
-     */
-    public function whichWorkspace(): int
-    {
-        trigger_error('TSFE->whichWorkspace() will be removed in TYPO3 v13.0. Use the Context API directly.', E_USER_DEPRECATED);
-        return $this->context->getPropertyFromAspect('workspace', 'id', 0);
     }
 
     /********************************************

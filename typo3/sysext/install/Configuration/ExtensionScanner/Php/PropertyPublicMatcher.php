@@ -956,36 +956,43 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->spamProtectEmailAddresses' => [
         'restFiles' => [
             'Deprecation-97866-VariousPublicTSFEProperties.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->intTarget' => [
         'restFiles' => [
             'Deprecation-97866-VariousPublicTSFEProperties.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->extTarget' => [
         'restFiles' => [
             'Deprecation-97866-VariousPublicTSFEProperties.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fileTarget' => [
         'restFiles' => [
             'Deprecation-97866-VariousPublicTSFEProperties.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrl' => [
         'restFiles' => [
             'Deprecation-97866-VariousPublicTSFEProperties.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->xhtmlDoctype' => [
         'restFiles' => [
             'Deprecation-99416-VariousDoctypeRelatedPropertiesAndMethods.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->xhtmlVersion' => [
         'restFiles' => [
             'Deprecation-99416-VariousDoctypeRelatedPropertiesAndMethods.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->thisScript' => [

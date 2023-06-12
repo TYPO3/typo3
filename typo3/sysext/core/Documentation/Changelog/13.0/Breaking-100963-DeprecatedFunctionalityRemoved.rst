@@ -33,7 +33,13 @@ The following PHP class aliases that have previously been marked as deprecated f
 
 The following PHP class methods that have previously been marked as deprecated for v12 and were now removed:
 
-- :php:`\Full\Class\Name->methodName`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrlWrap`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkEnableFields`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->doWorkspacePreview`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->initUserGroups`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isBackendUserLoggedIn`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isUserOrGroupSet`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->whichWorkspace`
 
 The following PHP static class methods that have previously been marked as deprecated for v12 and were now removed:
 
@@ -45,7 +51,13 @@ The following methods changed signature according to previous deprecations in v1
 
 The following public class properties have been dropped:
 
-- :php:`\Full\Class\Name->propertyName`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrl`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->extTarget`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fileTarget`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->intTarget`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->spamProtectEmailAddresses`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->xhtmlDoctype`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->xhtmlVersion`
 
 The following class methods visibility have been changed to protected:
 
@@ -57,7 +69,7 @@ The following class methods visibility have been changed to private:
 
 The following class properties visibility have been changed to protected:
 
-- :php:`\Full\Class\Name->propertyName`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->type`
 
 The following class properties visibility have been changed to private:
 

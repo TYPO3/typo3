@@ -1389,6 +1389,7 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->type' => [
         'restFiles' => [
             'Deprecation-100405-PropertyTypoScriptFrontendController-type.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];
