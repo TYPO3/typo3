@@ -723,6 +723,7 @@ return [
         'restFiles' => [
             'Deprecation-97544-PreviewURIGenerationRelatedFunctionalityInBackendUtility.rst',
             'Feature-97544-PSR-14EventsForModifyingPreviewURIs.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'determineId-PreProcessing\']' => [

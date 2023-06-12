@@ -1212,33 +1212,6 @@ class PageRepository implements LoggerAwareInterface
     }
 
     /**
-     * Returns the redirect URL for the input page row IF the doktype is set to 3.
-     *
-     * @param array $pagerow The page row to return URL type for
-     * @return string|bool The URL from based on the data from "pages:url". False if not found.
-     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13.0
-     */
-    public function getExtURL($pagerow)
-    {
-        trigger_error('PageRepository->getExtURL will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
-        if ((int)$pagerow['doktype'] === self::DOKTYPE_LINK) {
-            $redirectTo = $pagerow['url'];
-            $uI = parse_url($redirectTo);
-            // If relative path, prefix Site URL
-            // If it's a valid email without protocol, add "mailto:"
-            if (!($uI['scheme'] ?? false)) {
-                if (GeneralUtility::validEmail($redirectTo)) {
-                    $redirectTo = 'mailto:' . $redirectTo;
-                } elseif ($redirectTo[0] !== '/') {
-                    $redirectTo = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl() . $redirectTo;
-                }
-            }
-            return $redirectTo;
-        }
-        return false;
-    }
-
-    /**
      * Returns a MountPoint array for the specified page
      *
      * Does a recursive search if the mounted page should be a mount page

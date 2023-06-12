@@ -17,17 +17,12 @@ namespace TYPO3\CMS\Backend\Utility;
 
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
-use TYPO3\CMS\Backend\Routing\Route;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -35,7 +30,6 @@ use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -49,18 +43,13 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
-use TYPO3\CMS\Core\Routing\RouterInterface;
-use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
 use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -1128,24 +1117,6 @@ class BackendUtility
     }
 
     /**
-     * @deprecated since TYPO3 v12.4. Will be removed in TYPO3 v13.0 - use the ResourceFactory API instead.
-     */
-    public static function getThumbnailUrl(int $fileId, array $configuration): string
-    {
-        trigger_error(
-            'BackendUtility::getThumbnailUrl() will be removed in TYPO3 v13.0. The ResourceFactory API should be used instead.',
-            E_USER_DEPRECATED
-        );
-        $taskType = $configuration['_context'] ?? ProcessedFile::CONTEXT_IMAGEPREVIEW;
-        unset($configuration['_context']);
-
-        return GeneralUtility::makeInstance(ResourceFactory::class)
-                ->getFileObject($fileId)
-                ->process($taskType, $configuration)
-                ->getPublicUrl();
-    }
-
-    /**
      * Returns title-attribute information for a page-record informing about id, doktype, hidden, starttime, endtime, fe_group etc.
      *
      * @param array $row Input must be a page row ($row) with the proper fields set (be sure - send the full range of fields for the table)
@@ -1961,113 +1932,6 @@ class BackendUtility
     }
 
     /**
-     * Returns the preview url
-     *
-     * It will detect the correct domain name if needed and provide the link with the right back path.
-     *
-     * @param int $pageUid Page UID
-     * @param string $backPath Must point back to TYPO3_mainDir (where the site is assumed to be one level above)
-     * @param array|null $rootLine If root line is supplied the function will look for the first found domain record and use that URL instead (if found)
-     * @param string $anchorSection Optional anchor to the URL
-     * @param string $alternativeUrl An alternative URL that, if set, will ignore other parameters except $switchFocus: It will return the window.open command wrapped around this URL!
-     * @param string $additionalGetVars Additional GET variables.
-     * @param bool $switchFocus If TRUE, then the preview window will gain the focus.
-     * @deprecated since TYPO3 v12.0. Use PreviewUriBuilder instead.
-     */
-    public static function getPreviewUrl(
-        $pageUid,
-        $backPath = '',
-        $rootLine = null,
-        $anchorSection = '',
-        $alternativeUrl = '',
-        $additionalGetVars = '',
-        &$switchFocus = true
-    ): string {
-        trigger_error('BackendUtility::getPreviewUrl() will be removed in TYPO3 v13.0. Use PreviewUriBuilder instead.', E_USER_DEPRECATED);
-        $viewScript = '/index.php?id=';
-        if ($alternativeUrl) {
-            $viewScript = $alternativeUrl;
-        }
-
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'])) {
-            trigger_error(
-                'Hook $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_befunc.php\'][\'viewOnClickClass\'] will be removed in TYPO3 v13.0. Use BeforePagePreviewUriGeneratedEvent and AfterPagePreviewUriGeneratedEvent instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'preProcess')) {
-                $hookObj->preProcess(
-                    $pageUid,
-                    $backPath,
-                    $rootLine,
-                    $anchorSection,
-                    $viewScript,
-                    $additionalGetVars,
-                    $switchFocus
-                );
-            }
-        }
-
-        // If there is an alternative URL or the URL has been modified by a hook, use that one.
-        if ($alternativeUrl || $viewScript !== '/index.php?id=') {
-            $previewUrl = $viewScript;
-        } else {
-            $permissionClause = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);
-            $pageInfo = self::readPageAccess($pageUid, $permissionClause) ?: [];
-            // prepare custom context for link generation (to allow for example time based previews)
-            $context = clone GeneralUtility::makeInstance(Context::class);
-            $additionalGetVars .= self::ADMCMD_previewCmds($pageInfo, $context);
-
-            // Build the URL with a site as prefix, if configured
-            $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-            // Check if the page (= its rootline) has a site attached, otherwise just keep the URL as is
-            $rootLine = $rootLine ?? BackendUtility::BEgetRootLine($pageUid);
-            try {
-                $site = $siteFinder->getSiteByPageId((int)$pageUid, $rootLine);
-            } catch (SiteNotFoundException $e) {
-                throw new UnableToLinkToPageException('The page ' . $pageUid . ' had no proper connection to a site, no link could be built.', 1559794919);
-            }
-            // Create a multi-dimensional array out of the additional get vars
-            $additionalQueryParams = [];
-            parse_str($additionalGetVars, $additionalQueryParams);
-            if (isset($additionalQueryParams['L'])) {
-                $additionalQueryParams['_language'] = $additionalQueryParams['_language'] ?? $additionalQueryParams['L'];
-                unset($additionalQueryParams['L']);
-            }
-            try {
-                $previewUrl = (string)$site->getRouter($context)->generateUri(
-                    $pageUid,
-                    $additionalQueryParams,
-                    $anchorSection,
-                    RouterInterface::ABSOLUTE_URL
-                );
-            } catch (\InvalidArgumentException | InvalidRouteArgumentsException $e) {
-                throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $pageUid, $e->getMessage()), 1559794914, $e);
-            }
-        }
-
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'postProcess')) {
-                $previewUrl = $hookObj->postProcess(
-                    $previewUrl,
-                    $pageUid,
-                    $rootLine,
-                    $anchorSection,
-                    $viewScript,
-                    $additionalGetVars,
-                    $switchFocus
-                );
-            }
-        }
-
-        return $previewUrl;
-    }
-
-    /**
      * Makes click menu link (context sensitive menu)
      *
      * Returns $str wrapped in a link which will activate the context sensitive
@@ -2128,57 +1992,6 @@ class BackendUtility
             'data-contextmenu-uid' => $uid,
             'data-contextmenu-context' => $context,
         ];
-    }
-
-    /**
-     * Returns a URL with a command to TYPO3 Datahandler
-     *
-     * @param string $parameters Set of GET params to send. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
-     * @param string $redirectUrl Redirect URL, default is to use $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
-     * @return string
-     * @deprecated since TYPO3 v12.4. Will be removed in TYPO3 v13.0 - use the UriBuilder API instead.
-     */
-    public static function getLinkToDataHandlerAction($parameters, $redirectUrl = '')
-    {
-        trigger_error(
-            'BackendUtility::getLinkToDataHandlerAction() will be removed in TYPO3 v13.0. The UriBuilder API should be used instead.',
-            E_USER_DEPRECATED
-        );
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $url = (string)$uriBuilder->buildUriFromRoute('tce_db') . $parameters . '&redirect=';
-        $url .= rawurlencode($redirectUrl ?: $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri());
-        return $url;
-    }
-
-    /**
-     * Builds the URL to the current script with given arguments
-     *
-     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
-     * @param string $addParams Additional parameters to pass to the script.
-     * @param string $script The script to send the &id to, if empty it's automatically found
-     * @return string The complete script URL
-     * @todo Check if this can be removed or replaced by routing
-     */
-    protected static function buildScriptUrl($mainParams, $addParams, $script = '')
-    {
-        if (!is_array($mainParams)) {
-            $mainParams = ['id' => $mainParams];
-        }
-
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ($route = $GLOBALS['TYPO3_REQUEST']->getAttribute('route')) instanceof Route
-        ) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $scriptUrl = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $mainParams);
-            $scriptUrl .= $addParams;
-        } else {
-            if (!$script) {
-                $script = PathUtility::basename(Environment::getCurrentScript());
-            }
-            $scriptUrl = $script . HttpUtility::buildQueryString($mainParams, '?') . $addParams;
-        }
-
-        return $scriptUrl;
     }
 
     /**
@@ -3137,82 +2950,6 @@ class BackendUtility
      * Miscellaneous
      *
      *******************************************/
-    /**
-     * Creates ADMCMD parameters for the "viewpage" extension / frontend
-     *
-     * @param array $pageInfo Page record
-     * @return string Query-parameters
-     * @internal this method will be removed in TYPO3 v13.0 along with BackendUtility::getPreviewUrl()
-     */
-    public static function ADMCMD_previewCmds($pageInfo, Context $context)
-    {
-        if ($pageInfo === []) {
-            return '';
-        }
-        // Initialize access restriction values from current page
-        $access = [
-            'fe_group' => (string)($pageInfo['fe_group'] ?? ''),
-            'starttime' => (int)($pageInfo['starttime'] ?? 0),
-            'endtime' => (int)($pageInfo['endtime'] ?? 0),
-        ];
-        // Only check rootline if the current page has not set extendToSubpages itself
-        if (!(bool)($pageInfo['extendToSubpages'] ?? false)) {
-            $rootline = self::BEgetRootLine((int)($pageInfo['uid'] ?? 0));
-            // remove the current page from the rootline
-            array_shift($rootline);
-            foreach ($rootline as $page) {
-                // Skip root node, invalid pages and pages which do not define extendToSubpages
-                if ((int)($page['uid'] ?? 0) <= 0 || !(bool)($page['extendToSubpages'] ?? false)) {
-                    continue;
-                }
-                $access['fe_group'] = (string)($page['fe_group'] ?? '');
-                $access['starttime'] = (int)($page['starttime'] ?? 0);
-                $access['endtime'] = (int)($page['endtime'] ?? 0);
-                // Stop as soon as a page in the rootline has extendToSubpages set
-                break;
-            }
-        }
-        $simUser = '';
-        $simTime = '';
-        if ((int)$access['fe_group'] === -2) {
-            // -2 means "show at any login". We simulate first available fe_group.
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('fe_groups');
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-
-            $activeFeGroupId = $queryBuilder->select('uid')
-                ->from('fe_groups')
-                ->executeQuery()
-                ->fetchOne();
-
-            if ($activeFeGroupId) {
-                $simUser = '&ADMCMD_simUser=' . $activeFeGroupId;
-            }
-        } elseif (!empty($access['fe_group'])) {
-            $simUser = '&ADMCMD_simUser=' . $access['fe_group'];
-        }
-        if ($access['starttime'] > $GLOBALS['EXEC_TIME']) {
-            // simulate access time to ensure PageRepository will find the page and in turn PageRouter will generate
-            // an URL for it
-            $dateAspect = GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $access['starttime']));
-            $context->setAspect('date', $dateAspect);
-            $simTime = '&ADMCMD_simTime=' . $access['starttime'];
-        }
-        if ($access['endtime'] < $GLOBALS['EXEC_TIME'] && $access['endtime'] !== 0) {
-            // Set access time to page's endtime subtracted one second to ensure PageRepository will find the page and
-            // in turn PageRouter will generate an URL for it
-            $dateAspect = GeneralUtility::makeInstance(
-                DateTimeAspect::class,
-                new \DateTimeImmutable('@' . ($access['endtime'] - 1))
-            );
-            $context->setAspect('date', $dateAspect);
-            $simTime = '&ADMCMD_simTime=' . ($access['endtime'] - 1);
-        }
-        return $simUser . $simTime;
-    }
 
     /**
      * Determines whether a table is enabled for workspaces.

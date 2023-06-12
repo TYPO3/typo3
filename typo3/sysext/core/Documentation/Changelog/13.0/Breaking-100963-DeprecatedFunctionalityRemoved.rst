@@ -51,6 +51,7 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->renderContent`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->setContent`
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess`
+- :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getExtURL`
 - :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
 - :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory->get`
 - :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory->purgeInstances`
@@ -75,9 +76,13 @@ The following PHP class methods that have previously been marked as deprecated f
 
 The following PHP static class methods that have previously been marked as deprecated for v12 and were now removed:
 
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::ADMCMD_previewCmds`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getDropdownMenu`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getPreviewUrl`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getThumbnailUrl`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES`
 
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:
@@ -144,7 +149,7 @@ The following global variables have been removed:
 
 The following hooks have been removed:
 
-- :php:`$GLOBALS['TYPO3_CONF_VARS']['KEY']['subKey']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass']`
 
 The following single field configurations have been removed from TCA:
 

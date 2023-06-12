@@ -38,8 +38,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Substitution for `BackendUtility::getPreviewUrl` for generating links to Frontend URLs
- * with a modified scope.
+ * Generate links to Frontend URLs with a modified scope.
  */
 class PreviewUriBuilder
 {

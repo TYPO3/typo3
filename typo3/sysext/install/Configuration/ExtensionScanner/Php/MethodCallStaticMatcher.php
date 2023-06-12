@@ -1391,6 +1391,7 @@ return [
         'maximumNumberOfArguments' => 7,
         'restFiles' => [
             'Deprecation-97544-PreviewURIGenerationRelatedFunctionalityInBackendUtility.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig' => [
@@ -1490,6 +1491,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-100597-BackendUtilityMethodsGetThumbnailUrlAndGetLinkToDataHandlerAction.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction' => [
@@ -1497,6 +1499,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-100597-BackendUtilityMethodsGetThumbnailUrlAndGetLinkToDataHandlerAction.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript' => [

@@ -5491,6 +5491,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-99558-DeprecatePageRepository-getExtURL.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer->enableRemoveLineBreaksFromTemplate' => [
