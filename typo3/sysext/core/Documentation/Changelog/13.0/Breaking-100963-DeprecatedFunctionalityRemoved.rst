@@ -86,6 +86,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getPreviewUrl`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getThumbnailUrl`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript`
 
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:
 

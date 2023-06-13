@@ -2216,35 +2216,6 @@ class GeneralUtility
     }
 
     /**
-     * Returns the link-url to the current script.
-     * In $getParams you can set associative keys corresponding to the GET-vars you wish to add to the URL. If you set them empty, they will remove existing GET-vars from the current URL.
-     * REMEMBER to always use htmlspecialchars() for content in href-properties to get ampersands converted to entities (XHTML requirement and XSS precaution)
-     *
-     * @param array $getParams Array of GET parameters to include
-     * @return string
-     * @deprecated since TYPO3 v12.4. will be removed in TYPO3 v13.0.
-     */
-    public static function linkThisScript(array $getParams = [])
-    {
-        trigger_error(
-            'GeneralUtility::linkThisScript() will be removed in TYPO3 v13.0, retrieve request related' .
-            ' details from PSR-7 ServerRequestInterface instead.',
-            E_USER_DEPRECATED
-        );
-        $parts = self::getIndpEnv('SCRIPT_NAME');
-        $params = self::_GET();
-        foreach ($getParams as $key => $value) {
-            if ($value !== '') {
-                $params[$key] = $value;
-            } else {
-                unset($params[$key]);
-            }
-        }
-        $pString = self::implodeArrayForUrl('', $params);
-        return $pString ? $parts . '?' . ltrim($pString, '&') : $parts;
-    }
-
-    /**
      * This method is only for testing and should never be used outside tests.
      *
      * @param non-empty-string $envName
