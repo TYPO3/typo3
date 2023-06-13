@@ -1010,9 +1010,10 @@ return [
             'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Localization->debugKey' => [
+    'TYPO3\CMS\Core\Localization\LanguageService->debugKey' => [
         'restFiles' => [
             'Deprecation-100657-TYPO3_CONF_VARSBElanguageDebug.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

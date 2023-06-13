@@ -178,6 +178,9 @@ class SilentConfigurationUpgradeService
         'SYS/caching/cacheConfigurations/pagesection',
         // #99075
         'FE/defaultUserTSconfig',
+        // #101037
+        'BE/languageDebug',
+        'BE/lang/debug',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager)
@@ -202,7 +205,6 @@ class SilentConfigurationUpgradeService
         $this->migrateDatabaseConnectionSettings();
         $this->migrateDatabaseConnectionCharset();
         $this->migrateDatabaseDriverOptions();
-        $this->migrateLangDebug();
         $this->migrateCacheHashOptions();
         $this->migrateExceptionErrors();
         $this->migrateDisplayErrorsSetting();
@@ -842,27 +844,6 @@ class SilentConfigurationUpgradeService
             }
         } catch (MissingArrayPathException) {
             // no driver options found, nothing needs to be modified
-        }
-    }
-
-    /**
-     * Migrate the configuration setting BE/lang/debug if set in the system/settings.php file
-     *
-     * @throws ConfigurationChangedException
-     */
-    protected function migrateLangDebug(): void
-    {
-        $confManager = $this->configurationManager;
-        try {
-            $currentOption = $confManager->getLocalConfigurationValueByPath('BE/lang/debug');
-            // check if the current option is set and boolean
-            if (isset($currentOption) && is_bool($currentOption)) {
-                $confManager->setLocalConfigurationValueByPath('BE/languageDebug', $currentOption);
-                $confManager->removeLocalConfigurationKeysByPath(['BE/lang/debug']);
-                $this->throwConfigurationChangedException();
-            }
-        } catch (MissingArrayPathException) {
-            // no change inside the system/settings.php found, so nothing needs to be modified
         }
     }
 

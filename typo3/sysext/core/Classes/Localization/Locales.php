@@ -101,42 +101,6 @@ class Locales implements SingletonInterface
     ];
 
     /**
-     * Reversed mapping for backward compatibility codes
-     *
-     * Key => real ISO code
-     * value => the value that TYPO3 understands (which is wrong, obviously)
-     *
-     * Example:
-     * "da" => official ISO 639-1 code
-     * "dk" (wrong)" => the shortcut that TYPO3 uses for danish within the system for labels.
-     *
-     * @var array<non-empty-string, non-empty-string>
-     * @deprecated will be removed in TYPO3 v13.0. backwards-compatibility is not needed anymore.
-     */
-    protected array $isoReverseMapping = [
-        'bs' => 'ba', // Bosnian
-        'cs' => 'cz', // Czech
-        'da' => 'dk', // Danish
-        'el' => 'gr', // Greek
-        'fr_CA' => 'qc', // French (Canada)
-        'gl' => 'ga', // Galician
-        'ja' => 'jp', // Japanese
-        'ka' => 'ge', // Georgian
-        'kl' => 'gl', // Greenlandic
-        'ko' => 'kr', // Korean
-        'ms' => 'my', // Malay
-        'pt_BR' => 'br', // Portuguese (Brazil)
-        'sl' => 'si', // Slovenian
-        'sv' => 'se', // Swedish
-        'uk' => 'ua', // Ukrainian
-        'vi' => 'vn', // Vietnamese
-        'zh' => 'hk', // Chinese (China)
-        'zh_CN' => 'ch', // Chinese (Simplified)
-        'zh_HK' => 'hk', // Chinese (Simplified Hong Kong)
-        'zh_Hans_CN' => 'ch', // Chinese (Simplified Han)
-    ];
-
-    /**
      * Dependencies for locales.
      * By default, locales with a country/region suffix such as "de_AT" will automatically have the "de"
      * locale as fallback. This way TYPO3 only needs to know about the actual "base" language, however
@@ -242,18 +206,6 @@ class Locales implements SingletonInterface
     public function isLanguageKeyAvailable(string $languageKey): bool
     {
         return in_array($languageKey, $this->getActiveLanguages()) || is_dir(Environment::getLabelsPath() . '/' . $languageKey);
-    }
-
-    /**
-     * Returns the mapping between TYPO3 (old) language codes and ISO codes.
-     *
-     * @return array<non-empty-string, non-empty-string>
-     * @deprecated will be removed in TYPO3 v13.0.
-     */
-    public function getIsoMapping(): array
-    {
-        trigger_error('Locales->getIsoMapping() will be removed in TYPO3 v13.0. Migrate to real locales instead.', E_USER_DEPRECATED);
-        return array_flip($this->isoReverseMapping);
     }
 
     /**

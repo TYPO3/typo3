@@ -442,33 +442,6 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function migrateExistingLangDebug(): void
-    {
-        $testConfig = [
-            'BE' => [
-                'lang' => [
-                    'debug' => false,
-                ],
-            ],
-        ];
-        $configurationManager = $this->get(ConfigurationManager::class);
-        $configurationManager->updateLocalConfiguration($testConfig);
-
-        $subject = $this->get(SilentConfigurationUpgradeService::class);
-        $exceptionCaught = false;
-        try {
-            $subject->execute();
-        } catch (ConfigurationChangedException) {
-            $exceptionCaught = true;
-        } finally {
-            self::assertTrue($exceptionCaught);
-            self::assertFalse($configurationManager->getLocalConfigurationValueByPath('BE/languageDebug'));
-        }
-    }
-
-    /**
-     * @test
-     */
     public function migrateCacheHashOptions(): void
     {
         $testConfig = [

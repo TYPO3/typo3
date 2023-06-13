@@ -180,29 +180,29 @@ final class SettingsCest extends AbstractCest
     {
         $button = 'Configure options';
         $panel = 'Backend';
-        $checkbox = '#BE_languageDebug';
+        $checkbox = '#BE_lockSSL';
         $modalButton = 'Write configuration';
-        $expectedFlashMessageText = 'BE/languageDebug';
+        $expectedFlashMessageText = 'BE/lockSSL';
 
-        // Activate [BE][languageDebug]
+        // Activate [BE][lockSSL]
         $I->click($button);
         $modalDialog->canSeeDialog();
         $I->amGoingTo('open the backend panel');
         $I->click($panel, '.panel-heading');
         $I->waitForElement($checkbox);
-        $I->amGoingTo('tick the checkbox [BE][languageDebug] option');
+        $I->amGoingTo('tick the checkbox [BE][lockSSL] option');
         $I->click($checkbox);
         $I->click($modalButton, ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForText($expectedFlashMessageText, 5, self::$alertContainerSelector);
         $this->closeModalAndHideFlashMessage($I);
 
-        // Reset [BE][languageDebug]
+        // Reset [BE][lockSSL]
         $I->click($button);
         $modalDialog->canSeeDialog();
         $I->click($panel, '.panel-heading');
         $I->waitForElement($checkbox);
         $I->seeCheckboxIsChecked($checkbox);
-        $I->amGoingTo('reset [BE][languageDebug] checkbox');
+        $I->amGoingTo('reset [BE][lockSSL] checkbox');
         $I->click($checkbox);
         $I->click($modalButton, ModalDialog::$openedModalButtonContainerSelector);
         $this->closeModalAndHideFlashMessage($I);

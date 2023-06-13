@@ -236,9 +236,6 @@ BE:
     type: container
     description: 'Backend'
     items:
-        languageDebug:
-            type: bool
-            description: 'If enabled, language labels will be shown with additional debug information.'
         fileadminDir:
             type: text
             description: 'Path to the primary directory of files for editors. This is relative to the public web dir, DefaultStorage will be created with that configuration, do not access manually but via <code>\TYPO3\CMS\Core\Resource\ResourceFactory::getDefaultStorage().</code>'

@@ -1293,7 +1293,6 @@ return [
     ],
     'BE' => [
         // Backend Configuration.
-        'languageDebug' => false,
         'fileadminDir' => 'fileadmin/',
         'lockRootPath' => '',
         'userHomePath' => '',

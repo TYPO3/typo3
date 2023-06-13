@@ -128,6 +128,8 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Core\Database\Query\QueryBuilder->execute`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getExtURL`
 - :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
+- :php:`\TYPO3\CMS\Core\Localization\Locales->getIsoMapping`
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService->getLL`
 - :php:`\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter->filterInlineChildren`
 - :php:`\TYPO3\CMS\Core\Session\UserSessionManager->createFromGlobalCookieOrAnonymous`
 - :php:`\TYPO3\CMS\Dashboard\DashboardInitializationService->getRequireJsModules`
@@ -223,6 +225,7 @@ The following methods changed signature according to previous deprecations in v1
 
 The following public class properties have been dropped:
 
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService->debugKey`
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->BE_USER`
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->thisScript`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrl`
