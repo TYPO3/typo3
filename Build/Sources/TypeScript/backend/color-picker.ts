@@ -24,18 +24,8 @@ class ColorPicker {
   /**
    * Initialize the color picker for the given element
    */
-  public initialize(element?: HTMLInputElement): void {
-
-    if (typeof element === 'undefined') {
-      // @deprecated since v12, will be removed in v13.
-      console.warn('Initializing all color pickers globally has been marked as deprecated. Please pass a specific element to ColorPicker.initialize().');
-      document.querySelectorAll('.t3js-color-picker').forEach((colorPicker: HTMLInputElement): void => {
-        this.initialize(colorPicker);
-      });
-      return;
-    }
-
-    if (!(element instanceof HTMLInputElement) || element.parentElement?.classList.contains('minicolors')) {
+  public initialize(element: HTMLInputElement): void {
+    if (element.parentElement?.classList.contains('minicolors')) {
       return;
     }
 

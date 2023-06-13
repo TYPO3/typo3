@@ -199,6 +199,10 @@ The following JavaScript modules have been removed:
 
 - :js:`module.name`
 
+The following JavaScript methods behaviour has changed:
+
+- :js:`ColorPicker.initialize()` always requires an :js:`HTMLInputElement` to be passed as first argument
+
 The following RequireJS module names have been removed:
 
 - :js:`Dummy`
