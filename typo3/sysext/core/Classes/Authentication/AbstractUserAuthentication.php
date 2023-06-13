@@ -636,7 +636,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
                     new LoginAttemptFailedEvent($this, $request, $this->removeSensitiveLoginDataForLoggingInfo($loginData))
                 );
-                $this->handleLoginFailure();
             }
         }
     }
@@ -721,24 +720,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function isMfaSetupRequired(): bool
     {
         return false;
-    }
-
-    /**
-     * Implement functionality when there was a failed login
-     */
-    protected function handleLoginFailure(): void
-    {
-        if (($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] ?? []) !== []) {
-            trigger_error(
-                'The hook $TYPO3_CONF_VARS[\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauth.php\'][\'postLoginFailureProcessing\']'
-                . ' will be removed in TYPO3 v13.0. Use the PSR-14 event LoginAttemptFailedEvent.',
-                E_USER_DEPRECATED
-            );
-        }
-        $_params = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] ?? [] as $hookIdentifier => $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
     }
 
     /**
@@ -878,36 +859,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $event = new BeforeUserLogoutEvent($this);
         $event = $dispatcher->dispatch($event);
 
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'] ?? null)) {
-            trigger_error(
-                '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauth.php\'][\'logoff_pre_processing\'] will be removed in TYPO3 v13.0. Use the PSR-14 "BeforeUserLogoutEvent" instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
         if ($event->shouldLogout()) {
-            $_params = [];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'] ?? [] as $_funcRef) {
-                if ($_funcRef) {
-                    GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                }
-            }
             $this->performLogoff();
         }
 
         $dispatcher->dispatch(new AfterUserLoggedOutEvent($this));
-
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'] ?? null)) {
-            trigger_error(
-                '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauth.php\'][\'logoff_post_processing\'] will be removed in TYPO3 v13.0. Use the PSR-14 "BeforeUserLogoutEvent" instead.',
-                E_USER_DEPRECATED
-            );
-        }
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'] ?? [] as $_funcRef) {
-            if ($_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-        }
     }
 
     /**

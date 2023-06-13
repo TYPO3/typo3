@@ -998,30 +998,35 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'getDefaultUploadFolder\']' => [
         'restFiles' => [
             'Deprecation-83608-BackendUsersGetDefaultUploadFolderHook.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauth.php\'][\'postLoginFailureProcessing\']' => [
         'restFiles' => [
             'Deprecation-100278-PostLoginFailureProcessingHook.rst',
             'Feature-100278-PSR-14EventAfterFailedLoginsInBackendOrFrontendUsers.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauth.php\'][\'logoff_pre_processing\']' => [
         'restFiles' => [
             'Deprecation-100307-VariousHooksRelatedToAuthenticationUsers.rst',
             'Feature-100307-PSR-14EventsForUserLoginLogout.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauth.php\'][\'logoff_post_processing\']' => [
         'restFiles' => [
             'Deprecation-100307-VariousHooksRelatedToAuthenticationUsers.rst',
             'Feature-100307-PSR-14EventsForUserLoginLogout.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'backendUserLogin\']' => [
         'restFiles' => [
             'Deprecation-100307-VariousHooksRelatedToAuthenticationUsers.rst',
             'Feature-100307-PSR-14EventsForUserLoginLogout.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

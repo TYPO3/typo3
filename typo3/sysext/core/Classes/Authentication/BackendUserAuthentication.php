@@ -1609,20 +1609,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
         }
 
-        // @deprecated HOOK: getDefaultUploadFolder
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getDefaultUploadFolder'] ?? [])) {
-            trigger_error('The hook $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'getDefaultUploadFolder\'] will be removed in TYPO3 v13.0. Use the PSR-14 AfterDefaultUploadFolderWasResolvedEvent instead.', E_USER_DEPRECATED);
-        }
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getDefaultUploadFolder'] ?? [] as $_funcRef) {
-            $_params = [
-                'uploadFolder' => $uploadFolder,
-                'pid' => $pid,
-                'table' => $table,
-                'field' => $field,
-            ];
-            $uploadFolder = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
-
         if ($uploadFolder instanceof Folder) {
             return $uploadFolder;
         }
@@ -2050,18 +2036,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
             $event = new AfterUserLoggedInEvent($this, $request);
             GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
-            // Process hooks
-            $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin'] ?? [];
-            if (!empty($hooks)) {
-                trigger_error(
-                    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'backendUserLogin\'] will be removed in TYPO3 v13.0. Use the PSR-14 "AfterUserLoggedInEvent" instead.',
-                    E_USER_DEPRECATED
-                );
-            }
-            foreach ($hooks as $_funcRef) {
-                $_params = ['user' => $this->user];
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
         }
     }
 
