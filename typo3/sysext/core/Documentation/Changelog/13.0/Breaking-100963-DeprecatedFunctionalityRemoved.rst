@@ -39,6 +39,7 @@ The following PHP interfaces changed:
 
 The following PHP class aliases that have previously been marked as deprecated for v12 and were now removed:
 
+- :php:`\TYPO3\CMS\Frontend\Service\TypoLinkCodecService`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkResultFactory`
 
 The following PHP class methods that have previously been marked as deprecated for v12 and were now removed:

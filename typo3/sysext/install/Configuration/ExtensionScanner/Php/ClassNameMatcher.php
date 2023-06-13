@@ -1946,6 +1946,7 @@ return [
     'TYPO3\CMS\Frontend\Service\TypoLinkCodecService' => [
         'restFiles' => [
             'Deprecation-97217-MovedTypoLinkCodecServiceToEXTcore.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface' => [
