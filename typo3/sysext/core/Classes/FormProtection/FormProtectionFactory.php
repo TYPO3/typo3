@@ -70,8 +70,7 @@ class FormProtectionFactory
     }
 
     /**
-     * Detect the right FormProtection implementation based on the request. Should be used instead of
-     * FormProtectionFactory::get()
+     * Detect the right FormProtection implementation based on the request.
      */
     public function createFromRequest(ServerRequestInterface $request): AbstractFormProtection
     {
@@ -157,67 +156,6 @@ class FormProtectionFactory
     }
 
     /**
-     * Gets a form protection instance for the requested type or class.
-     *
-     * If there already is an existing instance of the requested $classNameOrType, the
-     * existing instance will be returned. If no $classNameOrType is provided, the factory
-     * detects the scope and returns the appropriate form protection object.
-     *
-     * @param string $classNameOrType Name of a form protection class, or one
-     *                                of the pre-defined form protection types:
-     *                                frontend, backend, installtool
-     * @param array<int,mixed> $constructorArguments Arguments for the class-constructor
-     * @return \TYPO3\CMS\Core\FormProtection\AbstractFormProtection the requested instance
-     *
-     * @deprecated since v12, will be removed in v13 together with createForTypeWithArguments. Use a instance of FormProtectionFactory directly.
-     * @see self::createFromRequest()
-     * @see self::createForType()
-     * @see self::createForClass()
-     */
-    public static function get($classNameOrType = 'default', ...$constructorArguments)
-    {
-        trigger_error(
-            __METHOD__ . ' will be removed in TYPO3 v13.0. Use a instance of ' . __CLASS__ . ' directly.',
-            E_USER_DEPRECATED
-        );
-        if (($classNameOrType === 'default' || $classNameOrType === 'installtool' || $classNameOrType === 'frontend' || $classNameOrType === 'backend')) {
-            return GeneralUtility::makeInstance(FormProtectionFactory::class)
-                ->createForType($classNameOrType);
-        }
-        return GeneralUtility::makeInstance(FormProtectionFactory::class)
-            ->createForClass($classNameOrType, ...$constructorArguments);
-    }
-
-    /**
-     * Create a concrete FormProtection implementation, using the provided arguments as constructor arguments.
-     * Should be used instead of FormProtectionFactory::get() is a custom FormProtection implementation must
-     * be instantiated.
-     *
-     * For provided core implementation use
-     *
-     *      // auto-detected based on request
-     *      GeneralUtility::makeInstance(FormProtectionFactory::class)
-     *          ->createFromRequest($GLOBAL['TYPO3_REQUEST']);
-     * or
-     *      // concrete implementation
-     *      GeneralUtility::makeInstance(FormProtectionFactory::class)
-     *          ->createForType($type); // 'installtool', 'backend', 'frontend', 'disabled'
-     *
-     * @param string $className Name of a form protection class
-     * @param array<int,mixed> $constructorArguments Arguments for the class-constructor
-     * @deprecated since v12, will be removed in v13 together with get().
-     */
-    protected function createForClass(string $className, ...$constructorArguments): AbstractFormProtection
-    {
-        $identifier = $this->getIdentifierForType($className);
-        if ($this->runtimeCache->has($identifier)) {
-            return $this->runtimeCache->get($identifier);
-        }
-        $this->runtimeCache->set($identifier, $this->createInstance($className, ...$constructorArguments));
-        return $this->runtimeCache->get($identifier);
-    }
-
-    /**
      * Check if we are in the install tool
      */
     protected function isInstallToolSession(ServerRequestInterface $request): bool
@@ -275,20 +213,5 @@ class FormProtectionFactory
             throw new \InvalidArgumentException('$className must be a subclass of ' . AbstractFormProtection::class . ', but actually was "' . $className . '".', 1285353026);
         }
         return $instance;
-    }
-
-    /**
-     * Purges all existing instances.
-     *
-     * This function is particularly useful when cleaning up in unit testing.
-     *
-     * @deprecated since v12, will be removed in v13. Internal cache has been replaced by runtime cache.
-     */
-    public static function purgeInstances(): void
-    {
-        trigger_error(
-            __METHOD__ . ' will be removed in TYPO3 v13.0. Cache has been replaced with runtime cache.',
-            E_USER_DEPRECATED
-        );
     }
 }

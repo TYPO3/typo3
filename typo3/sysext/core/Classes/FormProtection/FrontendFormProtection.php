@@ -29,7 +29,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  * matter; you only need it to get the form token for verifying it.
  *
  * <pre>
- * $formToken = TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()
+ * $formToken = GeneralUtility::makeInstance(FormProtectionFactory::class)->createFromType('frontend')
  * ->generateToken(
  * 'User setup', 'edit'
  * );
@@ -46,7 +46,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  * For editing a news record, the call could look like this:
  *
  * <pre>
- * $formToken = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()
+ * $formToken = GeneralUtility::makeInstance(FormProtectionFactory::class)->createFromType('frontend')
  * ->getFormProtection()->generateToken(
  * 'news', 'edit', $uid
  * );
@@ -57,7 +57,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  * that the form token is valid like this:
  *
  * <pre>
- * if ($dataHasBeenSubmitted && \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()
+ * if ($dataHasBeenSubmitted && GeneralUtility::makeInstance(FormProtectionFactory::class)->createFromType('frontend')
  * ->validateToken(
  * \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('formToken'),
  * 'User setup', 'edit

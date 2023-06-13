@@ -52,6 +52,8 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->setContent`
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess`
 - :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
+- :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory->get`
+- :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory->purgeInstances`
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager->isFeatureEnabled`
 - :php:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->getUserTSconf`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrlWrap`

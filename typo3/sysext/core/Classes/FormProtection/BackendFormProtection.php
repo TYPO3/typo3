@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Registry;
  * matter; you only need it to get the form token for verifying it.
  *
  * <pre>
- * $formToken = TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()
+ * $formToken = GeneralUtility::makeInstance(FormProtectionFactory::class)->createFromType('backend')
  * ->generateToken(
  * 'BE user setup', 'edit'
  * );
@@ -47,7 +47,7 @@ use TYPO3\CMS\Core\Registry;
  * For editing a tt_content record, the call could look like this:
  *
  * <pre>
- * $formToken = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()
+ * $formToken = GeneralUtility::makeInstance(FormProtectionFactory::class)->createFromType('backend')
  * ->getFormProtection()->generateToken(
  * 'tt_content', 'edit', $uid
  * );
@@ -58,7 +58,7 @@ use TYPO3\CMS\Core\Registry;
  * that the form token is valid like this:
  *
  * <pre>
- * if ($dataHasBeenSubmitted && TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()
+ * if ($dataHasBeenSubmitted && GeneralUtility::makeInstance(FormProtectionFactory::class)->createFromType('backend')
  * ->validateToken(
  * \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('formToken'),
  * 'BE user setup', 'edit

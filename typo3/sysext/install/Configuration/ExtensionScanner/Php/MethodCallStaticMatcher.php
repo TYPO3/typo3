@@ -1414,6 +1414,7 @@ return [
         'maximumNumberOfArguments' => 99,
         'restFiles' => [
             'Deprecation-99098-StaticUsageOfFormProtectionFactory.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances' => [
@@ -1421,6 +1422,7 @@ return [
         'maximumNumberOfArguments' => 99,
         'restFiles' => [
             'Deprecation-99098-StaticUsageOfFormProtectionFactory.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu' => [
