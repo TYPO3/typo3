@@ -968,6 +968,7 @@ return [
         'restFiles' => [
             'Deprecation-99717-DeprecatedModifyBlindedConfigurationOptionsHook.rst',
             'Feature-99717-NewPSR-14ModifyBlindedConfigurationOptionsEvent.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TBE_STYLES\'][\'stylesheet\']' => [
