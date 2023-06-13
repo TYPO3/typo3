@@ -195,7 +195,7 @@ class ImageContentObject extends AbstractContentObject
                                 $dimension .= $dimensionParts[1];
                             }
                         } elseif ($dimensionKey === 'XY') {
-                            $dimensionParts = GeneralUtility::intExplode(',', $dimension, false, 2);
+                            $dimensionParts = GeneralUtility::intExplode(',', $dimension);
                             $dimension = $dimensionParts[0] * $pixelDensity;
                             if ($dimensionParts[1]) {
                                 $dimension .= ',' . $dimensionParts[1] * $pixelDensity;

@@ -146,7 +146,7 @@ The following PHP static class methods that have previously been marked as depre
 
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:
 
-- :php:`\Full\Class\Name->methodName` (argument 42 is now an integer)
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode` (argument 4 :php:`$limit` has been removed)
 
 The following public class properties have been dropped:
 
