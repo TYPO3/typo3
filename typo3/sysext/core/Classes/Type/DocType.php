@@ -73,20 +73,6 @@ enum DocType
         };
     }
 
-    /**
-     * @internal only used for backwards-compatibility, and will be removed in TYPO3 v13.0.
-     */
-    public function getXhtmlDocType(): string
-    {
-        return match ($this) {
-            self::xhtmlTransitional => 'xhtml_trans',
-            self::xhtmlStrict => 'xhtml_strict',
-            self::xhtmlBasic => 'xhtml_basic',
-            self::xhtml11 => 'xhtml_11',
-            self::xhtmlRdfa10 => 'xhtml+rdfa_10',
-            default => ''
-        };
-    }
     public function getXmlPrologue(): string
     {
         if ($this->getXhtmlVersion() === 110) {
@@ -98,10 +84,7 @@ enum DocType
         return '';
     }
 
-    /**
-     * @internal only used for backwards-compatibility, and will be set to private in TYPO3 v13.0.
-     */
-    public function getXhtmlVersion(): ?int
+    private function getXhtmlVersion(): ?int
     {
         return match ($this) {
             self::xhtmlTransitional, self::xhtmlStrict => 100,

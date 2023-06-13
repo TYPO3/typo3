@@ -134,8 +134,21 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Core\Localization\LanguageService->getLL`
 - :php:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction->shallLoadRequireJs`
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->loadRequireJsModule`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->setRenderXhtml`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getRenderXhtml`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->setCharSet`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getCharSet`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->setMetaCharsetTag`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getMetaCharsetTag`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->setBaseUrl`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getBaseUrl`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->enableRemoveLineBreaksFromTemplate`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->disableRemoveLineBreaksFromTemplate`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getRemoveLineBreaksFromTemplate`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->enableDebugMode`
 - :php:`\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter->filterInlineChildren`
 - :php:`\TYPO3\CMS\Core\Session\UserSessionManager->createFromGlobalCookieOrAnonymous`
+- :php:`TYPO3\CMS\Core\Type\DocType->getXhtmlDocType`
 - :php:`\TYPO3\CMS\Dashboard\DashboardInitializationService->getRequireJsModules`
 - :php:`\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager->getContentObject`
 - :php:`\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager->setContentObject`
@@ -239,6 +252,7 @@ The following methods changed signature according to previous deprecations in v1
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode` (argument 4 :php:`$limit` has been removed)
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->addFlashMessage` (argument 2 is now of type :php:`ContextualFeedbackSeverity`)
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->start` (argument 3 :php:`$request` has been removed)
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->setLanguage()` (argument 1 is now of type :php:`Locale`)
 - :php:`\TYPO3\CMS\Reports\Status->__construct` (argument 4 is now of type :php:`ContextualFeedbackSeverity`)
 - :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider->addMessage` (argument 2 is now of type :php:`ContextualFeedbackSeverity`)
 - :php:`\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate` (argument 4 has been removed)
@@ -269,6 +283,7 @@ The following class methods visibility have been changed to private:
 - :php:`\Full\Class\Name->methodName`
 
 The following class methods are now marked as internal:
+
 :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isSetSessionCookie`
 :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isRefreshTimeBasedCookie`
 :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->removeCookie`
@@ -284,9 +299,10 @@ The following class properties visibility have been changed to protected:
 
 The following class properties visibility have been changed to private:
 
-- :php:`\Full\Class\Name->propertyName`
+- :php:`TYPO3\CMS\Core\Type\DocType->getXhtmlVersion`
 
 The following class properties are now marked as internal:
+
 :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->lastLogin_column`
 :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_uname`
 :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_uident`
@@ -295,6 +311,9 @@ The following class properties are now marked as internal:
 :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->dontSetCookie`
 :php:`\TYPO3\CMS\Core\Authentication\FrontendUserAuthentication->formfield_permanent`
 :php:`\TYPO3\CMS\Core\Authentication\FrontendUserAuthentication->is_permanent`
+
+The following class properties have changed/enforced type:
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->endingSlash` (is now string)
 
 The following eID entrypoints have been removed:
 

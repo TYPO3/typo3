@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
@@ -358,7 +359,7 @@ final class ImageContentObjectTest extends UnitTestCase
 
         $file = 'testImageName';
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
-        $pageRenderer->setLanguage('en');
+        $pageRenderer->setLanguage(new Locale());
         $pageRenderer->setDocType(DocType::createFromConfigurationKey($doctype));
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
 

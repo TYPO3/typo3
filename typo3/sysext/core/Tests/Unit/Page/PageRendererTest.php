@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
 use TYPO3\CMS\Core\Domain\ConsumableString;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -147,9 +148,7 @@ final class PageRendererTest extends UnitTestCase
     public function includeLanguageFileForInlineDoesNotAddToInlineLanguageLabelsIfFileCouldNotBeRead(): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, ['readLLfile'], [], '', false);
-        $subject->_set('lang', 'default');
-        $subject->_set('charSet', 'utf-8');
-        $subject->_set('inlineLanguageLabels', []);
+        $subject->setLanguage(new Locale());
         $subject->method('readLLfile')->willReturn([]);
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
         self::assertEquals([], $subject->_get('inlineLanguageLabels'));
@@ -207,9 +206,7 @@ final class PageRendererTest extends UnitTestCase
     public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabels(array $llFileContent, string $selectionPrefix, string $stripFromSelectionName, array $expectation): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, ['readLLfile'], [], '', false);
-        $subject->_set('lang', 'default');
-        $subject->_set('charSet', 'utf-8');
-        $subject->_set('inlineLanguageLabels', []);
+        $subject->setLanguage(new Locale());
         $subject->method('readLLfile')->willReturn($llFileContent);
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml', $selectionPrefix, $stripFromSelectionName);
         self::assertEquals($expectation, $subject->_get('inlineLanguageLabels'));

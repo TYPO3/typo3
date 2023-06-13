@@ -67,7 +67,7 @@ final class PageRendererTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = $this->createPageRenderer();
-        $subject->setLanguage('default');
+        $subject->setLanguage(new Locale());
 
         $prologueString = $expectedPrologueString = '<?xml version="1.0" encoding="utf-8" ?>';
         $subject->setXmlPrologAndDocType($prologueString);
@@ -208,7 +208,7 @@ final class PageRendererTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', $requestType);
         $subject = $this->createPageRenderer();
-        $subject->setLanguage('default');
+        $subject->setLanguage(new Locale());
 
         $subject->enableMoveJsFromHeaderToFooter();
 
@@ -294,7 +294,7 @@ final class PageRendererTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = $this->createPageRenderer();
-        $subject->setLanguage('default');
+        $subject->setLanguage(new Locale());
 
         $subject->addJsFooterLibrary(
             'test',
@@ -378,7 +378,7 @@ final class PageRendererTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = $this->createPageRenderer();
-        $subject->setLanguage('default');
+        $subject->setLanguage(new Locale());
 
         $subject->addJsFooterLibrary(
             'test',
@@ -453,7 +453,7 @@ final class PageRendererTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
         $subject = $this->createPageRenderer();
-        $subject->setLanguage('default');
+        $subject->setLanguage(new Locale());
 
         $packages = [
             [
@@ -491,7 +491,7 @@ final class PageRendererTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = $this->createPageRenderer();
-        $subject->setLanguage('default');
+        $subject->setLanguage(new Locale());
 
         $subject->addCssFile(
             '/fileadmin/test.css',

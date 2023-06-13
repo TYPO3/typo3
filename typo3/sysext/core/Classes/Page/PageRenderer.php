@@ -68,12 +68,6 @@ class PageRenderer implements SingletonInterface
 
     /**
      * @var bool
-     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0 along with enable, disable and getter method.
-     */
-    protected $removeLineBreaksFromTemplate = false;
-
-    /**
-     * @var bool
      */
     protected $concatenateJavascript = false;
 
@@ -86,14 +80,6 @@ class PageRenderer implements SingletonInterface
      * @var bool
      */
     protected $moveJsFromHeaderToFooter = false;
-
-    /**
-     * The language key
-     * Two character string or 'default'
-     *
-     * @var string
-     */
-    protected $lang;
 
     /**
      * The locale, used for the <html> tag (depending on the DocType) and possible translation files.
@@ -139,39 +125,15 @@ class PageRenderer implements SingletonInterface
     protected $title;
 
     /**
-     * Charset for the rendering
-     *
-     * @var string
-     */
-    protected $charSet = 'utf-8';
-
-    /**
      * @var string
      */
     protected $favIcon;
-
-    /**
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0.
-     */
-    protected $baseUrl;
-
-    /**
-     * @var bool
-     * @deprecated will be removed in TYPO3 v13.0. Use DocType instead.
-     */
-    protected $renderXhtml = true;
 
     // Static header blocks
     /**
      * @var string
      */
     protected $xmlPrologAndDocType = '';
-
-    /**
-     * @var array
-     */
-    protected $metaTags = [];
 
     /**
      * @var array
@@ -195,12 +157,6 @@ class PageRenderer implements SingletonInterface
 
     /**
      * @var string
-     * @deprecated will be removed in TYPO3 v13.0
-     */
-    protected $metaCharsetTag = '<meta http-equiv="Content-Type" content="text/html; charset=|" />';
-
-    /**
-     * @var string
      */
     protected $htmlTag = '<html>';
 
@@ -208,12 +164,6 @@ class PageRenderer implements SingletonInterface
      * @var string
      */
     protected $headTag = '<head>';
-
-    /**
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0.
-     */
-    protected $baseUrlTag = '<base href="|" />';
 
     /**
      * @var string
@@ -307,29 +257,11 @@ class PageRenderer implements SingletonInterface
     protected $inlineSettings = [];
 
     /**
-     * @var array{0: string, 1: string}
-     * @deprecated since TYPO3 v12.4, will be removed in TYPO3 v13.0 - use method `wrapInlineScript` instead
-     */
-    protected $inlineJavascriptWrap = [
-        '<script>' . LF . '/*<![CDATA[*/' . LF,
-        '/*]]>*/' . LF . '</script>' . LF,
-    ];
-
-    /**
-     * @var array
-     * @deprecated since TYPO3 v12.4, will be removed in TYPO3 v13.0 - use method `wrapInlineStyle` instead
-     */
-    protected $inlineCssWrap = [
-        '<style>' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
-        '-->' . LF . '/*]]>*/' . LF . '</style>' . LF,
-    ];
-
-    /**
      * Is empty string for HTML and ' /' for XHTML rendering
      *
      * @var string
      */
-    protected $endingSlash = '';
+    protected string $endingSlash = '';
 
     protected JavaScriptRenderer $javaScriptRenderer;
     protected ?ConsumableString $nonce = null;
@@ -443,7 +375,6 @@ class PageRenderer implements SingletonInterface
         $this->jsLibs = [];
         $this->cssFiles = [];
         $this->cssInline = [];
-        $this->metaTags = [];
         $this->inlineComments = [];
         $this->headerData = [];
         $this->footerData = [];
@@ -469,18 +400,6 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Enables/disables rendering of XHTML code
-     *
-     * @param bool $enable Enable XHTML
-     * @deprecated will be removed in TYPO3 v13.0. Use DocType instead.
-     */
-    public function setRenderXhtml($enable)
-    {
-        trigger_error('PageRenderer->setRenderXhtml() will be removed in TYPO3 v13.0. Use PageRenderer->setDocType() instead.', E_USER_DEPRECATED);
-        $this->renderXhtml = $enable;
-    }
-
-    /**
      * Sets xml prolog and docType
      *
      * @param string $xmlPrologAndDocType Complete tags for xml prolog and docType
@@ -491,31 +410,11 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Sets meta charset
-     *
-     * @param string $charSet Used charset
-     * @deprecated will be removed in TYPO3 v13.0
-     */
-    public function setCharSet($charSet)
-    {
-        trigger_error('PageRenderer->setCharSet() will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
-        $this->charSet = $charSet;
-    }
-
-    /**
      * Sets language
-     *
-     * @param string|Locale $lang Used language
      */
-    public function setLanguage($lang)
+    public function setLanguage(Locale $locale): void
     {
-        if ($lang instanceof Locale) {
-            $this->locale = $lang;
-            $this->lang = (string)$lang;
-        } else {
-            $this->lang = $lang;
-            $this->locale = new Locale($lang);
-        }
+        $this->locale = $locale;
         $this->setDefaultHtmlTag();
     }
 
@@ -534,18 +433,6 @@ class PageRenderer implements SingletonInterface
             }
             $this->setHtmlTag('<html ' . GeneralUtility::implodeAttributes($attributes, true) . '>');
         }
-    }
-
-    /**
-     * Set the meta charset tag
-     *
-     * @param string $metaCharsetTag
-     * @deprecated will be removed in TYPO3 v13.0. Use DocType instead.
-     */
-    public function setMetaCharsetTag($metaCharsetTag)
-    {
-        trigger_error('PageRenderer->setMetaCharsetTag() will be removed in TYPO3 v13.0. Use PageRenderer->setDocType() instead.', E_USER_DEPRECATED);
-        $this->metaCharsetTag = $metaCharsetTag;
     }
 
     /**
@@ -586,21 +473,6 @@ class PageRenderer implements SingletonInterface
     public function setIconMimeType($iconMimeType)
     {
         $this->iconMimeType = $iconMimeType;
-    }
-
-    /**
-     * Sets HTML base URL
-     *
-     * @param string $baseUrl HTML base URL
-     * @param bool $isInternalCall only to be used by TYPO3 Core to avoid multiple deprecations.
-     * @deprecated will be removed in TYPO3 v13.0 - <base> tags are not supported anymore in TYPO3.
-     */
-    public function setBaseUrl($baseUrl, bool $isInternalCall = false)
-    {
-        if (!$isInternalCall) {
-            trigger_error('PageRenderer->setBaseUrl() will be removed in TYPO3 v13.0, as <base> tags are not supported by default anymore in TYPO3', E_USER_DEPRECATED);
-        }
-        $this->baseUrl = $baseUrl;
     }
 
     /**
@@ -748,53 +620,6 @@ class PageRenderer implements SingletonInterface
         $this->concatenateCss = false;
     }
 
-    /**
-     * Sets removal of all line breaks in template
-     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0.
-     */
-    public function enableRemoveLineBreaksFromTemplate()
-    {
-        trigger_error(
-            'PageRenderer::enableRemoveLineBreaksFromTemplate() will be removed in TYPO3 v13.0.' .
-            'Use a proper output optimization tool instead.',
-            E_USER_DEPRECATED
-        );
-        $this->removeLineBreaksFromTemplate = true;
-    }
-
-    /**
-     * Unsets removal of all line breaks in template
-     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0.
-     */
-    public function disableRemoveLineBreaksFromTemplate()
-    {
-        trigger_error(
-            'PageRenderer::disableRemoveLineBreaksFromTemplate() will be removed in TYPO3 v13.0.' .
-            'Use a proper output optimization tool instead.',
-            E_USER_DEPRECATED
-        );
-        $this->removeLineBreaksFromTemplate = false;
-    }
-
-    /**
-     * Enables Debug Mode
-     * This is a shortcut to switch off all compress/concatenate features to enable easier debug
-     * @deprecated since TYPO3 v12.3. Will be removed in TYPO3 v13.0
-     */
-    public function enableDebugMode()
-    {
-        trigger_error(
-            'PageRenderer::enableDebugMode() will be removed in TYPO3 v13.0.',
-            E_USER_DEPRECATED
-        );
-        $this->compressJavascript = false;
-        $this->compressCss = false;
-        $this->concatenateCss = false;
-        $this->concatenateJavascript = false;
-        // @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0 along with enable, disable and getter method, and property.
-        $this->removeLineBreaksFromTemplate = false;
-    }
-
     /*****************************************************/
     /*                                                   */
     /*  Public Getters                                   */
@@ -812,37 +637,11 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Gets the charSet
-     *
-     * @return string $charSet
-     * @deprecated will be removed in TYPO3 v13.0. Use DocType instead.
-     */
-    public function getCharSet()
-    {
-        trigger_error('PageRenderer->getCharSet() will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.', E_USER_DEPRECATED);
-        return $this->charSet;
-    }
-
-    /**
      * Gets the language
-     *
-     * @return string $lang
      */
-    public function getLanguage()
+    public function getLanguage(): string
     {
-        return $this->lang;
-    }
-
-    /**
-     * Returns rendering mode XHTML or HTML
-     *
-     * @return bool TRUE if XHTML, FALSE if HTML
-     * @deprecated will be removed in TYPO3 v13.0. Use DocType instead.
-     */
-    public function getRenderXhtml()
-    {
-        trigger_error('PageRenderer->getRenderXhtml() will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.', E_USER_DEPRECATED);
-        return $this->renderXhtml;
+        return (string)$this->locale;
     }
 
     public function setNonce(?ConsumableString $nonce): void
@@ -853,9 +652,7 @@ class PageRenderer implements SingletonInterface
     public function setDocType(DocType $docType): void
     {
         $this->docType = $docType;
-        $this->renderXhtml = $docType->isXmlCompliant();
         $this->xmlPrologAndDocType = $docType->getDoctypeDeclaration();
-        $this->metaCharsetTag = str_replace('utf-8', '|', $docType->getMetaCharsetTag());
         $this->setDefaultHtmlTag();
     }
 
@@ -872,18 +669,6 @@ class PageRenderer implements SingletonInterface
     public function getHtmlTag()
     {
         return $this->htmlTag;
-    }
-
-    /**
-     * Get meta charset
-     *
-     * @return string
-     * @deprecated will be removed in TYPO3 v13.0. Use DocType instead.
-     */
-    public function getMetaCharsetTag()
-    {
-        trigger_error('PageRenderer->getMetaCharsetTag() will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.', E_USER_DEPRECATED);
-        return $this->metaCharsetTag;
     }
 
     /**
@@ -914,18 +699,6 @@ class PageRenderer implements SingletonInterface
     public function getIconMimeType()
     {
         return $this->iconMimeType;
-    }
-
-    /**
-     * Gets HTML base URL
-     *
-     * @return string $url
-     * @deprecated will be removed in TYPO3 v13.0.
-     */
-    public function getBaseUrl()
-    {
-        trigger_error('PageRenderer->getBaseUrl() will be removed in TYPO3 v13.0, as <base> tags are not supported by default anymore in TYPO3', E_USER_DEPRECATED);
-        return $this->baseUrl;
     }
 
     /**
@@ -986,22 +759,6 @@ class PageRenderer implements SingletonInterface
     public function getConcatenateCss()
     {
         return $this->concatenateCss;
-    }
-
-    /**
-     * Gets remove of empty lines from template
-     *
-     * @return bool
-     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0.
-     */
-    public function getRemoveLineBreaksFromTemplate()
-    {
-        trigger_error(
-            'PageRenderer::getRemoveLineBreaksFromTemplate() will be removed in TYPO3 v13.0.' .
-            'Use a proper output optimization tool instead.',
-            E_USER_DEPRECATED
-        );
-        return $this->removeLineBreaksFromTemplate;
     }
 
     /**
@@ -1809,7 +1566,7 @@ class PageRenderer implements SingletonInterface
     {
         $this->prepareRendering();
         [$jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs] = $this->renderJavaScriptAndCss();
-        $metaTags = implode(LF, array_merge($this->metaTags, $this->renderMetaTagsFromAPI()));
+        $metaTags = implode(LF, $this->renderMetaTagsFromAPI());
         $markerArray = $this->getPreparedMarkerArray($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs, $metaTags);
         $template = $this->getTemplate();
 
@@ -1823,12 +1580,8 @@ class PageRenderer implements SingletonInterface
         string $reasonPhrase = '',
     ): ResponseInterface {
         $stream = $this->streamFactory->createStream($this->render());
-        $contentType = 'text/html';
-        if ($this->charSet) {
-            $contentType .= '; charset=' . $this->charSet;
-        }
         return $this->responseFactory->createResponse($code, $reasonPhrase)
-            ->withHeader('Content-Type', $contentType)
+            ->withHeader('Content-Type', 'text/html; charset=utf-8')
             ->withBody($stream);
     }
 
@@ -1888,7 +1641,7 @@ class PageRenderer implements SingletonInterface
             '<!-- ###JS_INLINE' . $substituteHash . '### -->' => $jsInline,
             '<!-- ###JS_INCLUDE' . $substituteHash . '### -->' => $jsFiles,
             '<!-- ###JS_LIBS' . $substituteHash . '### -->' => $jsLibs,
-            '<!-- ###META' . $substituteHash . '### -->' => implode(LF, array_merge($this->metaTags, $this->renderMetaTagsFromAPI())),
+            '<!-- ###META' . $substituteHash . '### -->' => implode(LF, $this->renderMetaTagsFromAPI()),
             '<!-- ###HEADERDATA' . $substituteHash . '### -->' => implode(LF, $this->headerData),
             '<!-- ###FOOTERDATA' . $substituteHash . '### -->' => implode(LF, $this->footerData),
             '<!-- ###JS_LIBS_FOOTER' . $substituteHash . '### -->' => $jsFooterLibs,
@@ -1912,8 +1665,6 @@ class PageRenderer implements SingletonInterface
         if ($this->docType->isXmlCompliant()) {
             $this->endingSlash = ' /';
         } else {
-            $this->metaCharsetTag = str_replace(' />', '>', $this->metaCharsetTag);
-            $this->baseUrlTag = str_replace(' />', '>', $this->baseUrlTag);
             $this->shortcutTag = str_replace(' />', '>', $this->shortcutTag);
             $this->endingSlash = '';
         }
@@ -1988,9 +1739,7 @@ class PageRenderer implements SingletonInterface
             'XMLPROLOG_DOCTYPE' => $this->xmlPrologAndDocType,
             'HTMLTAG' => $this->htmlTag,
             'HEADTAG' => $this->headTag,
-            'METACHARSET' => $this->charSet ? str_replace('|', htmlspecialchars($this->charSet), $this->metaCharsetTag) : '',
             'INLINECOMMENT' => $this->inlineComments ? LF . LF . '<!-- ' . LF . implode(LF, $this->inlineComments) . '-->' . LF . LF : '',
-            'BASEURL' => $this->baseUrl ? str_replace('|', $this->baseUrl, $this->baseUrlTag) : '',
             'SHORTCUT' => $this->favIcon ? sprintf($this->shortcutTag, htmlspecialchars($this->favIcon), $this->iconMimeType) : '',
             'CSS_LIBS' => $cssLibs,
             'CSS_INCLUDE' => $cssFiles,
@@ -2006,6 +1755,8 @@ class PageRenderer implements SingletonInterface
             'JS_INCLUDE_FOOTER' => $jsFooterFiles,
             'JS_INLINE_FOOTER' => $jsFooterInline,
             'BODY' => $this->bodyContent,
+            // @internal
+            'TRAILING_SLASH_FOR_SELF_CLOSING_TAG' => $this->endingSlash ? ' ' . $this->endingSlash : '',
         ];
         $markerArray = array_map(static fn ($item) => (trim((string)$item)), $markerArray);
         return $markerArray;
@@ -2023,9 +1774,7 @@ class PageRenderer implements SingletonInterface
             'XMLPROLOG_DOCTYPE' => $this->xmlPrologAndDocType,
             'HTMLTAG' => $this->htmlTag,
             'HEADTAG' => $this->headTag,
-            'METACHARSET' => $this->charSet ? str_replace('|', htmlspecialchars($this->charSet), $this->metaCharsetTag) : '',
             'INLINECOMMENT' => $this->inlineComments ? LF . LF . '<!-- ' . LF . implode(LF, $this->inlineComments) . '-->' . LF . LF : '',
-            'BASEURL' => $this->baseUrl ? str_replace('|', $this->baseUrl, $this->baseUrlTag) : '',
             'SHORTCUT' => $this->favIcon ? sprintf($this->shortcutTag, htmlspecialchars($this->favIcon), $this->iconMimeType) : '',
             'META' => '<!-- ###META' . $substituteHash . '### -->',
             'BODY' => $this->bodyContent,
@@ -2041,6 +1790,8 @@ class PageRenderer implements SingletonInterface
             'JS_LIBS_FOOTER' => '<!-- ###JS_LIBS_FOOTER' . $substituteHash . '### -->',
             'JS_INCLUDE_FOOTER' => '<!-- ###JS_INCLUDE_FOOTER' . $substituteHash . '### -->',
             'JS_INLINE_FOOTER' => '<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->',
+            // @internal
+            'TRAILING_SLASH_FOR_SELF_CLOSING_TAG' => $this->endingSlash ? ' ' . $this->endingSlash : '',
         ];
         $markerArray = array_map(static fn ($item) => (trim((string)$item)), $markerArray);
         return $markerArray;
@@ -2054,11 +1805,6 @@ class PageRenderer implements SingletonInterface
         $templateFile = GeneralUtility::getFileAbsFileName($this->templateFile);
         if (is_file($templateFile)) {
             $template = (string)file_get_contents($templateFile);
-            // @todo remove the condition and the body with TYPO3 v13.
-            // @todo Belongs to Deprecation-99685-RemoveLineBreaksFromTemplate.rst
-            if ($this->removeLineBreaksFromTemplate) {
-                $template = strtr($template, [LF => '', CR => '']);
-            }
         } else {
             $template = '';
         }
@@ -2158,27 +1904,6 @@ class PageRenderer implements SingletonInterface
             $this->includeLanguageFileForInline($languageLabelFile['fileRef'], $languageLabelFile['selectionPrefix'], $languageLabelFile['stripFromSelectionName']);
         }
         $this->inlineLanguageLabelFiles = [];
-        // Convert settings back to UTF-8 since json_encode() only works with UTF-8:
-        if ($this->charSet !== 'utf-8' && is_array($this->inlineSettings)) {
-            $this->convertCharsetRecursivelyToUtf8($this->inlineSettings, $this->charSet);
-        }
-    }
-
-    /**
-     * Small helper function to convert charsets for arrays into utf-8
-     *
-     * @param mixed $data given by reference (string/array usually)
-     * @param string $fromCharset convert FROM this charset
-     */
-    protected function convertCharsetRecursivelyToUtf8(&$data, string $fromCharset)
-    {
-        foreach ($data as $key => $value) {
-            if (is_array($data[$key])) {
-                $this->convertCharsetRecursivelyToUtf8($data[$key], $fromCharset);
-            } elseif (is_string($data[$key])) {
-                $data[$key] = mb_convert_encoding($data[$key], 'utf-8', $fromCharset);
-            }
-        }
     }
 
     /**
@@ -2822,17 +2547,12 @@ class PageRenderer implements SingletonInterface
             'xmlPrologAndDocType' => &$this->xmlPrologAndDocType,
             'htmlTag' => &$this->htmlTag,
             'headTag' => &$this->headTag,
-            'charSet' => &$this->charSet,
-            'metaCharsetTag' => &$this->metaCharsetTag,
             'shortcutTag' => &$this->shortcutTag,
             'inlineComments' => &$this->inlineComments,
-            'baseUrl' => &$this->baseUrl,
-            'baseUrlTag' => &$this->baseUrlTag,
             'favIcon' => &$this->favIcon,
             'iconMimeType' => &$this->iconMimeType,
             'titleTag' => &$this->titleTag,
             'title' => &$this->title,
-            'metaTags' => &$this->metaTags,
             'jsFooterInline' => &$jsFooterInline,
             'jsFooterLibs' => &$jsFooterLibs,
             'bodyContent' => &$this->bodyContent,
@@ -2888,7 +2608,7 @@ class PageRenderer implements SingletonInterface
         //   since this is not needed and may lead to validation errors in the future.
         // * Whenever XHTML gets disabled, remove the "text/javascript" type from the wrap
         //   since this is not needed and may lead to validation errors in the future.
-        if ($this->docType !== DocType::html5 || $this->renderXhtml) {
+        if ($this->docType !== DocType::html5 || $this->docType->isXmlCompliant()) {
             $attributes['type'] = 'text/javascript';
         }
 
