@@ -24,6 +24,7 @@ The following PHP classes that have previously been marked as deprecated for v12
 - :php:`\TYPO3\CMS\Core\Exception\MissingTsfeException`
 - :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
 - :php:`\TYPO3\CMS\Core\TypoScript\TemplateService`
+- :php:`\TYPO3\CMS\Core\Utility\ResourceUtility`
 - :php:`\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher`
 - :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin`
 

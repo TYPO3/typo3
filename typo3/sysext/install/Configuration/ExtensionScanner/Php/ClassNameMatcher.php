@@ -1983,6 +1983,7 @@ return [
     'TYPO3\CMS\Core\Utility\ResourceUtility' => [
         'restFiles' => [
             'Deprecation-97576-TYPO3CMSCoreUtilityResourceUtility.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Mail\MailerAdapterInterface' => [
