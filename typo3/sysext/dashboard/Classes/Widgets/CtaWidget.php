@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Concrete CTA button implementation
@@ -44,8 +43,6 @@ class CtaWidget implements WidgetInterface, RequestAwareWidgetInterface
     public function __construct(
         private readonly WidgetConfigurationInterface $configuration,
         private readonly BackendViewFactory $backendViewFactory,
-        // @deprecated since v12, will be removed in v13 together with services 'dashboard.views.widget' and Factory
-        protected readonly ?StandaloneView $view = null,
         private readonly ?ButtonProviderInterface $buttonProvider = null,
         array $options = [],
     ) {

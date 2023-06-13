@@ -25,6 +25,7 @@ The following PHP classes that have previously been marked as deprecated for v12
 - :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
 - :php:`\TYPO3\CMS\Core\TypoScript\TemplateService`
 - :php:`\TYPO3\CMS\Core\Utility\ResourceUtility`
+- :php:`\TYPO3\CMS\Dashboard\Views\Factory`
 - :php:`\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher`
 - :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin`
 
@@ -233,6 +234,10 @@ The following module configuration have been removed:
 The following command line options have been removed:
 
 - :bash:`a:command --option`
+
+The following dependency injection service aliases have been removed:
+
+- :yaml:`@dashboard.views.widget`
 
 Impact
 ======

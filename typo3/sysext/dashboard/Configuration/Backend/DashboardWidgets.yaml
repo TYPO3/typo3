@@ -55,15 +55,6 @@ services:
       $link: 'https://docs.typo3.org/m/typo3/reference-tsconfig/main/en-us/Index.html'
       $target: '_blank'
 
-  dashboard.views.widget:
-    class: 'TYPO3\CMS\Fluid\View\StandaloneView'
-    public: true
-    factory: ['TYPO3\CMS\Dashboard\Views\Factory', 'widgetTemplate']
-    deprecated:
-      package: 'typo3/cms-dashboard'
-      version: '12.0'
-      message: 'Injection of "%service_id%" should not be injected due to a dependency to ServerRequestInterface. Inject BackendViewFactory instead and implement RequestAwareWidgetInterface.'
-
   dashboard.widget.t3news:
     class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
     arguments:

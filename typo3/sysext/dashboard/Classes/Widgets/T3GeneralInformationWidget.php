@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Concrete TYPO3 information widget
@@ -37,8 +36,6 @@ class T3GeneralInformationWidget implements WidgetInterface, RequestAwareWidgetI
     public function __construct(
         private readonly WidgetConfigurationInterface $configuration,
         private readonly BackendViewFactory $backendViewFactory,
-        // @deprecated since v12, will be removed in v13 together with services 'dashboard.views.widget' and Factory
-        protected readonly ?StandaloneView $view = null,
         private readonly array $options = [],
     ) {
     }
