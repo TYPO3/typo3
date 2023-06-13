@@ -57,50 +57,6 @@ class DebugUtility
     }
 
     /**
-     * Opens a debug message inside a popup window
-     * @deprecated since v12, will be removed in v13.
-     */
-    public static function debugInPopUpWindow(mixed $debugVariable, string $header = 'Debug', string $group = 'Debug'): void
-    {
-        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.', E_USER_DEPRECATED);
-        $debugString = self::renderDump($debugVariable, sprintf('%s (%s)', $header, $group));
-        $script = '
-			(function debug() {
-				var debugMessage = ' . GeneralUtility::quoteJSvalue($debugString) . ',
-					header = ' . GeneralUtility::quoteJSvalue($header) . ',
-					group = ' . GeneralUtility::quoteJSvalue($group) . ',
-
-					browserWindow = function(debug, header, group) {
-						var newWindow = window.open("", "TYPO3DebugWindow_" + group,
-							"width=600,height=400,menubar=0,toolbar=1,status=0,scrollbars=1,resizable=1"
-						);
-						if (newWindow.document.body.innerHTML) {
-							newWindow.document.body.innerHTML = newWindow.document.body.innerHTML + debugMessage;
-						} else {
-							newWindow.document.writeln(
-								"<html><head><title>Debug: " + header + "(" + group + ")</title></head>"
-								+ "<body onload=\\"self.focus()\\">"
-								+ debugMessage
-								+ "</body></html>"
-							);
-						}
-					};
-
-				if (top && typeof top.TYPO3 !== "undefined" && typeof top.TYPO3.Modal !== "undefined") {
-					top.TYPO3.Modal.show(
-						"Debug: " + header + " (" + group + ")",
-						document.createRange().createContextualFragment(debugMessage),
-						top.TYPO3.Severity.notice
-					);
-				} else {
-					browserWindow(debugMessage, header, group);
-				}
-			})();
-		';
-        echo GeneralUtility::wrapJS($script, ['nonce' => self::resolveNonceValue()]);
-    }
-
-    /**
      * Displays the "path" of the function call stack in a string, using debug_backtrace
      *
      * @param bool $prependFileNames If set to true file names are added to the output
@@ -126,19 +82,6 @@ class DebugUtility
             }
         }
         return implode(' // ', $path);
-    }
-
-    /**
-     * Displays an array as rows in a table. Useful to debug output like an array of database records.
-     *
-     * @param array $rows Array of arrays with similar keys
-     * @param string $header Table header
-     * @deprecated since v12, will be removed in v13.
-     */
-    public static function debugRows(array $rows, string $header = ''): void
-    {
-        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 in favor of ' . __CLASS__ . '::debug and will be removed with v13.', E_USER_DEPRECATED);
-        self::debug($rows, $header);
     }
 
     /**
@@ -171,19 +114,6 @@ class DebugUtility
     public static function viewArray(mixed $array_in): string
     {
         return self::renderDump($array_in);
-    }
-
-    /**
-     * Prints an array
-     *
-     * @param mixed $array_in Array to print visually (in a table).
-     * @see viewArray()
-     * @deprecated since v12, will be removed in v13.
-     */
-    public static function printArray(mixed $array_in): void
-    {
-        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 in favor of ' . __CLASS__ . '::viewArray and will be removed with v13.', E_USER_DEPRECATED);
-        echo self::renderDump($array_in);
     }
 
     /**

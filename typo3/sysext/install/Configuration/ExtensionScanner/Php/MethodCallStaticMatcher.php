@@ -1527,6 +1527,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-100653-DeprecatedSomeMethodsInDebugUtility.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\DebugUtility::printArray' => [
@@ -1534,6 +1535,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-100653-DeprecatedSomeMethodsInDebugUtility.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\DebugUtility::debugInPopUpWindow' => [
@@ -1541,6 +1543,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-100653-DeprecatedSomeMethodsInDebugUtility.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];
