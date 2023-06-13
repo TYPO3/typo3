@@ -48,8 +48,44 @@ The following PHP interfaces changed:
 
 The following PHP class aliases that have previously been marked as deprecated for v12 and were now removed:
 
+- :php:`\TYPO3\CMS\Backend\ElementBrowser\FileBrowser`
+- :php:`\TYPO3\CMS\Backend\ElementBrowser\FolderBrowser`
+- :php:`\TYPO3\CMS\Backend\Form\Element\InputLinkElement`
+- :php:`\TYPO3\CMS\Backend\Form\Element\InputDateTimeElement`
+- :php:`\TYPO3\CMS\Backend\Form\Element\InputColorPickerElement`
+- :php:`\TYPO3\CMS\Backend\Provider\PageTsBackendLayoutDataProvider`
 - :php:`\TYPO3\CMS\Frontend\Service\TypoLinkCodecService`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkResultFactory`
+- :php:`\TYPO3\CMS\Recordlist\Browser\AbstractElementBrowser`
+- :php:`\TYPO3\CMS\Recordlist\Browser\DatabaseBrowser`
+- :php:`\TYPO3\CMS\Recordlist\Browser\ElementBrowserInterface`
+- :php:`\TYPO3\CMS\Recordlist\Browser\ElementBrowserRegistry`
+- :php:`\TYPO3\CMS\Recordlist\Browser\FileBrowser`
+- :php:`\TYPO3\CMS\Recordlist\Browser\FolderBrowser`
+- :php:`\TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController`
+- :php:`\TYPO3\CMS\Recordlist\Controller\AccessDeniedException`
+- :php:`\TYPO3\CMS\Recordlist\Controller\ClearPageCacheController`
+- :php:`\TYPO3\CMS\Recordlist\Controller\ElementBrowserController`
+- :php:`\TYPO3\CMS\Recordlist\Controller\RecordListController`
+- :php:`\TYPO3\CMS\Recordlist\Controller\RecordDownloadController`
+- :php:`\TYPO3\CMS\Recordlist\Event\RenderAdditionalContentToRecordListEvent`
+- :php:`\TYPO3\CMS\Recordlist\Event\ModifyRecordListHeaderColumnsEvent`
+- :php:`\TYPO3\CMS\Recordlist\Event\ModifyRecordListRecordActionsEvent`
+- :php:`\TYPO3\CMS\Recordlist\Event\ModifyRecordListTableActionsEvent`
+- :php:`\TYPO3\CMS\Recordlist\LinkHandler\AbstractLinkHandler`
+- :php:`\TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler`
+- :php:`\TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHandler`
+- :php:`\TYPO3\CMS\Recordlist\LinkHandler\LinkHandlerInterface`
+- :php:`\TYPO3\CMS\Recordlist\LinkHandler\MailLinkHandler`
+- :php:`\TYPO3\CMS\Recordlist\LinkHandler\PageLinkHandler`
+- :php:`\TYPO3\CMS\Recordlist\LinkHandler\RecordLinkHandler`
+- :php:`\TYPO3\CMS\Recordlist\LinkHandler\TelephoneLinkHandler`
+- :php:`\TYPO3\CMS\Recordlist\LinkHandler\UrlLinkHandler`
+- :php:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList`
+- :php:`\TYPO3\CMS\Recordlist\RecordList\DownloadRecordList`
+- :php:`\TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface`
+- :php:`\TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent`
+- :php:`\TYPO3\CMS\Recordlist\View\FolderUtilityRenderer`
 
 The following PHP class methods that have previously been marked as deprecated for v12 and were now removed:
 
