@@ -34,10 +34,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected ContentObjectRenderer&MockObject $mockContentObject;
-
     protected FrontendConfigurationManager&MockObject&AccessibleObjectInterface $frontendConfigurationManager;
-
     protected TypoScriptService&MockObject $mockTypoScriptService;
 
     protected array $testTypoScriptSetup = [
@@ -99,15 +96,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->mockContentObject = $this->createMock(ContentObjectRenderer::class);
-        $this->frontendConfigurationManager = $this->getAccessibleMock(
-            FrontendConfigurationManager::class,
-            null,
-            [],
-            '',
-            false
-        );
-        $this->frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
+        $this->frontendConfigurationManager = $this->getAccessibleMock(FrontendConfigurationManager::class, null, [], '', false);
         $this->mockTypoScriptService = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $this->frontendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
         $this->frontendConfigurationManager->_set('eventDispatcher', $this->createMock(EventDispatcher::class));
@@ -475,24 +464,6 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getContentObjectReturnsInstanceOfContentObjectRenderer(): void
-    {
-        self::assertInstanceOf(ContentObjectRenderer::class, $this->frontendConfigurationManager->getContentObject());
-    }
-
-    /**
-     * @test
-     */
-    public function getContentObjectTheCurrentContentObject(): void
-    {
-        $mockContentObject = $this->createMock(ContentObjectRenderer::class);
-        $this->frontendConfigurationManager->setContentObject($mockContentObject);
-        self::assertSame($this->frontendConfigurationManager->getContentObject(), $mockContentObject);
-    }
-
-    /**
-     * @test
-     */
     public function getTypoScriptSetupReturnsSetupFromRequest(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -768,7 +739,10 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideStoragePidIfStartingPointIsSetOverridesCorrectly(): void
     {
-        $this->mockContentObject->data = ['pages' => '0', 'recursive' => 1];
+        $contentObject = new ContentObjectRenderer();
+        $contentObject->data = ['pages' => '0', 'recursive' => 1];
+        $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
+        $this->frontendConfigurationManager->setRequest($request);
 
         $pageRepositoryMock = $this->createMock(PageRepository::class);
         $pageRepositoryMock->method('getPageIdsRecursive')->willReturn([0, 1, 2, 3]);
@@ -788,7 +762,11 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideStoragePidIfStartingPointIsSetCorrectlyHandlesEmptyValuesFromPageRepository(): void
     {
-        $this->mockContentObject->data = ['pages' => '0', 'recursive' => 1];
+        $contentObject = new ContentObjectRenderer();
+        $contentObject->data = ['pages' => '0', 'recursive' => 1];
+        $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
+        $this->frontendConfigurationManager->setRequest($request);
+
         $pageRepositoryMock = $this->createMock(PageRepository::class);
         $pageRepositoryMock->method('getPageIdsRecursive')->willReturn([0]);
         $this->frontendConfigurationManager->_set('pageRepository', $pageRepositoryMock);
@@ -818,7 +796,10 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         ]);
 
         $this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
-        $this->mockContentObject->data = ['pi_flexform' => '<XML_ARRAY>'];
+        $contentObject = new ContentObjectRenderer();
+        $contentObject->data = ['pi_flexform' => '<XML_ARRAY>'];
+        $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
+        $this->frontendConfigurationManager->setRequest($request);
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
         self::assertSame(
@@ -838,7 +819,10 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         $flexFormService->expects(self::never())->method('convertFlexFormContentToArray');
 
         $this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
-        $this->mockContentObject->data = ['pi_flexform' => ''];
+        $contentObject = new ContentObjectRenderer();
+        $contentObject->data = ['pi_flexform' => ''];
+        $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
+        $this->frontendConfigurationManager->setRequest($request);
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
         self::assertSame(
@@ -858,7 +842,10 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         $flexFormService->expects(self::never())->method('convertFlexFormContentToArray');
 
         $this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
-        $this->mockContentObject->data = ['pi_flexform' => ['persistence' => ['storagePid' => '0,1,2,3']]];
+        $contentObject = new ContentObjectRenderer();
+        $contentObject->data = ['pi_flexform' => ['persistence' => ['storagePid' => '0,1,2,3']]];
+        $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
+        $this->frontendConfigurationManager->setRequest($request);
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
         self::assertSame(
@@ -878,7 +865,10 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         $flexFormService->expects(self::never())->method('convertFlexFormContentToArray');
 
         $this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
-        $this->mockContentObject->data = ['pi_flexform' => []];
+        $contentObject = new ContentObjectRenderer();
+        $contentObject->data = ['pi_flexform' => []];
+        $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
+        $this->frontendConfigurationManager->setRequest($request);
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
         self::assertSame(
@@ -899,7 +889,6 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
             '',
             false
         );
-        $frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
         $frontendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
 
         $this->mockTypoScriptService->expects(self::once())->method('convertTypoScriptArrayToPlainArray')->willReturn([

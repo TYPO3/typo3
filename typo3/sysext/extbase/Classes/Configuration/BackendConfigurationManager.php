@@ -74,11 +74,6 @@ class BackendConfigurationManager implements SingletonInterface
     protected array $configuration = [];
 
     /**
-     * @deprecated since v12. Remove in v13.
-     */
-    protected ?ContentObjectRenderer $contentObject = null;
-
-    /**
      * Name of the extension this Configuration Manager instance belongs to
      */
     protected ?string $extensionName = null;
@@ -113,26 +108,6 @@ class BackendConfigurationManager implements SingletonInterface
     public function setRequest(ServerRequestInterface $request): void
     {
         $this->request = $request;
-    }
-
-    /**
-     * @deprecated since v12. Remove in v13.
-     */
-    public function setContentObject(ContentObjectRenderer $contentObject): void
-    {
-        $this->contentObject = $contentObject;
-    }
-
-    /**
-     * @deprecated since v12. Remove in v13.
-     */
-    public function getContentObject(): ContentObjectRenderer
-    {
-        if ($this->contentObject instanceof ContentObjectRenderer) {
-            return $this->contentObject;
-        }
-        $this->contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        return $this->contentObject;
     }
 
     /**

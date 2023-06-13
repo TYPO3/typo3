@@ -74,8 +74,12 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
 
         $contentObject = new ContentObjectRenderer();
         $contentObject->data = ['pi_flexform' => $flexForm];
+        $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray([]);
+        $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
         $frontendConfigurationManager = $this->get(FrontendConfigurationManager::class);
-        $frontendConfigurationManager->setContentObject($contentObject);
+        $frontendConfigurationManager->setRequest($request);
         $frontendConfigurationManager->setConfiguration(['extensionName' => 'foo']);
 
         self::assertSame('from eventlistener', $frontendConfigurationManager->getConfiguration('foo')['settings']['foo']);
@@ -351,14 +355,14 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
         array $frameworkConfiguration,
         array $expected
     ): void {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray($frameworkConfiguration);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
-
         $contentObject = new ContentObjectRenderer();
         $contentObject->data = ['pi_flexform' => $flexFormConfiguration];
+        $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray($frameworkConfiguration);
+        $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
         $frontendConfigurationManager = $this->get(FrontendConfigurationManager::class);
-        $frontendConfigurationManager->setContentObject($contentObject);
+        $frontendConfigurationManager->setRequest($request);
         $frontendConfigurationManager->setConfiguration(['extensionName' => 'foo', 'pluginName' => 'foo']);
 
         self::assertSame($expected, $frontendConfigurationManager->getConfiguration('foo', 'foo')['settings']);

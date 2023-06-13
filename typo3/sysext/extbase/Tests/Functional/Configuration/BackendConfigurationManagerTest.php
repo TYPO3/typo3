@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendConfigurationManagerTest extends FunctionalTestCase
@@ -214,25 +213,5 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getRecursiveStoragePids'));
         $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, [1, -6], 4);
         self::assertEquals([1, 2, 4, 5, 3, 6, 7], $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function getContentObjectReturnsInstanceOfContentObjectRenderer(): void
-    {
-        $subject = $this->get(BackendConfigurationManager::class);
-        self::assertInstanceOf(ContentObjectRenderer::class, $subject->getContentObject());
-    }
-
-    /**
-     * @test
-     */
-    public function getContentObjectTheCurrentContentObject(): void
-    {
-        $subject = $this->get(BackendConfigurationManager::class);
-        $mockContentObject = $this->createMock(ContentObjectRenderer::class);
-        $subject->setContentObject($mockContentObject);
-        self::assertSame($mockContentObject, $subject->getContentObject());
     }
 }

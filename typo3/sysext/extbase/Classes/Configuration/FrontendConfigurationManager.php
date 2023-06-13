@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Event\Configuration\BeforeFlexFormConfigurationOverrideEvent;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * A general purpose configuration manager used in frontend mode.
@@ -42,12 +41,6 @@ class FrontendConfigurationManager implements SingletonInterface
      * @var array
      */
     protected $configuration = [];
-
-    /**
-     * @var ContentObjectRenderer
-     * @deprecated since v12. Remove in v13.
-     */
-    protected $contentObject;
 
     /**
      * name of the extension this Configuration Manager instance belongs to
@@ -86,26 +79,6 @@ class FrontendConfigurationManager implements SingletonInterface
     public function setRequest(ServerRequestInterface $request): void
     {
         $this->request = $request;
-    }
-
-    /**
-     * @deprecated since v12. Remove in v13.
-     */
-    public function setContentObject(ContentObjectRenderer $contentObject): void
-    {
-        $this->contentObject = $contentObject;
-    }
-
-    /**
-     * @deprecated since v12. Remove in v13.
-     */
-    public function getContentObject(): ?ContentObjectRenderer
-    {
-        if ($this->contentObject instanceof ContentObjectRenderer) {
-            return $this->contentObject;
-        }
-        $this->contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        return $this->contentObject;
     }
 
     /**
@@ -199,61 +172,7 @@ class FrontendConfigurationManager implements SingletonInterface
         /** @var ServerRequestInterface $request */
         $request = $this->request ?? $GLOBALS['TYPO3_REQUEST'];
         $frontendTypoScript = $request->getAttribute('frontend.typoscript');
-        try {
-            return $frontendTypoScript->getSetupArray();
-        } catch (\RuntimeException) {
-            // This Extbase bootstrap is executed in a context where TSFE did not calculate TS.
-            //
-            // This catch mitigates a "You're doing in wrong" case in TYPO3 v12:
-            //
-            // Extbase relies on frontend TypoScript being present; otherwise the configuration is
-            // notapplied. This is usually no problem - Extbase plugins are usually either included
-            // as USER content object (its content is cached and returned together with other
-            // content elements in fully-cached page context), or the Extbase plugin is registered
-            // as USER_INT.
-            // In this case, TSFE takes care of calculating TypoScript before the plugin is
-            // rendered, while other USER content objects are fetched from page cache.
-            //
-            // However, some people do not register Extbase as plugin content elements, but
-            // bootstrap extbase on their own in middlewares. In those cases, when the page is
-            // called a second time (and thus fetched from cache), TSFE does not prepare TypoScript
-            // since there is no USER_INT on the page. The custom middleware bootstraps Extbase and
-            // then still tries to retrieve TypoScript from the `frontend.typoscript`
-            // argument, which fails with the above exception, since TSFE did not prepare TypoScript.
-            //
-            // With TYPO3 v11, the "calling extbase in a context where TypoScript has not been
-            // calculated" scenario did not fail, but simply returned an empty array for TypoScript,
-            // crippling the configuration of the plugin in question. This is what we simulate here:
-            // Return an empty array to not be breaking.
-            //
-            // This mitigation hack will be removed in v13, though. Extension developers that run
-            // into the log message below have the following options:
-            //
-            // * Consider not using Extbase for the use case: Extbase is quite expensive. Executing
-            //   it from within middlewares can increase the parse time in fully-cached page context
-            //   significantly and should be avoided especially for "simple" things. In many cases,
-            //   directly manipulating the response object and skipping the Extbase overhead in a
-            //   middleware should be enough.
-            // * Move away from the middleware and register the Extbase instance as a casual USER_INT
-            //   object via TypoScript: Extbase is designed to be executed like this, the TSFE bootstrap
-            //   will take care of properly calculating TypoScript, and Extbase will run as expected.
-            //   Note that with TYPO3 v12, the overhead of USER_INT content objects has been reduced
-            //   significantly, since TypoScript can be fetched from improved cache layers more
-            //   quickly. This is also more resilient towards core changes since extension developers
-            //   do not need to go through the fiddly process of bootstrapping extbase on their own.
-            // * Trigger TypoScript calculation manually within the middleware: This is clumsy with
-            //   TYPO3 v12 and should only be done by developers who know exactly what they are
-            //   doing (chances are you do not!), and who are prepared to deal with problems on their
-            //   own when upgrading. TYPO3 v13 will most likely prepare better API in this area, though.
-            //
-            // @deprecated since TYPO3 v12, will be removed with TYPO3 v13, the exception will bubble up.
-            trigger_error(
-                'Using extbase in a context without TypoScript. Will stop working with TYPO3 v13. See the ' .
-                'comment in extbase FrontendConfigurationManager for more information on this.',
-                E_USER_DEPRECATED
-            );
-            return [];
-        }
+        return $frontendTypoScript->getSetupArray();
     }
 
     /**
@@ -324,8 +243,7 @@ class FrontendConfigurationManager implements SingletonInterface
      */
     protected function overrideStoragePidIfStartingPointIsSet(array $frameworkConfiguration): array
     {
-        // @deprecated: Remove fallback to $this->contentObject in v13.
-        $contentObject = $this->request?->getAttribute('currentContentObject') ?? $this->contentObject;
+        $contentObject = $this->request?->getAttribute('currentContentObject');
         $pages = (string)($contentObject->data['pages'] ?? '');
         if ($pages !== '') {
             $storagePids = GeneralUtility::intExplode(',', $pages, true);
@@ -373,8 +291,7 @@ class FrontendConfigurationManager implements SingletonInterface
      */
     protected function overrideConfigurationFromFlexForm(array $frameworkConfiguration): array
     {
-        // @todo: Remove fallback to $this->contentObject in v13.
-        $contentObject = $this->request?->getAttribute('currentContentObject') ?? $this->contentObject;
+        $contentObject = $this->request?->getAttribute('currentContentObject');
         $flexFormConfiguration = $contentObject->data['pi_flexform'] ?? [];
         if (is_string($flexFormConfiguration)) {
             if ($flexFormConfiguration !== '') {

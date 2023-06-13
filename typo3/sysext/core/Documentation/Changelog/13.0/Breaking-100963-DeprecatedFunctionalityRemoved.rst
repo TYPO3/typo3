@@ -45,7 +45,10 @@ The following PHP interfaces that have previously been marked as deprecated for 
 
 The following PHP interfaces changed:
 
+- :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface` method `getContentObject()` removed
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface` method `isFeatureEnabled()` removed
+- :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface` method `setContentObject()` removed
+- :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface` method `setRequest()` added
 
 The following PHP class aliases that have previously been marked as deprecated for v12 and were now removed:
 
@@ -101,13 +104,13 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getExtURL`
 - :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
-- :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory->get`
-- :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory->purgeInstances`
-- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility->_GET`
-- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility->_GP`
-- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility->_GPmerged`
-- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility->_POST`
+- :php:`\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager->getContentObject`
+- :php:`\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager->setContentObject`
+- :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager->getContentObject`
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager->isFeatureEnabled`
+- :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager->setContentObject`
+- :php:`\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager->getContentObject`
+- :php:`\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager->setContentObject`
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getFormat`
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getRequest`
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getTemplatePathAndFilename`
@@ -152,9 +155,15 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getThumbnailUrl`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordToolTip`
+- :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get`
+- :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::debugInPopUpWindow`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::debugRows`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::printArray`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GET`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GP`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_POST`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript`
 
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:

@@ -21,7 +21,6 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * A configuration manager following the strategy pattern. It hides the concrete
@@ -78,27 +77,6 @@ class ConfigurationManager implements ConfigurationManagerInterface
         $this->request = $request;
         // @todo: Move to getConfiguration() together with "late" creation of $this->concreteConfigurationManager
         $this->concreteConfigurationManager->setRequest($this->request);
-    }
-
-    /**
-     * @deprecated since v12. Remove in v13.
-     */
-    public function setContentObject(ContentObjectRenderer $contentObject): void
-    {
-        $this->concreteConfigurationManager->setContentObject($contentObject);
-    }
-
-    /**
-     * @deprecated since v12. Remove in v13.
-     */
-    public function getContentObject(): ?ContentObjectRenderer
-    {
-        trigger_error(
-            'ConfigurationManager->getContentObject() is deprecated since TYPO3 v12.4 and will be removed in v13.0.' .
-            ' Fetch the current content object from request attribute "currentContentObject" instead',
-            E_USER_DEPRECATED
-        );
-        return $this->concreteConfigurationManager->getContentObject();
     }
 
     /**

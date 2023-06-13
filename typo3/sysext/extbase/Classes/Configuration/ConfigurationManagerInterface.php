@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Configuration;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Class ConfigurationManagerInterface
@@ -30,16 +29,6 @@ interface ConfigurationManagerInterface extends SingletonInterface
     public const CONFIGURATION_TYPE_FRAMEWORK = 'Framework';
     public const CONFIGURATION_TYPE_SETTINGS = 'Settings';
     public const CONFIGURATION_TYPE_FULL_TYPOSCRIPT = 'FullTypoScript';
-
-    /**
-     * @deprecated since v12. Remove in v13.
-     */
-    public function setContentObject(ContentObjectRenderer $contentObject): void;
-
-    /**
-     * @deprecated since v12. Remove in v13.
-     */
-    public function getContentObject(): ?ContentObjectRenderer;
 
     /**
      * Returns the specified configuration.
@@ -80,7 +69,6 @@ interface ConfigurationManagerInterface extends SingletonInterface
      *
      * @param ServerRequestInterface $request
      * @internal Set by extbase bootstrap internally.
-     * @todo: Enable this interface method in v13.
      */
-    // public function setRequest(ServerRequestInterface $request): void;
+    public function setRequest(ServerRequestInterface $request): void;
 }

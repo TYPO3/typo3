@@ -112,12 +112,7 @@ class Bootstrap
             $request = $request->withAttribute('currentContentObject', $this->cObj);
         }
         $this->cObj->setRequest($request);
-        // @deprecated since v12. Remove in v13.
-        $this->configurationManager->setContentObject($this->cObj);
-        if (method_exists($this->configurationManager, 'setRequest')) {
-            // @todo: Avoid method_exists() when setRequest() has been added to interface.
-            $this->configurationManager->setRequest($request);
-        }
+        $this->configurationManager->setRequest($request);
         $this->configurationManager->setConfiguration($configuration);
         return $request;
         // todo: Outdated todo, recheck in v13.
