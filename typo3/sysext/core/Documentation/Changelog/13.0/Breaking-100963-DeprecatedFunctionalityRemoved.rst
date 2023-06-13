@@ -201,6 +201,7 @@ The following class constants have been dropped:
 The following global option handling have been dropped and are ignored:
 
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename']` only accepts a boolean value now
 
 The following global variables have been removed:
 

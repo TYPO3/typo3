@@ -2002,7 +2002,7 @@ class GeneralUtility
      *
      * Behaviour is influenced by the setting
      * TYPO3_CONF_VARS['BE' and 'FE'][versionNumberInFilename]
-     * = TRUE : modify filename ("embed" is also allowed until TYPO3 v13 in FE for legacy reasons)
+     * = TRUE : modify filename
      * = FALSE : add timestamp as query parameter
      *
      * @param string $file Relative path to file including all potential query parameters (not htmlspecialchared yet)
@@ -2026,14 +2026,7 @@ class GeneralUtility
         }
 
         if ($isFrontend) {
-            $configValue = $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] ?? false;
-            // Fallback layer for TYPO3 v12 - @deprecated can be removed in TYPO3 v13.0.
-            if ($configValue === 'embed') {
-                // no @deprecated warning here, as this might fill a lot of log files.
-                $configValue = true;
-            } else {
-                $configValue = $configValue === true;
-            }
+            $configValue = (bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] ?? false);
         } else {
             $configValue = (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'] ?? false);
         }

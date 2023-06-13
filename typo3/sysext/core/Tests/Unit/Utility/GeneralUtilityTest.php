@@ -3913,7 +3913,7 @@ final class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::mkdir_deep($testFileDirectory);
         touch($testFilepath);
 
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] = 'querystring';
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] = false;
         $incomingFileName = '/' . PathUtility::stripPathSitePrefix($testFilepath);
         $versionedFilename = GeneralUtility::createVersionNumberedFilename($incomingFileName);
         self::assertStringContainsString('.css?', $versionedFilename);
