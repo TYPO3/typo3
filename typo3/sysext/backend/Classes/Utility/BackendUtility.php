@@ -1212,19 +1212,6 @@ class BackendUtility
     }
 
     /**
-     * Returns the combined markup for Bootstraps tooltips
-     *
-     * @param string $table
-     * @return string
-     * @deprecated will be removed in TYPO3 v13.0 - use getRecordIconAltText directly
-     */
-    public static function getRecordToolTip(array $row, $table = 'pages')
-    {
-        trigger_error('BackendUtility::getRecordToolTip() will be removed in TYPO3 v13.0 - use getRecordIconAltText() instead', E_USER_DEPRECATED);
-        return 'title="' . self::getRecordIconAltText($row, $table) . '"';
-    }
-
-    /**
      * Returns title-attribute information for ANY record (from a table defined in TCA of course)
      * The included information depends on features of the table, but if hidden, starttime, endtime and fe_group fields are configured for, information about the record status in regard to these features are is included.
      * "pages" table can be used as well and will return the result of ->titleAttribForPages() for that page.
