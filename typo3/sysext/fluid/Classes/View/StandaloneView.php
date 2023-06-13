@@ -47,25 +47,6 @@ class StandaloneView extends AbstractTemplateView
     }
 
     /**
-     * Returns the format of the current request (defaults is "html")
-     *
-     * @return string $format
-     * @throws \RuntimeException
-     * @deprecated since v12, will be removed in v13: Views should be data sinks, not data sources. No substitution.
-     */
-    public function getFormat()
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13. Do not use StandaloneView as data source.',
-            E_USER_DEPRECATED
-        );
-        if ($this->baseRenderingContext instanceof RenderingContext) {
-            return $this->baseRenderingContext->getRequest()->getFormat();
-        }
-        throw new \RuntimeException('The rendering context must be of type ' . RenderingContext::class, 1482251887);
-    }
-
-    /**
      * @internal Currently used especially in functional tests. May change.
      */
     public function setRequest(?ServerRequestInterface $request = null): void
@@ -73,49 +54,6 @@ class StandaloneView extends AbstractTemplateView
         if ($this->baseRenderingContext instanceof RenderingContext) {
             $this->baseRenderingContext->setRequest($request);
         }
-    }
-
-    /**
-     * Returns the current request object
-     *
-     * @throws \RuntimeException
-     * @internal
-     * @deprecated since v12, will be removed in v13: Views should be data sinks, not data sources. No substitution.
-     */
-    public function getRequest(): ?ServerRequestInterface
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13. Do not use StandaloneView as data source.',
-            E_USER_DEPRECATED
-        );
-        if ($this->baseRenderingContext instanceof RenderingContext) {
-            return $this->baseRenderingContext->getRequest();
-        }
-        throw new \RuntimeException('The rendering context must be of type ' . RenderingContext::class, 1482251888);
-    }
-
-    /**
-     * Returns the absolute path to a Fluid template file if it was specified with setTemplatePathAndFilename() before.
-     * If the template filename was never specified, Fluid attempts to resolve the file based on controller and action.
-     *
-     * NB: If TemplatePaths was previously told to use the specific template path and filename it will short-circuit
-     * and return that template path and filename directly, instead of attempting to resolve it.
-     *
-     * @return string Fluid template path
-     * @deprecated since v12, will be removed in v13: Views should be data sinks, not data sources. No substitution.
-     */
-    public function getTemplatePathAndFilename()
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13. Do not use StandaloneView as data source.',
-            E_USER_DEPRECATED
-        );
-        $templatePaths = $this->baseRenderingContext->getTemplatePaths();
-        return $templatePaths->resolveTemplateFileForControllerAndActionAndFormat(
-            $this->baseRenderingContext->getControllerName(),
-            $this->baseRenderingContext->getControllerAction(),
-            $templatePaths->getFormat()
-        );
     }
 
     /**
@@ -138,7 +76,7 @@ class StandaloneView extends AbstractTemplateView
                 $this->baseRenderingContext->getControllerAction()
             );
             return true;
-        } catch (InvalidTemplateResourceException $_) {
+        } catch (InvalidTemplateResourceException) {
             return false;
         }
     }

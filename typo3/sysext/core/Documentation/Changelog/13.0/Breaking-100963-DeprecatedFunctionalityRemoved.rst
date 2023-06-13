@@ -107,6 +107,9 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility->_GPmerged`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility->_POST`
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager->isFeatureEnabled`
+- :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getFormat`
+- :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getRequest`
+- :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getTemplatePathAndFilename`
 - :php:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->getUserTSconf`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrlWrap`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkEnableFields`
