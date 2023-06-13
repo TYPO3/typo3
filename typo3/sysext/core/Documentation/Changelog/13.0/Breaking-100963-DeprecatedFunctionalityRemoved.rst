@@ -153,6 +153,7 @@ The following global variables have been removed:
 
 The following hooks have been removed:
 
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass']`
 
 The following single field configurations have been removed from TCA:

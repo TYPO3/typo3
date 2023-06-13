@@ -961,6 +961,7 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php\'][\'flushByTag\']' => [
         'restFiles' => [
             'Deprecation-99592-DeprecatedFlushByTagHook.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Lowlevel\Controller\ConfigurationController\'][\'modifyBlindedConfigurationOptions\']' => [
