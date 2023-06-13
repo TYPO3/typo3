@@ -44,9 +44,8 @@ final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTes
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['LANG'] = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
 
-        $mockScheduler = $this->getAccessibleMock(Scheduler::class, ['saveTask'], [], '', false);
+        $mockScheduler = $this->createMock(Scheduler::class);
         GeneralUtility::setSingletonInstance(Scheduler::class, $mockScheduler);
-        $mockScheduler->method('saveTask')->willReturn(false);
 
         $mockTaskRepository = $this->getMockBuilder(SchedulerTaskRepository::class)->disableOriginalConstructor()->getMock();
         GeneralUtility::addInstance(SchedulerTaskRepository::class, $mockTaskRepository);

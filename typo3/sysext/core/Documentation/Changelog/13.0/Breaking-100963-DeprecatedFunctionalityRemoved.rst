@@ -128,6 +128,18 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getMailTo`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getQueryArguments`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getTreeList`
+- :php:`\TYPO3\CMS\Scheduler\Scheduler->addTask`
+- :php:`\TYPO3\CMS\Scheduler\Scheduler->removeTask`
+- :php:`\TYPO3\CMS\Scheduler\Scheduler->saveTask`
+- :php:`\TYPO3\CMS\Scheduler\Scheduler->fetchTask`
+- :php:`\TYPO3\CMS\Scheduler\Scheduler->fetchTaskRecord`
+- :php:`\TYPO3\CMS\Scheduler\Scheduler->fetchTaskWithCondition`
+- :php:`\TYPO3\CMS\Scheduler\Scheduler->isValidTaskObject`
+- :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->isExecutionRunning`
+- :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->markExecution`
+- :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkExecution`
+- :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkAllExecutions`
+- :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->remove`
 
 The following PHP static class methods that have previously been marked as deprecated for v12 and were now removed:
 
@@ -148,6 +160,7 @@ The following PHP static class methods that have previously been marked as depre
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:
 
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode` (argument 4 :php:`$limit` has been removed)
+- :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider->addMessage` (argument 2 is now of type :php:`ContextualFeedbackSeverity`)
 
 The following public class properties have been dropped:
 

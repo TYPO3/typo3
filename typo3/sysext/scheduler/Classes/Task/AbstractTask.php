@@ -395,68 +395,6 @@ abstract class AbstractTask implements LoggerAwareInterface
     }
 
     /**
-     * Returns TRUE if an instance of the task is already running
-     *
-     * @return bool TRUE if an instance is already running, FALSE otherwise
-     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
-     */
-    public function isExecutionRunning()
-    {
-        trigger_error('AbstractTask->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(SchedulerTaskRepository::class)->isTaskMarkedAsRunning($this);
-    }
-
-    /**
-     * This method adds current execution to the execution list
-     * It also logs the execution time and mode
-     *
-     * @return int Execution id
-     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
-     */
-    public function markExecution()
-    {
-        trigger_error('AbstractTask->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(SchedulerTaskRepository::class)->addExecutionToTask($this);
-    }
-
-    /**
-     * Removes given execution from list
-     *
-     * @param int $executionID Id of the execution to remove.
-     * @param \Throwable|null $e An exception to signal a failed execution
-     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
-     */
-    public function unmarkExecution($executionID, \Throwable $e = null)
-    {
-        trigger_error('AbstractTask->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
-        if ($e instanceof \Throwable) {
-            // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
-            $failureString = serialize([
-                'code' => $e->getCode(),
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'traceString' => $e->getTraceAsString(),
-            ]);
-        } else {
-            $failureString = '';
-        }
-        GeneralUtility::makeInstance(SchedulerTaskRepository::class)->removeExecutionOfTask($this, $executionID, $failureString);
-    }
-
-    /**
-     * Clears all marked executions
-     *
-     * @return bool TRUE if the clearing succeeded, FALSE otherwise
-     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
-     */
-    public function unmarkAllExecutions()
-    {
-        trigger_error('AbstractTask->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(SchedulerTaskRepository::class)->removeAllRegisteredExecutionsForTask($this);
-    }
-
-    /**
      * Saves the details of the task to the database.
      *
      * @return bool
@@ -475,16 +413,6 @@ abstract class AbstractTask implements LoggerAwareInterface
     public function stop()
     {
         $this->execution = GeneralUtility::makeInstance(Execution::class);
-    }
-
-    /**
-     * Removes the task totally from the system.
-     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
-     */
-    public function remove()
-    {
-        trigger_error('AbstractTask->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
-        GeneralUtility::makeInstance(SchedulerTaskRepository::class)->remove($this);
     }
 
     /**

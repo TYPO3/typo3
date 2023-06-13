@@ -5548,6 +5548,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\Task\AbstractTask->markExecution' => [
@@ -5555,6 +5556,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkExecution' => [
@@ -5562,6 +5564,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkAllExecutions' => [
@@ -5569,6 +5572,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\Task\AbstractTask->remove' => [
@@ -5576,6 +5580,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\Scheduler->addTask' => [
@@ -5583,6 +5588,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\Scheduler->removeTask' => [
@@ -5590,6 +5596,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\Scheduler->saveTask' => [
@@ -5597,6 +5604,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\Scheduler->fetchTask' => [
@@ -5604,6 +5612,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\Scheduler->fetchTaskRecord' => [
@@ -5611,6 +5620,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\Scheduler->fetchTasksWithCondition' => [
@@ -5618,6 +5628,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\Scheduler->isValidTaskObject' => [
@@ -5625,6 +5636,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->setHashedPassword' => [
