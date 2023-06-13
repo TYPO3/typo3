@@ -29,6 +29,7 @@ The following PHP classes have been declared :php:`final`:
 The following PHP interfaces that have previously been marked as deprecated for v12 and were now removed:
 
 - :php:`\TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface`
+- :php:`\TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuFilterPagesHookInterface`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\TypolinkModifyLinkConfigForPageLinksHookInterface`
 - :php:`\TYPO3\CMS\Frontend\Http\UrlProcessorInterface`

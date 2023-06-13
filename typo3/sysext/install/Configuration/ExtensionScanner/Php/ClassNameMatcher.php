@@ -1936,6 +1936,7 @@ return [
             'Deprecation-97201-UnusedInterfaceForNewContentElementWizardHook.rst',
             'Breaking-97201-RemovedHookForNewContentElementWizard.rst',
             'Feature-97201-PSR-14EventForModifyingNewContentElementWizardItems.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Form\Element\InputLinkElement' => [
