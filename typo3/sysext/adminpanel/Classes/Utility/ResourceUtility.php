@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Adminpanel\Utility;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 class ResourceUtility
@@ -52,41 +51,6 @@ class ResourceUtility
                 $result['js'] .= $subResult['js'];
                 $result['css'] .= $subResult['css'];
             }
-        }
-        return $result;
-    }
-
-    public static function getAdditionalResourcesForModule(ResourceProviderInterface $module): array
-    {
-        $result = [
-            'js' => '',
-            'css' => '',
-        ];
-        foreach ($module->getJavaScriptFiles() as $file) {
-            $result['js'] .= static::getJsTag($file);
-        }
-        foreach ($module->getCssFiles() as $file) {
-            $result['css'] .= static::getCssTag($file);
-        }
-        return $result;
-    }
-
-    /**
-     * Returns a link tag with the admin panel stylesheet
-     * defined using TBE_STYLES
-     * @deprecated will be removed in TYPO3 v13.0.
-     */
-    protected static function getAdminPanelStylesheet(): string
-    {
-        $result = '';
-        if (!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
-            trigger_error(
-                '$GLOBALS[\'TBE_STYLES\'][\'stylesheets\'][\'admPanel\'] will be removed in TYPO3 v13.0. Use Admin Panel Module API ModuleInterface->getCssFiles() instead.',
-                E_USER_DEPRECATED
-            );
-            $stylesheet = GeneralUtility::locationHeaderUrl($GLOBALS['TBE_STYLES']['stylesheets']['admPanel']);
-            $result = '<link rel="stylesheet" href="' .
-                      htmlspecialchars($stylesheet, ENT_QUOTES | ENT_HTML5) . '" />';
         }
         return $result;
     }
@@ -130,7 +94,7 @@ class ResourceUtility
         $css = self::getCssTag($cssFileLocation);
 
         return [
-            'css' => $css . self::getAdminPanelStylesheet(),
+            'css' => $css,
             'js' => $js,
         ];
     }

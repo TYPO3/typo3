@@ -22,9 +22,6 @@
 			<trans-unit id="tca" resname="tca">
 				<source>$GLOBALS['TCA'] (Table configuration array)</source>
 			</trans-unit>
-			<trans-unit id="tbeStyles" resname="tbeStyles">
-				<source>$GLOBALS['TBE_STYLES'] (Skinning Styles)</source>
-			</trans-unit>
 			<trans-unit id="beUserTsConfig" resname="beUserTsConfig">
 				<source>$GLOBALS['BE_USER']-&gt;getTSConfig() (User TSconfig)</source>
 			</trans-unit>

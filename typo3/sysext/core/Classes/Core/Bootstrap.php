@@ -477,7 +477,6 @@ class Bootstrap
     public static function unsetReservedGlobalVariables()
     {
         unset($GLOBALS['TCA']);
-        unset($GLOBALS['TBE_STYLES']);
         unset($GLOBALS['BE_USER']);
     }
 

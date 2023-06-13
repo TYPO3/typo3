@@ -973,21 +973,25 @@ return [
     '$GLOBALS[\'TBE_STYLES\'][\'stylesheet\']' => [
         'restFiles' => [
             'Deprecation-100033-TBE_STYLESStylesheetAndStylesheet2.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TBE_STYLES\'][\'stylesheet2\']' => [
         'restFiles' => [
             'Deprecation-100033-TBE_STYLESStylesheetAndStylesheet2.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TBE_STYLES\'][\'skins\']' => [
         'restFiles' => [
             'Deprecation-100232-TBE_STYLESSkinningFunctionality.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TBE_STYLES\'][\'admPanel\']' => [
         'restFiles' => [
             'Deprecation-100232-TBE_STYLESSkinningFunctionality.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'getDefaultUploadFolder\']' => [

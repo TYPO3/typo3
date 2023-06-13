@@ -80,18 +80,8 @@ services:
         identifier: 'services'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:t3services'
         globalVariableKey: 'T3_SERVICES'
-        before: 'tbeStyles'
-        after: 'tca'
-
-  lowlevel.configuration.module.provider.tbestyles:
-    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider'
-    tags:
-      - name: 'lowlevel.configuration.module.provider'
-        identifier: 'tbeStyles'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:tbeStyles'
-        globalVariableKey: 'TBE_STYLES'
         before: 'userSettings'
-        after: 'services'
+        after: 'tca'
 
   lowlevel.configuration.module.provider.usersettings:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider'
@@ -101,7 +91,7 @@ services:
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:usersettings'
         globalVariableKey: 'TYPO3_USER_SETTINGS'
         before: 'pagesTypes'
-        after: 'tbeStyles'
+        after: 'services'
 
   lowlevel.configuration.module.provider.pagestypes:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\PageDoktypeProvider'

@@ -73,6 +73,7 @@ return [
     '$GLOBALS[\'TBE_STYLES\']' => [
         'restFiles' => [
             'Deprecation-100232-TBE_STYLESSkinningFunctionality.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

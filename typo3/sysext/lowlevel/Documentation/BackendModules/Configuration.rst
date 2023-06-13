@@ -36,7 +36,6 @@ The Configuration module displays various configuration settings:
 - :ref:`Global configuration <t3coreapi:typo3ConfVars>` (:php:`$GLOBALS['TYPO3_CONF_VARS']`)
 - :doc:`Table configuration array <t3tca:Index>` (:php:`$GLOBALS['TCA']`)
 - :ref:`Registered services <t3coreapi:services>` (:php:`$GLOBALS['T3_SERVICES']`)
-- :doc:`Skinning styles <t3skinning:Index>` (:php:`$GLOBALS['TBE_STYLES']`)
 - :ref:`User settings configuration <t3coreapi:user-settings>` (:php:`$GLOBALS['TYPO3_USER_SETTINGS']`)
 - :ref:`Table permissions by page type <t3coreapi:page-types-intro>`
 - :ref:`User settings <t3coreapi:be-user-configuration>` (:php:`$GLOBALS['BE_USER']->uc`)

@@ -161,7 +161,11 @@ The following global option handling have been dropped and are ignored:
 
 The following global variables have been removed:
 
-- :php:`$GLOBALS['KEY']`
+- :php:`$GLOBALS['TBE_STYLES']`
+- :php:`$GLOBALS['TBE_STYLES']['stylesheet']`
+- :php:`$GLOBALS['TBE_STYLES']['stylesheet2']`
+- :php:`$GLOBALS['TBE_STYLES']['skins']`
+- :php:`$GLOBALS['TBE_STYLES']['admPanel']`
 
 The following hooks have been removed:
 

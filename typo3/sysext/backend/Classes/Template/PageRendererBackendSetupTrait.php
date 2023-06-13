@@ -64,35 +64,10 @@ trait PageRendererBackendSetupTrait
     }
 
     /**
-     * Load all registered stylesheets from $GLOBALS['TBE_STYLES'] "API"
+     * Load all registered stylesheets from $GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets']
      */
     protected function loadStylesheets(PageRenderer $pageRenderer): void
     {
-        if (!empty($GLOBALS['TBE_STYLES']['stylesheet'])) {
-            trigger_error(
-                '$GLOBALS[\'TBE_STYLES\'][\'stylesheet\'] will be removed in TYPO3 v13.0. Use $GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'stylesheets\'] instead.',
-                E_USER_DEPRECATED
-            );
-            $pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheet']);
-        }
-        if (!empty($GLOBALS['TBE_STYLES']['stylesheet2'])) {
-            trigger_error(
-                '$GLOBALS[\'TBE_STYLES\'][\'stylesheet2\'] will be removed in TYPO3 v13.0. Use $GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'stylesheets\'] instead.',
-                E_USER_DEPRECATED
-            );
-            $pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheet2']);
-        }
-        // Add all *.css files of the directory $path to the stylesheets
-        foreach ($this->getRegisteredStylesheetFolders() as $folder) {
-            trigger_error(
-                '$GLOBALS[\'TBE_STYLES\'][\'skins\'][\'stylesheetDirectories\'] will be removed in TYPO3 v13.0. Use $GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'stylesheets\'] instead.',
-                E_USER_DEPRECATED
-            );
-            // Read all files in directory and sort them alphabetically
-            foreach (GeneralUtility::getFilesInDir($folder, 'css', true) as $cssFile) {
-                $pageRenderer->addCssFile($cssFile);
-            }
-        }
         foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets'] ?? [] as $path) {
             $path = GeneralUtility::getFileAbsFileName($path);
             if (!$path) {
@@ -108,24 +83,6 @@ trait PageRendererBackendSetupTrait
                 $pageRenderer->addCssFile($path);
             }
         }
-    }
-
-    /**
-     * Return an array of all stylesheet directories registered via $GLOBAlS['TBE_STYLES']['skins'].
-     * @deprecated will be removed in TYPO3 v13.0. Use $GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets'] instead.
-     */
-    protected function getRegisteredStylesheetFolders(): array
-    {
-        $stylesheetDirectories = [];
-        foreach ($GLOBALS['TBE_STYLES']['skins'] ?? [] as $skin) {
-            foreach ($skin['stylesheetDirectories'] ?? [] as $stylesheetDir) {
-                $directory = GeneralUtility::getFileAbsFileName($stylesheetDir);
-                if (!empty($directory)) {
-                    $stylesheetDirectories[] = $directory;
-                }
-            }
-        }
-        return $stylesheetDirectories;
     }
 
     /**
