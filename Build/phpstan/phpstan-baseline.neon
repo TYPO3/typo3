@@ -1241,11 +1241,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
 
 		-
-			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:\\$where_hid_del\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/FunctionalDeprecated/Domain/Repository/PageRepositoryTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$data of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\Typo3DatabaseBackend\\:\\:set\\(\\) expects string, array\\<int, string\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/Typo3DatabaseBackendTest.php

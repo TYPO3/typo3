@@ -1339,11 +1339,13 @@ return [
     'TYPO3\CMS\Core\Domain\Repository\PageRepository->where_hid_del' => [
         'restFiles' => [
             'Deprecation-99588-PublicPropertiesInPageRepository.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Domain\Repository\PageRepository->where_groupAccess' => [
         'restFiles' => [
             'Deprecation-99588-PublicPropertiesInPageRepository.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->lastLogin_column' => [

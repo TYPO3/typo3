@@ -1999,6 +1999,7 @@ return [
             'Breaking-98303-RemovedHooksForLanguageOverlaysInPageRepository.rst',
             'Deprecation-98303-InterfacesForPageRepositoryLanguageOverlayHooks.rst',
             'Feature-98303-PSR-14EventsForModifyingLanguageOverlays.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetRecordOverlayHookInterface' => [
@@ -2006,6 +2007,7 @@ return [
             'Breaking-98303-RemovedHooksForLanguageOverlaysInPageRepository.rst',
             'Deprecation-98303-InterfacesForPageRepositoryLanguageOverlayHooks.rst',
             'Feature-98303-PSR-14EventsForModifyingLanguageOverlays.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Plugin\AbstractPlugin' => [

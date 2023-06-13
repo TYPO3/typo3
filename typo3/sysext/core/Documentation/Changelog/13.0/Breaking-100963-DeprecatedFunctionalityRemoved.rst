@@ -39,6 +39,8 @@ The following PHP interfaces that have previously been marked as deprecated for 
 - :php:`\TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface`
 - :php:`\TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface`
 - :php:`\TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherInterface`
+- :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageOverlayHookInterface`
+- :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetRecordOverlayHookInterface`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuFilterPagesHookInterface`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\TypolinkModifyLinkConfigForPageLinksHookInterface`
 - :php:`\TYPO3\CMS\Frontend\Http\UrlProcessorInterface`
@@ -187,7 +189,7 @@ The following public class properties have been dropped:
 
 The following class methods visibility have been changed to protected:
 
-- :php:`\Full\Class\Name->methodName`
+- :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getRecordOverlay`
 
 The following class methods visibility have been changed to private:
 
@@ -195,6 +197,8 @@ The following class methods visibility have been changed to private:
 
 The following class properties visibility have been changed to protected:
 
+- :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->where_hid_del`
+- :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->where_groupAccess`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->type`
 
 The following class properties visibility have been changed to private:

@@ -20,8 +20,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -62,40 +60,23 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class PageRepository implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-    use PublicMethodDeprecationTrait;
-    use PublicPropertyDeprecationTrait;
-
-    private array $deprecatedPublicMethods = [
-        'getRecordOverlay' => 'Using PageRepository::getRecordOverlay() is deprecated and will not be possible anymore in TYPO3 v13.0. Use PageRepository:getLanguageOverlay() instead.',
-    ];
-
-    private array $deprecatedPublicProperties = [
-        'where_hid_del' => 'Using PageRepository->where_hid_del is deprecated and will not be possible anymore in TYPO3 v13.0. Use a custom Context API and QueryRestrictions to modify a database query.',
-        'where_groupAccess' => 'Using PageRepository->where_groupAccess is deprecated and will not be possible anymore in TYPO3 v13.0. Use a custom Context API and QueryRestrictions to modify a database query.',
-    ];
 
     /**
      * This is not the final clauses. There will normally be conditions for the
      * hidden, starttime and endtime fields as well. You MUST initialize the object
      * by the init() function
-     *
-     * @var string
      */
-    protected $where_hid_del = ' AND pages.deleted=0';
+    protected string $where_hid_del = ' AND pages.deleted=0';
 
     /**
      * Clause for fe_group access
-     *
-     * @var string
      */
-    protected $where_groupAccess = '';
+    protected string $where_groupAccess = '';
 
     /**
      * Can be migrated away later to use context API directly.
-     *
-     * @var int
      */
-    protected $sys_language_uid = 0;
+    protected int $sys_language_uid = 0;
 
     /**
      * Can be migrated away later to use context API directly.
@@ -103,17 +84,13 @@ class PageRepository implements LoggerAwareInterface
      * If > 0, versioning preview of other record versions is allowed. THIS MUST
      * ONLY BE SET IF the page is not cached and truly previewed by a backend
      * user!
-     *
-     * @var int
      */
-    protected $versioningWorkspaceId = 0;
+    protected int $versioningWorkspaceId = 0;
 
     /**
      * Computed properties that are added to database rows.
-     *
-     * @var array
      */
-    protected $computedPropertyNames = [
+    protected array $computedPropertyNames = [
         '_LOCALIZED_UID',
         '_MP_PARAM',
         '_ORIG_uid',
@@ -145,10 +122,7 @@ class PageRepository implements LoggerAwareInterface
     public const SHORTCUT_MODE_RANDOM_SUBPAGE = 2;
     public const SHORTCUT_MODE_PARENT_PAGE = 3;
 
-    /**
-     * @var Context
-     */
-    protected $context;
+    protected Context $context;
 
     /**
      * PageRepository constructor to set the base context, this will effectively remove the necessity for
@@ -680,23 +654,12 @@ class PageRepository implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param array $row Record to overlay. Must contain uid, pid and $table]['ctrl']['languageField']
-     * @param LanguageAspect|int|null $languageAspect Pointer to the site language id for content on the site.
-     * @param string $OLmode Overlay mode. If "hideNonTranslated" then records without translation will not be returned  un-translated but unset (and return value is NULL) - will be removed in TYPOO3 v13.0.
+     * @param LanguageAspect $languageAspect
      * @throws \UnexpectedValueException
      * @return array|null Returns the input record, possibly overlaid with a translation. But if overlays are not mixed ("fallback to default language") then it will return NULL if no translation is found.
      */
-    protected function getRecordOverlay(string $table, array $row, $languageAspect = null, $OLmode = '')
+    protected function getRecordOverlay(string $table, array $row, LanguageAspect $languageAspect)
     {
-        // Kept for backwards-compatibility, can be removed in TYPO3 v13.0.
-        if (is_int($languageAspect)) {
-            $OLmode = func_get_args()[3] ?? '';
-            $languageAspect = new LanguageAspect(
-                $languageAspect,
-                $languageAspect,
-                ($OLmode === 'hideNonTranslated' ? LanguageAspect::OVERLAYS_ON_WITH_FLOATING : ($OLmode ? LanguageAspect::OVERLAYS_MIXED : LanguageAspect::OVERLAYS_OFF))
-            );
-        }
-        $languageAspect ??= $this->context->getAspect('language');
         // Early return when no overlays are needed
         if ($languageAspect->getOverlayType() === $languageAspect::OVERLAYS_OFF) {
             return $row;
