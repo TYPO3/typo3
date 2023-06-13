@@ -225,6 +225,10 @@ The following events have been removed:
 
 - :php:`\TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent`
 
+The following fallbacks have been removed:
+
+- Usage of the :file:`ext_icon.*` file locations for extension icons
+
 The following features are now always enabled:
 
 - `the.feature.name`
