@@ -189,7 +189,7 @@ The following TypoScript options have been dropped or adapted:
 
 The following constants have been dropped:
 
-- :php:`CONSTANT_NAME`
+- :php:`TYPO3_mainDir`
 
 The following class constants have been dropped:
 

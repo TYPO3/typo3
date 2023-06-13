@@ -94,12 +94,6 @@ class SystemEnvironmentBuilder
         // This is a security measure to prevent script output if those files are located within document root and
         // called directly without bootstrap and error handling setup.
         defined('TYPO3') ?: define('TYPO3', true);
-
-        // Relative path from document root to typo3/ directory, hardcoded to "typo3/"
-        // @deprecated: will be removed in TYPO3 v13.0
-        if (!defined('TYPO3_mainDir')) {
-            define('TYPO3_mainDir', 'typo3/');
-        }
     }
 
     /**

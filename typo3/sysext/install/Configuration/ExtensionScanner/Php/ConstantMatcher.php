@@ -286,6 +286,7 @@ return [
     'TYPO3_mainDir' => [
         'restFiles' => [
             'Deprecation-98283-PHPConstantTYPO3_mainDir.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];
