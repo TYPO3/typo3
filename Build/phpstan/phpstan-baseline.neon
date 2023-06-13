@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\TypoScript\\\\ConditionMatching\\\\AbstractConditionMatcher\\:\\:\\$pageId \\(int\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Configuration/TypoScript/ConditionMatching/ConditionMatcher.php
-
-		-
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\Exception\\\\ResourceNotFoundException is never thrown in the try block\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php

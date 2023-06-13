@@ -2258,31 +2258,37 @@ return [
     'TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherInterface' => [
         'restFiles' => [
             'Deprecation-100047-DeprecatedConditionMatcherClasses.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher' => [
         'restFiles' => [
             'Deprecation-100047-DeprecatedConditionMatcherClasses.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher' => [
         'restFiles' => [
             'Deprecation-100047-DeprecatedConditionMatcherClasses.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher' => [
         'restFiles' => [
             'Deprecation-100047-DeprecatedConditionMatcherClasses.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Exception\MissingTsfeException' => [
         'restFiles' => [
             'Deprecation-100237-TypoScriptRelatedExceptions.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException' => [
         'restFiles' => [
             'Deprecation-100237-TypoScriptRelatedExceptions.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\BrowseTreeView' => [
