@@ -455,16 +455,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $data The record data that is rendered.
      * @param string $table The table that the data record is from.
      */
-    public function start($data, $table = '', ?ServerRequestInterface $request = null)
+    public function start($data, $table = '')
     {
-        if ($request !== null) {
-            // @deprecated since TYPO3 v12, will be removed with v13: Remove third method argument and remove if() with body.
-            trigger_error(
-                'Do not provide $request as third argument to start(). Call setRequest() before, instead.',
-                E_USER_DEPRECATED
-            );
-            $this->request = $request;
-        }
         $this->data = $data;
         $this->table = $table;
         $this->currentRecord = $table !== ''

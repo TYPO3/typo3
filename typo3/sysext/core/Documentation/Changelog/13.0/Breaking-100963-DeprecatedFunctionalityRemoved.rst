@@ -175,6 +175,7 @@ The following PHP static class methods that have previously been marked as depre
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:
 
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode` (argument 4 :php:`$limit` has been removed)
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->start` (argument 3 :php:`$request` has been removed)
 - :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider->addMessage` (argument 2 is now of type :php:`ContextualFeedbackSeverity`)
 
 The following public class properties have been dropped:
