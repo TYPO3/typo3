@@ -288,12 +288,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected bool $no_cacheBeforePageGen = false;
 
     /**
-     * May be set to the pagesTSconfig
-     * @internal
-     */
-    protected ?array $pagesTSconfig = null;
-
-    /**
      * Eg. insert JS-functions in this array ($additionalHeaderData) to include them
      * once. Use associative keys.
      *
