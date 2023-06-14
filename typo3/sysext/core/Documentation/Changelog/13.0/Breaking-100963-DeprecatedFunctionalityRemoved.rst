@@ -15,6 +15,7 @@ The following PHP classes that have previously been marked as deprecated for v12
 
 - :php:`\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher`
 - :php:`\TYPO3\CMS\Backend\EventListener\SilentSiteLanguageFlagMigration`
+- :php:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\HelpButton`
 - :php:`\TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader`
 - :php:`\TYPO3\CMS\Core\Configuration\PageTsConfig`
 - :php:`\TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser`
@@ -31,6 +32,8 @@ The following PHP classes that have previously been marked as deprecated for v12
 - :php:`\TYPO3\CMS\Dashboard\Views\Factory`
 - :php:`\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher`
 - :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin`
+- :php:`\TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons\CshViewHelper`
+- :php:`\TYPO3\CMS\Fluid\ViewHelpers\Be\Labels\CshViewHelper`
 
 The following PHP classes have been declared :php:`final`:
 
@@ -98,6 +101,7 @@ The following PHP class aliases that have previously been marked as deprecated f
 
 The following PHP class methods that have previously been marked as deprecated for v12 and were now removed:
 
+- :php:`\TYPO3\CMS\Backend\Template\Components\ButtonBar->makeHelpButton`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getBodyTag`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getDynamicTabMenu`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getView`
@@ -153,6 +157,7 @@ The following PHP class methods that have previously been marked as deprecated f
 The following PHP static class methods that have previously been marked as deprecated for v12 and were now removed:
 
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::ADMCMD_previewCmds`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::cshItem`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getDropdownMenu`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu`
@@ -166,6 +171,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::debugInPopUpWindow`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::debugRows`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::printArray`
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GET`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GP`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged`
@@ -216,7 +222,8 @@ The following eID entrypoints have been removed:
 
 The following ViewHelpers have been changed or removed:
 
-- :html:`<f:helper.name>` Argument "foo" dropped
+- :html:`<f:be.buttons.csh>` removed
+- :html:`<f:be.labels.csh>` removed
 
 The following TypoScript options have been dropped or adapted:
 
@@ -249,6 +256,7 @@ The following global variables have been removed:
 - :php:`$GLOBALS['TBE_STYLES']['stylesheet2']`
 - :php:`$GLOBALS['TBE_STYLES']['skins']`
 - :php:`$GLOBALS['TBE_STYLES']['admPanel']`
+- :php:`$GLOBALS['TCA_DESCR']`
 
 The following hooks have been removed:
 

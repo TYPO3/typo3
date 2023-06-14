@@ -5246,6 +5246,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-97312-DeprecateCSH-relatedMethods.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->andX' => [

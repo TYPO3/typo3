@@ -1891,33 +1891,6 @@ class BackendUtility
         return implode(',', array_unique($fields));
     }
 
-    /*******************************************
-     *
-     * Backend Modules API functions
-     *
-     *******************************************/
-
-    /**
-     * API for getting CSH icons/text for use in backend modules.
-     * TCA_DESCR will be loaded if it isn't already
-     *
-     * @param string $table Table name ('_MOD_'+module name)
-     * @param string $field Field name (CSH locallang main key)
-     * @param string $_ (unused)
-     * @param string $wrap Wrap code for icon-mode, splitted by "|". Not used for full-text mode.
-     * @return string HTML content for help text
-     *
-     * @deprecated The functionality has been removed in v12. The method will be removed in TYPO3 v13.
-     */
-    public static function cshItem($table, $field, $_ = '', $wrap = '')
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' is returning an empty string in TYPO3 v12 and will be removed in TYPO3 v13.0.',
-            E_USER_DEPRECATED
-        );
-        return '';
-    }
-
     /**
      * Makes click menu link (context sensitive menu)
      *

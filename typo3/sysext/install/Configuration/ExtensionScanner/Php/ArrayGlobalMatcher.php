@@ -61,6 +61,7 @@ return [
     '$GLOBALS[\'TCA_DESCR\']' => [
         'restFiles' => [
             'Breaking-97312-RemoveContextSensitiveHelp.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'PAGES_TYPES\']' => [

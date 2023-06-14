@@ -1974,6 +1974,7 @@ return [
     'TYPO3\CMS\Backend\Template\Components\Buttons\Action\HelpButton' => [
         'restFiles' => [
             'Deprecation-97312-DeprecateCSH-relatedMethods.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Http\UrlProcessorInterface' => [
