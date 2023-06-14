@@ -74,7 +74,6 @@ return [
             'redirects.hitCount' => false,
             'security.backend.htmlSanitizeRte' => false,
             'security.backend.enforceReferrer' => true,
-            'security.backend.enforceContentSecurityPolicy' => false,
             'security.frontend.enforceContentSecurityPolicy' => false,
             'security.usePasswordPolicyForFrontendUsers' => false,
         ],

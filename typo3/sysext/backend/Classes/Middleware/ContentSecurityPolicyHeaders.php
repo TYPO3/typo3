@@ -23,7 +23,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
@@ -38,7 +37,6 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
 final class ContentSecurityPolicyHeaders implements MiddlewareInterface
 {
     public function __construct(
-        private readonly Features $features,
         private readonly RequestId $requestId,
         private readonly LoggerInterface $logger,
         private readonly FrontendInterface $cache,
@@ -50,10 +48,6 @@ final class ContentSecurityPolicyHeaders implements MiddlewareInterface
     {
         $request = $request->withAttribute('nonce', new ConsumableString($this->requestId->nonce->b64));
         $response = $handler->handle($request);
-
-        if (!$this->features->isFeatureEnabled('security.backend.enforceContentSecurityPolicy')) {
-            return $response;
-        }
 
         $scope = Scope::backend();
         if ($response->hasHeader('Content-Security-Policy') || $response->hasHeader('Content-Security-Policy-Report-Only')) {

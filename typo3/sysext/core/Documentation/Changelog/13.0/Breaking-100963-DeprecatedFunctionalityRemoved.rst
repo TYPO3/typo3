@@ -369,7 +369,7 @@ The following fallbacks have been removed:
 
 The following features are now always enabled:
 
-- `the.feature.name`
+- `security.backend.enforceContentSecurityPolicy`
 
 The following features have been removed:
 

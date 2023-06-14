@@ -24,7 +24,6 @@ return [
         'sitename' => 'New TYPO3 site',
         'UTF8filesystem' => true,
         'features' => [
-            'security.backend.enforceContentSecurityPolicy' => true,
             'security.usePasswordPolicyForFrontendUsers' => true,
         ],
     ],

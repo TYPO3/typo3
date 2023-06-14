@@ -79,11 +79,6 @@ final class ApplicationEnvironment extends BackendEnvironment
             'MAIL' => [
                 'transport' => NullTransport::class,
             ],
-            'SYS' => [
-                'features' => [
-                    'security.backend.enforceContentSecurityPolicy' => true,
-                ],
-            ],
         ],
     ];
 

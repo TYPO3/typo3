@@ -63,7 +63,7 @@ class CspModuleController
     {
         return [
             'featureDisabled' => array_filter([
-                'backend' => !$this->features->isFeatureEnabled('security.backend.enforceContentSecurityPolicy'),
+                'backend' => false,
                 'frontend' => !$this->features->isFeatureEnabled('security.frontend.enforceContentSecurityPolicy'),
             ]),
             'customReporting' => array_filter([

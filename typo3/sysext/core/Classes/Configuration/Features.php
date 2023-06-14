@@ -71,6 +71,7 @@ class Features
         'simplifiedControllerActionDispatching',
         'unifiedPageTranslationHandling',
         'felogin.extbase',
+        'security.backend.enforceContentSecurityPolicy',
     ];
 
     /**
