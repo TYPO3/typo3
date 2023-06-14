@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Updates;
 
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Registry for upgrade wizards. The registry receives all services, tagged with "install.upgradewizard".
@@ -38,7 +37,7 @@ class UpgradeWizardRegistry
      */
     public function hasUpgradeWizard(string $identifier): bool
     {
-        return $this->upgradeWizards->has($identifier) || $this->getLegacyUpgradeWizardClassName($identifier) !== null;
+        return $this->upgradeWizards->has($identifier);
     }
 
     /**
@@ -50,7 +49,7 @@ class UpgradeWizardRegistry
             throw new \UnexpectedValueException('Upgrade wizard with identifier ' . $identifier . ' is not registered.', 1673964964);
         }
 
-        return $this->getLegacyUpgradeWizard($identifier) ?? $this->upgradeWizards->get($identifier);
+        return $this->upgradeWizards->get($identifier);
     }
 
     /**
@@ -60,47 +59,6 @@ class UpgradeWizardRegistry
      */
     public function getUpgradeWizards(): array
     {
-        return array_replace(
-            $this->upgradeWizards->getProvidedServices(),
-            $this->getLegacyUpgradeWizards()
-        );
-    }
-
-    /**
-     * @deprecated Remove with TYPO3 v13
-     */
-    private function getLegacyUpgradeWizardClassName(string $identifier): ?string
-    {
-        if (class_exists($identifier)) {
-            return $identifier;
-        }
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier])
-            && class_exists($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier])
-        ) {
-            return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
-        }
-        return null;
-    }
-
-    /**
-     * @deprecated Remove with TYPO3 v13
-     */
-    private function getLegacyUpgradeWizard(string $identifier): ?UpgradeWizardInterface
-    {
-        $className = $this->getLegacyUpgradeWizardClassName($identifier);
-        if ($className === null) {
-            return null;
-        }
-
-        $instance = GeneralUtility::makeInstance($className);
-        return $instance instanceof UpgradeWizardInterface ? $instance : null;
-    }
-
-    /**
-     * @deprecated Remove with TYPO3 v13
-     */
-    private function getLegacyUpgradeWizards(): array
-    {
-        return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] ?? [];
+        return $this->upgradeWizards->getProvidedServices();
     }
 }
