@@ -57,13 +57,6 @@ class FormResultCompiler
     protected $stylesheetFiles = [];
 
     /**
-     * Additional JavaScript printed after the form
-     *
-     * @var array
-     */
-    protected $additionalJavaScriptPost = [];
-
-    /**
      * Additional language label files to include.
      *
      * @var array
@@ -100,10 +93,6 @@ class FormResultCompiler
     public function mergeResult(array $resultArray)
     {
         $this->doSaveFieldName = $resultArray['doSaveFieldName'] ?? '';
-        // @deprecated since TYPO3 v12.4. will be removed in TYPO3 v13.0.
-        foreach ($resultArray['additionalJavaScriptPost'] as $element) {
-            $this->additionalJavaScriptPost[] = $element;
-        }
         foreach ($resultArray['javaScriptModules'] ?? [] as $module) {
             if (!$module instanceof JavaScriptModuleInstruction) {
                 throw new \LogicException(
@@ -245,16 +234,8 @@ class FormResultCompiler
         if (!empty($this->inlineData)) {
             $pageRenderer->addInlineSettingArray('FormEngineInline', $this->inlineData);
         }
-        $inlineJavaScript = '';
-        // @deprecated since TYPO3 v12.4. will be removed in TYPO3 v13.0.
-        if ($this->additionalJavaScriptPost !== []) {
-            trigger_error(
-                'Using form engine result property "additionalJavaScriptPost" is deprecated, use JavaScript modules instead.',
-                E_USER_DEPRECATED
-            );
-            $inlineJavaScript .= LF . "\t" . GeneralUtility::wrapJS(implode(LF, $this->additionalJavaScriptPost));
-        }
-        return $html . $inlineJavaScript;
+
+        return $html;
     }
 
     protected function getBackendUserAuthentication(): BackendUserAuthentication

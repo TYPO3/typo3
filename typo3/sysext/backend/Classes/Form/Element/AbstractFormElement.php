@@ -349,17 +349,6 @@ abstract class AbstractFormElement extends AbstractNode
                     $javaScriptEvaluation->getExportName()
                 )->invoke('registerCustomEvaluation', $name);
             }
-        } else {
-            trigger_error(
-                sprintf('Using inline JavaScript for custom eval function in "%s" is deprecated. Use JavaScript modules instead.', $name),
-                E_USER_DEPRECATED
-            );
-            // @deprecated since TYPO3 v12.4. will be removed in TYPO3 v13.0.
-            $resultArray['additionalJavaScriptPost'][] = sprintf(
-                'var TBE_EDITOR = TBE_EDITOR || { customEvalFunctions: {} }; TBE_EDITOR.customEvalFunctions[%s] = function(value) { %s };',
-                GeneralUtility::quoteJSvalue($name),
-                $javaScriptEvaluation
-            );
         }
 
         return $resultArray;

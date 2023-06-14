@@ -164,10 +164,6 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
             'scriptCall' => [],
         ];
 
-        // @todo deprecate with TYPO3 v12.0
-        foreach ($newContainerResult['additionalJavaScriptPost'] as $singleAdditionalJavaScriptPost) {
-            $jsonResult['scriptCall'][] = $singleAdditionalJavaScriptPost;
-        }
         foreach ($newContainerResult['stylesheetFiles'] as $stylesheetFile) {
             $jsonResult['stylesheetFiles'][] = $this->getRelativePathToStylesheetFile($stylesheetFile);
         }

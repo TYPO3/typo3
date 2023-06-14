@@ -420,10 +420,6 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
         if (!empty($fileReferenceData['inlineData'])) {
             $jsonResult['inlineData'] = $fileReferenceData['inlineData'];
         }
-        // @todo deprecate with TYPO3 v12.0
-        foreach ($fileReferenceData['additionalJavaScriptPost'] as $singleAdditionalJavaScriptPost) {
-            $jsonResult['scriptCall'][] = $singleAdditionalJavaScriptPost;
-        }
         if (!empty($fileReferenceData['additionalInlineLanguageLabelFiles'])) {
             $labels = [];
             foreach ($fileReferenceData['additionalInlineLanguageLabelFiles'] as $additionalInlineLanguageLabelFile) {

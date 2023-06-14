@@ -534,10 +534,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         if (!empty($childResult['inlineData'])) {
             $jsonResult['inlineData'] = $childResult['inlineData'];
         }
-        // @todo deprecate with TYPO3 v12.0
-        foreach ($childResult['additionalJavaScriptPost'] as $singleAdditionalJavaScriptPost) {
-            $jsonResult['scriptCall'][] = $singleAdditionalJavaScriptPost;
-        }
         if (!empty($childResult['additionalInlineLanguageLabelFiles'])) {
             $labels = [];
             foreach ($childResult['additionalInlineLanguageLabelFiles'] as $additionalInlineLanguageLabelFile) {

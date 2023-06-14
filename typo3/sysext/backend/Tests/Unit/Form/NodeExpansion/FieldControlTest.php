@@ -67,7 +67,6 @@ final class FieldControlTest extends UnitTestCase
                 'iconIdentifier' => 'actions-open',
                 'title' => 'aTitle',
                 'linkAttributes' => [ 'href' => '' ],
-                'additionalJavaScriptPost' => [ 'someJavaScript' ],
                 'javaScriptModules' => [
                     'aModule',
                 ],
@@ -103,9 +102,6 @@ final class FieldControlTest extends UnitTestCase
         });
 
         $expected = [
-            'additionalJavaScriptPost' => [
-                'someJavaScript',
-            ],
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
