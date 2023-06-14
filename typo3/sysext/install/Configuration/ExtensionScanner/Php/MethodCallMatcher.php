@@ -5274,6 +5274,7 @@ return [
         'maximumNumberOfArguments' => 999,
         'restFiles' => [
             'Deprecation-97244-CompositeExpressionMethodsAddAndAddMultiple.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getATagParams' => [

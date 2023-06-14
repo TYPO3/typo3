@@ -111,6 +111,8 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->renderContent`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->setContent`
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess`
+- :php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->add`
+- :php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->addMultiple`
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->andX`
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->orX`
 - :php:`\TYPO3\CMS\Core\Database\Query\QueryBuilder->execute`

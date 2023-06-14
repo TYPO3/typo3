@@ -17,13 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query\Expression;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Doctrine\DBAL\Query\Expression\CompositeExpression as DoctrineCompositeExpression;
 
 /**
  * Facade of the Doctrine DBAL CompositeExpression to have
  * all Query related classes with in TYPO3\CMS namespace.
  */
-class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpression
+class CompositeExpression extends DoctrineCompositeExpression
 {
     /**
      * Each expression part of the composite expression.
@@ -40,85 +40,21 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
     /**
      * @param string $type
      * @param string[]|self[] $parts
-     * @deprecated Direct instantiating deprecated since v12, will be removed in v13. This class will be made immutable. Use and() / or() factory methods instead.
+     * @internal Use factory methods `and()` or `or()` methods instead. Signature will change along with doctrine/dbal 4.
      */
     public function __construct($type, array $parts = [])
     {
-        // pass empty parent to parent constructor as we have borrowed nearly all
-        // method to this level because of their private visibility nature.
+        // Pass empty parts to parent constructor as we have borrowed nearly all method to this level because of their
+        // private visibility nature.
         parent::__construct((string)$type, []);
         $this->type = (string)$type;
-        $this->addMultiple($parts);
-        $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $callingFile = GeneralUtility::fixWindowsFilePath((string)($backTrace[0]['file'] ?? ''));
-        if ($callingFile !== GeneralUtility::fixWindowsFilePath(__FILE__)) {
-            trigger_error(
-                'Do not use CompositeExpression constructor directly, use static and() and or() factory methods.',
-                E_USER_DEPRECATED
-            );
-        }
-    }
-
-    /**
-     * Adds an expression to composite expression.
-     *
-     * @param mixed $part
-     * @deprecated since v12, will be removed in v13. This class will be made immutable. Use with() instead.
-     */
-    public function add($part): self
-    {
-        $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $callingFile = GeneralUtility::fixWindowsFilePath((string)($backTrace[0]['file'] ?? ''));
-        if ($callingFile !== GeneralUtility::fixWindowsFilePath(__FILE__)
-            && !str_contains($callingFile, 'doctrine/dbal/src/Query/Expression/CompositeExpression.php')
-        ) {
-            trigger_error(
-                'CompositeExpression::add() will be removed in TYPO3 v13.0. Use CompositeExpression::with() instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        // Due to a bug in Doctrine DBAL, we must add our own check here,
-        // which we luckily can, as we use a subclass anyway.
-        // @see https://github.com/doctrine/dbal/issues/2388
-        $isEmpty = $part instanceof self ? $part->count() === 0 : empty($part);
-        if (!$isEmpty) {
-            $this->parts[] = $part;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Adds multiple parts to composite expression.
-     *
-     * @param string[]|self[] $parts
-     * @deprecated since v12, will be removed in v13. This class will be made immutable. Use with() instead.
-     */
-    public function addMultiple(array $parts = []): self
-    {
-        $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $callingFile = GeneralUtility::fixWindowsFilePath((string)($backTrace[0]['file'] ?? ''));
-        if ($callingFile !== GeneralUtility::fixWindowsFilePath(__FILE__)
-            && !str_contains($callingFile, 'doctrine/dbal/src/Query/Expression/CompositeExpression.php')
-        ) {
-            trigger_error(
-                'CompositeExpression::addMultiple() will be removed in TYPO3 v13.0. Use CompositeExpression::with() instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        foreach ($parts as $part) {
-            // Due to a bug in Doctrine DBAL, we must add our own check here,
-            // which we luckily can, as we use a subclass anyway.
+        if ($parts !== []) {
+            // doctrine/dbal solved the issue to avoid empty parts by making it mandatory to avoid instantiating this
+            // class without a part. As we allow this and handle empty parts later on, we apply the empty check here.
             // @see https://github.com/doctrine/dbal/issues/2388
-            $isEmpty = $part instanceof self ? $part->count() === 0 : empty($part);
-            if (!$isEmpty) {
-                $this->parts[] = $part;
-            }
+            array_filter($parts, static fn ($value) => !(($value instanceof DoctrineCompositeExpression) ? $value->count() === 0 : empty($value)));
         }
-
-        return $this;
+        $this->parts = $parts;
     }
 
     /**
@@ -128,7 +64,7 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
     public static function and($part=null, ...$parts): self
     {
         $mergedParts = array_merge([$part], $parts);
-        array_filter($mergedParts, static fn ($value) => !is_null($value));
+        array_filter($mergedParts, static fn ($value) => !(($value instanceof DoctrineCompositeExpression) ? $value->count() === 0 : empty($value)));
         return (new self(self::TYPE_AND, []))->with(...$mergedParts);
     }
 
@@ -139,7 +75,7 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
     public static function or($part=null, ...$parts): self
     {
         $mergedParts = array_merge([$part], $parts);
-        array_filter($mergedParts, static fn ($value) => !is_null($value));
+        array_filter($mergedParts, static fn ($value) => !(($value instanceof DoctrineCompositeExpression) ? $value->count() === 0 : empty($value)));
         return (new self(self::TYPE_OR, []))->with(...$mergedParts);
     }
 
@@ -157,7 +93,7 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
             // Due to a bug in Doctrine DBAL, we must add our own check here,
             // which we luckily can, as we use a subclass anyway.
             // @see https://github.com/doctrine/dbal/issues/2388
-            $isEmpty = $singlePart instanceof self ? $singlePart->count() === 0 : empty($singlePart);
+            $isEmpty = (($singlePart instanceof DoctrineCompositeExpression) ? $singlePart->count() === 0 : empty($singlePart));
             if (!$isEmpty) {
                 $that->parts[] = $singlePart;
             }
