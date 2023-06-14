@@ -338,6 +338,7 @@ The following fallbacks have been removed:
 - Using chart.js v3 compatible widgets in ext:dashboard
 - Usage of :js:`.t3js-contextmenutrigger` to trigger and configure context menus
 - Usage of the jsonArray property :php:`scriptCall` for AjaxController's
+- Binding the selected menu items to callback actions in context menus
 
 The following features are now always enabled:
 
