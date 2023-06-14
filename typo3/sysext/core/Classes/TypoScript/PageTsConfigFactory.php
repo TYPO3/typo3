@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\TypoScript;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\ExpressionLanguage\DeprecatingRequestWrapper;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
@@ -132,8 +131,6 @@ final class PageTsConfigFactory
             //       want to switch to $fullRootLine[array_key_last($fullRootLine)] as soon as it contains all fields.
             'page' => $lastPageFullRecord,
             'pageId' => $pageId,
-            // @deprecated since v12, will be removed in v13.
-            'request' => new DeprecatingRequestWrapper($GLOBALS['TYPO3_REQUEST'] ?? null),
         ];
         $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
         $conditionMatcherVisitor->initializeExpressionMatcherWithVariables($conditionMatcherVariables);

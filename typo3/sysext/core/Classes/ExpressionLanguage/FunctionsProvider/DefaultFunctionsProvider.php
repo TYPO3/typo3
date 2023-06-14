@@ -62,15 +62,10 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
                 }
                 $request = $arguments['request'] ?? null;
                 if (!$request instanceof RequestWrapper) {
-                    // @deprecated: ip() without given request should stop working in v13. Throw an exception here.
-                    trigger_error(
-                        'Using expression language function "ip(' . $str . ')" in a context without request.' .
-                        ' A typical usage is user TSconfig or page TSconfig which can not provide a request object' .
-                        ' since especially the DataHandler can not provide one. The implementation uses a fallback' .
-                        ' for now, but will stop working in v13.',
-                        E_USER_DEPRECATED
+                    throw new \RuntimeException(
+                        'Using expression language function "ip(' . $str . ')" in a context without request.',
+                        1686745105
                     );
-                    return GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $str);
                 }
                 return GeneralUtility::cmpIP($request->getNormalizedParams()->getRemoteAddress(), $str);
             }

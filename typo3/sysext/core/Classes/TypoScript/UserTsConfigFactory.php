@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\TypoScript;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\ExpressionLanguage\DeprecatingRequestWrapper;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\TsConfigTreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
@@ -55,8 +54,6 @@ final class UserTsConfigFactory
         $conditionMatcherVisitor->initializeExpressionMatcherWithVariables([
             'page' => [],
             'pageId' => 0,
-            // @deprecated since v12, will be removed in v13.
-            'request' => new DeprecatingRequestWrapper($GLOBALS['TYPO3_REQUEST'] ?? null),
         ]);
         $includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
         $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);

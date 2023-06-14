@@ -24,6 +24,7 @@ The following PHP classes that have previously been marked as deprecated for v12
 - :php:`\TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction`
 - :php:`\TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction`
 - :php:`\TYPO3\CMS\Core\Exception\MissingTsfeException`
+- :php:`\TYPO3\CMS\Core\ExpressionLanguage\DeprecatingRequestWrapper`
 - :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
 - :php:`\TYPO3\CMS\Core\TypoScript\TemplateService`
 - :php:`\TYPO3\CMS\Core\Utility\ResourceUtility`
@@ -223,6 +224,9 @@ The following TypoScript options have been dropped or adapted:
 - :typoscript:`config.spamProtectEmailAddresses` (only `ascii` value)
 - :typoscript:`config.xhtmlDoctype`
 - :typoscript:`plugin.[pluginName]._CSS_PAGE_STYLE`
+- :typoscript:`[ip()]` condition function must be used in a context with request
+- :typoscript:`[loginUser()]` condition function removed
+- :typoscript:`[usergroup()]` condition function removed
 
 The following constants have been dropped:
 
