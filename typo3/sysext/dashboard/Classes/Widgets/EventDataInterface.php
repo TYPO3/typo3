@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 interface EventDataInterface
 {
     /**
-     * This method returns data which should be send to the widget as JSON encoded value.
+     * This method returns data which should be sent to the widget as JSON encoded value.
      */
     public function getEventData(): array;
 }
