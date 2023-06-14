@@ -49,8 +49,7 @@ class PageDoktypeRegistry implements SingletonInterface
         PageRepository::DOKTYPE_MOUNTPOINT => [
         ],
         // Even though both options look contradictory, the "allowedTables" key is used for other $pageTypes
-        // that have no custom definitions. So "allowedTables" works as a fallback for additional page types
-        // Effectively working like "allowTableOnStandardPages()" as the default entry is a "standard page"
+        // that have no custom definitions. So "allowedTables" works as a fallback for additional page types.
         'default' => [
             'allowedTables' => 'pages,sys_category,sys_file_reference,sys_file_collection',
             'onlyAllowedTables' => false,

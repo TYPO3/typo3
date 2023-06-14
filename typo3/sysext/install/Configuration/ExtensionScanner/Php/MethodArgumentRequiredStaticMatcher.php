@@ -6,6 +6,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Breaking-82899-MoreRestrictingChecksForAPIMethodsInExtensionManagementUtility.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

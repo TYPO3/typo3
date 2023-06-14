@@ -1344,6 +1344,7 @@ return [
         'maximumNumberOfArguments' => 5,
         'restFiles' => [
             'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addNavigationComponent' => [
@@ -1351,6 +1352,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent' => [
@@ -1413,6 +1415,7 @@ return [
             'Breaking-98487-GLOBALSPAGES_TYPESRemoved.rst',
             'Deprecation-98487-ExtensionManagementUtilityallowTableOnStandardPages.rst',
             'Feature-98487-TCAOptionCtrlsecurityignorePageTypeRestriction.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get' => [

@@ -207,8 +207,13 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::debugInPopUpWindow`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::debugRows`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::printArray`
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent`
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr`
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule`
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addNavigationComponent`
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages`
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig`
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GET`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GP`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged`

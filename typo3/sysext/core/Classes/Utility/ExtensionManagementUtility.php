@@ -643,61 +643,6 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Add tablename to default list of allowed tables on pages (in $PAGES_TYPES)
-     * Will add the $table to the list of tables allowed by default on pages as setup by $PAGES_TYPES['default']['allowedTables']
-     * FOR USE IN ext_tables.php FILES
-     *
-     * @param string $table Table name
-     * @deprecated will be removed in TYPO3 v13.0. Use $GLOBALS['TCA'][$table]['ctrl']['security']['ignorePageTypeRestriction'] instead.
-     */
-    public static function allowTableOnStandardPages(string $table): void
-    {
-        if ($table === '') {
-            return;
-        }
-        $registry = GeneralUtility::makeInstance(PageDoktypeRegistry::class);
-        $tables = explode(',', $table);
-        foreach ($tables as $singleTable) {
-            if (!$registry->isRecordTypeAllowedForDoktype($singleTable, null)) {
-                $registry->addAllowedRecordTypes(explode(',', $singleTable));
-            }
-        }
-    }
-
-    /**
-     * To allow extension authors to support multiple versions, this method is kept until
-     * TYPO3 v13, but is no longer used nor evaluated from TYPO3 v12.0. To add modules,
-     * place the configuration in your extensions' Configuration/Backend/Modules.php file.
-     *
-     * The method deliberately does not throw a deprecation warning in order to keep the noise
-     * of deprecation warnings small.
-     *
-     * @deprecated The functionality has been removed in v12. The method will be removed in TYPO3 v13.
-     */
-    public static function addModule($main, $sub = '', $position = '', $path = null, $moduleConfiguration = [])
-    {
-    }
-
-    /**
-     * Adds a "Function menu module" ('third level module') to an existing function menu of some other backend module.
-     *
-     * FOR USE IN ext_tables.php FILES
-     *
-     * @param string $modname Module name
-     * @param string $className Class name
-     * @param string $_unused not in use anymore
-     * @param string $title Title of module
-     * @param string $MM_key Menu array key - default is "function
-     * @param string $WS Workspace conditions. Blank means all workspaces, any other string can be a comma list of "online", "offline" and "custom
-     * @deprecated use the Module Registration API to define calls, will be removed in TYPO3 v13.0.
-     */
-    public static function insertModuleFunction($modname, $className, $_unused, $title, $MM_key = 'function', $WS = '')
-    {
-        // no-op: This is not in use anymore, use Modules.php instead
-        // This does not trigger a deprecation message as everything continues to work
-    }
-
-    /**
      * Adds $content to the default page TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultPageTSconfig']
      * Prefixed with a [GLOBAL] line
      * FOR USE IN ext_localconf.php FILE
@@ -719,32 +664,6 @@ class ExtensionManagementUtility
     public static function addUserTSConfig(string $content): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= chr(10) . $content;
-    }
-
-    /**
-     * Registers a navigation component e.g. page tree
-     *
-     * @param string $module
-     * @param string $componentId componentId is also a RequireJS module name e.g. 'TYPO3/CMS/MyExt/MyNavComponent'
-     * @param string $extensionKey
-     * @throws \RuntimeException
-     * @deprecated no longer in use. Will be removed in TYPO3 v13.0.
-     */
-    public static function addNavigationComponent($module, $componentId, $extensionKey)
-    {
-        trigger_error('ExtensionManagementUtility::addNavigationComponent() will be removed in TYPO3 v13.0. Is not needed anymore. Remove any calls to this method.', E_USER_DEPRECATED);
-    }
-
-    /**
-     * Registers a core navigation component
-     *
-     * @param string $module
-     * @param string $componentId
-     * @deprecated no longer in use. Will be removed in TYPO3 v13.0.
-     */
-    public static function addCoreNavigationComponent($module, $componentId)
-    {
-        trigger_error('ExtensionManagementUtility::addCoreNavigationComponent() will be removed in TYPO3 v13.0. Is not needed anymore. Remove any calls to this method.', E_USER_DEPRECATED);
     }
 
     /**************************************

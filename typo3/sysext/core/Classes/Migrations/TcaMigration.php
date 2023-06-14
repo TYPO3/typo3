@@ -1251,9 +1251,7 @@ class TcaMigration
 
                 $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
                     . 'type="inline" with foreign_table=sys_file_reference. The field has therefore been '
-                    . 'migrated to the dedicated TCA type \'file\'. This includes corresponding migration of '
-                    . 'the table mapping fields and filters, which were usually added to the field using the '
-                    . 'ExtensionManagementUtility::getFileFieldTCAConfig().' . $additionalInformation . ' '
+                    . 'migrated to the dedicated TCA type \'file\'' . $additionalInformation . ' '
                     . 'Please adjust your TCA accordingly.';
             }
         }

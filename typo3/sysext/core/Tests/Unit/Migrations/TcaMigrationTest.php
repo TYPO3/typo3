@@ -3312,35 +3312,6 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        yield 'customControls hook is removed' => [
-            'input' => [
-                'aTable' => [
-                    'columns' => [
-                        'aColumn' => [
-                            'config' => [
-                                'type' => 'inline',
-                                'foreign_table' => 'sys_file_reference',
-                                'customControls' => [
-                                    'userFunc' => '->someFunc()',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'expected' => [
-                'aTable' => [
-                    'columns' => [
-                        'aColumn' => [
-                            'config' => [
-                                'type' => 'file',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'The \'customControls\' option is not evaluated anymore',
-        ];
         yield 'renamed appearance options are migrated' => [
             'input' => [
                 'aTable' => [
