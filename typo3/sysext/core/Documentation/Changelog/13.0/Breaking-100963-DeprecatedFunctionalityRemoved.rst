@@ -376,6 +376,10 @@ The following JavaScript methods behaviour has changed:
 
 - :js:`ColorPicker.initialize()` always requires an :js:`HTMLInputElement` to be passed as first argument
 
+The following JavaScript methods have been removed:
+
+- :js:`getParameterFromUrl()` of :js:`@typo3/backend/utility`
+
 The following RequireJS module names have been removed:
 
 - :js:`Dummy`

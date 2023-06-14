@@ -69,42 +69,6 @@ class Utility {
   }
 
   /**
-   * Gets a parameter from a given url
-   *
-   * @param {string} url
-   * @param {string} parameter
-   * @returns {string}
-   * @deprecated will be removed in TYPO3 v13
-   */
-  public static getParameterFromUrl(url: string, parameter: string): string {
-    console.warn(
-      'The function `getParameterFromUrl()` of `@typo3/backend/utility` has been marked as deprecated and will ' +
-      'be removed in TYPO3 v13. Use `new URL(url, window.location.origin).searchParams.get(parameter)` instead.'
-    );
-
-    if (typeof url.split !== 'function') {
-      return '';
-    }
-    const parts = url.split('?');
-    let value = '';
-
-    if (parts.length >= 2) {
-      const queryString = parts.join('?');
-
-      const prefix = encodeURIComponent(parameter) + '=';
-      const parameters = queryString.split(/[&;]/g);
-      for (let i = parameters.length; i-- > 0; ) {
-        if (parameters[i].lastIndexOf(prefix, 0) !== -1) {
-          value = parameters[i].split('=')[1];
-          break;
-        }
-      }
-    }
-
-    return value;
-  }
-
-  /**
    * Updates a parameter inside of given url
    *
    * @param {string} url
