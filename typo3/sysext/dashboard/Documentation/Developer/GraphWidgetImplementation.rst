@@ -24,14 +24,12 @@ To make the dashboard aware of this workflow, some interfaces come together:
 
 * :php:class:`AdditionalCssInterface`
 
-* :php:class:`RequireJsModuleInterface`
-
 Also the existing template file :file:`Widget/ChartWidget` is used, which provides necessary HTML to render the chart.
 The provided ``eventData`` will be rendered as a chart and therefore has to match the expected structure.
 
 An example would be :file:`Classes/Widgets/BarChartWidget.php`::
 
-   class BarChartWidget implements WidgetInterface, EventDataInterface, AdditionalCssInterface, RequireJsModuleInterface
+   class BarChartWidget implements WidgetInterface, EventDataInterface, AdditionalCssInterface
    {
        public function __construct(
            // …
@@ -70,14 +68,6 @@ An example would be :file:`Classes/Widgets/BarChartWidget.php`::
        public function getCssFiles(): array
        {
            return [];
-       }
-
-       public function getRequireJsModules(): array
-       {
-           return [
-               'TYPO3/CMS/Dashboard/Contrib/chartjs',
-               'TYPO3/CMS/Dashboard/ChartInitializer',
-           ];
        }
 
        public function getOptions(): array

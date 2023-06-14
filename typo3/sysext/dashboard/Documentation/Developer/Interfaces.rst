@@ -90,26 +90,6 @@ For up to date information, please check the source code.
       :returntype: array
       :returns: Additional CSS classes which should be added to the rendered widget.
 
-.. php:class:: RequireJsModuleInterface
-
-   Widgets implementing this interface will add the provided RequireJS modules.
-   Those modules will be loaded in dashboard view if the widget is added at least once.
-
-   .. php:method:: getRequireJsModules()
-
-      Returns a list of RequireJS modules that should be loaded, e.g.::
-
-         return [
-             'TYPO3/CMS/MyExtension/ModuleName',
-             'TYPO3/CMS/MyExtension/Module2Name',
-         ];
-
-      See also :ref:`t3coreapi:requirejs` for further information regarding RequireJS
-      in TYPO3 Backend.
-
-      :returntype: array
-      :returns: List of modules to require.
-
 .. php:class:: AdditionalJavaScriptInterface
 
    Widgets implementing this interface will add the provided JavaScript files.

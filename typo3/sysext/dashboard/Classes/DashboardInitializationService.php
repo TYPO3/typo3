@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Dashboard\Widgets\AdditionalCssInterface;
 use TYPO3\CMS\Dashboard\Widgets\AdditionalJavaScriptInterface;
 use TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface;
-use TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 
 /**
@@ -41,13 +40,8 @@ class DashboardInitializationService
     /**
      * @var list<JavaScriptModuleInstruction>
      */
-    protected $javaScriptModuleInstructions = [];
+    protected array $javaScriptModuleInstructions = [];
 
-    /**
-     * @var list<string|array{0:string, 1:string}>
-     * @deprecated will be removed in TYPO3 v13.0
-     */
-    private array $requireJsModules = [];
     private array $jsFiles = [];
     private array $cssFiles = [];
 
@@ -136,10 +130,6 @@ class DashboardInitializationService
             if ($concreteInstance instanceof JavaScriptInterface) {
                 $this->defineJavaScriptInstructions($concreteInstance);
             }
-            if ($concreteInstance instanceof RequireJsModuleInterface) {
-                trigger_error('Using RequireJsModuleInterface is deprecated and will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
-                $this->defineRequireJsModules($concreteInstance);
-            }
             if ($concreteInstance instanceof AdditionalCssInterface) {
                 $this->defineCssFiles($concreteInstance);
             }
@@ -153,22 +143,6 @@ class DashboardInitializationService
     {
         foreach ($widgetInstance->getJavaScriptModuleInstructions() as $instruction) {
             $this->javaScriptModuleInstructions[] = $instruction;
-        }
-    }
-
-    /**
-     * Add the RequireJS modules needed by some widgets
-     *
-     * @deprecated will be removed in TYPO3 v13.0
-     */
-    protected function defineRequireJsModules(RequireJsModuleInterface $widgetInstance): void
-    {
-        foreach ($widgetInstance->getRequireJsModules() as $moduleNameOrIndex => $callbackOrModuleName) {
-            if (is_string($moduleNameOrIndex)) {
-                $this->requireJsModules[] = [$moduleNameOrIndex, $callbackOrModuleName];
-            } else {
-                $this->requireJsModules[] = $callbackOrModuleName;
-            }
         }
     }
 
@@ -216,15 +190,6 @@ class DashboardInitializationService
     public function getJavaScriptModuleInstructions(): array
     {
         return $this->javaScriptModuleInstructions;
-    }
-
-    /**
-     * @return list<string|array{0:string, 1:string}>
-     * @deprecated will be removed in TYPO3 v13.0
-     */
-    public function getRequireJsModules(): array
-    {
-        return $this->requireJsModules;
     }
 
     public function getJsFiles(): array

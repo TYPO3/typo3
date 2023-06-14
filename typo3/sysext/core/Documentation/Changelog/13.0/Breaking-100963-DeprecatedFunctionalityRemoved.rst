@@ -47,6 +47,7 @@ The following PHP interfaces that have previously been marked as deprecated for 
 - :php:`\TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherInterface`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageOverlayHookInterface`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetRecordOverlayHookInterface`
+- :php:`\TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuFilterPagesHookInterface`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\TypolinkModifyLinkConfigForPageLinksHookInterface`
 - :php:`\TYPO3\CMS\Frontend\Http\UrlProcessorInterface`
@@ -119,6 +120,7 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getExtURL`
 - :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
 - :php:`\TYPO3\CMS\Core\Session\UserSessionManager->createFromGlobalCookieOrAnonymous`
+- :php:`\TYPO3\CMS\Dashboard\DashboardInitializationService->getRequireJsModules`
 - :php:`\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager->getContentObject`
 - :php:`\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager->setContentObject`
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager->getContentObject`

@@ -1541,6 +1541,7 @@ return [
     'TYPO3\CMS\Dashboard\Widgets\Interfaces\RequireJsModuleInterface' => [
         'restFiles' => [
             'Breaking-91066-MovedInterfacesOfDashboard.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetConfigurationInterface' => [
@@ -1556,6 +1557,7 @@ return [
     'TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface' => [
         'restFiles' => [
             'Deprecation-96524-DeprecateInlineJavaScriptInDashboard.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Dashboard\Utility\ButtonUtility' => [

@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Dashboard\Dashboard;
 use TYPO3\CMS\Dashboard\DashboardInitializationService;
@@ -165,17 +164,6 @@ class DashboardController
         $javaScriptRenderer = $this->pageRenderer->getJavaScriptRenderer();
         foreach ($this->dashboardInitializationService->getJavaScriptModuleInstructions() as $instruction) {
             $javaScriptRenderer->addJavaScriptModuleInstruction($instruction);
-        }
-        foreach ($this->dashboardInitializationService->getRequireJsModules() as $requireJsModule) {
-            if (is_array($requireJsModule)) {
-                // Deprecation message is triggered by DashboardInitializationService::defineResourcesOfWidgets, and therefore silenced here.
-                $this->pageRenderer->loadRequireJsModule($requireJsModule[0], $requireJsModule[1], true);
-            } else {
-                // Deprecation message is triggered by DashboardInitializationService::defineResourcesOfWidgets, and therefore silenced here.
-                $javaScriptRenderer->addJavaScriptModuleInstruction(
-                    JavaScriptModuleInstruction::forRequireJS($requireJsModule, null, true)
-                );
-            }
         }
         foreach ($this->dashboardInitializationService->getCssFiles() as $cssFile) {
             $this->pageRenderer->addCssFile($cssFile);
