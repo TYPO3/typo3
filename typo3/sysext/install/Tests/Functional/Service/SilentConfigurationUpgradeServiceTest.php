@@ -34,6 +34,20 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
+    protected array $localConfigurationBackup;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->localConfigurationBackup = $this->get(ConfigurationManager::class)->getLocalConfiguration();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->get(ConfigurationManager::class)->writeLocalConfiguration($this->localConfigurationBackup);
+        parent::tearDown();
+    }
+
     /**
      * @test
      */
@@ -533,7 +547,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         } catch (ConfigurationChangedException) {
             $exceptionCaught = true;
         } finally {
-            self::assertTrue($exceptionCaught);
+            self::assertFalse($exceptionCaught);
             self::assertTrue($configurationManager->getLocalConfigurationValueByPath('FE/versionNumberInFilename'));
         }
     }
