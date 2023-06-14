@@ -5258,6 +5258,7 @@ return [
         'maximumNumberOfArguments' => 999,
         'restFiles' => [
             'Deprecation-97354-ExpressionBuilderMethodsAndXAndOrX.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->orX' => [
@@ -5265,6 +5266,7 @@ return [
         'maximumNumberOfArguments' => 999,
         'restFiles' => [
             'Deprecation-97354-ExpressionBuilderMethodsAndXAndOrX.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->addMultiple' => [
