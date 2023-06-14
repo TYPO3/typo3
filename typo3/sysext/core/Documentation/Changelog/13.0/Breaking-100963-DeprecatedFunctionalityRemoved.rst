@@ -121,6 +121,10 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager->setContentObject`
 - :php:`\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager->getContentObject`
 - :php:`\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager->setContentObject`
+- :php:`\TYPO3\CMS\Extbase\Property\AbstractTypeConverter->canConvertFrom`
+- :php:`\TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getPriority`
+- :php:`\TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getSupportedTargetType`
+- :php:`\TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getSupportedSourceTypes`
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getFormat`
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getRequest`
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getTemplatePathAndFilename`
@@ -177,6 +181,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_POST`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript`
+- :php:`TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter`
 
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:
 

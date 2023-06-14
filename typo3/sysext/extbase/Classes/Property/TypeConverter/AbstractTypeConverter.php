@@ -28,53 +28,6 @@ use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 abstract class AbstractTypeConverter implements TypeConverterInterface, SingletonInterface
 {
     /**
-     * The source types this converter can convert.
-     *
-     * @var string[]
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $sourceTypes = [];
-
-    /**
-     * The target type this converter can convert to.
-     *
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $targetType = '';
-
-    /**
-     * The priority for this converter.
-     *
-     * @var int
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $priority;
-
-    /**
-     * Returns the list of source types the TypeConverter can handle.
-     * Must be PHP simple types, classes or object is not allowed.
-     *
-     * @return string[]
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    public function getSupportedSourceTypes(): array
-    {
-        return $this->sourceTypes;
-    }
-
-    /**
-     * Return the target type this TypeConverter converts to.
-     * Can be a simple type or a class name.
-     *
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    public function getSupportedTargetType(): string
-    {
-        return $this->targetType;
-    }
-
-    /**
      * @todo The concept of this method is flawed because it enables the override of the target type depending on the
      *       structure of the source. So, technically we no longer convert type A to B but source of type A with
      *       structure X to type B defined by X. This makes a type converter non-deterministic.
@@ -87,25 +40,6 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
     public function getTargetTypeForSource($source, string $originalTargetType, PropertyMappingConfigurationInterface $configuration = null): string
     {
         return $originalTargetType;
-    }
-
-    /**
-     * Return the priority of this TypeConverter. TypeConverters with a high priority are chosen before low priority.
-     *
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    public function getPriority(): int
-    {
-        return $this->priority;
-    }
-
-    /**
-     * @param mixed $source the source data
-     * @deprecated will be removed in TYPO3 v13.0
-     */
-    public function canConvertFrom($source, string $targetType): bool
-    {
-        return true;
     }
 
     /**

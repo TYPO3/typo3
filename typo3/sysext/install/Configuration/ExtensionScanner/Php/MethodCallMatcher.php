@@ -5103,6 +5103,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-94117-RegisterExtbaseTypeConvertersAsServices.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getSupportedTargetType' => [
@@ -5110,6 +5111,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-94117-RegisterExtbaseTypeConvertersAsServices.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getPriority' => [
@@ -5117,6 +5119,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-94117-RegisterExtbaseTypeConvertersAsServices.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Property\AbstractTypeConverter->canConvertFrom' => [
@@ -5124,6 +5127,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-94117-RegisterExtbaseTypeConvertersAsServices.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getMailTo' => [

@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidDataTypeException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException;
@@ -44,24 +43,6 @@ class ObjectConverter extends AbstractTypeConverter
      */
     public const CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED = 4;
 
-    /**
-     * @var array
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $sourceTypes = ['array'];
-
-    /**
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $targetType = 'object';
-
-    /**
-     * @var int
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $priority = 10;
-
     protected ContainerInterface $container;
 
     /**
@@ -77,17 +58,6 @@ class ObjectConverter extends AbstractTypeConverter
     public function injectContainer(ContainerInterface $container)
     {
         $this->container = $container;
-    }
-
-    /**
-     * Only convert non-persistent types
-     *
-     * @param mixed $source
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function canConvertFrom($source, string $targetType): bool
-    {
-        return !is_subclass_of($targetType, AbstractDomainObject::class);
     }
 
     /**

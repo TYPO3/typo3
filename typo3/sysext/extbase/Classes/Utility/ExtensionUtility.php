@@ -197,20 +197,6 @@ tt_content.' . $pluginSignature . ' {
     }
 
     /**
-     * Register a type converter by class name.
-     *
-     * @param string $typeConverterClassName
-     * @deprecated will be removed in TYPO3 v13.0. Register type converters via Services.yaml in your extension(s).
-     */
-    public static function registerTypeConverter($typeConverterClassName)
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' does no longer has any effect and will completely be removed with TYPO3 v13. Register type converters via Services.yaml instead.',
-            E_USER_DEPRECATED
-        );
-    }
-
-    /**
      * Check a given extension name for validity.
      *
      * @param string $extensionName The name of the extension

@@ -27,18 +27,6 @@ use UnitEnum;
 class EnumConverter extends AbstractTypeConverter
 {
     /**
-     * Only convert if target is enum
-     *
-     * @template T of UnitEnum
-     * @param class-string<T> $targetType
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function canConvertFrom(mixed $source, string $targetType): bool
-    {
-        return enum_exists($targetType) && (is_int($source) || is_float($source) || is_string($source)) && $this->getEnumElement($source, $targetType);
-    }
-
-    /**
      * Convert an enum from $source to an enum.
      *
      * @template T of UnitEnum

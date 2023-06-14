@@ -36,21 +36,6 @@ use TYPO3\CMS\Form\Type\FormDefinitionArray;
 class FormDefinitionArrayConverter extends AbstractTypeConverter
 {
     /**
-     * @var array<string>
-     */
-    protected $sourceTypes = ['string'];
-
-    /**
-     * @var string
-     */
-    protected $targetType = FormDefinitionArray::class;
-
-    /**
-     * @var int
-     */
-    protected $priority = 10;
-
-    /**
      * @var ConfigurationService
      */
     protected $configurationService;

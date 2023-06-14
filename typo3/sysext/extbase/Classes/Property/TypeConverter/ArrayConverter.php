@@ -31,36 +31,6 @@ class ArrayConverter extends AbstractTypeConverter
     public const CONFIGURATION_LIMIT = 'limit';
 
     /**
-     * @var string[]
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $sourceTypes = ['array', 'string'];
-
-    /**
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $targetType = 'array';
-
-    /**
-     * @var int
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $priority = 10;
-
-    /**
-     * We can only convert empty strings to array or array to array.
-     *
-     * @param mixed $source
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     * @deprecated will be removed in TYPO3 v13.0
-     */
-    public function canConvertFrom($source, string $targetType): bool
-    {
-        return is_string($source) || is_array($source);
-    }
-
-    /**
      * Convert from $source to $targetType, a noop if the source is an array.
      * If it is an empty string it will be converted to an empty array.
      * If the type converter has a configuration, it can convert non-empty strings, too

@@ -1327,6 +1327,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Breaking-94117-RegisterExtbaseTypeConvertersAsServices.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES' => [

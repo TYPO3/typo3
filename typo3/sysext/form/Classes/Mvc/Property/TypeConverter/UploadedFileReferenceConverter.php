@@ -80,23 +80,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     protected $defaultConflictMode = 'rename';
 
     /**
-     * @var array
-     */
-    protected $sourceTypes = ['array'];
-
-    /**
-     * @var string
-     */
-    protected $targetType = PseudoFileReference::class;
-
-    /**
-     * Take precedence over the available FileReferenceConverter
-     *
-     * @var int
-     */
-    protected $priority = 12;
-
-    /**
      * @var PseudoFileReference[]
      */
     protected $convertedResources = [];

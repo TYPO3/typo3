@@ -76,45 +76,6 @@ class DateTimeConverter extends AbstractTypeConverter
     public const DEFAULT_DATE_FORMAT = \DateTimeInterface::W3C;
 
     /**
-     * @var string[]
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $sourceTypes = ['string', 'integer', 'array'];
-
-    /**
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $targetType = \DateTime::class;
-
-    /**
-     * @var int
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $priority = 10;
-
-    /**
-     * If conversion is possible.
-     *
-     * @param string|array|int $source
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function canConvertFrom($source, string $targetType): bool
-    {
-        if (!is_callable([$targetType, 'createFromFormat'])) {
-            // todo: this check does not make sense as this converter is only called on \DateTime targets
-            return false;
-        }
-        if (is_array($source)) {
-            return true;
-        }
-        if (is_int($source)) {
-            return true;
-        }
-        return is_string($source);
-    }
-
-    /**
      * Converts $source to a \DateTime using the configured dateFormat
      *
      * @param string|int|array $source the string to be converted to a \DateTime object

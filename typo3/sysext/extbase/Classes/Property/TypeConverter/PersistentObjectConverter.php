@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 use Symfony\Component\PropertyInfo\Type;
-use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException;
@@ -54,24 +53,6 @@ class PersistentObjectConverter extends ObjectConverter
     public const CONFIGURATION_CREATION_ALLOWED = 2;
 
     /**
-     * @var array
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $sourceTypes = ['integer', 'string', 'array'];
-
-    /**
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $targetType = 'object';
-
-    /**
-     * @var int
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $priority = 20;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
      */
     protected $persistenceManager;
@@ -82,17 +63,6 @@ class PersistentObjectConverter extends ObjectConverter
     public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
     {
         $this->persistenceManager = $persistenceManager;
-    }
-
-    /**
-     * We can only convert if the $targetType is either tagged with entity or value object.
-     *
-     * @param mixed $source
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function canConvertFrom($source, string $targetType): bool
-    {
-        return is_subclass_of($targetType, AbstractDomainObject::class);
     }
 
     /**

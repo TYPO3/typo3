@@ -25,24 +25,6 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 class StringConverter extends AbstractTypeConverter
 {
     /**
-     * @var string[]
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $sourceTypes = ['string', 'integer'];
-
-    /**
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $targetType = 'string';
-
-    /**
-     * @var int
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $priority = 10;
-
-    /**
      * Actually convert from $source to $targetType, taking into account the fully
      * built $convertedChildProperties and $configuration.
      *

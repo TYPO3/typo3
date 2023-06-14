@@ -26,24 +26,6 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 class IntegerConverter extends AbstractTypeConverter
 {
     /**
-     * @var string[]
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $sourceTypes = ['integer', 'string'];
-
-    /**
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $targetType = 'integer';
-
-    /**
-     * @var int
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $priority = 10;
-
-    /**
      * Actually convert from $source to $targetType, in fact a noop here.
      *
      * @param int|string|null $source

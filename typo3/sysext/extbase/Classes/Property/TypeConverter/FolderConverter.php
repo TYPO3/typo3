@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 use TYPO3\CMS\Core\Resource\ResourceInterface;
-use TYPO3\CMS\Extbase\Domain\Model\Folder;
 
 /**
  * Converter which transforms simple types to \TYPO3\CMS\Extbase\Domain\Model\Folder.
@@ -27,18 +26,6 @@ use TYPO3\CMS\Extbase\Domain\Model\Folder;
  */
 class FolderConverter extends AbstractFileFolderConverter
 {
-    /**
-     * @var string[]
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $sourceTypes = ['string'];
-
-    /**
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $targetType = Folder::class;
-
     /**
      * @var string
      */

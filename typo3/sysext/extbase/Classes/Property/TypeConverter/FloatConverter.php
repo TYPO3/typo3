@@ -38,24 +38,6 @@ class FloatConverter extends AbstractTypeConverter
     public const CONFIGURATION_DECIMAL_POINT = 'decimalPoint';
 
     /**
-     * @var string[]
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $sourceTypes = ['float', 'integer', 'string'];
-
-    /**
-     * @var string
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $targetType = 'float';
-
-    /**
-     * @var int
-     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
-     */
-    protected $priority = 10;
-
-    /**
      * Actually convert from $source to $targetType, by doing a typecast.
      *
      * @param mixed $source

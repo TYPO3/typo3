@@ -1531,11 +1531,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/IntegerConverter.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\TypeConverter\\\\ObjectConverter\\:\\:\\$sourceTypes is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\TypeConverter\\\\AbstractTypeConverter\\:\\:\\$sourceTypes\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/ObjectConverter.php
-
-		-
 			message: "#^Parameter \\#2 \\$key of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfigurationInterface\\:\\:getConfigurationValue\\(\\) expects string, int given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/ObjectConverter.php
@@ -2149,11 +2144,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$optionKey of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration\\:\\:setTypeConverterOption\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Mvc/Property/PropertyMappingConfiguration.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Form\\\\Mvc\\\\Property\\\\TypeConverter\\\\UploadedFileReferenceConverter\\:\\:\\$sourceTypes is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\TypeConverter\\\\AbstractTypeConverter\\:\\:\\$sourceTypes\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Property/TypeConverter/UploadedFileReferenceConverter.php
 
 		-
 			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getFileReferenceObject\\(\\) expects int, string given\\.$#"
