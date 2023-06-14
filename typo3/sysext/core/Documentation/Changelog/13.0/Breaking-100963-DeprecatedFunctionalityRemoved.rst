@@ -294,7 +294,7 @@ The following Backend route identifiers have been removed:
 
 The following global JavaScript variables have been removed:
 
-- :js:`Global_JavaScript_Variable_Name`
+- :js:`TYPO3.Tooltip`
 
 The following global JavaScript functions have been removed:
 
@@ -302,7 +302,7 @@ The following global JavaScript functions have been removed:
 
 The following JavaScript modules have been removed:
 
-- :js:`module.name`
+- :js:`tooltip`
 
 The following JavaScript methods behaviour has changed:
 
