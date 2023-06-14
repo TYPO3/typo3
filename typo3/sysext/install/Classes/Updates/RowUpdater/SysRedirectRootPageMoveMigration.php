@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
+ * @since 12.1
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class SysRedirectRootPageMoveMigration implements RowUpdaterInterface

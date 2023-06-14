@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
 /**
+ * @since 12.4
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('passwordPolicyForFrontendUsersUpdate')]

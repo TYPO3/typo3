@@ -24,6 +24,8 @@ use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
 /**
  * Installs and downloads EXT:fe_login_mode
+ *
+ * @since 12.1
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('feLoginModeExtension')]

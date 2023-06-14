@@ -22,11 +22,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Attribute\UpgradeWizard;
-use TYPO3\CMS\Install\Updates\RowUpdater\L18nDiffsourceToJsonMigration;
 use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
 use TYPO3\CMS\Install\Updates\RowUpdater\SysRedirectRootPageMoveMigration;
-use TYPO3\CMS\Install\Updates\RowUpdater\WorkspaceMovePlaceholderRemovalMigration;
-use TYPO3\CMS\Install\Updates\RowUpdater\WorkspaceNewPlaceholderRemovalMigration;
 
 /**
  * This is a generic updater to migrate content of TCA rows.
@@ -53,9 +50,6 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
      * @var array Single classes that may update rows
      */
     protected $rowUpdater = [
-        L18nDiffsourceToJsonMigration::class,
-        WorkspaceMovePlaceholderRemovalMigration::class,
-        WorkspaceNewPlaceholderRemovalMigration::class,
         SysRedirectRootPageMoveMigration::class,
     ];
 
