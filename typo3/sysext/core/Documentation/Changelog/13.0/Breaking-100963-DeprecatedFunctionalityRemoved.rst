@@ -113,6 +113,7 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess`
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->andX`
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->orX`
+- :php:`\TYPO3\CMS\Core\Database\Query\QueryBuilder->execute`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getExtURL`
 - :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
 - :php:`\TYPO3\CMS\Core\Session\UserSessionManager->createFromGlobalCookieOrAnonymous`

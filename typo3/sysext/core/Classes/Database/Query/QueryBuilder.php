@@ -233,33 +233,6 @@ class QueryBuilder
     }
 
     /**
-     * Executes this query using the bound parameters and their types.
-     *
-     * doctrine/dbal decided to split execute() into executeQuery() and
-     * executeStatement() for doctrine/dbal:^3.0, like it was done on
-     * connection level already, thus these methods are added to this
-     * decorator class also as preparation for extension authors, that
-     * they are able to write code which is compatible across two core
-     * versions and avoid deprecation warning. Additional this will ease
-     * backports without the need to switch between execute() and executeQuery().
-     *
-     * It is recommended to use directly executeQuery() for 'SELECT' and
-     * executeStatement() for 'INSERT', 'UPDATE' and 'DELETE' queries.
-     *
-     * @return Result|int
-     * @deprecated since v12, will be removed in v13. Use executeQuery() and executeStatement() instead.
-     */
-    public function execute()
-    {
-        trigger_error('QueryBuilder::execute() will be removed in TYPO3 v13.0. Use executeQuery() or executeStatement() directly.', E_USER_DEPRECATED);
-        if ($this->getType() !== \Doctrine\DBAL\Query\QueryBuilder::SELECT) {
-            return $this->executeStatement();
-        }
-
-        return $this->executeQuery();
-    }
-
-    /**
      * Executes an SQL query (SELECT) and returns a Result.
      *
      * doctrine/dbal decided to split execute() into executeQuery() and
