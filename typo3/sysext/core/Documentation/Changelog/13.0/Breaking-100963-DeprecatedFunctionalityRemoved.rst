@@ -334,7 +334,7 @@ The following features are now always enabled:
 
 The following features have been removed:
 
-- A feature like a removed upgrade wizard
+- Regular expression based validators in ext:form backend UI
 
 The following database tables have been removed:
 
