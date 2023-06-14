@@ -5405,6 +5405,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-99201-UserSessionManager-createFromGlobalCookieOrAnonymous.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer->setBaseUrl' => [

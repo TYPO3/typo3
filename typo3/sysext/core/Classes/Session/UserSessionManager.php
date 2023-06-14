@@ -99,25 +99,6 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Creates and returns a session from a global cookie (`$_COOKIE`). If
-     * no cookie can be found for the given name, an anonymous session
-     * will be returned. It is recommended to use the
-     * PSR-7-Request based method instead.
-     * @deprecated use createFromRequestOrAnonymous() instead. Will be removed in TYPO3 v13.0.
-     */
-    public function createFromGlobalCookieOrAnonymous(string $cookieName): UserSession
-    {
-        trigger_error('UserSessionManager->createFromGlobalCookieOrAnonymous() will be removed in TYPO3 v13.0. Use UserSessionManager->createFromRequestOrAnonymous() instead.', E_USER_DEPRECATED);
-        try {
-            $cookieValue = isset($_COOKIE[$cookieName]) ? stripslashes((string)$_COOKIE[$cookieName]) : '';
-            $sessionId = UserSession::resolveIdentifierFromJwt($cookieValue);
-        } catch (\Exception $exception) {
-            $this->logger->debug('Could not resolve session identifier from JWT', ['exception' => $exception]);
-        }
-        return $this->getSessionFromSessionId($sessionId  ?? '') ?? $this->createAnonymousSession();
-    }
-
-    /**
      * Creates and returns an anonymous session object (which is not persisted)
      */
     public function createAnonymousSession(): UserSession
