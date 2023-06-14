@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Controller\FileDumpController;
-use TYPO3\CMS\Core\Controller\RequireJsController;
 use TYPO3\CMS\Core\Hooks\BackendUserGroupIntegrityCheck;
 use TYPO3\CMS\Core\Hooks\BackendUserPasswordCheck;
 use TYPO3\CMS\Core\Hooks\CreateSiteConfiguration;
@@ -38,7 +37,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = PagesTsConfigGuard::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][CreateSiteConfiguration::class] = CreateSiteConfiguration::class;
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = FileDumpController::class . '::dumpAction';
-$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['requirejs'] = RequireJsController::class . '::retrieveConfiguration';
 
 $rendererRegistry = GeneralUtility::makeInstance(RendererRegistry::class);
 $rendererRegistry->registerRendererClass(AudioTagRenderer::class);

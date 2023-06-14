@@ -20,6 +20,7 @@ The following PHP classes that have previously been marked as deprecated for v12
 - :php:`\TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser`
 - :php:`\TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher`
 - :php:`\TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException`
+- :php:`\TYPO3\CMS\Core\Controller\RequireJsController`
 - :php:`\TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction`
 - :php:`\TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction`
 - :php:`\TYPO3\CMS\Core\Exception\MissingTsfeException`
@@ -205,6 +206,10 @@ The following class properties visibility have been changed to private:
 
 - :php:`\Full\Class\Name->propertyName`
 
+The following eID entrypoints have been removed:
+
+- :php:`requirejs`
+
 The following ViewHelpers have been changed or removed:
 
 - :html:`<f:helper.name>` Argument "foo" dropped
@@ -285,7 +290,7 @@ The following database table fields have been removed:
 
 The following Backend route identifiers have been removed:
 
-- `routeIdentifier`
+- `ajax_core_requirejs`
 
 The following global JavaScript variables have been removed:
 
