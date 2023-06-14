@@ -61,7 +61,7 @@ Typical code:
     $value = GeneralUtility::_GP('tx_scheduler');
 
     // After
-    $value = $request->getParsedBody()['tx_scheduler']) ?? $request->getQueryParams()['tx_scheduler']) ?? null;
+    $value = $request->getParsedBody()['tx_scheduler'] ?? $request->getQueryParams()['tx_scheduler'] ?? null;
 
 
 .. index:: PHP-API, FullyScanned, ext:core
