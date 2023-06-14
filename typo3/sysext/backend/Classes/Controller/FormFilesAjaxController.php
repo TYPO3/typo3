@@ -119,7 +119,6 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
                     'data' => '',
                     'stylesheetFiles' => [],
                     'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
-                    'scriptCall' => [],
                     'compilerInput' => [
                         'uid' => $fileReferenceData['databaseRow']['uid'],
                         'childChildUid' => $fileId,
@@ -184,7 +183,6 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
                     'data' => '',
                     'stylesheetFiles' => [],
                     'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
-                    'scriptCall' => [],
                 ],
                 GeneralUtility::makeInstance(NodeFactory::class)->create($fileReferenceData)->render()
             )

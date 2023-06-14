@@ -16,7 +16,6 @@ import { AjaxDispatcherResponse } from '@typo3/backend/form-engine/inline-relati
 export interface InlineResponseInterface extends AjaxDispatcherResponse{
   data: string;
   inlineData: InlineData;
-  scriptCall: Array<string>;
   stylesheetFiles: Array<string>;
   compilerInput?: CompilerInput,
 }

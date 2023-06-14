@@ -161,7 +161,6 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
             'html' => $newContainerResult['html'],
             'stylesheetFiles' => [],
             'scriptItems' => $scriptItems,
-            'scriptCall' => [],
         ];
 
         foreach ($newContainerResult['stylesheetFiles'] as $stylesheetFile) {

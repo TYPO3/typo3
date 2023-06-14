@@ -140,7 +140,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             'data' => '',
             'stylesheetFiles' => [],
             'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
-            'scriptCall' => [],
             'compilerInput' => [
                 'uid' => $childData['databaseRow']['uid'],
                 'childChildUid' => $childChildUid,
@@ -209,7 +208,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             'data' => '',
             'stylesheetFiles' => [],
             'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
-            'scriptCall' => [],
         ];
 
         $jsonArray = $this->mergeChildResultIntoJsonResult($jsonArray, $childResult);

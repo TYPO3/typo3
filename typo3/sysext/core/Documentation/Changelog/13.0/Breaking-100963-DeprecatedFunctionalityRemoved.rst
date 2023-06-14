@@ -324,6 +324,7 @@ The following fallbacks have been removed:
 - Usage of the result property :php:`additionalJavaScriptPost` of the form engine result array
 - Using chart.js v3 compatible widgets in ext:dashboard
 - Usage of :js:`.t3js-contextmenutrigger` to trigger and configure context menus
+- Usage of the jsonArray property :php:`scriptCall` for AjaxController's
 
 The following features are now always enabled:
 

@@ -32,7 +32,6 @@ export interface AjaxDispatcherResponse {
   messages: Message[];
   stylesheetFiles: string[];
   inlineData: object;
-  scriptCall: string[];
   scriptItems?: any[];
 }
 
@@ -121,15 +120,6 @@ export class AjaxDispatcher {
     if (json.scriptItems instanceof Array && json.scriptItems.length > 0) {
       const processor = new JavaScriptItemProcessor();
       processor.processItems(json.scriptItems);
-    }
-
-    // TODO: This is subject to be removed
-    // @todo deprecate or remove with TYPO3 v12.0
-    if (json.scriptCall && json.scriptCall.length > 0) {
-      for (const scriptCall of json.scriptCall) {
-        // eslint-disable-next-line no-eval
-        eval(scriptCall);
-      }
     }
 
     return json;

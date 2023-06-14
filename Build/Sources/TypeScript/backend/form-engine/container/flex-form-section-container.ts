@@ -157,13 +157,6 @@ class FlexFormSectionContainer {
         processor.processItems(data.scriptItems);
       }
 
-      // @todo deprecate or remove with TYPO3 v12.0
-      if (data.scriptCall && data.scriptCall.length > 0) {
-        for (const value of data.scriptCall) {
-          // eslint-disable-next-line no-eval
-          eval(value);
-        }
-      }
       if (data.stylesheetFiles && data.stylesheetFiles.length > 0) {
         for (const stylesheetFile of data.stylesheetFiles) {
           const element = document.createElement('link');
