@@ -174,14 +174,6 @@ class ContextMenu {
       return;
     }
 
-    const contextLegacyTarget = event.target.closest('.t3js-contextmenutrigger');
-    if (contextLegacyTarget instanceof HTMLElement) {
-      // @deprecated since v12, will be removed in v13.
-      console.warn('Using the contextmenu trigger .t3js-contextmenutrigger is deprecated. Please use [data-contextmenu-trigger="click"] instead and prefix your config with "data-contextmenu-".');
-      this.handleLegacyContextMenuEvent(event, contextLegacyTarget);
-      return;
-    }
-
     const contextMenu = event.target.closest('.context-menu');
     if (!contextMenu) {
       this.hideAll();
@@ -202,28 +194,6 @@ class ContextMenu {
         element
       );
     }
-  }
-
-  /**
-   * @deprecated since v12, will be removed in v13.
-   */
-  private handleLegacyContextMenuEvent(event: PointerEvent, element: HTMLElement): void
-  {
-    // if there is an other "inline" onclick setting, context menu is not triggered
-    // usually this is the case for the foldertree
-    if (element.getAttribute('onclick') && event.type === 'click') {
-      return;
-    }
-
-    event.preventDefault();
-    this.show(
-      element.dataset.table ?? '',
-      element.dataset.uid ?? '',
-      element.dataset.context ?? '',
-      '',
-      '',
-      element
-    );
   }
 
   /**

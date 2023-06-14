@@ -323,6 +323,7 @@ The following fallbacks have been removed:
 - Usage of the :file:`ext_icon.*` file locations for extension icons
 - Usage of the result property :php:`additionalJavaScriptPost` of the form engine result array
 - Using chart.js v3 compatible widgets in ext:dashboard
+- Usage of :js:`.t3js-contextmenutrigger` to trigger and configure context menus
 
 The following features are now always enabled:
 
