@@ -681,19 +681,13 @@ abstract class ActionController implements ControllerInterface
      * Creates a Message object and adds it to the FlashMessageQueue.
      *
      * @param string $messageTitle Optional message title
-     * @param int|ContextualFeedbackSeverity $severity Optional severity, must be one of \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity cases. Accepts int values as well, which is deprecated.
+     * @param ContextualFeedbackSeverity $severity
      * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default) or not
      * @throws \InvalidArgumentException if the message body is no string
      * @see \TYPO3\CMS\Core\Messaging\FlashMessage
-     *
-     * @todo: Change $severity to allow ContextualFeedbackSeverity only in v13
      */
-    public function addFlashMessage(string $messageBody, $messageTitle = '', $severity = ContextualFeedbackSeverity::OK, $storeInSession = true)
+    public function addFlashMessage(string $messageBody, $messageTitle = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK, $storeInSession = true)
     {
-        if (is_int($severity)) {
-            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
-            $severity = ContextualFeedbackSeverity::transform($severity);
-        }
         /* @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
         $flashMessage = GeneralUtility::makeInstance(
             FlashMessage::class,

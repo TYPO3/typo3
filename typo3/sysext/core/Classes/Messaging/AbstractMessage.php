@@ -24,27 +24,6 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
  */
 abstract class AbstractMessage implements \JsonSerializable
 {
-    /**
-     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE instead
-     */
-    public const NOTICE = -2;
-    /**
-     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO instead
-     */
-    public const INFO = -1;
-    /**
-     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK instead
-     */
-    public const OK = 0;
-    /**
-     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING instead
-     */
-    public const WARNING = 1;
-    /**
-     * @deprecated Use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR instead
-     */
-    public const ERROR = 2;
-
     protected string $title = '';
     protected string $message = '';
     protected ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK;
@@ -80,16 +59,10 @@ abstract class AbstractMessage implements \JsonSerializable
     /**
      * Sets the message' severity
      *
-     * @param value-of<ContextualFeedbackSeverity>|ContextualFeedbackSeverity $severity
-     *
-     * @todo: Change $severity to allow ContextualFeedbackSeverity only in v13
+     * @param ContextualFeedbackSeverity $severity
      */
-    public function setSeverity(int|ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
+    public function setSeverity(ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
     {
-        if (is_int($severity)) {
-            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
-            $severity = ContextualFeedbackSeverity::transform($severity) ?? ContextualFeedbackSeverity::OK;
-        }
         $this->severity = $severity;
     }
 

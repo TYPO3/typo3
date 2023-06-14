@@ -37,15 +37,11 @@ class FlashMessage extends AbstractMessage
      *
      * @param string $message The message.
      * @param string $title Optional message title.
-     * @param int|value-of<ContextualFeedbackSeverity>|ContextualFeedbackSeverity $severity
+     * @param ContextualFeedbackSeverity $severity
      * @param bool $storeInSession Optional, defines whether the message should be stored in the session or only for one request (default)
      */
-    public function __construct($message, $title = '', $severity = ContextualFeedbackSeverity::OK, $storeInSession = false)
+    public function __construct($message, $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK, $storeInSession = false)
     {
-        if (is_int($severity)) {
-            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
-            $severity = ContextualFeedbackSeverity::transform($severity) ?? ContextualFeedbackSeverity::OK;
-        }
         $this->setMessage($message);
         $this->setTitle($title);
         $this->setSeverity($severity);

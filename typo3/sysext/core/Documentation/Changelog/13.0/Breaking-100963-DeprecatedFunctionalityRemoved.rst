@@ -170,6 +170,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getThumbnailUrl`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordToolTip`
+- :php:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::transform`
 - :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get`
 - :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::debugInPopUpWindow`
@@ -185,8 +186,17 @@ The following PHP static class methods that have previously been marked as depre
 
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:
 
+- :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage->setSeverity` (argument 1 is now of type :php:`ContextualFeedbackSeverity`)
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessages->__construct` (argument 3 is now of type :php:`ContextualFeedbackSeverity`)
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->getAllMessages` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->getAllMessagesAndFlush` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->removeAllFlashMessagesFromSession` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->clear` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
+- :php:`\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility->addMessageToFlashMessageQueue` (argument 2 is now of type :php:`ContextualFeedbackSeverity|null`)
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode` (argument 4 :php:`$limit` has been removed)
+- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->addFlashMessage` (argument 2 is now of type :php:`ContextualFeedbackSeverity`)
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->start` (argument 3 :php:`$request` has been removed)
+- :php:`\TYPO3\CMS\Reports\Status->__construct` (argument 4 is now of type :php:`ContextualFeedbackSeverity`)
 - :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider->addMessage` (argument 2 is now of type :php:`ContextualFeedbackSeverity`)
 
 The following public class properties have been dropped:
@@ -247,7 +257,21 @@ The following constants have been dropped:
 
 The following class constants have been dropped:
 
-- :php:`\Full\Class\Name::CONSTANT_NAME`
+- :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR`
+- :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage::INFO`
+- :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage::NOTICE`
+- :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage::OK`
+- :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING`
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR`
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessage::INFO`
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE`
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessage::OK`
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING`
+- :php:`\TYPO3\CMS\Reports\Status::ERROR`
+- :php:`\TYPO3\CMS\Reports\Status::INFO`
+- :php:`\TYPO3\CMS\Reports\Status::NOTICE`
+- :php:`\TYPO3\CMS\Reports\Status::OK`
+- :php:`\TYPO3\CMS\Reports\Status::WARNING`
 
 The following global option handling have been dropped and are ignored:
 

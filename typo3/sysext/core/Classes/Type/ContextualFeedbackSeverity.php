@@ -56,43 +56,4 @@ enum ContextualFeedbackSeverity: int
             self::ERROR => 'actions-close',
         };
     }
-
-    /**
-     * Internal helper method to convert integer based severities into their enum counterparts with logging deprecations.
-     *
-     * @internal
-     * @deprecated Will be removed with TYPO3 13.0
-     */
-    public static function transform(int $originalSeverity): ?self
-    {
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        $caller = end($backtrace);
-        if (isset($caller['class'])) {
-            $callerName = $caller['class'] . $caller['type'] . $caller['function'];
-        } else {
-            $callerName = $caller['function'];
-        }
-        $callerLocation = sprintf('file %s, line %d', $caller['file'], $caller['line']);
-
-        $severity = ContextualFeedbackSeverity::tryFrom($originalSeverity);
-        if ($severity !== null) {
-            trigger_error(sprintf(
-                'Calling %s (%s) with an integer severity "%d" will be removed with TYPO3 v13. Consider using %s instead.',
-                $callerName,
-                $callerLocation,
-                $originalSeverity,
-                __CLASS__ . '::' . $severity->name
-            ), E_USER_DEPRECATED);
-
-            return $severity;
-        }
-
-        trigger_error(sprintf(
-            'Calling %s (%s) with an invalid severity "%d" will be unsupported with TYPO3 v13.',
-            $callerName,
-            $callerLocation,
-            $originalSeverity
-        ), E_USER_DEPRECATED);
-        return null;
-    }
 }

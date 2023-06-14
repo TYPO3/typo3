@@ -93,10 +93,6 @@ class FlashMessageFinisher extends AbstractFinisher
         $messageArguments = $this->parseOption('messageArguments');
         $messageCode = $this->parseOption('messageCode');
         $severity = $this->parseOption('severity');
-        if (is_int($severity)) {
-            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
-            $severity = ContextualFeedbackSeverity::transform($severity);
-        }
         switch ($severity) {
             case ContextualFeedbackSeverity::NOTICE:
                 $message = GeneralUtility::makeInstance(Notice::class, $messageBody, $messageCode, $messageArguments, $messageTitle);

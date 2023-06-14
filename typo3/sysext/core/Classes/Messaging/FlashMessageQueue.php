@@ -106,17 +106,11 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     /**
      * Returns all messages from the current PHP session and from the current request.
      *
-     * @param value-of<ContextualFeedbackSeverity>|ContextualFeedbackSeverity|null $severity the int values are deprecated
+     * @param ContextualFeedbackSeverity|null $severity
      * @return FlashMessage[]
-     *
-     * @todo: Change $severity to allow ContextualFeedbackSeverity|null only in v13
      */
-    public function getAllMessages(int|ContextualFeedbackSeverity|null $severity = null)
+    public function getAllMessages(ContextualFeedbackSeverity|null $severity = null)
     {
-        if (is_int($severity)) {
-            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
-            $severity = ContextualFeedbackSeverity::transform($severity);
-        }
         // Get messages from user session
         $queuedFlashMessagesFromSession = $this->getFlashMessagesFromSession();
         $queuedFlashMessages = array_merge($queuedFlashMessagesFromSession, $this->toArray());
@@ -138,17 +132,11 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
      * After fetching the messages the internal queue and the message queue in the session
      * will be emptied.
      *
-     * @param value-of<ContextualFeedbackSeverity>|ContextualFeedbackSeverity|null $severity the int values are deprecated
+     * @param ContextualFeedbackSeverity|null $severity
      * @return FlashMessage[]
-     *
-     * @todo: Change $severity to allow ContextualFeedbackSeverity|null only in v13
      */
-    public function getAllMessagesAndFlush(int|ContextualFeedbackSeverity|null $severity = null)
+    public function getAllMessagesAndFlush(ContextualFeedbackSeverity|null $severity = null)
     {
-        if (is_int($severity)) {
-            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
-            $severity = ContextualFeedbackSeverity::transform($severity);
-        }
         $queuedFlashMessages = $this->getAllMessages($severity);
         // Reset messages in user session
         $this->removeAllFlashMessagesFromSession($severity);
@@ -176,16 +164,10 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     /**
      * Removes all flash messages from the session
      *
-     * @param value-of<ContextualFeedbackSeverity>|ContextualFeedbackSeverity|null $severity the int values are deprecated
-     *
-     * @todo: Change $severity to allow ContextualFeedbackSeverity|null only in v13
+     * @param ContextualFeedbackSeverity|null $severity
      */
-    protected function removeAllFlashMessagesFromSession(int|ContextualFeedbackSeverity|null $severity = null)
+    protected function removeAllFlashMessagesFromSession(ContextualFeedbackSeverity|null $severity = null)
     {
-        if (is_int($severity)) {
-            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
-            $severity = ContextualFeedbackSeverity::transform($severity);
-        }
         if (!$this->getUserByContext() instanceof AbstractUserAuthentication) {
             return;
         }
@@ -274,16 +256,10 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     /**
      * Removes all items from the queue
      *
-     * @param value-of<ContextualFeedbackSeverity>|ContextualFeedbackSeverity|null $severity the int values are deprecated
-     *
-     * @todo: Change $severity to allow ContextualFeedbackSeverity|null only in v13
+     * @param ContextualFeedbackSeverity|null $severity
      */
-    public function clear(int|ContextualFeedbackSeverity|null $severity = null)
+    public function clear(ContextualFeedbackSeverity|null $severity = null)
     {
-        if (is_int($severity)) {
-            // @deprecated int type for $severity deprecated in v12, will change to Severity only in v13.
-            $severity = ContextualFeedbackSeverity::transform($severity);
-        }
         $this->rewind();
         if ($severity === null) {
             while (!$this->isEmpty()) {

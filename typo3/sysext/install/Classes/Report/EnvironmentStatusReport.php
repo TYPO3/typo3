@@ -119,14 +119,14 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
 
             if ($value > 0) {
                 $pathToXliff = 'LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf';
-                // Map information type to abbreviation which is used in \TYPO3\CMS\Reports\Status class
+                // Map information type to enums which is used in \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity
                 if ($type === 'information') {
                     $type = 'info';
                 }
                 if (!$verbose) {
                     $message = $this->getLanguageService()->sL($pathToXliff . ':environment.status.message.' . $type);
                 }
-                $severity = constant('\TYPO3\CMS\Reports\Status::' . strtoupper($type));
+                $severity = constant('\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::' . strtoupper($type));
                 $statusArray[] = GeneralUtility::makeInstance(
                     Status::class,
                     $this->getLanguageService()->sL($pathToXliff . ':environment.status.title'),

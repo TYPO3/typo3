@@ -307,7 +307,7 @@ class ExtendedFileUtility extends BasicFileUtility
      * @param ContextualFeedbackSeverity $severity
      * @throws \InvalidArgumentException
      */
-    protected function addMessageToFlashMessageQueue($localizationKey, array $replaceMarkers = [], $severity = ContextualFeedbackSeverity::ERROR)
+    protected function addMessageToFlashMessageQueue($localizationKey, array $replaceMarkers = [], ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::ERROR)
     {
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
