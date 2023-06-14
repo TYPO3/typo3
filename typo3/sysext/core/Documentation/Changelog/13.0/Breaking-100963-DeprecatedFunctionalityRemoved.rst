@@ -124,6 +124,10 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager->setContentObject`
 - :php:`\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager->getContentObject`
 - :php:`\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager->setContentObject`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->setLanguageOverlayMode`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->getLanguageOverlayMode`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->setLanguageUid`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->getLanguageUid`
 - :php:`\TYPO3\CMS\Extbase\Property\AbstractTypeConverter->canConvertFrom`
 - :php:`\TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getPriority`
 - :php:`\TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getSupportedTargetType`
