@@ -14,6 +14,7 @@ Description
 The following PHP classes that have previously been marked as deprecated for v12 and were now removed:
 
 - :php:`\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher`
+- :php:`\TYPO3\CMS\Backend\EventListener\SilentSiteLanguageFlagMigration`
 - :php:`\TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader`
 - :php:`\TYPO3\CMS\Core\Configuration\PageTsConfig`
 - :php:`\TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser`

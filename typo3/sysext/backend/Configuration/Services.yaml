@@ -195,11 +195,6 @@ services:
         identifier: 'typo3/cms-backend/login-notification'
         method: 'emailAtLogin'
 
-  TYPO3\CMS\Backend\EventListener\SilentSiteLanguageFlagMigration:
-    tags:
-      - name: event.listener
-        event: TYPO3\CMS\Core\Configuration\Event\SiteConfigurationLoadedEvent
-
   # Toolbar registry
   TYPO3\CMS\Backend\Toolbar\ToolbarItemsRegistry:
     arguments:
