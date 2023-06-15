@@ -28,6 +28,7 @@ The following PHP classes that have previously been marked as deprecated for v12
 - :php:`\TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction`
 - :php:`\TYPO3\CMS\Core\Exception\MissingTsfeException`
 - :php:`\TYPO3\CMS\Core\ExpressionLanguage\DeprecatingRequestWrapper`
+- :php:`\TYPO3\CMS\Core\Resource\Service\MagicImageService`
 - :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
 - :php:`\TYPO3\CMS\Core\TypoScript\TemplateService`
 - :php:`\TYPO3\CMS\Core\Utility\ResourceUtility`

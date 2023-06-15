@@ -2346,6 +2346,7 @@ return [
     'TYPO3\CMS\Core\Resource\Service\MagicImageService' => [
         'restFiles' => [
             'Deprecation-99237-MagicImageService.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];
