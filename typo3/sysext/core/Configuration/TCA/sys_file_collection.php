@@ -116,7 +116,7 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_collection.folder',
             'config' => [
                 'type' => 'folder',
-                'required' => true,
+                'minitems' => 1,
                 'maxitems' => 1,
                 'size' => 1,
             ],

@@ -340,6 +340,7 @@ export default (function() {
           }
           break;
         case 'group':
+        case 'folder':
           if (rule.minItems || rule.maxItems) {
             selected = FormEngineValidation.trimExplode(',', field.value).length;
             if (typeof rule.minItems !== 'undefined') {
