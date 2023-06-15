@@ -2233,6 +2233,7 @@ return [
     'TYPO3\CMS\Core\Resource\Service\UserFileInlineLabelService' => [
         'restFiles' => [
             'Deprecation-98479-DeprecatedFileReferenceRelatedFunctionality.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Typolink\LinkResultFactory' => [

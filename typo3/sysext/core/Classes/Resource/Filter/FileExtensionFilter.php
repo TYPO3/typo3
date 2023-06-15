@@ -80,30 +80,6 @@ class FileExtensionFilter
     }
 
     /**
-     * Entry method for use as DataHandler "inline" field filter
-     *
-     * @deprecated Will be removed in TYPO3 v13. Use filterFileReferences() directly instead.
-     */
-    public function filterInlineChildren(array $parameters, DataHandler|DatabaseRecordList $dataHandler): array
-    {
-        trigger_error(
-            'FileExtensionFilter->filterInlineChildren() will be removed in TYPO3 v13.0. Use FileExtensionFilter->filter() instead.',
-            E_USER_DEPRECATED
-        );
-
-        $references = $parameters['values'] ?? [];
-        if (!is_array($references)) {
-            $references = [];
-        }
-        return $this->filter(
-            $references,
-            (string)($parameters['allowedFileExtensions'] ?? ''),
-            (string)($parameters['disallowedFileExtensions'] ?? ''),
-            $dataHandler
-        );
-    }
-
-    /**
      * Entry method for use as filelist filter.
      *
      * We use -1 as the "don't include“ return value, for historic reasons,

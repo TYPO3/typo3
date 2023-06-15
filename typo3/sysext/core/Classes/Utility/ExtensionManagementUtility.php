@@ -524,32 +524,6 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Gets the TCA configuration for a field handling (FAL) files.
-     *
-     * @param string $fieldName Name of the field to be used
-     * @param array $customSettingOverride Custom field settings overriding the basics
-     * @param string $allowedFileExtensions Comma-separated list of allowed file extensions (e.g. "jpg,gif,pdf")
-     * @param string $disallowedFileExtensions Comma-separated list of disallowed file extensions (e.g. "doc,docx")
-     *
-     * @deprecated since TYPO3 v12.0. Use the TCA type "file" directly
-     */
-    public static function getFileFieldTCAConfig(string $fieldName, array $customSettingOverride = [], string $allowedFileExtensions = '', string $disallowedFileExtensions = ''): array
-    {
-        trigger_error(
-            'ExtensionManagementUtility::getFileFieldTCAConfig() will be removed in TYPO3 v13.0. Use TCA type "file" directly instead.',
-            E_USER_DEPRECATED
-        );
-
-        $fileFieldTCAConfig = [
-            'type' => 'file',
-            'allowed' => $allowedFileExtensions,
-            'disallowed'=> $disallowedFileExtensions,
-        ];
-        ArrayUtility::mergeRecursiveWithOverrule($fileFieldTCAConfig, $customSettingOverride);
-        return $fileFieldTCAConfig;
-    }
-
-    /**
      * Adds a list of new fields to the TYPO3 USER SETTINGS configuration "showitem" list, the array with
      * the new fields itself needs to be added additionally to show up in the user setup, like
      * $GLOBALS['TYPO3_USER_SETTINGS']['columns'] += $tempColumns
