@@ -17,6 +17,7 @@ services:
       - name: 'console.command'
         command: 'syslog:list'
         description: 'Show entries from the sys_log database table of the last 24 hours.'
+        schedulable: false
 
   TYPO3\CMS\Lowlevel\Command\MissingRelationsCommand:
     tags:
