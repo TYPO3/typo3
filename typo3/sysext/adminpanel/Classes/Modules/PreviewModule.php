@@ -18,11 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\Modules;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
+use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\Repositories\FrontendGroupsRepository;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -35,8 +41,12 @@ use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 /**
  * Admin Panel Preview Module
  */
-class PreviewModule extends AbstractModule implements RequestEnricherInterface, PageSettingsProviderInterface, ResourceProviderInterface
+class PreviewModule extends AbstractModule implements RequestEnricherInterface, PageSettingsProviderInterface, ResourceProviderInterface, OnSubmitActorInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+    protected CacheManager $cacheManager;
+
     /**
      * module configuration, set on initialize
      *
@@ -50,6 +60,11 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
      * }
      */
     protected array $config;
+
+    public function injectCacheManager(CacheManager $cacheManager): void
+    {
+        $this->cacheManager = $cacheManager;
+    }
 
     public function getIconIdentifier(): string
     {
@@ -246,5 +261,29 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
     public function getCssFiles(): array
     {
         return [];
+    }
+
+    public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void
+    {
+        if (!array_key_exists('preview_showFluidDebug', $configurationToSave)) {
+            return;
+        }
+
+        $currentShowFluidDebug = $this->getConfigOptionForModule('showFluidDebug');
+
+        if ($configurationToSave['preview_showFluidDebug']  === $currentShowFluidDebug) {
+            return;
+        }
+
+        $pageId = (int)$request->getParsedBody()['TSFE_ADMIN_PANEL']['preview_clearCacheId'];
+
+        try {
+            $this->cacheManager->flushCachesInGroupByTag('pages', 'pageId_' . $pageId);
+            $this->cacheManager->getCache('fluid_template')->flush();
+        } catch (NoSuchCacheException|NoSuchCacheGroupException $exception) {
+            if ($this->logger !== null) {
+                $this->logger->error($exception->getMessage(), ['exception' => $exception]);
+            }
+        }
     }
 }
