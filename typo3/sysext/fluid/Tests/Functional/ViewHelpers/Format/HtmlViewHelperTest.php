@@ -17,10 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class HtmlViewHelperTest extends FunctionalTestCase
 {
@@ -170,5 +174,23 @@ page.10 {
 EOT
                 ]
             );
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionIfCalledInBackendContext(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context->setRequest($request);
+        $context->getTemplatePaths()->setTemplateSource('<f:format.html>TYPO3 is a cool CMS</f:format.html>');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1686813703);
+        $this->expectExceptionMessage('Using f:format.html in backend context is not allowed. Use f:sanitize.html or f:transform.html instead.');
+
+        (new TemplateView($context))->render();
     }
 }

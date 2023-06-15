@@ -20,11 +20,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -157,9 +155,10 @@ final class HtmlViewHelper extends AbstractViewHelper
         $request = $renderingContext->getRequest();
         $isBackendRequest = $request instanceof ServerRequestInterface && ApplicationType::fromRequest($request)->isBackend();
         if ($isBackendRequest) {
-            // @deprecated since v12, remove in v13: Drop simulateFrontendEnvironment() and resetFrontendEnvironment() and throw a \RuntimeException here.
-            trigger_error('Using f:format.html in backend context has been deprecated in TYPO3 v12 and will be removed with v13', E_USER_DEPRECATED);
-            $tsfeBackup = self::simulateFrontendEnvironment();
+            throw new \RuntimeException(
+                'Using f:format.html in backend context is not allowed. Use f:sanitize.html or f:transform.html instead.',
+                1686813703
+            );
         }
 
         $value = $renderChildrenClosure() ?? '';
@@ -182,39 +181,6 @@ final class HtmlViewHelper extends AbstractViewHelper
         }
 
         $content = $contentObject->parseFunc($value, null, '< ' . $parseFuncTSPath);
-
-        if ($isBackendRequest) {
-            self::resetFrontendEnvironment($tsfeBackup);
-        }
-
         return $content;
-    }
-
-    /**
-     * Copies the specified parseFunc configuration to $GLOBALS['TSFE']->tmpl->setup in Backend mode.
-     * This somewhat hacky work around is currently needed because ContentObjectRenderer->parseFunc() relies on those variables to be set.
-     *
-     * @return ?TypoScriptFrontendController The 'old' backed up $GLOBALS['TSFE'] or null
-     */
-    protected static function simulateFrontendEnvironment(): ?TypoScriptFrontendController
-    {
-        // @todo: We may want to deprecate this entirely and throw an exception in v13 when this VH is used in BE scope:
-        //        Core has no BE related usages to this anymore and in general it shouldn't be needed in BE scope at all.
-        //        If BE really relies on content being processed via FE parseFunc, a controller should do this and assign
-        //        the processed value directly, which could then be rendered using f:format.raw.
-        $tsfeBackup = $GLOBALS['TSFE'] ?? null;
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->tmpl = new \stdClass();
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        $GLOBALS['TSFE']->tmpl->setup = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-        return $tsfeBackup;
-    }
-
-    /**
-     * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
-     */
-    protected static function resetFrontendEnvironment(?TypoScriptFrontendController $tsfeBackup): void
-    {
-        $GLOBALS['TSFE'] = $tsfeBackup;
     }
 }

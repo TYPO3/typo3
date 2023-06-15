@@ -347,6 +347,7 @@ The following fallbacks have been removed:
 - Usage of the jsonArray property :php:`scriptCall` for AjaxController's
 - Binding the selected menu items to callback actions in context menus
 - Checking for :php:`\TYPO3\CMS\Core\Site\SiteLanguageAwareTrait` is removed in :php:`\TYPO3\CMS\Core\Routing\Aspect\AspectFactory`
+- f:format.html ViewHelper no longer works in BE context
 
 The following features are now always enabled:
 
