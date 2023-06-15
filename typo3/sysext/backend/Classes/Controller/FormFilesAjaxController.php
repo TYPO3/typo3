@@ -46,7 +46,8 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
 
     public function __construct(
         private readonly ResponseFactoryInterface $responseFactory,
-        private readonly StreamFactoryInterface $streamFactory
+        private readonly StreamFactoryInterface $streamFactory,
+        private readonly FormDataCompiler $formDataCompiler,
     ) {
     }
 
@@ -107,8 +108,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
             $formDataCompilerInput['inlineChildChildUid'] = $fileId;
         }
 
-        $fileReferenceData = GeneralUtility::makeInstance(FormDataCompiler::class)
-            ->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
+        $fileReferenceData = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
 
         $fileReferenceData['inlineParentUid'] = $parent['uid'];
         $fileReferenceData['renderType'] = FileReferenceContainer::NODE_TYPE_IDENTIFIER;
@@ -237,8 +237,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
                 'inlineCompileExistingChildren' => false,
             ];
             // Full TcaDatabaseRecord is required here to have the list of connected uids $oldItemList
-            $parentData = GeneralUtility::makeInstance(FormDataCompiler::class)
-                ->compile($formDataCompilerInputForParent, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
+            $parentData = $this->formDataCompiler->compile($formDataCompilerInputForParent, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
             $parentLanguageField = $parentData['processedTca']['ctrl']['languageField'];
             $parentLanguage = $parentData['databaseRow'][$parentLanguageField];
             $oldItemList = $parentData['databaseRow'][$parentFieldName];
@@ -378,7 +377,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
         $inlineStackProcessor->initializeByGivenStructure($inlineStructure);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
 
-        return GeneralUtility::makeInstance(FormDataCompiler::class)
+        return $this->formDataCompiler
             ->compile(
                 [
                     'request' => $request,

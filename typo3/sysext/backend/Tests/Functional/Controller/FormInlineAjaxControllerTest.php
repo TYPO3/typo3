@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -64,7 +65,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
             ]
         );
 
-        $this->subject = new FormInlineAjaxController();
+        $this->subject = new FormInlineAjaxController(new FormDataCompiler());
     }
 
     /**

@@ -57,7 +57,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Backend controller: The "Site management" -> "Sites" module
- *
  * List all site root pages, CRUD site configuration.
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
@@ -69,7 +68,8 @@ class SiteConfigurationController
         protected readonly SiteFinder $siteFinder,
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly FormDataCompiler $formDataCompiler,
     ) {
     }
 
@@ -148,7 +148,6 @@ class SiteConfigurationController
 
         $returnUrl = $this->uriBuilder->buildUriFromRoute('site_configuration');
 
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'tableName' => 'site',
@@ -160,7 +159,7 @@ class SiteConfigurationController
             ],
             'defaultValues' => $defaultValues,
         ];
-        $formData = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(SiteConfigurationDataGroup::class));
+        $formData = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(SiteConfigurationDataGroup::class));
         $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
         $formData['renderType'] = 'outerWrapContainer';
         $formResult = $nodeFactory->create($formData)->render();

@@ -25,19 +25,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class FormDataCompiler
 {
     /**
-     * @deprecated Remove constructor in v13 and change controllers to get FormDataCompiler injected.
-     */
-    public function __construct(private readonly ?FormDataGroupInterface $formDataGroup = null)
-    {
-        if ($this->formDataGroup !== null) {
-            trigger_error(
-                'Avoid the formDataGroup constructor argument: The form data provider group should be hand over as second argument to compile()',
-                E_USER_DEPRECATED
-            );
-        }
-    }
-
-    /**
      * Main entry method maps given data input array and sanitizes some
      * crucial input parameters and calls compile on FormDataGroupInterface.
      *
@@ -45,18 +32,8 @@ class FormDataCompiler
      * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
      */
-    public function compile(array $initialData, FormDataGroupInterface $formDataGroup = null): array
+    public function compile(array $initialData, FormDataGroupInterface $formDataGroup): array
     {
-        if ($formDataGroup === null) {
-            // @deprecated Remove entire if() in v13.
-            //             Remove constructor in v13
-            //             Change method signature to "compile(array $initialData, FormDataGroupInterface $formDataGroup): array"
-            if ($this->formDataGroup === null) {
-                throw new \RuntimeException('No data provider group given', 1681390133);
-            }
-            $formDataGroup = $this->formDataGroup;
-        }
-
         $result = $this->initializeResultArray();
 
         // There must be only keys that actually exist in result data.

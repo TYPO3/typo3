@@ -346,7 +346,8 @@ class EditDocumentController
         protected readonly PageRenderer $pageRenderer,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected readonly BackendEntryPointResolver $backendEntryPointResolver
+        protected readonly BackendEntryPointResolver $backendEntryPointResolver,
+        private readonly FormDataCompiler $formDataCompiler,
     ) {
     }
 
@@ -1083,7 +1084,6 @@ class EditDocumentController
                     }
 
                     try {
-                        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
                         $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
 
                         // Reset viewId - it should hold data of last entry only
@@ -1103,7 +1103,7 @@ class EditDocumentController
                             $formDataCompilerInput['defaultValues'] = $this->defVals;
                         }
 
-                        $formData = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
+                        $formData = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
 
                         // Set this->viewId if possible
                         if ($command === 'new'
@@ -1120,7 +1120,6 @@ class EditDocumentController
                         }
 
                         // Determine if delete button can be shown
-                        $deleteAccess = false;
                         $permission = new Permission($formData['userPermissionOnPage']);
                         if ($formData['tableName'] === 'pages') {
                             $deleteAccess = $permission->get(Permission::PAGE_DELETE);

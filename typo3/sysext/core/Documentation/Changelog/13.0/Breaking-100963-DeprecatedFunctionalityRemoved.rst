@@ -223,6 +223,7 @@ The following PHP static class methods that have previously been marked as depre
 
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:
 
+- :php:`\TYPO3\CMS\Backend\Form\FormDataCompiler->compile` (argument 2 is now required)
 - :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage->setSeverity` (argument 1 is now of type :php:`ContextualFeedbackSeverity`)
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessages->__construct` (argument 3 is now of type :php:`ContextualFeedbackSeverity`)
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->getAllMessages` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)

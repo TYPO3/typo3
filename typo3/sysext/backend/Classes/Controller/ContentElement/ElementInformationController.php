@@ -68,6 +68,7 @@ class ElementInformationController
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly ResourceFactory $resourceFactory,
+        private readonly FormDataCompiler $formDataCompiler,
     ) {
     }
 
@@ -330,7 +331,6 @@ class ElementInformationController
      */
     protected function getFieldList(ServerRequestInterface $request, string $table, int $uid): array
     {
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'command' => 'edit',
@@ -338,7 +338,7 @@ class ElementInformationController
             'vanillaUid' => $uid,
         ];
         try {
-            $result = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
+            $result = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
             $fieldList = array_unique(array_values($result['columnsToProcess']));
 
             $ctrlKeysOfUnneededFields = ['origUid', 'transOrigPointerField', 'transOrigDiffSourceField'];

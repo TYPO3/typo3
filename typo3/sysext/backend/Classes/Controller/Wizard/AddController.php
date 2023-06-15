@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class AddController
 {
     /**
@@ -67,6 +69,11 @@ class AddController
      */
     protected string $returnEditConf = '';
 
+    public function __construct(
+        private readonly FormDataCompiler $formDataCompiler,
+    ) {
+    }
+
     /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
@@ -79,14 +86,13 @@ class AddController
             if ($this->processDataFlag) {
                 // Because OnTheFly can't handle MM relations with intermediate tables we use TcaDatabaseRecord here
                 // Otherwise already stored relations are overwritten with the new entry
-                $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
                 $input = [
                     'request' => $request,
                     'tableName' => $this->P['table'],
                     'vanillaUid' => (int)$this->P['uid'],
                     'command' => 'edit',
                 ];
-                $result = $formDataCompiler->compile($input, $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class));
+                $result = $this->formDataCompiler->compile($input, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
                 $currentParentRow = $result['databaseRow'];
 
                 // If that record was found (should absolutely be...), then init DataHandler and set, prepend or append

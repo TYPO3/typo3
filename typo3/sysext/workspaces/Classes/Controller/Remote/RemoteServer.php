@@ -60,6 +60,7 @@ class RemoteServer
         protected readonly WorkspaceService $workspaceService,
         protected readonly DiffUtility $differenceHandler,
         protected readonly EventDispatcherInterface $eventDispatcher,
+        private readonly FormDataCompiler $formDataCompiler,
     ) {
         $this->differenceHandler->stripTags = false;
     }
@@ -546,10 +547,8 @@ class RemoteServer
      */
     protected function getSuitableFields(string $table, int $uid, ServerRequestInterface $request): array
     {
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
-
         try {
-            $result = $formDataCompiler->compile(
+            $result = $this->formDataCompiler->compile(
                 [
                     'request' => $request,
                     'command' => 'edit',
@@ -559,7 +558,7 @@ class RemoteServer
                 GeneralUtility::makeInstance(TcaDatabaseRecord::class)
             );
             $fieldList = array_unique(array_values($result['columnsToProcess']));
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             // @todo: Avoid this general exception and catch something specific to not hide-away errors.
             $fieldList = [];
         }

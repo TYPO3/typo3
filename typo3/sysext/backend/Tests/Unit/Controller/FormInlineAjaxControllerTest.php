@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -38,7 +39,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        (new FormInlineAjaxController())->createAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler()))->createAction($request);
     }
 
     /**
@@ -55,7 +56,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        (new FormInlineAjaxController())->createAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler()))->createAction($request);
     }
 
     /**
@@ -79,7 +80,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        (new FormInlineAjaxController())->createAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler()))->createAction($request);
     }
 
     /**
@@ -96,7 +97,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        (new FormInlineAjaxController())->detailsAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler()))->detailsAction($request);
     }
 
     /**
@@ -113,7 +114,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        (new FormInlineAjaxController())->detailsAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler()))->detailsAction($request);
     }
 
     /**
@@ -137,7 +138,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        (new FormInlineAjaxController())->detailsAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler()))->detailsAction($request);
     }
 
     /**
@@ -154,7 +155,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        (new FormInlineAjaxController())->synchronizeLocalizeAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler()))->synchronizeLocalizeAction($request);
     }
 
     /**
@@ -171,7 +172,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        (new FormInlineAjaxController())->synchronizeLocalizeAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler()))->synchronizeLocalizeAction($request);
     }
 
     /**
@@ -195,7 +196,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        (new FormInlineAjaxController())->synchronizeLocalizeAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler()))->synchronizeLocalizeAction($request);
     }
 
     /**

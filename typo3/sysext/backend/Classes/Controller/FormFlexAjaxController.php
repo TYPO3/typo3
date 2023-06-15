@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
@@ -33,8 +34,14 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Handle FormEngine flex field ajax calls
  */
+#[Controller]
 class FormFlexAjaxController extends AbstractFormEngineAjaxController
 {
+    public function __construct(
+        private readonly FormDataCompiler $formDataCompiler,
+    ) {
+    }
+
     /**
      * Render a single flex form section container to add it to the DOM
      */
@@ -68,7 +75,6 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
             'flexFormContainerIdentifier' => $flexFormContainerIdentifier,
         ];
 
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'tableName' => $tableName,
@@ -103,7 +109,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
                 $formDataCompilerInput['databaseRow'][$subtypeValueField] = $subtypeValue;
             }
         }
-        $formData = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
+        $formData = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
 
         $dataStructure = $formData['processedTca']['columns'][$fieldName]['config']['ds'];
         $formData['fieldName'] = $fieldName;

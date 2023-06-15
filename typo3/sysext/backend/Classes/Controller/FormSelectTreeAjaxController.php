@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaSelectTreeAjaxFieldData;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -28,8 +29,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Backend controller for selectTree ajax operations
  */
+#[Controller]
 class FormSelectTreeAjaxController
 {
+    public function __construct(
+        private readonly FormDataCompiler $formDataCompiler,
+    ) {
+    }
+
     /**
      * Returns json representing category tree
      *
@@ -151,7 +158,6 @@ class FormSelectTreeAjaxController
             $processedTca['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;
         }
 
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'tableName' => $tableName,
@@ -168,7 +174,7 @@ class FormSelectTreeAjaxController
         if (!empty($request->getQueryParams()['defaultValues'])) {
             $formDataCompilerInput['defaultValues'] = json_decode($request->getQueryParams()['defaultValues'], true);
         }
-        $formData = $formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaSelectTreeAjaxFieldData::class));
+        $formData = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaSelectTreeAjaxFieldData::class));
 
         if ($formData['processedTca']['columns'][$fieldName]['config']['type'] === 'flex') {
             if (empty($flexFormContainerFieldName)) {
