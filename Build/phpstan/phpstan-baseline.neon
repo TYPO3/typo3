@@ -1011,11 +1011,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Service/FileProcessingService.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceStorage and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Service/UserFileMountService.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\MappableProcessor\\:\\:fetchMappers\\(\\) should return array\\<TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\MappableAspectInterface\\> but returns array\\<TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\AspectInterface\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Routing/Aspect/MappableProcessor.php

@@ -2294,6 +2294,7 @@ return [
     'TYPO3\CMS\Core\Resource\Service\UserFileMountService' => [
         'restFiles' => [
             'Deprecation-97923-DeprecateUserFileMountService.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherInterface' => [
