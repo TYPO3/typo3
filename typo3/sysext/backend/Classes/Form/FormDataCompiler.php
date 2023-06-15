@@ -70,12 +70,10 @@ class FormDataCompiler
         }
 
         if (!$result['request'] instanceof ServerRequestInterface) {
-            // @deprecated since v12: Throw a \RuntimeException in v13 instead.
-            trigger_error(
-                'When using FormDataCompiler, the current ServerRequestInterface object must be provided.',
-                E_USER_DEPRECATED
+            throw new \RuntimeException(
+                'The current ServerRequestInterface must be provided in key "request"',
+                1686867720
             );
-            $result['request'] = $GLOBALS['TYPO3_REQUEST'];
         }
 
         // Call the data group provider but take care it does not add or remove result keys

@@ -367,6 +367,8 @@ The following fallbacks have been removed:
 - f:format.html ViewHelper no longer works in BE context
 - Usage of :php:`JScode` containing inline JavaScript for handing custom signals
 - Usage property :php:`$resultArray['requireJsModules']` of the form engine result array
+- Using backend FormEngine, the current ServerRequestInterface request must be provided in key "request" as
+  initialData to FormDataCompiler, the fallback to :php:`$GLOBALS['TYPO3_REQUEST'] has been removed.
 
 The following features are now always enabled:
 

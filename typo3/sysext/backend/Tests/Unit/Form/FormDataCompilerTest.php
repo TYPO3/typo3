@@ -104,6 +104,21 @@ final class FormDataCompilerTest extends UnitTestCase
     /**
      * @test
      */
+    public function compileThrowsExceptionIfRequestIsNotProvidedInInitialDataArray(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1686867720);
+        $this->expectExceptionMessage('The current ServerRequestInterface must be provided in key "request"');
+
+        $this->subject->compile(
+            [],
+            $this->formDataGroupMock
+        );
+    }
+
+    /**
+     * @test
+     */
     public function compileReturnsResultArrayWithInputDataSet(): void
     {
         $input = [
