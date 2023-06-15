@@ -1677,58 +1677,6 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * includes an AMD-compatible JS file by resolving the ModuleName, and then requires the file via a requireJS request,
-     * additionally allowing to execute JavaScript code afterwards
-     *
-     * this function only works for AMD-ready JS modules, used like "define('TYPO3/CMS/Backend/FormEngine..."
-     * in the JS file
-     *
-     *	TYPO3/CMS/Backend/FormEngine =>
-     * 		"TYPO3": Vendor Name
-     * 		"CMS": Product Name
-     *		"Backend": Extension Name
-     *		"FormEngine": FileName in the Resources/Public/JavaScript folder
-     *
-     * @param string $mainModuleName Must be in the form of "TYPO3/CMS/PackageName/ModuleName" e.g. "TYPO3/CMS/Backend/FormEngine"
-     * @param string $callBackFunction loaded right after the requireJS loading, must be wrapped in function() {}
-     * @deprecated will be removed in TYPO3 v13.0. Use loadJavaScriptModule() instead, available since TYPO3 v12.0.
-     */
-    public function loadRequireJsModule($mainModuleName, $callBackFunction = null, bool $internal = false)
-    {
-        if (!$internal) {
-            trigger_error('PageRenderer->loadRequireJsModule is deprecated in favor of native ES6 modules, use loadJavaScriptModule() instead. Support for RequireJS module loading will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
-        }
-        $inlineCodeKey = $mainModuleName;
-        // make sure requireJS is initialized
-        $this->loadRequireJs();
-        // move internal module path definition to public module definition
-        // (since loading a module ends up disclosing the existence anyway)
-        $baseModuleName = $this->findRequireJsBaseModuleName($mainModuleName);
-        if ($baseModuleName !== null && isset($this->requireJsConfig['paths'][$baseModuleName])) {
-            $this->publicRequireJsConfig['paths'][$baseModuleName] = $this->requireJsConfig['paths'][$baseModuleName];
-            unset($this->requireJsConfig['paths'][$baseModuleName]);
-        }
-        if ($callBackFunction === null && $this->getApplicationType() === 'BE') {
-            $this->javaScriptRenderer->addJavaScriptModuleInstruction(
-                JavaScriptModuleInstruction::forRequireJS($mainModuleName, null, true)
-            );
-            return;
-        }
-        // processing frontend application or having callback function
-        // @todo deprecate callback function for backend application in TYPO3 v12.0
-        if ($callBackFunction === null) {
-            // just load the main module
-            $inlineCodeKey = $mainModuleName;
-            $javaScriptCode = sprintf('require([%s]);', GeneralUtility::quoteJSvalue($mainModuleName));
-        } else {
-            // load main module and execute possible callback function
-            $inlineCodeKey = $mainModuleName . sha1($callBackFunction);
-            $javaScriptCode = sprintf('require([%s], %s);', GeneralUtility::quoteJSvalue($mainModuleName), $callBackFunction);
-        }
-        $this->addJsInlineCode('RequireJS-Module-' . $inlineCodeKey, $javaScriptCode);
-    }
-
-    /**
      * Determines requireJS base module name (if defined).
      *
      * @return string|null
@@ -2134,10 +2082,6 @@ class PageRenderer implements SingletonInterface
                 sprintf('window.litNonce = %s;', GeneralUtility::quoteJSvalue($this->nonce->consume())),
                 ['nonce' => $this->nonce->consume()]
             );
-        }
-
-        if (!$this->addRequireJs && $this->javaScriptRenderer->hasRequireJs()) {
-            $this->loadRequireJs();
         }
 
         $out .= $this->javaScriptRenderer->renderImportMap(

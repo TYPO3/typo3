@@ -92,27 +92,10 @@ class FormManagerController extends AbstractBackendController
                 ARRAY_FILTER_USE_KEY
             )
         );
-        $requireJsModules = array_map(
-            static fn (string $name) => JavaScriptModuleInstruction::forRequireJS($name),
-            array_filter(
-                $this->formSettings['formManager']['dynamicRequireJsModules'] ?? [],
-                fn (string $name) => in_array($name, self::JS_MODULE_NAMES, true),
-                ARRAY_FILTER_USE_KEY
-            )
-        );
 
-        $jsModules = $requireJsModules + $javaScriptModules;
-        if (count($requireJsModules)) {
-            trigger_error(
-                'formManager.dynamicRequireJsModules has been deprecated in v12 and will be removed with v13. ' .
-                'Use formManager.dynamicJavaScriptModules instead.',
-                E_USER_DEPRECATED
-            );
-            $this->pageRenderer->loadRequireJs();
-        }
         $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::create('@typo3/form/backend/helper.js', 'Helper')
-                ->invoke('dispatchFormManager', $jsModules, $this->getFormManagerAppInitialData())
+                ->invoke('dispatchFormManager', $javaScriptModules, $this->getFormManagerAppInitialData())
         );
         $moduleTemplate->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());

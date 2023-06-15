@@ -163,10 +163,6 @@ class SetupModuleController
         foreach ($event->getJavaScriptModules() as $specifier) {
             $this->pageRenderer->loadJavaScriptModule($specifier);
         }
-        foreach ($event->getModules() as $moduleName) {
-            // The deprecation is added in AddJavaScriptModulesEvent::addModule, and therefore silenced here.
-            $this->pageRenderer->loadRequireJsModule($moduleName, null, true);
-        }
     }
 
     /**

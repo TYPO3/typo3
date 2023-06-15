@@ -22,12 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class JavaScriptModuleInstruction implements \JsonSerializable
 {
     /**
-     * Indicates a requireJS module shall be loaded.
-     * @deprecated will be removed in TYPO3 v13.0
-     */
-    public const FLAG_LOAD_REQUIRE_JS = 1;
-
-    /**
      * Indicates a ES6/11 module shall be loaded (paths mapped by an importmap)
      */
     public const FLAG_LOAD_IMPORTMAP = 2;
@@ -54,21 +48,6 @@ class JavaScriptModuleInstruction implements \JsonSerializable
     {
         $target = GeneralUtility::makeInstance(static::class, $name, self::FLAG_LOAD_IMPORTMAP);
         $target->exportName = $exportName;
-        return $target;
-    }
-
-    /**
-     * @param string $name RequireJS module name
-     * @param string|null $exportName (optional) name used internally to export the module
-     * @deprecated will be removed in TYPO3 v13.0. Use JavaScriptModuleInstruction::create() instead.
-     */
-    public static function forRequireJS(string $name, string $exportName = null, bool $internalCall = false): self
-    {
-        $target = GeneralUtility::makeInstance(static::class, $name, self::FLAG_LOAD_REQUIRE_JS);
-        $target->exportName = $exportName;
-        if (!$internalCall) {
-            trigger_error('JavaScriptModuleInstruction::forRequireJS() is deprecated in favor of native ES6 modules, use JavaScriptModuleInstruction::create() instead. Support for RequireJS module loading will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
-        }
         return $target;
     }
 
@@ -181,14 +160,6 @@ class JavaScriptModuleInstruction implements \JsonSerializable
             'args' => $args,
         ];
         return $this;
-    }
-
-    /**
-     * @deprecated will be removed in TYPO3 v13.0
-     */
-    public function shallLoadRequireJs(): bool
-    {
-        return ($this->flags & self::FLAG_LOAD_REQUIRE_JS) === self::FLAG_LOAD_REQUIRE_JS;
     }
 
     public function shallLoadImportMap(): bool

@@ -109,8 +109,6 @@ final class FieldControlTest extends UnitTestCase
                 'aModule',
                 'anotherModule',
             ],
-            /** @deprecated will be removed in TYPO3 v13.0 */
-            'requireJsModules' => [],
             'inlineData' => [],
             'html' => '\n<a class="btn btn-default">\n...>\n</a>',
         ];

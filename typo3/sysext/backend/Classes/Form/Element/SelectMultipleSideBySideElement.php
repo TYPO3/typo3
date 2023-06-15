@@ -97,8 +97,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
             'javaScriptModules' => [],
-            // @deprecated will be removed in TYPO3 v13.0
-            'requireJsModules' => [],
             'inlineData' => [],
             'html' => '',
         ];

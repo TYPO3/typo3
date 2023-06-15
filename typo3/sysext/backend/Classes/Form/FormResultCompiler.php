@@ -71,15 +71,6 @@ class FormResultCompiler
     protected $javaScriptModules = [];
 
     /**
-     * Array with requireJS modules, use module name as key, the value could be callback code.
-     * Use NULL as value if no callback is used.
-     *
-     * @var list<JavaScriptModuleInstruction>
-     * @deprecated will be removed in TYPO3 v13.0. Use $javaScriptModules instead.
-     */
-    protected $requireJsModules = [];
-
-    /**
      * @var PageRenderer
      */
     protected $pageRenderer;
@@ -105,20 +96,6 @@ class FormResultCompiler
                 );
             }
             $this->javaScriptModules[] = $module;
-        }
-        foreach ($resultArray['requireJsModules'] ?? [] as $module) {
-            if (!$module instanceof JavaScriptModuleInstruction) {
-                throw new \LogicException(
-                    sprintf(
-                        'Module must be a %s, type "%s" given',
-                        JavaScriptModuleInstruction::class,
-                        gettype($module)
-                    ),
-                    1638264590
-                );
-            }
-            trigger_error('FormEngine $resultArray[\'requireJsModules\'] is deprecated, use $resultArray[\'javaScriptModules\'] instead. Support for this array key will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
-            $this->requireJsModules[] = $module;
         }
         foreach ($resultArray['additionalHiddenFields'] as $element) {
             $this->hiddenFieldAccum[] = $element;
@@ -194,10 +171,6 @@ class FormResultCompiler
         $this->javaScriptModules[] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine-review.js');
 
         foreach ($this->javaScriptModules as $module) {
-            $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($module);
-        }
-        /** @deprecated will be removed in TYPO3 v13.0 */
-        foreach ($this->requireJsModules as $module) {
             $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($module);
         }
 

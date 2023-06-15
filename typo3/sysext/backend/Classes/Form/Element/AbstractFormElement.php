@@ -333,22 +333,11 @@ abstract class AbstractFormElement extends AbstractNode
 
         $javaScriptEvaluation = $evalObject->returnFieldJS();
         if ($javaScriptEvaluation instanceof JavaScriptModuleInstruction) {
-            if ($javaScriptEvaluation->shallLoadRequireJs()) {
-                // just use the module name and export-name
-                // @deprecated will be removed in TYPO3 v13.0
-                $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::forRequireJS(
-                    $javaScriptEvaluation->getName(),
-                    $javaScriptEvaluation->getExportName(),
-                    // silence deprecation error, has already been triggered by the original JavaScriptModuleInstruction instance
-                    true
-                )->invoke('registerCustomEvaluation', $name);
-            } else {
-                // just use the module name and export-name
-                $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
-                    $javaScriptEvaluation->getName(),
-                    $javaScriptEvaluation->getExportName()
-                )->invoke('registerCustomEvaluation', $name);
-            }
+            // just use the module name and export-name
+            $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
+                $javaScriptEvaluation->getName(),
+                $javaScriptEvaluation->getExportName()
+            )->invoke('registerCustomEvaluation', $name);
         }
 
         return $resultArray;

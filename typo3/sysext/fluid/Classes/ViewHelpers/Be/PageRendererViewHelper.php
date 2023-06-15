@@ -94,11 +94,6 @@ final class PageRendererViewHelper extends AbstractViewHelper
                 $pageRenderer->loadJavaScriptModule($addJavaScriptModule);
             }
         }
-        if (is_array($includeRequireJsModules)) {
-            foreach ($includeRequireJsModules as $addRequireJsFile) {
-                $pageRenderer->loadRequireJsModule($addRequireJsFile);
-            }
-        }
 
         if (is_array($addInlineSettings)) {
             $pageRenderer->addInlineSettingArray(null, $addInlineSettings);

@@ -131,6 +131,8 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
 - :php:`\TYPO3\CMS\Core\Localization\Locales->getIsoMapping`
 - :php:`\TYPO3\CMS\Core\Localization\LanguageService->getLL`
+- :php:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction->shallLoadRequireJs`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->loadRequireJsModule`
 - :php:`\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter->filterInlineChildren`
 - :php:`\TYPO3\CMS\Core\Session\UserSessionManager->createFromGlobalCookieOrAnonymous`
 - :php:`\TYPO3\CMS\Dashboard\DashboardInitializationService->getRequireJsModules`
@@ -169,6 +171,8 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getMailTo`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getQueryArguments`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getTreeList`
+- :php:`\TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent->addModule`
+- :php:`\TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent->getModules`
 - :php:`\TYPO3\CMS\Scheduler\Scheduler->addTask`
 - :php:`\TYPO3\CMS\Scheduler\Scheduler->removeTask`
 - :php:`\TYPO3\CMS\Scheduler\Scheduler->saveTask`
@@ -199,6 +203,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::transform`
 - :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get`
 - :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances`
+- :php:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction::forRequireJS`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::debugInPopUpWindow`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::debugRows`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::printArray`
@@ -297,6 +302,7 @@ The following class constants have been dropped:
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE`
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessage::OK`
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING`
+- :php:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction::FLAG_LOAD_REQUIRE_JS`
 - :php:`\TYPO3\CMS\Reports\Status::ERROR`
 - :php:`\TYPO3\CMS\Reports\Status::INFO`
 - :php:`\TYPO3\CMS\Reports\Status::NOTICE`
@@ -352,6 +358,7 @@ The following fallbacks have been removed:
 - Checking for :php:`\TYPO3\CMS\Core\Site\SiteLanguageAwareTrait` is removed in :php:`\TYPO3\CMS\Core\Routing\Aspect\AspectFactory`
 - f:format.html ViewHelper no longer works in BE context
 - Usage of :php:`JScode` containing inline JavaScript for handing custom signals
+- Usage property :php:`$resultArray['requireJsModules']` of the form engine result array
 
 The following features are now always enabled:
 

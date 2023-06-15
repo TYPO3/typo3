@@ -53,22 +53,6 @@ class JavaScriptRenderer
         if ($instruction->shallLoadImportMap()) {
             $this->importMap->includeImportsFor($instruction->getName());
         }
-        if ($instruction->shallLoadRequireJs()) {
-            $url = $this->importMap->resolveImport($instruction->getName() . '.js');
-
-            if ($url) {
-                // @todo: Map instruction to an ImportMap instruction. (to avoid loading requirejs if not actually required)
-                $this->javaScriptModuleInstructionFlags |= JavaScriptModuleInstruction::FLAG_LOAD_IMPORTMAP;
-            } else {
-                // If no modules were included, the RequireJS module is not yet
-                // backed by an ES6 replacement, therefore we load all importmap configurations,
-                // in order for all dependencies to be loadable.
-                // But we do only do this for logged in backend users (to avoid extension-list disclosure)
-                if (!empty($GLOBALS['BE_USER']->user['uid'])) {
-                    $this->includeAllImports();
-                }
-            }
-        }
         $this->javaScriptModuleInstructionFlags |= $instruction->getFlags();
         $this->items->addJavaScriptModuleInstruction($instruction);
     }
@@ -80,7 +64,8 @@ class JavaScriptRenderer
 
     public function hasRequirejs(): bool
     {
-        return ($this->javaScriptModuleInstructionFlags & JavaScriptModuleInstruction::FLAG_LOAD_REQUIRE_JS) === JavaScriptModuleInstruction::FLAG_LOAD_REQUIRE_JS;
+        // @TODO since it's marked as public return false and deprecate in TYPO3 v13
+        return false;
     }
 
     /**
