@@ -340,6 +340,7 @@ The following fallbacks have been removed:
 - Usage of :js:`.t3js-contextmenutrigger` to trigger and configure context menus
 - Usage of the jsonArray property :php:`scriptCall` for AjaxController's
 - Binding the selected menu items to callback actions in context menus
+- Checking for :php:`\TYPO3\CMS\Core\Site\SiteLanguageAwareTrait` is removed in :php:`\TYPO3\CMS\Core\Routing\Aspect\AspectFactory`
 
 The following features are now always enabled:
 

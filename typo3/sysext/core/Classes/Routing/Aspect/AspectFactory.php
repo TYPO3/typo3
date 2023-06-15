@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
-use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -101,19 +100,9 @@ class AspectFactory
      */
     protected function enrich(AspectInterface $aspect, SiteLanguage $language, Site $site): AspectInterface
     {
-        // The check for the trait is @deprecated and will be removed in TYPO3 v13
-        if ($aspect instanceof SiteLanguageAwareInterface || in_array(SiteLanguageAwareTrait::class, class_uses($aspect) ?: [], true)) {
+        if ($aspect instanceof SiteLanguageAwareInterface) {
             /** @var AspectInterface|SiteLanguageAwareInterface $aspect */
             $aspect->setSiteLanguage($language);
-
-            if (!$aspect instanceof SiteLanguageAwareInterface) {
-                trigger_error(
-                    'The class "' . get_class($aspect) . '" uses the (internal) TYPO3\CMS\Core\Site\SiteLanguageAwareTrait instead of implementing '
-                    . 'TYPO3\CMS\Core\Site\SiteLanguageAwareInterface to mark the class as language-aware. Using the trait for this purpose will stop working '
-                    . 'in TYPO3 v13. Please implement the interface for this.',
-                    E_USER_DEPRECATED
-                );
-            }
         }
         if ($aspect instanceof SiteAwareInterface) {
             $aspect->setSite($site);
