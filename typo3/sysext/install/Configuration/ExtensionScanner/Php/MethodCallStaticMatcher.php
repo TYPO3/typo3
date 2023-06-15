@@ -110,6 +110,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-96136-DeprecateInlineJavaScriptInBackendUpdateSignals.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\DataHandler::rmComma' => [

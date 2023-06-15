@@ -104,7 +104,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
     }
 
     /**
-     * Called as a hook in \TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalCode, calls a JS function
+     * Called as a hook in \TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalDetails, calls a JS function
      * to change the number of opened documents.
      */
     public function updateNumberOfOpenDocsHook(array &$params): void

@@ -193,6 +193,8 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getThumbnailUrl`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordToolTip`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getClickMenuOnIconTagParameters`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalCode`
 - :php:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::transform`
 - :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get`
 - :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances`
@@ -348,6 +350,7 @@ The following fallbacks have been removed:
 - Binding the selected menu items to callback actions in context menus
 - Checking for :php:`\TYPO3\CMS\Core\Site\SiteLanguageAwareTrait` is removed in :php:`\TYPO3\CMS\Core\Routing\Aspect\AspectFactory`
 - f:format.html ViewHelper no longer works in BE context
+- Usage of :php:`JScode` containing inline JavaScript for handing custom signals
 
 The following features are now always enabled:
 

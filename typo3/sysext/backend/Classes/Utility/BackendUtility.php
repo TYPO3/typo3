@@ -1916,26 +1916,6 @@ class BackendUtility
     }
 
     /**
-     * @deprecated since v12, will be removed in v13. Use BackendUtility::getContextMenuAttributes instead.
-     *
-     * @param string $table Table name/File path. If the icon is for a database
-     * record, enter the tablename from $GLOBALS['TCA']. If a file then enter
-     * the absolute filepath
-     * @param int|string $uid If icon is for database record this is the UID for the
-     * record from $table or identifier for sys_file record
-     * @param string $context Set tree if menu is called from tree view
-     */
-    public static function getClickMenuOnIconTagParameters(string $table, $uid = 0, string $context = ''): array
-    {
-        return self::getContextMenuAttributes(
-            $table,
-            $uid,
-            $context,
-            'click'
-        );
-    }
-
-    /**
      * @param string $table Table name/File path. If the icon is for a database
      * record, enter the tablename from $GLOBALS['TCA']. If a file then enter
      * the absolute filepath
@@ -1989,85 +1969,16 @@ class BackendUtility
     }
 
     /**
-     * Call to update the page tree frame (or something else..?) if this is set by the function
-     * setUpdateSignal(). It will return some JavaScript that does the update
-     *
-     * @return string HTML javascript code
-     * @see BackendUtility::setUpdateSignal()
-     * @deprecated will be removed in TYPO3 v13.0, use getUpdateSignalDetails() instead
-     */
-    public static function getUpdateSignalCode()
-    {
-        trigger_error(
-            'BackendUtility::getUpdateSignalCode will be removed in TYPO3 v13.0, use BackendUtility::getUpdateSignalDetails instead.',
-            E_USER_DEPRECATED
-        );
-
-        $signals = [];
-        $modData = static::getBackendUserAuthentication()->getModuleData(
-            BackendUtility::class . '::getUpdateSignal',
-            'ses'
-        );
-        if (empty($modData)) {
-            return '';
-        }
-        // Hook: Allows to let TYPO3 execute your JS code
-        $updateSignals = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'] ?? [];
-        // Loop through all setUpdateSignals and get the JS code
-        foreach ($modData as $set => $val) {
-            if (isset($updateSignals[$set])) {
-                $params = ['set' => $set, 'parameter' => $val['parameter'], 'JScode' => ''];
-                $ref = null;
-                GeneralUtility::callUserFunction($updateSignals[$set], $params, $ref);
-                $signals[] = $params['JScode'];
-            } else {
-                switch ($set) {
-                    case 'updatePageTree':
-                        $signals[] = '
-								if (top) {
-									top.document.dispatchEvent(new CustomEvent("typo3:pagetree:refresh"));
-								}';
-                        break;
-                    case 'updateFolderTree':
-                        $signals[] = '
-								if (top) {
-									top.document.dispatchEvent(new CustomEvent("typo3:filestoragetree:refresh"));
-								}';
-                        break;
-                    case 'updateModuleMenu':
-                        $signals[] = '
-								if (top && top.TYPO3.ModuleMenu && top.TYPO3.ModuleMenu.App) {
-									top.TYPO3.ModuleMenu.App.refreshMenu();
-								}';
-                        break;
-                    case 'updateTopbar':
-                        $signals[] = '
-								if (top && top.TYPO3.Backend && top.TYPO3.Backend.Topbar) {
-									top.TYPO3.Backend.Topbar.refresh();
-								}';
-                        break;
-                }
-            }
-        }
-        $content = implode(LF, $signals);
-        // For backwards compatibility, should be replaced
-        self::setUpdateSignal();
-        return $content;
-    }
-
-    /**
      * Gets instructions for update signals (e.g. page tree shall be refreshed,
      * since some page title has been modified during the current HTTP request).
      *
-     * @return array{html: list<string>, script: list<string>}
+     * @return array{html: list<string>}
      * @see BackendUtility::setUpdateSignal()
      */
     public static function getUpdateSignalDetails(): array
     {
         $details = [
             'html' => [],
-            // @deprecated `script` will be removed in TYPO3 v13.0
-            'script' => [],
         ];
         $modData = static::getBackendUserAuthentication()->getModuleData(
             BackendUtility::class . '::getUpdateSignal',
@@ -2081,20 +1992,11 @@ class BackendUtility
         // Loop through all setUpdateSignals and get the JS code
         foreach ($modData as $set => $val) {
             if (isset($updateSignals[$set])) {
-                $params = ['set' => $set, 'parameter' => $val['parameter'], 'JScode' => '', 'html' => ''];
+                $params = ['set' => $set, 'parameter' => $val['parameter'], 'html' => ''];
                 $ref = null;
                 GeneralUtility::callUserFunction($updateSignals[$set], $params, $ref);
                 if (!empty($params['html'])) {
                     $details['html'][] = $params['html'];
-                } elseif (!empty($params['JScode'])) {
-                    trigger_error(
-                        sprintf(
-                            'Using `JScode` in update signal "%s" will be removed in TYPO3 v13.0, use `html` instead.',
-                            $set
-                        ),
-                        E_USER_DEPRECATED
-                    );
-                    $details['script'][] = $params['JScode'];
                 }
             } else {
                 switch ($set) {

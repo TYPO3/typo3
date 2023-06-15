@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class DispatchNotificationHook
 {
     /**
-     * Called as a hook in \TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalCode
+     * Called as a hook in \TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalDetails
      * calls a JS function to send the slug change notification
      *
      * @param array $params
