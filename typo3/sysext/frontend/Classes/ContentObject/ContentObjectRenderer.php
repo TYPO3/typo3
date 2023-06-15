@@ -3240,27 +3240,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
                     // These operations should only be performed on code outside the tags...
                     if (!is_array($currentTag)) {
-                        // Constants
-                        $typoScriptSetupArray = [];
-                        $frontendTypoScript = $this->getRequest()->getAttribute('frontend.typoscript');
-                        if ($frontendTypoScript && $frontendTypoScript->hasSetup()) {
-                            $typoScriptSetupArray = $frontendTypoScript->getSetupArray();
-                        }
-                        $tmpConstants = $typoScriptSetupArray['constants.'] ?? null;
-                        if (!empty($conf['constants']) && is_array($tmpConstants)) {
-                            // @deprecated since v12, remove with v13: Entire if plus init code above
-                            trigger_error(
-                                'The TypoScript setup "constants" top-level-object and the parseFunc property "constants" have'
-                                . ' been deprecated in TYPO3 v12 and will be removed in v12. Use TypoScript constants / settings'
-                                . ' and access them in setup using "{$myConstant}" instead.',
-                                E_USER_DEPRECATED
-                            );
-                            foreach ($tmpConstants as $key => $val) {
-                                if (is_string($val)) {
-                                    $data = str_replace('###' . $key . '###', $val, $data);
-                                }
-                            }
-                        }
                         // Short
                         if (isset($conf['short.']) && is_array($conf['short.'])) {
                             $shortWords = $conf['short.'];

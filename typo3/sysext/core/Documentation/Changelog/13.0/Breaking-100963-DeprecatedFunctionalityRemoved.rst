@@ -291,6 +291,7 @@ The following TypoScript options have been dropped or adapted:
 - :typoscript:`[ip()]` condition function must be used in a context with request
 - :typoscript:`[loginUser()]` condition function removed
 - :typoscript:`[usergroup()]` condition function removed
+- :typoscript:`constants` setup top-level-object and :typoscript:`constants` property of :typoscript:`parseFunc`
 
 The following constants have been dropped:
 
