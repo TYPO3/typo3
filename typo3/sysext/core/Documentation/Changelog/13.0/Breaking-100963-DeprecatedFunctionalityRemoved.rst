@@ -401,6 +401,10 @@ The following JavaScript methods have been removed:
 
 - :js:`getParameterFromUrl()` of :js:`@typo3/backend/utility`
 
+The following CKEditor plugins have been removed:
+
+- :js:`SoftHyphen`
+
 The following RequireJS module names have been removed:
 
 - :js:`Dummy`
