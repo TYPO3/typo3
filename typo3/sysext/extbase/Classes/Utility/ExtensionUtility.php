@@ -139,20 +139,6 @@ tt_content.' . $pluginSignature . ' {
     }
 
     /**
-     * To allow extension authors to support multiple versions, this method is kept until
-     * TYPO3 v13, but is no longer used nor evaluated from TYPO3 v12.0. To register modules,
-     * place the configuration in your extensions' Configuration/Backend/Modules.php file.
-     *
-     * The method deliberately does not throw a deprecation warning in order to keep the noise
-     * of deprecation warnings small.
-     *
-     * @deprecated The functionality has been removed in v12. The method will be removed in TYPO3 v13.
-     */
-    public static function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions = [], array $moduleConfiguration = [])
-    {
-    }
-
-    /**
      * @internal only used for TYPO3 Core
      */
     public static function resolveControllerAliasFromControllerClassName(string $controllerClassName): string

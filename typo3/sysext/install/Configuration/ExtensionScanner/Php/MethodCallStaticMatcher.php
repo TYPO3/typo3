@@ -1367,6 +1367,7 @@ return [
         'maximumNumberOfArguments' => 6,
         'restFiles' => [
             'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getFuncInput' => [

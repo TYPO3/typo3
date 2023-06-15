@@ -219,6 +219,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_POST`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript`
+- :php:`TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule`
 - :php:`TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter`
 
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:

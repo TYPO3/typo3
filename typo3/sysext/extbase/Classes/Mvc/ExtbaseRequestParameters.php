@@ -36,7 +36,7 @@ class ExtbaseRequestParameters
     /**
      * Key of the plugin which identifies the plugin.
      * In frontend, it is the second argument of ExtensionUtility::configurePlugin(), example: "FormFramework" in ext:form.
-     * In backend, it is the combination $mainModuleName_$extensionName$subModuleName from ExtensionUtility::registerModule(),
+     * In backend, it is the combination $mainModuleName_$extensionName$subModuleName
      * for example "web_FormFormbuilder" for the ext:form backend module.
      */
     protected string $pluginName = '';
