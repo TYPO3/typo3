@@ -177,13 +177,9 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
 
     /**
      * @return TEntity|null The object at the current iterator position.
-     *
      * @see `ObjectStorage::current`
-     *
-     * @todo: Set return type to mixed in v13
      */
-    #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         $this->initialize();
         return parent::current();
@@ -235,11 +231,8 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      * @param TEntity $value The object to look for, or its key in the storage.
      *
      * @see `ObjectStorage::offsetGet`
-     *
-     * @todo: Set return type to mixed in v13
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($value)
+    public function offsetGet($value): mixed
     {
         $this->initialize();
         return parent::offsetGet($value);

@@ -97,10 +97,7 @@ class SiteRouteResult implements RouteResultInterface
 
     /**
      * @param mixed $offset
-     * @return mixed|UriInterface|string|SiteInterface|SiteLanguage
-     * @todo: Set return type to mixed in v13
      */
-    #[\ReturnTypeWillChange]
     public function offsetGet($offset): mixed
     {
         switch ($offset) {

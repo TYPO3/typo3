@@ -98,11 +98,9 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
     /**
      * Return the current element
      *
-     * @return mixed Can return any type.
-     * @todo: Set return type to mixed in v13
+     * @return T|null
      */
-    #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         return $this->storage->current();
     }
@@ -119,10 +117,8 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * Return the key of the current element
      *
      * @return int|string 0 on failure.
-     * @todo: Set return type to mixed in v13
      */
-    #[\ReturnTypeWillChange]
-    public function key()
+    public function key(): mixed
     {
         $currentRecord = $this->storage->current();
         return $currentRecord['uid'] ?? 0;

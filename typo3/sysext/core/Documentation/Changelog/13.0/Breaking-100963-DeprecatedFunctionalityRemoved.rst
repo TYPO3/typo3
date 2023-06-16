@@ -291,6 +291,30 @@ The following class methods are now marked as internal:
 :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->unpack_uc`
 :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->appendCookieToResponse`
 
+The following class methods now have a native return type/removed #[\ReturnTypeWillChange:
+
+:php:`\TYPO3\CMS\Core\Collection\AbstractRecordCollection->current`
+:php:`\TYPO3\CMS\Core\Collection\AbstractRecordCollection->key`
+:php:`\TYPO3\CMS\Core\Log\LogRecord->offsetGet`
+:php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->dequeue`
+:php:`\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection->key`
+:php:`\TYPO3\CMS\Core\Resource\MetaDataAspect->offsetGet`
+:php:`\TYPO3\CMS\Core\Resource\MetaDataAspect->current`
+:php:`\TYPO3\CMS\Core\Resource\Search\Result\EmptyFileSearchResult->current`
+:php:`\TYPO3\CMS\Core\Resource\Search\Result\EmptyFileSearchResult->key`
+:php:`\TYPO3\CMS\Core\Routing\SiteRouteResult->offsetGet`
+:php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy->current`
+:php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy->key`
+:php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage->current`
+:php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage->offsetGet`
+:php:`\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult->offsetGet`
+:php:`\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult->current`
+:php:`\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult->key`
+:php:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage->current`
+:php:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage->offsetGet`
+:php:`\TYPO3\CMS\Filelist\Dto\ResourceCollection->current`
+:php:`\TYPO3\CMS\Filelist\Dto\ResourceCollection->key`
+
 The following class properties visibility have been changed to protected:
 
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->where_hid_del`

@@ -150,14 +150,18 @@ class ResourceCollection implements \Countable, \Iterator, \ArrayAccess
         $this->position = 0;
     }
 
-    #[\ReturnTypeWillChange]
-    public function current()
+    /**
+     * @return ResourceInterface|null
+     */
+    public function current(): mixed
     {
         return $this->resources[$this->position];
     }
 
-    #[\ReturnTypeWillChange]
-    public function key(): int
+    /**
+     * @return int
+     */
+    public function key(): mixed
     {
         return $this->position;
     }

@@ -124,11 +124,8 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * Returns the current storage entry.
      *
      * @return TEntity|null The object at the current iterator position.
-     *
-     * @todo: Set return type to mixed in v13
      */
-    #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         $item = current($this->storage);
         return $item['obj'] ?? null;
@@ -208,11 +205,8 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @param TEntity|int $value The object to look for, or its key in the storage.
      * @return mixed The information associated with an object in the storage, or the object itself if an integer is passed.
-     *
-     * @todo: Set return type to mixed in v13
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($value)
+    public function offsetGet($value): mixed
     {
         if (MathUtility::canBeInterpretedAsInteger($value)) {
             return array_values($this->storage)[$value]['obj'] ?? null;

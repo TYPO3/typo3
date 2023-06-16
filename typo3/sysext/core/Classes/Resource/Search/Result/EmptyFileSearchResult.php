@@ -28,21 +28,21 @@ class EmptyFileSearchResult implements FileSearchResultInterface
     }
 
     /**
-     * @todo: Set return type to mixed in v13
+     * @phpstan-return null
      */
-    #[\ReturnTypeWillChange]
-    public function current(): void
+    public function current(): mixed
     {
         // Noop
+        return null;
     }
 
     /**
-     * @todo: Set return type to mixed in v13
+     * @phpstan-return null
      */
-    #[\ReturnTypeWillChange]
-    public function key(): void
+    public function key(): mixed
     {
         // Noop
+        return null;
     }
 
     public function next(): void
@@ -55,6 +55,9 @@ class EmptyFileSearchResult implements FileSearchResultInterface
         // Noop
     }
 
+    /**
+     * @return false
+     */
     public function valid(): bool
     {
         return false;

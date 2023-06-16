@@ -78,10 +78,8 @@ abstract class AbstractFileCollection extends AbstractRecordCollection
      * Return the key of the current element
      *
      * @return string
-     * @todo: Set return type to mixed in v13
      */
-    #[\ReturnTypeWillChange]
-    public function key()
+    public function key(): mixed
     {
         /** @var File $currentRecord */
         $currentRecord = $this->storage->current();

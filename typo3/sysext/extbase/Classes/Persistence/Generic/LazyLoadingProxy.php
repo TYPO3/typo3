@@ -188,12 +188,8 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 
     /**
      * Returns the current value of the storage array
-     *
-     * @return mixed
-     * @todo: Set return type to mixed in v13
      */
-    #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         // todo: make sure current() can be performed on $realInstance
         $realInstance = $this->_loadRealInstance();
@@ -202,11 +198,9 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 
     /**
      * Returns the current key storage array
-     * @todo: Set return type to mixed in v13
-     * @return int
+     * @return int|string|null
      */
-    #[\ReturnTypeWillChange]
-    public function key()
+    public function key(): mixed
     {
         // todo: make sure key() can be performed on $realInstance
         $realInstance = $this->_loadRealInstance();

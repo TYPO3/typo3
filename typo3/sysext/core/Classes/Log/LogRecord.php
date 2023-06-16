@@ -303,11 +303,8 @@ class LogRecord implements \ArrayAccess
      * Offset to retrieve, required by ArrayAccess interface
      *
      * @param mixed $offset
-     * @return mixed
-     * @todo: Set return type to mixed in v13
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         if (!in_array($offset, $this->gettableProperties, true)) {
             return null;
