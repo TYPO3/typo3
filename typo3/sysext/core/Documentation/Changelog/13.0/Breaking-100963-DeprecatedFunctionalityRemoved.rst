@@ -237,6 +237,7 @@ The following methods changed signature according to previous deprecations in v1
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->start` (argument 3 :php:`$request` has been removed)
 - :php:`\TYPO3\CMS\Reports\Status->__construct` (argument 4 is now of type :php:`ContextualFeedbackSeverity`)
 - :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider->addMessage` (argument 2 is now of type :php:`ContextualFeedbackSeverity`)
+- :php:`\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate` (argument 4 has been removed)
 
 The following public class properties have been dropped:
 
@@ -299,6 +300,7 @@ The following ViewHelpers have been changed or removed:
 
 - :html:`<f:be.buttons.csh>` removed
 - :html:`<f:be.labels.csh>` removed
+- :html:`<f:translate>` Argument "alternativeLanguageKeys" has been removed
 
 The following TypoScript options have been dropped or adapted:
 

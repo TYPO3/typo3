@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
-use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -48,10 +47,9 @@ class LocalizationUtility
      * @param string|null $extensionName The name of the extension
      * @param array|null $arguments The arguments of the extension, being passed over to sprintf
      * @param Locale|string|null $languageKey The language key or null for using the current language from the system
-     * @param string[]|null $alternativeLanguageKeys The alternative language keys if no translation was found. @deprecated will be removed in TYPO3 v13.0
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
      */
-    public static function translate(string $key, ?string $extensionName = null, array $arguments = null, Locale|string $languageKey = null, array $alternativeLanguageKeys = null): ?string
+    public static function translate(string $key, ?string $extensionName = null, array $arguments = null, Locale|string $languageKey = null): ?string
     {
         if ($key === '') {
             // Early return guard: returns null if the key was empty, because the key may be a dynamic value
@@ -75,16 +73,10 @@ class LocalizationUtility
         if ($languageKey === null) {
             $languageKey = static::getLanguageKey();
         }
-        if ($alternativeLanguageKeys !== null && $alternativeLanguageKeys !== []) {
-            trigger_error('Calling LocalizationUtility::translate() with the argument $alternativeLanguageKeys will be removed in TYPO3 v13.0. Use Locales instead.', E_USER_DEPRECATED);
-        }
         if ($languageKey instanceof Locale) {
-            if ($alternativeLanguageKeys !== null && $alternativeLanguageKeys !== []) {
-                $alternativeLanguageKeys = $languageKey->getDependencies();
-            }
             $languageKey = (string)$languageKey;
         }
-        $languageService = static::initializeLocalization($languageFilePath, $languageKey, $alternativeLanguageKeys, $extensionName);
+        $languageService = static::initializeLocalization($languageFilePath, $languageKey, $extensionName);
         $resolvedLabel = $languageService->sL('LLL:' . $languageFilePath . ':' . $key);
         $value = $resolvedLabel !== '' ? $resolvedLabel : null;
 
@@ -109,12 +101,10 @@ class LocalizationUtility
     /**
      * Loads local-language values by looking for a "locallang.xlf" file in the plugin resources directory and if found includes it.
      * Locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.xlf" file.
-     *
-     * @param string[]|null $alternativeLanguageKeys
      */
-    protected static function initializeLocalization(string $languageFilePath, string $languageKey, ?array $alternativeLanguageKeys, ?string $extensionName): LanguageService
+    protected static function initializeLocalization(string $languageFilePath, string $languageKey, ?string $extensionName): LanguageService
     {
-        $languageService = self::buildLanguageService($languageKey, $alternativeLanguageKeys, $languageFilePath);
+        $languageService = self::buildLanguageService($languageKey, $languageFilePath);
         if (!empty($extensionName)) {
             $overrideLabels = static::loadTypoScriptLabels($extensionName);
             if ($overrideLabels !== []) {
@@ -124,16 +114,12 @@ class LocalizationUtility
         return $languageService;
     }
 
-    protected static function buildLanguageService(string $languageKey, ?array $alternativeLanguageKeys, $languageFilePath): LanguageService
+    protected static function buildLanguageService(string $languageKey, string $languageFilePath): LanguageService
     {
-        $languageKeyHash = sha1(json_encode(array_merge([$languageKey], $alternativeLanguageKeys ?? [], [$languageFilePath])));
+        $languageKeyHash = sha1(json_encode(array_merge([$languageKey], [$languageFilePath])));
         $cache = self::getRuntimeCache();
         if (!$cache->get($languageKeyHash)) {
-            if ($alternativeLanguageKeys === [] || $alternativeLanguageKeys === null) {
-                $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($languageKey);
-            } else {
-                $locale = new Locale($languageKey, $alternativeLanguageKeys);
-            }
+            $locale = new Locale($languageKey, []);
             $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($locale);
             $languageService->includeLLFile($languageFilePath);
             $cache->set($languageKeyHash, $languageService);

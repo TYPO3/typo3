@@ -123,8 +123,6 @@ final class TranslateViewHelper extends AbstractViewHelper
         $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
         $this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
         $this->registerArgument('languageKey', 'string', 'Language key ("da" for example) or "default" to use. If empty, use current language. Ignored in non-extbase context.');
-        // @deprecated will be removed in TYPO3 v13.0. Deprecation is triggered in LocalizationUtility
-        $this->registerArgument('alternativeLanguageKeys', 'array', 'Alternative language keys if no translation does exist. Ignored in non-extbase context. Deprecated, will be removed in TYPO3 v13.0');
     }
 
     /**
@@ -197,7 +195,7 @@ final class TranslateViewHelper extends AbstractViewHelper
             // overloads from _LOCAL_LANG extbase TypoScript settings if specified.
             // Not this triggers TypoScript parsing via extbase ConfigurationManager
             // and should be avoided in backend context!
-            $value = LocalizationUtility::translate($id, $extensionName, $translateArguments, $arguments['languageKey'], $arguments['alternativeLanguageKeys'] ?? null);
+            $value = LocalizationUtility::translate($id, $extensionName, $translateArguments, $arguments['languageKey']);
         } catch (\InvalidArgumentException $e) {
             // @todo: Switch to more specific Exceptions here - for instance those thrown when a package was not found, see #95957
             $value = null;

@@ -108,13 +108,13 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             ['key2', 'xx', 'English label for key2'],
 
             'replace placeholder with argument' =>
-            ['keyWithPlaceholder', 'default', 'English label with number 100', [], [100]],
+            ['keyWithPlaceholder', 'default', 'English label with number 100', [100]],
 
             'placeholder and empty arguments in default' =>
-            ['keyWithPlaceholderAndNoArguments', 'default', '%d/%m/%Y', [], []],
+            ['keyWithPlaceholderAndNoArguments', 'default', '%d/%m/%Y', []],
 
             'placeholder and empty arguments in translation' =>
-            ['keyWithPlaceholderAndNoArguments', 'da', '%d-%m-%Y', [], []],
+            ['keyWithPlaceholderAndNoArguments', 'da', '%d-%m-%Y', []],
         ];
     }
 
@@ -126,7 +126,6 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         string $key,
         string $languageKey,
         string $expected,
-        array $altLanguageKeys = [],
         array $arguments = null
     ): void {
         // No TypoScript overrides
@@ -137,7 +136,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->user = ['lang' => $languageKey];
-        self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments, alternativeLanguageKeys: $altLanguageKeys));
+        self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments));
     }
 
     /**
@@ -148,7 +147,6 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         string $key,
         string $languageKey,
         string $expected,
-        array $altLanguageKeys = [],
         array $arguments = null
     ): void {
         // No TypoScript overrides
@@ -157,7 +155,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             ->with('Framework', 'label_test', null)
             ->willReturn([]);
 
-        self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments, $languageKey, $altLanguageKeys));
+        self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments, $languageKey));
     }
 
     /**
