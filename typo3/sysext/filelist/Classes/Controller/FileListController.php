@@ -302,7 +302,7 @@ class FileListController implements LoggerAwareInterface
         }
         if (!isset($this->MOD_SETTINGS['sort'])) {
             // Set default sorting
-            $this->MOD_SETTINGS['sort'] = 'file';
+            $this->MOD_SETTINGS['sort'] = 'uid';
             $this->MOD_SETTINGS['reverse'] = 0;
         }
 
