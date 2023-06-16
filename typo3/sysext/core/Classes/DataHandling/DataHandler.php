@@ -4552,8 +4552,18 @@ class DataHandler implements LoggerAwareInterface
             // @todo: Possible bug here? type can be something like 'table:field', which is then null in $row, writing null to $overrideValues
             $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['type']] = $row[$GLOBALS['TCA'][$table]['ctrl']['type']] ?? null;
         }
+
+        $tcaCols = $GLOBALS['TCA'][$table]['columns'];
+        $cType = $row['CType'];
+        if ($cType) {
+            $overrides = $GLOBALS['TCA'][$table]['types'][$cType]['columnsOverrides'] ?? null;
+            if ($overrides) {
+                $tcaCols = array_replace_recursive($tcaCols, $overrides);
+            }
+        }
+        
         // Set exclude Fields:
-        foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fCfg) {
+        foreach ($tcaCols as $fN => $fCfg) {
             $translateToMsg = '';
             // Check if we are just prefixing:
             if (isset($fCfg['l10n_mode']) && $fCfg['l10n_mode'] === 'prefixLangTitle') {
