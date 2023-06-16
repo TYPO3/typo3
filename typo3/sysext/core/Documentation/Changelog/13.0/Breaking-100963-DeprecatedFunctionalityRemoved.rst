@@ -172,6 +172,9 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getMailTo`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getQueryArguments`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getTreeList`
+- :php:`\TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->setAsInvalid`
+- :php:`\TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->setHashedPassword`
+- :php:`\TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->getErrorMessage`
 - :php:`\TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent->addModule`
 - :php:`\TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent->getModules`
 - :php:`\TYPO3\CMS\Scheduler\Scheduler->addTask`

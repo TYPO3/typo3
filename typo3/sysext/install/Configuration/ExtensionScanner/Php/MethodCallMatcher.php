@@ -5656,6 +5656,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-100355-DeprecateMethodsInPasswordChangeEventInExtfelogin.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->setAsInvalid' => [
@@ -5663,6 +5664,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-100355-DeprecateMethodsInPasswordChangeEventInExtfelogin.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->getErrorMessage' => [
@@ -5670,6 +5672,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100355-DeprecateMethodsInPasswordChangeEventInExtfelogin.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->isPropagationStopped' => [

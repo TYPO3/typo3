@@ -326,20 +326,6 @@ class PasswordRecoveryController extends ActionController
         if (is_array($user)) {
             $event = new PasswordChangeEvent($user, $hashedPassword, $newPassword);
             $this->eventDispatcher->dispatch($event);
-            $hashedPassword = $event->getHashedPassword();
-            if ($event->isPropagationStopped()) {
-                /** @var ExtbaseRequestParameters $extbaseRequestParameters */
-                $extbaseRequestParameters = clone $this->request->getAttribute('extbase');
-                $requestResult = $extbaseRequestParameters->getOriginalRequestMappingResults();
-                $requestResult->addError(new Error($event->getErrorMessage() ?? '', 1562846833));
-                $extbaseRequestParameters->setOriginalRequestMappingResults($requestResult);
-                $this->request = $this->request->withAttribute('extbase', $extbaseRequestParameters);
-
-                return (new ForwardResponse('showChangePassword'))
-                    ->withControllerName('PasswordRecovery')
-                    ->withExtensionName('felogin')
-                    ->withArguments(['hash' => $hash]);
-            }
         } else {
             // No user found
             /** @var ExtbaseRequestParameters $extbaseRequestParameters */
