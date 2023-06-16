@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Form\FieldInformation;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This field information node is used for the pages backend_layout
@@ -31,6 +30,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class BackendLayoutFromParentPage extends AbstractNode
 {
+    public function __construct(
+        private readonly BackendLayoutView $backendLayoutView,
+    ) {
+    }
+
     /**
      * Handler for single nodes
      *
@@ -72,8 +76,7 @@ class BackendLayoutFromParentPage extends AbstractNode
             }
         } else {
             // Get the resolved backend layout for the current page.
-            $backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
-            $backendLayout = $backendLayoutView->getBackendLayoutForPage(
+            $backendLayout = $this->backendLayoutView->getBackendLayoutForPage(
                 (int)($this->data['databaseRow']['uid'] ?? $this->data['effectivePid'] ?? 0)
             );
             if ($backendLayout !== null) {

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -95,6 +96,11 @@ class GroupElement extends AbstractFormElement
         ],
     ];
 
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+    ) {
+    }
+
     /**
      * This will render a selector box into which elements from the database
      * can be inserted. Relations.
@@ -102,7 +108,7 @@ class GroupElement extends AbstractFormElement
      * @return array As defined in initializeResultArray() of AbstractNode
      * @throws \RuntimeException
      */
-    public function render()
+    public function render(): array
     {
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUserAuthentication();

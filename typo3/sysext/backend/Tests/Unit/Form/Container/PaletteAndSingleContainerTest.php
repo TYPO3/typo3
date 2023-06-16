@@ -83,7 +83,12 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
         $expectedChildDataArray['fieldName'] = 'aField';
 
         $nodeFactoryMock->method('create')->with($expectedChildDataArray)->willReturn($singleFieldContainerMock);
-        $containerResult = (new PaletteAndSingleContainer($nodeFactoryMock, $input))->render();
+
+        $subject = new PaletteAndSingleContainer();
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($input);
+        $containerResult = $subject->render();
+
         // Expect label is in answer HTML
         self::assertStringContainsString($labelReference, $containerResult['html']);
     }
@@ -148,7 +153,12 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
         $expectedChildDataArray['fieldName'] = 'aField';
 
         $nodeFactoryMock->method('create')->with($expectedChildDataArray)->willReturn($singleFieldContainerMock);
-        $containerResult = (new PaletteAndSingleContainer($nodeFactoryMock, $input))->render();
+
+        $subject = new PaletteAndSingleContainer();
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($input);
+        $containerResult = $subject->render();
+
         // Expect label and description are in answer HTML
         self::assertStringContainsString($labelReference, $containerResult['html']);
         self::assertStringContainsString($descriptionReference, $containerResult['html']);
@@ -215,7 +225,12 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
         $expectedChildDataArray['fieldName'] = 'aField';
 
         $nodeFactoryMock->method('create')->with($expectedChildDataArray)->willReturn($singleFieldContainerMock);
-        $containerResult = (new PaletteAndSingleContainer($nodeFactoryMock, $input))->render();
+
+        $subject = new PaletteAndSingleContainer();
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($input);
+        $containerResult = $subject->render();
+
         // Expect label and description are in answer HTML
         self::assertStringContainsString($labelReferenceFieldArray, $containerResult['html']);
         self::assertStringContainsString($descriptionReferencePaletteArray, $containerResult['html']);

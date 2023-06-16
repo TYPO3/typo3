@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -62,6 +63,11 @@ class DatetimeElement extends AbstractFormElement
             ],
         ],
     ];
+
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+    ) {
+    }
 
     /**
      * This will render a single-line datetime form field, possibly with various control/validation features

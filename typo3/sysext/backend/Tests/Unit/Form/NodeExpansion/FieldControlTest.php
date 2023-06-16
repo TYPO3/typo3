@@ -24,7 +24,7 @@ use TYPO3\CMS\Backend\Form\NodeInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FieldControlTest extends UnitTestCase
@@ -35,12 +35,10 @@ final class FieldControlTest extends UnitTestCase
     public function renderMergesResultOfSingleControls(): void
     {
         $iconFactoryMock = $this->createMock(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
         $iconMock = $this->createMock(Icon::class);
         $iconMock->expects(self::atLeastOnce())->method('setTitle')->willReturn($iconMock);
         $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('');
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')->with(self::anything())
-            ->willReturn($iconMock);
+        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')->with(self::anything())->willReturn($iconMock);
 
         $languageServiceMock = $this->createMock(LanguageService::class);
         $languageServiceMock->method('sL')->with(self::anything())->willReturnArgument(0);
@@ -112,7 +110,9 @@ final class FieldControlTest extends UnitTestCase
             'inlineData' => [],
             'html' => '\n<a class="btn btn-default">\n...>\n</a>',
         ];
-        $result = (new FieldControl($nodeFactoryMock, $data))->render();
+        $subject = new FieldControl($nodeFactoryMock, $iconFactoryMock, new DependencyOrderingService());
+        $subject->setData($data);
+        $result = $subject->render();
         // We're not interested in testing the html merge here
         $expected['html'] = $result['html'];
 

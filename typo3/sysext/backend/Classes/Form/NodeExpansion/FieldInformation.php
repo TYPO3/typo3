@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\NodeExpansion;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Field information are additional HTML on a single node level that are typically
@@ -31,6 +31,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FieldInformation extends AbstractNode
 {
+    public function __construct(
+        private readonly NodeFactory $nodeFactory,
+        private readonly DependencyOrderingService $dependencyOrderingService,
+    ) {
+    }
+
     /**
      * Order the list of field information to be rendered with the ordering service,
      * then call each information element through the node factory and merge their
@@ -46,8 +52,7 @@ class FieldInformation extends AbstractNode
         }
 
         $fieldInformation = $this->data['renderData']['fieldInformation'];
-        $orderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
-        $orderedFieldInformation = $orderingService->orderByDependencies($fieldInformation, 'before', 'after');
+        $orderedFieldInformation = $this->dependencyOrderingService->orderByDependencies($fieldInformation);
 
         foreach ($orderedFieldInformation as $anOrderedFieldInformation => $orderedFieldInformationConfiguration) {
             if (isset($orderedFieldInformationConfiguration['disabled']) && $orderedFieldInformationConfiguration['disabled']

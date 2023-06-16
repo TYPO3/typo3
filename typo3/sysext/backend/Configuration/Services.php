@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface;
+use TYPO3\CMS\Backend\Form\NodeInterface;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\DependencyInjection\PublicServicePass;
@@ -19,7 +20,10 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     $containerBuilder->registerForAutoconfiguration(ToolbarItemInterface::class)->addTag('backend.toolbar.item');
     $containerBuilder->registerForAutoconfiguration(ProviderInterface::class)->addTag('backend.contextmenu.itemprovider');
     $containerBuilder->registerForAutoconfiguration(SearchProviderInterface::class)->addTag('livesearch.provider');
+    $containerBuilder->registerForAutoconfiguration(NodeInterface::class)->addTag('backend.form.node');
+
     $containerBuilder->addCompilerPass(new PublicServicePass('backend.controller'));
+    $containerBuilder->addCompilerPass(new PublicServicePass('backend.form.node'));
 
     // adds tag backend.controller to services
     $containerBuilder->registerAttributeForAutoconfiguration(

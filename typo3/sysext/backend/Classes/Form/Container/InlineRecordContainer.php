@@ -18,9 +18,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\ModifyInlineElementControlsEvent;
 use TYPO3\CMS\Backend\Form\Event\ModifyInlineElementEnabledControlsEvent;
-use TYPO3\CMS\Backend\Form\Exception\AccessDeniedContentEditException;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -34,7 +32,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Render a single inline record relation.
  *
  * This container is called by InlineControlContainer to render single existing records.
- * Furthermore it is called by FormEngine for an incoming ajax request to expand an existing record
+ * Furthermore, it is called by FormEngine for an incoming ajax request to expand an existing record
  * or to create a new one.
  *
  * This container creates the outer HTML of single inline records - eg. drag and drop and delete buttons.
@@ -49,36 +47,19 @@ class InlineRecordContainer extends AbstractContainer
      */
     protected $inlineData = [];
 
-    /**
-     * @var InlineStackProcessor
-     */
-    protected $inlineStackProcessor;
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    protected EventDispatcherInterface $eventDispatcher;
-
-    /**
-     * Default constructor
-     */
-    public function __construct(NodeFactory $nodeFactory, array $data)
-    {
-        parent::__construct($nodeFactory, $data);
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+        private readonly InlineStackProcessor $inlineStackProcessor,
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
     }
 
     /**
      * Entry method
      *
      * @return array As defined in initializeResultArray() of AbstractNode
-     * @throws AccessDeniedContentEditException
      */
-    public function render()
+    public function render(): array
     {
         $data = $this->data;
         $this->inlineData = $data['inlineData'];
@@ -114,7 +95,6 @@ class InlineRecordContainer extends AbstractContainer
         if (!$data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
             if ($isNewRecord || $data['isInlineChildExpanded']) {
                 // Render full content ONLY IF this is an AJAX request, a new record, or the record is not collapsed
-                $combinationHtml = '';
                 if (isset($data['combinationChild'])) {
                     $combinationChild = $this->renderCombinationChild($data, $appendFormFieldNames);
                     $combinationHtml = $combinationChild['html'];

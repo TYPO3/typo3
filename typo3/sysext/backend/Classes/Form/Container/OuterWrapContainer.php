@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Render header and footer row.
@@ -34,12 +32,17 @@ use TYPO3Fluid\Fluid\View\TemplateView;
  */
 class OuterWrapContainer extends AbstractContainer
 {
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+    ) {
+    }
+
     /**
      * Entry method
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUserAuthentication();
@@ -64,8 +67,7 @@ class OuterWrapContainer extends AbstractContainer
             $recordPath = BackendUtility::getRecordPath($this->data['effectivePid'], $permissionsClause, 15);
         }
 
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon = $iconFactory
+        $icon = $this->iconFactory
             ->getIconForRecord($table, $row, Icon::SIZE_SMALL)
             ->setTitle($recordPath)
             ->render();
@@ -118,12 +120,7 @@ class OuterWrapContainer extends AbstractContainer
             }
         }
 
-        // @todo: It's unfortunate we're using Typo3Fluid TemplateView directly here. We can't
-        //        inject BackendViewFactory here since __construct() is polluted by NodeInterface.
-        //        Remove __construct() from NodeInterface to have DI, then use BackendViewFactory here.
-        $view = GeneralUtility::makeInstance(TemplateView::class);
-        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
-        $templatePaths->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+        $view = $this->backendViewFactory->create($this->data['request']);
 
         $descriptionColumn = !empty($this->data['processedTca']['ctrl']['descriptionColumn'])
             ? $this->data['processedTca']['ctrl']['descriptionColumn'] : null;

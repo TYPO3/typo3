@@ -30,6 +30,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class OtherLanguageContent extends AbstractNode
 {
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+    ) {
+    }
+
     /**
      * Render other language content if enabled.
      */
@@ -54,7 +59,6 @@ class OtherLanguageContent extends AbstractNode
             return $result;
         }
 
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $table = $this->data['tableName'];
         $html = [];
         $defaultLanguageValue = BackendUtility::getProcessedValue(
@@ -71,7 +75,7 @@ class OtherLanguageContent extends AbstractNode
         if ($defaultLanguageValue !== '') {
             $iconIdentifier = ($this->data['systemLanguageRows'][0]['flagIconIdentifier'] ?? false) ?: 'flags-multiple';
             $html[] = '<div class="t3-form-original-language">';
-            $html[] =   $iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render();
+            $html[] =   $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render();
             $html[] =   $this->previewFieldValue($defaultLanguageValue);
             $html[] = '</div>';
         }
@@ -86,7 +90,7 @@ class OtherLanguageContent extends AbstractNode
             ) ?? '';
             if ($defaultLanguageValue !== '') {
                 $html[] = '<div class="t3-form-original-language">';
-                $html[] =   $iconFactory->getIcon($this->data['systemLanguageRows'][$previewLanguage['sys_language_uid']]['flagIconIdentifier'], Icon::SIZE_SMALL)->render();
+                $html[] =   $this->iconFactory->getIcon($this->data['systemLanguageRows'][$previewLanguage['sys_language_uid']]['flagIconIdentifier'], Icon::SIZE_SMALL)->render();
                 $html[] =   $this->previewFieldValue($defaultLanguageValue);
                 $html[] = '</div>';
             }

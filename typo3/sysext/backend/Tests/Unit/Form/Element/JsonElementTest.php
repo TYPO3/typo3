@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -53,14 +52,14 @@ final class JsonElementTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::addInstance(IconFactory::class, $this->createMock(IconFactory::class));
-
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
         $fieldInformationMock = $this->createMock(FieldInformation::class);
         $fieldInformationMock->method('render')->willReturn(['html' => '']);
         $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
 
-        $subject = new JsonElement($nodeFactoryMock, $data);
+        $subject = new JsonElement();
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($data);
         $result = $subject->render();
 
         self::assertEquals('@typo3/backend/form-engine/element/json-element.js', $result['javaScriptModules'][0]->getName());
@@ -89,7 +88,6 @@ final class JsonElementTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::addInstance(IconFactory::class, $this->createMock(IconFactory::class));
         GeneralUtility::setSingletonInstance(PackageManager::class, $this->createMock(PackageManager::class));
 
         $cacheManagerMock = $this->createMock(CacheManager::class);
@@ -107,7 +105,9 @@ final class JsonElementTest extends UnitTestCase
         $fieldInformationMock->method('render')->willReturn(['html' => '']);
         $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
 
-        $subject = new JsonElement($nodeFactoryMock, $data);
+        $subject = new JsonElement();
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($data);
         $result = $subject->render();
 
         self::assertEquals('@typo3/t3editor/element/code-mirror-element.js', $result['javaScriptModules'][0]->getName());

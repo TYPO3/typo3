@@ -21,7 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\ModifyFileReferenceControlsEvent;
 use TYPO3\CMS\Backend\Form\Event\ModifyFileReferenceEnabledControlsEvent;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -65,27 +64,25 @@ class FileReferenceContainer extends AbstractContainer
      */
     protected array $fileReferenceData = [];
 
-    protected InlineStackProcessor $inlineStackProcessor;
-    protected IconFactory $iconFactory;
-    protected EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(NodeFactory $nodeFactory, array $data)
-    {
-        parent::__construct($nodeFactory, $data);
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+        private readonly InlineStackProcessor $inlineStackProcessor,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ResourceFactory $resourceFactory,
+        private readonly ConnectionPool $connectionPool,
+        private readonly UriBuilder $uriBuilder,
+        private readonly MetaDataRepository $metaDataRepository,
+    ) {
     }
 
     public function render(): array
     {
-        $inlineStackProcessor = $this->inlineStackProcessor;
-        $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
+        $this->inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
 
         // Send a mapping information to the browser via JSON:
         // e.g. data[<curTable>][<curId>][<curField>] => data-<pid>-<parentTable>-<parentId>-<parentField>-<curTable>-<curId>-<curField>
-        $formPrefix = $inlineStackProcessor->getCurrentStructureFormPrefix();
-        $domObjectId = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+        $formPrefix = $this->inlineStackProcessor->getCurrentStructureFormPrefix();
+        $domObjectId = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
 
         $this->fileReferenceData = $this->data['inlineData'];
         $this->fileReferenceData['map'][$formPrefix] = $domObjectId;
@@ -237,7 +234,7 @@ class FileReferenceContainer extends AbstractContainer
             $fileUid = $databaseRow[self::FOREIGN_SELECTOR][0]['uid'] ?? null;
             if (!empty($fileUid)) {
                 try {
-                    $fileObject = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
+                    $fileObject = $this->resourceFactory->getFileObject($fileUid);
                     if ($fileObject->isMissing()) {
                         $thumbnail = '
                             <span class="badge badge-danger">'
@@ -378,8 +375,7 @@ class FileReferenceContainer extends AbstractContainer
                 $languageId = (int)(is_array($databaseRow[$languageField] ?? null)
                     ? ($databaseRow[$languageField][0] ?? 0)
                     : ($databaseRow[$languageField] ?? 0));
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('sys_file_metadata');
+                $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_metadata');
                 $metadataRecord = $queryBuilder
                     ->select('uid')
                     ->from('sys_file_metadata')
@@ -397,8 +393,7 @@ class FileReferenceContainer extends AbstractContainer
                     ->executeQuery()
                     ->fetchAssociative();
                 if (!empty($metadataRecord)) {
-                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                    $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+                    $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                         'edit[sys_file_metadata][' . (int)$metadataRecord['uid'] . ']' => 'edit',
                         'returnUrl' => $this->data['returnUrl'],
                     ]);
@@ -508,8 +503,7 @@ class FileReferenceContainer extends AbstractContainer
                     $fullTitle = $databaseRow['title'];
                 } elseif ($fileRecord['uid'] ?? false) {
                     try {
-                        $metaDataRepository = GeneralUtility::makeInstance(MetaDataRepository::class);
-                        $metaData = $metaDataRepository->findByFileUid($fileRecord['uid']);
+                        $metaData = $this->metaDataRepository->findByFileUid($fileRecord['uid']);
                         $fullTitle = $metaData['title'] ?? '';
                     } catch (InvalidUidException $e) {
                     }

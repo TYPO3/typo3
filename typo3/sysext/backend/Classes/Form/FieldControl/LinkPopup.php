@@ -32,6 +32,11 @@ class LinkPopup extends AbstractNode
 {
     use OnFieldChangeTrait;
 
+    public function __construct(
+        private readonly UriBuilder $uriBuilder,
+    ) {
+    }
+
     /**
      * Link popup control
      *
@@ -78,8 +83,7 @@ class LinkPopup extends AbstractNode
             ],
             $this->forwardOnFieldChangeQueryParams($parameterArray['fieldChangeFunc'] ?? [])
         );
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $url = (string)$uriBuilder->buildUriFromRoute('wizard_link', ['P' => $urlParameters]);
+        $url = (string)$this->uriBuilder->buildUriFromRoute('wizard_link', ['P' => $urlParameters]);
         $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
 
         return [

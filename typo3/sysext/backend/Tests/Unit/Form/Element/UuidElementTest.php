@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class UuidElementTest extends UnitTestCase
@@ -55,12 +54,12 @@ final class UuidElementTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::addInstance(IconFactory::class, $this->createMock(IconFactory::class));
-
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1678895476);
 
-        (new UuidElement($this->createMock(NodeFactory::class), $data))->render();
+        $subject = new UuidElement($this->createMock(IconFactory::class));
+        $subject->setData($data);
+        $subject->render();
     }
 
     /**
@@ -83,12 +82,12 @@ final class UuidElementTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::addInstance(IconFactory::class, $this->createMock(IconFactory::class));
-
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1678895476);
 
-        (new UuidElement($this->createMock(NodeFactory::class), $data))->render();
+        $subject = new UuidElement($this->createMock(IconFactory::class));
+        $subject->setData($data);
+        $subject->render();
     }
 
     /**
@@ -111,14 +110,15 @@ final class UuidElementTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::addInstance(IconFactory::class, $this->createMock(IconFactory::class));
-
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
         $fieldInformationMock = $this->createMock(FieldInformation::class);
         $fieldInformationMock->method('render')->willReturn(['html' => '']);
         $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
 
-        $subject = new UuidElement($nodeFactoryMock, $data);
+        $subject = new UuidElement($this->createMock(IconFactory::class));
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($data);
+        $subject->render();
         $result = $subject->render();
 
         self::assertEquals('@typo3/backend/copy-to-clipboard.js', $result['javaScriptModules'][0]->getName());
@@ -147,14 +147,15 @@ final class UuidElementTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::addInstance(IconFactory::class, $this->createMock(IconFactory::class));
-
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
         $fieldInformationMock = $this->createMock(FieldInformation::class);
         $fieldInformationMock->method('render')->willReturn(['html' => '']);
         $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
 
-        $subject = new UuidElement($nodeFactoryMock, $data);
+        $subject = new UuidElement($this->createMock(IconFactory::class));
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($data);
+        $subject->render();
         $result = $subject->render();
 
         self::assertEmpty($result['javaScriptModules']);

@@ -32,17 +32,15 @@ class PaletteAndSingleContainer extends AbstractContainer
 {
     /**
      * Final result array accumulating results from children and final HTML
-     *
-     * @var array
      */
-    protected $resultArray = [];
+    protected array $resultArray = [];
 
     /**
      * Entry method
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $languageService = $this->getLanguageService();
 
@@ -419,7 +417,7 @@ class PaletteAndSingleContainer extends AbstractContainer
     {
         $fieldName = $element['fieldName'];
         if (
-            $this->data['processedTca']['columns'][$fieldName]['config']['type'] === 'user'
+            ($this->data['processedTca']['columns'][$fieldName]['config']['type'] ?? '') === 'user'
             && !empty($this->data['processedTca']['columns'][$fieldName]['config']['noTableWrapping'])
         ) {
             return true;

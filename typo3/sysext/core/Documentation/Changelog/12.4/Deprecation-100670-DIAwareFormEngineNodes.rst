@@ -114,10 +114,11 @@ Compatibility with v13
 
 Extensions dropping TYPO3 v12 compatibility and going with v13 and up, can
 simplify the construct: In v13, :php:`setData()` will be added to :php:`AbstractNode`,
-extending classes don't need to implement it anymore. The two class
-properties :php:`$nodeFactory` and :php:`$iconFactory` (:php:`AbstractFormElement`
+extending classes don't need to implement it anymore. The class
+property :php:`$iconFactory` (:php:`AbstractFormElement`
 only) will be removed from the abstracts, constructor property promotion
-can be used for them. Also, a dependency injection service provider pass will
+can be used. :php:`NodeFactory` will be injected in the abstracts, without
+polluting :php:`__construct()`. Also, a dependency injection service provider pass will
 be added, to automatically set classes public that implement implement :php:`NodeInterface`,
 so a :yaml:`public: true` entry in :file:`Services.yaml` can be skipped.
 
@@ -126,7 +127,6 @@ A typical class extending :php:`AbstractNode` looks like this:
 ..  code-block:: php
 
     public function __construct(
-        private readonly NodeFactory $nodeFactory,
         private readonly IconFactory $iconFactory,
         private readonly MyService $myService,
     ) {

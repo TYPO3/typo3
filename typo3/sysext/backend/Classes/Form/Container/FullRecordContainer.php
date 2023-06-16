@@ -33,9 +33,8 @@ class FullRecordContainer extends AbstractContainer
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
-        $table = $this->data['tableName'];
         $recordTypeValue = $this->data['recordTypeValue'];
 
         // List of items to be rendered

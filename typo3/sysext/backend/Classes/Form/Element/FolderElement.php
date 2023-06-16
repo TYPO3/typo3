@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -70,6 +71,11 @@ class FolderElement extends AbstractFormElement
         ],
     ];
 
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+    ) {
+    }
+
     /**
      * This will render a selector box into which folder relations can be
      * inserted.
@@ -77,7 +83,7 @@ class FolderElement extends AbstractFormElement
      * @return array As defined in initializeResultArray() of AbstractNode
      * @throws \RuntimeException
      */
-    public function render()
+    public function render(): array
     {
         $languageService = $this->getLanguageService();
         $resultArray = $this->initializeResultArray();

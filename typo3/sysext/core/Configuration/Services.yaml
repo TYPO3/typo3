@@ -351,6 +351,9 @@ services:
     arguments:
       $cache: '@cache.typoscript'
 
+  TYPO3\CMS\Core\Utility\DiffUtility:
+    shared: false
+
   # Core caches, cache.core and cache.assets are injected as early
   # entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here
   cache.hash:

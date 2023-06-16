@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\NodeExpansion;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Field wizards are additional HTML on a single element level that are typically
@@ -35,6 +35,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FieldWizard extends AbstractNode
 {
+    public function __construct(
+        private readonly NodeFactory $nodeFactory,
+        private readonly DependencyOrderingService $dependencyOrderingService,
+    ) {
+    }
+
     /**
      * Order the list of field wizards to be rendered with the ordering service,
      * then call each wizard element through the node factory and merge their
@@ -50,8 +56,7 @@ class FieldWizard extends AbstractNode
         }
 
         $fieldWizard = $this->data['renderData']['fieldWizard'];
-        $orderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
-        $orderedFieldWizard = $orderingService->orderByDependencies($fieldWizard, 'before', 'after');
+        $orderedFieldWizard = $this->dependencyOrderingService->orderByDependencies($fieldWizard);
 
         foreach ($orderedFieldWizard as $anOrderedFieldWizard => $orderedFieldWizardConfiguration) {
             if (isset($orderedFieldWizardConfiguration['disabled']) && $orderedFieldWizardConfiguration['disabled']

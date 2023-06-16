@@ -15,11 +15,12 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Functional\Form;
+namespace TYPO3\CMS\Backend\Tests\Functional\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Element\MfaInfoElement;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,7 +31,7 @@ final class MfaInfoElementTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../../../../core/Tests/Functional/Authentication/Fixtures/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../../../../core/Tests/Functional/Authentication/Fixtures/be_users.csv');
 
         $GLOBALS['BE_USER'] = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->enablecolumns = ['deleted' => true];
@@ -206,10 +207,8 @@ final class MfaInfoElementTest extends FunctionalTestCase
 
     protected function getFormElementResult(array $data): array
     {
-        return GeneralUtility::makeInstance(
-            MfaInfoElement::class,
-            GeneralUtility::makeInstance(NodeFactory::class),
-            $data
-        )->render();
+        $node = new MfaInfoElement($this->get(IconFactory::class), $this->get(MfaProviderRegistry::class));
+        $node->setData($data);
+        return $node->render();
     }
 }

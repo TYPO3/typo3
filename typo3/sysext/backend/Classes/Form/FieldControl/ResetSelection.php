@@ -32,7 +32,7 @@ class ResetSelection extends AbstractNode
      *
      * @return array As defined by FieldControl class
      */
-    public function render()
+    public function render(): array
     {
         $parameterArray = $this->data['parameterArray'];
         $selectItems = $parameterArray['fieldConf']['config']['items'];

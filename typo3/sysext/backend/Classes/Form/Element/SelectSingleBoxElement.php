@@ -76,7 +76,7 @@ class SelectSingleBoxElement extends AbstractFormElement
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $languageService = $this->getLanguageService();
         $resultArray = $this->initializeResultArray();

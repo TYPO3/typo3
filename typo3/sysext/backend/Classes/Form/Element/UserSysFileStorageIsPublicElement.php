@@ -42,6 +42,12 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
         ],
     ];
 
+    public function __construct(
+        private readonly FlashMessageService $flashMessageService,
+        private readonly StorageRepository $storageRepository,
+    ) {
+    }
+
     /**
      * There are some edge cases where "is_public" can never be marked as true in the BE,
      * for instance for storage located outside the document root or
@@ -58,10 +64,9 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
         if ($this->data['command'] === 'edit') {
             // Make sure the storage object can be retrieved which is not the case when new storage.
             $lang = $this->getLanguageService();
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             try {
-                $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$row['uid']);
+                $storage = $this->storageRepository->findByUid((int)$row['uid']);
                 $storageRecord = $storage->getStorageRecord();
                 $isPublic = $storage->isPublic() && $storageRecord['is_public'];
 

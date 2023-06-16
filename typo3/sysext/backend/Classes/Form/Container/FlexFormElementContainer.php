@@ -36,7 +36,7 @@ class FlexFormElementContainer extends AbstractContainer
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
         $flexFormRowData = $this->data['flexFormRowData'];

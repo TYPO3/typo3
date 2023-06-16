@@ -17,10 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -28,11 +27,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class CheckboxElement extends AbstractFormElement
 {
-    /**
-     * @var IconRegistry
-     */
-    private $iconRegistry;
-
     /**
      * Default field information enabled for this element.
      *
@@ -67,10 +61,10 @@ class CheckboxElement extends AbstractFormElement
         ],
     ];
 
-    public function __construct(NodeFactory $nodeFactory, array $data)
-    {
-        parent::__construct($nodeFactory, $data);
-        $this->iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+        private readonly IconRegistry $iconRegistry,
+    ) {
     }
 
     /**

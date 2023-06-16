@@ -28,7 +28,7 @@ class NoTabsContainer extends AbstractContainer
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $options = $this->data;
         $options['renderType'] = 'paletteAndSingleContainer';

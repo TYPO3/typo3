@@ -59,6 +59,10 @@ The following PHP interfaces that have previously been marked as deprecated for 
 
 The following PHP interfaces changed:
 
+- :php:`\TYPO3\CMS\Backend\Form\NodeInterface` method :php:`setData()` added
+- :php:`\TYPO3\CMS\Backend\Form\NodeInterface` method :php:`render()` must return :php:`array`
+- :php:`\TYPO3\CMS\Backend\Form\NodeResolverInterface` method :php:`setData()` added
+- :php:`\TYPO3\CMS\Backend\Form\NodeResolverInterface` method :php:`resolve()` must return :php:`?string`
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface` method `getContentObject()` removed
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface` method `isFeatureEnabled()` removed
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface` method `setContentObject()` removed

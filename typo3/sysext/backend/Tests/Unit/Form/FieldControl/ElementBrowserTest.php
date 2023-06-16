@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FieldControl;
 
 use TYPO3\CMS\Backend\Form\FieldControl\ElementBrowser;
-use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -29,8 +29,8 @@ final class ElementBrowserTest extends UnitTestCase
      */
     public function renderTrimsAllowedValuesFromConfigSection(): void
     {
-        $nodeFactory = $this->createMock(NodeFactory::class);
-        $elementBrowser = new ElementBrowser($nodeFactory, [
+        $elementBrowser = new ElementBrowser($this->createMock(InlineStackProcessor::class));
+        $elementBrowser->setData([
             'fieldName' => 'somefield',
             'isInlineChild' => false,
             'tableName' => 'tt_content',
@@ -55,8 +55,8 @@ final class ElementBrowserTest extends UnitTestCase
      */
     public function renderTrimsAllowedValues(): void
     {
-        $nodeFactory = $this->createMock(NodeFactory::class);
-        $elementBrowser = new ElementBrowser($nodeFactory, [
+        $elementBrowser = new ElementBrowser($this->createMock(InlineStackProcessor::class));
+        $elementBrowser->setData([
             'fieldName' => 'somefield',
             'isInlineChild' => false,
             'tableName' => 'tt_content',
@@ -73,31 +73,6 @@ final class ElementBrowserTest extends UnitTestCase
         ]);
         $result = $elementBrowser->render();
         self::assertSame($result['linkAttributes']['data-params'], '|||jpg,png|');
-    }
-
-    /**
-     * @test
-     * @dataProvider renderResolvesEntryPointDataProvider
-     */
-    public function renderResolvesEntryPoint(array $config, string $expected): void
-    {
-        $nodeFactory = $this->createMock(NodeFactory::class);
-        $elementBrowser = new ElementBrowser($nodeFactory, [
-            'fieldName' => 'somefield',
-            'isInlineChild' => false,
-            'effectivePid' => 123,
-            'site' => new Site('some-site', 123, []),
-            'tableName' => 'tt_content',
-            'inlineStructure' => [],
-            'parameterArray' => [
-                'itemFormElName' => '',
-                'fieldConf' => [
-                    'config' => $config,
-                ],
-            ],
-        ]);
-        $result = $elementBrowser->render();
-        self::assertEquals($expected, $result['linkAttributes']['data-entry-point'] ?? '');
     }
 
     public static function renderResolvesEntryPointDataProvider(): \Generator
@@ -223,5 +198,30 @@ final class ElementBrowserTest extends UnitTestCase
             ],
             '123',
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider renderResolvesEntryPointDataProvider
+     */
+    public function renderResolvesEntryPoint(array $config, string $expected): void
+    {
+        $elementBrowser = new ElementBrowser($this->createMock(InlineStackProcessor::class));
+        $elementBrowser->setData([
+            'fieldName' => 'somefield',
+            'isInlineChild' => false,
+            'effectivePid' => 123,
+            'site' => new Site('some-site', 123, []),
+            'tableName' => 'tt_content',
+            'inlineStructure' => [],
+            'parameterArray' => [
+                'itemFormElName' => '',
+                'fieldConf' => [
+                    'config' => $config,
+                ],
+            ],
+        ]);
+        $result = $elementBrowser->render();
+        self::assertEquals($expected, $result['linkAttributes']['data-entry-point'] ?? '');
     }
 }

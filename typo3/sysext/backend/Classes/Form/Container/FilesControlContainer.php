@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\CustomFileControlsEvent;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -33,7 +32,6 @@ use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Files entry container.
@@ -41,7 +39,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
  * This container is the entry step to rendering a file reference. It is created by SingleFieldContainer.
  *
  * The code creates the main structure for the single file reference, initializes the inlineData array,
- * that is manipulated and also returned back in its manipulated state. The "control" stuff of file
+ * that is manipulated and also returned in its manipulated state. The "control" stuff of file
  * references is rendered here, for example the "create new" button.
  *
  * For each existing file reference, a FileReferenceContainer is called for further processing.
@@ -62,9 +60,6 @@ class FilesControlContainer extends AbstractContainer
      */
     protected array $javaScriptModules = [];
 
-    protected IconFactory $iconFactory;
-    protected InlineStackProcessor $inlineStackProcessor;
-
     protected $defaultFieldInformation = [
         'tcaDescription' => [
             'renderType' => 'tcaDescription',
@@ -77,13 +72,13 @@ class FilesControlContainer extends AbstractContainer
         ],
     ];
 
-    /**
-     * Container objects give $nodeFactory down to other containers.
-     */
-    public function __construct(NodeFactory $nodeFactory, array $data)
-    {
-        parent::__construct($nodeFactory, $data);
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+        private readonly InlineStackProcessor $inlineStackProcessor,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
+        private readonly DefaultUploadFolderResolver $defaultUploadFolderResolver,
+    ) {
     }
 
     /**
@@ -91,15 +86,13 @@ class FilesControlContainer extends AbstractContainer
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $languageService = $this->getLanguageService();
 
         $this->fileReferenceData = $this->data['inlineData'];
 
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $this->inlineStackProcessor = $inlineStackProcessor;
-        $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
+        $this->inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
 
         $table = $this->data['tableName'];
         $row = $this->data['databaseRow'];
@@ -139,7 +132,7 @@ class FilesControlContainer extends AbstractContainer
             }
         }
 
-        $inlineStackProcessor->pushStableStructureItem($newStructureItem);
+        $this->inlineStackProcessor->pushStableStructureItem($newStructureItem);
 
         // Hand over original returnUrl to FormFilesAjaxController. Needed if opening for instance a
         // nested element in a new view to then go back to the original returnUrl and not the url of
@@ -147,9 +140,9 @@ class FilesControlContainer extends AbstractContainer
         $config['originalReturnUrl'] = $this->data['returnUrl'];
 
         // e.g. data[<table>][<uid>][<field>]
-        $formFieldName = $inlineStackProcessor->getCurrentStructureFormPrefix();
+        $formFieldName = $this->inlineStackProcessor->getCurrentStructureFormPrefix();
         // e.g. data-<pid>-<table1>-<uid1>-<field1>-<table2>-<uid2>-<field2>
-        $formFieldIdentifier = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+        $formFieldIdentifier = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
 
         $config['inline']['first'] = false;
 
@@ -163,7 +156,7 @@ class FilesControlContainer extends AbstractContainer
             $config['inline']['last'] = $lastChild['databaseRow']['uid'];
         }
 
-        $top = $inlineStackProcessor->getStructureLevel(0);
+        $top = $this->inlineStackProcessor->getStructureLevel(0);
 
         $this->fileReferenceData['config'][$formFieldIdentifier] = [
             'table' => self::FILE_REFERENCE_TABLE,
@@ -220,7 +213,7 @@ class FilesControlContainer extends AbstractContainer
             $options['inlineFirstPid'] = $this->data['inlineFirstPid'];
             $options['inlineParentConfig'] = $config;
             $options['inlineData'] = $this->fileReferenceData;
-            $options['inlineStructure'] = $inlineStackProcessor->getStructure();
+            $options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
             $options['inlineExpandCollapseStateArray'] = $this->data['inlineExpandCollapseStateArray'];
             $options['renderType'] = FileReferenceContainer::NODE_TYPE_IDENTIFIER;
             $fileReference = $this->nodeFactory->create($options)->render();
@@ -233,12 +226,7 @@ class FilesControlContainer extends AbstractContainer
             }
         }
 
-        // @todo: It's unfortunate we're using Typo3Fluid TemplateView directly here. We can't
-        //        inject BackendViewFactory here since __construct() is polluted by NodeInterface.
-        //        Remove __construct() from NodeInterface to have DI, then use BackendViewFactory here.
-        $view = GeneralUtility::makeInstance(TemplateView::class);
-        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
-        $templatePaths->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+        $view = $this->backendViewFactory->create($this->data['request']);
         $view->assignMultiple([
             'formFieldIdentifier' => $formFieldIdentifier,
             'formFieldName' => $formFieldName,
@@ -281,7 +269,7 @@ class FilesControlContainer extends AbstractContainer
             }
         }
 
-        $controls = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+        $controls = $this->eventDispatcher->dispatch(
             new CustomFileControlsEvent($resultArray, $table, $field, $row, $config, $formFieldIdentifier, $formFieldName)
         )->getControls();
 
@@ -333,7 +321,7 @@ class FilesControlContainer extends AbstractContainer
 			    </button>';
         }
 
-        $onlineMediaAllowed = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getSupportedFileExtensions();
+        $onlineMediaAllowed = $this->onlineMediaHelperRegistry->getSupportedFileExtensions();
         if ($allowedFileTypes !== []) {
             $onlineMediaAllowed = array_intersect($allowedFileTypes, $onlineMediaAllowed);
         }
@@ -342,8 +330,7 @@ class FilesControlContainer extends AbstractContainer
         $showByUrl = ($inlineConfiguration['appearance']['fileByUrlAllowed'] ?? true) && $onlineMediaAllowed !== [];
 
         if (($showUpload || $showByUrl) && ($backendUser->uc['edit_docModuleUpload'] ?? false)) {
-            $defaultUploadFolderResolver = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
-            $folder = $defaultUploadFolderResolver->resolve(
+            $folder = $this->defaultUploadFolderResolver->resolve(
                 $backendUser,
                 $this->data['tableName'] === 'pages' ? $this->data['vanillaUid'] : ($this->data['parentPageRow']['uid'] ?? 0),
                 $this->data['tableName'],

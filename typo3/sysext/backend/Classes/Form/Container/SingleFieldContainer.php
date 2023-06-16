@@ -40,7 +40,7 @@ class SingleFieldContainer extends AbstractContainer
      * @throws \InvalidArgumentException
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $backendUser = $this->getBackendUserAuthentication();
         $resultArray = $this->initializeResultArray();

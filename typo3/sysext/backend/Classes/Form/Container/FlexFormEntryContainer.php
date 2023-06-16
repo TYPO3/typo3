@@ -28,7 +28,7 @@ class FlexFormEntryContainer extends AbstractContainer
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $flexFormDataStructureIdentifier = $this->data['parameterArray']['fieldConf']['config']['dataStructureIdentifier'];
         $flexFormDataStructureArray = $this->data['parameterArray']['fieldConf']['config']['ds'];

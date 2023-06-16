@@ -32,12 +32,17 @@ class EditPopup extends AbstractNode
 {
     use OnFieldChangeTrait;
 
+    public function __construct(
+        private readonly UriBuilder $uriBuilder,
+    ) {
+    }
+
     /**
      * Edit popup control
      *
      * @return array As defined by FieldControl class
      */
-    public function render()
+    public function render(): array
     {
         $options = $this->data['renderData']['fieldControlOptions'];
 
@@ -82,8 +87,7 @@ class EditPopup extends AbstractNode
             ],
             $this->forwardOnFieldChangeQueryParams($parameterArray['fieldChangeFunc'] ?? [])
         );
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $url = (string)$uriBuilder->buildUriFromRoute('wizard_edit', ['P' => $urlParameters]);
+        $url = (string)$this->uriBuilder->buildUriFromRoute('wizard_edit', ['P' => $urlParameters]);
         $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
 
         return [

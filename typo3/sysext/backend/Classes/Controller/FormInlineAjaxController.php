@@ -71,7 +71,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         // Parse the DOM identifier, add the levels to the structure stack
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->injectAjaxConfiguration($parentConfig);
+        $inlineStackProcessor->setAjaxConfiguration($parentConfig);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
 
         // Parent, this table embeds the child table
@@ -171,7 +171,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         // Parse the DOM identifier, add the levels to the structure stack
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->injectAjaxConfiguration($parentConfig);
+        $inlineStackProcessor->setAjaxConfiguration($parentConfig);
 
         // Parent, this table embeds the child table
         $parent = $inlineStackProcessor->getStructureLevel(-1);
@@ -237,7 +237,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         // Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->injectAjaxConfiguration($parentConfig);
+        $inlineStackProcessor->setAjaxConfiguration($parentConfig);
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
 
         $jsonArray = [

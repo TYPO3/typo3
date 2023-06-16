@@ -33,14 +33,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FlexFormSectionContainer extends AbstractContainer
 {
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+    ) {
+    }
+
     /**
      * Entry method
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $languageService = $this->getLanguageService();
 
         $flexFormDataStructureIdentifier = $this->data['flexFormDataStructureIdentifier'];
@@ -99,7 +103,7 @@ class FlexFormSectionContainer extends AbstractContainer
             $containerTemplateHtml[] =     'data-flexformcontainername="' . htmlspecialchars($flexFormContainerName) . '"';
             $containerTemplateHtml[] =     'data-target="#' . htmlspecialchars($hashedSectionContainerId) . '"';
             $containerTemplateHtml[] = '>';
-            $containerTemplateHtml[] =    $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
+            $containerTemplateHtml[] =    $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
             $containerTemplateHtml[] =    htmlspecialchars(GeneralUtility::fixed_lgd_cs($containerTitle, 30));
             $containerTemplateHtml[] = '</a>';
             $containerTemplatesHtml[] = implode(LF, $containerTemplateHtml);
@@ -132,7 +136,7 @@ class FlexFormSectionContainer extends AbstractContainer
         $html[] =             '</div>';
         $html[] =             '<div class="form-group">';
         $html[] =                 '<button class="btn btn-default t3-form-flexsection-toggle" type="button" title="' . $toggleAll . '" data-expand-all="false">';
-        $html[] =                     $iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render() . $toggleAll;
+        $html[] =                     $this->iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render() . $toggleAll;
         $html[] =                 '</button>';
         $html[] =             '</div>';
         $html[] =             '<div';

@@ -29,12 +29,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ElementBrowser extends AbstractNode
 {
+    public function __construct(
+        private readonly InlineStackProcessor $inlineStackProcessor,
+    ) {
+    }
+
     /**
      * Add button control
      *
      * @return array As defined by FieldControl class
      */
-    public function render()
+    public function render(): array
     {
         $table = $this->data['tableName'];
         $fieldName = $this->data['fieldName'];
@@ -59,15 +64,14 @@ class ElementBrowser extends AbstractNode
 
         // Check against inline uniqueness - Create some onclick js for delete control and element browser
         // to override record selection in some FAL scenarios - See 'appearance' docs of group element
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
+        $this->inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
         $objectPrefix = '';
         if (($this->data['isInlineChild'] ?? false)
             && ($this->data['inlineParentUid'] ?? false)
             && ($this->data['inlineParentConfig']['foreign_table'] ?? false) === $table
             && ($this->data['inlineParentConfig']['foreign_unique'] ?? false) === $fieldName
         ) {
-            $objectPrefix = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $table;
+            $objectPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $table;
         }
 
         if ($type === 'group') {

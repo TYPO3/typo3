@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatetimeElementTest extends UnitTestCase
@@ -102,7 +101,6 @@ final class DatetimeElementTest extends UnitTestCase
             ],
         ];
         $iconFactoryMock = $this->createMock(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
         $iconMock = $this->createMock(Icon::class);
         $iconMock->method('render')->willReturn('');
         $iconFactoryMock->method('getIcon')->with(self::anything())->willReturn($iconMock);
@@ -111,8 +109,12 @@ final class DatetimeElementTest extends UnitTestCase
         $fieldInformationMock->method('render')->willReturn(['html' => '']);
         $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $subject = new DatetimeElement($nodeFactoryMock, $data);
+
+        $subject = new DatetimeElement($iconFactoryMock);
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($data);
         $result = $subject->render();
+
         self::assertStringContainsString('<input type="hidden" name="myItemFormElName" value="' . $expectedOutput . '" />', $result['html']);
     }
 }

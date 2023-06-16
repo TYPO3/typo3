@@ -32,6 +32,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RecordsOverview extends AbstractNode
 {
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+    ) {
+    }
+
     /**
      * Render table with record details
      */
@@ -45,7 +50,6 @@ class RecordsOverview extends AbstractNode
         $selectedItems = $parameterArray['itemFormElValue'];
         $maxTitleLength = (int)$backendUser->uc['titleLen'];
 
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $recordsOverviewHtml = [];
         foreach ($selectedItems as $selectedItem) {
             $title = (string)$selectedItem['title'];
@@ -54,7 +58,7 @@ class RecordsOverview extends AbstractNode
             }
             $shortenedTitle = GeneralUtility::fixed_lgd_cs($title, $maxTitleLength);
             $linkedIcon = BackendUtility::wrapClickMenuOnIcon(
-                $iconFactory->getIconForRecord($selectedItem['table'], $selectedItem['row'], Icon::SIZE_SMALL)->render(),
+                $this->iconFactory->getIconForRecord($selectedItem['table'], $selectedItem['row'], Icon::SIZE_SMALL)->render(),
                 $selectedItem['table'],
                 $selectedItem['uid']
             );

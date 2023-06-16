@@ -31,7 +31,7 @@ final class ListOfFieldsContainerTest extends UnitTestCase
     {
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
         $paletteAndSingleContainerMock = $this->createMock(PaletteAndSingleContainer::class);
-        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn('');
+        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn([]);
 
         $input = [
             'tableName' => 'aTable',
@@ -55,7 +55,11 @@ final class ListOfFieldsContainerTest extends UnitTestCase
         ];
 
         $nodeFactoryMock->method('create')->with($expected)->willReturn($paletteAndSingleContainerMock);
-        (new ListOfFieldsContainer($nodeFactoryMock, $input))->render();
+
+        $subject = new ListOfFieldsContainer();
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($input);
+        $subject->render();
     }
 
     /**
@@ -65,7 +69,7 @@ final class ListOfFieldsContainerTest extends UnitTestCase
     {
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
         $paletteAndSingleContainerMock = $this->createMock(PaletteAndSingleContainer::class);
-        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn('');
+        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn([]);
 
         $input = [
             'tableName' => 'aTable',
@@ -89,7 +93,11 @@ final class ListOfFieldsContainerTest extends UnitTestCase
         ];
 
         $nodeFactoryMock->method('create')->with($expected)->willReturn($paletteAndSingleContainerMock);
-        (new ListOfFieldsContainer($nodeFactoryMock, $input))->render();
+
+        $subject = new ListOfFieldsContainer();
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($input);
+        $subject->render();
     }
 
     /**
@@ -99,7 +107,7 @@ final class ListOfFieldsContainerTest extends UnitTestCase
     {
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
         $paletteAndSingleContainerMock = $this->createMock(PaletteAndSingleContainer::class);
-        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn('');
+        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn([]);
 
         $input = [
             'tableName' => 'aTable',
@@ -131,7 +139,11 @@ final class ListOfFieldsContainerTest extends UnitTestCase
         ];
 
         $nodeFactoryMock->method('create')->with($expected)->willReturn($paletteAndSingleContainerMock);
-        (new ListOfFieldsContainer($nodeFactoryMock, $input))->render();
+
+        $subject = new ListOfFieldsContainer();
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($input);
+        $subject->render();
     }
 
     /**
@@ -141,7 +153,7 @@ final class ListOfFieldsContainerTest extends UnitTestCase
     {
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
         $paletteAndSingleContainerMock = $this->createMock(PaletteAndSingleContainer::class);
-        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn('');
+        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn([]);
 
         $input = [
             'tableName' => 'aTable',
@@ -169,6 +181,10 @@ final class ListOfFieldsContainerTest extends UnitTestCase
         ];
 
         $nodeFactoryMock->method('create')->with($expected)->willReturn($paletteAndSingleContainerMock);
-        (new ListOfFieldsContainer($nodeFactoryMock, $input))->render();
+
+        $subject = new ListOfFieldsContainer();
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($input);
+        $subject->render();
     }
 }

@@ -32,7 +32,7 @@ class TabsContainer extends AbstractContainer
      * @return array As defined in initializeResultArray() of AbstractNode
      * @throws \RuntimeException
      */
-    public function render()
+    public function render(): array
     {
         $languageService = $this->getLanguageService();
 

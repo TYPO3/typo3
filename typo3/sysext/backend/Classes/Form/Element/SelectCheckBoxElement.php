@@ -63,12 +63,17 @@ class SelectCheckBoxElement extends AbstractFormElement
         ],
     ];
 
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+    ) {
+    }
+
     /**
      * Render check boxes
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $resultArray = $this->initializeResultArray();
 
@@ -283,8 +288,7 @@ class SelectCheckBoxElement extends AbstractFormElement
         if (empty($overloadHelpText)) {
             return '';
         }
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $text = $iconFactory->getIcon('actions-system-help-open', Icon::SIZE_SMALL)->render();
+        $text = $this->iconFactory->getIcon('actions-system-help-open', Icon::SIZE_SMALL)->render();
         $abbrClassAdd = ' help-teaser-icon';
         $text = '<abbr class="help-teaser' . $abbrClassAdd . '">' . $text . '</abbr>';
         $wrappedText = '<span class="help-link" data-bs-content="<p></p>"';

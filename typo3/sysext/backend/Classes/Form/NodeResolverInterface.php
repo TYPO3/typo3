@@ -22,16 +22,13 @@ interface NodeResolverInterface
 {
     /**
      * Retrieve the current data array from NodeFactory.
-     *
-     * @todo: Enable this interface method in v13.
      */
-    // public function setData(array $data): void;
+    public function setData(array $data): void;
 
     /**
      * Main resolver method
      *
      * @return string|null New class name or null if this resolver does not change current class name.
-     * @todo: Change to "public function resolve(): ?string;" in v13.
      */
-    public function resolve();
+    public function resolve(): ?string;
 }

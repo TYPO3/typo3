@@ -32,9 +32,8 @@ class ListOfFieldsContainer extends AbstractContainer
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
-        $table = $this->data['tableName'];
         $fieldListToRender = $this->data['fieldListToRender'];
         $recordTypeValue = $this->data['recordTypeValue'];
 

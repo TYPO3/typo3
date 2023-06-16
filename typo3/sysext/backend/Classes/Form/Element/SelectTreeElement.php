@@ -75,7 +75,7 @@ class SelectTreeElement extends AbstractFormElement
      * @return array As defined in initializeResultArray() of AbstractNode
      * @see AbstractNode::initializeResultArray()
      */
-    public function render()
+    public function render(): array
     {
         $resultArray = $this->initializeResultArray();
         $parameterArray = $this->data['parameterArray'];

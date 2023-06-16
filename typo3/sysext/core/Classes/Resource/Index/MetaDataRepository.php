@@ -49,14 +49,9 @@ class MetaDataRepository implements SingletonInterface
      */
     protected $tableFields = [];
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        protected readonly EventDispatcherInterface $eventDispatcher,
+    ) {
     }
 
     /**

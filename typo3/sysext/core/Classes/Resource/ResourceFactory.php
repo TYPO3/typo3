@@ -54,14 +54,9 @@ class ResourceFactory implements SingletonInterface
      */
     protected $fileReferenceInstances = [];
 
-    /**
-     * @var StorageRepository
-     */
-    protected $storageRepository;
-
-    public function __construct(StorageRepository $storageRepository)
-    {
-        $this->storageRepository = $storageRepository;
+    public function __construct(
+        protected readonly StorageRepository $storageRepository,
+    ) {
     }
 
     /**

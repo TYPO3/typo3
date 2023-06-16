@@ -35,6 +35,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class OtherLanguageThumbnails extends AbstractNode
 {
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+        private readonly ResourceFactory $resourceFactory,
+    ) {
+    }
+
     /**
      * Render cropped thumbnails from other language rows
      */
@@ -57,7 +63,6 @@ class OtherLanguageThumbnails extends AbstractNode
         }
 
         $html = [];
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $languages = [$defaultLanguageRow['sys_language_uid'] => $defaultLanguageRow] + ($this->data['additionalLanguageRows'] ?? []);
 
         foreach ($languages as $sysLanguageUid => $languageRow) {
@@ -69,7 +74,7 @@ class OtherLanguageThumbnails extends AbstractNode
             }
 
             try {
-                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
+                $file = $this->resourceFactory->getFileObject($fileUid);
             } catch (FileDoesNotExistException|\InvalidArgumentException $e) {
                 continue;
             }
@@ -97,7 +102,7 @@ class OtherLanguageThumbnails extends AbstractNode
             if ($processedImages !== []) {
                 $iconIdentifier = $this->data['systemLanguageRows'][(int)$sysLanguageUid]['flagIconIdentifier'] ?? 'flags-multiple';
                 $html[] = '<div class="t3-form-original-language">';
-                $html[] =   $iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render();
+                $html[] =   $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render();
                 $html[] =   implode(LF, $processedImages);
                 $html[] = '</div>';
             }

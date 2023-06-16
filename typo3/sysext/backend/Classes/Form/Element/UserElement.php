@@ -31,7 +31,7 @@ class UserElement extends AbstractFormElement
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         // Render some dummy output to explain this element should usually not be called at all.
         $resultArray = $this->initializeResultArray();

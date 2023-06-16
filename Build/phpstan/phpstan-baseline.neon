@@ -201,26 +201,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/ViewHelpers/ThumbnailViewHelper.php
 
 		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeResolvers\\\\BarResolver has an unused parameter \\$data\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeResolvers/BarResolver.php
-
-		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeResolvers\\\\BarResolver has an unused parameter \\$nodeFactory\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeResolvers/BarResolver.php
-
-		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeResolvers\\\\FooResolver has an unused parameter \\$data\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeResolvers/FooResolver.php
-
-		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeResolvers\\\\FooResolver has an unused parameter \\$nodeFactory\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeResolvers/FooResolver.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with \\*NEVER\\* and array will always evaluate to false\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/EvaluateDisplayConditionsTest.php

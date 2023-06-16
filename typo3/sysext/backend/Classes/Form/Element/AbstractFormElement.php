@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Form\Behavior\UpdateBitmaskOnFieldChange;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locale;
@@ -59,21 +58,15 @@ abstract class AbstractFormElement extends AbstractNode
      */
     protected $maxInputWidth = 50;
 
-    /**
-     * @var IconFactory
-     * @deprecated since TYPO3 v12.4. will be removed in TYPO3 v13.0.
-     */
-    protected $iconFactory;
+    protected NodeFactory $nodeFactory;
 
     /**
-     * Container objects give $nodeFactory down to other containers.
-     *
-     * @deprecated since TYPO3 v12.4. Default constructor will be removed in v13.
+     * Injection of NodeFactory, which is used in this abstract already.
+     * Using inject* method to not pollute __construct() for inheriting classes.
      */
-    public function __construct(NodeFactory $nodeFactory = null, array $data = [])
+    public function injectNodeFactory(NodeFactory $nodeFactory): void
     {
-        parent::__construct($nodeFactory, $data);
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->nodeFactory = $nodeFactory;
     }
 
     /**

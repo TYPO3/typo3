@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\ModifyImageManipulationPreviewUrlEvent;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException;
@@ -31,9 +31,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3Fluid\Fluid\View\TemplateAwareViewInterface;
-use TYPO3Fluid\Fluid\View\TemplateView;
-use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Generation of image manipulation FormEngine element.
@@ -41,10 +38,7 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 class ImageManipulationElement extends AbstractFormElement
 {
-    /**
-     * @var string
-     */
-    private $wizardRouteName = 'ajax_wizard_image_manipulation';
+    private string $wizardRouteName = 'ajax_wizard_image_manipulation';
 
     /**
      * Default element configuration
@@ -124,35 +118,21 @@ class ImageManipulationElement extends AbstractFormElement
         ],
     ];
 
-    protected ViewInterface&TemplateAwareViewInterface $templateView;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    public function __construct(NodeFactory $nodeFactory, array $data)
-    {
-        parent::__construct($nodeFactory, $data);
-        // Would be great, if we could inject the view here, but since the constructor is in the interface, we can't
-        // @todo: It's unfortunate we're using Typo3Fluid TemplateView directly here. We can't
-        //        inject BackendViewFactory here since __construct() is polluted by NodeInterface.
-        //        Remove __construct() from NodeInterface to have DI, then use BackendViewFactory here.
-        $view = GeneralUtility::makeInstance(TemplateView::class);
-        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
-        $templatePaths->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
-        $templatePaths->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        $this->templateView = $view;
-        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+    public function __construct(
+        private readonly BackendViewFactory $backendViewFactory,
+        private readonly UriBuilder $uriBuilder,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ResourceFactory $resourceFactory,
+    ) {
     }
 
     /**
      * This will render an imageManipulation field
      *
      * @return array As defined in initializeResultArray() of AbstractNode
-     * @throws \TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException
+     * @throws InvalidConfigurationException
      */
-    public function render()
+    public function render(): array
     {
         $resultArray = $this->initializeResultArray();
         $parameterArray = $this->data['parameterArray'];
@@ -194,7 +174,7 @@ class ImageManipulationElement extends AbstractFormElement
             'config' => $config,
             'wizardUri' => $this->getWizardUri(),
             'wizardPayload' => json_encode($this->getWizardPayload($config['cropVariants'], $file)),
-            'previewUrl' => GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            'previewUrl' => $this->eventDispatcher->dispatch(
                 new ModifyImageManipulationPreviewUrlEvent($this->data['databaseRow'], $config, $file)
             )->getPreviewUrl(),
         ];
@@ -208,8 +188,9 @@ class ImageManipulationElement extends AbstractFormElement
                 $arguments['formEngine']['validation'] = $this->getValidationDataAsJsonString(['required' => true]);
             }
         }
-        $this->templateView->assignMultiple($arguments);
-        $resultArray['html'] = $this->templateView->render('Form/ImageManipulationElement');
+        $view = $this->backendViewFactory->create($this->data['request']);
+        $view->assignMultiple($arguments);
+        $resultArray['html'] = $view->render('Form/ImageManipulationElement');
 
         return $resultArray;
     }
@@ -229,8 +210,8 @@ class ImageManipulationElement extends AbstractFormElement
         }
         if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
             try {
-                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
-            } catch (FileDoesNotExistException|\InvalidArgumentException $e) {
+                $file = $this->resourceFactory->getFileObject($fileUid);
+            } catch (FileDoesNotExistException|\InvalidArgumentException) {
             }
         }
         return $file;
@@ -288,7 +269,7 @@ class ImageManipulationElement extends AbstractFormElement
 
     /**
      * @return array
-     * @throws \TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException
+     * @throws InvalidConfigurationException
      */
     protected function processConfiguration(array $config, string &$elementValue, File $file)
     {

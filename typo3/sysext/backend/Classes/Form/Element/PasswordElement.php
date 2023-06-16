@@ -41,12 +41,17 @@ class PasswordElement extends AbstractFormElement
         ],
     ];
 
+    public function __construct(
+        private readonly Features $features,
+    ) {
+    }
+
     /**
      * This will render a single-line password form field, possibly with various control/validation features
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $table = $this->data['tableName'];
         $fieldName = $this->data['fieldName'];
@@ -63,8 +68,7 @@ class PasswordElement extends AbstractFormElement
         $passwordPolicy = $config['passwordPolicy'] ?? null;
 
         // Ignore password policy for frontend users, if "security.usePasswordPolicyForFrontendUsers" is disabled
-        $features = GeneralUtility::makeInstance(Features::class);
-        if ($table === 'fe_users' && !$features->isFeatureEnabled('security.usePasswordPolicyForFrontendUsers')) {
+        if ($table === 'fe_users' && !$this->features->isFeatureEnabled('security.usePasswordPolicyForFrontendUsers')) {
             $passwordPolicy = null;
         }
 

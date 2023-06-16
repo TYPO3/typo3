@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -47,16 +46,6 @@ class InlineControlContainer extends AbstractContainer
     protected $inlineData = [];
 
     /**
-     * @var InlineStackProcessor
-     */
-    protected $inlineStackProcessor;
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * @var array<int,JavaScriptModuleInstruction>
      */
     protected $javaScriptModules = [];
@@ -81,13 +70,10 @@ class InlineControlContainer extends AbstractContainer
         ],
     ];
 
-    /**
-     * Container objects give $nodeFactory down to other containers.
-     */
-    public function __construct(NodeFactory $nodeFactory, array $data)
-    {
-        parent::__construct($nodeFactory, $data);
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+        private readonly InlineStackProcessor $inlineStackProcessor,
+    ) {
     }
 
     /**
@@ -95,15 +81,13 @@ class InlineControlContainer extends AbstractContainer
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $languageService = $this->getLanguageService();
 
         $this->inlineData = $this->data['inlineData'];
 
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $this->inlineStackProcessor = $inlineStackProcessor;
-        $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
+        $this->inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
 
         $table = $this->data['tableName'];
         $row = $this->data['databaseRow'];
@@ -135,7 +119,7 @@ class InlineControlContainer extends AbstractContainer
                 $newStructureItem['flexform'] = $flexFormParts;
             }
         }
-        $inlineStackProcessor->pushStableStructureItem($newStructureItem);
+        $this->inlineStackProcessor->pushStableStructureItem($newStructureItem);
 
         // Transport the flexform DS identifier fields to the FormInlineAjaxController
         if (!empty($newStructureItem['flexform'])
@@ -150,9 +134,9 @@ class InlineControlContainer extends AbstractContainer
         $config['originalReturnUrl'] = $this->data['returnUrl'];
 
         // e.g. data[<table>][<uid>][<field>]
-        $nameForm = $inlineStackProcessor->getCurrentStructureFormPrefix();
+        $nameForm = $this->inlineStackProcessor->getCurrentStructureFormPrefix();
         // e.g. data-<pid>-<table1>-<uid1>-<field1>-<table2>-<uid2>-<field2>
-        $nameObject = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+        $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
 
         $config['inline']['first'] = false;
         $firstChild = reset($this->data['parameterArray']['fieldConf']['children']);
@@ -165,7 +149,7 @@ class InlineControlContainer extends AbstractContainer
             $config['inline']['last'] = $lastChild['databaseRow']['uid'];
         }
 
-        $top = $inlineStackProcessor->getStructureLevel(0);
+        $top = $this->inlineStackProcessor->getStructureLevel(0);
 
         $this->inlineData['config'][$nameObject] = [
             'table' => $foreign_table,
@@ -326,7 +310,7 @@ class InlineControlContainer extends AbstractContainer
             // @todo: this can be removed if this container no longer sets additional info to $config
             $options['inlineParentConfig'] = $config;
             $options['inlineData'] = $this->inlineData;
-            $options['inlineStructure'] = $inlineStackProcessor->getStructure();
+            $options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
             $options['inlineExpandCollapseStateArray'] = $this->data['inlineExpandCollapseStateArray'];
             $options['renderType'] = 'inlineRecordContainer';
             $childResult = $this->nodeFactory->create($options)->render();

@@ -28,12 +28,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FlexFormContainerContainer extends AbstractContainer
 {
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+    ) {
+    }
+
     /**
      * Entry method
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $languageService = $this->getLanguageService();
 
@@ -44,7 +49,6 @@ class FlexFormContainerContainer extends AbstractContainer
         $flexFormContainerElementCollapsed = $this->data['flexFormContainerElementCollapsed'];
         $flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
 
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $flexFormContainerIdentifier = $this->data['flexFormContainerIdentifier'];
         $actionFieldName = 'data[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']'
             . $flexFormFormPrefix
@@ -60,11 +64,11 @@ class FlexFormContainerContainer extends AbstractContainer
         if ($userHasAccessToDefaultLanguage) {
             $moveAndDeleteContent[] = ''
                 . '<button type="button" class="btn btn-default t3js-delete">'
-                . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'))->render()
+                . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'))->render()
                 . '</button>';
             $moveAndDeleteContent[] = ''
                 . '<button type="button" class="btn btn-default t3js-sortable-handle sortableHandle">'
-                . $iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:sortable.dragmove'))->render()
+                . $this->iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:sortable.dragmove'))->render()
                 . '</button>';
         }
 

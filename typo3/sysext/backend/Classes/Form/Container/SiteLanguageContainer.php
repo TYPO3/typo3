@@ -18,11 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Site\SiteLanguagePresets;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Site languages entry container
@@ -35,7 +33,6 @@ class SiteLanguageContainer extends AbstractContainer
     private const FOREIGN_FIELD = 'languageId';
 
     protected array $inlineData;
-    protected InlineStackProcessor $inlineStackProcessor;
 
     /**
      * Default field information enabled for this element.
@@ -48,13 +45,10 @@ class SiteLanguageContainer extends AbstractContainer
         ],
     ];
 
-    /**
-     * Container objects give $nodeFactory down to other containers.
-     */
-    public function __construct(NodeFactory $nodeFactory, array $data)
-    {
-        parent::__construct($nodeFactory, $data);
-        $this->inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
+    public function __construct(
+        private readonly InlineStackProcessor $inlineStackProcessor,
+        private readonly SiteLanguagePresets $siteLanguagePresets,
+    ) {
     }
 
     public function render(): array
@@ -162,12 +156,7 @@ class SiteLanguageContainer extends AbstractContainer
             }
         }
 
-        // @todo: It's unfortunate we're using Typo3Fluid TemplateView directly here. We can't
-        //        inject BackendViewFactory here since __construct() is polluted by NodeInterface.
-        //        Remove __construct() from NodeInterface to have DI, then use BackendViewFactory here.
-        $view = GeneralUtility::makeInstance(TemplateView::class);
-        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
-        $templatePaths->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+        $view = $this->backendViewFactory->create($this->data['request']);
         $view->assignMultiple([
             'nameObject' => $nameObject,
             'nameForm' => $nameForm,
@@ -200,7 +189,7 @@ class SiteLanguageContainer extends AbstractContainer
             ]),
             'presetOptions' => [
                 'identifier' => $nameObject . '_preset',
-                'options' => GeneralUtility::makeInstance(SiteLanguagePresets::class)->getAllForSelector(),
+                'options' => $this->siteLanguagePresets->getAllForSelector(),
             ],
         ]);
 

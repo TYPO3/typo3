@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Form\Event\ModifyLinkExplanationEvent;
 use TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
@@ -75,6 +76,14 @@ class LinkElement extends AbstractFormElement
             ],
         ],
     ];
+
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly TypoLinkCodecService $typoLinkCodecService,
+        private readonly LinkService $linkService,
+    ) {
+    }
 
     /**
      * This will render a single-line link form field, possibly with various control/validation features
@@ -301,12 +310,10 @@ class LinkElement extends AbstractFormElement
         }
 
         $data = ['text' => '', 'icon' => ''];
-        $typolinkService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
-        $linkParts = $typolinkService->decode($itemValue);
-        $linkService = GeneralUtility::makeInstance(LinkService::class);
+        $linkParts = $this->typoLinkCodecService->decode($itemValue);
 
         try {
-            $linkData = $linkService->resolve($linkParts['url']);
+            $linkData = $this->linkService->resolve($linkParts['url']);
         } catch (FileDoesNotExistException|FolderDoesNotExistException|UnknownLinkHandlerException|InvalidPathException $e) {
             return $data;
         }
@@ -424,7 +431,7 @@ class LinkElement extends AbstractFormElement
 
         $data['additionalAttributes'] = '<div class="form-text">' . implode(' - ', $additionalAttributes) . '</div>';
 
-        return GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+        return $this->eventDispatcher->dispatch(
             new ModifyLinkExplanationEvent($data, $linkData, $linkParts, $this->data)
         )->getLinkExplanation();
     }

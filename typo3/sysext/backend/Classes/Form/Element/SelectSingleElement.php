@@ -66,12 +66,17 @@ class SelectSingleElement extends AbstractFormElement
         ],
     ];
 
+    public function __construct(
+        private readonly InlineStackProcessor $inlineStackProcessor,
+    ) {
+    }
+
     /**
      * Render single element
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $resultArray = $this->initializeResultArray();
 
@@ -84,13 +89,12 @@ class SelectSingleElement extends AbstractFormElement
         $classList = ['form-select', 'form-control-adapt'];
 
         // Check against inline uniqueness
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
+        $this->inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
         $uniqueIds = [];
         if (($this->data['isInlineChild'] ?? false) && ($this->data['inlineParentUid'] ?? false)) {
             // If config[foreign_unique] is set for the parent inline field, all
             // already used unique ids must be excluded from the select items.
-            $inlineObjectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+            $inlineObjectName = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
             if (($this->data['inlineParentConfig']['foreign_table'] ?? false) === $table
                 && ($this->data['inlineParentConfig']['foreign_unique'] ?? false) === $field
             ) {

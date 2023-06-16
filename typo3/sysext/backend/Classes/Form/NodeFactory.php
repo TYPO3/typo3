@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * - for complex cases - it is possible to register own resolver classes for single
  * renderTypes that can return a node class name to override the default lookup list.
  *
- * @todo: Declare final in v13.
+ * @todo: Declare final in v13. May require adding an interface to allow mocking in tests
  */
 class NodeFactory
 {
@@ -42,12 +42,12 @@ class NodeFactory
      * Node resolver classes
      * Nested array with nodeName as key, (sorted) priority as sub key and class as value
      */
-    protected array $nodeResolver = [];
+    private array $nodeResolver = [];
 
     /**
      * Default registry of node name to handling class
      */
-    protected array $nodeTypes = [
+    private array $nodeTypes = [
         // Default container classes
         'flex' => Container\FlexFormEntryContainer::class,
         'flexFormContainerContainer' => Container\FlexFormContainerContainer::class,
@@ -193,7 +193,7 @@ class NodeFactory
      *
      * @throws Exception if configuration is incomplete or two nodes with identical priorities are registered
      */
-    protected function registerAdditionalNodeTypesFromConfiguration(): void
+    private function registerAdditionalNodeTypesFromConfiguration(): void
     {
         // List of additional or override nodes
         $registeredTypeOverrides = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'];
@@ -236,7 +236,7 @@ class NodeFactory
      *
      * @throws Exception if configuration is incomplete or two resolver with identical priorities are registered
      */
-    protected function registerNodeResolvers(): void
+    private function registerNodeResolvers(): void
     {
         // List of node resolver
         $registeredNodeResolvers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'];
@@ -275,14 +275,12 @@ class NodeFactory
      *
      * @param array $data Main data array
      */
-    protected function initializeNodeClass(string $className, array $data): NodeInterface
+    private function initializeNodeClass(string $className, array $data): NodeInterface
     {
-        if (method_exists($className, 'setData')) {
-            $node = GeneralUtility::makeInstance($className);
-            $node->setData($data);
-            return $node;
-        }
-        return GeneralUtility::makeInstance($className, $this, $data);
+        /** @var NodeInterface $node */
+        $node = GeneralUtility::makeInstance($className);
+        $node->setData($data);
+        return $node;
     }
 
     /**
@@ -290,13 +288,11 @@ class NodeFactory
      *
      * @param array $data Main data array
      */
-    protected function initializeNodeResolverClass(string $className, array $data): NodeResolverInterface
+    private function initializeNodeResolverClass(string $className, array $data): NodeResolverInterface
     {
-        if (method_exists($className, 'setData')) {
-            $node = GeneralUtility::makeInstance($className);
-            $node->setData($data);
-            return $node;
-        }
-        return GeneralUtility::makeInstance($className, $this, $data);
+        /** @var NodeResolverInterface $node */
+        $node = GeneralUtility::makeInstance($className);
+        $node->setData($data);
+        return $node;
     }
 }

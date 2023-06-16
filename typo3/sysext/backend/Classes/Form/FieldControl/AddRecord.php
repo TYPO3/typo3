@@ -30,6 +30,11 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class AddRecord extends AbstractNode
 {
+    public function __construct(
+        private readonly UriBuilder $uriBuilder,
+    ) {
+    }
+
     /**
      * Add button control
      *
@@ -89,13 +94,12 @@ class AddRecord extends AbstractNode
 
         $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return [
             'iconIdentifier' => 'actions-plus',
             'title' => $title,
             'linkAttributes' => [
                 'id' => htmlspecialchars($id),
-                'href' => (string)$uriBuilder->buildUriFromRoute('wizard_add', $urlParameters),
+                'href' => (string)$this->uriBuilder->buildUriFromRoute('wizard_add', $urlParameters),
             ],
             'javaScriptModules' => [
                 JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-control/add-record.js')->instance('#' . $id),

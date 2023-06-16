@@ -24,7 +24,7 @@ class InputHiddenElement extends AbstractFormElement
      * This will render an input type="hidden" form field
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();

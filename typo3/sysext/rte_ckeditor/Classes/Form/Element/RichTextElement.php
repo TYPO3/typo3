@@ -19,7 +19,6 @@ namespace TYPO3\CMS\RteCKEditor\Form\Element;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -80,20 +79,12 @@ class RichTextElement extends AbstractFormElement
      */
     protected $rteConfiguration = [];
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * Container objects give $nodeFactory down to other containers.
-     *
-     * @param EventDispatcherInterface|null $eventDispatcher
-     */
-    public function __construct(NodeFactory $nodeFactory, array $data, EventDispatcherInterface $eventDispatcher = null)
-    {
-        parent::__construct($nodeFactory, $data);
-        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly UriBuilder $uriBuilder,
+        private readonly Locales $locales,
+        private readonly ResourceController $resourceController,
+    ) {
     }
 
     /**
@@ -135,11 +126,11 @@ class RichTextElement extends AbstractFormElement
             ]);
             // Prefixes custom stylesheets with id of the container element and a required `.ck-content` selector
             // see https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/content-styles.html
-            $styleSrcLoader = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+            $styleSrcLoader = $this->uriBuilder->buildUriFromRoute(
                 'rteckeditor_resource_stylesheet',
                 [
                     'params' => $styleSrcParams,
-                    'hmac' => GeneralUtility::makeInstance(ResourceController::class)->hmac($styleSrcParams, 'stylesheet'),
+                    'hmac' => $this->resourceController->hmac($styleSrcParams, 'stylesheet'),
                 ]
             ) . '#' . sha1_file(Environment::getPublicPath() . $styleSrc);
             $resultArray['stylesheetFiles'][] = $styleSrcLoader;
@@ -211,10 +202,8 @@ class RichTextElement extends AbstractFormElement
         }
         $languageCodeParts = explode('_', $contentLanguage);
         $contentLanguage = strtolower($languageCodeParts[0]) . (!empty($languageCodeParts[1]) ? '_' . strtoupper($languageCodeParts[1]) : '');
-        // Find the configured language in the list of localization locales
-        $locales = GeneralUtility::makeInstance(Locales::class);
-        // If not found, default to 'en'
-        if ($contentLanguage === 'default' || !$locales->isValidLanguageKey($contentLanguage)) {
+        // Find the configured language in the list of localization locales, if not found, default to 'en'.
+        if ($contentLanguage === 'default' || !$this->locales->isValidLanguageKey($contentLanguage)) {
             $contentLanguage = 'en';
         }
         return $contentLanguage;
@@ -275,7 +264,6 @@ class RichTextElement extends AbstractFormElement
         ];
 
         $pluginConfiguration = [];
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($externalPlugins as $pluginName => $configuration) {
             $pluginConfiguration[$pluginName] = [
                 'configName' => $configuration['configName'] ?? $pluginName,
@@ -287,7 +275,7 @@ class RichTextElement extends AbstractFormElement
             unset($configuration['resource']);
 
             if ($configuration['route'] ?? null) {
-                $configuration['routeUrl'] = (string)$uriBuilder->buildUriFromRoute($configuration['route'], $urlParameters);
+                $configuration['routeUrl'] = (string)$this->uriBuilder->buildUriFromRoute($configuration['route'], $urlParameters);
             }
 
             $pluginConfiguration[$pluginName]['config'] = $configuration;

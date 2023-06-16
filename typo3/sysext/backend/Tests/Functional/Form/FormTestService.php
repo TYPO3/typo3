@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Form;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -36,8 +38,11 @@ class FormTestService
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
 
+        $request = new ServerRequest();
+        $request = $request->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $formDataCompilerInput = [
-            'request' => new ServerRequest(),
+            'request' => $request,
             'tableName' => $table,
             'vanillaUid' => 0,
             'command' => 'new',

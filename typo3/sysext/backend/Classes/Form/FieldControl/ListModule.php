@@ -29,12 +29,17 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class ListModule extends AbstractNode
 {
+    public function __construct(
+        private readonly UriBuilder $uriBuilder,
+    ) {
+    }
+
     /**
      * Add button control
      *
      * @return array As defined by FieldControl class
      */
-    public function render()
+    public function render(): array
     {
         $options = $this->data['renderData']['fieldControlOptions'];
         $parameterArray = $this->data['parameterArray'];
@@ -91,14 +96,12 @@ class ListModule extends AbstractNode
 
         $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-
         return [
             'iconIdentifier' => 'actions-system-list-open',
             'title' => $title,
             'linkAttributes' => [
                 'id' => htmlspecialchars($id),
-                'href' => (string)$uriBuilder->buildUriFromRoute('wizard_list', $urlParameters),
+                'href' => (string)$this->uriBuilder->buildUriFromRoute('wizard_list', $urlParameters),
             ],
             'javaScriptModules' => [
                 JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-control/list-module.js')->instance('#' . $id),

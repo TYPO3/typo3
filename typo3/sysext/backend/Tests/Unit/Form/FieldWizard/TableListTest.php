@@ -18,57 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FieldWizard;
 
 use TYPO3\CMS\Backend\Form\FieldWizard\TableList;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TableListTest extends UnitTestCase
 {
-    /**
-     * @test
-     * @dataProvider renderResolvesEntryPointDataProvider
-     */
-    public function renderResolvesEntryPoint(array $config, array $expected): void
-    {
-        $GLOBALS['TCA'] = [];
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-
-        $iconMock = $this->createMock(Icon::class);
-        $iconMock->method('render')->with(self::anything())->willReturn('icon html');
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        $iconFactoryMock->method('getIconForRecord')->with(self::anything())->willReturn($iconMock);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
-
-        $nodeFactory = $this->createMock(NodeFactory::class);
-        $tableList = new TableList($nodeFactory, [
-            'fieldName' => 'somefield',
-            'isInlineChild' => false,
-            'effectivePid' => 123,
-            'site' => new Site('some-site', 123, []),
-            'tableName' => 'tt_content',
-            'inlineStructure' => [],
-            'parameterArray' => [
-                'itemFormElName' => '',
-                'fieldConf' => [
-                    'config' => $config,
-                ],
-            ],
-        ]);
-        $result = $tableList->render();
-
-        if ($expected === []) {
-            self::assertStringNotContainsString('data-entry-point', $result['html']);
-        }
-
-        foreach ($expected as $value) {
-            self::assertStringContainsString($value, $result['html']);
-        }
-    }
-
     public static function renderResolvesEntryPointDataProvider(): \Generator
     {
         yield 'Wildcard' => [
@@ -200,5 +157,45 @@ final class TableListTest extends UnitTestCase
                 'data-params="|||pages" data-entry-point="123"',
             ],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider renderResolvesEntryPointDataProvider
+     */
+    public function renderResolvesEntryPoint(array $config, array $expected): void
+    {
+        $GLOBALS['TCA'] = [];
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+
+        $iconMock = $this->createMock(Icon::class);
+        $iconMock->method('render')->with(self::anything())->willReturn('icon html');
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        $iconFactoryMock->method('getIconForRecord')->with(self::anything())->willReturn($iconMock);
+
+        $tableList = new TableList($iconFactoryMock);
+        $tableList->setData([
+            'fieldName' => 'somefield',
+            'isInlineChild' => false,
+            'effectivePid' => 123,
+            'site' => new Site('some-site', 123, []),
+            'tableName' => 'tt_content',
+            'inlineStructure' => [],
+            'parameterArray' => [
+                'itemFormElName' => '',
+                'fieldConf' => [
+                    'config' => $config,
+                ],
+            ],
+        ]);
+        $result = $tableList->render();
+
+        if ($expected === []) {
+            self::assertStringNotContainsString('data-entry-point', $result['html']);
+        }
+
+        foreach ($expected as $value) {
+            self::assertStringContainsString($value, $result['html']);
+        }
     }
 }

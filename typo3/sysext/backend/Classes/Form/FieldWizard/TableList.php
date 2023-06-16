@@ -31,6 +31,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TableList extends AbstractNode
 {
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+    ) {
+    }
+
     /**
      * Render table buttons
      */
@@ -48,7 +53,6 @@ class TableList extends AbstractNode
             return $result;
         }
 
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $allowed = GeneralUtility::trimExplode(',', $config['allowed'], true);
         $allowedTablesHtml = [];
         foreach ($allowed as $tableName) {
@@ -59,7 +63,7 @@ class TableList extends AbstractNode
                 $allowedTablesHtml[] = '</span>';
             } else {
                 $label = $languageService->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'] ?? '');
-                $icon = $iconFactory->getIconForRecord($tableName, [], Icon::SIZE_SMALL)->render();
+                $icon = $this->iconFactory->getIconForRecord($tableName, [], Icon::SIZE_SMALL)->render();
                 if ((bool)($config['fieldControl']['elementBrowser']['disabled'] ?? false)) {
                     $allowedTablesHtml[] = '<span class="tablelist-item-nolink">';
                     $allowedTablesHtml[] =  $icon;

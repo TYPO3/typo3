@@ -74,7 +74,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
 
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->injectAjaxConfiguration($parentConfig);
+        $inlineStackProcessor->setAjaxConfiguration($parentConfig);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
 
         $parent = $inlineStackProcessor->getStructureLevel(-1);
@@ -143,7 +143,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
 
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->injectAjaxConfiguration($parentConfig);
+        $inlineStackProcessor->setAjaxConfiguration($parentConfig);
 
         $parent = $inlineStackProcessor->getStructureLevel(-1);
         $parentFieldName = $parent['field'];
@@ -202,7 +202,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
 
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->injectAjaxConfiguration($parentConfig);
+        $inlineStackProcessor->setAjaxConfiguration($parentConfig);
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
 
         $jsonArray = [

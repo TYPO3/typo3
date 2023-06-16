@@ -22,6 +22,7 @@ use TYPO3\CMS\RteCKEditor\Form\Element\RichTextElement;
 
 /**
  * This resolver will return the RichTextElement render class if RTE is enabled for this field.
+ *
  * @internal This is a specific Backend FormEngine implementation and is not considered part of the Public TYPO3 API.
  */
 class RichTextNodeResolver implements NodeResolverInterface

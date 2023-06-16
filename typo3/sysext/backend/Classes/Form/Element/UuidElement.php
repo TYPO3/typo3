@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use Symfony\Component\Uid\Uuid;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -39,6 +40,11 @@ class UuidElement extends AbstractFormElement
             'renderType' => 'tcaDescription',
         ],
     ];
+
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+    ) {
+    }
 
     public function render(): array
     {
