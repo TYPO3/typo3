@@ -32,7 +32,7 @@ class User1Element extends AbstractFormElement
     /**
      * @return array<string, array<int, string|JavaScriptModuleInstruction>|string> As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
         $result = $this->initializeResultArray();
         $parameters = $this->data['parameterArray'];
