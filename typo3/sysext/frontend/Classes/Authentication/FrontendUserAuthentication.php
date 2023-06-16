@@ -20,7 +20,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Authentication\LoginType;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\SetCookieService;
@@ -32,22 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FrontendUserAuthentication extends AbstractUserAuthentication
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * List previously publicly accessible variables
-     */
-    private array $deprecatedPublicProperties = [
-        'lastLogin_column' => 'Using $lastLogin_column is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use AuthenticationServices to read or modify different form field values.',
-        'formfield_uname' => 'Using $formfield_uname is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use AuthenticationServices to read or modify different form field values.',
-        'formfield_uident' => 'Using $formfield_uident is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use AuthenticationServices to read or modify different form field values.',
-        'formfield_status' => 'Using $formfield_status is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use AuthenticationServices to read or modify different form field values.',
-        'loginSessionStarted' => 'Using $loginSessionStarted is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use AuthenticationServices or UserSession to detect if a session has just been started.',
-        'dontSetCookie' => 'Using $dontSetCookie is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use a custom PSR-15 middleware to override custom cookie overrides instead.',
-        'formfield_permanent' => 'Using $formfield_permanent is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use AuthenticationServices to read or modify different form field values.',
-        'is_permanent' => 'Using $is_permanent is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use AuthenticationServices to read or modify different form field values.',
-    ];
-
     /**
      * Login type, used for services.
      * @var string
@@ -57,21 +40,21 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     /**
      * Form field with login-name
      * @var string
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $formfield_uname = 'user';
 
     /**
      * Form field with password
      * @var string
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $formfield_uident = 'pass';
 
     /**
      * Form field with status: *'login', 'logout'. If empty login is not verified.
      * @var string
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $formfield_status = 'logintype';
 
@@ -80,7 +63,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * 1 = permanent login enabled
      * 0 = session is valid for a browser session only
      * @var string
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $formfield_permanent = 'permalogin';
 
@@ -111,7 +94,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     /**
      * Column name for last login timestamp
      * @var string
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $lastLogin_column = 'lastlogin';
 
@@ -152,7 +135,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * @var bool
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $is_permanent = false;
 
@@ -167,7 +150,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * Disable cookie by default, will be activated if saveSessionData() is called,
      * a user is logging-in or an existing session is found
      * @var bool
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $dontSetCookie = true;
 
@@ -196,7 +179,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * Determine whether a session cookie needs to be set (lifetime=0)
      *
      * @return bool
-     * @internal since TYPO3 v12. This is not considered public API anymore, if really needed implement the logic in an AuthenticationService or custom PHP class.
+     * @internal
      */
     protected function isSetSessionCookie()
     {
@@ -207,7 +190,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * Determine whether a non-session cookie needs to be set (lifetime>0)
      *
      * @return bool
-     * @internal since TYPO3 v12. This is not considered public API anymore, if really needed implement the logic in an AuthenticationService or custom PHP class.
+     * @internal
      */
     protected function isRefreshTimeBasedCookie()
     {

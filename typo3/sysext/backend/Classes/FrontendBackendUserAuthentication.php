@@ -34,7 +34,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * Form field with login name.
      *
      * @var string
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $formfield_uname = '';
 
@@ -42,7 +42,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * Form field with password.
      *
      * @var string
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $formfield_uident = '';
 
@@ -51,7 +51,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * disable login-attempts to the backend account through this script
      *
      * @var string
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $formfield_status = '';
 

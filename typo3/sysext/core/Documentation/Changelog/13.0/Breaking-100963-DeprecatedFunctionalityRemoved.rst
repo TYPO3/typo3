@@ -263,6 +263,14 @@ The following class methods visibility have been changed to private:
 
 - :php:`\Full\Class\Name->methodName`
 
+The following class methods are now marked as internal:
+:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isSetSessionCookie`
+:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isRefreshTimeBasedCookie`
+:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->removeCookie`
+:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isCookieSet`
+:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->unpack_uc`
+:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->appendCookieToResponse`
+
 The following class properties visibility have been changed to protected:
 
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->where_hid_del`
@@ -272,6 +280,16 @@ The following class properties visibility have been changed to protected:
 The following class properties visibility have been changed to private:
 
 - :php:`\Full\Class\Name->propertyName`
+
+The following class properties are now marked as internal:
+:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->lastLogin_column`
+:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_uname`
+:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_uident`
+:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_status`
+:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->loginSessionStarted`
+:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->dontSetCookie`
+:php:`\TYPO3\CMS\Core\Authentication\FrontendUserAuthentication->formfield_permanent`
+:php:`\TYPO3\CMS\Core\Authentication\FrontendUserAuthentication->is_permanent`
 
 The following eID entrypoints have been removed:
 

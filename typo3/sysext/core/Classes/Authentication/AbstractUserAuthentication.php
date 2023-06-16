@@ -20,15 +20,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedOutEvent;
 use TYPO3\CMS\Core\Authentication\Event\BeforeRequestTokenProcessedEvent;
 use TYPO3\CMS\Core\Authentication\Event\BeforeUserLogoutEvent;
 use TYPO3\CMS\Core\Authentication\Event\LoginAttemptFailedEvent;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Core\Environment;
@@ -67,32 +64,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
     use CookieHeaderTrait;
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
-
-    /**
-     * List previously publicly accessible variables
-     */
-    private array $deprecatedPublicProperties = [
-        'lastLogin_column' => 'Using $lastLogin_column is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use AuthenticationServices to read or modify different form field values.',
-        'formfield_uname' => 'Using $formfield_uname is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use AuthenticationServices to read or modify different form field values.',
-        'formfield_uident' => 'Using $formfield_uident is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use AuthenticationServices to read or modify different form field values.',
-        'formfield_status' => 'Using $formfield_status is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use AuthenticationServices to read or modify different form field values.',
-        'loginSessionStarted' => 'Using $loginSessionStarted is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use AuthenticationServices or UserSession to detect if a session has just been started.',
-        'dontSetCookie' => 'Using $dontSetCookie is marked as internal and will not be possible to access anymore in TYPO3 v13.0. Use a custom PSR-15 middleware to override custom cookie overrides instead.',
-    ];
-
-    /**
-     * List previously publicly accessible methods
-     */
-    private array $deprecatedPublicMethods = [
-        'isSetSessionCookie' => 'Using AbstractUserAuthentication->isSetSessionCookie() is marked as internal and cannot be called directly anymore in TYPO3 v13.0.',
-        'isRefreshTimeBasedCookie' => 'Using AbstractUserAuthentication->isRefreshTimeBasedCookie() is marked as internal and cannot be called directly anymore in TYPO3 v13.0.',
-        'removeCookie' => 'Using AbstractUserAuthentication->removeCookie() is marked as internal and cannot be called directly anymore in TYPO3 v13.0.',
-        'isCookieSet' => 'Using AbstractUserAuthentication->isCookieSet() is marked as internal and cannot be called directly anymore in TYPO3 v13.0.',
-        'unpack_uc' => 'Using AbstractUserAuthentication->unpack_uc() is marked as internal and cannot be called directly anymore in TYPO3 v13.0.',
-        'appendCookieToResponse' => 'Using AbstractUserAuthentication->appendCookieToResponse() is marked as internal and cannot be called directly anymore in TYPO3 v13.0.',
-    ];
 
     /**
      * Session/Cookie name
@@ -139,7 +110,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Column name for last login timestamp
      * @var string
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $lastLogin_column = '';
 
@@ -159,21 +130,21 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Form field with login-name
      * @var string
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $formfield_uname = '';
 
     /**
      * Form field with password
      * @var string
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal.
      */
     protected $formfield_uident = '';
 
     /**
      * Form field with status: *'login', 'logout'. If empty login is not verified.
      * @var string
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $formfield_status = '';
 
@@ -204,7 +175,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Will be set to TRUE if the login session is actually written during auth-check.
      * @var bool
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $loginSessionStarted = false;
 
@@ -222,7 +193,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Will prevent the setting of the session cookie
      * @var bool
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
+     * @internal
      */
     protected $dontSetCookie = false;
 
@@ -319,8 +290,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Used to apply a cookie to a PSR-7 Response.
      *
      * @todo: should go into a middleware?
-     * @internal since TYPO3 v12. This is not considered public API anymore, as this method should be defined in another
-     * place in the future. If really needed implement the logic in an AuthenticationService or custom PHP class.
+     * @internal
      */
     public function appendCookieToResponse(ResponseInterface $response, ?NormalizedParams $normalizedParams = null): ResponseInterface
     {
@@ -368,7 +338,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Determine whether a session cookie needs to be set (lifetime=0)
      *
      * @return bool
-     * @internal since TYPO3 v12. This is not considered public API anymore, if really needed implement the logic in an AuthenticationService or custom PHP class.
+     * @internal
      */
     protected function isSetSessionCookie()
     {
@@ -379,7 +349,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Determine whether a non-session cookie needs to be set (lifetime>0)
      *
      * @return bool
-     * @internal since TYPO3 v12. This is not considered public API anymore, if really needed implement the logic in an AuthenticationService or custom PHP class.
+     * @internal.
      */
     protected function isRefreshTimeBasedCookie()
     {
@@ -887,7 +857,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Empty / unset the cookie
      *
      * @param string|null $cookieName usually, this is $this->name
-     * @internal since TYPO3 v12. This is not considered public API anymore, if really needed implement the logic in an AuthenticationService or custom PHP class.
+     * @internal
      */
     public function removeCookie($cookieName = null)
     {
@@ -899,7 +869,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * or a cookie was already found in the system
      *
      * @return bool Returns TRUE if a cookie is set
-     * @internal since TYPO3 v12. This is not considered public API anymore, if really needed implement the logic in an AuthenticationService or custom PHP class.
+     * @internal
      */
     protected function isCookieSet()
     {
@@ -985,7 +955,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
     /**
      * Unserializes the user configuration from the user record into $this->>uc
-     * @internal since TYPO3 v12. This is not considered public API anymore, if really needed implement the logic in an AuthenticationService or custom PHP class.
+     * @internal
      */
     protected function unpack_uc()
     {

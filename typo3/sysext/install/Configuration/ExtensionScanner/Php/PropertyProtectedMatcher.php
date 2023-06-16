@@ -1351,41 +1351,49 @@ return [
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->lastLogin_column' => [
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_uname' => [
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_uident' => [
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_status' => [
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->loginSessionStarted' => [
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->dontSetCookie' => [
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->formfield_permanent' => [
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->is_permanent' => [
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->type' => [

@@ -5724,6 +5724,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isRefreshTimeBasedCookie' => [
@@ -5731,6 +5732,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->removeCookie' => [
@@ -5738,6 +5740,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isCookieSet' => [
@@ -5745,6 +5748,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->unpack_uc' => [
@@ -5752,6 +5756,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->appendCookieToResponse' => [
@@ -5759,6 +5764,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface->isFeatureEnabled' => [
