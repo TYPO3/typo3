@@ -370,6 +370,17 @@ The following fallbacks have been removed:
 - Using backend FormEngine, the current ServerRequestInterface request must be provided in key "request" as
   initialData to FormDataCompiler, the fallback to :php:`$GLOBALS['TYPO3_REQUEST'] has been removed.
 
+The following upgrade wizards have been removed:
+
+- Wizard for migrating backend user languages
+- Wizard for installing the extension "legacy_collections" from TER
+- Wizard for migrating the :php:`transOrigDiffSourceField` field to a json encoded string
+- Wizard for cleaning up workspace `new` placeholders
+- Wizard for cleaning up workspace `move` placeholders
+- Wizard for migrating shortcut records
+- Wizard for sanitizing existing SVG files in the `fileadmin` folder
+- Wizard for populating a new channel column of the sys_log table
+
 The following features are now always enabled:
 
 - `security.backend.enforceContentSecurityPolicy`
