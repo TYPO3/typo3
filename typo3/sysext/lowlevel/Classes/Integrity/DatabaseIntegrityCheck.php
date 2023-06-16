@@ -19,6 +19,7 @@ use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -505,28 +506,35 @@ class DatabaseIntegrityCheck
             if ($GLOBALS['TCA'][$table]) {
                 $ids = array_keys($dbArr);
                 if (!empty($ids)) {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getQueryBuilderForTable($table);
-                    $queryBuilder->getRestrictions()
-                        ->removeAll()
-                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                    $queryResult = $queryBuilder
-                        ->select('uid')
-                        ->from($table)
-                        ->where(
-                            $queryBuilder->expr()->in(
-                                'uid',
-                                $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
+                    $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getConnectionForTable($table);
+
+                    $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+
+                    foreach (array_chunk($ids, $maxBindParameters, true) as $chunk) {
+                        $queryBuilder = $connection->createQueryBuilder();
+                        $queryBuilder->getRestrictions()
+                            ->removeAll()
+                            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        $queryResult = $queryBuilder
+                            ->select('uid')
+                            ->from($table)
+                            ->where(
+                                $queryBuilder->expr()->in(
+                                    'uid',
+                                    $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
+                                )
                             )
-                        )
-                        ->executeQuery();
-                    while ($row = $queryResult->fetchAssociative()) {
-                        if (isset($dbArr[$row['uid']])) {
-                            unset($dbArr[$row['uid']]);
-                        } else {
-                            $rows[] = 'Strange Error. ...';
+                            ->executeQuery();
+                        while ($row = $queryResult->fetchAssociative()) {
+                            if (isset($dbArr[$row['uid']])) {
+                                unset($dbArr[$row['uid']]);
+                            } else {
+                                $rows[] = 'Strange Error. ...';
+                            }
                         }
                     }
+
                     foreach ($dbArr as $theId => $theC) {
                         $rows[] = 'There are ' . $theC . ' records pointing to this missing or deleted record: <code>[' . $table . '][' . $theId . ']</code>';
                     }
