@@ -42,7 +42,6 @@ use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent;
 use TYPO3\CMS\FrontendLogin\Service\RecoveryService;
-use TYPO3\CMS\FrontendLogin\Service\ValidatorResolverService;
 
 /**
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
@@ -272,22 +271,6 @@ class PasswordRecoveryController extends ActionController
                     $validationResult->addError(new Error($validationError, 1667647475));
                     $originalResult->merge($validationResult);
                 }
-            }
-        } else {
-            // @deprecated since v12, will be removed in v13.
-            // Resolve validators from TypoScript configuration
-            $validators = GeneralUtility::makeInstance(ValidatorResolverService::class)
-                ->resolve($this->settings['passwordValidators'] ?? []);
-
-            // Call each validator on new password
-            foreach ($validators ?? [] as $validator) {
-                $result = $validator->validate($newPass);
-                $originalResult->merge($result);
-
-                trigger_error(
-                    'settings.passwordValidators will be removed in TYPO3 v13.0. Please use password policies instead.',
-                    E_USER_DEPRECATED
-                );
             }
         }
 

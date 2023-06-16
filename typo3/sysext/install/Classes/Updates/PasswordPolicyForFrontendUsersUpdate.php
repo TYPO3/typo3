@@ -37,8 +37,7 @@ class PasswordPolicyForFrontendUsersUpdate implements UpgradeWizardInterface, Co
 
         $this->confirmation = new Confirmation(
             'Do you want to use the global password policy for frontend users?',
-            'If you did not configure own validators in plugin.tx_felogin_login.settings.passwordValidators' .
-            ' TypoScript and comply with the TYPO3 default password policy password requirements:' . "\n\n" .
+            'If so it will comply with the TYPO3 default password policy password requirements:' . "\n\n" .
             '* At least 8 chars' . "\n" .
             '* At least one number' . "\n" .
             '* At least one upper case char' . "\n" .
@@ -48,7 +47,7 @@ class PasswordPolicyForFrontendUsersUpdate implements UpgradeWizardInterface, Co
             'the feature toggle "security.usePasswordPolicyForFrontendUsers" will be activated.',
             true,
             'Yes, use the password policy',
-            'No, use deprecated TypoScript validation'
+            'No, don\'t use password policy'
         );
     }
 

@@ -58,18 +58,6 @@ plugin.tx_felogin_login {
     forgotLinkHashValidTime = {$styles.content.loginform.forgotLinkHashValidTime}
     domains = {$styles.content.loginform.domains}
 
-    # @deprecated Please enable the `security.usePasswordPolicyForFrontendUsers` feature toggle
-    #             and use password policies introduced in #97388 instead.
-    #             Validators based on extbase will be removed in TYPO3 v13.
-    passwordValidators {
-      10 = TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
-      20 {
-        className = TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator
-        options {
-          minimum = {$styles.content.loginform.newPasswordMinLength}
-        }
-      }
-    }
     # Needed for the message hint in the default template
     newPasswordMinLength = {$styles.content.loginform.newPasswordMinLength}
   }

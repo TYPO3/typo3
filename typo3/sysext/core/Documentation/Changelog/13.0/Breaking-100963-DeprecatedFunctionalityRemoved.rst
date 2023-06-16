@@ -364,6 +364,7 @@ The following TypoScript options have been dropped or adapted:
 - :typoscript:`[loginUser()]` condition function removed
 - :typoscript:`[usergroup()]` condition function removed
 - :typoscript:`constants` setup top-level-object and :typoscript:`constants` property of :typoscript:`parseFunc`
+- :typoscript:`plugin.tx_felogin_login.settings.passwordValidators` has been removed
 
 The following constants have been dropped:
 
