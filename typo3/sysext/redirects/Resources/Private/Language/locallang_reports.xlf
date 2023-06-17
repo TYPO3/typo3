@@ -18,6 +18,15 @@
 			<trans-unit id="status.conflictingRedirects.message" resname="status.conflictingRedirects.message">
 				<source>These redirects cause a conflict as there are pages that are still accessible with the same URL.</source>
 			</trans-unit>
+			<trans-unit id="status.checkIntegrityResultState" resname="status.checkIntegrityResultState">
+				<source>Redirects integrity check</source>
+			</trans-unit>
+			<trans-unit id="status.checkIntegrityResultState.title" resname="status.checkIntegrityResultState.title">
+				<source>List of conflicting redirects may not be up to date!</source>
+			</trans-unit>
+			<trans-unit id="status.checkIntegrityResultState.message" resname="status.checkIntegrityResultState.message">
+				<source>Regularly run the console command redirects:checkintegrity.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

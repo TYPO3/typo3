@@ -27,7 +27,8 @@ use TYPO3\CMS\Redirects\Service\IntegrityService;
 class CheckIntegrityCommand extends Command
 {
     private const REGISTRY_NAMESPACE = 'tx_redirects';
-    private const REGISTRY_KEY = 'conflicting_redirects';
+    public const REGISTRY_KEY_CONFLICTING_REDIRECTS = 'conflicting_redirects';
+    public const REGISTRY_KEY_LAST_TIMESTAMP_CHECK_INTEGRITY = 'redirects_check_integrity_last_check';
 
     public function __construct(
         private readonly Registry $registry,
@@ -51,7 +52,8 @@ class CheckIntegrityCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->registry->remove(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY);
+        $this->registry->remove(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY_CONFLICTING_REDIRECTS);
+        $this->registry->remove(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY_LAST_TIMESTAMP_CHECK_INTEGRITY);
 
         $list = [];
         $site = $input->getArgument('site') ?: null;
@@ -64,7 +66,8 @@ class CheckIntegrityCommand extends Command
                 $conflict['uri']
             ));
         }
-        $this->registry->set(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY, $list);
+        $this->registry->set(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY_CONFLICTING_REDIRECTS, $list);
+        $this->registry->set(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY_LAST_TIMESTAMP_CHECK_INTEGRITY, time());
         return Command::SUCCESS;
     }
 }

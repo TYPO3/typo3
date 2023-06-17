@@ -48,6 +48,16 @@ class RedirectRepository
             ->fetchOne();
     }
 
+    public function countActiveRedirects(): int
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_redirect');
+        return (int)$queryBuilder
+            ->count('uid')
+            ->from('sys_redirect')
+            ->executeQuery()
+            ->fetchOne();
+    }
+
     /**
      * Prepares the QueryBuilder with Constraints from the Demand
      */

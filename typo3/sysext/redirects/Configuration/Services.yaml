@@ -7,6 +7,14 @@ services:
   TYPO3\CMS\Redirects\:
     resource: '../Classes/*'
 
+  extension.configuration.redirects:
+    class: 'array'
+    factory:
+      - '@TYPO3\CMS\Core\Configuration\ExtensionConfiguration'
+      - 'get'
+    arguments:
+      - 'redirects'
+
   TYPO3\CMS\Redirects\Controller\RecordHistoryRollbackController:
     tags: ['backend.controller']
 
@@ -60,3 +68,7 @@ services:
       - name: event.listener
         identifier: 'redirects-add-page-type-zero-source'
         after: 'redirects-add-plain-slug-replacement-source'
+
+  TYPO3\CMS\Redirects\Configuration\CheckIntegrityConfiguration:
+    arguments:
+      $extensionConfiguration: '@extension.configuration.redirects'

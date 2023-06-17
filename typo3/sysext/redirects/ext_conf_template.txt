@@ -1,0 +1,7 @@
+# customsubcategory=checkintegrity=Checkintegrity
+
+# cat=reports/checkintegrity; type=boolean; label=LLL:EXT:redirects/Resources/Private/Language/locallang_extconf.xlf:showCheckintegrityInfoInReports.enable
+showCheckIntegrityInfoInReports = 1
+
+# cat=reports/checkintegrity; type=int; label=LLL:EXT:redirects/Resources/Private/Language/locallang_extconf.xlf:showCheckintegrityInfoInReports.seconds
+showCheckIntegrityInfoInReportsSeconds = 86400
