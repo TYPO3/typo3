@@ -30,11 +30,3 @@
 .. ---------
 
 .. By default, code blocks use PHP syntax highlighting
-
-..  todo: remove the attention blog before v12 LTS release.
-
-..  attention::
-    ..  versionadded:: 12.1
-
-    This extension and its documentation are still work in progress and may
-    change until the release of TYPO3 v12 LTS.
