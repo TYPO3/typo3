@@ -1,5 +1,7 @@
 ..  include:: /Includes.rst.txt
 
+..  _start:
+
 ===============
 TYPO3 Reactions
 ===============
@@ -43,6 +45,7 @@ backend :guilabel:`System > Reactions`.
 
     Introduction/Index
     Installation/Index
+    Reactions/Index
 
 ..  Meta Menu
 
@@ -50,4 +53,3 @@ backend :guilabel:`System > Reactions`.
     :hidden:
 
     Sitemap
-    genindex
