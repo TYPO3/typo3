@@ -5543,6 +5543,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-99905-SiteLanguageIso-639-1Setting.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Site\Entity\SiteLanguage->getDirection' => [
@@ -5550,6 +5551,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-99916-SiteLanguageDirectionSetting.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer->enableDebugMode' => [

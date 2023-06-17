@@ -158,7 +158,9 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->enableDebugMode`
 - :php:`\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter->filterInlineChildren`
 - :php:`\TYPO3\CMS\Core\Session\UserSessionManager->createFromGlobalCookieOrAnonymous`
-- :php:`TYPO3\CMS\Core\Type\DocType->getXhtmlDocType`
+- :php:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage->getTwoLetterIsoCode`
+- :php:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage->getDirection`
+- :php:`\TYPO3\CMS\Core\Type\DocType->getXhtmlDocType`
 - :php:`\TYPO3\CMS\Dashboard\DashboardInitializationService->getRequireJsModules`
 - :php:`\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager->getContentObject`
 - :php:`\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager->setContentObject`

@@ -69,25 +69,11 @@ class SiteLanguage
     protected $flagIdentifier = '';
 
     /**
-     * The iso code for this language (two letter) ISO-639-1
-     * @deprecated in favor of $this->locale->getLanguageCode()
-     * @var string
-     */
-    protected $twoLetterIsoCode = '';
-
-    /**
      * Language tag for this language defined by RFC 1766 / 3066 for "hreflang" attribute
      *
      * @var string
      */
     protected $hreflang = '';
-
-    /**
-     * The direction for this language
-     * @deprecated in favor of $this->locale->isRightToLeftLanguageDirection()
-     * @var string
-     */
-    protected $direction = '';
 
     /**
      * Prefix for TYPO3's language files. If empty, this
@@ -143,14 +129,8 @@ class SiteLanguage
         if (!empty($configuration['typo3Language'])) {
             $this->typo3Language = $configuration['typo3Language'];
         }
-        if (!empty($configuration['iso-639-1'])) {
-            $this->twoLetterIsoCode = $configuration['iso-639-1'];
-        }
         if (!empty($configuration['hreflang'])) {
             $this->hreflang = $configuration['hreflang'];
-        }
-        if (!empty($configuration['direction'])) {
-            $this->direction = $configuration['direction'];
         }
         if (!empty($configuration['fallbackType'])) {
             $this->fallbackType = $configuration['fallbackType'];
@@ -189,10 +169,7 @@ class SiteLanguage
             'title' => $this->getTitle(),
             'websiteTitle' => $this->getWebsiteTitle(),
             'navigationTitle' => $this->getNavigationTitle(),
-            // @deprecated will be removed in TYPO3 v13.0
-            'twoLetterIsoCode' => $this->twoLetterIsoCode ?: $this->locale->getLanguageCode(),
             'hreflang' => $this->hreflang ?: $this->locale->getName(),
-            'direction' => $this->direction ?: ($this->locale->isRightToLeftLanguageDirection() ? 'rtl' : ''),
             'typo3Language' => $this->getTypo3Language(),
             'flagIdentifier' => $this->getFlagIdentifier(),
             'fallbackType' => $this->getFallbackType(),
@@ -267,16 +244,6 @@ class SiteLanguage
     }
 
     /**
-     * Returns the ISO-639-1 language ISO code
-     * @deprecated not needed anymore, use $this->getLocale()->getLanguageCode() instead.
-     */
-    public function getTwoLetterIsoCode(): string
-    {
-        trigger_error('SiteLanguage->getTwoLetterIsoCode() will be removed in TYPO3 v13.0. Use SiteLanguage->getLocale()->getLanguageCode() instead.', E_USER_DEPRECATED);
-        return $this->twoLetterIsoCode ?: $this->locale->getLanguageCode();
-    }
-
-    /**
      * Returns the RFC 1766 / 3066 language tag for hreflang tags
      */
     public function getHreflang(bool $fetchCustomSetting = false): string
@@ -286,16 +253,6 @@ class SiteLanguage
             return $this->hreflang;
         }
         return $this->hreflang ?: $this->locale->getName();
-    }
-
-    /**
-     * Returns the language direction
-     * @deprecated in favor of $this->locale->isRightToLeftLanguageDirection()
-     */
-    public function getDirection(): string
-    {
-        trigger_error('SiteLanguage->getDirection() will be removed in TYPO3 v13.0. Use SiteLanguage->getLocale()->isRightToLeftLanguageDirection() instead.', E_USER_DEPRECATED);
-        return $this->direction;
     }
 
     /**
