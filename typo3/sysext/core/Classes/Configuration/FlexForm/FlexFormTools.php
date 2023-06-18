@@ -709,7 +709,6 @@ class FlexFormTools
                     }
                 }
                 $dataStructure['sheets'][$sheetName] = $sheetStructure;
-                $dataStructure = $this->removeElementTceFormsRecursive($dataStructure);
 
                 if (is_array($dataStructure['sheets'][$sheetName])) {
                     // @todo Use TcaPreparation instead of duplicating the code.
@@ -1048,55 +1047,6 @@ class FlexFormTools
         }
 
         return $dataStructureSheets;
-    }
-
-    /**
-     * Remove "TCEforms" key from all elements in data structure to simplify further parsing.
-     *
-     * Example config:
-     * ['config']['ds']['sheets']['sDEF']['ROOT']['el']['anElement']['TCEforms']['label'] becomes
-     * ['config']['ds']['sheets']['sDEF']['ROOT']['el']['anElement']['label']
-     *
-     * and
-     *
-     * ['ROOT']['TCEforms']['sheetTitle'] becomes
-     * ['ROOT']['sheetTitle']
-     *
-     * @internal This method serves as a compatibility layer and will be removed in TYPO3 v13.
-     */
-    public function removeElementTceFormsRecursive(array $structure): array
-    {
-        $newStructure = [];
-        foreach ($structure as $key => $value) {
-            if ($key === 'ROOT' && is_array($value) && isset($value['TCEforms'])) {
-                trigger_error(
-                    'The tag "<TCEforms>" should not be set under the FlexForm definition "<ROOT>" anymore. It should be omitted while the underlying configuration ascends one level up. This compatibility layer will be removed in TYPO3 v13.',
-                    E_USER_DEPRECATED
-                );
-                $value = array_merge($value, $value['TCEforms']);
-                unset($value['TCEforms']);
-            }
-            if ($key === 'el' && is_array($value)) {
-                $newSubStructure = [];
-                foreach ($value as $subKey => $subValue) {
-                    if (is_array($subValue) && count($subValue) === 1 && isset($subValue['TCEforms'])) {
-                        trigger_error(
-                            'The tag "<TCEforms>" was found in a FlexForm definition for the field "<' . $subKey . '>". It should be omitted while the underlying configuration ascends one level up. This compatibility layer will be removed in TYPO3 v13.',
-                            E_USER_DEPRECATED
-                        );
-                        $newSubStructure[$subKey] = $subValue['TCEforms'];
-                    } else {
-                        $newSubStructure[$subKey] = $subValue;
-                    }
-                }
-                $value = $newSubStructure;
-            }
-            if (is_array($value)) {
-                $value = $this->removeElementTceFormsRecursive($value);
-            }
-            $newStructure[$key] = $value;
-        }
-        return $newStructure;
     }
 
     /**

@@ -122,6 +122,7 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getRootRecord`
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getThisScript`
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess`
+- :php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->removeElementTceFormsRecursive`
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->add`
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->addMultiple`
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->andX`
@@ -389,6 +390,7 @@ The following fallbacks have been removed:
 - Usage property :php:`$resultArray['requireJsModules']` of the form engine result array
 - Using backend FormEngine, the current ServerRequestInterface request must be provided in key "request" as
   initialData to FormDataCompiler, the fallback to :php:`$GLOBALS['TYPO3_REQUEST'] has been removed.
+- Compatibility layer for "TCEforms" key in FlexFormTools has been removed
 
 The following upgrade wizards have been removed:
 

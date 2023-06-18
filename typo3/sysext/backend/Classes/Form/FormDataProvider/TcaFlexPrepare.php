@@ -88,7 +88,6 @@ class TcaFlexPrepare implements FormDataProviderInterface
         } else {
             // Assume the data structure has been given from outside if the data structure identifier is already set.
             $dataStructureArray = $result['processedTca']['columns'][$fieldName]['config']['ds'];
-            $dataStructureArray = $flexFormTools->removeElementTceFormsRecursive($dataStructureArray);
             $dataStructureArray = $flexFormTools->migrateFlexFormTcaRecursive($dataStructureArray);
         }
         if (!isset($dataStructureArray['meta']) || !is_array($dataStructureArray['meta'])) {
