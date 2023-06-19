@@ -1451,6 +1451,7 @@ return [
                 'utm_campaign',
                 'utm_term',
                 'utm_content',
+                'gad',
                 'gclid',
                 'fbclid',
                 'msclkid',
