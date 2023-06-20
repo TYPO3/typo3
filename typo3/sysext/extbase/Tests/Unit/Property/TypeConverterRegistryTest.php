@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
 
-use TYPO3\CMS\Core\Authentication\LoginType;
+use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration;
 use TYPO3\CMS\Core\Type\TypeInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Property\Exception\DuplicateTypeConverterException;
@@ -159,7 +159,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
     {
         $this->subject->add(new CoreTypeConverter(), 10, ['integer'], TypeInterface::class);
 
-        $converter = $this->subject->findTypeConverter('integer', LoginType::class);
+        $converter = $this->subject->findTypeConverter('integer', CompleteEnumeration::class);
         self::assertInstanceOf(CoreTypeConverter::class, $converter);
     }
 
@@ -177,18 +177,18 @@ final class TypeConverterRegistryTest extends UnitTestCase
          * If such a converter is not registered, the registry tries to find a converter by looking at the interfaces
          * the target class implements.
          *
-         * Example: LoginType as target type and CoreTypeConverter as registered converter.
+         * Example: CompleteEnumeration as target type and CoreTypeConverter as registered converter.
          *
          * If such a converter is not registered, the registry does one last attempt to find a suitable converter by
          * checking the source type.
          *
-         * Example: LoginType as target, no suitable converter for that specific target type registered but 1 or n
+         * Example: CompleteEnumeration as target, no suitable converter for that specific target type registered but 1 or n
          *          converters registered that convert the desired source type into the unspecific target type "object".
          */
 
         $this->subject->add(new ObjectConverter(), 10, ['array'], 'object');
 
-        $converter = $this->subject->findTypeConverter('array', LoginType::class);
+        $converter = $this->subject->findTypeConverter('array', CompleteEnumeration::class);
         self::assertInstanceOf(ObjectConverter::class, $converter);
     }
 
@@ -210,9 +210,9 @@ final class TypeConverterRegistryTest extends UnitTestCase
 
         $this->expectException(TypeConverterException::class);
         $this->expectExceptionCode(1476044883);
-        $this->expectExceptionMessage('No converter found which can be used to convert from "array" to "TYPO3\CMS\Core\Authentication\LoginType".');
+        $this->expectExceptionMessage('No converter found which can be used to convert from "array" to "TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration".');
 
-        $this->subject->findTypeConverter('array', LoginType::class);
+        $this->subject->findTypeConverter('array', CompleteEnumeration::class);
     }
 
     /**

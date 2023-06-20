@@ -222,7 +222,7 @@ class LoginController extends ActionController
     protected function shouldRedirectToOverview(): bool
     {
         return $this->userAspect->isLoggedIn()
-               && ($this->loginType === LoginType::LOGIN)
+               && (LoginType::tryFrom($this->loginType) === LoginType::LOGIN)
                && !($this->settings['showLogoutFormAfterLogin'] ?? 0);
     }
 
@@ -234,7 +234,7 @@ class LoginController extends ActionController
         $messageKey = self::MESSAGEKEY_DEFAULT;
         if ($this->hasLoginErrorOccurred()) {
             $messageKey = self::MESSAGEKEY_ERROR;
-        } elseif ($this->loginType === LoginType::LOGOUT) {
+        } elseif (LoginType::tryFrom($this->loginType) === LoginType::LOGOUT) {
             $messageKey = self::MESSAGEKEY_LOGOUT;
         }
 
@@ -243,7 +243,8 @@ class LoginController extends ActionController
 
     protected function isLoginOrLogoutInProgress(): bool
     {
-        return $this->loginType === LoginType::LOGIN || $this->loginType === LoginType::LOGOUT;
+        $type = LoginType::tryFrom($this->loginType);
+        return $type === LoginType::LOGIN || $type === LoginType::LOGOUT;
     }
 
     /**
@@ -259,11 +260,11 @@ class LoginController extends ActionController
 
     protected function isLogoutSuccessful(): bool
     {
-        return $this->loginType === LoginType::LOGOUT && !$this->userAspect->isLoggedIn();
+        return LoginType::tryFrom($this->loginType) === LoginType::LOGOUT && !$this->userAspect->isLoggedIn();
     }
 
     protected function hasLoginErrorOccurred(): bool
     {
-        return $this->loginType === LoginType::LOGIN && !$this->userAspect->isLoggedIn();
+        return LoginType::tryFrom($this->loginType) === LoginType::LOGIN && !$this->userAspect->isLoggedIn();
     }
 }

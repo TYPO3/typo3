@@ -388,8 +388,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // Get Login/Logout data submitted by a form or params
         $loginData = $this->getLoginFormData($request);
         $this->logger->debug('Login data', $this->removeSensitiveLoginDataForLoggingInfo($loginData));
+        $type = LoginType::tryFrom($loginData['status'] ?? '');
         // Active logout (eg. with "logout" button)
-        if ($loginData['status'] === LoginType::LOGOUT) {
+        if ($type === LoginType::LOGOUT) {
             if ($this->writeStdLog) {
                 // $type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid
                 $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, 2, 'User %s logged out', [$this->user['username']], '', 0, 0);
@@ -414,7 +415,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         }
 
         // Active login (eg. with login form).
-        if ($loginData['status'] === LoginType::LOGIN) {
+        if ($type === LoginType::LOGIN) {
             if (!$isExistingSession) {
                 $activeLogin = true;
                 $this->logger->debug('Active login (eg. with login form)');
@@ -1069,7 +1070,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             'uident' => StringUtility::filter($parsedBody[$this->formfield_uident] ?? '', ''),
         ];
         // Only process the login data if a login is requested
-        if ($loginData['status'] === LoginType::LOGIN) {
+        if (LoginType::tryFrom($loginData['status'] ?? '') === LoginType::LOGIN) {
             $loginData = $this->processLoginData($loginData, $request);
         }
         return $loginData;
@@ -1078,7 +1079,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function isActiveLogin(ServerRequestInterface $request): bool
     {
         $status = $request->getParsedBody()[$this->formfield_status] ?? $request->getQueryParams()[$this->formfield_status] ?? '';
-        return $status === LoginType::LOGIN;
+        return LoginType::tryFrom($status) === LoginType::LOGIN;
     }
 
     /**

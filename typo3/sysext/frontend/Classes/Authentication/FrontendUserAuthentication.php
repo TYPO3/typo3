@@ -207,7 +207,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     {
         $loginData = parent::getLoginFormData($request);
         // Needed in order to fetch users which are already logged-in due to fetching from session
-        if ($loginData['status'] !== LoginType::LOGIN) {
+        if (LoginType::tryFrom($loginData['status'] ?? '') !== LoginType::LOGIN) {
             $this->checkPid_value = null;
         }
 

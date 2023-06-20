@@ -54,9 +54,10 @@ class RedirectHandler
         foreach ($configuration->getModes() as $redirectMode) {
             $redirectUrl = '';
 
-            if ($loginType === LoginType::LOGIN) {
+            $type = LoginType::tryFrom($loginType);
+            if ($type === LoginType::LOGIN) {
                 $redirectUrl = $this->handleSuccessfulLogin($request, $redirectMode, $configuration->getPageOnLogin(), $configuration->getDomains(), $redirectModeReferrer);
-            } elseif ($loginType === LoginType::LOGOUT) {
+            } elseif ($type === LoginType::LOGOUT) {
                 $redirectUrl = $this->handleSuccessfulLogout($request, $redirectMode, $configuration->getPageOnLogout());
             }
 
@@ -157,7 +158,7 @@ class RedirectHandler
 
     protected function isUserLoginFailedAndLoginErrorActive(array $redirectModes, string $loginType): bool
     {
-        return $loginType === LoginType::LOGIN
+        return LoginType::tryFrom($loginType) === LoginType::LOGIN
             && !$this->userIsLoggedIn
             && $this->isRedirectModeActive($redirectModes, RedirectMode::LOGIN_ERROR);
     }

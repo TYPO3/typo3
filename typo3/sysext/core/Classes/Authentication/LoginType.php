@@ -17,20 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Authentication;
 
-use TYPO3\CMS\Core\Type\Enumeration;
-
 /**
  * Contains the different login types
  */
-final class LoginType extends Enumeration
+enum LoginType: string
 {
-    /**
-     * When a login is in process
-     */
-    public const LOGIN = 'login';
-
-    /**
-     * When a logout is in process
-     */
-    public const LOGOUT = 'logout';
+    case LOGIN = 'login';
+    case LOGOUT = 'logout';
 }

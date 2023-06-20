@@ -145,7 +145,7 @@ class AjaxLoginController
     protected function hasLoginBeenProcessed(ServerRequestInterface $request): bool
     {
         $loginFormData = $this->getBackendUser()->getLoginFormData($request);
-        return $loginFormData['status'] === LoginType::LOGIN && !empty($loginFormData['uname']) && !empty($loginFormData['uident']);
+        return LoginType::tryFrom($loginFormData['status'] ?? '') === LoginType::LOGIN && !empty($loginFormData['uname']) && !empty($loginFormData['uident']);
     }
 
     protected function getBackendUser(): ?BackendUserAuthentication
