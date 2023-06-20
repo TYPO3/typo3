@@ -457,34 +457,3 @@ domains
    Description
          Comma separated list of domains which are allowed for the referrer
          redirect mode
-
-
-
-passwordValidators
-------------------
-
-.. deprecated:: 12.3
-
-   The TypoScript does not include validators any more by default. Instead, the
-   extension uses global :ref:`password policies <t3coreapi:password-policies>`
-   to ensure password requirements are fulfilled.
-
-.. container:: table-row
-
-   Property
-         passwordValidators
-
-   Data type
-         array
-
-   Description
-         Array of validators to use for the new user password.
-
-   Migration
-        Special password requirements configured using custom validators in
-        TypoScript must be migrated to a custom password policy validator as
-        described in :ref:`password policies <t3coreapi:password-policies>`.
-
-        Before creating a custom password policy validator, it is recommended to
-        evaluate, if the :php:`CorePasswordValidator` used in the default
-        password policy suits current password requirements.
