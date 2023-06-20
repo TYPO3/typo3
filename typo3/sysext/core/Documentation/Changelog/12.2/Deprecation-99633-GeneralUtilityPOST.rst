@@ -11,8 +11,8 @@ See :issue:`99633`
 Description
 ===========
 
-The method :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_POST()` has
-been marked deprecated and should not be used any longer.
+The methods :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_POST()` and :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GET()`
+have been marked deprecated and should not be used any longer.
 
 Modern code should access GET and POST data from the PSR-7
 :php:`\Psr\Http\Message\ServerRequestInterface`, and should avoid accessing
@@ -62,5 +62,21 @@ Typical code:
 
     // After
     $value = $request->getParsedBody()['tx_scheduler']);
+
+
+:php:`GeneralUtility::_GET()` is a helper method that retrieves
+incoming URL query parameters / `GET` parameters and returns the value.
+
+Typical code:
+
+..  code-block:: php
+
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+    // Before
+    $value = GeneralUtility::_GET'tx_myextension');
+
+    // After
+    $value = $request->getQueryParams()['tx_myextension']);
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend
