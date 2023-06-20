@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Form\Tests\Functional\Framework\FormHandling\FormDataFactory;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -242,7 +243,8 @@ final class RequestHandlingTest extends FunctionalTestCase
         $subject = new FormDataFactory();
 
         // goto form page
-        $pageMarkup = (string)$this->executeFrontendSubRequest(new InternalRequest($uri), null, true)->getBody();
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $pageMarkup = (string)$this->executeFrontendSubRequest($internalRequest, null, true)->getBody();
         $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
         $honeypotIdFromStep1 = $formData->getHoneypotId();
@@ -253,7 +255,8 @@ final class RequestHandlingTest extends FunctionalTestCase
         self::assertNotEmpty($honeypotIdFromStep1, 'honeypot element exists');
 
         // post data and go to summary page
-        $formPostRequest = $formData->with('text-1', 'FOObarBAZ')->toPostRequest(new InternalRequest($uri));
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $formPostRequest = $formData->with('text-1', 'FOObarBAZ')->toPostRequest($internalRequest);
         $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
         $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
@@ -267,7 +270,8 @@ final class RequestHandlingTest extends FunctionalTestCase
         self::assertEmpty($honeypotIdFromStep2, 'honeypot element does not exists on summary form step');
 
         // go back to first page
-        $formPostRequest = $formData->with('__currentPage', '0')->toPostRequest(new InternalRequest($uri));
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $formPostRequest = $formData->with('__currentPage', '0')->toPostRequest($internalRequest);
         $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
         $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
@@ -279,7 +283,8 @@ final class RequestHandlingTest extends FunctionalTestCase
         self::assertEquals($sessionIdFromStep3, $sessionIdFromStep2, 'session is still available');
 
         // post data and go to summary page
-        $formPostRequest = $formData->with('text-1', 'BAZbarFOO')->toPostRequest(new InternalRequest($uri));
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $formPostRequest = $formData->with('text-1', 'BAZbarFOO')->toPostRequest($internalRequest);
         $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
         $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
@@ -293,7 +298,8 @@ final class RequestHandlingTest extends FunctionalTestCase
         self::assertEquals($sessionIdFromStep4, $sessionIdFromStep3, 'session is still available');
 
         // submit and trigger finishers
-        $formPostRequest = $formData->toPostRequest(new InternalRequest($uri));
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $formPostRequest = $formData->toPostRequest($internalRequest);
         $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
         $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//*[@id="' . $formIdentifier . '"]');
 
@@ -377,18 +383,22 @@ final class RequestHandlingTest extends FunctionalTestCase
         $subject = new FormDataFactory();
 
         // goto form page
-        $pageMarkup = (string)$this->executeFrontendSubRequest(new InternalRequest($uri), null, true)->getBody();
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $pageMarkup = (string)$this->executeFrontendSubRequest($internalRequest, null, true)->getBody();
         $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
         // goto form target with HTTP GET
-        (string)$this->executeFrontendSubRequest($formData->toGetRequest(new InternalRequest($uri), false), null, true)->getBody();
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        (string)$this->executeFrontendSubRequest($formData->toGetRequest($internalRequest, false), null, true)->getBody();
 
         // goto form page
-        $pageMarkup = (string)$this->executeFrontendSubRequest(new InternalRequest($uri), null, true)->getBody();
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $pageMarkup = (string)$this->executeFrontendSubRequest($internalRequest, null, true)->getBody();
         $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
         // post data and go to summary page
-        $formPostRequest = $formData->with('text-1', 'FOObarBAZ')->toPostRequest(new InternalRequest($uri));
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $formPostRequest = $formData->with('text-1', 'FOObarBAZ')->toPostRequest($internalRequest);
         $pageMarkup = (string)$this->executeFrontendSubRequest($formPostRequest, null, true)->getBody();
         $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
@@ -472,14 +482,16 @@ final class RequestHandlingTest extends FunctionalTestCase
         $subject = new FormDataFactory();
 
         // goto form page
-        $pageMarkup = (string)$this->executeFrontendSubRequest(new InternalRequest($uri), null, true)->getBody();
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $pageMarkup = (string)$this->executeFrontendSubRequest($internalRequest, null, true)->getBody();
         $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
         $honeypotId = $formData->getHoneypotId();
 
         self::assertNotEmpty($honeypotId, 'honeypot element exists');
 
         // revisit form page
-        $pageMarkup = (string)$this->executeFrontendSubRequest(new InternalRequest($uri), null, true)->getBody();
+        $internalRequest = (new InternalRequest($uri))->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $pageMarkup = (string)$this->executeFrontendSubRequest($internalRequest, null, true)->getBody();
         $formData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]');
 
         $honeypotIdFromRevisit = $formData->getHoneypotId();

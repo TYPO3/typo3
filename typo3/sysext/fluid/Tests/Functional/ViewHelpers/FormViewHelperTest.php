@@ -30,6 +30,7 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\ExtendsAbstractEntity;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -267,7 +268,8 @@ final class FormViewHelperTest extends FunctionalTestCase
         $serverRequest = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
-            ->withAttribute('extbase', new ExtbaseRequestParameters());
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
         return new Request($serverRequest);
     }
 }

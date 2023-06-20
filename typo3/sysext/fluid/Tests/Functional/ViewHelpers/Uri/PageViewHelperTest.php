@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -268,6 +269,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = $request->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
         $request = new Request($request);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);

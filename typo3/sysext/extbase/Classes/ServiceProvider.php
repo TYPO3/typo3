@@ -56,12 +56,21 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getReflectionService(ContainerInterface $container): Reflection\ReflectionService
     {
-        return self::new($container, Reflection\ReflectionService::class, [$container->get(CacheManager::class)->getCache('extbase'), $container->get(PackageDependentCacheIdentifier::class)->withPrefix('ClassSchemata')->toString()]);
+        return self::new(
+            $container,
+            Reflection\ReflectionService::class,
+            [
+                $container->get(CacheManager::class)->getCache('extbase'),
+                $container->get(PackageDependentCacheIdentifier::class)->withPrefix('ClassSchemata')->toString(),
+            ]
+        );
     }
 
     public static function getExtensionService(ContainerInterface $container): Service\ExtensionService
     {
         $extensionService = self::new($container, Service\ExtensionService::class);
+        // This ensures ExtensionService always gets the current (!) ConfigurationManager
+        // injected a-new, each time it is injected itself.
         $extensionService->injectConfigurationManager($container->get(Configuration\ConfigurationManager::class));
         return $extensionService;
     }

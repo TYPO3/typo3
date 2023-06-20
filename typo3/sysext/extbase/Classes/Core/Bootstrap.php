@@ -36,42 +36,27 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * This class is the main entry point for extbase extensions.
  *
- * @todo: Please note that this class will become internal in TYPO3 v13.0
+ * @internal
  */
 class Bootstrap
 {
-    /**
-     * Set by UserContentObject (USER) via setContentObjectRenderer() in frontend
-     */
     protected ?ContentObjectRenderer $cObj = null;
 
-    protected ContainerInterface $container;
-    protected ConfigurationManagerInterface $configurationManager;
-    protected PersistenceManagerInterface $persistenceManager;
-    protected CacheService $cacheService;
-    protected Dispatcher $dispatcher;
-    protected RequestBuilder $extbaseRequestBuilder;
-
     public function __construct(
-        ContainerInterface $container,
-        ConfigurationManagerInterface $configurationManager,
-        PersistenceManagerInterface $persistenceManager,
-        CacheService $cacheService,
-        Dispatcher $dispatcher,
-        RequestBuilder $extbaseRequestBuilder
+        protected readonly ContainerInterface $container,
+        protected readonly ConfigurationManagerInterface $configurationManager,
+        protected readonly PersistenceManagerInterface $persistenceManager,
+        protected readonly CacheService $cacheService,
+        protected readonly Dispatcher $dispatcher,
+        protected readonly RequestBuilder $extbaseRequestBuilder
     ) {
-        $this->container = $container;
-        $this->configurationManager = $configurationManager;
-        $this->persistenceManager = $persistenceManager;
-        $this->cacheService = $cacheService;
-        $this->dispatcher = $dispatcher;
-        $this->extbaseRequestBuilder = $extbaseRequestBuilder;
     }
 
     /**
+     * The current (!) cObj.
      * Called for frontend plugins from UserContentObject via ContentObjectRenderer->callUserFunction().
      */
-    public function setContentObjectRenderer(ContentObjectRenderer $cObj)
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
     {
         $this->cObj = $cObj;
     }
@@ -108,6 +93,9 @@ class Bootstrap
     public function initializeConfiguration(array $configuration, ServerRequestInterface $request): ServerRequestInterface
     {
         if ($this->cObj === null) {
+            // @todo: While the frontend sets the current cObj, a backend extbase request does not.
+            //        It is currently not clear if the backend should have a dummy cObj as well.
+            //        For now, extbase initializes one.
             $this->cObj = $this->container->get(ContentObjectRenderer::class);
             $request = $request->withAttribute('currentContentObject', $this->cObj);
         }

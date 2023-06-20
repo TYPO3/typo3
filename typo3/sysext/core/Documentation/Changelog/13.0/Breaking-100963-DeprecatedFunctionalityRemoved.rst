@@ -166,6 +166,7 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager->setContentObject`
 - :php:`\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager->getContentObject`
 - :php:`\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager->setContentObject`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->getRequest`
 - :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->setLanguageOverlayMode`
 - :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->getLanguageOverlayMode`
 - :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->setLanguageUid`

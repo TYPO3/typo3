@@ -28,6 +28,7 @@ use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\ActionControllerArgumentTest\Controller\ArgumentTestController;
 use TYPO3Tests\ActionControllerArgumentTest\Domain\Model\Model;
@@ -76,7 +77,6 @@ final class ActionControllerArgumentTest extends FunctionalTestCase
     public function validationErrorReturnsToForwardedPreviousAction(string $forwardTargetAction, array $forwardTargetArguments, string $validateAction, array $expectations): void
     {
         $inputRequest = $this->buildRequest('forward');
-        $GLOBALS['TYPO3_REQUEST'] = $inputRequest;
 
         // trigger action to forward to some `input*` action
         $controller = $this->buildController();
@@ -93,7 +93,6 @@ final class ActionControllerArgumentTest extends FunctionalTestCase
         unset($inputRequest, $controller);
 
         $validateRequest = $this->buildRequest($validateAction, $parsedInputData['form']);
-        $GLOBALS['TYPO3_REQUEST'] = $validateRequest;
 
         // trigger `validate*` action with generated arguments from FormViewHelper (see template)
         $controller = $this->buildController();
@@ -202,6 +201,7 @@ final class ActionControllerArgumentTest extends FunctionalTestCase
         $request = $request->withControllerName('ArgumentTest');
         $request = $request->withFormat('html');
         $request = $request->withControllerActionName($actionName);
+        $request = $request->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
         if ($arguments !== null) {
             $request = $request->withArguments($arguments);
         }

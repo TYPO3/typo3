@@ -32,10 +32,7 @@ use TYPO3\CMS\Extbase\Exception;
  */
 class ExtensionService implements SingletonInterface
 {
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+    protected ConfigurationManagerInterface $configurationManager;
 
     /**
      * Cache of result for getTargetPidByPlugin()
