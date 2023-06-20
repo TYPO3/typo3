@@ -25,19 +25,14 @@ use PDOException;
 use TYPO3\CMS\Core\Database\Driver\DriverConnection;
 
 /**
- * The main change in favor of Doctrine's implementation is to use our custom DriverConnection (which in turn creates
- * a custom Result object).
+ * The main change in favor of Doctrine's implementation is to use our custom
+ * DriverConnection which creates a custom Result object.
  *
  * @internal this implementation is not part of TYPO3's Public API.
  */
-class Driver extends AbstractPostgreSQLDriver
+final class Driver extends AbstractPostgreSQLDriver
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @return DriverConnectionInterface
-     */
-    public function connect(array $params)
+    public function connect(array $params): DriverConnectionInterface
     {
         $driverOptions = $params['driverOptions'] ?? [];
 
@@ -47,7 +42,7 @@ class Driver extends AbstractPostgreSQLDriver
 
         try {
             $pdo = new PDO(
-                $this->_constructPdoDsn($params),
+                $this->constructPdoDsn($params),
                 $params['user'] ?? '',
                 $params['password'] ?? '',
                 $driverOptions,
@@ -62,10 +57,9 @@ class Driver extends AbstractPostgreSQLDriver
                 $pdo->setAttribute(PDO::PGSQL_ATTR_DISABLE_PREPARES, true);
             }
 
-            /* defining client_encoding via SET NAMES to avoid inconsistent DSN support
-             * - the 'client_encoding' connection param only works with postgres >= 9.1
-             * - passing client_encoding via the 'options' param breaks pgbouncer support
-             */
+            // defining client_encoding via SET NAMES to avoid inconsistent DSN support:
+            // - the 'client_encoding' connection param only works with postgres >= 9.1
+            // - passing client_encoding via the 'options' param breaks pgbouncer support
             if (isset($params['charset'])) {
                 $pdo->exec('SET NAMES \'' . $params['charset'] . '\'');
             }
@@ -77,24 +71,17 @@ class Driver extends AbstractPostgreSQLDriver
     }
 
     /**
-     * Constructs the Postgres PDO DSN.
-     *
-     * @param mixed[] $params
-     *
-     * @return string The DSN.
+     * @return string Postgres PDO DSN
      */
-    private function _constructPdoDsn(array $params)
+    private function constructPdoDsn(array $params): string
     {
         $dsn = 'pgsql:';
-
         if (isset($params['host']) && $params['host'] !== '') {
             $dsn .= 'host=' . $params['host'] . ';';
         }
-
         if (isset($params['port']) && $params['port'] !== '') {
             $dsn .= 'port=' . $params['port'] . ';';
         }
-
         if (isset($params['dbname'])) {
             $dsn .= 'dbname=' . $params['dbname'] . ';';
         } elseif (isset($params['default_dbname'])) {
@@ -105,41 +92,24 @@ class Driver extends AbstractPostgreSQLDriver
             // as it is mostly present in every server setup.
             $dsn .= 'dbname=postgres;';
         }
-
         if (isset($params['sslmode'])) {
             $dsn .= 'sslmode=' . $params['sslmode'] . ';';
         }
-
         if (isset($params['sslrootcert'])) {
             $dsn .= 'sslrootcert=' . $params['sslrootcert'] . ';';
         }
-
         if (isset($params['sslcert'])) {
             $dsn .= 'sslcert=' . $params['sslcert'] . ';';
         }
-
         if (isset($params['sslkey'])) {
             $dsn .= 'sslkey=' . $params['sslkey'] . ';';
         }
-
         if (isset($params['sslcrl'])) {
             $dsn .= 'sslcrl=' . $params['sslcrl'] . ';';
         }
-
         if (isset($params['application_name'])) {
             $dsn .= 'application_name=' . $params['application_name'] . ';';
         }
-
         return $dsn;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated
-     */
-    public function getName()
-    {
-        return 'pdo_pgsql';
     }
 }

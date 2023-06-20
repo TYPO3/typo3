@@ -25,21 +25,14 @@ use PDOException;
 use TYPO3\CMS\Core\Database\Driver\DriverConnection;
 
 /**
- * The main change in favor of Doctrine's implementation is to use our custom DriverConnection (which in turn creates
- * a custom Result object).
- *
- * All private methods have to be checked on every release of doctrine/dbal.
+ * The main change in favor of Doctrine's implementation is to use our custom
+ * DriverConnection which creates a custom Result object.
  *
  * @internal this implementation is not part of TYPO3's Public API.
  */
-class Driver extends AbstractMySQLDriver
+final class Driver extends AbstractMySQLDriver
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @return DriverConnectionInterface
-     */
-    public function connect(array $params)
+    public function connect(array $params): DriverConnectionInterface
     {
         $driverOptions = $params['driverOptions'] ?? [];
 
@@ -66,45 +59,26 @@ class Driver extends AbstractMySQLDriver
     }
 
     /**
-     * Constructs the MySql PDO DSN.
-     *
-     * @param mixed[] $params
-     *
-     * @return string The DSN.
+     * @return string MySql PDO DSN
      */
-    protected function constructPdoDsn(array $params)
+    private function constructPdoDsn(array $params): string
     {
         $dsn = 'mysql:';
         if (isset($params['host']) && $params['host'] !== '') {
             $dsn .= 'host=' . $params['host'] . ';';
         }
-
         if (isset($params['port'])) {
             $dsn .= 'port=' . $params['port'] . ';';
         }
-
         if (isset($params['dbname'])) {
             $dsn .= 'dbname=' . $params['dbname'] . ';';
         }
-
         if (isset($params['unix_socket'])) {
             $dsn .= 'unix_socket=' . $params['unix_socket'] . ';';
         }
-
         if (isset($params['charset'])) {
             $dsn .= 'charset=' . $params['charset'] . ';';
         }
-
         return $dsn;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated
-     */
-    public function getName()
-    {
-        return 'pdo_mysql';
     }
 }

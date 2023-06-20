@@ -11,7 +11,7 @@ See :issue:`100963`
 Description
 ===========
 
-The following PHP classes that have previously been marked as deprecated for v12 and were now removed:
+The following PHP classes that have previously been marked as deprecated with v12 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher`
 - :php:`\TYPO3\CMS\Backend\EventListener\SilentSiteLanguageFlagMigration`
@@ -42,9 +42,11 @@ The following PHP classes that have previously been marked as deprecated for v12
 
 The following PHP classes have been declared :php:`final`:
 
-- :php:`\Full\Class\Name`
+- :php:`\TYPO3\CMS\Core\Database\Driver\PDOMySql\Driver`
+- :php:`\TYPO3\CMS\Core\Database\Driver\PDOPgSql\Driver`
+- :php:`\TYPO3\CMS\Core\Database\Driver\PDOSqlite\Driver`
 
-The following PHP interfaces that have previously been marked as deprecated for v12 and were now removed:
+The following PHP interfaces that have previously been marked as deprecated with v12 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface`
 - :php:`\TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface`
@@ -68,7 +70,7 @@ The following PHP interfaces changed:
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface` method `setContentObject()` removed
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface` method `setRequest()` added
 
-The following PHP class aliases that have previously been marked as deprecated for v12 and were now removed:
+The following PHP class aliases that have previously been marked as deprecated with v12 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\ElementBrowser\FileBrowser`
 - :php:`\TYPO3\CMS\Backend\ElementBrowser\FolderBrowser`
@@ -109,7 +111,7 @@ The following PHP class aliases that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent`
 - :php:`\TYPO3\CMS\Recordlist\View\FolderUtilityRenderer`
 
-The following PHP class methods that have previously been marked as deprecated for v12 and were now removed:
+The following PHP class methods that have previously been marked as deprecated with v12 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\Template\Components\ButtonBar->makeHelpButton`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getBodyTag`
@@ -127,6 +129,9 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getThisScript`
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess`
 - :php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->removeElementTceFormsRecursive`
+- :php:`\TYPO3\CMS\Core\Database\Driver\PDOMySql\Driver->getName`
+- :php:`\TYPO3\CMS\Core\Database\Driver\PDOPgSql\Driver->getName`
+- :php:`\TYPO3\CMS\Core\Database\Driver\PDOSqlite\Driver->getName`
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->add`
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->addMultiple`
 - :php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->andX`
@@ -207,7 +212,7 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkAllExecutions`
 - :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->remove`
 
-The following PHP static class methods that have previously been marked as deprecated for v12 and were now removed:
+The following PHP static class methods that have previously been marked as deprecated for v12 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::ADMCMD_previewCmds`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::cshItem`
@@ -288,36 +293,36 @@ The following class methods visibility have been changed to private:
 
 The following class methods are now marked as internal:
 
-:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isSetSessionCookie`
-:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isRefreshTimeBasedCookie`
-:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->removeCookie`
-:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isCookieSet`
-:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->unpack_uc`
-:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->appendCookieToResponse`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isSetSessionCookie`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isRefreshTimeBasedCookie`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->removeCookie`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isCookieSet`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->unpack_uc`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->appendCookieToResponse`
 
-The following class methods now have a native return type/removed #[\ReturnTypeWillChange:
+The following class methods now have a native return type and removed the #[\ReturnTypeWillChange] attribute:
 
-:php:`\TYPO3\CMS\Core\Collection\AbstractRecordCollection->current`
-:php:`\TYPO3\CMS\Core\Collection\AbstractRecordCollection->key`
-:php:`\TYPO3\CMS\Core\Log\LogRecord->offsetGet`
-:php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->dequeue`
-:php:`\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection->key`
-:php:`\TYPO3\CMS\Core\Resource\MetaDataAspect->offsetGet`
-:php:`\TYPO3\CMS\Core\Resource\MetaDataAspect->current`
-:php:`\TYPO3\CMS\Core\Resource\Search\Result\EmptyFileSearchResult->current`
-:php:`\TYPO3\CMS\Core\Resource\Search\Result\EmptyFileSearchResult->key`
-:php:`\TYPO3\CMS\Core\Routing\SiteRouteResult->offsetGet`
-:php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy->current`
-:php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy->key`
-:php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage->current`
-:php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage->offsetGet`
-:php:`\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult->offsetGet`
-:php:`\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult->current`
-:php:`\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult->key`
-:php:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage->current`
-:php:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage->offsetGet`
-:php:`\TYPO3\CMS\Filelist\Dto\ResourceCollection->current`
-:php:`\TYPO3\CMS\Filelist\Dto\ResourceCollection->key`
+- :php:`\TYPO3\CMS\Core\Collection\AbstractRecordCollection->current`
+- :php:`\TYPO3\CMS\Core\Collection\AbstractRecordCollection->key`
+- :php:`\TYPO3\CMS\Core\Log\LogRecord->offsetGet`
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->dequeue`
+- :php:`\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection->key`
+- :php:`\TYPO3\CMS\Core\Resource\MetaDataAspect->offsetGet`
+- :php:`\TYPO3\CMS\Core\Resource\MetaDataAspect->current`
+- :php:`\TYPO3\CMS\Core\Resource\Search\Result\EmptyFileSearchResult->current`
+- :php:`\TYPO3\CMS\Core\Resource\Search\Result\EmptyFileSearchResult->key`
+- :php:`\TYPO3\CMS\Core\Routing\SiteRouteResult->offsetGet`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy->current`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy->key`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage->current`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage->offsetGet`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult->offsetGet`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult->current`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult->key`
+- :php:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage->current`
+- :php:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage->offsetGet`
+- :php:`\TYPO3\CMS\Filelist\Dto\ResourceCollection->current`
+- :php:`\TYPO3\CMS\Filelist\Dto\ResourceCollection->key`
 
 The following class properties visibility have been changed to protected:
 
@@ -329,16 +334,16 @@ The following class properties visibility have been changed to private:
 
 - :php:`TYPO3\CMS\Core\Type\DocType->getXhtmlVersion`
 
-The following class properties are now marked as internal:
+The following class properties have been marked as internal:
 
-:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->lastLogin_column`
-:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_uname`
-:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_uident`
-:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_status`
-:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->loginSessionStarted`
-:php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->dontSetCookie`
-:php:`\TYPO3\CMS\Core\Authentication\FrontendUserAuthentication->formfield_permanent`
-:php:`\TYPO3\CMS\Core\Authentication\FrontendUserAuthentication->is_permanent`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->lastLogin_column`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_uname`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_uident`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->formfield_status`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->loginSessionStarted`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->dontSetCookie`
+- :php:`\TYPO3\CMS\Core\Authentication\FrontendUserAuthentication->formfield_permanent`
+- :php:`\TYPO3\CMS\Core\Authentication\FrontendUserAuthentication->is_permanent`
 
 The following class properties have changed/enforced type:
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->endingSlash` (is now string)
