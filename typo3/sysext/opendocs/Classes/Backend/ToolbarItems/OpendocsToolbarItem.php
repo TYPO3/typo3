@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Opendocs\Backend\ToolbarItems;
 
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -163,7 +164,17 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     {
         $table = $document[3]['table'] ?? '';
         $uid = $document[3]['uid'] ?? 0;
-        $record = BackendUtility::getRecordWSOL($table, $uid);
+
+        try {
+            $record = BackendUtility::getRecordWSOL($table, $uid);
+        } catch (TableNotFoundException $e) {
+            // This exception is caught in cases, when you have an recently opened document
+            // from an extension record (let's say a sys_note record) and then uninstall
+            // the extension and drop the DB table. After then, the DB table could
+            // not be found anymore and will throw an exception making the
+            // whole backend unusable.
+            $record = null;
+        }
 
         if (!is_array($record)) {
             // Record seems to be deleted
