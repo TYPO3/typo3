@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
+use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
@@ -307,12 +308,13 @@ class Folder implements FolderInterface
     /**
      * Adds an uploaded file into the Storage.
      *
-     * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
+     * @param array|UploadedFileInterface $uploadedFileData Information about the uploaded file given by $_FILES['file1']
+     *                                                      or a PSR-7 UploadedFileInterface object
      * @param string|DuplicationBehavior $conflictMode
      * @return FileInterface The file object
      * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
-    public function addUploadedFile(array $uploadedFileData, $conflictMode = DuplicationBehavior::CANCEL)
+    public function addUploadedFile(array|UploadedFileInterface $uploadedFileData, $conflictMode = DuplicationBehavior::CANCEL)
     {
         if (!$conflictMode instanceof DuplicationBehavior) {
             trigger_error(
@@ -323,7 +325,7 @@ class Folder implements FolderInterface
             $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
         }
 
-        return $this->storage->addUploadedFile($uploadedFileData, $this, $uploadedFileData['name'], $conflictMode);
+        return $this->storage->addUploadedFile($uploadedFileData, $this, null, $conflictMode);
     }
 
     /**
