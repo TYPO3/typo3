@@ -61,6 +61,7 @@ The following PHP interfaces that have previously been marked as deprecated with
 
 The following PHP interfaces changed:
 
+- :php:`\TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface` method :php:`setModuleData()` added
 - :php:`\TYPO3\CMS\Backend\Form\NodeInterface` method :php:`setData()` added
 - :php:`\TYPO3\CMS\Backend\Form\NodeInterface` method :php:`render()` must return :php:`array`
 - :php:`\TYPO3\CMS\Backend\Form\NodeResolverInterface` method :php:`setData()` added
