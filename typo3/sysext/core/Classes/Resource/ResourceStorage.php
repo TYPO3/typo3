@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Resource;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
@@ -2134,20 +2135,27 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Adds an uploaded file into the Storage. Previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::file_upload()
      *
-     * @param array|UploadedFile $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
+     * @param array|UploadedFileInterface $uploadedFileData Information about the uploaded file given by $_FILES['file1']
+     *                                                      or a PSR-7 UploadedFileInterface object
      * @param Folder|null $targetFolder the target folder
      * @param string|null $targetFileName the file name to be written
-     * @param DuplicationBehavior $conflictMode
-     * @return FileInterface The file object
      */
-    public function addUploadedFile(array|UploadedFile $uploadedFileData, ?Folder $targetFolder = null, $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL)
+    public function addUploadedFile(array|UploadedFileInterface $uploadedFileData, ?Folder $targetFolder = null, $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL): FileInterface
     {
-        if ($uploadedFileData instanceof UploadedFile) {
-            $localFilePath = $uploadedFileData->getTemporaryFileName();
-            if ($targetFileName === null) {
-                $targetFileName = $uploadedFileData->getClientFilename();
+        if ($uploadedFileData instanceof UploadedFileInterface) {
+            if ($uploadedFileData instanceof UploadedFile) {
+                $localFilePath = $uploadedFileData->getTemporaryFileName();
+                if ($targetFileName === null) {
+                    $targetFileName = $uploadedFileData->getClientFilename();
+                }
+                $size = $uploadedFileData->getSize();
+            } else {
+                // This throws if $uploadedFileData is UploadedFileInterface, but is not the TYPO3
+                // core implementation UploadedFile. It should be fair to throw here for now since
+                // getTemporaryFileName() is not part of PSR-7 UploadedFileInterface, but it
+                // could be eventually refactored away or streamlined?
+                throw new \InvalidArgumentException('Uploaded file with streams are not supported yet', 1736765655);
             }
-            $size = $uploadedFileData->getSize();
         } else {
             $localFilePath = $uploadedFileData['tmp_name'];
             if ($targetFileName === null) {

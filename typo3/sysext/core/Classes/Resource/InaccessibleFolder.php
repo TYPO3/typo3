@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
+use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderReadPermissionsException;
 
@@ -138,11 +139,11 @@ class InaccessibleFolder extends Folder
     /**
      * Adds an uploaded file into the Storage.
      *
-     * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
+     * @param array|UploadedFileInterface $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
      * @param DuplicationBehavior $conflictMode
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
-    public function addUploadedFile(array $uploadedFileData, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL): never
+    public function addUploadedFile(array|UploadedFileInterface $uploadedFileData, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL): never
     {
         $this->throwInaccessibleException();
     }

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
+use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
@@ -299,13 +300,12 @@ class Folder implements FolderInterface
     /**
      * Adds an uploaded file into the Storage.
      *
-     * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
-     * @param DuplicationBehavior $conflictMode
-     * @return FileInterface The file object
+     * @param array|UploadedFileInterface $uploadedFileData Information about the uploaded file given by $_FILES['file1']
+     *                                                      or a PSR-7 UploadedFileInterface object
      */
-    public function addUploadedFile(array $uploadedFileData, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL)
+    public function addUploadedFile(array|UploadedFileInterface $uploadedFileData, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL): FileInterface
     {
-        return $this->storage->addUploadedFile($uploadedFileData, $this, $uploadedFileData['name'], $conflictMode);
+        return $this->storage->addUploadedFile($uploadedFileData, $this, null, $conflictMode);
     }
 
     /**
