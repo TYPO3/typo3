@@ -228,22 +228,20 @@ class Repository implements RepositoryInterface, SingletonInterface
     public function __call($methodName, $arguments)
     {
         if (str_starts_with($methodName, 'findBy') && strlen($methodName) > 7) {
-            // @todo Enable in version 13.0
-            // trigger_error(
-            //     'Usage of magic method ' . static::class . '->findBy[Property]() is deprecated, use method findBy() instead.',
-            //     E_USER_DEPRECATED
-            // );
+            trigger_error(
+                'Usage of magic method ' . static::class . '->findBy[Property]() is deprecated and will be removed in TYPO3 v14.0, use method findBy() instead.',
+                E_USER_DEPRECATED
+            );
             $propertyName = lcfirst(substr($methodName, 6));
             $query = $this->createQuery();
             $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute();
             return $result;
         }
         if (str_starts_with($methodName, 'findOneBy') && strlen($methodName) > 10) {
-            // @todo Enable in version 13.0
-            // trigger_error(
-            //     'Usage of magic method ' . static::class . '->findOneBy[Property]() is deprecated, use method findOneBy() instead.',
-            //     E_USER_DEPRECATED
-            // );
+            trigger_error(
+                'Usage of magic method ' . static::class . '->findOneBy[Property]() is deprecated and will be removed in TYPO3 v14.0, use method findOneBy() instead.',
+                E_USER_DEPRECATED
+            );
             $propertyName = lcfirst(substr($methodName, 9));
             $query = $this->createQuery();
 
@@ -255,11 +253,10 @@ class Repository implements RepositoryInterface, SingletonInterface
                 return $result[0] ?? null;
             }
         } elseif (str_starts_with($methodName, 'countBy') && strlen($methodName) > 8) {
-            // @todo Enable in version 13.0
-            // trigger_error(
-            //     'Usage of magic method ' . static::class . '->countBy[Property]() is deprecated, use method count() instead.',
-            //     E_USER_DEPRECATED
-            // );
+            trigger_error(
+                'Usage of magic method ' . static::class . '->countBy[Property]() is deprecated and will be removed in TYPO3 v14.0, use method count() instead.',
+                E_USER_DEPRECATED
+            );
             $propertyName = lcfirst(substr($methodName, 7));
             $query = $this->createQuery();
             $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();
