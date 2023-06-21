@@ -1081,11 +1081,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Type/Enumeration.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Type\\\\Enumeration\\:\\:cast\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\Type\\\\Enumeration\\) but returns object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Type/Enumeration.php
-
-		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Type/Enumeration.php
