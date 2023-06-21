@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Type\Icon\IconState;
+use TYPO3\CMS\Core\Imaging\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -71,7 +71,7 @@ final class IconViewHelper extends AbstractViewHelper
         $this->registerArgument('identifier', 'string', 'Identifier of the icon as registered in the Icon Registry.', true);
         $this->registerArgument('size', 'string', 'Desired size of the icon. All values of the Icons.sizes enum are allowed, these are: "small", "default", "large" and "overlay".', false, Icon::SIZE_SMALL);
         $this->registerArgument('overlay', 'string', 'Identifier of an overlay icon as registered in the Icon Registry.', false);
-        $this->registerArgument('state', 'string', 'Sets the state of the icon. All values of the Icons.states enum are allowed, these are: "default" and "disabled".', false, IconState::STATE_DEFAULT);
+        $this->registerArgument('state', 'string', 'Sets the state of the icon. All values of the Icons.states enum are allowed, these are: "default" and "disabled".', false, IconState::STATE_DEFAULT->value);
         $this->registerArgument('alternativeMarkupIdentifier', 'string', 'Alternative icon identifier. Takes precedence over the identifier if supported by the IconProvider.', false);
     }
 
@@ -83,7 +83,7 @@ final class IconViewHelper extends AbstractViewHelper
         $identifier = $arguments['identifier'];
         $size = $arguments['size'];
         $overlay = $arguments['overlay'];
-        $state = IconState::cast($arguments['state']);
+        $state = IconState::tryFrom($arguments['state']);
         $alternativeMarkupIdentifier = $arguments['alternativeMarkupIdentifier'];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return $iconFactory->getIcon($identifier, $size, $overlay, $state)->render($alternativeMarkupIdentifier);

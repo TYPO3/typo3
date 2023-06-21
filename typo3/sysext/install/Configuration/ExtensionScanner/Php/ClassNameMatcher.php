@@ -2351,4 +2351,10 @@ return [
             'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Type\Icon\IconState' => [
+        'restFiles' => [
+            'Deprecation-101133-IconStateClass.rst',
+            'Breaking-101133-IconStateChangedType.rst',
+        ],
+    ],
 ];

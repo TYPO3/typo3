@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\Type\Enumeration;
 
 /**
  * A class providing constants for icon states
+ *
+ * @deprecated will be removed in TYPO3 v14.0
  */
 final class IconState extends Enumeration
 {

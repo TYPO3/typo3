@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Type\Icon\IconState;
+use TYPO3\CMS\Core\Imaging\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -38,7 +38,7 @@ final class IconViewHelperTest extends FunctionalTestCase
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
         $iconMock = $this->createMock(Icon::class);
         $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
-            ->with('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DEFAULT))
+            ->with('myIdentifier', Icon::SIZE_SMALL, null, IconState::STATE_DEFAULT)
             ->willReturn($iconMock);
         $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
 
@@ -56,7 +56,7 @@ final class IconViewHelperTest extends FunctionalTestCase
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
         $iconMock = $this->createMock(Icon::class);
         $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
-            ->with('myIdentifier', Icon::SIZE_LARGE, null, IconState::cast(IconState::STATE_DEFAULT))
+            ->with('myIdentifier', Icon::SIZE_LARGE, null, IconState::STATE_DEFAULT)
             ->willReturn($iconMock);
         $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
 
@@ -74,7 +74,7 @@ final class IconViewHelperTest extends FunctionalTestCase
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
         $iconMock = $this->createMock(Icon::class);
         $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
-            ->with('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DISABLED))
+            ->with('myIdentifier', Icon::SIZE_SMALL, null, IconState::STATE_DISABLED)
             ->willReturn($iconMock);
         $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
 
@@ -92,7 +92,7 @@ final class IconViewHelperTest extends FunctionalTestCase
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
         $iconMock = $this->createMock(Icon::class);
         $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
-            ->with('myIdentifier', self::anything(), 'overlayString', IconState::cast(IconState::STATE_DEFAULT))
+            ->with('myIdentifier', self::anything(), 'overlayString', IconState::STATE_DEFAULT)
             ->willReturn($iconMock);
         $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
 

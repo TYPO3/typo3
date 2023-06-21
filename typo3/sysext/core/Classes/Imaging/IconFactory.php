@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
-use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -82,9 +81,21 @@ class IconFactory
      * @param string $overlayIdentifier
      * @return Icon
      */
-    public function getIcon($identifier, $size = Icon::SIZE_MEDIUM, $overlayIdentifier = null, IconState $state = null)
+    public function getIcon($identifier, $size = Icon::SIZE_MEDIUM, $overlayIdentifier = null, \TYPO3\CMS\Core\Type\Icon\IconState|IconState $state = null)
     {
-        $cacheIdentifier = md5($identifier . $size . $overlayIdentifier . (string)$state);
+        if ($state instanceof IconState) {
+            $stateValue = $state->value;
+        } else {
+            if ($state instanceof \TYPO3\CMS\Core\Type\Icon\IconState) {
+                trigger_error(
+                    'Using the non-native enumeration TYPO3\CMS\Core\Type\Icon\IconState in IconFactory->getIcon()'
+                    . ' will not work in TYPO3 v14.0 anymore. Use native TYPO3\CMS\Core\Imaging\IconState instead.',
+                    E_USER_DEPRECATED
+                );
+            }
+            $stateValue = (string)$state;
+        }
+        $cacheIdentifier = md5($identifier . $size . $overlayIdentifier . $stateValue);
         if (!empty(static::$iconCache[$cacheIdentifier])) {
             return static::$iconCache[$cacheIdentifier];
         }
@@ -98,7 +109,7 @@ class IconFactory
         }
 
         $iconConfiguration = $this->iconRegistry->getIconConfigurationByIdentifier($identifier);
-        $iconConfiguration['state'] = $state;
+        $iconConfiguration['state'] = $stateValue;
         $icon = $this->createIcon($identifier, $size, $overlayIdentifier, $iconConfiguration);
 
         /** @var IconProviderInterface $iconProvider */
@@ -518,7 +529,11 @@ class IconFactory
         $icon = GeneralUtility::makeInstance(Icon::class);
         $icon->setIdentifier($identifier);
         $icon->setSize($size);
-        $icon->setState($iconConfiguration['state'] ?: new IconState());
+        $iconState = IconState::tryFrom($iconConfiguration['state']);
+        if ($iconState === null) {
+            $iconState = IconState::STATE_DEFAULT;
+        }
+        $icon->setState($iconState);
         if (!empty($overlayIdentifier)) {
             $icon->setOverlayIcon($this->getIcon($overlayIdentifier, Icon::SIZE_OVERLAY));
         }

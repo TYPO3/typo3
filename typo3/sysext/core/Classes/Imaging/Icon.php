@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Imaging;
 
-use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -85,7 +84,7 @@ class Icon
     /**
      * Contains the state information
      *
-     * @var IconState
+     * @var IconState|null
      */
     protected $state;
 
@@ -253,7 +252,7 @@ class Icon
         $classes[] = 't3js-icon';
         $classes[] = 'icon';
         $classes[] = 'icon-size-' . $this->size;
-        $classes[] = 'icon-state-' . htmlspecialchars((string)$this->state);
+        $classes[] = 'icon-state-' . htmlspecialchars($this->state instanceof IconState ? $this->state->value : IconState::STATE_DEFAULT->value);
         $classes[] = 'icon-' . $this->getIdentifier();
         if ($this->isSpinning()) {
             $classes[] = 'icon-spin';
