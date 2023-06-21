@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Html\HtmlCropper;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
@@ -314,9 +313,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public $parentRecord = [];
 
     /**
-     * @var string|int
+     * @var string|int|null
+     * @internal this property might change and is not part of TYPO3 Core API anymore since TYPO3 v13.0. Use at your own risk
      */
-    public $checkPid_badDoktypeList = PageRepository::DOKTYPE_RECYCLER;
+    public $checkPid_badDoktypeList;
 
     public ?LinkResultInterface $lastTypoLinkResult = null;
 
@@ -5184,10 +5184,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         // Enablefields
         $constraints[] = QueryHelper::stripLogicalOperatorPrefix($tsfe->sys_page->enableFields($table, -1, $enableFieldsIgnore));
-        // For pages, recyclers are also always excluded, as this is the default for fetching records in PageRepository
-        if ($table === 'pages') {
-            $constraints[] = GeneralUtility::makeInstance(DocumentTypeExclusionRestriction::class, [PageRepository::DOKTYPE_RECYCLER])->buildExpression([$table => $table], $expressionBuilder);
-        }
 
         // MAKE WHERE:
         if ($constraints !== []) {
@@ -5347,10 +5343,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         $restrictionContainer = GeneralUtility::makeInstance(FrontendRestrictionContainer::class);
-        $restrictionContainer->add(GeneralUtility::makeInstance(
-            DocumentTypeExclusionRestriction::class,
-            GeneralUtility::intExplode(',', (string)$this->checkPid_badDoktypeList, true)
-        ));
+        if ($this->checkPid_badDoktypeList) {
+            $restrictionContainer->add(GeneralUtility::makeInstance(
+                DocumentTypeExclusionRestriction::class,
+                // @todo this functionality should be streamlined with a default FrontendRestriction or a "LinkRestrictionContainer"
+                GeneralUtility::intExplode(',', (string)$this->checkPid_badDoktypeList, true)
+            ));
+        }
         return $tsfe->sys_page->filterAccessiblePageIds($pageIds, $restrictionContainer);
     }
 

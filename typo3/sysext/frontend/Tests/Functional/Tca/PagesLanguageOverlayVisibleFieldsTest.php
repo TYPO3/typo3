@@ -99,20 +99,6 @@ final class PagesLanguageOverlayVisibleFieldsTest extends FunctionalTestCase
                 'author_email',
             ],
         ],
-        PageRepository::DOKTYPE_RECYCLER => [
-            'hiddenFields' => [
-                'nav_title',
-                'subtitle',
-                'starttime',
-                'endtime',
-                'abstract',
-                'keywords',
-                'description',
-                'author',
-                'author_email',
-                'media',
-            ],
-        ],
         PageRepository::DOKTYPE_SPACER => [
             'hiddenFields' => [
                 'nav_title',

@@ -573,7 +573,6 @@ class PageProvider extends RecordProvider
     protected function isExcludedDoktype(): bool
     {
         $excludeDoktypes = [
-            PageRepository::DOKTYPE_RECYCLER,
             PageRepository::DOKTYPE_SYSFOLDER,
             PageRepository::DOKTYPE_SPACER,
         ];

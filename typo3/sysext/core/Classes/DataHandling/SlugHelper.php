@@ -566,14 +566,13 @@ class SlugHelper
     }
 
     /**
-     * Fetch a parent page, but exclude spacers, recyclers and sys-folders
+     * Fetch a parent page, but exclude spacers and sys-folders
      */
     protected function resolveParentPageRecord(int $pid, int $languageId): ?array
     {
         $rootLine = BackendUtility::BEgetRootLine($pid, '', true, ['nav_title']);
         $excludeDokTypes = [
             PageRepository::DOKTYPE_SPACER,
-            PageRepository::DOKTYPE_RECYCLER,
             PageRepository::DOKTYPE_SYSFOLDER,
         ];
         do {

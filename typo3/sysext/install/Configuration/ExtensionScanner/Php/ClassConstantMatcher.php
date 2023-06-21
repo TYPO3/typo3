@@ -545,4 +545,9 @@ return [
             'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_RECYCLER' => [
+        'restFiles' => [
+            'Breaking-101137-PageDoktypeRecyclerRemoved.rst',
+        ],
+    ],
 ];

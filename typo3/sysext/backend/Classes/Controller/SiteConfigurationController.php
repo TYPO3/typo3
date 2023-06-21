@@ -716,7 +716,6 @@ class SiteConfigurationController
                         $queryBuilder->expr()->notIn('doktype', [
                             PageRepository::DOKTYPE_SYSFOLDER,
                             PageRepository::DOKTYPE_SPACER,
-                            PageRepository::DOKTYPE_RECYCLER,
                             PageRepository::DOKTYPE_LINK,
                         ])
                     ),

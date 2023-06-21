@@ -959,7 +959,6 @@ class EditDocumentController
         return !in_array((int)$currentPage['doktype'], [
             PageRepository::DOKTYPE_SPACER,
             PageRepository::DOKTYPE_SYSFOLDER,
-            PageRepository::DOKTYPE_RECYCLER,
         ], true);
     }
 
@@ -1387,9 +1386,8 @@ class EditDocumentController
             if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
                 $excludeDokTypes = GeneralUtility::intExplode(',', (string)$pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'], true);
             } else {
-                // exclude sys-folders, spacers and recycler by default
+                // exclude sys-folders and spacers by default
                 $excludeDokTypes = [
-                    PageRepository::DOKTYPE_RECYCLER,
                     PageRepository::DOKTYPE_SYSFOLDER,
                     PageRepository::DOKTYPE_SPACER,
                 ];

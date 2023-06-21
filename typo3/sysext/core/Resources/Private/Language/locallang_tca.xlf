@@ -357,9 +357,6 @@
 			<trans-unit id="doktype.I.folder" resname="doktype.I.folder">
 				<source>Folder</source>
 			</trans-unit>
-			<trans-unit id="doktype.I.2" resname="doktype.I.2">
-				<source>Recycler</source>
-			</trans-unit>
 			<trans-unit id="title" resname="title">
 				<source>Page title</source>
 			</trans-unit>

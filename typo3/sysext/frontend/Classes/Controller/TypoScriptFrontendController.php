@@ -914,9 +914,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // Don't go here, if there is no backend user logged in.
                     $removeTheRestFlag = true;
                 }
-            } elseif ((int)$this->rootLine[$a]['doktype'] === PageRepository::DOKTYPE_RECYCLER) {
-                // page is in a recycler
-                $removeTheRestFlag = true;
             }
             if ($removeTheRestFlag) {
                 // Page is 'not found' in case a subsection was found and not accessible, code 2

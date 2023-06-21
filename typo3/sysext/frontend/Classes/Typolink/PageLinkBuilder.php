@@ -714,10 +714,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                     ),
                     $queryBuilder->expr()->neq(
                         'doktype',
-                        $queryBuilder->createNamedParameter(PageRepository::DOKTYPE_RECYCLER, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->neq(
-                        'doktype',
                         $queryBuilder->createNamedParameter(PageRepository::DOKTYPE_BE_USER_SECTION, Connection::PARAM_INT)
                     )
                 )->executeQuery();

@@ -532,7 +532,7 @@ class RecordListController
 
     /**
      * Returns the configuration of mod.web_list.noViewWithDokTypes or the
-     * default value 254 (Sys Folders) and 255 (Recycler), if not set.
+     * default value 254 (Sys Folders), if not set.
      */
     protected function canCreatePreviewLink(): bool
     {
@@ -541,7 +541,6 @@ class RecordListController
         } else {
             $noViewDokTypes = [
                 PageRepository::DOKTYPE_SYSFOLDER,
-                PageRepository::DOKTYPE_RECYCLER,
             ];
         }
         return !in_array($this->pageInfo['doktype'] ?? 0, $noViewDokTypes);

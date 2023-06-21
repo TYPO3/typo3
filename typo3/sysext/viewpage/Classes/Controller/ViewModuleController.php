@@ -273,7 +273,7 @@ class ViewModuleController
     }
 
     /**
-     * Verifies if doktype of given page is valid - not a folder / recycler / ...
+     * Verifies if doktype of given page is valid - not a folder / spacer / ...
      */
     protected function isValidDoktype(int $pageId = 0): bool
     {
@@ -286,7 +286,6 @@ class ViewModuleController
             && !in_array($pageType, [
                 PageRepository::DOKTYPE_SPACER,
                 PageRepository::DOKTYPE_SYSFOLDER,
-                PageRepository::DOKTYPE_RECYCLER,
             ], true);
     }
 

@@ -1331,7 +1331,7 @@ return [
                 height = 64
             }
             options.pageTree {
-                doktypesToShowInNewPageDragArea = 1,6,4,7,3,254,255,199
+                doktypesToShowInNewPageDragArea = 1,6,4,7,3,254,199
             }
 
             options.contextMenu {

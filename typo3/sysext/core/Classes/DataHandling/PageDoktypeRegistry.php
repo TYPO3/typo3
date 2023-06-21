@@ -42,10 +42,6 @@ class PageDoktypeRegistry implements SingletonInterface
         PageRepository::DOKTYPE_SYSFOLDER => [
             'allowedTables' => '*',
         ],
-        // Doktype 255 is a recycle-bin.
-        PageRepository::DOKTYPE_RECYCLER => [
-            'allowedTables' => 'sys_file',
-        ],
         PageRepository::DOKTYPE_MOUNTPOINT => [
         ],
         // Even though both options look contradictory, the "allowedTables" key is used for other $pageTypes

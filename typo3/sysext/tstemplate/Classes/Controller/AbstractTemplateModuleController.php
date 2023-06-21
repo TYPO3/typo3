@@ -119,9 +119,8 @@ abstract class AbstractTemplateModuleController
         $languageService = $this->getLanguageService();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
-        // Don't add preview button for sysfolders and recycler by default, and look up TS config options
+        // Don't add preview button for sysfolders and spacers by default, and look up TS config options
         $excludedDokTypes = [
-            PageRepository::DOKTYPE_RECYCLER,
             PageRepository::DOKTYPE_SYSFOLDER,
             PageRepository::DOKTYPE_SPACER,
         ];

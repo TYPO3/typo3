@@ -1,0 +1,7 @@
+"pages",,,,,,,
+,"uid",pid,doktype,hidden,deleted,title,slug
+,1,0,1,0,0,"Root","/"
+,2,1,6,0,0,"BE User Section",0,"/be-user-section"
+,3,0,255,0,0,"Recycler 1",0,"/recycler-1"
+,4,0,255,1,0,"Old Recycler",0,"/old-recycler"
+,5,0,255,0,1,"Deleted Recycler",0,"/deleted-recycler"

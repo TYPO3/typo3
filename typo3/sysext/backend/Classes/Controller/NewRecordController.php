@@ -305,9 +305,8 @@ class NewRecordController
                     true
                 );
             } else {
-                // exclude sysfolders and recycler by default
+                // exclude sysfolders and spacers by default
                 $excludeDokTypes = [
-                    PageRepository::DOKTYPE_RECYCLER,
                     PageRepository::DOKTYPE_SYSFOLDER,
                     PageRepository::DOKTYPE_SPACER,
                 ];

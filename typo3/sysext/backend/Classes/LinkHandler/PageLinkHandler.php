@@ -260,6 +260,6 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
     protected function isPageLinkable(array $page): bool
     {
-        return !in_array((int)$page['doktype'], [PageRepository::DOKTYPE_RECYCLER, PageRepository::DOKTYPE_SYSFOLDER, PageRepository::DOKTYPE_SPACER]);
+        return !in_array((int)$page['doktype'], [PageRepository::DOKTYPE_SYSFOLDER, PageRepository::DOKTYPE_SPACER]);
     }
 }

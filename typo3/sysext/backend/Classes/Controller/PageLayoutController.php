@@ -613,9 +613,8 @@ class PageLayoutController
             // Exclude doktypes, set via tsConfig
             $excludeDokTypes = GeneralUtility::intExplode(',', (string)($tsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'] ?? ''), true);
         } else {
-            // Exclude default doktypes: sysfolders, spacers and recycler
+            // Exclude default doktypes: sysfolders and spacers
             $excludeDokTypes = [
-                PageRepository::DOKTYPE_RECYCLER,
                 PageRepository::DOKTYPE_SYSFOLDER,
                 PageRepository::DOKTYPE_SPACER,
             ];

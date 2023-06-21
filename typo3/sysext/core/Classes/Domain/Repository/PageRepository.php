@@ -112,7 +112,6 @@ class PageRepository implements LoggerAwareInterface
     public const DOKTYPE_MOUNTPOINT = 7;
     public const DOKTYPE_SPACER = 199;
     public const DOKTYPE_SYSFOLDER = 254;
-    public const DOKTYPE_RECYCLER = 255;
 
     /**
      * Named constants for "magic numbers" of the field shortcut_mode
@@ -184,8 +183,7 @@ class PageRepository implements LoggerAwareInterface
                     $expressionBuilder->or(
                         $expressionBuilder->eq('pages.t3ver_wsid', 0),
                         $expressionBuilder->eq('pages.t3ver_wsid', (int)$this->versioningWorkspaceId)
-                    ),
-                    $expressionBuilder->neq('pages.doktype', self::DOKTYPE_RECYCLER)
+                    )
                 );
             } else {
                 // add starttime / endtime, and check for hidden/deleted
@@ -194,8 +192,7 @@ class PageRepository implements LoggerAwareInterface
                 $this->where_hid_del = ' AND ' . (string)$expressionBuilder->and(
                     QueryHelper::stripLogicalOperatorPrefix(
                         $this->enableFields('pages', (int)$show_hidden, ['fe_group' => true])
-                    ),
-                    $expressionBuilder->neq('pages.doktype', self::DOKTYPE_RECYCLER)
+                    )
                 );
             }
             $cache->set($cacheIdentifier, $this->where_hid_del);
@@ -1066,7 +1063,6 @@ class PageRepository implements LoggerAwareInterface
                 $excludedDoktypes = [
                     self::DOKTYPE_SPACER,
                     self::DOKTYPE_SYSFOLDER,
-                    self::DOKTYPE_RECYCLER,
                     self::DOKTYPE_BE_USER_SECTION,
                 ];
                 $savedWhereGroupAccess = '';
@@ -1230,10 +1226,6 @@ class PageRepository implements LoggerAwareInterface
                     $queryBuilder->expr()->eq(
                         'uid',
                         $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->neq(
-                        'doktype',
-                        $queryBuilder->createNamedParameter(self::DOKTYPE_RECYCLER, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()
@@ -1263,10 +1255,6 @@ class PageRepository implements LoggerAwareInterface
                     $queryBuilder->expr()->eq(
                         'uid',
                         $queryBuilder->createNamedParameter($mount_pid, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->neq(
-                        'doktype',
-                        $queryBuilder->createNamedParameter(self::DOKTYPE_RECYCLER, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()
@@ -1821,7 +1809,7 @@ class PageRepository implements LoggerAwareInterface
      *
      * The only pages WHICH PREVENTS DESCENDING in a branch are
      * - deleted pages,
-     * - pages in a recycler (doktype = 255) or of the Backend User Section (doktype = 6) type
+     * - pages of the Backend User Section (doktype = 6) type
      * - pages that have the extendToSubpages set, WHERE starttime, endtime, hidden or fe_group
      *   would hide the pages.
      *
@@ -1963,7 +1951,6 @@ class PageRepository implements LoggerAwareInterface
             $versionState = VersionState::cast($row['t3ver_state']);
             $this->versionOL('pages', $row, false, $bypassEnableFieldsCheck);
             if ($row === false
-                || (int)$row['doktype'] === self::DOKTYPE_RECYCLER
                 || (int)$row['doktype'] === self::DOKTYPE_BE_USER_SECTION
                 || $versionState->indicatesPlaceholder()
             ) {
@@ -1971,7 +1958,7 @@ class PageRepository implements LoggerAwareInterface
                 // Doing this after the overlay to make sure changes
                 // in the overlay are respected.
                 // However, we do not process pages below of and
-                // including of type recycler and BE user section
+                // including of type BE user section
                 continue;
             }
             // Find mount point if any:
@@ -2008,7 +1995,6 @@ class PageRepository implements LoggerAwareInterface
                 $this->versionOL('pages', $row);
                 $versionState = VersionState::cast($row['t3ver_state']);
                 if ($row === false
-                    || (int)$row['doktype'] === self::DOKTYPE_RECYCLER
                     || (int)$row['doktype'] === self::DOKTYPE_BE_USER_SECTION
                     || $versionState->indicatesPlaceholder()
                 ) {

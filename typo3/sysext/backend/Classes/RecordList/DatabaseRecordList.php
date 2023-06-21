@@ -3142,7 +3142,7 @@ class DatabaseRecordList
 
     /**
      * Returns the configuration of mod.web_list.noViewWithDokTypes or the
-     * default value 254 (Sys Folders) and 255 (Recycler), if not set.
+     * default value 254 (Sys Folders) and 199 (Spacer), if not set.
      */
     protected function getNoViewWithDokTypes(array $tsConfig): array
     {
@@ -3152,7 +3152,6 @@ class DatabaseRecordList
             $noViewDokTypes = [
                 PageRepository::DOKTYPE_SPACER,
                 PageRepository::DOKTYPE_SYSFOLDER,
-                PageRepository::DOKTYPE_RECYCLER,
             ];
         }
 

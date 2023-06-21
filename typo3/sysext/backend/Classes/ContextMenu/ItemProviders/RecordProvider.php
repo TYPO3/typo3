@@ -635,7 +635,6 @@ class RecordProvider extends AbstractProvider
         return !in_array((int)$this->pageRecord['doktype'], [
             PageRepository::DOKTYPE_SPACER,
             PageRepository::DOKTYPE_SYSFOLDER,
-            PageRepository::DOKTYPE_RECYCLER,
         ], true);
     }
 
