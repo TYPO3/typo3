@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
-use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
+use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 
 /**
  * Additional BE fields for ip address anonymization task.
@@ -59,11 +59,11 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
         $options = [];
         // Add an empty option on top if an existing task is configured
         // with a table that can not be found in configuration anymore
-        if ($task && !array_key_exists($task->table, $tableConfiguration) && $currentSchedulerModuleAction->equals(Action::EDIT)) {
+        if ($task && !array_key_exists($task->table, $tableConfiguration) && $currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
             $options[] = '<option value="" selected="selected"></option>';
         }
         foreach ($tableConfiguration as $tableName => $configuration) {
-            if ($currentSchedulerModuleAction->equals(Action::ADD) && empty($options)) {
+            if ($currentSchedulerModuleAction === SchedulerManagementAction::ADD && empty($options)) {
                 // Select first table by default if adding a new task
                 $options[] = '<option value="' . $tableName . '" selected="selected">' . $tableName . '</option>';
             } elseif ($task && $task->table === $tableName) {

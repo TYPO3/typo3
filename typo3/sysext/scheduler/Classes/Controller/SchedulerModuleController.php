@@ -43,9 +43,9 @@ use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\Scheduler;
+use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
-use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 
@@ -57,7 +57,7 @@ use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 #[BackendController]
 final class SchedulerModuleController
 {
-    protected Action $currentAction;
+    protected SchedulerManagementAction $currentAction;
 
     public function __construct(
         protected readonly Scheduler $scheduler,
@@ -132,7 +132,9 @@ final class SchedulerModuleController
             return $this->renderListTasksView($view, $moduleData);
         }
 
-        if (($parsedBody['action'] ?? '') === Action::ADD
+        $parsedAction = SchedulerManagementAction::tryFrom($parsedBody['action'] ?? '') ?? SchedulerManagementAction::LIST;
+
+        if ($parsedAction === SchedulerManagementAction::ADD
             && in_array($parsedBody['CMD'] ?? '', ['save', 'saveclose', 'close'], true)
         ) {
             // Received data for adding a new task - validate, persist, render requested 'next' action.
@@ -152,7 +154,7 @@ final class SchedulerModuleController
             }
         }
 
-        if (($parsedBody['action'] ?? '') === Action::EDIT
+        if ($parsedAction === SchedulerManagementAction::EDIT
             && in_array($parsedBody['CMD'] ?? '', ['save', 'close', 'saveclose', 'new'], true)
         ) {
             // Received data for updating existing task - validate, persist, render requested 'next' action.
@@ -175,11 +177,12 @@ final class SchedulerModuleController
             }
         }
 
+        $queryAction = SchedulerManagementAction::tryFrom($queryParams['action'] ?? '') ?? SchedulerManagementAction::LIST;
         // Add new task form / edit existing task form.
-        if (($queryParams['action'] ?? '') === Action::ADD) {
+        if ($queryAction === SchedulerManagementAction::ADD) {
             return $this->renderAddTaskFormView($view, $request);
         }
-        if (($queryParams['action'] ?? '') === Action::EDIT) {
+        if ($queryAction === SchedulerManagementAction::EDIT) {
             return $this->renderEditTaskFormView($view, $request);
         }
 
@@ -190,7 +193,7 @@ final class SchedulerModuleController
     /**
      * This is (unfortunately) used by additional field providers to distinct between "create new task" and "edit task".
      */
-    public function getCurrentAction(): Action
+    public function getCurrentAction(): SchedulerManagementAction
     {
         return $this->currentAction;
     }
@@ -348,7 +351,7 @@ final class SchedulerModuleController
         ksort($groupedClasses);
 
         // Additional field provider access $this->getCurrentAction() - Init it for them
-        $this->currentAction = new Action(Action::ADD);
+        $this->currentAction = SchedulerManagementAction::ADD;
         // Get the extra fields to display for each task that needs some.
         $additionalFields = [];
         foreach ($registeredClasses as $class => $registrationInfo) {
@@ -451,7 +454,7 @@ final class SchedulerModuleController
         ];
 
         // Additional field provider access $this->getCurrentAction() - Init it for them
-        $this->currentAction = new Action(Action::EDIT);
+        $this->currentAction = SchedulerManagementAction::EDIT;
         $additionalFields = [];
         if (!empty($registeredClasses[$class]['provider'])) {
             $providerObject = GeneralUtility::makeInstance($registeredClasses[$class]['provider']);

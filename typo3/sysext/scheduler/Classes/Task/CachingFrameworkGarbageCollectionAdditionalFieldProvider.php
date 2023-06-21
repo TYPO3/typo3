@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
-use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
+use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 
 /**
  * Additional BE fields for caching framework garbage collection task.
@@ -44,12 +44,12 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractA
         // Initialize selected fields
         if (empty($taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'])) {
             $taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'] = [];
-            if ($currentSchedulerModuleAction->equals(Action::ADD)) {
+            if ($currentSchedulerModuleAction === SchedulerManagementAction::ADD) {
                 // In case of new task, set to dbBackend if it's available
                 if (in_array(Typo3DatabaseBackend::class, $this->getRegisteredBackends())) {
                     $taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'][] = Typo3DatabaseBackend::class;
                 }
-            } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+            } elseif ($currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
                 // In case of editing the task, set to currently selected value
                 $taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'] = $task->selectedBackends;
             }

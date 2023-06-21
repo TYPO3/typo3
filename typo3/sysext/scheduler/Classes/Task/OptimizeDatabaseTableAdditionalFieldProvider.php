@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
-use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
+use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 
 /**
  * Additional BE fields for optimize database table task.
@@ -50,10 +50,10 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
         // Initialize selected fields
         if (empty($taskInfo['scheduler_optimizeDatabaseTables_selectedTables'])) {
             $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = [];
-            if ($currentSchedulerModuleAction->equals(Action::ADD)) {
+            if ($currentSchedulerModuleAction === SchedulerManagementAction::ADD) {
                 // In case of new task, select no tables by default
                 $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = [];
-            } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+            } elseif ($currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
                 // In case of editing the task, set to currently selected value
                 $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = $task->selectedTables;
             }

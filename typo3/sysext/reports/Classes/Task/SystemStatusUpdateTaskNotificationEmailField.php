@@ -20,8 +20,8 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
-use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * Additional field to set the notification email address(es) for system health
@@ -56,7 +56,7 @@ class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFie
     {
         $currentSchedulerModuleAction = $schedulerModule->getCurrentAction();
 
-        if ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+        if ($currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
             $taskInfo[$this->fieldPrefix . 'NotificationEmail'] = $task->getNotificationEmail();
             $taskInfo[$this->fieldPrefix . 'NotificationAll'] = $task->getNotificationAll();
         }

@@ -23,8 +23,8 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
-use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * This class provides Scheduler Additional Field plugin implementation
@@ -55,63 +55,63 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         $lang = $this->getLanguageService();
 
         if (empty($taskInfo['configuration'])) {
-            if ($currentSchedulerModuleAction->equals(Action::ADD)) {
+            if ($currentSchedulerModuleAction === SchedulerManagementAction::ADD) {
                 $taskInfo['configuration'] = $taskInfo['linkvalidator']['configuration'] ?? '';
-            } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+            } elseif ($currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
                 $taskInfo['configuration'] = $task->getConfiguration();
             } else {
                 $taskInfo['configuration'] = $task->getConfiguration();
             }
         }
         if (empty($taskInfo['depth'])) {
-            if ($currentSchedulerModuleAction->equals(Action::ADD)) {
+            if ($currentSchedulerModuleAction === SchedulerManagementAction::ADD) {
                 $taskInfo['depth'] = $taskInfo['linkvalidator']['depth'] ?? 0;
-            } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+            } elseif ($currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
                 $taskInfo['depth'] = $task->getDepth();
             } else {
                 $taskInfo['depth'] = $task->getDepth();
             }
         }
         if (empty($taskInfo['page'])) {
-            if ($currentSchedulerModuleAction->equals(Action::ADD)) {
+            if ($currentSchedulerModuleAction === SchedulerManagementAction::ADD) {
                 $taskInfo['page'] = $taskInfo['linkvalidator']['page'] ?? 0;
-            } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+            } elseif ($currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
                 $taskInfo['page'] = $task->getPage();
             } else {
                 $taskInfo['page'] = $task->getPage();
             }
         }
         if (empty($taskInfo['languages'])) {
-            if ($currentSchedulerModuleAction->equals(Action::ADD)) {
+            if ($currentSchedulerModuleAction === SchedulerManagementAction::ADD) {
                 $taskInfo['languages'] = $taskInfo['linkvalidator']['languages'] ?? '';
-            } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+            } elseif ($currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
                 $taskInfo['languages'] = $task->getLanguages();
             } else {
                 $taskInfo['languages'] = $task->getLanguages();
             }
         }
         if (empty($taskInfo['email'])) {
-            if ($currentSchedulerModuleAction->equals(Action::ADD)) {
+            if ($currentSchedulerModuleAction === SchedulerManagementAction::ADD) {
                 $taskInfo['email'] = $taskInfo['linkvalidator']['email'] ?? '';
-            } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+            } elseif ($currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
                 $taskInfo['email'] = $task->getEmail();
             } else {
                 $taskInfo['email'] = $task->getEmail();
             }
         }
         if (empty($taskInfo['emailOnBrokenLinkOnly'])) {
-            if ($currentSchedulerModuleAction->equals(Action::ADD)) {
+            if ($currentSchedulerModuleAction === SchedulerManagementAction::ADD) {
                 $taskInfo['emailOnBrokenLinkOnly'] = ($taskInfo['linkvalidator']['emailOnBrokenLinkOnly'] ?? false) ? (bool)$taskInfo['linkvalidator']['emailOnBrokenLinkOnly'] : true;
-            } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+            } elseif ($currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
                 $taskInfo['emailOnBrokenLinkOnly'] = $task->getEmailOnBrokenLinkOnly();
             } else {
                 $taskInfo['emailOnBrokenLinkOnly'] = $task->getEmailOnBrokenLinkOnly();
             }
         }
         if (empty($taskInfo['emailTemplateName'])) {
-            if ($currentSchedulerModuleAction->equals(Action::ADD)) {
+            if ($currentSchedulerModuleAction === SchedulerManagementAction::ADD) {
                 $taskInfo['emailTemplateName'] = ($taskInfo['linkvalidator']['emailTemplateName'] ?? false) ? $taskInfo['linkvalidator']['emailTemplateName'] : '';
-            } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+            } elseif ($currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
                 $taskInfo['emailTemplateName'] = $task->getEmailTemplateName();
             } else {
                 $taskInfo['emailTemplateName'] = $task->getEmailTemplateName();

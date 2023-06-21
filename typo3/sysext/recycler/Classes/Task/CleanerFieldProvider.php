@@ -19,8 +19,8 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
-use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * A task that should be run regularly that deletes
@@ -41,7 +41,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
     {
         $currentSchedulerModuleAction = $schedulerModule->getCurrentAction();
 
-        if ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+        if ($currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
             $taskInfo['RecyclerCleanerTCA'] = $task->getTcaTables();
             $taskInfo['RecyclerCleanerPeriod'] = $task->getPeriod();
         }

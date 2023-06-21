@@ -15,18 +15,15 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Scheduler\Task\Enumeration;
-
-use TYPO3\CMS\Core\Type\Enumeration;
+namespace TYPO3\CMS\Scheduler;
 
 /**
  * List of possible scheduler actions. Additional field providers use this.
- * Set by SchedulerModuleController.
+ * Used by SchedulerModuleController.
  */
-final class Action extends Enumeration
+enum SchedulerManagementAction: string
 {
-    public const __default = self::LIST;
-    public const ADD = 'add';
-    public const EDIT = 'edit';
-    public const LIST = 'list';
+    case ADD = 'add';
+    case EDIT = 'edit';
+    case LIST = 'list';
 }

@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
-use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
+use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 
 /**
  * Additional BE fields for recycler garbage collection task.
@@ -53,7 +53,7 @@ class RecyclerGarbageCollectionAdditionalFieldProvider extends AbstractAdditiona
         // Initialize selected fields
         if (!isset($taskInfo['scheduler_recyclerGarbageCollection_numberOfDays'])) {
             $taskInfo['scheduler_recyclerGarbageCollection_numberOfDays'] = $this->defaultNumberOfDays;
-            if ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+            if ($currentSchedulerModuleAction === SchedulerManagementAction::EDIT) {
                 $taskInfo['scheduler_recyclerGarbageCollection_numberOfDays'] = $task->numberOfDays;
             }
         }
