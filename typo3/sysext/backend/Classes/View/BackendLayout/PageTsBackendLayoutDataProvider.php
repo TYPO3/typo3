@@ -60,14 +60,13 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  * }
  *
  * @internal Do not extend, change providers using $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']
- * @todo: Mark final in v13 and change protected to private.
  */
-class PageTsBackendLayoutDataProvider implements DataProviderInterface
+final class PageTsBackendLayoutDataProvider implements DataProviderInterface
 {
     /**
      * Internal Backend Layout stack
      */
-    protected array $backendLayouts = [];
+    private array $backendLayouts = [];
 
     public function addBackendLayouts(DataProviderContext $dataProviderContext, BackendLayoutCollection $backendLayoutCollection): void
     {
@@ -97,7 +96,7 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
      * Gets page TSconfig from DataProviderContext if available from context,
      * else fetch from BackendUtility by pageId.
      */
-    protected function getPageTsConfig(?DataProviderContext $dataProviderContext, ?int $pageId): array
+    private function getPageTsConfig(?DataProviderContext $dataProviderContext, ?int $pageId): array
     {
         if ($dataProviderContext === null && $pageId === null) {
             throw new \RuntimeException('Either $dataProviderContext or $pageId must be provided', 1676380686);
@@ -111,7 +110,7 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
     /**
      * Generate the Backend Layout configs
      */
-    protected function generateBackendLayouts(?DataProviderContext $dataProviderContext, ?int $pageId)
+    private function generateBackendLayouts(?DataProviderContext $dataProviderContext, ?int $pageId): void
     {
         $pageTsConfig = $this->getPageTsConfig($dataProviderContext, $pageId);
         if (!empty($pageTsConfig['mod.']['web_layout.']['BackendLayouts.'])) {
@@ -125,12 +124,8 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
 
     /**
      * Generates a Backend Layout from page TSconfig array
-     *
-     * @param string $identifier
-     * @param array $data
-     * @return mixed
      */
-    protected function generateBackendLayoutFromTsConfig($identifier, $data)
+    private function generateBackendLayoutFromTsConfig(string $identifier, array $data): ?array
     {
         $backendLayout = [];
         if (!empty($data['config.']['backend_layout.']) && is_array($data['config.']['backend_layout.'])) {
@@ -150,10 +145,8 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
 
     /**
      * Attach Backend Layout to internal Stack
-     *
-     * @param mixed $backendLayout
      */
-    protected function attachBackendLayout($backendLayout = null)
+    private function attachBackendLayout(mixed $backendLayout = null)
     {
         if ($backendLayout) {
             $this->backendLayouts[$backendLayout['uid']] = $backendLayout;
@@ -162,10 +155,8 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
 
     /**
      * Creates a new backend layout using the given record data.
-     *
-     * @return BackendLayout
      */
-    protected function createBackendLayout(array $data)
+    private function createBackendLayout(array $data): BackendLayout
     {
         $backendLayout = BackendLayout::create($data['uid'], $data['title'], $data['config']);
         $backendLayout->setIconPath($this->getIconPath($data['icon']));
@@ -177,9 +168,8 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
      * Gets and sanitizes the icon path.
      *
      * @param string $icon Name of the icon file
-     * @return string
      */
-    protected function getIconPath($icon)
+    private function getIconPath(string $icon): string
     {
         $iconPath = '';
         if (!empty($icon)) {
