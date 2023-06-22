@@ -2846,16 +2846,6 @@ parameters:
 			path: ../../typo3/sysext/linkvalidator/Tests/Functional/Repository/BrokenLinkRepositoryTest.php
 
 		-
-			message: "#^Parameter \\#2 \\$softRefEntry of method TYPO3\\\\CMS\\\\Linkvalidator\\\\Linktype\\\\ExternalLinktype\\:\\:checkLink\\(\\) expects array, null given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/linkvalidator/Tests/Unit/Linktype/ExternalLinktypeTest.php
-
-		-
-			message: "#^Parameter \\#3 \\$reference of method TYPO3\\\\CMS\\\\Linkvalidator\\\\Linktype\\\\ExternalLinktype\\:\\:checkLink\\(\\) expects TYPO3\\\\CMS\\\\Linkvalidator\\\\LinkAnalyzer, null given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/linkvalidator/Tests/Unit/Linktype/ExternalLinktypeTest.php
-
-		-
 			message: "#^Binary operation \"\\>\\>\" between string and 1 results in an error\\.$#"
 			count: 2
 			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php

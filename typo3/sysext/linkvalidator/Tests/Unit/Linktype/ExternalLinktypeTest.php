@@ -63,7 +63,7 @@ final class ExternalLinktypeTest extends UnitTestCase
             ->willThrowException($clientExceptionMock);
         $subject = new ExternalLinktype($requestFactoryMock);
 
-        $result = $subject->checkLink($url, null, null);
+        $result = $subject->checkLink($url, [], $this->getMockBuilder(LinkAnalyzer::class)->disableOriginalConstructor()->getMock());
 
         self::assertFalse($result);
     }
@@ -90,7 +90,7 @@ final class ExternalLinktypeTest extends UnitTestCase
 
         $subject = new ExternalLinktype($requestFactoryMock);
 
-        $subject->checkLink($url, null, null);
+        $subject->checkLink($url, [], $this->getMockBuilder(LinkAnalyzer::class)->disableOriginalConstructor()->getMock());
         $errorParams = $subject->getErrorParams();
 
         self::assertSame($errorParams['errorType'], 'httpStatusCode');

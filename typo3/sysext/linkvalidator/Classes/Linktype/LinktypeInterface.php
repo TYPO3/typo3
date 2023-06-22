@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +16,8 @@
  */
 
 namespace TYPO3\CMS\Linkvalidator\Linktype;
+
+use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 
 /**
  * This class provides interface implementation.
@@ -33,7 +37,7 @@ interface LinktypeInterface
      * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance
      * @return bool TRUE on success or FALSE on error
      */
-    public function checkLink($url, $softRefEntry, $reference);
+    public function checkLink(string $url, array $softRefEntry, LinkAnalyzer $reference): bool;
 
     /**
      * Function to override config of Linktype. Should be used only
@@ -49,24 +53,22 @@ interface LinktypeInterface
      * @param string $key Validator hook name
      * @return string Fetched type
      */
-    public function fetchType($value, $type, $key);
+    public function fetchType(array $value, string $type, string $key): string;
 
     /**
      * Get the value of the private property errorParams.
      *
      * @return array All parameters needed for the rendering of the error message
-     * @todo change return type to array in TYPO3 v13
      */
-    public function getErrorParams();
+    public function getErrorParams(): array;
 
     /**
      * Construct a valid Url for browser output
      *
      * @param array $row Broken link record
      * @return string Parsed broken url
-     * @todo change input parameter type to array in TYPO3 v13
      */
-    public function getBrokenUrl($row);
+    public function getBrokenUrl(array $row): string;
 
     /**
      * Generate the localized error message from the error params saved from the parsing
@@ -74,5 +76,5 @@ interface LinktypeInterface
      * @param array $errorParams All parameters needed for the rendering of the error message
      * @return string Validation error message
      */
-    public function getErrorMessage($errorParams);
+    public function getErrorMessage(array $errorParams): string;
 }

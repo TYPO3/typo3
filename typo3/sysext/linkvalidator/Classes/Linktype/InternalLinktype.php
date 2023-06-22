@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,6 +21,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 
 /**
  * This class provides Check Internal Links plugin implementation
@@ -69,7 +72,7 @@ class InternalLinktype extends AbstractLinktype
      * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance
      * @return bool TRUE on success or FALSE on error
      */
-    public function checkLink($url, $softRefEntry, $reference)
+    public function checkLink(string $url, array $softRefEntry, LinkAnalyzer $reference): bool
     {
         $page = null;
         $anchor = '';
@@ -231,9 +234,8 @@ class InternalLinktype extends AbstractLinktype
      *
      * @param array $errorParams All parameters needed for the rendering of the error message
      * @return string Validation error message
-     * @todo change input parameter type to array in TYPO3 v13
      */
-    public function getErrorMessage($errorParams)
+    public function getErrorMessage(array $errorParams): string
     {
         $lang = $this->getLanguageService();
         $errorType = $errorParams['errorType'] ?? '';
@@ -347,7 +349,7 @@ class InternalLinktype extends AbstractLinktype
      * @param array $row Broken link record
      * @return string Parsed broken url
      */
-    public function getBrokenUrl($row)
+    public function getBrokenUrl(array $row): string
     {
         $domain = rtrim($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl(), '/');
         return $domain . '/index.php?id=' . $row['url'];

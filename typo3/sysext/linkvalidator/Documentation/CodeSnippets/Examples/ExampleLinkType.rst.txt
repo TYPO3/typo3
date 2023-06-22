@@ -7,14 +7,14 @@
     {
         protected string $identifier = 'example';
 
-        public function checkLink($url, $softRefEntry, $reference)
+        public function checkLink(string $url, array $softRefEntry, LinkAnalyzer $reference): bool
         {
             $isValidUrl = false;
             // TODO: Implement checkLink() method.
             return $isValidUrl;
         }
 
-        public function getErrorMessage($errorParams)
+        public function getErrorMessage(array $errorParams): string
         {
             $lang = $this->getLanguageService();
             switch ($errorParams['errno'] ?? 0) {

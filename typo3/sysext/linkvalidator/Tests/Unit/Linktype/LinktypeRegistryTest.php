@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Unit\Linktype;
 
+use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -84,26 +85,26 @@ final class LinktypeRegistryTest extends UnitTestCase
             {
                 return $this->identifier;
             }
-            public function checkLink($url, $softRefEntry, $reference)
+            public function checkLink(string $url, array $softRefEntry, LinkAnalyzer $reference): bool
             {
                 return true;
             }
             public function setAdditionalConfig(array $config): void
             {
             }
-            public function fetchType($value, $type, $key)
+            public function fetchType(array $value, string $type, string $key): string
             {
                 return '';
             }
-            public function getErrorParams()
+            public function getErrorParams(): array
             {
                 return [];
             }
-            public function getBrokenUrl($row)
+            public function getBrokenUrl(array $row): string
             {
                 return '';
             }
-            public function getErrorMessage($errorParams)
+            public function getErrorMessage(array $errorParams): string
             {
                 return '';
             }
