@@ -702,6 +702,14 @@ return [
                 ],
             ],
         ],
+        'number_7' => [
+            'label' => 'number_7',
+            'description' => 'readonly=1',
+            'config' => [
+                'type' => 'number',
+                'readOnly' => 1,
+            ],
+        ],
 
         'text_1' => [
             'l10n_mode' => 'prefixLangTitle description',
@@ -1676,7 +1684,7 @@ backend_layout {
                 --div--;color,
                     color_1,color_2,color_3,
                 --div--;number,
-                    number_1,number_2,number_3,number_4,number_5,number_6,
+                    number_1, number_2, number_3, number_4, number_5, number_6, number_7,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,

@@ -125,6 +125,7 @@ CREATE TABLE tx_styleguide_elements_basic (
     number_4 int(11) DEFAULT '0' NOT NULL,
     number_5 text,
     number_6 int(11) DEFAULT '0' NOT NULL,
+    number_7 int(11) DEFAULT '0' NOT NULL,
 
     inputdatetime_1 text,
     inputdatetime_2 date,
