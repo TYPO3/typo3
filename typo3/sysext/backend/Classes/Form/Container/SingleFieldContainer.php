@@ -149,28 +149,6 @@ class SingleFieldContainer extends AbstractContainer
     }
 
     /**
-     * Checks if the $table is the child of an inline type AND the $field is the label field of this table.
-     * This function is used to dynamically update the label while editing. This has no effect on labels,
-     * that were processed by a FormEngine-hook on saving.
-     *
-     * @param string $table The table to check
-     * @param string $field The field on this table to check
-     * @return bool Is inline child and field is responsible for the label
-     */
-    protected function isInlineChildAndLabelField($table, $field)
-    {
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
-        $level = $inlineStackProcessor->getStructureLevel(-1);
-        if ($level['config']['foreign_label']) {
-            $label = $level['config']['foreign_label'];
-        } else {
-            $label = $this->data['processedTca']['ctrl']['label'];
-        }
-        return $level['config']['foreign_table'] === $table && $label === $field;
-    }
-
-    /**
      * Rendering of inline fields should be skipped under certain circumstances
      *
      * @return bool TRUE if field should be skipped based on inline configuration
