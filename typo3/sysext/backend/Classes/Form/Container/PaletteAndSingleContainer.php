@@ -184,12 +184,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                     $element['paletteDescription']
                 );
             } else {
-                // Return raw HTML only in case of user element with no wrapping requested
-                if ($this->isUserNoTableWrappingField($element)) {
-                    $content[] = $element['fieldHtml'];
-                } else {
-                    $content[] = $this->fieldSetWrap($this->wrapSingleFieldContentWithLabelAndOuterDiv($element));
-                }
+                $content[] = $this->fieldSetWrap($this->wrapSingleFieldContentWithLabelAndOuterDiv($element));
             }
         }
 
@@ -405,24 +400,6 @@ class PaletteAndSingleContainer extends AbstractContainer
         $content[] = '</div>';
 
         return implode(LF, $content);
-    }
-
-    /**
-     * TRUE if field is of type user and to wrapping is requested
-     *
-     * @param array $element Current element from "target structure" array
-     * @return bool TRUE if user and noTableWrapping is set
-     */
-    protected function isUserNoTableWrappingField($element)
-    {
-        $fieldName = $element['fieldName'];
-        if (
-            ($this->data['processedTca']['columns'][$fieldName]['config']['type'] ?? '') === 'user'
-            && !empty($this->data['processedTca']['columns'][$fieldName]['config']['noTableWrapping'])
-        ) {
-            return true;
-        }
-        return false;
     }
 
     protected function getLanguageService(): LanguageService
