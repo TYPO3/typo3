@@ -50,59 +50,64 @@ class PaletteAndSingleContainer extends AbstractContainer
          * other parts of the return array from children except html are accumulated in
          * $this->resultArray
          *
-        $targetStructure = array(
-            0 => array(
+        $targetStructure = [
+            0 => [
                 'type' => 'palette',
                 'fieldName' => 'palette1',
-                'fieldLabel' => 'palette1',
-                'elements' => array(
-                    0 => array(
+                'paletteLegend' => 'palette1',
+                'paletteDescription' => 'palette1Description',
+                'elements' => [
+                    0 => [
                         'type' => 'single',
                         'fieldName' => 'paletteName',
+                        // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
                         'fieldLabel' => 'element1',
                         'fieldHtml' => 'element1',
                     ),
-                    1 => array(
+                    1 => [
                         'type' => 'linebreak',
                     ),
-                    2 => array(
+                    2 => [
                         'type' => 'single',
                         'fieldName' => 'paletteName',
+                        // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
                         'fieldLabel' => 'element2',
                         'fieldHtml' => 'element2',
-                    ),
-                ),
-                'paletteDescription' => 'palette1Description',
-            ),
-            1 => array(
+                    ],
+                ],
+            ],
+            1 => [
                 'type' => 'single',
                 'fieldName' => 'element3',
+                // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
                 'fieldLabel' => 'element3',
                 'fieldHtml' => 'element3',
-            ),
-            2 => array(
-                'type' => 'palette2',
+            ],
+            2 => [
+                'type' => 'palette',
                 'fieldName' => 'palette2',
-                'fieldLabel' => '', // Palette label is optional
-                'elements' => array(
-                    0 => array(
+                'paletteLegend' => '', // Palette label is optional
+                'paletteDescription' => '', // Palette description is optional
+                'elements' => [
+                    0 => [
                         'type' => 'single',
                         'fieldName' => 'element4',
+                        // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
                         'fieldLabel' => 'element4',
                         'fieldHtml' => 'element4',
-                    ),
-                    1 => array(
+                    ],
+                    1 => [
                         'type' => 'linebreak',
-                    ),
-                    2 => array(
+                    ],
+                    2 => [
                         'type' => 'single',
                         'fieldName' => 'element5',
+                        // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
                         'fieldLabel' => 'element5',
                         'fieldHtml' => 'element5',
-                    ),
-                ),
-                'paletteDescription' => '', // Palette description is optional
-            ),
+                    ],
+                ],
+            ],
         );
          */
 
@@ -118,36 +123,30 @@ class PaletteAndSingleContainer extends AbstractContainer
                 $paletteElementArray = $this->createPaletteContentArray($fieldConfiguration['paletteName']);
                 if (!empty($paletteElementArray)) {
                     $mainStructureCounter++;
-
                     // If there is no label in ['types']['aType']['showitem'] for this palette: "--palette--;;aPalette",
                     // then use ['palettes']['aPalette']['label'] if given.
-                    $paletteLabel = $fieldConfiguration['fieldLabel'];
-                    if ($paletteLabel === null && !empty($this->data['processedTca']['palettes'][$fieldConfiguration['paletteName']]['label'])) {
-                        $paletteLabel = $this->data['processedTca']['palettes'][$fieldConfiguration['paletteName']]['label'];
+                    $paletteLegend = $fieldConfiguration['fieldLabel'];
+                    if ($paletteLegend === null && !empty($this->data['processedTca']['palettes'][$fieldConfiguration['paletteName']]['label'])) {
+                        $paletteLegend = $this->data['processedTca']['palettes'][$fieldConfiguration['paletteName']]['label'];
                     }
-
                     // Get description of palette.
                     $paletteDescription = $this->data['processedTca']['palettes'][$fieldConfiguration['paletteName']]['description'] ?? '';
-
                     $targetStructure[$mainStructureCounter] = [
                         'type' => 'palette',
                         'fieldName' => $fieldConfiguration['paletteName'],
-                        'fieldLabel' => $languageService->sL($paletteLabel),
-                        'elements' => $paletteElementArray,
+                        'paletteLegend' => $languageService->sL($paletteLegend),
                         'paletteDescription' => $languageService->sL($paletteDescription),
+                        'elements' => $paletteElementArray,
                     ];
                 }
             } else {
                 if (!is_array($this->data['processedTca']['columns'][$fieldName] ?? null)) {
                     continue;
                 }
-
                 $options = $this->data;
                 $options['fieldName'] = $fieldName;
-
                 $options['renderType'] = 'singleFieldContainer';
                 $childResultArray = $this->nodeFactory->create($options)->render();
-
                 if (!empty($childResultArray['html'])) {
                     $mainStructureCounter++;
                     $fieldLabel = '';
@@ -157,11 +156,11 @@ class PaletteAndSingleContainer extends AbstractContainer
                     $targetStructure[$mainStructureCounter] = [
                         'type' => 'single',
                         'fieldName' => $fieldConfiguration['fieldName'],
+                        // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
                         'fieldLabel' => $fieldLabel,
                         'fieldHtml' => $childResultArray['html'],
                     ];
                 }
-
                 $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $childResultArray, false);
             }
         }
@@ -171,20 +170,24 @@ class PaletteAndSingleContainer extends AbstractContainer
         foreach ($targetStructure as $element) {
             if ($element['type'] === 'palette') {
                 $paletteName = $element['fieldName'];
-                $paletteElementsHtml = $this->renderInnerPaletteContent($element);
-
                 $isHiddenPalette = !empty($this->data['processedTca']['palettes'][$paletteName]['isHiddenPalette']);
-
-                $paletteElementsHtml = '<div class="row">' . $paletteElementsHtml . '</div>';
-
-                $content[] = $this->fieldSetWrap(
-                    $paletteElementsHtml,
-                    $isHiddenPalette,
-                    $element['fieldLabel'],
-                    $element['paletteDescription']
-                );
+                $html = [];
+                $html[] = '<fieldset class="form-section' . ($isHiddenPalette ? ' hide' : '') . '">';
+                if (!empty($element['paletteLegend'])) {
+                    $html[] = '<h4 class="form-section-headline">' . htmlspecialchars($element['paletteLegend']) . '</h4>';
+                }
+                if (!empty($element['paletteDescription'])) {
+                    $html[] = '<p class="form-section-description text-body-secondary">' . htmlspecialchars($element['paletteDescription']) . '</p>';
+                }
+                $html[] = '<div class="row">' . $this->renderInnerPaletteContent($element) . '</div>';
+                $html[] = '</fieldset>';
+                $content[] = implode(LF, $html);
             } else {
-                $content[] = $this->fieldSetWrap($this->wrapSingleFieldContentWithLabelAndOuterDiv($element));
+                $html = [];
+                $html[] = '<fieldset class="form-section">';
+                $html[] = $this->wrapSingleFieldContentWithLabelAndOuterDiv($element);
+                $html[] = '</fieldset>';
+                $content[] = implode(LF, $html);
             }
         }
 
@@ -330,38 +333,6 @@ class PaletteAndSingleContainer extends AbstractContainer
             }
         }
 
-        return implode(LF, $result);
-    }
-
-    /**
-     * Wrap content in a field set
-     *
-     * @param string $content Incoming content
-     * @param bool $paletteHidden TRUE if the palette is hidden
-     * @param string $label Given label
-     * @param string $description Given decription
-     * @return string Wrapped content
-     */
-    protected function fieldSetWrap($content, $paletteHidden = false, $label = '', $description = '')
-    {
-        $fieldSetClass = 'form-section';
-        if ($paletteHidden) {
-            $fieldSetClass .= ' hide';
-        }
-
-        $result = [];
-        $result[] = '<fieldset class="' . $fieldSetClass . '">';
-
-        if (!empty($label)) {
-            $result[] = '<h4 class="form-section-headline">' . htmlspecialchars($label) . '</h4>';
-        }
-
-        if (!empty($description)) {
-            $result[] = '<p class="form-section-description text-body-secondary">' . htmlspecialchars($description) . '</p>';
-        }
-
-        $result[] = $content;
-        $result[] = '</fieldset>';
         return implode(LF, $result);
     }
 
