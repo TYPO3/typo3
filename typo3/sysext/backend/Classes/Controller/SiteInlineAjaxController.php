@@ -101,6 +101,9 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
                     if ($language->getBase()->getPath() !== '/') {
                         $defaultDatabaseRow['base'] = '/' . strtolower($language->getLocale()->getName()) . '/';
                     }
+                    if ($language->getHreflang(true) !== '') {
+                        $defaultDatabaseRow['hreflang'] = $language->getHreflang();
+                    }
                     if ($language->getNavigationTitle() !== '') {
                         $defaultDatabaseRow['navigationTitle'] = $language->getNavigationTitle();
                     }

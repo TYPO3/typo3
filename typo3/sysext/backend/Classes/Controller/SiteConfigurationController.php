@@ -827,9 +827,6 @@ class SiteConfigurationController
             if (isset($languageConfiguration['iso-639-1'])) {
                 $existingLanguagesWithLegacyProperties[$languageConfiguration['languageId']]['iso-639-1'] = $languageConfiguration['iso-639-1'];
             }
-            if (isset($languageConfiguration['hreflang'])) {
-                $existingLanguagesWithLegacyProperties[$languageConfiguration['languageId']]['hreflang'] = $languageConfiguration['hreflang'];
-            }
             if (isset($languageConfiguration['direction'])) {
                 $existingLanguagesWithLegacyProperties[$languageConfiguration['languageId']]['direction'] = $languageConfiguration['direction'];
             }

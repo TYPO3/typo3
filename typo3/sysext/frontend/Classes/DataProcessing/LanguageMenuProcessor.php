@@ -180,7 +180,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
                     'language.' => [
                         'data' => 'register:languageId',
                     ],
-                    'field' => 'locale:full',
+                    'field' => 'hreflang',
                     'stdWrap.' => [
                         'wrap' => ',"hreflang":|',
                     ],

@@ -24,6 +24,9 @@
 			<trans-unit id="site_language.locale" resname="site_language.locale">
 				<source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
 			</trans-unit>
+			<trans-unit id="site_language.hreflang" resname="site_language.hreflang">
+				<source>Optional, used for "hreflang" attributes - if empty, the information is retrieved from the locale</source>
+			</trans-unit>
 			<trans-unit id="site_language.websiteTitle" resname="site_language.websiteTitle">
 				<source>With this language based Website title, you can override the Website title for this language</source>
 			</trans-unit>
