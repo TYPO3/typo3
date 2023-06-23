@@ -76,11 +76,9 @@ class SiteLanguage
     protected $twoLetterIsoCode = '';
 
     /**
-     * Language tag for this language defined by RFC 1766 / 3066 for "lang"
-     * and "hreflang" attributes
+     * Language tag for this language defined by RFC 1766 / 3066 for "hreflang" attribute
      *
      * @var string
-     * @deprecated in favor of $this->locale->getName()
      */
     protected $hreflang = '';
 
@@ -279,13 +277,13 @@ class SiteLanguage
     }
 
     /**
-     * Returns the RFC 1766 / 3066 language tag
-     * @deprecated not needed anymore, use $siteLanguage->getLocale()->getName() instead.
+     * Returns the RFC 1766 / 3066 language tag for hreflang tags
      */
-    public function getHreflang(bool $isInternalCall = false): string
+    public function getHreflang(bool $fetchCustomSetting = false): string
     {
-        if (!$isInternalCall) {
-            trigger_error('SiteLanguage->getHreflang() will be removed in TYPO3 v13.0. Use SiteLanguage->getLocale()->getName() instead.', E_USER_DEPRECATED);
+        // Ensure to check if a custom attribute is set
+        if ($fetchCustomSetting) {
+            return $this->hreflang;
         }
         return $this->hreflang ?: $this->locale->getName();
     }

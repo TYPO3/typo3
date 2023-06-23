@@ -74,6 +74,17 @@ return [
                 ],
             ],
         ],
+        'hreflang' => [
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.hreflang',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.hreflang',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'trim',
+                'size' => 6,
+                'default' => '',
+                'placeholder' => 'en-US',
+            ],
+        ],
         'enabled' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.enabled',
             'config' => [
@@ -400,7 +411,7 @@ return [
     ],
     'palettes' => [
         'default' => [
-            'showitem' => 'title, enabled, --linebreak--, locale, base',
+            'showitem' => 'title, enabled, --linebreak--, locale, hreflang, --linebreak--, base',
         ],
         'languageIdPalette' => [
             'showitem' => 'languageId',

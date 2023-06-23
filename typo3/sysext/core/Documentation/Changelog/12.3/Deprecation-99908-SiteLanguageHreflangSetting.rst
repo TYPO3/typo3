@@ -17,14 +17,9 @@ link to alternative language versions of a translated page, and to add the
 :html:`lang` attribute to the :html:`<html>` tag of a frontend page in HTML format.
 
 Since TYPO3 v12 it is not necessary to set this property in the site configuration
-anymore, and has been removed from the backend UI. The information is now automatically
-derived from the :yaml:`locale` setting of the site configuration.
-
-As a result, the amount of options in the user interface for integrators is
-reduced.
-
-The PHP method :php:`SiteLanguage->getHrefLang()` serves no purpose
-anymore and is deprecated.
+anymore. The information is now automatically
+derived from the :yaml:`locale` setting of the site configuration if not set
+in the site configuration.
 
 This also affects the TypoScript :typoscript:`getData` property
 :typoscript:`siteLanguage:hrefLang`, and the TypoScript condition

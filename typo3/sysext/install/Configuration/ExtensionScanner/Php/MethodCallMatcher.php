@@ -5498,13 +5498,6 @@ return [
             'Deprecation-99905-SiteLanguageIso-639-1Setting.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Site\Entity\SiteLanguage->getHrefLang' => [
-        'numberOfMandatoryArguments' => 0,
-        'maximumNumberOfArguments' => 0,
-        'restFiles' => [
-            'Deprecation-99908-SiteLanguageHreflangSetting.rst',
-        ],
-    ],
     'TYPO3\CMS\Core\Site\Entity\SiteLanguage->getDirection' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
