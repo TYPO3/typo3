@@ -104,6 +104,32 @@ final class QueryTest extends UnitTestCase
     /**
      * @test
      */
+    public function setLimitSetsLimit(): void
+    {
+        $this->query->setLimit(15);
+
+        self::assertSame(
+            15,
+            $this->query->getLimit()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function unsetLimitWillResetLimitToNull(): void
+    {
+        $this->query->setLimit(15);
+        $this->query->unsetLimit();
+
+        self::assertNull(
+            $this->query->getLimit()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function setOffsetAcceptsOnlyIntegers(): void
     {
         $this->expectException(\InvalidArgumentException::class);

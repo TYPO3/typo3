@@ -91,7 +91,7 @@ class Query implements QueryInterface
     protected $orderings = [];
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $limit;
 
@@ -297,14 +297,14 @@ class Query implements QueryInterface
      */
     public function unsetLimit()
     {
-        unset($this->limit);
+        $this->limit = null;
         return $this;
     }
 
     /**
      * Returns the maximum size of the result set to limit.
      *
-     * @return int
+     * @return int|null
      */
     public function getLimit()
     {
