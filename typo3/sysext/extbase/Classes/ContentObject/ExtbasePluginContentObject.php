@@ -58,6 +58,9 @@ class ExtbasePluginContentObject extends AbstractContentObject
                 'cObj' => serialize($this->cObj),
                 'type' => 'FUNC',
             ];
+        } elseif (isset($conf['stdWrap.'])) {
+            // Only executed when the element is not converted to USER_INT
+            $content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
         }
         $this->cObj->setUserObjectType(false);
         return $content;
