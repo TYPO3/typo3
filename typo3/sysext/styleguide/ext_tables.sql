@@ -204,6 +204,8 @@ CREATE TABLE tx_styleguide_elements_basic (
     user_1 text,
     user_2 text,
 
+    unknown_1 text,
+
     flex_1 text
 );
 

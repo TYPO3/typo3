@@ -1431,6 +1431,15 @@ backend_layout {
             ],
         ],
 
+        'unknown_1' => [
+            'label' => 'unknown_1',
+            'description' => 'default',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'unknown',
+            ],
+        ],
+
         'flex_1' => [
             'label' => 'flex_1',
             'config' => [
@@ -1720,6 +1729,8 @@ backend_layout {
                     passthrough_1, passthrough_2,
                 --div--;user,
                     user_1, user_2,
+                --div--;unknown,
+                    unknown_1,
                 --div--;in flex,
                     flex_1,
                 --div--;meta,
