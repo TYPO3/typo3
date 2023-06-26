@@ -8,30 +8,29 @@
         <h3>Problems Detected</h3>
     </div>
 
-    <form class="t3js-installer-environmentFolders-bad" style="display: none;">
-        <div class="typo3-install-content-spacer-small">
-            <button class="btn btn-default t3js-installer-environmentFolders-retry">
-                Scan environment again
-            </button>
-        </div>
-    </form>
-
-    <form class="t3js-installer-environmentFolders-bad" style="display: none;">
-        <div class="typo3-install-content-spacer-small">
-            <button class="btn btn-danger t3js-installer-environmentFolders-execute">
-                Continue with errors
-                <span class="t3-install-form-button-icon-negative">&nbsp;</span>
-            </button>
-        </div>
-    </form>
-
-    <form class="t3js-installer-environmentFolders-good" style="display: none;">
-        <div class="typo3-install-content-spacer-small">
-            <button class="btn btn-success t3js-installer-environmentFolders-execute">
-                No problems detected, continue with installation
-            </button>
-        </div>
-    </form>
+    <div class="row justify-content-between">
+        <form class="col-auto t3js-installer-environmentFolders-bad" style="display: none;">
+            <div class="typo3-install-content-spacer-small">
+                <button class="btn btn-default t3js-installer-environmentFolders-retry">
+                    Scan environment again
+                </button>
+            </div>
+        </form>
+        <form class="col-auto t3js-installer-environmentFolders-bad" style="display: none;">
+            <div class="typo3-install-content-spacer-small">
+                <button class="btn btn-danger t3js-installer-environmentFolders-execute float-end">
+                    Continue with errors
+                </button>
+            </div>
+        </form>
+        <form class="col-auto t3js-installer-environmentFolders-good" style="display: none;">
+            <div class="typo3-install-content-spacer-small">
+                <button class="btn btn-success t3js-installer-environmentFolders-execute float-end">
+                    No problems detected, continue with installation
+                </button>
+            </div>
+        </form>
+    </div>
 
 </div>
 </html>
