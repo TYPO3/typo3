@@ -127,6 +127,7 @@ CREATE TABLE tx_styleguide_elements_basic (
     number_7 int(11) DEFAULT '0' NOT NULL,
 
     email_1 text,
+    email_2 text,
 
     inputdatetime_1 text,
     inputdatetime_2 date,
