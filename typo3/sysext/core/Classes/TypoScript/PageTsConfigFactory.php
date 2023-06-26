@@ -83,12 +83,10 @@ final class PageTsConfigFactory
             $siteSettings = $site->getSettings();
             if (!$siteSettings->isEmpty()) {
                 $siteSettingsCacheIdentifier = 'site-settings-flat-' . hash('xxh3', json_encode($siteSettings, JSON_THROW_ON_ERROR));
-                $gotSiteSettingsFromCache = false;
-                $siteSettingsNode = $this->cache->require($siteSettingsCacheIdentifier);
-                if ($siteSettingsNode) {
-                    $gotSiteSettingsFromCache = true;
-                }
-                if (!$gotSiteSettingsFromCache) {
+                $siteSettingsCacheArray = $this->cache->require($siteSettingsCacheIdentifier);
+                if (isset($siteSettingsCacheArray['flatConstants'])) {
+                    $siteSettingsFlat = $siteSettingsCacheArray['flatConstants'];
+                } else {
                     $siteConstants = '';
                     $siteSettings = $siteSettings->getAllFlat();
                     foreach ($siteSettings as $nodeIdentifier => $value) {
@@ -104,7 +102,7 @@ final class PageTsConfigFactory
                     $includeTreeTraverserConditionVerdictAware->addVisitor($astBuilderVisitor);
                     $includeTreeTraverserConditionVerdictAware->traverse($siteSettingsTreeRoot);
                     $siteSettingsFlat = $astBuilderVisitor->getAst()->flatten();
-                    $this->cache->set($siteSettingsCacheIdentifier, 'return unserialize(\'' . addcslashes(serialize($siteSettingsFlat), '\'\\') . '\');');
+                    $this->cache->set($siteSettingsCacheIdentifier, 'return unserialize(\'' . addcslashes(serialize(['flatConstants' => $siteSettingsFlat]), '\'\\') . '\');');
                 }
             }
         }
