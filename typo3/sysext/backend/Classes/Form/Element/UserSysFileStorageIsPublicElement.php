@@ -94,7 +94,8 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
         $isPublicAsString = $isPublic ? '1' : '0';
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
-        $resultArray = $this->mergeChildReturnIntoExistingResult($this->initializeResultArray(), $fieldInformationResult, false);
+        $resultArray = $this->initializeResultArray();
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         $checkboxParameters = $this->checkBoxParams(
             $parameterArray['itemFormElName'],
@@ -129,7 +130,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
         $html[] =       '</div>';
         $html[] =   '</div>';
         $html[] = '</div>';
-        $resultArray['html'] = implode(LF, $html);
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
         return $resultArray;
     }
 }

@@ -35,12 +35,15 @@ class UserElement extends AbstractFormElement
     {
         // Render some dummy output to explain this element should usually not be called at all.
         $resultArray = $this->initializeResultArray();
-        $resultArray['html'] = '<div class="alert alert-warning">';
-        $resultArray['html'] .= 'This is dummy output: Field <code>' . htmlspecialchars($this->data['fieldName']) . '</code>';
-        $resultArray['html'] .= 'of table <code>' . htmlspecialchars($this->data['tableName']) . '</code>';
-        $resultArray['html'] .= ' is registered as type="user" element without a specific renderType.';
-        $resultArray['html'] .= ' Please look up details in TCA reference documentation for type="user".';
-        $resultArray['html'] .= '</div>';
+        $fieldName = $this->data['flexFormFieldName'] ?? $this->data['fieldName'];
+        $html = [];
+        $html[] = '<div class="alert alert-warning">';
+        $html[] = 'This is dummy output: Field <code>' . htmlspecialchars($fieldName) . '</code>';
+        $html[] = 'of table <code>' . htmlspecialchars($this->data['tableName']) . '</code>';
+        $html[] = ' is registered as type="user" element without a specific renderType.';
+        $html[] = ' Please look up details in TCA reference documentation for type="user".';
+        $html[] = '</div>';
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
         return $resultArray;
     }
 }

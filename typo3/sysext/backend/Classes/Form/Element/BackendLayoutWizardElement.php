@@ -183,7 +183,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $html[] = '</div>';
 
         $html = implode(LF, $html);
-        $resultArray['html'] = $html;
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend($html);
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
             '@typo3/backend/grid-editor.js',
             'GridEditor'

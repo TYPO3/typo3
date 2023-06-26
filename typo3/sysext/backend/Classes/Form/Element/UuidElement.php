@@ -109,6 +109,7 @@ class UuidElement extends AbstractFormElement
         }
 
         $html = [];
+        $html[] = $this->renderLabel($fieldId);
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =     $fieldInformationHtml;
         $html[] =     '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';

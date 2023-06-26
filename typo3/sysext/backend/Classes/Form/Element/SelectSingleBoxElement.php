@@ -108,7 +108,15 @@ class SelectSingleBoxElement extends AbstractFormElement
             $optionElements[] = $this->renderOptionElement($value, $item['label'], $attributes);
         }
 
-        $selectElement = $this->renderSelectElement($optionElements, $parameterArray, $config);
+        $selectItems = $parameterArray['fieldConf']['config']['items'];
+        $size = (int)($config['size'] ?? 0);
+        $autoSizeMax = (int)($config['autoSizeMax'] ?? 0);
+        if ($autoSizeMax > 0) {
+            $size = MathUtility::forceIntegerInRange($size, 1);
+            $size = MathUtility::forceIntegerInRange(count($selectItems) + 1, $size, $autoSizeMax);
+        }
+        $selectId = StringUtility::getUniqueId($size === 1 ? 'tceforms-select' : 'tceforms-multiselect');
+        $selectElement = $this->renderSelectElement($optionElements, $parameterArray, $config, $selectId, $size);
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
@@ -123,6 +131,7 @@ class SelectSingleBoxElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         $html = [];
+        $html[] = $this->renderLabel($selectId);
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
@@ -161,27 +170,14 @@ class SelectSingleBoxElement extends AbstractFormElement
 
     /**
      * Renders a <select> element
-     *
-     * @param array $optionElements List of rendered <option> elements
-     * @param array $config Field configuration
-     * @return string
      */
-    protected function renderSelectElement(array $optionElements, array $parameterArray, array $config)
+    protected function renderSelectElement(array $optionElements, array $parameterArray, array $config, string $selectId, int $size): string
     {
-        $selectItems = $parameterArray['fieldConf']['config']['items'];
-        $size = (int)($config['size'] ?? 0);
-        $autoSizeMax = (int)($config['autoSizeMax'] ?? 0);
-        if ($autoSizeMax > 0) {
-            $size = MathUtility::forceIntegerInRange($size, 1);
-            $size = MathUtility::forceIntegerInRange(count($selectItems) + 1, $size, $autoSizeMax);
-        }
-
-        $prefix = $size === 1 ? 'tceforms-select' : 'tceforms-multiselect';
         $attributes = array_merge(
             [
                 'name' => $parameterArray['itemFormElName'] . '[]',
                 'multiple' => 'multiple',
-                'id' => StringUtility::getUniqueId($prefix),
+                'id' => $selectId,
                 'class' => 'form-select ',
                 'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             ],

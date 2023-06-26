@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * None element is a "disabled" input element with formatted values if needed.
@@ -59,18 +60,20 @@ class NoneElement extends AbstractFormElement
         $size = $config['size'] ?? $this->defaultInputWidth;
         $size = MathUtility::forceIntegerInRange($size, $this->minimumInputWidth, $this->maxInputWidth);
         $width = $this->formMaxWidth($size);
+        $fieldId = StringUtility::getUniqueId('formengine-textarea-');
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         $html = [];
+        $html[] = $this->renderLabel($fieldId);
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
         $html[] =       '<div class="form-wizards-element">';
         $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
-        $html[] =               '<input class="form-control" value="' . htmlspecialchars($itemValue) . '" type="text" disabled>';
+        $html[] =               '<input class="form-control" id="' . htmlspecialchars($fieldId) . '" value="' . htmlspecialchars($itemValue) . '" type="text" disabled>';
         $html[] =           '</div>';
         $html[] =       '</div>';
         $html[] =   '</div>';

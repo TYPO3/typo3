@@ -67,6 +67,9 @@ final class MfaInfoElementTest extends FunctionalTestCase
             ],
             'parameterArray' => [
                 'itemFormElValue' => '[]',
+                'fieldConf' => [
+                    'label' => 'foo',
+                ],
             ],
         ]);
 
@@ -91,6 +94,9 @@ final class MfaInfoElementTest extends FunctionalTestCase
             ],
             'parameterArray' => [
                 'itemFormElValue' => '{"invalid":{"active":true}}',
+                'fieldConf' => [
+                    'label' => 'foo',
+                ],
             ],
         ]);
 
@@ -115,6 +121,9 @@ final class MfaInfoElementTest extends FunctionalTestCase
             ],
             'parameterArray' => [
                 'itemFormElValue' => '{"totp":{"secret":"KRMVATZTJFZUC53FONXW2ZJB","active":true,"attempts":2}}',
+                'fieldConf' => [
+                    'label' => 'foo',
+                ],
             ],
         ]);
 
@@ -148,6 +157,9 @@ final class MfaInfoElementTest extends FunctionalTestCase
             ],
             'parameterArray' => [
                 'itemFormElValue' => '{"totp":{"secret":"KRMVATZTJFZUC53FONXW2ZJB","active":true,"attempts":2},"recovery-codes":{"active":true,"attempts":3,"codes":[]}}',
+                'fieldConf' => [
+                    'label' => 'foo',
+                ],
             ],
         ]);
 
@@ -185,6 +197,9 @@ final class MfaInfoElementTest extends FunctionalTestCase
             ],
             'parameterArray' => [
                 'itemFormElValue' => '{"totp":{"secret":"KRMVATZTJFZUC53FONXW2ZJB","active":true,"attempts":2},"recovery-codes":{"active":true,"attempts":3,"codes":[]}}',
+                'fieldConf' => [
+                    'label' => 'foo',
+                ],
             ],
         ]);
 

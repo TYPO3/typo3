@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -60,8 +62,6 @@ class PaletteAndSingleContainer extends AbstractContainer
                     0 => [
                         'type' => 'single',
                         'fieldName' => 'paletteName',
-                        // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
-                        'fieldLabel' => 'element1',
                         'fieldHtml' => 'element1',
                     ),
                     1 => [
@@ -70,8 +70,6 @@ class PaletteAndSingleContainer extends AbstractContainer
                     2 => [
                         'type' => 'single',
                         'fieldName' => 'paletteName',
-                        // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
-                        'fieldLabel' => 'element2',
                         'fieldHtml' => 'element2',
                     ],
                 ],
@@ -79,8 +77,6 @@ class PaletteAndSingleContainer extends AbstractContainer
             1 => [
                 'type' => 'single',
                 'fieldName' => 'element3',
-                // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
-                'fieldLabel' => 'element3',
                 'fieldHtml' => 'element3',
             ],
             2 => [
@@ -92,8 +88,6 @@ class PaletteAndSingleContainer extends AbstractContainer
                     0 => [
                         'type' => 'single',
                         'fieldName' => 'element4',
-                        // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
-                        'fieldLabel' => 'element4',
                         'fieldHtml' => 'element4',
                     ],
                     1 => [
@@ -102,8 +96,6 @@ class PaletteAndSingleContainer extends AbstractContainer
                     2 => [
                         'type' => 'single',
                         'fieldName' => 'element5',
-                        // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
-                        'fieldLabel' => 'element5',
                         'fieldHtml' => 'element5',
                     ],
                 ],
@@ -120,7 +112,7 @@ class PaletteAndSingleContainer extends AbstractContainer
             $fieldConfiguration = $this->explodeSingleFieldShowItemConfiguration($fieldString);
             $fieldName = $fieldConfiguration['fieldName'];
             if ($fieldName === '--palette--') {
-                $paletteElementArray = $this->createPaletteContentArray($fieldConfiguration['paletteName']);
+                $paletteElementArray = $this->createPaletteContentArray($fieldConfiguration['paletteName'] ?? '');
                 if (!empty($paletteElementArray)) {
                     $mainStructureCounter++;
                     // If there is no label in ['types']['aType']['showitem'] for this palette: "--palette--;;aPalette",
@@ -149,15 +141,9 @@ class PaletteAndSingleContainer extends AbstractContainer
                 $childResultArray = $this->nodeFactory->create($options)->render();
                 if (!empty($childResultArray['html'])) {
                     $mainStructureCounter++;
-                    $fieldLabel = '';
-                    if (!empty($this->data['processedTca']['columns'][$fieldName]['label'])) {
-                        $fieldLabel = $this->data['processedTca']['columns'][$fieldName]['label'];
-                    }
                     $targetStructure[$mainStructureCounter] = [
                         'type' => 'single',
                         'fieldName' => $fieldConfiguration['fieldName'],
-                        // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
-                        'fieldLabel' => $fieldLabel,
                         'fieldHtml' => $childResultArray['html'],
                     ];
                 }
@@ -185,7 +171,9 @@ class PaletteAndSingleContainer extends AbstractContainer
             } else {
                 $html = [];
                 $html[] = '<fieldset class="form-section">';
-                $html[] = $this->wrapSingleFieldContentWithLabelAndOuterDiv($element);
+                $html[] =     '<div class="form-group t3js-formengine-validation-marker t3js-formengine-palette-field">';
+                $html[] =         $element['fieldHtml'];
+                $html[] =     '</div>';
                 $html[] = '</fieldset>';
                 $content[] = implode(LF, $html);
             }
@@ -200,15 +188,13 @@ class PaletteAndSingleContainer extends AbstractContainer
      * Render single fields of a given palette
      *
      * @param string $paletteName The palette to render
-     * @return array
      */
-    protected function createPaletteContentArray($paletteName)
+    protected function createPaletteContentArray(string $paletteName): array
     {
         // palette needs a palette name reference, otherwise it does not make sense to try rendering of it
         if (empty($paletteName) || empty($this->data['processedTca']['palettes'][$paletteName]['showitem'])) {
             return [];
         }
-
         $resultStructure = [];
         $foundRealElement = false; // Set to true if not only line breaks were rendered
         $fieldsArray = GeneralUtility::trimExplode(',', $this->data['processedTca']['palettes'][$paletteName]['showitem'], true);
@@ -225,27 +211,19 @@ class PaletteAndSingleContainer extends AbstractContainer
                 }
                 $options = $this->data;
                 $options['fieldName'] = $fieldName;
-
                 $options['renderType'] = 'singleFieldContainer';
                 $singleFieldContentArray = $this->nodeFactory->create($options)->render();
-
                 if (!empty($singleFieldContentArray['html'])) {
                     $foundRealElement = true;
-                    $fieldLabel = '';
-                    if (!empty($this->data['processedTca']['columns'][$fieldName]['label'])) {
-                        $fieldLabel = $this->data['processedTca']['columns'][$fieldName]['label'];
-                    }
                     $resultStructure[] = [
                         'type' => 'single',
                         'fieldName' => $fieldName,
-                        'fieldLabel' => $fieldLabel,
                         'fieldHtml' => $singleFieldContentArray['html'],
                     ];
                 }
                 $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $singleFieldContentArray, false);
             }
         }
-
         if ($foundRealElement) {
             return $resultStructure;
         }
@@ -258,7 +236,7 @@ class PaletteAndSingleContainer extends AbstractContainer
      * @param array $elementArray Array of elements
      * @return string Wrapped content
      */
-    protected function renderInnerPaletteContent(array $elementArray)
+    protected function renderInnerPaletteContent(array $elementArray): string
     {
         // Group fields
         $groupedFields = [];
@@ -319,8 +297,9 @@ class PaletteAndSingleContainer extends AbstractContainer
                         $result[] = '<div class="clearfix"></div>';
                     }
                 } else {
-                    $result[] = $this->wrapSingleFieldContentWithLabelAndOuterDiv($element, [$colClass]);
-
+                    $result[] = '<div class="form-group t3js-formengine-validation-marker t3js-formengine-palette-field ' . $colClass . '">';
+                    $result[] =     $element['fieldHtml'];
+                    $result[] = '</div>';
                     // Breakpoints
                     if ($counter + 1 < $numberOfItems && !empty($colClear)) {
                         foreach ($colClear as $rowBreakAfter => $clearClass) {
@@ -332,45 +311,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                 }
             }
         }
-
         return implode(LF, $result);
-    }
-
-    /**
-     * Wrap a single element
-     *
-     * @param array $element Given element as documented above
-     * @param array $additionalPaletteClasses Additional classes to be added to HTML
-     * @return string Wrapped element
-     */
-    protected function wrapSingleFieldContentWithLabelAndOuterDiv(array $element, array $additionalPaletteClasses = [])
-    {
-        $fieldName = $element['fieldName'];
-
-        $paletteFieldClasses = [
-            'form-group',
-            't3js-formengine-validation-marker',
-            't3js-formengine-palette-field',
-        ];
-        foreach ($additionalPaletteClasses as $class) {
-            $paletteFieldClasses[] = $class;
-        }
-
-        $label = htmlspecialchars($element['fieldLabel']);
-
-        if ($this->getBackendUser()->shallDisplayDebugInformation()) {
-            $label .= ' <code>[' . htmlspecialchars($fieldName) . ']</code>';
-        }
-
-        $content = [];
-        $content[] = '<div class="' . implode(' ', $paletteFieldClasses) . '">';
-        $content[] =    '<label class="form-label t3js-formengine-label">';
-        $content[] =        $label;
-        $content[] =    '</label>';
-        $content[] =    $element['fieldHtml'];
-        $content[] = '</div>';
-
-        return implode(LF, $content);
     }
 
     protected function getLanguageService(): LanguageService

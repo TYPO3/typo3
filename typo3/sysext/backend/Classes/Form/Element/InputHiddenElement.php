@@ -28,9 +28,7 @@ class InputHiddenElement extends AbstractFormElement
     {
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
-
         $resultArray['additionalHiddenFields'][] = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
-
         return $resultArray;
     }
 }

@@ -80,6 +80,8 @@ class InputTextElement extends AbstractFormElement
         $width = $this->formMaxWidth(
             MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth)
         );
+        $fieldId = StringUtility::getUniqueId('formengine-input-');
+        $renderedLabel = $this->renderLabel($fieldId);
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
@@ -87,12 +89,13 @@ class InputTextElement extends AbstractFormElement
 
         if ($config['readOnly'] ?? false) {
             $html = [];
+            $html[] = $renderedLabel;
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
-            $html[] =               '<input class="form-control" value="' . htmlspecialchars((string)$itemValue) . '" type="text" disabled>';
+            $html[] =               '<input class="form-control" id="' . htmlspecialchars($fieldId) . '" value="' . htmlspecialchars((string)$itemValue) . '" type="text" disabled>';
             $html[] =           '</div>';
             $html[] =       '</div>';
             $html[] =   '</div>';
@@ -102,7 +105,6 @@ class InputTextElement extends AbstractFormElement
         }
 
         $languageService = $this->getLanguageService();
-        $fieldId = StringUtility::getUniqueId('formengine-input-');
         $itemName = (string)$parameterArray['itemFormElName'];
 
         // @todo: The whole eval handling is a mess and needs refactoring
@@ -275,7 +277,7 @@ class InputTextElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
-        $resultArray['html'] = '
+        $resultArray['html'] = $renderedLabel . '
             <div class="formengine-field-item t3js-formengine-field-item">
                 ' . $fieldInformationHtml . $fullElement . '
             </div>';

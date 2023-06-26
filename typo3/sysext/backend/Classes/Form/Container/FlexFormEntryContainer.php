@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+
 /**
  * Entry container to a flex form element. This container is created by
  * SingleFieldContainer if a type='flex' field is rendered.
@@ -44,6 +46,17 @@ class FlexFormEntryContainer extends AbstractContainer
             $options['renderType'] = 'flexFormTabsContainer';
         }
 
-        return $this->nodeFactory->create($options)->render();
+        $resultArray = $this->nodeFactory->create($options)->render();
+        $legend = htmlspecialchars($this->data['parameterArray']['fieldConf']['label']);
+        if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
+            $legend .= ' <code>[' . htmlspecialchars($this->data['fieldName']) . ']</code>';
+        }
+        $resultArray['html'] = '<fieldset><legend class="form-legend">' . $legend . '</legend>' . $resultArray['html'] . '</fieldset>';
+        return $resultArray;
+    }
+
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

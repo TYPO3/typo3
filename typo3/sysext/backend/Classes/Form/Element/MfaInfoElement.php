@@ -46,6 +46,7 @@ class MfaInfoElement extends AbstractFormElement
     public function render(): array
     {
         $resultArray = $this->initializeResultArray();
+
         $currentBackendUser = $this->getBackendUser();
         $tableName = $this->data['tableName'];
 
@@ -172,7 +173,7 @@ class MfaInfoElement extends AbstractFormElement
             )->instance('#' . $fieldId, ['userId' => $userId, 'tableName' => $tableName]);
         }
 
-        $resultArray['html'] = $status . implode(PHP_EOL, $html);
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend($status . implode(PHP_EOL, $html));
         return $resultArray;
     }
 }

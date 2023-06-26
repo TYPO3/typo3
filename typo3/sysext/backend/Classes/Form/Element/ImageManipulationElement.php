@@ -190,7 +190,7 @@ class ImageManipulationElement extends AbstractFormElement
         }
         $view = $this->backendViewFactory->create($this->data['request']);
         $view->assignMultiple($arguments);
-        $resultArray['html'] = $view->render('Form/ImageManipulationElement');
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend($view->render('Form/ImageManipulationElement'));
 
         return $resultArray;
     }

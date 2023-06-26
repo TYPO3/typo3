@@ -43,6 +43,7 @@ final class JsonElementTest extends UnitTestCase
                 'itemFormElName' => 'config',
                 'itemFormElValue' => ['foo' => 'bar'],
                 'fieldConf' => [
+                    'label' => 'foo',
                     'config' => [
                         'type' => 'json',
                         'enableCodeEditor' => false,
@@ -80,6 +81,7 @@ final class JsonElementTest extends UnitTestCase
                 'itemFormElName' => 'config',
                 'itemFormElValue' => ['foo' => 'bar'],
                 'fieldConf' => [
+                    'label' => 'foo',
                     'config' => [
                         'type' => 'json',
                         'placeholder' => 'placeholder',

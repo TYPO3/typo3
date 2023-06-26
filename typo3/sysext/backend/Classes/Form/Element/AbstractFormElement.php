@@ -118,6 +118,38 @@ abstract class AbstractFormElement extends AbstractNode
     }
 
     /**
+     * Render a label element for the current field by given id.
+     */
+    protected function renderLabel(string $for): string
+    {
+        $label = htmlspecialchars($this->data['parameterArray']['fieldConf']['label']);
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
+            $fieldName = $this->data['flexFormFieldName'] ?? $this->data['fieldName'];
+            $label .= ' <code>[' . htmlspecialchars($fieldName) . ']</code>';
+        }
+        return '<label for="' . htmlspecialchars($for) . '" class="form-label t3js-formengine-label">' . $label . '</label>';
+    }
+
+    /**
+     * Elements that don't render a simple input field can't have a '<label for="..."'.
+     * A fieldset with a legend is used instead.
+     */
+    protected function wrapWithFieldsetAndLegend(string $innerHTML): string
+    {
+        $legend = htmlspecialchars($this->data['parameterArray']['fieldConf']['label']);
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
+            $fieldName = $this->data['flexFormFieldName'] ?? $this->data['fieldName'];
+            $legend .= ' <code>[' . htmlspecialchars($fieldName) . ']</code>';
+        }
+        $html = [];
+        $html[] = '<fieldset>';
+        $html[] =     '<legend class="form-legend">' . $legend . '</legend>';
+        $html[] =     $innerHTML;
+        $html[] = '</fieldset>';
+        return implode(LF, $html);
+    }
+
+    /**
      * Returns true if the "null value" checkbox should be rendered. This is used in some
      * "text" based types like "text" and "input" for some renderType's.
      *

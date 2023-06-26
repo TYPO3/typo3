@@ -164,7 +164,7 @@ class T3editorElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        $this->resultArray['html'] = implode(LF, $html);
+        $this->resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
 
         return $this->resultArray;
     }

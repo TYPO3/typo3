@@ -130,6 +130,7 @@ class GroupElement extends AbstractFormElement
             $size = MathUtility::forceIntegerInRange($size, 1);
             $size = MathUtility::forceIntegerInRange(count($selectedItems) + 1, $size, $autoSizeMax);
         }
+        $fieldId = StringUtility::getUniqueId('tceforms-multiselect-');
 
         $maxTitleLength = (int)$backendUser->uc['titleLen'];
 
@@ -156,6 +157,7 @@ class GroupElement extends AbstractFormElement
         if (isset($config['readOnly']) && $config['readOnly']) {
             // Return early if element is read only
             $html = [];
+            $html[] = $this->renderLabel($fieldId);
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
@@ -163,6 +165,7 @@ class GroupElement extends AbstractFormElement
             $html[] =           '<select';
             $html[] =               ' size="' . $size . '"';
             $html[] =               ' disabled="disabled"';
+            $html[] =               ' id="' . $fieldId . '"';
             $html[] =               ' class="form-select"';
             $html[] =               ($maxItems !== 1 && $size !== 1) ? ' multiple="multiple"' : '';
             $html[] =           '>';
@@ -225,8 +228,6 @@ class GroupElement extends AbstractFormElement
             $showDeleteControl = false;
         }
 
-        $fieldId = StringUtility::getUniqueId('tceforms-multiselect-');
-
         $selectorAttributes = [
             'id' => $fieldId,
             'data-formengine-input-name' => htmlspecialchars($elementName),
@@ -247,6 +248,7 @@ class GroupElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         $html = [];
+        $html[] = $this->renderLabel($fieldId);
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';

@@ -183,7 +183,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        $resultArray['html'] = implode(LF, $html);
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
 
         $onFieldChangeItems = $this->getOnFieldChangeItems($this->getFieldChangeFuncs());
         $resultArray['javaScriptModules']['selectTreeElement'] = JavaScriptModuleInstruction::create(

@@ -106,7 +106,7 @@ abstract class AbstractElementsBasicCest
             static function (RemoteWebDriver $webDriver) use ($fieldLabel) {
                 return $webDriver->findElement(
                     WebDriverBy::xpath(
-                        '(//label/code[contains(text(),"[' . $fieldLabel . ']")]/..)[1]/ancestor::fieldset[@class="form-section"][1]'
+                        '(//code[contains(text(),"[' . $fieldLabel . ']")]/..)[1]/ancestor::fieldset[@class="form-section"][1]'
                     )
                 );
             }

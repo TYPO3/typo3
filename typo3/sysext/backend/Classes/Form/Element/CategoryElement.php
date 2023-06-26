@@ -142,7 +142,7 @@ class CategoryElement extends AbstractFormElement
             'data-defaultvalues' => GeneralUtility::jsonEncodeForHtmlAttribute($this->data['defaultValues'], false),
         ];
 
-        $resultArray['html'] =
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(
             '<typo3-formengine-element-category ' . GeneralUtility::implodeAttributes(['class' => 'formengine-field-item t3js-formengine-field-item', 'recordFieldId' => $fieldId, 'treeWrapperId' => $treeWrapperId], true) . '>
                 ' . $fieldInformationHtml . '
                 <div class="form-control-wrap">
@@ -156,7 +156,8 @@ class CategoryElement extends AbstractFormElement
                         ' . $fieldWizardHtml . '
                     </div>
                 </div>
-            </typo3-formengine-element-category>';
+            </typo3-formengine-element-category>'
+        );
 
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/category-element.js');
 

@@ -91,6 +91,7 @@ final class DatetimeElementTest extends UnitTestCase
                 'tableName' => 'table_foo',
                 'fieldName' => 'field_bar',
                 'fieldConf' => [
+                    'label' => 'foo',
                     'config' => [
                         'type' => 'datetime',
                         'dbType' => 'datetime',

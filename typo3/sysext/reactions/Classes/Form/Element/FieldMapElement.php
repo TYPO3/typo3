@@ -94,7 +94,7 @@ class FieldMapElement extends AbstractFormElement
         $html[] =         '</div>';
         $html[] =     '</div>';
         $html[] = '</div>';
-        $resultArray['html'] = implode(LF, $html);
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
         return $resultArray;
     }
 }
