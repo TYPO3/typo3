@@ -69,9 +69,13 @@
 }
 
 .typo3-install-content-progress {
-    padding: 15px 35px;
+    padding: 15px 35px 20px;
     border-top: 1px solid #eaeaea;
     background-color: #fafafa;
+}
+
+.typo3-install-content-progress-text {
+    padding-bottom: 7px;
 }
 
 .typo3-install-content-body {

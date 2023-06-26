@@ -30,6 +30,7 @@ class Installer {
   private selectorModuleContent: string = '.t3js-module-content';
   private selectorMainContent: string = '.t3js-installer-content';
   private selectorProgressBar: string = '.t3js-installer-progress';
+  private selectorProgressBarSteps: string = '.t3js-installer-progress-steps';
   private selectorDatabaseConnectOutput: string = '.t3js-installer-databaseConnect-output';
   private selectorDatabaseSelectOutput: string = '.t3js-installer-databaseSelect-output';
   private selectorDatabaseDataOutput: string = '.t3js-installer-databaseData-output';
@@ -110,10 +111,12 @@ class Installer {
 
   private setProgress(done: number): void {
     const $progressBar: JQuery = $(this.selectorProgressBar);
+    const $progressBarSteps: JQuery = $(this.selectorProgressBarSteps);
     let percent: number = 0;
     if (done !== 0) {
       percent = (done / 5) * 100;
-      $progressBar.find('.progress-bar').empty().text(done + ' / 5 - ' + percent + '% Complete');
+      $progressBar.find('.progress-bar').empty().text(percent + '%');
+      $progressBarSteps.find('.progress-steps').text(done + ' of 5');
     }
     $progressBar
       .find('.progress-bar')
