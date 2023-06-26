@@ -32,6 +32,7 @@ use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -53,6 +54,7 @@ class MainController
     public function __construct(
         private readonly ModuleLoader $moduleLoader,
         private readonly UriBuilder $uriBuilder,
+        private readonly RequestId $requestId,
     ) {
         $this->adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
     }
@@ -78,7 +80,7 @@ class MainController
      */
     public function render(ServerRequestInterface $request): string
     {
-        $resources = ResourceUtility::getResources();
+        $resources = ResourceUtility::getResources(['nonce' => $this->requestId->nonce->b64]);
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Main.html';
@@ -98,7 +100,7 @@ class MainController
             $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('adminpanel_requestcache');
             $requestId = $request->getAttribute('adminPanelRequestId');
             $data = $cache->get($requestId);
-            $moduleResources = ResourceUtility::getAdditionalResourcesForModules($this->modules);
+            $moduleResources = ResourceUtility::getAdditionalResourcesForModules($this->modules, ['nonce' => $this->requestId->nonce->b64]);
             $settingsModules = array_filter($this->modules, static function (ModuleInterface $module): bool {
                 return $module instanceof PageSettingsProviderInterface;
             });

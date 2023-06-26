@@ -30,9 +30,10 @@ class ResourceUtility
      * one array - returns an array of full html tags
      *
      * @param ModuleInterface[] $modules
+     * @param array<string, string> $attributes
      * @return array{js: string, css: string}
      */
-    public static function getAdditionalResourcesForModules(array $modules): array
+    public static function getAdditionalResourcesForModules(array $modules, array $attributes = []): array
     {
         $result = [
             'js' => '',
@@ -41,10 +42,10 @@ class ResourceUtility
         foreach ($modules as $module) {
             if ($module instanceof ResourceProviderInterface) {
                 foreach ($module->getJavaScriptFiles() as $file) {
-                    $result['js'] .= static::getJsTag($file);
+                    $result['js'] .= static::getJsTag($file, $attributes);
                 }
                 foreach ($module->getCssFiles() as $file) {
-                    $result['css'] .= static::getCssTag($file);
+                    $result['css'] .= static::getCssTag($file, $attributes);
                 }
             }
             if ($module instanceof SubmoduleProviderInterface) {
@@ -56,17 +57,20 @@ class ResourceUtility
         return $result;
     }
 
-    public static function getAdditionalResourcesForModule(ResourceProviderInterface $module): array
+    /**
+     * @param array<string, string> $attributes
+     */
+    public static function getAdditionalResourcesForModule(ResourceProviderInterface $module, array $attributes = []): array
     {
         $result = [
             'js' => '',
             'css' => '',
         ];
         foreach ($module->getJavaScriptFiles() as $file) {
-            $result['js'] .= static::getJsTag($file);
+            $result['js'] .= static::getJsTag($file, $attributes);
         }
         foreach ($module->getCssFiles() as $file) {
-            $result['css'] .= static::getCssTag($file);
+            $result['css'] .= static::getCssTag($file, $attributes);
         }
         return $result;
     }
@@ -93,41 +97,49 @@ class ResourceUtility
 
     /**
      * Get a css tag for file - with absolute web path resolving
+     *
+     * @param array<string, string> $attributes
      */
-    protected static function getCssTag(string $cssFileLocation): string
+    protected static function getCssTag(string $cssFileLocation, array $attributes): string
     {
-        $css = '<link rel="stylesheet" href="' .
-               htmlspecialchars(
-                   PathUtility::getPublicResourceWebPath($cssFileLocation),
-                   ENT_QUOTES | ENT_HTML5
-               ) .
-               '" media="all" />';
-        return $css;
+        return sprintf(
+            '<link %s />',
+            GeneralUtility::implodeAttributes([
+                ...$attributes,
+                'rel' => 'stylesheet',
+                'media' => 'all',
+                'href' => PathUtility::getPublicResourceWebPath($cssFileLocation),
+            ], true)
+        );
     }
 
     /**
      * Get a script tag for JavaScript with absolute paths
+     *
+     * @param array<string, string> $attributes
      */
-    protected static function getJsTag(string $jsFileLocation): string
+    protected static function getJsTag(string $jsFileLocation, array $attributes): string
     {
-        $js = '<script src="' .
-              htmlspecialchars(
-                  PathUtility::getPublicResourceWebPath($jsFileLocation),
-                  ENT_QUOTES | ENT_HTML5
-              ) .
-              '"></script>';
-        return $js;
+        return sprintf(
+            '<script %s></script>',
+            GeneralUtility::implodeAttributes([
+                ...$attributes,
+                'src' => PathUtility::getPublicResourceWebPath($jsFileLocation),
+            ], true)
+        );
     }
 
     /**
      * Return a string with tags for main admin panel resources
+     *
+     * @param array<string, string> $attributes
      */
-    public static function getResources(): array
+    public static function getResources(array $attributes = []): array
     {
         $jsFileLocation = 'EXT:adminpanel/Resources/Public/JavaScript/admin-panel.js';
-        $js = self::getJsTag($jsFileLocation);
+        $js = self::getJsTag($jsFileLocation, $attributes);
         $cssFileLocation = 'EXT:adminpanel/Resources/Public/Css/adminpanel.css';
-        $css = self::getCssTag($cssFileLocation);
+        $css = self::getCssTag($cssFileLocation, $attributes);
 
         return [
             'css' => $css . self::getAdminPanelStylesheet(),
