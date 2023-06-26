@@ -337,6 +337,7 @@ return [
                 'required' => true,
             ],
         ],
+
         'inputdatetime_1' => [
             'label' => 'inputdatetime_1',
             'description' => 'eval=date',
@@ -1422,6 +1423,13 @@ backend_layout {
                 ],
             ],
         ],
+        'user_2' => [
+            'label' => 'user_2',
+            'description' => 'no renderType',
+            'config' => [
+                'type' => 'user',
+            ],
+        ],
 
         'flex_1' => [
             'label' => 'flex_1',
@@ -1711,7 +1719,7 @@ backend_layout {
                 --div--;passthrough,
                     passthrough_1, passthrough_2,
                 --div--;user,
-                    user_1,
+                    user_1, user_2,
                 --div--;in flex,
                     flex_1,
                 --div--;meta,
