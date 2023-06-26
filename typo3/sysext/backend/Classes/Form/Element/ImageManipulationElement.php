@@ -155,6 +155,8 @@ class ImageManipulationElement extends AbstractFormElement
     public function render()
     {
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
         $parameterArray = $this->data['parameterArray'];
         $config = $this->populateConfiguration($parameterArray['fieldConf']['config']);
 
@@ -209,7 +211,7 @@ class ImageManipulationElement extends AbstractFormElement
             }
         }
         $this->templateView->assignMultiple($arguments);
-        $resultArray['html'] = $this->templateView->render('Form/ImageManipulationElement');
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend($this->templateView->render('Form/ImageManipulationElement'));
 
         return $resultArray;
     }

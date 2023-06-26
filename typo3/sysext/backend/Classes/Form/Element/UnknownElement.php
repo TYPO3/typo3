@@ -27,10 +27,14 @@ class UnknownElement extends AbstractFormElement
      */
     public function render()
     {
+        $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
         $type = $this->data['parameterArray']['fieldConf']['config']['type'];
         $renderType = $this->data['renderType'];
-        $resultArray = $this->initializeResultArray();
-        $resultArray['html'] = '<div class="alert alert-warning">Unknown type: <code>' . $type . '</code>' . ($renderType ? ', render type: <code>' . $renderType . '</code>' : '') . '</div>';
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(
+            '<div class="alert alert-warning">Unknown type: <code>' . $type . '</code>' . ($renderType ? ', render type: <code>' . $renderType . '</code>' : '') . '</div>'
+        );
         return $resultArray;
     }
 }

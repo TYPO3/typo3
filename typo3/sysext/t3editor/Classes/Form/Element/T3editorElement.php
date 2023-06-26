@@ -88,6 +88,8 @@ class T3editorElement extends AbstractFormElement
     public function render(): array
     {
         $this->resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $this->resultArray['labelHasBeenHandled'] = true;
         $this->resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/t3editor/element/code-mirror-element.js');
 
         // Compile and register t3editor configuration
@@ -164,7 +166,7 @@ class T3editorElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        $this->resultArray['html'] = implode(LF, $html);
+        $this->resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
 
         return $this->resultArray;
     }

@@ -127,18 +127,20 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
      */
     public function render()
     {
-        $filterTextfield = [];
-        $languageService = $this->getLanguageService();
-        $resultArray = $this->initializeResultArray();
-
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
-        $elementName = $parameterArray['itemFormElName'];
 
         if ($config['readOnly'] ?? false) {
             // Early return for the relatively simple read only case
             return $this->renderReadOnly();
         }
+
+        $filterTextfield = [];
+        $languageService = $this->getLanguageService();
+        $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
+        $elementName = $parameterArray['itemFormElName'];
 
         $possibleItems = $config['items'];
         $selectedItems = $parameterArray['itemFormElValue'] ?: [];
@@ -281,6 +283,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $availableOptionsFieldId = StringUtility::getUniqueId('tceforms-multiselect-');
 
         $html = [];
+        $html[] = $this->renderLabel($selectedOptionsFieldId);
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
@@ -411,6 +414,8 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
     {
         $languageService = $this->getLanguageService();
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
 
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
@@ -450,7 +455,10 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
+        $selectId = StringUtility::getUniqueId('tceforms-multiselect-');
+
         $html = [];
+        $html[] = $this->renderLabel($selectId);
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
@@ -461,7 +469,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =           '<div class="form-wizards-wrap form-wizards-aside">';
         $html[] =               '<div class="form-wizards-element">';
         $html[] =                   '<select';
-        $html[] =                       ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
+        $html[] =                       ' id="' . $selectId . '"';
         $html[] =                       ' size="' . $size . '"';
         $html[] =                       ' class="form-select"';
         $html[] =                       $multiple;

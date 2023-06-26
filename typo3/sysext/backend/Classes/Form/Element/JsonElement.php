@@ -70,6 +70,8 @@ class JsonElement extends AbstractFormElement
     public function render(): array
     {
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
 
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
@@ -102,6 +104,7 @@ class JsonElement extends AbstractFormElement
                 $rows = $calculatedRows;
             }
         }
+        $fieldId = StringUtility::getUniqueId('formengine-json-');
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
@@ -110,12 +113,13 @@ class JsonElement extends AbstractFormElement
         // Early return readonly display in case t3editor is not available
         if ($readOnly && !$enableCodeEditor) {
             $html = [];
+            $html[] = $this->renderLabel($fieldId);
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
-            $html[] =               '<textarea class="form-control font-monospace" rows="' . $rows . '" disabled>';
+            $html[] =               '<textarea class="form-control font-monospace" id="' . htmlspecialchars($fieldId) . '" rows="' . $rows . '" disabled>';
             $html[] =                   htmlspecialchars($itemValue);
             $html[] =               '</textarea>';
             $html[] =           '</div>';
@@ -126,7 +130,6 @@ class JsonElement extends AbstractFormElement
             return $resultArray;
         }
 
-        $fieldId = StringUtility::getUniqueId('formengine-json-');
         $itemName = (string)$parameterArray['itemFormElName'];
         $attributes = [
             'id' => $fieldId,
@@ -239,7 +242,7 @@ class JsonElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        $resultArray['html'] = implode(LF, $html);
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
 
         return $resultArray;
     }

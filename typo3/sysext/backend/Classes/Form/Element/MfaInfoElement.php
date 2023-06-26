@@ -48,6 +48,9 @@ class MfaInfoElement extends AbstractFormElement
     public function render(): array
     {
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
+
         $currentBackendUser = $this->getBackendUser();
         $tableName = $this->data['tableName'];
 
@@ -174,7 +177,7 @@ class MfaInfoElement extends AbstractFormElement
             )->instance('#' . $fieldId, ['userId' => $userId, 'tableName' => $tableName]);
         }
 
-        $resultArray['html'] = $status . implode(PHP_EOL, $html);
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend($status . implode(PHP_EOL, $html));
         return $resultArray;
     }
 }

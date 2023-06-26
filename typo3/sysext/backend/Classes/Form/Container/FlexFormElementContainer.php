@@ -45,7 +45,8 @@ class FlexFormElementContainer extends AbstractContainer
 
         $languageService = $this->getLanguageService();
         $resultArray = $this->initializeResultArray();
-        $showFieldName = $this->getBackendUserAuthentication()->shallDisplayDebugInformation();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
 
         foreach ($flexFormDataStructureArray as $flexFormFieldName => $flexFormFieldArray) {
             if (
@@ -131,19 +132,22 @@ class FlexFormElementContainer extends AbstractContainer
                 $childResult = $this->nodeFactory->create($options)->render();
 
                 if (!empty($childResult['html'])) {
-                    // Possible line breaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace (?!)
-                    $processedTitle = str_replace('\\n', '<br />', htmlspecialchars($fakeParameterArray['fieldConf']['label']));
                     $html = [];
                     $html[] = '<div class="form-section" data-id="' . htmlspecialchars($flexFormFieldName) . '">';
-                    $html[] =   '<div class="form-group t3js-formengine-palette-field t3js-formengine-validation-marker">';
-                    $html[] =       '<label class="form-label t3js-formengine-label">';
-                    $html[] =           $processedTitle;
-                    $html[] =           $showFieldName ? (' <code>[' . htmlspecialchars($flexFormFieldName) . ']</code>') : '';
-                    $html[] =       '</label>';
-                    $html[] =       '<div class="formengine-field-item t3js-formengine-field-item">';
-                    $html[] =           $childResult['html'];
-                    $html[] =       '</div>';
-                    $html[] =   '</div>';
+                    $html[] =     '<div class="form-group t3js-formengine-palette-field t3js-formengine-validation-marker">';
+                    if (!($childResult['labelHasBeenHandled'] ?? false)) {
+                        // Possible line breaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace (?!)
+                        $processedTitle = str_replace('\\n', '<br />', htmlspecialchars($fakeParameterArray['fieldConf']['label']));
+                        if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
+                            $processedTitle .= ' <code>[' . htmlspecialchars($flexFormFieldName) . ']</code>';
+                        }
+                        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+                        $html[] = '<label class="form-label t3js-formengine-label">' . $processedTitle . '</label>';
+                    }
+                    $html[] =         '<div class="formengine-field-item t3js-formengine-field-item">';
+                    $html[] =             $childResult['html'];
+                    $html[] =         '</div>';
+                    $html[] =     '</div>';
                     $html[] = '</div>';
                     $resultArray['html'] .= implode(LF, $html);
                     $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult, false);

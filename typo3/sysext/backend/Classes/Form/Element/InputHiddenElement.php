@@ -28,9 +28,9 @@ class InputHiddenElement extends AbstractFormElement
     {
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
-
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
         $resultArray['additionalHiddenFields'][] = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
-
         return $resultArray;
     }
 }

@@ -81,6 +81,8 @@ class FolderElement extends AbstractFormElement
     {
         $languageService = $this->getLanguageService();
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
 
         $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
@@ -96,6 +98,7 @@ class FolderElement extends AbstractFormElement
             $size = MathUtility::forceIntegerInRange($size, 1);
             $size = MathUtility::forceIntegerInRange(count($selectedItems) + 1, $size, $autoSizeMax);
         }
+        $fieldId = StringUtility::getUniqueId('tceforms-multiselect-');
 
         $listOfSelectedValues = [];
         $selectorOptionsHtml = [];
@@ -115,6 +118,7 @@ class FolderElement extends AbstractFormElement
         if (isset($config['readOnly']) && $config['readOnly']) {
             // Return early if element is read only
             $html = [];
+            $html[] = $this->renderLabel($fieldId);
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
@@ -122,6 +126,7 @@ class FolderElement extends AbstractFormElement
             $html[] =           '<select';
             $html[] =               ' size="' . $size . '"';
             $html[] =               ' disabled="disabled"';
+            $html[] =               ' id="' . $fieldId . '"';
             $html[] =               ' class="form-select"';
             $html[] =               ($maxItems !== 1 && $size !== 1) ? ' multiple="multiple"' : '';
             $html[] =           '>';
@@ -145,8 +150,6 @@ class FolderElement extends AbstractFormElement
             $showDeleteControl = false;
         }
 
-        $fieldId = StringUtility::getUniqueId('tceforms-multiselect-');
-
         $selectorAttributes = [
             'id' => $fieldId,
             'data-formengine-input-name' => htmlspecialchars($elementName),
@@ -167,6 +170,7 @@ class FolderElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         $html = [];
+        $html[] = $this->renderLabel($fieldId);
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';

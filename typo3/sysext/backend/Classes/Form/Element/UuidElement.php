@@ -43,6 +43,8 @@ class UuidElement extends AbstractFormElement
     public function render(): array
     {
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
         $parameterArray = $this->data['parameterArray'];
         $itemValue = htmlspecialchars((string)$parameterArray['itemFormElValue'], ENT_QUOTES);
         $config = $parameterArray['fieldConf']['config'];
@@ -103,6 +105,7 @@ class UuidElement extends AbstractFormElement
         }
 
         $html = [];
+        $html[] = $this->renderLabel($fieldId);
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =     $fieldInformationHtml;
         $html[] =     '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';

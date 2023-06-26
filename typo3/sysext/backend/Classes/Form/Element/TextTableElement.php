@@ -84,6 +84,8 @@ class TextTableElement extends AbstractFormElement
     {
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
 
         $itemValue = $parameterArray['itemFormElValue'];
         $config = $parameterArray['fieldConf']['config'];
@@ -104,6 +106,7 @@ class TextTableElement extends AbstractFormElement
                 $rows = $originalRows;
             }
         }
+        $fieldId = StringUtility::getUniqueId('formengine-textarea-');
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
@@ -111,12 +114,13 @@ class TextTableElement extends AbstractFormElement
 
         if ($config['readOnly'] ?? false) {
             $html = [];
+            $html[] = $this->renderLabel($fieldId);
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap" style="overflow: auto;">';
-            $html[] =               '<textarea class="form-control" rows="' . $rows . '" disabled>';
+            $html[] =               '<textarea class="form-control" id="' . htmlspecialchars($fieldId) . '" rows="' . $rows . '" disabled>';
             $html[] =                   htmlspecialchars($itemValue);
             $html[] =               '</textarea>';
             $html[] =           '</div>';
@@ -145,8 +149,6 @@ class TextTableElement extends AbstractFormElement
                 }
             }
         }
-
-        $fieldId = StringUtility::getUniqueId('formengine-textarea-');
 
         $attributes = array_merge(
             [
@@ -220,7 +222,7 @@ class TextTableElement extends AbstractFormElement
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/element/table-wizard-element.js');
         $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_wizards.xlf';
 
-        $resultArray['html'] = implode(LF, $html);
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
         return $resultArray;
     }
 

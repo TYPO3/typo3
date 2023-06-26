@@ -64,6 +64,8 @@ class RadioElement extends AbstractFormElement
     public function render()
     {
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
 
         $disabled = '';
         if ($this->data['parameterArray']['fieldConf']['config']['readOnly'] ?? false) {
@@ -116,7 +118,7 @@ class RadioElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        $resultArray['html'] = implode(LF, $html);
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
         return $resultArray;
     }
 }

@@ -52,6 +52,8 @@ class PasswordElement extends AbstractFormElement
         $fieldName = $this->data['fieldName'];
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
         $config = $parameterArray['fieldConf']['config'];
         $passwordPolicyValidator = null;
 
@@ -59,6 +61,8 @@ class PasswordElement extends AbstractFormElement
         $width = $this->formMaxWidth(
             MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth)
         );
+        $fieldId = StringUtility::getUniqueId('formengine-input-');
+        $renderedLabel = $this->renderLabel($fieldId);
 
         $passwordPolicy = $config['passwordPolicy'] ?? null;
 
@@ -84,12 +88,13 @@ class PasswordElement extends AbstractFormElement
 
         if ($config['readOnly'] ?? false) {
             $html = [];
+            $html[] = $renderedLabel;
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
-            $html[] =               '<input class="form-control" value="' . ($itemValue ? '*********' : '') . '" type="text" disabled>';
+            $html[] =               '<input class="form-control" id="' . htmlspecialchars($fieldId) . '" value="' . ($itemValue ? '*********' : '') . '" type="text" disabled>';
             $html[] =           '</div>';
             $html[] =       '</div>';
             $html[] =   '</div>';
@@ -99,7 +104,6 @@ class PasswordElement extends AbstractFormElement
         }
 
         $languageService = $this->getLanguageService();
-        $fieldId = StringUtility::getUniqueId('formengine-input-');
         $itemName = (string)$parameterArray['itemFormElName'];
 
         // Always add "trim" and "password" (required for JS validation)
@@ -228,7 +232,7 @@ class PasswordElement extends AbstractFormElement
         $passwordElementAttributes['recordFieldId'] = $fieldId;
         $passwordElementAttributes['passwordPolicy'] = $passwordPolicy;
 
-        $resultArray['html'] = '
+        $resultArray['html'] = $renderedLabel . '
             <typo3-formengine-element-password ' . GeneralUtility::implodeAttributes($passwordElementAttributes, true) . '>
                 ' . $fieldInformationHtml . '
                 ' . $fullElement . '

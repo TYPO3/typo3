@@ -53,6 +53,8 @@ class CategoryElement extends AbstractFormElement
     public function render(): array
     {
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
         $fieldName = $this->data['fieldName'];
         $tableName = $this->data['tableName'];
         $parameterArray = $this->data['parameterArray'];
@@ -142,7 +144,7 @@ class CategoryElement extends AbstractFormElement
             'data-defaultvalues' => GeneralUtility::jsonEncodeForHtmlAttribute($this->data['defaultValues'], false),
         ];
 
-        $resultArray['html'] =
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(
             '<typo3-formengine-element-category ' . GeneralUtility::implodeAttributes(['class' => 'formengine-field-item t3js-formengine-field-item', 'recordFieldId' => $fieldId, 'treeWrapperId' => $treeWrapperId], true) . '>
                 ' . $fieldInformationHtml . '
                 <div class="form-control-wrap">
@@ -156,7 +158,8 @@ class CategoryElement extends AbstractFormElement
                         ' . $fieldWizardHtml . '
                     </div>
                 </div>
-            </typo3-formengine-element-category>';
+            </typo3-formengine-element-category>'
+        );
 
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/category-element.js');
 

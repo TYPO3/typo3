@@ -45,6 +45,8 @@ class FieldMapElement extends AbstractFormElement
     {
         $languageService = $this->getLanguageService();
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
         $parameterArray = $this->data['parameterArray'];
         $itemValue = $parameterArray['itemFormElValue'];
         $itemName = $parameterArray['itemFormElName'];
@@ -94,7 +96,7 @@ class FieldMapElement extends AbstractFormElement
         $html[] =         '</div>';
         $html[] =     '</div>';
         $html[] = '</div>';
-        $resultArray['html'] = implode(LF, $html);
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
         return $resultArray;
     }
 }

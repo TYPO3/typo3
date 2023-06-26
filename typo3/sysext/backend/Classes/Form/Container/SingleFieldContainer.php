@@ -44,6 +44,8 @@ class SingleFieldContainer extends AbstractContainer
     {
         $backendUser = $this->getBackendUserAuthentication();
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
 
         $table = $this->data['tableName'];
         $row = $this->data['databaseRow'];

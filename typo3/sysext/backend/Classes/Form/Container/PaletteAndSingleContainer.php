@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -122,7 +124,7 @@ class PaletteAndSingleContainer extends AbstractContainer
             $fieldConfiguration = $this->explodeSingleFieldShowItemConfiguration($fieldString);
             $fieldName = $fieldConfiguration['fieldName'];
             if ($fieldName === '--palette--') {
-                $paletteElementArray = $this->createPaletteContentArray($fieldConfiguration['paletteName']);
+                $paletteElementArray = $this->createPaletteContentArray($fieldConfiguration['paletteName'] ?? '');
                 if (!empty($paletteElementArray)) {
                     $mainStructureCounter++;
                     // If there is no label in ['types']['aType']['showitem'] for this palette: "--palette--;;aPalette",
@@ -161,6 +163,8 @@ class PaletteAndSingleContainer extends AbstractContainer
                         // @deprecated: fieldLabel can be removed in v13 when all elements take care of label/legend
                         'fieldLabel' => $fieldLabel,
                         'fieldHtml' => $childResultArray['html'],
+                        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+                        'labelHasBeenHandled' => $childResultArray['labelHasBeenHandled'] ?? false,
                     ];
                 }
                 $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $childResultArray, false);
@@ -202,15 +206,13 @@ class PaletteAndSingleContainer extends AbstractContainer
      * Render single fields of a given palette
      *
      * @param string $paletteName The palette to render
-     * @return array
      */
-    protected function createPaletteContentArray($paletteName)
+    protected function createPaletteContentArray(string $paletteName): array
     {
         // palette needs a palette name reference, otherwise it does not make sense to try rendering of it
         if (empty($paletteName) || empty($this->data['processedTca']['palettes'][$paletteName]['showitem'])) {
             return [];
         }
-
         $resultStructure = [];
         $foundRealElement = false; // Set to true if not only line breaks were rendered
         $fieldsArray = GeneralUtility::trimExplode(',', $this->data['processedTca']['palettes'][$paletteName]['showitem'], true);
@@ -227,10 +229,8 @@ class PaletteAndSingleContainer extends AbstractContainer
                 }
                 $options = $this->data;
                 $options['fieldName'] = $fieldName;
-
                 $options['renderType'] = 'singleFieldContainer';
                 $singleFieldContentArray = $this->nodeFactory->create($options)->render();
-
                 if (!empty($singleFieldContentArray['html'])) {
                     $foundRealElement = true;
                     $fieldLabel = '';
@@ -242,12 +242,13 @@ class PaletteAndSingleContainer extends AbstractContainer
                         'fieldName' => $fieldName,
                         'fieldLabel' => $fieldLabel,
                         'fieldHtml' => $singleFieldContentArray['html'],
+                        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+                        'labelHasBeenHandled' => $singleFieldContentArray['labelHasBeenHandled'] ?? false,
                     ];
                 }
                 $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $singleFieldContentArray, false);
             }
         }
-
         if ($foundRealElement) {
             return $resultStructure;
         }
@@ -260,7 +261,7 @@ class PaletteAndSingleContainer extends AbstractContainer
      * @param array $elementArray Array of elements
      * @return string Wrapped content
      */
-    protected function renderInnerPaletteContent(array $elementArray)
+    protected function renderInnerPaletteContent(array $elementArray): string
     {
         // Group fields
         $groupedFields = [];
@@ -334,7 +335,6 @@ class PaletteAndSingleContainer extends AbstractContainer
                 }
             }
         }
-
         return implode(LF, $result);
     }
 
@@ -345,33 +345,23 @@ class PaletteAndSingleContainer extends AbstractContainer
      * @param array $additionalPaletteClasses Additional classes to be added to HTML
      * @return string Wrapped element
      */
-    protected function wrapSingleFieldContentWithLabelAndOuterDiv(array $element, array $additionalPaletteClasses = [])
+    protected function wrapSingleFieldContentWithLabelAndOuterDiv(array $element, array $additionalPaletteClasses = []): string
     {
-        $fieldName = $element['fieldName'];
-
-        $paletteFieldClasses = [
-            'form-group',
-            't3js-formengine-validation-marker',
-            't3js-formengine-palette-field',
-        ];
-        foreach ($additionalPaletteClasses as $class) {
-            $paletteFieldClasses[] = $class;
-        }
-
-        $label = htmlspecialchars($element['fieldLabel']);
-
-        if ($this->getBackendUser()->shallDisplayDebugInformation()) {
-            $label .= ' <code>[' . htmlspecialchars($fieldName) . ']</code>';
-        }
-
+        $paletteFieldClasses = array_merge(['form-group', 't3js-formengine-validation-marker', 't3js-formengine-palette-field'], $additionalPaletteClasses);
         $content = [];
         $content[] = '<div class="' . implode(' ', $paletteFieldClasses) . '">';
-        $content[] =    '<label class="form-label t3js-formengine-label">';
-        $content[] =        $label;
-        $content[] =    '</label>';
-        $content[] =    $element['fieldHtml'];
+        if (!$element['labelHasBeenHandled']) {
+            // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+            $label = htmlspecialchars($element['fieldLabel']);
+            if ($this->getBackendUser()->shallDisplayDebugInformation()) {
+                $label .= ' <code>[' . htmlspecialchars($element['fieldName']) . ']</code>';
+            }
+            $content[] = '<label class="form-label t3js-formengine-label">';
+            $content[] =     $label;
+            $content[] = '</label>';
+        }
+        $content[] = $element['fieldHtml'];
         $content[] = '</div>';
-
         return implode(LF, $content);
     }
 

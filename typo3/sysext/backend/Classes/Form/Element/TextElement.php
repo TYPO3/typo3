@@ -82,6 +82,8 @@ class TextElement extends AbstractFormElement
         $fieldName = $this->data['fieldName'];
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
 
         $itemValue = $parameterArray['itemFormElValue'];
         $config = $parameterArray['fieldConf']['config'];
@@ -89,6 +91,8 @@ class TextElement extends AbstractFormElement
         if ($config['cols'] ?? false) {
             $width = $this->formMaxWidth(MathUtility::forceIntegerInRange($config['cols'], $this->minimumInputWidth, $this->maxInputWidth));
         }
+        $fieldId = StringUtility::getUniqueId('formengine-textarea-');
+        $renderedLabel = $this->renderLabel($fieldId);
 
         // Setting number of rows
         $rows = MathUtility::forceIntegerInRange(($config['rows'] ?? 5) ?: 5, 1, 20);
@@ -111,12 +115,13 @@ class TextElement extends AbstractFormElement
 
         if ($config['readOnly'] ?? false) {
             $html = [];
+            $html[] = $renderedLabel;
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
-            $html[] =               '<textarea class="form-control" rows="' . $rows . '" disabled>';
+            $html[] =               '<textarea class="form-control" id="' . htmlspecialchars($fieldId) . '" rows="' . $rows . '" disabled>';
             $html[] =                   htmlspecialchars((string)$itemValue);
             $html[] =               '</textarea>';
             $html[] =           '</div>';
@@ -128,7 +133,6 @@ class TextElement extends AbstractFormElement
         }
 
         $languageService = $this->getLanguageService();
-        $fieldId = StringUtility::getUniqueId('formengine-textarea-');
         $itemName = (string)$parameterArray['itemFormElName'];
 
         // @todo: The whole eval handling is a mess and needs refactoring - Especially for this element,
@@ -310,7 +314,7 @@ class TextElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
-        $resultArray['html'] = '
+        $resultArray['html'] = $renderedLabel . '
              <typo3-formengine-element-text class="formengine-field-item t3js-formengine-field-item" recordFieldId="' . htmlspecialchars($fieldId) . '">
                 ' . $fieldInformationHtml . '
                 ' . $fullElement . '

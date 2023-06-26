@@ -74,6 +74,8 @@ class InputSlugElement extends AbstractFormElement
         $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
 
         $languageId = 0;
         if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField']) && !empty($GLOBALS['TCA'][$table]['ctrl']['languageField'])) {
@@ -87,6 +89,7 @@ class InputSlugElement extends AbstractFormElement
         $size = MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $width = $this->formMaxWidth($size);
         $baseUrl = $this->data['customData'][$this->data['fieldName']]['slugPrefix'] ?? '';
+        $fieldId = StringUtility::getUniqueId('formengine-input-');
 
         // Convert UTF-8 characters back (that is important, see Slug class when sanitizing)
         $itemValue = rawurldecode($itemValue);
@@ -109,8 +112,10 @@ class InputSlugElement extends AbstractFormElement
                 'type' => 'text',
                 'value' => $itemValue,
                 'title' => $itemValue,
+                'id' => $fieldId,
             ];
-
+            $html = [];
+            $html[] = $this->renderLabel($fieldId);
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =     $fieldInformationHtml;
             $html[] =     '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
@@ -124,7 +129,6 @@ class InputSlugElement extends AbstractFormElement
             $html[] =         '</div>';
             $html[] =     '</div>';
             $html[] = '</div>';
-
             $resultArray['html'] = implode(LF, $html);
             return $resultArray;
         }
@@ -160,7 +164,7 @@ class InputSlugElement extends AbstractFormElement
         $mainFieldHtml[] =                      ' readonly';
         $mainFieldHtml[] =                  ' />';
         $mainFieldHtml[] =                  '<input type="text"';
-        $mainFieldHtml[] =                      ' id="' . htmlspecialchars(StringUtility::getUniqueId('formengine-input-')) . '"';
+        $mainFieldHtml[] =                      ' id="' . htmlspecialchars($fieldId) . '"';
         $mainFieldHtml[] =                      ' class="form-control t3js-form-field-slug-input hidden"';
         $mainFieldHtml[] =                      ' placeholder="' . htmlspecialchars($row['slug'] ?? '/') . '"';
         $mainFieldHtml[] =                      ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '"';
@@ -196,7 +200,7 @@ class InputSlugElement extends AbstractFormElement
         $mainFieldHtml[] =  '</div>';
         $mainFieldHtml[] = '</div>';
 
-        $resultArray['html'] = implode(LF, $mainFieldHtml);
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $mainFieldHtml));
 
         [$commonElementPrefix] = GeneralUtility::revExplode('[', $parameterArray['itemFormElName'], 2);
         $validInputNamesToListenTo = [];

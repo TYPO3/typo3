@@ -47,6 +47,7 @@ final class UuidElementTest extends UnitTestCase
                 'itemFormElName' => 'identifier',
                 'itemFormElValue' => '',
                 'fieldConf' => [
+                    'label' => 'foo',
                     'config' => [
                         'type' => 'uuid',
                         'required' => true,
@@ -75,6 +76,7 @@ final class UuidElementTest extends UnitTestCase
                 'itemFormElName' => 'identifier',
                 'itemFormElValue' => '_-invalid-_',
                 'fieldConf' => [
+                    'label' => 'foo',
                     'config' => [
                         'type' => 'uuid',
                         'required' => true,
@@ -104,6 +106,7 @@ final class UuidElementTest extends UnitTestCase
                 'itemFormElName' => 'identifier',
                 'itemFormElValue' => $uuid,
                 'fieldConf' => [
+                    'label' => 'foo',
                     'config' => [
                         'type' => 'uuid',
                     ],
@@ -139,6 +142,7 @@ final class UuidElementTest extends UnitTestCase
                 'itemFormElName' => 'identifier',
                 'itemFormElValue' => $uuid,
                 'fieldConf' => [
+                    'label' => 'foo',
                     'config' => [
                         'type' => 'uuid',
                         'enableCopyToClipboard' => false,

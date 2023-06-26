@@ -74,6 +74,8 @@ class SelectSingleElement extends AbstractFormElement
     public function render()
     {
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
 
         $table = $this->data['tableName'];
         $field = $this->data['fieldName'];
@@ -219,6 +221,7 @@ class SelectSingleElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         $html = [];
+        $html[] = $this->renderLabel($selectId);
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap">';

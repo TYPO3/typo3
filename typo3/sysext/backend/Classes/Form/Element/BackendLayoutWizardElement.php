@@ -56,6 +56,8 @@ class BackendLayoutWizardElement extends AbstractFormElement
     {
         $lang = $this->getLanguageService();
         $resultArray = $this->initializeResultArray();
+        // @deprecated since v12, will be removed with v13 when all elements handle label/legend on their own
+        $resultArray['labelHasBeenHandled'] = true;
         $this->initializeWizard();
 
         $row = $this->data['databaseRow'];
@@ -176,7 +178,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $html[] = '</div>';
 
         $html = implode(LF, $html);
-        $resultArray['html'] = $html;
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend($html);
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
             '@typo3/backend/grid-editor.js',
             'GridEditor'
