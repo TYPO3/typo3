@@ -294,13 +294,6 @@ return [
                 ],
             ],
         ],
-        'input_39' => [
-            'label' => 'input_39',
-            'description' => 'type=email',
-            'config' => [
-                'type' => 'email',
-            ],
-        ],
         'input_40' => [
             'label' => 'input_40',
             'description' => 'readOnly',
@@ -708,6 +701,14 @@ return [
             'config' => [
                 'type' => 'number',
                 'readOnly' => 1,
+            ],
+        ],
+
+        'email_1' => [
+            'label' => 'email_1',
+            'description' => 'email',
+            'config' => [
+                'type' => 'email',
             ],
         ],
 
@@ -1669,7 +1670,7 @@ backend_layout {
         '0' => [
             'showitem' => '
                 --div--;input,
-                    input_1, input_40, input_2, input_3, input_41, input_42, input_43, input_44, input_4, input_5, input_39, input_10,
+                    input_1, input_40, input_2, input_3, input_41, input_42, input_43, input_44, input_4, input_5, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19, input_20,
                     input_21, input_22, input_23, input_24, input_26, input_27, input_14, input_28,
                     input_33, input_35, input_36,
@@ -1685,6 +1686,8 @@ backend_layout {
                     color_1,color_2,color_3,
                 --div--;number,
                     number_1, number_2, number_3, number_4, number_5, number_6, number_7,
+                --div--;email,
+                    email_1,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,

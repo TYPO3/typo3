@@ -94,7 +94,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     input_33 text,
     input_35 text,
     input_36 text,
-    input_39 text,
     input_40 text,
     input_41 text,
     input_42 text,
@@ -126,6 +125,8 @@ CREATE TABLE tx_styleguide_elements_basic (
     number_5 text,
     number_6 int(11) DEFAULT '0' NOT NULL,
     number_7 int(11) DEFAULT '0' NOT NULL,
+
+    email_1 text,
 
     inputdatetime_1 text,
     inputdatetime_2 date,
