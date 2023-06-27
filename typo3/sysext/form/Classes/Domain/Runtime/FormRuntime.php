@@ -499,16 +499,16 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * If no surrounding content object can be found (which would be strange)
      * we assume a cached request for safety which means that an empty form
      * will be rendered.
-     *
-     * @todo: this should be checked against https://forge.typo3.org/issues/91625 as this was fixed differently for UriBuilder
      */
     protected function isRenderedCached(): bool
     {
         $contentObject = $this->request->getAttribute('currentContentObject');
-        return $contentObject === null
-            ? true
-            // @todo this does not work when rendering a cached `FLUIDTEMPLATE` (not nested in `COA_INT`)
-            : $contentObject->getUserObjectType() === ContentObjectRenderer::OBJECTTYPE_USER;
+        // @todo: this does not work when rendering a cached `FLUIDTEMPLATE` (not nested in `COA_INT`)
+        //        Rendering the form other than with the controller, will never work out cleanly.
+        //        This likely can only be resolved by deprecating using the form render view helper
+        //        other than in a template for the form plugin and covering the use cases the VH was introduced
+        //        with a different concept
+        return $contentObject === null || $contentObject->getUserObjectType() === ContentObjectRenderer::OBJECTTYPE_USER;
     }
 
     /**
@@ -1078,10 +1078,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             }
         }
 
-        $contentObjectData = [];
-        if ($this->request->getAttribute('currentContentObject') instanceof ContentObjectRenderer) {
-            $contentObjectData = $this->request->getAttribute('currentContentObject')->data;
-        }
+        $contentObjectData = $this->request->getAttribute('currentContentObject')?->data ?? [];
 
         return GeneralUtility::makeInstance(
             Resolver::class,

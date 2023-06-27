@@ -515,9 +515,9 @@ class UriBuilder
                 $typolinkConfiguration['forceAbsoluteUrl.']['scheme'] = $this->absoluteUriScheme;
             }
         }
-        /** @var ContentObjectRenderer $currentContentObject */
+        /** @var ?ContentObjectRenderer $currentContentObject */
         $currentContentObject = $this->request->getAttribute('currentContentObject');
-        return $currentContentObject->createUrl($typolinkConfiguration);
+        return $currentContentObject?->createUrl($typolinkConfiguration) ?? '';
     }
 
     /**

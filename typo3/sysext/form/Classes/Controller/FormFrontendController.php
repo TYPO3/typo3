@@ -69,7 +69,7 @@ class FormFrontendController extends ActionController
             $formDefinition['persistenceIdentifier'] = $this->settings['persistenceIdentifier'];
             $formDefinition = $this->overrideByFlexFormSettings($formDefinition);
             $formDefinition = ArrayUtility::setValueByPath($formDefinition, 'renderingOptions._originalIdentifier', $formDefinition['identifier'], '.');
-            $formDefinition['identifier'] .= '-' . $this->request->getAttribute('currentContentObject')->data['uid'];
+            $formDefinition['identifier'] .= '-' . ($this->request->getAttribute('currentContentObject')?->data['uid'] ?? '');
         }
         $this->view->assign('formConfiguration', $formDefinition);
 
@@ -93,7 +93,7 @@ class FormFrontendController extends ActionController
      */
     protected function overrideByFlexFormSettings(array $formDefinition): array
     {
-        $flexFormData = GeneralUtility::xml2array($this->request->getAttribute('currentContentObject')->data['pi_flexform'] ?? '');
+        $flexFormData = GeneralUtility::xml2array($this->request->getAttribute('currentContentObject')?->data['pi_flexform'] ?? '');
 
         if (!is_array($flexFormData)) {
             return $formDefinition;

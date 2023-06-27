@@ -244,10 +244,10 @@ class FrontendConfigurationManager implements SingletonInterface
     protected function overrideStoragePidIfStartingPointIsSet(array $frameworkConfiguration): array
     {
         $contentObject = $this->request?->getAttribute('currentContentObject');
-        $pages = (string)($contentObject->data['pages'] ?? '');
+        $pages = (string)($contentObject?->data['pages'] ?? '');
         if ($pages !== '') {
             $storagePids = GeneralUtility::intExplode(',', $pages, true);
-            $recursionDepth = (int)($contentObject->data['recursive'] ?? 0);
+            $recursionDepth = (int)($contentObject?->data['recursive'] ?? 0);
             $recursiveStoragePids = $this->pageRepository->getPageIdsRecursive($storagePids, $recursionDepth);
             $pages = implode(',', $recursiveStoragePids);
             ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, [
@@ -292,7 +292,7 @@ class FrontendConfigurationManager implements SingletonInterface
     protected function overrideConfigurationFromFlexForm(array $frameworkConfiguration): array
     {
         $contentObject = $this->request?->getAttribute('currentContentObject');
-        $flexFormConfiguration = $contentObject->data['pi_flexform'] ?? [];
+        $flexFormConfiguration = $contentObject?->data['pi_flexform'] ?? [];
         if (is_string($flexFormConfiguration)) {
             if ($flexFormConfiguration !== '') {
                 $flexFormConfiguration = $this->flexFormService->convertFlexFormContentToArray($flexFormConfiguration);
