@@ -135,7 +135,7 @@ final class SysTemplateTreeBuilder
         }
 
         foreach ($sysTemplateRows as $sysTemplateRow) {
-            $cacheIdentifier = 'sys-template-' . $this->type . '-' . $this->getSysTemplateRowIdentifier($sysTemplateRow);
+            $cacheIdentifier = 'sys-template-' . $this->type . '-' . $this->getSysTemplateRowIdentifier($sysTemplateRow, $site);
             if ($this->cache) {
                 // Get from cache if possible
                 $includeNode = $this->cache->require($cacheIdentifier);
@@ -504,9 +504,18 @@ final class SysTemplateTreeBuilder
      * from the relevant row fields like 'constants' and 'config', but we do NOT include
      * the sys_template row 'uid' and 'pid'. So different sys_template rows with the same content
      * lead to the same identifier, and we cache that just once.
+     *
+     * One additional dependency influences the identifier as well: If the 'clear constants'
+     * flag is set, this row will later trigger loading of constants from given site settings.
+     * When two "first" template rows have the exact same field content in different sites, the
+     * site identifier needs to be added to the hash to still create two different cache entries.
      */
-    private function getSysTemplateRowIdentifier(array $sysTemplateRow): string
+    private function getSysTemplateRowIdentifier(array $sysTemplateRow, ?SiteInterface $site): string
     {
+        $siteIdentifier = 'dummy';
+        if ($this->type === 'constants' && ((int)$sysTemplateRow['clear'] & 1) && $site !== null) {
+            $siteIdentifier = $site->getIdentifier();
+        }
         $cacheRelevantSysTemplateRowValues = [
             'root' => (int)$sysTemplateRow['root'],
             'clear' => (int)$sysTemplateRow['clear'],
@@ -516,6 +525,7 @@ final class SysTemplateTreeBuilder
             'basedOn' => (string)$sysTemplateRow['basedOn'],
             'includeStaticAfterBasedOn' => (int)$sysTemplateRow['includeStaticAfterBasedOn'],
             'static_file_mode' => (int)$sysTemplateRow['static_file_mode'],
+            'siteIdentifier' => $siteIdentifier,
         ];
         return hash('xxh3', json_encode($cacheRelevantSysTemplateRowValues, JSON_THROW_ON_ERROR));
     }
