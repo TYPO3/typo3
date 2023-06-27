@@ -4732,7 +4732,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     if (method_exists($classObj, 'setContentObjectRenderer') && is_callable([$classObj, 'setContentObjectRenderer'])) {
                         $classObj->setContentObjectRenderer($this);
                     }
-                    $content = $callable($content, $conf, $this->getRequest());
+                    $content = $callable($content, $conf, $this->getRequest()->withAttribute('currentContentObject', $this));
                 } else {
                     $this->getTimeTracker()->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', LogLevel::ERROR);
                 }
@@ -4740,7 +4740,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $this->getTimeTracker()->setTSlogMessage('Class "' . $parts[0] . '" did not exist', LogLevel::ERROR);
             }
         } elseif (function_exists($funcName)) {
-            $content = $funcName($content, $conf);
+            $content = $funcName($content, $conf, $this->getRequest()->withAttribute('currentContentObject', $this));
         } else {
             $this->getTimeTracker()->setTSlogMessage('Function "' . $funcName . '" did not exist', LogLevel::ERROR);
         }
@@ -5869,35 +5869,32 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * @todo: This getRequest() handling is pretty messy. We created a loop from
-     *        request to 'currentContentObject' back to request with this.
-     *        v13 should be refactored, probably with this patch chain:
-     *        * Remove fallback to $GLOBALS['TYPO3_REQUEST'] to force consumers
-     *          actually setting the request using setRequest().
-     *        * Protect this method.
-     *        * Get rid of public TSFE->cObj (the "page" instance of cObj).
-     *        * Avoid TSFE as constructor argument and make ContentObjectRenderer
-     *          free for DI, for instance to get the container injected.
-     *        * When getRequest() is protected or private, setRequest() should
-     *          *remove* the currentContentObject attribute again, to prevent
-     *          the object loop. This will work, since local getRequest() could
-     *          use $this when needed.
+     * @todo: This getRequest() is still a bit messy.
+     *        Underling code depends on both, a ContentObjectRenderer instance and a request,
+     *        but the API currently only passes one or the other. For instance Extbase and Fluid
+     *        only pass the Request, DataProcessors only a ContentObjectRenderer.
+     *        This is why getRequest() is currently public here.
+     *        A potential refactoring could:
+     *        * Create interfaces to pass both where needed (or pass a combined context object)
+     *        * Deprecate access to getRequest() here afterwards
+     *        A circular dependency that the instance of ContentObjectRenderer holds a
+     *        request with the instance of itself as attribute must be avoided.
+     *        This is currently achieved by adding a new request with
+     *        $this->request->withAttribute('currentContentObject', $cObj) in code that needs
+     *        it, but this new request is NOT passed back into the ContentObjectRenderer instance.
      *
-     * @internal This method will be set to protected with TYPO3 v13.
+     * @internal This method might be deprecated with TYPO3 v13.
      */
     public function getRequest(): ServerRequestInterface
     {
         if ($this->request instanceof ServerRequestInterface) {
-            // Note attribute 'currentContentObject' has been set by setRequest() already.
             return $this->request;
         }
-
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
             // @todo: We may want to deprecate this fallback and force consumers
             //        to setRequest() after object instantiation / unserialization instead.
-            return $GLOBALS['TYPO3_REQUEST']->withAttribute('currentContentObject', $this);
+            return $GLOBALS['TYPO3_REQUEST'];
         }
-
         throw new ContentRenderingException(
             'PSR-7 request is missing in ContentObjectRenderer. Inject with start(), setRequest() or provide via $GLOBALS[\'TYPO3_REQUEST\'].',
             1607172972

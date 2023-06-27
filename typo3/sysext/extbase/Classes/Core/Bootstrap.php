@@ -109,9 +109,8 @@ class Bootstrap
     {
         if ($this->cObj === null) {
             $this->cObj = $this->container->get(ContentObjectRenderer::class);
-            $request = $request->withAttribute('currentContentObject', $this->cObj);
+            $this->cObj->setRequest($request);
         }
-        $this->cObj->setRequest($request);
         // @deprecated since v12. Remove in v13.
         $this->configurationManager->setContentObject($this->cObj);
         if (method_exists($this->configurationManager, 'setRequest')) {

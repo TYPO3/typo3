@@ -696,7 +696,7 @@ class UriBuilder
             E_USER_DEPRECATED
         );
 
-        return ($contentObject = $this->getRequest()?->getArgument('currentContentObject')) instanceof ContentObjectRenderer
+        return ($contentObject = $this->getRequest()?->getAttribute('currentContentObject')) instanceof ContentObjectRenderer
             ? $contentObject
             : GeneralUtility::makeInstance(ContentObjectRenderer::class);
     }

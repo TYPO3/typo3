@@ -128,7 +128,7 @@ final class CObjectViewHelper extends AbstractViewHelper
         /** @var RenderingContext $renderingContext */
         $request = $renderingContext->getRequest();
         $contentObjectRenderer = self::getContentObjectRenderer($request);
-        $contentObjectRenderer->setRequest($request->withAttribute('currentContentObject', $contentObjectRenderer));
+        $contentObjectRenderer->setRequest($request);
         $tsfeBackup = null;
         if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
             $tsfeBackup = self::simulateFrontendEnvironment();
@@ -216,7 +216,12 @@ final class CObjectViewHelper extends AbstractViewHelper
                 GeneralUtility::makeInstance(FrontendUserAuthentication::class)
             );
         }
-        return GeneralUtility::makeInstance(ContentObjectRenderer::class, $tsfe);
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $tsfe);
+        $parent = $request->getAttribute('currentContentObject');
+        if ($parent instanceof ContentObjectRenderer) {
+            $contentObjectRenderer->setParent($parent->data, $parent->currentRecord);
+        }
+        return $contentObjectRenderer;
     }
 
     /**

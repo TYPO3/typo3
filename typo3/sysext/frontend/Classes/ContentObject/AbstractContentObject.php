@@ -59,6 +59,11 @@ abstract class AbstractContentObject
     public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
     {
         $this->cObj = $cObj;
+        // Provide the ContentObjectRenderer to the request as well, for code
+        // that only passes the request to more underlying layers, like Extbase does.
+        // Also makes sure the request in a Fluid RenderingContext also has the current
+        // content object available.
+        $this->request = $this->request->withAttribute('currentContentObject', $cObj);
     }
 
     protected function hasTypoScriptFrontendController(): bool
