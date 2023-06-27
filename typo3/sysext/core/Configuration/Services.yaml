@@ -147,6 +147,13 @@ services:
   TYPO3\CMS\Core\Routing\RequestContextFactory:
     public: true
 
+  TYPO3\CMS\Core\Routing\Enhancer\VariableProcessor:
+    public: true
+    shared: false
+
+  TYPO3\CMS\Core\Routing\Enhancer\VariableProcessorCache:
+    shared: true
+
   # FAL security checks for backend users
   TYPO3\CMS\Core\Resource\Security\StoragePermissionsAspect:
     tags:

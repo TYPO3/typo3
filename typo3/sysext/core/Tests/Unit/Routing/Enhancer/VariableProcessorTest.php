@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Routing\Enhancer;
 
 use TYPO3\CMS\Core\Routing\Enhancer\VariableProcessor;
+use TYPO3\CMS\Core\Routing\Enhancer\VariableProcessorCache;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class VariableProcessorTest extends UnitTestCase
@@ -127,7 +128,7 @@ final class VariableProcessorTest extends UnitTestCase
      */
     public function isRoutePathProcessed(?string $namespace, array $arguments, string $inflatedRoutePath, string $deflatedRoutePath): void
     {
-        $subject = new VariableProcessor();
+        $subject = new VariableProcessor(new VariableProcessorCache());
         self::assertSame(
             $deflatedRoutePath,
             $subject->deflateRoutePath($inflatedRoutePath, $namespace, $arguments)
@@ -166,7 +167,7 @@ final class VariableProcessorTest extends UnitTestCase
      */
     public function parametersAreProcessed(array $arguments, array $deflatedParameters): void
     {
-        $subject = new VariableProcessor();
+        $subject = new VariableProcessor(new VariableProcessorCache());
         $inflatedParameters = ['a' => 'a', 'first' => ['aa' => 'aa', 'second' => ['aaa' => 'aaa', '@any' => '@any']]];
         self::assertEquals(
             $deflatedParameters,
@@ -242,7 +243,7 @@ final class VariableProcessorTest extends UnitTestCase
      */
     public function namespaceParametersAreProcessed(string $namespace, array $arguments, array $deflatedParameters): void
     {
-        $subject = new VariableProcessor();
+        $subject = new VariableProcessor(new VariableProcessorCache());
         $inflatedParameters = ['a' => 'a', 'first' => ['aa' => 'aa', 'second' => ['aaa' => 'aaa', '@any' => '@any']]];
         self::assertEquals(
             $deflatedParameters,
@@ -330,7 +331,7 @@ final class VariableProcessorTest extends UnitTestCase
      */
     public function keysAreDeflated(?string $namespace, array $arguments, array $deflatedKeys): void
     {
-        $subject = new VariableProcessor();
+        $subject = new VariableProcessor(new VariableProcessorCache());
         $inflatedKeys = ['a' => 'a', 'b' => 'b', 'c' => ['d' => 'd', 'e' => 'e']];
         self::assertEquals(
             $deflatedKeys,
@@ -350,6 +351,6 @@ final class VariableProcessorTest extends UnitTestCase
     {
         $this->expectException(\OutOfRangeException::class);
         $this->expectExceptionCode(1537633463);
-        (new VariableProcessor())->inflateKeys($deflatedKeys, $namespace, $arguments);
+        (new VariableProcessor(new VariableProcessorCache()))->inflateKeys($deflatedKeys, $namespace, $arguments);
     }
 }

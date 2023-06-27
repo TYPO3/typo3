@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Routing\Enhancer;
 use TYPO3\CMS\Core\Routing\Aspect\AspectInterface;
 use TYPO3\CMS\Core\Routing\Aspect\ModifiableAspectInterface;
 use TYPO3\CMS\Core\Routing\Route;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract Enhancer, useful for custom enhancers
@@ -181,7 +182,7 @@ abstract class AbstractEnhancer implements EnhancerInterface
         if (isset($this->variableProcessor)) {
             return $this->variableProcessor;
         }
-        return $this->variableProcessor = new VariableProcessor();
+        return $this->variableProcessor = GeneralUtility::makeInstance(VariableProcessor::class);
     }
 
     /**
