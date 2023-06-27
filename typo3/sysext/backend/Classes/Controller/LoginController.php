@@ -200,9 +200,11 @@ class LoginController
         $preferredBrowserLanguage = $this->locales->getPreferredClientLanguage($httpAcceptLanguage);
 
         // If we found a $preferredBrowserLanguage, which is not the default language, while no user is logged in,
-        // initialize $this->getLanguageService()
+        // initialize $this->getLanguageService() and set the language to the backend user object, so labels in fluid
+        // views are translated
         if (empty($backendUser->user['uid'])) {
             $languageService->init($this->locales->createLocale($preferredBrowserLanguage));
+            $backendUser->user['lang'] = $preferredBrowserLanguage;
         }
 
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $languageService);
