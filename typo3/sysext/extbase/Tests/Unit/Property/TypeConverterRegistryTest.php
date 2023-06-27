@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
 
-use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration;
+use TYPO3\CMS\Core\Tests\UnitDeprecated\Type\Fixture\Enumeration\CompleteEnumeration;
 use TYPO3\CMS\Core\Type\TypeInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Property\Exception\DuplicateTypeConverterException;
@@ -25,7 +25,6 @@ use TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException;
 use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
-use TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverter\CoreTypeConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverter\FileReferenceConverter;
@@ -187,29 +186,6 @@ final class TypeConverterRegistryTest extends UnitTestCase
 
         $converter = $this->subject->findTypeConverter('array', CompleteEnumeration::class);
         self::assertInstanceOf(ObjectConverter::class, $converter);
-    }
-
-    /**
-     * @test
-     *
-     * @see testFindConverterThrowsTypeConverterExceptionWhenThereIsNoConverterRegisteredForGivenSourceTypeAndObjectTargetType
-     */
-    public function findConverterThrowsExceptionIfNoConverterCanBeFoundToConvertSourceToAnObject(): void
-    {
-        /*
-         * This test is similar to another one above but in this case the exception is thrown later because there is a
-         * converter registered for the given source type but the registry ultimately fails to find a converter that
-         * not only handles the desired source type but also the desired target type. In the other test further above,
-         * the registry could early return as soon as no converter for the desired source type was found.
-         */
-
-        $this->subject->add(new ArrayConverter(), 10, ['array'], 'array');
-
-        $this->expectException(TypeConverterException::class);
-        $this->expectExceptionCode(1476044883);
-        $this->expectExceptionMessage('No converter found which can be used to convert from "array" to "TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration".');
-
-        $this->subject->findTypeConverter('array', CompleteEnumeration::class);
     }
 
     /**

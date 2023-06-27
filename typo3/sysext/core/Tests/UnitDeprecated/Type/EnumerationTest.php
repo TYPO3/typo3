@@ -15,13 +15,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Type;
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Type;
 
-use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration;
-use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\DuplicateConstantValueEnumeration;
-use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\InvalidConstantEnumeration;
-use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\MissingConstantsEnumeration;
-use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\MissingDefaultEnumeration;
+use TYPO3\CMS\Core\Tests\UnitDeprecated\Type\Fixture\Enumeration\CompleteEnumeration;
+use TYPO3\CMS\Core\Tests\UnitDeprecated\Type\Fixture\Enumeration\DuplicateConstantValueEnumeration;
+use TYPO3\CMS\Core\Tests\UnitDeprecated\Type\Fixture\Enumeration\InvalidConstantEnumeration;
+use TYPO3\CMS\Core\Tests\UnitDeprecated\Type\Fixture\Enumeration\MissingConstantsEnumeration;
+use TYPO3\CMS\Core\Tests\UnitDeprecated\Type\Fixture\Enumeration\MissingDefaultEnumeration;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationDefinitionException;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;

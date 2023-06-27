@@ -15,14 +15,17 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration;
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Type\Fixture\Enumeration;
 
 use TYPO3\CMS\Core\Type\Enumeration;
 
 /**
- * This is an enumeration without a default value so it must be called with a value
+ * This is a complete enumeration with all possible constant values
  */
-final class MissingDefaultEnumeration extends Enumeration
+final class CompleteEnumeration extends Enumeration
 {
-    public const FOO = 1;
+    public const __default = self::INTEGER_VALUE;
+    public const INTEGER_VALUE = 1;
+    public const STRING_INTEGER_VALUE = '2';
+    public const STRING_VALUE = 'foo';
 }

@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
  *
  * The prefix "Abstract" has been left out by intention because
  * a "type" is abstract by definition.
+ *
+ * @deprecated will be removed in TYPO3 v14.0.
  */
 abstract class Enumeration implements TypeInterface
 {
@@ -43,6 +45,8 @@ abstract class Enumeration implements TypeInterface
      */
     public function __construct($value = null)
     {
+        trigger_error('Class ' . __CLASS__ . ' used by enumeration ' . static::class . ' will be removed in TYPO3 v14.0. Use native enums instead.', E_USER_DEPRECATED);
+
         if ($value === null && !defined('static::__default')) {
             throw new InvalidEnumerationValueException(
                 sprintf('A value for enumeration "%s" is required if no __default is defined.', static::class),
@@ -187,6 +191,8 @@ abstract class Enumeration implements TypeInterface
      */
     public static function cast($value)
     {
+        trigger_error('Class ' . __CLASS__ . ' used by enumeration ' . static::class . ' will be removed in TYPO3 v14.0. Use native enums instead.', E_USER_DEPRECATED);
+
         if (!is_object($value) || get_class($value) !== static::class) {
             $value = new static($value);
         }
