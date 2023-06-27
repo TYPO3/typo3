@@ -2073,8 +2073,7 @@ class DatabaseRecordList
     protected function isRecordDeletePlaceholder(array $row): bool
     {
         return $this->getBackendUserAuthentication()->workspace > 0
-            && isset($row['t3ver_state'])
-            && VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER);
+            && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER;
     }
 
     public function setIsEditable(bool $isEditable): void

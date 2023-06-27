@@ -604,7 +604,7 @@ class PageLayoutController
         if (
             $this->currentSelectedLanguage === -1
             || (int)$this->moduleData->get('function') !== 1
-            || VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
+            || VersionState::tryFrom($this->pageinfo['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER
         ) {
             return null;
         }

@@ -15,21 +15,17 @@
 
 namespace TYPO3\CMS\Core\Versioning;
 
-use TYPO3\CMS\Core\Type\Enumeration;
-
 /**
  * Enumeration object for VersionState
  */
-final class VersionState extends Enumeration
+enum VersionState: int
 {
-    public const __default = self::DEFAULT_STATE;
-
     /**
      * The t3ver_state 0 is used for a live element, and any
      * commonly "modified" versioned record which is then identified
      * with t3ver_oid=uid of live ID
      */
-    public const DEFAULT_STATE = 0;
+    case DEFAULT_STATE = 0;
 
     /**
      * If a new record is created in a workspace a new
@@ -38,7 +34,7 @@ final class VersionState extends Enumeration
      * record and has no t3ver_oid value. Publishing this record
      * is done by changing the t3ver_wsid field to "0".
      */
-    public const NEW_PLACEHOLDER = 1;
+    case NEW_PLACEHOLDER = 1;
 
     /**
      * Deleting elements is done by actually creating a
@@ -46,7 +42,7 @@ final class VersionState extends Enumeration
      * that indicates the live element must be deleted upon
      * publishing the versions.
      */
-    public const DELETE_PLACEHOLDER = 2;
+    case DELETE_PLACEHOLDER = 2;
 
     /**
      * When an element is moved to a different page, a versioned
@@ -58,13 +54,38 @@ final class VersionState extends Enumeration
      * the t3ver_state=4 records should be fetched as well to
      * find the new position and to do "workspace overlays" properly.
      */
-    public const MOVE_POINTER = 4;
+    case MOVE_POINTER = 4;
+
+    public function indicatesPlaceholder(): bool
+    {
+        return $this !== self::NEW_PLACEHOLDER && $this !== self::DEFAULT_STATE;
+    }
 
     /**
-     * @return bool
+     * Cast value to enumeration type
+     *
+     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14.0.
      */
-    public function indicatesPlaceholder()
+    public static function cast(mixed $value): ?self
     {
-        return (int)$this->__toString() > self::NEW_PLACEHOLDER;
+        trigger_error(
+            'VersionState::' . __METHOD__ . ' has been marked as deprecated in TYPO3 v13. Use VersionState::tryFrom() instead.',
+            E_USER_DEPRECATED,
+        );
+        return $value instanceof self ? $value : self::tryFrom((int)$value);
+    }
+
+    /**
+     * Compare if the value of the current object value equals the given value
+     *
+     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14.0.
+     */
+    public function equals(mixed $value): bool
+    {
+        trigger_error(
+            'VersionState->' . __METHOD__ . ' has been marked as deprecated in TYPO3 v13. Use VersionState::tryFrom() and native comparison logic instead.',
+            E_USER_DEPRECATED,
+        );
+        return $this === ($value instanceof self ? $value : self::tryFrom((int)$value));
     }
 }

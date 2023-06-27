@@ -90,7 +90,7 @@ class WorkspaceRestriction implements QueryRestrictionInterface
                         ),
                         $expressionBuilder->eq(
                             $tableAlias . '.t3ver_state',
-                            VersionState::MOVE_POINTER
+                            VersionState::MOVE_POINTER->value
                         )
                     )
                 );
@@ -101,7 +101,7 @@ class WorkspaceRestriction implements QueryRestrictionInterface
                     $workspaceIdExpression,
                     $expressionBuilder->neq(
                         't3ver_state',
-                        VersionState::DELETE_PLACEHOLDER
+                        VersionState::DELETE_PLACEHOLDER->value
                     )
                 );
             }

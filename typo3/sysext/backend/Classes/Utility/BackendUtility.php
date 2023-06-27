@@ -1136,14 +1136,14 @@ class BackendUtility
             $out = htmlspecialchars($parts[0]);
             return $includeAttrib ? 'title="' . $out . '"' : $out;
         }
-        switch (VersionState::cast($row['t3ver_state'])) {
-            case new VersionState(VersionState::DELETE_PLACEHOLDER):
+        switch (VersionState::tryFrom($row['t3ver_state'] ?? 0)) {
+            case VersionState::DELETE_PLACEHOLDER:
                 $parts[] = 'Deleted element!';
                 break;
-            case new VersionState(VersionState::MOVE_POINTER):
+            case VersionState::MOVE_POINTER:
                 $parts[] = 'NEW LOCATION (Move-to Pointer) WSID#' . $row['t3ver_wsid'];
                 break;
-            case new VersionState(VersionState::NEW_PLACEHOLDER):
+            case VersionState::NEW_PLACEHOLDER:
                 $parts[] = 'New element!';
                 break;
         }
@@ -1232,14 +1232,14 @@ class BackendUtility
             // Uid is added
             $out .= 'id=' . ($row['uid'] ?? 0);
             if (static::isTableWorkspaceEnabled($table)) {
-                switch (VersionState::cast($row['t3ver_state'] ?? null)) {
-                    case new VersionState(VersionState::DELETE_PLACEHOLDER):
+                switch (VersionState::tryFrom($row['t3ver_state'] ?? 0)) {
+                    case VersionState::DELETE_PLACEHOLDER:
                         $out .= ' - Deleted element!';
                         break;
-                    case new VersionState(VersionState::MOVE_POINTER):
+                    case VersionState::MOVE_POINTER:
                         $out .= ' - NEW LOCATION (Move-to Pointer) WSID#' . $row['t3ver_wsid'];
                         break;
-                    case new VersionState(VersionState::NEW_PLACEHOLDER):
+                    case VersionState::NEW_PLACEHOLDER:
                         $out .= ' - New element!';
                         break;
                 }
@@ -2601,9 +2601,9 @@ class BackendUtility
 
         // Check if input record is a moved record
         $incomingRecordIsAMoveVersion = false;
-        if (isset($row['t3ver_oid'], $row['t3ver_state'])
+        if (isset($row['t3ver_oid'])
             && $row['t3ver_oid'] > 0
-            && (int)$row['t3ver_state'] === VersionState::MOVE_POINTER
+            && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER
         ) {
             // @todo: This handling needs a review, together with the 4th param $unsetMovePointers
             $incomingRecordIsAMoveVersion = true;
@@ -2621,12 +2621,12 @@ class BackendUtility
             // If t3ver_state is not found, then find it... (but we like best if it is here...)
             if (!isset($wsAlt['t3ver_state'])) {
                 $stateRec = self::getRecord($table, $wsAlt['uid'], 't3ver_state');
-                $versionState = VersionState::cast($stateRec['t3ver_state']);
+                $versionState = VersionState::tryFrom($stateRec['t3ver_state'] ?? 0);
             } else {
-                $versionState = VersionState::cast($wsAlt['t3ver_state']);
+                $versionState = VersionState::tryFrom($wsAlt['t3ver_state']);
             }
             // Check if this is in move-state
-            if ($versionState->equals(VersionState::MOVE_POINTER)) {
+            if ($versionState === VersionState::MOVE_POINTER) {
                 // @todo Same problem as frontend in versionOL(). See TODO point there and todo above.
                 if (!$incomingRecordIsAMoveVersion && $unsetMovePointers) {
                     $row = false;
@@ -2637,7 +2637,7 @@ class BackendUtility
                 $wsAlt['_ORIG_pid'] = $row['pid'];
             }
             // Swap UID
-            if (!$versionState->equals(VersionState::NEW_PLACEHOLDER)) {
+            if ($versionState !== VersionState::NEW_PLACEHOLDER) {
                 $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
                 $wsAlt['uid'] = $row['uid'];
             }
@@ -2686,7 +2686,7 @@ class BackendUtility
                                 ),
                                 $queryBuilder->expr()->eq(
                                     't3ver_state',
-                                    $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, Connection::PARAM_INT)
+                                    $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
                                 )
                             ),
                             $queryBuilder->expr()->eq(
@@ -2776,7 +2776,7 @@ class BackendUtility
             if (is_array($currentRecord)) {
                 if ((int)$currentRecord['t3ver_oid'] > 0) {
                     $liveVersionId = $currentRecord['t3ver_oid'];
-                } elseif ((int)($currentRecord['t3ver_state']) === VersionState::NEW_PLACEHOLDER) {
+                } elseif (VersionState::tryFrom($currentRecord['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
                     // New versions do not have a live counterpart
                     $liveVersionId = (int)$uid;
                 }

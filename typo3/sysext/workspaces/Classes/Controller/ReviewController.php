@@ -193,7 +193,7 @@ class ReviewController
         if ($pageUid > 0 && $activeWorkspace > 0) {
             $pageRecord = BackendUtility::getRecord('pages', $pageUid);
             BackendUtility::workspaceOL('pages', $pageRecord, $activeWorkspace);
-            if (!VersionState::cast($pageRecord['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+            if (VersionState::tryFrom($pageRecord['t3ver_state'] ?? 0) !== VersionState::DELETE_PLACEHOLDER->value) {
                 $canCreatePreviewLink = true;
             }
         }

@@ -326,7 +326,7 @@ abstract class AbstractItemProvider
             }
             // Only proceed in case the row was not unset and we don't deal with a delete placeholder
             if (is_array($foreignRow)
-                && !VersionState::cast($foreignRow['t3ver_state'] ?? 0)->equals(VersionState::DELETE_PLACEHOLDER)
+                && VersionState::tryFrom($foreignRow['t3ver_state'] ?? 0) !== VersionState::DELETE_PLACEHOLDER
             ) {
                 // If the foreign table sets selicon_field, this field can contain an image
                 // that represents this specific row.
@@ -659,7 +659,7 @@ abstract class AbstractItemProvider
                 ->andWhere(
                     $queryBuilder->expr()->neq(
                         $foreignTableName . '.t3ver_state',
-                        $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, Connection::PARAM_INT)
+                        $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT)
                     )
                 );
         }

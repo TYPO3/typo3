@@ -1446,7 +1446,7 @@ class RelationHandler
                     $queryBuilder->expr()->eq(
                         't3ver_state',
                         $queryBuilder->createNamedParameter(
-                            (string)VersionState::cast(VersionState::DELETE_PLACEHOLDER),
+                            VersionState::DELETE_PLACEHOLDER->value,
                             Connection::PARAM_INT
                         )
                     )

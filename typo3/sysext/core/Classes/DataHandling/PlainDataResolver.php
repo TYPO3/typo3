@@ -191,7 +191,7 @@ class PlainDataResolver
             $versionId = $version['uid'];
             if (isset($ids[$liveReferenceId])) {
                 if (!$this->keepDeletePlaceholder
-                    && VersionState::cast($version['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
+                    && VersionState::tryFrom($version['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER
                 ) {
                     unset($ids[$liveReferenceId]);
                 } else {
@@ -230,7 +230,7 @@ class PlainDataResolver
             ->where(
                 $queryBuilder->expr()->eq(
                     't3ver_state',
-                    $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_wsid',

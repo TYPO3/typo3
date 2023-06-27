@@ -554,8 +554,8 @@ class SlugHelper
                         $this->workspaceId,
                         true
                     );
-                    if (VersionState::cast($record['t3ver_state'] ?? null)
-                        ->equals(VersionState::DELETE_PLACEHOLDER)) {
+                    if (VersionState::tryFrom($record['t3ver_state'] ?? 0) ===
+                        VersionState::DELETE_PLACEHOLDER) {
                         return null;
                     }
                     return $record;

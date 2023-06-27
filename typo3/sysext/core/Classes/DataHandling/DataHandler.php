@@ -1099,7 +1099,7 @@ class DataHandler implements LoggerAwareInterface
                             $fieldArray['pid'] = $theRealPid;
                             $fieldArray['t3ver_oid'] = 0;
                             // Setting state for version (so it can know it is currently a new version...)
-                            $fieldArray['t3ver_state'] = (string)new VersionState(VersionState::NEW_PLACEHOLDER);
+                            $fieldArray['t3ver_state'] = VersionState::NEW_PLACEHOLDER->value;
                             $fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
                             $this->insertDB($table, $id, $fieldArray, true, (int)($incomingFieldArray['uid'] ?? 0));
                             // Hold auto-versionized ids of placeholders
@@ -3840,7 +3840,7 @@ class DataHandler implements LoggerAwareInterface
                         $movedLiveIds = [];
                         $movedLiveRecords = [];
                         while ($row = $result->fetchAssociative()) {
-                            if ($isTableWorkspaceEnabled && (int)$row['t3ver_state'] === VersionState::MOVE_POINTER) {
+                            if ($isTableWorkspaceEnabled && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER) {
                                 $movedLiveIds[(int)$row['t3ver_oid']] = (int)$row['uid'];
                             }
                             $rows[(int)$row['uid']] = $row;
@@ -4311,7 +4311,7 @@ class DataHandler implements LoggerAwareInterface
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->neq(
                     't3ver_state',
-                    VersionState::DELETE_PLACEHOLDER
+                    VersionState::DELETE_PLACEHOLDER->value
                 )
             );
         }
@@ -5207,7 +5207,7 @@ class DataHandler implements LoggerAwareInterface
                 // with sys_language_uid > 0
                 $queryBuilder->expr()->gt($languageField, $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                 // in state 'new'
-                $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)),
                 // with "l10n_parent" set to uid of live record
                 $queryBuilder->expr()->eq($localizationParentFieldName, $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
             );
@@ -5694,7 +5694,7 @@ class DataHandler implements LoggerAwareInterface
             // deletion before - deleting them again in a workspace would revert that state.
             if ((int)$this->BE_USER->workspace > 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
                 BackendUtility::workspaceOL($table, $record, $this->BE_USER->workspace);
-                if (VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+                if (VersionState::tryFrom($record['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER) {
                     continue;
                 }
             }
@@ -5953,8 +5953,8 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Perform discard operations
-        $versionState = VersionState::cast($versionRecord['t3ver_state']);
-        if ($table === 'pages' && $versionState->equals(VersionState::NEW_PLACEHOLDER)) {
+        $versionState = VersionState::tryFrom($versionRecord['t3ver_state'] ?? 0);
+        if ($table === 'pages' && $versionState === VersionState::NEW_PLACEHOLDER) {
             // When discarding a new page, there can be new sub pages and new records.
             // Those need to be discarded, otherwise they'd end up as records without parent page.
             $this->discardSubPagesAndRecordsOnPage($versionRecord);
@@ -5990,7 +5990,7 @@ class DataHandler implements LoggerAwareInterface
     {
         $isLocalizedPage = false;
         $sysLanguageId = (int)$page[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
-        $versionState = VersionState::cast($page['t3ver_state']);
+        $versionState = VersionState::tryFrom($page['t3ver_state'] ?? 0);
         if ($sysLanguageId > 0) {
             // New or moved localized page.
             // Discard records on this page localization, but no sub pages.
@@ -5998,7 +5998,7 @@ class DataHandler implements LoggerAwareInterface
             // @todo: Discard other page translations that inherit from this?! (l10n_source field)
             $isLocalizedPage = true;
             $pid = (int)$page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
-        } elseif ($versionState->equals(VersionState::NEW_PLACEHOLDER)) {
+        } elseif ($versionState === VersionState::NEW_PLACEHOLDER) {
             // New default language page.
             // Discard any sub pages and all other records of this page, including any page localizations.
             // The t3ver_state=1 record is incoming here. Records on this page have their pid field set to the uid
@@ -6279,7 +6279,7 @@ class DataHandler implements LoggerAwareInterface
         $overrideArray = [
             't3ver_oid' => $id,
             't3ver_wsid' => $this->BE_USER->workspace,
-            't3ver_state' => (string)($delete ? new VersionState(VersionState::DELETE_PLACEHOLDER) : new VersionState(VersionState::DEFAULT_STATE)),
+            't3ver_state' => $delete ? VersionState::DELETE_PLACEHOLDER->value : VersionState::DEFAULT_STATE->value,
             't3ver_stage' => 0,
         ];
         if ($GLOBALS['TCA'][$table]['ctrl']['editlock'] ?? false) {
@@ -8027,7 +8027,7 @@ class DataHandler implements LoggerAwareInterface
                 $queryBuilder->andWhere(
                     $queryBuilder->expr()->or(
                         $queryBuilder->expr()->eq('t3ver_oid', 0),
-                        $queryBuilder->expr()->eq('t3ver_state', VersionState::MOVE_POINTER)
+                        $queryBuilder->expr()->eq('t3ver_state', VersionState::MOVE_POINTER->value)
                     )
                 );
             }
@@ -8074,12 +8074,12 @@ class DataHandler implements LoggerAwareInterface
             ];
             // Look if the record UID happens to be a versioned record. If so, find its live version.
             // If this is already a moved record in workspace, this is not needed
-            if ((int)$row['t3ver_state'] !== VersionState::MOVE_POINTER && $lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortColumn . ',pid,uid')) {
+            if (VersionState::tryFrom($row['t3ver_state'] ?? 0) !== VersionState::MOVE_POINTER && $lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortColumn . ',pid,uid')) {
                 $row = $lookForLiveVersion;
             } elseif ($considerWorkspaces && $this->BE_USER->workspace > 0) {
                 // In case the previous record is moved in the workspace, we need to fetch the information from this specific record
                 $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $row['uid'], $sortColumn . ',pid,uid,t3ver_state');
-                if (is_array($versionedRecord) && (int)$versionedRecord['t3ver_state'] === VersionState::MOVE_POINTER) {
+                if (is_array($versionedRecord) && VersionState::tryFrom($versionedRecord['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER) {
                     $row = $versionedRecord;
                 }
             }
@@ -8111,7 +8111,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->andWhere(
                         $queryBuilder->expr()->or(
                             $queryBuilder->expr()->eq('t3ver_oid', 0),
-                            $queryBuilder->expr()->eq('t3ver_state', VersionState::MOVE_POINTER)
+                            $queryBuilder->expr()->eq('t3ver_state', VersionState::MOVE_POINTER->value)
                         )
                     );
                 }
@@ -9634,8 +9634,8 @@ class DataHandler implements LoggerAwareInterface
      */
     public function workspaceCannotEditOfflineVersion(string $table, array $record)
     {
-        $versionState = new VersionState($record['t3ver_state']);
-        if ($versionState->equals(VersionState::NEW_PLACEHOLDER) || (int)$record['t3ver_oid'] > 0) {
+        $versionState = VersionState::tryFrom($record['t3ver_state'] ?? 0);
+        if ($versionState === VersionState::NEW_PLACEHOLDER || (int)$record['t3ver_oid'] > 0) {
             return $this->workspaceCannotEditRecord($table, $record);
         }
         return 'Not an offline version';
@@ -9670,10 +9670,10 @@ class DataHandler implements LoggerAwareInterface
         if (is_array($recData)) {
             // We are testing a "version" (identified by having a t3ver_oid): it can be edited provided
             // that workspace matches and versioning is enabled for the table.
-            $versionState = new VersionState($recData['t3ver_state'] ?? 0);
+            $versionState = VersionState::tryFrom($recData['t3ver_state'] ?? 0);
             if ($tableSupportsVersioning
                 && (
-                    $versionState->equals(VersionState::NEW_PLACEHOLDER) || (int)(($recData['t3ver_oid'] ?? 0) > 0)
+                    $versionState === VersionState::NEW_PLACEHOLDER || (int)(($recData['t3ver_oid'] ?? 0) > 0)
                 )
             ) {
                 if ((int)$recData['t3ver_wsid'] !== $this->BE_USER->workspace) {

@@ -48,8 +48,7 @@ class DatabaseEditRow extends AbstractDatabaseRecordProvider implements FormData
             );
         }
         if (BackendUtility::isTableWorkspaceEnabled($result['tableName'])
-            && isset($databaseRow['t3ver_state'])
-            && VersionState::cast($databaseRow['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
+            && VersionState::tryFrom($databaseRow['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER
         ) {
             // Workspace delete placeholder records (t3ver_state = 2) should never be edited. This is a fallback
             // to suppress editing in case something still links to FormEngine edit of such a record.

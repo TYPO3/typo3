@@ -584,10 +584,7 @@ class RecordProvider extends AbstractProvider
      */
     protected function isDeletePlaceholder(): bool
     {
-        if (!isset($this->record['t3ver_state'])) {
-            return false;
-        }
-        return VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER);
+        return VersionState::tryFrom($this->record['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER;
     }
 
     /**

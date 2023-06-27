@@ -1954,8 +1954,8 @@ class EditDocumentController
                             if ($backendUser->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
                                 $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($backendUser->workspace, $table, $row['uid'], 'uid,t3ver_state');
                                 if (!empty($workspaceVersion)) {
-                                    $versionState = VersionState::cast($workspaceVersion['t3ver_state']);
-                                    if ($versionState->equals(VersionState::DELETE_PLACEHOLDER)) {
+                                    $versionState = VersionState::tryFrom($workspaceVersion['t3ver_state'] ?? 0);
+                                    if ($versionState === VersionState::DELETE_PLACEHOLDER) {
                                         // If a workspace delete placeholder exists for this translation: Mark
                                         // this language as "don't add to selector" and continue with next row,
                                         // otherwise an edit link to a delete placeholder would be created, which
@@ -2215,7 +2215,7 @@ class EditDocumentController
                 // Check for versioning support of the table:
                 if ($tableSupportsVersioning) {
                     // If the record is already a version of "something" pass it by.
-                    if ($reqRecord['t3ver_oid'] > 0 || (int)($reqRecord['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
+                    if ($reqRecord['t3ver_oid'] > 0 || VersionState::tryFrom($reqRecord['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
                         // (If it turns out not to be a version of the current workspace there will be trouble, but
                         // that is handled inside DataHandler then and in the interface it would clearly be an error of
                         // links if the user accesses such a scenario)

@@ -5129,7 +5129,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $expressionBuilder->and(
                         $expressionBuilder->eq(
                             $table . '.t3ver_state',
-                            (int)(string)VersionState::cast(VersionState::MOVE_POINTER)
+                            VersionState::MOVE_POINTER->value
                         ),
                         $expressionBuilder->in($table . '.t3ver_oid', $listArr)
                     )

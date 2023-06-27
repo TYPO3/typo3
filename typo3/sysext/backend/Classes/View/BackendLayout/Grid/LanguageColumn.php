@@ -140,7 +140,7 @@ class LanguageColumn extends AbstractGridObject
 
     public function getAllowViewPage(): bool
     {
-        return !VersionState::cast($this->context->getPageRecord()['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER);
+        return VersionState::tryFrom($this->context->getPageRecord()['t3ver_state'] ?? 0) !== VersionState::DELETE_PLACEHOLDER;
     }
 
     public function getViewPageLinkTitle(): string

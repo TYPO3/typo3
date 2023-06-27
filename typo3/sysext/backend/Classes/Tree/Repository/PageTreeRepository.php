@@ -277,7 +277,7 @@ class PageTreeRepository
             $movedPages = [];
             foreach ($pageRecords as $pageRecord) {
                 $livePageIds[] = (int)$pageRecord['uid'];
-                if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER) {
+                if (VersionState::tryFrom($pageRecord['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER) {
                     $movedPages[$pageRecord['t3ver_oid']] = [
                         'pid' => (int)$pageRecord['pid'],
                         'sorting' => (int)$pageRecord['sorting'],
@@ -312,7 +312,7 @@ class PageTreeRepository
                     ->fetchAllAssociative();
 
                 foreach ($pageRecords as &$pageRecord) {
-                    if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER && !empty($movedPages[$pageRecord['t3ver_oid']])) {
+                    if (VersionState::tryFrom($pageRecord['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER && !empty($movedPages[$pageRecord['t3ver_oid']])) {
                         $pageRecord['uid'] = $pageRecord['t3ver_oid'];
                         $pageRecord['sorting'] = (int)$movedPages[$pageRecord['t3ver_oid']]['sorting'];
                         $pageRecord['pid'] = (int)$movedPages[$pageRecord['t3ver_oid']]['pid'];
@@ -402,7 +402,7 @@ class PageTreeRepository
             foreach ($pageRecords as $pageRecord) {
                 $livePageIds[] = (int)$pageRecord['uid'];
                 $livePagePids[(int)$pageRecord['uid']] = (int)$pageRecord['pid'];
-                if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER) {
+                if (VersionState::tryFrom($pageRecord['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER) {
                     $movedPages[$pageRecord['t3ver_oid']] = [
                         'pid' => (int)$pageRecord['pid'],
                         'sorting' => (int)$pageRecord['sorting'],
@@ -441,7 +441,7 @@ class PageTreeRepository
             // This is done in order to avoid fetching records again (e.g. via BackendUtility::workspaceOL()
             if ((int)$pageRecord['t3ver_oid'] > 0) {
                 // When a move pointer is found, the pid+sorting of the versioned record should be used
-                if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER && !empty($movedPages[$pageRecord['t3ver_oid']])) {
+                if (VersionState::tryFrom($pageRecord['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER && !empty($movedPages[$pageRecord['t3ver_oid']])) {
                     $parentPageId = (int)$movedPages[$pageRecord['t3ver_oid']]['pid'];
                     $pageRecord['sorting'] = (int)$movedPages[$pageRecord['t3ver_oid']]['sorting'];
                 } else {
@@ -590,7 +590,7 @@ class PageTreeRepository
                 if ((int)$pageRecord['t3ver_oid'] > 0) {
                     $livePagePids[(int)$pageRecord['t3ver_oid']] = (int)$pageRecord['pid'];
                 }
-                if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER) {
+                if (VersionState::tryFrom($pageRecord['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER) {
                     $movedPages[$pageRecord['t3ver_oid']] = [
                         'pid' => (int)$pageRecord['pid'],
                         'sorting' => (int)$pageRecord['sorting'],
@@ -632,11 +632,12 @@ class PageTreeRepository
             // This is done in order to avoid fetching records again (e.g. via BackendUtility::workspaceOL()
             if ((int)$pageRecord['t3ver_oid'] > 0) {
                 // This probably should also remove the live version
-                if ((int)$pageRecord['t3ver_state'] === VersionState::DELETE_PLACEHOLDER) {
+                $versionState = VersionState::tryFrom($pageRecord['t3ver_state'] ?? 0);
+                if ($versionState === VersionState::DELETE_PLACEHOLDER) {
                     continue;
                 }
                 // When a move pointer is found, the pid+sorting of the versioned record be used
-                if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER && !empty($movedPages[$pageRecord['t3ver_oid']])) {
+                if ($versionState === VersionState::MOVE_POINTER && !empty($movedPages[$pageRecord['t3ver_oid']])) {
                     $parentPageId = (int)$movedPages[$pageRecord['t3ver_oid']]['pid'];
                     $pageRecord['sorting'] = (int)$movedPages[$pageRecord['t3ver_oid']]['sorting'];
                 } else {

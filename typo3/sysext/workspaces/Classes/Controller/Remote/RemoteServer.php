@@ -121,13 +121,13 @@ class RemoteServer
         $liveReturnArray = [];
         $liveRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
         $versionRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->uid);
-        $versionState = VersionState::cast((int)($versionRecord['t3ver_state'] ?? 0));
+        $versionState = VersionState::tryFrom($versionRecord['t3ver_state'] ?? 0);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $icon_Live = $iconFactory->getIconForRecord($parameter->table, $liveRecord, Icon::SIZE_SMALL)->getIdentifier();
         $icon_Workspace = $iconFactory->getIconForRecord($parameter->table, $versionRecord, Icon::SIZE_SMALL)->getIdentifier();
         $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
-        $isNewOrDeletePlaceholder = $versionState->equals(VersionState::NEW_PLACEHOLDER) || $versionState->equals(VersionState::DELETE_PLACEHOLDER);
+        $isNewOrDeletePlaceholder = $versionState === VersionState::NEW_PLACEHOLDER || $versionState === VersionState::DELETE_PLACEHOLDER;
         $suitableFields = ($isNewOrDeletePlaceholder && ($parameter->filterFields ?? false)) ? array_flip($this->getSuitableFields($parameter->table, $parameter->t3ver_oid, $request)) : [];
         foreach ($fieldsOfRecords as $fieldName) {
             if (
@@ -214,7 +214,7 @@ class RemoteServer
                     $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
-                        'content' => $versionState->equals(VersionState::NEW_PLACEHOLDER)
+                        'content' => $versionState === VersionState::NEW_PLACEHOLDER
                             ? $this->differenceHandler->makeDiffDisplay('', $newOrDeleteRecord[$fieldName])
                             : $this->differenceHandler->makeDiffDisplay($newOrDeleteRecord[$fieldName], ''),
                     ];

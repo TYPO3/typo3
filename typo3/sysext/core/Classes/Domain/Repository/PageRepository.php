@@ -705,7 +705,7 @@ class PageRepository implements LoggerAwareInterface
                     // the found (live) language record again, see the versionOL() call a few lines below.
                     // This means, we need to modify the $pid value for moved records, as they might be on a different
                     // page and use the PID of the LIVE version.
-                    if (isset($row['_ORIG_pid']) && $this->hasTableWorkspaceSupport($table) && VersionState::cast($row['t3ver_state'] ?? 0)->equals(VersionState::MOVE_POINTER)) {
+                    if (isset($row['_ORIG_pid']) && $this->hasTableWorkspaceSupport($table) && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER) {
                         $pid = $row['_ORIG_pid'];
                     }
                     $olrow = $queryBuilder->select('*')
@@ -1453,7 +1453,7 @@ class PageRepository implements LoggerAwareInterface
                     // in case we are NOT in a version preview (that means we are online!)
                     $constraints[] = $expressionBuilder->lte(
                         $table . '.t3ver_state',
-                        new VersionState(VersionState::DEFAULT_STATE)
+                        VersionState::DEFAULT_STATE->value
                     );
                     $constraints[] = $expressionBuilder->eq($table . '.t3ver_wsid', 0);
                 } else {
@@ -1470,7 +1470,7 @@ class PageRepository implements LoggerAwareInterface
                     // Always filter out versioned records that have an "offline" record
                     $constraints[] = $expressionBuilder->or(
                         $expressionBuilder->eq($table . '.t3ver_oid', 0),
-                        $expressionBuilder->eq($table . '.t3ver_state', VersionState::MOVE_POINTER)
+                        $expressionBuilder->eq($table . '.t3ver_state', VersionState::MOVE_POINTER->value)
                     );
                 }
             }
@@ -1608,7 +1608,7 @@ class PageRepository implements LoggerAwareInterface
             $fieldNames = implode(',', array_keys($this->purgeComputedProperties($row)));
             // will overlay any incoming moved record with the live record, which in turn
             // will be overlaid with its workspace version again to fetch both PID fields.
-            $incomingRecordIsAMoveVersion = (int)($row['t3ver_oid']) > 0 && (int)($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER;
+            $incomingRecordIsAMoveVersion = (int)($row['t3ver_oid'] ?? 0) > 0 && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER;
             if ($incomingRecordIsAMoveVersion) {
                 // Fetch the live version again if the given $row is a move pointer, so we know the original PID
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
@@ -1623,8 +1623,8 @@ class PageRepository implements LoggerAwareInterface
             }
             if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], $fieldNames, $bypassEnableFieldsCheck)) {
                 if (is_array($wsAlt)) {
-                    $rowVersionState = VersionState::cast($wsAlt['t3ver_state'] ?? null);
-                    if ($rowVersionState->equals(VersionState::MOVE_POINTER)) {
+                    $rowVersionState = VersionState::tryFrom($wsAlt['t3ver_state'] ?? 0);
+                    if ($rowVersionState === VersionState::MOVE_POINTER) {
                         // For move pointers, store the actual live PID in the _ORIG_pid
                         // The only place where PID is actually different in a workspace
                         $wsAlt['_ORIG_pid'] = $row['pid'];
@@ -1632,21 +1632,21 @@ class PageRepository implements LoggerAwareInterface
                     // For versions of single elements or page+content, preserve online UID
                     // (this will produce true "overlay" of element _content_, not any references)
                     // For new versions there is no online counterpart
-                    if (!$rowVersionState->equals(VersionState::NEW_PLACEHOLDER)) {
+                    if ($rowVersionState !== VersionState::NEW_PLACEHOLDER) {
                         $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
                     }
                     $wsAlt['uid'] = $row['uid'];
                     // Changing input record to the workspace version alternative:
                     $row = $wsAlt;
                     // Unset record if it turned out to be deleted in workspace
-                    if ($rowVersionState->equals(VersionState::DELETE_PLACEHOLDER)) {
+                    if ($rowVersionState === VersionState::DELETE_PLACEHOLDER) {
                         $row = false;
                     }
                     // Check if move-pointer in workspace (unless if a move-placeholder is the
                     // reason why it appears!):
                     // You have to specifically set $unsetMovePointers in order to clear these
                     // because it is normally a display issue if it should be shown or not.
-                    if ($rowVersionState->equals(VersionState::MOVE_POINTER) && !$incomingRecordIsAMoveVersion && $unsetMovePointers) {
+                    if ($rowVersionState === VersionState::MOVE_POINTER && !$incomingRecordIsAMoveVersion && $unsetMovePointers) {
                         // Unset record if it turned out to be deleted in workspace
                         $row = false;
                     }
@@ -1655,9 +1655,7 @@ class PageRepository implements LoggerAwareInterface
                     // Notice, that unless $bypassEnableFieldsCheck is TRUE, the $row is unset if
                     // enablefields for BOTH the version AND the online record deselects it. See
                     // note for $bypassEnableFieldsCheck
-                    /** @var VersionState $versionState */
-                    $versionState = VersionState::cast($row['t3ver_state'] ?? 0);
-                    if ($wsAlt <= -1 || $versionState->indicatesPlaceholder()) {
+                    if ($wsAlt <= -1 || VersionState::tryFrom($row['t3ver_state'] ?? 0)->indicatesPlaceholder()) {
                         // Unset record if it turned out to be "hidden"
                         $row = false;
                     }
@@ -1706,7 +1704,7 @@ class PageRepository implements LoggerAwareInterface
                             ),
                             $queryBuilder->expr()->eq(
                                 't3ver_state',
-                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, Connection::PARAM_INT)
+                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
                             )
                         ),
                         $queryBuilder->expr()->eq(
@@ -1744,7 +1742,7 @@ class PageRepository implements LoggerAwareInterface
                             ),
                             $queryBuilder->expr()->eq(
                                 't3ver_state',
-                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, Connection::PARAM_INT)
+                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
                             )
                         ),
                         $queryBuilder->expr()->eq(
@@ -1948,7 +1946,7 @@ class PageRepository implements LoggerAwareInterface
 
         $result = $queryBuilder->executeQuery();
         while ($row = $result->fetchAssociative()) {
-            $versionState = VersionState::cast($row['t3ver_state']);
+            $versionState = VersionState::tryFrom($row['t3ver_state'] ?? 0);
             $this->versionOL('pages', $row, false, $bypassEnableFieldsCheck);
             if ($row === false
                 || (int)$row['doktype'] === self::DOKTYPE_BE_USER_SECTION
@@ -1993,7 +1991,7 @@ class PageRepository implements LoggerAwareInterface
 
                 $row = $queryBuilder->executeQuery()->fetchAssociative();
                 $this->versionOL('pages', $row);
-                $versionState = VersionState::cast($row['t3ver_state']);
+                $versionState = VersionState::tryFrom($row['t3ver_state'] ?? 0);
                 if ($row === false
                     || (int)$row['doktype'] === self::DOKTYPE_BE_USER_SECTION
                     || $versionState->indicatesPlaceholder()

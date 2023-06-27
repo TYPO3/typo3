@@ -220,7 +220,7 @@ class DataHandlerHook
                 $id = $record['uid'];
             }
         }
-        $recordVersionState = VersionState::cast($record['t3ver_state'] ?? 0);
+        $recordVersionState = VersionState::tryFrom($record['t3ver_state'] ?? 0);
         // Look, if record is an offline version, then delete directly:
         if ((int)($record['t3ver_oid'] ?? 0) > 0) {
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
@@ -229,8 +229,8 @@ class DataHandlerHook
                     $liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
                     // Processing can be skipped if a delete placeholder shall be published
                     // during the current request. Thus it will be deleted later on...
-                    $liveRecordVersionState = VersionState::cast($liveRec['t3ver_state']);
-                    if ($recordVersionState->equals(VersionState::DELETE_PLACEHOLDER) && !empty($liveRec['uid'])
+                    $liveRecordVersionState = VersionState::tryFrom($liveRec['t3ver_state'] ?? 0);
+                    if ($recordVersionState === VersionState::DELETE_PLACEHOLDER && !empty($liveRec['uid'])
                         && !empty($dataHandler->cmdmap[$table][$liveRec['uid']]['version']['action'])
                         && !empty($dataHandler->cmdmap[$table][$liveRec['uid']]['version']['swapWith'])
                         && $dataHandler->cmdmap[$table][$liveRec['uid']]['version']['action'] === 'swap'
@@ -239,14 +239,14 @@ class DataHandlerHook
                         return null;
                     }
 
-                    if ($record['t3ver_wsid'] > 0 && $recordVersionState->equals(VersionState::DEFAULT_STATE)) {
+                    if ($record['t3ver_wsid'] > 0 && $recordVersionState === VersionState::DEFAULT_STATE) {
                         // Change normal versioned record to delete placeholder
                         // Happens when an edited record is deleted
                         GeneralUtility::makeInstance(ConnectionPool::class)
                             ->getConnectionForTable($table)
                             ->update(
                                 $table,
-                                ['t3ver_state' => VersionState::DELETE_PLACEHOLDER],
+                                ['t3ver_state' => VersionState::DELETE_PLACEHOLDER->value],
                                 ['uid' => $id]
                             );
 
@@ -255,7 +255,7 @@ class DataHandlerHook
                     } elseif ($record['t3ver_wsid'] == 0 || !$liveRecordVersionState->indicatesPlaceholder()) {
                         // Delete those in WS 0 + if their live records state was not "Placeholder".
                         $dataHandler->deleteEl($table, $id);
-                    } elseif ($recordVersionState->equals(VersionState::NEW_PLACEHOLDER)) {
+                    } elseif ($recordVersionState === VersionState::NEW_PLACEHOLDER) {
                         $placeholderRecord = BackendUtility::getLiveVersionOfRecord($table, (int)$id);
                         $dataHandler->deleteEl($table, (int)$id);
                         if (is_array($placeholderRecord)) {
@@ -268,7 +268,7 @@ class DataHandlerHook
             } else {
                 $dataHandler->log($table, (int)$id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Versioning not enabled for record with an online ID (t3ver_oid) given');
             }
-        } elseif ($recordVersionState->equals(VersionState::NEW_PLACEHOLDER)) {
+        } elseif ($recordVersionState === VersionState::NEW_PLACEHOLDER) {
             // If it is a new versioned record, delete it directly.
             $dataHandler->deleteEl($table, $id);
         } elseif ($dataHandler->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
@@ -339,7 +339,7 @@ class DataHandlerHook
         }
         $tableSupportsVersioning = BackendUtility::isTableWorkspaceEnabled($table);
         $recordWasMoved = true;
-        $moveRecVersionState = VersionState::cast((int)($moveRec['t3ver_state'] ?? VersionState::DEFAULT_STATE));
+        $moveRecVersionState = VersionState::tryFrom($moveRec['t3ver_state'] ?? 0);
         // Get workspace version of the source record, if any:
         $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
         if ($tableSupportsVersioning) {
@@ -360,7 +360,7 @@ class DataHandlerHook
         // Check workspace permissions:
         $workspaceAccessBlocked = [];
         // Element was in "New/Deleted/Moved" so it can be moved...
-        $recIsNewVersion = $moveRecVersionState->equals(VersionState::NEW_PLACEHOLDER) || $moveRecVersionState->indicatesPlaceholder();
+        $recIsNewVersion = $moveRecVersionState === VersionState::NEW_PLACEHOLDER || $moveRecVersionState->indicatesPlaceholder();
         $recordMustNotBeVersionized = $dataHandler->BE_USER->workspaceAllowsLiveEditingInTable($table);
         $canMoveRecord = $recIsNewVersion || $tableSupportsVersioning;
         // Workspace source check:
@@ -458,7 +458,7 @@ class DataHandlerHook
             if (empty($versionedRecord)) {
                 continue;
             }
-            $versionState = VersionState::cast($versionedRecord['t3ver_state']);
+            $versionState = VersionState::tryFrom($versionedRecord['t3ver_state'] ?? 0);
             if ($versionState->indicatesPlaceholder()) {
                 continue;
             }
@@ -570,7 +570,7 @@ class DataHandlerHook
         // Currently live version, contents will be removed.
         $curVersion = BackendUtility::getRecord($table, $id, '*');
         // Versioned records which contents will be moved into $curVersion
-        $isNewRecord = ((int)($curVersion['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER);
+        $isNewRecord = VersionState::tryFrom($curVersion['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER;
         if ($isNewRecord && is_array($curVersion)) {
             // @todo: This early return is odd. It means version_swap_processFields() and versionPublishManyToManyRelations()
             //        below are not called for new records to be published. This is "fine" for mm since mm tables have no
@@ -615,12 +615,12 @@ class DataHandlerHook
             $dataHandler->log($table, $swapWith, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'In offline record, either t3ver_oid was not set or the t3ver_oid didn\'t match the id of the online version as it must');
             return;
         }
-        $versionState = new VersionState($swapVersion['t3ver_state']);
+        $versionState = VersionState::tryFrom($swapVersion['t3ver_state'] ?? 0);
 
         // Find fields to keep
         $keepFields = $this->getUniqueFields($table);
         // Sorting needs to be exchanged for moved records
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['sortby']) && !$versionState->equals(VersionState::MOVE_POINTER)) {
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['sortby']) && $versionState !== VersionState::MOVE_POINTER) {
             $keepFields[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
         }
         // l10n-fields must be kept otherwise the localization
@@ -639,7 +639,7 @@ class DataHandlerHook
         $t3ver_state['swapVersion'] = $swapVersion['t3ver_state'];
         // Modify offline version to become online:
         // Set pid for ONLINE (but not for moved records)
-        if (!$versionState->equals(VersionState::MOVE_POINTER)) {
+        if ($versionState !== VersionState::MOVE_POINTER) {
             $swapVersion['pid'] = (int)$curVersion['pid'];
         }
         // We clear this because t3ver_oid only make sense for offline versions
@@ -655,7 +655,7 @@ class DataHandlerHook
         //        the "from workspace" information which would usually be retrieved by accessing $swapVersion['t3ver_wsid']
         $swapVersion['t3ver_wsid'] = 0;
         $swapVersion['t3ver_stage'] = 0;
-        $swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
+        $swapVersion['t3ver_state'] = VersionState::DEFAULT_STATE->value;
         // Take care of relations in each field (e.g. IRRE):
         if (is_array($GLOBALS['TCA'][$table]['columns'])) {
             foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fieldConf) {
@@ -673,7 +673,7 @@ class DataHandlerHook
         $curVersion['t3ver_wsid'] = 0;
         // Increment lifecycle counter
         $curVersion['t3ver_stage'] = 0;
-        $curVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
+        $curVersion['t3ver_state'] = VersionState::DEFAULT_STATE->value;
         // Generating proper history data to prepare logging
         $dataHandler->compareFieldArrayWithCurrentAndUnset($table, $id, $swapVersion);
         $dataHandler->compareFieldArrayWithCurrentAndUnset($table, $swapWith, $curVersion);
@@ -711,7 +711,7 @@ class DataHandlerHook
             // Register swapped ids for later remapping:
             $this->remappedIds[$table][$id] = $swapWith;
             $this->remappedIds[$table][$swapWith] = $id;
-            if ((int)$t3ver_state['swapVersion'] === VersionState::DELETE_PLACEHOLDER) {
+            if (VersionState::tryFrom($t3ver_state['swapVersion']?? 0) === VersionState::DELETE_PLACEHOLDER) {
                 // We're publishing a delete placeholder t3ver_state = 2. This means the live record should
                 // be set to deleted. We're currently in some workspace and deal with a live record here. Thus,
                 // we temporarily set backend user workspace to 0 so all operations happen as in live.
@@ -931,7 +931,7 @@ class DataHandlerHook
             't3ver_oid' => 0,
             't3ver_wsid' => 0,
             't3ver_stage' => 0,
-            't3ver_state' => VersionState::DEFAULT_STATE,
+            't3ver_state' => VersionState::DEFAULT_STATE->value,
         ];
 
         try {
@@ -1143,7 +1143,7 @@ class DataHandlerHook
                             ),
                             $queryBuilder->expr()->eq(
                                 't3ver_state',
-                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, Connection::PARAM_INT)
+                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
                             )
                         )
                     )
@@ -1222,7 +1222,7 @@ class DataHandlerHook
         $dataHandler->moveRecord_raw($table, $versionedRecordUid, $destPid);
 
         $versionedRecord = BackendUtility::getRecord($table, $versionedRecordUid, 'uid,t3ver_state');
-        if (!VersionState::cast($versionedRecord['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+        if (VersionState::tryFrom($versionedRecord['t3ver_state'] ?? 0) !== VersionState::DELETE_PLACEHOLDER) {
             // Update the state of this record to a move placeholder. This is allowed if the
             // record is a 'changed' (t3ver_state=0) record: Changing a record and moving it
             // around later, should switch it from 'changed' to 'moved'. Deleted placeholders
@@ -1237,7 +1237,7 @@ class DataHandlerHook
                 ->update(
                     $table,
                     [
-                        't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER),
+                        't3ver_state' => VersionState::MOVE_POINTER->value,
                     ],
                     [
                         'uid' => (int)$versionedRecordUid,

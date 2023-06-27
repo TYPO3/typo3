@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Workspaces\Service;
 
+use PharIo\Version\Version;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -181,7 +182,7 @@ class GridDataService implements LoggerAwareInterface
                     $liveRecordLabel = BackendUtility::getRecordTitle($table, $origRecord);
                     [$pathWorkspaceCropped, $pathWorkspace] = BackendUtility::getRecordPath((int)$record['wspid'], '', 15, 1000);
                     $calculatedT3verOid = $record['t3ver_oid'];
-                    if ((int)($record['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
+                    if (VersionState::tryFrom($record['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
                         // If we're dealing with a 'new' record, this one has no t3ver_oid. On publish, there is no
                         // live counterpart, but the publish methods later need a live uid to publish to. We thus
                         // use the uid as t3ver_oid here to be transparent on javascript side.
@@ -588,7 +589,7 @@ class GridDataService implements LoggerAwareInterface
         } elseif ($hiddenOnline == 1 && $hiddenOffline == 0) {
             $hiddenState = 'unhidden';
         }
-        switch ($stateId) {
+        switch (VersionState::tryFrom($stateId)) {
             case VersionState::NEW_PLACEHOLDER:
                 $state = 'new';
                 break;

@@ -50,7 +50,7 @@ final class PageTreeItemsHighlighter
             if ((int)($page['t3ver_wsid'] ?? 0) === $workspaceId
                 && (
                     (int)($page['t3ver_oid'] ?? 0) > 0
-                    || (int)($page['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER
+                    || VersionState::tryFrom($page['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER
                 )
             ) {
                 $item['class'] = 'ver-element ver-versions';

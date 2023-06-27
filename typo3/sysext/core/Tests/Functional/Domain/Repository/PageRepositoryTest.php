@@ -433,7 +433,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals(11, $pageRec['uid']);
         self::assertEquals(0, $pageRec['t3ver_oid']);
         self::assertEquals(987654321, $pageRec['t3ver_wsid']);
-        self::assertEquals(VersionState::NEW_PLACEHOLDER, $pageRec['t3ver_state']);
+        self::assertEquals(VersionState::NEW_PLACEHOLDER->value, $pageRec['t3ver_state']);
     }
 
     /**
@@ -454,7 +454,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals(11, $pageRec['uid']);
         self::assertEquals(0, $pageRec['t3ver_oid']);
         self::assertEquals(987654321, $pageRec['t3ver_wsid']);
-        self::assertEquals(VersionState::NEW_PLACEHOLDER, $pageRec['t3ver_state']);
+        self::assertEquals(VersionState::NEW_PLACEHOLDER->value, $pageRec['t3ver_state']);
     }
 
     ////////////////////////////////

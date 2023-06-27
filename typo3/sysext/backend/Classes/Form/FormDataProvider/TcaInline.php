@@ -429,8 +429,8 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             if ($backendUser->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($childTableName)) {
                 $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($backendUser->workspace, $childTableName, $uid, 'uid,t3ver_state');
                 if (!empty($workspaceVersion)) {
-                    $versionState = VersionState::cast($workspaceVersion['t3ver_state']);
-                    if ($versionState->equals(VersionState::DELETE_PLACEHOLDER)) {
+                    $versionState = VersionState::tryFrom($workspaceVersion['t3ver_state'] ?? 0);
+                    if ($versionState === VersionState::DELETE_PLACEHOLDER) {
                         continue;
                     }
                     $uid = $workspaceVersion['uid'];

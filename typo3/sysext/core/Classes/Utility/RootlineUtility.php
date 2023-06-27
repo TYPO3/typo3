@@ -414,7 +414,7 @@ class RootlineUtility
         }
 
         $page = $this->resolvePageRecord($pageId);
-        if (!isset($page['t3ver_state']) || !VersionState::cast($page['t3ver_state'])->equals(VersionState::MOVE_POINTER)) {
+        if (!isset($page['t3ver_state']) || VersionState::tryFrom($page['t3ver_state']) !== VersionState::MOVE_POINTER) {
             return $pageId;
         }
 
@@ -464,7 +464,7 @@ class RootlineUtility
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_state',
-                    $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_oid',

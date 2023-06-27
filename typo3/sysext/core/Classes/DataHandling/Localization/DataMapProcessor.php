@@ -852,7 +852,7 @@ class DataMapProcessor
                 $queryBuilder->expr()->in(
                     't3ver_state',
                     $queryBuilder->createNamedParameter(
-                        [VersionState::DEFAULT_STATE, VersionState::NEW_PLACEHOLDER, VersionState::MOVE_POINTER],
+                        [VersionState::DEFAULT_STATE->value, VersionState::NEW_PLACEHOLDER->value, VersionState::MOVE_POINTER->value],
                         Connection::PARAM_INT_ARRAY
                     )
                 ),

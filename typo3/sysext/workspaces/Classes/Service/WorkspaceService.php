@@ -328,7 +328,7 @@ class WorkspaceService implements SingletonInterface
             $queryBuilder->expr()->neq(
                 'A.t3ver_state',
                 $queryBuilder->createNamedParameter(
-                    (string)new VersionState(VersionState::MOVE_POINTER),
+                    VersionState::MOVE_POINTER->value,
                     Connection::PARAM_INT
                 )
             ),
@@ -446,7 +446,7 @@ class WorkspaceService implements SingletonInterface
             $queryBuilder->expr()->eq(
                 't3ver_state',
                 $queryBuilder->createNamedParameter(
-                    VersionState::NEW_PLACEHOLDER,
+                    VersionState::NEW_PLACEHOLDER->value,
                     Connection::PARAM_INT
                 )
             ),
@@ -537,7 +537,7 @@ class WorkspaceService implements SingletonInterface
             $queryBuilder->expr()->eq(
                 'B.t3ver_state',
                 $queryBuilder->createNamedParameter(
-                    (string)new VersionState(VersionState::DEFAULT_STATE),
+                    VersionState::DEFAULT_STATE->value,
                     Connection::PARAM_INT
                 )
             ),
@@ -548,7 +548,7 @@ class WorkspaceService implements SingletonInterface
             $queryBuilder->expr()->eq(
                 'C.t3ver_state',
                 $queryBuilder->createNamedParameter(
-                    (string)new VersionState(VersionState::MOVE_POINTER),
+                    VersionState::MOVE_POINTER->value,
                     Connection::PARAM_INT
                 )
             ),
@@ -677,7 +677,7 @@ class WorkspaceService implements SingletonInterface
                     ),
                     $queryBuilder->expr()->eq(
                         't3ver_state',
-                        $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, Connection::PARAM_INT)
+                        $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT)
                     )
                 )
                 ->orderBy('uid')
@@ -872,12 +872,12 @@ class WorkspaceService implements SingletonInterface
                 ->fetchAssociative();
 
             if ($row !== false) {
-                $isNewPage = VersionState::cast($row['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER);
+                $isNewPage = VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER;
             }
         } else {
             $rec = BackendUtility::getRecord('pages', $id, 't3ver_state');
             if (is_array($rec)) {
-                $isNewPage = VersionState::cast($rec['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER);
+                $isNewPage = VersionState::tryFrom($rec['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER;
             }
         }
         return $isNewPage;
@@ -995,7 +995,7 @@ class WorkspaceService implements SingletonInterface
                     $queryBuilder->expr()->or(
                         $queryBuilder->expr()->eq(
                             't3ver_state',
-                            $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, Connection::PARAM_INT)
+                            $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->gt(
                             't3ver_oid',

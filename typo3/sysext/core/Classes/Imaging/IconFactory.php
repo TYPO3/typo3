@@ -354,8 +354,7 @@ class IconFactory
         if ($table === 'pages' && (int)($row['extendToSubpages'] ?? 0) > 0) {
             $status['protectedSection'] = true;
         }
-        if (isset($row['t3ver_state'])
-            && VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+        if (VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER) {
             $status['deleted'] = true;
         }
 

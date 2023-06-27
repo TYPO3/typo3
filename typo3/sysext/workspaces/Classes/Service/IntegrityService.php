@@ -126,7 +126,7 @@ class IntegrityService
                 // Get localization parent from live workspace
                 $languageParentRecord = BackendUtility::getRecord($table, $versionRow[$languageParentField], 'uid,t3ver_state');
                 // If localization parent is a new version....
-                if (is_array($languageParentRecord) && VersionState::cast($languageParentRecord['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER)) {
+                if (is_array($languageParentRecord) && VersionState::tryFrom($languageParentRecord['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
                     $title = BackendUtility::getRecordTitle($table, $versionRow);
                     $languageService = $this->getLanguageService();
                     // Add warning for current versionized record:
