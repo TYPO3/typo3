@@ -209,13 +209,61 @@ class ObjectAccess
         $classSchema = GeneralUtility::makeInstance(ReflectionService::class)
             ->getClassSchema($object);
 
-        $accessor = self::createAccessor();
-        $propertyNames = array_keys($classSchema->getProperties());
-        $accessiblePropertyNames = array_filter($propertyNames, static function ($propertyName) use ($accessor, $object) {
-            return $accessor->isReadable($object, $propertyName);
-        });
+        $accessiblePropertyNames = [];
+        foreach ($classSchema->getProperties() as $propertyName => $propertyDefinition) {
+            if ($propertyDefinition->isPublic()) {
+                $accessiblePropertyNames[] = $propertyName;
+                continue;
+            }
 
+            $accessors = [
+                'get' . ucfirst($propertyName),
+                'has' . ucfirst($propertyName),
+                'is' . ucfirst($propertyName),
+            ];
+
+            foreach ($accessors as $accessor) {
+                if (!$classSchema->hasMethod($accessor)) {
+                    continue;
+                }
+
+                if (!$classSchema->getMethod($accessor)->isPublic()) {
+                    continue;
+                }
+
+                foreach ($classSchema->getMethod($accessor)->getParameters() as $methodParam) {
+                    if (!$methodParam->isOptional()) {
+                        continue 2;
+                    }
+                }
+
+                if (!is_callable([$object, $accessor])) {
+                    continue;
+                }
+
+                $accessiblePropertyNames[] = $propertyName;
+            }
+        }
+
+        // Fallback mechanism to not break former behaviour
+        //
+        // todo: Checking accessor methods of virtual(non-existing) properties should be removed (breaking) in
+        //       upcoming versions. It was an unintentionally added "feature" in the past. It contradicts the method
+        //       name "getGettablePropertyNames".
         foreach ($classSchema->getMethods() as $methodName => $methodDefinition) {
+            $propertyName = null;
+            if (str_starts_with($methodName, 'get') || str_starts_with($methodName, 'has')) {
+                $propertyName = lcfirst(substr($methodName, 3));
+            }
+
+            if (str_starts_with($methodName, 'is')) {
+                $propertyName = lcfirst(substr($methodName, 2));
+            }
+
+            if ($propertyName === null) {
+                continue;
+            }
+
             if (!$methodDefinition->isPublic()) {
                 continue;
             }
@@ -226,19 +274,7 @@ class ObjectAccess
                 }
             }
 
-            if (str_starts_with($methodName, 'get')) {
-                $accessiblePropertyNames[] = lcfirst(substr($methodName, 3));
-                continue;
-            }
-
-            if (str_starts_with($methodName, 'has')) {
-                $accessiblePropertyNames[] = lcfirst(substr($methodName, 3));
-                continue;
-            }
-
-            if (str_starts_with($methodName, 'is')) {
-                $accessiblePropertyNames[] = lcfirst(substr($methodName, 2));
-            }
+            $accessiblePropertyNames[] = $propertyName;
         }
 
         $accessiblePropertyNames = array_unique($accessiblePropertyNames);
