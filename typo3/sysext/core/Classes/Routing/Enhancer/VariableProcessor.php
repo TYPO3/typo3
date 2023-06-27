@@ -36,23 +36,51 @@ class VariableProcessor
      */
     protected $nestedValues = [];
 
+    public function __construct(private readonly VariableProcessorCache $cache)
+    {
+    }
+
     protected function addHash(string $value): string
     {
-        if (strlen($value) < 31 && !preg_match('#[^\w]#', $value)) {
+        if (!$this->requiresHashing($value)) {
             return $value;
         }
-        // removing one bit, e.g. for enforced route prefix `{!value}`
-        $hash = substr(md5($value), 0, -1);
-        // Symfony Route Compiler requires first literal to be non-integer
-        if ($hash[0] === (string)(int)$hash[0]) {
-            $hash[0] = str_replace(
-                range('0', '9'),
-                range('o', 'x'),
-                $hash[0]
-            );
-        }
+        // generate hash (fetch from cache, if available)
+        $hash = $this->generateHash($value);
+        // store hash locally (indicator, that this value was processed)
         $this->hashes[$hash] = $value;
         return $hash;
+    }
+
+    /**
+     * Determines whether a parameter value requires hashing.
+     * This is the case if the value has 31+ chars (Symfony has a limitation of 32 chars),
+     * or if the value contains any non-word characters besides `[A-Za-z0-9_]`, such as `@`.
+     */
+    protected function requiresHashing(string $value): bool
+    {
+        if (!isset($this->cache->requiresHashing[$value])) {
+            $this->cache->requiresHashing[$value] = strlen($value) >= 31 || preg_match('#[^\w]#', $value) > 0;
+        }
+        return $this->cache->requiresHashing[$value];
+    }
+
+    protected function generateHash(string $value): string
+    {
+        if (!isset($this->cache->hashes[$value])) {
+            // remove one char, which might be used as enforced route prefix `{!value}`
+            $hash = substr(md5($value), 0, -1);
+            // Symfony Route Compiler requires the first literal to be non-integer
+            if ($hash[0] === (string)(int)$hash[0]) {
+                $hash[0] = str_replace(
+                    range('0', '9'),
+                    range('o', 'x'),
+                    $hash[0]
+                );
+            }
+            $this->cache->hashes[$value] = $hash;
+        }
+        return $this->cache->hashes[$value];
     }
 
     /**
