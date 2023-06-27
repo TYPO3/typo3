@@ -29,7 +29,7 @@ class ModelService
 {
     private const SOURCE_PARSING_PRIORITIES = [
         HashProxy::class => 50,
-        HashType::class => 50,
+        HashValue::class => 50,
     ];
 
     /**
@@ -89,15 +89,15 @@ class ModelService
             // use a proxy instead of a real Nonce instance
             return SourceKeyword::nonceProxy;
         }
-        if ($string[0] === "'" && $string[-1] === "'") {
-            return SourceKeyword::tryFrom(substr($string, 1, -1));
-        }
-        if ($string[-1] === ':') {
-            return SourceScheme::tryFrom(substr($string, 0, -1));
-        }
         try {
+            if ($string[0] === "'" && $string[-1] === "'") {
+                return SourceKeyword::from(substr($string, 1, -1));
+            }
+            if ($string[-1] === ':') {
+                return SourceScheme::from(substr($string, 0, -1));
+            }
             return new UriValue($string);
-        } catch (\InvalidArgumentException) {
+        } catch (\InvalidArgumentException|\ValueError) {
             // no handling here
         }
         /** @var SourceValueInterface $sourceInterface */
@@ -171,7 +171,7 @@ class ModelService
     private function resolvePrioritizedSourceInterfaces(): array
     {
         $interfaces = self::SOURCE_PARSING_PRIORITIES;
-        rsort($interfaces);
+        arsort($interfaces);
         return array_keys($interfaces);
     }
 }
