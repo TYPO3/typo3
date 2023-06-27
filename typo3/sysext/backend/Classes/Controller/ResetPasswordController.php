@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
@@ -198,9 +199,11 @@ class ResetPasswordController
         $preferredBrowserLanguage = $this->locales->getPreferredClientLanguage($httpAcceptLanguage);
 
         // If we found a $preferredBrowserLanguage, which is not the default language
-        // initialize $this->getLanguageService() again with $preferredBrowserLanguage
+        // initialize $this->getLanguageService() again with $preferredBrowserLanguage.
+        // Additionally, set the language to the backend user object, so labels in fluid views are translated
         if ($preferredBrowserLanguage !== 'default') {
             $languageService->init($preferredBrowserLanguage);
+            $this->getBackendUserAuthentication()->user['lang'] = $preferredBrowserLanguage;
         }
 
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $languageService);
@@ -260,5 +263,10 @@ class ResetPasswordController
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
