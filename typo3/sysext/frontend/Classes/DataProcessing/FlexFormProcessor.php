@@ -96,7 +96,7 @@ class FlexFormProcessor implements DataProcessorInterface
     protected function processAdditionalDataProcessors(array $data, array $processorConfiguration, ServerRequestInterface $request): array
     {
         $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $contentObjectRenderer->setRequest($request->withAttribute('currentContentObject', $contentObjectRenderer));
+        $contentObjectRenderer->setRequest($request);
         $contentObjectRenderer->start([$data], '');
         return GeneralUtility::makeInstance(ContentDataProcessor::class)->process(
             $contentObjectRenderer,

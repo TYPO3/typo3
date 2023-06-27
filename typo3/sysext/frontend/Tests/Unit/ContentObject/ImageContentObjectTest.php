@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -51,6 +52,7 @@ final class ImageContentObjectTest extends UnitTestCase
                 new NullFrontend('runtime'),
             ),
         ]);
+        $this->subject->setRequest(new ServerRequest());
         $this->subject->setContentObjectRenderer($contentObjectRenderer);
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $this->subject->_set('pageRenderer', $pageRenderer);
@@ -382,6 +384,7 @@ final class ImageContentObjectTest extends UnitTestCase
             ),
         ]);
         $subject->_set('pageRenderer', $pageRenderer);
+        $subject->setRequest(new ServerRequest());
         $subject->setContentObjectRenderer($cObj);
         $result = $subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
 

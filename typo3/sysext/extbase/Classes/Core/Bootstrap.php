@@ -97,9 +97,8 @@ class Bootstrap
             //        It is currently not clear if the backend should have a dummy cObj as well.
             //        For now, extbase initializes one.
             $this->cObj = $this->container->get(ContentObjectRenderer::class);
-            $request = $request->withAttribute('currentContentObject', $this->cObj);
+            $this->cObj->setRequest($request);
         }
-        $this->cObj->setRequest($request);
         $this->configurationManager->setRequest($request);
         $this->configurationManager->setConfiguration($configuration);
         return $request;
