@@ -20,7 +20,7 @@
 	},
 	"require": {
 		"doctrine/dbal": "^3.6.2",
-		"guzzlehttp/promises": "^2.0",
+		"guzzlehttp/promises": "^1.5.2 || ^2.0",
 		"nikic/php-parser": "^4.15.4",
 		"symfony/finder": "^6.2",
 		"symfony/http-foundation": "^6.2",
