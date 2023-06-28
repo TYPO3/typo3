@@ -24,25 +24,9 @@ use TYPO3\CMS\Frontend\Exception;
  */
 class UnableToLinkException extends Exception
 {
-    /**
-     * @var string the text which should have gone inside the
-     * @todo Make $linkText strictly typed in TYPO3 v13
-     */
-    protected $linkText;
-
-    /**
-     * Constructor the exception. With an additional parameter for the link text
-     *
-     * @param string $message [optional] The Exception message to throw.
-     * @param int $code [optional] The Exception code.
-     * @param \Throwable $previous [optional] The previous throwable used for the exception chaining.
-     * @param string $linkText [optional]
-     * @todo Make the signature strictly typed in TYPO3 v13
-     */
-    public function __construct($message = '', $code = 0, \Throwable $previous = null, $linkText = '')
+    public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null, protected string $linkText = '')
     {
         parent::__construct($message, $code, $previous);
-        $this->linkText = $linkText;
     }
 
     /**
