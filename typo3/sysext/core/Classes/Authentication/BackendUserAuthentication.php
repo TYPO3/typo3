@@ -1417,6 +1417,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     $path = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
                     $fileMountRecordCache[$userHomeStorageUid . $path] = [
                         'base' => $userHomeStorageUid,
+                        'identifier' => "$userHomeStorageUid:$path",
                         'title' => $this->user['username'],
                         'path' => $path,
                         'read_only' => false,
@@ -1426,6 +1427,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     $path = $userHomeFilter . $this->user['uid'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
                     $fileMountRecordCache[$userHomeStorageUid . $path] = [
                         'base' => $userHomeStorageUid,
+                        'identifier' => "$userHomeStorageUid:$path",
                         'title' => $this->user['username'],
                         'path' => $path,
                         'read_only' => false,
@@ -1445,7 +1447,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     foreach ($this->userGroups as $groupData) {
                         $path = $groupHomeFilter . $groupData['uid'];
                         $fileMountRecordCache[$groupHomeStorageUid . $path] = [
-                            'base' => $groupHomeStorageUid,
+                            'base' => $groupHomeStorageUid
+                            'identifier' => "$groupHomeStorageUid:$path",
                             'title' => $groupData['title'],
                             'path' => $path,
                             'read_only' => false,
