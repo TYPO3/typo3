@@ -1260,8 +1260,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Regular users only have storages that are defined in their filemounts
             // Permissions and file mounts for the storage are added in StoragePermissionAspect
             foreach ($this->getFileMountRecords() as $row) {
-                if (!str_contains($row['identifier'], ':')) {
-                    // Skip record since the file mount identifier is invalid
+                if (!str_contains($row['identifier'] ?? '', ':')) {
+                    // Skip record since the file mount identifier is invalid, this usually happens
+                    // when file storages are selected. file mounts and groupHomePath and userHomePath should go through
                     continue;
                 }
                 [$base] = GeneralUtility::trimExplode(':', $row['identifier'], true);
@@ -1367,7 +1368,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
 
         // Read-only file mounts
-        $readOnlyMountPoints = \trim($this->getTSConfig()['options.']['folderTree.']['altElementBrowserMountPoints'] ?? '');
+        $readOnlyMountPoints = trim($this->getTSConfig()['options.']['folderTree.']['altElementBrowserMountPoints'] ?? '');
         if ($readOnlyMountPoints) {
             // We cannot use the API here but need to fetch the default storage record directly
             // to not instantiate it (which directly applies mount points) before all mount points are resolved!
@@ -1408,7 +1409,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // Personal or Group filemounts are not accessible if file mount list is set in workspace record
         if ($this->workspace <= 0 || empty($this->workspaceRec['file_mountpoints'])) {
             // If userHomePath is set, we attempt to mount it
-            if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath']) {
+            if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'] ?? false) {
                 [$userHomeStorageUid, $userHomeFilter] = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'], 2);
                 $userHomeStorageUid = (int)$userHomeStorageUid;
                 $userHomeFilter = '/' . ltrim($userHomeFilter, '/');
@@ -1417,6 +1418,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     $path = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
                     $fileMountRecordCache[$userHomeStorageUid . $path] = [
                         'base' => $userHomeStorageUid,
+                        'identifier' => $userHomeStorageUid . ':' . $path,
                         'title' => $this->user['username'],
                         'path' => $path,
                         'read_only' => false,
@@ -1426,6 +1428,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     $path = $userHomeFilter . $this->user['uid'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
                     $fileMountRecordCache[$userHomeStorageUid . $path] = [
                         'base' => $userHomeStorageUid,
+                        'identifier' => $userHomeStorageUid . ':' . $path,
                         'title' => $this->user['username'],
                         'path' => $path,
                         'read_only' => false,
@@ -1436,7 +1439,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
             // Mount group home-dirs
             $mountOptions = new BackendGroupMountOption((int)($this->user['options'] ?? 0));
-            if ($GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] !== '' && $mountOptions->shouldUserIncludeFileMountsFromAssociatedGroups()) {
+            if (($GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] ?? '') !== '' && $mountOptions->shouldUserIncludeFileMountsFromAssociatedGroups()) {
                 // If groupHomePath is set, we attempt to mount it
                 [$groupHomeStorageUid, $groupHomeFilter] = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
                 $groupHomeStorageUid = (int)$groupHomeStorageUid;
@@ -1446,6 +1449,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                         $path = $groupHomeFilter . $groupData['uid'];
                         $fileMountRecordCache[$groupHomeStorageUid . $path] = [
                             'base' => $groupHomeStorageUid,
+                            'identifier' => $groupHomeStorageUid . ':' . $path,
                             'title' => $groupData['title'],
                             'path' => $path,
                             'read_only' => false,
