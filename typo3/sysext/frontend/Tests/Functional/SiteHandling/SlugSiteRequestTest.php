@@ -41,7 +41,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         'FE' => [
             'cacheHash' => [
                 'requireCacheHashPresenceParameters' => ['value', 'testing[value]', 'tx_testing_link[value]'],
-                'excludedParameters' => ['tx_testing_link[excludedValue]'],
+                'excludedParameters' => ['L', 'tx_testing_link[excludedValue]'],
                 'enforceValidation' => true,
             ],
             'debug' => false,
@@ -310,6 +310,31 @@ class SlugSiteRequestTest extends AbstractTestCase
         $uri = 'https://website.other/any/invalid/slug';
         $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         self::assertSame(404, $response->getStatusCode());
+    }
+
+    public static function siteWithPageIdRequestsAreCorrectlyHandledDataProvider(): \Generator
+    {
+        yield 'valid same-site request is redirected' => ['https://website.local/?id=1000&L=0', 307];
+        yield 'valid same-site request is processed' => ['https://website.local/?id=1100&L=0', 200];
+    }
+
+    /**
+     * @test
+     * @dataProvider siteWithPageIdRequestsAreCorrectlyHandledDataProvider
+     */
+    public function siteWithPageIdRequestsAreCorrectlyHandled(string $uri, int $expectation): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ],
+            $this->buildErrorHandlingConfiguration('Fluid', [404])
+        );
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        self::assertSame($expectation, $response->getStatusCode());
     }
 
     /**

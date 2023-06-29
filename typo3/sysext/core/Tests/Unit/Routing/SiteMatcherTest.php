@@ -109,7 +109,8 @@ class SiteMatcherTest extends UnitTestCase
         $request = new ServerRequest('http://www.example.com/');
         /** @var SiteRouteResult $result */
         $result = $subject->matchRequest($request);
-        // Nothing found, only the empty site, but finds the last site ("second") according to the algorithm
+        // finds the second site, since that configuration does not have a host part, thus only `/` matches
+        // @todo for future versions (TYPO3 v12+) this should be adjusted and be more explicit by enforcing host names
         self::assertNull($result->getLanguage());
         self::assertEquals('second', $result->getSite()->getIdentifier());
     }
