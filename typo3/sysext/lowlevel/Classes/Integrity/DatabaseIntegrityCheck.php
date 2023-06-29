@@ -154,10 +154,7 @@ class DatabaseIntegrityCheck
                 $this->recStats['hidden']++;
             }
 
-            if (!is_array($this->recStats['doktype'][$row['doktype']] ?? false)) {
-                $this->recStats['doktype'][$row['doktype']] = 0;
-            }
-
+            $this->recStats['doktype'][$row['doktype']] ??= 0;
             $this->recStats['doktype'][$row['doktype']]++;
             // If all records should be shown, do so:
             if ($this->genTreeIncludeRecords) {
