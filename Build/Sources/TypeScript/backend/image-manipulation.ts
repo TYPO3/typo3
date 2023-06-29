@@ -24,6 +24,7 @@ import '@typo3/backend/element/spinner-element';
 import { renderNodes } from '@typo3/core/lit-helper';
 import { DraggableResizableElement, Offset } from '@typo3/backend/element/draggable-resizable-element';
 import type { DraggableResizableEvent, PointerEventNames } from '@typo3/backend/element/draggable-resizable-element';
+import type { EventInterface } from '@typo3/core/event/event-interface';
 
 export interface Area {
   x: number;
@@ -59,8 +60,7 @@ interface CropperEvent extends CustomEvent {
  */
 class ImageManipulation {
   private initialized: boolean = false;
-  private abortController: AbortController;
-  private abortEventListenerOptions: AddEventListenerOptions;
+  private triggerListener: EventInterface = null;
   private trigger: HTMLElement;
   private currentModal: ModalElement;
   private cropVariantTriggers: NodeListOf<HTMLElement>;
@@ -165,13 +165,18 @@ class ImageManipulation {
    *       Show the modal and kick-off image manipulation
    */
   public initializeTrigger(): void {
-    const trigger = document.querySelector('.t3js-image-manipulation-trigger');
-    // @todo unregister callback
-    trigger.addEventListener('click', (e: Event): void => {
-      e.preventDefault();
-      this.trigger = e.currentTarget as HTMLElement;
-      this.show();
-    }, this.abortEventListenerOptions);
+    if (this.triggerListener) {
+      return;
+    }
+    this.triggerListener = new RegularEvent(
+      'click',
+      (evt: Event, target: HTMLElement): void => {
+        evt.preventDefault();
+        this.trigger = target;
+        this.show();
+      }
+    );
+    this.triggerListener.delegateTo(document, '.t3js-image-manipulation-trigger');
   }
 
   /**
@@ -235,19 +240,16 @@ class ImageManipulation {
     });
 
     this.currentModal.addEventListener('typo3-modal-shown', (): void => {
-      this.abortController = new AbortController();
       new AjaxRequest(imageUri).post(payload).then(async (response: AjaxResponse): Promise<void> => {
         const htmlResponse = await response.resolve();
         this.currentModal.templateResultContent = html`${unsafeHTML(htmlResponse)}`;
         this.currentModal.updateComplete.then(() => this.initializeCropperModal());
       });
-      // see https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/abort_event
-      this.abortEventListenerOptions = { signal: this.abortController.signal };
     });
 
     this.currentModal.addEventListener('typo3-modal-hide', (): void => {
       this.destroy();
-    }, this.abortEventListenerOptions);
+    });
   }
 
   /**
@@ -292,7 +294,7 @@ class ImageManipulation {
         cropVariant.cropArea = this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea, imageData);
         this.currentCropVariant = Object.assign({}, cropVariant);
         this.update(cropVariant);
-      }, this.abortEventListenerOptions)
+      })
     );
 
     /**
@@ -309,21 +311,20 @@ class ImageManipulation {
         this.setCropArea(temp.cropArea);
         this.currentCropVariant = Object.assign({}, temp, { selectedRatio: ratioId });
         this.update(this.currentCropVariant);
-      },
-      this.abortEventListenerOptions
+      }
     ).delegateTo(this.currentModal, 'label[data-method=setAspectRatio]');
 
     /**
      * Assign EventListener to saveButton
      */
-    new RegularEvent('click', (): void => this.save(this.data), this.abortEventListenerOptions)
+    new RegularEvent('click', (): void => this.save(this.data))
       .delegateTo(this.currentModal, 'button[name=save]');
 
     /**
      * Assign EventListener to previewButton if preview url exists
      */
     if (this.trigger.dataset.previewUrl) {
-      new RegularEvent('click', (): void => this.openPreview(this.data), this.abortEventListenerOptions)
+      new RegularEvent('click', (): void => this.openPreview(this.data))
         .delegateTo(this.currentModal, 'button[name=preview]');
     } else {
       this.currentModal.querySelectorAll('button[name=preview]')
@@ -333,7 +334,7 @@ class ImageManipulation {
     /**
      * Assign EventListener to dismissButton
      */
-    new RegularEvent('click', (): void => this.currentModal.hideModal(), this.abortEventListenerOptions)
+    new RegularEvent('click', (): void => this.currentModal.hideModal())
       .delegateTo(this.currentModal, 'button[name=dismiss]');
 
     /**
@@ -353,8 +354,7 @@ class ImageManipulation {
         const absoluteCropArea: Area = this.convertRelativeToAbsoluteCropArea(resetCropVariant.cropArea, imageData);
         this.currentCropVariant = Object.assign({}, resetCropVariant, { cropArea: absoluteCropArea });
         this.update(this.currentCropVariant);
-      },
-      this.abortEventListenerOptions
+      }
     ).delegateTo(this.currentModal, 'button[name=reset]')
 
     // if we start without an cropArea, maximize the cropper
@@ -482,7 +482,7 @@ class ImageManipulation {
   private update(cropVariant: CropVariant): void {
     const temp: CropVariant = Object.assign({}, cropVariant);
     const selectedRatio: Ratio = cropVariant.allowedAspectRatios[cropVariant.selectedRatio];
-    this.currentModal.querySelector('[data-bs-option]')?.classList.remove('active');
+    this.currentModal.querySelector('[data-bs-option].active')?.classList.remove('active');
     this.currentModal.querySelector(`[data-bs-option="${cropVariant.selectedRatio}"]`)?.classList.add('active');
     /**
      * Setting the aspect ratio cause a redraw of the crop area so we need to manually reset it to last data
@@ -533,7 +533,7 @@ class ImageManipulation {
     this.focusAreaEl.addEventListener('draggable-resizable-started', () => {
       // disable outer cropper, when interacting with inner draggable-resizable-element
       this.cropper.disable();
-    }, this.abortEventListenerOptions);
+    });
     this.focusAreaEl.addEventListener('draggable-resizable-updated', () => {
       const coverAreas = this.currentCropVariant.coverAreas;
       const focusArea = this.convertOffsetToArea(this.focusAreaEl.offset, container);
@@ -544,7 +544,7 @@ class ImageManipulation {
       } else {
         visualElement.classList.remove('has-nodrop');
       }
-    }, this.abortEventListenerOptions);
+    });
     this.focusAreaEl.addEventListener('draggable-resizable-finished', (evt: DraggableResizableEvent) => {
       const coverAreas = this.currentCropVariant.coverAreas;
       const focusArea = this.convertOffsetToArea(this.focusAreaEl.offset, container);
@@ -557,7 +557,7 @@ class ImageManipulation {
       visualElement.classList.remove('has-nodrop');
       // re-enable outer cropper again
       this.cropper.enable();
-    }, this.abortEventListenerOptions);
+    });
 
     container.appendChild(this.focusAreaEl);
     this.scaleAndMoveFocusArea(this.currentCropVariant.focusArea);
@@ -800,8 +800,9 @@ class ImageManipulation {
       }
       this.renderElements(viewBox, preview);
 
+      const ratioTitleWindow = this.currentModal.ownerDocument.defaultView;
       const ratioTitleText = this.currentModal.querySelector(`.t3-js-ratio-title[data-ratio-id="${cropVariant.id}${cropVariant.selectedRatio}"]`); // tslint:disable-line:max-line-length
-      if (previewSelectedRatio instanceof HTMLElement && ratioTitleText instanceof HTMLElement) {
+      if (previewSelectedRatio instanceof HTMLElement && ratioTitleText instanceof ratioTitleWindow.HTMLElement) {
         previewSelectedRatio.innerText = ratioTitleText.innerText;
       }
     });
@@ -836,10 +837,6 @@ class ImageManipulation {
    * @desc Destroy the ImageManipulation including cropper and alike
    */
   private destroy(): void {
-    if (this.abortController) {
-      this.abortController.abort();
-      this.abortController = null;
-    }
     if (this.currentModal) {
       if (this.cropper instanceof Cropper) {
         this.cropper.destroy();
