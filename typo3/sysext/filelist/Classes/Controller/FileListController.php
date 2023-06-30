@@ -42,7 +42,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Resource\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -110,9 +110,8 @@ class FileListController implements LoggerAwareInterface
         $this->cmd = (string)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? '');
         $this->searchTerm = (string)trim($parsedBody['searchTerm'] ?? $queryParams['searchTerm'] ?? '');
         $this->currentPage = (int)($parsedBody['currentPage'] ?? $queryParams['currentPage'] ?? 1);
-        $this->overwriteExistingFiles = DuplicationBehavior::cast(
-            $parsedBody['overwriteExistingFiles'] ?? $queryParams['overwriteExistingFiles'] ?? null
-        );
+        $duplicationBehaviorFromRequest = $parsedBody['overwriteExistingFiles'] ?? $queryParams['overwriteExistingFiles'] ?? '';
+        $this->overwriteExistingFiles = DuplicationBehavior::tryFrom($duplicationBehaviorFromRequest) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
 
         $storage = null;
         try {
@@ -430,10 +429,11 @@ class FileListController implements LoggerAwareInterface
                 'online_media.update.success' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.update.success'),
                 'online_media.update.error' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.update.error'),
             ]);
+            $defaultDuplicationBehavior = DuplicationBehavior::getDefaultDuplicationBehaviour($this->getBackendUser());
             $this->view->assign('dragUploader', [
                 'fileDenyPattern' => $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] ?? null,
                 'maxFileSize' => GeneralUtility::getMaxUploadFileSize() * 1024,
-                'defaultDuplicationBehaviourAction' => $this->getDefaultDuplicationBehaviourAction(),
+                'defaultDuplicationBehaviourAction' => $defaultDuplicationBehavior->value,
             ]);
         }
     }
@@ -664,32 +664,6 @@ class FileListController implements LoggerAwareInterface
             ));
         }
         return (string)$name;
-    }
-
-    /**
-     * Return the default duplication behaviour action, set in TSconfig
-     */
-    protected function getDefaultDuplicationBehaviourAction(): string
-    {
-        $defaultAction = $this->getBackendUser()->getTSConfig()
-            ['options.']['file_list.']['uploader.']['defaultAction'] ?? '';
-
-        if ($defaultAction === '') {
-            return DuplicationBehavior::CANCEL;
-        }
-
-        if (!in_array($defaultAction, [
-            DuplicationBehavior::REPLACE,
-            DuplicationBehavior::RENAME,
-            DuplicationBehavior::CANCEL,
-        ], true)) {
-            $this->logger->warning('TSConfig: options.file_list.uploader.defaultAction contains an invalid value ("{value}"), fallback to default value: "{default}"', [
-                'value' => $defaultAction,
-                'default' => DuplicationBehavior::CANCEL,
-            ]);
-            $defaultAction = DuplicationBehavior::CANCEL;
-        }
-        return $defaultAction;
     }
 
     /**

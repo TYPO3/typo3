@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -1267,7 +1268,7 @@ class Export extends ImportExport
 
         $temporaryFileName = GeneralUtility::tempnam('export');
         GeneralUtility::writeFile($temporaryFileName, $fileContent);
-        $file = $saveFolder->addFile($temporaryFileName, $fileName, 'replace');
+        $file = $saveFolder->addFile($temporaryFileName, $fileName, DuplicationBehavior::REPLACE);
 
         if ($this->saveFilesOutsideExportFile) {
             $filesFolder = $saveFolder->createFolder($filesFolderName);

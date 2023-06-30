@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Resource\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -152,7 +152,7 @@ class ImportController
         $file = $parsedBody['file'] ?? [];
         $conflictMode = empty($parsedBody['overwriteExistingFiles']) ? DuplicationBehavior::CANCEL : DuplicationBehavior::REPLACE;
         $this->fileProcessor->setActionPermissions();
-        $this->fileProcessor->setExistingFilesConflictMode(DuplicationBehavior::cast($conflictMode));
+        $this->fileProcessor->setExistingFilesConflictMode($conflictMode);
         $this->fileProcessor->start($file);
         $result = $this->fileProcessor->processData();
         if (isset($result['upload'][0][0])) {

@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Resource\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Event\AfterFileCommandProcessedEvent;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
@@ -55,7 +55,6 @@ use TYPO3\CMS\Core\SysLog\Action\File as SystemLogFileAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\CMS\Core\Utility\Exception\NotImplementedMethodException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -76,12 +75,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ExtendedFileUtility extends BasicFileUtility
 {
     /**
-     * Defines behaviour when uploading files with names that already exist; possible values are
-     * the values of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
-     *
-     * @var DuplicationBehavior
+     * Defines behaviour when uploading files with names that already exist;
      */
-    protected $existingFilesConflictMode;
+    protected DuplicationBehavior $existingFilesConflictMode;
 
     /**
      * This array is self-explaining (look in the class below).
@@ -138,34 +134,18 @@ class ExtendedFileUtility extends BasicFileUtility
 
     /**
      * Get existingFilesConflictMode
-     *
-     * @return string
      */
-    public function getExistingFilesConflictMode()
+    public function getExistingFilesConflictMode(): string
     {
-        return (string)$this->existingFilesConflictMode;
+        return $this->existingFilesConflictMode->value;
     }
 
     /**
      * Set existingFilesConflictMode
-     *
-     * @param DuplicationBehavior|string $existingFilesConflictMode Instance or constant of \TYPO3\CMS\Core\Resource\DuplicationBehavior
-     * @throws Exception
      */
-    public function setExistingFilesConflictMode($existingFilesConflictMode)
+    public function setExistingFilesConflictMode(DuplicationBehavior $existingFilesConflictMode): void
     {
-        try {
-            $this->existingFilesConflictMode = DuplicationBehavior::cast($existingFilesConflictMode);
-        } catch (InvalidEnumerationValueException $e) {
-            throw new Exception(
-                sprintf(
-                    'Invalid argument, received: "%s", expected a value from enumeration \TYPO3\CMS\Core\Resource\DuplicationBehavior (%s)',
-                    $existingFilesConflictMode,
-                    implode(', ', DuplicationBehavior::getConstants())
-                ),
-                1476046229
-            );
-        }
+        $this->existingFilesConflictMode = $existingFilesConflictMode;
     }
 
     /**
@@ -279,7 +259,7 @@ class ExtendedFileUtility extends BasicFileUtility
                         }
 
                         GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
-                            new AfterFileCommandProcessedEvent([$action => $cmdArr], $result[$action][$key], (string)$this->existingFilesConflictMode)
+                            new AfterFileCommandProcessedEvent([$action => $cmdArr], $result[$action][$key], $this->existingFilesConflictMode->value)
                         );
                     }
                 }
@@ -803,7 +783,7 @@ class ExtendedFileUtility extends BasicFileUtility
         if ($sourceFileObject instanceof File) {
             try {
                 // Try to rename the File
-                $resultObject = $sourceFileObject->rename($targetFile, (string)$this->existingFilesConflictMode);
+                $resultObject = $sourceFileObject->rename($targetFile, $this->existingFilesConflictMode);
                 if ($resultObject->getName() !== $targetFile) {
                     $this->writeLog(SystemLogFileAction::RENAME, SystemLogErrorClassification::USER_ERROR, 'File renamed from "{identifier}" to "{destination}". Filename had to be sanitized', ['identifier' => $sourceFile, 'destination' => $targetFile]);
                     $this->addMessageToFlashMessageQueue('FileUtility.FileNameSanitized', [$targetFile, $resultObject->getName()], ContextualFeedbackSeverity::WARNING);
@@ -1063,8 +1043,8 @@ class ExtendedFileUtility extends BasicFileUtility
                 'size' => $uploadedFileData['size'][$i],
             ];
             try {
-                $fileObject = $targetFolderObject->addUploadedFile($fileInfo, (string)$this->existingFilesConflictMode);
-                if ($this->existingFilesConflictMode->equals(DuplicationBehavior::REPLACE)) {
+                $fileObject = $targetFolderObject->addUploadedFile($fileInfo, $this->existingFilesConflictMode);
+                if ($this->existingFilesConflictMode === DuplicationBehavior::REPLACE) {
                     $this->getIndexer($fileObject->getStorage())->updateIndexEntry($fileObject);
                 }
                 $resultObjects[] = $fileObject;

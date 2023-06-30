@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -468,13 +469,24 @@ abstract class AbstractFile implements FileInterface
      * Renames this file.
      *
      * @param non-empty-string $newName The new file name
-     * @param DuplicationBehavior::* $conflictMode
+     * @param string|DuplicationBehavior $conflictMode
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function rename(string $newName, $conflictMode = DuplicationBehavior::RENAME): FileInterface
     {
         if ($this->deleted) {
             throw new \RuntimeException('File has been deleted.', 1329821482);
         }
+
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using a string of the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in AbstractFile->rename()'
+                . ' will stop working in TYPO3 v14.0. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
+
         return $this->getStorage()->renameFile($this, $newName, $conflictMode);
     }
 
@@ -483,16 +495,27 @@ abstract class AbstractFile implements FileInterface
      *
      * @param Folder $targetFolder Folder to copy file into.
      * @param string $targetFileName an optional destination fileName
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string|DuplicationBehavior $conflictMode
      *
      * @throws \RuntimeException
      * @return File The new (copied) file.
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function copyTo(Folder $targetFolder, $targetFileName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
         if ($this->deleted) {
             throw new \RuntimeException('File has been deleted.', 1329821483);
         }
+
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using a string of the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in AbstractFile->copyTo()'
+                . ' will stop working in TYPO3 v14.0. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
+
         return $targetFolder->getStorage()->copyFile($this, $targetFolder, $targetFileName, $conflictMode);
     }
 
@@ -501,16 +524,27 @@ abstract class AbstractFile implements FileInterface
      *
      * @param Folder $targetFolder Folder to move file into.
      * @param string $targetFileName an optional destination fileName
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string|DuplicationBehavior $conflictMode
      *
      * @throws \RuntimeException
      * @return File This file object, with updated properties.
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function moveTo(Folder $targetFolder, $targetFileName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
         if ($this->deleted) {
             throw new \RuntimeException('File has been deleted.', 1329821484);
         }
+
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using a string of the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in AbstractFile->moveTo()'
+                . ' will stop working in TYPO3 v14.0. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
+
         return $targetFolder->getStorage()->moveFile($this, $targetFolder, $targetFileName, $conflictMode);
     }
 

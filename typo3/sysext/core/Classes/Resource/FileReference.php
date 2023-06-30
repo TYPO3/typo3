@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -392,7 +393,8 @@ class FileReference implements FileInterface
      * Renames the fileName in this particular usage.
      *
      * @param non-empty-string $newName The new file name
-     * @param DuplicationBehavior::* $conflictMode
+     * @param string|DuplicationBehavior $conflictMode
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function rename(string $newName, $conflictMode = DuplicationBehavior::RENAME): FileInterface
     {

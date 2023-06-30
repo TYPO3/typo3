@@ -1681,7 +1681,7 @@ return [
         'restFiles' => [
             'Deprecation-94313-ClassAbstractService.rst',
             'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
-       ],
+        ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest' => [
         'restFiles' => [
@@ -2380,6 +2380,11 @@ return [
     'TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException' => [
         'restFiles' => [
             'Breaking-102224-TemplaVoilaRelatedFlexFormDataStructureLookups.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\DuplicationBehavior' => [
+        'restFiles' => [
+            'Deprecation-101151-DuplicationBehaviorClass.rst',
         ],
     ],
 ];

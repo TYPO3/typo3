@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
+
 /**
  * File Interface
  */
@@ -112,7 +114,8 @@ interface FileInterface extends ResourceInterface
      * Renames this file.
      *
      * @param non-empty-string $newName The new file name
-     * @param DuplicationBehavior::* $conflictMode
+     * @param string|DuplicationBehavior $conflictMode
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function rename(string $newName, $conflictMode = DuplicationBehavior::RENAME): FileInterface;
 

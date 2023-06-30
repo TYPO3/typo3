@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Type\Enumeration;
 
 /**
  * Enumeration object for DuplicationBehavior
+ * @deprecated will be removed in TYPO3 v14.0
  */
 final class DuplicationBehavior extends Enumeration
 {

@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\StreamableDriverInterface;
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileContentsSetEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileCopiedEvent;
@@ -1219,12 +1220,13 @@ class ResourceStorage implements ResourceStorageInterface
      * @param string $localFilePath The file on the server's hard disk to add
      * @param Folder $targetFolder The target folder where the file should be added
      * @param string $targetFileName The name of the file to be add, If not set, the local file name is used
-     * @param string $conflictMode a value of the DuplicationBehavior enumeration
+     * @param string|DuplicationBehavior $conflictMode
      * @param bool $removeOriginal if set the original file will be removed after successful operation
      *
      * @throws \InvalidArgumentException
      * @throws Exception\ExistingTargetFileNameException
      * @return FileInterface
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function addFile($localFilePath, Folder $targetFolder, $targetFileName = '', $conflictMode = DuplicationBehavior::RENAME, $removeOriginal = true)
     {
@@ -1233,7 +1235,16 @@ class ResourceStorage implements ResourceStorageInterface
         if (!is_uploaded_file($localFilePath) && !file_exists($localFilePath)) {
             throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
         }
-        $conflictMode = DuplicationBehavior::cast($conflictMode);
+
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in ResourceStorage->addFile()'
+                . ' will stop working in TYPO3 v14.0. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
+
         $targetFileName = $this->sanitizeFileName($targetFileName ?: PathUtility::basename($localFilePath), $targetFolder);
 
         $targetFileName = $this->eventDispatcher->dispatch(
@@ -1243,12 +1254,12 @@ class ResourceStorage implements ResourceStorageInterface
         $this->assureFileAddPermissions($targetFolder, $targetFileName);
 
         $replaceExisting = false;
-        if ($conflictMode->equals(DuplicationBehavior::CANCEL) && $this->driver->fileExistsInFolder($targetFileName, $targetFolder->getIdentifier())) {
+        if ($conflictMode === DuplicationBehavior::CANCEL && $this->driver->fileExistsInFolder($targetFileName, $targetFolder->getIdentifier())) {
             throw new ExistingTargetFileNameException('File "' . $targetFileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
         }
-        if ($conflictMode->equals(DuplicationBehavior::RENAME)) {
+        if ($conflictMode === DuplicationBehavior::RENAME) {
             $targetFileName = $this->getUniqueName($targetFolder, $targetFileName);
-        } elseif ($conflictMode->equals(DuplicationBehavior::REPLACE) && $this->driver->fileExistsInFolder($targetFileName, $targetFolder->getIdentifier())) {
+        } elseif ($conflictMode === DuplicationBehavior::REPLACE && $this->driver->fileExistsInFolder($targetFileName, $targetFolder->getIdentifier())) {
             $replaceExisting = true;
         }
 
@@ -1876,15 +1887,23 @@ class ResourceStorage implements ResourceStorageInterface
      * folder, the latter has to be part of this storage
      *
      * @param string $targetFileName an optional destination fileName
-     * @param string $conflictMode a value of the DuplicationBehavior enumeration
+     * @param string|DuplicationBehavior $conflictMode
      *
      * @throws \Exception|Exception\AbstractFileOperationException
      * @throws Exception\ExistingTargetFileNameException
      * @return FileInterface
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function copyFile(FileInterface $file, Folder $targetFolder, $targetFileName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
-        $conflictMode = DuplicationBehavior::cast($conflictMode);
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in ResourceStorage->copyFile()'
+                . ' will stop working in TYPO3 v14.0. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
         if ($targetFileName === null) {
             $targetFileName = $file->getName();
         }
@@ -1896,11 +1915,11 @@ class ResourceStorage implements ResourceStorageInterface
         );
 
         // File exists and we should abort, let's abort
-        if ($conflictMode->equals(DuplicationBehavior::CANCEL) && $targetFolder->hasFile($sanitizedTargetFileName)) {
+        if ($conflictMode === DuplicationBehavior::CANCEL && $targetFolder->hasFile($sanitizedTargetFileName)) {
             throw new ExistingTargetFileNameException('The target file already exists.', 1320291064);
         }
         // File exists and we should find another name, let's find another one
-        if ($conflictMode->equals(DuplicationBehavior::RENAME) && $targetFolder->hasFile($sanitizedTargetFileName)) {
+        if ($conflictMode === DuplicationBehavior::RENAME && $targetFolder->hasFile($sanitizedTargetFileName)) {
             $sanitizedTargetFileName = $this->getUniqueName($targetFolder, $sanitizedTargetFileName);
         }
         $sourceStorage = $file->getStorage();
@@ -1937,15 +1956,23 @@ class ResourceStorage implements ResourceStorageInterface
      * @param FileInterface $file
      * @param Folder $targetFolder
      * @param string $targetFileName an optional destination fileName
-     * @param string $conflictMode a value of the DuplicationBehavior enumeration
+     * @param string|DuplicationBehavior $conflictMode
      *
      * @throws Exception\ExistingTargetFileNameException
      * @throws \RuntimeException
      * @return FileInterface
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function moveFile($file, $targetFolder, $targetFileName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
-        $conflictMode = DuplicationBehavior::cast($conflictMode);
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in ResourceStorage->moveFile()'
+                . ' will not work in TYPO3 v14.0 anymore. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
         if ($targetFileName === null) {
             $targetFileName = $file->getName();
         }
@@ -1954,9 +1981,9 @@ class ResourceStorage implements ResourceStorageInterface
         $this->assureFileMovePermissions($file, $targetFolder, $sanitizedTargetFileName);
         if ($targetFolder->hasFile($sanitizedTargetFileName)) {
             // File exists and we should abort, let's abort
-            if ($conflictMode->equals(DuplicationBehavior::RENAME)) {
+            if ($conflictMode === DuplicationBehavior::RENAME) {
                 $sanitizedTargetFileName = $this->getUniqueName($targetFolder, $sanitizedTargetFileName);
-            } elseif ($conflictMode->equals(DuplicationBehavior::CANCEL)) {
+            } elseif ($conflictMode === DuplicationBehavior::CANCEL) {
                 throw new ExistingTargetFileNameException('The target file already exists', 1329850997);
             }
         }
@@ -2008,9 +2035,10 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param string $targetFileName
-     * @param string $conflictMode
+     * @param string|DuplicationBehavior $conflictMode
      * @return FileInterface
      * @throws ExistingTargetFileNameException
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function renameFile($file, $targetFileName, $conflictMode = DuplicationBehavior::RENAME)
     {
@@ -2024,7 +2052,14 @@ class ResourceStorage implements ResourceStorageInterface
             new BeforeFileRenamedEvent($file, $sanitizedTargetFileName)
         );
 
-        $conflictMode = DuplicationBehavior::cast($conflictMode);
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in ResourceStorage->renameFile()'
+                . ' will not work in TYPO3 v14.0 anymore. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
 
         // Call driver method to rename the file and update the index entry
         try {
@@ -2034,12 +2069,12 @@ class ResourceStorage implements ResourceStorageInterface
                 $this->getIndexer()->updateIndexEntry($file);
             }
         } catch (ExistingTargetFileNameException $exception) {
-            if ($conflictMode->equals(DuplicationBehavior::RENAME)) {
+            if ($conflictMode === DuplicationBehavior::RENAME) {
                 $newName = $this->getUniqueName($file->getParentFolder(), $sanitizedTargetFileName);
                 $file = $this->renameFile($file, $newName);
-            } elseif ($conflictMode->equals(DuplicationBehavior::CANCEL)) {
+            } elseif ($conflictMode === DuplicationBehavior::CANCEL) {
                 throw $exception;
-            } elseif ($conflictMode->equals(DuplicationBehavior::REPLACE)) {
+            } elseif ($conflictMode === DuplicationBehavior::REPLACE) {
                 $sourceFileIdentifier = substr($file->getCombinedIdentifier(), 0, (int)strrpos($file->getCombinedIdentifier(), '/') + 1) . $sanitizedTargetFileName;
                 $sourceFile = $this->getResourceFactoryInstance()->getFileObjectFromCombinedIdentifier($sourceFileIdentifier);
                 $file = $this->replaceFile($sourceFile, Environment::getPublicPath() . '/' . $file->getPublicUrl());
@@ -2089,12 +2124,20 @@ class ResourceStorage implements ResourceStorageInterface
      * @param array|UploadedFile $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
      * @param Folder|null $targetFolder the target folder
      * @param string|null $targetFileName the file name to be written
-     * @param string $conflictMode a value of the DuplicationBehavior enumeration
+     * @param string|DuplicationBehavior $conflictMode
      * @return FileInterface The file object
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function addUploadedFile(array|UploadedFile $uploadedFileData, Folder $targetFolder = null, $targetFileName = null, $conflictMode = DuplicationBehavior::CANCEL)
     {
-        $conflictMode = DuplicationBehavior::cast($conflictMode);
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in ResourceStorage->addUploadedFile()'
+                . ' will not work in TYPO3 v14.0 anymore. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
         if ($uploadedFileData instanceof UploadedFile) {
             $localFilePath = $uploadedFileData->getTemporaryFileName();
             if ($targetFileName === null) {
@@ -2115,11 +2158,11 @@ class ResourceStorage implements ResourceStorageInterface
         $targetFileName = $this->driver->sanitizeFileName($targetFileName);
 
         $this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $size);
-        if ($this->hasFileInFolder($targetFileName, $targetFolder) && $conflictMode->equals(DuplicationBehavior::REPLACE)) {
+        if ($this->hasFileInFolder($targetFileName, $targetFolder) && $conflictMode === DuplicationBehavior::REPLACE) {
             $file = $this->getFileInFolder($targetFileName, $targetFolder);
             $resultObject = $this->replaceFile($file, $localFilePath);
         } else {
-            $resultObject = $this->addFile($localFilePath, $targetFolder, $targetFileName, (string)$conflictMode);
+            $resultObject = $this->addFile($localFilePath, $targetFolder, $targetFileName, $conflictMode);
         }
         return $resultObject;
     }
@@ -2157,12 +2200,13 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder $folderToMove The folder to move.
      * @param Folder $targetParentFolder The target parent folder
      * @param string $newFolderName
-     * @param string $conflictMode a value of the DuplicationBehavior enumeration
+     * @param string|DuplicationBehavior $conflictMode
      *
      * @throws \Exception|\TYPO3\CMS\Core\Exception
      * @throws \InvalidArgumentException
      * @throws InvalidTargetFolderException
      * @return Folder
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function moveFolder(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
@@ -2222,13 +2266,21 @@ class ResourceStorage implements ResourceStorageInterface
      * @param FolderInterface $folderToCopy The folder to copy
      * @param FolderInterface $targetParentFolder The target folder
      * @param string $newFolderName
-     * @param string $conflictMode a value of the DuplicationBehavior enumeration
+     * @param string|DuplicationBehavior $conflictMode
      * @return Folder The new (copied) folder object
      * @throws InvalidTargetFolderException
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function copyFolder(FolderInterface $folderToCopy, FolderInterface $targetParentFolder, $newFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
-        $conflictMode = DuplicationBehavior::cast($conflictMode);
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in ResourceStorage->copyFolder()'
+                . ' will not work in TYPO3 v14.0 anymore. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
         $this->assureFolderCopyPermissions($folderToCopy, $targetParentFolder);
         $returnObject = null;
         $sanitizedNewFolderName = $this->driver->sanitizeFileName($newFolderName ?: $folderToCopy->getName());
@@ -2237,7 +2289,7 @@ class ResourceStorage implements ResourceStorageInterface
                 new BeforeFolderCopiedEvent($folderToCopy, $targetParentFolder, $sanitizedNewFolderName)
             );
         }
-        if ($conflictMode->equals(DuplicationBehavior::CANCEL) && ($targetParentFolder->hasFolder($sanitizedNewFolderName) || $targetParentFolder->hasFile($sanitizedNewFolderName))) {
+        if ($conflictMode === DuplicationBehavior::CANCEL && ($targetParentFolder->hasFolder($sanitizedNewFolderName) || $targetParentFolder->hasFile($sanitizedNewFolderName))) {
             throw new InvalidTargetFolderException(
                 sprintf(
                     'Cannot copy folder "%s" into target folder "%s", because there is already a folder or file with that name in the target folder!',
@@ -2248,7 +2300,7 @@ class ResourceStorage implements ResourceStorageInterface
             );
         }
         // Folder exists and we should find another name, let's find another one
-        if ($conflictMode->equals(DuplicationBehavior::RENAME) && ($targetParentFolder->hasFolder($sanitizedNewFolderName) || $targetParentFolder->hasFile($sanitizedNewFolderName))) {
+        if ($conflictMode === DuplicationBehavior::RENAME && ($targetParentFolder->hasFolder($sanitizedNewFolderName) || $targetParentFolder->hasFile($sanitizedNewFolderName))) {
             $sanitizedNewFolderName = $this->getUniqueName($targetParentFolder, $sanitizedNewFolderName);
         }
         $sourceStorage = $folderToCopy->getStorage();

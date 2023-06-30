@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Capabilities;
-use TYPO3\CMS\Core\Resource\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
 use TYPO3\CMS\Core\Resource\File;
@@ -493,7 +493,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
      */
     public function copyFolderThrowsErrorWhenFolderAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
     {
-        $conflictMode = (string)DuplicationBehavior::cast(DuplicationBehavior::CANCEL);
+        $conflictMode = DuplicationBehavior::CANCEL;
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
@@ -511,7 +511,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
      */
     public function copyFolderGeneratesNewFolderNameWhenFolderAlreadyExistsInTargetFolderAndConflictModeIsRename(): void
     {
-        $conflictMode = (string)DuplicationBehavior::cast(DuplicationBehavior::RENAME);
+        $conflictMode = DuplicationBehavior::RENAME;
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
@@ -529,7 +529,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
      */
     public function copyFileThrowsErrorWhenFileWithSameNameAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
     {
-        $conflictMode = (string)DuplicationBehavior::cast(DuplicationBehavior::CANCEL);
+        $conflictMode = DuplicationBehavior::CANCEL;
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
@@ -549,7 +549,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
      */
     public function copyFileGeneratesNewFileNameWhenFileAlreadyExistsInTargetFolderAndConflictModeIsRename(): void
     {
-        $conflictMode = (string)DuplicationBehavior::cast(DuplicationBehavior::RENAME);
+        $conflictMode = DuplicationBehavior::RENAME;
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);

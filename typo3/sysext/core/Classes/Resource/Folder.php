@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourcePermissionsUnavailableException;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
@@ -281,12 +282,23 @@ class Folder implements FolderInterface
      *
      * @param string $localFilePath
      * @param string $fileName
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string|DuplicationBehavior $conflictMode
      * @return File The file object
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function addFile($localFilePath, $fileName = null, $conflictMode = DuplicationBehavior::CANCEL)
     {
         $fileName = $fileName ?: PathUtility::basename($localFilePath);
+
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in Folder->addFile()'
+                . ' will stop working in TYPO3 v14.0. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
+
         return $this->storage->addFile($localFilePath, $this, $fileName, $conflictMode);
     }
 
@@ -294,11 +306,21 @@ class Folder implements FolderInterface
      * Adds an uploaded file into the Storage.
      *
      * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string|DuplicationBehavior $conflictMode
      * @return File The file object
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function addUploadedFile(array $uploadedFileData, $conflictMode = DuplicationBehavior::CANCEL)
     {
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in Folder->addUploadedFile()'
+                . ' will stop working in TYPO3 v14.0. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
+
         return $this->storage->addUploadedFile($uploadedFileData, $this, $uploadedFileData['name'], $conflictMode);
     }
 
@@ -347,11 +369,21 @@ class Folder implements FolderInterface
      *
      * @param Folder $targetFolder Target folder to copy to.
      * @param string $targetFolderName an optional destination fileName
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string|DuplicationBehavior $conflictMode
      * @return Folder New (copied) folder object.
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function copyTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in Folder->copyTo()'
+                . ' will stop working in TYPO3 v14.0. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
+
         return $targetFolder->getStorage()->copyFolder($this, $targetFolder, $targetFolderName, $conflictMode);
     }
 
@@ -360,11 +392,21 @@ class Folder implements FolderInterface
      *
      * @param Folder $targetFolder Target folder to move to.
      * @param string $targetFolderName an optional destination fileName
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string|DuplicationBehavior $conflictMode
      * @return Folder New (copied) folder object.
+     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function moveTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
+        if (!$conflictMode instanceof DuplicationBehavior) {
+            trigger_error(
+                'Using the non-native enumeration TYPO3\CMS\Core\Resource\DuplicationBehavior in Folder->moveTo()'
+                . ' will stop working in TYPO3 v14.0. Use native TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior instead.',
+                E_USER_DEPRECATED
+            );
+            $conflictMode = DuplicationBehavior::tryFrom($conflictMode) ?? DuplicationBehavior::getDefaultDuplicationBehaviour();
+        }
+
         return $targetFolder->getStorage()->moveFolder($this, $targetFolder, $targetFolderName, $conflictMode);
     }
 
