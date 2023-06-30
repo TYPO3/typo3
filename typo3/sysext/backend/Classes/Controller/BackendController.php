@@ -94,6 +94,7 @@ class BackendController
             JavaScriptModuleInstruction::create('@typo3/backend/login-refresh.js')
                 ->invoke('initialize', [
                     'intervalTime' => MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60),
+                    'requestTokenUrl' => (string)$this->uriBuilder->buildUriFromRoute('login_request_token'),
                     'loginFramesetUrl' => (string)$this->uriBuilder->buildUriFromRoute('login_frameset'),
                     'logoutUrl' => (string)$this->uriBuilder->buildUriFromRoute('logout'),
                 ])

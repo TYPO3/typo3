@@ -83,6 +83,14 @@ return [
         'target' => Controller\LoginController::class . '::refreshAction',
     ],
 
+    // Fetch RequestToken via AJAX
+    'login_request_token' => [
+        'path' => '/login/request-token',
+        'access' => 'public',
+        'methods' => ['POST'],
+        'target' => Controller\LoginController::class . '::requestTokenAction',
+    ],
+
     // Authentication endpoint for Multi-factor authentication
     'auth_mfa' => [
         'path' => '/auth/mfa',

@@ -58,6 +58,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         '/login/password-reset/initiate-reset',
         '/login/password-reset/validate',
         '/login/password-reset/finish',
+        '/login/request-token',
         '/install/server-response-check/host',
         '/ajax/login',
         '/ajax/logout',
