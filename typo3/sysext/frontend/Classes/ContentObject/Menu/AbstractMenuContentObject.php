@@ -1200,7 +1200,19 @@ abstract class AbstractMenuContentObject
     {
         $runtimeCache = $this->getRuntimeCache();
         $MP_var = $this->getMPvar($key);
-        $cacheId = 'menu-generated-links-' . md5($key . $altTarget . $typeOverride . $MP_var . ((string)($this->mconf['showAccessRestrictedPages'] ?? '_')) . json_encode($this->menuArr[$key]));
+        $cacheId = 'menu-generated-links-' . md5(
+            $key
+                . ($altTarget ?: ($this->mconf['target'] ?? '') . (isset($this->mconf['target.']) ? json_encode($this->mconf['target.']) : ''))
+                . $typeOverride
+                . $MP_var
+                . ($this->mconf['addParams'] ?? '')
+                . ($this->I['val']['additionalParams'] ?? '')
+                . ((string)($this->mconf['showAccessRestrictedPages'] ?? '_'))
+                . (isset($this->mconf['showAccessRestrictedPages.']) ? json_encode($this->mconf['showAccessRestrictedPages.']) : '')
+                . json_encode($this->menuArr[$key])
+                . ($this->I['val']['ATagParams'] ?? '')
+                . (isset($this->I['val']['ATagParams.']) ? json_encode($this->I['val']['ATagParams.']) : '')
+        );
         $runtimeCachedLink = $runtimeCache->get($cacheId);
         if ($runtimeCachedLink !== false) {
             return $runtimeCachedLink;
