@@ -19,14 +19,15 @@ namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaDiff;
+use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\IntegerType;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
+use TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -39,22 +40,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SchemaMigrator
 {
     /**
-     * @var Schema[]
-     */
-    protected $schema = [];
-
-    /**
      * Compare current and expected schema definitions and provide updates suggestions in the form
      * of SQL statements.
      *
      * @param string[] $statements The CREATE TABLE statements
      * @param bool $remove TRUE for RENAME/DROP table and column suggestions, FALSE for ADD/CHANGE suggestions
      * @return array<string, array> SQL statements to migrate the database to the expected schema, indexed by performed operation
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws DBALException
+     * @throws SchemaException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws UnexpectedSignalReturnValueTypeException
      * @throws StatementException
      */
     public function getUpdateSuggestions(array $statements, bool $remove = false): array
@@ -83,11 +79,11 @@ class SchemaMigrator
      * all changes without any pre-processing.
      *
      * @return array<string, SchemaDiff>
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws DBALException
+     * @throws SchemaException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws UnexpectedSignalReturnValueTypeException
      * @throws StatementException
      */
     public function getSchemaDiffs(array $statements): array
@@ -114,10 +110,10 @@ class SchemaMigrator
      *
      * @param string[] $statements The CREATE TABLE statements
      * @param string[] $selectedStatements The hashes of the update suggestions to execute
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws DBALException
+     * @throws SchemaException
      * @throws \InvalidArgumentException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws UnexpectedSignalReturnValueTypeException
      * @throws StatementException
      * @throws \RuntimeException
      */
@@ -160,11 +156,11 @@ class SchemaMigrator
      * @param string[] $statements The CREATE TABLE statements
      * @param bool $createOnly Only perform changes that add fields or create tables
      * @return array<string, string> Error messages for statements that occurred during the installation procedure.
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws DBALException
+     * @throws SchemaException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws UnexpectedSignalReturnValueTypeException
      * @throws StatementException
      */
     public function install(array $statements, bool $createOnly = false): array
@@ -234,11 +230,11 @@ class SchemaMigrator
      *
      * @param string[] $statements The SQL CREATE TABLE statements
      * @return Table[]
-     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws SchemaException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws StatementException
+     * @throws UnexpectedSignalReturnValueTypeException
      */
     public function parseCreateTableStatements(array $statements): array
     {
