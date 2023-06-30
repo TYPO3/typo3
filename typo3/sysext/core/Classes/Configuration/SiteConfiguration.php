@@ -45,10 +45,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SiteConfiguration implements SingletonInterface
 {
-    protected PhpFrontend $cache;
-
-    protected string $configPath;
-
     /**
      * Config yaml file name.
      *
@@ -84,19 +80,12 @@ class SiteConfiguration implements SingletonInterface
      * @var array|null
      */
     protected $firstLevelCache;
-    protected EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @param PhpFrontend|null $coreCache
-     */
-    public function __construct(string $configPath, EventDispatcherInterface $eventDispatcher, PhpFrontend $coreCache = null)
-    {
-        $this->configPath = $configPath;
-        // The following fallback to GeneralUtility;:getContainer() is only used in acceptance tests
-        // @todo: Fix testing-framework/typo3/sysext/core/Classes/Configuration/SiteConfiguration.php
-        // to inject the cache instance
-        $this->cache = $coreCache ?? GeneralUtility::getContainer()->get('cache.core');
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        protected string $configPath,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected PhpFrontend $cache
+    ) {
     }
 
     /**
