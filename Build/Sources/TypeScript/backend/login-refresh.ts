@@ -24,8 +24,14 @@ enum MarkupIdentifiers {
 
 interface LoginRefreshOptions {
   intervalTime?: number;
+  requestTokenUrl?: string;
   loginFramesetUrl?: string;
   logoutUrl?: string;
+}
+
+interface RequestTokenResponseData {
+  headerName?: string;
+  requestToken?: string;
 }
 
 /**
@@ -45,6 +51,7 @@ class LoginRefresh {
   private $timeoutModal: JQuery = null;
   private $backendLockedModal: JQuery = null;
   private $loginForm: JQuery = null;
+  private requestTokenUrl: string = '';
   private loginFramesetUrl: string = '';
   private logoutUrl: string = '';
 
@@ -354,9 +361,15 @@ class LoginRefresh {
    *
    * @param {JQueryEventObject} event
    */
-  protected submitForm = (event: JQueryEventObject): void => {
+  protected submitForm = async (event: JQueryEventObject): Promise<void> => {
     event.preventDefault();
 
+    const tokenResponse = await new AjaxRequest(this.requestTokenUrl).post({});
+    const tokenData: RequestTokenResponseData = await tokenResponse.resolve('application/json');
+
+    if (!tokenData.headerName || !tokenData.requestToken) {
+      return;
+    }
     const $form = this.$loginForm.find('form');
     const $passwordField = $form.find('input[name=p_field]');
     const $useridentField = $form.find('input[name=userident]');
@@ -373,23 +386,23 @@ class LoginRefresh {
       $passwordField.val('');
     }
 
-    const postData: any = {
-      login_status: 'login',
-    };
+    const postData: Record<string, string> = { login_status: 'login' };
     for (const field of $form.serializeArray()) {
       postData[field.name] = field.value;
     }
-    new AjaxRequest($form.attr('action')).post(postData).then(async (response: AjaxResponse): Promise<void> => {
-      const data = await response.resolve();
-      if (data.login.success) {
-        // User is logged in
-        this.hideLoginForm();
-      } else {
-        Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_failed_message']);
-        $passwordField.focus();
-      }
-    });
-  };
+    const headers = new Headers();
+    headers.set(tokenData.headerName, tokenData.requestToken);
+
+    const response = await new AjaxRequest($form.attr('action')).post(postData, { headers });
+    const data = await response.resolve();
+    if (data.login.success) {
+      // User is logged in
+      this.hideLoginForm();
+    } else {
+      Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_failed_message']);
+      $passwordField.focus();
+    }
+  }
 
   /**
    * Registers the (shown|hidden).bs.modal events.
@@ -455,6 +468,9 @@ class LoginRefresh {
     }
     if (options.logoutUrl !== undefined) {
       this.setLogoutUrl(options.logoutUrl);
+    }
+    if (options.requestTokenUrl !== undefined) {
+      this.requestTokenUrl = options.requestTokenUrl;
     }
   }
 }

@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -142,6 +143,18 @@ class LoginController
         $this->loginRefresh = true;
         $response = $this->createLoginLogoutForm($request);
         return $this->appendLoginProviderCookie($request, $request->getAttribute('normalizedParams'), $response);
+    }
+
+    /**
+     * Returns a new request-token value, which is signed by a new nonce value (the nonce is sent
+     * as cookie automatically in `RequestTokenMiddleware` since it is created via the `NoncePool`).
+     */
+    public function requestTokenAction(ServerRequestInterface $request): ResponseInterface
+    {
+        return new JsonResponse([
+            'headerName' => RequestToken::HEADER_NAME,
+            'requestToken' => $this->provideRequestTokenJwt(),
+        ]);
     }
 
     /**
