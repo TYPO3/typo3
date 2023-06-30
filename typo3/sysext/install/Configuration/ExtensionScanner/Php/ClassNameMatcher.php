@@ -2404,4 +2404,10 @@ return [
             'Feature-102581-PSR-14EventForModifyingContentObjectRenderer.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus' => [
+        'restFiles' => [
+            'Deprecation-101174-InformationStatusClass.rst',
+            'Feature-101174-InformationStatus.rst',
+        ],
+    ],
 ];

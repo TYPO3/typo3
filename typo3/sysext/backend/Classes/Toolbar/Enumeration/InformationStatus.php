@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Type\Enumeration;
 
 /**
  * This class holds the severities of the SystemInformation toolbar menu
+ * @deprecated will be removed in TYPO3 v14.0
  */
 final class InformationStatus extends Enumeration
 {
@@ -67,6 +68,11 @@ final class InformationStatus extends Enumeration
      */
     public function isGreaterThan(InformationStatus $status)
     {
+        trigger_error(
+            'Calling ' . __METHOD__ . ' using the non-native enumeration ' . __CLASS__ . ' has been deprecated '
+            . 'and will stop working in TYPO3 v14.0. Use the native ' . \TYPO3\CMS\Backend\Toolbar\InformationStatus::class . ' instead.',
+            E_USER_DEPRECATED
+        );
         return self::$statusIntegerMap[(string)$this] > self::$statusIntegerMap[(string)$status];
     }
 }

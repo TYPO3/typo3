@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Belog\Controller;
 use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
+use TYPO3\CMS\Backend\Toolbar\InformationStatus;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -76,7 +76,7 @@ final class SystemInformationController
                     $count,
                     (string)$uriBuilder->buildUriFromRoute($moduleIdentifier, $moduleParams)
                 ),
-                InformationStatus::STATUS_ERROR,
+                InformationStatus::ERROR,
                 $count,
                 $moduleIdentifier,
                 http_build_query($moduleParams)

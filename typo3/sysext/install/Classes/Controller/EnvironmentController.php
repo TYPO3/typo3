@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
-use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
+use TYPO3\CMS\Backend\Toolbar\InformationStatus;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -1056,11 +1056,11 @@ class EnvironmentController extends AbstractController
     protected function getApplicationContextInformation(): array
     {
         $applicationContext = Environment::getContext();
-        $status = $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_WARNING;
+        $status = $applicationContext->isProduction() ? InformationStatus::OK : InformationStatus::WARNING;
 
         return [
             'context' => (string)$applicationContext,
-            'status' => $status,
+            'status' => $status->value,
         ];
     }
 
