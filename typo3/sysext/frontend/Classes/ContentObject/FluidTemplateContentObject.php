@@ -28,13 +28,10 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
  */
 class FluidTemplateContentObject extends AbstractContentObject
 {
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
-
-    public function __construct(protected ContentDataProcessor $contentDataProcessor)
-    {
+    public function __construct(
+        protected ContentDataProcessor $contentDataProcessor,
+        protected StandaloneView $view
+    ) {
     }
 
     /**
@@ -67,8 +64,7 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     public function render($conf = [])
     {
-        $parentView = $this->view;
-        $this->initializeStandaloneViewInstance();
+        $this->view->setRequest($this->request);
 
         if (!is_array($conf)) {
             $conf = [];
@@ -87,10 +83,7 @@ class FluidTemplateContentObject extends AbstractContentObject
 
         $this->renderFluidTemplateAssetsIntoPageRenderer($variables);
         $content = $this->renderFluidView();
-        $content = $this->applyStandardWrapToRenderedContent($content, $conf);
-
-        $this->view = $parentView;
-        return $content;
+        return $this->applyStandardWrapToRenderedContent($content, $conf);
     }
 
     /**
@@ -109,19 +102,6 @@ class FluidTemplateContentObject extends AbstractContentObject
         if (!empty(trim($footerAssets))) {
             $pageRenderer->addFooterData($footerAssets);
         }
-    }
-
-    /**
-     * Creating standalone view instance must not be done in construct() as
-     * it can lead to a nasty cache issue since content object instances
-     * are not always re-created by the content object rendered for every
-     * usage, but can be re-used. Thus, we need a fresh instance of
-     * StandaloneView every time render() is called.
-     */
-    protected function initializeStandaloneViewInstance()
-    {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setRequest($this->request);
     }
 
     /**

@@ -60,6 +60,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
@@ -7539,7 +7540,8 @@ final class ContentObjectRendererTest extends UnitTestCase
                             new ContentDataProcessor(
                                 new Container(),
                                 $dataProcessorRegistry
-                            )
+                            ),
+                            new StandaloneView()
                         );
                     } else {
                         $contentObject = new $className();
