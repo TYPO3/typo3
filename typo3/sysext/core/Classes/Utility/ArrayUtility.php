@@ -472,7 +472,7 @@ class ArrayUtility
         foreach ($array as $key => $value) {
             if ($keepDots === false) {
                 // Ensure there is no trailing dot:
-                $key = rtrim($key, '.');
+                $key = rtrim((string)$key, '.');
             }
             if (!is_array($value)) {
                 $flatArray[$prefix . $key] = $value;
