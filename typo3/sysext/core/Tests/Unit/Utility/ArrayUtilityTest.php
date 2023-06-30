@@ -1256,6 +1256,16 @@ final class ArrayUtilityTest extends UnitTestCase
                     'second' => 2,
                 ],
             ],
+            'nested array with integer key' => [
+                [
+                    'templateRootPaths.' => [
+                        10 => '',
+                    ],
+                ],
+                [
+                    'templateRootPaths.10' => '',
+                ],
+            ],
             'nested array of 2 levels' => [
                 [
                     'first.' => [
