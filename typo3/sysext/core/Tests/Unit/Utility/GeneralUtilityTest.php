@@ -519,20 +519,6 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expected, GeneralUtility::splitCalc($expression, '+-*/'));
     }
 
-    ///////////////////////////////
-    // Tests concerning htmlspecialchars_decode
-    ///////////////////////////////
-    /**
-     * @test
-     */
-    public function htmlspecialcharsDecodeReturnsDecodedString(): void
-    {
-        $string = '<typo3 version="6.0">&nbsp;</typo3>';
-        $encoded = htmlspecialchars($string);
-        $decoded = htmlspecialchars_decode($encoded);
-        self::assertEquals($string, $decoded);
-    }
-
     //////////////////////////////////
     // Tests concerning validEmail
     //////////////////////////////////
