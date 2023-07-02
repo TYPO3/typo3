@@ -169,7 +169,7 @@ class LoginController extends AbstractLoginFormController
                 'permaloginStatus' => $this->getPermaloginStatus(),
                 'redirectURL' => $this->redirectHandler->getLoginFormRedirectUrl($this->configuration, $this->isRedirectDisabled()),
                 'redirectReferrer' => $this->request->hasArgument('redirectReferrer') ? (string)$this->request->getArgument('redirectReferrer') : '',
-                'referer' => $this->getRefererForLoginForm(),
+                'referer' => $this->getReferrerForLoginForm(),
                 'noRedirect' => $this->isRedirectDisabled(),
             ]
         );
@@ -230,22 +230,22 @@ class LoginController extends AbstractLoginFormController
      *
      * The evaluated `referer` is only returned, if it is considered as valid.
      */
-    protected function getRefererForLoginForm(): string
+    protected function getReferrerForLoginForm(): string
     {
-        // Early return, if redirectMode is not configured to respect the referer
-        if (!$this->isRefererRedirectEnabled()) {
+        // Early return, if redirectMode is not configured to respect the referrer
+        if (!$this->isReferrerRedirectEnabled()) {
             return '';
         }
 
-        $referer = (string)(
+        $referrer = (string)(
             $this->request->getParsedBody()['referer'] ??
             $this->request->getQueryParams()['referer'] ??
             $this->request->getServerParams()['HTTP_REFERER'] ??
             ''
         );
 
-        if ($this->redirectUrlValidator->isValid($referer)) {
-            return $referer;
+        if ($this->redirectUrlValidator->isValid($referrer)) {
+            return $referrer;
         }
 
         return '';
@@ -300,13 +300,13 @@ class LoginController extends AbstractLoginFormController
     }
 
     /**
-     * Returns, if redirect based on the referer is enabled
+     * Returns, if redirect based on the referrer is enabled
      */
-    protected function isRefererRedirectEnabled(): bool
+    protected function isReferrerRedirectEnabled(): bool
     {
-        $refererRedirectModes = [RedirectMode::REFERER, RedirectMode::REFERER_DOMAINS];
+        $referrerRedirectModes = [RedirectMode::REFERRER, RedirectMode::REFERRER_DOMAINS];
         $configuredRedirectModes = GeneralUtility::trimExplode(',', $this->settings['redirectMode'] ?? '');
-        return count(array_intersect($configuredRedirectModes, $refererRedirectModes)) > 0;
+        return count(array_intersect($configuredRedirectModes, $referrerRedirectModes)) > 0;
     }
 
     /**

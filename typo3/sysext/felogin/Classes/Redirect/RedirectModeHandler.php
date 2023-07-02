@@ -141,7 +141,7 @@ class RedirectModeHandler
         $redirectUrl = '';
         if ($redirectReferrer !== 'off') {
             // Avoid forced logout, when trying to login immediately after a logout
-            $redirectUrl = preg_replace('/[&?]logintype=[a-z]+/', '', $this->getReferer());
+            $redirectUrl = preg_replace('/[&?]logintype=[a-z]+/', '', $this->getReferrer());
         }
 
         return $redirectUrl ?? '';
@@ -150,7 +150,7 @@ class RedirectModeHandler
     /**
      * Handle redirect mode refererDomains
      */
-    public function redirectModeRefererDomains(string $domains, string $redirectReferrer): string
+    public function redirectModeReferrerDomains(string $domains, string $redirectReferrer): string
     {
         $redirectUrl = '';
         if ($redirectReferrer !== '') {
@@ -163,7 +163,7 @@ class RedirectModeHandler
         // Thanks to plan2.net / Martin Kutschker for implementing this feature.
         // also avoid redirect when logging in after changing password
         if ($domains) {
-            $url = $this->getReferer();
+            $url = $this->getReferrer();
             // Is referring url allowed to redirect?
             $match = [];
             if (preg_match('#^http://([[:alnum:]._-]+)/#', $url, $match)) {
@@ -222,15 +222,15 @@ class RedirectModeHandler
         return $this->uriBuilder->build();
     }
 
-    protected function getReferer(): string
+    protected function getReferrer(): string
     {
-        $referer = '';
-        $requestReferer = (string)$this->serverRequestHandler->getPropertyFromGetAndPost('referer');
+        $referrer = '';
+        $requestReferrer = (string)$this->serverRequestHandler->getPropertyFromGetAndPost('referer');
 
-        if ($this->redirectUrlValidator->isValid($requestReferer)) {
-            $referer = $requestReferer;
+        if ($this->redirectUrlValidator->isValid($requestReferrer)) {
+            $referrer = $requestReferrer;
         }
 
-        return $referer;
+        return $referrer;
     }
 }

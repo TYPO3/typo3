@@ -62,7 +62,7 @@ class ServerRequestHandler
     /**
      * Returns the HTTP_REFERER from server request parameters if set
      */
-    public function getHttpReferer(): string
+    public function getHttpReferrer(): string
     {
         return $this->request->getServerParams()['HTTP_REFERER'] ?? '';
     }
