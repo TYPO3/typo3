@@ -101,7 +101,7 @@ class RedirectModeHandler
         $redirectUrl = '';
         if ($redirectReferrer !== 'off') {
             // Avoid forced logout, when trying to login immediately after a logout
-            $redirectUrl = preg_replace('/[&?]logintype=[a-z]+/', '', $this->getReferer($request));
+            $redirectUrl = preg_replace('/[&?]logintype=[a-z]+/', '', $this->getReferrer($request));
         }
 
         return $redirectUrl ?? '';
@@ -110,7 +110,7 @@ class RedirectModeHandler
     /**
      * Handle redirect mode refererDomains
      */
-    public function redirectModeRefererDomains(RequestInterface $request, string $domains, string $redirectReferrer): string
+    public function redirectModeReferrerDomains(RequestInterface $request, string $domains, string $redirectReferrer): string
     {
         $redirectUrl = '';
         if ($redirectReferrer !== '') {
@@ -122,7 +122,7 @@ class RedirectModeHandler
         // Allowed domains to redirect to, can be configured with plugin.tx_felogin_login.domains
         // also avoid redirect when logging in after changing password
         if ($domains) {
-            $url = $this->getReferer($request);
+            $url = $this->getReferrer($request);
             // Is referring url allowed to redirect?
             $match = [];
             if (preg_match('#^http://([[:alnum:]._-]+)/#', $url, $match)) {
@@ -182,15 +182,15 @@ class RedirectModeHandler
         return $this->uriBuilder->build();
     }
 
-    protected function getReferer(RequestInterface $request): string
+    protected function getReferrer(RequestInterface $request): string
     {
-        $referer = '';
-        $requestReferer = (string)($request->getParsedBody()['referer'] ?? $request->getQueryParams()['referer'] ?? '');
+        $referrer = '';
+        $requestReferrer = (string)($request->getParsedBody()['referer'] ?? $request->getQueryParams()['referer'] ?? '');
 
-        if ($this->redirectUrlValidator->isValid($request, $requestReferer)) {
-            $referer = $requestReferer;
+        if ($this->redirectUrlValidator->isValid($request, $requestReferrer)) {
+            $referrer = $requestReferrer;
         }
 
-        return $referer;
+        return $referrer;
     }
 }

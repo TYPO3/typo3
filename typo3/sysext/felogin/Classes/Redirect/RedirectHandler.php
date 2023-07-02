@@ -141,11 +141,11 @@ class RedirectHandler
             case RedirectMode::GETPOST:
                 $redirectUrl = $this->getRedirectUrlRequestParam($request);
                 break;
-            case RedirectMode::REFERER:
+            case RedirectMode::REFERRER:
                 $redirectUrl = $this->redirectModeHandler->redirectModeReferrer($request, $redirectModeReferrer);
                 break;
-            case RedirectMode::REFERER_DOMAINS:
-                $redirectUrl = $this->redirectModeHandler->redirectModeRefererDomains($request, $domains, $redirectModeReferrer);
+            case RedirectMode::REFERRER_DOMAINS:
+                $redirectUrl = $this->redirectModeHandler->redirectModeReferrerDomains($request, $domains, $redirectModeReferrer);
                 break;
             default:
                 $redirectUrl = '';

@@ -30,6 +30,6 @@ final class RedirectMode
     public const GETPOST = 'getpost';
     public const USER_LOGIN = 'userLogin';
     public const GROUP_LOGIN = 'groupLogin';
-    public const REFERER = 'referer';
-    public const REFERER_DOMAINS = 'refererDomains';
+    public const REFERRER = 'referer';
+    public const REFERRER_DOMAINS = 'refererDomains';
 }
