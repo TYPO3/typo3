@@ -110,6 +110,10 @@ class CommandApplication implements ApplicationInterface
         ob_clean();
 
         $exitCode = $this->application->run($input, $output);
+        // exit codes > 255 are not handled in UNIX
+        if ($exitCode > 255) {
+            $exitCode = 255;
+        }
 
         exit($exitCode);
     }
