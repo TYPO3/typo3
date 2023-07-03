@@ -136,14 +136,19 @@ final class RequestTest extends UnitTestCase
         $headers = [
             ['INVALID'],
             'x-invalid-null'   => null,
-            'x-invalid-true'   => true,
-            'x-invalid-false'  => false,
-            'x-invalid-int'    => 1,
             'x-invalid-object' => (object)['INVALID'],
+            'x-valid-true'   => true,
+            'x-valid-false'  => false,
+            'x-valid-int'    => 1,
+            'x-valid-float'    => 1.5,
             'x-valid-string'   => 'VALID',
             'x-valid-array'    => ['VALID'],
         ];
         $expected = [
+            'x-valid-true' => ['1'],
+            'x-valid-false' => [''],
+            'x-valid-int' => ['1'],
+            'x-valid-float' => ['1.5'],
             'x-valid-string' => ['VALID'],
             'x-valid-array'  => ['VALID'],
         ];

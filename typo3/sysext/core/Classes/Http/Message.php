@@ -341,11 +341,11 @@ class Message implements MessageInterface
     {
         $headerNames = $headers = [];
         foreach ($originalHeaders as $header => $value) {
-            if (!is_string($header) || (!is_array($value) && !is_string($value))) {
+            if (!is_string($header) || (!is_array($value) && !is_scalar($value))) {
                 continue;
             }
             if (!is_array($value)) {
-                $value = [$value];
+                $value = [(string)$value];
             }
             $headerNames[strtolower($header)] = $header;
             $headers[$header] = $value;
