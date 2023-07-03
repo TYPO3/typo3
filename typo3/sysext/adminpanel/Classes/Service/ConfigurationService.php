@@ -33,23 +33,13 @@ use TYPO3\CMS\Core\SingletonInterface;
 class ConfigurationService implements SingletonInterface
 {
     /**
-     * @var array
-     */
-    protected $mainConfiguration;
-
-    public function __construct()
-    {
-        $this->mainConfiguration = $this->getBackendUser()->getTSConfig()['admPanel.'] ?? [];
-    }
-
-    /**
      * Get MainConfiguration (User TSConfig admPanel)
      *
      * @return array
      */
     public function getMainConfiguration(): array
     {
-        return $this->mainConfiguration;
+        return $this->getBackendUser()->getTSConfig()['admPanel.'] ?? [];
     }
 
     /**
@@ -66,11 +56,7 @@ class ConfigurationService implements SingletonInterface
             throw new \InvalidArgumentException('Identifier and option may not be empty', 1532861423);
         }
 
-        if (isset($this->mainConfiguration['override.'][$identifier . '.'][$option])) {
-            $returnValue = $this->mainConfiguration['override.'][$identifier . '.'][$option];
-        } else {
-            $returnValue = $this->getBackendUser()->uc['AdminPanel'][$identifier . '_' . $option] ?? '';
-        }
+        $returnValue = $this->getMainConfiguration()['override.'][$identifier . '.'][$option] ?? $this->getBackendUser()->uc['AdminPanel'][$identifier . '_' . $option] ?? '';
 
         return (string)$returnValue;
     }
