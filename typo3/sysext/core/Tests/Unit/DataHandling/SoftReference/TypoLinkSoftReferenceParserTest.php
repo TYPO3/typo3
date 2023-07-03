@@ -134,6 +134,17 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
                     ],
                 ],
             ],
+            'link with invalid content' => [
+                [
+                    'content' => 'Email: andrew@example.com',
+                    'elementKey' => '8695f308356bcca1acac2749152a44a9:0',
+                    'matchString' => 'Email: andrew@example.com',
+                    'error' => 'Couldn\'t decide typolink mode.',
+                ],
+                [
+                    'error' => 'Couldn\'t decide typolink mode.',
+                ],
+            ],
         ];
     }
 

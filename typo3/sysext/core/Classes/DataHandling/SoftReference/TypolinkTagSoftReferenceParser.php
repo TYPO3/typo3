@@ -59,9 +59,9 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                         $elements[$key]['matchString'] = $foundValue;
                         $elements[$key]['subst'] = [
                             'type' => 'db',
-                            'recordRef' => 'pages:' . $linkDetails['pageuid'],
+                            'recordRef' => 'pages:' . ($linkDetails['pageuid'] ?? 0),
                             'tokenID' => $token,
-                            'tokenValue' => $linkDetails['pageuid'],
+                            'tokenValue' => $linkDetails['pageuid'] ?? '',
                         ];
                         if (isset($pageAndAnchorMatches[2]) && $pageAndAnchorMatches[2] !== '') {
                             // Anchor is assumed to point to a content elements:
@@ -90,7 +90,7 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                         $elements[$key]['subst'] = [
                             'type' => 'external',
                             'tokenID' => $token,
-                            'tokenValue' => $linkDetails['url'],
+                            'tokenValue' => (string)($linkDetails['url'] ?? ''),
                         ];
                     } elseif ($linkDetails['type'] === LinkService::TYPE_EMAIL) {
                         $token = $this->makeTokenID((string)$key);
@@ -99,7 +99,7 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                         $elements[$key]['subst'] = [
                             'type' => 'string',
                             'tokenID' => $token,
-                            'tokenValue' => $linkDetails['email'],
+                            'tokenValue' => (string)($linkDetails['email'] ?? ''),
                         ];
                     } elseif ($linkDetails['type'] === LinkService::TYPE_TELEPHONE) {
                         $token = $this->makeTokenID((string)$key);
@@ -108,7 +108,7 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                         $elements[$key]['subst'] = [
                             'type' => 'string',
                             'tokenID' => $token,
-                            'tokenValue' => $linkDetails['telephone'],
+                            'tokenValue' => (string)($linkDetails['telephone'] ?? ''),
                         ];
                     }
                 } catch (\Exception $e) {

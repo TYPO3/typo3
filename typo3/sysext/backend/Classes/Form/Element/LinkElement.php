@@ -361,20 +361,19 @@ class LinkElement extends AbstractFormElement
                 break;
             case LinkService::TYPE_EMAIL:
                 $data = [
-                    'text' => $linkData['email'],
+                    'text' => $linkData['email'] ?? '',
                     'icon' => $this->iconFactory->getIcon('content-elements-mailform', Icon::SIZE_SMALL)->render(),
                 ];
                 break;
             case LinkService::TYPE_URL:
                 $data = [
-                    'text' => $linkData['url'],
+                    'text' => $linkData['url'] ?? '',
                     'icon' => $this->iconFactory->getIcon('apps-pagetree-page-shortcut-external', Icon::SIZE_SMALL)->render(),
 
                 ];
                 break;
             case LinkService::TYPE_FILE:
-                /** @var File $file */
-                $file = $linkData['file'];
+                $file = $linkData['file'] ?? null;
                 if ($file instanceof File) {
                     $data = [
                         'text' => $file->getPublicUrl(),
@@ -383,8 +382,7 @@ class LinkElement extends AbstractFormElement
                 }
                 break;
             case LinkService::TYPE_FOLDER:
-                /** @var Folder $folder */
-                $folder = $linkData['folder'];
+                $folder = $linkData['folder'] ?? null;
                 if ($folder instanceof Folder) {
                     $data = [
                         'text' => $folder->getPublicUrl(),
@@ -420,7 +418,7 @@ class LinkElement extends AbstractFormElement
                 break;
             case LinkService::TYPE_UNKNOWN:
                 $data = [
-                    'text' => $linkData['file'],
+                    'text' => $linkData['file'] ?? $linkData['url'] ?? '',
                     'icon' => $this->iconFactory->getIcon('actions-link', Icon::SIZE_SMALL)->render(),
                 ];
                 break;

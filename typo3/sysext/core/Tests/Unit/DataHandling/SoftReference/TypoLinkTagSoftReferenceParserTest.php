@@ -120,6 +120,19 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
                     ],
                 ],
             ],
+            'link with invalid content' => [
+                [
+                    'content' => '<p><a href="Email: hans@example.com">Click here</a></p>',
+                    'elementKey' => 1,
+                    'matchString' => '<a href="Email: hans@example.com">',
+                ],
+                [
+                    'subst' => [
+                        'type' => 'string',
+                        'tokenValue' => '',
+                    ],
+                ],
+            ],
         ];
     }
 

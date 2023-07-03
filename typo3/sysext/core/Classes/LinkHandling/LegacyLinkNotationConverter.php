@@ -83,6 +83,12 @@ class LegacyLinkNotationConverter
             // Check for link-handler keyword
             [$linkHandlerKeyword, $linkHandlerValue] = explode(':', $linkParameter, 2);
             $result['type'] = strtolower(trim($linkHandlerKeyword));
+            if ($linkHandlerValue === '') {
+                return [
+                    'type' => LinkService::TYPE_UNKNOWN,
+                    'url' => $linkParameter,
+                ];
+            }
             $result['url'] = $linkParameter;
             $result['value'] = $linkHandlerValue;
             if ($result['type'] === LinkService::TYPE_RECORD) {
