@@ -14,3 +14,7 @@ Known Problems
   stored and only one of the forgot password forms will work. Make sure
   there is only one felogin plugin on the page where the password
   recovery form is displayed.
+
+- If usergroup access rights of the plugin are defined to
+  :guilabel:`Hide at login`, all felogin code (e.g. redirects, PSR-14 events)
+  will not be executed after a user successfully logged in.
