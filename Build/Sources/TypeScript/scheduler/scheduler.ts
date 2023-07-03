@@ -162,6 +162,7 @@ class Scheduler {
     taskType = parseInt(taskType + '', 10);
     $('#task_end_col').toggle(taskType === 2);
     $('#task_frequency_row').toggle(taskType === 2);
+    $('#task_multiple_row').toggle(taskType === 2);
   }
 
   /**
