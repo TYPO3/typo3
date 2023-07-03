@@ -1229,9 +1229,9 @@ function formatConsoleArguments(errorName, data) {
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
-const version = '38.0.1';
+const version = '38.1.0';
 // The second argument is not a month. It is `monthIndex` and starts from `0`.
-const releaseDate = new Date(2023, 4, 23);
+const releaseDate = new Date(2023, 5, 28);
 /* istanbul ignore next -- @preserve */
 const windowOrGlobal = typeof window === 'object' ? window : global;
 /* istanbul ignore next -- @preserve */
@@ -3972,18 +3972,18 @@ function castSlice(array, start, end) {
   end = end === undefined ? length : end;
   return (!start && end >= length) ? array : baseSlice(array, start, end);
 }/** Used to compose unicode character classes. */
-var rsAstralRange$1 = '\\ud800-\\udfff',
-    rsComboMarksRange$1 = '\\u0300-\\u036f',
-    reComboHalfMarksRange$1 = '\\ufe20-\\ufe2f',
-    rsComboSymbolsRange$1 = '\\u20d0-\\u20ff',
-    rsComboRange$1 = rsComboMarksRange$1 + reComboHalfMarksRange$1 + rsComboSymbolsRange$1,
-    rsVarRange$1 = '\\ufe0e\\ufe0f';
+var rsAstralRange$2 = '\\ud800-\\udfff',
+    rsComboMarksRange$3 = '\\u0300-\\u036f',
+    reComboHalfMarksRange$3 = '\\ufe20-\\ufe2f',
+    rsComboSymbolsRange$3 = '\\u20d0-\\u20ff',
+    rsComboRange$3 = rsComboMarksRange$3 + reComboHalfMarksRange$3 + rsComboSymbolsRange$3,
+    rsVarRange$2 = '\\ufe0e\\ufe0f';
 
 /** Used to compose unicode capture groups. */
-var rsZWJ$1 = '\\u200d';
+var rsZWJ$2 = '\\u200d';
 
 /** Used to detect strings with [zero-width joiners or code points from the astral planes](http://eev.ee/blog/2015/09/12/dark-corners-of-unicode/). */
-var reHasUnicode = RegExp('[' + rsZWJ$1 + rsAstralRange$1  + rsComboRange$1 + rsVarRange$1 + ']');
+var reHasUnicode = RegExp('[' + rsZWJ$2 + rsAstralRange$2  + rsComboRange$3 + rsVarRange$2 + ']');
 
 /**
  * Checks if `string` contains Unicode symbols.
@@ -4004,32 +4004,32 @@ function hasUnicode(string) {
 function asciiToArray(string) {
   return string.split('');
 }/** Used to compose unicode character classes. */
-var rsAstralRange = '\\ud800-\\udfff',
-    rsComboMarksRange = '\\u0300-\\u036f',
-    reComboHalfMarksRange = '\\ufe20-\\ufe2f',
-    rsComboSymbolsRange = '\\u20d0-\\u20ff',
-    rsComboRange = rsComboMarksRange + reComboHalfMarksRange + rsComboSymbolsRange,
-    rsVarRange = '\\ufe0e\\ufe0f';
+var rsAstralRange$1 = '\\ud800-\\udfff',
+    rsComboMarksRange$2 = '\\u0300-\\u036f',
+    reComboHalfMarksRange$2 = '\\ufe20-\\ufe2f',
+    rsComboSymbolsRange$2 = '\\u20d0-\\u20ff',
+    rsComboRange$2 = rsComboMarksRange$2 + reComboHalfMarksRange$2 + rsComboSymbolsRange$2,
+    rsVarRange$1 = '\\ufe0e\\ufe0f';
 
 /** Used to compose unicode capture groups. */
-var rsAstral = '[' + rsAstralRange + ']',
-    rsCombo = '[' + rsComboRange + ']',
-    rsFitz = '\\ud83c[\\udffb-\\udfff]',
-    rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')',
-    rsNonAstral = '[^' + rsAstralRange + ']',
-    rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}',
-    rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]',
-    rsZWJ = '\\u200d';
+var rsAstral = '[' + rsAstralRange$1 + ']',
+    rsCombo$2 = '[' + rsComboRange$2 + ']',
+    rsFitz$1 = '\\ud83c[\\udffb-\\udfff]',
+    rsModifier$1 = '(?:' + rsCombo$2 + '|' + rsFitz$1 + ')',
+    rsNonAstral$1 = '[^' + rsAstralRange$1 + ']',
+    rsRegional$1 = '(?:\\ud83c[\\udde6-\\uddff]){2}',
+    rsSurrPair$1 = '[\\ud800-\\udbff][\\udc00-\\udfff]',
+    rsZWJ$1 = '\\u200d';
 
 /** Used to compose unicode regexes. */
-var reOptMod = rsModifier + '?',
-    rsOptVar = '[' + rsVarRange + ']?',
-    rsOptJoin = '(?:' + rsZWJ + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*',
-    rsSeq = rsOptVar + reOptMod + rsOptJoin,
-    rsSymbol = '(?:' + [rsNonAstral + rsCombo + '?', rsCombo, rsRegional, rsSurrPair, rsAstral].join('|') + ')';
+var reOptMod$1 = rsModifier$1 + '?',
+    rsOptVar$1 = '[' + rsVarRange$1 + ']?',
+    rsOptJoin$1 = '(?:' + rsZWJ$1 + '(?:' + [rsNonAstral$1, rsRegional$1, rsSurrPair$1].join('|') + ')' + rsOptVar$1 + reOptMod$1 + ')*',
+    rsSeq$1 = rsOptVar$1 + reOptMod$1 + rsOptJoin$1,
+    rsSymbol = '(?:' + [rsNonAstral$1 + rsCombo$2 + '?', rsCombo$2, rsRegional$1, rsSurrPair$1, rsAstral].join('|') + ')';
 
 /** Used to match [string symbols](https://mathiasbynens.be/notes/javascript-unicode). */
-var reUnicode = RegExp(rsFitz + '(?=' + rsFitz + ')|' + rsSymbol + rsSeq, 'g');
+var reUnicode = RegExp(rsFitz$1 + '(?=' + rsFitz$1 + ')|' + rsSymbol + rsSeq$1, 'g');
 
 /**
  * Converts a Unicode `string` to an array.
@@ -4096,6 +4096,281 @@ function createCaseFirst(methodName) {
 var upperFirst = createCaseFirst('toUpperCase');
 
 var upperFirst$1 = upperFirst;/**
+ * A specialized version of `_.reduce` for arrays without support for
+ * iteratee shorthands.
+ *
+ * @private
+ * @param {Array} [array] The array to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @param {*} [accumulator] The initial value.
+ * @param {boolean} [initAccum] Specify using the first element of `array` as
+ *  the initial value.
+ * @returns {*} Returns the accumulated value.
+ */
+function arrayReduce(array, iteratee, accumulator, initAccum) {
+  var index = -1,
+      length = array == null ? 0 : array.length;
+
+  if (initAccum && length) {
+    accumulator = array[++index];
+  }
+  while (++index < length) {
+    accumulator = iteratee(accumulator, array[index], index, array);
+  }
+  return accumulator;
+}/**
+ * The base implementation of `_.propertyOf` without support for deep paths.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Function} Returns the new accessor function.
+ */
+function basePropertyOf(object) {
+  return function(key) {
+    return object == null ? undefined : object[key];
+  };
+}/** Used to map Latin Unicode letters to basic Latin letters. */
+var deburredLetters = {
+  // Latin-1 Supplement block.
+  '\xc0': 'A',  '\xc1': 'A', '\xc2': 'A', '\xc3': 'A', '\xc4': 'A', '\xc5': 'A',
+  '\xe0': 'a',  '\xe1': 'a', '\xe2': 'a', '\xe3': 'a', '\xe4': 'a', '\xe5': 'a',
+  '\xc7': 'C',  '\xe7': 'c',
+  '\xd0': 'D',  '\xf0': 'd',
+  '\xc8': 'E',  '\xc9': 'E', '\xca': 'E', '\xcb': 'E',
+  '\xe8': 'e',  '\xe9': 'e', '\xea': 'e', '\xeb': 'e',
+  '\xcc': 'I',  '\xcd': 'I', '\xce': 'I', '\xcf': 'I',
+  '\xec': 'i',  '\xed': 'i', '\xee': 'i', '\xef': 'i',
+  '\xd1': 'N',  '\xf1': 'n',
+  '\xd2': 'O',  '\xd3': 'O', '\xd4': 'O', '\xd5': 'O', '\xd6': 'O', '\xd8': 'O',
+  '\xf2': 'o',  '\xf3': 'o', '\xf4': 'o', '\xf5': 'o', '\xf6': 'o', '\xf8': 'o',
+  '\xd9': 'U',  '\xda': 'U', '\xdb': 'U', '\xdc': 'U',
+  '\xf9': 'u',  '\xfa': 'u', '\xfb': 'u', '\xfc': 'u',
+  '\xdd': 'Y',  '\xfd': 'y', '\xff': 'y',
+  '\xc6': 'Ae', '\xe6': 'ae',
+  '\xde': 'Th', '\xfe': 'th',
+  '\xdf': 'ss',
+  // Latin Extended-A block.
+  '\u0100': 'A',  '\u0102': 'A', '\u0104': 'A',
+  '\u0101': 'a',  '\u0103': 'a', '\u0105': 'a',
+  '\u0106': 'C',  '\u0108': 'C', '\u010a': 'C', '\u010c': 'C',
+  '\u0107': 'c',  '\u0109': 'c', '\u010b': 'c', '\u010d': 'c',
+  '\u010e': 'D',  '\u0110': 'D', '\u010f': 'd', '\u0111': 'd',
+  '\u0112': 'E',  '\u0114': 'E', '\u0116': 'E', '\u0118': 'E', '\u011a': 'E',
+  '\u0113': 'e',  '\u0115': 'e', '\u0117': 'e', '\u0119': 'e', '\u011b': 'e',
+  '\u011c': 'G',  '\u011e': 'G', '\u0120': 'G', '\u0122': 'G',
+  '\u011d': 'g',  '\u011f': 'g', '\u0121': 'g', '\u0123': 'g',
+  '\u0124': 'H',  '\u0126': 'H', '\u0125': 'h', '\u0127': 'h',
+  '\u0128': 'I',  '\u012a': 'I', '\u012c': 'I', '\u012e': 'I', '\u0130': 'I',
+  '\u0129': 'i',  '\u012b': 'i', '\u012d': 'i', '\u012f': 'i', '\u0131': 'i',
+  '\u0134': 'J',  '\u0135': 'j',
+  '\u0136': 'K',  '\u0137': 'k', '\u0138': 'k',
+  '\u0139': 'L',  '\u013b': 'L', '\u013d': 'L', '\u013f': 'L', '\u0141': 'L',
+  '\u013a': 'l',  '\u013c': 'l', '\u013e': 'l', '\u0140': 'l', '\u0142': 'l',
+  '\u0143': 'N',  '\u0145': 'N', '\u0147': 'N', '\u014a': 'N',
+  '\u0144': 'n',  '\u0146': 'n', '\u0148': 'n', '\u014b': 'n',
+  '\u014c': 'O',  '\u014e': 'O', '\u0150': 'O',
+  '\u014d': 'o',  '\u014f': 'o', '\u0151': 'o',
+  '\u0154': 'R',  '\u0156': 'R', '\u0158': 'R',
+  '\u0155': 'r',  '\u0157': 'r', '\u0159': 'r',
+  '\u015a': 'S',  '\u015c': 'S', '\u015e': 'S', '\u0160': 'S',
+  '\u015b': 's',  '\u015d': 's', '\u015f': 's', '\u0161': 's',
+  '\u0162': 'T',  '\u0164': 'T', '\u0166': 'T',
+  '\u0163': 't',  '\u0165': 't', '\u0167': 't',
+  '\u0168': 'U',  '\u016a': 'U', '\u016c': 'U', '\u016e': 'U', '\u0170': 'U', '\u0172': 'U',
+  '\u0169': 'u',  '\u016b': 'u', '\u016d': 'u', '\u016f': 'u', '\u0171': 'u', '\u0173': 'u',
+  '\u0174': 'W',  '\u0175': 'w',
+  '\u0176': 'Y',  '\u0177': 'y', '\u0178': 'Y',
+  '\u0179': 'Z',  '\u017b': 'Z', '\u017d': 'Z',
+  '\u017a': 'z',  '\u017c': 'z', '\u017e': 'z',
+  '\u0132': 'IJ', '\u0133': 'ij',
+  '\u0152': 'Oe', '\u0153': 'oe',
+  '\u0149': "'n", '\u017f': 's'
+};
+
+/**
+ * Used by `_.deburr` to convert Latin-1 Supplement and Latin Extended-A
+ * letters to basic Latin letters.
+ *
+ * @private
+ * @param {string} letter The matched letter to deburr.
+ * @returns {string} Returns the deburred letter.
+ */
+var deburrLetter = basePropertyOf(deburredLetters);
+
+var deburrLetter$1 = deburrLetter;/** Used to match Latin Unicode letters (excluding mathematical operators). */
+var reLatin = /[\xc0-\xd6\xd8-\xf6\xf8-\xff\u0100-\u017f]/g;
+
+/** Used to compose unicode character classes. */
+var rsComboMarksRange$1 = '\\u0300-\\u036f',
+    reComboHalfMarksRange$1 = '\\ufe20-\\ufe2f',
+    rsComboSymbolsRange$1 = '\\u20d0-\\u20ff',
+    rsComboRange$1 = rsComboMarksRange$1 + reComboHalfMarksRange$1 + rsComboSymbolsRange$1;
+
+/** Used to compose unicode capture groups. */
+var rsCombo$1 = '[' + rsComboRange$1 + ']';
+
+/**
+ * Used to match [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks) and
+ * [combining diacritical marks for symbols](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks_for_Symbols).
+ */
+var reComboMark = RegExp(rsCombo$1, 'g');
+
+/**
+ * Deburrs `string` by converting
+ * [Latin-1 Supplement](https://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
+ * and [Latin Extended-A](https://en.wikipedia.org/wiki/Latin_Extended-A)
+ * letters to basic Latin letters and removing
+ * [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks).
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category String
+ * @param {string} [string=''] The string to deburr.
+ * @returns {string} Returns the deburred string.
+ * @example
+ *
+ * _.deburr('déjà vu');
+ * // => 'deja vu'
+ */
+function deburr(string) {
+  string = toString(string);
+  return string && string.replace(reLatin, deburrLetter$1).replace(reComboMark, '');
+}/** Used to match words composed of alphanumeric characters. */
+var reAsciiWord = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g;
+
+/**
+ * Splits an ASCII `string` into an array of its words.
+ *
+ * @private
+ * @param {string} The string to inspect.
+ * @returns {Array} Returns the words of `string`.
+ */
+function asciiWords(string) {
+  return string.match(reAsciiWord) || [];
+}/** Used to detect strings that need a more robust regexp to match words. */
+var reHasUnicodeWord = /[a-z][A-Z]|[A-Z]{2}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/;
+
+/**
+ * Checks if `string` contains a word composed of Unicode symbols.
+ *
+ * @private
+ * @param {string} string The string to inspect.
+ * @returns {boolean} Returns `true` if a word is found, else `false`.
+ */
+function hasUnicodeWord(string) {
+  return reHasUnicodeWord.test(string);
+}/** Used to compose unicode character classes. */
+var rsAstralRange = '\\ud800-\\udfff',
+    rsComboMarksRange = '\\u0300-\\u036f',
+    reComboHalfMarksRange = '\\ufe20-\\ufe2f',
+    rsComboSymbolsRange = '\\u20d0-\\u20ff',
+    rsComboRange = rsComboMarksRange + reComboHalfMarksRange + rsComboSymbolsRange,
+    rsDingbatRange = '\\u2700-\\u27bf',
+    rsLowerRange = 'a-z\\xdf-\\xf6\\xf8-\\xff',
+    rsMathOpRange = '\\xac\\xb1\\xd7\\xf7',
+    rsNonCharRange = '\\x00-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\xbf',
+    rsPunctuationRange = '\\u2000-\\u206f',
+    rsSpaceRange = ' \\t\\x0b\\f\\xa0\\ufeff\\n\\r\\u2028\\u2029\\u1680\\u180e\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\u202f\\u205f\\u3000',
+    rsUpperRange = 'A-Z\\xc0-\\xd6\\xd8-\\xde',
+    rsVarRange = '\\ufe0e\\ufe0f',
+    rsBreakRange = rsMathOpRange + rsNonCharRange + rsPunctuationRange + rsSpaceRange;
+
+/** Used to compose unicode capture groups. */
+var rsApos$1 = "['\u2019]",
+    rsBreak = '[' + rsBreakRange + ']',
+    rsCombo = '[' + rsComboRange + ']',
+    rsDigits = '\\d+',
+    rsDingbat = '[' + rsDingbatRange + ']',
+    rsLower = '[' + rsLowerRange + ']',
+    rsMisc = '[^' + rsAstralRange + rsBreakRange + rsDigits + rsDingbatRange + rsLowerRange + rsUpperRange + ']',
+    rsFitz = '\\ud83c[\\udffb-\\udfff]',
+    rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')',
+    rsNonAstral = '[^' + rsAstralRange + ']',
+    rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}',
+    rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]',
+    rsUpper = '[' + rsUpperRange + ']',
+    rsZWJ = '\\u200d';
+
+/** Used to compose unicode regexes. */
+var rsMiscLower = '(?:' + rsLower + '|' + rsMisc + ')',
+    rsMiscUpper = '(?:' + rsUpper + '|' + rsMisc + ')',
+    rsOptContrLower = '(?:' + rsApos$1 + '(?:d|ll|m|re|s|t|ve))?',
+    rsOptContrUpper = '(?:' + rsApos$1 + '(?:D|LL|M|RE|S|T|VE))?',
+    reOptMod = rsModifier + '?',
+    rsOptVar = '[' + rsVarRange + ']?',
+    rsOptJoin = '(?:' + rsZWJ + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*',
+    rsOrdLower = '\\d*(?:1st|2nd|3rd|(?![123])\\dth)(?=\\b|[A-Z_])',
+    rsOrdUpper = '\\d*(?:1ST|2ND|3RD|(?![123])\\dTH)(?=\\b|[a-z_])',
+    rsSeq = rsOptVar + reOptMod + rsOptJoin,
+    rsEmoji = '(?:' + [rsDingbat, rsRegional, rsSurrPair].join('|') + ')' + rsSeq;
+
+/** Used to match complex or compound words. */
+var reUnicodeWord = RegExp([
+  rsUpper + '?' + rsLower + '+' + rsOptContrLower + '(?=' + [rsBreak, rsUpper, '$'].join('|') + ')',
+  rsMiscUpper + '+' + rsOptContrUpper + '(?=' + [rsBreak, rsUpper + rsMiscLower, '$'].join('|') + ')',
+  rsUpper + '?' + rsMiscLower + '+' + rsOptContrLower,
+  rsUpper + '+' + rsOptContrUpper,
+  rsOrdUpper,
+  rsOrdLower,
+  rsDigits,
+  rsEmoji
+].join('|'), 'g');
+
+/**
+ * Splits a Unicode `string` into an array of its words.
+ *
+ * @private
+ * @param {string} The string to inspect.
+ * @returns {Array} Returns the words of `string`.
+ */
+function unicodeWords(string) {
+  return string.match(reUnicodeWord) || [];
+}/**
+ * Splits `string` into an array of its words.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category String
+ * @param {string} [string=''] The string to inspect.
+ * @param {RegExp|string} [pattern] The pattern to match words.
+ * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+ * @returns {Array} Returns the words of `string`.
+ * @example
+ *
+ * _.words('fred, barney, & pebbles');
+ * // => ['fred', 'barney', 'pebbles']
+ *
+ * _.words('fred, barney, & pebbles', /[^, ]+/g);
+ * // => ['fred', 'barney', '&', 'pebbles']
+ */
+function words(string, pattern, guard) {
+  string = toString(string);
+  pattern = guard ? undefined : pattern;
+
+  if (pattern === undefined) {
+    return hasUnicodeWord(string) ? unicodeWords(string) : asciiWords(string);
+  }
+  return string.match(pattern) || [];
+}/** Used to compose unicode capture groups. */
+var rsApos = "['\u2019]";
+
+/** Used to match apostrophes. */
+var reApos = RegExp(rsApos, 'g');
+
+/**
+ * Creates a function like `_.camelCase`.
+ *
+ * @private
+ * @param {Function} callback The function to combine each word.
+ * @returns {Function} Returns the new compounder function.
+ */
+function createCompounder(callback) {
+  return function(string) {
+    return arrayReduce(words(deburr(string).replace(reApos, '')), callback, '');
+  };
+}/**
  * Removes all key-value entries from the stack.
  *
  * @private
@@ -6220,7 +6495,32 @@ var removeItemFromArray = pull;/**
  */
 function set(object, path, value) {
   return object == null ? object : baseSet(object, path, value);
-}/** Error message constants. */
+}/**
+ * Converts `string` to
+ * [start case](https://en.wikipedia.org/wiki/Letter_case#Stylistic_or_specialised_usage).
+ *
+ * @static
+ * @memberOf _
+ * @since 3.1.0
+ * @category String
+ * @param {string} [string=''] The string to convert.
+ * @returns {string} Returns the start cased string.
+ * @example
+ *
+ * _.startCase('--foo-bar--');
+ * // => 'Foo Bar'
+ *
+ * _.startCase('fooBar');
+ * // => 'Foo Bar'
+ *
+ * _.startCase('__FOO_BAR__');
+ * // => 'FOO BAR'
+ */
+var startCase = createCompounder(function(result, word, index) {
+  return result + (index ? ' ' : '') + upperFirst$1(word);
+});
+
+var startCase$1 = startCase;/** Error message constants. */
 var FUNC_ERROR_TEXT = 'Expected a function';
 
 /**
@@ -7792,30 +8092,53 @@ class Rect {
      * If there's no such visible rect, which is when the rect is limited by one or many of
      * the ancestors, `null` is returned.
      *
+     * **Note**: This method does not consider the boundaries of the viewport (window).
+     * To get a rect cropped by all ancestors and the viewport, use an intersection such as:
+     *
+     * ```ts
+     * const visibleInViewportRect = new Rect( window ).getIntersection( new Rect( source ).getVisible() );
+     * ```
+     *
      * @returns A visible rect instance or `null`, if there's none.
      */
     getVisible() {
         const source = this._source;
         let visibleRect = this.clone();
         // There's no ancestor to crop <body> with the overflow.
-        if (!isBody(source)) {
-            let parent = source.parentNode || source.commonAncestorContainer;
-            // Check the ancestors all the way up to the <body>.
-            while (parent && !isBody(parent)) {
-                const parentRect = new Rect(parent);
-                const intersectionRect = visibleRect.getIntersection(parentRect);
-                if (intersectionRect) {
-                    if (intersectionRect.getArea() < visibleRect.getArea()) {
-                        // Reduce the visible rect to the intersection.
-                        visibleRect = intersectionRect;
-                    }
-                }
-                else {
-                    // There's no intersection, the rect is completely invisible.
-                    return null;
-                }
-                parent = parent.parentNode;
+        if (isBody(source)) {
+            return visibleRect;
+        }
+        let child = source;
+        let parent = source.parentNode || source.commonAncestorContainer;
+        let absolutelyPositionedChildElement;
+        // Check the ancestors all the way up to the <body>.
+        while (parent && !isBody(parent)) {
+            if (child instanceof HTMLElement && getElementPosition(child) === 'absolute') {
+                absolutelyPositionedChildElement = child;
             }
+            // The child will be cropped only if it has `position: absolute` and the parent has `position: relative` + some overflow.
+            // Otherwise there's no chance of visual clipping and the parent can be skipped
+            // https://github.com/ckeditor/ckeditor5/issues/14107.
+            if (absolutelyPositionedChildElement &&
+                (getElementPosition(parent) !== 'relative' || getElementOverflow(parent) === 'visible')) {
+                child = parent;
+                parent = parent.parentNode;
+                continue;
+            }
+            const parentRect = new Rect(parent);
+            const intersectionRect = visibleRect.getIntersection(parentRect);
+            if (intersectionRect) {
+                if (intersectionRect.getArea() < visibleRect.getArea()) {
+                    // Reduce the visible rect to the intersection.
+                    visibleRect = intersectionRect;
+                }
+            }
+            else {
+                // There's no intersection, the rect is completely invisible.
+                return null;
+            }
+            child = parent;
+            parent = parent.parentNode;
         }
         return visibleRect;
     }
@@ -7970,6 +8293,18 @@ function isDomElement(value) {
     // Note: earlier we used `isElement()` from lodash library, however that function is less performant because
     // it makes complicated checks to make sure that given value is a DOM element.
     return value !== null && typeof value === 'object' && value.nodeType === 1 && typeof value.getBoundingClientRect === 'function';
+}
+/**
+ * Returns the value of the `position` style of an `HTMLElement`.
+ */
+function getElementPosition(element) {
+    return element.ownerDocument.defaultView.getComputedStyle(element).position;
+}
+/**
+ * Returns the value of the `overflow` style of an `HTMLElement`.
+ */
+function getElementOverflow(element) {
+    return element.ownerDocument.defaultView.getComputedStyle(element).overflow;
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -8010,6 +8345,12 @@ class ResizeObserver {
         this._callback = callback;
         ResizeObserver._addElementCallback(element, callback);
         ResizeObserver._observerInstance.observe(element);
+    }
+    /**
+     * The element observed by this observer.
+     */
+    get element() {
+        return this._element;
     }
     /**
      * Destroys the observer which disables the `callback` passed to the {@link #constructor}.
@@ -8586,6 +8927,7 @@ function scrollViewportToShowTarget({ target, viewportOffset = 0, ancestorOffset
     const targetWindow = getWindow(target);
     let currentWindow = targetWindow;
     let currentFrame = null;
+    viewportOffset = normalizeViewportOffset(viewportOffset);
     // Iterate over all windows, starting from target's parent window up to window#top.
     while (currentWindow) {
         let firstAncestorToScroll;
@@ -8721,8 +9063,8 @@ function scrollAncestorsToShowTarget(target, ancestorOffset) {
  * whether it is already visible or not. This option will only work when `alignToTop` is `true`
  */
 function scrollWindowToShowRect({ window, rect, alignToTop, forceScroll, viewportOffset }) {
-    const targetShiftedDownRect = rect.clone().moveBy(0, viewportOffset);
-    const targetShiftedUpRect = rect.clone().moveBy(0, -viewportOffset);
+    const targetShiftedDownRect = rect.clone().moveBy(0, viewportOffset.bottom);
+    const targetShiftedUpRect = rect.clone().moveBy(0, -viewportOffset.top);
     const viewportRect = new Rect(window).excludeScrollbarsAndBorders();
     const rects = [targetShiftedUpRect, targetShiftedDownRect];
     const forceScrollToTop = alignToTop && forceScroll;
@@ -8731,18 +9073,18 @@ function scrollWindowToShowRect({ window, rect, alignToTop, forceScroll, viewpor
     const initialScrollX = scrollX;
     const initialScrollY = scrollY;
     if (forceScrollToTop) {
-        scrollY -= (viewportRect.top - rect.top) + viewportOffset;
+        scrollY -= (viewportRect.top - rect.top) + viewportOffset.top;
     }
     else if (!allRectsFitInViewport) {
         if (isAbove(targetShiftedUpRect, viewportRect)) {
-            scrollY -= viewportRect.top - rect.top + viewportOffset;
+            scrollY -= viewportRect.top - rect.top + viewportOffset.top;
         }
         else if (isBelow(targetShiftedDownRect, viewportRect)) {
             if (alignToTop) {
-                scrollY += rect.top - viewportRect.top - viewportOffset;
+                scrollY += rect.top - viewportRect.top - viewportOffset.top;
             }
             else {
-                scrollY += rect.bottom - viewportRect.bottom + viewportOffset;
+                scrollY += rect.bottom - viewportRect.bottom + viewportOffset.bottom;
             }
         }
     }
@@ -8750,10 +9092,10 @@ function scrollWindowToShowRect({ window, rect, alignToTop, forceScroll, viewpor
         // TODO: Web browsers scroll natively to place the target in the middle
         // of the viewport. It's not a very popular case, though.
         if (isLeftOf(rect, viewportRect)) {
-            scrollX -= viewportRect.left - rect.left + viewportOffset;
+            scrollX -= viewportRect.left - rect.left + viewportOffset.left;
         }
         else if (isRightOf(rect, viewportRect)) {
-            scrollX += rect.right - viewportRect.right + viewportOffset;
+            scrollX += rect.right - viewportRect.right + viewportOffset.right;
         }
     }
     if (scrollX != initialScrollX || scrollY !== initialScrollY) {
@@ -8885,6 +9227,25 @@ function getRectRelativeToWindow(target, relativeWindow) {
         }
     }
     return rect;
+}
+/**
+ * A helper that explodes the `viewportOffset` configuration if defined as a plain number into an object
+ * with `top`, `bottom`, `left`, and `right` properties.
+ *
+ * If an object value is passed, this helper will pass it through.
+ *
+ * @param viewportOffset Viewport offset to be normalized.
+ */
+function normalizeViewportOffset(viewportOffset) {
+    if (typeof viewportOffset === 'number') {
+        return {
+            top: viewportOffset,
+            bottom: viewportOffset,
+            left: viewportOffset,
+            right: viewportOffset
+        };
+    }
+    return viewportOffset;
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -10203,7 +10564,7 @@ function verifyLicense(token) {
     //
     // Please keep this code intact. Thank you for your understanding.
     function oldTokenCheck(token) {
-        if (token.match(/^[a-zA-Z0-9+/=$]+$/g) && (token.length >= 40 && token.length <= 255)) {
+        if (token.length >= 40 && token.length <= 255) {
             return 'VALID';
         }
         else {
@@ -10211,11 +10572,10 @@ function verifyLicense(token) {
         }
     }
     // TODO: issue ci#3175
-    let decryptedData = '';
-    let decryptedSecondElement = '';
     if (!token) {
         return 'INVALID';
     }
+    let decryptedData = '';
     try {
         decryptedData = atob(token);
     }
@@ -10245,14 +10605,9 @@ function verifyLicense(token) {
     if (firstElement.length < 40 || firstElement.length > 255) {
         return 'INVALID';
     }
+    let decryptedSecondElement = '';
     try {
-        // Must be a valid format.
         atob(firstElement);
-    }
-    catch (e) {
-        return 'INVALID';
-    }
-    try {
         decryptedSecondElement = atob(secondElement);
     }
     catch (e) {
@@ -10580,7 +10935,7 @@ function styleInject(css, { insertAt } = {}) {
   } else {
     style.appendChild(document.createTextNode(css));
   }
-}var css_248z$Y = ".ck-hidden{display:none!important}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{box-sizing:border-box;height:auto;position:static;width:auto}:root{--ck-z-default:1;--ck-z-modal:calc(var(--ck-z-default) + 999)}.ck-transitions-disabled,.ck-transitions-disabled *{transition:none!important}:root{--ck-powered-by-line-height:10px;--ck-powered-by-padding-vertical:2px;--ck-powered-by-padding-horizontal:4px;--ck-powered-by-text-color:#4f4f4f;--ck-powered-by-border-radius:var(--ck-border-radius);--ck-powered-by-background:#fff;--ck-powered-by-border-color:var(--ck-color-focus-border)}.ck.ck-balloon-panel.ck-powered-by-balloon{--ck-border-radius:var(--ck-powered-by-border-radius);background:var(--ck-powered-by-background);border:0;box-shadow:none;min-height:unset}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by{line-height:var(--ck-powered-by-line-height)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by a{align-items:center;cursor:pointer;display:flex;filter:grayscale(80%);line-height:var(--ck-powered-by-line-height);opacity:.66;padding:var(--ck-powered-by-padding-vertical) var(--ck-powered-by-padding-horizontal)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-powered-by__label{color:var(--ck-powered-by-text-color);cursor:pointer;font-size:7.5px;font-weight:700;letter-spacing:-.2px;line-height:normal;margin-right:4px;padding-left:2px;text-transform:uppercase}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-icon{cursor:pointer;display:block}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by:hover a{filter:grayscale(0);opacity:1}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_border]{border:var(--ck-focus-ring);border-color:var(--ck-powered-by-border-color)}:root{--ck-color-base-foreground:#fafafa;--ck-color-base-background:#fff;--ck-color-base-border:#ccced1;--ck-color-base-action:#53a336;--ck-color-base-focus:#6cb5f9;--ck-color-base-text:#333;--ck-color-base-active:#2977ff;--ck-color-base-active-focus:#0d65ff;--ck-color-base-error:#db3700;--ck-color-focus-border-coordinates:218,81.8%,56.9%;--ck-color-focus-border:hsl(var(--ck-color-focus-border-coordinates));--ck-color-focus-outer-shadow:#cae1fc;--ck-color-focus-disabled-shadow:rgba(119,186,248,.3);--ck-color-focus-error-shadow:rgba(255,64,31,.3);--ck-color-text:var(--ck-color-base-text);--ck-color-shadow-drop:rgba(0,0,0,.15);--ck-color-shadow-drop-active:rgba(0,0,0,.2);--ck-color-shadow-inner:rgba(0,0,0,.1);--ck-color-button-default-background:transparent;--ck-color-button-default-hover-background:#f0f0f0;--ck-color-button-default-active-background:#f0f0f0;--ck-color-button-default-disabled-background:transparent;--ck-color-button-on-background:#f0f7ff;--ck-color-button-on-hover-background:#dbecff;--ck-color-button-on-active-background:#dbecff;--ck-color-button-on-disabled-background:#f0f2f4;--ck-color-button-on-color:#2977ff;--ck-color-button-action-background:var(--ck-color-base-action);--ck-color-button-action-hover-background:#4d9d30;--ck-color-button-action-active-background:#4d9d30;--ck-color-button-action-disabled-background:#7ec365;--ck-color-button-action-text:var(--ck-color-base-background);--ck-color-button-save:#008a00;--ck-color-button-cancel:#db3700;--ck-color-switch-button-off-background:#939393;--ck-color-switch-button-off-hover-background:#7d7d7d;--ck-color-switch-button-on-background:var(--ck-color-button-action-background);--ck-color-switch-button-on-hover-background:#4d9d30;--ck-color-switch-button-inner-background:var(--ck-color-base-background);--ck-color-switch-button-inner-shadow:rgba(0,0,0,.1);--ck-color-dropdown-panel-background:var(--ck-color-base-background);--ck-color-dropdown-panel-border:var(--ck-color-base-border);--ck-color-input-background:var(--ck-color-base-background);--ck-color-input-border:var(--ck-color-base-border);--ck-color-input-error-border:var(--ck-color-base-error);--ck-color-input-text:var(--ck-color-base-text);--ck-color-input-disabled-background:#f2f2f2;--ck-color-input-disabled-border:var(--ck-color-base-border);--ck-color-input-disabled-text:#757575;--ck-color-list-background:var(--ck-color-base-background);--ck-color-list-button-hover-background:var(--ck-color-button-default-hover-background);--ck-color-list-button-on-background:var(--ck-color-button-on-color);--ck-color-list-button-on-background-focus:var(--ck-color-button-on-color);--ck-color-list-button-on-text:var(--ck-color-base-background);--ck-color-panel-background:var(--ck-color-base-background);--ck-color-panel-border:var(--ck-color-base-border);--ck-color-toolbar-background:var(--ck-color-base-background);--ck-color-toolbar-border:var(--ck-color-base-border);--ck-color-tooltip-background:var(--ck-color-base-text);--ck-color-tooltip-text:var(--ck-color-base-background);--ck-color-engine-placeholder-text:#707070;--ck-color-upload-bar-background:#6cb5f9;--ck-color-link-default:#0000f0;--ck-color-link-selected-background:rgba(31,176,255,.1);--ck-color-link-fake-selection:rgba(31,176,255,.3);--ck-color-highlight-background:#ff0;--ck-disabled-opacity:.5;--ck-focus-outer-shadow-geometry:0 0 0 3px;--ck-focus-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-outer-shadow);--ck-focus-disabled-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-disabled-shadow);--ck-focus-error-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-error-shadow);--ck-focus-ring:1px solid var(--ck-color-focus-border);--ck-font-size-base:13px;--ck-line-height-base:1.84615;--ck-font-face:Helvetica,Arial,Tahoma,Verdana,Sans-Serif;--ck-font-size-tiny:0.7em;--ck-font-size-small:0.75em;--ck-font-size-normal:1em;--ck-font-size-big:1.4em;--ck-font-size-large:1.8em;--ck-ui-component-min-height:2.3em}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{word-wrap:break-word;background:transparent;border:0;margin:0;padding:0;text-decoration:none;transition:none;vertical-align:middle}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset_all{border-collapse:collapse;color:var(--ck-color-text);cursor:auto;float:none;font:normal normal normal var(--ck-font-size-base)/var(--ck-line-height-base) var(--ck-font-face);text-align:left;white-space:nowrap}.ck-reset_all .ck-rtl :not(.ck-reset_all-excluded *){text-align:right}.ck-reset_all iframe:not(.ck-reset_all-excluded *){vertical-align:inherit}.ck-reset_all textarea:not(.ck-reset_all-excluded *){white-space:pre-wrap}.ck-reset_all input[type=password]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text]:not(.ck-reset_all-excluded *),.ck-reset_all textarea:not(.ck-reset_all-excluded *){cursor:text}.ck-reset_all input[type=password][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all textarea[disabled]:not(.ck-reset_all-excluded *){cursor:default}.ck-reset_all fieldset:not(.ck-reset_all-excluded *){border:2px groove #dfdee3;padding:10px}.ck-reset_all button:not(.ck-reset_all-excluded *)::-moz-focus-inner{border:0;padding:0}.ck[dir=rtl],.ck[dir=rtl] .ck{text-align:right}:root{--ck-border-radius:2px;--ck-inner-shadow:2px 2px 3px var(--ck-color-shadow-inner) inset;--ck-drop-shadow:0 1px 2px 1px var(--ck-color-shadow-drop);--ck-drop-shadow-active:0 3px 6px 1px var(--ck-color-shadow-drop-active);--ck-spacing-unit:0.6em;--ck-spacing-large:calc(var(--ck-spacing-unit)*1.5);--ck-spacing-standard:var(--ck-spacing-unit);--ck-spacing-medium:calc(var(--ck-spacing-unit)*0.8);--ck-spacing-small:calc(var(--ck-spacing-unit)*0.5);--ck-spacing-tiny:calc(var(--ck-spacing-unit)*0.3);--ck-spacing-extra-tiny:calc(var(--ck-spacing-unit)*0.16)}";
+}var css_248z$Y = ".ck-hidden{display:none!important}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{box-sizing:border-box;height:auto;position:static;width:auto}:root{--ck-z-default:1;--ck-z-modal:calc(var(--ck-z-default) + 999)}.ck-transitions-disabled,.ck-transitions-disabled *{transition:none!important}:root{--ck-powered-by-line-height:10px;--ck-powered-by-padding-vertical:2px;--ck-powered-by-padding-horizontal:4px;--ck-powered-by-text-color:#4f4f4f;--ck-powered-by-border-radius:var(--ck-border-radius);--ck-powered-by-background:#fff;--ck-powered-by-border-color:var(--ck-color-focus-border)}.ck.ck-balloon-panel.ck-powered-by-balloon{--ck-border-radius:var(--ck-powered-by-border-radius);background:var(--ck-powered-by-background);box-shadow:none;min-height:unset;z-index:calc(var(--ck-z-modal) - 1)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by{line-height:var(--ck-powered-by-line-height)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by a{align-items:center;cursor:pointer;display:flex;filter:grayscale(80%);line-height:var(--ck-powered-by-line-height);opacity:.66;padding:var(--ck-powered-by-padding-vertical) var(--ck-powered-by-padding-horizontal)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-powered-by__label{color:var(--ck-powered-by-text-color);cursor:pointer;font-size:7.5px;font-weight:700;letter-spacing:-.2px;line-height:normal;margin-right:4px;padding-left:2px;text-transform:uppercase}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-icon{cursor:pointer;display:block}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by:hover a{filter:grayscale(0);opacity:1}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_inside]{border-color:transparent}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_border]{border:var(--ck-focus-ring);border-color:var(--ck-powered-by-border-color)}:root{--ck-color-base-foreground:#fafafa;--ck-color-base-background:#fff;--ck-color-base-border:#ccced1;--ck-color-base-action:#53a336;--ck-color-base-focus:#6cb5f9;--ck-color-base-text:#333;--ck-color-base-active:#2977ff;--ck-color-base-active-focus:#0d65ff;--ck-color-base-error:#db3700;--ck-color-focus-border-coordinates:218,81.8%,56.9%;--ck-color-focus-border:hsl(var(--ck-color-focus-border-coordinates));--ck-color-focus-outer-shadow:#cae1fc;--ck-color-focus-disabled-shadow:rgba(119,186,248,.3);--ck-color-focus-error-shadow:rgba(255,64,31,.3);--ck-color-text:var(--ck-color-base-text);--ck-color-shadow-drop:rgba(0,0,0,.15);--ck-color-shadow-drop-active:rgba(0,0,0,.2);--ck-color-shadow-inner:rgba(0,0,0,.1);--ck-color-button-default-background:transparent;--ck-color-button-default-hover-background:#f0f0f0;--ck-color-button-default-active-background:#f0f0f0;--ck-color-button-default-disabled-background:transparent;--ck-color-button-on-background:#f0f7ff;--ck-color-button-on-hover-background:#dbecff;--ck-color-button-on-active-background:#dbecff;--ck-color-button-on-disabled-background:#f0f2f4;--ck-color-button-on-color:#2977ff;--ck-color-button-action-background:var(--ck-color-base-action);--ck-color-button-action-hover-background:#4d9d30;--ck-color-button-action-active-background:#4d9d30;--ck-color-button-action-disabled-background:#7ec365;--ck-color-button-action-text:var(--ck-color-base-background);--ck-color-button-save:#008a00;--ck-color-button-cancel:#db3700;--ck-color-switch-button-off-background:#939393;--ck-color-switch-button-off-hover-background:#7d7d7d;--ck-color-switch-button-on-background:var(--ck-color-button-action-background);--ck-color-switch-button-on-hover-background:#4d9d30;--ck-color-switch-button-inner-background:var(--ck-color-base-background);--ck-color-switch-button-inner-shadow:rgba(0,0,0,.1);--ck-color-dropdown-panel-background:var(--ck-color-base-background);--ck-color-dropdown-panel-border:var(--ck-color-base-border);--ck-color-input-background:var(--ck-color-base-background);--ck-color-input-border:var(--ck-color-base-border);--ck-color-input-error-border:var(--ck-color-base-error);--ck-color-input-text:var(--ck-color-base-text);--ck-color-input-disabled-background:#f2f2f2;--ck-color-input-disabled-border:var(--ck-color-base-border);--ck-color-input-disabled-text:#757575;--ck-color-list-background:var(--ck-color-base-background);--ck-color-list-button-hover-background:var(--ck-color-button-default-hover-background);--ck-color-list-button-on-background:var(--ck-color-button-on-color);--ck-color-list-button-on-background-focus:var(--ck-color-button-on-color);--ck-color-list-button-on-text:var(--ck-color-base-background);--ck-color-panel-background:var(--ck-color-base-background);--ck-color-panel-border:var(--ck-color-base-border);--ck-color-toolbar-background:var(--ck-color-base-background);--ck-color-toolbar-border:var(--ck-color-base-border);--ck-color-tooltip-background:var(--ck-color-base-text);--ck-color-tooltip-text:var(--ck-color-base-background);--ck-color-engine-placeholder-text:#707070;--ck-color-upload-bar-background:#6cb5f9;--ck-color-link-default:#0000f0;--ck-color-link-selected-background:rgba(31,176,255,.1);--ck-color-link-fake-selection:rgba(31,176,255,.3);--ck-color-highlight-background:#ff0;--ck-disabled-opacity:.5;--ck-focus-outer-shadow-geometry:0 0 0 3px;--ck-focus-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-outer-shadow);--ck-focus-disabled-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-disabled-shadow);--ck-focus-error-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-error-shadow);--ck-focus-ring:1px solid var(--ck-color-focus-border);--ck-font-size-base:13px;--ck-line-height-base:1.84615;--ck-font-face:Helvetica,Arial,Tahoma,Verdana,Sans-Serif;--ck-font-size-tiny:0.7em;--ck-font-size-small:0.75em;--ck-font-size-normal:1em;--ck-font-size-big:1.4em;--ck-font-size-large:1.8em;--ck-ui-component-min-height:2.3em}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{word-wrap:break-word;background:transparent;border:0;margin:0;padding:0;text-decoration:none;transition:none;vertical-align:middle}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset_all{border-collapse:collapse;color:var(--ck-color-text);cursor:auto;float:none;font:normal normal normal var(--ck-font-size-base)/var(--ck-line-height-base) var(--ck-font-face);text-align:left;white-space:nowrap}.ck-reset_all .ck-rtl :not(.ck-reset_all-excluded *){text-align:right}.ck-reset_all iframe:not(.ck-reset_all-excluded *){vertical-align:inherit}.ck-reset_all textarea:not(.ck-reset_all-excluded *){white-space:pre-wrap}.ck-reset_all input[type=password]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text]:not(.ck-reset_all-excluded *),.ck-reset_all textarea:not(.ck-reset_all-excluded *){cursor:text}.ck-reset_all input[type=password][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all textarea[disabled]:not(.ck-reset_all-excluded *){cursor:default}.ck-reset_all fieldset:not(.ck-reset_all-excluded *){border:2px groove #dfdee3;padding:10px}.ck-reset_all button:not(.ck-reset_all-excluded *)::-moz-focus-inner{border:0;padding:0}.ck[dir=rtl],.ck[dir=rtl] .ck{text-align:right}:root{--ck-border-radius:2px;--ck-inner-shadow:2px 2px 3px var(--ck-color-shadow-inner) inset;--ck-drop-shadow:0 1px 2px 1px var(--ck-color-shadow-drop);--ck-drop-shadow-active:0 3px 6px 1px var(--ck-color-shadow-drop-active);--ck-spacing-unit:0.6em;--ck-spacing-large:calc(var(--ck-spacing-unit)*1.5);--ck-spacing-standard:var(--ck-spacing-unit);--ck-spacing-medium:calc(var(--ck-spacing-unit)*0.8);--ck-spacing-small:calc(var(--ck-spacing-unit)*0.5);--ck-spacing-tiny:calc(var(--ck-spacing-unit)*0.3);--ck-spacing-extra-tiny:calc(var(--ck-spacing-unit)*0.16)}";
 styleInject(css_248z$Y);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -12283,6 +12638,12 @@ class BodyCollection extends ViewCollection {
     constructor(locale, initialItems = []) {
         super(initialItems);
         this.locale = locale;
+    }
+    /**
+     * The element holding elements of the body region.
+     */
+    get bodyCollectionContainer() {
+        return this._bodyCollectionContainer;
     }
     /**
      * Attaches the body collection to the DOM body element. You need to execute this method to render the content of
@@ -19635,36 +19996,38 @@ class TreeWalker$1 {
                 position = new Position$1(node, 0);
             }
             else {
+                // We are past the walker boundaries.
+                if (this.boundaries && this.boundaries.end.isBefore(position)) {
+                    return { done: true, value: undefined };
+                }
                 position.offset++;
             }
             this._position = position;
             return this._formatReturnValue('elementStart', node, previousPosition, position, 1);
         }
-        else if (node instanceof Text$2) {
+        if (node instanceof Text$2) {
             if (this.singleCharacters) {
                 position = new Position$1(node, 0);
                 this._position = position;
                 return this._next();
             }
-            else {
-                let charactersCount = node.data.length;
-                let item;
-                // If text stick out of walker range, we need to cut it and wrap in TextProxy.
-                if (node == this._boundaryEndParent) {
-                    charactersCount = this.boundaries.end.offset;
-                    item = new TextProxy$1(node, 0, charactersCount);
-                    position = Position$1._createAfter(item);
-                }
-                else {
-                    item = new TextProxy$1(node, 0, node.data.length);
-                    // If not just keep moving forward.
-                    position.offset++;
-                }
-                this._position = position;
-                return this._formatReturnValue('text', item, previousPosition, position, charactersCount);
+            let charactersCount = node.data.length;
+            let item;
+            // If text stick out of walker range, we need to cut it and wrap in TextProxy.
+            if (node == this._boundaryEndParent) {
+                charactersCount = this.boundaries.end.offset;
+                item = new TextProxy$1(node, 0, charactersCount);
+                position = Position$1._createAfter(item);
             }
+            else {
+                item = new TextProxy$1(node, 0, node.data.length);
+                // If not just keep moving forward.
+                position.offset++;
+            }
+            this._position = position;
+            return this._formatReturnValue('text', item, previousPosition, position, charactersCount);
         }
-        else if (typeof node == 'string') {
+        if (typeof node == 'string') {
             let textLength;
             if (this.singleCharacters) {
                 textLength = 1;
@@ -19679,17 +20042,13 @@ class TreeWalker$1 {
             this._position = position;
             return this._formatReturnValue('text', textProxy, previousPosition, position, textLength);
         }
-        else {
-            // `node` is not set, we reached the end of current `parent`.
-            position = Position$1._createAfter(parent);
-            this._position = position;
-            if (this.ignoreElementEnd) {
-                return this._next();
-            }
-            else {
-                return this._formatReturnValue('elementEnd', parent, previousPosition, position);
-            }
+        // `node` is not set, we reached the end of current `parent`.
+        position = Position$1._createAfter(parent);
+        this._position = position;
+        if (this.ignoreElementEnd) {
+            return this._next();
         }
+        return this._formatReturnValue('elementEnd', parent, previousPosition, position);
     }
     /**
      * Makes a step backward in view. Moves the {@link #position} to the previous position and returns the encountered value.
@@ -19721,48 +20080,42 @@ class TreeWalker$1 {
             node = parent.getChild(position.offset - 1);
         }
         if (node instanceof Element$1) {
-            if (!this.shallow) {
-                position = new Position$1(node, node.childCount);
-                this._position = position;
-                if (this.ignoreElementEnd) {
-                    return this._previous();
-                }
-                else {
-                    return this._formatReturnValue('elementEnd', node, previousPosition, position);
-                }
-            }
-            else {
+            if (this.shallow) {
                 position.offset--;
                 this._position = position;
                 return this._formatReturnValue('elementStart', node, previousPosition, position, 1);
             }
+            position = new Position$1(node, node.childCount);
+            this._position = position;
+            if (this.ignoreElementEnd) {
+                return this._previous();
+            }
+            return this._formatReturnValue('elementEnd', node, previousPosition, position);
         }
-        else if (node instanceof Text$2) {
+        if (node instanceof Text$2) {
             if (this.singleCharacters) {
                 position = new Position$1(node, node.data.length);
                 this._position = position;
                 return this._previous();
             }
-            else {
-                let charactersCount = node.data.length;
-                let item;
-                // If text stick out of walker range, we need to cut it and wrap in TextProxy.
-                if (node == this._boundaryStartParent) {
-                    const offset = this.boundaries.start.offset;
-                    item = new TextProxy$1(node, offset, node.data.length - offset);
-                    charactersCount = item.data.length;
-                    position = Position$1._createBefore(item);
-                }
-                else {
-                    item = new TextProxy$1(node, 0, node.data.length);
-                    // If not just keep moving backward.
-                    position.offset--;
-                }
-                this._position = position;
-                return this._formatReturnValue('text', item, previousPosition, position, charactersCount);
+            let charactersCount = node.data.length;
+            let item;
+            // If text stick out of walker range, we need to cut it and wrap in TextProxy.
+            if (node == this._boundaryStartParent) {
+                const offset = this.boundaries.start.offset;
+                item = new TextProxy$1(node, offset, node.data.length - offset);
+                charactersCount = item.data.length;
+                position = Position$1._createBefore(item);
             }
+            else {
+                item = new TextProxy$1(node, 0, node.data.length);
+                // If not just keep moving backward.
+                position.offset--;
+            }
+            this._position = position;
+            return this._formatReturnValue('text', item, previousPosition, position, charactersCount);
         }
-        else if (typeof node == 'string') {
+        if (typeof node == 'string') {
             let textLength;
             if (!this.singleCharacters) {
                 // Check if text stick out of walker range.
@@ -19777,12 +20130,10 @@ class TreeWalker$1 {
             this._position = position;
             return this._formatReturnValue('text', textProxy, previousPosition, position, textLength);
         }
-        else {
-            // `node` is not set, we reached the beginning of current `parent`.
-            position = Position$1._createBefore(parent);
-            this._position = position;
-            return this._formatReturnValue('elementStart', parent, previousPosition, position, 1);
-        }
+        // `node` is not set, we reached the beginning of current `parent`.
+        position = Position$1._createBefore(parent);
+        this._position = position;
+        return this._formatReturnValue('elementStart', parent, previousPosition, position, 1);
     }
     /**
      * Format returned data and adjust `previousPosition` and `nextPosition` if reach the bound of the {@link module:engine/view/text~Text}.
@@ -27585,8 +27936,19 @@ class InputObserver extends DomEventObserver {
         }
         else if (domTargetRanges.length) {
             targetRanges = domTargetRanges.map(domRange => {
-                return view.domConverter.domRangeToView(domRange);
-            });
+                // Sometimes browser provides range that starts before editable node.
+                // We try to fall back to collapsed range at the valid end position.
+                // See https://github.com/ckeditor/ckeditor5/issues/14411.
+                // See https://github.com/ckeditor/ckeditor5/issues/14050.
+                const viewStart = view.domConverter.domPositionToView(domRange.startContainer, domRange.startOffset);
+                const viewEnd = view.domConverter.domPositionToView(domRange.endContainer, domRange.endOffset);
+                if (viewStart) {
+                    return view.createRange(viewStart, viewEnd);
+                }
+                else if (viewEnd) {
+                    return view.createRange(viewEnd);
+                }
+            }).filter((range) => !!range);
             // @if CK_DEBUG_TYPING // if ( ( window as any ).logCKETyping ) {
             // @if CK_DEBUG_TYPING // 	console.info( '%c[InputObserver]%c using target ranges:',
             // @if CK_DEBUG_TYPING // 		'color: green;font-weight: bold', 'font-weight:bold', targetRanges
@@ -27999,6 +28361,9 @@ class View extends ObservableMixin() {
      * Scrolls the page viewport and {@link #domRoots} with their ancestors to reveal the
      * caret, **if not already visible to the user**.
      *
+     * **Note**: Calling this method fires the {@link module:engine/view/view~ViewScrollToTheSelectionEvent} event that
+     * allows custom behaviors.
+     *
      * @param options Additional configuration of the scrolling behavior.
      * @param options.viewportOffset A distance between the DOM selection and the viewport boundary to be maintained
      * while scrolling to the selection (default is 20px). Setting this value to `0` will reveal the selection precisely at
@@ -28013,15 +28378,28 @@ class View extends ObservableMixin() {
      */
     scrollToTheSelection({ alignToTop, forceScroll, viewportOffset = 20, ancestorOffset = 20 } = {}) {
         const range = this.document.selection.getFirstRange();
-        if (range) {
-            scrollViewportToShowTarget({
-                target: this.domConverter.viewRangeToDom(range),
-                viewportOffset,
-                ancestorOffset,
-                alignToTop,
-                forceScroll
-            });
+        if (!range) {
+            return;
         }
+        // Clone to make sure properties like `viewportOffset` are not mutated in the event listeners.
+        const originalArgs = cloneDeep({ alignToTop, forceScroll, viewportOffset, ancestorOffset });
+        if (typeof viewportOffset === 'number') {
+            viewportOffset = {
+                top: viewportOffset,
+                bottom: viewportOffset,
+                left: viewportOffset,
+                right: viewportOffset
+            };
+        }
+        const options = {
+            target: this.domConverter.viewRangeToDom(range),
+            viewportOffset,
+            ancestorOffset,
+            alignToTop,
+            forceScroll
+        };
+        this.fire('scrollToTheSelection', options, originalArgs);
+        scrollViewportToShowTarget(options);
     }
     /**
      * It will focus DOM element representing {@link module:engine/view/editableelement~EditableElement EditableElement}
@@ -29416,7 +29794,7 @@ class TreeWalker {
         // Get node just after the current position.
         // Use a highly optimized version instead of checking the text node first and then getting the node after. See #6582.
         const textNodeAtPosition = getTextNodeAtPosition(position, parent);
-        const node = textNodeAtPosition ? textNodeAtPosition : getNodeAfterPosition(position, parent, textNodeAtPosition);
+        const node = textNodeAtPosition || getNodeAfterPosition(position, parent, textNodeAtPosition);
         if (node instanceof Element) {
             if (!this.shallow) {
                 // Manual operations on path internals for optimization purposes. Here and in the rest of the method.
@@ -29424,12 +29802,16 @@ class TreeWalker {
                 this._visitedParent = node;
             }
             else {
+                // We are past the walker boundaries.
+                if (this.boundaries && this.boundaries.end.isBefore(position)) {
+                    return { done: true, value: undefined };
+                }
                 position.offset++;
             }
             this._position = position;
             return formatReturnValue('elementStart', node, previousPosition, position, 1);
         }
-        else if (node instanceof Text$1) {
+        if (node instanceof Text$1) {
             let charactersCount;
             if (this.singleCharacters) {
                 charactersCount = 1;
@@ -29447,19 +29829,15 @@ class TreeWalker {
             this._position = position;
             return formatReturnValue('text', item, previousPosition, position, charactersCount);
         }
-        else {
-            // `node` is not set, we reached the end of current `parent`.
-            position.path.pop();
-            position.offset++;
-            this._position = position;
-            this._visitedParent = parent.parent;
-            if (this.ignoreElementEnd) {
-                return this._next();
-            }
-            else {
-                return formatReturnValue('elementEnd', parent, previousPosition, position);
-            }
+        // `node` is not set, we reached the end of current `parent`.
+        position.path.pop();
+        position.offset++;
+        this._position = position;
+        this._visitedParent = parent.parent;
+        if (this.ignoreElementEnd) {
+            return this._next();
         }
+        return formatReturnValue('elementEnd', parent, previousPosition, position);
     }
     /**
      * Makes a step backward in model. Moves the {@link #position} to the previous position and returns the encountered value.
@@ -29480,26 +29858,22 @@ class TreeWalker {
         // Use a highly optimized version instead of checking the text node first and then getting the node before. See #6582.
         const positionParent = position.parent;
         const textNodeAtPosition = getTextNodeAtPosition(position, positionParent);
-        const node = textNodeAtPosition ? textNodeAtPosition : getNodeBeforePosition(position, positionParent, textNodeAtPosition);
+        const node = textNodeAtPosition || getNodeBeforePosition(position, positionParent, textNodeAtPosition);
         if (node instanceof Element) {
             position.offset--;
-            if (!this.shallow) {
-                position.path.push(node.maxOffset);
-                this._position = position;
-                this._visitedParent = node;
-                if (this.ignoreElementEnd) {
-                    return this._previous();
-                }
-                else {
-                    return formatReturnValue('elementEnd', node, previousPosition, position);
-                }
-            }
-            else {
+            if (this.shallow) {
                 this._position = position;
                 return formatReturnValue('elementStart', node, previousPosition, position, 1);
             }
+            position.path.push(node.maxOffset);
+            this._position = position;
+            this._visitedParent = node;
+            if (this.ignoreElementEnd) {
+                return this._previous();
+            }
+            return formatReturnValue('elementEnd', node, previousPosition, position);
         }
-        else if (node instanceof Text$1) {
+        if (node instanceof Text$1) {
             let charactersCount;
             if (this.singleCharacters) {
                 charactersCount = 1;
@@ -29517,13 +29891,11 @@ class TreeWalker {
             this._position = position;
             return formatReturnValue('text', item, previousPosition, position, charactersCount);
         }
-        else {
-            // `node` is not set, we reached the beginning of current `parent`.
-            position.path.pop();
-            this._position = position;
-            this._visitedParent = parent.parent;
-            return formatReturnValue('elementStart', parent, previousPosition, position, 1);
-        }
+        // `node` is not set, we reached the beginning of current `parent`.
+        position.path.pop();
+        this._position = position;
+        this._visitedParent = parent.parent;
+        return formatReturnValue('elementStart', parent, previousPosition, position, 1);
     }
 }
 function formatReturnValue(type, item, previousPosition, nextPosition, length) {
@@ -34534,27 +34906,27 @@ class LiveSelection extends Selection {
             // When gravity is overridden then don't take node before into consideration.
             if (!this.isGravityOverridden) {
                 // ...look at the node before caret and take attributes from it if it is a character node.
-                attrs = getAttrsIfCharacter(nodeBefore);
+                attrs = getTextAttributes(nodeBefore, schema);
             }
             // 3. If not, look at the node after caret...
             if (!attrs) {
-                attrs = getAttrsIfCharacter(nodeAfter);
+                attrs = getTextAttributes(nodeAfter, schema);
             }
             // 4. If not, try to find the first character on the left, that is in the same node.
             // When gravity is overridden then don't take node before into consideration.
             if (!this.isGravityOverridden && !attrs) {
                 let node = nodeBefore;
-                while (node && !schema.isInline(node) && !attrs) {
+                while (node && !attrs) {
                     node = node.previousSibling;
-                    attrs = getAttrsIfCharacter(node);
+                    attrs = getTextAttributes(node, schema);
                 }
             }
             // 5. If not found, try to find the first character on the right, that is in the same node.
             if (!attrs) {
                 let node = nodeAfter;
-                while (node && !schema.isInline(node) && !attrs) {
+                while (node && !attrs) {
                     node = node.nextSibling;
-                    attrs = getAttrsIfCharacter(node);
+                    attrs = getTextAttributes(node, schema);
                 }
             }
             // 6. If not found, selection should retrieve attributes from parent.
@@ -34582,13 +34954,31 @@ class LiveSelection extends Selection {
 /**
  * Helper function for {@link module:engine/model/liveselection~LiveSelection#_updateAttributes}.
  *
- * It takes model item, checks whether it is a text node (or text proxy) and, if so, returns it's attributes. If not, returns `null`.
+ * It checks if the passed model item is a text node (or text proxy) and, if so, returns it's attributes.
+ * If not, it checks if item is an inline object and does the same. Otherwise it returns `null`.
  */
-function getAttrsIfCharacter(node) {
+function getTextAttributes(node, schema) {
+    if (!node) {
+        return null;
+    }
     if (node instanceof TextProxy || node instanceof Text$1) {
         return node.getAttributes();
     }
-    return null;
+    if (!schema.isInline(node)) {
+        return null;
+    }
+    // Stop on inline elements (such as `<softBreak>`) that are not objects (such as `<imageInline>` or `<mathml>`).
+    if (!schema.isObject(node)) {
+        return [];
+    }
+    const attributes = [];
+    // Collect all attributes that can be applied to the text node.
+    for (const [key, value] of node.getAttributes()) {
+        if (schema.checkAttribute('$text', key)) {
+            attributes.push([key, value]);
+        }
+    }
+    return attributes;
 }
 /**
  * Removes selection attributes from element which is not empty anymore.
@@ -34851,7 +35241,7 @@ class DowncastHelpers extends ConversionHelpers {
      * } );
      * ```
      *
-     * The `slorFor()` function can also take a callback that allows filtering which children of the model element
+     * The `createSlot()` function can also take a callback that allows filtering which children of the model element
      * should be converted into this slot.
      *
      * Imagine a table feature where for this model structure:
@@ -37509,8 +37899,8 @@ function upcastDataToMarker(config) {
         //
         // This hack probably would not be needed if attributes are upcasted separately.
         //
-        const basePriority = priorities.get('low');
-        const maxPriority = priorities.get('highest');
+        const basePriority = priorities.low;
+        const maxPriority = priorities.highest;
         const priorityFactor = priorities.get(config.converterPriority) / maxPriority; // Number in range [ -1, 1 ].
         dispatcher.on('element', upcastAttributeToMarker(normalizedConfig), { priority: basePriority + priorityFactor });
     };
@@ -51951,6 +52341,9 @@ const RGB_COLOR_REGEXP = /^rgb\([ ]?([0-9]{1,3}[ %]?,[ ]?){2,3}[0-9]{1,3}[ %]?\)
 const RGBA_COLOR_REGEXP = /^rgba\([ ]?([0-9]{1,3}[ %]?,[ ]?){3}(1|[0-9]+%|[0]?\.?[0-9]+)\)$/i;
 const HSL_COLOR_REGEXP = /^hsl\([ ]?([0-9]{1,3}[ %]?[,]?[ ]*){3}(1|[0-9]+%|[0]?\.?[0-9]+)?\)$/i;
 const HSLA_COLOR_REGEXP = /^hsla\([ ]?([0-9]{1,3}[ %]?,[ ]?){2,3}(1|[0-9]+%|[0]?\.?[0-9]+)\)$/i;
+// Note: This regexp hardcodes a single level of nested () for values such as `calc( var( ...) + ...)`.
+// If this gets more complex, a proper parser should be used instead.
+const CSS_SHORTHAND_VALUE_REGEXP = /\w+\((?:[^()]|\([^()]*\))*\)|\S+/gi;
 const COLOR_NAMES = new Set([
     // CSS Level 1
     'black', 'silver', 'gray', 'white', 'maroon', 'red', 'purple', 'fuchsia',
@@ -52155,10 +52548,8 @@ function getPositionShorthandNormalizer(shorthand) {
  * ```
  */
 function getShorthandValues(string) {
-    return string
-        .replace(/, /g, ',') // Exclude comma from spaces evaluation as values are separated by spaces.
-        .split(' ')
-        .map(string => string.replace(/,/g, ', ')); // Restore original notation.
+    const matches = string.matchAll(CSS_SHORTHAND_VALUE_REGEXP);
+    return Array.from(matches).map(i => i[0]);
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -52612,7 +53003,7 @@ function addPaddingRules(stylesProcessor) {
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */var index$7=/*#__PURE__*/Object.freeze({__proto__:null,EditingController:EditingController,DataController:DataController,Conversion:Conversion,HtmlDataProcessor:HtmlDataProcessor,InsertOperation:InsertOperation,MoveOperation:MoveOperation,MergeOperation:MergeOperation,SplitOperation:SplitOperation,MarkerOperation:MarkerOperation,OperationFactory:OperationFactory,AttributeOperation:AttributeOperation,RenameOperation:RenameOperation,RootAttributeOperation:RootAttributeOperation,RootOperation:RootOperation,NoOperation:NoOperation,transformSets:transformSets,DocumentSelection:DocumentSelection,Range:Range,LiveRange:LiveRange,LivePosition:LivePosition,Model:Model$1,TreeWalker:TreeWalker,Element:Element,Position:Position,DocumentFragment:DocumentFragment,History:History,Text:Text$1,TextProxy:TextProxy,findOptimalInsertionRange:findOptimalInsertionRange$1,DataTransfer:DataTransfer,DomConverter:DomConverter,Renderer:Renderer,View:View,ViewDocument:Document$1,ViewText:Text$2,ViewElement:Element$1,ViewContainerElement:ContainerElement,ViewEditableElement:EditableElement,ViewRootEditableElement:RootEditableElement,ViewAttributeElement:AttributeElement,ViewEmptyElement:EmptyElement,ViewRawElement:RawElement,ViewUIElement:UIElement,ViewDocumentFragment:DocumentFragment$1,AttributeElement:AttributeElement,getFillerOffset:getFillerOffset$5,Observer:Observer,ClickObserver:ClickObserver,DomEventObserver:DomEventObserver,MouseObserver:MouseObserver,TabObserver:TabObserver,DowncastWriter:DowncastWriter,UpcastWriter:UpcastWriter,Matcher:Matcher,BubblingEventInfo:BubblingEventInfo,DomEventData:DomEventData,StylesProcessor:StylesProcessor,enablePlaceholder:enablePlaceholder,disablePlaceholder:disablePlaceholder,showPlaceholder:showPlaceholder,hidePlaceholder:hidePlaceholder,needsPlaceholder:needsPlaceholder,addBackgroundRules:addBackgroundRules,addBorderRules:addBorderRules,addMarginRules:addMarginRules,addPaddingRules:addPaddingRules,isColor:isColor,isLineStyle:isLineStyle,isLength:isLength,isPercentage:isPercentage,isRepeat:isRepeat,isPosition:isPosition,isAttachment:isAttachment,isURL:isURL,getBoxSidesValues:getBoxSidesValues,getBoxSidesValueReducer:getBoxSidesValueReducer,getBoxSidesShorthandValue:getBoxSidesShorthandValue,getPositionShorthandNormalizer:getPositionShorthandNormalizer,getShorthandValues:getShorthandValues});/**
+ */var index$7=/*#__PURE__*/Object.freeze({__proto__:null,EditingController:EditingController,DataController:DataController,Conversion:Conversion,HtmlDataProcessor:HtmlDataProcessor,InsertOperation:InsertOperation,MoveOperation:MoveOperation,MergeOperation:MergeOperation,SplitOperation:SplitOperation,MarkerOperation:MarkerOperation,OperationFactory:OperationFactory,AttributeOperation:AttributeOperation,RenameOperation:RenameOperation,RootAttributeOperation:RootAttributeOperation,RootOperation:RootOperation,NoOperation:NoOperation,transformSets:transformSets,DocumentSelection:DocumentSelection,Range:Range,LiveRange:LiveRange,LivePosition:LivePosition,Model:Model$1,TreeWalker:TreeWalker,Element:Element,Position:Position,DocumentFragment:DocumentFragment,History:History,Text:Text$1,TextProxy:TextProxy,findOptimalInsertionRange:findOptimalInsertionRange$1,DataTransfer:DataTransfer,DomConverter:DomConverter,Renderer:Renderer,View:View,ViewDocument:Document$1,ViewText:Text$2,ViewElement:Element$1,ViewContainerElement:ContainerElement,ViewEditableElement:EditableElement,ViewRootEditableElement:RootEditableElement,ViewAttributeElement:AttributeElement,ViewEmptyElement:EmptyElement,ViewRawElement:RawElement,ViewUIElement:UIElement,ViewDocumentFragment:DocumentFragment$1,ViewTreeWalker:TreeWalker$1,AttributeElement:AttributeElement,getFillerOffset:getFillerOffset$5,Observer:Observer,ClickObserver:ClickObserver,DomEventObserver:DomEventObserver,MouseObserver:MouseObserver,TabObserver:TabObserver,DowncastWriter:DowncastWriter,UpcastWriter:UpcastWriter,Matcher:Matcher,BubblingEventInfo:BubblingEventInfo,DomEventData:DomEventData,StylesProcessor:StylesProcessor,enablePlaceholder:enablePlaceholder,disablePlaceholder:disablePlaceholder,showPlaceholder:showPlaceholder,hidePlaceholder:hidePlaceholder,needsPlaceholder:needsPlaceholder,addBackgroundRules:addBackgroundRules,addBorderRules:addBorderRules,addMarginRules:addMarginRules,addPaddingRules:addPaddingRules,isColor:isColor,isLineStyle:isLineStyle,isLength:isLength,isPercentage:isPercentage,isRepeat:isRepeat,isPosition:isPosition,isAttachment:isAttachment,isURL:isURL,getBoxSidesValues:getBoxSidesValues,getBoxSidesValueReducer:getBoxSidesValueReducer,getBoxSidesShorthandValue:getBoxSidesShorthandValue,getPositionShorthandNormalizer:getPositionShorthandNormalizer,getShorthandValues:getShorthandValues});/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -53331,8 +53722,8 @@ var threeVerticalDots$1 = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/
 var bold = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10.187 17H5.773c-.637 0-1.092-.138-1.364-.415-.273-.277-.409-.718-.409-1.323V4.738c0-.617.14-1.062.419-1.332.279-.27.73-.406 1.354-.406h4.68c.69 0 1.288.041 1.793.124.506.083.96.242 1.36.478.341.197.644.447.906.75a3.262 3.262 0 0 1 .808 2.162c0 1.401-.722 2.426-2.167 3.075C15.05 10.175 16 11.315 16 13.01a3.756 3.756 0 0 1-2.296 3.504 6.1 6.1 0 0 1-1.517.377c-.571.073-1.238.11-2 .11zm-.217-6.217H7v4.087h3.069c1.977 0 2.965-.69 2.965-2.072 0-.707-.256-1.22-.768-1.537-.512-.319-1.277-.478-2.296-.478zM7 5.13v3.619h2.606c.729 0 1.292-.067 1.69-.2a1.6 1.6 0 0 0 .91-.765c.165-.267.247-.566.247-.897 0-.707-.26-1.176-.778-1.409-.519-.232-1.31-.348-2.375-.348H7z\"/></svg>";
 var paragraph = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10.5 5.5H7v5h3.5a2.5 2.5 0 1 0 0-5zM5 3h6.5v.025a5 5 0 0 1 0 9.95V13H7v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z\"/></svg>";
 var plus = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10 2a1 1 0 0 0-1 1v6H3a1 1 0 1 0 0 2h6v6a1 1 0 1 0 2 0v-6h6a1 1 0 1 0 0-2h-6V3a1 1 0 0 0-1-1Z\"/></svg>";
-var text = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><g clip-path=\"url(#a)\"><path d=\"M9.816 11.5 7.038 4.785 4.261 11.5h5.555Zm.62 1.5H3.641l-1.666 4.028H.312l5.789-14h1.875l5.789 14h-1.663L10.436 13Z\"/><path clip-rule=\"evenodd\" d=\"m12.09 17-.534-1.292.848-1.971.545 1.319L12.113 17h-.023Zm1.142-5.187.545 1.319L15.5 9.13l1.858 4.316h-3.45l.398.965h3.467L18.887 17H20l-3.873-9h-1.254l-1.641 3.813Z\"/></g><defs><clipPath id=\"a\"><path d=\"M0 0h20v20H0z\"/></clipPath></defs></svg>";
-var importExport = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><g clip-path=\"url(#a)\"><path clip-rule=\"evenodd\" d=\"M19 4.5 14 0H3v12.673l.868-1.041c.185-.222.4-.402.632-.54V1.5h8v5h5v7.626a2.24 2.24 0 0 1 1.5.822V4.5ZM14 5V2l3.3 3H14Zm-3.692 12.5c.062.105.133.206.213.303L11.52 19H8v-.876a2.243 2.243 0 0 0 1.82-.624h.488Zm7.518-.657a.75.75 0 0 0-1.152-.96L15.5 17.29V12H14v5.29l-1.174-1.408a.75.75 0 0 0-1.152.96l2.346 2.816a.95.95 0 0 0 1.46 0l2.346-2.815Zm-15.056-.38a.75.75 0 0 1-.096-1.056l2.346-2.815a.95.95 0 0 1 1.46 0l2.346 2.815a.75.75 0 1 1-1.152.96L6.5 14.96V20H5v-5.04l-1.174 1.408a.75.75 0 0 1-1.056.096Z\"/></g><defs><clipPath id=\"a\"><path d=\"M0 0h20v20H0z\"/></clipPath></defs></svg>";
+var text = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M9.816 11.5 7.038 4.785 4.261 11.5h5.555Zm.62 1.5H3.641l-1.666 4.028H.312l5.789-14h1.875l5.789 14h-1.663L10.436 13Z\"/><path d=\"m12.09 17-.534-1.292.848-1.971.545 1.319L12.113 17h-.023Zm1.142-5.187.545 1.319L15.5 9.13l1.858 4.316h-3.45l.398.965h3.467L18.887 17H20l-3.873-9h-1.254l-1.641 3.813Z\"/></svg>";
+var importExport = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19 4.5 14 0H3v12.673l.868-1.041c.185-.222.4-.402.632-.54V1.5h8v5h5v7.626a2.24 2.24 0 0 1 1.5.822V4.5ZM14 5V2l3.3 3H14Zm-3.692 12.5c.062.105.133.206.213.303L11.52 19H8v-.876a2.243 2.243 0 0 0 1.82-.624h.488Zm7.518-.657a.75.75 0 0 0-1.152-.96L15.5 17.29V12H14v5.29l-1.174-1.408a.75.75 0 0 0-1.152.96l2.346 2.816a.95.95 0 0 0 1.46 0l2.346-2.815Zm-15.056-.38a.75.75 0 0 1-.096-1.056l2.346-2.815a.95.95 0 0 1 1.46 0l2.346 2.815a.75.75 0 1 1-1.152.96L6.5 14.96V20H5v-5.04l-1.174 1.408a.75.75 0 0 1-1.056.096Z\"/></svg>";
 /**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -55258,7 +55649,7 @@ class HexBase extends ColorPicker {
  */
 class HexColorPicker extends HexBase {
 }
-customElements.define('hex-color-picker', HexColorPicker);var css_248z$I = ".ck.ck-input{min-width:unset}.color-picker-hex-input{width:max-content}.ck.ck-color-picker__row{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}.ck.ck-color-picker__row .ck-color-picker__hash-view{padding-right:var(--ck-spacing-medium);padding-top:var(--ck-spacing-tiny)}";
+customElements.define('hex-color-picker', HexColorPicker);var css_248z$I = ".color-picker-hex-input{width:max-content}.color-picker-hex-input .ck.ck-input{min-width:unset}.ck.ck-color-picker__row{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}.ck.ck-color-picker__row .ck-color-picker__hash-view{padding-right:var(--ck-spacing-medium);padding-top:var(--ck-spacing-tiny)}";
 styleInject(css_248z$I);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -55301,7 +55692,10 @@ class ColorPickerView extends View$1 {
             this._hexColor = convertColorToCommonHexFormat(this.color);
         });
         this.on('change:_hexColor', () => {
-            this.picker.setAttribute('color', this._hexColor);
+            // Should update color in color picker when its not focused
+            if (document.activeElement !== this.picker) {
+                this.picker.setAttribute('color', this._hexColor);
+            }
             // There has to be two way binding between properties.
             // Extra precaution has to be taken to trigger change back only when the color really changes.
             if (convertColorToCommonHexFormat(this.color) != convertColorToCommonHexFormat(this._hexColor)) {
@@ -56922,13 +57316,15 @@ function getTooltipData(element) {
         position: (element.dataset.ckeTooltipPosition || 's'),
         cssClass: element.dataset.ckeTooltipClass || ''
     };
-}var poweredByIcon = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"53\" height=\"10\" viewBox=\"0 0 53 10\"><g clip-path=\"url(#a)\"><path fill=\"#1C2331\" d=\"M31.724 1.492a15.139 15.139 0 0 0 .045 1.16 2.434 2.434 0 0 0-.687-.34 3.68 3.68 0 0 0-1.103-.166 2.332 2.332 0 0 0-1.14.255 1.549 1.549 0 0 0-.686.87c-.15.41-.225.98-.225 1.712 0 .939.148 1.659.444 2.161.297.503.792.754 1.487.754.452.015.9-.094 1.294-.316.296-.174.557-.4.771-.669l.14.852h1.282V.007h-1.623v1.485ZM31 6.496a1.77 1.77 0 0 1-.494.061.964.964 0 0 1-.521-.127.758.758 0 0 1-.296-.466 3.984 3.984 0 0 1-.093-.992 4.208 4.208 0 0 1 .098-1.052.753.753 0 0 1 .307-.477 1.08 1.08 0 0 1 .55-.122c.233-.004.466.026.69.089l.483.144v2.553c-.11.076-.213.143-.307.2a1.73 1.73 0 0 1-.417.189ZM35.68 0l-.702.004c-.322.002-.482.168-.48.497l.004.581c.002.33.164.493.486.49l.702-.004c.322-.002.481-.167.48-.496L36.165.49c-.002-.33-.164-.493-.486-.491ZM36.145 2.313l-1.612.01.034 5.482 1.613-.01-.035-5.482ZM39.623.79 37.989.8 38 2.306l-.946.056.006 1.009.949-.006.024 2.983c.003.476.143.844.419 1.106.275.26.658.39 1.148.387.132 0 .293-.01.483-.03.19-.02.38-.046.57-.08.163-.028.324-.068.482-.119l-.183-1.095-.702.004a.664.664 0 0 1-.456-.123.553.553 0 0 1-.14-.422l-.016-2.621 1.513-.01-.006-1.064-1.514.01-.01-1.503ZM46.226 2.388c-.41-.184-.956-.274-1.636-.27-.673.004-1.215.101-1.627.29-.402.179-.72.505-.888.91-.18.419-.268.979-.264 1.68.004.688.1 1.24.285 1.655.172.404.495.724.9.894.414.18.957.268 1.63.264.68-.004 1.224-.099 1.632-.284.4-.176.714-.501.878-.905.176-.418.263-.971.258-1.658-.004-.702-.097-1.261-.28-1.677a1.696 1.696 0 0 0-.888-.9Zm-.613 3.607a.77.77 0 0 1-.337.501 1.649 1.649 0 0 1-1.317.009.776.776 0 0 1-.343-.497 4.066 4.066 0 0 1-.105-1.02 4.136 4.136 0 0 1 .092-1.03.786.786 0 0 1 .337-.507 1.59 1.59 0 0 1 1.316-.008.79.79 0 0 1 .344.502c.078.337.113.683.105 1.03.012.343-.019.685-.092 1.02ZM52.114 2.07a2.67 2.67 0 0 0-1.128.278c-.39.191-.752.437-1.072.73l-.157-.846-1.273.008.036 5.572 1.623-.01-.024-3.78c.35-.124.646-.22.887-.286.26-.075.53-.114.8-.118l.45-.003.144-1.546-.286.001ZM22.083 7.426l-1.576-2.532a2.137 2.137 0 0 0-.172-.253 1.95 1.95 0 0 0-.304-.29.138.138 0 0 1 .042-.04 1.7 1.7 0 0 0 .328-.374l1.75-2.71c.01-.015.025-.028.024-.048-.01-.01-.021-.007-.031-.007L20.49 1.17a.078.078 0 0 0-.075.045l-.868 1.384c-.23.366-.46.732-.688 1.099a.108.108 0 0 1-.112.06c-.098-.005-.196-.001-.294-.002-.018 0-.038.006-.055-.007.002-.02.002-.039.005-.058a4.6 4.6 0 0 0 .046-.701V1.203c0-.02-.009-.032-.03-.03h-.033L16.93 1.17c-.084 0-.073-.01-.073.076v6.491c-.001.018.006.028.025.027h1.494c.083 0 .072.007.072-.071v-2.19c0-.055-.003-.11-.004-.166a3.366 3.366 0 0 0-.05-.417h.06c.104 0 .209.002.313-.002a.082.082 0 0 1 .084.05c.535.913 1.07 1.824 1.607 2.736a.104.104 0 0 0 .103.062c.554-.003 1.107-.002 1.66-.002l.069-.003-.019-.032-.188-.304ZM27.112 6.555c-.005-.08-.004-.08-.082-.08h-2.414c-.053 0-.106-.003-.159-.011a.279.279 0 0 1-.246-.209.558.558 0 0 1-.022-.15c0-.382 0-.762-.002-1.143 0-.032.007-.049.042-.044h2.504c.029.003.037-.012.034-.038V3.814c0-.089.013-.078-.076-.078h-2.44c-.07 0-.062.003-.062-.06v-.837c0-.047.004-.093.013-.14a.283.283 0 0 1 .241-.246.717.717 0 0 1 .146-.011h2.484c.024.002.035-.009.036-.033l.003-.038.03-.496c.01-.183.024-.365.034-.548.005-.085.003-.087-.082-.094-.218-.018-.437-.038-.655-.05a17.845 17.845 0 0 0-.657-.026 72.994 72.994 0 0 0-1.756-.016 1.7 1.7 0 0 0-.471.064 1.286 1.286 0 0 0-.817.655c-.099.196-.149.413-.145.633v3.875c0 .072.003.144.011.216a1.27 1.27 0 0 0 .711 1.029c.228.113.48.167.734.158.757-.005 1.515.002 2.272-.042.274-.016.548-.034.82-.053.03-.002.043-.008.04-.041-.008-.104-.012-.208-.019-.312a69.964 69.964 0 0 1-.05-.768ZM16.14 7.415l-.127-1.075c-.004-.03-.014-.04-.044-.037a13.125 13.125 0 0 1-.998.073c-.336.01-.672.02-1.008.016-.116-.001-.233-.014-.347-.039a.746.746 0 0 1-.45-.262c-.075-.1-.132-.211-.167-.33a3.324 3.324 0 0 1-.126-.773 9.113 9.113 0 0 1-.015-.749c0-.285.022-.57.065-.852.023-.158.066-.312.127-.46a.728.728 0 0 1 .518-.443 1.64 1.64 0 0 1 .397-.048c.628-.001 1.255.003 1.882.05.022.001.033-.006.036-.026l.003-.031.06-.55c.019-.177.036-.355.057-.532.004-.034-.005-.046-.04-.056a5.595 5.595 0 0 0-1.213-.21 10.783 10.783 0 0 0-.708-.02c-.24-.003-.48.01-.719.041a3.477 3.477 0 0 0-.625.14 1.912 1.912 0 0 0-.807.497c-.185.2-.33.433-.424.688a4.311 4.311 0 0 0-.24 1.096c-.031.286-.045.572-.042.86-.006.43.024.86.091 1.286.04.25.104.497.193.734.098.279.26.53.473.734.214.205.473.358.756.446.344.11.702.17 1.063.177a8.505 8.505 0 0 0 1.578-.083 6.11 6.11 0 0 0 .766-.18c.03-.008.047-.023.037-.057a.157.157 0 0 1-.003-.025Z\"/><path fill=\"#AFE229\" d=\"M6.016 6.69a1.592 1.592 0 0 0-.614.21c-.23.132-.422.32-.56.546-.044.072-.287.539-.287.539l-.836 1.528.009.006c.038.025.08.046.123.063.127.046.26.07.395.073.505.023 1.011-.007 1.517-.003.29.009.58.002.869-.022a.886.886 0 0 0 .395-.116.962.962 0 0 0 .312-.286c.056-.083.114-.163.164-.249.24-.408.48-.816.718-1.226.075-.128.148-.257.222-.386l.112-.192a1.07 1.07 0 0 0 .153-.518l-1.304.023s-1.258-.005-1.388.01Z\"/><path fill=\"#771BFF\" d=\"m2.848 9.044.76-1.39.184-.352c-.124-.067-.245-.14-.367-.21-.346-.204-.706-.384-1.045-.6a.984.984 0 0 1-.244-.207c-.108-.134-.136-.294-.144-.46-.021-.409-.002-.818-.009-1.227-.003-.195 0-.39.003-.585.004-.322.153-.553.427-.713l.833-.488c.22-.13.44-.257.662-.385.05-.029.105-.052.158-.077.272-.128.519-.047.76.085l.044.028c.123.06.242.125.358.196.318.178.635.357.952.537.095.056.187.117.275.184.194.144.254.35.266.578.016.284.007.569.006.853-.001.28.004.558 0 .838.592-.003 1.259 0 1.259 0l.723-.013c-.003-.292-.007-.584-.007-.876 0-.524.015-1.048-.016-1.571-.024-.42-.135-.8-.492-1.067a5.02 5.02 0 0 0-.506-.339A400.52 400.52 0 0 0 5.94.787C5.722.664 5.513.524 5.282.423 5.255.406 5.228.388 5.2.373 4.758.126 4.305-.026 3.807.21c-.097.046-.197.087-.29.14A699.896 699.896 0 0 0 .783 1.948c-.501.294-.773.717-.778 1.31-.004.36-.009.718-.001 1.077.016.754-.017 1.508.024 2.261.016.304.07.6.269.848.127.15.279.28.448.382.622.4 1.283.734 1.92 1.11l.183.109Z\"/></g><defs><clipPath id=\"a\"><path fill=\"#fff\" d=\"M0 0h52.4v10H0z\"/></clipPath></defs></svg>";
+}var poweredByIcon = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"53\" height=\"10\" viewBox=\"0 0 53 10\"><path fill=\"#1C2331\" d=\"M31.724 1.492a15.139 15.139 0 0 0 .045 1.16 2.434 2.434 0 0 0-.687-.34 3.68 3.68 0 0 0-1.103-.166 2.332 2.332 0 0 0-1.14.255 1.549 1.549 0 0 0-.686.87c-.15.41-.225.98-.225 1.712 0 .939.148 1.659.444 2.161.297.503.792.754 1.487.754.452.015.9-.094 1.294-.316.296-.174.557-.4.771-.669l.14.852h1.282V.007h-1.623v1.485ZM31 6.496a1.77 1.77 0 0 1-.494.061.964.964 0 0 1-.521-.127.758.758 0 0 1-.296-.466 3.984 3.984 0 0 1-.093-.992 4.208 4.208 0 0 1 .098-1.052.753.753 0 0 1 .307-.477 1.08 1.08 0 0 1 .55-.122c.233-.004.466.026.69.089l.483.144v2.553c-.11.076-.213.143-.307.2a1.73 1.73 0 0 1-.417.189ZM35.68 0l-.702.004c-.322.002-.482.168-.48.497l.004.581c.002.33.164.493.486.49l.702-.004c.322-.002.481-.167.48-.496L36.165.49c-.002-.33-.164-.493-.486-.491ZM36.145 2.313l-1.612.01.034 5.482 1.613-.01-.035-5.482ZM39.623.79 37.989.8 38 2.306l-.946.056.006 1.009.949-.006.024 2.983c.003.476.143.844.419 1.106.275.26.658.39 1.148.387.132 0 .293-.01.483-.03.19-.02.38-.046.57-.08.163-.028.324-.068.482-.119l-.183-1.095-.702.004a.664.664 0 0 1-.456-.123.553.553 0 0 1-.14-.422l-.016-2.621 1.513-.01-.006-1.064-1.514.01-.01-1.503ZM46.226 2.388c-.41-.184-.956-.274-1.636-.27-.673.004-1.215.101-1.627.29-.402.179-.72.505-.888.91-.18.419-.268.979-.264 1.68.004.688.1 1.24.285 1.655.172.404.495.724.9.894.414.18.957.268 1.63.264.68-.004 1.224-.099 1.632-.284.4-.176.714-.501.878-.905.176-.418.263-.971.258-1.658-.004-.702-.097-1.261-.28-1.677a1.696 1.696 0 0 0-.888-.9Zm-.613 3.607a.77.77 0 0 1-.337.501 1.649 1.649 0 0 1-1.317.009.776.776 0 0 1-.343-.497 4.066 4.066 0 0 1-.105-1.02 4.136 4.136 0 0 1 .092-1.03.786.786 0 0 1 .337-.507 1.59 1.59 0 0 1 1.316-.008.79.79 0 0 1 .344.502c.078.337.113.683.105 1.03.012.343-.019.685-.092 1.02ZM52.114 2.07a2.67 2.67 0 0 0-1.128.278c-.39.191-.752.437-1.072.73l-.157-.846-1.273.008.036 5.572 1.623-.01-.024-3.78c.35-.124.646-.22.887-.286.26-.075.53-.114.8-.118l.45-.003.144-1.546-.286.001ZM22.083 7.426l-1.576-2.532a2.137 2.137 0 0 0-.172-.253 1.95 1.95 0 0 0-.304-.29.138.138 0 0 1 .042-.04 1.7 1.7 0 0 0 .328-.374l1.75-2.71c.01-.015.025-.028.024-.048-.01-.01-.021-.007-.031-.007L20.49 1.17a.078.078 0 0 0-.075.045l-.868 1.384c-.23.366-.46.732-.688 1.099a.108.108 0 0 1-.112.06c-.098-.005-.196-.001-.294-.002-.018 0-.038.006-.055-.007.002-.02.002-.039.005-.058a4.6 4.6 0 0 0 .046-.701V1.203c0-.02-.009-.032-.03-.03h-.033L16.93 1.17c-.084 0-.073-.01-.073.076v6.491c-.001.018.006.028.025.027h1.494c.083 0 .072.007.072-.071v-2.19c0-.055-.003-.11-.004-.166a3.366 3.366 0 0 0-.05-.417h.06c.104 0 .209.002.313-.002a.082.082 0 0 1 .084.05c.535.913 1.07 1.824 1.607 2.736a.104.104 0 0 0 .103.062c.554-.003 1.107-.002 1.66-.002l.069-.003-.019-.032-.188-.304ZM27.112 6.555c-.005-.08-.004-.08-.082-.08h-2.414c-.053 0-.106-.003-.159-.011a.279.279 0 0 1-.246-.209.558.558 0 0 1-.022-.15c0-.382 0-.762-.002-1.143 0-.032.007-.049.042-.044h2.504c.029.003.037-.012.034-.038V3.814c0-.089.013-.078-.076-.078h-2.44c-.07 0-.062.003-.062-.06v-.837c0-.047.004-.093.013-.14a.283.283 0 0 1 .241-.246.717.717 0 0 1 .146-.011h2.484c.024.002.035-.009.036-.033l.003-.038.03-.496c.01-.183.024-.365.034-.548.005-.085.003-.087-.082-.094-.218-.018-.437-.038-.655-.05a17.845 17.845 0 0 0-.657-.026 72.994 72.994 0 0 0-1.756-.016 1.7 1.7 0 0 0-.471.064 1.286 1.286 0 0 0-.817.655c-.099.196-.149.413-.145.633v3.875c0 .072.003.144.011.216a1.27 1.27 0 0 0 .711 1.029c.228.113.48.167.734.158.757-.005 1.515.002 2.272-.042.274-.016.548-.034.82-.053.03-.002.043-.008.04-.041-.008-.104-.012-.208-.019-.312a69.964 69.964 0 0 1-.05-.768ZM16.14 7.415l-.127-1.075c-.004-.03-.014-.04-.044-.037a13.125 13.125 0 0 1-.998.073c-.336.01-.672.02-1.008.016-.116-.001-.233-.014-.347-.039a.746.746 0 0 1-.45-.262c-.075-.1-.132-.211-.167-.33a3.324 3.324 0 0 1-.126-.773 9.113 9.113 0 0 1-.015-.749c0-.285.022-.57.065-.852.023-.158.066-.312.127-.46a.728.728 0 0 1 .518-.443 1.64 1.64 0 0 1 .397-.048c.628-.001 1.255.003 1.882.05.022.001.033-.006.036-.026l.003-.031.06-.55c.019-.177.036-.355.057-.532.004-.034-.005-.046-.04-.056a5.595 5.595 0 0 0-1.213-.21 10.783 10.783 0 0 0-.708-.02c-.24-.003-.48.01-.719.041a3.477 3.477 0 0 0-.625.14 1.912 1.912 0 0 0-.807.497c-.185.2-.33.433-.424.688a4.311 4.311 0 0 0-.24 1.096c-.031.286-.045.572-.042.86-.006.43.024.86.091 1.286.04.25.104.497.193.734.098.279.26.53.473.734.214.205.473.358.756.446.344.11.702.17 1.063.177a8.505 8.505 0 0 0 1.578-.083 6.11 6.11 0 0 0 .766-.18c.03-.008.047-.023.037-.057a.157.157 0 0 1-.003-.025Z\"/><path fill=\"#AFE229\" d=\"M6.016 6.69a1.592 1.592 0 0 0-.614.21c-.23.132-.422.32-.56.546-.044.072-.287.539-.287.539l-.836 1.528.009.006c.038.025.08.046.123.063.127.046.26.07.395.073.505.023 1.011-.007 1.517-.003.29.009.58.002.869-.022a.886.886 0 0 0 .395-.116.962.962 0 0 0 .312-.286c.056-.083.114-.163.164-.249.24-.408.48-.816.718-1.226.075-.128.148-.257.222-.386l.112-.192a1.07 1.07 0 0 0 .153-.518l-1.304.023s-1.258-.005-1.388.01Z\"/><path fill=\"#771BFF\" d=\"m2.848 9.044.76-1.39.184-.352c-.124-.067-.245-.14-.367-.21-.346-.204-.706-.384-1.045-.6a.984.984 0 0 1-.244-.207c-.108-.134-.136-.294-.144-.46-.021-.409-.002-.818-.009-1.227-.003-.195 0-.39.003-.585.004-.322.153-.553.427-.713l.833-.488c.22-.13.44-.257.662-.385.05-.029.105-.052.158-.077.272-.128.519-.047.76.085l.044.028c.123.06.242.125.358.196.318.178.635.357.952.537.095.056.187.117.275.184.194.144.254.35.266.578.016.284.007.569.006.853-.001.28.004.558 0 .838.592-.003 1.259 0 1.259 0l.723-.013c-.003-.292-.007-.584-.007-.876 0-.524.015-1.048-.016-1.571-.024-.42-.135-.8-.492-1.067a5.02 5.02 0 0 0-.506-.339A400.52 400.52 0 0 0 5.94.787C5.722.664 5.513.524 5.282.423 5.255.406 5.228.388 5.2.373 4.758.126 4.305-.026 3.807.21c-.097.046-.197.087-.29.14A699.896 699.896 0 0 0 .783 1.948c-.501.294-.773.717-.778 1.31-.004.36-.009.718-.001 1.077.016.754-.017 1.508.024 2.261.016.304.07.6.269.848.127.15.279.28.448.382.622.4 1.283.734 1.92 1.11l.183.109Z\"/></svg>";
 /**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 const ICON_WIDTH = 53;
 const ICON_HEIGHT = 10;
+// ⚠ Note, whenever changing the threshold, make sure to update the docs/support/managing-ckeditor-logo.md docs
+// as this information is also mentioned there ⚠.
 const NARROW_ROOT_HEIGHT_THRESHOLD = 50;
 const NARROW_ROOT_WIDTH_THRESHOLD = 350;
 const DEFAULT_LABEL = 'Powered by';
@@ -56980,8 +57376,9 @@ class PoweredBy extends DomEmitterMixin() {
      */
     _handleEditorReady() {
         const editor = this.editor;
+        const forceVisible = !!editor.config.get('ui.poweredBy.forceVisible');
         /* istanbul ignore next -- @preserve */
-        if (verifyLicense(editor.config.get('licenseKey')) === 'VALID') {
+        if (!forceVisible && verifyLicense(editor.config.get('licenseKey')) === 'VALID') {
             return;
         }
         // No view means no body collection to append the powered by balloon to.
@@ -57237,6 +57634,7 @@ class EditorUI extends ObservableMixin() {
          * All available & focusable toolbars.
          */
         this._focusableToolbarDefinitions = [];
+        const editingView = editor.editing.view;
         this.editor = editor;
         this.componentFactory = new ComponentFactory(editor);
         this.focusTracker = new FocusTracker();
@@ -57247,7 +57645,8 @@ class EditorUI extends ObservableMixin() {
             this.isReady = true;
         });
         // Informs UI components that should be refreshed after layout change.
-        this.listenTo(editor.editing.view.document, 'layoutChanged', () => this.update());
+        this.listenTo(editingView.document, 'layoutChanged', this.update.bind(this));
+        this.listenTo(editingView, 'scrollToTheSelection', this._handleScrollToTheSelection.bind(this));
         this._initFocusTracking();
     }
     /**
@@ -57564,6 +57963,26 @@ class EditorUI extends ObservableMixin() {
         }
         toolbarView.focus();
         return true;
+    }
+    /**
+     * Provides an integration between {@link #viewportOffset} and {@link module:utils/dom/scroll~scrollViewportToShowTarget}.
+     * It allows the UI-agnostic engine method to consider user-configured viewport offsets specific for the integration.
+     *
+     * @param evt The `scrollToTheSelection` event info.
+     * @param data The payload carried by the `scrollToTheSelection` event.
+     */
+    _handleScrollToTheSelection(evt, data) {
+        const configuredViewportOffset = {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            ...this.viewportOffset
+        };
+        data.viewportOffset.top += configuredViewportOffset.top;
+        data.viewportOffset.bottom += configuredViewportOffset.bottom;
+        data.viewportOffset.left += configuredViewportOffset.left;
+        data.viewportOffset.right += configuredViewportOffset.right;
     }
 }
 /**
@@ -59311,21 +59730,10 @@ class BlockToolbar extends Plugin {
      * **Note:** This needs to be done after all plugins are ready.
      */
     afterInit() {
-        const factory = this.editor.ui.componentFactory;
-        const config = this._blockToolbarConfig;
-        this.toolbarView.fillFromConfig(config, factory);
+        this.toolbarView.fillFromConfig(this._blockToolbarConfig, this.editor.ui.componentFactory);
         // Hide panel before executing each button in the panel.
         for (const item of this.toolbarView.items) {
             item.on('execute', () => this._hidePanel(true), { priority: 'high' });
-        }
-        if (!config.shouldNotGroupWhenFull) {
-            this.listenTo(this.editor, 'ready', () => {
-                const editableElement = this.editor.ui.view.editable.element;
-                // Set #toolbarView's max-width just after the initialization and update it on the editable resize.
-                this._resizeObserver = new ResizeObserver(editableElement, () => {
-                    this.toolbarView.maxWidth = this._getToolbarMaxWidth();
-                });
-            });
         }
     }
     /**
@@ -59428,6 +59836,8 @@ class BlockToolbar extends Plugin {
         const domTarget = view.domConverter.mapViewToDom(editor.editing.mapper.toViewElement(modelTarget));
         // Show block button.
         this.buttonView.isVisible = true;
+        // Make sure that the block toolbar panel is resized properly.
+        this._setupToolbarResize();
         // Attach block button to target DOM element.
         this._attachButtonToElement(domTarget);
         // When panel is opened then refresh it position to be properly aligned with block button.
@@ -59478,14 +59888,22 @@ class BlockToolbar extends Plugin {
         //
         // https://github.com/ckeditor/ckeditor5/issues/6449, https://github.com/ckeditor/ckeditor5/issues/6575
         this.panelView.show();
-        this.toolbarView.maxWidth = this._getToolbarMaxWidth();
+        const editableElement = this._getSelectedEditableElement();
+        this.toolbarView.maxWidth = this._getToolbarMaxWidth(editableElement);
         this.panelView.pin({
             target: this.buttonView.element,
-            limiter: this.editor.ui.getEditableElement()
+            limiter: editableElement
         });
         if (!wasVisible) {
             this.toolbarView.items.get(0).focus();
         }
+    }
+    /**
+     * Returns currently selected editable, based on the model selection.
+     */
+    _getSelectedEditableElement() {
+        const selectedModelRootName = this.editor.model.document.selection.getFirstRange().root.rootName;
+        return this.editor.ui.getEditableElement(selectedModelRootName);
     }
     /**
      * Hides the {@link #toolbarView}.
@@ -59505,9 +59923,9 @@ class BlockToolbar extends Plugin {
      */
     _attachButtonToElement(targetElement) {
         const contentStyles = window.getComputedStyle(targetElement);
-        const editableRect = new Rect(this.editor.ui.getEditableElement());
+        const editableRect = new Rect(this._getSelectedEditableElement());
         const contentPaddingTop = parseInt(contentStyles.paddingTop, 10);
-        // When line height is not an integer then thread it as "normal".
+        // When line height is not an integer then treat it as "normal".
         // MDN says that 'normal' == ~1.2 on desktop browsers.
         const contentLineHeight = parseInt(contentStyles.lineHeight, 10) || parseInt(contentStyles.fontSize, 10) * 1.2;
         const position = getOptimalPosition({
@@ -59533,13 +59951,31 @@ class BlockToolbar extends Plugin {
         this.buttonView.left = position.left;
     }
     /**
-     * Gets the {@link #toolbarView} max-width, based on
-     * editable width plus distance between farthest edge of the {@link #buttonView} and the editable.
+     * Creates a resize observer that observes selected editable and resizes the toolbar panel accordingly.
+     */
+    _setupToolbarResize() {
+        const editableElement = this._getSelectedEditableElement();
+        // Do this only if the automatic grouping is turned on.
+        if (!this._blockToolbarConfig.shouldNotGroupWhenFull) {
+            // If resize observer is attached to a different editable than currently selected editable, re-attach it.
+            if (this._resizeObserver && this._resizeObserver.element !== editableElement) {
+                this._resizeObserver.destroy();
+                this._resizeObserver = null;
+            }
+            if (!this._resizeObserver) {
+                this._resizeObserver = new ResizeObserver(editableElement, () => {
+                    this.toolbarView.maxWidth = this._getToolbarMaxWidth(editableElement);
+                });
+            }
+        }
+    }
+    /**
+     * Gets the {@link #toolbarView} max-width, based on given `editableElement` width plus the distance between the farthest
+     * edge of the {@link #buttonView} and the editable.
      *
      * @returns A maximum width that toolbar can have, in pixels.
      */
-    _getToolbarMaxWidth() {
-        const editableElement = this.editor.ui.view.editable.element;
+    _getToolbarMaxWidth(editableElement) {
         const editableRect = new Rect(editableElement);
         const buttonRect = new Rect(this.buttonView.element);
         const isRTL = this.editor.locale.uiLanguageDirection === 'rtl';
@@ -59553,7 +59989,7 @@ class BlockToolbar extends Plugin {
  */
 const icons = {
     colorPaletteIcon
-};var index$5=/*#__PURE__*/Object.freeze({__proto__:null,icons:icons,clickOutsideHandler:clickOutsideHandler,injectCssTransitionDisabler:injectCssTransitionDisabler,CssTransitionDisablerMixin:CssTransitionDisablerMixin,submitHandler:submitHandler,addKeyboardHandlingForGrid:addKeyboardHandlingForGrid,BodyCollection:BodyCollection,ButtonView:ButtonView,SwitchButtonView:SwitchButtonView,ColorGridView:ColorGridView,ColorTileView:ColorTileView,ColorPickerView:ColorPickerView,ComponentFactory:ComponentFactory,DropdownView:DropdownView,DropdownPanelView:DropdownPanelView,DropdownButtonView:DropdownButtonView,SplitButtonView:SplitButtonView,EditorUI:EditorUI,EditorUIView:EditorUIView,BoxedEditorUIView:BoxedEditorUIView,InlineEditableUIView:InlineEditableUIView,FormHeaderView:FormHeaderView,FocusCycler:FocusCycler,IconView:IconView,InputView:InputView,InputTextView:InputTextView,InputNumberView:InputNumberView,IframeView:IframeView,LabelView:LabelView,LabeledFieldView:LabeledFieldView,ListItemView:ListItemView,ListView:ListView,Notification:Notification,Model:Model,BalloonPanelView:BalloonPanelView,ContextualBalloon:ContextualBalloon,StickyPanelView:StickyPanelView,TooltipManager:TooltipManager,Template:Template,ToolbarView:ToolbarView,ToolbarSeparatorView:ToolbarSeparatorView,normalizeToolbarConfig:normalizeToolbarConfig,BalloonToolbar:BalloonToolbar,BlockToolbar:BlockToolbar,View:View$1,ViewCollection:ViewCollection,getLocalizedColorOptions:getLocalizedColorOptions,normalizeColorOptions:normalizeColorOptions,normalizeSingleColorDefinition:normalizeSingleColorDefinition,createDropdown:createDropdown,addToolbarToDropdown:addToolbarToDropdown,addListToDropdown:addListToDropdown,focusChildOnDropdownOpen:focusChildOnDropdownOpen,createLabeledInputText:createLabeledInputText,createLabeledInputNumber:createLabeledInputNumber,createLabeledDropdown:createLabeledDropdown});/**
+};var index$5=/*#__PURE__*/Object.freeze({__proto__:null,icons:icons,clickOutsideHandler:clickOutsideHandler,injectCssTransitionDisabler:injectCssTransitionDisabler,CssTransitionDisablerMixin:CssTransitionDisablerMixin,submitHandler:submitHandler,addKeyboardHandlingForGrid:addKeyboardHandlingForGrid,BodyCollection:BodyCollection,ButtonView:ButtonView,SwitchButtonView:SwitchButtonView,ColorGridView:ColorGridView,ColorTileView:ColorTileView,ColorPickerView:ColorPickerView,ComponentFactory:ComponentFactory,DropdownView:DropdownView,DropdownPanelView:DropdownPanelView,DropdownButtonView:DropdownButtonView,SplitButtonView:SplitButtonView,EditorUI:EditorUI,EditorUIView:EditorUIView,BoxedEditorUIView:BoxedEditorUIView,InlineEditableUIView:InlineEditableUIView,FormHeaderView:FormHeaderView,FocusCycler:FocusCycler,IconView:IconView,InputView:InputView,InputTextView:InputTextView,InputNumberView:InputNumberView,IframeView:IframeView,LabelView:LabelView,LabeledFieldView:LabeledFieldView,ListItemView:ListItemView,ListView:ListView,Notification:Notification,Model:Model,BalloonPanelView:BalloonPanelView,ContextualBalloon:ContextualBalloon,StickyPanelView:StickyPanelView,TooltipManager:TooltipManager,Template:Template,ToolbarView:ToolbarView,ToolbarLineBreakView:ToolbarLineBreakView,ToolbarSeparatorView:ToolbarSeparatorView,normalizeToolbarConfig:normalizeToolbarConfig,BalloonToolbar:BalloonToolbar,BlockToolbar:BlockToolbar,View:View$1,ViewCollection:ViewCollection,getLocalizedColorOptions:getLocalizedColorOptions,normalizeColorOptions:normalizeColorOptions,normalizeSingleColorDefinition:normalizeSingleColorDefinition,createDropdown:createDropdown,addToolbarToDropdown:addToolbarToDropdown,addListToDropdown:addListToDropdown,focusChildOnDropdownOpen:focusChildOnDropdownOpen,createLabeledInputText:createLabeledInputText,createLabeledInputNumber:createLabeledInputNumber,createLabeledDropdown:createLabeledDropdown});/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -59572,6 +60008,7 @@ class ClassicEditorUI extends EditorUI {
         this.view = view;
         this._toolbarConfig = normalizeToolbarConfig(editor.config.get('toolbar'));
         this._elementReplacer = new ElementReplacer();
+        this.listenTo(editor.editing.view, 'scrollToTheSelection', this._handleScrollToTheSelectionWithStickyPanel.bind(this));
     }
     /**
      * @inheritDoc
@@ -59669,6 +60106,34 @@ class ClassicEditorUI extends EditorUI {
                 isDirectHost: false,
                 keepOnFocus: true
             });
+        }
+    }
+    /**
+     * Provides an integration between the sticky toolbar and {@link module:utils/dom/scroll~scrollViewportToShowTarget}.
+     * It allows the UI-agnostic engine method to consider the geometry of the
+     * {@link module:editor-classic/classiceditoruiview~ClassicEditorUIView#stickyPanel} that pins to the
+     * edge of the viewport and can obscure the user caret after scrolling the window.
+     *
+     * @param evt The `scrollToTheSelection` event info.
+     * @param data The payload carried by the `scrollToTheSelection` event.
+     * @param originalArgs The original arguments passed to `scrollViewportToShowTarget()` method (see implementation to learn more).
+     */
+    _handleScrollToTheSelectionWithStickyPanel(evt, data, originalArgs) {
+        const stickyPanel = this.view.stickyPanel;
+        if (stickyPanel.isSticky) {
+            const stickyPanelHeight = new Rect(stickyPanel.element).height;
+            data.viewportOffset.top += stickyPanelHeight;
+        }
+        else {
+            const scrollViewportOnPanelGettingSticky = () => {
+                this.editor.editing.view.scrollToTheSelection(originalArgs);
+            };
+            this.listenTo(stickyPanel, 'change:isSticky', scrollViewportOnPanelGettingSticky);
+            // This works as a post-scroll-fixer because it's impossible predict whether the panel will be sticky after scrolling or not.
+            // Listen for a short period of time only and if the toolbar does not become sticky very soon, cancel the listener.
+            setTimeout(() => {
+                this.stopListening(stickyPanel, 'change:isSticky', scrollViewportOnPanelGettingSticky);
+            }, 20);
         }
     }
 }var css_248z$z = ".ck.ck-editor{position:relative}.ck.ck-editor .ck-editor__top .ck-sticky-panel .ck-toolbar{z-index:var(--ck-z-modal)}.ck.ck-editor__top .ck-sticky-panel .ck-toolbar{border-radius:0}.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,.ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius);border-bottom-left-radius:0;border-bottom-right-radius:0}.ck.ck-editor__top .ck-sticky-panel .ck-toolbar{border-bottom-width:0}.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar{border-bottom-width:1px;border-radius:0}.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar,.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius);border-radius:0}.ck.ck-editor__main>.ck-editor__editable{background:var(--ck-color-base-background);border-radius:0}.ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable,.ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){border-color:var(--ck-color-base-border)}";
@@ -62193,13 +62658,13 @@ class Typing extends Plugin {
  */
 function getLastTextLine(range, model) {
     let start = range.start;
-    const text = Array.from(range.getItems()).reduce((rangeText, node) => {
+    const text = Array.from(range.getWalker({ ignoreElementEnd: false })).reduce((rangeText, { item }) => {
         // Trim text to a last occurrence of an inline element and update range start.
-        if (!(node.is('$text') || node.is('$textProxy'))) {
-            start = model.createPositionAfter(node);
+        if (!(item.is('$text') || item.is('$textProxy'))) {
+            start = model.createPositionAfter(item);
             return '';
         }
-        return rangeText + node.data;
+        return rangeText + item.data;
     }, '');
     return { text, range: model.createRange(start, range.end) };
 }/**
@@ -70756,7 +71221,7 @@ class HeadingEditing extends Plugin {
             view: 'h1',
             // With a `low` priority, `paragraph` plugin autoparagraphing mechanism is executed. Make sure
             // this listener is called before it. If not, `h1` will be transformed into a paragraph.
-            converterPriority: priorities.get('low') + 1
+            converterPriority: priorities.low + 1
         });
     }
 }/**
@@ -75538,6 +76003,7 @@ function insertNewEmptyList(listStyle, element, writer) {
  */
 function transformElementIntoListItem(element, writer) {
     removeBulletElement(element, writer);
+    writer.removeStyle('text-indent', element); // #12361
     return writer.rename('li', element);
 }
 /**
@@ -75924,7 +76390,7 @@ class MSWordNormalizer {
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 /**
- * Removes `<b>` tag wrapper added by Google Docs to a copied content.
+ * Removes the `<b>` tag wrapper added by Google Docs to a copied content.
  *
  * @param documentFragment element `data.content` obtained from clipboard
  */
@@ -76035,7 +76501,7 @@ class GoogleDocsNormalizer {
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 /**
- * Removes `xmlns` attribute from table pasted from Google Sheets.
+ * Removes the `xmlns` attribute from table pasted from Google Sheets.
  *
  * @param documentFragment element `data.content` obtained from clipboard
  */
@@ -76050,7 +76516,7 @@ function removeXmlns(documentFragment, writer) {
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 /**
- * Removes `<google-sheets-html-origin>` tag wrapper added by Google Sheets to a copied content.
+ * Removes the `<google-sheets-html-origin>` tag wrapper added by Google Sheets to a copied content.
  *
  * @param documentFragment element `data.content` obtained from clipboard
  */
@@ -76067,7 +76533,7 @@ function removeGoogleSheetsTag(documentFragment, writer) {
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 /**
- * Removes `width:0px` style from table pasted from Google Sheets.
+ * Removes the `width:0px` style from table pasted from Google Sheets.
  *
  * @param documentFragment element `data.content` obtained from clipboard
  */
@@ -76075,6 +76541,21 @@ function removeInvalidTableWidth(documentFragment, writer) {
     for (const child of documentFragment.getChildren()) {
         if (child.is('element', 'table') && child.getStyle('width') === '0px') {
             writer.removeStyle('width', child);
+        }
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * Removes `<style>` block added by Google Sheets to a copied content.
+ *
+ * @param documentFragment element `data.content` obtained from clipboard
+ */
+function removeStyleBlock(documentFragment, writer) {
+    for (const child of Array.from(documentFragment.getChildren())) {
+        if (child.is('element', 'style')) {
+            writer.remove(child);
         }
     }
 }/**
@@ -76109,6 +76590,7 @@ class GoogleSheetsNormalizer {
         removeGoogleSheetsTag(documentFragment, writer);
         removeXmlns(documentFragment, writer);
         removeInvalidTableWidth(documentFragment, writer);
+        removeStyleBlock(documentFragment, writer);
         data.content = documentFragment;
     }
 }/**
@@ -76174,7 +76656,7 @@ function normalizeSafariSpaceSpans(htmlString) {
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 /**
- * Parses provided HTML extracting contents of `<body>` and `<style>` tags.
+ * Parses the provided HTML extracting contents of `<body>` and `<style>` tags.
  *
  * @param htmlString HTML string to be parsed.
  */
@@ -76307,7 +76789,9 @@ class PasteFromOffice extends Plugin {
             const htmlString = data.dataTransfer.getData('text/html');
             const activeNormalizer = normalizers.find(normalizer => normalizer.isActive(htmlString));
             if (activeNormalizer) {
-                data._parsedData = parseHtml(htmlString, viewDocument.stylesProcessor);
+                if (!data._parsedData) {
+                    data._parsedData = parseHtml(htmlString, viewDocument.stylesProcessor);
+                }
                 activeNormalizer.execute(data);
                 data._isTransformedWithPasteFromOffice = true;
             }
@@ -87324,7 +87808,11 @@ class StyleUtils extends Plugin {
                         modelElements.push(appliesToBlock);
                     }
                     else if (ghsDefinition.isBlock) {
+                        const ghsBlockDefinition = ghsDefinition;
                         modelElements.push(ghsDefinition.model);
+                        if (ghsBlockDefinition.paragraphLikeModel) {
+                            modelElements.push(ghsBlockDefinition.paragraphLikeModel);
+                        }
                     }
                 }
                 else {
@@ -88366,6 +88854,21 @@ function modifyGhsAttribute(writer, item, ghsAttributeName, subject, callback) {
             writer.removeAttribute(ghsAttributeName, item);
         }
     }
+}
+/**
+ * Transforms passed string to PascalCase format. Examples:
+ * * `div` => `Div`
+ * * `h1` => `H1`
+ * * `table` => `Table`
+ */
+function toPascalCase(data) {
+    return startCase$1(data).replace(/ /g, '');
+}
+/**
+ * Returns the attribute name of the model element that holds raw HTML attributes.
+ */
+function getHtmlAttributeName(viewElementName) {
+    return `html${toPascalCase(viewElementName)}Attributes`;
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -88395,7 +88898,7 @@ function toObjectWidgetConverter(editor, { view: viewName, isInline }) {
     return (modelElement, { writer }) => {
         const widgetLabel = t('HTML object');
         const viewElement = createObjectView(viewName, modelElement, writer);
-        const viewAttributes = modelElement.getAttribute('htmlAttributes');
+        const viewAttributes = modelElement.getAttribute(getHtmlAttributeName(viewName));
         writer.addClass('html-object-embed__content', viewElement);
         if (viewAttributes) {
             setViewAttributes(writer, viewAttributes, viewElement);
@@ -88472,7 +88975,7 @@ function attributeToViewInlineConverter({ priority, view: viewName }) {
 /**
  * View-to-model conversion helper preserving allowed attributes on block element.
  *
- * All matched attributes will be preserved on `htmlAttributes` attribute.
+ * All matched attributes will be preserved on `html*Attributes` attribute.
  *
  * @returns Returns a conversion callback.
 */
@@ -88487,21 +88990,22 @@ function viewToModelBlockAttributeConverter({ view: viewName }, dataFilter) {
                 return;
             }
             const viewAttributes = dataFilter.processViewAttributes(data.viewItem, conversionApi);
-            if (viewAttributes) {
-                conversionApi.writer.setAttribute('htmlAttributes', viewAttributes, data.modelRange);
+            if (!viewAttributes) {
+                return;
             }
+            conversionApi.writer.setAttribute(getHtmlAttributeName(data.viewItem.name), viewAttributes, data.modelRange);
         }, { priority: 'low' });
     };
 }
 /**
- * Model-to-view conversion helper applying attributes preserved in `htmlAttributes` attribute
+ * Model-to-view conversion helper applying attributes preserved in `html*Attributes` attribute
  * for block elements.
  *
  * @returns Returns a conversion callback.
 */
-function modelToViewBlockAttributeConverter({ model: modelName }) {
+function modelToViewBlockAttributeConverter({ view: viewName, model: modelName }) {
     return (dispatcher) => {
-        dispatcher.on(`attribute:htmlAttributes:${modelName}`, (evt, data, conversionApi) => {
+        dispatcher.on(`attribute:${getHtmlAttributeName(viewName)}:${modelName}`, (evt, data, conversionApi) => {
             if (!conversionApi.consumable.consume(data.item, evt.name)) {
                 return;
             }
@@ -89026,17 +89530,20 @@ var defaultConfig = {
         {
             model: 'htmlLiAttributes',
             view: 'li',
-            appliesToBlock: true
+            appliesToBlock: true,
+            coupledAttribute: 'listItemId'
         },
         {
-            model: 'htmlListAttributes',
+            model: 'htmlOlAttributes',
             view: 'ol',
-            appliesToBlock: true
+            appliesToBlock: true,
+            coupledAttribute: 'listItemId'
         },
         {
-            model: 'htmlListAttributes',
+            model: 'htmlUlAttributes',
             view: 'ul',
-            appliesToBlock: true
+            appliesToBlock: true,
+            coupledAttribute: 'listItemId'
         },
         {
             model: 'htmlFigureAttributes',
@@ -89458,6 +89965,7 @@ var defaultConfig = {
             view: '$customElement',
             modelSchema: {
                 allowWhere: ['$text', '$block'],
+                allowAttributesOf: '$inlineObject',
                 isInline: true
             }
         }
@@ -89699,7 +90207,8 @@ class DataFilter extends Plugin {
         this._coupledAttributes = null;
         this._registerElementsAfterInit();
         this._registerElementHandlers();
-        this._registerModelPostFixer();
+        this._registerCoupledAttributesPostFixer();
+        this._registerAssociatedHtmlAttributesPostFixer();
     }
     /**
      * @inheritDoc
@@ -89857,7 +90366,7 @@ class DataFilter extends Plugin {
             }, {
                 // With the highest priority listener we are able to register elements right before
                 // running data conversion.
-                priority: priorities.get('highest') + 1
+                priority: priorities.highest + 1
             });
         }
     }
@@ -89879,7 +90388,7 @@ class DataFilter extends Plugin {
             // * Make sure no other features hook into this event before GHS because otherwise the
             // downcast conversion (for these features) could run before GHS registered its converters
             // (https://github.com/ckeditor/ckeditor5/issues/11356).
-            priority: priorities.get('highest') + 1
+            priority: priorities.highest + 1
         });
     }
     /**
@@ -89938,7 +90447,7 @@ class DataFilter extends Plugin {
      * The `htmlA` attribute would stay in the model and would cause GHS to generate an `<a>` element.
      * This is incorrect from UX point of view, as the user wanted to remove the whole link (not only `href`).
      */
-    _registerModelPostFixer() {
+    _registerCoupledAttributesPostFixer() {
         const model = this.editor.model;
         model.document.registerPostFixer(writer => {
             const changes = model.document.differ.getChanges();
@@ -89961,6 +90470,57 @@ class DataFilter extends Plugin {
                             writer.removeAttribute(attributeKey, item);
                             changed = true;
                         }
+                    }
+                }
+            }
+            return changed;
+        });
+    }
+    /**
+     * Removes `html*Attributes` attributes from incompatible elements.
+     *
+     * For example, consider the following HTML:
+     *
+     * ```html
+     * <heading2 htmlH2Attributes="...">foobar[]</heading2>
+     * ```
+     *
+     * Pressing `enter` creates a new `paragraph` element that inherits
+     * the `htmlH2Attributes` attribute from `heading2`.
+     *
+     * ```html
+     * <heading2 htmlH2Attributes="...">foobar</heading2>
+     * <paragraph htmlH2Attributes="...">[]</paragraph>
+     * ```
+     *
+     * This postfixer ensures that this doesn't happen, and that elements can
+     * only have `html*Attributes` associated with them,
+     * e.g.: `htmlPAttributes` for `<p>`, `htmlDivAttributes` for `<div>`, etc.
+     *
+     * With it enabled, pressing `enter` at the end of `<heading2>` will create
+     * a new paragraph without the `htmlH2Attributes` attribute.
+     *
+     * ```html
+     * <heading2 htmlH2Attributes="...">foobar</heading2>
+     * <paragraph>[]</paragraph>
+     * ```
+     */
+    _registerAssociatedHtmlAttributesPostFixer() {
+        const model = this.editor.model;
+        model.document.registerPostFixer(writer => {
+            const changes = model.document.differ.getChanges();
+            let changed = false;
+            for (const change of changes) {
+                if (change.type !== 'insert' || change.name === '$text') {
+                    continue;
+                }
+                for (const attr of change.attributes.keys()) {
+                    if (!attr.startsWith('html') || !attr.endsWith('Attributes')) {
+                        continue;
+                    }
+                    if (!model.schema.checkAttribute(change.name, attr)) {
+                        writer.removeAttribute(attr, change.position.nodeAfter);
+                        changed = true;
                     }
                 }
             }
@@ -90012,7 +90572,7 @@ class DataFilter extends Plugin {
             return;
         }
         schema.extend(definition.model, {
-            allowAttributes: ['htmlAttributes', 'htmlContent']
+            allowAttributes: [getHtmlAttributeName(viewName), 'htmlContent']
         });
         // Store element content in special `$rawContent` custom property to
         // avoid editor's data filtering mechanism.
@@ -90024,15 +90584,14 @@ class DataFilter extends Plugin {
             model: viewToModelObjectConverter(definition),
             // With a `low` priority, `paragraph` plugin auto-paragraphing mechanism is executed. Make sure
             // this listener is called before it. If not, some elements will be transformed into a paragraph.
-            converterPriority: priorities.get('low') + 1
+            // `+ 2` is used to take priority over `_addDefaultH1Conversion` in the Heading plugin.
+            converterPriority: priorities.low + 2
         });
         conversion.for('upcast').add(viewToModelBlockAttributeConverter(definition, this));
         conversion.for('editingDowncast').elementToStructure({
             model: {
                 name: modelName,
-                attributes: [
-                    'htmlAttributes'
-                ]
+                attributes: [getHtmlAttributeName(viewName)]
             },
             view: toObjectWidgetConverter(editor, definition)
         });
@@ -90062,7 +90621,8 @@ class DataFilter extends Plugin {
                 view: viewName,
                 // With a `low` priority, `paragraph` plugin auto-paragraphing mechanism is executed. Make sure
                 // this listener is called before it. If not, some elements will be transformed into a paragraph.
-                converterPriority: priorities.get('low') + 1
+                // `+ 2` is used to take priority over `_addDefaultH1Conversion` in the Heading plugin.
+                converterPriority: priorities.low + 2
             });
             conversion.for('downcast').elementToElement({
                 model: modelName,
@@ -90073,7 +90633,7 @@ class DataFilter extends Plugin {
             return;
         }
         schema.extend(definition.model, {
-            allowAttributes: 'htmlAttributes'
+            allowAttributes: getHtmlAttributeName(viewName)
         });
         conversion.for('upcast').add(viewToModelBlockAttributeConverter(definition, this));
         conversion.for('downcast').add(modelToViewBlockAttributeConverter(definition));
@@ -90284,7 +90844,7 @@ class CodeBlockElementSupport extends Plugin {
             const conversion = editor.conversion;
             // Extend codeBlock to allow attributes required by attribute filtration.
             schema.extend('codeBlock', {
-                allowAttributes: ['htmlAttributes', 'htmlContentAttributes']
+                allowAttributes: ['htmlPreAttributes', 'htmlContentAttributes']
             });
             conversion.for('upcast').add(viewToModelCodeBlockAttributeConverter(dataFilter));
             conversion.for('downcast').add(modelToViewCodeBlockAttributeConverter());
@@ -90296,7 +90856,7 @@ class CodeBlockElementSupport extends Plugin {
  * View-to-model conversion helper preserving allowed attributes on {@link module:code-block/codeblock~CodeBlock Code Block}
  * feature model element.
  *
- * Attributes are preserved as a value of `htmlAttributes` model attribute.
+ * Attributes are preserved as a value of `html*Attributes` model attribute.
  * @param dataFilter
  * @returns Returns a conversion callback.
  */
@@ -90308,7 +90868,7 @@ function viewToModelCodeBlockAttributeConverter(dataFilter) {
             if (!viewPreElement || !viewPreElement.is('element', 'pre')) {
                 return;
             }
-            preserveElementAttributes(viewPreElement, 'htmlAttributes');
+            preserveElementAttributes(viewPreElement, 'htmlPreAttributes');
             preserveElementAttributes(viewCodeElement, 'htmlContentAttributes');
             function preserveElementAttributes(viewElement, attributeName) {
                 const viewAttributes = dataFilter.processViewAttributes(viewElement, conversionApi);
@@ -90326,7 +90886,7 @@ function viewToModelCodeBlockAttributeConverter(dataFilter) {
  */
 function modelToViewCodeBlockAttributeConverter() {
     return (dispatcher) => {
-        dispatcher.on('attribute:htmlAttributes:codeBlock', (evt, data, conversionApi) => {
+        dispatcher.on('attribute:htmlPreAttributes:codeBlock', (evt, data, conversionApi) => {
             if (!conversionApi.consumable.consume(data.item, evt.name)) {
                 return;
             }
@@ -90413,7 +90973,7 @@ class DualContentModelElementSupport extends Plugin {
                 },
                 // With a `low` priority, `paragraph` plugin auto-paragraphing mechanism is executed. Make sure
                 // this listener is called before it. If not, some elements will be transformed into a paragraph.
-                converterPriority: priorities.get('low') + 0.5
+                converterPriority: priorities.low + 0.5
             });
             conversion.for('downcast').elementToElement({
                 view: blockDefinition.view,
@@ -90452,7 +91012,7 @@ class DualContentModelElementSupport extends Plugin {
         const conversion = editor.conversion;
         const dataFilter = editor.plugins.get(DataFilter);
         editor.model.schema.extend(definition.model, {
-            allowAttributes: 'htmlAttributes'
+            allowAttributes: getHtmlAttributeName(definition.view)
         });
         conversion.for('upcast').add(viewToModelBlockAttributeConverter(definition, dataFilter));
         conversion.for('downcast').add(modelToViewBlockAttributeConverter(definition));
@@ -90487,7 +91047,6 @@ class HeadingElementSupport extends Plugin {
         }
         const options = editor.config.get('heading.options');
         this.registerHeadingElements(editor, options);
-        this.removeClassesOnEnter(editor, options);
     }
     /**
      * Registers all elements supported by HeadingEditing to enable custom attributes for those elements.
@@ -90508,19 +91067,6 @@ class HeadingElementSupport extends Plugin {
             model: 'htmlHgroup',
             modelSchema: {
                 allowChildren: headerModels
-            }
-        });
-    }
-    /**
-     * Removes css classes from "htmlAttributes" of new paragraph created when hitting "enter" in heading.
-     */
-    removeClassesOnEnter(editor, options) {
-        const enterCommand = editor.commands.get('enter');
-        this.listenTo(enterCommand, 'afterExecute', (evt, data) => {
-            const positionParent = editor.model.document.selection.getFirstPosition().parent;
-            const isHeading = options.some(option => positionParent.is('element', option.model));
-            if (isHeading && positionParent.childCount === 0) {
-                modifyGhsAttribute(data.writer, positionParent, 'htmlAttributes', 'classes', classes => classes.clear());
             }
         });
     }
@@ -90586,7 +91132,7 @@ class ImageElementSupport extends Plugin {
             if (schema.isRegistered('imageBlock')) {
                 schema.extend('imageBlock', {
                     allowAttributes: [
-                        'htmlAttributes',
+                        'htmlImgAttributes',
                         // Figure and Link don't have model counterpart.
                         // We will preserve attributes on image model element using these attribute keys.
                         'htmlFigureAttributes',
@@ -90599,7 +91145,7 @@ class ImageElementSupport extends Plugin {
                     allowAttributes: [
                         // `htmlA` is needed for standard GHS link integration.
                         'htmlA',
-                        'htmlAttributes'
+                        'htmlImgAttributes'
                     ]
                 });
             }
@@ -90623,7 +91169,7 @@ function viewToModelImageAttributeConverter(dataFilter) {
             }
             const viewImageElement = data.viewItem;
             const viewContainerElement = viewImageElement.parent;
-            preserveElementAttributes(viewImageElement, 'htmlAttributes');
+            preserveElementAttributes(viewImageElement, 'htmlImgAttributes');
             if (viewContainerElement.is('element', 'a')) {
                 preserveLinkAttributes(viewContainerElement);
             }
@@ -90668,8 +91214,8 @@ function viewToModelFigureAttributeConverter$1(dataFilter) {
  */
 function modelToViewImageAttributeConverter() {
     return (dispatcher) => {
-        addInlineAttributeConversion('htmlAttributes');
-        addBlockAttributeConversion('img', 'htmlAttributes');
+        addInlineAttributeConversion('htmlImgAttributes');
+        addBlockAttributeConversion('img', 'htmlImgAttributes');
         addBlockAttributeConversion('figure', 'htmlFigureAttributes');
         addBlockAttributeConversion('a', 'htmlLinkAttributes');
         function addInlineAttributeConversion(attributeName) {
@@ -90757,7 +91303,7 @@ class MediaEmbedElementSupport extends Plugin {
             }
             schema.extend('media', {
                 allowAttributes: [
-                    'htmlAttributes',
+                    getHtmlAttributeName(mediaElementName),
                     'htmlFigureAttributes'
                 ]
             });
@@ -90770,7 +91316,7 @@ class MediaEmbedElementSupport extends Plugin {
 function viewToModelMediaAttributesConverter(dataFilter, mediaElementName) {
     const upcastMedia = (evt, data, conversionApi) => {
         const viewMediaElement = data.viewItem;
-        preserveElementAttributes(viewMediaElement, 'htmlAttributes');
+        preserveElementAttributes(viewMediaElement, getHtmlAttributeName(mediaElementName));
         function preserveElementAttributes(viewElement, attributeName) {
             const viewAttributes = dataFilter.processViewAttributes(viewElement, conversionApi);
             if (viewAttributes) {
@@ -90804,7 +91350,7 @@ function viewToModelFigureAttributesConverter(dataFilter) {
 }
 function modelToViewMediaAttributeConverter(mediaElementName) {
     return (dispatcher) => {
-        addAttributeConversionDispatcherHandler(mediaElementName, 'htmlAttributes');
+        addAttributeConversionDispatcherHandler(mediaElementName, getHtmlAttributeName(mediaElementName));
         addAttributeConversionDispatcherHandler('figure', 'htmlFigureAttributes');
         function addAttributeConversionDispatcherHandler(elementName, attributeName) {
             dispatcher.on(`attribute:${attributeName}:media`, (evt, data, conversionApi) => {
@@ -90849,7 +91395,7 @@ class ScriptElementSupport extends Plugin {
             const conversion = editor.conversion;
             schema.register('htmlScript', definition.modelSchema);
             schema.extend('htmlScript', {
-                allowAttributes: ['htmlAttributes', 'htmlContent'],
+                allowAttributes: ['htmlScriptAttributes', 'htmlContent'],
                 isContent: true
             });
             editor.data.registerRawContentMatcher({
@@ -90911,7 +91457,7 @@ class TableElementSupport extends Plugin {
             }
             schema.extend('table', {
                 allowAttributes: [
-                    'htmlAttributes',
+                    'htmlTableAttributes',
                     // Figure, thead and tbody elements don't have model counterparts.
                     // We will be preserving attributes on table element using these attribute keys.
                     'htmlFigureAttributes', 'htmlTheadAttributes', 'htmlTbodyAttributes'
@@ -90963,7 +91509,7 @@ function viewToModelTableAttributeConverter(dataFilter) {
                 return;
             }
             const viewTableElement = data.viewItem;
-            preserveElementAttributes(viewTableElement, 'htmlAttributes');
+            preserveElementAttributes(viewTableElement, 'htmlTableAttributes');
             for (const childNode of viewTableElement.getChildren()) {
                 if (childNode.is('element', 'thead')) {
                     preserveElementAttributes(childNode, 'htmlTheadAttributes');
@@ -91009,7 +91555,7 @@ function viewToModelFigureAttributeConverter(dataFilter) {
  */
 function modelToViewTableAttributeConverter() {
     return (dispatcher) => {
-        addAttributeConversionDispatcherHandler('table', 'htmlAttributes');
+        addAttributeConversionDispatcherHandler('table', 'htmlTableAttributes');
         addAttributeConversionDispatcherHandler('figure', 'htmlFigureAttributes');
         addAttributeConversionDispatcherHandler('thead', 'htmlTheadAttributes');
         addAttributeConversionDispatcherHandler('tbody', 'htmlTbodyAttributes');
@@ -91059,7 +91605,7 @@ class StyleElementSupport extends Plugin {
             const conversion = editor.conversion;
             schema.register('htmlStyle', definition.modelSchema);
             schema.extend('htmlStyle', {
-                allowAttributes: ['htmlAttributes', 'htmlContent'],
+                allowAttributes: ['htmlStyleAttributes', 'htmlContent'],
                 isContent: true
             });
             editor.data.registerRawContentMatcher({
@@ -91112,37 +91658,40 @@ class DocumentListElementSupport extends Plugin {
         const conversion = editor.conversion;
         const dataFilter = editor.plugins.get(DataFilter);
         const documentListEditing = editor.plugins.get('DocumentListEditing');
+        const viewElements = ['ul', 'ol', 'li'];
         // Register downcast strategy.
         // Note that this must be done before document list editing registers conversion in afterInit.
         documentListEditing.registerDowncastStrategy({
             scope: 'item',
             attributeName: 'htmlLiAttributes',
-            setAttributeOnDowncast(writer, attributeValue, viewElement) {
-                setViewAttributes(writer, attributeValue, viewElement);
-            }
+            setAttributeOnDowncast: setViewAttributes
         });
         documentListEditing.registerDowncastStrategy({
             scope: 'list',
-            attributeName: 'htmlListAttributes',
-            setAttributeOnDowncast(writer, viewAttributes, viewElement) {
-                setViewAttributes(writer, viewAttributes, viewElement);
-            }
+            attributeName: 'htmlUlAttributes',
+            setAttributeOnDowncast: setViewAttributes
+        });
+        documentListEditing.registerDowncastStrategy({
+            scope: 'list',
+            attributeName: 'htmlOlAttributes',
+            setAttributeOnDowncast: setViewAttributes
         });
         dataFilter.on('register', (evt, definition) => {
-            if (!['ul', 'ol', 'li'].includes(definition.view)) {
+            if (!viewElements.includes(definition.view)) {
                 return;
             }
             evt.stop();
             // Do not register same converters twice.
-            if (schema.checkAttribute('$block', 'htmlListAttributes')) {
+            if (schema.checkAttribute('$block', 'htmlLiAttributes')) {
                 return;
             }
-            schema.extend('$block', { allowAttributes: ['htmlListAttributes', 'htmlLiAttributes'] });
-            schema.extend('$blockObject', { allowAttributes: ['htmlListAttributes', 'htmlLiAttributes'] });
-            schema.extend('$container', { allowAttributes: ['htmlListAttributes', 'htmlLiAttributes'] });
+            const allowAttributes = viewElements.map(element => getHtmlAttributeName(element));
+            schema.extend('$block', { allowAttributes });
+            schema.extend('$blockObject', { allowAttributes });
+            schema.extend('$container', { allowAttributes });
             conversion.for('upcast').add(dispatcher => {
-                dispatcher.on('element:ul', viewToModelListAttributeConverter('htmlListAttributes', dataFilter), { priority: 'low' });
-                dispatcher.on('element:ol', viewToModelListAttributeConverter('htmlListAttributes', dataFilter), { priority: 'low' });
+                dispatcher.on('element:ul', viewToModelListAttributeConverter('htmlUlAttributes', dataFilter), { priority: 'low' });
+                dispatcher.on('element:ol', viewToModelListAttributeConverter('htmlOlAttributes', dataFilter), { priority: 'low' });
                 dispatcher.on('element:li', viewToModelListAttributeConverter('htmlLiAttributes', dataFilter), { priority: 'low' });
             });
         });
@@ -91177,18 +91726,35 @@ class DocumentListElementSupport extends Plugin {
                     continue;
                 }
                 if (previousNodeInList.getAttribute('listType') == node.getAttribute('listType')) {
-                    const value = previousNodeInList.getAttribute('htmlListAttributes');
-                    if (!isEqual(node.getAttribute('htmlListAttributes'), value)) {
-                        writer.setAttribute('htmlListAttributes', value, node);
+                    const attribute = getAttributeFromListType(previousNodeInList.getAttribute('listType'));
+                    const value = previousNodeInList.getAttribute(attribute);
+                    if (!isEqual(node.getAttribute(attribute), value) &&
+                        writer.model.schema.checkAttribute(node, attribute)) {
+                        writer.setAttribute(attribute, value, node);
                         evt.return = true;
                     }
                 }
                 if (previousNodeInList.getAttribute('listItemId') == node.getAttribute('listItemId')) {
                     const value = previousNodeInList.getAttribute('htmlLiAttributes');
-                    if (!isEqual(node.getAttribute('htmlLiAttributes'), value)) {
+                    if (!isEqual(node.getAttribute('htmlLiAttributes'), value) &&
+                        writer.model.schema.checkAttribute(node, 'htmlLiAttributes')) {
                         writer.setAttribute('htmlLiAttributes', value, node);
                         evt.return = true;
                     }
+                }
+            }
+        });
+        // Remove `ol` attributes from `ul` elements and vice versa.
+        documentListEditing.on('postFixer', (evt, { listNodes, writer }) => {
+            for (const { node } of listNodes) {
+                const listType = node.getAttribute('listType');
+                if (listType === 'bulleted' && node.getAttribute('htmlOlAttributes')) {
+                    writer.removeAttribute('htmlOlAttributes', node);
+                    evt.return = true;
+                }
+                if (listType === 'numbered' && node.getAttribute('htmlUlAttributes')) {
+                    writer.removeAttribute('htmlUlAttributes', node);
+                    evt.return = true;
                 }
             }
         });
@@ -91206,10 +91772,14 @@ class DocumentListElementSupport extends Plugin {
         this.listenTo(indentList, 'afterExecute', (evt, changedBlocks) => {
             editor.model.change(writer => {
                 for (const node of changedBlocks) {
+                    const attribute = getAttributeFromListType(node.getAttribute('listType'));
+                    if (!editor.model.schema.checkAttribute(node, attribute)) {
+                        continue;
+                    }
                     // Just reset the attribute.
                     // If there is a previous indented list that this node should be merged into,
                     // the postfixer will unify all the attributes of both sub-lists.
-                    writer.setAttribute('htmlListAttributes', {}, node);
+                    writer.setAttribute(attribute, {}, node);
                 }
             });
         });
@@ -91222,7 +91792,7 @@ class DocumentListElementSupport extends Plugin {
  * @returns Returns a conversion callback.
  */
 function viewToModelListAttributeConverter(attributeName, dataFilter) {
-    const callback = (evt, data, conversionApi) => {
+    return (evt, data, conversionApi) => {
         const viewElement = data.viewItem;
         if (!data.modelRange) {
             Object.assign(data, conversionApi.convertChildren(data.viewItem, data.modelCursor));
@@ -91238,10 +91808,19 @@ function viewToModelListAttributeConverter(attributeName, dataFilter) {
             if (item.hasAttribute(attributeName)) {
                 continue;
             }
-            conversionApi.writer.setAttribute(attributeName, viewAttributes || {}, item);
+            if (conversionApi.writer.model.schema.checkAttribute(item, attributeName)) {
+                conversionApi.writer.setAttribute(attributeName, viewAttributes || {}, item);
+            }
         }
     };
-    return callback;
+}
+/**
+ * Returns HTML attribute name based on provided list type.
+ */
+function getAttributeFromListType(listType) {
+    return listType === 'bulleted' ?
+        'htmlUlAttributes' :
+        'htmlOlAttributes';
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -91277,7 +91856,7 @@ class CustomElementSupport extends Plugin {
             const preLikeElements = editor.data.htmlProcessor.domConverter.preElements;
             schema.register(definition.model, definition.modelSchema);
             schema.extend(definition.model, {
-                allowAttributes: ['htmlElementName', 'htmlAttributes', 'htmlContent'],
+                allowAttributes: ['htmlElementName', 'htmlCustomElementAttributes', 'htmlContent'],
                 isContent: true
             });
             // Being executed on the low priority, it will catch all elements that were not caught by other converters.
@@ -91309,7 +91888,7 @@ class CustomElementSupport extends Plugin {
                     });
                     const htmlAttributes = dataFilter.processViewAttributes(viewElement, conversionApi);
                     if (htmlAttributes) {
-                        conversionApi.writer.setAttribute('htmlAttributes', htmlAttributes, modelElement);
+                        conversionApi.writer.setAttribute('htmlCustomElementAttributes', htmlAttributes, modelElement);
                     }
                     // Store the whole element in the attribute so that DomConverter will be able to use the pre like element context.
                     const viewWriter = new UpcastWriter(viewElement.document);
@@ -91329,13 +91908,13 @@ class CustomElementSupport extends Plugin {
             conversion.for('editingDowncast').elementToElement({
                 model: {
                     name: definition.model,
-                    attributes: ['htmlElementName', 'htmlAttributes', 'htmlContent']
+                    attributes: ['htmlElementName', 'htmlCustomElementAttributes', 'htmlContent']
                 },
                 view: (modelElement, { writer }) => {
                     const viewName = modelElement.getAttribute('htmlElementName');
                     const viewElement = writer.createRawElement(viewName);
-                    if (modelElement.hasAttribute('htmlAttributes')) {
-                        setViewAttributes(writer, modelElement.getAttribute('htmlAttributes'), viewElement);
+                    if (modelElement.hasAttribute('htmlCustomElementAttributes')) {
+                        setViewAttributes(writer, modelElement.getAttribute('htmlCustomElementAttributes'), viewElement);
                     }
                     return viewElement;
                 }
@@ -91343,7 +91922,7 @@ class CustomElementSupport extends Plugin {
             conversion.for('dataDowncast').elementToElement({
                 model: {
                     name: definition.model,
-                    attributes: ['htmlElementName', 'htmlAttributes', 'htmlContent']
+                    attributes: ['htmlElementName', 'htmlCustomElementAttributes', 'htmlContent']
                 },
                 view: (modelElement, { writer }) => {
                     const viewName = modelElement.getAttribute('htmlElementName');
@@ -91358,8 +91937,8 @@ class CustomElementSupport extends Plugin {
                             domElement.appendChild(customElement.firstChild);
                         }
                     });
-                    if (modelElement.hasAttribute('htmlAttributes')) {
-                        setViewAttributes(writer, modelElement.getAttribute('htmlAttributes'), viewElement);
+                    if (modelElement.hasAttribute('htmlCustomElementAttributes')) {
+                        setViewAttributes(writer, modelElement.getAttribute('htmlCustomElementAttributes'), viewElement);
                     }
                     return viewElement;
                 }
@@ -91436,7 +92015,7 @@ class GeneralHtmlSupport extends Plugin {
         if (inlineDefinition) {
             return inlineDefinition.model;
         }
-        return 'htmlAttributes';
+        return getHtmlAttributeName(viewElementName);
     }
     /**
      * Updates GHS model attribute for a specified view element name, so it includes the given class name.
@@ -93636,12 +94215,12 @@ class WordCount extends Plugin {
         Object.defineProperties(this, {
             characters: {
                 get() {
-                    return (this.characters = this._getCharacters());
+                    return (this.characters = this._getCharacters(this._getText()));
                 }
             },
             words: {
                 get() {
-                    return (this.words = this._getWords());
+                    return (this.words = this._getWords(this._getText()));
                 }
             }
         });
@@ -93754,18 +94333,27 @@ class WordCount extends Plugin {
         }
         return this._outputView.element;
     }
+    _getText() {
+        let txt = '';
+        for (const rootName of this.editor.model.document.getRootNames()) {
+            if (txt !== '') {
+                // Add a delimiter, so words from each root are treated independently.
+                txt += '\n';
+            }
+            txt += modelElementToPlainText(this.editor.model.document.getRoot(rootName));
+        }
+        return txt;
+    }
     /**
      * Determines the number of characters in the current editor's model.
      */
-    _getCharacters() {
-        const txt = modelElementToPlainText(this.editor.model.document.getRoot());
+    _getCharacters(txt) {
         return txt.replace(/\n/g, '').length;
     }
     /**
      * Determines the number of words in the current editor's model.
      */
-    _getWords() {
-        const txt = modelElementToPlainText(this.editor.model.document.getRoot());
+    _getWords(txt) {
         const detectedWords = txt.match(this._wordsMatchRegExp) || [];
         return detectedWords.length;
     }
@@ -93776,8 +94364,9 @@ class WordCount extends Plugin {
      * @fires update
      */
     _refreshStats() {
-        const words = this.words = this._getWords();
-        const characters = this.characters = this._getCharacters();
+        const txt = this._getText();
+        const words = this.words = this._getWords(txt);
+        const characters = this.characters = this._getCharacters(txt);
         this.fire('update', {
             words,
             characters
