@@ -106,8 +106,14 @@ class VideoTagRenderer implements FileRendererInterface
         }
         if (isset($options['additionalConfig']) && is_array($options['additionalConfig'])) {
             foreach ($options['additionalConfig'] as $key => $value) {
-                if ((bool)$value) {
-                    $attributes[] = htmlspecialchars($key);
+                if ($value) {
+                    if ((int)$value !== 1) {
+                        $attributes[] = htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
+                    } else {
+                        $attributes[] = htmlspecialchars($key);
+                    }
+                    // Ensure that the property is not set afterwards
+                    $options[$key] = false;
                 }
             }
         }

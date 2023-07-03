@@ -135,6 +135,21 @@ final class VideoTagRendererTest extends UnitTestCase
                 ['preload' => 'auto'],
                 '<video width="300" height="200" controls preload="auto"><source src="//:path/myVideoFile" type="video/mp4"></video>',
             ],
+            [
+                '//:path/myVideoFile',
+                [
+                    'data' => [
+                        'js-required' => 'yes',
+                        'custom-id' => 'video-123',
+                    ],
+                    'additionalAttributes' => [
+                        'muted' => 'muted',
+                        'foo' => 'bar',
+                    ],
+                    'controlsList' => 'nodownload',
+                ],
+                '<video muted="muted" foo="bar" data-js-required="yes" data-custom-id="video-123" width="300" height="200" controls controlsList="nodownload"><source src="//:path/myVideoFile" type="video/mp4"></video>',
+            ],
         ];
     }
 
