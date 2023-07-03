@@ -954,20 +954,20 @@ class PageRepository implements LoggerAwareInterface
             return [];
         }
 
-        $dokType = (int)$page['doktype'];
-        $shortcutMode = (int)$page['shortcut_mode'];
+        $dokType = (int)($page['doktype'] ?? 0);
+        $shortcutMode = (int)($page['shortcut_mode'] ?? 0);
 
-        if ($dokType === self::DOKTYPE_SHORTCUT && ($page['shortcut'] || $shortcutMode)) {
+        if ($dokType === self::DOKTYPE_SHORTCUT && (($shortcut = (int)($page['shortcut'] ?? 0)) || $shortcutMode)) {
             if ($shortcutMode === self::SHORTCUT_MODE_NONE) {
                 // No shortcut_mode set, so target is directly set in $page['shortcut']
                 $searchField = 'uid';
-                $searchUid = (int)$page['shortcut'];
+                $searchUid = $shortcut;
             } elseif ($shortcutMode === self::SHORTCUT_MODE_FIRST_SUBPAGE || $shortcutMode === self::SHORTCUT_MODE_RANDOM_SUBPAGE) {
                 // Check subpages - first subpage or random subpage
                 $searchField = 'pid';
                 // If a shortcut mode is set and no valid page is given to select subpages
                 // from use the actual page.
-                $searchUid = (int)$page['shortcut'] ?: $page['uid'];
+                $searchUid = $shortcut ?: $page['uid'];
             } elseif ($shortcutMode === self::SHORTCUT_MODE_PARENT_PAGE) {
                 // Shortcut to parent page
                 $searchField = 'uid';
