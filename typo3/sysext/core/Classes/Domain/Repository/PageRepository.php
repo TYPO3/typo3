@@ -457,6 +457,15 @@ class PageRepository implements LoggerAwareInterface
                     $localizedRecord = $this->getRecordOverlay($table, $originalRow, $languageAspect);
                 }
             }
+        } else {
+            // Free mode.
+            // For "pages": Pages are usually retrieved by fetching the page record in the default language.
+            // However, the originalRow should still fetch the page in a specific language (with fallbacks).
+            // The method "getPageOverlay" should still be called in order to get the page record in the correct language.
+            if ($table === 'pages' && $languageAspect->getId() > 0) {
+                $attempted = true;
+                $localizedRecord = $this->getPageOverlay($originalRow, $languageAspect);
+            }
         }
 
         $event = new AfterRecordLanguageOverlayEvent($table, $originalRow, $localizedRecord, $attempted, $languageAspect);
