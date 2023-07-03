@@ -28,7 +28,7 @@ class LegacyLinkBuilder extends AbstractTypolinkBuilder
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        if ($linkDetails['file']) {
+        if ($linkDetails['file'] ?? false) {
             $linkDetails['type'] = LinkService::TYPE_FILE;
             $linkLocation = $linkDetails['file'];
             // Setting title if blank value to link
@@ -37,7 +37,7 @@ class LegacyLinkBuilder extends AbstractTypolinkBuilder
             $url = $linkLocation;
             $url = $this->forceAbsoluteUrl($url, $conf);
             $target = $target ?: $this->resolveTargetAttribute($conf, 'fileTarget');
-        } elseif ($linkDetails['url']) {
+        } elseif ($linkDetails['url'] ?? false) {
             $linkDetails['type'] = LinkService::TYPE_URL;
             $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget');
             $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']);
