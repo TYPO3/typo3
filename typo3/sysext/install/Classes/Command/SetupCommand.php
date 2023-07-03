@@ -296,7 +296,14 @@ EOT
                 $dbname->setValidator($dbNameValidator);
                 $databaseConnection['database'] = $questionHelper->ask($input, $output, $dbname);
             } else {
-                $dbNameValidator($dbnameFromCli);
+                try {
+                    $dbNameValidator($dbnameFromCli);
+                } catch (\RuntimeException $e) {
+                    $this->writeError($output, $e->getMessage());
+
+                    return Command::FAILURE;
+                }
+
                 $databaseConnection['database'] = $dbnameFromCli;
             }
 
