@@ -3834,10 +3834,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
             try {
                 $theImage = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($file);
                 $info = GeneralUtility::makeInstance(GifBuilder::class)->imageMagickConvert($theImage, 'WEB');
-                $info['origFile'] = $theImage;
-                // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, ln 100ff in order for the setup-array to create a unique filename hash.
-                $info['origFile_mtime'] = @filemtime(Environment::getPublicPath() . '/' . $theImage);
-                $imageResource = $info;
+                if ($info !== null) {
+                    $info['origFile'] = $theImage;
+                    // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, ln 100ff in order for the setup-array to create a unique filename hash.
+                    $info['origFile_mtime'] = @filemtime(Environment::getPublicPath() . '/' . $theImage);
+                    $imageResource = $info;
+                }
             } catch (Exception $e) {
                 // do nothing in case the file path is invalid
             }
