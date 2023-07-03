@@ -4945,8 +4945,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
                 try {
                     $count = $countQueryBuilder->executeQuery()->fetchOne();
-                    $conf['max'] = str_ireplace('total', $count, $conf['max']);
-                    $conf['begin'] = str_ireplace('total', $count, $conf['begin']);
+                    if (isset($conf['max'])) {
+                        $conf['max'] = str_ireplace('total', $count, (string)$conf['max']);
+                    }
+                    if (isset($conf['begin'])) {
+                        $conf['begin'] = str_ireplace('total', $count, (string)$conf['begin']);
+                    }
                 } catch (DBALException $e) {
                     $this->getTimeTracker()->setTSlogMessage($e->getPrevious()->getMessage());
                     $error = true;
@@ -4954,12 +4958,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
 
             if (!$error) {
-                $conf['begin'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['begin'] ?? '')), 0);
-                $conf['max'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['max'] ?? '')), 0);
-                if ($conf['begin'] > 0) {
+                if (isset($conf['begin']) && $conf['begin'] > 0) {
+                    $conf['begin'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['begin'])), 0);
                     $queryBuilder->setFirstResult($conf['begin']);
                 }
-                $queryBuilder->setMaxResults($conf['max'] ?: 100000);
+                if (isset($conf['max'])) {
+                    $conf['max'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['max'])), 0);
+                    $queryBuilder->setMaxResults($conf['max'] ?: 100000);
+                }
             }
         }
 
