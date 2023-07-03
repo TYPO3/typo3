@@ -37,6 +37,11 @@ class FormEngineReview {
   private readonly labelSelector: string = '.t3js-formengine-label';
 
   /**
+   * Class of FormEngine legends
+   */
+  private readonly legendSelector: string = '.t3js-formengine-legend';
+
+  /**
    * The constructor, set the class properties default values
    */
   constructor() {
@@ -108,7 +113,7 @@ class FormEngineReview {
         const link = document.createElement('a');
         link.classList.add('list-group-item');
         link.href = '#';
-        link.textContent = $field.find(me.labelSelector).text();
+        link.textContent = $field.find(me.labelSelector).text() || $field.find(me.legendSelector).text();
         link.addEventListener('click', (e: Event) => me.switchToField(e, $input));
 
         $list.append(link);
