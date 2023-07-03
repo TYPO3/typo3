@@ -67,27 +67,3 @@ id=2:
    [end]
 
 Of course there can be solutions with :typoscript:`HMENU` items, etc.
-
-
-.. _access-restrictions:
-
-Access restrictions on the felogin plugin
-=========================================
-
-A very common issue is that the felogin plugin is set to Access: Hide
-at login. After the core has processed the login request the page will
-be rendered without the felogin plugin. If there are redirect options
-active they will NOT be executed, simply because the felogin plugin is
-hidden.
-
-One solution is to insert felogin with TypoScript in the page. The
-redirect options must be set in the TypoScript configuration. Any
-output of this plugin can be hidden with CSS. Redirect options will be
-executed by this invisible felogin. If there are two instances of
-felogin present on a page (one as a content element, the other via
-TypoScript) this can easily lead to problems, just as with any plugin.
-
-Of course setting the felogin plugin to Hide at login and having
-redirect options together doesn't really makes sense if a redirect
-will happen in all cases.
-

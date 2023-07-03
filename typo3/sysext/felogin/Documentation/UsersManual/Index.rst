@@ -43,3 +43,18 @@ for setting this storage folder:
 
    plugin.tx_felogin_login.settings.pages = xxx
 
+
+.. _access-restrictions:
+
+Access restrictions on the felogin plugin
+=========================================
+
+A very common issue is, that the felogin plugin is set to Access:
+:guilabel:`Hide at login`. After the core has processed the login request, the
+page will be rendered without the felogin plugin. If there are redirect options
+active they will **not be executed**, simply because the felogin plugin is
+hidden.
+
+Of course setting the felogin plugin to :guilabel:`Hide at login` and having
+redirect options together doesn't really makes sense.
+
