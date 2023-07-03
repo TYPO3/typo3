@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\EventListener;
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
@@ -39,10 +40,23 @@ use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceInterface;
  */
 final class AddPageTypeZeroSource
 {
+    /**
+     * @var list<PageRepository::DOKTYPE_*>
+     */
+    private array $ignoredDokTypes = [
+        PageRepository::DOKTYPE_SPACER,
+        PageRepository::DOKTYPE_SYSFOLDER,
+    ];
+
     public function __invoke(SlugRedirectChangeItemCreatedEvent $event): void
     {
         // Create full resolved uri for page type zero.
         $changeItem = $event->getSlugRedirectChangeItem();
+        // Do not create a redirect source for ignored doktypes
+        if (in_array((int)($changeItem->getOriginal()['doktype'] ?? 0), $this->ignoredDokTypes, true)) {
+            return;
+        }
+
         try {
             $pageTypeZeroSource = $this->createPageTypeZeroSource(
                 $changeItem->getPageId(),

@@ -506,6 +506,64 @@ final class SlugServiceTest extends FunctionalTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function sysFolderWithSubPagesDoesNotCreateAutoRedirectForSysFolderButUpdatesSubpagesIfReasonable(): void
+    {
+        $newPageSlug = '/test-new';
+        $this->buildBaseSite();
+        $this->createSubject();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SysFolderSubPages_Test1.csv');
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
+        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $this->setPageSlug(2, $newPageSlug);
+
+        // These are the slugs after rebuildSlugsForSlugChange() has run
+        $slugs = [
+            '/',
+            '/test-new',
+            '/dummy-1-3',
+            '/test-new/dummy-1-2-3',
+        ];
+
+        // This redirects should exist, after rebuildSlugsForSlugChange() has run
+        $redirects = [
+            ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-3', 'target' => 't3://page?uid=4&_language=0'],
+        ];
+        $this->assertSlugsAndRedirectsExists($slugs, $redirects);
+    }
+
+    /**
+     * @test
+     */
+    public function spacerWithSubPagesDoesNotCreateAutoRedirectForSpacerButUpdatesSubpagesIfReasonable(): void
+    {
+        $newPageSlug = '/test-new';
+        $this->buildBaseSite();
+        $this->createSubject();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SpacerSubPages_Test1.csv');
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
+        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $this->setPageSlug(2, $newPageSlug);
+
+        // These are the slugs after rebuildSlugsForSlugChange() has run
+        $slugs = [
+            '/',
+            '/test-new',
+            '/dummy-1-3',
+            '/test-new/dummy-1-2-3',
+        ];
+
+        // This redirects should exist, after rebuildSlugsForSlugChange() has run
+        $redirects = [
+            ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-3', 'target' => 't3://page?uid=4&_language=0'],
+        ];
+        $this->assertSlugsAndRedirectsExists($slugs, $redirects);
+    }
+
     protected function buildBaseSite(): void
     {
         $configuration = [

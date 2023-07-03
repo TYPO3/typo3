@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\EventListener;
 
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
 use TYPO3\CMS\Redirects\RedirectUpdate\PlainSlugReplacementRedirectSource;
 use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
@@ -27,9 +28,22 @@ use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
  */
 final class AddPlainSlugReplacementSource
 {
+    /**
+     * @var list<PageRepository::DOKTYPE_*>
+     */
+    private array $ignoredDokTypes = [
+        PageRepository::DOKTYPE_SPACER,
+        PageRepository::DOKTYPE_SYSFOLDER,
+    ];
+
     public function __invoke(SlugRedirectChangeItemCreatedEvent $event): void
     {
         $changeItem = $event->getSlugRedirectChangeItem();
+        // Do not create a redirect source for ignored doktypes
+        if (in_array((int)($changeItem->getOriginal()['doktype'] ?? 0), $this->ignoredDokTypes, true)) {
+            return;
+        }
+
         // We create a plain slug replacement source, which mirrors the behaviour since first implementation. This
         // may vanish anytime. Introducing an event here opens up the possibility to add custom source definitions, for
         // example doing a real URI building to cover route decorators and enhancers, or creating redirects for more
