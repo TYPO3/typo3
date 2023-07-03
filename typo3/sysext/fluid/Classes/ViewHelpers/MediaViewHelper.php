@@ -98,10 +98,10 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
      */
     public function render(): string
     {
-        $file = $this->arguments['file'];
-        $additionalConfig = (array)$this->arguments['additionalConfig'];
-        $width = $this->arguments['width'];
-        $height = $this->arguments['height'];
+        $file = $this->arguments['file'] ?? null;
+        $additionalConfig = (array)($this->arguments['additionalConfig'] ?? []);
+        $width = ($this->arguments['width'] ?? 0);
+        $height = ($this->arguments['height'] ?? 0);
 
         // get Resource Object (non ExtBase version)
         if (is_callable([$file, 'getOriginalResource'])) {
@@ -113,7 +113,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
             throw new \UnexpectedValueException('Supplied file object type ' . get_class($file) . ' must be FileInterface.', 1454252193);
         }
 
-        if ((string)$this->arguments['fileExtension'] && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], (string)$this->arguments['fileExtension'])) {
+        if ((string)($this->arguments['fileExtension'] ?? '') && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], (string)$this->arguments['fileExtension'])) {
             throw new Exception(
                 'The extension ' . $this->arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\']'
                 . ' as a valid image file extension and can not be processed.',
@@ -127,7 +127,14 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
         if ($fileRenderer === null) {
             return $this->renderImage($file, $width, $height, $this->arguments['fileExtension'] ?? null);
         }
-        $additionalConfig = array_merge_recursive($this->arguments, $additionalConfig);
+        $arguments = [];
+        foreach ($this->arguments as $argumentName => $argumentValue) {
+            // Prevent "null" when given in fluid
+            if (!empty($argumentValue) && $argumentValue !== 'null') {
+                $arguments[$argumentName] = $argumentValue;
+            }
+        }
+        $additionalConfig = array_merge_recursive($arguments, $additionalConfig);
         return $fileRenderer->render($file, $width, $height, $additionalConfig);
     }
 
@@ -140,7 +147,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
      */
     protected function renderImage(FileInterface $image, $width, $height, ?string $fileExtension): string
     {
-        $cropVariant = $this->arguments['cropVariant'] ?: 'default';
+        $cropVariant = (string)(($this->arguments['cropVariant'] ?? '') ?: 'default');
         $cropString = $image instanceof FileReference ? $image->getProperty('crop') : '';
         $cropVariantCollection = CropVariantCollection::create((string)$cropString);
         $cropArea = $cropVariantCollection->getCropArea($cropVariant);
@@ -179,7 +186,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
         if (empty($this->arguments['alt'])) {
             $this->tag->addAttribute('alt', $alt);
         }
-        if (empty($this->arguments['title']) && $title) {
+        if (empty($this->arguments['title']) && !empty($title)) {
             $this->tag->addAttribute('title', $title);
         }
 
