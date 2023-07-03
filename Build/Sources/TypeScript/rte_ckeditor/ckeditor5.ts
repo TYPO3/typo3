@@ -2,6 +2,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators';
 import type { PluginInterface } from '@ckeditor/ckeditor5-core/src/plugin';
 import { CKEditor5, Core, WordCount } from '@typo3/ckeditor5-bundle';
+import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
 
 interface CKEditor5Config {
   // in TYPO3 always `items` property is used, skipping `string[]`
@@ -135,7 +136,11 @@ export class CKEditor5Element extends LitElement {
             this.applyEditableElementStyles(editor);
             this.handleWordCountPlugin(editor);
             this.applyReadOnly(editor);
+            const sourceEditingPlugin = editor.plugins.get('SourceEditing') as SourceEditing;
             editor.model.document.on('change:data', (): void => {
+              if(!sourceEditingPlugin.isSourceEditingMode) {
+                editor.updateSourceElement()
+              }
               this.target.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
             });
 
