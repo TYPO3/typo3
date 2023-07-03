@@ -448,7 +448,7 @@ class SchedulerModuleController
             'end' => $parsedBody['end'] ?? ($taskType === AbstractTask::TYPE_RECURRING ? $taskExecution->getEnd() : 0),
             // Find current frequency field value depending on task type and interval vs. cron command
             'frequency' => $parsedBody['frequency'] ?? ($taskType === AbstractTask::TYPE_RECURRING ? ($taskExecution->getInterval() ?: $taskExecution->getCronCmd()) : ''),
-            'multiple' => (bool)($parsedBody['multiple'] ?? $taskExecution->getMultiple()),
+            'multiple' => !($taskType === AbstractTask::TYPE_SINGLE) && (bool)($parsedBody['multiple'] ?? $taskExecution->getMultiple()),
             'description' => $parsedBody['description'] ?? $task->getDescription(),
         ];
 
