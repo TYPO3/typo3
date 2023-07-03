@@ -86,3 +86,22 @@ unit php 8.2 deprecated pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.2
+
+unit php 8.3 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "11.5"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.3
+    - Build/Scripts/runTests.sh -s unit -p 8.3
+unit php 8.3 deprecated pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "11.5"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.3
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.3

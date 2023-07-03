@@ -194,7 +194,7 @@ class LocalizationUtilityTest extends UnitTestCase
         $this->configurationManagerInterfaceProphecy = $this->prophesize(ConfigurationManagerInterface::class);
         $property = $reflectionClass->getProperty('configurationManager');
         $property->setAccessible(true);
-        $property->setValue($this->configurationManagerInterfaceProphecy->reveal());
+        $property->setValue(null, $this->configurationManagerInterfaceProphecy->reveal());
 
         $localizationFactoryProphecy = $this->prophesize(LocalizationFactory::class);
         GeneralUtility::setSingletonInstance(LocalizationFactory::class, $localizationFactoryProphecy->reveal());
@@ -210,11 +210,11 @@ class LocalizationUtilityTest extends UnitTestCase
 
         $property = $reflectionClass->getProperty('configurationManager');
         $property->setAccessible(true);
-        $property->setValue(null);
+        $property->setValue(null, null);
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
-        $property->setValue([]);
+        $property->setValue(null, []);
 
         GeneralUtility::purgeInstances();
 
@@ -337,7 +337,7 @@ class LocalizationUtilityTest extends UnitTestCase
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
-        $property->setValue($this->LOCAL_LANG);
+        $property->setValue(null, $this->LOCAL_LANG);
 
         $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
         $backendUserAuthentication = $backendUserAuthenticationProphecy->reveal();
@@ -370,7 +370,7 @@ class LocalizationUtilityTest extends UnitTestCase
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
-        $property->setValue($this->LOCAL_LANG);
+        $property->setValue(null, $this->LOCAL_LANG);
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
@@ -488,7 +488,7 @@ class LocalizationUtilityTest extends UnitTestCase
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
-        $property->setValue($LOCAL_LANG);
+        $property->setValue(null, $LOCAL_LANG);
 
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
         $this->configurationManagerInterfaceProphecy
@@ -517,7 +517,7 @@ class LocalizationUtilityTest extends UnitTestCase
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
-        $property->setValue($this->LOCAL_LANG);
+        $property->setValue(null, $this->LOCAL_LANG);
 
         $typoScriptLocalLang = [
             '_LOCAL_LANG' => [
