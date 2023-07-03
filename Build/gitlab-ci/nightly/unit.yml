@@ -122,6 +122,43 @@ unit php 8.2 max random:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
     - Build/Scripts/runTests.sh -s unitRandom -p 8.2
 
+unit php 8.3 max:
+  stage: unit
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
+    - Build/Scripts/runTests.sh -s unit -p 8.3
+unit php 8.3 max deprecated:
+  stage: unit
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.3
+unit php 8.3 max random:
+  stage: unit
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.3
+
 unit php 8.2 min:
   stage: unit
   needs: []
@@ -158,3 +195,40 @@ unit php 8.2 min random:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
     - Build/Scripts/runTests.sh -s unitRandom -p 8.2
+
+unit php 8.3 min:
+  stage: unit
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.3
+    - Build/Scripts/runTests.sh -s unit -p 8.3
+unit php 8.3 min deprecated:
+  stage: unit
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.3
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.3
+unit php 8.3 min random:
+  stage: unit
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.3
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.3
