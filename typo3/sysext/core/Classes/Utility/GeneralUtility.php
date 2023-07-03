@@ -560,7 +560,14 @@ class GeneralUtility
             $labelArr = explode('|', str_replace('"', '', $labels));
         }
         // This is set via Site Handling and in the Locales class via setlocale()
+        // LC_NUMERIC is not set because of side effects when calculating with floats
+        // see @\TYPO3\CMS\Core\Localization\Locales::setLocale
+        $currentLocale = setlocale(LC_MONETARY, '0');
+        $oldLocale = setlocale(LC_NUMERIC, '0');
+        setlocale(LC_NUMERIC, $currentLocale);
         $localeInfo = localeconv();
+        setlocale(LC_NUMERIC, $oldLocale);
+
         $sizeInBytes = max($sizeInBytes, 0);
         $multiplier = floor(($sizeInBytes ? log($sizeInBytes) : 0) / log($base));
         $sizeInUnits = $sizeInBytes / $base ** $multiplier;
