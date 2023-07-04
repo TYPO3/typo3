@@ -158,6 +158,18 @@ final class UpgradeWizardsService
 
     public function getWizardInformationByIdentifier(string $identifier): array
     {
+        $this->assertIdentifierIsValid($identifier);
+
+        if (is_subclass_of($identifier, RowUpdaterInterface::class)) {
+            return [
+                'class' => $identifier,
+                'identifier' => $identifier,
+                'title' => $identifier,
+                'shouldRenderWizard' => false,
+                'explanation' => '',
+            ];
+        }
+
         $wizard = $this->upgradeWizardRegistry->getUpgradeWizard($identifier);
 
         if ($wizard instanceof ChattyInterface) {
