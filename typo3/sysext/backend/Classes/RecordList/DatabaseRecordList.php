@@ -823,7 +823,8 @@ class DatabaseRecordList
         }
 
         $iconIdentifier = 'actions-plus';
-        $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:new');
+        $tableTitle = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
+        $title = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordOfType'), $tableTitle);
         $attributes = [
             'title' => $title,
             'aria-label' => $title,

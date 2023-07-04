@@ -51,6 +51,9 @@
 			<trans-unit id="new" resname="new">
 				<source>New record</source>
 			</trans-unit>
+			<trans-unit id="newRecordOfType" resname="newRecordOfType">
+				<source>New %s</source>
+			</trans-unit>
 			<trans-unit id="newPage" resname="newPage">
 				<source>Create new page after this page</source>
 			</trans-unit>

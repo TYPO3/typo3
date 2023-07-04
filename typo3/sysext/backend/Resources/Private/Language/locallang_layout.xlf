@@ -148,7 +148,7 @@
 				<source>Create new record</source>
 			</trans-unit>
 			<trans-unit id="newContentElement" resname="newContentElement">
-				<source>Create new content element</source>
+				<source>New Page Content</source>
 			</trans-unit>
 			<trans-unit id="CEonThisPage" resname="CEonThisPage">
 				<source>Content elements on this page</source>
