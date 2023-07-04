@@ -71,7 +71,9 @@ class UpgradeWizardRegistry
      */
     private function getLegacyUpgradeWizardClassName(string $identifier): ?string
     {
-        if (class_exists($identifier)) {
+        // will only return true for UpgradeWizardInterface implementations, but not for RowUpdaterInterface
+        // allowing RowUpdaters to fall back to a simplified handling.
+        if (class_exists($identifier) && is_subclass_of($identifier, UpgradeWizardInterface::class)) {
             return $identifier;
         }
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier])
