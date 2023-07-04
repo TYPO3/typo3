@@ -19,6 +19,7 @@ namespace TYPO3\CMS\FrontendLogin\Redirect;
 
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
 use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
@@ -178,6 +179,53 @@ class RedirectHandler
             return $this->getGetpostRedirectUrl($request, $configuration->getModes());
         }
         return '';
+    }
+
+    /**
+     * Determines the `referer` variable used in the login form for loginMode=referer depending on the
+     * following evaluation order:
+     *
+     * - HTTP POST parameter `referer`
+     * - HTTP GET parameter `referer`
+     * - HTTP_REFERER
+     * - URL of initiating request in case plugin has been called via sub-request
+     *
+     * The evaluated `referer` is only returned, if it is considered valid.
+     */
+    public function getReferrerForLoginForm(RequestInterface $request, array $settings): string
+    {
+        // Early return, if redirectMode is not configured to respect the referrer
+        if (!$this->isReferrerRedirectEnabled($settings)) {
+            return '';
+        }
+
+        $referrer = (string)(
+            $request->getParsedBody()['referer'] ??
+            $request->getQueryParams()['referer'] ??
+            $request->getServerParams()['HTTP_REFERER'] ??
+            ''
+        );
+
+        // If the current request was initiated via sub-request, we use the URI of the original request as referrer
+        if ($originalRequest = $request->getAttribute('originalRequest', false)) {
+            $referrer = (string)$originalRequest->getUri();
+        }
+
+        if ($this->redirectUrlValidator->isValid($request, $referrer)) {
+            return $referrer;
+        }
+
+        return '';
+    }
+
+    /**
+     * Returns whether redirect based on the referrer is enabled
+     */
+    protected function isReferrerRedirectEnabled(array $settings): bool
+    {
+        $referrerRedirectModes = [RedirectMode::REFERRER, RedirectMode::REFERRER_DOMAINS];
+        $configuredRedirectModes = GeneralUtility::trimExplode(',', $settings['redirectMode'] ?? '');
+        return count(array_intersect($configuredRedirectModes, $referrerRedirectModes)) > 0;
     }
 
     /**

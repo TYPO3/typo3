@@ -29,6 +29,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectHandler;
+use TYPO3\CMS\FrontendLogin\Redirect\RedirectMode;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectModeHandler;
 use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -205,5 +206,72 @@ final class RedirectHandlerTest extends UnitTestCase
 
         $configuration = RedirectConfiguration::fromSettings(['redirectMode' => $redirectMode]);
         self::assertEquals($expected, $this->subject->getLoginFormRedirectUrl($request, $configuration, $redirectDisabled));
+    }
+
+    /**
+     * @test
+     */
+    public function getReferrerForLoginFormReturnsEmptyStringIfRedirectModeReferrerDisabled(): void
+    {
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
+        $settings = ['redirectMode' => RedirectMode::LOGIN];
+        self::assertEquals('', $this->subject->getReferrerForLoginForm($request, $settings));
+    }
+
+    /**
+     * @test
+     */
+    public function getReferrerForLoginFormReturnsReferrerGetParameter(): void
+    {
+        $expectedReferrer = 'https://example.com/page-referrer';
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withQueryParams(['referer' => $expectedReferrer]);
+        $request = new Request($serverRequest);
+        $this->redirectUrlValidator->expects(self::once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
+        $settings = ['redirectMode' => RedirectMode::REFERRER];
+        self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
+    }
+
+    /**
+     * @test
+     */
+    public function getReferrerForLoginFormReturnsReferrerPostParameter(): void
+    {
+        $expectedReferrer = 'https://example.com/page-referrer';
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withParsedBody(['referer' => $expectedReferrer]);
+        $request = new Request($serverRequest);
+        $this->redirectUrlValidator->expects(self::once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
+        $settings = ['redirectMode' => RedirectMode::REFERRER];
+        self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
+    }
+
+    /**
+     * @test
+     */
+    public function getReferrerForLoginFormReturnsHttpReferrerParameter(): void
+    {
+        $expectedReferrer = 'https://example.com/page-referrer';
+        $serverRequest = (new ServerRequest('/login', 'GET', 'php://input', [], ['HTTP_REFERER' => $expectedReferrer]))
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
+        $this->redirectUrlValidator->expects(self::once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
+        $settings = ['redirectMode' => RedirectMode::REFERRER];
+        self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
+    }
+
+    /**
+     * @test
+     */
+    public function getReferrerForLoginFormReturnsOriginalRequestUrlIfCalledBySubRequest(): void
+    {
+        $expectedReferrer = 'https://example.com/original-page';
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('originalRequest', new ServerRequest($expectedReferrer));
+        $request = new Request($serverRequest);
+        $this->redirectUrlValidator->expects(self::once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
+        $settings = ['redirectMode' => RedirectMode::REFERRER];
+        self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
     }
 }
