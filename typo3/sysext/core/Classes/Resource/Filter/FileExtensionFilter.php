@@ -167,6 +167,11 @@ class FileExtensionFilter
         $this->allowedFileExtensions = $this->convertToLowercaseArray($allowedFileExtensions);
     }
 
+    public function getAllowedFileExtensions(): ?array
+    {
+        return $this->allowedFileExtensions;
+    }
+
     /**
      * Set disallowed file extensions
      *
@@ -175,6 +180,32 @@ class FileExtensionFilter
     public function setDisallowedFileExtensions(mixed $disallowedFileExtensions): void
     {
         $this->disallowedFileExtensions = $this->convertToLowercaseArray($disallowedFileExtensions);
+    }
+
+    public function getDisallowedFileExtensions(): ?array
+    {
+        return $this->disallowedFileExtensions;
+    }
+
+    /**
+     * Compared the current allowed and disallowed lists and returns
+     * a filtered list either as allow or as disallow list. The "mode"
+     * is indicated by the array key, which is either "allowedFileExtensions"
+     * or "disallowedFileExtensions".
+     */
+    public function getFilteredFileExtensions(): array
+    {
+        if ($this->disallowedFileExtensions === null) {
+            return ['allowedFileExtensions' => $this->allowedFileExtensions ?? ['*']];
+        }
+
+        if ($this->allowedFileExtensions === null) {
+            return ['disallowedFileExtensions' => $this->disallowedFileExtensions];
+        }
+
+        return ['allowedFileExtensions' => array_filter($this->allowedFileExtensions, function ($fileExtension) {
+            return !in_array($fileExtension, $this->disallowedFileExtensions, true);
+        })];
     }
 
     /**

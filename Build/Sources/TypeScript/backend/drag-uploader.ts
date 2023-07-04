@@ -84,6 +84,7 @@ class DragUploaderPlugin {
   public $fileList: JQuery;
   public fileListColumnCount: number;
   public filesExtensionsAllowed: string;
+  public filesExtensionsDisallowed: string;
   public fileDenyPattern: RegExp | null;
   public maxFileSize: number;
   public $trigger: JQuery;
@@ -142,6 +143,7 @@ class DragUploaderPlugin {
     this.$fileList = $(this.$element.data('progress-container'));
     this.fileListColumnCount = $('thead tr:first th', this.$fileList).length + 1;
     this.filesExtensionsAllowed = this.$element.data('file-allowed');
+    this.filesExtensionsDisallowed = this.$element.data('file-disallowed');
     this.fileDenyPattern = this.$element.data('file-deny-pattern') ? new RegExp(this.$element.data('file-deny-pattern'), 'i') : null;
     this.maxFileSize = parseInt(this.$element.data('max-file-size'), 10);
     this.target = this.$element.data('target-folder');
@@ -616,6 +618,11 @@ class FileQueueItem {
         .replace(/\{0\}/g, this.dragUploader.filesExtensionsAllowed),
       );
       this.$row.addClass('error');
+    } else if (!this.checkDisallowedExtensions()) {
+      this.updateMessage(TYPO3.lang['file_upload.fileExtensionDisallowed']
+        .replace(/\{0\}/g, this.dragUploader.filesExtensionsDisallowed),
+      );
+      this.$row.addClass('error');
     } else {
       this.updateMessage('- ' + DragUploader.fileSizeAsString(this.file.size));
 
@@ -810,6 +817,16 @@ class FileQueueItem {
     const allowed = this.dragUploader.filesExtensionsAllowed.split(',');
 
     return $.inArray(extension.toLowerCase(), allowed) !== -1;
+  }
+
+  public checkDisallowedExtensions(): boolean {
+    if (!this.dragUploader.filesExtensionsDisallowed) {
+      return true;
+    }
+    const extension = this.file.name.split('.').pop();
+    const disallowed = this.dragUploader.filesExtensionsDisallowed.split(',');
+
+    return $.inArray(extension.toLowerCase(), disallowed) === -1;
   }
 }
 
