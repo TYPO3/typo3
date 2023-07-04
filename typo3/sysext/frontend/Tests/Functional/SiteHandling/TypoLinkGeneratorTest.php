@@ -141,6 +141,10 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
                 't3://record?identifier=content&uid=402',
                 '<a href="/features#c402">EN: Features</a>',
             ],
+            'Record with language ALL on default language page' => [
+                't3://record?identifier=content&uid=410',
+                '<a href="/features#c410">EN: Features</a>',
+            ],
             [
                 't3://url?url=https://typo3.org%3f%26param-a=a%26param-b=b&other=other#other',
                 '<a href="https://typo3.org?&amp;param-a=a&amp;param-b=b">https://typo3.org?&amp;param-a=a&amp;param-b=b</a>',
