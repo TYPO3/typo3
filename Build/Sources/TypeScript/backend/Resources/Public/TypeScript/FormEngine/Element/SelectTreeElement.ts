@@ -115,8 +115,8 @@ export class SelectTreeElement {
    * It's done once after loading data.
    * Later indeterminate state is updated just for the subset of nodes
    */
-  private loadDataAfter = () => {
-    this.tree.nodes = this.tree.nodes.map((node: TreeNode) => {
+  private loadDataAfter = (evt: CustomEvent) => {
+    this.tree.nodes = evt.detail.nodes.map((node: TreeNode) => {
       node.indeterminate = false;
       return node;
     });
@@ -140,10 +140,10 @@ export class SelectTreeElement {
     // foreach ancestor except node itself
     let indeterminate = false;
     node.parents.forEach((index: number) => {
-      const node = this.tree.nodes[index];
-      node.indeterminate = (node.checked || node.indeterminate || indeterminate);
+      const treeNode = this.tree.nodes[index];
+      treeNode.indeterminate = (node.checked || node.indeterminate || indeterminate);
       // check state for the next level
-      indeterminate = (node.checked || node.indeterminate || node.checked || node.indeterminate);
+      indeterminate = (treeNode.checked || treeNode.indeterminate || node.checked || node.indeterminate);
     });
   }
 
