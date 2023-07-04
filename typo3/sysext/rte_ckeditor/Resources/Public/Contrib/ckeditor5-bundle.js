@@ -10935,8 +10935,8 @@ function styleInject(css, { insertAt } = {}) {
   } else {
     style.appendChild(document.createTextNode(css));
   }
-}var css_248z$Y = ".ck-hidden{display:none!important}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{box-sizing:border-box;height:auto;position:static;width:auto}:root{--ck-z-default:1;--ck-z-modal:calc(var(--ck-z-default) + 999)}.ck-transitions-disabled,.ck-transitions-disabled *{transition:none!important}:root{--ck-powered-by-line-height:10px;--ck-powered-by-padding-vertical:2px;--ck-powered-by-padding-horizontal:4px;--ck-powered-by-text-color:#4f4f4f;--ck-powered-by-border-radius:var(--ck-border-radius);--ck-powered-by-background:#fff;--ck-powered-by-border-color:var(--ck-color-focus-border)}.ck.ck-balloon-panel.ck-powered-by-balloon{--ck-border-radius:var(--ck-powered-by-border-radius);background:var(--ck-powered-by-background);box-shadow:none;min-height:unset;z-index:calc(var(--ck-z-modal) - 1)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by{line-height:var(--ck-powered-by-line-height)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by a{align-items:center;cursor:pointer;display:flex;filter:grayscale(80%);line-height:var(--ck-powered-by-line-height);opacity:.66;padding:var(--ck-powered-by-padding-vertical) var(--ck-powered-by-padding-horizontal)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-powered-by__label{color:var(--ck-powered-by-text-color);cursor:pointer;font-size:7.5px;font-weight:700;letter-spacing:-.2px;line-height:normal;margin-right:4px;padding-left:2px;text-transform:uppercase}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-icon{cursor:pointer;display:block}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by:hover a{filter:grayscale(0);opacity:1}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_inside]{border-color:transparent}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_border]{border:var(--ck-focus-ring);border-color:var(--ck-powered-by-border-color)}:root{--ck-color-base-foreground:#fafafa;--ck-color-base-background:#fff;--ck-color-base-border:#ccced1;--ck-color-base-action:#53a336;--ck-color-base-focus:#6cb5f9;--ck-color-base-text:#333;--ck-color-base-active:#2977ff;--ck-color-base-active-focus:#0d65ff;--ck-color-base-error:#db3700;--ck-color-focus-border-coordinates:218,81.8%,56.9%;--ck-color-focus-border:hsl(var(--ck-color-focus-border-coordinates));--ck-color-focus-outer-shadow:#cae1fc;--ck-color-focus-disabled-shadow:rgba(119,186,248,.3);--ck-color-focus-error-shadow:rgba(255,64,31,.3);--ck-color-text:var(--ck-color-base-text);--ck-color-shadow-drop:rgba(0,0,0,.15);--ck-color-shadow-drop-active:rgba(0,0,0,.2);--ck-color-shadow-inner:rgba(0,0,0,.1);--ck-color-button-default-background:transparent;--ck-color-button-default-hover-background:#f0f0f0;--ck-color-button-default-active-background:#f0f0f0;--ck-color-button-default-disabled-background:transparent;--ck-color-button-on-background:#f0f7ff;--ck-color-button-on-hover-background:#dbecff;--ck-color-button-on-active-background:#dbecff;--ck-color-button-on-disabled-background:#f0f2f4;--ck-color-button-on-color:#2977ff;--ck-color-button-action-background:var(--ck-color-base-action);--ck-color-button-action-hover-background:#4d9d30;--ck-color-button-action-active-background:#4d9d30;--ck-color-button-action-disabled-background:#7ec365;--ck-color-button-action-text:var(--ck-color-base-background);--ck-color-button-save:#008a00;--ck-color-button-cancel:#db3700;--ck-color-switch-button-off-background:#939393;--ck-color-switch-button-off-hover-background:#7d7d7d;--ck-color-switch-button-on-background:var(--ck-color-button-action-background);--ck-color-switch-button-on-hover-background:#4d9d30;--ck-color-switch-button-inner-background:var(--ck-color-base-background);--ck-color-switch-button-inner-shadow:rgba(0,0,0,.1);--ck-color-dropdown-panel-background:var(--ck-color-base-background);--ck-color-dropdown-panel-border:var(--ck-color-base-border);--ck-color-input-background:var(--ck-color-base-background);--ck-color-input-border:var(--ck-color-base-border);--ck-color-input-error-border:var(--ck-color-base-error);--ck-color-input-text:var(--ck-color-base-text);--ck-color-input-disabled-background:#f2f2f2;--ck-color-input-disabled-border:var(--ck-color-base-border);--ck-color-input-disabled-text:#757575;--ck-color-list-background:var(--ck-color-base-background);--ck-color-list-button-hover-background:var(--ck-color-button-default-hover-background);--ck-color-list-button-on-background:var(--ck-color-button-on-color);--ck-color-list-button-on-background-focus:var(--ck-color-button-on-color);--ck-color-list-button-on-text:var(--ck-color-base-background);--ck-color-panel-background:var(--ck-color-base-background);--ck-color-panel-border:var(--ck-color-base-border);--ck-color-toolbar-background:var(--ck-color-base-background);--ck-color-toolbar-border:var(--ck-color-base-border);--ck-color-tooltip-background:var(--ck-color-base-text);--ck-color-tooltip-text:var(--ck-color-base-background);--ck-color-engine-placeholder-text:#707070;--ck-color-upload-bar-background:#6cb5f9;--ck-color-link-default:#0000f0;--ck-color-link-selected-background:rgba(31,176,255,.1);--ck-color-link-fake-selection:rgba(31,176,255,.3);--ck-color-highlight-background:#ff0;--ck-disabled-opacity:.5;--ck-focus-outer-shadow-geometry:0 0 0 3px;--ck-focus-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-outer-shadow);--ck-focus-disabled-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-disabled-shadow);--ck-focus-error-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-error-shadow);--ck-focus-ring:1px solid var(--ck-color-focus-border);--ck-font-size-base:13px;--ck-line-height-base:1.84615;--ck-font-face:Helvetica,Arial,Tahoma,Verdana,Sans-Serif;--ck-font-size-tiny:0.7em;--ck-font-size-small:0.75em;--ck-font-size-normal:1em;--ck-font-size-big:1.4em;--ck-font-size-large:1.8em;--ck-ui-component-min-height:2.3em}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{word-wrap:break-word;background:transparent;border:0;margin:0;padding:0;text-decoration:none;transition:none;vertical-align:middle}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset_all{border-collapse:collapse;color:var(--ck-color-text);cursor:auto;float:none;font:normal normal normal var(--ck-font-size-base)/var(--ck-line-height-base) var(--ck-font-face);text-align:left;white-space:nowrap}.ck-reset_all .ck-rtl :not(.ck-reset_all-excluded *){text-align:right}.ck-reset_all iframe:not(.ck-reset_all-excluded *){vertical-align:inherit}.ck-reset_all textarea:not(.ck-reset_all-excluded *){white-space:pre-wrap}.ck-reset_all input[type=password]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text]:not(.ck-reset_all-excluded *),.ck-reset_all textarea:not(.ck-reset_all-excluded *){cursor:text}.ck-reset_all input[type=password][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all textarea[disabled]:not(.ck-reset_all-excluded *){cursor:default}.ck-reset_all fieldset:not(.ck-reset_all-excluded *){border:2px groove #dfdee3;padding:10px}.ck-reset_all button:not(.ck-reset_all-excluded *)::-moz-focus-inner{border:0;padding:0}.ck[dir=rtl],.ck[dir=rtl] .ck{text-align:right}:root{--ck-border-radius:2px;--ck-inner-shadow:2px 2px 3px var(--ck-color-shadow-inner) inset;--ck-drop-shadow:0 1px 2px 1px var(--ck-color-shadow-drop);--ck-drop-shadow-active:0 3px 6px 1px var(--ck-color-shadow-drop-active);--ck-spacing-unit:0.6em;--ck-spacing-large:calc(var(--ck-spacing-unit)*1.5);--ck-spacing-standard:var(--ck-spacing-unit);--ck-spacing-medium:calc(var(--ck-spacing-unit)*0.8);--ck-spacing-small:calc(var(--ck-spacing-unit)*0.5);--ck-spacing-tiny:calc(var(--ck-spacing-unit)*0.3);--ck-spacing-extra-tiny:calc(var(--ck-spacing-unit)*0.16)}";
-styleInject(css_248z$Y);/**
+}var css_248z$Z = ".ck-hidden{display:none!important}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{box-sizing:border-box;height:auto;position:static;width:auto}:root{--ck-z-default:1;--ck-z-modal:calc(var(--ck-z-default) + 999)}.ck-transitions-disabled,.ck-transitions-disabled *{transition:none!important}:root{--ck-powered-by-line-height:10px;--ck-powered-by-padding-vertical:2px;--ck-powered-by-padding-horizontal:4px;--ck-powered-by-text-color:#4f4f4f;--ck-powered-by-border-radius:var(--ck-border-radius);--ck-powered-by-background:#fff;--ck-powered-by-border-color:var(--ck-color-focus-border)}.ck.ck-balloon-panel.ck-powered-by-balloon{--ck-border-radius:var(--ck-powered-by-border-radius);background:var(--ck-powered-by-background);box-shadow:none;min-height:unset;z-index:calc(var(--ck-z-modal) - 1)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by{line-height:var(--ck-powered-by-line-height)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by a{align-items:center;cursor:pointer;display:flex;filter:grayscale(80%);line-height:var(--ck-powered-by-line-height);opacity:.66;padding:var(--ck-powered-by-padding-vertical) var(--ck-powered-by-padding-horizontal)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-powered-by__label{color:var(--ck-powered-by-text-color);cursor:pointer;font-size:7.5px;font-weight:700;letter-spacing:-.2px;line-height:normal;margin-right:4px;padding-left:2px;text-transform:uppercase}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-icon{cursor:pointer;display:block}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by:hover a{filter:grayscale(0);opacity:1}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_inside]{border-color:transparent}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_border]{border:var(--ck-focus-ring);border-color:var(--ck-powered-by-border-color)}:root{--ck-color-base-foreground:#fafafa;--ck-color-base-background:#fff;--ck-color-base-border:#ccced1;--ck-color-base-action:#53a336;--ck-color-base-focus:#6cb5f9;--ck-color-base-text:#333;--ck-color-base-active:#2977ff;--ck-color-base-active-focus:#0d65ff;--ck-color-base-error:#db3700;--ck-color-focus-border-coordinates:218,81.8%,56.9%;--ck-color-focus-border:hsl(var(--ck-color-focus-border-coordinates));--ck-color-focus-outer-shadow:#cae1fc;--ck-color-focus-disabled-shadow:rgba(119,186,248,.3);--ck-color-focus-error-shadow:rgba(255,64,31,.3);--ck-color-text:var(--ck-color-base-text);--ck-color-shadow-drop:rgba(0,0,0,.15);--ck-color-shadow-drop-active:rgba(0,0,0,.2);--ck-color-shadow-inner:rgba(0,0,0,.1);--ck-color-button-default-background:transparent;--ck-color-button-default-hover-background:#f0f0f0;--ck-color-button-default-active-background:#f0f0f0;--ck-color-button-default-disabled-background:transparent;--ck-color-button-on-background:#f0f7ff;--ck-color-button-on-hover-background:#dbecff;--ck-color-button-on-active-background:#dbecff;--ck-color-button-on-disabled-background:#f0f2f4;--ck-color-button-on-color:#2977ff;--ck-color-button-action-background:var(--ck-color-base-action);--ck-color-button-action-hover-background:#4d9d30;--ck-color-button-action-active-background:#4d9d30;--ck-color-button-action-disabled-background:#7ec365;--ck-color-button-action-text:var(--ck-color-base-background);--ck-color-button-save:#008a00;--ck-color-button-cancel:#db3700;--ck-color-switch-button-off-background:#939393;--ck-color-switch-button-off-hover-background:#7d7d7d;--ck-color-switch-button-on-background:var(--ck-color-button-action-background);--ck-color-switch-button-on-hover-background:#4d9d30;--ck-color-switch-button-inner-background:var(--ck-color-base-background);--ck-color-switch-button-inner-shadow:rgba(0,0,0,.1);--ck-color-dropdown-panel-background:var(--ck-color-base-background);--ck-color-dropdown-panel-border:var(--ck-color-base-border);--ck-color-input-background:var(--ck-color-base-background);--ck-color-input-border:var(--ck-color-base-border);--ck-color-input-error-border:var(--ck-color-base-error);--ck-color-input-text:var(--ck-color-base-text);--ck-color-input-disabled-background:#f2f2f2;--ck-color-input-disabled-border:var(--ck-color-base-border);--ck-color-input-disabled-text:#757575;--ck-color-list-background:var(--ck-color-base-background);--ck-color-list-button-hover-background:var(--ck-color-button-default-hover-background);--ck-color-list-button-on-background:var(--ck-color-button-on-color);--ck-color-list-button-on-background-focus:var(--ck-color-button-on-color);--ck-color-list-button-on-text:var(--ck-color-base-background);--ck-color-panel-background:var(--ck-color-base-background);--ck-color-panel-border:var(--ck-color-base-border);--ck-color-toolbar-background:var(--ck-color-base-background);--ck-color-toolbar-border:var(--ck-color-base-border);--ck-color-tooltip-background:var(--ck-color-base-text);--ck-color-tooltip-text:var(--ck-color-base-background);--ck-color-engine-placeholder-text:#707070;--ck-color-upload-bar-background:#6cb5f9;--ck-color-link-default:#0000f0;--ck-color-link-selected-background:rgba(31,176,255,.1);--ck-color-link-fake-selection:rgba(31,176,255,.3);--ck-color-highlight-background:#ff0;--ck-disabled-opacity:.5;--ck-focus-outer-shadow-geometry:0 0 0 3px;--ck-focus-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-outer-shadow);--ck-focus-disabled-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-disabled-shadow);--ck-focus-error-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-error-shadow);--ck-focus-ring:1px solid var(--ck-color-focus-border);--ck-font-size-base:13px;--ck-line-height-base:1.84615;--ck-font-face:Helvetica,Arial,Tahoma,Verdana,Sans-Serif;--ck-font-size-tiny:0.7em;--ck-font-size-small:0.75em;--ck-font-size-normal:1em;--ck-font-size-big:1.4em;--ck-font-size-large:1.8em;--ck-ui-component-min-height:2.3em}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{word-wrap:break-word;background:transparent;border:0;margin:0;padding:0;text-decoration:none;transition:none;vertical-align:middle}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset_all{border-collapse:collapse;color:var(--ck-color-text);cursor:auto;float:none;font:normal normal normal var(--ck-font-size-base)/var(--ck-line-height-base) var(--ck-font-face);text-align:left;white-space:nowrap}.ck-reset_all .ck-rtl :not(.ck-reset_all-excluded *){text-align:right}.ck-reset_all iframe:not(.ck-reset_all-excluded *){vertical-align:inherit}.ck-reset_all textarea:not(.ck-reset_all-excluded *){white-space:pre-wrap}.ck-reset_all input[type=password]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text]:not(.ck-reset_all-excluded *),.ck-reset_all textarea:not(.ck-reset_all-excluded *){cursor:text}.ck-reset_all input[type=password][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all textarea[disabled]:not(.ck-reset_all-excluded *){cursor:default}.ck-reset_all fieldset:not(.ck-reset_all-excluded *){border:2px groove #dfdee3;padding:10px}.ck-reset_all button:not(.ck-reset_all-excluded *)::-moz-focus-inner{border:0;padding:0}.ck[dir=rtl],.ck[dir=rtl] .ck{text-align:right}:root{--ck-border-radius:2px;--ck-inner-shadow:2px 2px 3px var(--ck-color-shadow-inner) inset;--ck-drop-shadow:0 1px 2px 1px var(--ck-color-shadow-drop);--ck-drop-shadow-active:0 3px 6px 1px var(--ck-color-shadow-drop-active);--ck-spacing-unit:0.6em;--ck-spacing-large:calc(var(--ck-spacing-unit)*1.5);--ck-spacing-standard:var(--ck-spacing-unit);--ck-spacing-medium:calc(var(--ck-spacing-unit)*0.8);--ck-spacing-small:calc(var(--ck-spacing-unit)*0.5);--ck-spacing-tiny:calc(var(--ck-spacing-unit)*0.3);--ck-spacing-extra-tiny:calc(var(--ck-spacing-unit)*0.16)}";
+styleInject(css_248z$Z);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -12684,8 +12684,8 @@ class BodyCollection extends ViewCollection {
             wrapper.remove();
         }
     }
-}var css_248z$X = ".ck.ck-icon{vertical-align:middle}:root{--ck-icon-size:calc(var(--ck-line-height-base)*var(--ck-font-size-normal))}.ck.ck-icon{font-size:.8333350694em;height:var(--ck-icon-size);width:var(--ck-icon-size);will-change:transform}.ck.ck-icon,.ck.ck-icon *{cursor:inherit}.ck.ck-icon.ck-icon_inherit-color,.ck.ck-icon.ck-icon_inherit-color *{color:inherit}.ck.ck-icon.ck-icon_inherit-color :not([fill]){fill:currentColor}";
-styleInject(css_248z$X);/**
+}var css_248z$Y = ".ck.ck-icon{vertical-align:middle}:root{--ck-icon-size:calc(var(--ck-line-height-base)*var(--ck-font-size-normal))}.ck.ck-icon{font-size:.8333350694em;height:var(--ck-icon-size);width:var(--ck-icon-size);will-change:transform}.ck.ck-icon,.ck.ck-icon *{cursor:inherit}.ck.ck-icon.ck-icon_inherit-color,.ck.ck-icon.ck-icon_inherit-color *{color:inherit}.ck.ck-icon.ck-icon_inherit-color :not([fill]){fill:currentColor}";
+styleInject(css_248z$Y);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -12790,8 +12790,8 @@ IconView.presentationalAttributeNames = [
     'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke-width',
     'text-anchor', 'text-decoration', 'text-overflow', 'text-rendering', 'transform', 'unicode-bidi', 'vector-effect',
     'visibility', 'white-space', 'word-spacing', 'writing-mode'
-];var css_248z$W = ".ck.ck-button,a.ck.ck-button{align-items:center;display:inline-flex;justify-content:left;position:relative;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-button .ck-button__label,a.ck.ck-button .ck-button__label{display:none}.ck.ck-button.ck-button_with-text .ck-button__label,a.ck.ck-button.ck-button_with-text .ck-button__label{display:inline-block}.ck.ck-button:not(.ck-button_with-text),a.ck.ck-button:not(.ck-button_with-text){justify-content:center}.ck.ck-button,a.ck.ck-button{background:var(--ck-color-button-default-background)}.ck.ck-button:not(.ck-disabled):hover,a.ck.ck-button:not(.ck-disabled):hover{background:var(--ck-color-button-default-hover-background)}.ck.ck-button:not(.ck-disabled):active,a.ck.ck-button:not(.ck-disabled):active{background:var(--ck-color-button-default-active-background)}.ck.ck-button.ck-disabled,a.ck.ck-button.ck-disabled{background:var(--ck-color-button-default-disabled-background)}.ck.ck-button,a.ck.ck-button{border-radius:0}.ck-rounded-corners .ck.ck-button,.ck-rounded-corners a.ck.ck-button,.ck.ck-button.ck-rounded-corners,a.ck.ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-button,a.ck.ck-button{-webkit-appearance:none;border:1px solid transparent;cursor:default;font-size:inherit;line-height:1;min-height:var(--ck-ui-component-min-height);min-width:var(--ck-ui-component-min-height);padding:var(--ck-spacing-tiny);text-align:center;transition:box-shadow .2s ease-in-out,border .2s ease-in-out;vertical-align:middle;white-space:nowrap}.ck.ck-button:active,.ck.ck-button:focus,a.ck.ck-button:active,a.ck.ck-button:focus{border:var(--ck-focus-ring);box-shadow:var(--ck-focus-outer-shadow),0 0;outline:none}.ck.ck-button .ck-button__icon use,.ck.ck-button .ck-button__icon use *,a.ck.ck-button .ck-button__icon use,a.ck.ck-button .ck-button__icon use *{color:inherit}.ck.ck-button .ck-button__label,a.ck.ck-button .ck-button__label{color:inherit;cursor:inherit;font-size:inherit;font-weight:inherit;vertical-align:middle}[dir=ltr] .ck.ck-button .ck-button__label,[dir=ltr] a.ck.ck-button .ck-button__label{text-align:left}[dir=rtl] .ck.ck-button .ck-button__label,[dir=rtl] a.ck.ck-button .ck-button__label{text-align:right}.ck.ck-button .ck-button__keystroke,a.ck.ck-button .ck-button__keystroke{color:inherit}[dir=ltr] .ck.ck-button .ck-button__keystroke,[dir=ltr] a.ck.ck-button .ck-button__keystroke{margin-left:var(--ck-spacing-large)}[dir=rtl] .ck.ck-button .ck-button__keystroke,[dir=rtl] a.ck.ck-button .ck-button__keystroke{margin-right:var(--ck-spacing-large)}.ck.ck-button .ck-button__keystroke,a.ck.ck-button .ck-button__keystroke{font-weight:700;opacity:.7}.ck.ck-button.ck-disabled:active,.ck.ck-button.ck-disabled:focus,a.ck.ck-button.ck-disabled:active,a.ck.ck-button.ck-disabled:focus{box-shadow:var(--ck-focus-disabled-outer-shadow),0 0}.ck.ck-button.ck-disabled .ck-button__icon,.ck.ck-button.ck-disabled .ck-button__label,a.ck.ck-button.ck-disabled .ck-button__icon,a.ck.ck-button.ck-disabled .ck-button__label{opacity:var(--ck-disabled-opacity)}.ck.ck-button.ck-disabled .ck-button__keystroke,a.ck.ck-button.ck-disabled .ck-button__keystroke{opacity:.3}.ck.ck-button.ck-button_with-text,a.ck.ck-button.ck-button_with-text{padding:var(--ck-spacing-tiny) var(--ck-spacing-standard)}[dir=ltr] .ck.ck-button.ck-button_with-text .ck-button__icon,[dir=ltr] a.ck.ck-button.ck-button_with-text .ck-button__icon{margin-left:calc(var(--ck-spacing-small)*-1);margin-right:var(--ck-spacing-small)}[dir=rtl] .ck.ck-button.ck-button_with-text .ck-button__icon,[dir=rtl] a.ck.ck-button.ck-button_with-text .ck-button__icon{margin-left:var(--ck-spacing-small);margin-right:calc(var(--ck-spacing-small)*-1)}.ck.ck-button.ck-button_with-keystroke .ck-button__label,a.ck.ck-button.ck-button_with-keystroke .ck-button__label{flex-grow:1}.ck.ck-button.ck-on,a.ck.ck-button.ck-on{background:var(--ck-color-button-on-background)}.ck.ck-button.ck-on:not(.ck-disabled):hover,a.ck.ck-button.ck-on:not(.ck-disabled):hover{background:var(--ck-color-button-on-hover-background)}.ck.ck-button.ck-on:not(.ck-disabled):active,a.ck.ck-button.ck-on:not(.ck-disabled):active{background:var(--ck-color-button-on-active-background)}.ck.ck-button.ck-on.ck-disabled,a.ck.ck-button.ck-on.ck-disabled{background:var(--ck-color-button-on-disabled-background)}.ck.ck-button.ck-on,a.ck.ck-button.ck-on{color:var(--ck-color-button-on-color)}.ck.ck-button.ck-button-save,a.ck.ck-button.ck-button-save{color:var(--ck-color-button-save)}.ck.ck-button.ck-button-cancel,a.ck.ck-button.ck-button-cancel{color:var(--ck-color-button-cancel)}.ck.ck-button-action,a.ck.ck-button-action{background:var(--ck-color-button-action-background)}.ck.ck-button-action:not(.ck-disabled):hover,a.ck.ck-button-action:not(.ck-disabled):hover{background:var(--ck-color-button-action-hover-background)}.ck.ck-button-action:not(.ck-disabled):active,a.ck.ck-button-action:not(.ck-disabled):active{background:var(--ck-color-button-action-active-background)}.ck.ck-button-action.ck-disabled,a.ck.ck-button-action.ck-disabled{background:var(--ck-color-button-action-disabled-background)}.ck.ck-button-action,a.ck.ck-button-action{color:var(--ck-color-button-action-text)}.ck.ck-button-bold,a.ck.ck-button-bold{font-weight:700}";
-styleInject(css_248z$W);/**
+];var css_248z$X = ".ck.ck-button,a.ck.ck-button{align-items:center;display:inline-flex;justify-content:left;position:relative;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-button .ck-button__label,a.ck.ck-button .ck-button__label{display:none}.ck.ck-button.ck-button_with-text .ck-button__label,a.ck.ck-button.ck-button_with-text .ck-button__label{display:inline-block}.ck.ck-button:not(.ck-button_with-text),a.ck.ck-button:not(.ck-button_with-text){justify-content:center}.ck.ck-button,a.ck.ck-button{background:var(--ck-color-button-default-background)}.ck.ck-button:not(.ck-disabled):hover,a.ck.ck-button:not(.ck-disabled):hover{background:var(--ck-color-button-default-hover-background)}.ck.ck-button:not(.ck-disabled):active,a.ck.ck-button:not(.ck-disabled):active{background:var(--ck-color-button-default-active-background)}.ck.ck-button.ck-disabled,a.ck.ck-button.ck-disabled{background:var(--ck-color-button-default-disabled-background)}.ck.ck-button,a.ck.ck-button{border-radius:0}.ck-rounded-corners .ck.ck-button,.ck-rounded-corners a.ck.ck-button,.ck.ck-button.ck-rounded-corners,a.ck.ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-button,a.ck.ck-button{-webkit-appearance:none;border:1px solid transparent;cursor:default;font-size:inherit;line-height:1;min-height:var(--ck-ui-component-min-height);min-width:var(--ck-ui-component-min-height);padding:var(--ck-spacing-tiny);text-align:center;transition:box-shadow .2s ease-in-out,border .2s ease-in-out;vertical-align:middle;white-space:nowrap}.ck.ck-button:active,.ck.ck-button:focus,a.ck.ck-button:active,a.ck.ck-button:focus{border:var(--ck-focus-ring);box-shadow:var(--ck-focus-outer-shadow),0 0;outline:none}.ck.ck-button .ck-button__icon use,.ck.ck-button .ck-button__icon use *,a.ck.ck-button .ck-button__icon use,a.ck.ck-button .ck-button__icon use *{color:inherit}.ck.ck-button .ck-button__label,a.ck.ck-button .ck-button__label{color:inherit;cursor:inherit;font-size:inherit;font-weight:inherit;vertical-align:middle}[dir=ltr] .ck.ck-button .ck-button__label,[dir=ltr] a.ck.ck-button .ck-button__label{text-align:left}[dir=rtl] .ck.ck-button .ck-button__label,[dir=rtl] a.ck.ck-button .ck-button__label{text-align:right}.ck.ck-button .ck-button__keystroke,a.ck.ck-button .ck-button__keystroke{color:inherit}[dir=ltr] .ck.ck-button .ck-button__keystroke,[dir=ltr] a.ck.ck-button .ck-button__keystroke{margin-left:var(--ck-spacing-large)}[dir=rtl] .ck.ck-button .ck-button__keystroke,[dir=rtl] a.ck.ck-button .ck-button__keystroke{margin-right:var(--ck-spacing-large)}.ck.ck-button .ck-button__keystroke,a.ck.ck-button .ck-button__keystroke{font-weight:700;opacity:.7}.ck.ck-button.ck-disabled:active,.ck.ck-button.ck-disabled:focus,a.ck.ck-button.ck-disabled:active,a.ck.ck-button.ck-disabled:focus{box-shadow:var(--ck-focus-disabled-outer-shadow),0 0}.ck.ck-button.ck-disabled .ck-button__icon,.ck.ck-button.ck-disabled .ck-button__label,a.ck.ck-button.ck-disabled .ck-button__icon,a.ck.ck-button.ck-disabled .ck-button__label{opacity:var(--ck-disabled-opacity)}.ck.ck-button.ck-disabled .ck-button__keystroke,a.ck.ck-button.ck-disabled .ck-button__keystroke{opacity:.3}.ck.ck-button.ck-button_with-text,a.ck.ck-button.ck-button_with-text{padding:var(--ck-spacing-tiny) var(--ck-spacing-standard)}[dir=ltr] .ck.ck-button.ck-button_with-text .ck-button__icon,[dir=ltr] a.ck.ck-button.ck-button_with-text .ck-button__icon{margin-left:calc(var(--ck-spacing-small)*-1);margin-right:var(--ck-spacing-small)}[dir=rtl] .ck.ck-button.ck-button_with-text .ck-button__icon,[dir=rtl] a.ck.ck-button.ck-button_with-text .ck-button__icon{margin-left:var(--ck-spacing-small);margin-right:calc(var(--ck-spacing-small)*-1)}.ck.ck-button.ck-button_with-keystroke .ck-button__label,a.ck.ck-button.ck-button_with-keystroke .ck-button__label{flex-grow:1}.ck.ck-button.ck-on,a.ck.ck-button.ck-on{background:var(--ck-color-button-on-background)}.ck.ck-button.ck-on:not(.ck-disabled):hover,a.ck.ck-button.ck-on:not(.ck-disabled):hover{background:var(--ck-color-button-on-hover-background)}.ck.ck-button.ck-on:not(.ck-disabled):active,a.ck.ck-button.ck-on:not(.ck-disabled):active{background:var(--ck-color-button-on-active-background)}.ck.ck-button.ck-on.ck-disabled,a.ck.ck-button.ck-on.ck-disabled{background:var(--ck-color-button-on-disabled-background)}.ck.ck-button.ck-on,a.ck.ck-button.ck-on{color:var(--ck-color-button-on-color)}.ck.ck-button.ck-button-save,a.ck.ck-button.ck-button-save{color:var(--ck-color-button-save)}.ck.ck-button.ck-button-cancel,a.ck.ck-button.ck-button-cancel{color:var(--ck-color-button-cancel)}.ck.ck-button-action,a.ck.ck-button-action{background:var(--ck-color-button-action-background)}.ck.ck-button-action:not(.ck-disabled):hover,a.ck.ck-button-action:not(.ck-disabled):hover{background:var(--ck-color-button-action-hover-background)}.ck.ck-button-action:not(.ck-disabled):active,a.ck.ck-button-action:not(.ck-disabled):active{background:var(--ck-color-button-action-active-background)}.ck.ck-button-action.ck-disabled,a.ck.ck-button-action.ck-disabled{background:var(--ck-color-button-action-disabled-background)}.ck.ck-button-action,a.ck.ck-button-action{color:var(--ck-color-button-action-text)}.ck.ck-button-bold,a.ck.ck-button-bold{font-weight:700}";
+styleInject(css_248z$X);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -13014,8 +13014,8 @@ class ButtonView extends View$1 {
         }
         return '';
     }
-}var css_248z$V = ".ck.ck-button.ck-switchbutton .ck-button__toggle,.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{display:block}:root{--ck-switch-button-toggle-width:2.6153846154em;--ck-switch-button-toggle-inner-size:calc(1.07692em + 1px);--ck-switch-button-translation:calc(var(--ck-switch-button-toggle-width) - var(--ck-switch-button-toggle-inner-size) - 2px);--ck-switch-button-inner-hover-shadow:0 0 0 5px var(--ck-color-switch-button-inner-shadow)}.ck.ck-button.ck-switchbutton,.ck.ck-button.ck-switchbutton.ck-on:active,.ck.ck-button.ck-switchbutton.ck-on:focus,.ck.ck-button.ck-switchbutton.ck-on:hover,.ck.ck-button.ck-switchbutton:active,.ck.ck-button.ck-switchbutton:focus,.ck.ck-button.ck-switchbutton:hover{background:transparent;color:inherit}[dir=ltr] .ck.ck-button.ck-switchbutton .ck-button__label{margin-right:calc(var(--ck-spacing-large)*2)}[dir=rtl] .ck.ck-button.ck-switchbutton .ck-button__label{margin-left:calc(var(--ck-spacing-large)*2)}.ck.ck-button.ck-switchbutton .ck-button__toggle{border-radius:0}.ck-rounded-corners .ck.ck-button.ck-switchbutton .ck-button__toggle,.ck.ck-button.ck-switchbutton .ck-button__toggle.ck-rounded-corners{border-radius:var(--ck-border-radius)}[dir=ltr] .ck.ck-button.ck-switchbutton .ck-button__toggle{margin-left:auto}[dir=rtl] .ck.ck-button.ck-switchbutton .ck-button__toggle{margin-right:auto}.ck.ck-button.ck-switchbutton .ck-button__toggle{background:var(--ck-color-switch-button-off-background);border:1px solid transparent;transition:background .4s ease,box-shadow .2s ease-in-out,outline .2s ease-in-out;width:var(--ck-switch-button-toggle-width)}.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{border-radius:0}.ck-rounded-corners .ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner,.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner.ck-rounded-corners{border-radius:var(--ck-border-radius);border-radius:calc(var(--ck-border-radius)*.5)}.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{background:var(--ck-color-switch-button-inner-background);height:var(--ck-switch-button-toggle-inner-size);transition:all .3s ease;width:var(--ck-switch-button-toggle-inner-size)}.ck.ck-button.ck-switchbutton .ck-button__toggle:hover{background:var(--ck-color-switch-button-off-hover-background)}.ck.ck-button.ck-switchbutton .ck-button__toggle:hover .ck-button__toggle__inner{box-shadow:var(--ck-switch-button-inner-hover-shadow)}.ck.ck-button.ck-switchbutton.ck-disabled .ck-button__toggle{opacity:var(--ck-disabled-opacity)}.ck.ck-button.ck-switchbutton:focus{border-color:transparent;box-shadow:none;outline:none}.ck.ck-button.ck-switchbutton:focus .ck-button__toggle{box-shadow:0 0 0 1px var(--ck-color-base-background),0 0 0 5px var(--ck-color-focus-outer-shadow);outline:var(--ck-focus-ring);outline-offset:1px}.ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle{background:var(--ck-color-switch-button-on-background)}.ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle:hover{background:var(--ck-color-switch-button-on-hover-background)}[dir=ltr] .ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle .ck-button__toggle__inner{transform:translateX(var( --ck-switch-button-translation ))}[dir=rtl] .ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle .ck-button__toggle__inner{transform:translateX(calc(var( --ck-switch-button-translation )*-1))}";
-styleInject(css_248z$V);/**
+}var css_248z$W = ".ck.ck-button.ck-switchbutton .ck-button__toggle,.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{display:block}:root{--ck-switch-button-toggle-width:2.6153846154em;--ck-switch-button-toggle-inner-size:calc(1.07692em + 1px);--ck-switch-button-translation:calc(var(--ck-switch-button-toggle-width) - var(--ck-switch-button-toggle-inner-size) - 2px);--ck-switch-button-inner-hover-shadow:0 0 0 5px var(--ck-color-switch-button-inner-shadow)}.ck.ck-button.ck-switchbutton,.ck.ck-button.ck-switchbutton.ck-on:active,.ck.ck-button.ck-switchbutton.ck-on:focus,.ck.ck-button.ck-switchbutton.ck-on:hover,.ck.ck-button.ck-switchbutton:active,.ck.ck-button.ck-switchbutton:focus,.ck.ck-button.ck-switchbutton:hover{background:transparent;color:inherit}[dir=ltr] .ck.ck-button.ck-switchbutton .ck-button__label{margin-right:calc(var(--ck-spacing-large)*2)}[dir=rtl] .ck.ck-button.ck-switchbutton .ck-button__label{margin-left:calc(var(--ck-spacing-large)*2)}.ck.ck-button.ck-switchbutton .ck-button__toggle{border-radius:0}.ck-rounded-corners .ck.ck-button.ck-switchbutton .ck-button__toggle,.ck.ck-button.ck-switchbutton .ck-button__toggle.ck-rounded-corners{border-radius:var(--ck-border-radius)}[dir=ltr] .ck.ck-button.ck-switchbutton .ck-button__toggle{margin-left:auto}[dir=rtl] .ck.ck-button.ck-switchbutton .ck-button__toggle{margin-right:auto}.ck.ck-button.ck-switchbutton .ck-button__toggle{background:var(--ck-color-switch-button-off-background);border:1px solid transparent;transition:background .4s ease,box-shadow .2s ease-in-out,outline .2s ease-in-out;width:var(--ck-switch-button-toggle-width)}.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{border-radius:0}.ck-rounded-corners .ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner,.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner.ck-rounded-corners{border-radius:var(--ck-border-radius);border-radius:calc(var(--ck-border-radius)*.5)}.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{background:var(--ck-color-switch-button-inner-background);height:var(--ck-switch-button-toggle-inner-size);transition:all .3s ease;width:var(--ck-switch-button-toggle-inner-size)}.ck.ck-button.ck-switchbutton .ck-button__toggle:hover{background:var(--ck-color-switch-button-off-hover-background)}.ck.ck-button.ck-switchbutton .ck-button__toggle:hover .ck-button__toggle__inner{box-shadow:var(--ck-switch-button-inner-hover-shadow)}.ck.ck-button.ck-switchbutton.ck-disabled .ck-button__toggle{opacity:var(--ck-disabled-opacity)}.ck.ck-button.ck-switchbutton:focus{border-color:transparent;box-shadow:none;outline:none}.ck.ck-button.ck-switchbutton:focus .ck-button__toggle{box-shadow:0 0 0 1px var(--ck-color-base-background),0 0 0 5px var(--ck-color-focus-outer-shadow);outline:var(--ck-focus-ring);outline-offset:1px}.ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle{background:var(--ck-color-switch-button-on-background)}.ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle:hover{background:var(--ck-color-switch-button-on-hover-background)}[dir=ltr] .ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle .ck-button__toggle__inner{transform:translateX(var( --ck-switch-button-translation ))}[dir=rtl] .ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle .ck-button__toggle__inner{transform:translateX(calc(var( --ck-switch-button-translation )*-1))}";
+styleInject(css_248z$W);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -13201,8 +13201,8 @@ class ColorTileView extends ButtonView {
         super.render();
         this.iconView.fillColor = 'hsl(0, 0%, 100%)';
     }
-}var css_248z$U = ".ck.ck-color-grid{display:grid}:root{--ck-color-grid-tile-size:24px;--ck-color-color-grid-check-icon:#166fd4}.ck.ck-color-grid{grid-gap:5px;padding:8px}.ck.ck-color-grid__tile{border:0;height:var(--ck-color-grid-tile-size);min-height:var(--ck-color-grid-tile-size);min-width:var(--ck-color-grid-tile-size);padding:0;transition:box-shadow .2s ease;width:var(--ck-color-grid-tile-size)}.ck.ck-color-grid__tile.ck-disabled{cursor:unset;transition:unset}.ck.ck-color-grid__tile.ck-color-table__color-tile_bordered{box-shadow:0 0 0 1px var(--ck-color-base-border)}.ck.ck-color-grid__tile .ck.ck-icon{color:var(--ck-color-color-grid-check-icon);display:none}.ck.ck-color-grid__tile.ck-on{box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-base-text)}.ck.ck-color-grid__tile.ck-on .ck.ck-icon{display:block}.ck.ck-color-grid__tile.ck-on,.ck.ck-color-grid__tile:focus:not(.ck-disabled),.ck.ck-color-grid__tile:hover:not(.ck-disabled){border:0}.ck.ck-color-grid__tile:focus:not(.ck-disabled),.ck.ck-color-grid__tile:hover:not(.ck-disabled){box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-focus-border)}.ck.ck-color-grid__label{padding:0 var(--ck-spacing-standard)}";
-styleInject(css_248z$U);/**
+}var css_248z$V = ".ck.ck-color-grid{display:grid}:root{--ck-color-grid-tile-size:24px;--ck-color-color-grid-check-icon:#166fd4}.ck.ck-color-grid{grid-gap:5px;padding:8px}.ck.ck-color-grid__tile{border:0;height:var(--ck-color-grid-tile-size);min-height:var(--ck-color-grid-tile-size);min-width:var(--ck-color-grid-tile-size);padding:0;transition:box-shadow .2s ease;width:var(--ck-color-grid-tile-size)}.ck.ck-color-grid__tile.ck-disabled{cursor:unset;transition:unset}.ck.ck-color-grid__tile.ck-color-table__color-tile_bordered{box-shadow:0 0 0 1px var(--ck-color-base-border)}.ck.ck-color-grid__tile .ck.ck-icon{color:var(--ck-color-color-grid-check-icon);display:none}.ck.ck-color-grid__tile.ck-on{box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-base-text)}.ck.ck-color-grid__tile.ck-on .ck.ck-icon{display:block}.ck.ck-color-grid__tile.ck-on,.ck.ck-color-grid__tile:focus:not(.ck-disabled),.ck.ck-color-grid__tile:hover:not(.ck-disabled){border:0}.ck.ck-color-grid__tile:focus:not(.ck-disabled),.ck.ck-color-grid__tile:hover:not(.ck-disabled){box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-focus-border)}.ck.ck-color-grid__label{padding:0 var(--ck-spacing-standard)}";
+styleInject(css_248z$V);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -14740,8 +14740,8 @@ function parseColorString(colorString) {
 }
 function canConvertParsedColor(parsedColor) {
     return Object.keys(convert$1).includes(parsedColor.space);
-}var css_248z$T = ".ck.ck-label{display:block}.ck.ck-voice-label{display:none}.ck.ck-label{font-weight:700}";
-styleInject(css_248z$T);/**
+}var css_248z$U = ".ck.ck-label{display:block}.ck.ck-voice-label{display:none}.ck.ck-label{font-weight:700}";
+styleInject(css_248z$U);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -14775,8 +14775,8 @@ class LabelView extends View$1 {
             ]
         });
     }
-}var css_248z$S = ".ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper{display:flex;position:relative}.ck.ck-labeled-field-view .ck.ck-label{display:block;position:absolute}:root{--ck-labeled-field-view-transition:.1s cubic-bezier(0,0,0.24,0.95);--ck-labeled-field-empty-unfocused-max-width:100% - 2 * var(--ck-spacing-medium);--ck-labeled-field-label-default-position-x:var(--ck-spacing-medium);--ck-labeled-field-label-default-position-y:calc(var(--ck-font-size-base)*0.6);--ck-color-labeled-field-label-background:var(--ck-color-base-background)}.ck.ck-labeled-field-view{border-radius:0}.ck-rounded-corners .ck.ck-labeled-field-view,.ck.ck-labeled-field-view.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper{width:100%}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{top:0}[dir=ltr] .ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{left:0}[dir=rtl] .ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{right:0}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{background:var(--ck-color-labeled-field-label-background);font-weight:400;line-height:normal;max-width:100%;overflow:hidden;padding:0 calc(var(--ck-font-size-tiny)*.5);pointer-events:none;text-overflow:ellipsis;transform:translate(var(--ck-spacing-medium),-6px) scale(.75);transform-origin:0 0;transition:transform var(--ck-labeled-field-view-transition),padding var(--ck-labeled-field-view-transition),background var(--ck-labeled-field-view-transition)}.ck.ck-labeled-field-view.ck-error .ck-input:not([readonly])+.ck.ck-label,.ck.ck-labeled-field-view.ck-error>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{color:var(--ck-color-base-error)}.ck.ck-labeled-field-view .ck-labeled-field-view__status{font-size:var(--ck-font-size-small);margin-top:var(--ck-spacing-small);white-space:normal}.ck.ck-labeled-field-view .ck-labeled-field-view__status.ck-labeled-field-view__status_error{color:var(--ck-color-base-error)}.ck.ck-labeled-field-view.ck-disabled>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{color:var(--ck-color-input-disabled-text)}[dir=ltr] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,[dir=ltr] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{transform:translate(var(--ck-labeled-field-label-default-position-x),var(--ck-labeled-field-label-default-position-y)) scale(1)}[dir=rtl] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,[dir=rtl] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{transform:translate(calc(var(--ck-labeled-field-label-default-position-x)*-1),var(--ck-labeled-field-label-default-position-y)) scale(1)}.ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{background:transparent;max-width:calc(var(--ck-labeled-field-empty-unfocused-max-width));padding:0}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown>.ck.ck-button{background:transparent}.ck.ck-labeled-field-view.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown>.ck-button>.ck-button__label{opacity:0}.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown+.ck-label{max-width:calc(var(--ck-labeled-field-empty-unfocused-max-width) - var(--ck-dropdown-arrow-size) - var(--ck-spacing-standard))}";
-styleInject(css_248z$S);/**
+}var css_248z$T = ".ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper{display:flex;position:relative}.ck.ck-labeled-field-view .ck.ck-label{display:block;position:absolute}:root{--ck-labeled-field-view-transition:.1s cubic-bezier(0,0,0.24,0.95);--ck-labeled-field-empty-unfocused-max-width:100% - 2 * var(--ck-spacing-medium);--ck-labeled-field-label-default-position-x:var(--ck-spacing-medium);--ck-labeled-field-label-default-position-y:calc(var(--ck-font-size-base)*0.6);--ck-color-labeled-field-label-background:var(--ck-color-base-background)}.ck.ck-labeled-field-view{border-radius:0}.ck-rounded-corners .ck.ck-labeled-field-view,.ck.ck-labeled-field-view.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper{width:100%}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{top:0}[dir=ltr] .ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{left:0}[dir=rtl] .ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{right:0}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{background:var(--ck-color-labeled-field-label-background);font-weight:400;line-height:normal;max-width:100%;overflow:hidden;padding:0 calc(var(--ck-font-size-tiny)*.5);pointer-events:none;text-overflow:ellipsis;transform:translate(var(--ck-spacing-medium),-6px) scale(.75);transform-origin:0 0;transition:transform var(--ck-labeled-field-view-transition),padding var(--ck-labeled-field-view-transition),background var(--ck-labeled-field-view-transition)}.ck.ck-labeled-field-view.ck-error .ck-input:not([readonly])+.ck.ck-label,.ck.ck-labeled-field-view.ck-error>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{color:var(--ck-color-base-error)}.ck.ck-labeled-field-view .ck-labeled-field-view__status{font-size:var(--ck-font-size-small);margin-top:var(--ck-spacing-small);white-space:normal}.ck.ck-labeled-field-view .ck-labeled-field-view__status.ck-labeled-field-view__status_error{color:var(--ck-color-base-error)}.ck.ck-labeled-field-view.ck-disabled>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{color:var(--ck-color-input-disabled-text)}[dir=ltr] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,[dir=ltr] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{transform:translate(var(--ck-labeled-field-label-default-position-x),var(--ck-labeled-field-label-default-position-y)) scale(1)}[dir=rtl] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,[dir=rtl] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{transform:translate(calc(var(--ck-labeled-field-label-default-position-x)*-1),var(--ck-labeled-field-label-default-position-y)) scale(1)}.ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{background:transparent;max-width:calc(var(--ck-labeled-field-empty-unfocused-max-width));padding:0}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown>.ck.ck-button{background:transparent}.ck.ck-labeled-field-view.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown>.ck-button>.ck-button__label{opacity:0}.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown+.ck-label{max-width:calc(var(--ck-labeled-field-empty-unfocused-max-width) - var(--ck-dropdown-arrow-size) - var(--ck-spacing-standard))}";
+styleInject(css_248z$T);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -14925,8 +14925,8 @@ class LabeledFieldView extends View$1 {
     focus() {
         this.fieldView.focus();
     }
-}var css_248z$R = ":root{--ck-input-width:18em;--ck-input-text-width:var(--ck-input-width)}.ck.ck-input{border-radius:0}.ck-rounded-corners .ck.ck-input,.ck.ck-input.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-input{background:var(--ck-color-input-background);border:1px solid var(--ck-color-input-border);min-height:var(--ck-ui-component-min-height);min-width:var(--ck-input-width);padding:var(--ck-spacing-extra-tiny) var(--ck-spacing-medium);transition:box-shadow .1s ease-in-out,border .1s ease-in-out}.ck.ck-input:focus{border:var(--ck-focus-ring);box-shadow:var(--ck-focus-outer-shadow),0 0;outline:none}.ck.ck-input[readonly]{background:var(--ck-color-input-disabled-background);border:1px solid var(--ck-color-input-disabled-border);color:var(--ck-color-input-disabled-text)}.ck.ck-input[readonly]:focus{box-shadow:var(--ck-focus-disabled-outer-shadow),0 0}.ck.ck-input.ck-error{animation:ck-input-shake .3s ease both;border-color:var(--ck-color-input-error-border)}.ck.ck-input.ck-error:focus{box-shadow:var(--ck-focus-error-outer-shadow),0 0}@keyframes ck-input-shake{20%{transform:translateX(-2px)}40%{transform:translateX(2px)}60%{transform:translateX(-1px)}80%{transform:translateX(1px)}}";
-styleInject(css_248z$R);/**
+}var css_248z$S = ":root{--ck-input-width:18em;--ck-input-text-width:var(--ck-input-width)}.ck.ck-input{border-radius:0}.ck-rounded-corners .ck.ck-input,.ck.ck-input.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-input{background:var(--ck-color-input-background);border:1px solid var(--ck-color-input-border);min-height:var(--ck-ui-component-min-height);min-width:var(--ck-input-width);padding:var(--ck-spacing-extra-tiny) var(--ck-spacing-medium);transition:box-shadow .1s ease-in-out,border .1s ease-in-out}.ck.ck-input:focus{border:var(--ck-focus-ring);box-shadow:var(--ck-focus-outer-shadow),0 0;outline:none}.ck.ck-input[readonly]{background:var(--ck-color-input-disabled-background);border:1px solid var(--ck-color-input-disabled-border);color:var(--ck-color-input-disabled-text)}.ck.ck-input[readonly]:focus{box-shadow:var(--ck-focus-disabled-outer-shadow),0 0}.ck.ck-input.ck-error{animation:ck-input-shake .3s ease both;border-color:var(--ck-color-input-error-border)}.ck.ck-input.ck-error:focus{box-shadow:var(--ck-focus-error-outer-shadow),0 0}@keyframes ck-input-shake{20%{transform:translateX(-2px)}40%{transform:translateX(2px)}60%{transform:translateX(-1px)}80%{transform:translateX(1px)}}";
+styleInject(css_248z$S);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -15172,8 +15172,8 @@ class DropdownPanelView extends View$1 {
             }
         }
     }
-}var css_248z$Q = ":root{--ck-dropdown-max-width:75vw}.ck.ck-dropdown{display:inline-block;position:relative}.ck.ck-dropdown .ck-dropdown__arrow{pointer-events:none;z-index:var(--ck-z-default)}.ck.ck-dropdown .ck-button.ck-dropdown__button{width:100%}.ck.ck-dropdown .ck-dropdown__panel{display:none;max-width:var(--ck-dropdown-max-width);position:absolute;z-index:var(--ck-z-modal)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel-visible{display:inline-block}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_n,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nmw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nw{bottom:100%}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw{bottom:auto;top:100%}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se{left:0}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw{right:0}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_n,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s{left:50%;transform:translateX(-50%)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nmw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw{left:75%;transform:translateX(-75%)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme{left:25%;transform:translateX(-25%)}.ck.ck-toolbar .ck-dropdown__panel{z-index:calc(var(--ck-z-modal) + 1)}:root{--ck-dropdown-arrow-size:calc(var(--ck-icon-size)*0.5)}.ck.ck-dropdown{font-size:inherit}.ck.ck-dropdown .ck-dropdown__arrow{width:var(--ck-dropdown-arrow-size)}[dir=ltr] .ck.ck-dropdown .ck-dropdown__arrow{margin-left:var(--ck-spacing-standard);right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-dropdown .ck-dropdown__arrow{left:var(--ck-spacing-standard);margin-right:var(--ck-spacing-small)}.ck.ck-dropdown.ck-disabled .ck-dropdown__arrow{opacity:var(--ck-disabled-opacity)}[dir=ltr] .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text){padding-left:var(--ck-spacing-small)}[dir=rtl] .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text){padding-right:var(--ck-spacing-small)}.ck.ck-dropdown .ck-button.ck-dropdown__button .ck-button__label{overflow:hidden;text-overflow:ellipsis;width:7em}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-disabled .ck-button__label{opacity:var(--ck-disabled-opacity)}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on{border-bottom-left-radius:0;border-bottom-right-radius:0}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-dropdown__button_label-width_auto .ck-button__label{width:auto}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-off:active,.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on:active{box-shadow:none}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-off:active:focus,.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on:active:focus{box-shadow:var(--ck-focus-outer-shadow),0 0}.ck.ck-dropdown__panel{border-radius:0}.ck-rounded-corners .ck.ck-dropdown__panel,.ck.ck-dropdown__panel.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-dropdown__panel{background:var(--ck-color-dropdown-panel-background);border:1px solid var(--ck-color-dropdown-panel-border);bottom:0;box-shadow:var(--ck-drop-shadow),0 0;min-width:100%}.ck.ck-dropdown__panel.ck-dropdown__panel_se{border-top-left-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_sw{border-top-right-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_ne{border-bottom-left-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_nw{border-bottom-right-radius:0}";
-styleInject(css_248z$Q);/**
+}var css_248z$R = ":root{--ck-dropdown-max-width:75vw}.ck.ck-dropdown{display:inline-block;position:relative}.ck.ck-dropdown .ck-dropdown__arrow{pointer-events:none;z-index:var(--ck-z-default)}.ck.ck-dropdown .ck-button.ck-dropdown__button{width:100%}.ck.ck-dropdown .ck-dropdown__panel{display:none;max-width:var(--ck-dropdown-max-width);position:absolute;z-index:var(--ck-z-modal)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel-visible{display:inline-block}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_n,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nmw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nw{bottom:100%}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw{bottom:auto;top:100%}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se{left:0}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw{right:0}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_n,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s{left:50%;transform:translateX(-50%)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nmw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw{left:75%;transform:translateX(-75%)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme{left:25%;transform:translateX(-25%)}.ck.ck-toolbar .ck-dropdown__panel{z-index:calc(var(--ck-z-modal) + 1)}:root{--ck-dropdown-arrow-size:calc(var(--ck-icon-size)*0.5)}.ck.ck-dropdown{font-size:inherit}.ck.ck-dropdown .ck-dropdown__arrow{width:var(--ck-dropdown-arrow-size)}[dir=ltr] .ck.ck-dropdown .ck-dropdown__arrow{margin-left:var(--ck-spacing-standard);right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-dropdown .ck-dropdown__arrow{left:var(--ck-spacing-standard);margin-right:var(--ck-spacing-small)}.ck.ck-dropdown.ck-disabled .ck-dropdown__arrow{opacity:var(--ck-disabled-opacity)}[dir=ltr] .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text){padding-left:var(--ck-spacing-small)}[dir=rtl] .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text){padding-right:var(--ck-spacing-small)}.ck.ck-dropdown .ck-button.ck-dropdown__button .ck-button__label{overflow:hidden;text-overflow:ellipsis;width:7em}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-disabled .ck-button__label{opacity:var(--ck-disabled-opacity)}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on{border-bottom-left-radius:0;border-bottom-right-radius:0}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-dropdown__button_label-width_auto .ck-button__label{width:auto}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-off:active,.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on:active{box-shadow:none}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-off:active:focus,.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on:active:focus{box-shadow:var(--ck-focus-outer-shadow),0 0}.ck.ck-dropdown__panel{border-radius:0}.ck-rounded-corners .ck.ck-dropdown__panel,.ck.ck-dropdown__panel.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-dropdown__panel{background:var(--ck-color-dropdown-panel-background);border:1px solid var(--ck-color-dropdown-panel-border);bottom:0;box-shadow:var(--ck-drop-shadow),0 0;min-width:100%}.ck.ck-dropdown__panel.ck-dropdown__panel_se{border-top-left-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_sw{border-top-right-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_ne{border-bottom-left-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_nw{border-bottom-right-radius:0}";
+styleInject(css_248z$R);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -17024,8 +17024,8 @@ class ContextPlugin extends ObservableMixin() {
     static get isContextPlugin() {
         return true;
     }
-}var css_248z$P = ".ck .ck-placeholder,.ck.ck-placeholder{position:relative}.ck .ck-placeholder:before,.ck.ck-placeholder:before{content:attr(data-placeholder);left:0;pointer-events:none;position:absolute;right:0}.ck.ck-read-only .ck-placeholder:before{display:none}.ck.ck-reset_all .ck-placeholder{position:relative}.ck .ck-placeholder:before,.ck.ck-placeholder:before{color:var(--ck-color-engine-placeholder-text);cursor:text}";
-styleInject(css_248z$P);/**
+}var css_248z$Q = ".ck .ck-placeholder,.ck.ck-placeholder{position:relative}.ck .ck-placeholder:before,.ck.ck-placeholder:before{content:attr(data-placeholder);left:0;pointer-events:none;position:absolute;right:0}.ck.ck-read-only .ck-placeholder:before{display:none}.ck.ck-reset_all .ck-placeholder{position:relative}.ck .ck-placeholder:before,.ck.ck-placeholder:before{color:var(--ck-color-engine-placeholder-text);cursor:text}";
+styleInject(css_248z$Q);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -24591,8 +24591,8 @@ function jumpOverInlineFiller(evt, data) {
             }
         }
     }
-}var css_248z$O = ".ck.ck-editor__editable span[data-ck-unsafe-element]{display:none}";
-styleInject(css_248z$O);/**
+}var css_248z$P = ".ck.ck-editor__editable span[data-ck-unsafe-element]{display:none}";
+styleInject(css_248z$P);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -53763,8 +53763,8 @@ const icons$1 = {
     pilcrow: pilcrow$1,
     quote,
     threeVerticalDots: threeVerticalDots$1
-};var index$6=/*#__PURE__*/Object.freeze({__proto__:null,icons:icons$1,Plugin:Plugin,Command:Command,MultiCommand:MultiCommand,Context:Context,ContextPlugin:ContextPlugin,Editor:Editor,attachToForm:attachToForm,DataApiMixin:DataApiMixin,ElementApiMixin:ElementApiMixin,secureSourceElement:secureSourceElement,PendingActions:PendingActions});var css_248z$N = ".ck.ck-toolbar{align-items:center;display:flex;flex-flow:row nowrap;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-toolbar>.ck-toolbar__items{align-items:center;display:flex;flex-flow:row wrap;flex-grow:1}.ck.ck-toolbar .ck.ck-toolbar__separator{display:inline-block}.ck.ck-toolbar .ck.ck-toolbar__separator:first-child,.ck.ck-toolbar .ck.ck-toolbar__separator:last-child{display:none}.ck.ck-toolbar .ck-toolbar__line-break{flex-basis:100%}.ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items{flex-wrap:nowrap}.ck.ck-toolbar.ck-toolbar_vertical>.ck-toolbar__items{flex-direction:column}.ck.ck-toolbar.ck-toolbar_floating>.ck-toolbar__items{flex-wrap:nowrap}.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown>.ck-dropdown__button .ck-dropdown__arrow{display:none}.ck.ck-toolbar{border-radius:0}.ck-rounded-corners .ck.ck-toolbar,.ck.ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-toolbar{background:var(--ck-color-toolbar-background);border:1px solid var(--ck-color-toolbar-border);padding:0 var(--ck-spacing-small)}.ck.ck-toolbar .ck.ck-toolbar__separator{align-self:stretch;background:var(--ck-color-toolbar-border);margin-bottom:var(--ck-spacing-small);margin-top:var(--ck-spacing-small);min-width:1px;width:1px}.ck.ck-toolbar .ck-toolbar__line-break{height:0}.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break){margin-right:var(--ck-spacing-small)}.ck.ck-toolbar>.ck-toolbar__items:empty+.ck.ck-toolbar__separator{display:none}.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break),.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown{margin-bottom:var(--ck-spacing-small);margin-top:var(--ck-spacing-small)}.ck.ck-toolbar.ck-toolbar_vertical{padding:0}.ck.ck-toolbar.ck-toolbar_vertical>.ck-toolbar__items>.ck{border-radius:0;margin:0;width:100%}.ck.ck-toolbar.ck-toolbar_compact{padding:0}.ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>*{margin:0}.ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>:not(:first-child):not(:last-child){border-radius:0}.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown>.ck.ck-button.ck-dropdown__button{padding-left:var(--ck-spacing-tiny)}.ck.ck-toolbar .ck-toolbar__nested-toolbar-dropdown>.ck-dropdown__panel{min-width:auto}.ck.ck-toolbar .ck-toolbar__nested-toolbar-dropdown>.ck-button>.ck-button__label{max-width:7em;width:auto}.ck.ck-toolbar:focus{outline:none}.ck-toolbar-container .ck.ck-toolbar{border:0}.ck.ck-toolbar[dir=rtl]>.ck-toolbar__items>.ck,[dir=rtl] .ck.ck-toolbar>.ck-toolbar__items>.ck{margin-right:0}.ck.ck-toolbar[dir=rtl]:not(.ck-toolbar_compact)>.ck-toolbar__items>.ck,[dir=rtl] .ck.ck-toolbar:not(.ck-toolbar_compact)>.ck-toolbar__items>.ck{margin-left:var(--ck-spacing-small)}.ck.ck-toolbar[dir=rtl]>.ck-toolbar__items>.ck:last-child,[dir=rtl] .ck.ck-toolbar>.ck-toolbar__items>.ck:last-child{margin-left:0}.ck.ck-toolbar.ck-toolbar_compact[dir=rtl]>.ck-toolbar__items>.ck:first-child,[dir=rtl] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:first-child{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-toolbar.ck-toolbar_compact[dir=rtl]>.ck-toolbar__items>.ck:last-child,[dir=rtl] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:last-child{border-bottom-right-radius:0;border-top-right-radius:0}.ck.ck-toolbar.ck-toolbar_grouping[dir=rtl]>.ck-toolbar__items:not(:empty):not(:only-child),.ck.ck-toolbar[dir=rtl]>.ck.ck-toolbar__separator,[dir=rtl] .ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items:not(:empty):not(:only-child),[dir=rtl] .ck.ck-toolbar>.ck.ck-toolbar__separator{margin-left:var(--ck-spacing-small)}.ck.ck-toolbar[dir=ltr]>.ck-toolbar__items>.ck:last-child,[dir=ltr] .ck.ck-toolbar>.ck-toolbar__items>.ck:last-child{margin-right:0}.ck.ck-toolbar.ck-toolbar_compact[dir=ltr]>.ck-toolbar__items>.ck:first-child,[dir=ltr] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:first-child{border-bottom-right-radius:0;border-top-right-radius:0}.ck.ck-toolbar.ck-toolbar_compact[dir=ltr]>.ck-toolbar__items>.ck:last-child,[dir=ltr] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:last-child{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-toolbar.ck-toolbar_grouping[dir=ltr]>.ck-toolbar__items:not(:empty):not(:only-child),.ck.ck-toolbar[dir=ltr]>.ck.ck-toolbar__separator,[dir=ltr] .ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items:not(:empty):not(:only-child),[dir=ltr] .ck.ck-toolbar>.ck.ck-toolbar__separator{margin-right:var(--ck-spacing-small)}";
-styleInject(css_248z$N);/**
+};var index$6=/*#__PURE__*/Object.freeze({__proto__:null,icons:icons$1,Plugin:Plugin,Command:Command,MultiCommand:MultiCommand,Context:Context,ContextPlugin:ContextPlugin,Editor:Editor,attachToForm:attachToForm,DataApiMixin:DataApiMixin,ElementApiMixin:ElementApiMixin,secureSourceElement:secureSourceElement,PendingActions:PendingActions});var css_248z$O = ".ck.ck-toolbar{align-items:center;display:flex;flex-flow:row nowrap;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-toolbar>.ck-toolbar__items{align-items:center;display:flex;flex-flow:row wrap;flex-grow:1}.ck.ck-toolbar .ck.ck-toolbar__separator{display:inline-block}.ck.ck-toolbar .ck.ck-toolbar__separator:first-child,.ck.ck-toolbar .ck.ck-toolbar__separator:last-child{display:none}.ck.ck-toolbar .ck-toolbar__line-break{flex-basis:100%}.ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items{flex-wrap:nowrap}.ck.ck-toolbar.ck-toolbar_vertical>.ck-toolbar__items{flex-direction:column}.ck.ck-toolbar.ck-toolbar_floating>.ck-toolbar__items{flex-wrap:nowrap}.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown>.ck-dropdown__button .ck-dropdown__arrow{display:none}.ck.ck-toolbar{border-radius:0}.ck-rounded-corners .ck.ck-toolbar,.ck.ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-toolbar{background:var(--ck-color-toolbar-background);border:1px solid var(--ck-color-toolbar-border);padding:0 var(--ck-spacing-small)}.ck.ck-toolbar .ck.ck-toolbar__separator{align-self:stretch;background:var(--ck-color-toolbar-border);margin-bottom:var(--ck-spacing-small);margin-top:var(--ck-spacing-small);min-width:1px;width:1px}.ck.ck-toolbar .ck-toolbar__line-break{height:0}.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break){margin-right:var(--ck-spacing-small)}.ck.ck-toolbar>.ck-toolbar__items:empty+.ck.ck-toolbar__separator{display:none}.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break),.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown{margin-bottom:var(--ck-spacing-small);margin-top:var(--ck-spacing-small)}.ck.ck-toolbar.ck-toolbar_vertical{padding:0}.ck.ck-toolbar.ck-toolbar_vertical>.ck-toolbar__items>.ck{border-radius:0;margin:0;width:100%}.ck.ck-toolbar.ck-toolbar_compact{padding:0}.ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>*{margin:0}.ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>:not(:first-child):not(:last-child){border-radius:0}.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown>.ck.ck-button.ck-dropdown__button{padding-left:var(--ck-spacing-tiny)}.ck.ck-toolbar .ck-toolbar__nested-toolbar-dropdown>.ck-dropdown__panel{min-width:auto}.ck.ck-toolbar .ck-toolbar__nested-toolbar-dropdown>.ck-button>.ck-button__label{max-width:7em;width:auto}.ck.ck-toolbar:focus{outline:none}.ck-toolbar-container .ck.ck-toolbar{border:0}.ck.ck-toolbar[dir=rtl]>.ck-toolbar__items>.ck,[dir=rtl] .ck.ck-toolbar>.ck-toolbar__items>.ck{margin-right:0}.ck.ck-toolbar[dir=rtl]:not(.ck-toolbar_compact)>.ck-toolbar__items>.ck,[dir=rtl] .ck.ck-toolbar:not(.ck-toolbar_compact)>.ck-toolbar__items>.ck{margin-left:var(--ck-spacing-small)}.ck.ck-toolbar[dir=rtl]>.ck-toolbar__items>.ck:last-child,[dir=rtl] .ck.ck-toolbar>.ck-toolbar__items>.ck:last-child{margin-left:0}.ck.ck-toolbar.ck-toolbar_compact[dir=rtl]>.ck-toolbar__items>.ck:first-child,[dir=rtl] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:first-child{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-toolbar.ck-toolbar_compact[dir=rtl]>.ck-toolbar__items>.ck:last-child,[dir=rtl] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:last-child{border-bottom-right-radius:0;border-top-right-radius:0}.ck.ck-toolbar.ck-toolbar_grouping[dir=rtl]>.ck-toolbar__items:not(:empty):not(:only-child),.ck.ck-toolbar[dir=rtl]>.ck.ck-toolbar__separator,[dir=rtl] .ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items:not(:empty):not(:only-child),[dir=rtl] .ck.ck-toolbar>.ck.ck-toolbar__separator{margin-left:var(--ck-spacing-small)}.ck.ck-toolbar[dir=ltr]>.ck-toolbar__items>.ck:last-child,[dir=ltr] .ck.ck-toolbar>.ck-toolbar__items>.ck:last-child{margin-right:0}.ck.ck-toolbar.ck-toolbar_compact[dir=ltr]>.ck-toolbar__items>.ck:first-child,[dir=ltr] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:first-child{border-bottom-right-radius:0;border-top-right-radius:0}.ck.ck-toolbar.ck-toolbar_compact[dir=ltr]>.ck-toolbar__items>.ck:last-child,[dir=ltr] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:last-child{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-toolbar.ck-toolbar_grouping[dir=ltr]>.ck-toolbar__items:not(:empty):not(:only-child),.ck.ck-toolbar[dir=ltr]>.ck.ck-toolbar__separator,[dir=ltr] .ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items:not(:empty):not(:only-child),[dir=ltr] .ck.ck-toolbar>.ck.ck-toolbar__separator{margin-right:var(--ck-spacing-small)}";
+styleInject(css_248z$O);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -54466,8 +54466,8 @@ class DynamicGrouping {
             this.viewFocusables.add(this.groupedItemsDropdown);
         }
     }
-}var css_248z$M = ".ck.ck-list{display:flex;flex-direction:column;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-list .ck-list__item,.ck.ck-list .ck-list__separator{display:block}.ck.ck-list .ck-list__item>:focus{position:relative;z-index:var(--ck-z-default)}.ck.ck-list{border-radius:0}.ck-rounded-corners .ck.ck-list,.ck.ck-list.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-list{background:var(--ck-color-list-background);list-style-type:none}.ck.ck-list__item{cursor:default;min-width:12em}.ck.ck-list__item .ck-button{border-radius:0;min-height:unset;padding:calc(var(--ck-line-height-base)*.2*var(--ck-font-size-base)) calc(var(--ck-line-height-base)*.4*var(--ck-font-size-base));text-align:left;width:100%}.ck.ck-list__item .ck-button .ck-button__label{line-height:calc(var(--ck-line-height-base)*1.2*var(--ck-font-size-base))}.ck.ck-list__item .ck-button:active{box-shadow:none}.ck.ck-list__item .ck-button.ck-on{background:var(--ck-color-list-button-on-background);color:var(--ck-color-list-button-on-text)}.ck.ck-list__item .ck-button.ck-on:active{box-shadow:none}.ck.ck-list__item .ck-button.ck-on:hover:not(.ck-disabled){background:var(--ck-color-list-button-on-background-focus)}.ck.ck-list__item .ck-button.ck-on:focus:not(.ck-switchbutton):not(.ck-disabled){border-color:var(--ck-color-base-background)}.ck.ck-list__item .ck-button:hover:not(.ck-disabled){background:var(--ck-color-list-button-hover-background)}.ck.ck-list__item .ck-switchbutton.ck-on{background:var(--ck-color-list-background);color:inherit}.ck.ck-list__item .ck-switchbutton.ck-on:hover:not(.ck-disabled){background:var(--ck-color-list-button-hover-background);color:inherit}.ck.ck-list__separator{background:var(--ck-color-base-border);height:1px;width:100%}";
-styleInject(css_248z$M);/**
+}var css_248z$N = ".ck.ck-list{display:flex;flex-direction:column;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-list .ck-list__item,.ck.ck-list .ck-list__separator{display:block}.ck.ck-list .ck-list__item>:focus{position:relative;z-index:var(--ck-z-default)}.ck.ck-list{border-radius:0}.ck-rounded-corners .ck.ck-list,.ck.ck-list.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-list{background:var(--ck-color-list-background);list-style-type:none}.ck.ck-list__item{cursor:default;min-width:12em}.ck.ck-list__item .ck-button{border-radius:0;min-height:unset;padding:calc(var(--ck-line-height-base)*.2*var(--ck-font-size-base)) calc(var(--ck-line-height-base)*.4*var(--ck-font-size-base));text-align:left;width:100%}.ck.ck-list__item .ck-button .ck-button__label{line-height:calc(var(--ck-line-height-base)*1.2*var(--ck-font-size-base))}.ck.ck-list__item .ck-button:active{box-shadow:none}.ck.ck-list__item .ck-button.ck-on{background:var(--ck-color-list-button-on-background);color:var(--ck-color-list-button-on-text)}.ck.ck-list__item .ck-button.ck-on:active{box-shadow:none}.ck.ck-list__item .ck-button.ck-on:hover:not(.ck-disabled){background:var(--ck-color-list-button-on-background-focus)}.ck.ck-list__item .ck-button.ck-on:focus:not(.ck-switchbutton):not(.ck-disabled){border-color:var(--ck-color-base-background)}.ck.ck-list__item .ck-button:hover:not(.ck-disabled){background:var(--ck-color-list-button-hover-background)}.ck.ck-list__item .ck-switchbutton.ck-on{background:var(--ck-color-list-background);color:inherit}.ck.ck-list__item .ck-switchbutton.ck-on:hover:not(.ck-disabled){background:var(--ck-color-list-button-hover-background);color:inherit}.ck.ck-list__separator{background:var(--ck-color-base-border);height:1px;width:100%}";
+styleInject(css_248z$N);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -54607,8 +54607,8 @@ class ListSeparatorView extends View$1 {
             }
         });
     }
-}var css_248z$L = ".ck.ck-splitbutton{font-size:inherit}.ck.ck-splitbutton .ck-splitbutton__action:focus{z-index:calc(var(--ck-z-default) + 1)}:root{--ck-color-split-button-hover-background:#ebebeb;--ck-color-split-button-hover-border:#b3b3b3}[dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,[dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__action{border-bottom-right-radius:unset;border-top-right-radius:unset}[dir=rtl] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,[dir=rtl] .ck.ck-splitbutton:hover>.ck-splitbutton__action{border-bottom-left-radius:unset;border-top-left-radius:unset}.ck.ck-splitbutton>.ck-splitbutton__arrow{min-width:unset}[dir=ltr] .ck.ck-splitbutton>.ck-splitbutton__arrow{border-bottom-left-radius:unset;border-top-left-radius:unset}[dir=rtl] .ck.ck-splitbutton>.ck-splitbutton__arrow{border-bottom-right-radius:unset;border-top-right-radius:unset}.ck.ck-splitbutton>.ck-splitbutton__arrow svg{width:var(--ck-dropdown-arrow-size)}.ck.ck-splitbutton>.ck-splitbutton__arrow:not(:focus){border-bottom-width:0;border-top-width:0}.ck.ck-splitbutton.ck-splitbutton_open>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover),.ck.ck-splitbutton:hover>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover){background:var(--ck-color-split-button-hover-background)}.ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,.ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{background-color:var(--ck-color-split-button-hover-border);content:\"\";height:100%;position:absolute;width:1px}.ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:focus:after,.ck.ck-splitbutton:hover>.ck-splitbutton__arrow:focus:after{--ck-color-split-button-hover-border:var(--ck-color-focus-border)}[dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,[dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{left:-1px}[dir=rtl] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,[dir=rtl] .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{right:-1px}.ck.ck-splitbutton.ck-splitbutton_open{border-radius:0}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners>.ck-splitbutton__action{border-bottom-left-radius:0}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners>.ck-splitbutton__arrow{border-bottom-right-radius:0}";
-styleInject(css_248z$L);/**
+}var css_248z$M = ".ck.ck-splitbutton{font-size:inherit}.ck.ck-splitbutton .ck-splitbutton__action:focus{z-index:calc(var(--ck-z-default) + 1)}:root{--ck-color-split-button-hover-background:#ebebeb;--ck-color-split-button-hover-border:#b3b3b3}[dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,[dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__action{border-bottom-right-radius:unset;border-top-right-radius:unset}[dir=rtl] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,[dir=rtl] .ck.ck-splitbutton:hover>.ck-splitbutton__action{border-bottom-left-radius:unset;border-top-left-radius:unset}.ck.ck-splitbutton>.ck-splitbutton__arrow{min-width:unset}[dir=ltr] .ck.ck-splitbutton>.ck-splitbutton__arrow{border-bottom-left-radius:unset;border-top-left-radius:unset}[dir=rtl] .ck.ck-splitbutton>.ck-splitbutton__arrow{border-bottom-right-radius:unset;border-top-right-radius:unset}.ck.ck-splitbutton>.ck-splitbutton__arrow svg{width:var(--ck-dropdown-arrow-size)}.ck.ck-splitbutton>.ck-splitbutton__arrow:not(:focus){border-bottom-width:0;border-top-width:0}.ck.ck-splitbutton.ck-splitbutton_open>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover),.ck.ck-splitbutton:hover>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover){background:var(--ck-color-split-button-hover-background)}.ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,.ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{background-color:var(--ck-color-split-button-hover-border);content:\"\";height:100%;position:absolute;width:1px}.ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:focus:after,.ck.ck-splitbutton:hover>.ck-splitbutton__arrow:focus:after{--ck-color-split-button-hover-border:var(--ck-color-focus-border)}[dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,[dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{left:-1px}[dir=rtl] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,[dir=rtl] .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{right:-1px}.ck.ck-splitbutton.ck-splitbutton_open{border-radius:0}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners>.ck-splitbutton__action{border-bottom-left-radius:0}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners>.ck-splitbutton__arrow{border-bottom-right-radius:0}";
+styleInject(css_248z$M);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -54751,9 +54751,9 @@ class SplitButtonView extends View$1 {
         arrowView.delegate('execute').to(this, 'open');
         return arrowView;
     }
-}var css_248z$K = ":root{--ck-toolbar-dropdown-max-width:60vw}.ck.ck-toolbar-dropdown>.ck-dropdown__panel{max-width:var(--ck-toolbar-dropdown-max-width);width:max-content}.ck.ck-toolbar-dropdown>.ck-dropdown__panel .ck-button:focus{z-index:calc(var(--ck-z-default) + 1)}.ck.ck-toolbar-dropdown .ck-toolbar{border:0}";
-styleInject(css_248z$K);var css_248z$J = ".ck.ck-dropdown .ck-dropdown__panel .ck-list{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list,.ck.ck-dropdown .ck-dropdown__panel .ck-list.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0}.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button,.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius);border-bottom-left-radius:0;border-bottom-right-radius:0;border-top-left-radius:0}.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button,.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}";
-styleInject(css_248z$J);/**
+}var css_248z$L = ":root{--ck-toolbar-dropdown-max-width:60vw}.ck.ck-toolbar-dropdown>.ck-dropdown__panel{max-width:var(--ck-toolbar-dropdown-max-width);width:max-content}.ck.ck-toolbar-dropdown>.ck-dropdown__panel .ck-button:focus{z-index:calc(var(--ck-z-default) + 1)}.ck.ck-toolbar-dropdown .ck-toolbar{border:0}";
+styleInject(css_248z$L);var css_248z$K = ".ck.ck-dropdown .ck-dropdown__panel .ck-list{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list,.ck.ck-dropdown .ck-dropdown__panel .ck-list.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0}.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button,.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius);border-bottom-left-radius:0;border-bottom-right-radius:0;border-top-left-radius:0}.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button,.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}";
+styleInject(css_248z$K);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -55649,8 +55649,8 @@ class HexBase extends ColorPicker {
  */
 class HexColorPicker extends HexBase {
 }
-customElements.define('hex-color-picker', HexColorPicker);var css_248z$I = ".color-picker-hex-input{width:max-content}.color-picker-hex-input .ck.ck-input{min-width:unset}.ck.ck-color-picker__row{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}.ck.ck-color-picker__row .ck-color-picker__hash-view{padding-right:var(--ck-spacing-medium);padding-top:var(--ck-spacing-tiny)}";
-styleInject(css_248z$I);/**
+customElements.define('hex-color-picker', HexColorPicker);var css_248z$J = ".color-picker-hex-input{width:max-content}.color-picker-hex-input .ck.ck-input{min-width:unset}.ck.ck-color-picker__row{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}.ck.ck-color-picker__row .ck-color-picker__hash-view{padding-right:var(--ck-spacing-medium);padding-top:var(--ck-spacing-tiny)}";
+styleInject(css_248z$J);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -55990,8 +55990,8 @@ class ComponentFactory {
  */
 function getNormalized(name) {
     return String(name).toLowerCase();
-}var css_248z$H = ":root{--ck-balloon-panel-arrow-z-index:calc(var(--ck-z-default) - 3)}.ck.ck-balloon-panel{display:none;position:absolute;z-index:var(--ck-z-modal)}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:after,.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:before{content:\"\";position:absolute}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:before{z-index:var(--ck-balloon-panel-arrow-z-index)}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:after{z-index:calc(var(--ck-balloon-panel-arrow-z-index) + 1)}.ck.ck-balloon-panel[class*=arrow_n]:before{z-index:var(--ck-balloon-panel-arrow-z-index)}.ck.ck-balloon-panel[class*=arrow_n]:after{z-index:calc(var(--ck-balloon-panel-arrow-z-index) + 1)}.ck.ck-balloon-panel[class*=arrow_s]:before{z-index:var(--ck-balloon-panel-arrow-z-index)}.ck.ck-balloon-panel[class*=arrow_s]:after{z-index:calc(var(--ck-balloon-panel-arrow-z-index) + 1)}.ck.ck-balloon-panel.ck-balloon-panel_visible{display:block}:root{--ck-balloon-border-width:1px;--ck-balloon-arrow-offset:2px;--ck-balloon-arrow-height:10px;--ck-balloon-arrow-half-width:8px;--ck-balloon-arrow-drop-shadow:0 2px 2px var(--ck-color-shadow-drop)}.ck.ck-balloon-panel{border-radius:0}.ck-rounded-corners .ck.ck-balloon-panel,.ck.ck-balloon-panel.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-balloon-panel{background:var(--ck-color-panel-background);border:var(--ck-balloon-border-width) solid var(--ck-color-panel-border);box-shadow:var(--ck-drop-shadow),0 0;min-height:15px}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:after,.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:before{border-style:solid;height:0;width:0}.ck.ck-balloon-panel[class*=arrow_n]:after,.ck.ck-balloon-panel[class*=arrow_n]:before{border-width:0 var(--ck-balloon-arrow-half-width) var(--ck-balloon-arrow-height) var(--ck-balloon-arrow-half-width)}.ck.ck-balloon-panel[class*=arrow_n]:before{border-color:transparent transparent var(--ck-color-panel-border) transparent;margin-top:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_n]:after{border-color:transparent transparent var(--ck-color-panel-background) transparent;margin-top:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel[class*=arrow_s]:after,.ck.ck-balloon-panel[class*=arrow_s]:before{border-width:var(--ck-balloon-arrow-height) var(--ck-balloon-arrow-half-width) 0 var(--ck-balloon-arrow-half-width)}.ck.ck-balloon-panel[class*=arrow_s]:before{border-color:var(--ck-color-panel-border) transparent transparent;filter:drop-shadow(var(--ck-balloon-arrow-drop-shadow));margin-bottom:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_s]:after{border-color:var(--ck-color-panel-background) transparent transparent transparent;margin-bottom:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel[class*=arrow_e]:after,.ck.ck-balloon-panel[class*=arrow_e]:before{border-width:var(--ck-balloon-arrow-half-width) 0 var(--ck-balloon-arrow-half-width) var(--ck-balloon-arrow-height)}.ck.ck-balloon-panel[class*=arrow_e]:before{border-color:transparent transparent transparent var(--ck-color-panel-border);margin-right:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_e]:after{border-color:transparent transparent transparent var(--ck-color-panel-background);margin-right:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel[class*=arrow_w]:after,.ck.ck-balloon-panel[class*=arrow_w]:before{border-width:var(--ck-balloon-arrow-half-width) var(--ck-balloon-arrow-height) var(--ck-balloon-arrow-half-width) 0}.ck.ck-balloon-panel[class*=arrow_w]:before{border-color:transparent var(--ck-color-panel-border) transparent transparent;margin-left:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_w]:after{border-color:transparent var(--ck-color-panel-background) transparent transparent;margin-left:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel.ck-balloon-panel_arrow_n:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_n:before{left:50%;margin-left:calc(var(--ck-balloon-arrow-half-width)*-1);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_nw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_nw:before{left:calc(var(--ck-balloon-arrow-half-width)*2);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_ne:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_ne:before{right:calc(var(--ck-balloon-arrow-half-width)*2);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_s:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_s:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);left:50%;margin-left:calc(var(--ck-balloon-arrow-half-width)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_sw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_sw:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);left:calc(var(--ck-balloon-arrow-half-width)*2)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_se:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_se:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);right:calc(var(--ck-balloon-arrow-half-width)*2)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_sme:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_sme:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);margin-right:calc(var(--ck-balloon-arrow-half-width)*2);right:25%}.ck.ck-balloon-panel.ck-balloon-panel_arrow_smw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_smw:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);left:25%;margin-left:calc(var(--ck-balloon-arrow-half-width)*2)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_nme:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_nme:before{margin-right:calc(var(--ck-balloon-arrow-half-width)*2);right:25%;top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_nmw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_nmw:before{left:25%;margin-left:calc(var(--ck-balloon-arrow-half-width)*2);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_e:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_e:before{margin-top:calc(var(--ck-balloon-arrow-half-width)*-1);right:calc(var(--ck-balloon-arrow-height)*-1);top:50%}.ck.ck-balloon-panel.ck-balloon-panel_arrow_w:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_w:before{left:calc(var(--ck-balloon-arrow-height)*-1);margin-top:calc(var(--ck-balloon-arrow-half-width)*-1);top:50%}";
-styleInject(css_248z$H);/**
+}var css_248z$I = ":root{--ck-balloon-panel-arrow-z-index:calc(var(--ck-z-default) - 3)}.ck.ck-balloon-panel{display:none;position:absolute;z-index:var(--ck-z-modal)}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:after,.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:before{content:\"\";position:absolute}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:before{z-index:var(--ck-balloon-panel-arrow-z-index)}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:after{z-index:calc(var(--ck-balloon-panel-arrow-z-index) + 1)}.ck.ck-balloon-panel[class*=arrow_n]:before{z-index:var(--ck-balloon-panel-arrow-z-index)}.ck.ck-balloon-panel[class*=arrow_n]:after{z-index:calc(var(--ck-balloon-panel-arrow-z-index) + 1)}.ck.ck-balloon-panel[class*=arrow_s]:before{z-index:var(--ck-balloon-panel-arrow-z-index)}.ck.ck-balloon-panel[class*=arrow_s]:after{z-index:calc(var(--ck-balloon-panel-arrow-z-index) + 1)}.ck.ck-balloon-panel.ck-balloon-panel_visible{display:block}:root{--ck-balloon-border-width:1px;--ck-balloon-arrow-offset:2px;--ck-balloon-arrow-height:10px;--ck-balloon-arrow-half-width:8px;--ck-balloon-arrow-drop-shadow:0 2px 2px var(--ck-color-shadow-drop)}.ck.ck-balloon-panel{border-radius:0}.ck-rounded-corners .ck.ck-balloon-panel,.ck.ck-balloon-panel.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-balloon-panel{background:var(--ck-color-panel-background);border:var(--ck-balloon-border-width) solid var(--ck-color-panel-border);box-shadow:var(--ck-drop-shadow),0 0;min-height:15px}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:after,.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:before{border-style:solid;height:0;width:0}.ck.ck-balloon-panel[class*=arrow_n]:after,.ck.ck-balloon-panel[class*=arrow_n]:before{border-width:0 var(--ck-balloon-arrow-half-width) var(--ck-balloon-arrow-height) var(--ck-balloon-arrow-half-width)}.ck.ck-balloon-panel[class*=arrow_n]:before{border-color:transparent transparent var(--ck-color-panel-border) transparent;margin-top:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_n]:after{border-color:transparent transparent var(--ck-color-panel-background) transparent;margin-top:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel[class*=arrow_s]:after,.ck.ck-balloon-panel[class*=arrow_s]:before{border-width:var(--ck-balloon-arrow-height) var(--ck-balloon-arrow-half-width) 0 var(--ck-balloon-arrow-half-width)}.ck.ck-balloon-panel[class*=arrow_s]:before{border-color:var(--ck-color-panel-border) transparent transparent;filter:drop-shadow(var(--ck-balloon-arrow-drop-shadow));margin-bottom:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_s]:after{border-color:var(--ck-color-panel-background) transparent transparent transparent;margin-bottom:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel[class*=arrow_e]:after,.ck.ck-balloon-panel[class*=arrow_e]:before{border-width:var(--ck-balloon-arrow-half-width) 0 var(--ck-balloon-arrow-half-width) var(--ck-balloon-arrow-height)}.ck.ck-balloon-panel[class*=arrow_e]:before{border-color:transparent transparent transparent var(--ck-color-panel-border);margin-right:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_e]:after{border-color:transparent transparent transparent var(--ck-color-panel-background);margin-right:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel[class*=arrow_w]:after,.ck.ck-balloon-panel[class*=arrow_w]:before{border-width:var(--ck-balloon-arrow-half-width) var(--ck-balloon-arrow-height) var(--ck-balloon-arrow-half-width) 0}.ck.ck-balloon-panel[class*=arrow_w]:before{border-color:transparent var(--ck-color-panel-border) transparent transparent;margin-left:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_w]:after{border-color:transparent var(--ck-color-panel-background) transparent transparent;margin-left:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel.ck-balloon-panel_arrow_n:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_n:before{left:50%;margin-left:calc(var(--ck-balloon-arrow-half-width)*-1);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_nw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_nw:before{left:calc(var(--ck-balloon-arrow-half-width)*2);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_ne:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_ne:before{right:calc(var(--ck-balloon-arrow-half-width)*2);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_s:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_s:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);left:50%;margin-left:calc(var(--ck-balloon-arrow-half-width)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_sw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_sw:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);left:calc(var(--ck-balloon-arrow-half-width)*2)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_se:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_se:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);right:calc(var(--ck-balloon-arrow-half-width)*2)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_sme:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_sme:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);margin-right:calc(var(--ck-balloon-arrow-half-width)*2);right:25%}.ck.ck-balloon-panel.ck-balloon-panel_arrow_smw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_smw:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);left:25%;margin-left:calc(var(--ck-balloon-arrow-half-width)*2)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_nme:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_nme:before{margin-right:calc(var(--ck-balloon-arrow-half-width)*2);right:25%;top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_nmw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_nmw:before{left:25%;margin-left:calc(var(--ck-balloon-arrow-half-width)*2);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_e:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_e:before{margin-top:calc(var(--ck-balloon-arrow-half-width)*-1);right:calc(var(--ck-balloon-arrow-height)*-1);top:50%}.ck.ck-balloon-panel.ck-balloon-panel_arrow_w:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_w:before{left:calc(var(--ck-balloon-arrow-height)*-1);margin-top:calc(var(--ck-balloon-arrow-half-width)*-1);top:50%}";
+styleInject(css_248z$I);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -56971,8 +56971,8 @@ function generatePositions(options = {}) {
     function getSouthTop(targetRect) {
         return targetRect.bottom + heightOffset;
     }
-}var css_248z$G = ".ck.ck-balloon-panel.ck-tooltip{--ck-balloon-border-width:0px;--ck-balloon-arrow-offset:0px;--ck-balloon-arrow-half-width:4px;--ck-balloon-arrow-height:4px;--ck-color-panel-background:var(--ck-color-tooltip-background);padding:0 var(--ck-spacing-medium);pointer-events:none;z-index:calc(var(--ck-z-modal) + 100)}.ck.ck-balloon-panel.ck-tooltip .ck-tooltip__text{color:var(--ck-color-tooltip-text);font-size:.9em;line-height:1.5}.ck.ck-balloon-panel.ck-tooltip{box-shadow:none}.ck.ck-balloon-panel.ck-tooltip:before{display:none}";
-styleInject(css_248z$G);/**
+}var css_248z$H = ".ck.ck-balloon-panel.ck-tooltip{--ck-balloon-border-width:0px;--ck-balloon-arrow-offset:0px;--ck-balloon-arrow-half-width:4px;--ck-balloon-arrow-height:4px;--ck-color-panel-background:var(--ck-color-tooltip-background);padding:0 var(--ck-spacing-medium);pointer-events:none;z-index:calc(var(--ck-z-modal) + 100)}.ck.ck-balloon-panel.ck-tooltip .ck-tooltip__text{color:var(--ck-color-tooltip-text);font-size:.9em;line-height:1.5}.ck.ck-balloon-panel.ck-tooltip{box-shadow:none}.ck.ck-balloon-panel.ck-tooltip:before{display:none}";
+styleInject(css_248z$H);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -58005,8 +58005,8 @@ function getToolbarDefinitionWeight(toolbarDef) {
         weight--;
     }
     return weight;
-}var css_248z$F = ":root{--ck-color-editable-blur-selection:#d9d9d9}.ck.ck-editor__editable:not(.ck-editor__nested-editable){border-radius:0}.ck-rounded-corners .ck.ck-editor__editable:not(.ck-editor__nested-editable),.ck.ck-editor__editable.ck-rounded-corners:not(.ck-editor__nested-editable){border-radius:var(--ck-border-radius)}.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable){border:var(--ck-focus-ring);box-shadow:var(--ck-inner-shadow),0 0;outline:none}.ck.ck-editor__editable_inline{border:1px solid transparent;overflow:auto;padding:0 var(--ck-spacing-standard)}.ck.ck-editor__editable_inline[dir=ltr]{text-align:left}.ck.ck-editor__editable_inline[dir=rtl]{text-align:right}.ck.ck-editor__editable_inline>:first-child{margin-top:var(--ck-spacing-large)}.ck.ck-editor__editable_inline>:last-child{margin-bottom:var(--ck-spacing-large)}.ck.ck-editor__editable_inline.ck-blurred ::selection{background:var(--ck-color-editable-blur-selection)}.ck.ck-balloon-panel.ck-toolbar-container[class*=arrow_n]:after{border-bottom-color:var(--ck-color-base-foreground)}.ck.ck-balloon-panel.ck-toolbar-container[class*=arrow_s]:after{border-top-color:var(--ck-color-base-foreground)}";
-styleInject(css_248z$F);/**
+}var css_248z$G = ":root{--ck-color-editable-blur-selection:#d9d9d9}.ck.ck-editor__editable:not(.ck-editor__nested-editable){border-radius:0}.ck-rounded-corners .ck.ck-editor__editable:not(.ck-editor__nested-editable),.ck.ck-editor__editable.ck-rounded-corners:not(.ck-editor__nested-editable){border-radius:var(--ck-border-radius)}.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable){border:var(--ck-focus-ring);box-shadow:var(--ck-inner-shadow),0 0;outline:none}.ck.ck-editor__editable_inline{border:1px solid transparent;overflow:auto;padding:0 var(--ck-spacing-standard)}.ck.ck-editor__editable_inline[dir=ltr]{text-align:left}.ck.ck-editor__editable_inline[dir=rtl]{text-align:right}.ck.ck-editor__editable_inline>:first-child{margin-top:var(--ck-spacing-large)}.ck.ck-editor__editable_inline>:last-child{margin-bottom:var(--ck-spacing-large)}.ck.ck-editor__editable_inline.ck-blurred ::selection{background:var(--ck-color-editable-blur-selection)}.ck.ck-balloon-panel.ck-toolbar-container[class*=arrow_n]:after{border-bottom-color:var(--ck-color-base-foreground)}.ck.ck-balloon-panel.ck-toolbar-container[class*=arrow_s]:after{border-top-color:var(--ck-color-base-foreground)}";
+styleInject(css_248z$G);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -58262,8 +58262,8 @@ class InlineEditableUIView extends EditableUIView {
             writer.setAttribute('aria-label', this._generateLabel(this), viewRoot);
         });
     }
-}var css_248z$E = ".ck.ck-form__header{align-items:center;display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}:root{--ck-form-header-height:38px}.ck.ck-form__header{border-bottom:1px solid var(--ck-color-base-border);height:var(--ck-form-header-height);line-height:var(--ck-form-header-height);padding:var(--ck-spacing-small) var(--ck-spacing-large)}.ck.ck-form__header .ck-form__header__label{font-weight:700}";
-styleInject(css_248z$E);/**
+}var css_248z$F = ".ck.ck-form__header{align-items:center;display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}:root{--ck-form-header-height:38px}.ck.ck-form__header{border-bottom:1px solid var(--ck-color-base-border);height:var(--ck-form-header-height);line-height:var(--ck-form-header-height);padding:var(--ck-spacing-small) var(--ck-spacing-large)}.ck.ck-form__header .ck-form__header__label{font-weight:700}";
+styleInject(css_248z$F);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -58586,9 +58586,9 @@ class Model extends ObservableMixin() {
     }
 }var previousArrow = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M11.463 5.187a.888.888 0 1 1 1.254 1.255L9.16 10l3.557 3.557a.888.888 0 1 1-1.254 1.255L7.26 10.61a.888.888 0 0 1 .16-1.382l4.043-4.042z\"/></svg>";
 var nextIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8.537 14.813a.888.888 0 1 1-1.254-1.255L10.84 10 7.283 6.442a.888.888 0 1 1 1.254-1.255L12.74 9.39a.888.888 0 0 1-.16 1.382l-4.043 4.042z\"/></svg>";
-var css_248z$D = ".ck .ck-balloon-rotator__navigation{align-items:center;display:flex;justify-content:center}.ck .ck-balloon-rotator__content .ck-toolbar{justify-content:center}.ck .ck-balloon-rotator__navigation{background:var(--ck-color-toolbar-background);border-bottom:1px solid var(--ck-color-toolbar-border);padding:0 var(--ck-spacing-small)}.ck .ck-balloon-rotator__navigation>*{margin-bottom:var(--ck-spacing-small);margin-right:var(--ck-spacing-small);margin-top:var(--ck-spacing-small)}.ck .ck-balloon-rotator__navigation .ck-balloon-rotator__counter{margin-left:var(--ck-spacing-small);margin-right:var(--ck-spacing-standard)}.ck .ck-balloon-rotator__content .ck.ck-annotation-wrapper{box-shadow:none}";
-styleInject(css_248z$D);var css_248z$C = ".ck .ck-fake-panel{position:absolute;z-index:calc(var(--ck-z-modal) - 1)}.ck .ck-fake-panel div{position:absolute}.ck .ck-fake-panel div:first-child{z-index:2}.ck .ck-fake-panel div:nth-child(2){z-index:1}:root{--ck-balloon-fake-panel-offset-horizontal:6px;--ck-balloon-fake-panel-offset-vertical:6px}.ck .ck-fake-panel div{background:var(--ck-color-panel-background);border:1px solid var(--ck-color-panel-border);border-radius:var(--ck-border-radius);box-shadow:var(--ck-drop-shadow),0 0;height:100%;min-height:15px;width:100%}.ck .ck-fake-panel div:first-child{margin-left:var(--ck-balloon-fake-panel-offset-horizontal);margin-top:var(--ck-balloon-fake-panel-offset-vertical)}.ck .ck-fake-panel div:nth-child(2){margin-left:calc(var(--ck-balloon-fake-panel-offset-horizontal)*2);margin-top:calc(var(--ck-balloon-fake-panel-offset-vertical)*2)}.ck .ck-fake-panel div:nth-child(3){margin-left:calc(var(--ck-balloon-fake-panel-offset-horizontal)*3);margin-top:calc(var(--ck-balloon-fake-panel-offset-vertical)*3)}.ck .ck-balloon-panel_arrow_s+.ck-fake-panel,.ck .ck-balloon-panel_arrow_se+.ck-fake-panel,.ck .ck-balloon-panel_arrow_sw+.ck-fake-panel{--ck-balloon-fake-panel-offset-vertical:-6px}";
-styleInject(css_248z$C);/**
+var css_248z$E = ".ck .ck-balloon-rotator__navigation{align-items:center;display:flex;justify-content:center}.ck .ck-balloon-rotator__content .ck-toolbar{justify-content:center}.ck .ck-balloon-rotator__navigation{background:var(--ck-color-toolbar-background);border-bottom:1px solid var(--ck-color-toolbar-border);padding:0 var(--ck-spacing-small)}.ck .ck-balloon-rotator__navigation>*{margin-bottom:var(--ck-spacing-small);margin-right:var(--ck-spacing-small);margin-top:var(--ck-spacing-small)}.ck .ck-balloon-rotator__navigation .ck-balloon-rotator__counter{margin-left:var(--ck-spacing-small);margin-right:var(--ck-spacing-standard)}.ck .ck-balloon-rotator__content .ck.ck-annotation-wrapper{box-shadow:none}";
+styleInject(css_248z$E);var css_248z$D = ".ck .ck-fake-panel{position:absolute;z-index:calc(var(--ck-z-modal) - 1)}.ck .ck-fake-panel div{position:absolute}.ck .ck-fake-panel div:first-child{z-index:2}.ck .ck-fake-panel div:nth-child(2){z-index:1}:root{--ck-balloon-fake-panel-offset-horizontal:6px;--ck-balloon-fake-panel-offset-vertical:6px}.ck .ck-fake-panel div{background:var(--ck-color-panel-background);border:1px solid var(--ck-color-panel-border);border-radius:var(--ck-border-radius);box-shadow:var(--ck-drop-shadow),0 0;height:100%;min-height:15px;width:100%}.ck .ck-fake-panel div:first-child{margin-left:var(--ck-balloon-fake-panel-offset-horizontal);margin-top:var(--ck-balloon-fake-panel-offset-vertical)}.ck .ck-fake-panel div:nth-child(2){margin-left:calc(var(--ck-balloon-fake-panel-offset-horizontal)*2);margin-top:calc(var(--ck-balloon-fake-panel-offset-vertical)*2)}.ck .ck-fake-panel div:nth-child(3){margin-left:calc(var(--ck-balloon-fake-panel-offset-horizontal)*3);margin-top:calc(var(--ck-balloon-fake-panel-offset-vertical)*3)}.ck .ck-balloon-panel_arrow_s+.ck-fake-panel,.ck .ck-balloon-panel_arrow_se+.ck-fake-panel,.ck .ck-balloon-panel_arrow_sw+.ck-fake-panel{--ck-balloon-fake-panel-offset-vertical:-6px}";
+styleInject(css_248z$D);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -59147,8 +59147,8 @@ class FakePanelsView extends View$1 {
             Object.assign(this, { top, left, width, height });
         }
     }
-}var css_248z$B = ".ck.ck-sticky-panel .ck-sticky-panel__content_sticky{position:fixed;top:0;z-index:var(--ck-z-modal)}.ck.ck-sticky-panel .ck-sticky-panel__content_sticky_bottom-limit{position:absolute;top:auto}.ck.ck-sticky-panel .ck-sticky-panel__content_sticky{border-top-left-radius:0;border-top-right-radius:0;border-width:0 1px 1px;box-shadow:var(--ck-drop-shadow),0 0}";
-styleInject(css_248z$B);/**
+}var css_248z$C = ".ck.ck-sticky-panel .ck-sticky-panel__content_sticky{position:fixed;top:0;z-index:var(--ck-z-modal)}.ck.ck-sticky-panel .ck-sticky-panel__content_sticky_bottom-limit{position:absolute;top:auto}.ck.ck-sticky-panel .ck-sticky-panel__content_sticky{border-top-left-radius:0;border-top-right-radius:0;border-width:0 1px 1px;box-shadow:var(--ck-drop-shadow),0 0}";
+styleInject(css_248z$C);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -59568,8 +59568,8 @@ function selectionContainsOnlyMultipleSelectables(selection, schema) {
         const element = range.getContainedElement();
         return element && schema.isSelectable(element);
     });
-}var css_248z$A = ".ck.ck-block-toolbar-button{position:absolute;z-index:var(--ck-z-default)}:root{--ck-color-block-toolbar-button:var(--ck-color-text);--ck-block-toolbar-button-size:var(--ck-font-size-normal)}.ck.ck-block-toolbar-button{color:var(--ck-color-block-toolbar-button);font-size:var(--ck-block-toolbar-size)}";
-styleInject(css_248z$A);/**
+}var css_248z$B = ".ck.ck-block-toolbar-button{position:absolute;z-index:var(--ck-z-default)}:root{--ck-color-block-toolbar-button:var(--ck-color-text);--ck-block-toolbar-button-size:var(--ck-font-size-normal)}.ck.ck-block-toolbar-button{color:var(--ck-color-block-toolbar-button);font-size:var(--ck-block-toolbar-size)}";
+styleInject(css_248z$B);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -60136,8 +60136,8 @@ class ClassicEditorUI extends EditorUI {
             }, 20);
         }
     }
-}var css_248z$z = ".ck.ck-editor{position:relative}.ck.ck-editor .ck-editor__top .ck-sticky-panel .ck-toolbar{z-index:var(--ck-z-modal)}.ck.ck-editor__top .ck-sticky-panel .ck-toolbar{border-radius:0}.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,.ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius);border-bottom-left-radius:0;border-bottom-right-radius:0}.ck.ck-editor__top .ck-sticky-panel .ck-toolbar{border-bottom-width:0}.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar{border-bottom-width:1px;border-radius:0}.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar,.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius);border-radius:0}.ck.ck-editor__main>.ck-editor__editable{background:var(--ck-color-base-background);border-radius:0}.ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable,.ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){border-color:var(--ck-color-base-border)}";
-styleInject(css_248z$z);/**
+}var css_248z$A = ".ck.ck-editor{position:relative}.ck.ck-editor .ck-editor__top .ck-sticky-panel .ck-toolbar{z-index:var(--ck-z-modal)}.ck.ck-editor__top .ck-sticky-panel .ck-toolbar{border-radius:0}.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,.ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius);border-bottom-left-radius:0;border-bottom-right-radius:0}.ck.ck-editor__top .ck-sticky-panel .ck-toolbar{border-bottom-width:0}.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar{border-bottom-width:1px;border-radius:0}.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar,.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius);border-radius:0}.ck.ck-editor__main>.ck-editor__editable{background:var(--ck-color-base-background);border-radius:0}.ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable,.ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){border-color:var(--ck-color-base-border)}";
+styleInject(css_248z$A);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -63796,8 +63796,8 @@ class BlockQuoteEditing extends Plugin {
             }
         }, { context: 'blockquote' });
     }
-}var css_248z$y = ".ck-content blockquote{border-left:5px solid #ccc;font-style:italic;margin-left:0;margin-right:0;overflow:hidden;padding-left:1.5em;padding-right:1.5em}.ck-content[dir=rtl] blockquote{border-left:0;border-right:5px solid #ccc}";
-styleInject(css_248z$y);/**
+}var css_248z$z = ".ck-content blockquote{border-left:5px solid #ccc;font-style:italic;margin-left:0;margin-right:0;overflow:hidden;padding-left:1.5em;padding-right:1.5em}.ck-content[dir=rtl] blockquote{border-left:0;border-right:5px solid #ccc}";
+styleInject(css_248z$z);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -64812,8 +64812,8 @@ function getClosestWidgetViewElement(domElement, domConverter) {
 function getTypeAroundFakeCaretPosition(selection) {
     return selection.getAttribute(TYPE_AROUND_SELECTION_ATTRIBUTE);
 }var returnIcon = "<svg viewBox=\"0 0 10 8\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M9.055.263v3.972h-6.77M1 4.216l2-2.038m-2 2 2 2.038\"/></svg>";
-var css_248z$x = ".ck .ck-widget .ck-widget__type-around__button{display:block;overflow:hidden;position:absolute;z-index:var(--ck-z-default)}.ck .ck-widget .ck-widget__type-around__button svg{left:50%;position:absolute;top:50%;z-index:calc(var(--ck-z-default) + 2)}.ck .ck-widget .ck-widget__type-around__button.ck-widget__type-around__button_before{left:min(10%,30px);top:calc(var(--ck-widget-outline-thickness)*-.5);transform:translateY(-50%)}.ck .ck-widget .ck-widget__type-around__button.ck-widget__type-around__button_after{bottom:calc(var(--ck-widget-outline-thickness)*-.5);right:min(10%,30px);transform:translateY(50%)}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:after,.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__button:hover:after{content:\"\";display:block;left:1px;position:absolute;top:1px;z-index:calc(var(--ck-z-default) + 1)}.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__fake-caret{display:none;left:0;position:absolute;right:0}.ck .ck-widget:hover>.ck-widget__type-around>.ck-widget__type-around__fake-caret{left:calc(var(--ck-widget-outline-thickness)*-1);right:calc(var(--ck-widget-outline-thickness)*-1)}.ck .ck-widget.ck-widget_type-around_show-fake-caret_before>.ck-widget__type-around>.ck-widget__type-around__fake-caret{display:block;top:calc(var(--ck-widget-outline-thickness)*-1 - 1px)}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after>.ck-widget__type-around>.ck-widget__type-around__fake-caret{bottom:calc(var(--ck-widget-outline-thickness)*-1 - 1px);display:block}.ck.ck-editor__editable.ck-read-only .ck-widget__type-around,.ck.ck-editor__editable.ck-restricted-editing_mode_restricted .ck-widget__type-around,.ck.ck-editor__editable.ck-widget__type-around_disabled .ck-widget__type-around{display:none}:root{--ck-widget-type-around-button-size:20px;--ck-color-widget-type-around-button-active:var(--ck-color-focus-border);--ck-color-widget-type-around-button-hover:var(--ck-color-widget-hover-border);--ck-color-widget-type-around-button-blurred-editable:var(--ck-color-widget-blurred-border);--ck-color-widget-type-around-button-radar-start-alpha:0;--ck-color-widget-type-around-button-radar-end-alpha:.3;--ck-color-widget-type-around-button-icon:var(--ck-color-base-background)}.ck .ck-widget .ck-widget__type-around__button{background:var(--ck-color-widget-type-around-button);border-radius:100px;height:var(--ck-widget-type-around-button-size);opacity:0;pointer-events:none;transition:opacity var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),background var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve);width:var(--ck-widget-type-around-button-size)}.ck .ck-widget .ck-widget__type-around__button svg{height:8px;margin-top:1px;transform:translate(-50%,-50%);transition:transform .5s ease;width:10px}.ck .ck-widget .ck-widget__type-around__button svg *{stroke-dasharray:10;stroke-dashoffset:0;fill:none;stroke:var(--ck-color-widget-type-around-button-icon);stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:round}.ck .ck-widget .ck-widget__type-around__button svg line{stroke-dasharray:7}.ck .ck-widget .ck-widget__type-around__button:hover{animation:ck-widget-type-around-button-sonar 1s ease infinite}.ck .ck-widget .ck-widget__type-around__button:hover svg polyline{animation:ck-widget-type-around-arrow-dash 2s linear}.ck .ck-widget .ck-widget__type-around__button:hover svg line{animation:ck-widget-type-around-arrow-tip-dash 2s linear}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button,.ck .ck-widget:hover>.ck-widget__type-around>.ck-widget__type-around__button{opacity:1;pointer-events:auto}.ck .ck-widget:not(.ck-widget_selected)>.ck-widget__type-around>.ck-widget__type-around__button{background:var(--ck-color-widget-type-around-button-hover)}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button,.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__button:hover{background:var(--ck-color-widget-type-around-button-active)}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:after,.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__button:hover:after{background:linear-gradient(135deg,hsla(0,0%,100%,0),hsla(0,0%,100%,.3));border-radius:100px;height:calc(var(--ck-widget-type-around-button-size) - 2px);width:calc(var(--ck-widget-type-around-button-size) - 2px)}.ck .ck-widget.ck-widget_with-selection-handle>.ck-widget__type-around>.ck-widget__type-around__button_before{margin-left:20px}.ck .ck-widget .ck-widget__type-around__fake-caret{animation:ck-widget-type-around-fake-caret-pulse 1s linear infinite normal forwards;background:var(--ck-color-base-text);height:1px;outline:1px solid hsla(0,0%,100%,.5);pointer-events:none}.ck .ck-widget.ck-widget_selected.ck-widget_type-around_show-fake-caret_after,.ck .ck-widget.ck-widget_selected.ck-widget_type-around_show-fake-caret_before{outline-color:transparent}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_selected:hover,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_selected:hover{outline-color:var(--ck-color-widget-hover-border)}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after>.ck-widget__type-around>.ck-widget__type-around__button,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before>.ck-widget__type-around>.ck-widget__type-around__button{opacity:0;pointer-events:none}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_selected.ck-widget_with-resizer>.ck-widget__resizer,.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_selected.ck-widget_with-resizer>.ck-widget__resizer,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle{opacity:0}.ck[dir=rtl] .ck-widget.ck-widget_with-selection-handle .ck-widget__type-around>.ck-widget__type-around__button_before{margin-left:0;margin-right:20px}.ck-editor__nested-editable.ck-editor__editable_selected .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button,.ck-editor__nested-editable.ck-editor__editable_selected .ck-widget:hover>.ck-widget__type-around>.ck-widget__type-around__button{opacity:0;pointer-events:none}.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:not(:hover){background:var(--ck-color-widget-type-around-button-blurred-editable)}.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:not(:hover) svg *{stroke:#999}@keyframes ck-widget-type-around-arrow-dash{0%{stroke-dashoffset:10}20%,to{stroke-dashoffset:0}}@keyframes ck-widget-type-around-arrow-tip-dash{0%,20%{stroke-dashoffset:7}40%,to{stroke-dashoffset:0}}@keyframes ck-widget-type-around-button-sonar{0%{box-shadow:0 0 0 0 hsla(var(--ck-color-focus-border-coordinates),var(--ck-color-widget-type-around-button-radar-start-alpha))}50%{box-shadow:0 0 0 5px hsla(var(--ck-color-focus-border-coordinates),var(--ck-color-widget-type-around-button-radar-end-alpha))}to{box-shadow:0 0 0 5px hsla(var(--ck-color-focus-border-coordinates),var(--ck-color-widget-type-around-button-radar-start-alpha))}}@keyframes ck-widget-type-around-fake-caret-pulse{0%{opacity:1}49%{opacity:1}50%{opacity:0}99%{opacity:0}to{opacity:1}}";
-styleInject(css_248z$x);/**
+var css_248z$y = ".ck .ck-widget .ck-widget__type-around__button{display:block;overflow:hidden;position:absolute;z-index:var(--ck-z-default)}.ck .ck-widget .ck-widget__type-around__button svg{left:50%;position:absolute;top:50%;z-index:calc(var(--ck-z-default) + 2)}.ck .ck-widget .ck-widget__type-around__button.ck-widget__type-around__button_before{left:min(10%,30px);top:calc(var(--ck-widget-outline-thickness)*-.5);transform:translateY(-50%)}.ck .ck-widget .ck-widget__type-around__button.ck-widget__type-around__button_after{bottom:calc(var(--ck-widget-outline-thickness)*-.5);right:min(10%,30px);transform:translateY(50%)}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:after,.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__button:hover:after{content:\"\";display:block;left:1px;position:absolute;top:1px;z-index:calc(var(--ck-z-default) + 1)}.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__fake-caret{display:none;left:0;position:absolute;right:0}.ck .ck-widget:hover>.ck-widget__type-around>.ck-widget__type-around__fake-caret{left:calc(var(--ck-widget-outline-thickness)*-1);right:calc(var(--ck-widget-outline-thickness)*-1)}.ck .ck-widget.ck-widget_type-around_show-fake-caret_before>.ck-widget__type-around>.ck-widget__type-around__fake-caret{display:block;top:calc(var(--ck-widget-outline-thickness)*-1 - 1px)}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after>.ck-widget__type-around>.ck-widget__type-around__fake-caret{bottom:calc(var(--ck-widget-outline-thickness)*-1 - 1px);display:block}.ck.ck-editor__editable.ck-read-only .ck-widget__type-around,.ck.ck-editor__editable.ck-restricted-editing_mode_restricted .ck-widget__type-around,.ck.ck-editor__editable.ck-widget__type-around_disabled .ck-widget__type-around{display:none}:root{--ck-widget-type-around-button-size:20px;--ck-color-widget-type-around-button-active:var(--ck-color-focus-border);--ck-color-widget-type-around-button-hover:var(--ck-color-widget-hover-border);--ck-color-widget-type-around-button-blurred-editable:var(--ck-color-widget-blurred-border);--ck-color-widget-type-around-button-radar-start-alpha:0;--ck-color-widget-type-around-button-radar-end-alpha:.3;--ck-color-widget-type-around-button-icon:var(--ck-color-base-background)}.ck .ck-widget .ck-widget__type-around__button{background:var(--ck-color-widget-type-around-button);border-radius:100px;height:var(--ck-widget-type-around-button-size);opacity:0;pointer-events:none;transition:opacity var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),background var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve);width:var(--ck-widget-type-around-button-size)}.ck .ck-widget .ck-widget__type-around__button svg{height:8px;margin-top:1px;transform:translate(-50%,-50%);transition:transform .5s ease;width:10px}.ck .ck-widget .ck-widget__type-around__button svg *{stroke-dasharray:10;stroke-dashoffset:0;fill:none;stroke:var(--ck-color-widget-type-around-button-icon);stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:round}.ck .ck-widget .ck-widget__type-around__button svg line{stroke-dasharray:7}.ck .ck-widget .ck-widget__type-around__button:hover{animation:ck-widget-type-around-button-sonar 1s ease infinite}.ck .ck-widget .ck-widget__type-around__button:hover svg polyline{animation:ck-widget-type-around-arrow-dash 2s linear}.ck .ck-widget .ck-widget__type-around__button:hover svg line{animation:ck-widget-type-around-arrow-tip-dash 2s linear}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button,.ck .ck-widget:hover>.ck-widget__type-around>.ck-widget__type-around__button{opacity:1;pointer-events:auto}.ck .ck-widget:not(.ck-widget_selected)>.ck-widget__type-around>.ck-widget__type-around__button{background:var(--ck-color-widget-type-around-button-hover)}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button,.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__button:hover{background:var(--ck-color-widget-type-around-button-active)}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:after,.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__button:hover:after{background:linear-gradient(135deg,hsla(0,0%,100%,0),hsla(0,0%,100%,.3));border-radius:100px;height:calc(var(--ck-widget-type-around-button-size) - 2px);width:calc(var(--ck-widget-type-around-button-size) - 2px)}.ck .ck-widget.ck-widget_with-selection-handle>.ck-widget__type-around>.ck-widget__type-around__button_before{margin-left:20px}.ck .ck-widget .ck-widget__type-around__fake-caret{animation:ck-widget-type-around-fake-caret-pulse 1s linear infinite normal forwards;background:var(--ck-color-base-text);height:1px;outline:1px solid hsla(0,0%,100%,.5);pointer-events:none}.ck .ck-widget.ck-widget_selected.ck-widget_type-around_show-fake-caret_after,.ck .ck-widget.ck-widget_selected.ck-widget_type-around_show-fake-caret_before{outline-color:transparent}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_selected:hover,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_selected:hover{outline-color:var(--ck-color-widget-hover-border)}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after>.ck-widget__type-around>.ck-widget__type-around__button,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before>.ck-widget__type-around>.ck-widget__type-around__button{opacity:0;pointer-events:none}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_selected.ck-widget_with-resizer>.ck-widget__resizer,.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_selected.ck-widget_with-resizer>.ck-widget__resizer,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle{opacity:0}.ck[dir=rtl] .ck-widget.ck-widget_with-selection-handle .ck-widget__type-around>.ck-widget__type-around__button_before{margin-left:0;margin-right:20px}.ck-editor__nested-editable.ck-editor__editable_selected .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button,.ck-editor__nested-editable.ck-editor__editable_selected .ck-widget:hover>.ck-widget__type-around>.ck-widget__type-around__button{opacity:0;pointer-events:none}.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:not(:hover){background:var(--ck-color-widget-type-around-button-blurred-editable)}.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:not(:hover) svg *{stroke:#999}@keyframes ck-widget-type-around-arrow-dash{0%{stroke-dashoffset:10}20%,to{stroke-dashoffset:0}}@keyframes ck-widget-type-around-arrow-tip-dash{0%,20%{stroke-dashoffset:7}40%,to{stroke-dashoffset:0}}@keyframes ck-widget-type-around-button-sonar{0%{box-shadow:0 0 0 0 hsla(var(--ck-color-focus-border-coordinates),var(--ck-color-widget-type-around-button-radar-start-alpha))}50%{box-shadow:0 0 0 5px hsla(var(--ck-color-focus-border-coordinates),var(--ck-color-widget-type-around-button-radar-end-alpha))}to{box-shadow:0 0 0 5px hsla(var(--ck-color-focus-border-coordinates),var(--ck-color-widget-type-around-button-radar-start-alpha))}}@keyframes ck-widget-type-around-fake-caret-pulse{0%{opacity:1}49%{opacity:1}50%{opacity:0}99%{opacity:0}to{opacity:1}}";
+styleInject(css_248z$y);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -65763,8 +65763,8 @@ function isSingleLineRange(editing, modelRange, isForward) {
 }
 function selectionWillShrink(selection, isForward) {
     return !selection.isCollapsed && selection.isBackward == isForward;
-}var css_248z$w = ":root{--ck-color-resizer:var(--ck-color-focus-border);--ck-color-resizer-tooltip-background:#262626;--ck-color-resizer-tooltip-text:#f2f2f2;--ck-resizer-border-radius:var(--ck-border-radius);--ck-resizer-tooltip-offset:10px;--ck-resizer-tooltip-height:calc(var(--ck-spacing-small)*2 + 10px)}.ck .ck-widget,.ck .ck-widget.ck-widget_with-selection-handle{position:relative}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{position:absolute}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon{display:block}.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle{visibility:visible}.ck .ck-size-view{background:var(--ck-color-resizer-tooltip-background);border:1px solid var(--ck-color-resizer-tooltip-text);border-radius:var(--ck-resizer-border-radius);color:var(--ck-color-resizer-tooltip-text);display:block;font-size:var(--ck-font-size-tiny);height:var(--ck-resizer-tooltip-height);line-height:var(--ck-resizer-tooltip-height);padding:0 var(--ck-spacing-small)}.ck .ck-size-view.ck-orientation-above-center,.ck .ck-size-view.ck-orientation-bottom-left,.ck .ck-size-view.ck-orientation-bottom-right,.ck .ck-size-view.ck-orientation-top-left,.ck .ck-size-view.ck-orientation-top-right{position:absolute}.ck .ck-size-view.ck-orientation-top-left{left:var(--ck-resizer-tooltip-offset);top:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-top-right{right:var(--ck-resizer-tooltip-offset);top:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-bottom-right{bottom:var(--ck-resizer-tooltip-offset);right:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-bottom-left{bottom:var(--ck-resizer-tooltip-offset);left:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-above-center{left:50%;top:calc(var(--ck-resizer-tooltip-height)*-1);transform:translate(-50%)}:root{--ck-widget-outline-thickness:3px;--ck-widget-handler-icon-size:16px;--ck-widget-handler-animation-duration:200ms;--ck-widget-handler-animation-curve:ease;--ck-color-widget-blurred-border:#dedede;--ck-color-widget-hover-border:#ffc83d;--ck-color-widget-editable-focus-background:var(--ck-color-base-background);--ck-color-widget-drag-handler-icon-color:var(--ck-color-base-background)}.ck .ck-widget{outline-color:transparent;outline-style:solid;outline-width:var(--ck-widget-outline-thickness);transition:outline-color var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve)}.ck .ck-widget.ck-widget_selected,.ck .ck-widget.ck-widget_selected:hover{outline:var(--ck-widget-outline-thickness) solid var(--ck-color-focus-border)}.ck .ck-widget:hover{outline-color:var(--ck-color-widget-hover-border)}.ck .ck-editor__nested-editable{border:1px solid transparent}.ck .ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck .ck-editor__nested-editable:focus{background-color:var(--ck-color-widget-editable-focus-background);border:var(--ck-focus-ring);box-shadow:var(--ck-inner-shadow),0 0;outline:none}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{background-color:transparent;border-radius:var(--ck-border-radius) var(--ck-border-radius) 0 0;box-sizing:border-box;left:calc(0px - var(--ck-widget-outline-thickness));opacity:0;padding:4px;top:0;transform:translateY(-100%);transition:background-color var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),visibility var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),opacity var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve)}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon{color:var(--ck-color-widget-drag-handler-icon-color);height:var(--ck-widget-handler-icon-size);width:var(--ck-widget-handler-icon-size)}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator{opacity:0;transition:opacity .3s var(--ck-widget-handler-animation-curve)}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle:hover .ck-icon .ck-icon__selected-indicator{opacity:1}.ck .ck-widget.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle{background-color:var(--ck-color-widget-hover-border);opacity:1}.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle{background-color:var(--ck-color-focus-border);opacity:1}.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator,.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator{opacity:1}.ck[dir=rtl] .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{left:auto;right:calc(0px - var(--ck-widget-outline-thickness))}.ck.ck-editor__editable.ck-read-only .ck-widget{transition:none}.ck.ck-editor__editable.ck-read-only .ck-widget:not(.ck-widget_selected){--ck-widget-outline-thickness:0px}.ck.ck-editor__editable.ck-read-only .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle,.ck.ck-editor__editable.ck-read-only .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle:hover{background:var(--ck-color-widget-blurred-border)}.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover{outline-color:var(--ck-color-widget-blurred-border)}.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle:hover,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle>.ck-widget__selection-handle,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle>.ck-widget__selection-handle:hover{background:var(--ck-color-widget-blurred-border)}.ck.ck-editor__editable blockquote>.ck-widget.ck-widget_with-selection-handle:first-child,.ck.ck-editor__editable>.ck-widget.ck-widget_with-selection-handle:first-child{margin-top:calc(1em + var(--ck-widget-handler-icon-size))}";
-styleInject(css_248z$w);/**
+}var css_248z$x = ":root{--ck-color-resizer:var(--ck-color-focus-border);--ck-color-resizer-tooltip-background:#262626;--ck-color-resizer-tooltip-text:#f2f2f2;--ck-resizer-border-radius:var(--ck-border-radius);--ck-resizer-tooltip-offset:10px;--ck-resizer-tooltip-height:calc(var(--ck-spacing-small)*2 + 10px)}.ck .ck-widget,.ck .ck-widget.ck-widget_with-selection-handle{position:relative}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{position:absolute}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon{display:block}.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle{visibility:visible}.ck .ck-size-view{background:var(--ck-color-resizer-tooltip-background);border:1px solid var(--ck-color-resizer-tooltip-text);border-radius:var(--ck-resizer-border-radius);color:var(--ck-color-resizer-tooltip-text);display:block;font-size:var(--ck-font-size-tiny);height:var(--ck-resizer-tooltip-height);line-height:var(--ck-resizer-tooltip-height);padding:0 var(--ck-spacing-small)}.ck .ck-size-view.ck-orientation-above-center,.ck .ck-size-view.ck-orientation-bottom-left,.ck .ck-size-view.ck-orientation-bottom-right,.ck .ck-size-view.ck-orientation-top-left,.ck .ck-size-view.ck-orientation-top-right{position:absolute}.ck .ck-size-view.ck-orientation-top-left{left:var(--ck-resizer-tooltip-offset);top:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-top-right{right:var(--ck-resizer-tooltip-offset);top:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-bottom-right{bottom:var(--ck-resizer-tooltip-offset);right:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-bottom-left{bottom:var(--ck-resizer-tooltip-offset);left:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-above-center{left:50%;top:calc(var(--ck-resizer-tooltip-height)*-1);transform:translate(-50%)}:root{--ck-widget-outline-thickness:3px;--ck-widget-handler-icon-size:16px;--ck-widget-handler-animation-duration:200ms;--ck-widget-handler-animation-curve:ease;--ck-color-widget-blurred-border:#dedede;--ck-color-widget-hover-border:#ffc83d;--ck-color-widget-editable-focus-background:var(--ck-color-base-background);--ck-color-widget-drag-handler-icon-color:var(--ck-color-base-background)}.ck .ck-widget{outline-color:transparent;outline-style:solid;outline-width:var(--ck-widget-outline-thickness);transition:outline-color var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve)}.ck .ck-widget.ck-widget_selected,.ck .ck-widget.ck-widget_selected:hover{outline:var(--ck-widget-outline-thickness) solid var(--ck-color-focus-border)}.ck .ck-widget:hover{outline-color:var(--ck-color-widget-hover-border)}.ck .ck-editor__nested-editable{border:1px solid transparent}.ck .ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck .ck-editor__nested-editable:focus{background-color:var(--ck-color-widget-editable-focus-background);border:var(--ck-focus-ring);box-shadow:var(--ck-inner-shadow),0 0;outline:none}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{background-color:transparent;border-radius:var(--ck-border-radius) var(--ck-border-radius) 0 0;box-sizing:border-box;left:calc(0px - var(--ck-widget-outline-thickness));opacity:0;padding:4px;top:0;transform:translateY(-100%);transition:background-color var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),visibility var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),opacity var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve)}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon{color:var(--ck-color-widget-drag-handler-icon-color);height:var(--ck-widget-handler-icon-size);width:var(--ck-widget-handler-icon-size)}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator{opacity:0;transition:opacity .3s var(--ck-widget-handler-animation-curve)}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle:hover .ck-icon .ck-icon__selected-indicator{opacity:1}.ck .ck-widget.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle{background-color:var(--ck-color-widget-hover-border);opacity:1}.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle{background-color:var(--ck-color-focus-border);opacity:1}.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator,.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator{opacity:1}.ck[dir=rtl] .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{left:auto;right:calc(0px - var(--ck-widget-outline-thickness))}.ck.ck-editor__editable.ck-read-only .ck-widget{transition:none}.ck.ck-editor__editable.ck-read-only .ck-widget:not(.ck-widget_selected){--ck-widget-outline-thickness:0px}.ck.ck-editor__editable.ck-read-only .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle,.ck.ck-editor__editable.ck-read-only .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle:hover{background:var(--ck-color-widget-blurred-border)}.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover{outline-color:var(--ck-color-widget-blurred-border)}.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle:hover,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle>.ck-widget__selection-handle,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle>.ck-widget__selection-handle:hover{background:var(--ck-color-widget-blurred-border)}.ck.ck-editor__editable blockquote>.ck-widget.ck-widget_with-selection-handle:first-child,.ck.ck-editor__editable>.ck-widget.ck-widget_with-selection-handle:first-child{margin-top:calc(1em + var(--ck-widget-handler-icon-size))}";
+styleInject(css_248z$x);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -66959,8 +66959,8 @@ function extractCoordinates(event) {
 }
 function existsInDom(element) {
     return element && element.ownerDocument && element.ownerDocument.contains(element);
-}var css_248z$v = ".ck .ck-widget_with-resizer{position:relative}.ck .ck-widget__resizer{display:none;left:0;pointer-events:none;position:absolute;top:0}.ck-focused .ck-widget_with-resizer.ck-widget_selected>.ck-widget__resizer{display:block}.ck .ck-widget__resizer__handle{pointer-events:all;position:absolute}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-right,.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-left{cursor:nwse-resize}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-left,.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-right{cursor:nesw-resize}:root{--ck-resizer-size:10px;--ck-resizer-offset:calc(var(--ck-resizer-size)/-2 - 2px);--ck-resizer-border-width:1px}.ck .ck-widget__resizer{outline:1px solid var(--ck-color-resizer)}.ck .ck-widget__resizer__handle{background:var(--ck-color-focus-border);border:var(--ck-resizer-border-width) solid #fff;border-radius:var(--ck-resizer-border-radius);height:var(--ck-resizer-size);width:var(--ck-resizer-size)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-left{left:var(--ck-resizer-offset);top:var(--ck-resizer-offset)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-right{right:var(--ck-resizer-offset);top:var(--ck-resizer-offset)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-right{bottom:var(--ck-resizer-offset);right:var(--ck-resizer-offset)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-left{bottom:var(--ck-resizer-offset);left:var(--ck-resizer-offset)}";
-styleInject(css_248z$v);/**
+}var css_248z$w = ".ck .ck-widget_with-resizer{position:relative}.ck .ck-widget__resizer{display:none;left:0;pointer-events:none;position:absolute;top:0}.ck-focused .ck-widget_with-resizer.ck-widget_selected>.ck-widget__resizer{display:block}.ck .ck-widget__resizer__handle{pointer-events:all;position:absolute}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-right,.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-left{cursor:nwse-resize}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-left,.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-right{cursor:nesw-resize}:root{--ck-resizer-size:10px;--ck-resizer-offset:calc(var(--ck-resizer-size)/-2 - 2px);--ck-resizer-border-width:1px}.ck .ck-widget__resizer{outline:1px solid var(--ck-color-resizer)}.ck .ck-widget__resizer__handle{background:var(--ck-color-focus-border);border:var(--ck-resizer-border-width) solid #fff;border-radius:var(--ck-resizer-border-radius);height:var(--ck-resizer-size);width:var(--ck-resizer-size)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-left{left:var(--ck-resizer-offset);top:var(--ck-resizer-offset)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-right{right:var(--ck-resizer-offset);top:var(--ck-resizer-offset)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-right{bottom:var(--ck-resizer-offset);right:var(--ck-resizer-offset)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-left{bottom:var(--ck-resizer-offset);left:var(--ck-resizer-offset)}";
+styleInject(css_248z$w);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -67141,8 +67141,8 @@ class WidgetResize extends Plugin {
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */var index$3=/*#__PURE__*/Object.freeze({__proto__:null,Widget:Widget,WidgetToolbarRepository:WidgetToolbarRepository,WidgetResize:WidgetResize,WidgetTypeAround:WidgetTypeAround,WIDGET_CLASS_NAME:WIDGET_CLASS_NAME,WIDGET_SELECTED_CLASS_NAME:WIDGET_SELECTED_CLASS_NAME,isWidget:isWidget,toWidget:toWidget,setHighlightHandling:setHighlightHandling,setLabel:setLabel,getLabel:getLabel,toWidgetEditable:toWidgetEditable,findOptimalInsertionRange:findOptimalInsertionRange,viewToModelPositionOutsideModelElement:viewToModelPositionOutsideModelElement});var css_248z$u = ".ck.ck-editor__editable .ck.ck-clipboard-drop-target-position{display:inline;pointer-events:none;position:relative}.ck.ck-editor__editable .ck.ck-clipboard-drop-target-position span{position:absolute;width:0}.ck.ck-editor__editable .ck-widget:-webkit-drag>.ck-widget__selection-handle,.ck.ck-editor__editable .ck-widget:-webkit-drag>.ck-widget__type-around{display:none}.ck.ck-clipboard-drop-target-line{pointer-events:none;position:absolute}:root{--ck-clipboard-drop-target-dot-width:12px;--ck-clipboard-drop-target-dot-height:8px;--ck-clipboard-drop-target-color:var(--ck-color-focus-border)}.ck.ck-editor__editable .ck.ck-clipboard-drop-target-position span{background:var(--ck-clipboard-drop-target-color);border:1px solid var(--ck-clipboard-drop-target-color);bottom:calc(var(--ck-clipboard-drop-target-dot-height)*-.5);margin-left:-1px;top:calc(var(--ck-clipboard-drop-target-dot-height)*-.5)}.ck.ck-editor__editable .ck.ck-clipboard-drop-target-position span:after{border-color:var(--ck-clipboard-drop-target-color) transparent transparent transparent;border-style:solid;border-width:calc(var(--ck-clipboard-drop-target-dot-height)) calc(var(--ck-clipboard-drop-target-dot-width)*.5) 0 calc(var(--ck-clipboard-drop-target-dot-width)*.5);content:\"\";display:block;height:0;left:50%;position:absolute;top:calc(var(--ck-clipboard-drop-target-dot-height)*-.5);transform:translateX(-50%);width:0}.ck.ck-editor__editable .ck-widget.ck-clipboard-drop-target-range{outline:var(--ck-widget-outline-thickness) solid var(--ck-clipboard-drop-target-color)!important}.ck.ck-editor__editable .ck-widget:-webkit-drag{zoom:.6;outline:none!important}.ck.ck-clipboard-drop-target-line{background:var(--ck-clipboard-drop-target-color);border:1px solid var(--ck-clipboard-drop-target-color);height:0;margin-top:-1px}";
-styleInject(css_248z$u);/**
+ */var index$3=/*#__PURE__*/Object.freeze({__proto__:null,Widget:Widget,WidgetToolbarRepository:WidgetToolbarRepository,WidgetResize:WidgetResize,WidgetTypeAround:WidgetTypeAround,WIDGET_CLASS_NAME:WIDGET_CLASS_NAME,WIDGET_SELECTED_CLASS_NAME:WIDGET_SELECTED_CLASS_NAME,isWidget:isWidget,toWidget:toWidget,setHighlightHandling:setHighlightHandling,setLabel:setLabel,getLabel:getLabel,toWidgetEditable:toWidgetEditable,findOptimalInsertionRange:findOptimalInsertionRange,viewToModelPositionOutsideModelElement:viewToModelPositionOutsideModelElement});var css_248z$v = ".ck.ck-editor__editable .ck.ck-clipboard-drop-target-position{display:inline;pointer-events:none;position:relative}.ck.ck-editor__editable .ck.ck-clipboard-drop-target-position span{position:absolute;width:0}.ck.ck-editor__editable .ck-widget:-webkit-drag>.ck-widget__selection-handle,.ck.ck-editor__editable .ck-widget:-webkit-drag>.ck-widget__type-around{display:none}.ck.ck-clipboard-drop-target-line{pointer-events:none;position:absolute}:root{--ck-clipboard-drop-target-dot-width:12px;--ck-clipboard-drop-target-dot-height:8px;--ck-clipboard-drop-target-color:var(--ck-color-focus-border)}.ck.ck-editor__editable .ck.ck-clipboard-drop-target-position span{background:var(--ck-clipboard-drop-target-color);border:1px solid var(--ck-clipboard-drop-target-color);bottom:calc(var(--ck-clipboard-drop-target-dot-height)*-.5);margin-left:-1px;top:calc(var(--ck-clipboard-drop-target-dot-height)*-.5)}.ck.ck-editor__editable .ck.ck-clipboard-drop-target-position span:after{border-color:var(--ck-clipboard-drop-target-color) transparent transparent transparent;border-style:solid;border-width:calc(var(--ck-clipboard-drop-target-dot-height)) calc(var(--ck-clipboard-drop-target-dot-width)*.5) 0 calc(var(--ck-clipboard-drop-target-dot-width)*.5);content:\"\";display:block;height:0;left:50%;position:absolute;top:calc(var(--ck-clipboard-drop-target-dot-height)*-.5);transform:translateX(-50%);width:0}.ck.ck-editor__editable .ck-widget.ck-clipboard-drop-target-range{outline:var(--ck-widget-outline-thickness) solid var(--ck-clipboard-drop-target-color)!important}.ck.ck-editor__editable .ck-widget:-webkit-drag{zoom:.6;outline:none!important}.ck.ck-clipboard-drop-target-line{background:var(--ck-clipboard-drop-target-color);border:1px solid var(--ck-clipboard-drop-target-color);height:0;margin-top:-1px}";
+styleInject(css_248z$v);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -69589,9 +69589,9 @@ class Essentials extends Plugin {
     static get pluginName() {
         return 'Essentials';
     }
-}var css_248z$t = ".ck-vertical-form .ck-button:after{bottom:-1px;content:\"\";position:absolute;right:-1px;top:-1px;width:0;z-index:1}.ck-vertical-form .ck-button:focus:after{display:none}@media screen and (max-width:600px){.ck.ck-responsive-form .ck-button:after{bottom:-1px;content:\"\";position:absolute;right:-1px;top:-1px;width:0;z-index:1}.ck.ck-responsive-form .ck-button:focus:after{display:none}}.ck-vertical-form>.ck-button:nth-last-child(2):after{border-right:1px solid var(--ck-color-base-border)}.ck.ck-responsive-form{padding:var(--ck-spacing-large)}.ck.ck-responsive-form:focus{outline:none}[dir=ltr] .ck.ck-responsive-form>:not(:first-child),[dir=rtl] .ck.ck-responsive-form>:not(:last-child){margin-left:var(--ck-spacing-standard)}@media screen and (max-width:600px){.ck.ck-responsive-form{padding:0;width:calc(var(--ck-input-width)*.8)}.ck.ck-responsive-form .ck-labeled-field-view{margin:var(--ck-spacing-large) var(--ck-spacing-large) 0}.ck.ck-responsive-form .ck-labeled-field-view .ck-input-text{min-width:0;width:100%}.ck.ck-responsive-form .ck-labeled-field-view .ck-labeled-field-view__error{white-space:normal}.ck.ck-responsive-form>.ck-button:nth-last-child(2):after{border-right:1px solid var(--ck-color-base-border)}.ck.ck-responsive-form>.ck-button:last-child,.ck.ck-responsive-form>.ck-button:nth-last-child(2){border-radius:0;margin-top:var(--ck-spacing-large);padding:var(--ck-spacing-standard)}.ck.ck-responsive-form>.ck-button:last-child:not(:focus),.ck.ck-responsive-form>.ck-button:nth-last-child(2):not(:focus){border-top:1px solid var(--ck-color-base-border)}[dir=ltr] .ck.ck-responsive-form>.ck-button:last-child,[dir=ltr] .ck.ck-responsive-form>.ck-button:nth-last-child(2),[dir=rtl] .ck.ck-responsive-form>.ck-button:last-child,[dir=rtl] .ck.ck-responsive-form>.ck-button:nth-last-child(2){margin-left:0}[dir=rtl] .ck.ck-responsive-form>.ck-button:last-child:last-of-type,[dir=rtl] .ck.ck-responsive-form>.ck-button:nth-last-child(2):last-of-type{border-right:1px solid var(--ck-color-base-border)}}";
-styleInject(css_248z$t);var css_248z$s = ".ck.ck-find-and-replace-form{max-width:100%}.ck.ck-find-and-replace-form fieldset{display:flex}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{position:absolute}.ck.ck-find-and-replace-form{width:400px}.ck.ck-find-and-replace-form:focus{outline:none}.ck.ck-find-and-replace-form fieldset{align-content:stretch;align-items:center;border:0;flex-direction:row;flex-wrap:nowrap;margin:0;padding:var(--ck-spacing-large)}.ck.ck-find-and-replace-form fieldset>.ck-button{flex:0 0 auto}[dir=ltr] .ck.ck-find-and-replace-form fieldset>*+*{margin-left:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-find-and-replace-form fieldset>*+*{margin-right:var(--ck-spacing-standard)}.ck.ck-find-and-replace-form fieldset .ck-labeled-field-view{flex:1 1 auto}.ck.ck-find-and-replace-form fieldset .ck-labeled-field-view .ck-input{min-width:50px;width:100%}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find{align-items:flex-start}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-find{font-weight:700}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-find .ck-button__label{padding-left:var(--ck-spacing-large);padding-right:var(--ck-spacing-large)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-prev>.ck-icon{transform:rotate(90deg)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-next>.ck-icon{transform:rotate(-90deg)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{top:50%;transform:translateY(-50%)}[dir=ltr] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{left:var(--ck-spacing-standard)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{color:var(--ck-color-base-border)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace{flex-wrap:wrap;justify-content:flex-end;margin-top:calc(var(--ck-spacing-large)*-1)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-labeled-field-view{margin-bottom:var(--ck-spacing-large)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-options-dropdown{margin-left:0;margin-right:auto}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-labeled-field-view,.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-labeled-field-view .ck-input{width:100%}@media screen and (max-width:600px){.ck.ck-find-and-replace-form{width:300px}.ck.ck-find-and-replace-form fieldset{flex-wrap:wrap}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-labeled-field-view{flex:1 0 auto;margin-bottom:var(--ck-spacing-standard);width:100%}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button{text-align:center}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type{flex:1 1 auto}[dir=ltr] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type{margin-left:0}[dir=rtl] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type{margin-right:0}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type .ck-button__label{text-align:center;width:100%}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>:not(.ck-labeled-field-view){flex:1 1 auto}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-dropdown:not(.ck-labeled-field-view){flex-grow:0}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-button:not(.ck-labeled-field-view)>.ck-button__label{text-align:center;width:100%}}";
-styleInject(css_248z$s);/**
+}var css_248z$u = ".ck-vertical-form .ck-button:after{bottom:-1px;content:\"\";position:absolute;right:-1px;top:-1px;width:0;z-index:1}.ck-vertical-form .ck-button:focus:after{display:none}@media screen and (max-width:600px){.ck.ck-responsive-form .ck-button:after{bottom:-1px;content:\"\";position:absolute;right:-1px;top:-1px;width:0;z-index:1}.ck.ck-responsive-form .ck-button:focus:after{display:none}}.ck-vertical-form>.ck-button:nth-last-child(2):after{border-right:1px solid var(--ck-color-base-border)}.ck.ck-responsive-form{padding:var(--ck-spacing-large)}.ck.ck-responsive-form:focus{outline:none}[dir=ltr] .ck.ck-responsive-form>:not(:first-child),[dir=rtl] .ck.ck-responsive-form>:not(:last-child){margin-left:var(--ck-spacing-standard)}@media screen and (max-width:600px){.ck.ck-responsive-form{padding:0;width:calc(var(--ck-input-width)*.8)}.ck.ck-responsive-form .ck-labeled-field-view{margin:var(--ck-spacing-large) var(--ck-spacing-large) 0}.ck.ck-responsive-form .ck-labeled-field-view .ck-input-text{min-width:0;width:100%}.ck.ck-responsive-form .ck-labeled-field-view .ck-labeled-field-view__error{white-space:normal}.ck.ck-responsive-form>.ck-button:nth-last-child(2):after{border-right:1px solid var(--ck-color-base-border)}.ck.ck-responsive-form>.ck-button:last-child,.ck.ck-responsive-form>.ck-button:nth-last-child(2){border-radius:0;margin-top:var(--ck-spacing-large);padding:var(--ck-spacing-standard)}.ck.ck-responsive-form>.ck-button:last-child:not(:focus),.ck.ck-responsive-form>.ck-button:nth-last-child(2):not(:focus){border-top:1px solid var(--ck-color-base-border)}[dir=ltr] .ck.ck-responsive-form>.ck-button:last-child,[dir=ltr] .ck.ck-responsive-form>.ck-button:nth-last-child(2),[dir=rtl] .ck.ck-responsive-form>.ck-button:last-child,[dir=rtl] .ck.ck-responsive-form>.ck-button:nth-last-child(2){margin-left:0}[dir=rtl] .ck.ck-responsive-form>.ck-button:last-child:last-of-type,[dir=rtl] .ck.ck-responsive-form>.ck-button:nth-last-child(2):last-of-type{border-right:1px solid var(--ck-color-base-border)}}";
+styleInject(css_248z$u);var css_248z$t = ".ck.ck-find-and-replace-form{max-width:100%}.ck.ck-find-and-replace-form fieldset{display:flex}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{position:absolute}.ck.ck-find-and-replace-form{width:400px}.ck.ck-find-and-replace-form:focus{outline:none}.ck.ck-find-and-replace-form fieldset{align-content:stretch;align-items:center;border:0;flex-direction:row;flex-wrap:nowrap;margin:0;padding:var(--ck-spacing-large)}.ck.ck-find-and-replace-form fieldset>.ck-button{flex:0 0 auto}[dir=ltr] .ck.ck-find-and-replace-form fieldset>*+*{margin-left:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-find-and-replace-form fieldset>*+*{margin-right:var(--ck-spacing-standard)}.ck.ck-find-and-replace-form fieldset .ck-labeled-field-view{flex:1 1 auto}.ck.ck-find-and-replace-form fieldset .ck-labeled-field-view .ck-input{min-width:50px;width:100%}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find{align-items:flex-start}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-find{font-weight:700}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-find .ck-button__label{padding-left:var(--ck-spacing-large);padding-right:var(--ck-spacing-large)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-prev>.ck-icon{transform:rotate(90deg)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-next>.ck-icon{transform:rotate(-90deg)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{top:50%;transform:translateY(-50%)}[dir=ltr] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{left:var(--ck-spacing-standard)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{color:var(--ck-color-base-border)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace{flex-wrap:wrap;justify-content:flex-end;margin-top:calc(var(--ck-spacing-large)*-1)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-labeled-field-view{margin-bottom:var(--ck-spacing-large)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-options-dropdown{margin-left:0;margin-right:auto}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-labeled-field-view,.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-labeled-field-view .ck-input{width:100%}@media screen and (max-width:600px){.ck.ck-find-and-replace-form{width:300px}.ck.ck-find-and-replace-form fieldset{flex-wrap:wrap}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-labeled-field-view{flex:1 0 auto;margin-bottom:var(--ck-spacing-standard);width:100%}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button{text-align:center}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type{flex:1 1 auto}[dir=ltr] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type{margin-left:0}[dir=rtl] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type{margin-right:0}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type .ck-button__label{text-align:center;width:100%}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>:not(.ck-labeled-field-view){flex:1 1 auto}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-dropdown:not(.ck-labeled-field-view){flex-grow:0}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-button:not(.ck-labeled-field-view)>.ck-button__label{text-align:center;width:100%}}";
+styleInject(css_248z$t);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -70586,8 +70586,8 @@ function regexpMatchToFindResult(matchResult) {
         start: startOffset,
         end: startOffset + matchResult[lastGroupIndex].length
     };
-}var css_248z$r = ".ck-find-result{background:var(--ck-color-highlight-background);color:var(--ck-color-text)}.ck-find-result_selected{background:#ff9633}";
-styleInject(css_248z$r);/**
+}var css_248z$s = ".ck-find-result{background:var(--ck-color-highlight-background);color:var(--ck-color-text)}.ck-find-result_selected{background:#ff9633}";
+styleInject(css_248z$s);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -71254,8 +71254,8 @@ function getLocalizedOptions(editor) {
         }
         return option;
     });
-}var css_248z$q = ".ck.ck-heading_heading1{font-size:20px}.ck.ck-heading_heading2{font-size:17px}.ck.ck-heading_heading3{font-size:14px}.ck[class*=ck-heading_heading]{font-weight:700}.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__button .ck-button__label{width:8em}.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__panel .ck-list__item{min-width:18em}";
-styleInject(css_248z$q);/**
+}var css_248z$r = ".ck.ck-heading_heading1{font-size:20px}.ck.ck-heading_heading2{font-size:17px}.ck.ck-heading_heading3{font-size:14px}.ck[class*=ck-heading_heading]{font-weight:700}.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__button .ck-button__label{width:8em}.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__panel .ck-list__item{min-width:18em}";
+styleInject(css_248z$r);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -72137,8 +72137,8 @@ class ManualDecorator extends ObservableMixin() {
             styles: this.styles
         };
     }
-}var css_248z$p = ".ck .ck-link_selected{background:var(--ck-color-link-selected-background)}.ck .ck-link_selected span.image-inline{outline:var(--ck-widget-outline-thickness) solid var(--ck-color-link-selected-background)}.ck .ck-fake-link-selection{background:var(--ck-color-link-fake-selection)}.ck .ck-fake-link-selection_collapsed{border-right:1px solid var(--ck-color-base-text);height:100%;margin-right:-1px;outline:1px solid hsla(0,0%,100%,.5)}";
-styleInject(css_248z$p);/**
+}var css_248z$q = ".ck .ck-link_selected{background:var(--ck-color-link-selected-background)}.ck .ck-link_selected span.image-inline{outline:var(--ck-widget-outline-thickness) solid var(--ck-color-link-selected-background)}.ck .ck-fake-link-selection{background:var(--ck-color-link-fake-selection)}.ck .ck-fake-link-selection_collapsed{border-right:1px solid var(--ck-color-base-text);height:100%;margin-right:-1px;outline:1px solid hsla(0,0%,100%,.5)}";
+styleInject(css_248z$q);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -72671,8 +72671,8 @@ function isTyping(editor) {
 function getLinkAttributesAllowedOnText(schema) {
     const textAttributes = schema.getDefinition('$text').allowAttributes;
     return textAttributes.filter(attribute => attribute.startsWith('link'));
-}var css_248z$o = ".ck.ck-link-form{display:flex}.ck.ck-link-form .ck-label{display:none}@media screen and (max-width:600px){.ck.ck-link-form{flex-wrap:wrap}.ck.ck-link-form .ck-labeled-field-view{flex-basis:100%}.ck.ck-link-form .ck-button{flex-basis:50%}}.ck.ck-link-form_layout-vertical{display:block}.ck.ck-link-form_layout-vertical .ck-button.ck-button-cancel,.ck.ck-link-form_layout-vertical .ck-button.ck-button-save{margin-top:var(--ck-spacing-medium)}.ck.ck-link-form_layout-vertical{min-width:var(--ck-input-width);padding:0}.ck.ck-link-form_layout-vertical .ck-labeled-field-view{margin:var(--ck-spacing-large) var(--ck-spacing-large) var(--ck-spacing-small)}.ck.ck-link-form_layout-vertical .ck-labeled-field-view .ck-input-text{min-width:0;width:100%}.ck.ck-link-form_layout-vertical>.ck-button{border-radius:0;margin:0;padding:var(--ck-spacing-standard);width:50%}.ck.ck-link-form_layout-vertical>.ck-button:not(:focus){border-top:1px solid var(--ck-color-base-border)}[dir=ltr] .ck.ck-link-form_layout-vertical>.ck-button,[dir=rtl] .ck.ck-link-form_layout-vertical>.ck-button{margin-left:0}[dir=rtl] .ck.ck-link-form_layout-vertical>.ck-button:last-of-type{border-right:1px solid var(--ck-color-base-border)}.ck.ck-link-form_layout-vertical .ck.ck-list{margin:var(--ck-spacing-standard) var(--ck-spacing-large)}.ck.ck-link-form_layout-vertical .ck.ck-list .ck-button.ck-switchbutton{padding:0;width:100%}.ck.ck-link-form_layout-vertical .ck.ck-list .ck-button.ck-switchbutton:hover{background:none}";
-styleInject(css_248z$o);/**
+}var css_248z$p = ".ck.ck-link-form{display:flex}.ck.ck-link-form .ck-label{display:none}@media screen and (max-width:600px){.ck.ck-link-form{flex-wrap:wrap}.ck.ck-link-form .ck-labeled-field-view{flex-basis:100%}.ck.ck-link-form .ck-button{flex-basis:50%}}.ck.ck-link-form_layout-vertical{display:block}.ck.ck-link-form_layout-vertical .ck-button.ck-button-cancel,.ck.ck-link-form_layout-vertical .ck-button.ck-button-save{margin-top:var(--ck-spacing-medium)}.ck.ck-link-form_layout-vertical{min-width:var(--ck-input-width);padding:0}.ck.ck-link-form_layout-vertical .ck-labeled-field-view{margin:var(--ck-spacing-large) var(--ck-spacing-large) var(--ck-spacing-small)}.ck.ck-link-form_layout-vertical .ck-labeled-field-view .ck-input-text{min-width:0;width:100%}.ck.ck-link-form_layout-vertical>.ck-button{border-radius:0;margin:0;padding:var(--ck-spacing-standard);width:50%}.ck.ck-link-form_layout-vertical>.ck-button:not(:focus){border-top:1px solid var(--ck-color-base-border)}[dir=ltr] .ck.ck-link-form_layout-vertical>.ck-button,[dir=rtl] .ck.ck-link-form_layout-vertical>.ck-button{margin-left:0}[dir=rtl] .ck.ck-link-form_layout-vertical>.ck-button:last-of-type{border-right:1px solid var(--ck-color-base-border)}.ck.ck-link-form_layout-vertical .ck.ck-list{margin:var(--ck-spacing-standard) var(--ck-spacing-large)}.ck.ck-link-form_layout-vertical .ck.ck-list .ck-button.ck-switchbutton{padding:0;width:100%}.ck.ck-link-form_layout-vertical .ck.ck-list .ck-button.ck-switchbutton:hover{background:none}";
+styleInject(css_248z$p);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -72893,8 +72893,8 @@ class LinkFormView extends View$1 {
         children.add(this.cancelButtonView);
         return children;
     }
-}var css_248z$n = ".ck.ck-link-actions{display:flex;flex-direction:row;flex-wrap:nowrap}.ck.ck-link-actions .ck-link-actions__preview{display:inline-block}.ck.ck-link-actions .ck-link-actions__preview .ck-button__label{overflow:hidden}@media screen and (max-width:600px){.ck.ck-link-actions{flex-wrap:wrap}.ck.ck-link-actions .ck-link-actions__preview{flex-basis:100%}.ck.ck-link-actions .ck-button:not(.ck-link-actions__preview){flex-basis:50%}}.ck.ck-link-actions .ck-button.ck-link-actions__preview{padding-left:0;padding-right:0}.ck.ck-link-actions .ck-button.ck-link-actions__preview .ck-button__label{color:var(--ck-color-link-default);cursor:pointer;max-width:var(--ck-input-width);min-width:3em;padding:0 var(--ck-spacing-medium);text-align:center;text-overflow:ellipsis}.ck.ck-link-actions .ck-button.ck-link-actions__preview .ck-button__label:hover{text-decoration:underline}.ck.ck-link-actions .ck-button.ck-link-actions__preview,.ck.ck-link-actions .ck-button.ck-link-actions__preview:active,.ck.ck-link-actions .ck-button.ck-link-actions__preview:focus,.ck.ck-link-actions .ck-button.ck-link-actions__preview:hover{background:none}.ck.ck-link-actions .ck-button.ck-link-actions__preview:active{box-shadow:none}.ck.ck-link-actions .ck-button.ck-link-actions__preview:focus .ck-button__label{text-decoration:underline}[dir=ltr] .ck.ck-link-actions .ck-button:not(:first-child),[dir=rtl] .ck.ck-link-actions .ck-button:not(:last-child){margin-left:var(--ck-spacing-standard)}@media screen and (max-width:600px){.ck.ck-link-actions .ck-button.ck-link-actions__preview{margin:var(--ck-spacing-standard) var(--ck-spacing-standard) 0}.ck.ck-link-actions .ck-button.ck-link-actions__preview .ck-button__label{max-width:100%;min-width:0}[dir=ltr] .ck.ck-link-actions .ck-button:not(.ck-link-actions__preview),[dir=rtl] .ck.ck-link-actions .ck-button:not(.ck-link-actions__preview){margin-left:0}}";
-styleInject(css_248z$n);var unlinkIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m11.077 15 .991-1.416a.75.75 0 1 1 1.229.86l-1.148 1.64a.748.748 0 0 1-.217.206 5.251 5.251 0 0 1-8.503-5.955.741.741 0 0 1 .12-.274l1.147-1.639a.75.75 0 1 1 1.228.86L4.933 10.7l.006.003a3.75 3.75 0 0 0 6.132 4.294l.006.004zm5.494-5.335a.748.748 0 0 1-.12.274l-1.147 1.639a.75.75 0 1 1-1.228-.86l.86-1.23a3.75 3.75 0 0 0-6.144-4.301l-.86 1.229a.75.75 0 0 1-1.229-.86l1.148-1.64a.748.748 0 0 1 .217-.206 5.251 5.251 0 0 1 8.503 5.955zm-4.563-2.532a.75.75 0 0 1 .184 1.045l-3.155 4.505a.75.75 0 1 1-1.229-.86l3.155-4.506a.75.75 0 0 1 1.045-.184zm4.919 10.562-1.414 1.414a.75.75 0 1 1-1.06-1.06l1.414-1.415-1.415-1.414a.75.75 0 0 1 1.061-1.06l1.414 1.414 1.414-1.415a.75.75 0 0 1 1.061 1.061l-1.414 1.414 1.414 1.415a.75.75 0 0 1-1.06 1.06l-1.415-1.414z\"/></svg>";
+}var css_248z$o = ".ck.ck-link-actions{display:flex;flex-direction:row;flex-wrap:nowrap}.ck.ck-link-actions .ck-link-actions__preview{display:inline-block}.ck.ck-link-actions .ck-link-actions__preview .ck-button__label{overflow:hidden}@media screen and (max-width:600px){.ck.ck-link-actions{flex-wrap:wrap}.ck.ck-link-actions .ck-link-actions__preview{flex-basis:100%}.ck.ck-link-actions .ck-button:not(.ck-link-actions__preview){flex-basis:50%}}.ck.ck-link-actions .ck-button.ck-link-actions__preview{padding-left:0;padding-right:0}.ck.ck-link-actions .ck-button.ck-link-actions__preview .ck-button__label{color:var(--ck-color-link-default);cursor:pointer;max-width:var(--ck-input-width);min-width:3em;padding:0 var(--ck-spacing-medium);text-align:center;text-overflow:ellipsis}.ck.ck-link-actions .ck-button.ck-link-actions__preview .ck-button__label:hover{text-decoration:underline}.ck.ck-link-actions .ck-button.ck-link-actions__preview,.ck.ck-link-actions .ck-button.ck-link-actions__preview:active,.ck.ck-link-actions .ck-button.ck-link-actions__preview:focus,.ck.ck-link-actions .ck-button.ck-link-actions__preview:hover{background:none}.ck.ck-link-actions .ck-button.ck-link-actions__preview:active{box-shadow:none}.ck.ck-link-actions .ck-button.ck-link-actions__preview:focus .ck-button__label{text-decoration:underline}[dir=ltr] .ck.ck-link-actions .ck-button:not(:first-child),[dir=rtl] .ck.ck-link-actions .ck-button:not(:last-child){margin-left:var(--ck-spacing-standard)}@media screen and (max-width:600px){.ck.ck-link-actions .ck-button.ck-link-actions__preview{margin:var(--ck-spacing-standard) var(--ck-spacing-standard) 0}.ck.ck-link-actions .ck-button.ck-link-actions__preview .ck-button__label{max-width:100%;min-width:0}[dir=ltr] .ck.ck-link-actions .ck-button:not(.ck-link-actions__preview),[dir=rtl] .ck.ck-link-actions .ck-button:not(.ck-link-actions__preview){margin-left:0}}";
+styleInject(css_248z$o);var unlinkIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m11.077 15 .991-1.416a.75.75 0 1 1 1.229.86l-1.148 1.64a.748.748 0 0 1-.217.206 5.251 5.251 0 0 1-8.503-5.955.741.741 0 0 1 .12-.274l1.147-1.639a.75.75 0 1 1 1.228.86L4.933 10.7l.006.003a3.75 3.75 0 0 0 6.132 4.294l.006.004zm5.494-5.335a.748.748 0 0 1-.12.274l-1.147 1.639a.75.75 0 1 1-1.228-.86l.86-1.23a3.75 3.75 0 0 0-6.144-4.301l-.86 1.229a.75.75 0 0 1-1.229-.86l1.148-1.64a.748.748 0 0 1 .217-.206 5.251 5.251 0 0 1 8.503 5.955zm-4.563-2.532a.75.75 0 0 1 .184 1.045l-3.155 4.505a.75.75 0 1 1-1.229-.86l3.155-4.506a.75.75 0 0 1 1.045-.184zm4.919 10.562-1.414 1.414a.75.75 0 1 1-1.06-1.06l1.414-1.415-1.415-1.414a.75.75 0 0 1 1.061-1.06l1.414 1.414 1.414-1.415a.75.75 0 0 1 1.061 1.061l-1.414 1.414 1.414 1.415a.75.75 0 0 1-1.06 1.06l-1.415-1.414z\"/></svg>";
 /**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -73845,9 +73845,719 @@ class Link extends Plugin {
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 /**
- * The list command. It is used by the {@link module:list/list~List list feature}.
+ * Document list blocks iterator.
  */
-class ListCommand extends Command {
+class ListWalker {
+    /**
+     * Creates a document list iterator.
+     *
+     * @param startElement The start list item block element.
+     * @param options.direction The iterating direction.
+     * @param options.includeSelf Whether start block should be included in the result (if it's matching other criteria).
+     * @param options.sameAttributes Additional attributes that must be the same for each block.
+     * @param options.sameIndent Whether blocks with the same indent level as the start block should be included
+     * in the result.
+     * @param options.lowerIndent Whether blocks with a lower indent level than the start block should be included
+     * in the result.
+     * @param options.higherIndent Whether blocks with a higher indent level than the start block should be included
+     * in the result.
+     */
+    constructor(startElement, options) {
+        this._startElement = startElement;
+        this._referenceIndent = startElement.getAttribute('listIndent');
+        this._isForward = options.direction == 'forward';
+        this._includeSelf = !!options.includeSelf;
+        this._sameAttributes = toArray$1(options.sameAttributes || []);
+        this._sameIndent = !!options.sameIndent;
+        this._lowerIndent = !!options.lowerIndent;
+        this._higherIndent = !!options.higherIndent;
+    }
+    /**
+     * Performs only first step of iteration and returns the result.
+     *
+     * @param startElement The start list item block element.
+     * @param options.direction The iterating direction.
+     * @param options.includeSelf Whether start block should be included in the result (if it's matching other criteria).
+     * @param options.sameAttributes Additional attributes that must be the same for each block.
+     * @param options.sameIndent Whether blocks with the same indent level as the start block should be included
+     * in the result.
+     * @param options.lowerIndent Whether blocks with a lower indent level than the start block should be included
+     * in the result.
+     * @param options.higherIndent Whether blocks with a higher indent level than the start block should be included
+     * in the result.
+     */
+    static first(startElement, options) {
+        const walker = new this(startElement, options);
+        const iterator = walker[Symbol.iterator]();
+        return first(iterator);
+    }
+    /**
+     * Iterable interface.
+     */
+    *[Symbol.iterator]() {
+        const nestedItems = [];
+        for (const { node } of iterateSiblingListBlocks(this._getStartNode(), this._isForward ? 'forward' : 'backward')) {
+            const indent = node.getAttribute('listIndent');
+            // Leaving a nested list.
+            if (indent < this._referenceIndent) {
+                // Abort searching blocks.
+                if (!this._lowerIndent) {
+                    break;
+                }
+                // While searching for lower indents, update the reference indent to find another parent in the next step.
+                this._referenceIndent = indent;
+            }
+            // Entering a nested list.
+            else if (indent > this._referenceIndent) {
+                // Ignore nested blocks.
+                if (!this._higherIndent) {
+                    continue;
+                }
+                // Collect nested blocks to verify if they are really nested, or it's a different item.
+                if (!this._isForward) {
+                    nestedItems.push(node);
+                    continue;
+                }
+            }
+            // Same indent level block.
+            else {
+                // Ignore same indent block.
+                if (!this._sameIndent) {
+                    // While looking for nested blocks, stop iterating while encountering first same indent block.
+                    if (this._higherIndent) {
+                        // No more nested blocks so yield nested items.
+                        if (nestedItems.length) {
+                            yield* nestedItems;
+                            nestedItems.length = 0;
+                        }
+                        break;
+                    }
+                    continue;
+                }
+                // Abort if item has any additionally specified attribute different.
+                if (this._sameAttributes.some(attr => node.getAttribute(attr) !== this._startElement.getAttribute(attr))) {
+                    break;
+                }
+            }
+            // There is another block for the same list item so the nested items were in the same list item.
+            if (nestedItems.length) {
+                yield* nestedItems;
+                nestedItems.length = 0;
+            }
+            yield node;
+        }
+    }
+    /**
+     * Returns the model element to start iterating.
+     */
+    _getStartNode() {
+        if (this._includeSelf) {
+            return this._startElement;
+        }
+        return this._isForward ?
+            this._startElement.nextSibling :
+            this._startElement.previousSibling;
+    }
+}
+/**
+ * Iterates sibling list blocks starting from the given node.
+ *
+ * @internal
+ * @param node The model node.
+ * @param direction Iteration direction.
+ * @returns The object with `node` and `previous` {@link module:engine/model/element~Element blocks}.
+ */
+function* iterateSiblingListBlocks(node, direction = 'forward') {
+    const isForward = direction == 'forward';
+    let previous = null;
+    while (isListItemBlock(node)) {
+        yield { node, previous };
+        previous = node;
+        node = isForward ? node.nextSibling : node.previousSibling;
+    }
+}
+/**
+ * The iterable protocol over the list elements.
+ *
+ * @internal
+ */
+class ListBlocksIterable {
+    /**
+     * @param listHead The head element of a list.
+     */
+    constructor(listHead) {
+        this._listHead = listHead;
+    }
+    /**
+     * List blocks iterator.
+     *
+     * Iterates over all blocks of a list.
+     */
+    [Symbol.iterator]() {
+        return iterateSiblingListBlocks(this._listHead, 'forward');
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The list item ID generator.
+ *
+ * @internal
+ */
+class ListItemUid {
+    /**
+     * Returns the next ID.
+     *
+     * @internal
+     */
+    /* istanbul ignore next: static function definition -- @preserve */
+    static next() {
+        return uid();
+    }
+}
+/**
+ * Returns true if the given model node is a list item block.
+ *
+ * @internal
+ */
+function isListItemBlock(node) {
+    return !!node && node.is('element') && node.hasAttribute('listItemId');
+}
+/**
+ * Returns an array with all elements that represents the same list item.
+ *
+ * It means that values for `listIndent`, and `listItemId` for all items are equal.
+ *
+ * @internal
+ * @param listItem Starting list item element.
+ * @param options.higherIndent Whether blocks with a higher indent level than the start block should be included
+ * in the result.
+ */
+function getAllListItemBlocks(listItem, options = {}) {
+    return [
+        ...getListItemBlocks(listItem, { ...options, direction: 'backward' }),
+        ...getListItemBlocks(listItem, { ...options, direction: 'forward' })
+    ];
+}
+/**
+ * Returns an array with elements that represents the same list item in the specified direction.
+ *
+ * It means that values for `listIndent` and `listItemId` for all items are equal.
+ *
+ * **Note**: For backward search the provided item is not included, but for forward search it is included in the result.
+ *
+ * @internal
+ * @param listItem Starting list item element.
+ * @param options.direction Walking direction.
+ * @param options.higherIndent Whether blocks with a higher indent level than the start block should be included in the result.
+ */
+function getListItemBlocks(listItem, options = {}) {
+    const isForward = options.direction == 'forward';
+    const items = Array.from(new ListWalker(listItem, {
+        ...options,
+        includeSelf: isForward,
+        sameIndent: true,
+        sameAttributes: 'listItemId'
+    }));
+    return isForward ? items : items.reverse();
+}
+/**
+ * Returns a list items nested inside the given list item.
+ *
+ * @internal
+ */
+function getNestedListBlocks(listItem) {
+    return Array.from(new ListWalker(listItem, {
+        direction: 'forward',
+        higherIndent: true
+    }));
+}
+/**
+ * Returns array of all blocks/items of the same list as given block (same indent, same type and properties).
+ *
+ * @internal
+ * @param listItem Starting list item element.
+ */
+function getListItems(listItem) {
+    const backwardBlocks = new ListWalker(listItem, {
+        sameIndent: true,
+        sameAttributes: 'listType'
+    });
+    const forwardBlocks = new ListWalker(listItem, {
+        sameIndent: true,
+        sameAttributes: 'listType',
+        includeSelf: true,
+        direction: 'forward'
+    });
+    return [
+        ...Array.from(backwardBlocks).reverse(),
+        ...forwardBlocks
+    ];
+}
+/**
+ * Check if the given block is the first in the list item.
+ *
+ * @internal
+ * @param listBlock The list block element.
+ */
+function isFirstBlockOfListItem(listBlock) {
+    const previousSibling = ListWalker.first(listBlock, {
+        sameIndent: true,
+        sameAttributes: 'listItemId'
+    });
+    if (!previousSibling) {
+        return true;
+    }
+    return false;
+}
+/**
+ * Check if the given block is the last in the list item.
+ *
+ * @internal
+ */
+function isLastBlockOfListItem(listBlock) {
+    const nextSibling = ListWalker.first(listBlock, {
+        direction: 'forward',
+        sameIndent: true,
+        sameAttributes: 'listItemId'
+    });
+    if (!nextSibling) {
+        return true;
+    }
+    return false;
+}
+/**
+ * Expands the given list of selected blocks to include the leading and tailing blocks of partially selected list items.
+ *
+ * @internal
+ * @param blocks The list of selected blocks.
+ * @param options.withNested Whether should include nested list items.
+ */
+function expandListBlocksToCompleteItems(blocks, options = {}) {
+    blocks = toArray$1(blocks);
+    const higherIndent = options.withNested !== false;
+    const allBlocks = new Set();
+    for (const block of blocks) {
+        for (const itemBlock of getAllListItemBlocks(block, { higherIndent })) {
+            allBlocks.add(itemBlock);
+        }
+    }
+    return sortBlocks(allBlocks);
+}
+/**
+ * Expands the given list of selected blocks to include all the items of the lists they're in.
+ *
+ * @internal
+ * @param blocks The list of selected blocks.
+ */
+function expandListBlocksToCompleteList(blocks) {
+    blocks = toArray$1(blocks);
+    const allBlocks = new Set();
+    for (const block of blocks) {
+        for (const itemBlock of getListItems(block)) {
+            allBlocks.add(itemBlock);
+        }
+    }
+    return sortBlocks(allBlocks);
+}
+/**
+ * Splits the list item just before the provided list block.
+ *
+ * @internal
+ * @param listBlock The list block element.
+ * @param writer The model writer.
+ * @returns The array of updated blocks.
+ */
+function splitListItemBefore(listBlock, writer) {
+    const blocks = getListItemBlocks(listBlock, { direction: 'forward' });
+    const id = ListItemUid.next();
+    for (const block of blocks) {
+        writer.setAttribute('listItemId', id, block);
+    }
+    return blocks;
+}
+/**
+ * Merges the list item with the parent list item.
+ *
+ * @internal
+ * @param listBlock The list block element.
+ * @param parentBlock The list block element to merge with.
+ * @param writer The model writer.
+ * @returns The array of updated blocks.
+ */
+function mergeListItemBefore(listBlock, parentBlock, writer) {
+    const attributes = {};
+    for (const [key, value] of parentBlock.getAttributes()) {
+        if (key.startsWith('list')) {
+            attributes[key] = value;
+        }
+    }
+    const blocks = getListItemBlocks(listBlock, { direction: 'forward' });
+    for (const block of blocks) {
+        writer.setAttributes(attributes, block);
+    }
+    return blocks;
+}
+/**
+ * Increases indentation of given list blocks.
+ *
+ * @internal
+ * @param blocks The block or iterable of blocks.
+ * @param writer The model writer.
+ * @param options.expand Whether should expand the list of blocks to include complete list items.
+ * @param options.indentBy The number of levels the indentation should change (could be negative).
+ */
+function indentBlocks(blocks, writer, { expand, indentBy = 1 } = {}) {
+    blocks = toArray$1(blocks);
+    // Expand the selected blocks to contain the whole list items.
+    const allBlocks = expand ? expandListBlocksToCompleteItems(blocks) : blocks;
+    for (const block of allBlocks) {
+        const blockIndent = block.getAttribute('listIndent') + indentBy;
+        if (blockIndent < 0) {
+            removeListAttributes(block, writer);
+        }
+        else {
+            writer.setAttribute('listIndent', blockIndent, block);
+        }
+    }
+    return allBlocks;
+}
+/**
+ * Decreases indentation of given list of blocks. If the indentation of some blocks matches the indentation
+ * of surrounding blocks, they get merged together.
+ *
+ * @internal
+ * @param blocks The block or iterable of blocks.
+ * @param writer The model writer.
+ */
+function outdentBlocksWithMerge(blocks, writer) {
+    blocks = toArray$1(blocks);
+    // Expand the selected blocks to contain the whole list items.
+    const allBlocks = expandListBlocksToCompleteItems(blocks);
+    const visited = new Set();
+    const referenceIndent = Math.min(...allBlocks.map(block => block.getAttribute('listIndent')));
+    const parentBlocks = new Map();
+    // Collect parent blocks before the list structure gets altered.
+    for (const block of allBlocks) {
+        parentBlocks.set(block, ListWalker.first(block, { lowerIndent: true }));
+    }
+    for (const block of allBlocks) {
+        if (visited.has(block)) {
+            continue;
+        }
+        visited.add(block);
+        const blockIndent = block.getAttribute('listIndent') - 1;
+        if (blockIndent < 0) {
+            removeListAttributes(block, writer);
+            continue;
+        }
+        // Merge with parent list item while outdenting and indent matches reference indent.
+        if (block.getAttribute('listIndent') == referenceIndent) {
+            const mergedBlocks = mergeListItemIfNotLast(block, parentBlocks.get(block), writer);
+            // All list item blocks are updated while merging so add those to visited set.
+            for (const mergedBlock of mergedBlocks) {
+                visited.add(mergedBlock);
+            }
+            // The indent level was updated while merging so continue to next block.
+            if (mergedBlocks.length) {
+                continue;
+            }
+        }
+        writer.setAttribute('listIndent', blockIndent, block);
+    }
+    return sortBlocks(visited);
+}
+/**
+ * Removes all list attributes from the given blocks.
+ *
+ * @internal
+ * @param blocks The block or iterable of blocks.
+ * @param writer The model writer.
+ * @returns Array of altered blocks.
+ */
+function removeListAttributes(blocks, writer) {
+    blocks = toArray$1(blocks);
+    for (const block of blocks) {
+        for (const attributeKey of block.getAttributeKeys()) {
+            if (attributeKey.startsWith('list')) {
+                writer.removeAttribute(attributeKey, block);
+            }
+        }
+    }
+    return blocks;
+}
+/**
+ * Checks whether the given blocks are related to a single list item.
+ *
+ * @internal
+ * @param blocks The list block elements.
+ */
+function isSingleListItem(blocks) {
+    if (!blocks.length) {
+        return false;
+    }
+    const firstItemId = blocks[0].getAttribute('listItemId');
+    if (!firstItemId) {
+        return false;
+    }
+    return !blocks.some(item => item.getAttribute('listItemId') != firstItemId);
+}
+/**
+ * Modifies the indents of list blocks following the given list block so the indentation is valid after
+ * the given block is no longer a list item.
+ *
+ * @internal
+ * @param lastBlock The last list block that has become a non-list element.
+ * @param writer The model writer.
+ * @returns Array of altered blocks.
+ */
+function outdentFollowingItems(lastBlock, writer) {
+    const changedBlocks = [];
+    // Start from the model item that is just after the last turned-off item.
+    let currentIndent = Number.POSITIVE_INFINITY;
+    // Correct indent of all items after the last turned off item.
+    // Rules that should be followed:
+    // 1. All direct sub-items of turned-off item should become indent 0, because the first item after it
+    //    will be the first item of a new list. Other items are at the same level, so should have same 0 index.
+    // 2. All items with indent lower than indent of turned-off item should become indent 0, because they
+    //    should not end up as a child of any of list items that they were not children of before.
+    // 3. All other items should have their indent changed relatively to it's parent.
+    //
+    // For example:
+    // 1  * --------
+    // 2     * --------
+    // 3        * --------			<-- this is turned off.
+    // 4           * --------		<-- this has to become indent = 0, because it will be first item on a new list.
+    // 5              * --------	<-- this should be still be a child of item above, so indent = 1.
+    // 6        * --------			<-- this has to become indent = 0, because it should not be a child of any of items above.
+    // 7           * --------		<-- this should be still be a child of item above, so indent = 1.
+    // 8     * --------				<-- this has to become indent = 0.
+    // 9        * --------			<-- this should still be a child of item above, so indent = 1.
+    // 10          * --------		<-- this should still be a child of item above, so indent = 2.
+    // 11          * --------		<-- this should still be at the same level as item above, so indent = 2.
+    // 12 * --------				<-- this and all below are left unchanged.
+    // 13    * --------
+    // 14       * --------
+    //
+    // After turning off 3 the list becomes:
+    //
+    // 1  * --------
+    // 2     * --------
+    //
+    // 3  --------
+    //
+    // 4  * --------
+    // 5     * --------
+    // 6  * --------
+    // 7     * --------
+    // 8  * --------
+    // 9     * --------
+    // 10       * --------
+    // 11       * --------
+    // 12 * --------
+    // 13    * --------
+    // 14       * --------
+    //
+    // Thanks to this algorithm no lists are mismatched and no items get unexpected children/parent, while
+    // those parent-child connection which are possible to maintain are still maintained. It's worth noting
+    // that this is the same effect that we would be get by multiple use of outdent command. However doing
+    // it like this is much more efficient because it's less operation (less memory usage, easier OT) and
+    // less conversion (faster).
+    for (const { node } of iterateSiblingListBlocks(lastBlock.nextSibling, 'forward')) {
+        // Check each next list item, as long as its indent is higher than 0.
+        const indent = node.getAttribute('listIndent');
+        // If the indent is 0 we are not going to change anything anyway.
+        if (indent == 0) {
+            break;
+        }
+        // We check if that's item indent is lower than current relative indent.
+        if (indent < currentIndent) {
+            // If it is, current relative indent becomes that indent.
+            currentIndent = indent;
+        }
+        // Fix indent relatively to current relative indent.
+        // Note, that if we just changed the current relative indent, the newIndent will be equal to 0.
+        const newIndent = indent - currentIndent;
+        writer.setAttribute('listIndent', newIndent, node);
+        changedBlocks.push(node);
+    }
+    return changedBlocks;
+}
+/**
+ * Returns the array of given blocks sorted by model indexes (document order).
+ *
+ * @internal
+ */
+function sortBlocks(blocks) {
+    return Array.from(blocks)
+        .filter(block => block.root.rootName !== '$graveyard')
+        .sort((a, b) => a.index - b.index);
+}
+/**
+ * Returns a selected block object. If a selected object is inline or when there is no selected
+ * object, `null` is returned.
+ *
+ * @internal
+ * @param model The instance of editor model.
+ * @returns Selected block object or `null`.
+ */
+function getSelectedBlockObject(model) {
+    const selectedElement = model.document.selection.getSelectedElement();
+    if (!selectedElement) {
+        return null;
+    }
+    if (model.schema.isObject(selectedElement) && model.schema.isBlock(selectedElement)) {
+        return selectedElement;
+    }
+    return null;
+}
+// Merges a given block to the given parent block if parent is a list item and there is no more blocks in the same item.
+function mergeListItemIfNotLast(block, parentBlock, writer) {
+    const parentItemBlocks = getListItemBlocks(parentBlock, { direction: 'forward' });
+    // Merge with parent only if outdented item wasn't the last one in its parent.
+    // Merge:
+    // * a			->		* a
+    //   * [b]		->		  b
+    //   c			->		  c
+    // Don't merge:
+    // * a			->		* a
+    //   * [b]		-> 		* b
+    // * c			->		* c
+    if (parentItemBlocks.pop().index > block.index) {
+        return mergeListItemBefore(block, parentBlock, writer);
+    }
+    return [];
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The document list indent command. It is used by the {@link module:list/documentlist~DocumentList list feature}.
+ */
+class DocumentListIndentCommand extends Command {
+    /**
+     * Creates an instance of the command.
+     *
+     * @param editor The editor instance.
+     * @param indentDirection The direction of indent. If it is equal to `backward`, the command
+     * will outdent a list item.
+     */
+    constructor(editor, indentDirection) {
+        super(editor);
+        this._direction = indentDirection;
+    }
+    /**
+     * @inheritDoc
+     */
+    refresh() {
+        this.isEnabled = this._checkEnabled();
+    }
+    /**
+     * Indents or outdents (depending on the {@link #constructor}'s `indentDirection` parameter) selected list items.
+     *
+     * @fires execute
+     * @fires afterExecute
+     */
+    execute() {
+        const model = this.editor.model;
+        const blocks = getSelectedListBlocks(model.document.selection);
+        model.change(writer => {
+            const changedBlocks = [];
+            // Handle selection contained in the single list item and starting in the following blocks.
+            if (isSingleListItem(blocks) && !isFirstBlockOfListItem(blocks[0])) {
+                // Allow increasing indent of following list item blocks.
+                if (this._direction == 'forward') {
+                    changedBlocks.push(...indentBlocks(blocks, writer));
+                }
+                // For indent make sure that indented blocks have a new ID.
+                // For outdent just split blocks from the list item (give them a new IDs).
+                changedBlocks.push(...splitListItemBefore(blocks[0], writer));
+            }
+            // More than a single list item is selected, or the first block of list item is selected.
+            else {
+                // Now just update the attributes of blocks.
+                if (this._direction == 'forward') {
+                    changedBlocks.push(...indentBlocks(blocks, writer, { expand: true }));
+                }
+                else {
+                    changedBlocks.push(...outdentBlocksWithMerge(blocks, writer));
+                }
+            }
+            // Align the list item type to match the previous list item (from the same list).
+            for (const block of changedBlocks) {
+                // This block become a plain block (for example a paragraph).
+                if (!block.hasAttribute('listType')) {
+                    continue;
+                }
+                const previousItemBlock = ListWalker.first(block, { sameIndent: true });
+                if (previousItemBlock) {
+                    writer.setAttribute('listType', previousItemBlock.getAttribute('listType'), block);
+                }
+            }
+            this._fireAfterExecute(changedBlocks);
+        });
+    }
+    /**
+     * Fires the `afterExecute` event.
+     *
+     * @param changedBlocks The changed list elements.
+     */
+    _fireAfterExecute(changedBlocks) {
+        this.fire('afterExecute', sortBlocks(new Set(changedBlocks)));
+    }
+    /**
+     * Checks whether the command can be enabled in the current context.
+     *
+     * @returns Whether the command should be enabled.
+     */
+    _checkEnabled() {
+        // Check whether any of position's ancestor is a list item.
+        let blocks = getSelectedListBlocks(this.editor.model.document.selection);
+        let firstBlock = blocks[0];
+        // If selection is not in a list item, the command is disabled.
+        if (!firstBlock) {
+            return false;
+        }
+        // If we are outdenting it is enough to be in list item. Every list item can always be outdented.
+        if (this._direction == 'backward') {
+            return true;
+        }
+        // A single block of a list item is selected, so it could be indented as a sublist.
+        if (isSingleListItem(blocks) && !isFirstBlockOfListItem(blocks[0])) {
+            return true;
+        }
+        blocks = expandListBlocksToCompleteItems(blocks);
+        firstBlock = blocks[0];
+        // Check if there is any list item before selected items that could become a parent of selected items.
+        const siblingItem = ListWalker.first(firstBlock, { sameIndent: true });
+        if (!siblingItem) {
+            return false;
+        }
+        if (siblingItem.getAttribute('listType') == firstBlock.getAttribute('listType')) {
+            return true;
+        }
+        return false;
+    }
+}
+/**
+ * Returns an array of selected blocks truncated to the first non list block element.
+ */
+function getSelectedListBlocks(selection) {
+    const blocks = Array.from(selection.getSelectedBlocks());
+    const firstNonListBlockIndex = blocks.findIndex(block => !isListItemBlock(block));
+    if (firstNonListBlockIndex != -1) {
+        blocks.length = firstNonListBlockIndex;
+    }
+    return blocks;
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The list command. It is used by the {@link module:list/documentlist~DocumentList document list feature}.
+ */
+class DocumentListCommand extends Command {
     /**
      * Creates an instance of the command.
      *
@@ -73869,165 +74579,77 @@ class ListCommand extends Command {
      * Executes the list command.
      *
      * @fires execute
+     * @fires afterExecute
      * @param options Command options.
      * @param options.forceValue If set, it will force the command behavior. If `true`, the command will try to convert the
-     * selected items and potentially the neighbor elements to the proper list items. If set to `false`, it will convert selected elements
+     * selected items and potentially the neighbor elements to the proper list items. If set to `false` it will convert selected elements
      * to paragraphs. If not set, the command will toggle selected elements to list items or paragraphs, depending on the selection.
      */
     execute(options = {}) {
         const model = this.editor.model;
         const document = model.document;
+        const selectedBlockObject = getSelectedBlockObject(model);
         const blocks = Array.from(document.selection.getSelectedBlocks())
-            .filter(block => checkCanBecomeListItem(block, model.schema));
+            .filter(block => model.schema.checkAttribute(block, 'listType'));
         // Whether we are turning off some items.
         const turnOff = options.forceValue !== undefined ? !options.forceValue : this.value;
-        // If we are turning off items, we are going to rename them to paragraphs.
         model.change(writer => {
-            // If part of a list got turned off, we need to handle (outdent) all of sub-items of the last turned-off item.
-            // To be sure that model is all the time in a good state, we first fix items below turned-off item.
             if (turnOff) {
-                // Start from the model item that is just after the last turned-off item.
-                let next = blocks[blocks.length - 1].nextSibling;
-                let currentIndent = Number.POSITIVE_INFINITY;
-                let changes = [];
-                // Correct indent of all items after the last turned off item.
-                // Rules that should be followed:
-                // 1. All direct sub-items of turned-off item should become indent 0, because the first item after it
-                //    will be the first item of a new list. Other items are at the same level, so should have same 0 index.
-                // 2. All items with indent lower than indent of turned-off item should become indent 0, because they
-                //    should not end up as a child of any of list items that they were not children of before.
-                // 3. All other items should have their indent changed relatively to it's parent.
-                //
-                // For example:
-                // 1  * --------
-                // 2     * --------
-                // 3        * --------			<-- this is turned off.
-                // 4           * --------		<-- this has to become indent = 0, because it will be first item on a new list.
-                // 5              * --------	<-- this should be still be a child of item above, so indent = 1.
-                // 6        * --------			<-- this has to become indent = 0, because it should not be a child of any of items above.
-                // 7           * --------		<-- this should be still be a child of item above, so indent = 1.
-                // 8     * --------				<-- this has to become indent = 0.
-                // 9        * --------			<-- this should still be a child of item above, so indent = 1.
-                // 10          * --------		<-- this should still be a child of item above, so indent = 2.
-                // 11          * --------		<-- this should still be at the same level as item above, so indent = 2.
-                // 12 * --------				<-- this and all below are left unchanged.
-                // 13    * --------
-                // 14       * --------
-                //
-                // After turning off 3 the list becomes:
-                //
-                // 1  * --------
-                // 2     * --------
-                //
-                // 3  --------
-                //
-                // 4  * --------
-                // 5     * --------
-                // 6  * --------
-                // 7     * --------
-                // 8  * --------
-                // 9     * --------
-                // 10       * --------
-                // 11       * --------
-                // 12 * --------
-                // 13    * --------
-                // 14       * --------
-                //
-                // Thanks to this algorithm no lists are mismatched and no items get unexpected children/parent, while
-                // those parent-child connection which are possible to maintain are still maintained. It's worth noting
-                // that this is the same effect that we would be get by multiple use of outdent command. However doing
-                // it like this is much more efficient because it's less operation (less memory usage, easier OT) and
-                // less conversion (faster).
-                while (next && next.name == 'listItem' && next.getAttribute('listIndent') !== 0) {
-                    // Check each next list item, as long as its indent is bigger than 0.
-                    // If the indent is 0 we are not going to change anything anyway.
-                    const indent = next.getAttribute('listIndent');
-                    // We check if that's item indent is lower as current relative indent.
-                    if (indent < currentIndent) {
-                        // If it is, current relative indent becomes that indent.
-                        currentIndent = indent;
-                    }
-                    // Fix indent relatively to current relative indent.
-                    // Note, that if we just changed the current relative indent, the newIndent will be equal to 0.
-                    const newIndent = indent - currentIndent;
-                    // Save the entry in changes array. We do not apply it at the moment, because we will need to
-                    // reverse the changes so the last item is changed first.
-                    // This is to keep model in correct state all the time.
-                    changes.push({ element: next, listIndent: newIndent });
-                    // Find next item.
-                    next = next.nextSibling;
+                const lastBlock = blocks[blocks.length - 1];
+                // Split the first block from the list item.
+                const itemBlocks = getListItemBlocks(lastBlock, { direction: 'forward' });
+                const changedBlocks = [];
+                if (itemBlocks.length > 1) {
+                    changedBlocks.push(...splitListItemBefore(itemBlocks[1], writer));
                 }
-                changes = changes.reverse();
-                for (const item of changes) {
-                    writer.setAttribute('listIndent', item.listIndent, item.element);
-                }
+                // Convert list blocks to plain blocks.
+                changedBlocks.push(...removeListAttributes(blocks, writer));
+                // Outdent items following the selected list item.
+                changedBlocks.push(...outdentFollowingItems(lastBlock, writer));
+                this._fireAfterExecute(changedBlocks);
             }
-            // If we are turning on, we might change some items that are already `listItem`s but with different type.
-            // Changing one nested list item to other type should also trigger changing all its siblings so the
-            // whole nested list is of the same type.
-            // Example (assume changing to numbered list):
-            // * ------				<-- do not fix, top level item
-            //   * ------			<-- fix, because latter list item of this item's list is changed
-            //      * ------		<-- do not fix, item is not affected (different list)
-            //   * ------			<-- fix, because latter list item of this item's list is changed
-            //      * ------		<-- fix, because latter list item of this item's list is changed
-            //      * ---[--		<-- already in selection
-            //   * ------			<-- already in selection
-            //   * ------			<-- already in selection
-            // * ------				<-- already in selection, but does not cause other list items to change because is top-level
-            //   * ---]--			<-- already in selection
-            //   * ------			<-- fix, because preceding list item of this item's list is changed
-            //      * ------		<-- do not fix, item is not affected (different list)
-            // * ------				<-- do not fix, top level item
-            if (!turnOff) {
-                // Find lowest indent among selected items. This will be indicator what is the indent of
-                // top-most list affected by the command.
-                let lowestIndent = Number.POSITIVE_INFINITY;
-                for (const item of blocks) {
-                    if (item.is('element', 'listItem') && item.getAttribute('listIndent') < lowestIndent) {
-                        lowestIndent = item.getAttribute('listIndent');
+            // Turning on the list items for a collapsed selection inside a list item.
+            else if ((selectedBlockObject || document.selection.isCollapsed) && isListItemBlock(blocks[0])) {
+                const changedBlocks = getListItems(selectedBlockObject || blocks[0]);
+                for (const block of changedBlocks) {
+                    writer.setAttribute('listType', this.type, block);
+                }
+                this._fireAfterExecute(changedBlocks);
+            }
+            // Turning on the list items for a non-collapsed selection.
+            else {
+                const changedBlocks = [];
+                for (const block of blocks) {
+                    // Promote the given block to the list item.
+                    if (!block.hasAttribute('listType')) {
+                        writer.setAttributes({
+                            listIndent: 0,
+                            listItemId: ListItemUid.next(),
+                            listType: this.type
+                        }, block);
+                        changedBlocks.push(block);
+                    }
+                    // Change the type of list item.
+                    else {
+                        for (const node of expandListBlocksToCompleteItems(block, { withNested: false })) {
+                            if (node.getAttribute('listType') != this.type) {
+                                writer.setAttribute('listType', this.type, node);
+                                changedBlocks.push(node);
+                            }
+                        }
                     }
                 }
-                // Do not execute the fix for top-level lists.
-                lowestIndent = lowestIndent === 0 ? 1 : lowestIndent;
-                // Fix types of list items that are "before" the selected blocks.
-                _fixType(blocks, true, lowestIndent);
-                // Fix types of list items that are "after" the selected blocks.
-                _fixType(blocks, false, lowestIndent);
+                this._fireAfterExecute(changedBlocks);
             }
-            // Phew! Now it will be easier :).
-            // For each block element that was in the selection, we will either: turn it to list item,
-            // turn it to paragraph, or change it's type. Or leave it as it is.
-            // Do it in reverse as there might be multiple blocks (same as with changing indents).
-            for (const element of blocks.reverse()) {
-                if (turnOff && element.name == 'listItem') {
-                    // We are turning off and the element is a `listItem` - it should be converted to `paragraph`.
-                    // List item specific attributes are removed by post fixer.
-                    writer.rename(element, 'paragraph');
-                }
-                else if (!turnOff && element.name != 'listItem') {
-                    // We are turning on and the element is not a `listItem` - it should be converted to `listItem`.
-                    // The order of operations is important to keep model in correct state.
-                    writer.setAttributes({ listType: this.type, listIndent: 0 }, element);
-                    writer.rename(element, 'listItem');
-                }
-                else if (!turnOff && element.name == 'listItem' && element.getAttribute('listType') != this.type) {
-                    // We are turning on and the element is a `listItem` but has different type - change it's type and
-                    // type of it's all siblings that have same indent.
-                    writer.setAttribute('listType', this.type, element);
-                }
-            }
-            /**
-             * Event fired by the {@link #execute} method.
-             *
-             * It allows to execute an action after executing the {@link ~ListCommand#execute} method, for example adjusting
-             * attributes of changed blocks.
-             *
-             * @protected
-             * @event _executeCleanup
-             */
-            this.fire('_executeCleanup', blocks);
         });
+    }
+    /**
+     * Fires the `afterExecute` event.
+     *
+     * @param changedBlocks The changed list elements.
+     */
+    _fireAfterExecute(changedBlocks) {
+        this.fire('afterExecute', sortBlocks(new Set(changedBlocks)));
     }
     /**
      * Checks the command's {@link #value}.
@@ -74035,9 +74657,17 @@ class ListCommand extends Command {
      * @returns The current value.
      */
     _getValue() {
-        // Check whether closest `listItem` ancestor of the position has a correct type.
-        const listItem = first(this.editor.model.document.selection.getSelectedBlocks());
-        return !!listItem && listItem.is('element', 'listItem') && listItem.getAttribute('listType') == this.type;
+        const selection = this.editor.model.document.selection;
+        const blocks = Array.from(selection.getSelectedBlocks());
+        if (!blocks.length) {
+            return false;
+        }
+        for (const block of blocks) {
+            if (block.getAttribute('listType') != this.type) {
+                return false;
+            }
+        }
+        return true;
     }
     /**
      * Checks whether the command can be enabled in the current context.
@@ -74045,89 +74675,40 @@ class ListCommand extends Command {
      * @returns Whether the command should be enabled.
      */
     _checkEnabled() {
+        const selection = this.editor.model.document.selection;
+        const schema = this.editor.model.schema;
+        const blocks = Array.from(selection.getSelectedBlocks());
+        if (!blocks.length) {
+            return false;
+        }
         // If command value is true it means that we are in list item, so the command should be enabled.
         if (this.value) {
             return true;
         }
-        const selection = this.editor.model.document.selection;
-        const schema = this.editor.model.schema;
-        const firstBlock = first(selection.getSelectedBlocks());
-        if (!firstBlock) {
-            return false;
-        }
-        // Otherwise, check if list item can be inserted at the position start.
-        return checkCanBecomeListItem(firstBlock, schema);
-    }
-}
-/**
- * Helper function used when one or more list item have their type changed. Fixes type of other list items
- * that are affected by the change (are in same lists) but are not directly in selection. The function got extracted
- * not to duplicated code, as same fix has to be performed before and after selection.
- *
- * @param blocks Blocks that are in selection.
- * @param isBackward Specified whether fix will be applied for blocks before first selected block (`true`)
- * or blocks after last selected block (`false`).
- * @param lowestIndent Lowest indent among selected blocks.
- */
-function _fixType(blocks, isBackward, lowestIndent) {
-    // We need to check previous sibling of first changed item and next siblings of last changed item.
-    const startingItem = isBackward ? blocks[0] : blocks[blocks.length - 1];
-    if (startingItem.is('element', 'listItem')) {
-        let item = startingItem[isBackward ? 'previousSibling' : 'nextSibling'];
-        // During processing items, keeps the lowest indent of already processed items.
-        // This saves us from changing too many items.
-        // Following example is for going forward as it is easier to read, however same applies to going backward.
-        // * ------
-        //   * ------
-        //     * --[---
-        //   * ------		<-- `lowestIndent` should be 1
-        //     * --]---		<-- `startingItem`, `currentIndent` = 2, `lowestIndent` == 1
-        //     * ------		<-- should be fixed, `indent` == 2 == `currentIndent`
-        //   * ------		<-- should be fixed, set `currentIndent` to 1, `indent` == 1 == `currentIndent`
-        //     * ------		<-- should not be fixed, item is in different list, `indent` = 2, `indent` != `currentIndent`
-        //   * ------		<-- should be fixed, `indent` == 1 == `currentIndent`
-        // * ------			<-- break loop (`indent` < `lowestIndent`)
-        let currentIndent = startingItem.getAttribute('listIndent');
-        // Look back until a list item with indent lower than reference `lowestIndent`.
-        // That would be the parent of nested sublist which contains item having `lowestIndent`.
-        while (item && item.is('element', 'listItem') && item.getAttribute('listIndent') >= lowestIndent) {
-            if (currentIndent > item.getAttribute('listIndent')) {
-                currentIndent = item.getAttribute('listIndent');
+        for (const block of blocks) {
+            if (schema.checkAttribute(block, 'listType')) {
+                return true;
             }
-            // Found an item that is in the same nested sublist.
-            if (item.getAttribute('listIndent') == currentIndent) {
-                // Just add the item to selected blocks like it was selected by the user.
-                blocks[isBackward ? 'unshift' : 'push'](item);
-            }
-            item = item[isBackward ? 'previousSibling' : 'nextSibling'];
         }
+        return false;
     }
-}
-/**
- * Checks whether the given block can be replaced by a listItem.
- *
- * @param block A block to be tested.
- * @param schema The schema of the document.
- */
-function checkCanBecomeListItem(block, schema) {
-    return schema.checkChild(block.parent, 'listItem') && !schema.isObject(block);
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 /**
- * The list indent command. It is used by the {@link module:list/list~List list feature}.
+ * The document list merge command. It is used by the {@link module:list/documentlist~DocumentList list feature}.
  */
-class IndentCommand extends Command {
+class DocumentListMergeCommand extends Command {
     /**
      * Creates an instance of the command.
      *
      * @param editor The editor instance.
-     * @param indentDirection The direction of indent. If it is equal to `backward`, the command will outdent a list item.
+     * @param direction Whether list item should be merged before or after the selected block.
      */
-    constructor(editor, indentDirection) {
+    constructor(editor, direction) {
         super(editor);
-        this._indentBy = indentDirection == 'forward' ? 1 : -1;
+        this._direction = direction;
     }
     /**
      * @inheritDoc
@@ -74136,50 +74717,62 @@ class IndentCommand extends Command {
         this.isEnabled = this._checkEnabled();
     }
     /**
-     * Indents or outdents (depending on the {@link #constructor}'s `indentDirection` parameter) selected list items.
+     * Merges list blocks together (depending on the {@link #constructor}'s `direction` parameter).
      *
      * @fires execute
+     * @fires afterExecute
+     * @param options Command options.
+     * @param options.shouldMergeOnBlocksContentLevel When set `true`, merging will be performed together
+     * with {@link module:engine/model/model~Model#deleteContent} to get rid of the inline content in the selection or take advantage
+     * of the heuristics in `deleteContent()` that helps convert lists into paragraphs in certain cases.
      */
-    execute() {
+    execute({ shouldMergeOnBlocksContentLevel = false } = {}) {
         const model = this.editor.model;
-        const doc = model.document;
-        let itemsToChange = Array.from(doc.selection.getSelectedBlocks());
+        const selection = model.document.selection;
+        const changedBlocks = [];
         model.change(writer => {
-            const lastItem = itemsToChange[itemsToChange.length - 1];
-            // Indenting a list item should also indent all the items that are already sub-items of indented item.
-            let next = lastItem.nextSibling;
-            // Check all items after last indented item, as long as their indent is bigger than indent of that item.
-            while (next && next.name == 'listItem' &&
-                next.getAttribute('listIndent') > lastItem.getAttribute('listIndent')) {
-                itemsToChange.push(next);
-                next = next.nextSibling;
+            const { firstElement, lastElement } = this._getMergeSubjectElements(selection, shouldMergeOnBlocksContentLevel);
+            const firstIndent = firstElement.getAttribute('listIndent') || 0;
+            const lastIndent = lastElement.getAttribute('listIndent');
+            const lastElementId = lastElement.getAttribute('listItemId');
+            if (firstIndent != lastIndent) {
+                const nestedLastElementBlocks = getNestedListBlocks(lastElement);
+                changedBlocks.push(...indentBlocks([lastElement, ...nestedLastElementBlocks], writer, {
+                    indentBy: firstIndent - lastIndent,
+                    // If outdenting, the entire sub-tree that follows must be included.
+                    expand: firstIndent < lastIndent
+                }));
             }
-            // We need to be sure to keep model in correct state after each small change, because converters
-            // bases on that state and assumes that model is correct.
-            // Because of that, if the command outdents items, we will outdent them starting from the last item, as
-            // it is safer.
-            if (this._indentBy < 0) {
-                itemsToChange = itemsToChange.reverse();
-            }
-            for (const item of itemsToChange) {
-                const indent = item.getAttribute('listIndent') + this._indentBy;
-                // If indent is lower than 0, it means that the item got outdented when it was not indented.
-                // This means that we need to convert that list item to paragraph.
-                if (indent < 0) {
-                    // To keep the model as correct as possible, first rename listItem, then remove attributes,
-                    // as listItem without attributes is very incorrect and will cause problems in converters.
-                    // No need to remove attributes, will be removed by post fixer.
-                    writer.rename(item, 'paragraph');
+            if (shouldMergeOnBlocksContentLevel) {
+                let sel = selection;
+                if (selection.isCollapsed) {
+                    sel = writer.createSelection(writer.createRange(writer.createPositionAt(firstElement, 'end'), writer.createPositionAt(lastElement, 0)));
                 }
-                // If indent is >= 0, change the attribute value.
-                else {
-                    writer.setAttribute('listIndent', indent, item);
+                // Delete selected content. Replace entire content only for non-collapsed selection.
+                model.deleteContent(sel, { doNotResetEntireContent: selection.isCollapsed });
+                // Get the last "touched" element after deleteContent call (can't use the lastElement because
+                // it could get merged into the firstElement while deleting content).
+                const lastElementAfterDelete = sel.getLastPosition().parent;
+                // Check if the element after it was in the same list item and adjust it if needed.
+                const nextSibling = lastElementAfterDelete.nextSibling;
+                changedBlocks.push(lastElementAfterDelete);
+                if (nextSibling && nextSibling !== lastElement && nextSibling.getAttribute('listItemId') == lastElementId) {
+                    changedBlocks.push(...mergeListItemBefore(nextSibling, lastElementAfterDelete, writer));
                 }
             }
-            // It allows to execute an action after executing the `~IndentCommand#execute` method, for example adjusting
-            // attributes of changed list items.
-            this.fire('_executeCleanup', itemsToChange);
+            else {
+                changedBlocks.push(...mergeListItemBefore(lastElement, firstElement, writer));
+            }
+            this._fireAfterExecute(changedBlocks);
         });
+    }
+    /**
+     * Fires the `afterExecute` event.
+     *
+     * @param changedBlocks The changed list elements.
+     */
+    _fireAfterExecute(changedBlocks) {
+        this.fire('afterExecute', sortBlocks(new Set(changedBlocks)));
     }
     /**
      * Checks whether the command can be enabled in the current context.
@@ -74187,405 +74780,152 @@ class IndentCommand extends Command {
      * @returns Whether the command should be enabled.
      */
     _checkEnabled() {
-        // Check whether any of position's ancestor is a list item.
-        const listItem = first(this.editor.model.document.selection.getSelectedBlocks());
-        // If selection is not in a list item, the command is disabled.
-        if (!listItem || !listItem.is('element', 'listItem')) {
-            return false;
-        }
-        if (this._indentBy > 0) {
-            // Cannot indent first item in it's list. Check if before `listItem` is a list item that is in same list.
-            // To be in the same list, the item has to have same attributes and cannot be "split" by an item with lower indent.
-            const indent = listItem.getAttribute('listIndent');
-            const type = listItem.getAttribute('listType');
-            let prev = listItem.previousSibling;
-            while (prev && prev.is('element', 'listItem') && prev.getAttribute('listIndent') >= indent) {
-                if (prev.getAttribute('listIndent') == indent) {
-                    // The item is on the same level.
-                    // If it has same type, it means that we found a preceding sibling from the same list.
-                    // If it does not have same type, it means that `listItem` is on different list (this can happen only
-                    // on top level lists, though).
-                    return prev.getAttribute('listType') == type;
-                }
-                prev = prev.previousSibling;
+        const model = this.editor.model;
+        const selection = model.document.selection;
+        const selectedBlockObject = getSelectedBlockObject(model);
+        if (selection.isCollapsed || selectedBlockObject) {
+            const positionParent = selectedBlockObject || selection.getFirstPosition().parent;
+            if (!isListItemBlock(positionParent)) {
+                return false;
             }
-            // Could not find similar list item, this means that `listItem` is first in its list.
-            return false;
+            const siblingNode = this._direction == 'backward' ?
+                positionParent.previousSibling :
+                positionParent.nextSibling;
+            if (!siblingNode) {
+                return false;
+            }
+            if (isSingleListItem([positionParent, siblingNode])) {
+                return false;
+            }
         }
-        // If we are outdenting it is enough to be in list item. Every list item can always be outdented.
+        else {
+            const lastPosition = selection.getLastPosition();
+            const firstPosition = selection.getFirstPosition();
+            // If deleting within a single block of a list item, there's no need to merge anything.
+            // The default delete should be executed instead.
+            if (lastPosition.parent === firstPosition.parent) {
+                return false;
+            }
+            if (!isListItemBlock(lastPosition.parent)) {
+                return false;
+            }
+        }
         return true;
+    }
+    /**
+     * Returns the boundary elements the merge should be executed for. These are not necessarily selection's first
+     * and last position parents but sometimes sibling or even further blocks depending on the context.
+     *
+     * @param selection The selection the merge is executed for.
+     * @param shouldMergeOnBlocksContentLevel When `true`, merge is performed together with
+     * {@link module:engine/model/model~Model#deleteContent} to remove the inline content within the selection.
+     */
+    _getMergeSubjectElements(selection, shouldMergeOnBlocksContentLevel) {
+        const model = this.editor.model;
+        const selectedBlockObject = getSelectedBlockObject(model);
+        let firstElement, lastElement;
+        if (selection.isCollapsed || selectedBlockObject) {
+            const positionParent = selectedBlockObject || selection.getFirstPosition().parent;
+            const isFirstBlock = isFirstBlockOfListItem(positionParent);
+            if (this._direction == 'backward') {
+                lastElement = positionParent;
+                if (isFirstBlock && !shouldMergeOnBlocksContentLevel) {
+                    // For the "c" as an anchorElement:
+                    //  * a
+                    //    * b
+                    //  * [c]  <-- this block should be merged with "a"
+                    // It should find "a" element to merge with:
+                    //  * a
+                    //    * b
+                    //    c
+                    firstElement = ListWalker.first(positionParent, { sameIndent: true, lowerIndent: true });
+                }
+                else {
+                    firstElement = positionParent.previousSibling;
+                }
+            }
+            else {
+                // In case of the forward merge there is no case as above, just merge with next sibling.
+                firstElement = positionParent;
+                lastElement = positionParent.nextSibling;
+            }
+        }
+        else {
+            firstElement = selection.getFirstPosition().parent;
+            lastElement = selection.getLastPosition().parent;
+        }
+        return {
+            firstElement: firstElement,
+            lastElement: lastElement
+        };
     }
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 /**
- * Creates a list item {@link module:engine/view/containerelement~ContainerElement}.
+ * The document list split command that splits the list item at the selection.
  *
- * @param writer The writer instance.
+ * It is used by the {@link module:list/documentlist~DocumentList document list feature}.
  */
-function createViewListItemElement(writer) {
-    const viewItem = writer.createContainerElement('li');
-    viewItem.getFillerOffset = getListItemFillerOffset;
-    return viewItem;
-}
-/**
- * Helper function that creates a `<ul><li></li></ul>` or (`<ol>`) structure out of the given `modelItem` model `listItem` element.
- * Then, it binds the created view list item (`<li>`) with the model `listItem` element.
- * The function then returns the created view list item (`<li>`).
- *
- * @param modelItem Model list item.
- * @param conversionApi Conversion interface.
- * @returns View list element.
- */
-function generateLiInUl(modelItem, conversionApi) {
-    const mapper = conversionApi.mapper;
-    const viewWriter = conversionApi.writer;
-    const listType = modelItem.getAttribute('listType') == 'numbered' ? 'ol' : 'ul';
-    const viewItem = createViewListItemElement(viewWriter);
-    const viewList = viewWriter.createContainerElement(listType, null);
-    viewWriter.insert(viewWriter.createPositionAt(viewList, 0), viewItem);
-    mapper.bindElements(modelItem, viewItem);
-    return viewItem;
-}
-/**
- * Helper function that inserts a view list at a correct place and merges it with its siblings.
- * It takes a model list item element (`modelItem`) and a corresponding view list item element (`injectedItem`). The view list item
- * should be in a view list element (`<ul>` or `<ol>`) and should be its only child.
- * See comments below to better understand the algorithm.
- *
- * @param modelItem Model list item.
- * @param injectedItem
- * @param conversionApi Conversion interface.
- * @param model The model instance.
- */
-function injectViewList(modelItem, injectedItem, conversionApi, model) {
-    const injectedList = injectedItem.parent;
-    const mapper = conversionApi.mapper;
-    const viewWriter = conversionApi.writer;
-    // The position where the view list will be inserted.
-    let insertPosition = mapper.toViewPosition(model.createPositionBefore(modelItem));
-    // 1. Find the previous list item that has the same or smaller indent. Basically we are looking for the first model item
-    // that is a "parent" or "sibling" of the injected model item.
-    // If there is no such list item, it means that the injected list item is the first item in "its list".
-    const refItem = getSiblingListItem(modelItem.previousSibling, {
-        sameIndent: true,
-        smallerIndent: true,
-        listIndent: modelItem.getAttribute('listIndent')
-    });
-    const prevItem = modelItem.previousSibling;
-    if (refItem && refItem.getAttribute('listIndent') == modelItem.getAttribute('listIndent')) {
-        // There is a list item with the same indent - we found the same-level sibling.
-        // Break the list after it. The inserted view item will be added in the broken space.
-        const viewItem = mapper.toViewElement(refItem);
-        insertPosition = viewWriter.breakContainer(viewWriter.createPositionAfter(viewItem));
+class DocumentListSplitCommand extends Command {
+    /**
+     * Creates an instance of the command.
+     *
+     * @param editor The editor instance.
+     * @param direction Whether list item should be split before or after the selected block.
+     */
+    constructor(editor, direction) {
+        super(editor);
+        this._direction = direction;
     }
-    else {
-        // There is no list item with the same indent. Check the previous model item.
-        if (prevItem && prevItem.name == 'listItem') {
-            // If it is a list item, it has to have a lower indent.
-            // It means that the inserted item should be added to it as its nested item.
-            insertPosition = mapper.toViewPosition(model.createPositionAt(prevItem, 'end'));
-            // There could be some not mapped elements (eg. span in to-do list) but we need to insert
-            // a nested list directly inside the li element.
-            const mappedViewAncestor = mapper.findMappedViewAncestor(insertPosition);
-            const nestedList = findNestedList(mappedViewAncestor);
-            // If there already is some nested list, then use it's position.
-            if (nestedList) {
-                insertPosition = viewWriter.createPositionBefore(nestedList);
-            }
-            else {
-                // Else just put new list on the end of list item content.
-                insertPosition = viewWriter.createPositionAt(mappedViewAncestor, 'end');
-            }
-        }
-        else {
-            // The previous item is not a list item (or does not exist at all).
-            // Just map the position and insert the view item at the mapped position.
-            insertPosition = mapper.toViewPosition(model.createPositionBefore(modelItem));
-        }
+    /**
+     * @inheritDoc
+     */
+    refresh() {
+        this.isEnabled = this._checkEnabled();
     }
-    insertPosition = positionAfterUiElements(insertPosition);
-    // Insert the view item.
-    viewWriter.insert(insertPosition, injectedList);
-    // 2. Handle possible children of the injected model item.
-    if (prevItem && prevItem.name == 'listItem') {
-        const prevView = mapper.toViewElement(prevItem);
-        const walkerBoundaries = viewWriter.createRange(viewWriter.createPositionAt(prevView, 0), insertPosition);
-        const walker = walkerBoundaries.getWalker({ ignoreElementEnd: true });
-        for (const value of walker) {
-            if (value.item.is('element', 'li')) {
-                const breakPosition = viewWriter.breakContainer(viewWriter.createPositionBefore(value.item));
-                const viewList = value.item.parent;
-                const targetPosition = viewWriter.createPositionAt(injectedItem, 'end');
-                mergeViewLists(viewWriter, targetPosition.nodeBefore, targetPosition.nodeAfter);
-                viewWriter.move(viewWriter.createRangeOn(viewList), targetPosition);
-                // This is bad, but those lists will be removed soon anyway.
-                walker._position = breakPosition;
-            }
-        }
-    }
-    else {
-        const nextViewList = injectedList.nextSibling;
-        if (nextViewList && (nextViewList.is('element', 'ul') || nextViewList.is('element', 'ol'))) {
-            let lastSubChild = null;
-            for (const child of nextViewList.getChildren()) {
-                const modelChild = mapper.toModelElement(child);
-                if (modelChild &&
-                    modelChild.getAttribute('listIndent') > modelItem.getAttribute('listIndent')) {
-                    lastSubChild = child;
-                }
-                else {
-                    break;
-                }
-            }
-            if (lastSubChild) {
-                viewWriter.breakContainer(viewWriter.createPositionAfter(lastSubChild));
-                viewWriter.move(viewWriter.createRangeOn(lastSubChild.parent), viewWriter.createPositionAt(injectedItem, 'end'));
-            }
-        }
-    }
-    // Merge the inserted view list with its possible neighbor lists.
-    mergeViewLists(viewWriter, injectedList, injectedList.nextSibling);
-    mergeViewLists(viewWriter, injectedList.previousSibling, injectedList);
-}
-function mergeViewLists(viewWriter, firstList, secondList) {
-    // Check if two lists are going to be merged.
-    if (!firstList || !secondList || (firstList.name != 'ul' && firstList.name != 'ol')) {
-        return null;
-    }
-    // Both parameters are list elements, so compare types now.
-    if (firstList.name != secondList.name || firstList.getAttribute('class') !== secondList.getAttribute('class')) {
-        return null;
-    }
-    return viewWriter.mergeContainers(viewWriter.createPositionAfter(firstList));
-}
-/**
- * Helper function that for a given `view.Position`, returns a `view.Position` that is after all `view.UIElement`s that
- * are after the given position.
- *
- * For example:
- * `<container:p>foo^<ui:span></ui:span><ui:span></ui:span>bar</container:p>`
- * For position ^, the position before "bar" will be returned.
- *
- */
-function positionAfterUiElements(viewPosition) {
-    return viewPosition.getLastMatchingPosition(value => value.item.is('uiElement'));
-}
-/**
- * Helper function that searches for a previous list item sibling of a given model item that meets the given criteria
- * passed by the options object.
- *
- * @param options Search criteria.
- * @param options.sameIndent Whether the sought sibling should have the same indentation.
- * @param options.smallerIndent Whether the sought sibling should have a smaller indentation.
- * @param options.listIndent The reference indentation.
- * @param options.direction Walking direction.
- */
-function getSiblingListItem(modelItem, options) {
-    const sameIndent = !!options.sameIndent;
-    const smallerIndent = !!options.smallerIndent;
-    const indent = options.listIndent;
-    let item = modelItem;
-    while (item && item.name == 'listItem') {
-        const itemIndent = item.getAttribute('listIndent');
-        if ((sameIndent && indent == itemIndent) || (smallerIndent && indent > itemIndent)) {
-            return item;
-        }
-        if (options.direction === 'forward') {
-            item = item.nextSibling;
-        }
-        else {
-            item = item.previousSibling;
-        }
-    }
-    return null;
-}
-/**
- * Helper method for creating a UI button and linking it with an appropriate command.
- *
- * @internal
- * @param editor The editor instance to which the UI component will be added.
- * @param commandName The name of the command.
- * @param label The button label.
- * @param icon The source of the icon.
- */
-function createUIComponent(editor, commandName, label, icon) {
-    editor.ui.componentFactory.add(commandName, locale => {
-        const command = editor.commands.get(commandName);
-        const buttonView = new ButtonView(locale);
-        buttonView.set({
-            label,
-            icon,
-            tooltip: true,
-            isToggleable: true
+    /**
+     * Splits the list item at the selection.
+     *
+     * @fires execute
+     * @fires afterExecute
+     */
+    execute() {
+        const editor = this.editor;
+        editor.model.change(writer => {
+            const changedBlocks = splitListItemBefore(this._getStartBlock(), writer);
+            this._fireAfterExecute(changedBlocks);
         });
-        // Bind button model to command.
-        buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');
-        // Execute command.
-        buttonView.on('execute', () => {
-            editor.execute(commandName);
-            editor.editing.view.focus();
-        });
-        return buttonView;
-    });
-}
-/**
- * Returns a first list view element that is direct child of the given view element.
- */
-function findNestedList(viewElement) {
-    for (const node of viewElement.getChildren()) {
-        if (node.name == 'ul' || node.name == 'ol') {
-            return node;
-        }
     }
-    return null;
-}
-/**
- * Returns an array with all `listItem` elements that represent the same list.
- *
- * It means that values of `listIndent`, `listType`, `listStyle`, `listReversed` and `listStart` for all items are equal.
- *
- * Additionally, if the `position` is inside a list item, that list item will be returned as well.
- *
- * @param position Starting position.
- * @param direction Walking direction.
- */
-function getSiblingNodes(position, direction) {
-    const items = [];
-    const listItem = position.parent;
-    const walkerOptions = {
-        ignoreElementEnd: false,
-        startPosition: position,
-        shallow: true,
-        direction
-    };
-    const limitIndent = listItem.getAttribute('listIndent');
-    const nodes = [...new TreeWalker(walkerOptions)]
-        .filter(value => value.item.is('element'))
-        .map(value => value.item);
-    for (const element of nodes) {
-        // If found something else than `listItem`, we're out of the list scope.
-        if (!element.is('element', 'listItem')) {
-            break;
-        }
-        // If current parsed item has lower indent that element that the element that was a starting point,
-        // it means we left a nested list. Abort searching items.
-        //
-        // ■ List item 1.       [listIndent=0]
-        //     ○ List item 2.[] [listIndent=1], limitIndent = 1,
-        //     ○ List item 3.   [listIndent=1]
-        // ■ List item 4.       [listIndent=0]
-        //
-        // Abort searching when leave nested list.
-        if (element.getAttribute('listIndent') < limitIndent) {
-            break;
-        }
-        // ■ List item 1.[]     [listIndent=0] limitIndent = 0,
-        //     ○ List item 2.   [listIndent=1]
-        //     ○ List item 3.   [listIndent=1]
-        // ■ List item 4.       [listIndent=0]
-        //
-        // Ignore nested lists.
-        if (element.getAttribute('listIndent') > limitIndent) {
-            continue;
-        }
-        // ■ List item 1.[]  [listType=bulleted]
-        // 1. List item 2.   [listType=numbered]
-        // 2.List item 3.    [listType=numbered]
-        //
-        // Abort searching when found a different kind of a list.
-        if (element.getAttribute('listType') !== listItem.getAttribute('listType')) {
-            break;
-        }
-        // ■ List item 1.[]  [listType=bulleted]
-        // ■ List item 2.    [listType=bulleted]
-        // ○ List item 3.    [listType=bulleted]
-        // ○ List item 4.    [listType=bulleted]
-        //
-        // Abort searching when found a different list style,
-        if (element.getAttribute('listStyle') !== listItem.getAttribute('listStyle')) {
-            break;
-        }
-        // ... different direction
-        if (element.getAttribute('listReversed') !== listItem.getAttribute('listReversed')) {
-            break;
-        }
-        // ... and different start index
-        if (element.getAttribute('listStart') !== listItem.getAttribute('listStart')) {
-            break;
-        }
-        if (direction === 'backward') {
-            items.unshift(element);
-        }
-        else {
-            items.push(element);
-        }
+    /**
+     * Fires the `afterExecute` event.
+     *
+     * @param changedBlocks The changed list elements.
+     */
+    _fireAfterExecute(changedBlocks) {
+        this.fire('afterExecute', sortBlocks(new Set(changedBlocks)));
     }
-    return items;
-}
-/**
- * Returns an array with all `listItem` elements in the model selection.
- *
- * It returns all the items even if only a part of the list is selected, including items that belong to nested lists.
- * If no list is selected, it returns an empty array.
- * The order of the elements is not specified.
- *
- * @internal
- */
-function getSelectedListItems(model) {
-    const document = model.document;
-    // For all selected blocks find all list items that are being selected
-    // and update the `listStyle` attribute in those lists.
-    let listItems = [...document.selection.getSelectedBlocks()]
-        .filter(element => element.is('element', 'listItem'))
-        .map(element => {
-        const position = model.change(writer => writer.createPositionAt(element, 0));
-        return [
-            ...getSiblingNodes(position, 'backward'),
-            ...getSiblingNodes(position, 'forward')
-        ];
-    })
-        .flat();
-    // Since `getSelectedBlocks()` can return items that belong to the same list, and
-    // `getSiblingNodes()` returns the entire list, we need to remove duplicated items.
-    listItems = [...new Set(listItems)];
-    return listItems;
-}
-const BULLETED_LIST_STYLE_TYPES = ['disc', 'circle', 'square'];
-// There's a lot of them (https://www.w3.org/TR/css-counter-styles-3/#typedef-counter-style).
-// Let's support only those that can be selected by ListPropertiesUI.
-const NUMBERED_LIST_STYLE_TYPES = [
-    'decimal',
-    'decimal-leading-zero',
-    'lower-roman',
-    'upper-roman',
-    'lower-latin',
-    'upper-latin'
-];
-/**
- * Checks whether the given list-style-type is supported by numbered or bulleted list.
- */
-function getListTypeFromListStyleType(listStyleType) {
-    if (BULLETED_LIST_STYLE_TYPES.includes(listStyleType)) {
-        return 'bulleted';
+    /**
+     * Checks whether the command can be enabled in the current context.
+     *
+     * @returns Whether the command should be enabled.
+     */
+    _checkEnabled() {
+        const selection = this.editor.model.document.selection;
+        const block = this._getStartBlock();
+        return selection.isCollapsed &&
+            isListItemBlock(block) &&
+            !isFirstBlockOfListItem(block);
     }
-    if (NUMBERED_LIST_STYLE_TYPES.includes(listStyleType)) {
-        return 'numbered';
+    /**
+     * Returns the model element that is the main focus of the command (according to the current selection and command direction).
+     */
+    _getStartBlock() {
+        const doc = this.editor.model.document;
+        const positionParent = doc.selection.getFirstPosition().parent;
+        return (this._direction == 'before' ? positionParent : positionParent.nextSibling);
     }
-    return null;
-}
-/**
- * Implementation of getFillerOffset for view list item element.
- *
- * @returns Block filler offset or `null` if block filler is not needed.
- */
-function getListItemFillerOffset() {
-    const hasOnlyLists = !this.isEmpty && (this.getChild(0).name == 'ul' || this.getChild(0).name == 'ol');
-    if (this.isEmpty || hasOnlyLists) {
-        return 0;
-    }
-    return getFillerOffset$5.call(this);
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -74593,886 +74933,65 @@ function getListItemFillerOffset() {
 /**
  * A set of helpers related to document lists.
  */
-class ListUtils extends Plugin {
+class DocumentListUtils extends Plugin {
     /**
      * @inheritDoc
      */
     static get pluginName() {
-        return 'ListUtils';
+        return 'DocumentListUtils';
     }
     /**
-     * Checks whether the given list-style-type is supported by numbered or bulleted list.
+     * Expands the given list of selected blocks to include all the items of the lists they're in.
+     *
+     * @param blocks The list of selected blocks.
      */
-    getListTypeFromListStyleType(listStyleType) {
-        return getListTypeFromListStyleType(listStyleType);
+    expandListBlocksToCompleteList(blocks) {
+        return expandListBlocksToCompleteList(blocks);
     }
     /**
-     * Returns an array with all `listItem` elements in the model selection.
+     * Check if the given block is the first in the list item.
      *
-     * It returns all the items even if only a part of the list is selected, including items that belong to nested lists.
-     * If no list is selected, it returns an empty array.
-     * The order of the elements is not specified.
+     * @param listBlock The list block element.
      */
-    getSelectedListItems(model) {
-        return getSelectedListItems(model);
+    isFirstBlockOfListItem(listBlock) {
+        return isFirstBlockOfListItem(listBlock);
     }
     /**
-     * Returns an array with all `listItem` elements that represent the same list.
+     * Returns true if the given model node is a list item block.
      *
-     * It means that values of `listIndent`, `listType`, `listStyle`, `listReversed` and `listStart` for all items are equal.
-     *
-     * Additionally, if the `position` is inside a list item, that list item will be returned as well.
-     *
-     * @param position Starting position.
-     * @param direction Walking direction.
+     * @param node A model node.
      */
-    getSiblingNodes(position, direction) {
-        return getSiblingNodes(position, direction);
+    isListItemBlock(node) {
+        return isListItemBlock(node);
+    }
+    /**
+     * Expands the given list of selected blocks to include the leading and tailing blocks of partially selected list items.
+     *
+     * @param blocks The list of selected blocks.
+     * @param options.withNested Whether should include nested list items.
+     */
+    expandListBlocksToCompleteItems(blocks, options = {}) {
+        return expandListBlocksToCompleteItems(blocks, options);
     }
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 /**
- * A model-to-view converter for the `listItem` model element insertion.
- *
- * It creates a `<ul><li></li><ul>` (or `<ol>`) view structure out of a `listItem` model element, inserts it at the correct
- * position, and merges the list with surrounding lists (if available).
- *
- * @see module:engine/conversion/downcastdispatcher~DowncastDispatcher#event:insert
- * @param model Model instance.
- */
-function modelViewInsertion(model) {
-    return (evt, data, conversionApi) => {
-        const consumable = conversionApi.consumable;
-        if (!consumable.test(data.item, 'insert') ||
-            !consumable.test(data.item, 'attribute:listType') ||
-            !consumable.test(data.item, 'attribute:listIndent')) {
-            return;
-        }
-        consumable.consume(data.item, 'insert');
-        consumable.consume(data.item, 'attribute:listType');
-        consumable.consume(data.item, 'attribute:listIndent');
-        const modelItem = data.item;
-        const viewItem = generateLiInUl(modelItem, conversionApi);
-        injectViewList(modelItem, viewItem, conversionApi, model);
-    };
-}
-/**
- * A model-to-view converter for the `listItem` model element removal.
- *
- * @see module:engine/conversion/downcastdispatcher~DowncastDispatcher#event:remove
- * @param model Model instance.
- * @returns Returns a conversion callback.
- */
-function modelViewRemove(model) {
-    return (evt, data, conversionApi) => {
-        const viewPosition = conversionApi.mapper.toViewPosition(data.position);
-        const viewStart = viewPosition.getLastMatchingPosition(value => !value.item.is('element', 'li'));
-        const viewItem = viewStart.nodeAfter;
-        const viewWriter = conversionApi.writer;
-        // 1. Break the container after and before the list item.
-        // This will create a view list with one view list item - the one to remove.
-        viewWriter.breakContainer(viewWriter.createPositionBefore(viewItem));
-        viewWriter.breakContainer(viewWriter.createPositionAfter(viewItem));
-        // 2. Remove the list with the item to remove.
-        const viewList = viewItem.parent;
-        const viewListPrev = viewList.previousSibling;
-        const removeRange = viewWriter.createRangeOn(viewList);
-        const removed = viewWriter.remove(removeRange);
-        // 3. Merge the whole created by breaking and removing the list.
-        if (viewListPrev && viewListPrev.nextSibling) {
-            mergeViewLists(viewWriter, viewListPrev, viewListPrev.nextSibling);
-        }
-        // 4. Bring back nested list that was in the removed <li>.
-        const modelItem = conversionApi.mapper.toModelElement(viewItem);
-        hoistNestedLists(modelItem.getAttribute('listIndent') + 1, data.position, removeRange.start, viewItem, conversionApi, model);
-        // 5. Unbind removed view item and all children.
-        for (const child of viewWriter.createRangeIn(removed).getItems()) {
-            conversionApi.mapper.unbindViewElement(child);
-        }
-        evt.stop();
-    };
-}
-/**
- * A model-to-view converter for the `type` attribute change on the `listItem` model element.
- *
- * This change means that the `<li>` element parent changes from `<ul>` to `<ol>` (or vice versa). This is accomplished
- * by breaking view elements and changing their name. The next {@link module:list/list/converters~modelViewMergeAfterChangeType}
- * converter will attempt to merge split nodes.
- *
- * Splitting this conversion into 2 steps makes it possible to add an additional conversion in the middle.
- * Check {@link module:list/todolist/todolistconverters~modelViewChangeType} to see an example of it.
- *
- * @see module:engine/conversion/downcastdispatcher~DowncastDispatcher#event:attribute
- */
-const modelViewChangeType = (evt, data, conversionApi) => {
-    if (!conversionApi.consumable.test(data.item, evt.name)) {
-        return;
-    }
-    const viewItem = conversionApi.mapper.toViewElement(data.item);
-    const viewWriter = conversionApi.writer;
-    // Break the container after and before the list item.
-    // This will create a view list with one view list item -- the one that changed type.
-    viewWriter.breakContainer(viewWriter.createPositionBefore(viewItem));
-    viewWriter.breakContainer(viewWriter.createPositionAfter(viewItem));
-    // Change name of the view list that holds the changed view item.
-    // We cannot just change name property, because that would not render properly.
-    const viewList = viewItem.parent;
-    const listName = data.attributeNewValue == 'numbered' ? 'ol' : 'ul';
-    viewWriter.rename(listName, viewList);
-};
-/**
- * A model-to-view converter that attempts to merge nodes split by {@link module:list/list/converters~modelViewChangeType}.
- *
- * @see module:engine/conversion/downcastdispatcher~DowncastDispatcher#event:attribute
- */
-const modelViewMergeAfterChangeType = (evt, data, conversionApi) => {
-    conversionApi.consumable.consume(data.item, evt.name);
-    const viewItem = conversionApi.mapper.toViewElement(data.item);
-    const viewList = viewItem.parent;
-    const viewWriter = conversionApi.writer;
-    // Merge the changed view list with other lists, if possible.
-    mergeViewLists(viewWriter, viewList, viewList.nextSibling);
-    mergeViewLists(viewWriter, viewList.previousSibling, viewList);
-};
-/**
- * A model-to-view converter for the `listIndent` attribute change on the `listItem` model element.
- *
- * @see module:engine/conversion/downcastdispatcher~DowncastDispatcher#event:attribute
- * @param model Model instance.
- * @returns Returns a conversion callback.
- */
-function modelViewChangeIndent(model) {
-    return (evt, data, conversionApi) => {
-        if (!conversionApi.consumable.consume(data.item, 'attribute:listIndent')) {
-            return;
-        }
-        const viewItem = conversionApi.mapper.toViewElement(data.item);
-        const viewWriter = conversionApi.writer;
-        // 1. Break the container after and before the list item.
-        // This will create a view list with one view list item -- the one that changed type.
-        viewWriter.breakContainer(viewWriter.createPositionBefore(viewItem));
-        viewWriter.breakContainer(viewWriter.createPositionAfter(viewItem));
-        // 2. Extract view list with changed view list item and merge "hole" possibly created by breaking and removing elements.
-        const viewList = viewItem.parent;
-        const viewListPrev = viewList.previousSibling;
-        const removeRange = viewWriter.createRangeOn(viewList);
-        viewWriter.remove(removeRange);
-        if (viewListPrev && viewListPrev.nextSibling) {
-            mergeViewLists(viewWriter, viewListPrev, viewListPrev.nextSibling);
-        }
-        // 3. Bring back nested list that was in the removed <li>.
-        hoistNestedLists(data.attributeOldValue + 1, data.range.start, removeRange.start, viewItem, conversionApi, model);
-        // 4. Inject view list like it is newly inserted.
-        injectViewList(data.item, viewItem, conversionApi, model);
-        // 5. Consume insertion of children inside the item. They are already handled by re-building the item in view.
-        for (const child of data.item.getChildren()) {
-            conversionApi.consumable.consume(child, 'insert');
-        }
-    };
-}
-/**
- * A special model-to-view converter introduced by the {@link module:list/list~List list feature}. This converter is fired for
- * insert change of every model item, and should be fired before the actual converter. The converter checks whether the inserted
- * model item is a non-`listItem` element. If it is, and it is inserted inside a view list, the converter breaks the
- * list so the model element is inserted to the view parent element corresponding to its model parent element.
- *
- * The converter prevents such situations:
- *
- * ```xml
- * // Model:                        // View:
- * <listItem>foo</listItem>         <ul>
- * <listItem>bar</listItem>             <li>foo</li>
- *                                      <li>bar</li>
- *                                  </ul>
- *
- * // After change:                 // Correct view guaranteed by this converter:
- * <listItem>foo</listItem>         <ul><li>foo</li></ul><p>xxx</p><ul><li>bar</li></ul>
- * <paragraph>xxx</paragraph>       // Instead of this wrong view state:
- * <listItem>bar</listItem>         <ul><li>foo</li><p>xxx</p><li>bar</li></ul>
- * ```
- *
- * @see module:engine/conversion/downcastdispatcher~DowncastDispatcher#event:insert
- */
-const modelViewSplitOnInsert = (evt, data, conversionApi) => {
-    if (!conversionApi.consumable.test(data.item, evt.name)) {
-        return;
-    }
-    if (data.item.name != 'listItem') {
-        let viewPosition = conversionApi.mapper.toViewPosition(data.range.start);
-        const viewWriter = conversionApi.writer;
-        const lists = [];
-        // Break multiple ULs/OLs if there are.
-        //
-        // Imagine following list:
-        //
-        // 1 --------
-        //   1.1 --------
-        //     1.1.1 --------
-        //     1.1.2 --------
-        //     1.1.3 --------
-        //       1.1.3.1 --------
-        //   1.2 --------
-        //     1.2.1 --------
-        // 2 --------
-        //
-        // Insert paragraph after item 1.1.1:
-        //
-        // 1 --------
-        //   1.1 --------
-        //     1.1.1 --------
-        //
-        // Lorem ipsum.
-        //
-        //     1.1.2 --------
-        //     1.1.3 --------
-        //       1.1.3.1 --------
-        //   1.2 --------
-        //     1.2.1 --------
-        // 2 --------
-        //
-        // In this case 1.1.2 has to become beginning of a new list.
-        // We need to break list before 1.1.2 (obvious), then we need to break list also before 1.2.
-        // Then we need to move those broken pieces one after another and merge:
-        //
-        // 1 --------
-        //   1.1 --------
-        //     1.1.1 --------
-        //
-        // Lorem ipsum.
-        //
-        // 1.1.2 --------
-        //   1.1.3 --------
-        //     1.1.3.1 --------
-        // 1.2 --------
-        //   1.2.1 --------
-        // 2 --------
-        //
-        while (viewPosition.parent.name == 'ul' || viewPosition.parent.name == 'ol') {
-            viewPosition = viewWriter.breakContainer(viewPosition);
-            if (viewPosition.parent.name != 'li') {
-                break;
-            }
-            // Remove lists that are after inserted element.
-            // They will be brought back later, below the inserted element.
-            const removeStart = viewPosition;
-            const removeEnd = viewWriter.createPositionAt(viewPosition.parent, 'end');
-            // Don't remove if there is nothing to remove.
-            if (!removeStart.isEqual(removeEnd)) {
-                const removed = viewWriter.remove(viewWriter.createRange(removeStart, removeEnd));
-                lists.push(removed);
-            }
-            viewPosition = viewWriter.createPositionAfter(viewPosition.parent);
-        }
-        // Bring back removed lists.
-        if (lists.length > 0) {
-            for (let i = 0; i < lists.length; i++) {
-                const previousList = viewPosition.nodeBefore;
-                const insertedRange = viewWriter.insert(viewPosition, lists[i]);
-                viewPosition = insertedRange.end;
-                // Don't merge first list! We want a split in that place (this is why this converter is introduced).
-                if (i > 0) {
-                    const mergePos = mergeViewLists(viewWriter, previousList, previousList.nextSibling);
-                    // If `mergePos` is in `previousList` it means that the lists got merged.
-                    // In this case, we need to fix insert position.
-                    if (mergePos && mergePos.parent == previousList) {
-                        viewPosition.offset--;
-                    }
-                }
-            }
-            // Merge last inserted list with element after it.
-            mergeViewLists(viewWriter, viewPosition.nodeBefore, viewPosition.nodeAfter);
-        }
-    }
-};
-/**
- * A special model-to-view converter introduced by the {@link module:list/list~List list feature}. This converter takes care of
- * merging view lists after something is removed or moved from near them.
- *
- * Example:
- *
- * ```xml
- * // Model:                        // View:
- * <listItem>foo</listItem>         <ul><li>foo</li></ul>
- * <paragraph>xxx</paragraph>       <p>xxx</p>
- * <listItem>bar</listItem>         <ul><li>bar</li></ul>
- *
- * // After change:                 // Correct view guaranteed by this converter:
- * <listItem>foo</listItem>         <ul>
- * <listItem>bar</listItem>             <li>foo</li>
- *                                      <li>bar</li>
- *                                  </ul>
- * ```
- *
- * @see module:engine/conversion/downcastdispatcher~DowncastDispatcher#event:remove
- */
-const modelViewMergeAfter = (evt, data, conversionApi) => {
-    const viewPosition = conversionApi.mapper.toViewPosition(data.position);
-    const viewItemPrev = viewPosition.nodeBefore;
-    const viewItemNext = viewPosition.nodeAfter;
-    // Merge lists if something (remove, move) was done from inside of list.
-    // Merging will be done only if both items are view lists of the same type.
-    // The check is done inside the helper function.
-    mergeViewLists(conversionApi.writer, viewItemPrev, viewItemNext);
-};
-/**
- * A view-to-model converter that converts the `<li>` view elements into the `listItem` model elements.
- *
- * To set correct values of the `listType` and `listIndent` attributes the converter:
- * * checks `<li>`'s parent,
- * * stores and increases the `conversionApi.store.indent` value when `<li>`'s sub-items are converted.
- *
- * @see module:engine/conversion/upcastdispatcher~UpcastDispatcher#event:element
- */
-const viewModelConverter = (evt, data, conversionApi) => {
-    if (conversionApi.consumable.consume(data.viewItem, { name: true })) {
-        const writer = conversionApi.writer;
-        // 1. Create `listItem` model element.
-        const listItem = writer.createElement('listItem');
-        // 2. Handle `listItem` model element attributes.
-        const indent = getIndent(data.viewItem);
-        writer.setAttribute('listIndent', indent, listItem);
-        // Set 'bulleted' as default. If this item is pasted into a context,
-        const type = data.viewItem.parent && data.viewItem.parent.name == 'ol' ? 'numbered' : 'bulleted';
-        writer.setAttribute('listType', type, listItem);
-        if (!conversionApi.safeInsert(listItem, data.modelCursor)) {
-            return;
-        }
-        const nextPosition = viewToModelListItemChildrenConverter(listItem, data.viewItem.getChildren(), conversionApi);
-        // Result range starts before the first item and ends after the last.
-        data.modelRange = writer.createRange(data.modelCursor, nextPosition);
-        conversionApi.updateConversionResult(listItem, data);
-    }
-};
-/**
- * A view-to-model converter for the `<ul>` and `<ol>` view elements that cleans the input view of garbage.
- * This is mostly to clean whitespaces from between the `<li>` view elements inside the view list element, however, also
- * incorrect data can be cleared if the view was incorrect.
- *
- * @see module:engine/conversion/upcastdispatcher~UpcastDispatcher#event:element
- */
-const cleanList = (evt, data, conversionApi) => {
-    if (conversionApi.consumable.test(data.viewItem, { name: true })) {
-        // Caching children because when we start removing them iterating fails.
-        const children = Array.from(data.viewItem.getChildren());
-        for (const child of children) {
-            const isWrongElement = !(child.is('element', 'li') || isList$1(child));
-            if (isWrongElement) {
-                child._remove();
-            }
-        }
-    }
-};
-/**
- * A view-to-model converter for the `<li>` elements that cleans whitespace formatting from the input view.
- *
- * @see module:engine/conversion/upcastdispatcher~UpcastDispatcher#event:element
- */
-const cleanListItem = (evt, data, conversionApi) => {
-    if (conversionApi.consumable.test(data.viewItem, { name: true })) {
-        if (data.viewItem.childCount === 0) {
-            return;
-        }
-        const children = [...data.viewItem.getChildren()];
-        let foundList = false;
-        for (const child of children) {
-            if (foundList && !isList$1(child)) {
-                child._remove();
-            }
-            if (isList$1(child)) {
-                // If this is a <ul> or <ol>, do not process it, just mark that we already visited list element.
-                foundList = true;
-            }
-        }
-    }
-};
-/**
- * Returns a callback for model position to view position mapping for {@link module:engine/conversion/mapper~Mapper}. The callback fixes
- * positions between the `listItem` elements that would be incorrectly mapped because of how list items are represented in the model
- * and in the view.
- */
-function modelToViewPosition(view) {
-    return (evt, data) => {
-        if (data.isPhantom) {
-            return;
-        }
-        const modelItem = data.modelPosition.nodeBefore;
-        if (modelItem && modelItem.is('element', 'listItem')) {
-            const viewItem = data.mapper.toViewElement(modelItem);
-            const topmostViewList = viewItem.getAncestors().find(isList$1);
-            const walker = view.createPositionAt(viewItem, 0).getWalker();
-            for (const value of walker) {
-                if (value.type == 'elementStart' && value.item.is('element', 'li')) {
-                    data.viewPosition = value.previousPosition;
-                    break;
-                }
-                else if (value.type == 'elementEnd' && value.item == topmostViewList) {
-                    data.viewPosition = value.nextPosition;
-                    break;
-                }
-            }
-        }
-    };
-}
-/**
- * The callback for view position to model position mapping for {@link module:engine/conversion/mapper~Mapper}. The callback fixes
- * positions between the `<li>` elements that would be incorrectly mapped because of how list items are represented in the model
- * and in the view.
- *
- * @see module:engine/conversion/mapper~Mapper#event:viewToModelPosition
- * @param model Model instance.
- * @returns Returns a conversion callback.
- */
-function viewToModelPosition(model) {
-    return (evt, data) => {
-        const viewPos = data.viewPosition;
-        const viewParent = viewPos.parent;
-        const mapper = data.mapper;
-        if (viewParent.name == 'ul' || viewParent.name == 'ol') {
-            // Position is directly in <ul> or <ol>.
-            if (!viewPos.isAtEnd) {
-                // If position is not at the end, it must be before <li>.
-                // Get that <li>, map it to `listItem` and set model position before that `listItem`.
-                const modelNode = mapper.toModelElement(viewPos.nodeAfter);
-                data.modelPosition = model.createPositionBefore(modelNode);
-            }
-            else {
-                // Position is at the end of <ul> or <ol>, so there is no <li> after it to be mapped.
-                // There is <li> before the position, but we cannot just map it to `listItem` and set model position after it,
-                // because that <li> may contain nested items.
-                // We will check "model length" of that <li>, in other words - how many `listItem`s are in that <li>.
-                const modelNode = mapper.toModelElement(viewPos.nodeBefore);
-                const modelLength = mapper.getModelLength(viewPos.nodeBefore);
-                // Then we get model position before mapped `listItem` and shift it accordingly.
-                data.modelPosition = model.createPositionBefore(modelNode).getShiftedBy(modelLength);
-            }
-            evt.stop();
-        }
-        else if (viewParent.name == 'li' &&
-            viewPos.nodeBefore &&
-            (viewPos.nodeBefore.name == 'ul' || viewPos.nodeBefore.name == 'ol')) {
-            // In most cases when view position is in <li> it is in text and this is a correct position.
-            // However, if position is after <ul> or <ol> we have to fix it -- because in model <ul>/<ol> are not in the `listItem`.
-            const modelNode = mapper.toModelElement(viewParent);
-            // Check all <ul>s and <ol>s that are in the <li> but before mapped position.
-            // Get model length of those elements and then add it to the offset of `listItem` mapped to the original <li>.
-            let modelLength = 1; // Starts from 1 because the original <li> has to be counted in too.
-            let viewList = viewPos.nodeBefore;
-            while (viewList && isList$1(viewList)) {
-                modelLength += mapper.getModelLength(viewList);
-                viewList = viewList.previousSibling;
-            }
-            data.modelPosition = model.createPositionBefore(modelNode).getShiftedBy(modelLength);
-            evt.stop();
-        }
-    };
-}
-/**
- * Post-fixer that reacts to changes on document and fixes incorrect model states.
- *
- * In the example below, there is a correct list structure.
- * Then the middle element is removed so the list structure will become incorrect:
- *
- * ```xml
- * <listItem listType="bulleted" listIndent=0>Item 1</listItem>
- * <listItem listType="bulleted" listIndent=1>Item 2</listItem>   <--- this is removed.
- * <listItem listType="bulleted" listIndent=2>Item 3</listItem>
- * ```
- *
- * The list structure after the middle element is removed:
- *
- * ```xml
- * <listItem listType="bulleted" listIndent=0>Item 1</listItem>
- * <listItem listType="bulleted" listIndent=2>Item 3</listItem>
- * ```
- *
- * Should become:
- *
- * ```xml
- * <listItem listType="bulleted" listIndent=0>Item 1</listItem>
- * <listItem listType="bulleted" listIndent=1>Item 3</listItem>   <--- note that indent got post-fixed.
- * ```
- *
- * @param model The data model.
- * @param writer The writer to do changes with.
- * @returns `true` if any change has been applied, `false` otherwise.
- */
-function modelChangePostFixer(model, writer) {
-    const changes = model.document.differ.getChanges();
-    const itemToListHead = new Map();
-    let applied = false;
-    for (const entry of changes) {
-        if (entry.type == 'insert' && entry.name == 'listItem') {
-            _addListToFix(entry.position);
-        }
-        else if (entry.type == 'insert' && entry.name != 'listItem') {
-            if (entry.name != '$text') {
-                // In case of renamed element.
-                const item = entry.position.nodeAfter;
-                if (item.hasAttribute('listIndent')) {
-                    writer.removeAttribute('listIndent', item);
-                    applied = true;
-                }
-                if (item.hasAttribute('listType')) {
-                    writer.removeAttribute('listType', item);
-                    applied = true;
-                }
-                if (item.hasAttribute('listStyle')) {
-                    writer.removeAttribute('listStyle', item);
-                    applied = true;
-                }
-                if (item.hasAttribute('listReversed')) {
-                    writer.removeAttribute('listReversed', item);
-                    applied = true;
-                }
-                if (item.hasAttribute('listStart')) {
-                    writer.removeAttribute('listStart', item);
-                    applied = true;
-                }
-                for (const innerItem of Array.from(model.createRangeIn(item)).filter(e => e.item.is('element', 'listItem'))) {
-                    _addListToFix(innerItem.previousPosition);
-                }
-            }
-            const posAfter = entry.position.getShiftedBy(entry.length);
-            _addListToFix(posAfter);
-        }
-        else if (entry.type == 'remove' && entry.name == 'listItem') {
-            _addListToFix(entry.position);
-        }
-        else if (entry.type == 'attribute' && entry.attributeKey == 'listIndent') {
-            _addListToFix(entry.range.start);
-        }
-        else if (entry.type == 'attribute' && entry.attributeKey == 'listType') {
-            _addListToFix(entry.range.start);
-        }
-    }
-    for (const listHead of itemToListHead.values()) {
-        _fixListIndents(listHead);
-        _fixListTypes(listHead);
-    }
-    return applied;
-    function _addListToFix(position) {
-        const previousNode = position.nodeBefore;
-        if (!previousNode || !previousNode.is('element', 'listItem')) {
-            const item = position.nodeAfter;
-            if (item && item.is('element', 'listItem')) {
-                itemToListHead.set(item, item);
-            }
-        }
-        else {
-            let listHead = previousNode;
-            if (itemToListHead.has(listHead)) {
-                return;
-            }
-            for (
-            // Cache previousSibling and reuse for performance reasons. See #6581.
-            let previousSibling = listHead.previousSibling; previousSibling && previousSibling.is('element', 'listItem'); previousSibling = listHead.previousSibling) {
-                listHead = previousSibling;
-                if (itemToListHead.has(listHead)) {
-                    return;
-                }
-            }
-            itemToListHead.set(previousNode, listHead);
-        }
-    }
-    function _fixListIndents(item) {
-        let maxIndent = 0;
-        let fixBy = null;
-        while (item && item.is('element', 'listItem')) {
-            const itemIndent = item.getAttribute('listIndent');
-            if (itemIndent > maxIndent) {
-                let newIndent;
-                if (fixBy === null) {
-                    fixBy = itemIndent - maxIndent;
-                    newIndent = maxIndent;
-                }
-                else {
-                    if (fixBy > itemIndent) {
-                        fixBy = itemIndent;
-                    }
-                    newIndent = itemIndent - fixBy;
-                }
-                writer.setAttribute('listIndent', newIndent, item);
-                applied = true;
-            }
-            else {
-                fixBy = null;
-                maxIndent = item.getAttribute('listIndent') + 1;
-            }
-            item = item.nextSibling;
-        }
-    }
-    function _fixListTypes(item) {
-        let typesStack = [];
-        let prev = null;
-        while (item && item.is('element', 'listItem')) {
-            const itemIndent = item.getAttribute('listIndent');
-            if (prev && prev.getAttribute('listIndent') > itemIndent) {
-                typesStack = typesStack.slice(0, itemIndent + 1);
-            }
-            if (itemIndent != 0) {
-                if (typesStack[itemIndent]) {
-                    const type = typesStack[itemIndent];
-                    if (item.getAttribute('listType') != type) {
-                        writer.setAttribute('listType', type, item);
-                        applied = true;
-                    }
-                }
-                else {
-                    typesStack[itemIndent] = item.getAttribute('listType');
-                }
-            }
-            prev = item;
-            item = item.nextSibling;
-        }
-    }
-}
-/**
- * A fixer for pasted content that includes list items.
- *
- * It fixes indentation of pasted list items so the pasted items match correctly to the context they are pasted into.
- *
- * Example:
- *
- * ```xml
- * <listItem listType="bulleted" listIndent=0>A</listItem>
- * <listItem listType="bulleted" listIndent=1>B^</listItem>
- * // At ^ paste:  <listItem listType="bulleted" listIndent=4>X</listItem>
- * //              <listItem listType="bulleted" listIndent=5>Y</listItem>
- * <listItem listType="bulleted" listIndent=2>C</listItem>
- * ```
- *
- * Should become:
- *
- * ```xml
- * <listItem listType="bulleted" listIndent=0>A</listItem>
- * <listItem listType="bulleted" listIndent=1>BX</listItem>
- * <listItem listType="bulleted" listIndent=2>Y/listItem>
- * <listItem listType="bulleted" listIndent=2>C</listItem>
- * ```
- */
-const modelIndentPasteFixer = function (evt, [content, selectable]) {
-    const model = this;
-    // Check whether inserted content starts from a `listItem`. If it does not, it means that there are some other
-    // elements before it and there is no need to fix indents, because even if we insert that content into a list,
-    // that list will be broken.
-    // Note: we also need to handle singular elements because inserting item with indent 0 into 0,1,[],2
-    // would create incorrect model.
-    let item = content.is('documentFragment') ? content.getChild(0) : content;
-    let selection;
-    if (!selectable) {
-        selection = model.document.selection;
-    }
-    else {
-        selection = model.createSelection(selectable);
-    }
-    if (item && item.is('element', 'listItem')) {
-        // Get a reference list item. Inserted list items will be fixed according to that item.
-        const pos = selection.getFirstPosition();
-        let refItem = null;
-        if (pos.parent.is('element', 'listItem')) {
-            refItem = pos.parent;
-        }
-        else if (pos.nodeBefore && pos.nodeBefore.is('element', 'listItem')) {
-            refItem = pos.nodeBefore;
-        }
-        // If there is `refItem` it means that we do insert list items into an existing list.
-        if (refItem) {
-            // First list item in `data` has indent equal to 0 (it is a first list item). It should have indent equal
-            // to the indent of reference item. We have to fix the first item and all of it's children and following siblings.
-            // Indent of all those items has to be adjusted to reference item.
-            const indentChange = refItem.getAttribute('listIndent');
-            // Fix only if there is anything to fix.
-            if (indentChange > 0) {
-                // Adjust indent of all "first" list items in inserted data.
-                while (item && item.is('element', 'listItem')) {
-                    item._setAttribute('listIndent', item.getAttribute('listIndent') + indentChange);
-                    item = item.nextSibling;
-                }
-            }
-        }
-    }
-};
-/**
- * Helper function that converts children of a given `<li>` view element into corresponding model elements.
- * The function maintains proper order of elements if model `listItem` is split during the conversion
- * due to block children conversion.
- *
- * @param listItemModel List item model element to which converted children will be inserted.
- * @param viewChildren View elements which will be converted.
- * @param conversionApi Conversion interface to be used by the callback.
- * @returns Position on which next elements should be inserted after children conversion.
- */
-function viewToModelListItemChildrenConverter(listItemModel, viewChildren, conversionApi) {
-    const { writer, schema } = conversionApi;
-    // A position after the last inserted `listItem`.
-    let nextPosition = writer.createPositionAfter(listItemModel);
-    // Check all children of the converted `<li>`. At this point we assume there are no "whitespace" view text nodes
-    // in view list, between view list items. This should be handled by `<ul>` and `<ol>` converters.
-    for (const child of viewChildren) {
-        if (child.name == 'ul' || child.name == 'ol') {
-            // If the children is a list, we will insert its conversion result after currently handled `listItem`.
-            // Then, next insertion position will be set after all the new list items (and maybe other elements if
-            // something split list item).
-            //
-            // If this is a list, we expect that some `listItem`s and possibly other blocks will be inserted, however `.modelCursor`
-            // should be set after last `listItem` (or block). This is why it feels safe to use it as `nextPosition`
-            nextPosition = conversionApi.convertItem(child, nextPosition).modelCursor;
-        }
-        else {
-            // If this is not a list, try inserting content at the end of the currently handled `listItem`.
-            const result = conversionApi.convertItem(child, writer.createPositionAt(listItemModel, 'end'));
-            // It may end up that the current `listItem` becomes split (if that content cannot be inside `listItem`). For example:
-            //
-            // <li><p>Foo</p></li>
-            //
-            // will be converted to:
-            //
-            // <listItem></listItem><paragraph>Foo</paragraph><listItem></listItem>
-            //
-            const convertedChild = result.modelRange.start.nodeAfter;
-            const wasSplit = convertedChild && convertedChild.is('element') && !schema.checkChild(listItemModel, convertedChild.name);
-            if (wasSplit) {
-                // As `lastListItem` got split, we need to update it to the second part of the split `listItem` element.
-                //
-                // `modelCursor` should be set to a position where the conversion should continue. There are multiple possible scenarios
-                // that may happen. Usually, `modelCursor` (marked as `#` below) would point to the second list item after conversion:
-                //
-                //		`<li><p>Foo</p></li>` -> `<listItem></listItem><paragraph>Foo</paragraph><listItem>#</listItem>`
-                //
-                // However, in some cases, like auto-paragraphing, the position is placed at the end of the block element:
-                //
-                //		`<li><div>Foo</div></li>` -> `<listItem></listItem><paragraph>Foo#</paragraph><listItem></listItem>`
-                //
-                // or after an element if another element broken auto-paragraphed element:
-                //
-                //		`<li><div><h2>Foo</h2></div></li>` -> `<listItem></listItem><heading1>Foo</heading1>#<listItem></listItem>`
-                //
-                // We need to check for such cases and use proper list item and position based on it.
-                //
-                if (result.modelCursor.parent.is('element', 'listItem')) {
-                    // (1).
-                    listItemModel = result.modelCursor.parent;
-                }
-                else {
-                    // (2), (3).
-                    listItemModel = findNextListItem(result.modelCursor);
-                }
-                nextPosition = writer.createPositionAfter(listItemModel);
-            }
-        }
-    }
-    return nextPosition;
-}
-/**
- * Helper function that seeks for a next list item starting from given `startPosition`.
- */
-function findNextListItem(startPosition) {
-    const treeWalker = new TreeWalker({ startPosition });
-    let value;
-    do {
-        value = treeWalker.next();
-    } while (!value.value.item.is('element', 'listItem'));
-    return value.value.item;
-}
-/**
- * Helper function that takes all children of given `viewRemovedItem` and moves them in a correct place, according
- * to other given parameters.
- */
-function hoistNestedLists(nextIndent, modelRemoveStartPosition, viewRemoveStartPosition, viewRemovedItem, conversionApi, model) {
-    // Find correct previous model list item element.
-    // The element has to have either same or smaller indent than given reference indent.
-    // This will be the model element which will get nested items (if it has smaller indent) or sibling items (if it has same indent).
-    // Keep in mind that such element might not be found, if removed item was the first item.
-    const prevModelItem = getSiblingListItem(modelRemoveStartPosition.nodeBefore, {
-        sameIndent: true,
-        smallerIndent: true,
-        listIndent: nextIndent
-    });
-    const mapper = conversionApi.mapper;
-    const viewWriter = conversionApi.writer;
-    // Indent of found element or `null` if the element has not been found.
-    const prevIndent = prevModelItem ? prevModelItem.getAttribute('listIndent') : null;
-    let insertPosition;
-    if (!prevModelItem) {
-        // If element has not been found, simply insert lists at the position where the removed item was:
-        //
-        // Lorem ipsum.
-        // 1 --------           <--- this is removed, no previous list item, put nested items in place of removed item.
-        //   1.1 --------       <--- this is reference indent.
-        //     1.1.1 --------
-        //     1.1.2 --------
-        //   1.2 --------
-        //
-        // Becomes:
-        //
-        // Lorem ipsum.
-        // 1.1 --------
-        //   1.1.1 --------
-        //   1.1.2 --------
-        // 1.2 --------
-        insertPosition = viewRemoveStartPosition;
-    }
-    else if (prevIndent == nextIndent) {
-        // If element has been found and has same indent as reference indent it means that nested items should
-        // become siblings of found element:
-        //
-        // 1 --------
-        //   1.1 --------
-        //   1.2 --------       <--- this is `prevModelItem`.
-        // 2 --------           <--- this is removed, previous list item has indent same as reference indent.
-        //   2.1 --------       <--- this is reference indent, this and 2.2 should become siblings of 1.2.
-        //   2.2 --------
-        //
-        // Becomes:
-        //
-        // 1 --------
-        //   1.1 --------
-        //   1.2 --------
-        //   2.1 --------
-        //   2.2 --------
-        const prevViewList = mapper.toViewElement(prevModelItem).parent;
-        insertPosition = viewWriter.createPositionAfter(prevViewList);
-    }
-    else {
-        // If element has been found and has smaller indent as reference indent it means that nested items
-        // should become nested items of found item:
-        //
-        // 1 --------           <--- this is `prevModelItem`.
-        //   1.1 --------       <--- this is removed, previous list item has indent smaller than reference indent.
-        //     1.1.1 --------   <--- this is reference indent, this and 1.1.1 should become nested items of 1.
-        //     1.1.2 --------
-        //   1.2 --------
-        //
-        // Becomes:
-        //
-        // 1 --------
-        //   1.1.1 --------
-        //   1.1.2 --------
-        //   1.2 --------
-        //
-        // Note: in this case 1.1.1 have indent 2 while 1 have indent 0. In model that should not be possible,
-        // because following item may have indent bigger only by one. But this is fixed by postfixer.
-        const modelPosition = model.createPositionAt(prevModelItem, 'end');
-        insertPosition = mapper.toViewPosition(modelPosition);
-    }
-    insertPosition = positionAfterUiElements(insertPosition);
-    // Handle multiple lists. This happens if list item has nested numbered and bulleted lists. Following lists
-    // are inserted after the first list (no need to recalculate insertion position for them).
-    for (const child of [...viewRemovedItem.getChildren()]) {
-        if (isList$1(child)) {
-            insertPosition = viewWriter.move(viewWriter.createRangeOn(child), insertPosition).end;
-            mergeViewLists(viewWriter, child, child.nextSibling);
-            mergeViewLists(viewWriter, child.previousSibling, child);
-        }
-    }
-}
-/**
  * Checks if view element is a list type (ul or ol).
+ *
+ * @internal
  */
-function isList$1(viewElement) {
+function isListView(viewElement) {
     return viewElement.is('element', 'ol') || viewElement.is('element', 'ul');
+}
+/**
+ * Checks if view element is a list item (li).
+ *
+ * @internal
+ */
+function isListItemView(viewElement) {
+    return viewElement.is('element', 'li');
 }
 /**
  * Calculates the indent value for a list item. Handles HTML compliant and non-compliant lists.
@@ -75503,13 +75022,15 @@ function isList$1(viewElement) {
  * |-> OL                                          |-> OL
  *     |-> LI (parent LIs: 0)                          |-> LI (indent: 1)
  * ```
+ *
+ * @internal
  */
 function getIndent(listItem) {
     let indent = 0;
     let parent = listItem.parent;
     while (parent) {
         // Each LI in the tree will result in an increased indent for HTML compliant lists.
-        if (parent.is('element', 'li')) {
+        if (isListItemView(parent)) {
             indent++;
         }
         else {
@@ -75521,127 +75042,762 @@ function getIndent(listItem) {
             //		|-> LI (parent LIs: 0)            |-> LI         (indent: 0)
             //		|-> OL                                |-> OL
             //		    |-> LI (parent LIs: 0)                |-> LI (indent: 1)
-            if (previousSibling && previousSibling.is('element', 'li')) {
+            if (previousSibling && isListItemView(previousSibling)) {
                 indent++;
             }
         }
         parent = parent.parent;
     }
     return indent;
-}var css_248z$m = ".ck-content ol{list-style-type:decimal}.ck-content ol ol{list-style-type:lower-latin}.ck-content ol ol ol{list-style-type:lower-roman}.ck-content ol ol ol ol{list-style-type:upper-latin}.ck-content ol ol ol ol ol{list-style-type:upper-roman}.ck-content ul{list-style-type:disc}.ck-content ul ul{list-style-type:circle}.ck-content ul ul ul,.ck-content ul ul ul ul{list-style-type:square}";
+}
+/**
+ * Creates a list attribute element (ol or ul).
+ *
+ * @internal
+ */
+function createListElement(writer, indent, type, id = getViewElementIdForListType(type, indent)) {
+    // Negative priorities so that restricted editing attribute won't wrap lists.
+    return writer.createAttributeElement(getViewElementNameForListType(type), null, {
+        priority: 2 * indent / 100 - 100,
+        id
+    });
+}
+/**
+ * Creates a list item attribute element (li).
+ *
+ * @internal
+ */
+function createListItemElement(writer, indent, id) {
+    // Negative priorities so that restricted editing attribute won't wrap list items.
+    return writer.createAttributeElement('li', null, {
+        priority: (2 * indent + 1) / 100 - 100,
+        id
+    });
+}
+/**
+ * Returns a view element name for the given list type.
+ *
+ * @internal
+ */
+function getViewElementNameForListType(type) {
+    return type == 'numbered' ? 'ol' : 'ul';
+}
+/**
+ * Returns a view element ID for the given list type and indent.
+ *
+ * @internal
+ */
+function getViewElementIdForListType(type, indent) {
+    return `list-${type}-${indent}`;
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * Based on the provided positions looks for the list head and stores it in the provided map.
+ *
+ * @internal
+ * @param position The search starting position.
+ * @param itemToListHead The map from list item element to the list head element.
+ */
+function findAndAddListHeadToMap(position, itemToListHead) {
+    const previousNode = position.nodeBefore;
+    if (!isListItemBlock(previousNode)) {
+        const item = position.nodeAfter;
+        if (isListItemBlock(item)) {
+            itemToListHead.set(item, item);
+        }
+    }
+    else {
+        let listHead = previousNode;
+        // Previously, the loop below was defined like this:
+        //
+        // 		for ( { node: listHead } of iterateSiblingListBlocks( listHead, 'backward' ) )
+        //
+        // Unfortunately, such a destructuring is incorrectly transpiled by Babel and the loop never ends.
+        // See: https://github.com/ckeditor/ckeditor5-react/issues/345.
+        for (const { node } of iterateSiblingListBlocks(listHead, 'backward')) {
+            listHead = node;
+            if (itemToListHead.has(listHead)) {
+                return;
+            }
+        }
+        itemToListHead.set(previousNode, listHead);
+    }
+}
+/**
+ * Scans the list starting from the given list head element and fixes items' indentation.
+ *
+ * @internal
+ * @param listNodes The iterable of list nodes.
+ * @param writer The model writer.
+ * @returns Whether the model was modified.
+ */
+function fixListIndents(listNodes, writer) {
+    let maxIndent = 0; // Guards local sublist max indents that need fixing.
+    let prevIndent = -1; // Previous item indent.
+    let fixBy = null;
+    let applied = false;
+    for (const { node } of listNodes) {
+        const itemIndent = node.getAttribute('listIndent');
+        if (itemIndent > maxIndent) {
+            let newIndent;
+            if (fixBy === null) {
+                fixBy = itemIndent - maxIndent;
+                newIndent = maxIndent;
+            }
+            else {
+                if (fixBy > itemIndent) {
+                    fixBy = itemIndent;
+                }
+                newIndent = itemIndent - fixBy;
+            }
+            if (newIndent > prevIndent + 1) {
+                newIndent = prevIndent + 1;
+            }
+            writer.setAttribute('listIndent', newIndent, node);
+            applied = true;
+            prevIndent = newIndent;
+        }
+        else {
+            fixBy = null;
+            maxIndent = itemIndent + 1;
+            prevIndent = itemIndent;
+        }
+    }
+    return applied;
+}
+/**
+ * Scans the list starting from the given list head element and fixes items' types.
+ *
+ * @internal
+ * @param listNodes The iterable of list nodes.
+ * @param seenIds The set of already known IDs.
+ * @param writer The model writer.
+ * @returns Whether the model was modified.
+ */
+function fixListItemIds(listNodes, seenIds, writer) {
+    const visited = new Set();
+    let applied = false;
+    for (const { node } of listNodes) {
+        if (visited.has(node)) {
+            continue;
+        }
+        let listType = node.getAttribute('listType');
+        let listItemId = node.getAttribute('listItemId');
+        // Use a new ID if this one was spot earlier (even in other list).
+        if (seenIds.has(listItemId)) {
+            listItemId = ListItemUid.next();
+        }
+        seenIds.add(listItemId);
+        for (const block of getListItemBlocks(node, { direction: 'forward' })) {
+            visited.add(block);
+            // Use a new ID if a block of a bigger list item has different type.
+            if (block.getAttribute('listType') != listType) {
+                listItemId = ListItemUid.next();
+                listType = block.getAttribute('listType');
+            }
+            if (block.getAttribute('listItemId') != listItemId) {
+                writer.setAttribute('listItemId', listItemId, block);
+                applied = true;
+            }
+        }
+    }
+    return applied;
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * Returns the upcast converter for list items. It's supposed to work after the block converters (content inside list items) are converted.
+ *
+ * @internal
+ */
+function listItemUpcastConverter() {
+    return (evt, data, conversionApi) => {
+        const { writer, schema } = conversionApi;
+        if (!data.modelRange) {
+            return;
+        }
+        const items = Array.from(data.modelRange.getItems({ shallow: true }))
+            .filter((item) => schema.checkAttribute(item, 'listItemId'));
+        if (!items.length) {
+            return;
+        }
+        const attributes = {
+            listItemId: ListItemUid.next(),
+            listIndent: getIndent(data.viewItem),
+            listType: data.viewItem.parent && data.viewItem.parent.is('element', 'ol') ? 'numbered' : 'bulleted'
+        };
+        for (const item of items) {
+            // Set list attributes only on same level items, those nested deeper are already handled by the recursive conversion.
+            if (!isListItemBlock(item)) {
+                writer.setAttributes(attributes, item);
+            }
+        }
+        if (items.length > 1) {
+            // Make sure that list item that contain only nested list will preserve paragraph for itself:
+            //	<ul>
+            //		<li>
+            //			<p></p>  <-- this one must be kept
+            //			<ul>
+            //				<li></li>
+            //			</ul>
+            //		</li>
+            //	</ul>
+            if (items[1].getAttribute('listItemId') != attributes.listItemId) {
+                conversionApi.keepEmptyElement(items[0]);
+            }
+        }
+    };
+}
+/**
+ * Returns the upcast converter for the `<ul>` and `<ol>` view elements that cleans the input view of garbage.
+ * This is mostly to clean whitespaces from between the `<li>` view elements inside the view list element. However,
+ * incorrect data can also be cleared if the view was incorrect.
+ *
+ * @internal
+ */
+function listUpcastCleanList() {
+    return (evt, data, conversionApi) => {
+        if (!conversionApi.consumable.test(data.viewItem, { name: true })) {
+            return;
+        }
+        const viewWriter = new UpcastWriter(data.viewItem.document);
+        for (const child of Array.from(data.viewItem.getChildren())) {
+            if (!isListItemView(child) && !isListView(child)) {
+                viewWriter.remove(child);
+            }
+        }
+    };
+}
+/**
+ * Returns a model document change:data event listener that triggers conversion of related items if needed.
+ *
+ * @internal
+ * @param model The editor model.
+ * @param editing The editing controller.
+ * @param attributeNames The list of all model list attributes (including registered strategies).
+ * @param documentListEditing The document list editing plugin.
+ */
+function reconvertItemsOnDataChange(model, editing, attributeNames, documentListEditing) {
+    return () => {
+        const changes = model.document.differ.getChanges();
+        const itemsToRefresh = [];
+        const itemToListHead = new Map();
+        const changedItems = new Set();
+        for (const entry of changes) {
+            if (entry.type == 'insert' && entry.name != '$text') {
+                findAndAddListHeadToMap(entry.position, itemToListHead);
+                // Insert of a non-list item.
+                if (!entry.attributes.has('listItemId')) {
+                    findAndAddListHeadToMap(entry.position.getShiftedBy(entry.length), itemToListHead);
+                }
+                else {
+                    changedItems.add(entry.position.nodeAfter);
+                }
+            }
+            // Removed list item.
+            else if (entry.type == 'remove' && entry.attributes.has('listItemId')) {
+                findAndAddListHeadToMap(entry.position, itemToListHead);
+            }
+            // Changed list attribute.
+            else if (entry.type == 'attribute') {
+                const item = entry.range.start.nodeAfter;
+                if (attributeNames.includes(entry.attributeKey)) {
+                    findAndAddListHeadToMap(entry.range.start, itemToListHead);
+                    if (entry.attributeNewValue === null) {
+                        findAndAddListHeadToMap(entry.range.start.getShiftedBy(1), itemToListHead);
+                        // Check if paragraph should be converted from bogus to plain paragraph.
+                        if (doesItemParagraphRequiresRefresh(item)) {
+                            itemsToRefresh.push(item);
+                        }
+                    }
+                    else {
+                        changedItems.add(item);
+                    }
+                }
+                else if (isListItemBlock(item)) {
+                    // Some other attribute was changed on the list item,
+                    // check if paragraph does not need to be converted to bogus or back.
+                    if (doesItemParagraphRequiresRefresh(item)) {
+                        itemsToRefresh.push(item);
+                    }
+                }
+            }
+        }
+        for (const listHead of itemToListHead.values()) {
+            itemsToRefresh.push(...collectListItemsToRefresh(listHead, changedItems));
+        }
+        for (const item of new Set(itemsToRefresh)) {
+            editing.reconvertItem(item);
+        }
+    };
+    function collectListItemsToRefresh(listHead, changedItems) {
+        const itemsToRefresh = [];
+        const visited = new Set();
+        const stack = [];
+        for (const { node, previous } of iterateSiblingListBlocks(listHead, 'forward')) {
+            if (visited.has(node)) {
+                continue;
+            }
+            const itemIndent = node.getAttribute('listIndent');
+            // Current node is at the lower indent so trim the stack.
+            if (previous && itemIndent < previous.getAttribute('listIndent')) {
+                stack.length = itemIndent + 1;
+            }
+            // Update the stack for the current indent level.
+            stack[itemIndent] = Object.fromEntries(Array.from(node.getAttributes())
+                .filter(([key]) => attributeNames.includes(key)));
+            // Find all blocks of the current node.
+            const blocks = getListItemBlocks(node, { direction: 'forward' });
+            for (const block of blocks) {
+                visited.add(block);
+                // Check if bogus vs plain paragraph needs refresh.
+                if (doesItemParagraphRequiresRefresh(block, blocks)) {
+                    itemsToRefresh.push(block);
+                }
+                // Check if wrapping with UL, OL, LIs needs refresh.
+                else if (doesItemWrappingRequiresRefresh(block, stack, changedItems)) {
+                    itemsToRefresh.push(block);
+                }
+            }
+        }
+        return itemsToRefresh;
+    }
+    function doesItemParagraphRequiresRefresh(item, blocks) {
+        if (!item.is('element', 'paragraph')) {
+            return false;
+        }
+        const viewElement = editing.mapper.toViewElement(item);
+        if (!viewElement) {
+            return false;
+        }
+        const useBogus = shouldUseBogusParagraph(item, attributeNames, blocks);
+        if (useBogus && viewElement.is('element', 'p')) {
+            return true;
+        }
+        else if (!useBogus && viewElement.is('element', 'span')) {
+            return true;
+        }
+        return false;
+    }
+    function doesItemWrappingRequiresRefresh(item, stack, changedItems) {
+        // Items directly affected by some "change" don't need a refresh, they will be converted by their own changes.
+        if (changedItems.has(item)) {
+            return false;
+        }
+        const viewElement = editing.mapper.toViewElement(item);
+        let indent = stack.length - 1;
+        // Traverse down the stack to the root to verify if all ULs, OLs, and LIs are as expected.
+        for (let element = viewElement.parent; !element.is('editableElement'); element = element.parent) {
+            const isListItemElement = isListItemView(element);
+            const isListElement = isListView(element);
+            if (!isListElement && !isListItemElement) {
+                continue;
+            }
+            const eventName = `checkAttributes:${isListItemElement ? 'item' : 'list'}`;
+            const needsRefresh = documentListEditing.fire(eventName, {
+                viewElement: element,
+                modelAttributes: stack[indent]
+            });
+            if (needsRefresh) {
+                break;
+            }
+            if (isListElement) {
+                indent--;
+                // Don't need to iterate further if we already know that the item is wrapped appropriately.
+                if (indent < 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+/**
+ * Returns the list item downcast converter.
+ *
+ * @internal
+ * @param attributeNames A list of attribute names that should be converted if they are set.
+ * @param strategies The strategies.
+ * @param model The model.
+ */
+function listItemDowncastConverter(attributeNames, strategies, model) {
+    const consumer = createAttributesConsumer(attributeNames);
+    return (evt, data, conversionApi) => {
+        const { writer, mapper, consumable } = conversionApi;
+        const listItem = data.item;
+        if (!attributeNames.includes(data.attributeKey)) {
+            return;
+        }
+        // Test if attributes on the converted items are not consumed.
+        if (!consumer(listItem, consumable)) {
+            return;
+        }
+        // Use positions mapping instead of mapper.toViewElement( listItem ) to find outermost view element.
+        // This is for cases when mapping is using inner view element like in the code blocks (pre > code).
+        const viewElement = findMappedViewElement(listItem, mapper, model);
+        // Unwrap element from current list wrappers.
+        unwrapListItemBlock(viewElement, writer);
+        // Then wrap them with the new list wrappers.
+        wrapListItemBlock(listItem, writer.createRangeOn(viewElement), strategies, writer);
+    };
+}
+/**
+ * Returns the bogus paragraph view element creator. A bogus paragraph is used if a list item contains only a single block or nested list.
+ *
+ * @internal
+ * @param attributeNames The list of all model list attributes (including registered strategies).
+ */
+function bogusParagraphCreator(attributeNames, { dataPipeline } = {}) {
+    return (modelElement, { writer }) => {
+        // Convert only if a bogus paragraph should be used.
+        if (!shouldUseBogusParagraph(modelElement, attributeNames)) {
+            return null;
+        }
+        if (!dataPipeline) {
+            return writer.createContainerElement('span', { class: 'ck-list-bogus-paragraph' });
+        }
+        // Using `<p>` in case there are some markers on it and transparentRendering will render it anyway.
+        const viewElement = writer.createContainerElement('p');
+        writer.setCustomProperty('dataPipeline:transparentRendering', true, viewElement);
+        return viewElement;
+    };
+}
+/**
+ * Helper for mapping mode to view elements. It's using positions mapping instead of mapper.toViewElement( element )
+ * to find outermost view element. This is for cases when mapping is using inner view element like in the code blocks (pre > code).
+ *
+ * @internal
+ * @param element The model element.
+ * @param mapper The mapper instance.
+ * @param model The model.
+ */
+function findMappedViewElement(element, mapper, model) {
+    const modelRange = model.createRangeOn(element);
+    const viewRange = mapper.toViewRange(modelRange).getTrimmed();
+    return viewRange.getContainedElement();
+}
+// Unwraps all ol, ul, and li attribute elements that are wrapping the provided view element.
+function unwrapListItemBlock(viewElement, viewWriter) {
+    let attributeElement = viewElement.parent;
+    while (attributeElement.is('attributeElement') && ['ul', 'ol', 'li'].includes(attributeElement.name)) {
+        const parentElement = attributeElement.parent;
+        viewWriter.unwrap(viewWriter.createRangeOn(viewElement), attributeElement);
+        attributeElement = parentElement;
+    }
+}
+// Wraps the given list item with appropriate attribute elements for ul, ol, and li.
+function wrapListItemBlock(listItem, viewRange, strategies, writer) {
+    if (!listItem.hasAttribute('listIndent')) {
+        return;
+    }
+    const listItemIndent = listItem.getAttribute('listIndent');
+    let currentListItem = listItem;
+    for (let indent = listItemIndent; indent >= 0; indent--) {
+        const listItemViewElement = createListItemElement(writer, indent, currentListItem.getAttribute('listItemId'));
+        const listViewElement = createListElement(writer, indent, currentListItem.getAttribute('listType'));
+        for (const strategy of strategies) {
+            if (currentListItem.hasAttribute(strategy.attributeName)) {
+                strategy.setAttributeOnDowncast(writer, currentListItem.getAttribute(strategy.attributeName), strategy.scope == 'list' ? listViewElement : listItemViewElement);
+            }
+        }
+        viewRange = writer.wrap(viewRange, listItemViewElement);
+        viewRange = writer.wrap(viewRange, listViewElement);
+        if (indent == 0) {
+            break;
+        }
+        currentListItem = ListWalker.first(currentListItem, { lowerIndent: true });
+        // There is no list item with lower indent, this means this is a document fragment containing
+        // only a part of nested list (like copy to clipboard) so we don't need to try to wrap it further.
+        if (!currentListItem) {
+            break;
+        }
+    }
+}
+// Returns the function that is responsible for consuming attributes that are set on the model node.
+function createAttributesConsumer(attributeNames) {
+    return (node, consumable) => {
+        const events = [];
+        // Collect all set attributes that are triggering conversion.
+        for (const attributeName of attributeNames) {
+            if (node.hasAttribute(attributeName)) {
+                events.push(`attribute:${attributeName}`);
+            }
+        }
+        if (!events.every(event => consumable.test(node, event) !== false)) {
+            return false;
+        }
+        events.forEach(event => consumable.consume(node, event));
+        return true;
+    };
+}
+// Whether the given item should be rendered as a bogus paragraph.
+function shouldUseBogusParagraph(item, attributeNames, blocks = getAllListItemBlocks(item)) {
+    if (!isListItemBlock(item)) {
+        return false;
+    }
+    for (const attributeKey of item.getAttributeKeys()) {
+        // Ignore selection attributes stored on block elements.
+        if (attributeKey.startsWith('selection:')) {
+            continue;
+        }
+        // Don't use bogus paragraph if there are attributes from other features.
+        if (!attributeNames.includes(attributeKey)) {
+            return false;
+        }
+    }
+    return blocks.length < 2;
+}var css_248z$n = ".ck-editor__editable .ck-list-bogus-paragraph{display:block}";
+styleInject(css_248z$n);var css_248z$m = ".ck-content ol{list-style-type:decimal}.ck-content ol ol{list-style-type:lower-latin}.ck-content ol ol ol{list-style-type:lower-roman}.ck-content ol ol ol ol{list-style-type:upper-latin}.ck-content ol ol ol ol ol{list-style-type:upper-roman}.ck-content ul{list-style-type:disc}.ck-content ul ul{list-style-type:circle}.ck-content ul ul ul,.ck-content ul ul ul ul{list-style-type:square}";
 styleInject(css_248z$m);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 /**
- * The engine of the list feature. It handles creating, editing and removing lists and list items.
- *
- * It registers the `'numberedList'`, `'bulletedList'`, `'indentList'` and `'outdentList'` commands.
+ * A list of base list model attributes.
  */
-class ListEditing extends Plugin {
+const LIST_BASE_ATTRIBUTES = ['listType', 'listIndent', 'listItemId'];
+/**
+ * The editing part of the document-list feature. It handles creating, editing and removing lists and list items.
+ */
+class DocumentListEditing extends Plugin {
+    constructor() {
+        super(...arguments);
+        /**
+         * The list of registered downcast strategies.
+         */
+        this._downcastStrategies = [];
+    }
     /**
      * @inheritDoc
      */
     static get pluginName() {
-        return 'ListEditing';
+        return 'DocumentListEditing';
     }
     /**
      * @inheritDoc
      */
     static get requires() {
-        return [Enter, Delete, ListUtils];
+        return [Enter, Delete, DocumentListUtils];
     }
     /**
      * @inheritDoc
      */
     init() {
         const editor = this.editor;
-        // Schema.
-        // Note: in case `$block` will ever be allowed in `listItem`, keep in mind that this feature
-        // uses `Selection#getSelectedBlocks()` without any additional processing to obtain all selected list items.
-        // If there are blocks allowed inside list item, algorithms using `getSelectedBlocks()` will have to be modified.
-        editor.model.schema.register('listItem', {
-            inheritAllFrom: '$block',
-            allowAttributes: ['listType', 'listIndent']
-        });
-        // Converters.
-        const data = editor.data;
-        const editing = editor.editing;
-        editor.model.document.registerPostFixer(writer => modelChangePostFixer(editor.model, writer));
-        editing.mapper.registerViewToModelLength('li', getViewListItemLength);
-        data.mapper.registerViewToModelLength('li', getViewListItemLength);
-        editing.mapper.on('modelToViewPosition', modelToViewPosition(editing.view));
-        editing.mapper.on('viewToModelPosition', viewToModelPosition(editor.model));
-        data.mapper.on('modelToViewPosition', modelToViewPosition(editing.view));
-        editor.conversion.for('editingDowncast')
-            .add(dispatcher => {
-            dispatcher.on('insert', modelViewSplitOnInsert, { priority: 'high' });
-            dispatcher.on('insert:listItem', modelViewInsertion(editor.model));
-            dispatcher.on('attribute:listType:listItem', modelViewChangeType, { priority: 'high' });
-            dispatcher.on('attribute:listType:listItem', modelViewMergeAfterChangeType, { priority: 'low' });
-            dispatcher.on('attribute:listIndent:listItem', modelViewChangeIndent(editor.model));
-            dispatcher.on('remove:listItem', modelViewRemove(editor.model));
-            dispatcher.on('remove', modelViewMergeAfter, { priority: 'low' });
-        });
-        editor.conversion.for('dataDowncast')
-            .add(dispatcher => {
-            dispatcher.on('insert', modelViewSplitOnInsert, { priority: 'high' });
-            dispatcher.on('insert:listItem', modelViewInsertion(editor.model));
-        });
-        editor.conversion.for('upcast')
-            .add(dispatcher => {
-            dispatcher.on('element:ul', cleanList, { priority: 'high' });
-            dispatcher.on('element:ol', cleanList, { priority: 'high' });
-            dispatcher.on('element:li', cleanListItem, { priority: 'high' });
-            dispatcher.on('element:li', viewModelConverter);
-        });
-        // Fix indentation of pasted items.
-        editor.model.on('insertContent', modelIndentPasteFixer, { priority: 'high' });
-        // Register commands for numbered and bulleted list.
-        editor.commands.add('numberedList', new ListCommand(editor, 'numbered'));
-        editor.commands.add('bulletedList', new ListCommand(editor, 'bulleted'));
-        // Register commands for indenting.
-        editor.commands.add('indentList', new IndentCommand(editor, 'forward'));
-        editor.commands.add('outdentList', new IndentCommand(editor, 'backward'));
-        const viewDocument = editing.view.document;
-        // Overwrite default Enter key behavior.
-        // If Enter key is pressed with selection collapsed in empty list item, outdent it instead of breaking it.
-        this.listenTo(viewDocument, 'enter', (evt, data) => {
-            const doc = this.editor.model.document;
+        const model = editor.model;
+        if (editor.plugins.has('ListEditing')) {
+            /**
+             * The `DocumentList` feature can not be loaded together with the `List` plugin.
+             *
+             * @error document-list-feature-conflict
+             * @param conflictPlugin Name of the plugin.
+             */
+            throw new CKEditorError('document-list-feature-conflict', this, { conflictPlugin: 'ListEditing' });
+        }
+        model.schema.extend('$container', { allowAttributes: LIST_BASE_ATTRIBUTES });
+        model.schema.extend('$block', { allowAttributes: LIST_BASE_ATTRIBUTES });
+        model.schema.extend('$blockObject', { allowAttributes: LIST_BASE_ATTRIBUTES });
+        for (const attribute of LIST_BASE_ATTRIBUTES) {
+            model.schema.setAttributeProperties(attribute, {
+                copyOnReplace: true
+            });
+        }
+        // Register commands.
+        editor.commands.add('numberedList', new DocumentListCommand(editor, 'numbered'));
+        editor.commands.add('bulletedList', new DocumentListCommand(editor, 'bulleted'));
+        editor.commands.add('indentList', new DocumentListIndentCommand(editor, 'forward'));
+        editor.commands.add('outdentList', new DocumentListIndentCommand(editor, 'backward'));
+        editor.commands.add('mergeListItemBackward', new DocumentListMergeCommand(editor, 'backward'));
+        editor.commands.add('mergeListItemForward', new DocumentListMergeCommand(editor, 'forward'));
+        editor.commands.add('splitListItemBefore', new DocumentListSplitCommand(editor, 'before'));
+        editor.commands.add('splitListItemAfter', new DocumentListSplitCommand(editor, 'after'));
+        this._setupDeleteIntegration();
+        this._setupEnterIntegration();
+        this._setupTabIntegration();
+        this._setupClipboardIntegration();
+    }
+    /**
+     * @inheritDoc
+     */
+    afterInit() {
+        const editor = this.editor;
+        const commands = editor.commands;
+        const indent = commands.get('indent');
+        const outdent = commands.get('outdent');
+        if (indent) {
+            // Priority is high due to integration with `IndentBlock` plugin. We want to indent list first and if it's not possible
+            // user can indent content with `IndentBlock` plugin.
+            indent.registerChildCommand(commands.get('indentList'), { priority: 'high' });
+        }
+        if (outdent) {
+            // Priority is lowest due to integration with `IndentBlock` and `IndentCode` plugins.
+            // First we want to allow user to outdent all indendations from other features then he can oudent list item.
+            outdent.registerChildCommand(commands.get('outdentList'), { priority: 'lowest' });
+        }
+        // Register conversion and model post-fixer after other plugins had a chance to register their attribute strategies.
+        this._setupModelPostFixing();
+        this._setupConversion();
+    }
+    /**
+     * Registers a downcast strategy.
+     *
+     * **Note**: Strategies must be registered in the `Plugin#init()` phase so that it can be applied
+     * in the `DocumentListEditing#afterInit()`.
+     *
+     * @param strategy The downcast strategy to register.
+     */
+    registerDowncastStrategy(strategy) {
+        this._downcastStrategies.push(strategy);
+    }
+    /**
+     * Returns list of model attribute names that should affect downcast conversion.
+     */
+    _getListAttributeNames() {
+        return [
+            ...LIST_BASE_ATTRIBUTES,
+            ...this._downcastStrategies.map(strategy => strategy.attributeName)
+        ];
+    }
+    /**
+     * Attaches the listener to the {@link module:engine/view/document~Document#event:delete} event and handles backspace/delete
+     * keys in and around document lists.
+     */
+    _setupDeleteIntegration() {
+        const editor = this.editor;
+        const mergeBackwardCommand = editor.commands.get('mergeListItemBackward');
+        const mergeForwardCommand = editor.commands.get('mergeListItemForward');
+        this.listenTo(editor.editing.view.document, 'delete', (evt, data) => {
+            const selection = editor.model.document.selection;
+            // Let the Widget plugin take care of block widgets while deleting (https://github.com/ckeditor/ckeditor5/issues/11346).
+            if (getSelectedBlockObject(editor.model)) {
+                return;
+            }
+            editor.model.change(() => {
+                const firstPosition = selection.getFirstPosition();
+                if (selection.isCollapsed && data.direction == 'backward') {
+                    if (!firstPosition.isAtStart) {
+                        return;
+                    }
+                    const positionParent = firstPosition.parent;
+                    if (!isListItemBlock(positionParent)) {
+                        return;
+                    }
+                    const previousBlock = ListWalker.first(positionParent, {
+                        sameAttributes: 'listType',
+                        sameIndent: true
+                    });
+                    // Outdent the first block of a first list item.
+                    if (!previousBlock && positionParent.getAttribute('listIndent') === 0) {
+                        if (!isLastBlockOfListItem(positionParent)) {
+                            editor.execute('splitListItemAfter');
+                        }
+                        editor.execute('outdentList');
+                    }
+                    // Merge block with previous one (on the block level or on the content level).
+                    else {
+                        if (!mergeBackwardCommand.isEnabled) {
+                            return;
+                        }
+                        mergeBackwardCommand.execute({
+                            shouldMergeOnBlocksContentLevel: shouldMergeOnBlocksContentLevel(editor.model, 'backward')
+                        });
+                    }
+                    data.preventDefault();
+                    evt.stop();
+                }
+                // Non-collapsed selection or forward delete.
+                else {
+                    // Collapsed selection should trigger forward merging only if at the end of a block.
+                    if (selection.isCollapsed && !selection.getLastPosition().isAtEnd) {
+                        return;
+                    }
+                    if (!mergeForwardCommand.isEnabled) {
+                        return;
+                    }
+                    mergeForwardCommand.execute({
+                        shouldMergeOnBlocksContentLevel: shouldMergeOnBlocksContentLevel(editor.model, 'forward')
+                    });
+                    data.preventDefault();
+                    evt.stop();
+                }
+            });
+        }, { context: 'li' });
+    }
+    /**
+     * Attaches a listener to the {@link module:engine/view/document~Document#event:enter} event and handles enter key press
+     * in document lists.
+     */
+    _setupEnterIntegration() {
+        const editor = this.editor;
+        const model = editor.model;
+        const commands = editor.commands;
+        const enterCommand = commands.get('enter');
+        // Overwrite the default Enter key behavior: outdent or split the list in certain cases.
+        this.listenTo(editor.editing.view.document, 'enter', (evt, data) => {
+            const doc = model.document;
+            const positionParent = doc.selection.getFirstPosition().parent;
+            if (doc.selection.isCollapsed &&
+                isListItemBlock(positionParent) &&
+                positionParent.isEmpty &&
+                !data.isSoft) {
+                const isFirstBlock = isFirstBlockOfListItem(positionParent);
+                const isLastBlock = isLastBlockOfListItem(positionParent);
+                // * a      →      * a
+                // * []     →      []
+                if (isFirstBlock && isLastBlock) {
+                    editor.execute('outdentList');
+                    data.preventDefault();
+                    evt.stop();
+                }
+                // * []     →      * []
+                //   a      →      * a
+                else if (isFirstBlock && !isLastBlock) {
+                    editor.execute('splitListItemAfter');
+                    data.preventDefault();
+                    evt.stop();
+                }
+                // * a      →      * a
+                //   []     →      * []
+                else if (isLastBlock) {
+                    editor.execute('splitListItemBefore');
+                    data.preventDefault();
+                    evt.stop();
+                }
+            }
+        }, { context: 'li' });
+        // In some cases, after the default block splitting, we want to modify the new block to become a new list item
+        // instead of an additional block in the same list item.
+        this.listenTo(enterCommand, 'afterExecute', () => {
+            const splitCommand = commands.get('splitListItemBefore');
+            // The command has not refreshed because the change block related to EnterCommand#execute() is not over yet.
+            // Let's keep it up to date and take advantage of DocumentListSplitCommand#isEnabled.
+            splitCommand.refresh();
+            if (!splitCommand.isEnabled) {
+                return;
+            }
+            const doc = editor.model.document;
             const positionParent = doc.selection.getLastPosition().parent;
-            if (doc.selection.isCollapsed && positionParent.name == 'listItem' && positionParent.isEmpty) {
-                this.editor.execute('outdentList');
-                data.preventDefault();
-                evt.stop();
+            const listItemBlocks = getAllListItemBlocks(positionParent);
+            // Keep in mind this split happens after the default enter handler was executed. For instance:
+            //
+            // │       Initial state       │    After default enter    │   Here in #afterExecute   │
+            // ├───────────────────────────┼───────────────────────────┼───────────────────────────┤
+            // │          * a[]            │           * a             │           * a             │
+            // │                           │             []            │           * []            │
+            if (listItemBlocks.length === 2) {
+                splitCommand.execute();
             }
-        }, { context: 'li' });
-        // Overwrite default Backspace key behavior.
-        // If Backspace key is pressed with selection collapsed on first position in first list item, outdent it. #83
-        this.listenTo(viewDocument, 'delete', (evt, data) => {
-            // Check conditions from those that require less computations like those immediately available.
-            if (data.direction !== 'backward') {
-                return;
-            }
-            const selection = this.editor.model.document.selection;
-            if (!selection.isCollapsed) {
-                return;
-            }
-            const firstPosition = selection.getFirstPosition();
-            if (!firstPosition.isAtStart) {
-                return;
-            }
-            const positionParent = firstPosition.parent;
-            if (positionParent.name !== 'listItem') {
-                return;
-            }
-            const previousIsAListItem = positionParent.previousSibling && positionParent.previousSibling.name === 'listItem';
-            if (previousIsAListItem) {
-                return;
-            }
-            this.editor.execute('outdentList');
-            data.preventDefault();
-            evt.stop();
-        }, { context: 'li' });
+        });
+    }
+    /**
+     * Attaches a listener to the {@link module:engine/view/document~Document#event:tab} event and handles tab key and tab+shift keys
+     * presses in document lists.
+     */
+    _setupTabIntegration() {
+        const editor = this.editor;
         this.listenTo(editor.editing.view.document, 'tab', (evt, data) => {
             const commandName = data.shiftKey ? 'outdentList' : 'indentList';
             const command = this.editor.commands.get(commandName);
@@ -75654,30 +75810,324 @@ class ListEditing extends Plugin {
         }, { context: 'li' });
     }
     /**
-     * @inheritDoc
+     * Registers the conversion helpers for the document-list feature.
      */
-    afterInit() {
-        const commands = this.editor.commands;
-        const indent = commands.get('indent');
-        const outdent = commands.get('outdent');
-        if (indent) {
-            indent.registerChildCommand(commands.get('indentList'));
-        }
-        if (outdent) {
-            outdent.registerChildCommand(commands.get('outdentList'));
-        }
+    _setupConversion() {
+        const editor = this.editor;
+        const model = editor.model;
+        const attributeNames = this._getListAttributeNames();
+        editor.conversion.for('upcast')
+            .elementToElement({ view: 'li', model: 'paragraph' })
+            .add(dispatcher => {
+            dispatcher.on('element:li', listItemUpcastConverter());
+            dispatcher.on('element:ul', listUpcastCleanList(), { priority: 'high' });
+            dispatcher.on('element:ol', listUpcastCleanList(), { priority: 'high' });
+        });
+        editor.conversion.for('editingDowncast')
+            .elementToElement({
+            model: 'paragraph',
+            view: bogusParagraphCreator(attributeNames),
+            converterPriority: 'high'
+        });
+        editor.conversion.for('dataDowncast')
+            .elementToElement({
+            model: 'paragraph',
+            view: bogusParagraphCreator(attributeNames, { dataPipeline: true }),
+            converterPriority: 'high'
+        });
+        editor.conversion.for('downcast')
+            .add(dispatcher => {
+            dispatcher.on('attribute', listItemDowncastConverter(attributeNames, this._downcastStrategies, model));
+        });
+        this.listenTo(model.document, 'change:data', reconvertItemsOnDataChange(model, editor.editing, attributeNames, this), { priority: 'high' });
+        // For LI verify if an ID of the attribute element is correct.
+        this.on('checkAttributes:item', (evt, { viewElement, modelAttributes }) => {
+            if (viewElement.id != modelAttributes.listItemId) {
+                evt.return = true;
+                evt.stop();
+            }
+        });
+        // For UL and OL check if the name and ID of element is correct.
+        this.on('checkAttributes:list', (evt, { viewElement, modelAttributes }) => {
+            if (viewElement.name != getViewElementNameForListType(modelAttributes.listType) ||
+                viewElement.id != getViewElementIdForListType(modelAttributes.listType, modelAttributes.listIndent)) {
+                evt.return = true;
+                evt.stop();
+            }
+        });
+    }
+    /**
+     * Registers model post-fixers.
+     */
+    _setupModelPostFixing() {
+        const model = this.editor.model;
+        const attributeNames = this._getListAttributeNames();
+        // Register list fixing.
+        // First the low level handler.
+        model.document.registerPostFixer(writer => modelChangePostFixer(model, writer, attributeNames, this));
+        // Then the callbacks for the specific lists.
+        // The indentation fixing must be the first one...
+        this.on('postFixer', (evt, { listNodes, writer }) => {
+            evt.return = fixListIndents(listNodes, writer) || evt.return;
+        }, { priority: 'high' });
+        // ...then the item ids... and after that other fixers that rely on the correct indentation and ids.
+        this.on('postFixer', (evt, { listNodes, writer, seenIds }) => {
+            evt.return = fixListItemIds(listNodes, seenIds, writer) || evt.return;
+        }, { priority: 'high' });
+    }
+    /**
+     * Integrates the feature with the clipboard via {@link module:engine/model/model~Model#insertContent} and
+     * {@link module:engine/model/model~Model#getSelectedContent}.
+     */
+    _setupClipboardIntegration() {
+        const model = this.editor.model;
+        this.listenTo(model, 'insertContent', createModelIndentPasteFixer(model), { priority: 'high' });
+        // To enhance the UX, the editor should not copy list attributes to the clipboard if the selection
+        // started and ended in the same list item.
+        //
+        // If the selection was enclosed in a single list item, there is a good chance the user did not want it
+        // copied as a list item but plain blocks.
+        //
+        // This avoids pasting orphaned list items instead of paragraphs, for instance, straight into the root.
+        //
+        //	                       ┌─────────────────────┬───────────────────┐
+        //	                       │ Selection           │ Clipboard content │
+        //	                       ├─────────────────────┼───────────────────┤
+        //	                       │ [* <Widget />]      │ <Widget />        │
+        //	                       ├─────────────────────┼───────────────────┤
+        //	                       │ [* Foo]             │ Foo               │
+        //	                       ├─────────────────────┼───────────────────┤
+        //	                       │ * Foo [bar] baz     │ bar               │
+        //	                       ├─────────────────────┼───────────────────┤
+        //	                       │ * Fo[o              │ o                 │
+        //	                       │   ba]r              │ ba                │
+        //	                       ├─────────────────────┼───────────────────┤
+        //	                       │ * Fo[o              │ * o               │
+        //	                       │ * ba]r              │ * ba              │
+        //	                       ├─────────────────────┼───────────────────┤
+        //	                       │ [* Foo              │ * Foo             │
+        //	                       │  * bar]             │ * bar             │
+        //	                       └─────────────────────┴───────────────────┘
+        //
+        // See https://github.com/ckeditor/ckeditor5/issues/11608.
+        this.listenTo(model, 'getSelectedContent', (evt, [selection]) => {
+            const isSingleListItemSelected = isSingleListItem(Array.from(selection.getSelectedBlocks()));
+            if (isSingleListItemSelected) {
+                model.change(writer => removeListAttributes(Array.from(evt.return.getChildren()), writer));
+            }
+        });
     }
 }
-function getViewListItemLength(element) {
-    let length = 1;
-    for (const child of element.getChildren()) {
-        if (child.name == 'ul' || child.name == 'ol') {
-            for (const item of child.getChildren()) {
-                length += getViewListItemLength(item);
+/**
+ * Post-fixer that reacts to changes on document and fixes incorrect model states (invalid `listItemId` and `listIndent` values).
+ *
+ * In the example below, there is a correct list structure.
+ * Then the middle element is removed so the list structure will become incorrect:
+ *
+ * ```xml
+ * <paragraph listType="bulleted" listItemId="a" listIndent=0>Item 1</paragraph>
+ * <paragraph listType="bulleted" listItemId="b" listIndent=1>Item 2</paragraph>   <--- this is removed.
+ * <paragraph listType="bulleted" listItemId="c" listIndent=2>Item 3</paragraph>
+ * ```
+ *
+ * The list structure after the middle element is removed:
+ *
+ * ```xml
+ * <paragraph listType="bulleted" listItemId="a" listIndent=0>Item 1</paragraph>
+ * <paragraph listType="bulleted" listItemId="c" listIndent=2>Item 3</paragraph>
+ * ```
+ *
+ * Should become:
+ *
+ * ```xml
+ * <paragraph listType="bulleted" listItemId="a" listIndent=0>Item 1</paragraph>
+ * <paragraph listType="bulleted" listItemId="c" listIndent=1>Item 3</paragraph>   <--- note that indent got post-fixed.
+ * ```
+ *
+ * @param model The data model.
+ * @param writer The writer to do changes with.
+ * @param attributeNames The list of all model list attributes (including registered strategies).
+ * @param documentListEditing The document list editing plugin.
+ * @returns `true` if any change has been applied, `false` otherwise.
+ */
+function modelChangePostFixer(model, writer, attributeNames, documentListEditing) {
+    const changes = model.document.differ.getChanges();
+    const itemToListHead = new Map();
+    let applied = false;
+    for (const entry of changes) {
+        if (entry.type == 'insert' && entry.name != '$text') {
+            const item = entry.position.nodeAfter;
+            // Remove attributes in case of renamed element.
+            if (!model.schema.checkAttribute(item, 'listItemId')) {
+                for (const attributeName of Array.from(item.getAttributeKeys())) {
+                    if (attributeNames.includes(attributeName)) {
+                        writer.removeAttribute(attributeName, item);
+                        applied = true;
+                    }
+                }
+            }
+            findAndAddListHeadToMap(entry.position, itemToListHead);
+            // Insert of a non-list item - check if there is a list after it.
+            if (!entry.attributes.has('listItemId')) {
+                findAndAddListHeadToMap(entry.position.getShiftedBy(entry.length), itemToListHead);
+            }
+            // Check if there is no nested list.
+            for (const { item: innerItem, previousPosition } of model.createRangeIn(item)) {
+                if (isListItemBlock(innerItem)) {
+                    findAndAddListHeadToMap(previousPosition, itemToListHead);
+                }
+            }
+        }
+        // Removed list item or block adjacent to a list.
+        else if (entry.type == 'remove') {
+            findAndAddListHeadToMap(entry.position, itemToListHead);
+        }
+        // Changed list item indent or type.
+        else if (entry.type == 'attribute' && attributeNames.includes(entry.attributeKey)) {
+            findAndAddListHeadToMap(entry.range.start, itemToListHead);
+            if (entry.attributeNewValue === null) {
+                findAndAddListHeadToMap(entry.range.start.getShiftedBy(1), itemToListHead);
             }
         }
     }
-    return length;
+    // Make sure that IDs are not shared by split list.
+    const seenIds = new Set();
+    for (const listHead of itemToListHead.values()) {
+        applied = documentListEditing.fire('postFixer', {
+            listNodes: new ListBlocksIterable(listHead),
+            listHead,
+            writer,
+            seenIds
+        }) || applied;
+    }
+    return applied;
+}
+/**
+ * A fixer for pasted content that includes list items.
+ *
+ * It fixes indentation of pasted list items so the pasted items match correctly to the context they are pasted into.
+ *
+ * Example:
+ *
+ * ```xml
+ * <paragraph listType="bulleted" listItemId="a" listIndent=0>A</paragraph>
+ * <paragraph listType="bulleted" listItemId="b" listIndent=1>B^</paragraph>
+ * // At ^ paste:  <paragraph listType="bulleted" listItemId="x" listIndent=4>X</paragraph>
+ * //              <paragraph listType="bulleted" listItemId="y" listIndent=5>Y</paragraph>
+ * <paragraph listType="bulleted" listItemId="c" listIndent=2>C</paragraph>
+ * ```
+ *
+ * Should become:
+ *
+ * ```xml
+ * <paragraph listType="bulleted" listItemId="a" listIndent=0>A</paragraph>
+ * <paragraph listType="bulleted" listItemId="b" listIndent=1>BX</paragraph>
+ * <paragraph listType="bulleted" listItemId="y" listIndent=2>Y/paragraph>
+ * <paragraph listType="bulleted" listItemId="c" listIndent=2>C</paragraph>
+ * ```
+ */
+function createModelIndentPasteFixer(model) {
+    return (evt, [content, selectable]) => {
+        // Check whether inserted content starts from a `listItem`. If it does not, it means that there are some other
+        // elements before it and there is no need to fix indents, because even if we insert that content into a list,
+        // that list will be broken.
+        // Note: we also need to handle singular elements because inserting item with indent 0 into 0,1,[],2
+        // would create incorrect model.
+        const item = content.is('documentFragment') ? content.getChild(0) : content;
+        if (!isListItemBlock(item)) {
+            return;
+        }
+        let selection;
+        if (!selectable) {
+            selection = model.document.selection;
+        }
+        else {
+            selection = model.createSelection(selectable);
+        }
+        // Get a reference list item. Inserted list items will be fixed according to that item.
+        const pos = selection.getFirstPosition();
+        let refItem = null;
+        if (isListItemBlock(pos.parent)) {
+            refItem = pos.parent;
+        }
+        else if (isListItemBlock(pos.nodeBefore)) {
+            refItem = pos.nodeBefore;
+        }
+        // If there is `refItem` it means that we do insert list items into an existing list.
+        if (!refItem) {
+            return;
+        }
+        // First list item in `data` has indent equal to 0 (it is a first list item). It should have indent equal
+        // to the indent of reference item. We have to fix the first item and all of it's children and following siblings.
+        // Indent of all those items has to be adjusted to reference item.
+        const indentChange = refItem.getAttribute('listIndent') - item.getAttribute('listIndent');
+        // Fix only if there is anything to fix.
+        if (indentChange <= 0) {
+            return;
+        }
+        model.change(writer => {
+            // Adjust indent of all "first" list items in inserted data.
+            for (const { node } of iterateSiblingListBlocks(item, 'forward')) {
+                writer.setAttribute('listIndent', node.getAttribute('listIndent') + indentChange, node);
+            }
+        });
+    };
+}
+/**
+ * Decides whether the merge should be accompanied by the model's `deleteContent()`, for instance, to get rid of the inline
+ * content in the selection or take advantage of the heuristics in `deleteContent()` that helps convert lists into paragraphs
+ * in certain cases.
+ */
+function shouldMergeOnBlocksContentLevel(model, direction) {
+    const selection = model.document.selection;
+    if (!selection.isCollapsed) {
+        return !getSelectedBlockObject(model);
+    }
+    if (direction === 'forward') {
+        return true;
+    }
+    const firstPosition = selection.getFirstPosition();
+    const positionParent = firstPosition.parent;
+    const previousSibling = positionParent.previousSibling;
+    if (model.schema.isObject(previousSibling)) {
+        return false;
+    }
+    if (previousSibling.isEmpty) {
+        return true;
+    }
+    return isSingleListItem([positionParent, previousSibling]);
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * Helper method for creating a UI button and linking it with an appropriate command.
+ *
+ * @internal
+ * @param editor The editor instance to which the UI component will be added.
+ * @param commandName The name of the command.
+ * @param label The button label.
+ * @param icon The source of the icon.
+ */
+function createUIComponent(editor, commandName, label, icon) {
+    editor.ui.componentFactory.add(commandName, locale => {
+        const command = editor.commands.get(commandName);
+        const buttonView = new ButtonView(locale);
+        buttonView.set({
+            label,
+            icon,
+            tooltip: true,
+            isToggleable: true
+        });
+        // Bind button model to command.
+        buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');
+        // Execute command.
+        buttonView.on('execute', () => {
+            editor.execute(commandName);
+            editor.editing.view.focus();
+        });
+        return buttonView;
+    });
 }var numberedListIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 5.75c0 .414.336.75.75.75h9.5a.75.75 0 1 0 0-1.5h-9.5a.75.75 0 0 0-.75.75zM3.5 3v5H2V3.7H1v-1h2.5V3zM.343 17.857l2.59-3.257H2.92a.6.6 0 1 0-1.04 0H.302a2 2 0 1 1 3.995 0h-.001c-.048.405-.16.734-.333.988-.175.254-.59.692-1.244 1.312H4.3v1h-4l.043-.043zM7 14.75a.75.75 0 0 1 .75-.75h9.5a.75.75 0 1 1 0 1.5h-9.5a.75.75 0 0 1-.75-.75z\"/></svg>";
 var bulletedListIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 5.75c0 .414.336.75.75.75h9.5a.75.75 0 1 0 0-1.5h-9.5a.75.75 0 0 0-.75.75zm-6 0C1 4.784 1.777 4 2.75 4c.966 0 1.75.777 1.75 1.75 0 .966-.777 1.75-1.75 1.75C1.784 7.5 1 6.723 1 5.75zm6 9c0 .414.336.75.75.75h9.5a.75.75 0 1 0 0-1.5h-9.5a.75.75 0 0 0-.75.75zm-6 0c0-.966.777-1.75 1.75-1.75.966 0 1.75.777 1.75 1.75 0 .966-.777 1.75-1.75 1.75-.966 0-1.75-.777-1.75-1.75z\"/></svg>";
 /**
@@ -75709,23 +76159,23 @@ class ListUI extends Plugin {
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 /**
- * The list feature.
+ * The document list feature.
  *
- * This is a "glue" plugin that loads the {@link module:list/list/listediting~ListEditing list editing feature}
- * and {@link module:list/list/listui~ListUI list UI feature}.
+ * This is a "glue" plugin that loads the {@link module:list/documentlist/documentlistediting~DocumentListEditing document list
+ * editing feature} and {@link module:list/list/listui~ListUI list UI feature}.
  */
-class List extends Plugin {
+class DocumentList extends Plugin {
     /**
      * @inheritDoc
      */
     static get requires() {
-        return [ListEditing, ListUI];
+        return [DocumentListEditing, ListUI];
     }
     /**
      * @inheritDoc
      */
     static get pluginName() {
-        return 'List';
+        return 'DocumentList';
     }
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
@@ -94737,7 +95187,7 @@ class LinkImage extends Plugin {
   Indent,
   Italic,
   Link,
-  List,
+  DocumentList,
   Paragraph,
   PastePlainText,
   PasteFromOffice,
