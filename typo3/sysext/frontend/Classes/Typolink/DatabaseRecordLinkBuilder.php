@@ -60,7 +60,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
             $record = $tsfe->sys_page->checkRecord($databaseTable, $linkDetails['uid']);
             $languageAspect = $tsfe->getContext()->getAspect('language');
 
-            if ($languageAspect->doOverlays()) {
+            if ($languageAspect->doOverlays() && is_array($record)) {
                 $overlay = $tsfe->sys_page->getLanguageOverlay(
                     $databaseTable,
                     $record,
