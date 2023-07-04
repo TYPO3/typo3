@@ -53,10 +53,21 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_groups.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_filemounts.csv');
         $this->setUpBackendUser(2);
         /** @var BackendUserAuthentication $backendUser */
         $backendUser = $GLOBALS['BE_USER'];
         $this->subject = $backendUser;
+    }
+
+    /**
+     * @test
+     */
+    public function getFileMountRecordsReturnsFilemounts(): void
+    {
+        $backendUser = $this->setUpBackendUser(3);
+        $records = $backendUser->getFileMountRecords();
+        self::assertCount(3, $records);
     }
 
     /**

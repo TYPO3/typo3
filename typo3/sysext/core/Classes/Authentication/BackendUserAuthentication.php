@@ -1313,7 +1313,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $fileMountRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
             if ($fileMountRecords !== false) {
                 foreach ($fileMountRecords as $fileMount) {
-                    $fileMountRecordCache[$fileMount['identifier']] = $fileMount;
+                    $readOnlySuffix = (bool)$fileMount['read_only'] ? '-readonly' : '';
+                    $fileMountRecordCache[$fileMount['identifier'] . $readOnlySuffix] = $fileMount;
                 }
             }
         }
@@ -1348,7 +1349,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     $storageUid = $defaultStorageRow['uid'];
                     $path = $readOnlyMountPointConfiguration[0];
                 }
-                $fileMountRecordCache[$storageUid . $path] = [
+                $fileMountRecordCache[$storageUid . $path . '-readonly'] = [
                     'base' => $storageUid,
                     'title' => $path,
                     'path' => $path,
