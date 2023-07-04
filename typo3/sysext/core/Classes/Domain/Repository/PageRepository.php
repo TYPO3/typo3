@@ -1159,8 +1159,9 @@ class PageRepository implements LoggerAwareInterface
             $resolveRandomSubpages
         );
         if (!empty($shortcut)) {
+            $shortcutOriginalPageUid = (int)$page['uid'];
             $page = $shortcut;
-            $page['_SHORTCUT_ORIGINAL_PAGE_UID'] = $page['uid'];
+            $page['_SHORTCUT_ORIGINAL_PAGE_UID'] = $shortcutOriginalPageUid;
         }
 
         if ($resolveRandomSubpages === false) {
