@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Configuration\Exception\SettingsWriteException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
@@ -192,6 +193,7 @@ class SilentConfigurationUpgradeService
      * ConfigurationChangedException if something was written to LocalConfiguration.
      *
      * @throws ConfigurationChangedException
+     * @throws SettingsWriteException
      */
     public function execute(): void
     {

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Configuration\Exception\SettingsWriteException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
+use TYPO3\CMS\Install\Service\Exception\SilentConfigurationUpgradeReadonlyException;
 use TYPO3\CMS\Install\Service\Exception\TemplateFileChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Install\Service\SilentTemplateFileUpgradeService;
@@ -117,8 +119,10 @@ class LayoutController extends AbstractController
         $success = true;
         try {
             $this->silentConfigurationUpgradeService->execute();
-        } catch (ConfigurationChangedException $e) {
+        } catch (ConfigurationChangedException) {
             $success = false;
+        } catch (SettingsWriteException $e) {
+            throw new SilentConfigurationUpgradeReadonlyException(code: 1688462974, throwable: $e);
         }
         return new JsonResponse([
             'success' => $success,

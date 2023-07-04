@@ -25,10 +25,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
+use TYPO3\CMS\Core\Configuration\Exception\SettingsWriteException;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\DatabaseUpgradeWizardsService;
+use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
+use TYPO3\CMS\Install\Service\Exception\SilentConfigurationUpgradeReadonlyException;
 use TYPO3\CMS\Install\Service\LateBootService;
+use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
 use TYPO3\CMS\Install\Updates\ChattyInterface;
 use TYPO3\CMS\Install\Updates\ConfirmableInterface;
@@ -43,6 +47,7 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
  */
 class UpgradeWizardRunCommand extends Command
 {
+    private const MAX_SILENT_UPGRADE_TRIES = 100;
     private UpgradeWizardsService $upgradeWizardsService;
 
     /**
@@ -58,7 +63,8 @@ class UpgradeWizardRunCommand extends Command
     public function __construct(
         string $name,
         private readonly LateBootService $lateBootService,
-        private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService
+        private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService,
+        private readonly SilentConfigurationUpgradeService $configurationUpgradeService
     ) {
         parent::__construct($name);
     }
@@ -76,6 +82,26 @@ class UpgradeWizardRunCommand extends Command
         Bootstrap::initializeBackendAuthentication();
         $this->databaseUpgradeWizardsService->isDatabaseCharsetUtf8()
             ?: $this->databaseUpgradeWizardsService->setDatabaseCharsetUtf8();
+        // Ensure SilentConfigurationUpdates are also run on CLI, if necessary. Due to the fact that single silent
+        // upgrade tasks throwing a `ConfigurationChangedException` on changes and stopping the execution of following
+        // upgrades, we need to handle this in a loop handling this exception. Other errors leading to a direct stop,
+        // with an additionally concrete handling for readonly `settings.php`. To be safe against future end-less loops,
+        // a max-try check is used.
+        $loopSafety = 0;
+        do {
+            try {
+                $this->configurationUpgradeService->execute();
+                $success = true;
+            } catch (ConfigurationChangedException) {
+                // Due to the fact that single silent upgrade tasks emits and stops the upgrade chain, we need to
+                // handle this as not successful and continue processing the upgrade chain. Therefore, the loop.
+                $success = false;
+            } catch (SettingsWriteException $e) {
+                // Readonly or not-writable `settings.php`. Throw a more meaning full exception and stop the upgrade.
+                throw new SilentConfigurationUpgradeReadonlyException(1688462973, $e);
+            }
+            $loopSafety++;
+        } while ($success === false && $loopSafety < self::MAX_SILENT_UPGRADE_TRIES);
     }
 
     /**

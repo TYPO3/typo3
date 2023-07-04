@@ -341,7 +341,8 @@ class ServiceProvider extends AbstractServiceProvider
         return new Command\UpgradeWizardRunCommand(
             'upgrade:run',
             $container->get(Service\LateBootService::class),
-            $container->get(Service\DatabaseUpgradeWizardsService::class)
+            $container->get(Service\DatabaseUpgradeWizardsService::class),
+            $container->get(Service\SilentConfigurationUpgradeService::class)
         );
     }
 

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration;
 
+use TYPO3\CMS\Core\Configuration\Exception\SettingsWriteException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -389,7 +390,7 @@ class ConfigurationManager
     {
         $systemSettingsFile = $this->getSystemConfigurationFileLocation();
         if (!$this->canWriteConfiguration()) {
-            throw new \RuntimeException(
+            throw new SettingsWriteException(
                 $this->getSystemConfigurationFileLocation(true) . ' is not writable.',
                 1346323822
             );
