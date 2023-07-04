@@ -114,7 +114,7 @@
 		"php-webdriver/webdriver": "^1.14.0",
 		"phpstan/phpstan": "^1.10.22",
 		"phpstan/phpstan-phpunit": "^1.3.13",
-		"phpunit/phpunit": "^10.1.1",
+		"phpunit/phpunit": "^10.2.3",
 		"sokil/php-isocodes-db-i18n": "^4.0.13",
 		"symfony/translation": "^6.2",
 		"typo3/cms-styleguide": "~13.0@dev",
