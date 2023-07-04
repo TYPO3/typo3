@@ -226,6 +226,15 @@ $panel-heading-bg-scale: -85%;
         flex-wrap: wrap;
         gap: .25rem;
     }
+
+    &-button {
+        display: flex;
+        text-align: start;
+        align-items: center;
+        align-self: stretch;
+        border: 0;
+        width: 100%;
+    }
 }
 
 //

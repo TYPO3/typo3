@@ -167,12 +167,21 @@ class SelectCheckBoxElement extends AbstractFormElement
 
             $html[] = '<div id="' . $groupId . '" class="panel panel-default">';
             if ($hasGroupHeader) {
-                $html[] = '<div class="panel-heading">';
-                $html[] =    '<a data-bs-toggle="collapse" href="#' . $groupIdCollapsible . '" aria-expanded="false" aria-controls="' . $groupIdCollapsible . '">';
-                $html[] =        $group['header']['icon'];
-                $html[] =        htmlspecialchars($group['header']['title']);
-                $html[] =    '</a>';
+                $expanded = ($config['appearance']['expandAll'] ?? false) ? 'true' : 'false';
+                $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon((($config['appearance']['expandAll'] ?? false) ? 'actions-view-list-collapse' : 'actions-view-list-expand'), Icon::SIZE_SMALL)->render() . '</span>';
+
+                $html[] = '<button type="button" class="t3js-toggle-selectcheckbox-group panel-heading panel-heading-button" aria-expanded="' . $expanded . '"';
+                $html[] = ' aria-controls="' . $groupIdCollapsible . '" data-bs-target="#' . $groupIdCollapsible . '" data-bs-toggle="collapse">';
+                $html[] = '<span class="flex-grow-1 align-self-center">';
+                $html[] =   $group['header']['icon'];
+                $html[] =   htmlspecialchars($group['header']['title']);
+                $html[] = '</span>';
+                $html[] = '<div class="panel-actions ml-auto">';
+                $html[] = '<span class="btn btn-sm btn-default">';
+                $html[] =  $icon;
+                $html[] = '</span>';
                 $html[] = '</div>';
+                $html[] = '</button>';
             }
             if (!empty($group['items']) && is_array($group['items'])) {
                 $tableRows = [];

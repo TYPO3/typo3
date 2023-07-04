@@ -3072,6 +3072,7 @@ a.dropdown-toggle{text-decoration:none}
 .panel-heading-row{flex-grow:1;display:flex;align-items:center;flex-wrap:wrap;max-width:100%;gap:var(--panel-header-padding-y) var(--panel-header-padding-x)}
 .panel-heading-title{font-weight:700;flex-grow:1;width:250px;max-width:100%}
 .panel-heading-actions{display:flex;align-items:center;flex-wrap:wrap;gap:.25rem}
+.panel-heading-button{display:flex;text-align:start;align-items:center;align-self:stretch;border:0;width:100%}
 .panel-title{font-size:12px;margin-top:0;margin-bottom:0}
 .panel-body{padding:var(--panel-padding)}
 .panel-body>p>a{text-decoration:underline}

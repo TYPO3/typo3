@@ -13,11 +13,18 @@
 
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
+import Icons from '@typo3/backend/icons';
 
 enum Identifier {
   toggleAll = '.t3js-toggle-checkboxes',
   singleItem = '.t3js-checkbox',
   revertSelection = '.t3js-revert-selection',
+  toggleGroup = '.t3js-toggle-selectcheckbox-group',
+}
+
+enum IconIdentifier {
+  collapse = 'actions-view-list-collapse',
+  expand = 'actions-view-list-expand',
 }
 
 class SelectCheckBoxElement {
@@ -77,6 +84,8 @@ class SelectCheckBoxElement {
       this.setToggleAllState();
       this.setRevertSelection();
     }).delegateTo(this.table, Identifier.revertSelection);
+
+    new RegularEvent('click', this.toggleGroup).delegateTo(document, Identifier.toggleGroup);
   }
 
   private setToggleAllState(): void {
@@ -104,6 +113,18 @@ class SelectCheckBoxElement {
 
   private getCheckedItems(): NodeListOf<HTMLInputElement> {
     return this.table.querySelectorAll(Identifier.singleItem + ':checked');
+  }
+
+  private toggleGroup(e: MouseEvent, targetEl: HTMLElement): void {
+    e.preventDefault();
+
+    const isExpanded = targetEl.ariaExpanded === 'true';
+    const collapseIcon = targetEl.querySelector('.collapseIcon');
+    const toggleIcon = isExpanded ? IconIdentifier.collapse : IconIdentifier.expand;
+
+    Icons.getIcon(toggleIcon, Icons.sizes.small).then((icon: string): void => {
+      collapseIcon.innerHTML = icon;
+    });
   }
 }
 
