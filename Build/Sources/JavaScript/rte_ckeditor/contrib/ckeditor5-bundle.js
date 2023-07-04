@@ -5,7 +5,7 @@ import FindAndReplace from '@ckeditor/ckeditor5-find-and-replace/src/findandrepl
 import Heading from '@ckeditor/ckeditor5-heading/src/heading.js';
 import Indent from '@ckeditor/ckeditor5-indent/src/indent.js';
 import Link from '@ckeditor/ckeditor5-link/src/link.js';
-import List from '@ckeditor/ckeditor5-list/src/list.js';
+import DocumentList from '@ckeditor/ckeditor5-list/src/documentlist.js';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph.js';
 import PastePlainText from '@ckeditor/ckeditor5-clipboard/src/pasteplaintext.js';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice.js';
@@ -36,7 +36,7 @@ export const CKEditor5Plugins = {
   Indent,
   Italic,
   Link,
-  List,
+  DocumentList,
   Paragraph,
   PastePlainText,
   PasteFromOffice,
