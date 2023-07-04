@@ -107,7 +107,7 @@ return [
 	</span>
 	
 </span>',
-      'title' => '<em>header_link, "typolink"</em>: <span title="file:4">file:4</span><br><span class="indent indent-inline-block" style="--indent-level: 1"></span> <strong>Record</strong> sys_file:4',
+      'title' => '<em>header_link, "typolink"</em>: <span title="file:4">file:4</span>',
       '_softRefInfo' =>
       [
         'field' => 'header_link',
@@ -115,29 +115,13 @@ return [
         'matchString' => 'file:4',
         'subst' =>
         [
-          'type' => 'db',
-          'recordRef' => 'sys_file:4',
+          'type' => 'external',
           'tokenID' => '81b8b33df54ef433f1cbc7c3e513e6c4',
-          'tokenValue' => 'file:4',
+          'tokenValue' => '4',
         ],
       ],
       'controls' => '<select class="form-select form-select-sm" name="tx_impexp[softrefCfg][81b8b33df54ef433f1cbc7c3e513e6c4][mode]" style="width: 100px"><option value="" selected="selected"></option><option value="editable">Editable</option><option value="exclude">Exclude</option></select>',
       'message' => '',
-    ],
-    5 =>
-    [
-      'ref' => 'sys_file:4',
-      'type' => 'rel',
-      'title' => '<span title="/">sys_file:4</span>',
-      'msg' => 'LOST RELATION (Path: /)',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file:4" class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning">
-	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
-	</span>
-	
-</span>',
-      'controls' => '',
-      'message' => '<span class="text-danger">LOST RELATION (Path: /)</span>',
     ],
   ],
 ];

@@ -97,6 +97,31 @@ final class UrlLinkHandlerTest extends UnitTestCase
                 ['url' => 'tel:+1-2345-6789'],
                 'tel:+1-2345-6789',
             ],
+            'URL without scheme with host' => [
+                ['url' => 'www.example.com'],
+                ['url' => 'http://www.example.com'],
+                'http://www.example.com',
+            ],
+            'URL without scheme with host and path' => [
+                ['url' => 'www.example.com/my-products'],
+                ['url' => 'http://www.example.com/my-products'],
+                'http://www.example.com/my-products',
+            ],
+            'URL without scheme without host and path' => [
+                ['url' => '/my-products'],
+                ['url' => '/my-products'],
+                '/my-products',
+            ],
+            'URL that could be a host or a relative path' => [
+                ['url' => 'my-products.com'],
+                ['url' => 'http://my-products.com'],
+                'http://my-products.com',
+            ],
+            'URL that could be a host or a absolute path' => [
+                ['url' => '/www.my-products.com'],
+                ['url' => '/www.my-products.com'],
+                '/www.my-products.com',
+            ],
             'javascript URL (denied)' => [
                 ['url' => 'javascript:alert(\'XSS\')'],
                 ['url' => ''],
