@@ -54,16 +54,19 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         } else {
             $record = $tsfe->sys_page->checkRecord($databaseTable, $linkDetails['uid']);
             $languageAspect = $tsfe->getContext()->getAspect('language');
+            $languageField = (string)($GLOBALS['TCA'][$databaseTable]['ctrl']['languageField'] ?? '');
 
-            if ($languageAspect->doOverlays()) {
-                $overlay = $tsfe->sys_page->getRecordOverlay(
-                    $databaseTable,
-                    $record,
-                    $languageAspect
-                );
-
-                if (empty($overlay['_LOCALIZED_UID'])) {
-                    $record = 0;
+            if (is_array($record) && $languageField !== '') {
+                $languageIdOfRecord = $record[$languageField];
+                // If a record is already in a localized version OR if the record is set to "All Languages"
+                // we allow the generation of the link
+                if ($languageIdOfRecord === 0 && $languageAspect->doOverlays()) {
+                    $overlay = $tsfe->sys_page->getLanguageOverlay($databaseTable, $record);
+                    // If the record is not translated (overlays enabled), even though it should have been done
+                    // We avoid linking to it
+                    if (empty($overlay['_LOCALIZED_UID'])) {
+                        $record = 0;
+                    }
                 }
             }
         }
