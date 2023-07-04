@@ -1,0 +1,5 @@
+sys_filemounts,,,,,,,,,,,,
+,uid,pid,tstamp,deleted,hidden,sorting,title,identifier,read_only
+,1,0,1688490942,0,0,64,content,1:content,0
+,2,0,1688490942,0,0,128,content,1:content,1
+,3,0,1688490942,0,0,256,upload,1:upload,0
