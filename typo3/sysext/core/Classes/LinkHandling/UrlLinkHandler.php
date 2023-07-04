@@ -46,7 +46,8 @@ class UrlLinkHandler implements LinkHandlingInterface
     protected function addHttpSchemeAsFallback(string $url): string
     {
         if (!empty($url)) {
-            if (str_starts_with($url, '//')) {
+            // We expect this an absolute path, and leave as is. We also leave double slashes ('//') as is.
+            if (str_starts_with($url, '/')) {
                 return $url;
             }
             $scheme = parse_url($url, PHP_URL_SCHEME);

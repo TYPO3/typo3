@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserTestCase
@@ -242,8 +243,11 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
      */
     public function findRefReturnsParsedElementsWithFile(array $softrefConfiguration, array $expectedElement): void
     {
+        $storageObject = $this->createMock(ResourceStorage::class);
+        $storageObject->method('getUid')->willReturn(1);
         $fileObject = $this->createMock(File::class);
         $fileObject->expects(self::once())->method('getUid')->willReturn(42);
+        $fileObject->expects(self::any())->method('getStorage')->willReturn($storageObject);
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $resourceFactory->method('getFileObject')->with('42')->willReturn($fileObject);

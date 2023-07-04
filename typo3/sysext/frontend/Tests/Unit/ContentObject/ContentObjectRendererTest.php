@@ -3149,55 +3149,50 @@ final class ContentObjectRendererTest extends UnitTestCase
                 [
                     'parameter' => 'fileadmin/foo.bar',
                     'ATagParams' => 'class="file-class"',
-                    'fileTarget' => '_blank',
                     'title' => 'Title of the file',
                 ],
                 '/',
-                '<a href="/fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
+                '<a href="/fileadmin/foo.bar" class="file-class" title="Title of the file">My file</a>',
             ],
             'Link to file with attributes with longer absRefPrefix' => [
                 'My file',
                 [
                     'parameter' => 'fileadmin/foo.bar',
                     'ATagParams' => 'class="file-class"',
-                    'fileTarget' => '_blank',
                     'title' => 'Title of the file',
                 ],
                 '/sub/',
-                '<a href="/sub/fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
+                '<a href="/sub/fileadmin/foo.bar" class="file-class" title="Title of the file">My file</a>',
             ],
             'Link to absolute file with attributes with absRefPrefix' => [
                 'My file',
                 [
                     'parameter' => '/images/foo.bar',
                     'ATagParams' => 'class="file-class"',
-                    'fileTarget' => '_blank',
                     'title' => 'Title of the file',
                 ],
                 '/',
-                '<a href="/images/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
+                '<a href="/images/foo.bar" class="file-class" title="Title of the file">My file</a>',
             ],
             'Link to absolute file with attributes with longer absRefPrefix' => [
                 'My file',
                 [
                     'parameter' => '/images/foo.bar',
                     'ATagParams' => 'class="file-class"',
-                    'fileTarget' => '_blank',
                     'title' => 'Title of the file',
                 ],
                 '/sub/',
-                '<a href="/images/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
+                '<a href="/images/foo.bar" class="file-class" title="Title of the file">My file</a>',
             ],
             'Link to absolute file with attributes with identical longer absRefPrefix' => [
                 'My file',
                 [
                     'parameter' => '/sub/fileadmin/foo.bar',
                     'ATagParams' => 'class="file-class"',
-                    'fileTarget' => '_blank',
                     'title' => 'Title of the file',
                 ],
                 '/sub/',
-                '<a href="/sub/fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
+                '<a href="/sub/fileadmin/foo.bar" class="file-class" title="Title of the file">My file</a>',
             ],
         ];
     }
@@ -3441,13 +3436,13 @@ final class ContentObjectRendererTest extends UnitTestCase
                 'My file',
                 [
                     'parameter' => '/fileadmin/foo.bar',
-                    'fileTarget' => '_blank',
+                    'ATagParams' => 'class="file-class"',
                     'returnLast' => 'result',
                 ],
                 json_encode([
                     'href' => '/fileadmin/foo.bar',
-                    'target' => '_blank',
-                    'class' => null,
+                    'target' => null,
+                    'class' => 'file-class',
                     'title' => null,
                     'linkText' => 'My file',
                     'additionalAttributes' => [],
