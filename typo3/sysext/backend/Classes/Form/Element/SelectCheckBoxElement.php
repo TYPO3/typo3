@@ -171,12 +171,21 @@ class SelectCheckBoxElement extends AbstractFormElement
 
             $html[] = '<div id="' . $groupId . '" class="panel panel-default" data-multi-record-selection-identifier="' . $groupId . '">';
             if ($hasGroupHeader) {
-                $html[] = '<div class="panel-heading">';
-                $html[] =    '<a data-bs-toggle="collapse" href="#' . $groupCollapsibleId . '" aria-expanded="false" aria-controls="' . $groupCollapsibleId . '">';
-                $html[] =        $group['header']['icon'];
-                $html[] =        htmlspecialchars($group['header']['title']);
-                $html[] =    '</a>';
+                $expanded = ($config['appearance']['expandAll'] ?? false) ? 'true' : 'false';
+                $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon((($config['appearance']['expandAll'] ?? false) ? 'actions-view-list-collapse' : 'actions-view-list-expand'), IconSize::SMALL)->render() . '</span>';
+
+                $html[] = '<button type="button" class="t3js-toggle-selectcheckbox-group panel-heading panel-heading-button" aria-expanded="' . $expanded . '"';
+                $html[] = ' aria-controls="' . $groupCollapsibleId . '" data-bs-target="#' . $groupCollapsibleId . '" data-bs-toggle="collapse">';
+                $html[] = '<span class="flex-grow-1 align-self-center">';
+                $html[] =   $group['header']['icon'];
+                $html[] =   htmlspecialchars($group['header']['title']);
+                $html[] = '</span>';
+                $html[] = '<div class="panel-actions ml-auto">';
+                $html[] = '<span class="btn btn-sm btn-default">';
+                $html[] =  $icon;
+                $html[] = '</span>';
                 $html[] = '</div>';
+                $html[] = '</button>';
             }
             if (!empty($group['items']) && is_array($group['items'])) {
                 $tableRows = [];
@@ -240,6 +249,7 @@ class SelectCheckBoxElement extends AbstractFormElement
 
                     // Add JavaScript module. This is only needed, in case the element
                     // is not readOnly, since otherwise no checkbox changes take place.
+                    $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/select-check-box-element.js')->instance();
                     $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/multi-record-selection.js');
                 }
                 $html[] =            '<tbody>' . implode(LF, $tableRows) . '</tbody>';
