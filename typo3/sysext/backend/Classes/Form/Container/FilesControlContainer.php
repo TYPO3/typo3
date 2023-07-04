@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -257,9 +258,12 @@ class FilesControlContainer extends AbstractContainer
         ]);
 
         if (!$isReadOnly && ($config['appearance']['showFileSelectors'] ?? true) !== false) {
-            $allowedFileTypes = GeneralUtility::trimExplode(',', (string)($config['allowed'] ?? ''), true);
-            $view->assign('fileSelectors', $this->getFileSelectors($config, $allowedFileTypes));
-            $view->assign('allowedFileTypes', $allowedFileTypes);
+            /** @var FileExtensionFilter $fileExtensionFilter */
+            $fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
+            $fileExtensionFilter->setAllowedFileExtensions($config['allowed'] ?? null);
+            $fileExtensionFilter->setDisallowedFileExtensions($config['disallowed'] ?? null);
+            $view->assign('fileSelectors', $this->getFileSelectors($config, $fileExtensionFilter));
+            $view->assignMultiple($fileExtensionFilter->getFilteredFileExtensions());
             // Render the localization buttons if needed
             if ($numberOfNotYetLocalizedChildren) {
                 $view->assignMultiple([
@@ -290,7 +294,7 @@ class FilesControlContainer extends AbstractContainer
     /**
      * Generate buttons to select, reference and upload files.
      */
-    protected function getFileSelectors(array $inlineConfiguration, array $allowedFileTypes): array
+    protected function getFileSelectors(array $inlineConfiguration, FileExtensionFilter $fileExtensionFilter): array
     {
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUserAuthentication();
@@ -312,7 +316,7 @@ class FilesControlContainer extends AbstractContainer
                 'style' => !($inlineConfiguration['inline']['showCreateNewRelationButton'] ?? true) ? 'display: none;' : '',
                 'title' => $buttonText,
                 'data-mode' => 'file',
-                'data-params' => '|||' . implode(',', $allowedFileTypes) . '|' . $objectPrefix,
+                'data-params' => '|||allowed=' . implode(',', $fileExtensionFilter->getAllowedFileExtensions() ?? []) . ';disallowed=' . implode(',', $fileExtensionFilter->getDisallowedFileExtensions() ?? []) . '|' . $objectPrefix,
             ];
             $controls[] = '
                 <button ' . GeneralUtility::implodeAttributes($attributes, true) . '>
@@ -321,9 +325,11 @@ class FilesControlContainer extends AbstractContainer
 			    </button>';
         }
 
-        $onlineMediaAllowed = $this->onlineMediaHelperRegistry->getSupportedFileExtensions();
-        if ($allowedFileTypes !== []) {
-            $onlineMediaAllowed = array_intersect($allowedFileTypes, $onlineMediaAllowed);
+        $onlineMediaAllowed = [];
+        foreach ($this->onlineMediaHelperRegistry->getSupportedFileExtensions() as $supportedFileExtension) {
+            if ($fileExtensionFilter->isAllowed($supportedFileExtension)) {
+                $onlineMediaAllowed[] = $supportedFileExtension;
+            }
         }
 
         $showUpload = (bool)($inlineConfiguration['appearance']['fileUploadAllowed'] ?? true);
@@ -356,7 +362,8 @@ class FilesControlContainer extends AbstractContainer
                         'data-dropzone-target' => '#' . StringUtility::escapeCssSelector($currentStructureDomObjectIdPrefix),
                         'data-insert-dropzone-before' => '1',
                         'data-file-irre-object' => $objectPrefix,
-                        'data-file-allowed' => implode(',', $allowedFileTypes),
+                        'data-file-allowed' => implode(',', $fileExtensionFilter->getAllowedFileExtensions() ?? []),
+                        'data-file-disallowed' => implode(',', $fileExtensionFilter->getDisallowedFileExtensions() ?? []),
                         'data-target-folder' => $folder->getCombinedIdentifier(),
                         'data-max-file-size' => (string)(GeneralUtility::getMaxUploadFileSize() * 1024),
                     ];

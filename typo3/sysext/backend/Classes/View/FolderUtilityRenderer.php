@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
@@ -91,10 +92,9 @@ class FolderUtilityRenderer
      * Makes an upload form for uploading files to the filemount the user is browsing.
      * The files are uploaded to the tce_file.php script in the core which will handle the upload.
      *
-     * @param string[] $allowedExtensions
      * @return string HTML for an upload form.
      */
-    public function uploadForm(Folder $folderObject, array $allowedExtensions)
+    public function uploadForm(Folder $folderObject, ?FileExtensionFilter $fileExtensionFilter = null)
     {
         if (!$folderObject->checkActionPermission('write')) {
             return '';
@@ -105,28 +105,39 @@ class FolderUtilityRenderer
             return '';
         }
 
+        $list = ['*'];
+        $denyList = false;
+        $allowedOnlineMediaList = [];
         $lang = $this->getLanguageService();
-        // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
-        $fileExtList = [];
-        $fileNameVerifier = GeneralUtility::makeInstance(FileNameValidator::class);
-        foreach ($allowedExtensions as $fileExt) {
-            if ($fileNameVerifier->isValid('.' . $fileExt)) {
-                $fileExtList[] = '<span class="badge badge-success">'
-                    . strtoupper(htmlspecialchars($fileExt)) . '</span>';
+
+        if ($fileExtensionFilter !== null) {
+            $resolvedFileExtensions = $fileExtensionFilter->getFilteredFileExtensions();
+            if (($resolvedFileExtensions['allowedFileExtensions'] ?? []) !== []) {
+                $list = $resolvedFileExtensions['allowedFileExtensions'];
+            } elseif (($resolvedFileExtensions['disallowedFileExtensions'] ?? []) !== []) {
+                $denyList = true;
+                $list = $resolvedFileExtensions['disallowedFileExtensions'];
             }
         }
-        $formAction = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
-        $combinedIdentifier = $folderObject->getCombinedIdentifier();
+
+        $fileNameVerifier = GeneralUtility::makeInstance(FileNameValidator::class);
+        foreach ($list as $fileExt) {
+            if (($fileExt === '*' && !$denyList) || $fileNameVerifier->isValid('.' . $fileExt)) {
+                $allowedOnlineMediaList[] = '<span class="badge badge-' . ($denyList ? 'danger' : 'success') . '">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
+            }
+        }
         $markup = [];
-        if (!empty($fileExtList)) {
+        if (!empty($allowedOnlineMediaList)) {
             $markup[] = '<div class="row">';
             $markup[] = '    <label>';
-            $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions')) . '<br/>';
+            $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($denyList ? 'disallowedFileExtensions' : 'allowedFileExtensions'))) . '<br/>';
             $markup[] = '    </label>';
-            $markup[] = '    <div>' . implode(' ', $fileExtList) . '</div>';
+            $markup[] = '    <div>' . implode(' ', $allowedOnlineMediaList) . '</div>';
             $markup[] = '</div>';
         }
 
+        $formAction = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
+        $combinedIdentifier = $folderObject->getCombinedIdentifier();
         $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
             $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier]),
             '&'
@@ -162,25 +173,23 @@ class FolderUtilityRenderer
 
         // Add online media
         // Create a list of allowed file extensions in a readable format "youtube, vimeo" etc.
-        $fileExtList = [];
-        $onlineMediaFileExt = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getSupportedFileExtensions();
-        foreach ($onlineMediaFileExt as $fileExt) {
-            if ($fileNameVerifier->isValid('.' . $fileExt)
-                && (empty($allowedExtensions) || in_array($fileExt, $allowedExtensions, true))
+        $allowedOnlineMediaList = [];
+        foreach (GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getSupportedFileExtensions() as $supportedFileExtension) {
+            if ($fileNameVerifier->isValid('.' . $supportedFileExtension)
+                && ($fileExtensionFilter === null || $fileExtensionFilter->isAllowed($supportedFileExtension))
             ) {
-                $fileExtList[] = '<span class="badge badge-success">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
+                $allowedOnlineMediaList[$supportedFileExtension] = '<span class="badge badge-success">' . strtoupper(htmlspecialchars($supportedFileExtension)) . '</span>';
             }
         }
-        if (!empty($fileExtList)) {
+        if (!empty($allowedOnlineMediaList)) {
             $formAction = (string)$this->uriBuilder->buildUriFromRoute('online_media');
 
             $markup = [];
-            $markup[] = '<form class="pt-3 pb-3" action="' . htmlspecialchars($formAction)
-                . '" method="post" name="editform1" id="typo3-addMediaForm" enctype="multipart/form-data">';
+            $markup[] = '<form class="pt-3 pb-3" action="' . htmlspecialchars($formAction) . '" method="post" name="editform1" id="typo3-addMediaForm" enctype="multipart/form-data">';
             $markup[] = '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
             $markup[] = '<input type="hidden" name="data[newMedia][0][target]" value="' . htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';
-            $markup[] = '<input type="hidden" name="data[newMedia][0][allowed]" value="' . htmlspecialchars(implode(',', $allowedExtensions)) . '" />';
-            $markup[] = '<h4>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media')) . '</h4>';
+            $markup[] = '<input type="hidden" name="data[newMedia][0][allowed]" value="' . htmlspecialchars(implode(',', array_keys($allowedOnlineMediaList))) . '" />';
+            $markup[] = '<h4>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:onlinemedia.new_media')) . '</h4>';
             $markup[] = '<div class="row">';
             $markup[] = '<div class="col">';
             $markup[] = '<div class="input-group">';
@@ -195,7 +204,7 @@ class FolderUtilityRenderer
             $markup[] = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders');
             $markup[] = '</div>';
             $markup[] = '<div class="col">';
-            $markup[] = implode(' ', $fileExtList);
+            $markup[] = implode(' ', $allowedOnlineMediaList);
             $markup[] = '</div>';
             $markup[] = '</div>';
             $markup[] = '</div>';

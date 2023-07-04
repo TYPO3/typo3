@@ -88,7 +88,7 @@ class FileLinkHandler extends AbstractResourceLinkHandler
 
             // Build the file upload and folder creation form
             $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
-            $markup[] = $folderUtilityRenderer->uploadForm($this->selectedFolder, []);
+            $markup[] = $folderUtilityRenderer->uploadForm($this->selectedFolder);
             $markup[] = $folderUtilityRenderer->createFolder($this->selectedFolder);
 
             $contentHtml = implode(PHP_EOL, $markup);

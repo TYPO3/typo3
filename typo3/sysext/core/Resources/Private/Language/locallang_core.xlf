@@ -655,6 +655,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.fileExtensionExpected" resname="file_upload.fileExtensionExpected">
 				<source>Upload failed! A file with &quot;{0}&quot; extension is expected!</source>
 			</trans-unit>
+			<trans-unit id="file_upload.fileExtensionDisallowed" resname="file_upload.fileExtensionDisallowed">
+				<source>Upload failed! The file extension must not be &quot;{0}&quot;!</source>
+			</trans-unit>
 			<trans-unit id="file_upload.uploadFailed" resname="file_upload.uploadFailed">
 				<source>Upload of file &quot;{0}&quot; failed!</source>
 			</trans-unit>
@@ -1220,6 +1223,9 @@ Do you want to refresh it now?</source>
 			</trans-unit>
 			<trans-unit id="cm.allowedFileExtensions" resname="cm.allowedFileExtensions">
 				<source>Allowed file extensions</source>
+			</trans-unit>
+			<trans-unit id="cm.disallowedFileExtensions" resname="cm.disallowedFileExtensions">
+				<source>Disallowed file extensions</source>
 			</trans-unit>
 			<trans-unit id="cm.allowedEditableTextFileExtensions" resname="cm.allowedEditableTextFileExtensions">
 				<source>Allowed editable text file extensions</source>

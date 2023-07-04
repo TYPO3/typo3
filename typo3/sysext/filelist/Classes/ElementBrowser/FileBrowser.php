@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Filelist\ElementBrowser;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,7 +39,7 @@ class FileBrowser extends AbstractResourceBrowser
     protected string $identifier = self::IDENTIFIER;
 
     protected ?string $searchWord = null;
-    protected array $allowedFileExtensions = ['*'];
+    protected ?FileExtensionFilter $fileExtensionFilter;
     protected ?FileSearchDemand $searchDemand = null;
 
     /**
@@ -57,18 +58,31 @@ class FileBrowser extends AbstractResourceBrowser
 
         $this->searchWord = (string)trim($request->getParsedBody()['searchTerm'] ?? $request->getQueryParams()['searchTerm'] ?? '');
 
-        // The key number 3 of the bparams contains the "allowed" string. Disallowed is not passed to
-        // the element browser at all but only filtered out in DataHandler afterwards
-        $allowedFileExtensions = GeneralUtility::trimExplode(',', explode('|', $this->bparams)[3], true);
-        if (!empty($allowedFileExtensions) && !in_array(['sys_file', '*'], $allowedFileExtensions)) {
-            $this->allowedFileExtensions = $allowedFileExtensions;
+        $fileExtensions = GeneralUtility::trimExplode(';', explode('|', $this->bparams)[3], true);
+        $allowed = str_replace('allowed=', '', $fileExtensions[0]);
+        $disallowed = str_replace('disallowed=', '', $fileExtensions[1]);
+
+        $this->fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
+        if ($allowed !== '' && !str_contains($allowed, 'sys_file') && !str_contains($allowed, '*')) {
+            $this->fileExtensionFilter->setAllowedFileExtensions($allowed);
+        }
+        if ($disallowed !== '') {
+            $this->fileExtensionFilter->setDisallowedFileExtensions($disallowed);
         }
 
         $this->resourceDisplayMatcher = GeneralUtility::makeInstance(Matcher::class);
         $this->resourceDisplayMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
-        $this->resourceDisplayMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class)->setExtensions($this->allowedFileExtensions));
+        $this->resourceDisplayMatcher->addMatcher(
+            GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class)
+                ->setExtensions($this->fileExtensionFilter->getAllowedFileExtensions() ?? ['*'])
+                ->setIgnoredExtensions($this->fileExtensionFilter->getDisallowedFileExtensions() ?? [])
+        );
         $this->resourceSelectableMatcher = GeneralUtility::makeInstance(Matcher::class);
-        $this->resourceSelectableMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class)->setExtensions($this->allowedFileExtensions));
+        $this->resourceSelectableMatcher->addMatcher(
+            GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class)
+                ->setExtensions($this->fileExtensionFilter->getAllowedFileExtensions() ?? ['*'])
+                ->setIgnoredExtensions($this->fileExtensionFilter->getDisallowedFileExtensions() ?? [])
+        );
     }
 
     /**
@@ -115,7 +129,7 @@ class FileBrowser extends AbstractResourceBrowser
 
             // Build the file upload and folder creation form
             $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
-            $markup[] = $folderUtilityRenderer->uploadForm($this->selectedFolder, $this->allowedFileExtensions);
+            $markup[] = $folderUtilityRenderer->uploadForm($this->selectedFolder, $this->fileExtensionFilter);
             $markup[] = $folderUtilityRenderer->createFolder($this->selectedFolder);
 
             $contentHtml = implode('', $markup);

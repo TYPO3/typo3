@@ -12,14 +12,22 @@
                     {fileSelector -> f:format.raw()}
                 </f:for>
             </div>
-            <f:if condition="{allowedFileTypes}">
-                <div class="form-text">
-                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions"/><br>
-                    <f:for each="{allowedFileTypes}" as="allowedFileType">
-                        <span class="badge badge-success">{allowedFileType}</span>
-                    </f:for>
-                </div>
-            </f:if>
+            <div class="form-text">
+                <f:if condition="{allowedFileExtensions}">
+                    <f:then>
+                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions"/><br>
+                        <f:for each="{allowedFileExtensions}" as="allowedFileExtension">
+                            <span class="badge badge-success">{allowedFileExtension}</span>
+                        </f:for>
+                    </f:then>
+                    <f:else if="{disallowedFileExtensions}">
+                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.disallowedFileExtensions"/><br>
+                        <f:for each="{disallowedFileExtensions}" as="disallowedFileExtension">
+                            <span class="badge badge-danger">{disallowedFileExtension}</span>
+                        </f:for>
+                    </f:else>
+                </f:if>
+            </div>
         </div>
         <f:if condition="{showAllLocalizationLink}">
             <div class="typo3-localizationLink" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localizeAllRecords')}">
