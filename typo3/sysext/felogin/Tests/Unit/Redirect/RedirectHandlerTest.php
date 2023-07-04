@@ -21,11 +21,16 @@ use Generator;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectHandler;
+use TYPO3\CMS\FrontendLogin\Redirect\RedirectMode;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectModeHandler;
 use TYPO3\CMS\FrontendLogin\Redirect\ServerRequestHandler;
+use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -60,6 +65,9 @@ class RedirectHandlerTest extends UnitTestCase
     /** @var ObjectProphecy<Context> */
     protected ObjectProphecy $context;
 
+    /** @var ObjectProphecy<RedirectUrlValidator> */
+    protected ObjectProphecy $redirectUrlValidator;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -67,13 +75,15 @@ class RedirectHandlerTest extends UnitTestCase
         $this->serverRequestHandler = $this->prophesize(ServerRequestHandler::class);
         $this->redirectModeHandler = $this->prophesize(RedirectModeHandler::class);
         $this->context = $this->prophesize(Context::class);
+        $this->redirectUrlValidator = $this->prophesize(RedirectUrlValidator::class);
 
         $GLOBALS['TSFE'] = $this->prophesize(TypoScriptFrontendController::class)->reveal();
 
         $this->subject = new RedirectHandler(
             $this->serverRequestHandler->reveal(),
             $this->redirectModeHandler->reveal(),
-            $this->context->reveal()
+            $this->context->reveal(),
+            $this->redirectUrlValidator->reveal()
         );
     }
 
@@ -141,7 +151,8 @@ class RedirectHandlerTest extends UnitTestCase
         $this->subject = new RedirectHandler(
             $this->serverRequestHandler->reveal(),
             $this->redirectModeHandler->reveal(),
-            $this->context->reveal()
+            $this->context->reveal(),
+            $this->redirectUrlValidator->reveal()
         );
 
         $this->serverRequestHandler
@@ -200,11 +211,79 @@ class RedirectHandlerTest extends UnitTestCase
         $this->subject = new RedirectHandler(
             $this->serverRequestHandler->reveal(),
             $this->redirectModeHandler->reveal(),
-            $this->context->reveal()
+            $this->context->reveal(),
+            $this->redirectUrlValidator->reveal()
         );
 
         $this->serverRequestHandler->getRedirectUrlRequestParam()->willReturn($redirectUrl);
         $configuration = RedirectConfiguration::fromSettings(['redirectMode' => $redirectMode]);
         self::assertEquals($expected, $this->subject->getLoginFormRedirectUrl($configuration, $redirectDisabled));
+    }
+
+    /**
+     * @test
+     */
+    public function getReferrerForLoginFormReturnsEmptyStringIfRedirectModeReferrerDisabled(): void
+    {
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
+        $settings = ['redirectMode' => RedirectMode::LOGIN];
+        self::assertEquals('', $this->subject->getReferrerForLoginForm($request, $settings));
+    }
+
+    /**
+     * @test
+     */
+    public function getReferrerForLoginFormReturnsReferrerGetParameter(): void
+    {
+        $expectedReferrer = 'https://example.com/page-referrer';
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withQueryParams(['referer' => $expectedReferrer]);
+        $request = new Request($serverRequest);
+        $this->redirectUrlValidator->isValid($expectedReferrer)->willReturn(true);
+        $settings = ['redirectMode' => RedirectMode::REFERRER];
+        self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
+    }
+
+    /**
+     * @test
+     */
+    public function getReferrerForLoginFormReturnsReferrerPostParameter(): void
+    {
+        $expectedReferrer = 'https://example.com/page-referrer';
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withParsedBody(['referer' => $expectedReferrer]);
+        $request = new Request($serverRequest);
+        $this->redirectUrlValidator->isValid($expectedReferrer)->willReturn(true);
+        $settings = ['redirectMode' => RedirectMode::REFERRER];
+        self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
+    }
+
+    /**
+     * @test
+     */
+    public function getReferrerForLoginFormReturnsHttpReferrerParameter(): void
+    {
+        $expectedReferrer = 'https://example.com/page-referrer';
+        $serverRequest = (new ServerRequest('/login', 'GET', 'php://input', [], ['HTTP_REFERER' => $expectedReferrer]))
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
+        $this->redirectUrlValidator->isValid($expectedReferrer)->willReturn(true);
+        $settings = ['redirectMode' => RedirectMode::REFERRER];
+        self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
+    }
+
+    /**
+     * @test
+     */
+    public function getReferrerForLoginFormReturnsOriginalRequestUrlIfCalledBySubRequest(): void
+    {
+        $expectedReferrer = 'https://example.com/original-page';
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('originalRequest', new ServerRequest($expectedReferrer));
+        $request = new Request($serverRequest);
+        $this->redirectUrlValidator->isValid($expectedReferrer)->willReturn(true);
+        $settings = ['redirectMode' => RedirectMode::REFERRER];
+        self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
     }
 }

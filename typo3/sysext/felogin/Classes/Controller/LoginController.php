@@ -31,7 +31,6 @@ use TYPO3\CMS\FrontendLogin\Event\LoginErrorOccurredEvent;
 use TYPO3\CMS\FrontendLogin\Event\LogoutConfirmedEvent;
 use TYPO3\CMS\FrontendLogin\Event\ModifyLoginFormViewEvent;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectHandler;
-use TYPO3\CMS\FrontendLogin\Redirect\RedirectMode;
 use TYPO3\CMS\FrontendLogin\Redirect\ServerRequestHandler;
 use TYPO3\CMS\FrontendLogin\Service\UserService;
 use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
@@ -169,7 +168,7 @@ class LoginController extends AbstractLoginFormController
                 'permaloginStatus' => $this->getPermaloginStatus(),
                 'redirectURL' => $this->redirectHandler->getLoginFormRedirectUrl($this->configuration, $this->isRedirectDisabled()),
                 'redirectReferrer' => $this->request->hasArgument('redirectReferrer') ? (string)$this->request->getArgument('redirectReferrer') : '',
-                'referer' => $this->getReferrerForLoginForm(),
+                'referer' => $this->redirectHandler->getReferrerForLoginForm($this->request, $this->settings),
                 'noRedirect' => $this->isRedirectDisabled(),
             ]
         );
@@ -221,37 +220,6 @@ class LoginController extends AbstractLoginFormController
     }
 
     /**
-     * Determines the `referer` variable used in the login form for loginMode=referer depending on the
-     * following evaluation order:
-     *
-     * - HTTP POST parameter `referer`
-     * - HTTP GET parameter `referer`
-     * - HTTP_REFERER
-     *
-     * The evaluated `referer` is only returned, if it is considered as valid.
-     */
-    protected function getReferrerForLoginForm(): string
-    {
-        // Early return, if redirectMode is not configured to respect the referrer
-        if (!$this->isReferrerRedirectEnabled()) {
-            return '';
-        }
-
-        $referrer = (string)(
-            $this->request->getParsedBody()['referer'] ??
-            $this->request->getQueryParams()['referer'] ??
-            $this->request->getServerParams()['HTTP_REFERER'] ??
-            ''
-        );
-
-        if ($this->redirectUrlValidator->isValid($referrer)) {
-            return $referrer;
-        }
-
-        return '';
-    }
-
-    /**
      * Handles the redirect when $this->redirectUrl is not empty
      */
     protected function handleRedirect(): void
@@ -297,16 +265,6 @@ class LoginController extends AbstractLoginFormController
         return $permaLogin > 1
                || (int)($this->settings['showPermaLogin'] ?? 0) === 0
                || $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] === 0;
-    }
-
-    /**
-     * Returns, if redirect based on the referrer is enabled
-     */
-    protected function isReferrerRedirectEnabled(): bool
-    {
-        $referrerRedirectModes = [RedirectMode::REFERRER, RedirectMode::REFERRER_DOMAINS];
-        $configuredRedirectModes = GeneralUtility::trimExplode(',', $this->settings['redirectMode'] ?? '');
-        return count(array_intersect($configuredRedirectModes, $referrerRedirectModes)) > 0;
     }
 
     /**

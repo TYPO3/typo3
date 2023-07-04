@@ -109,9 +109,9 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
                 );
             }
             if ($this->useSubrequest) {
-                // Create a subrequest and do not take any special query parameters into account
+                // Create a sub-request and do not take any special query parameters into account
                 $subRequest = $request->withQueryParams([])->withUri(new Uri($resolvedUrl))->withMethod('GET');
-                $subResponse = $this->stashEnvironment(fn (): ResponseInterface => $this->sendSubRequest($subRequest, $this->pageUid));
+                $subResponse = $this->stashEnvironment(fn (): ResponseInterface => $this->sendSubRequest($subRequest, $this->pageUid, $request));
             } else {
                 $cacheIdentifier = 'errorPage_' . md5($resolvedUrl);
                 try {
@@ -263,13 +263,15 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
      *
      * The $pageId is used to ensure the correct site is accessed.
      */
-    protected function sendSubRequest(ServerRequestInterface $request, int $pageId): ResponseInterface
+    protected function sendSubRequest(ServerRequestInterface $request, int $pageId, ServerRequestInterface $originalRequest): ResponseInterface
     {
         $site = $request->getAttribute('site', null);
         if (!$site instanceof Site) {
             $site = $this->siteFinder->getSiteByPageId($pageId);
             $request = $request->withAttribute('site', $site);
         }
+
+        $request = $request->withAttribute('originalRequest', $originalRequest);
 
         return $this->application->handle($request);
     }
