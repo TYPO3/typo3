@@ -1,24 +1,5 @@
 (function() {
   /**
-   * @param {Function} callback
-   */
-  function ready(callback) {
-    if (document.readyState === 'complete') {
-      callback.call(null);
-      return;
-    }
-    var clearListeners = function() {
-      window.removeEventListener('load', delegate);
-      document.removeEventListener('DOMContentLoaded', delegate);
-    };
-    var delegate = function() {
-      clearListeners();
-      callback.call(null);
-    };
-    window.addEventListener('load', delegate);
-    document.addEventListener('DOMContentLoaded', delegate);
-  }
-  /**
    * Decoding helper function
    *
    * @param {number} charCode
@@ -76,29 +57,37 @@
     return windowRef;
   }
 
-  ready(function() {
-    var mailtoElements = document.querySelectorAll('a[data-mailto-token][data-mailto-vector]');
-    // `Array.from` for IE compatibility
-    Array.from(mailtoElements).forEach(function(element) {
-        element.addEventListener('click', function(evt) {
-          evt.preventDefault();
-          var dataset = evt.currentTarget.dataset;
-          var value = dataset.mailtoToken;
-          var offset = parseInt(dataset.mailtoVector, 10) * -1;
-          document.location.href = decryptString(value, offset);
-        });
-      });
-    var openElements = document.querySelectorAll('a[data-window-url]');
-    // `Array.from` for IE compatibility
-    Array.from(openElements).forEach(function(element) {
-        element.addEventListener('click', function(evt) {
-          evt.preventDefault();
-          var dataset = evt.currentTarget.dataset;
-          var url = dataset.windowUrl;
-          var target = dataset.windowTarget || null;
-          var features = dataset.windowFeatures || null;
-          windowOpen(url, target, features);
-        });
-      });
+  /**
+   * Delegates event handling to elements
+   *
+   * @param {string} event
+   * @param {string} selector
+   * @param {function} callback
+   */
+  function delegateEvent(event, selector, callback) {
+    document.addEventListener(event, function(evt) {
+      for (var targetElement = evt.target; targetElement && targetElement !== document; targetElement = targetElement.parentNode) {
+        if (targetElement.matches(selector)) {
+          callback.call(targetElement, evt, targetElement);
+        }
+      }
+    });
+  }
+
+  delegateEvent('click', 'a[data-mailto-token][data-mailto-vector]', function(evt, evtTarget) {
+    evt.preventDefault();
+    var dataset = evtTarget.dataset;
+    var value = dataset.mailtoToken;
+    var offset = parseInt(dataset.mailtoVector, 10) * -1;
+    document.location.href = decryptString(value, offset);
+  });
+
+  delegateEvent('click', 'a[data-window-url]', function(evt, evtTarget) {
+    evt.preventDefault();
+    var dataset = evtTarget.dataset;
+    var url = dataset.windowUrl;
+    var target = dataset.windowTarget || null;
+    var features = dataset.windowFeatures || null;
+    windowOpen(url, target, features);
   });
 })();
