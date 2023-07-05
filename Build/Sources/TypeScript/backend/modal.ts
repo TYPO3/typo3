@@ -486,7 +486,7 @@ class Modal {
   private initializeMarkupTrigger(theDocument: Document): void {
     const modalTrigger = (evt: Event, triggerElement: HTMLElement): void => {
       evt.preventDefault();
-      const content = triggerElement.dataset.bsContent || TYPO3.lang['message.confirmation'] || 'Are you sure?';
+      const content = triggerElement.dataset.bsContent || triggerElement.dataset.content || TYPO3.lang['message.confirmation'] || 'Are you sure?';
       let severity = SeverityEnum.info;
       if (triggerElement.dataset.severity in SeverityEnum) {
         const severityKey = triggerElement.dataset.severity as keyof typeof SeverityEnum;
