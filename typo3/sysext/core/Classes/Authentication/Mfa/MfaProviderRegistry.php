@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 /**
  * Registry for configuration providers which is called by the ConfigurationProviderPass
  *
- * @internal
+ * @internal should only be used by the TYPO3 Core
  */
 class MfaProviderRegistry
 {

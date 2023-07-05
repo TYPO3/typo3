@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Type\Enumeration;
 
 /**
  * Enumeration of possible view types for MFA providers
- *
- * @internal This is an experimental TYPO3 Core API and subject to change until v11 LTS
  */
 class MfaViewType extends Enumeration
 {
