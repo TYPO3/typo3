@@ -99,9 +99,10 @@ Subsequently you can configure settings for the three predefined stages.
 
 The "Settings dialog" is about the popup window which appears after
 each review process. If the "show dialog" box is not checked, the
-popup will not even appear and notifications will be sent according
-to the predefined settings. When the "changeable preselection" box
-is checked, the preselected list of users to notify can be modified
+popup will not show notification settings and notifications will 
+be sent according to the predefined settings. 
+When the "changeable preselection" box is checked, the preselected
+list of users to notify can be modified
 on the fly before sending the change notification.
 
 The "Preselection" setting makes it possible to choose which users
