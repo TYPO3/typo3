@@ -74,7 +74,10 @@ class UploadedFile implements UploadedFileInterface
         }
         $this->error = $errorStatus;
 
-        $this->clientFilename = $clientFilename;
+        if ($clientFilename !== null) {
+            $clientFilename = \Normalizer::normalize($clientFilename);
+        }
+        $this->clientFilename = is_string($clientFilename) ? $clientFilename : null;
         $this->clientMediaType = $clientMediaType;
     }
 

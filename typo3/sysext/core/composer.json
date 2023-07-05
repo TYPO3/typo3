@@ -66,6 +66,7 @@
 		"symfony/messenger": "^6.2",
 		"symfony/mime": "^6.2",
 		"symfony/options-resolver": "^6.2",
+		"symfony/polyfill-intl-normalizer": "^1.27",
 		"symfony/rate-limiter": "^6.2",
 		"symfony/routing": "^6.2",
 		"symfony/uid": "^6.2",

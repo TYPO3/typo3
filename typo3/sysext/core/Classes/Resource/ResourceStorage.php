@@ -2098,7 +2098,7 @@ class ResourceStorage implements ResourceStorageInterface
         } else {
             $localFilePath = $uploadedFileData['tmp_name'];
             if ($targetFileName === null) {
-                $targetFileName = $uploadedFileData['name'];
+                $targetFileName = \Normalizer::normalize($uploadedFileData['name']);
             }
             $size = $uploadedFileData['size'];
         }
