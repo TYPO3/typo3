@@ -28,8 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Basic manager for MFA providers to access and update their
  * properties (information) from the mfa column in the user array.
- *
- * @internal This is an experimental TYPO3 Core API and subject to change until v11 LTS
  */
 class MfaProviderPropertyManager implements LoggerAwareInterface
 {

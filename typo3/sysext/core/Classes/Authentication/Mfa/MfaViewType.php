@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Core\Authentication\Mfa;
 
 /**
  * Enumeration of possible view types for MFA providers
- *
- * @internal
  */
 enum MfaViewType: string
 {

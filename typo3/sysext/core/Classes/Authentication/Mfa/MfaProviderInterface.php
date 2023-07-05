@@ -22,8 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * To be implemented by all MFA providers.
- *
- * @internal This is an experimental TYPO3 Core API and subject to change until v11 LTS
  */
 interface MfaProviderInterface
 {

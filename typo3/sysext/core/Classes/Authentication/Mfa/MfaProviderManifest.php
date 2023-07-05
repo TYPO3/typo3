@@ -24,7 +24,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Adapter for MFA providers
  *
- * @internal
+ * @internal should only be used by the TYPO3 Core
  */
 final class MfaProviderManifest implements MfaProviderManifestInterface
 {
