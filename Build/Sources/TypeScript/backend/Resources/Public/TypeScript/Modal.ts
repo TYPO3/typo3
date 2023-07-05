@@ -377,7 +377,7 @@ class Modal {
     $(theDocument).on('click', '.t3js-modal-trigger', (evt: JQueryEventObject): void => {
       evt.preventDefault();
       const $element = $(evt.currentTarget);
-      const content = $element.data('bs-content') || 'Are you sure?';
+      const content = $element.data('bs-content') || $element.data('content') || 'Are you sure?';
       let severity = SeverityEnum.info;
       if ($element.data('severity') in SeverityEnum) {
         const severityKey: keyof typeof SeverityEnum = $element.data('severity');
