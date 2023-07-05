@@ -32,38 +32,38 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
 
     private const beusers = [
         'admin' => [
-            'fixture' => __DIR__ . '/Fixtures/be_users.csv',
+            'fixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_users.csv',
             'uid' => 1,
             'groupFixture' => '',
         ],
         'no group' => [
-            'fixture' => __DIR__ . '/Fixtures/be_users.csv',
+            'fixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_users.csv',
             'uid' => 2,
             'groupFixture' => '',
         ],
         // write access to pages, tt_content
         'group 1' => [
-            'fixture' => __DIR__ . '/Fixtures/be_users.csv',
+            'fixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_users.csv',
             'uid' => 3,
-            'groupFixture' => __DIR__ . '/Fixtures/be_groups.csv',
+            'groupFixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_groups.csv',
         ],
         // write access to pages, tt_content, exclude field pages.header_link
         'group 2' => [
-            'fixture' => __DIR__ . '/Fixtures/be_users.csv',
+            'fixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_users.csv',
             'uid' => 4,
-            'groupFixture' => __DIR__ . '/Fixtures/be_groups.csv',
+            'groupFixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_groups.csv',
         ],
         // write access to pages, tt_content (restricted to default language)
         'group 3' => [
-            'fixture' => __DIR__ . '/Fixtures/be_users.csv',
+            'fixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_users.csv',
             'uid' => 5,
-            'groupFixture' => __DIR__ . '/Fixtures/be_groups.csv',
+            'groupFixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_groups.csv',
         ],
         // group 6: access to all, but restricted via explicit allow to CType=texmedia and text
         'group 6' => [
-            'fixture' => __DIR__ . '/Fixtures/be_users.csv',
+            'fixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_users.csv',
             'uid' => 6,
-            'groupFixture' => __DIR__ . '/Fixtures/be_groups.csv',
+            'groupFixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_groups.csv',
         ],
 
     ];
@@ -73,7 +73,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'Admin user should see all broken links' =>
         [
             self::beusers['admin'], // backend user
-            __DIR__ . '/Fixtures/input.csv', // input file for DB
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input.csv', // input file for DB
             [1], // pids
             [ // expected result
                 'db' => 1,
@@ -85,7 +85,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'User with no group should see none' =>
         [
             self::beusers['no group'],
-            __DIR__ . '/Fixtures/input.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input.csv',
             [1],
             [
                 'total' => 0,
@@ -94,7 +94,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'User with permission to pages but not to specific tables should see none' =>
         [
             self::beusers['no group'],
-            __DIR__ . '/Fixtures/input_permissions_user_2.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_2.csv',
             [1],
             [
                 'total' => 0,
@@ -103,7 +103,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'User with permission to pages and to specific tables, but no exclude fields should see 3 of 4 broken links' =>
         [
             self::beusers['group 1'],
-            __DIR__ . '/Fixtures/input_permissions_user_3.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_3.csv',
             [1],
             [
                 'db' => 1,
@@ -115,7 +115,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'User with permission to pages, specific tables and exclude fields should see all broken links' =>
         [
             self::beusers['group 2'],
-            __DIR__ . '/Fixtures/input_permissions_user_4.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_4.csv',
             [1],
             [
                 'db' => 1,
@@ -127,7 +127,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'User has write permission only for Ctype textmedia and text, should see only broken links from textmedia records' =>
         [
             self::beusers['group 6'],
-            __DIR__ . '/Fixtures/input_permissions_user_6_explicit_allow.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_6_explicit_allow.csv',
             [1],
             [
                 'external' => 1,
@@ -138,7 +138,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'User has write permission only for default language and should see only 1 of 2 broken links' =>
         [
             self::beusers['group 3'],
-            __DIR__ . '/Fixtures/input_permissions_user_5.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_5.csv',
             [1],
             [
                 'external' => 1,
@@ -192,7 +192,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'Admin user should see all broken links' =>
         [
             self::beusers['admin'], // backend user
-            __DIR__ . '/Fixtures/input.csv', // input file for DB
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input.csv', // input file for DB
             [1], // pids
             4, // count
         ];
@@ -200,35 +200,35 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'User with no group should see none' =>
         [
             self::beusers['no group'],
-            __DIR__ . '/Fixtures/input.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input.csv',
             [1],
             0,
         ];
         yield 'User with permission to pages but not to specific tables should see none' =>
         [
             self::beusers['no group'],
-            __DIR__ . '/Fixtures/input_permissions_user_2.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_2.csv',
             [1],
             0,
         ];
         yield 'User with permission to pages and to specific tables, but no exclude fields should see 3 of 4 broken links' =>
         [
             self::beusers['group 1'],
-            __DIR__ . '/Fixtures/input_permissions_user_3.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_3.csv',
             [1],
             3,
         ];
         yield 'User with permission to pages, specific tables and exclude fields should see all broken links' =>
         [
             self::beusers['group 2'],
-            __DIR__ . '/Fixtures/input_permissions_user_4.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_4.csv',
             [1],
             4,
         ];
         yield 'User has write permission only for Ctype textmedia and text, should see only broken links from textmedia records' =>
         [
             self::beusers['group 6'],
-            __DIR__ . '/Fixtures/input_permissions_user_6_explicit_allow.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_6_explicit_allow.csv',
             [1],
             1,
         ];
@@ -236,7 +236,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'User has write permission only for default language and should see only 1 of 2 broken links' =>
         [
             self::beusers['group 3'],
-            __DIR__ . '/Fixtures/input_permissions_user_5.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_5.csv',
             [1],
             1,
         ];
@@ -289,7 +289,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'Admin user should see all broken links' =>
         [
             self::beusers['admin'], // backend user
-            __DIR__ . '/Fixtures/input.csv', // input file for DB
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input.csv', // input file for DB
             [1], // pids
             [ // expected result
                 [
@@ -350,21 +350,21 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'User with no group should see none' =>
         [
             self::beusers['no group'],
-            __DIR__ . '/Fixtures/input.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input.csv',
             [1],
             [],
         ];
         yield 'User with permission to pages but not to specific tables should see none' =>
         [
             self::beusers['no group'],
-            __DIR__ . '/Fixtures/input_permissions_user_2.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_2.csv',
             [1],
             [],
         ];
         yield 'User with permission to pages and to specific tables, but no exclude fields should see 3 of 4 broken links' =>
         [
             self::beusers['group 1'],
-            __DIR__ . '/Fixtures/input_permissions_user_3.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_3.csv',
             [1],
             [
                 [
@@ -411,7 +411,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'User with permission to pages, specific tables and exclude fields should see all broken links' =>
         [
             self::beusers['group 2'],
-            __DIR__ . '/Fixtures/input_permissions_user_4.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_4.csv',
             [1],
             [
                 [
@@ -471,7 +471,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'User has write permission only for Ctype textmedia and text, should see only broken links from textmedia records' =>
         [
             self::beusers['group 6'],
-            __DIR__ . '/Fixtures/input_permissions_user_6_explicit_allow.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_6_explicit_allow.csv',
             [1],
             [
                 [
@@ -493,7 +493,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'User has write permission only for default language and should see only 1 of 2 broken links' =>
         [
             self::beusers['group 3'],
-            __DIR__ . '/Fixtures/input_permissions_user_5.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_permissions_user_5.csv',
             [1],
             [
                 [
@@ -565,7 +565,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'All languages should be returend' =>
         [
             self::beusers['admin'], // backend user
-            __DIR__ . '/Fixtures/input_languages.csv', // input file for DB
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_languages.csv', // input file for DB
             [1, 2, 3], // pids
             [], // languages
             [ // expected result
@@ -611,7 +611,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         yield 'Only defined languages should be returend' =>
         [
             self::beusers['admin'],
-            __DIR__ . '/Fixtures/input_languages.csv',
+            __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/input_languages.csv',
             [1, 2, 3],
             [0, 2],
             [
