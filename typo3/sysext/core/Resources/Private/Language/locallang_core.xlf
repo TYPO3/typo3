@@ -1314,6 +1314,12 @@ Do you want to refresh it now?</source>
 			<trans-unit id="warning.inline_use_combination" resname="warning.inline_use_combination">
 				<source>This record will be modified globally.</source>
 			</trans-unit>
+			<trans-unit id="warning.tableDisplayOrder.message" resname="warning.tableDisplayOrder.message">
+				<source>The TSconfig setting for "mod.web_list.tableDisplayOrder" contains a circular dependency and cannot be resolved.</source>
+			</trans-unit>
+			<trans-unit id="warning.tableDisplayOrder.title" resname="warning.tableDisplayOrder.title">
+				<source>Circular table ordering detected</source>
+			</trans-unit>
 			<trans-unit id="error.formProtection.tokenInvalid" resname="error.formProtection.tokenInvalid">
 				<source>Validating the security token of this form has failed. Please reload the form and submit it again.</source>
 			</trans-unit>
