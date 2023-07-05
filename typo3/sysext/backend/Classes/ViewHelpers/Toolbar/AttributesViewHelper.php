@@ -43,7 +43,7 @@ final class AttributesViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $additionalAttributes = [
-            'class' => 'toolbar-item t3js-toolbar-item',
+            'class' => 'toolbar-item',
         ];
 
         $toolbarItem = $arguments['class'] ?? null;
