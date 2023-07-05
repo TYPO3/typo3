@@ -224,7 +224,7 @@ class Router {
       );
   }
 
-  public async handleAjaxError(error: AjaxResponse, $outputContainer?: JQuery): Promise<void> {
+  public async handleAjaxError(error: AjaxResponse, outputContainer?: HTMLElement|JQuery): Promise<void> {
     if (error.response.status === 403) {
       // Install tool session expired - depending on context render error message or login
       if (this.context === 'backend') {
@@ -271,9 +271,13 @@ class Router {
         + '</div>'
       ;
 
-      if (typeof $outputContainer !== 'undefined') {
+      if (typeof outputContainer !== 'undefined') {
         // Write to given output container. This is typically a modal if given
-        $($outputContainer).empty().html(message);
+        if (outputContainer instanceof HTMLElement) {
+          outputContainer.innerHTML = message;
+        } else {
+          outputContainer.empty().html(message);
+        }
       } else {
         // Else write to main frame
         this.rootContainer.innerHTML = message;

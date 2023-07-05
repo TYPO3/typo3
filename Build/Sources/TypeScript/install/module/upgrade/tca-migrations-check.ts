@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
@@ -22,6 +21,7 @@ import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 /**
  * Module: @typo3/install/module/tca-migrations-check
@@ -33,46 +33,42 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
     this.check();
-    currentModal.on('click', this.selectorCheckTrigger, (e: JQueryEventObject): void => {
-      e.preventDefault();
+
+    new RegularEvent('click', (event: Event) => {
+      event.preventDefault();
       this.check();
-    });
+    }).delegateTo(currentModal.get(0), this.selectorCheckTrigger);
   }
 
   private check(): void {
     this.setModalButtonsState(false);
-
-    const $outputContainer: JQuery = $(this.selectorOutputContainer);
-    const modalContent: JQuery = this.getModalBody();
-    const message: JQuery = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.empty().append(message);
+    const outputContainer: HTMLElement = document.querySelector(this.selectorOutputContainer);
+    if (outputContainer !== null) {
+      outputContainer.append(ProgressBar.render(Severity.loading, 'Loading...', '').get(0));
+    }
+    const modalContent: HTMLElement = this.getModalBody().get(0);
     (new AjaxRequest(Router.getUrl('tcaMigrationsCheck')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          modalContent.empty().append(data.html);
+          modalContent.innerHTML = data.html;
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
-              const m = InfoBox.render(
+              modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.render(
                 Severity.warning,
                 'TCA migrations need to be applied',
                 'Check the following list and apply needed changes.',
-              );
-              modalContent.find(this.selectorOutputContainer).empty();
-              modalContent.find(this.selectorOutputContainer).append(m);
+              ).get(0));
               data.status.forEach((element: MessageInterface): void => {
-                const m2 = InfoBox.render(element.severity, element.title, element.message);
-                modalContent.find(this.selectorOutputContainer).append(m2);
+                modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.render(element.severity, element.title, element.message).get(0));
               });
             } else {
-              const m3 = InfoBox.render(Severity.ok, 'No TCA migrations need to be applied', 'Your TCA looks good.');
-              modalContent.find(this.selectorOutputContainer).append(m3);
+              modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.render(Severity.ok, 'No TCA migrations need to be applied', 'Your TCA looks good.').get(0));
             }
           } else {
-            const m4 = FlashMessage.render(Severity.error, 'Something went wrong', 'Use "Check for broken extensions"');
-            modalContent.find(this.selectorOutputContainer).append(m4);
+            modalContent.querySelector(this.selectorOutputContainer).append(FlashMessage.render(Severity.error, 'Something went wrong', 'Use "Check for broken extensions"').get(0));
           }
           this.setModalButtonsState(true);
         },
