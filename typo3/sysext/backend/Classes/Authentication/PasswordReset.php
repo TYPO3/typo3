@@ -355,7 +355,7 @@ class PasswordReset implements LoggerAwareInterface
 
         $this->invalidateUserSessions($userId);
 
-        $this->logger->info('Password reset successful for user {user_id)', ['user_id' => $userId]);
+        $this->logger->info('Password reset successful for user \'{username}\'', ['username' => $user['username'], 'user_id' => $userId]);
         $this->log(
             'Password reset successful for user %s',
             SystemLogLoginAction::PASSWORD_RESET_ACCOMPLISHED,
