@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * @internal this is experimental and subject to change in TYPO3 v10 / v11
@@ -316,7 +317,7 @@ class PageLayoutContext
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-        $queryBuilder->select('uid', $GLOBALS['TCA']['pages']['ctrl']['languageField'])
+        $queryBuilder->select('*')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq(
@@ -326,7 +327,10 @@ class PageLayoutContext
             );
         $statement = $queryBuilder->executeQuery();
         while ($row = $statement->fetchAssociative()) {
-            unset($availableTranslations[(int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]]);
+            BackendUtility::workspaceOL('pages', $row, $this->getBackendUser()->workspace);
+            if ($row && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+                unset($availableTranslations[(int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]]);
+            }
         }
         // If any languages are left, make selector:
         $options = [];

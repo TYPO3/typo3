@@ -238,7 +238,7 @@ class PageLayoutController
 
     /**
      * Fetch all records of the current page ID.
-     * Does not do workspace overlays, and also does not check permissions
+     * Does not check permissions.
      */
     protected function getExistingPageTranslations(): array
     {
@@ -249,8 +249,8 @@ class PageLayoutController
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-        return $queryBuilder
-            ->select('uid', $GLOBALS['TCA']['pages']['ctrl']['languageField'])
+        $result = $queryBuilder
+            ->select('*')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq(
@@ -258,8 +258,16 @@ class PageLayoutController
                     $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
                 )
             )
-            ->executeQuery()
-            ->fetchAllAssociative();
+            ->executeQuery();
+
+        $rows = [];
+        while ($row = $result->fetchAssociative()) {
+            BackendUtility::workspaceOL('pages', $row, $this->getBackendUser()->workspace);
+            if ($row && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+                $rows[] = $row;
+            }
+        }
+        return $rows;
     }
 
     protected function getLocalizedPageRecord(int $languageId): ?array
