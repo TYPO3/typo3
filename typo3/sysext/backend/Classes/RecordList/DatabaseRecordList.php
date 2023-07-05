@@ -45,8 +45,11 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -2242,8 +2245,21 @@ class DatabaseRecordList
                 }
             }
         }
-        $orderedTableNames = GeneralUtility::makeInstance(DependencyOrderingService::class)
-            ->orderByDependencies($tableNames);
+        try {
+            $orderedTableNames = GeneralUtility::makeInstance(DependencyOrderingService::class)
+                ->orderByDependencies($tableNames);
+        } catch (\UnexpectedValueException $e) {
+            // If you have circular dependencies we just keep the original order and give a notice
+            // Example mod.web_list.tableDisplayOrder.pages.after = tt_content
+            $lang = $this->getLanguageService();
+            $header = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.tableDisplayOrder.title');
+            $msg = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.tableDisplayOrder.message');
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, $header, ContextualFeedbackSeverity::WARNING, true);
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
+            $orderedTableNames = $tableNames;
+        }
         return array_keys($orderedTableNames);
     }
 
