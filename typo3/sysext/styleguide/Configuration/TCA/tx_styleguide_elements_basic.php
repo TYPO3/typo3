@@ -340,7 +340,7 @@ return [
 
         'inputdatetime_1' => [
             'label' => 'inputdatetime_1',
-            'description' => 'eval=date',
+            'description' => 'format=date',
             'config' => [
                 'type' => 'datetime',
                 'format' => 'date',
@@ -348,7 +348,7 @@ return [
         ],
         'inputdatetime_2' => [
             'label' => 'inputdatetime_2',
-            'description' => 'dbType=date eval=date',
+            'description' => 'dbType=date format=date',
             'config' => [
                 'type' => 'datetime',
                 'dbType' => 'date',
@@ -357,14 +357,14 @@ return [
         ],
         'inputdatetime_3' => [
             'label' => 'inputdatetime_3',
-            'description' => 'eval=datetime',
+            'description' => 'format=datetime',
             'config' => [
                 'type' => 'datetime',
             ],
         ],
         'inputdatetime_4' => [
             'label' => 'inputdatetime_4',
-            'description' => 'dbType=datetime eval=datetime',
+            'description' => 'format=datetime eval=datetime',
             'config' => [
                 'type' => 'datetime',
                 'dbType' => 'datetime',
@@ -372,7 +372,7 @@ return [
         ],
         'inputdatetime_5' => [
             'label' => 'inputdatetime_5',
-            'description' => 'eval=time',
+            'description' => 'format=time',
             'config' => [
                 'type' => 'datetime',
                 'format' => 'time',
@@ -380,7 +380,7 @@ return [
         ],
         'inputdatetime_6' => [
             'label' => 'inputdatetime_6',
-            'description' => 'eval=timesec',
+            'description' => 'format=timesec',
             'config' => [
                 'type' => 'datetime',
                 'format' => 'timesec',
@@ -388,7 +388,7 @@ return [
         ],
         'inputdatetime_7' => [
             'label' => 'inputdatetime_7',
-            'description' => 'eval=date readOnly',
+            'description' => 'format=date readOnly',
             'config' => [
                 'type' => 'datetime',
                 'format' => 'date',
@@ -397,7 +397,7 @@ return [
         ],
         'inputdatetime_8' => [
             'label' => 'inputdatetime_8',
-            'description' => 'eval=datetime readOnly',
+            'description' => 'format=datetime readOnly',
             'config' => [
                 'type' => 'datetime',
                 'readOnly' => true,
@@ -405,7 +405,7 @@ return [
         ],
         'inputdatetime_9' => [
             'label' => 'inputdatetime_9',
-            'description' => 'eval=time readOnly',
+            'description' => 'format=time readOnly',
             'config' => [
                 'type' => 'datetime',
                 'format' => 'time',
@@ -414,7 +414,7 @@ return [
         ],
         'inputdatetime_10' => [
             'label' => 'inputdatetime_10',
-            'description' => 'eval=timesec readOnly',
+            'description' => 'format=timesec readOnly',
             'config' => [
                 'type' => 'datetime',
                 'format' => 'timesec',
@@ -423,13 +423,157 @@ return [
         ],
         'inputdatetime_11' => [
             'label' => 'inputdatetime_11',
-            'description' => 'eval=datetime, default=0, range.lower=1627208536',
+            'description' => 'default=0, range.lower=1627208536',
             'config' => [
                 'type' => 'datetime',
                 'default' => 0,
                 'range' => [
                     'lower' => 1627208536,
                 ],
+            ],
+        ],
+        'inputdatetime_12' => [
+            'label' => 'inputdatetime_12',
+            'description' => 'format=time dbType=time',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'time',
+                'dbType' => 'time',
+            ],
+        ],
+        'inputdatetime_13' => [
+            'label' => 'inputdatetime_13',
+            'description' => 'format=timesec dbType=time',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'timesec',
+                'dbType' => 'time',
+            ],
+        ],
+
+        'inputdatetime_21' => [
+            'label' => 'inputdatetime_21',
+            'description' => 'format=date nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'date',
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_22' => [
+            'label' => 'inputdatetime_22',
+            'description' => 'dbType=date format=date nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'dbType' => 'date',
+                'format' => 'date',
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_23' => [
+            'label' => 'inputdatetime_23',
+            'description' => 'format=datetime nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_24' => [
+            'label' => 'inputdatetime_24',
+            'description' => 'format=datetime eval=datetime nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'dbType' => 'datetime',
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_25' => [
+            'label' => 'inputdatetime_25',
+            'description' => 'format=time nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'time',
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_26' => [
+            'label' => 'inputdatetime_6',
+            'description' => 'format=timesec nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'timesec',
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_27' => [
+            'label' => 'inputdatetime_27',
+            'description' => 'format=date readOnly nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'date',
+                'readOnly' => true,
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_28' => [
+            'label' => 'inputdatetime_28',
+            'description' => 'format=datetime readOnly nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'readOnly' => true,
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_29' => [
+            'label' => 'inputdatetime_29',
+            'description' => 'format=time readOnly nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'time',
+                'readOnly' => true,
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_30' => [
+            'label' => 'inputdatetime_30',
+            'description' => 'format=timesec readOnly nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'timesec',
+                'readOnly' => true,
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_31' => [
+            'label' => 'inputdatetime_31',
+            'description' => 'default=0, range.lower=1627208536 nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'default' => 0,
+                'range' => [
+                    'lower' => 1627208536,
+                ],
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_32' => [
+            'label' => 'inputdatetime_32',
+            'description' => 'format=time dbType=time nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'time',
+                'dbType' => 'time',
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_33' => [
+            'label' => 'inputdatetime_33',
+            'description' => 'format=timesec dbType=time nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'timesec',
+                'dbType' => 'time',
+                'nullable' => true,
             ],
         ],
 
@@ -1702,7 +1846,10 @@ backend_layout {
                 --div--;inputDateTime,
                     inputdatetime_1, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5,
                     inputdatetime_6, inputdatetime_7, inputdatetime_8, inputdatetime_9, inputdatetime_10,
-                    inputdatetime_11,
+                    inputdatetime_11, inputdatetime_12, inputdatetime_13,
+                    inputdatetime_21, inputdatetime_22, inputdatetime_23, inputdatetime_24, inputdatetime_25,
+                    inputdatetime_26, inputdatetime_27, inputdatetime_28, inputdatetime_29, inputdatetime_30,
+                    inputdatetime_31, inputdatetime_32, inputdatetime_33,
                 --div--;link,
                     link_1,link_2,link_3,link_4,link_5,
                 --div--;password,
