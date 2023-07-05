@@ -160,6 +160,7 @@ class Typo3DbBackendTest extends UnitTestCase
         $row = [
             'uid' => '42',
             'pid' => '42',
+            't3ver_oid' => '42',
         ];
         $workspaceVersion = [
             'uid' => '43',

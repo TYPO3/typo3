@@ -635,4 +635,34 @@ class PageRepositoryTest extends FunctionalTestCase
         self::assertSame('Translated #2', $overlaidRecord['header']);
         self::assertNull($overlaidRecord['bodytext']);
     }
+
+    /**
+     * @return array<string, array{0: array<string, int>}>
+     */
+    public static function invalidRowForVersionOLDataProvider(): array
+    {
+        return [
+            'no uid and no t3ver_oid' => [[]],
+            'zero uid and no t3ver_oid' => [['uid' => 0]],
+            'positive uid and no t3ver_oid' => [['uid' => 1]],
+            'no uid but t3ver_oid' => [['t3ver_oid' => 1]],
+        ];
+    }
+
+    /**
+     * @test
+     * @param array<string, int> $input
+     * @dataProvider invalidRowForVersionOLDataProvider
+     */
+    public function versionOLForAnInvalidRowUnchangedRowData(array $input): void
+    {
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(4));
+        $subject = new PageRepository($context);
+        $originalInput = $input;
+
+        $subject->versionOL('pages', $input);
+
+        self::assertSame($originalInput, $input);
+    }
 }
