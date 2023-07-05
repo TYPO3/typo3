@@ -34,16 +34,10 @@ use TYPO3\CMS\Install\Service\LateBootService;
  */
 class LanguagePackCommand extends Command
 {
-    /**
-     * @var LateBootService
-     */
-    private $lateBootService;
-
     public function __construct(
         string $name,
-        LateBootService $lateBootService
+        private readonly LateBootService $lateBootService
     ) {
-        $this->lateBootService = $lateBootService;
         parent::__construct($name);
     }
     /**

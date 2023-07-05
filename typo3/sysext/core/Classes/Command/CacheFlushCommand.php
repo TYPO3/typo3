@@ -33,15 +33,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class CacheFlushCommand extends Command
 {
-    protected BootService $bootService;
-    protected FrontendInterface $dependencyInjectionCache;
-
     public function __construct(
-        BootService $bootService,
-        FrontendInterface $dependencyInjectionCache
+        protected readonly BootService $bootService,
+        protected readonly FrontendInterface $dependencyInjectionCache
     ) {
-        $this->bootService = $bootService;
-        $this->dependencyInjectionCache = $dependencyInjectionCache;
         parent::__construct('cache:flush');
     }
 

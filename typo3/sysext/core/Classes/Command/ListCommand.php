@@ -32,13 +32,10 @@ use TYPO3\CMS\Core\Core\BootService;
  */
 class ListCommand extends SymfonyListCommand
 {
-    protected ContainerInterface $failsafeContainer;
-    protected BootService $bootService;
-
-    public function __construct(ContainerInterface $failsafeContainer, BootService $bootService)
-    {
-        $this->failsafeContainer = $failsafeContainer;
-        $this->bootService = $bootService;
+    public function __construct(
+        protected readonly ContainerInterface $failsafeContainer,
+        protected readonly BootService $bootService,
+    ) {
         parent::__construct();
     }
 

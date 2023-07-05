@@ -28,21 +28,14 @@ use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 
 class CleanupRedirectsCommand extends Command
 {
-    /**
-     * @var RedirectRepository
-     */
-    protected $redirectRepository;
+    protected LanguageService $languageService;
 
-    /**
-     * @var LanguageService
-     */
-    protected $languageService;
-
-    public function __construct(RedirectRepository $redirectRepository, LanguageServiceFactory $languageServiceFactory)
-    {
-        $this->redirectRepository = $redirectRepository;
+    public function __construct(
+        protected readonly RedirectRepository $redirectRepository,
+        protected readonly LanguageServiceFactory $languageServiceFactory
+    ) {
         $this->languageService = $languageServiceFactory->create('default');
-        parent::__construct(null);
+        parent::__construct();
     }
 
     protected function configure(): void

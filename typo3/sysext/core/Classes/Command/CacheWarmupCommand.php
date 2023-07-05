@@ -35,21 +35,12 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 class CacheWarmupCommand extends Command
 {
-    protected ContainerBuilder $containerBuilder;
-    protected PackageManager $packageManager;
-    protected BootService $bootService;
-    protected FrontendInterface $dependencyInjectionCache;
-
     public function __construct(
-        ContainerBuilder $containerBuilder,
-        PackageManager $packageManager,
-        BootService $bootService,
-        FrontendInterface $dependencyInjectionCache
+        protected readonly ContainerBuilder $containerBuilder,
+        protected readonly PackageManager $packageManager,
+        protected readonly BootService $bootService,
+        protected readonly FrontendInterface $dependencyInjectionCache
     ) {
-        $this->containerBuilder = $containerBuilder;
-        $this->packageManager = $packageManager;
-        $this->bootService = $bootService;
-        $this->dependencyInjectionCache = $dependencyInjectionCache;
         parent::__construct('cache:warmup');
     }
 

@@ -32,11 +32,8 @@ use TYPO3\CMS\Impexp\Export;
  */
 class ExportCommand extends Command
 {
-    protected Export $export;
-
-    public function __construct(Export $export)
+    public function __construct(protected readonly Export $export)
     {
-        $this->export = $export;
         parent::__construct();
     }
 

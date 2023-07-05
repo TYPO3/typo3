@@ -33,22 +33,10 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
  */
 class ActivateExtensionCommand extends Command
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var InstallUtility
-     */
-    private $installUtility;
-
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        InstallUtility $installUtility
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly InstallUtility $installUtility
     ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->installUtility = $installUtility;
         parent::__construct();
     }
 

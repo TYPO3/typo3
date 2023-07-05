@@ -32,11 +32,8 @@ use TYPO3\CMS\Impexp\Import;
  */
 class ImportCommand extends Command
 {
-    protected Import $import;
-
-    public function __construct(Import $import)
+    public function __construct(protected readonly Import $import)
     {
-        $this->import = $import;
         parent::__construct();
     }
 

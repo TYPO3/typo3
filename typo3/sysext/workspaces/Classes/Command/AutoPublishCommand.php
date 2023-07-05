@@ -34,20 +34,10 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class AutoPublishCommand extends Command
 {
-    /**
-     * @var WorkspaceService
-     */
-    private $workspaceService;
-
-    /**
-     * @var ConnectionPool
-     */
-    private $connectionPool;
-
-    public function __construct(WorkspaceService $workspaceService, ConnectionPool $connectionPool)
-    {
-        $this->workspaceService = $workspaceService;
-        $this->connectionPool = $connectionPool;
+    public function __construct(
+        private readonly WorkspaceService $workspaceService,
+        private readonly ConnectionPool $connectionPool
+    ) {
         parent::__construct();
     }
 

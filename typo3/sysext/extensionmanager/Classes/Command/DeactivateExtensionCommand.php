@@ -32,14 +32,8 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
  */
 class DeactivateExtensionCommand extends Command
 {
-    /**
-     * @var InstallUtility
-     */
-    private $installUtility;
-
-    public function __construct(InstallUtility $installUtility)
+    public function __construct(private readonly InstallUtility $installUtility)
     {
-        $this->installUtility = $installUtility;
         parent::__construct();
     }
 

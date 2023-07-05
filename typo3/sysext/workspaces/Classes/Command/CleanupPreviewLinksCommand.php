@@ -29,14 +29,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
  */
 class CleanupPreviewLinksCommand extends Command
 {
-    /**
-     * @var ConnectionPool
-     */
-    private $connectionPool;
-
-    public function __construct(ConnectionPool $connectionPool)
+    public function __construct(private readonly ConnectionPool $connectionPool)
     {
-        $this->connectionPool = $connectionPool;
         parent::__construct();
     }
 

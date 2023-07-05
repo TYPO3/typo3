@@ -29,20 +29,10 @@ class CheckIntegrityCommand extends Command
     private const REGISTRY_NAMESPACE = 'tx_redirects';
     private const REGISTRY_KEY = 'conflicting_redirects';
 
-    /**
-     * @var Registry
-     */
-    private $registry;
-
-    /**
-     * @var IntegrityService
-     */
-    private $integrityService;
-
-    public function __construct(Registry $registry, IntegrityService $integrityService)
-    {
-        $this->registry = $registry;
-        $this->integrityService = $integrityService;
+    public function __construct(
+        private readonly Registry $registry,
+        private readonly IntegrityService $integrityService
+    ) {
         parent::__construct();
     }
 

@@ -29,14 +29,8 @@ use TYPO3\CMS\Core\Site\SiteFinder;
  */
 class SiteListCommand extends Command
 {
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
-
-    public function __construct(SiteFinder $siteFinder)
+    public function __construct(protected readonly SiteFinder $siteFinder)
     {
-        $this->siteFinder = $siteFinder;
         parent::__construct();
     }
 
