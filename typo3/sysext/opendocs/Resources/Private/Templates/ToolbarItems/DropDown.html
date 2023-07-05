@@ -14,7 +14,7 @@
     <f:else>
         <f:if condition="{openDocuments}">
             <hr class="dropdown-divider" aria-hidden="true">
-            <ul class="dropdown-list">
+            <ul class="dropdown-list" data-open-docs="{openDocuments->f:count()}">
                 <li>
                     <h3 class="dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:open_docs" /></h3>
                     <a href="#" class="dropdown-item dropdown-item-action t3js-topbar-opendocs-close"
