@@ -87,6 +87,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
      */
     public function render()
     {
+        $this->getBackendUser()->initializeWebmountsForElementBrowser();
         $this->modTSconfig = BackendUtility::getPagesTSconfig((int)$this->expandPage)['mod.']['web_list.'] ?? [];
         [, , , $allowedTables] = explode('|', $this->bparams);
 
