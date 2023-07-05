@@ -319,7 +319,7 @@ class IconFactory
      */
     protected function mapRecordTypeToOverlayIdentifier($table, array $row)
     {
-        $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
+        $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'] ?? [];
         // Calculate for a given record the actual visibility at the moment
         $status = [
             'hidden' => false,
