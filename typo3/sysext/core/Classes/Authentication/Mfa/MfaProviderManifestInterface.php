@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Authentication\Mfa;
 /**
  * Annotated information about the MFA provider – used in various views
  *
- * @internal
+ * @internal should only be used by the TYPO3 Core
  */
 interface MfaProviderManifestInterface extends MfaProviderInterface
 {
