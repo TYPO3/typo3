@@ -36,6 +36,9 @@ services:
     arguments:
       $cache: '@cache.runtime'
 
+  TYPO3\CMS\Backend\Authentication\PasswordReset:
+    public: true
+
   TYPO3\CMS\Backend\Clipboard\Clipboard:
     shared: false
     public: true

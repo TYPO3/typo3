@@ -68,6 +68,10 @@ class PasswordReset implements LoggerAwareInterface
     protected const MAXIMUM_RESET_ATTEMPTS = 3;
     protected const MAXIMUM_RESET_ATTEMPTS_SINCE = '-30 minutes';
 
+    public function __construct(private readonly MailerInterface $mailer)
+    {
+    }
+
     /**
      * Check if there are at least one in the system that contains a non-empty password AND an email address set.
      */
@@ -158,8 +162,7 @@ class PasswordReset implements LoggerAwareInterface
             ->assign('email', $emailAddress)
             ->setTemplate('PasswordReset/AmbiguousResetRequested');
 
-        // TODO: DI should be used to inject the MailerInterface
-        GeneralUtility::makeInstance(MailerInterface::class)->send($emailObject);
+        $this->mailer->send($emailObject);
         $this->logger->warning('Password reset sent to email address {email} but multiple accounts found', ['email' => $emailAddress]);
         $this->log(
             'Sent password reset email to email address %s but with multiple accounts attached.',
