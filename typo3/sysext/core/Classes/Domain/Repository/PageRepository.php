@@ -1677,14 +1677,14 @@ class PageRepository implements LoggerAwareInterface
      */
     public function versionOL($table, &$row, $unsetMovePointers = false, $bypassEnableFieldsCheck = false)
     {
-        if ($this->versioningWorkspaceId > 0 && is_array($row)) {
+        if ($this->versioningWorkspaceId > 0 && is_array($row) && $row !== [] && isset($row['uid'], $row['t3ver_oid'])) {
             // implode(',',array_keys($row)) = Using fields from original record to make
             // sure no additional fields are selected. This is best for eg. getPageOverlay()
             // Computed properties are excluded since those would lead to SQL errors.
             $fieldNames = implode(',', array_keys($this->purgeComputedProperties($row)));
             // will overlay any incoming moved record with the live record, which in turn
             // will be overlaid with its workspace version again to fetch both PID fields.
-            $incomingRecordIsAMoveVersion = (int)($row['t3ver_oid'] ?? 0) > 0 && (int)($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER;
+            $incomingRecordIsAMoveVersion = (int)($row['t3ver_oid']) > 0 && (int)($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER;
             if ($incomingRecordIsAMoveVersion) {
                 // Fetch the live version again if the given $row is a move pointer, so we know the original PID
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
