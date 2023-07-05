@@ -1608,7 +1608,7 @@ class PageRepository implements LoggerAwareInterface
             $fieldNames = implode(',', array_keys($this->purgeComputedProperties($row)));
             // will overlay any incoming moved record with the live record, which in turn
             // will be overlaid with its workspace version again to fetch both PID fields.
-            $incomingRecordIsAMoveVersion = (int)($row['t3ver_oid'] ?? 0) > 0 && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER;
+            $incomingRecordIsAMoveVersion = (int)$row['t3ver_oid'] > 0 && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER;
             if ($incomingRecordIsAMoveVersion) {
                 // Fetch the live version again if the given $row is a move pointer, so we know the original PID
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
