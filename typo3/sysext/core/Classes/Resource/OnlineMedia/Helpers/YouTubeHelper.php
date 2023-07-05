@@ -83,7 +83,8 @@ class YouTubeHelper extends AbstractOEmbedHelper
         // - www.youtube.com/v/<code>
         // - www.youtube-nocookie.com/v/<code> # youtube-nocookie.com web link
         // - www.youtube.com/embed/<code> # URL form iframe embed code, can also get code from full iframe snippet
-        if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match)) {
+        // - www.youtube.com/shorts/<code>
+        if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?|shorts)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match)) {
             $videoId = $match[1];
         }
         if (empty($videoId)) {
