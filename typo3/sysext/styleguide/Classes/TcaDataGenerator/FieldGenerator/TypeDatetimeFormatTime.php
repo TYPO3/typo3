@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
@@ -47,6 +48,16 @@ class TypeDatetimeFormatTime extends AbstractFieldGenerator implements FieldGene
     public function generate(array $data): string
     {
         // 05:23
-        return '19380';
+        $value = '19380';
+
+        // We need to partly do the same work as the DataHandler for some dbTypes for the DateTime type to get
+        // database compatible values. Without it, we will get invalid format database exception when inserted.
+        // See \TYPO3\CMS\Core\DataHandling\DataHandler::checkValueForDatetime().
+        $nativeDateTimeType = $data['fieldConfig']['config']['dbType'] ?? '';
+        $dateTimeFormats = QueryHelper::getDateTimeFormats();
+        $nativeDateTimeFieldFormat = $dateTimeFormats[$nativeDateTimeType]['format'] ?? 'h:i:s';
+        $value =  gmdate($nativeDateTimeFieldFormat, (int)$value);
+
+        return $value;
     }
 }
