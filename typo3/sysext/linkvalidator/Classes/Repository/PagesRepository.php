@@ -61,7 +61,7 @@ class PagesRepository
         $queryBuilder->getRestrictions()->removeAll();
 
         $row = $queryBuilder
-            ->select('uid', 'title', 'hidden', 'extendToSubpages')
+            ->select('uid', 'pid', 'title', 'hidden', 'extendToSubpages')
             ->from(self::TABLE)
             ->where(
                 $queryBuilder->expr()->eq(
