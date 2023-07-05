@@ -1511,11 +1511,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Reflection/ClassSchema.php
 
 		-
-			message: "#^Call to function is_array\\(\\) with object will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Reflection/ObjectAccess.php
-
-		-
 			message: "#^Dead catch \\- Symfony\\\\Component\\\\PropertyAccess\\\\Exception\\\\NoSuchIndexException is never thrown in the try block\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Reflection/ObjectAccess.php

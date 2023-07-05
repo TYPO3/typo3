@@ -491,15 +491,6 @@ final class ObjectAccessTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPropertyPathReturnsNullIfSubjectIsNoObject(): void
-    {
-        $string = 'Hello world';
-        self::assertNull(ObjectAccess::getPropertyPath($string, 'property2'));
-    }
-
-    /**
-     * @test
-     */
     public function getPropertyPathReturnsNullIfSubjectOnPathIsNoObject(): void
     {
         $object = new \stdClass();

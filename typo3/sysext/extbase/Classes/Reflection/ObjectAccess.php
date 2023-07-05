@@ -37,10 +37,7 @@ use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
  */
 class ObjectAccess
 {
-    /**
-     * @var PropertyAccessorInterface
-     */
-    private static $propertyAccessor;
+    private static PropertyAccessorInterface|null $propertyAccessor = null;
 
     /**
      * Get a property of a given object.
@@ -52,24 +49,18 @@ class ObjectAccess
      * - if public property exists, return the value of it.
      * - else, throw exception
      *
-     * @param mixed $subject Object or array to get the property from
+     * @param object|array $subject Object or array to get the property from
      * @param string $propertyName name of the property to retrieve
      *
      * @throws \InvalidArgumentException in case $subject was not an object or $propertyName was not a string
      * @throws Exception\PropertyNotAccessibleException
      * @return mixed Value of the property
      */
-    public static function getProperty($subject, string $propertyName)
+    public static function getProperty(object|array $subject, string $propertyName): mixed
     {
-        if (!is_object($subject) && !is_array($subject)) {
-            throw new \InvalidArgumentException(
-                '$subject must be an object or array, ' . gettype($subject) . ' given.',
-                1237301367
-            );
-        }
         try {
             return self::getPropertyInternal($subject, $propertyName);
-        } catch (NoSuchIndexException $ignoredException) {
+        } catch (NoSuchIndexException) {
             return null;
         }
     }
@@ -81,14 +72,14 @@ class ObjectAccess
      *
      * @see getProperty()
      *
-     * @param mixed $subject Object or array to get the property from
+     * @param object|array $subject Object or array to get the property from
      * @param string $propertyName name of the property to retrieve
      *
      * @throws Exception\PropertyNotAccessibleException
      * @return mixed Value of the property
      * @internal
      */
-    public static function getPropertyInternal($subject, string $propertyName)
+    public static function getPropertyInternal(object|array $subject, string $propertyName): mixed
     {
         if ($subject instanceof \SplObjectStorage || $subject instanceof ObjectStorage) {
             $subject = iterator_to_array(clone $subject, false);
@@ -114,15 +105,11 @@ class ObjectAccess
             return self::getObjectPropertyValue($subject, $propertyPath);
         }
 
-        if (is_array($subject)) {
-            try {
-                return self::getArrayIndexValue($subject, self::convertToArrayPropertyPath($propertyPath));
-            } catch (NoSuchIndexException $ignoredException) {
-                return null;
-            }
+        try {
+            return self::getArrayIndexValue($subject, self::convertToArrayPropertyPath($propertyPath));
+        } catch (NoSuchIndexException) {
+            return null;
         }
-
-        return null;
     }
 
     /**
@@ -133,18 +120,18 @@ class ObjectAccess
      *
      * For arrays the keys are checked likewise.
      *
-     * @param mixed $subject Object or array to get the property path from
+     * @param object|array $subject Object or array to get the property path from
      * @param string $propertyPath
      *
      * @return mixed Value of the property
      */
-    public static function getPropertyPath($subject, string $propertyPath)
+    public static function getPropertyPath(object|array $subject, string $propertyPath): mixed
     {
         try {
             foreach (new PropertyPath($propertyPath) as $pathSegment) {
                 $subject = self::getPropertyInternal($subject, $pathSegment);
             }
-        } catch (PropertyNotAccessibleException $error) {
+        } catch (\TypeError|PropertyNotAccessibleException) {
             return null;
         }
         return $subject;
@@ -161,21 +148,18 @@ class ObjectAccess
      * on it without checking if it existed.
      * - else, return FALSE
      *
-     * @param mixed $subject The target object or array
+     * @param object|array $subject The target object or array
      * @param string $propertyName Name of the property to set
      * @param mixed $propertyValue Value of the property
      *
      * @throws \InvalidArgumentException in case $object was not an object or $propertyName was not a string
      * @return bool TRUE if the property could be set, FALSE otherwise
      */
-    public static function setProperty(&$subject, string $propertyName, $propertyValue): bool
+    public static function setProperty(object|array &$subject, string $propertyName, mixed $propertyValue): bool
     {
         if (is_array($subject) || $subject instanceof \ArrayAccess) {
             $subject[$propertyName] = $propertyValue;
             return true;
-        }
-        if (!is_object($subject)) {
-            throw new \InvalidArgumentException('subject must be an object or array, ' . gettype($subject) . ' given.', 1237301368);
         }
 
         $accessor = self::createAccessor();
@@ -195,7 +179,7 @@ class ObjectAccess
      *
      * @param object $object Object to receive property names for
      *
-     * @return array Array of all gettable property names
+     * @return list<string> Array of all gettable property names
      * @throws Exception\UnknownClassException
      */
     public static function getGettablePropertyNames(object $object): array
@@ -292,7 +276,7 @@ class ObjectAccess
      * @param object $object Object to receive property names for
      *
      * @throws \InvalidArgumentException
-     * @return array Array of all settable property names
+     * @return list<string> Array of all settable property names
      */
     public static function getSettablePropertyNames(object $object): array
     {
@@ -328,10 +312,8 @@ class ObjectAccess
      *
      * @param object $object Object containing the property
      * @param string $propertyName Name of the property to check
-     *
-     * @throws \InvalidArgumentException
      */
-    public static function isPropertySettable(object $object, $propertyName): bool
+    public static function isPropertySettable(object $object, string $propertyName): bool
     {
         if ($object instanceof \stdClass && array_key_exists($propertyName, get_object_vars($object))) {
             return true;
@@ -345,12 +327,12 @@ class ObjectAccess
     /**
      * Tells if the value of the specified property can be retrieved by this Object Accessor.
      *
-     * @param object $object Object containing the property
+     * @param object|array $object Object containing the property
      * @param string $propertyName Name of the property to check
      *
      * @throws \InvalidArgumentException
      */
-    public static function isPropertyGettable($object, $propertyName): bool
+    public static function isPropertyGettable(object|array $object, string $propertyName): bool
     {
         if (is_array($object) || ($object instanceof \ArrayAccess && $object->offsetExists($propertyName))) {
             $propertyName = self::wrap($propertyName);
@@ -366,7 +348,7 @@ class ObjectAccess
      * @param object $object Object to get all properties from.
      *
      * @throws \InvalidArgumentException
-     * @return array Associative array of all properties.
+     * @return array<string, mixed> Associative array of all properties.
      * @todo What to do with ArrayAccess
      */
     public static function getGettableProperties(object $object): array
@@ -390,10 +372,9 @@ class ObjectAccess
     }
 
     /**
-     * @return mixed
      * @throws Exception\PropertyNotAccessibleException
      */
-    private static function getObjectPropertyValue(object $subject, PropertyPath $propertyPath)
+    private static function getObjectPropertyValue(object $subject, PropertyPath $propertyPath): mixed
     {
         $accessor = self::createAccessor();
 
@@ -404,10 +385,7 @@ class ObjectAccess
         throw new PropertyNotAccessibleException('The property "' . (string)$propertyPath . '" on the subject does not exist.', 1476109666);
     }
 
-    /**
-     * @return mixed
-     */
-    private static function getArrayIndexValue(array $subject, PropertyPath $propertyPath)
+    private static function getArrayIndexValue(array $subject, PropertyPath $propertyPath): mixed
     {
         return self::createAccessor()->getValue($subject, $propertyPath);
     }
