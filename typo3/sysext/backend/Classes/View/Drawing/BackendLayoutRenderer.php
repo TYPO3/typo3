@@ -120,7 +120,9 @@ class BackendLayoutRenderer
                     $context = $localizedContext;
                 }
             }
-            $view->assign('grid', $this->getGridForPageLayoutContext($context));
+            $grid  = $this->getGridForPageLayoutContext($context);
+            $view->assign('grid', $grid);
+            $view->assign('gridColumns', array_fill(1, $grid->getContext()->getBackendLayout()->getColCount(), null));
         }
 
         $rendered = $view->render('PageLayout/PageLayout');
@@ -151,6 +153,7 @@ class BackendLayoutRenderer
                 }
 
                 $view->assign('grid', $unusedGrid);
+                $view->assign('gridColumns', null);
                 $rendered .= $view->render('PageLayout/UnusedRecords');
             }
         }

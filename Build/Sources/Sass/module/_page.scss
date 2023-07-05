@@ -16,6 +16,8 @@ html {
 // Variables
 //
 :root {
+    --pagemodule-grid-border-radius: 5px;
+    --pagemodule-grid-border-color: rgba(0, 0, 0, .15);
     --pagemodule-grid-spacing: 1rem;
     --pagemodule-grid-inner-spacing: 1rem;
     --pagemodule-grid-cell-header-size: 1em;
@@ -45,12 +47,11 @@ html {
 }
 
 .t3-grid-container {
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: auto;
+    border-radius: var(--pagemodule-grid-border-radius);
+    border: 1px dotted var(--pagemodule-grid-border-color);
     margin-bottom: var(--typo3-spacing);
-}
-
-.t3-grid-container-inner {
-    margin: calc(var(--pagemodule-grid-spacing) * -1);
 }
 
 .t3-grid-cell {
@@ -125,6 +126,12 @@ html {
 //
 .t3-page-lang-copyce {
     margin: var(--pagemodule-grid-spacing);
+}
+
+.t3-page-lang-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 //

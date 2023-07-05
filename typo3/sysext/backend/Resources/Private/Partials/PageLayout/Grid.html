@@ -1,6 +1,13 @@
 <div class="t3-grid-container">
     <div class="t3-grid-container-inner">
         <table class="t3-page-columns t3-grid-table t3js-page-columns">
+            <f:if condition="{gridColumns}">
+                <colgroup>
+                    <f:for each="{gridColumns}" as="tmpColumn">
+                        <col span="1" style="width: calc(100% / {gridColumns -> f:count()})">
+                    </f:for>
+                </colgroup>
+            </f:if>
             <f:for each="{grid.rows}" as="row">
                 <tr>
                     <f:for each="{row.columns}" as="column">

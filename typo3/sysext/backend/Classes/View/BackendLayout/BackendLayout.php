@@ -193,6 +193,16 @@ class BackendLayout
         return $this->structure['usedColumns'] ?? [];
     }
 
+    public function getColCount(): int
+    {
+        return $this->structure['colCount'] ?? 0;
+    }
+
+    public function getRowCount(): int
+    {
+        return $this->structure['rowCount'] ?? 0;
+    }
+
     /**
      * @return array
      */
