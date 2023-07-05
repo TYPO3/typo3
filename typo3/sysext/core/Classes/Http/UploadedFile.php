@@ -104,7 +104,10 @@ class UploadedFile implements UploadedFileInterface
         if ($clientFilename !== null && !is_string($clientFilename)) {
             throw new \InvalidArgumentException('Invalid client filename provided for an uploaded file.', 1436717304);
         }
-        $this->clientFilename = $clientFilename;
+        if (is_string($clientFilename)) {
+            $clientFilename = \Normalizer::normalize($clientFilename);
+        }
+        $this->clientFilename = is_string($clientFilename) ? $clientFilename : null;
 
         if ($clientMediaType !== null && !is_string($clientMediaType)) {
             throw new \InvalidArgumentException('Invalid client media type provided for an uploaded file.', 1436717305);

@@ -286,4 +286,15 @@ class UploadedFileTest extends UnitTestCase
         $this->expectExceptionCode(1436717306);
         $upload->getStream();
     }
+
+    /**
+     * see https://en.wikipedia.org/wiki/Unicode_equivalence#Normalization, "NFD"
+     * @test
+     */
+    public function nfdFileNameIsNormalized(): void
+    {
+        $clientFileName = hex2bin('6fcc88') . '.png';
+        $subject = new UploadedFile(fopen('php://temp', 'wb+'), 0, 0, $clientFileName);
+        self::assertSame(hex2bin('c3b6') . '.png', $subject->getClientFilename());
+    }
 }

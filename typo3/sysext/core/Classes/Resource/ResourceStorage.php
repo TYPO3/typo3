@@ -2149,7 +2149,7 @@ class ResourceStorage implements ResourceStorageInterface
             $targetFolder = $this->getDefaultFolder();
         }
         if ($targetFileName === null) {
-            $targetFileName = $uploadedFileData['name'];
+            $targetFileName = \Normalizer::normalize($uploadedFileData['name']);
         }
         $targetFileName = $this->driver->sanitizeFileName($targetFileName);
 

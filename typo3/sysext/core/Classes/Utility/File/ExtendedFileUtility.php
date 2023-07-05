@@ -1086,6 +1086,10 @@ class ExtendedFileUtility extends BasicFileUtility
                 'size' => [$uploadedFileData['size']],
             ];
         }
+        $uploadedFileData['name'] = array_map(
+            static fn (string $name) => \Normalizer::normalize($name),
+            $uploadedFileData['name']
+        );
         $resultObjects = [];
         $numberOfUploadedFilesForPosition = count($uploadedFileData['name']);
         // Loop through all uploaded files
