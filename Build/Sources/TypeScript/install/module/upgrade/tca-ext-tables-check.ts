@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
@@ -22,6 +21,7 @@ import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 /**
  * Module: @typo3/install/module/tca-ext-tables-check
@@ -33,42 +33,46 @@ class TcaExtTablesCheck extends AbstractInteractableModule {
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
     this.check();
-    currentModal.on('click', this.selectorCheckTrigger, (e: JQueryEventObject): void => {
-      e.preventDefault();
+
+    new RegularEvent('click', (event: Event) => {
+      event.preventDefault();
       this.check();
-    });
+    }).delegateTo(currentModal.get(0), this.selectorCheckTrigger);
   }
 
   private check(): void {
     this.setModalButtonsState(false);
 
-    const modalContent = this.getModalBody();
-    const $outputContainer = $(this.selectorOutputContainer);
-    const m: JQuery = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.empty().append(m);
+    const outputContainer: HTMLElement = document.querySelector(this.selectorOutputContainer);
+    if (outputContainer !== null) {
+      outputContainer.append(ProgressBar.render(Severity.loading, 'Loading...', '').get(0));
+    }
+    const modalContent: HTMLElement = this.getModalBody().get(0);
     (new AjaxRequest(Router.getUrl('tcaExtTablesCheck')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          modalContent.empty().append(data.html);
+          modalContent.innerHTML = data.html;
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
-              const aMessage = InfoBox.render(
-                Severity.warning,
-                'Following extensions change TCA in ext_tables.php',
-                'Check ext_tables.php files, look for ExtensionManagementUtility calls and $GLOBALS[\'TCA\'] modifications',
+              modalContent.querySelector(this.selectorOutputContainer).append(
+                InfoBox.render(
+                  Severity.warning,
+                  'Following extensions change TCA in ext_tables.php',
+                  'Check ext_tables.php files, look for ExtensionManagementUtility calls and $GLOBALS[\'TCA\'] modifications',
+                ).get(0)
               );
-              modalContent.find(this.selectorOutputContainer).append(aMessage);
               data.status.forEach((element: MessageInterface): void => {
-                const m2 = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.append(m2);
-                modalContent.append(m2);
+                const infobox: HTMLElement = InfoBox.render(element.severity, element.title, element.message).get(0);
+                modalContent.append(infobox);
+                modalContent.querySelector(this.selectorOutputContainer).append(infobox);
               });
             } else {
-              const aMessage = InfoBox.render(Severity.ok, 'No TCA changes in ext_tables.php files. Good job!', '');
-              modalContent.find(this.selectorOutputContainer).append(aMessage);
+              modalContent.querySelector(this.selectorOutputContainer).append(
+                InfoBox.render(Severity.ok, 'No TCA changes in ext_tables.php files. Good job!', '').get(0)
+              );
             }
           } else {
             Notification.error('Something went wrong', 'Please use the module "Check for broken extensions" to find a possible extension causing this issue.');
