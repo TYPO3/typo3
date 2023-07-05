@@ -163,6 +163,7 @@ class SuggestWizardDefaultReceiver
         $countQueryBuilder = clone $this->queryBuilder;
         $allRowsCount = $countQueryBuilder
             ->count('uid')
+            ->from($this->table)
             ->executeQuery()
             ->fetchOne();
         if ($allRowsCount) {
