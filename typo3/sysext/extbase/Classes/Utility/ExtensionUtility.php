@@ -126,6 +126,11 @@ tt_content.' . $pluginSignature . ' {
         // pluginType is usually defined by configurePlugin() in the global array. Use this or fall back to default "list_type".
         $pluginType = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] ?? 'list_type';
 
+        // set pluginName as default pluginTitle
+        if ($pluginTitle === '') {
+            $pluginTitle = $pluginName;
+        }
+
         $itemArray = [$pluginTitle, $pluginSignature, $pluginIcon];
         if ($group) {
             $itemArray[3] = $group;
