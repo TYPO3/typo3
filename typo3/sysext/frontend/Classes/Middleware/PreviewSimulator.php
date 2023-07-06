@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
@@ -66,11 +68,12 @@ class PreviewSimulator implements MiddlewareInterface
             }
             // The preview flag is set if the current page turns out to be hidden
             $showHiddenPages = $this->checkIfPageIsHidden($pageArguments->getPageId(), $request);
+            $rootlineRequiresPreviewFlag = $this->checkIfRootlineRequiresPreview($pageArguments->getPageId());
             $simulatingDate = $this->simulateDate($request);
             $simulatingGroup = $this->simulateUserGroup($request);
             $showHiddenRecords = $visibilityAspect->includeHidden();
             $isOfflineWorkspace = $this->context->getPropertyFromAspect('workspace', 'id', 0) > 0;
-            $isPreview = $simulatingDate || $simulatingGroup || $showHiddenRecords || $showHiddenPages || $isOfflineWorkspace;
+            $isPreview = $simulatingDate || $simulatingGroup || $showHiddenRecords || $showHiddenPages || $isOfflineWorkspace || $rootlineRequiresPreviewFlag;
             if ($this->context->hasAspect('frontend.preview')) {
                 $previewAspect = $this->context->getAspect('frontend.preview');
                 $isPreview = $previewAspect->isPreview() || $isPreview;
@@ -78,13 +81,53 @@ class PreviewSimulator implements MiddlewareInterface
             $previewAspect = GeneralUtility::makeInstance(PreviewAspect::class, $isPreview);
             $this->context->setAspect('frontend.preview', $previewAspect);
 
-            if ($showHiddenPages) {
+            if ($showHiddenPages || $rootlineRequiresPreviewFlag) {
                 $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, true, $visibilityAspect->includeHiddenContent(), $visibilityAspect->includeDeletedRecords());
                 $this->context->setAspect('visibility', $newAspect);
             }
         }
 
         return $handler->handle($request);
+    }
+
+    protected function checkIfRootlineRequiresPreview(int $pageId): bool
+    {
+        $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId, '', $this->context);
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
+        $groupRestricted = false;
+        $timeRestricted = false;
+        $hidden = false;
+        try {
+            $rootLine = $rootlineUtility->get();
+            $pageInfo = $pageRepository->getPage_noCheck($pageId);
+            // Only check rootline if the current page has not set extendToSubpages itself
+            // @see \TYPO3\CMS\Backend\Routing\PreviewUriBuilder::class
+            if (!(bool)($pageInfo['extendToSubpages'] ?? false)) {
+                // remove the current page from the rootline
+                array_shift($rootLine);
+                foreach ($rootLine as $page) {
+                    // Skip root node and pages which do not define extendToSubpages
+                    if ((int)($page['uid'] ?? 0) === 0 || !(bool)($page['extendToSubpages'] ?? false)) {
+                        continue;
+                    }
+                    $groupRestricted = (bool)(string)($page['fe_group'] ?? '');
+                    $timeRestricted = (int)($page['starttime'] ?? 0) || (int)($page['endtime'] ?? 0);
+                    $hidden = (int)($page['hidden'] ?? 0);
+                    // Stop as soon as a page in the rootline has extendToSubpages set
+                    break;
+                }
+            }
+
+        } catch (\Exception) {
+            // if the rootline cannot be resolved (404 because of delete placeholder in workspaces for example)
+            // we do not want to fail here but rather continue handling the request to trigger the TSFE 404 handling
+        } finally {
+            // clear the rootline cache to ensure it's cleanly built with the full context later on.
+            $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+            $cacheManager->getCache('runtime')->flushByTag(RootlineUtility::RUNTIME_CACHE_TAG);
+            $cacheManager->getCache('rootline')->flush();
+        }
+        return $groupRestricted || $timeRestricted || $hidden;
     }
 
     /**
