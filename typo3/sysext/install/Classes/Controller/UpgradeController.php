@@ -276,9 +276,6 @@ class UpgradeController extends AbstractController
                 'btnClass' => 'btn-warning t3js-coreUpdate-button t3js-coreUpdate-init',
                 'name' => 'coreUpdateCheckForUpdate',
                 'text' => 'Check for core updates',
-                'dataAttributes' => [
-                    'action' => 'checkForUpdate',
-                ],
             ];
         }
 
