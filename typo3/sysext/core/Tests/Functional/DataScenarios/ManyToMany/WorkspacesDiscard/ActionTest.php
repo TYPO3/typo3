@@ -198,11 +198,32 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     /**
      * @test
      */
+    public function copyContentToLanguageOfRelation(): void
+    {
+        parent::copyContentToLanguageOfRelation();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageOfRelation.csv');
+    }
+
+    /**
+     * @test
+     */
     public function copyCategoryOfRelation(): void
     {
         parent::copyCategoryOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyCategoryOfRelation.csv');
+    }
+
+    /**
+     * @test
+     * @todo: this is a faulty test, because the category should be discarded
+     */
+    public function copyCategoryToLanguageOfRelation(): void
+    {
+        parent::copyCategoryToLanguageOfRelation();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newCategoryId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyCategoryToLanguageOfRelation.csv');
     }
 
     /**
@@ -213,6 +234,55 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::localizeContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelation.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function localizeContentOfRelationWithLanguageSynchronization(): void
+    {
+        parent::localizeContentOfRelationWithLanguageSynchronization();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWSynchronization.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function localizeContentOfRelationWithLanguageExclude(): void
+    {
+        parent::localizeContentOfRelationWithLanguageExclude();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWExclude.csv');
+    }
+
+    /**
+     * @test
+     * See DataSet/localizeContentOfRelationNAddCategoryWSynchronization.csv
+     * Note: The added category still exists, even if we discard the localized content
+     */
+    public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
+    {
+        parent::localizeContentOfRelationAndAddCategoryWithLanguageSynchronization();
+        // @todo: even if we discard this record, it is still showing up in the result
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        // @todo: do we need to discard the references manually?
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationNAddCategoryWSynchronization.csv');
+    }
+
+    /**
+     * @test
+     * See DataSet/localizeContentChainOfRelationNAddCategoryWSynchronization.csv
+     * Note: The added category still exists, even if we discard the localized content
+     */
+    public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization(): void
+    {
+        parent::localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization();
+        // @todo: even if we discard this record, it is still showing up in the result
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentIdSecond']);
+        // @todo: do we need to discard the references manually?
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentChainOfRelationNAddCategoryWSynchronization.csv');
     }
 
     /**
