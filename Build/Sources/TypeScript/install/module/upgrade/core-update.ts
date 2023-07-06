@@ -90,15 +90,15 @@ class CoreUpdate extends AbstractInteractableModule {
 
     currentModal.on('click', '.t3js-coreUpdate-init', (e: JQueryEventObject): void => {
       e.preventDefault();
-      // Don't use jQuery's data() function, as the DOM is re-rendered and any set data attribute gets lost.
-      // See showActionButton()
-      const action = $(e.currentTarget).attr('data-action');
 
+      if (!e.currentTarget.hasAttribute('data-action')) {
+        this.callAction('coreUpdateIsUpdateAvailable');
+        return;
+      }
+
+      const action = (e.currentTarget as HTMLElement).dataset.action;
       this.findInModal(this.selectorOutput).empty();
       switch (action) {
-        case 'checkForUpdate':
-          this.callAction('coreUpdateIsUpdateAvailable');
-          break;
         case 'updateDevelopment':
           this.update('development');
           break;
