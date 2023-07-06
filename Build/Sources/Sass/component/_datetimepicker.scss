@@ -619,3 +619,45 @@
         transform: translate3d(0, 0, 0);
     }
 }
+
+.shortcut-buttons-flatpickr-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: calc(var(--typo3-component-padding-y) / 2) var(--typo3-component-padding-x);
+    border-top: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+    background-color: var(--typo3-component-bg);
+    color: var(--typo3-component-color);
+}
+
+.shortcut-buttons-flatpickr-label {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    padding: var(--typo3-component-padding-y) var(--typo3-component-padding-x);
+}
+
+.shortcut-buttons-flatpickr-buttons {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.shortcut-buttons-flatpickr-button {
+    background-color: transparent;
+    color: inherit;
+    border: none;
+    padding: .5em .75em;
+
+    &:hover {
+        color: var(--typo3-component-hover-color);
+        background: var(--typo3-component-hover-bg);
+        outline: 1px solid var(--typo3-component-hover-border-color);
+        outline-offset: -1px;
+    }
+
+    &:focus {
+        color: var(--typo3-component-focus-color);
+        background: var(--typo3-component-focus-bg);
+        outline: 1px solid var(--typo3-component-focus-border-color);
+        outline-offset: -1px;
+    }
+}

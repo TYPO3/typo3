@@ -79,6 +79,7 @@ declare module 'muuri';
 declare module 'codemirror';
 declare module 'flatpickr/flatpickr.min';
 declare module 'flatpickr/locales';
+declare module 'flatpickr/plugins/shortcut-buttons.min';
 declare module '@typo3/backend/legacy-tree';
 declare module '@typo3/install/chosen.jquery.min';
 declare module '@typo3/dashboard/contrib/chartjs';

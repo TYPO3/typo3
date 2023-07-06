@@ -669,6 +669,7 @@ module.exports = function (grunt) {
           'broadcastchannel.js': 'broadcastchannel-polyfill/index.js',
           'flatpickr/flatpickr.min.js': 'flatpickr/dist/flatpickr.js',
           'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
+          'flatpickr/plugins/shortcut-buttons.min.js': 'shortcut-buttons-flatpickr/dist/shortcut-buttons-flatpickr.min.js',
           'interact.js': 'interactjs/dist/interact.min.js',
           'jquery.js': 'jquery/dist/jquery.js',
           'jquery/minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',

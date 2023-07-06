@@ -12,6 +12,7 @@
  */
 
 import flatpickr from 'flatpickr/flatpickr.min';
+import ShortcutButtonsPlugin from 'flatpickr/plugins/shortcut-buttons.min';
 import { DateTime } from 'luxon';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
 
@@ -197,6 +198,19 @@ class DateTimePicker {
       minuteIncrement: 1,
       noCalendar: false,
       weekNumbers: true,
+      plugins: [
+        ShortcutButtonsPlugin({
+          theme: 'typo3',
+          button: [
+            {
+              label: top.TYPO3.lang['labels.datepicker.today'] || 'Today'
+            },
+          ],
+          onClick: (index: number, fp: any) => {
+            fp.setDate(new Date());
+          }
+        })
+      ],
     };
 
     // set options based on type

@@ -160,6 +160,7 @@
     "mark.js": "^8.11.1",
     "muuri": "^0.9.5",
     "nprogress": "^0.2.0",
+    "shortcut-buttons-flatpickr": "^0.4.0",
     "sortablejs": "^1.15.0",
     "source-sans": "^3.46.0",
     "tablesort": "^5.3.0",
