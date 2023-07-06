@@ -183,17 +183,17 @@ return [
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
             'showitem' => '
-				--palette--;;basicoverlayPalette,
+				--palette--;;imageoverlayPalette,
 				--palette--;;filePalette',
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => [
             'showitem' => '
-				--palette--;;basicoverlayPalette,
+				--palette--;;audioOverlayPalette,
 				--palette--;;filePalette',
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => [
             'showitem' => '
-				--palette--;;basicoverlayPalette,
+				--palette--;;videoOverlayPalette,
 				--palette--;;filePalette',
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => [
