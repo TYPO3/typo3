@@ -154,8 +154,11 @@ export default (function() {
           const date = DateTime.fromISO(value.toString(), { zone: 'utc' });
           theString = date.toFormat('dd-MM-yyyy');
         } else {
+          if (value === '' || value === '0') {
+            return '';
+          }
           parsedInt = parseInt(value.toString(), 10);
-          if (!parsedInt) {
+          if (isNaN(parsedInt)) {
             return '';
           }
           theTime = new Date(parsedInt * 1000);
@@ -166,11 +169,11 @@ export default (function() {
         }
         break;
       case 'datetime':
-        // eslint-disable-next-line radix
-        if (value.toString().indexOf('-') <= 0 && !(typeof value === 'number' ? value : parseInt(value))) {
+        if (value === '' || value === '0') {
+          // if value is '0' (string), it's supposed to be empty
           return '';
         }
-        theString = FormEngineValidation.formatValue('time', value, config) + ' ' + FormEngineValidation.formatValue('date', value, config);
+        theString = (FormEngineValidation.formatValue('time', value, config) + ' ' + FormEngineValidation.formatValue('date', value, config)).trim();
         break;
       case 'time':
       case 'timesec':
@@ -178,9 +181,12 @@ export default (function() {
         if (value.toString().indexOf('-') > 0) {
           dateValue = DateTime.fromISO(value.toString(), { zone: 'utc' });
         } else {
+          if (value === '' || value === '0') {
+            return '';
+          }
           // eslint-disable-next-line radix
           parsedInt = typeof value === 'number' ? value : parseInt(value);
-          if (!parsedInt && value.toString() !== '0') {
+          if (isNaN(parsedInt)) {
             return '';
           }
           dateValue = DateTime.fromSeconds(parsedInt, { zone: 'utc' });

@@ -25,11 +25,18 @@ interface ProcessValueData {
 describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
   const formatValueDataProvider: Array<FormatValueData> = [
     {
-      'description': 'works for type date',
+      'description': 'returns empty string with string 0',
+      'type': 'date',
+      'value': '0',
+      'config': {},
+      'result': ''
+    },
+    {
+      'description': 'returns date with int 0',
       'type': 'date',
       'value': 0,
       'config': {},
-      'result': ''
+      'result': '01-01-1970'
     },
     {
       'description': 'works for type date with timestamp',
@@ -48,7 +55,7 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     {
       'description': 'works for type datetime',
       'type': 'datetime',
-      'value': 0,
+      'value': '0',
       'config': {},
       'result': ''
     },
@@ -69,7 +76,7 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     {
       'description': 'resolves to empty result for zero value',
       'type': 'datetime',
-      'value': 0,
+      'value': '0',
       'config': {},
       'result': ''
     },
