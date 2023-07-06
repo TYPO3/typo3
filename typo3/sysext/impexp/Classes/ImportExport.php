@@ -597,8 +597,11 @@ abstract class ImportExport
                         $databaseRecord = $this->getRecordFromDatabase($table, $newUid, '*');
                         BackendUtility::workspaceOL($table, $databaseRecord);
                     }
+                    /** @var array|null $importRecord */
                     $importRecord = $this->dat['records'][$table . ':' . $uid]['data'] ?? null;
-                    if (is_array($databaseRecord) && is_array($importRecord)) {
+                    if ($databaseRecord === null) {
+                        $line['showDiffContent'] = '';
+                    } elseif (is_array($databaseRecord) && is_array($importRecord)) {
                         $line['showDiffContent'] = $this->compareRecords($databaseRecord, $importRecord, $table, $diffInverse);
                     } else {
                         $line['showDiffContent'] = 'ERROR: One of the inputs were not an array!';

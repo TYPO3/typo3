@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Impexp\Import;
 
 /**
@@ -176,7 +178,11 @@ class ImportController
         $import->setShowDiff(!(bool)($inputData['notShowDiff'] ?? false));
         $import->setSoftrefInputValues((array)($inputData['softrefInputValues'] ?? null));
         if (!empty($inputData['file'])) {
-            $filePath = $this->getFilePathWithinFileMountBoundaries((string)$inputData['file']);
+            if (PathUtility::isExtensionPath($inputData['file'])) {
+                $filePath = $inputData['file'];
+            } else {
+                $filePath = $this->getFilePathWithinFileMountBoundaries((string)$inputData['file']);
+            }
             try {
                 $import->loadFile($filePath, true);
                 $import->checkImportPrerequisites();
@@ -204,6 +210,8 @@ class ImportController
     protected function getSelectableFileList(Import $import): array
     {
         $exportFiles = [];
+
+        // Fileadmin
         $folder = $import->getOrCreateDefaultImportExportFolder();
         if ($folder !== null) {
             $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
@@ -215,6 +223,24 @@ class ImportController
         foreach ($exportFiles as $file) {
             $selectableFiles[$file->getCombinedIdentifier()] = $file->getPublicUrl();
         }
+
+        // Extension Distribution
+        if ($this->getBackendUser()->isAdmin()) {
+            $possibleImportFiles = [
+                'Initialisation/data.t3d',
+                'Initialisation/data.xml',
+            ];
+            $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
+            foreach ($activePackages as $package) {
+                foreach ($possibleImportFiles as $possibleImportFile) {
+                    if (!file_exists($package->getPackagePath() . $possibleImportFile)) {
+                        continue;
+                    }
+                    $selectableFiles['EXT:' . $package->getPackageKey() . '/' . $possibleImportFile] = 'EXT:' . $package->getPackageKey() . '/' . $possibleImportFile;
+                }
+            }
+        }
+
         return $selectableFiles;
     }
 
