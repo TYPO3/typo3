@@ -103,7 +103,7 @@ Providing custom JS
 
 There are two ways to add JavaScript for an widget:
 
-RequireJS AMD module
+JavaScript module
     Implement :php:class:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`:
 
     .. code-block:: php
@@ -114,11 +114,11 @@ RequireJS AMD module
             public function getJavaScriptModuleInstructions(): array
             {
                 return [
-                    JavaScriptModuleInstruction::forRequireJS(
-                        'TYPO3/CMS/MyExtension/ModuleName'
+                    JavaScriptModuleInstruction::create(
+                        '@myvendor/my-extension/module-name.js'
                     )->invoke('initialize'),
-                    JavaScriptModuleInstruction::forRequireJS(
-                        'TYPO3/CMS/MyExtension/ModuleName2'
+                    JavaScriptModuleInstruction::create(
+                        '@myvendor/my-extension/module-name2.js'
                     )->invoke('initialize'),
                 ];
             }
@@ -126,7 +126,7 @@ RequireJS AMD module
 
    .. seealso::
 
-      :ref:`t3coreapi:requirejs` for more info about RequireJS in TYPO3 Backend.
+      :ref:`t3coreapi:backend-javascript-es6` for more info about JavaScript in TYPO3 Backend.
 
 Plain JS files
     Implement :php:class:`AdditionalJavaScriptInterface`:
@@ -144,7 +144,7 @@ Plain JS files
            }
        }
 
-RequireJS
+JavaScript
     Implement :php:class:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`:
 
     .. code-block:: php
@@ -155,8 +155,8 @@ RequireJS
             public function getJavaScriptModuleInstructions(): array
             {
                 return [
-                    JavaScriptModuleInstruction::forRequireJS(
-                        'TYPO3/CMS/Dashboard/ChartInitializer'
+                    JavaScriptModuleInstruction::create(
+                        '@typo3/dashboard/chart-initializer.js'
                     )->invoke('initialize'),
                 ];
             }

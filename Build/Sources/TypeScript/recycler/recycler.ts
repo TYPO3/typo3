@@ -50,7 +50,7 @@ type RecordToDelete = string;
 
 /**
  * Module: @typo3/recycler/recycler
- * RequireJS module for Recycler
+ * JavaScript module for Recycler
  */
 class Recycler {
   public elements: { [key: string]: JQuery } = {}; // filled in getElements()

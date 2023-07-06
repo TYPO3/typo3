@@ -11,7 +11,7 @@ Implement graph widget
 .. php:namespace:: TYPO3\CMS\Dashboard\Widgets
 
 First of all a new data provider is required, which will provide the data for the chart.
-Next the data will be provided to the widget instance, which will be rendered with RequireJS modules and Css.
+Next the data will be provided to the widget instance, which will be rendered with JavaScript modules and Css.
 
 To make the dashboard aware of this workflow, some interfaces come together:
 

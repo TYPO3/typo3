@@ -119,7 +119,7 @@ class BackendUserController extends ActionController
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
         ]);
-        // Load requireJS modules
+        // Load JavaScript modules
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/modal.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/beuser/backend-user-listing.js');
