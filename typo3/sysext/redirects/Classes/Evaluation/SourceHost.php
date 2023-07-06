@@ -33,7 +33,7 @@ class SourceHost
      * (invoked by FormEngine when editing redirect entities).
      *
      * Returned `JavaScriptModuleInstruction` delegates handling to corresponding
-     * RequireJS module, having a method `evaluateSourceHost` that deals with that
+     * JavaScript module, having a method `evaluateSourceHost` that deals with that
      * evaluation request.
      */
     public function returnFieldJS(): JavaScriptModuleInstruction

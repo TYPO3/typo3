@@ -38,7 +38,7 @@ To register an addon, the following code may be used:
 
     return [
         'my/addon' => [
-            'module' => 'cm/addon/my/addon',
+            'module' => JavaScriptModuleInstruction::create('@codemirror/addon', 'addon')->invoke()
             'cssFiles' => [
                 'EXT:my_extension/Resources/Public/Css/MyAddon.css',
             ],
@@ -61,9 +61,7 @@ To register an addon, the following code may be used:
     :type: string
     :Required: true
 
-    Holds the RequireJS namespace of the CodeMirror module. For custom
-    modules placed in an extension, the known
-    `TYPO3/CMS/Extension/Module` namespace must be used.
+    Holds the JavaScriptModuleInstruction of the CodeMirror module.
 
 .. confval:: cssFiles
 
@@ -122,9 +120,7 @@ To register a mode, the following code may be used:
     :type: string
     :Required: true
 
-    Holds the RequireJS namespace of the CodeMirror module. For custom
-    modules placed in an extension, the known
-    `TYPO3/CMS/Extension/Module` namespace must be used.
+    Holds the JavaScriptModuleInstruction of the CodeMirror module.
 
 .. confval:: extensions
 
