@@ -45,7 +45,6 @@ class MethodParameter
             'defaultValue' => null,
             'ignoreValidation' => false,
             'validators' => [],
-            'position' => -1,
         ];
 
         foreach ($defaults as $key => $defaultValue) {
@@ -98,10 +97,5 @@ class MethodParameter
     public function isOptional(): bool
     {
         return $this->definition['optional'];
-    }
-
-    public function getPosition(): int
-    {
-        return $this->definition['position'];
     }
 }

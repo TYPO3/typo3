@@ -34,45 +34,7 @@ class DummyClassWithAllTypesOfMethods
     {
     }
 
-    /**
-     * @license
-     * @copyright
-     * @author
-     * @version
-     */
-    public function methodWithIgnoredTags(): void
-    {
-    }
-
-    public function injectSettings(): void
-    {
-        // Will fail, as injectSettings is blacklisted
-    }
-
-    public function injectMethodWithoutParam(): void
-    {
-        // Will fail, as there is no param
-    }
-
-    protected function injectMethodThatIsProtected(): void
-    {
-        // Will fail, as method is protected
-    }
-
-    public function injectFoo(DummyClassWithAllTypesOfMethods $foo): void
-    {
-        // Will succeed
-    }
-
-    public static function staticMethod(): void
-    {
-    }
-
     public static function methodWithMandatoryParam($param): void
-    {
-    }
-
-    public static function methodWithNullableParam($param = null): void
     {
     }
 

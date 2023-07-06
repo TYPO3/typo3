@@ -1756,21 +1756,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyClassWithAllTypesOfProperties.php
 
 		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Reflection\\\\Fixture\\\\DummyClassWithConstructorAndConstructorArguments has an unused parameter \\$bar\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyClassWithConstructorAndConstructorArguments.php
-
-		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Reflection\\\\Fixture\\\\DummyClassWithConstructorAndConstructorArguments has an unused parameter \\$foo\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyClassWithConstructorAndConstructorArguments.php
-
-		-
-			message: "#^Constructor of class TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Reflection\\\\Fixture\\\\DummyClassWithConstructorAndConstructorArgumentsWithDependencies has an unused parameter \\$foo\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyClassWithConstructorAndConstructorArgumentsWithDependencies.php
-
-		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Reflection\\\\Fixture\\\\DummyClassWithInvalidTypeHint has an unused parameter \\$invalid\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyClassWithInvalidTypeHint.php

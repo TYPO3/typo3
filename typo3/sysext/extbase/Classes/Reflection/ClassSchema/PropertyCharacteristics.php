@@ -27,7 +27,6 @@ final class PropertyCharacteristics extends BitSet
     public const VISIBILITY_PRIVATE = 1 << 0;
     public const VISIBILITY_PROTECTED = 1 << 1;
     public const VISIBILITY_PUBLIC = 1 << 2;
-    public const IS_STATIC = 1 << 3;
     public const ANNOTATED_LAZY = 1 << 4;
     public const ANNOTATED_TRANSIENT = 1 << 5;
 }

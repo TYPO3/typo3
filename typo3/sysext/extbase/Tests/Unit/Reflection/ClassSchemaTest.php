@@ -17,47 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
-use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithConstructorAndConstructorArguments;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParam;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParamTypeHint;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParam;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParamTypeHint;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyEntity;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyModel;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummySingleton;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyValueObject;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ClassSchemaTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
-    public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses(): void
-    {
-        $this->resetSingletonInstances = true;
-        $service = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
-        $classSchema = $service->getClassSchema(DummyModel::class);
-        self::assertTrue($classSchema->isAggregateRoot());
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaHasConstructor(): void
-    {
-        $classSchema = new ClassSchema(DummyClassWithConstructorAndConstructorArguments::class);
-        self::assertTrue($classSchema->hasConstructor());
-    }
-
     /**
      * @test
      */
@@ -75,8 +48,6 @@ final class ClassSchemaTest extends UnitTestCase
                 'publicStaticPropertyWithDefaultValue',
                 'stringTypedProperty',
                 'nullableStringTypedProperty',
-                'propertyWithIgnoredTags',
-                'propertyWithInjectAnnotation',
                 'propertyWithTransientAnnotation',
                 'propertyWithTransientAttribute',
                 'propertyWithCascadeAnnotation',
@@ -116,84 +87,13 @@ final class ClassSchemaTest extends UnitTestCase
                 'publicMethod',
                 'protectedMethod',
                 'privateMethod',
-                'methodWithIgnoredTags',
-                'injectSettings',
-                'injectMethodWithoutParam',
-                'injectMethodThatIsProtected',
-                'injectFoo',
-                'staticMethod',
                 'methodWithMandatoryParam',
-                'methodWithNullableParam',
                 'methodWithDefaultValueParam',
                 'methodWithTypeHintedParam',
                 'methodWithDocBlockTypeHintOnly',
             ],
             array_keys((new ClassSchema(DummyClassWithAllTypesOfMethods::class))->getMethods())
         );
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsPropertyDefaultValue(): void
-    {
-        $classSchema = new ClassSchema(DummyClassWithAllTypesOfProperties::class);
-
-        $propertyDefinition = $classSchema->getProperty('publicPropertyWithDefaultValue');
-        self::assertSame('foo', $propertyDefinition->getDefaultValue());
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaSkipsDetectionOfDefaultValuesOfStaticClassProperties(): void
-    {
-        $classSchema = new ClassSchema(DummyClassWithAllTypesOfProperties::class);
-
-        $propertyDefinition = $classSchema->getProperty('publicStaticPropertyWithDefaultValue');
-        self::assertNull($propertyDefinition->getDefaultValue());
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsSingletons(): void
-    {
-        self::assertTrue((new ClassSchema(DummySingleton::class))->isSingleton());
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsModels(): void
-    {
-        self::assertTrue((new ClassSchema(DummyEntity::class))->isModel());
-        self::assertTrue((new ClassSchema(DummyValueObject::class))->isModel());
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsEntities(): void
-    {
-        self::assertTrue((new ClassSchema(DummyEntity::class))->isEntity());
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsValueObjects(): void
-    {
-        self::assertTrue((new ClassSchema(DummyValueObject::class))->isValueObject());
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsClassName(): void
-    {
-        $this->resetSingletonInstances = true;
-        self::assertSame(DummyModel::class, (new ClassSchema(DummyModel::class))->getClassName());
     }
 
     /**

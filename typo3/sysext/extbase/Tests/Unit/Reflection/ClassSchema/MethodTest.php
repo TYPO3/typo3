@@ -48,16 +48,4 @@ final class MethodTest extends UnitTestCase
         self::assertFalse($methodDefinition->isProtected());
         self::assertTrue($methodDefinition->isPrivate());
     }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsStaticMethods(): void
-    {
-        self::assertTrue(
-            (new ClassSchema(DummyClassWithAllTypesOfMethods::class))
-            ->getMethod('staticMethod')
-            ->isStatic()
-        );
-    }
 }

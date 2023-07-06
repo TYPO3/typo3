@@ -48,7 +48,6 @@ class Property
 
         $defaults = [
             'c' => null, // cascade
-            'd' => null, // defaultValue
             't' => [], // types
             'v' => [], // validators
         ];
@@ -184,14 +183,6 @@ class Property
     public function getValidators(): array
     {
         return $this->definition['v'];
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDefaultValue()
-    {
-        return $this->definition['d'];
     }
 
     public function getCascadeValue(): ?string

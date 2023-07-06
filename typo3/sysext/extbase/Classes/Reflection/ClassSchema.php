@@ -25,16 +25,12 @@ use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\BitSet;
-use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
 use TYPO3\CMS\Extbase\Annotation\Validate;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
@@ -52,12 +48,7 @@ use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
  */
 class ClassSchema
 {
-    private const BIT_CLASS_IS_ENTITY = 1 << 0;
-    private const BIT_CLASS_IS_VALUE_OBJECT = 1 << 1;
-    private const BIT_CLASS_IS_AGGREGATE_ROOT = 1 << 2;
     private const BIT_CLASS_IS_CONTROLLER = 1 << 3;
-    private const BIT_CLASS_IS_SINGLETON = 1 << 4;
-    private const BIT_CLASS_HAS_CONSTRUCTOR = 1 << 5;
 
     /**
      * @var BitSet
@@ -119,25 +110,8 @@ class ClassSchema
 
         $reflectionClass = new \ReflectionClass($className);
 
-        if ($reflectionClass->implementsInterface(SingletonInterface::class)) {
-            $this->bitSet->set(self::BIT_CLASS_IS_SINGLETON);
-        }
-
         if ($reflectionClass->implementsInterface(ControllerInterface::class)) {
             $this->bitSet->set(self::BIT_CLASS_IS_CONTROLLER);
-        }
-
-        if ($reflectionClass->isSubclassOf(AbstractEntity::class)) {
-            $this->bitSet->set(self::BIT_CLASS_IS_ENTITY);
-
-            $possibleRepositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName($className);
-            if (class_exists($possibleRepositoryClassName)) {
-                $this->bitSet->set(self::BIT_CLASS_IS_AGGREGATE_ROOT);
-            }
-        }
-
-        if ($reflectionClass->isSubclassOf(AbstractValueObject::class)) {
-            $this->bitSet->set(self::BIT_CLASS_IS_VALUE_OBJECT);
         }
 
         if (self::$propertyInfoExtractor === null) {
@@ -185,25 +159,16 @@ class ClassSchema
     {
         $annotationReader = new AnnotationReader();
 
-        $defaultProperties = $reflectionClass->getDefaultProperties();
-
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             $propertyName = $reflectionProperty->getName();
-            // according to https://www.php.net/manual/en/reflectionclass.getdefaultproperties.php
-            // > This method only works for static properties when used on internal classes. The default
-            // > value of a static class property can not be tracked when using this method on user defined classes.
-            $defaultPropertyValue = $reflectionProperty->isStatic() ? null : $defaultProperties[$propertyName] ?? null;
 
             $propertyCharacteristicsBit = 0;
             $propertyCharacteristicsBit += $reflectionProperty->isPrivate() ? PropertyCharacteristics::VISIBILITY_PRIVATE : 0;
             $propertyCharacteristicsBit += $reflectionProperty->isProtected() ? PropertyCharacteristics::VISIBILITY_PROTECTED : 0;
             $propertyCharacteristicsBit += $reflectionProperty->isPublic() ? PropertyCharacteristics::VISIBILITY_PUBLIC : 0;
-            $propertyCharacteristicsBit += $reflectionProperty->isStatic() ? PropertyCharacteristics::IS_STATIC : 0;
 
             $this->properties[$propertyName] = [
                 'c' => null, // cascade
-                'd' => $defaultPropertyValue, // defaultValue
-                'e' => null, // elementType
                 't' => null, // type
                 'v' => [], // validators
             ];
@@ -291,12 +256,8 @@ class ClassSchema
             $this->methods[$methodName]['private']      = $reflectionMethod->isPrivate();
             $this->methods[$methodName]['protected']    = $reflectionMethod->isProtected();
             $this->methods[$methodName]['public']       = $reflectionMethod->isPublic();
-            $this->methods[$methodName]['static']       = $reflectionMethod->isStatic();
-            $this->methods[$methodName]['abstract']     = $reflectionMethod->isAbstract();
             $this->methods[$methodName]['params']       = [];
-            $this->methods[$methodName]['tags']         = [];
-            $this->methods[$methodName]['annotations']  = [];
-            $this->methods[$methodName]['isAction']     = str_ends_with($methodName, 'Action');
+            $isAction = $this->bitSet->get(self::BIT_CLASS_IS_CONTROLLER) && str_ends_with($methodName, 'Action');
 
             $argumentValidators = [];
 
@@ -305,7 +266,6 @@ class ClassSchema
             foreach ($reflectionAttributes as $attribute) {
                 match ($attribute->getName()) {
                     Validate::class => $validateAttributes[] = $attribute,
-                    IgnoreValidation::class => $this->methods[$methodName]['tags']['ignorevalidation'][] = $attribute->newInstance()->argumentName,
                     default => '' // non-extbase attributes
                 };
             }
@@ -318,10 +278,7 @@ class ClassSchema
                 static fn (object $annotation): bool => $annotation instanceof Validate
             );
 
-            if ($this->methods[$methodName]['isAction']
-                && $this->bitSet->get(self::BIT_CLASS_IS_CONTROLLER)
-                && (count($validateAnnotations) > 0 || $validateAttributes !== [])
-            ) {
+            if ($isAction && (count($validateAnnotations) > 0 || $validateAttributes !== [])) {
                 foreach ($validateAnnotations as $validateAnnotation) {
                     $validatorName = $validateAnnotation->validator;
                     $validatorObjectName = ValidatorClassNameResolver::resolve($validatorName);
@@ -341,12 +298,6 @@ class ClassSchema
                         'options' => $validator->options,
                         'className' => $validatorObjectName,
                     ];
-                }
-            }
-
-            foreach ($annotations as $annotation) {
-                if ($annotation instanceof IgnoreValidation) {
-                    $this->methods[$methodName]['tags']['ignorevalidation'][] = $annotation->argumentName;
                 }
             }
 
@@ -370,12 +321,9 @@ class ClassSchema
                 $reflectionType = $reflectionParameter->getType();
 
                 $this->methods[$methodName]['params'][$parameterName] = [];
-                $this->methods[$methodName]['params'][$parameterName]['position'] = $parameterPosition; // compat
-                $this->methods[$methodName]['params'][$parameterName]['byReference'] = $reflectionParameter->isPassedByReference(); // compat
                 $this->methods[$methodName]['params'][$parameterName]['array'] = false; // compat
                 $this->methods[$methodName]['params'][$parameterName]['optional'] = $reflectionParameter->isOptional();
                 $this->methods[$methodName]['params'][$parameterName]['allowsNull'] = $reflectionParameter->allowsNull();
-                $this->methods[$methodName]['params'][$parameterName]['class'] = null; // compat
                 $this->methods[$methodName]['params'][$parameterName]['type'] = null;
                 $this->methods[$methodName]['params'][$parameterName]['hasDefaultValue'] = $reflectionParameter->isDefaultValueAvailable();
                 $this->methods[$methodName]['params'][$parameterName]['defaultValue'] = null;
@@ -392,12 +340,10 @@ class ClassSchema
                     $this->methods[$methodName]['params'][$parameterName]['allowsNull'] = $reflectionType->allowsNull();
                     // A built-in type effectively means "not a class".
                     if ($reflectionType->isBuiltin()) {
-                        $this->methods[$methodName]['params'][$parameterName]['array'] = $reflectionType->getName() === 'array'; // compat
                         $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($reflectionType->getName(), '\\');
                     } elseif ($reflectionType->getName() === 'self') {
                         // In addition, self cannot be resolved by "new \ReflectionClass('self')",
                         // so treat this as a reference to the current class
-                        $this->methods[$methodName]['params'][$parameterName]['class'] = $reflectionClass->getName();
                         $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($reflectionClass->getName(), '\\');
                     } else {
                         // This is mainly to confirm that the class exists. If it doesn't, a ReflectionException
@@ -407,7 +353,6 @@ class ClassSchema
                         $classname = $reflectionType->getName();
                         $reflection = new \ReflectionClass($classname);
                         // There's a single type declaration that is a class.
-                        $this->methods[$methodName]['params'][$parameterName]['class'] = $reflectionType->getName();
                         $this->methods[$methodName]['params'][$parameterName]['type'] = $reflectionType->getName();
                     }
                 }
@@ -470,20 +415,6 @@ MESSAGE;
                 );
             }
         }
-
-        if (isset($this->methods['__construct'])) {
-            $this->bitSet->set(self::BIT_CLASS_HAS_CONSTRUCTOR);
-        }
-    }
-
-    /**
-     * Returns the class name this schema is referring to
-     *
-     * @return string The class name
-     */
-    public function getClassName(): string
-    {
-        return $this->className;
     }
 
     /**
@@ -523,17 +454,6 @@ MESSAGE;
     }
 
     /**
-     * Whether the class is an aggregate root and therefore accessible through
-     * a repository.
-     *
-     * @return bool TRUE if it is managed
-     */
-    public function isAggregateRoot(): bool
-    {
-        return $this->bitSet->get(self::BIT_CLASS_IS_AGGREGATE_ROOT);
-    }
-
-    /**
      * If the class schema has a certain property.
      *
      * @param string $propertyName Name of the property
@@ -541,11 +461,6 @@ MESSAGE;
     public function hasProperty(string $propertyName): bool
     {
         return array_key_exists($propertyName, $this->properties);
-    }
-
-    public function hasConstructor(): bool
-    {
-        return $this->bitSet->get(self::BIT_CLASS_HAS_CONSTRUCTOR);
     }
 
     /**
@@ -568,35 +483,6 @@ MESSAGE;
     public function getMethods(): array
     {
         return $this->buildMethodObjects();
-    }
-
-    /**
-     * @internal
-     */
-    public function isModel(): bool
-    {
-        return $this->isEntity() || $this->isValueObject();
-    }
-
-    /**
-     * @internal
-     */
-    public function isEntity(): bool
-    {
-        return $this->bitSet->get(self::BIT_CLASS_IS_ENTITY);
-    }
-
-    /**
-     * @internal
-     */
-    public function isValueObject(): bool
-    {
-        return $this->bitSet->get(self::BIT_CLASS_IS_VALUE_OBJECT);
-    }
-
-    public function isSingleton(): bool
-    {
-        return $this->bitSet->get(self::BIT_CLASS_IS_SINGLETON);
     }
 
     public function hasMethod(string $methodName): bool

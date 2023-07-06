@@ -50,19 +50,6 @@ class DummyClassWithAllTypesOfProperties extends AbstractEntity
     public ?string $nullableStringTypedProperty = null;
 
     /**
-     * @license
-     * @copyright
-     * @author
-     * @version
-     */
-    public $propertyWithIgnoredTags;
-
-    /**
-     * @var DummyClassWithAllTypesOfProperties
-     */
-    public $propertyWithInjectAnnotation;
-
-    /**
      * @Transient
      */
     public $propertyWithTransientAnnotation;
