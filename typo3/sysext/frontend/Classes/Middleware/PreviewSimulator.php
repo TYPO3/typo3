@@ -94,10 +94,19 @@ class PreviewSimulator implements MiddlewareInterface
     {
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         $site = $request->getAttribute('site', null);
-        return $pageRepository->checkIfPageIsHidden(
-            $pageId,
-            LanguageAspectFactory::createFromSiteLanguage($request->getAttribute('language', $site->getDefaultLanguage()))
-        );
+        // always check both the page in the requested language and the page in the default language, as due to the
+        // overlay handling, a hidden default page will require setting the preview flag to allow previewing of the
+        // translation
+        $languageAspectFromRequest = LanguageAspectFactory::createFromSiteLanguage($request->getAttribute('language', $site->getDefaultLanguage()));
+        $pageIsHidden = $pageRepository->checkIfPageIsHidden($pageId, $languageAspectFromRequest);
+
+        if ($languageAspectFromRequest->getId() > 0) {
+            $pageIsHidden = $pageIsHidden || $pageRepository->checkIfPageIsHidden(
+                $pageId,
+                LanguageAspectFactory::createFromSiteLanguage($site->getDefaultLanguage())
+            );
+        }
+        return $pageIsHidden;
     }
 
     /**
