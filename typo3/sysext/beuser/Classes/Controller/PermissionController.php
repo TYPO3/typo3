@@ -421,7 +421,10 @@ class PermissionController
                 $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
                     ->setActive($this->depth === $value)
                     ->setLabel($label)
-                    ->setHref((string)$this->uriBuilder->buildUriFromRoute('permissions_pages', ['depth' => $value]));
+                    ->setHref((string)$this->uriBuilder->buildUriFromRoute('permissions_pages', [
+                        'id' => $this->id,
+                        'depth' => $value,
+                    ]));
             }
             $viewModeButton = $buttonBar->makeDropDownButton()
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
