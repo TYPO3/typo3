@@ -175,9 +175,9 @@ class TranslationStatusController extends InfoModuleController
                 ],
                 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
             ]);
-            $info = '<a href="#" ' . $previewUriBuilder->serializeDispatcherAttributes()
+            $info = '<button ' . ($previewUriBuilder->serializeDispatcherAttributes() ?? 'disabled="true"')
                 . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
-                $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() . '</a>';
+                $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() . '</button>';
             if ($backendUser->check('tables_modify', 'pages')) {
                 $info .= '<a href="' . htmlspecialchars($editUrl)
                     . '" class="btn btn-default" title="' . $lang->sL(
@@ -241,11 +241,11 @@ class TranslationStatusController extends InfoModuleController
                             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                         ]);
                         // ViewPageLink
-                        $info = '<a href="#" ' . $previewUriBuilder
+                        $info = '<button ' . ($previewUriBuilder
                                 ->withLanguage($languageId)
-                                ->serializeDispatcherAttributes()
+                                ->serializeDispatcherAttributes() ?? 'disabled="true"')
                             . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
-                            $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
+                            $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</button>';
                         $info .= '<a href="' . htmlspecialchars($editUrl)
                             . '" class="btn btn-default" title="' . $lang->sL(
                                 'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLanguageOverlayRecord'

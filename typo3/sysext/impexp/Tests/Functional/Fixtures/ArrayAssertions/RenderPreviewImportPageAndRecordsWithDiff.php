@@ -470,7 +470,7 @@ return [
 	</span>
 	
 </span>',
-      'title' => '<a href="#" >Root</a>',
+      'title' => 'Root',
       'active' => 'active',
       'showDiffContent' => '<strong class="text-nowrap">[pages:1 =&gt; 1]:</strong>
 Match',

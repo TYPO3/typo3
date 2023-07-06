@@ -170,7 +170,7 @@ return [
 	</span>
 	
 </span>',
-      'title' => '<a href="#" >Root</a>',
+      'title' => 'Root',
       'active' => 'active',
       'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][pages:1]" id="checkExcludepages:1" value="1" /><label class="form-check-label" for="checkExcludepages:1">Exclude</label></div>',
       'message' => '',
@@ -260,7 +260,7 @@ return [
 	</span>
 	
 </span>',
-      'title' => '<a href="#" >Dummy 1-2</a>',
+      'title' => 'Dummy 1-2',
       'active' => 'active',
       'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][pages:2]" id="checkExcludepages:2" value="1" /><label class="form-check-label" for="checkExcludepages:2">Exclude</label></div>',
       'message' => '',
@@ -276,7 +276,7 @@ return [
 	</span>
 	<span class="icon-overlay icon-overlay-hidden"><svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/overlay.svg#overlay-hidden" /></svg></span>
 </span>',
-      'title' => '<a href="#" >Dummy 1-3</a>',
+      'title' => 'Dummy 1-3',
       'active' => 'hidden',
       'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][pages:3]" id="checkExcludepages:3" value="1" /><label class="form-check-label" for="checkExcludepages:3">Exclude</label></div>',
       'message' => '',

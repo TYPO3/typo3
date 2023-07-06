@@ -631,11 +631,12 @@ class PageLayoutController
             ->buildDispatcherDataAttributes();
 
         return $buttonBar->makeLinkButton()
+            ->setHref('#')
             ->setDataAttributes($previewDataAttributes ?? [])
+            ->setDisabled(!$previewDataAttributes)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
-            ->setShowLabelText(true)
-            ->setHref('#');
+            ->setShowLabelText(true);
     }
 
     /**

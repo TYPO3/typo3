@@ -375,10 +375,10 @@ class PageInformationController extends InfoModuleController
                             ->withRootLine(BackendUtility::BEgetRootLine($row['uid']))
                             ->serializeDispatcherAttributes();
                         $editButton =
-                            '<a href="#" ' . $attributes . ' class="btn btn-default" title="' .
+                            '<button ' . ($attributes ?? 'disabled="true"') . ' class="btn btn-default" title="' .
                             htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' .
                             $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() .
-                            '</a>';
+                            '</button>';
 
                         if ($this->getBackendUser()->check('tables_modify', 'pages')) {
                             $editButton .=

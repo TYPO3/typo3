@@ -517,7 +517,7 @@ return [
           . "\t" . '</span>' . "\n"
           . "\t\n"
           . '</span>',
-      'title' => '<a href="#" >Root</a>',
+      'title' => 'Root',
       'active' => 'active',
       'updatePath' => '/',
       'updateMode' => sprintf('<select class="form-select form-select-sm" name="tx_impexp[import_mode][pages:1]" style="width: 100px"><option value="0">Update</option><option value="%s">Import as new</option><option value="%s">Ignore PID</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_AS_NEW, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_IGNORE_PID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),

@@ -146,9 +146,10 @@ class InfoModuleController
                 $viewButton = $buttonBar->makeLinkButton()
                     ->setHref('#')
                     ->setDataAttributes($previewDataAttributes ?? [])
-                    ->setShowLabelText(true)
-                    ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                    ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
+                    ->setDisabled(!$previewDataAttributes)
+                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                    ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
+                    ->setShowLabelText(true);
                 $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT);
             }
         }

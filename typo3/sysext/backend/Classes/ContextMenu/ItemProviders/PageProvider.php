@@ -423,7 +423,8 @@ class PageProvider extends RecordProvider
     {
         return !$this->isRoot()
             && !$this->isDeleted()
-            && !$this->isExcludedDoktype();
+            && !$this->isExcludedDoktype()
+            && $this->previewLinkCanBeBuild();
     }
 
     /**
