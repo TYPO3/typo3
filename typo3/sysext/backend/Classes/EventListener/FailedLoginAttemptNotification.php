@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Event\LoginAttemptFailedEvent;
+use TYPO3\CMS\Core\Authentication\Event\MfaVerificationFailedEvent;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -64,9 +65,10 @@ final class FailedLoginAttemptNotification
      * Sends a warning email if there has been a certain amount of failed logins during a period.
      * If a login fails, this function is called. It will look up the sys_log to see if there
      * have been more than $failedLoginAttemptsThreshold failed logins the last X seconds
-     * (default 3600, see $warningPeriod). If so, an email with a warning is sent.
+     * (default 3600, see $warningPeriod). If so, an email with a warning is sent. This also
+     * includes failed multi-factor authentication failures.
      */
-    public function __invoke(LoginAttemptFailedEvent $event): void
+    public function __invoke(LoginAttemptFailedEvent|MfaVerificationFailedEvent $event): void
     {
         if (!$event->isBackendAttempt()) {
             // This notification only works for backend users

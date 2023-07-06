@@ -19,27 +19,35 @@ namespace TYPO3\CMS\Core\Authentication\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
- * Event fired after a login attempt failed.
+ * Class to be extended by events, fired after authentication has failed
  */
-final class LoginAttemptFailedEvent extends AbstractAuthenticationFailedEvent
+abstract class AbstractAuthenticationFailedEvent
 {
     public function __construct(
-        private readonly AbstractUserAuthentication $user,
-        private readonly ServerRequestInterface $request,
-        private readonly array $loginData,
+        private readonly ServerRequestInterface $request
     ) {
-        parent::__construct($this->request);
     }
 
-    public function getUser(): AbstractUserAuthentication
+    /**
+     * Returns the user, who failed to authenticate successfully
+     */
+    abstract public function getUser(): AbstractUserAuthentication;
+
+    public function isFrontendAttempt(): bool
     {
-        return $this->user;
+        return !$this->isBackendAttempt();
     }
 
-    public function getLoginData(): array
+    public function isBackendAttempt(): bool
     {
-        return $this->loginData;
+        return $this->getUser() instanceof BackendUserAuthentication;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }
