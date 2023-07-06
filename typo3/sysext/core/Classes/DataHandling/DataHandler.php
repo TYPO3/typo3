@@ -2183,16 +2183,21 @@ class DataHandler implements LoggerAwareInterface
             $nativeDateTimeFieldFormat = $dateTimeFormats[$nativeDateTimeType]['format'];
             $nativeDateTimeFieldEmptyValue = $dateTimeFormats[$nativeDateTimeType]['empty'];
             $nativeDateTimeFieldResetValue = $dateTimeFormats[$nativeDateTimeType]['reset'];
-            if (empty($value)) {
+            if (empty($value) || $value === $nativeDateTimeFieldEmptyValue) {
                 $value = null;
+            } elseif (MathUtility::canBeInterpretedAsInteger((string)$value)) {
+                // This happens if DataHandler is not used in conjunction with FormEngine, but from e.g. a CLI command.
+                // Only happens if "dbType" is set.
+                $value = (int)$value;
             } else {
                 // Convert the date/time into a timestamp for the sake of the checks
                 // We expect the ISO 8601 $value to contain a UTC timezone specifier.
-                // We explicitly fallback to UTC if no timezone specifier is given (e.g. for copy operations).
+                // We explicitly fall back to UTC if no timezone specifier is given (e.g. for copy operations).
                 $dateTime = new \DateTime((string)$value, new \DateTimeZone('UTC'));
+
                 // The timestamp (UTC) returned by getTimestamp() will be converted to
                 // a local time string by gmdate() later.
-                $value = $value === $nativeDateTimeFieldEmptyValue ? null : $dateTime->getTimestamp();
+                $value = $dateTime->getTimestamp();
             }
         }
 
