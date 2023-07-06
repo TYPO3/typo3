@@ -194,10 +194,8 @@ services:
     tags:
       - name: event.listener
         identifier: 'typo3/cms-backend/failed-login-attempt-notification'
-        event: TYPO3\CMS\Core\Authentication\Event\LoginAttemptFailedEvent
       - name: event.listener
         identifier: 'typo3/cms-backend/failed-mfa-verification-notification'
-        event: TYPO3\CMS\Core\Authentication\Event\MfaVerificationFailedEvent
 
   TYPO3\CMS\Backend\Security\EmailLoginNotification:
     tags:
