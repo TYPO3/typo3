@@ -73,6 +73,9 @@
 			<trans-unit id="sys_webhook.webhook_type.typo3-login-error" resname="sys_webhook.webhook_type.typo3-login-error">
 				<source>... when an error occurs on log in</source>
 			</trans-unit>
+			<trans-unit id="sys_webhook.webhook_type.typo3-mfa-error" resname="sys_webhook.webhook_type.typo3-mfa-error">
+				<source>... when an error occurs on multi-factor authentication</source>
+			</trans-unit>
 			<trans-unit id="sys_webhook.webhook_type.typo3-file-added" resname="sys_webhook.webhook_type.typo3-file-added">
 				<source>... when a file is added</source>
 			</trans-unit>

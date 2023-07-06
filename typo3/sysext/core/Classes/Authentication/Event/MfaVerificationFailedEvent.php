@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Authentication\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 
 /**
@@ -29,6 +30,7 @@ final class MfaVerificationFailedEvent extends AbstractAuthenticationFailedEvent
     public function __construct(
         private readonly ServerRequestInterface $request,
         private readonly MfaProviderPropertyManager $propertyManager,
+        private readonly MfaProviderManifestInterface $mfaProvider,
     ) {
         parent::__construct($this->request);
     }
@@ -40,11 +42,16 @@ final class MfaVerificationFailedEvent extends AbstractAuthenticationFailedEvent
 
     public function getProviderIdentifier(): string
     {
-        return $this->propertyManager->getIdentifier();
+        return $this->mfaProvider->getIdentifier();
     }
 
     public function getProviderProperties(): array
     {
         return $this->propertyManager->getProperties();
+    }
+
+    public function isProviderLocked(): bool
+    {
+        return $this->mfaProvider->isLocked($this->propertyManager);
     }
 }
