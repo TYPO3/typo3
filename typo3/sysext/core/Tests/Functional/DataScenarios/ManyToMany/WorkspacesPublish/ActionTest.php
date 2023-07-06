@@ -282,6 +282,22 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     /**
      * @test
      */
+    public function copyContentToLanguageOfRelation(): void
+    {
+        parent::copyContentToLanguageOfRelation();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageOfRelation.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+    }
+
+    /**
+     * @test
+     */
     public function copyCategoryOfRelation(): void
     {
         parent::copyCategoryOfRelation();
@@ -298,12 +314,97 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     /**
      * @test
      */
+    public function copyCategoryToLanguageOfRelation(): void
+    {
+        parent::copyCategoryToLanguageOfRelation();
+        $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyCategoryToLanguageOfRelation.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A'));
+        // [Translate to Dansk:] Category A is not connected, thus it is not shown
+        // ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', '[Translate to Dansk:] Category A'));
+
+    }
+
+    /**
+     * @test
+     */
     public function localizeContentOfRelation(): void
     {
         parent::localizeContentOfRelation();
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelation.csv');
 
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+    }
+
+    /**
+     * @test
+     */
+    public function localizeContentOfRelationWithLanguageSynchronization(): void
+    {
+        parent::localizeContentOfRelationWithLanguageSynchronization();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWSynchronization.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+    }
+
+    /**
+     * @test
+     */
+    public function localizeContentOfRelationWithLanguageExclude(): void
+    {
+        parent::localizeContentOfRelationWithLanguageExclude();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWExclude.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+    }
+
+    /**
+     * @test
+     */
+    public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
+    {
+        parent::localizeContentOfRelationAndAddCategoryWithLanguageSynchronization();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationNAddCategoryWSynchronization.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+    }
+
+    /**
+     * @test
+     */
+    public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization(): void
+    {
+        parent::localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentIdSecond']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentChainOfRelationNAddCategoryWSynchronization.csv');
+
+        // @todo: should we check for LanguageId_Second?
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()

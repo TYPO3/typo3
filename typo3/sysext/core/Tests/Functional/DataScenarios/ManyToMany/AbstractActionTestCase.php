@@ -134,20 +134,21 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     /**
      * See DataSet/copyContentToLanguageOfRelation.csv
-     * @todo: does not exist in workspaces
      */
     public function copyContentToLanguageOfRelation(): void
     {
-        $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
     /**
      * See DataSet/copyCategoryToLanguageOfRelation.csv
-     * @todo: does not exist in workspaces
+     * @todo: This action does not copy the relations with it (at least in workspaces), and should be re-evaluated
      */
     public function copyCategoryToLanguageOfRelation(): void
     {
-        $this->actionService->copyRecordToLanguage(self::TABLE_Category, self::VALUE_CategoryIdFirst, self::VALUE_LanguageId);
+        $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Category, self::VALUE_CategoryIdFirst, self::VALUE_LanguageId);
+        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][self::VALUE_CategoryIdFirst];
     }
 
     public function localizeContentOfRelation(): void
@@ -156,9 +157,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    /**
-     * @todo: does not exist in workspaces
-     */
     public function localizeContentOfRelationWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
@@ -166,9 +164,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    /**
-     * @todo: does not exist in workspaces
-     */
+    public function localizeContentOfRelationWithLanguageExclude(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['l10n_mode'] = 'exclude';
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
     public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
@@ -182,9 +184,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    /**
-     * @todo: does not exist in workspaces
-     */
     public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;

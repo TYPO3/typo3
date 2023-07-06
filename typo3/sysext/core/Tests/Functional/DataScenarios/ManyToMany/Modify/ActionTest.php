@@ -271,6 +271,22 @@ final class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     * See DataSet/localizeContentOfRelationWExclude.csv
+     */
+    public function localizeContentOfRelationWithLanguageExclude(): void
+    {
+        parent::localizeContentOfRelationWithLanguageExclude();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWExclude.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+    }
+
+    /**
+     * @test
      * See DataSet/localizeContentOfRelationNAddCategoryWSynchronization.csv
      */
     public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
