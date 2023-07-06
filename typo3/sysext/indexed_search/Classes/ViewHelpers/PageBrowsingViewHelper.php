@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
 
+use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -30,15 +31,17 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 final class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
 {
-    /**
-     * @var string
-     */
-    protected static $prefixId = 'tx_indexedsearch';
+    protected static string $prefixId = 'tx_indexedsearch';
 
     /**
      * @var string
      */
     protected $tagName = 'ul';
+
+    public function __construct(private readonly AssetCollector $assetCollector)
+    {
+        parent::__construct();
+    }
 
     public function initializeArguments(): void
     {
@@ -124,11 +127,41 @@ final class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
      */
     protected function makecurrentPageSelector_link($str, $p, $freeIndexUid)
     {
-        $onclick = 'document.getElementById(' . GeneralUtility::quoteJSvalue(self::$prefixId . '_pointer') . ').value=' . GeneralUtility::quoteJSvalue((string)$p) . ';';
-        if ($freeIndexUid !== null) {
-            $onclick .= 'document.getElementById(' . GeneralUtility::quoteJSvalue(self::$prefixId . '_freeIndexUid') . ').value=' . GeneralUtility::quoteJSvalue($freeIndexUid) . ';';
+        $this->providePageSelectorJavaScript();
+        return sprintf(
+            '<a %s>%s</a>',
+            GeneralUtility::implodeAttributes([
+                'href' => '#',
+                'class' => 'tx-indexedsearch-page-selector',
+                'data-prefix' => self::$prefixId,
+                'data-pointer' => $p,
+                'data-freeIndexUid' => $freeIndexUid,
+            ], true),
+            htmlspecialchars($str)
+        );
+    }
+
+    private function providePageSelectorJavaScript(): void
+    {
+        if ($this->assetCollector->hasInlineJavaScript(self::class)) {
+            return;
         }
-        $onclick .= 'document.getElementById(' . GeneralUtility::quoteJSvalue(self::$prefixId) . ').submit();return false;';
-        return '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . htmlspecialchars($str) . '</a>';
+        $this->assetCollector->addInlineJavaScript(
+            self::class,
+            implode(' ', [
+                "document.addEventListener('click', (evt) => {",
+                    'evt.preventDefault();',
+                    "if (!evt.target.classList.contains('tx-indexedsearch-page-selector')) {",
+                        'return;',
+                    '}',
+                    'var data = evt.target.dataset;',
+                    "document.getElementById(data.prefix + '_pointer').value = data.pointer;",
+                    "document.getElementById(data.prefix + '_freeIndexUid').value = data.freeIndexUid;",
+                    'document.getElementById(data.prefix).submit();',
+                '});',
+            ]),
+            [],
+            ['useNonce' => true],
+        );
     }
 }
