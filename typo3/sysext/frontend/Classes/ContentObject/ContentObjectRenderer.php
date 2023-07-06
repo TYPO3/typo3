@@ -3262,7 +3262,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // Search for tags to process in current data and
                     // call this method recursively if found
                     if (str_contains($data, '<') && isset($conf['tags.']) && is_array($conf['tags.'])) {
-                        foreach ($conf['tags.'] as $tag => $tagConfig) {
+                        // @todo probably use a DOM tree traversal for the whole stuff
+                        // This iterations basically re-processes the markup string, as
+                        // long as there are `<$tag ` or `<$tag>` "tags" found...
+                        foreach (array_keys($conf['tags.']) as $tag) {
                             // only match tag `a` in `<a href"...">` but not in `<abbr>`
                             if (preg_match('#<' . $tag . '[\s/>]#', $data)) {
                                 $data = $this->parseFuncInternal($data, $conf);
