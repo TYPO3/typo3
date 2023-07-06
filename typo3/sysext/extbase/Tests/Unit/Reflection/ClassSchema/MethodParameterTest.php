@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodParameterException;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithConstructorAndConstructorArgumentsWithDependencies;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithGettersAndSetters;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyController;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithIgnoreValidationDoctrineAnnotation;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithIgnoreValidationDoctrineAttribute;
@@ -101,18 +99,6 @@ final class MethodParameterTest extends UnitTestCase
 
         $this->expectException(NoSuchMethodParameterException::class);
         $classSchemaMethod->getParameter('baz')->ignoreValidation();
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsConstructorArgumentsWithDependencies(): void
-    {
-        $classSchema = new ClassSchema(DummyClassWithConstructorAndConstructorArgumentsWithDependencies::class);
-        self::assertTrue($classSchema->hasConstructor());
-
-        $method = $classSchema->getMethod('__construct');
-        self::assertSame(DummyClassWithGettersAndSetters::class, $method->getParameter('foo')->getDependency());
     }
 
     /**

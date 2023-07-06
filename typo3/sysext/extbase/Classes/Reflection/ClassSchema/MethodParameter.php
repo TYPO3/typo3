@@ -43,7 +43,6 @@ class MethodParameter
             'optional' => false,
             'hasDefaultValue' => false,
             'defaultValue' => null,
-            'dependency' => null,
             'ignoreValidation' => false,
             'validators' => [],
             'position' => -1,
@@ -99,11 +98,6 @@ class MethodParameter
     public function isOptional(): bool
     {
         return $this->definition['optional'];
-    }
-
-    public function getDependency(): ?string
-    {
-        return $this->definition['dependency'];
     }
 
     public function getPosition(): int

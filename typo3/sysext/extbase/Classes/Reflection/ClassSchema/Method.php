@@ -55,7 +55,6 @@ class Method
             'public' => false,
             'protected' => false,
             'private' => false,
-            'injectMethod' => false,
             'static' => false,
         ];
 
@@ -139,11 +138,6 @@ class Method
     public function isPrivate(): bool
     {
         return $this->definition['private'];
-    }
-
-    public function isInjectMethod(): bool
-    {
-        return $this->definition['injectMethod'];
     }
 
     public function isStatic(): bool

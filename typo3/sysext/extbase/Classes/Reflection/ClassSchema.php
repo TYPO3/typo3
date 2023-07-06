@@ -58,8 +58,6 @@ class ClassSchema
     private const BIT_CLASS_IS_CONTROLLER = 1 << 3;
     private const BIT_CLASS_IS_SINGLETON = 1 << 4;
     private const BIT_CLASS_HAS_CONSTRUCTOR = 1 << 5;
-    private const BIT_CLASS_HAS_INJECT_METHODS = 1 << 6;
-    private const BIT_CLASS_HAS_INJECT_PROPERTIES = 1 << 7;
 
     /**
      * @var BitSet
@@ -94,11 +92,6 @@ class ClassSchema
      * @var array
      */
     private $methods = [];
-
-    /**
-     * @var array
-     */
-    private $injectMethods = [];
 
     /**
      * @var PropertyInfoExtractor
@@ -192,7 +185,6 @@ class ClassSchema
     {
         $annotationReader = new AnnotationReader();
 
-        $classHasInjectProperties = false;
         $defaultProperties = $reflectionClass->getDefaultProperties();
 
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
@@ -278,10 +270,6 @@ class ClassSchema
             foreach ($types as $type) {
                 $this->properties[$propertyName]['t'][] = $type;
             }
-        }
-
-        if ($classHasInjectProperties) {
-            $this->bitSet->set(self::BIT_CLASS_HAS_INJECT_PROPERTIES);
         }
     }
 
@@ -391,7 +379,6 @@ class ClassSchema
                 $this->methods[$methodName]['params'][$parameterName]['type'] = null;
                 $this->methods[$methodName]['params'][$parameterName]['hasDefaultValue'] = $reflectionParameter->isDefaultValueAvailable();
                 $this->methods[$methodName]['params'][$parameterName]['defaultValue'] = null;
-                $this->methods[$methodName]['params'][$parameterName]['dependency'] = null; // Extbase DI
                 $this->methods[$methodName]['params'][$parameterName]['ignoreValidation'] = $ignoreValidationParameters !== [] || $ignoreValidationParametersFromAttribute !== [];
                 $this->methods[$methodName]['params'][$parameterName]['validators'] = [];
 
@@ -451,21 +438,6 @@ class ClassSchema
                     }
                 }
 
-                // Extbase DI
-                if ($reflectionType instanceof \ReflectionNamedType && !$reflectionType->isBuiltin()
-                    && ($reflectionMethod->isConstructor() || $this->hasInjectMethodName($reflectionMethod))
-                ) {
-                    if ($typeDetectedViaDocBlock) {
-                        $parameterType = $this->methods[$methodName]['params'][$parameterName]['type'];
-                        $errorMessage = <<<MESSAGE
-The type ($parameterType) of parameter \$$parameterName of method $this->className::$methodName() is defined via php DocBlock. Use a proper PHP parameter type hint instead:
-[private|protected|public] function $methodName($parameterType \$$parameterName)
-MESSAGE;
-                        throw new \RuntimeException($errorMessage, 1639224353);
-                    }
-                    $this->methods[$methodName]['params'][$parameterName]['dependency'] = $reflectionType->getName();
-                }
-
                 // Extbase Validation
                 if (isset($argumentValidators[$parameterName])) {
                     if ($this->methods[$methodName]['params'][$parameterName]['type'] === null) {
@@ -497,24 +469,10 @@ MESSAGE;
                     1515073585
                 );
             }
-
-            // Extbase
-            $this->methods[$methodName]['injectMethod'] = false;
-            if ($this->hasInjectMethodName($reflectionMethod)
-                && count($this->methods[$methodName]['params']) === 1
-                && reset($this->methods[$methodName]['params'])['dependency'] !== null
-            ) {
-                $this->methods[$methodName]['injectMethod'] = true;
-                $this->injectMethods[] = $methodName;
-            }
         }
 
         if (isset($this->methods['__construct'])) {
             $this->bitSet->set(self::BIT_CLASS_HAS_CONSTRUCTOR);
-        }
-
-        if (count($this->injectMethods) > 0) {
-            $this->bitSet->set(self::BIT_CLASS_HAS_INJECT_METHODS);
         }
     }
 
@@ -612,22 +570,6 @@ MESSAGE;
         return $this->buildMethodObjects();
     }
 
-    protected function hasInjectMethodName(\ReflectionMethod $reflectionMethod): bool
-    {
-        $methodName = $reflectionMethod->getName();
-        if ($methodName === 'injectSettings' || !$reflectionMethod->isPublic()) {
-            return false;
-        }
-
-        if (
-            str_starts_with($reflectionMethod->getName(), 'inject')
-        ) {
-            return true;
-        }
-
-        return false;
-    }
-
     /**
      * @internal
      */
@@ -660,24 +602,6 @@ MESSAGE;
     public function hasMethod(string $methodName): bool
     {
         return isset($this->methods[$methodName]);
-    }
-
-    public function hasInjectProperties(): bool
-    {
-        return $this->bitSet->get(self::BIT_CLASS_HAS_INJECT_PROPERTIES);
-    }
-
-    public function hasInjectMethods(): bool
-    {
-        return $this->bitSet->get(self::BIT_CLASS_HAS_INJECT_METHODS);
-    }
-
-    /**
-     * @return array|Method[]
-     */
-    public function getInjectMethods(): array
-    {
-        return array_filter($this->buildMethodObjects(), static fn (Method $method): bool => $method->isInjectMethod());
     }
 
     /**

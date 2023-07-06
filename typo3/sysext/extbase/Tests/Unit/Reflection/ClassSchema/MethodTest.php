@@ -52,30 +52,6 @@ final class MethodTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsInjectMethods(): void
-    {
-        $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
-        self::assertTrue($classSchema->hasInjectMethods());
-
-        $methodDefinition = $classSchema->getMethod('injectSettings');
-        self::assertFalse($methodDefinition->isInjectMethod());
-
-        $methodDefinition = $classSchema->getMethod('injectMethodWithoutParam');
-        self::assertFalse($methodDefinition->isInjectMethod());
-
-        $methodDefinition = $classSchema->getMethod('injectMethodThatIsProtected');
-        self::assertFalse($methodDefinition->isInjectMethod());
-
-        $methodDefinition = $classSchema->getMethod('injectFoo');
-        self::assertTrue($methodDefinition->isInjectMethod());
-
-        $injectMethods = $classSchema->getInjectMethods();
-        self::assertArrayHasKey('injectFoo', $injectMethods);
-    }
-
-    /**
-     * @test
-     */
     public function classSchemaDetectsStaticMethods(): void
     {
         self::assertTrue(

@@ -1506,11 +1506,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/PersistentObjectConverter.php
 
 		-
-			message: "#^If condition is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Reflection/ClassSchema.php
-
-		-
 			message: "#^Dead catch \\- Symfony\\\\Component\\\\PropertyAccess\\\\Exception\\\\NoSuchIndexException is never thrown in the try block\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Reflection/ObjectAccess.php
