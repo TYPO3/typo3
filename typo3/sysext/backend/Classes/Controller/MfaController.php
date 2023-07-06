@@ -136,7 +136,7 @@ class MfaController extends AbstractMfaController
                 error: SystemLogErrorClassification::SECURITY_NOTICE
             );
             $this->eventDispatcher->dispatch(
-                new MfaVerificationFailedEvent($request, $propertyManager)
+                new MfaVerificationFailedEvent($request, $propertyManager, $mfaProvider)
             );
             // If failed, initiate a redirect back to the auth view
             return new RedirectResponse($this->uriBuilder->buildUriWithRedirect(
