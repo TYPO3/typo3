@@ -2092,30 +2092,44 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         $this->fetchGroupData();
         // Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
         $this->backendSetUC();
-        if ($this->loginSessionStarted) {
-            // Also, if there is a recovery link set, unset it now
-            // this will be moved into its own Event at a later stage.
-            // If a token was set previously, this is now unset, as it was now possible to log-in
-            if ($this->user['password_reset_token'] ?? '') {
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable($this->user_table)
-                    ->update($this->user_table, ['password_reset_token' => ''], ['uid' => $this->user['uid']]);
-            }
+        if ($this->loginSessionStarted && !($this->getSessionData('mfa') ?? false)) {
+            // Handling user logged in. By checking for the mfa session key, it's ensured, the
+            // handling is only done once, since MfaController does the handling on its own.
+            $this->handleUserLoggedIn();
+        }
+    }
 
-            $event = new AfterUserLoggedInEvent($this, $request);
-            GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
-            // Process hooks
-            $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin'] ?? [];
-            if (!empty($hooks)) {
-                trigger_error(
-                    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'backendUserLogin\'] will be removed in TYPO3 v13.0. Use the PSR-14 "AfterUserLoggedInEvent" instead.',
-                    E_USER_DEPRECATED
-                );
-            }
-            foreach ($hooks as $_funcRef) {
-                $_params = ['user' => $this->user];
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+    /**
+     * Is called after a user has sucesfully logged in. So either by using only one factor
+     * (e.g. username/password) or after the multi-factor authentication process has been passed.
+     *
+     * @internal
+     */
+    public function handleUserLoggedIn(ServerRequestInterface $request = null): void
+    {
+        // Also, if there is a recovery link set, unset it now
+        // this will be moved into its own Event at a later stage.
+        // If a token was set previously, this is now unset, as it was now possible to log-in
+        if ($this->user['password_reset_token'] ?? '') {
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($this->user_table)
+                ->update($this->user_table, ['password_reset_token' => ''], ['uid' => $this->user['uid']]);
+        }
+
+        $event = new AfterUserLoggedInEvent($this, $request);
+        GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
+
+        // Process hooks
+        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin'] ?? [];
+        if (!empty($hooks)) {
+            trigger_error(
+                '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'backendUserLogin\'] will be removed in TYPO3 v13.0. Use the PSR-14 "AfterUserLoggedInEvent" instead.',
+                E_USER_DEPRECATED
+            );
+        }
+        foreach ($hooks as $_funcRef) {
+            $_params = ['user' => $this->user];
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 

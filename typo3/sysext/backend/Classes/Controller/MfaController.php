@@ -120,7 +120,8 @@ class MfaController extends AbstractMfaController
      */
     protected function verifyAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
     {
-        $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
+        $backendUser = $this->getBackendUser();
+        $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $backendUser);
 
         // Check if the provider can process the request and is not temporarily blocked
         if (!$mfaProvider->canProcess($request) || $mfaProvider->isLocked($propertyManager)) {
@@ -150,7 +151,8 @@ class MfaController extends AbstractMfaController
         $this->log('Multi-factor authentication successful for user ###USERNAME###');
         // If verified, store this information in the session
         // and initiate a redirect back to the login view.
-        $this->getBackendUser()->setAndSaveSessionData('mfa', true);
+        $backendUser->setAndSaveSessionData('mfa', true);
+        $backendUser->handleUserLoggedIn($request);
         return new RedirectResponse(
             $this->uriBuilder->buildUriWithRedirect('login', [], RouteRedirect::createFromRequest($request))
         );
