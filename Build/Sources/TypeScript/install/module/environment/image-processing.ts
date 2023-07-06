@@ -12,7 +12,6 @@
  */
 
 import 'bootstrap';
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
@@ -22,6 +21,7 @@ import InfoBox from '../../renderable/info-box';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 /**
  * Module: @typo3/install/module/image-processing
@@ -38,21 +38,21 @@ class ImageProcessing extends AbstractInteractableModule {
     this.currentModal = currentModal;
     this.getData();
 
-    currentModal.on('click', this.selectorExecuteTrigger, (e: JQueryEventObject): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event) => {
+      event.preventDefault();
       this.runTests();
-    });
+    }).delegateTo(currentModal.get(0), this.selectorExecuteTrigger);
   }
 
   private getData(): void {
-    const modalContent = this.getModalBody();
+    const modalContent: HTMLElement = this.getModalBody().get(0);
     (new AjaxRequest(Router.getUrl('imageProcessingGetData')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
-            modalContent.empty().append(data.html);
+            modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
             this.runTests();
           } else {
@@ -66,39 +66,38 @@ class ImageProcessing extends AbstractInteractableModule {
   }
 
   private runTests(): void {
-    const modalContent = this.getModalBody();
-    const $triggerButton = this.findInModal(this.selectorExecuteTrigger);
+    const modalContent: HTMLElement = this.getModalBody().get(0);
     this.setModalButtonsState(false);
 
-    const $twinImageTemplate = this.findInModal(this.selectorTwinImageTemplate);
+    const twinImageTemplate = this.findInModal(this.selectorTwinImageTemplate).get(0);
     const promises: Array<Promise<void>> = [];
-    modalContent.find(this.selectorTestContainer).each((index: number, container: Element): void => {
-      const $container: JQuery = $(container);
-      const testType: string = $container.data('test');
-      const message = InfoBox.render(Severity.loading, 'Loading...', '');
-      $container.empty().append(message);
-      const request = (new AjaxRequest(Router.getUrl(testType)))
+    modalContent.querySelectorAll(this.selectorTestContainer).forEach((container: HTMLElement, index: number): void => {
+      container.innerHTML = '';
+      container.append(InfoBox.render(Severity.loading, 'Loading...', '').get(0));
+      const request = (new AjaxRequest(Router.getUrl(container.dataset.test)))
         .get({ cache: 'no-cache' })
         .then(
           async (response: AjaxResponse): Promise<void> => {
             const data = await response.resolve();
             if (data.success === true) {
-              $container.empty();
+              container.innerHTML = '';
               if (Array.isArray(data.status)) {
                 data.status.forEach((element: MessageInterface): void => {
-                  const message = InfoBox.render(element.severity, element.title, element.message);
-                  $container.append(message);
+                  container.append(InfoBox.render(element.severity, element.title, element.message).get(0));
                 });
               }
-              const $aTwin = $twinImageTemplate.clone();
-              $aTwin.removeClass('t3js-imageProcessing-twinImage-template');
+              const aTwin: HTMLElement = twinImageTemplate.cloneNode(true) as HTMLElement;
+              aTwin.classList.remove('t3js-imageProcessing-twinImage-template');
               if (data.fileExists === true) {
-                $aTwin.find('img.reference').attr('src', data.referenceFile);
-                $aTwin.find('img.result').attr('src', data.outputFile);
-                $aTwin.find(this.selectorTwinImages).show();
+                aTwin.querySelector('img.reference')?.setAttribute('src', data.referenceFile);
+                aTwin.querySelector('img.result')?.setAttribute('src', data.outputFile);
+                aTwin.querySelectorAll(this.selectorTwinImages).forEach((image: HTMLElement) => image.hidden = false);
               }
               if (Array.isArray(data.command) && data.command.length > 0) {
-                $aTwin.find(this.selectorCommandContainer).show();
+                const commandContainer: HTMLElement = aTwin.querySelector(this.selectorCommandContainer);
+                if (commandContainer !== null) {
+                  commandContainer.hidden = false;
+                }
                 const commandText: Array<string> = [];
                 data.command.forEach((aElement: any): void => {
                   commandText.push('<strong>Command:</strong>\n' + aElement[1]);
@@ -106,9 +105,12 @@ class ImageProcessing extends AbstractInteractableModule {
                     commandText.push('<strong>Result:</strong>\n' + aElement[2]);
                   }
                 });
-                $aTwin.find(this.selectorCommandText).html(commandText.join('\n'));
+                const commandTextElement: HTMLElement = aTwin.querySelector(this.selectorCommandText);
+                if (commandTextElement !== null) {
+                  commandTextElement.innerHTML = commandText.join('\n');
+                }
               }
-              $container.append($aTwin);
+              container.append(aTwin);
             }
           },
           (error: AjaxResponse): void => {
@@ -119,7 +121,11 @@ class ImageProcessing extends AbstractInteractableModule {
     });
 
     Promise.all(promises).then((): void => {
-      $triggerButton.removeClass('disabled').prop('disabled', false);
+      const triggerButton: HTMLElement = this.findInModal(this.selectorExecuteTrigger).get(0);
+      if (triggerButton !== null) {
+        triggerButton.classList.remove('disabled');
+        triggerButton.removeAttribute('disabled');
+      }
     });
   }
 }
