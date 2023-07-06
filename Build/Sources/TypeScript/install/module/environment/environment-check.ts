@@ -12,7 +12,6 @@
  */
 
 import 'bootstrap';
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
@@ -23,6 +22,7 @@ import InfoBox from '../../renderable/info-box';
 import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 interface EnvironmentCheckResponse {
   success: boolean,
@@ -51,27 +51,31 @@ class EnvironmentCheck extends AbstractInteractableModule {
     // Get status on initialize to have the badge and content ready
     this.runTests();
 
-    currentModal.on('click', this.selectorExecuteTrigger, (e: JQueryEventObject): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event) => {
+      event.preventDefault();
       this.runTests();
-    });
+    }).delegateTo(currentModal.get(0), this.selectorExecuteTrigger);
   }
 
   private runTests(): void {
     this.setModalButtonsState(false);
-
-    const modalContent = this.getModalBody();
-    const $errorBadge = $(this.selectorGridderBadge);
-    $errorBadge.text('').hide();
-    const message = ProgressBar.render(Severity.loading, 'Loading...', '');
-    modalContent.find(this.selectorOutputContainer).empty().append(message);
-
+    const modalContent: HTMLElement = this.getModalBody().get(0);
+    const errorBadge: HTMLElement = document.querySelector(this.selectorGridderBadge);
+    if (errorBadge !== null) {
+      errorBadge.innerHTML = '';
+      errorBadge.hidden = true;
+    }
+    const outputContainer: HTMLElement = modalContent.querySelector(this.selectorOutputContainer);
+    if (outputContainer !== null) {
+      outputContainer.innerHTML = '';
+      outputContainer.append(ProgressBar.render(Severity.loading, 'Loading...', '').get(0));
+    }
     (new AjaxRequest(Router.getUrl('environmentCheckGetStatus')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data: EnvironmentCheckResponse = await response.resolve();
-          modalContent.empty().append(data.html);
+          modalContent.innerHTML = data.html;
           Modal.setButtons(data.buttons);
           let warningCount = 0;
           let errorCount = 0;
@@ -84,14 +88,23 @@ class EnvironmentCheck extends AbstractInteractableModule {
                 if (status.severity === 2) {
                   errorCount++;
                 }
-                const message = InfoBox.render(status.severity, status.title, status.message);
-                modalContent.find(this.selectorOutputContainer).append(message);
+                modalContent.querySelector(this.selectorOutputContainer).append(
+                  InfoBox.render(status.severity, status.title, status.message).get(0)
+                );
               }
             }
-            if (errorCount > 0) {
-              $errorBadge.removeClass('badge-warning').addClass('badge-danger').text(errorCount).show();
-            } else if (warningCount > 0) {
-              $errorBadge.removeClass('badge-error').addClass('badge-warning').text(warningCount).show();
+            if (errorBadge !== null) {
+              if (errorCount > 0) {
+                errorBadge.classList.remove('badge-warning');
+                errorBadge.classList.add('badge-danger');
+                errorBadge.innerText = errorCount.toString();
+                errorBadge.hidden = false;
+              } else if (warningCount > 0) {
+                errorBadge.classList.remove('badge-error');
+                errorBadge.classList.add('badge-warning');
+                errorBadge.innerText = warningCount.toString();
+                errorBadge.hidden = false;
+              }
             }
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
