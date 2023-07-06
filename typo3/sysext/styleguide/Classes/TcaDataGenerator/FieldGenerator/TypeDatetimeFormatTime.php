@@ -17,7 +17,10 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Types\IntegerType;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
@@ -49,6 +52,17 @@ class TypeDatetimeFormatTime extends AbstractFieldGenerator implements FieldGene
     {
         // 05:23
         $value = '19380';
+
+        // If database field is configured as integer field type, keep the integer-like value.
+        $tableSchemaInformation = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($data['tableName'])
+            ->getSchemaInformation()
+            ->introspectTable($data['tableName']);
+        if ($tableSchemaInformation->hasColumn($data['fieldName'])
+            && $tableSchemaInformation->getColumn($data['fieldName'])->getType() instanceof IntegerType
+        ) {
+            return $value;
+        }
 
         // We need to partly do the same work as the DataHandler for some dbTypes for the DateTime type to get
         // database compatible values. Without it, we will get invalid format database exception when inserted.
