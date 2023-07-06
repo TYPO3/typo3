@@ -2029,19 +2029,32 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         $this->fetchGroupData();
         // Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
         $this->backendSetUC();
-        if ($this->loginSessionStarted) {
-            // Also, if there is a recovery link set, unset it now
-            // this will be moved into its own Event at a later stage.
-            // If a token was set previously, this is now unset, as it was now possible to log-in
-            if ($this->user['password_reset_token'] ?? '') {
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable($this->user_table)
-                    ->update($this->user_table, ['password_reset_token' => ''], ['uid' => $this->user['uid']]);
-            }
-
-            $event = new AfterUserLoggedInEvent($this, $request);
-            GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
+        if ($this->loginSessionStarted && !($this->getSessionData('mfa') ?? false)) {
+            // Handling user logged in. By checking for the mfa session key, it's ensured, the
+            // handling is only done once, since MfaController does the handling on its own.
+            $this->handleUserLoggedIn();
         }
+    }
+
+    /**
+     * Is called after a user has sucesfully logged in. So either by using only one factor
+     * (e.g. username/password) or after the multi-factor authentication process has been passed.
+     *
+     * @internal
+     */
+    public function handleUserLoggedIn(ServerRequestInterface $request = null): void
+    {
+        // Also, if there is a recovery link set, unset it now
+        // this will be moved into its own Event at a later stage.
+        // If a token was set previously, this is now unset, as it was now possible to log-in
+        if ($this->user['password_reset_token'] ?? '') {
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($this->user_table)
+                ->update($this->user_table, ['password_reset_token' => ''], ['uid' => $this->user['uid']]);
+        }
+
+        $event = new AfterUserLoggedInEvent($this, $request);
+        GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
     }
 
     /**
