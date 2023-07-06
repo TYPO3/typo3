@@ -59,16 +59,6 @@ return [
                 'default' => 0,
             ],
         ],
-        'birthday' => [
-            'exclude' => true,
-            'label' => 'Birthday',
-            'config' => [
-                'type' => 'datetime',
-                'format' => 'date',
-                'dbType' => 'datetime',
-                'default' => 0,
-            ],
-        ],
         'title' => [
             'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
@@ -83,7 +73,7 @@ return [
     'types' => [
         '0' => [
             'showitem' =>
-                '--div--;LLL:EXT:test_datahandler/Resources/Private/Language/locallang_db.xlf:tabs.general, title, birthday,' .
+                '--div--;LLL:EXT:test_datahandler/Resources/Private/Language/locallang_db.xlf:tabs.general, title,' .
                 '--div--;LLL:EXT:test_datahandler/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l10n_parent, l10n_diffsource, hidden',
         ],
     ],
