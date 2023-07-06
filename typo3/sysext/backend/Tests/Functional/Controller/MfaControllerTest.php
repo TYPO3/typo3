@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\MfaController;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -66,7 +67,8 @@ final class MfaControllerTest extends FunctionalTestCase
             $this->get(PageRenderer::class),
             $this->get(ExtensionConfiguration::class),
             new Logger('testing'),
-            $this->get(BackendViewFactory::class)
+            $this->get(BackendViewFactory::class),
+            $this->get(EventDispatcherInterface::class)
         );
         $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
 

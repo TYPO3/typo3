@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Authentication\Event\MfaVerificationFailedEvent;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
@@ -55,6 +57,7 @@ class MfaController extends AbstractMfaController
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly LoggerInterface $logger,
         protected readonly BackendViewFactory $backendViewFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -126,7 +129,14 @@ class MfaController extends AbstractMfaController
         }
         // Call the provider to verify the request
         if (!$mfaProvider->verify($request, $propertyManager)) {
-            $this->log('Multi-factor authentication failed for user ###USERNAME###');
+            $this->log(
+                message: 'Multi-factor authentication failed for user \'###USERNAME###\' with provider \'' . $mfaProvider->getIdentifier() . '\'!',
+                action: Login::ATTEMPT,
+                error: SystemLogErrorClassification::SECURITY_NOTICE
+            );
+            $this->eventDispatcher->dispatch(
+                new MfaVerificationFailedEvent($request, $propertyManager)
+            );
             // If failed, initiate a redirect back to the auth view
             return new RedirectResponse($this->uriBuilder->buildUriWithRedirect(
                 'auth_mfa',
@@ -175,8 +185,13 @@ class MfaController extends AbstractMfaController
     /**
      * Log debug information for MFA events
      */
-    protected function log(string $message, array $additionalData = [], ?MfaProviderManifestInterface $mfaProvider = null): void
-    {
+    protected function log(
+        string $message,
+        array $additionalData = [],
+        ?MfaProviderManifestInterface $mfaProvider = null,
+        int $action = Login::LOGIN,
+        int $error = SystemLogErrorClassification::MESSAGE
+    ): void {
         $user = $this->getBackendUser();
         $username = $user->user[$user->username_column];
         $context = [
@@ -196,7 +211,7 @@ class MfaController extends AbstractMfaController
         $this->logger->debug($message, $data);
         if ($user->writeStdLog) {
             // Write to sys_log if enabled
-            $user->writelog(SystemLogType::LOGIN, Login::LOGIN, SystemLogErrorClassification::MESSAGE, 1, $message, $data);
+            $user->writelog(SystemLogType::LOGIN, $action, $error, 1, $message, $data);
         }
     }
 

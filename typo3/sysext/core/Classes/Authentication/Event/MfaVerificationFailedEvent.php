@@ -19,27 +19,32 @@ namespace TYPO3\CMS\Core\Authentication\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 
 /**
- * Event fired after a login attempt failed.
+ * Event fired after MFA verification failed.
  */
-final class LoginAttemptFailedEvent extends AbstractAuthenticationFailedEvent
+final class MfaVerificationFailedEvent extends AbstractAuthenticationFailedEvent
 {
     public function __construct(
-        private readonly AbstractUserAuthentication $user,
         private readonly ServerRequestInterface $request,
-        private readonly array $loginData,
+        private readonly MfaProviderPropertyManager $propertyManager,
     ) {
         parent::__construct($this->request);
     }
 
     public function getUser(): AbstractUserAuthentication
     {
-        return $this->user;
+        return $this->propertyManager->getUser();
     }
 
-    public function getLoginData(): array
+    public function getProviderIdentifier(): string
     {
-        return $this->loginData;
+        return $this->propertyManager->getIdentifier();
+    }
+
+    public function getProviderProperties(): array
+    {
+        return $this->propertyManager->getProperties();
     }
 }
