@@ -87,7 +87,6 @@
 		"symfony/messenger": "^6.2",
 		"symfony/mime": "^6.2",
 		"symfony/options-resolver": "^6.2",
-		"symfony/polyfill-intl-normalizer": "^1.27",
 		"symfony/property-access": "^6.2",
 		"symfony/property-info": "^6.2.11",
 		"symfony/rate-limiter": "^6.2",
