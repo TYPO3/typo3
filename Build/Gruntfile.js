@@ -703,7 +703,6 @@ module.exports = function (grunt) {
         },
         files: {
           'autosize.js': 'autosize/dist/autosize.esm.js',
-          'require.js': 'requirejs/require.js',
           'cropperjs.js': 'cropperjs/dist/cropper.esm.js',
           'es-module-shims.js': 'es-module-shims/dist/es-module-shims.js',
           'luxon.js': 'luxon/build/es6/luxon.js',
@@ -725,7 +724,6 @@ module.exports = function (grunt) {
           '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/luxon.js': ['<%= paths.core %>Public/JavaScript/Contrib/luxon.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/require.js': ['<%= paths.core %>Public/JavaScript/Contrib/require.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': ['<%= paths.core %>Public/JavaScript/Contrib/nprogress.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/taboverride.js': ['<%= paths.core %>Public/JavaScript/Contrib/taboverride.js'],
           '<%= paths.install %>Public/JavaScript/chosen.jquery.min.js': ['<%= paths.install %>Public/JavaScript/chosen.jquery.min.js']

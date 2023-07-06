@@ -28,15 +28,11 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
-use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
-use TYPO3\CMS\Core\Package\PackageInterface;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\DocType;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -52,9 +48,6 @@ class PageRenderer implements SingletonInterface
     protected const PART_COMPLETE = 0;
     protected const PART_HEADER = 1;
     protected const PART_FOOTER = 2;
-
-    public const REQUIREJS_SCOPE_CONFIG = 'config';
-    public const REQUIREJS_SCOPE_RESOLVE = 'resolve';
 
     /**
      * @var bool
@@ -201,46 +194,6 @@ class PageRenderer implements SingletonInterface
      */
     protected $templateFile;
 
-    // Paths to contributed libraries
-
-    /**
-     * default path to the requireJS library, relative to the typo3/ directory
-     * @var string
-     */
-    protected $requireJsPath = 'EXT:core/Resources/Public/JavaScript/Contrib/';
-
-    // Internal flags for JS-libraries
-    /**
-     * if set, the requireJS library is included
-     * @var bool
-     */
-    protected $addRequireJs = false;
-
-    /**
-     * Inline configuration for requireJS (internal)
-     * @var array
-     */
-    protected $requireJsConfig = [];
-
-    /**
-     * Inline configuration for requireJS from extensions
-     *
-     * @var array
-     */
-    protected $additionalRequireJsConfig = [];
-
-    /**
-     * Module names of internal requireJS 'paths'
-     * @var array
-     */
-    protected $internalRequireJsPathModuleNames = [];
-
-    /**
-     * Inline configuration for requireJS (public)
-     * @var array
-     */
-    protected $publicRequireJsConfig = [];
-
     /**
      * @var array
      */
@@ -272,7 +225,6 @@ class PageRenderer implements SingletonInterface
         protected readonly FrontendInterface $assetsCache,
         protected readonly MarkerBasedTemplateService $templateService,
         protected readonly MetaTagManagerRegistry $metaTagRegistry,
-        protected readonly PackageManager $packageManager,
         protected readonly AssetRenderer $assetRenderer,
         protected readonly ResourceCompressor $resourceCompressor,
         protected readonly RelativeCssPathFixer $relativeCssPathFixer,
@@ -293,7 +245,6 @@ class PageRenderer implements SingletonInterface
         foreach ($state as $var => $value) {
             switch ($var) {
                 case 'assetsCache':
-                case 'packageManager':
                 case 'assetRenderer':
                 case 'templateService':
                 case 'resourceCompressor':
@@ -327,7 +278,6 @@ class PageRenderer implements SingletonInterface
         foreach (get_object_vars($this) as $var => $value) {
             switch ($var) {
                 case 'assetsCache':
-                case 'packageManager':
                 case 'assetRenderer':
                 case 'templateService':
                 case 'resourceCompressor':
@@ -493,40 +443,6 @@ class PageRenderer implements SingletonInterface
     public function setBodyContent($content)
     {
         $this->bodyContent = $content;
-    }
-
-    /**
-     * Sets path to requireJS library (relative to typo3 directory)
-     *
-     * @param string $path Path to requireJS library
-     */
-    public function setRequireJsPath($path)
-    {
-        $this->requireJsPath = $path;
-    }
-
-    public function getRequireJsConfig(string $scope = null): array
-    {
-        // return basic RequireJS configuration without shim, paths and packages
-        if ($scope === static::REQUIREJS_SCOPE_CONFIG) {
-            return array_replace_recursive(
-                $this->publicRequireJsConfig,
-                $this->filterArrayKeys(
-                    $this->requireJsConfig,
-                    ['shim', 'paths', 'packages'],
-                    false
-                )
-            );
-        }
-        // return RequireJS configuration for resolving only shim, paths and packages
-        if ($scope === static::REQUIREJS_SCOPE_RESOLVE) {
-            return $this->filterArrayKeys(
-                $this->requireJsConfig,
-                ['shim', 'paths', 'packages'],
-                true
-            );
-        }
-        return [];
     }
 
     public function setApplyNonceHint(bool $applyNonceHint): void
@@ -1196,231 +1112,6 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Call function if you need the requireJS library
-     * this automatically adds the JavaScript path of all loaded extensions in the requireJS path option
-     * so it resolves names like TYPO3/CMS/MyExtension/MyJsFile to EXT:MyExtension/Resources/Public/JavaScript/MyJsFile.js
-     * when using requireJS
-     */
-    public function loadRequireJs()
-    {
-        $this->addRequireJs = true;
-        $backendUserLoggedIn = !empty($GLOBALS['BE_USER']->user['uid']);
-        if ($this->getApplicationType() === 'BE' && $backendUserLoggedIn) {
-            // Include all imports in order to be available for prior
-            // RequireJS modules migrated to ES6
-            $this->javaScriptRenderer->includeAllImports();
-        }
-        if (!empty($this->requireJsConfig) && !empty($this->publicRequireJsConfig)) {
-            return;
-        }
-
-        $packages = $this->packageManager->getActivePackages();
-        $isDevelopment = Environment::getContext()->isDevelopment();
-        $cacheIdentifier = (new PackageDependentCacheIdentifier($this->packageManager))
-              ->withPrefix('RequireJS')
-              ->withAdditionalHashedIdentifier(($isDevelopment ? ':dev' : '') . GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'))
-              ->toString();
-        $requireJsConfig = $this->assetsCache->get($cacheIdentifier);
-
-        // if we did not get a configuration from the cache, compute and store it in the cache
-        if (!isset($requireJsConfig['internal']) || !isset($requireJsConfig['public'])) {
-            $requireJsConfig = $this->computeRequireJsConfig($isDevelopment, $packages);
-            $this->assetsCache->set($cacheIdentifier, $requireJsConfig);
-        }
-
-        $this->requireJsConfig = array_merge_recursive($this->additionalRequireJsConfig, $requireJsConfig['internal']);
-        $this->additionalRequireJsConfig = [];
-        $this->publicRequireJsConfig = $requireJsConfig['public'];
-        $this->internalRequireJsPathModuleNames = $requireJsConfig['internalNames'];
-    }
-
-    /**
-     * Computes the RequireJS configuration, mainly consisting of the paths to the core and all extension JavaScript
-     * resource folders plus some additional generic configuration.
-     *
-     * @param bool $isDevelopment
-     * @param array<string, PackageInterface> $packages
-     * @return array The RequireJS configuration
-     */
-    protected function computeRequireJsConfig($isDevelopment, array $packages)
-    {
-        // load all paths to map to package names / namespaces
-        $requireJsConfig = [
-            'public' => [],
-            'internal' => [],
-            'internalNames' => [],
-        ];
-
-        $corePath = $packages['core']->getPackagePath() . 'Resources/Public/JavaScript/Contrib/';
-        $corePath = PathUtility::getAbsoluteWebPath($corePath);
-        // first, load all paths for the namespaces, and configure contrib libs.
-        $requireJsConfig['public']['paths'] = [];
-        $requireJsConfig['public']['shim'] = [];
-
-        $requireJsConfig['public']['waitSeconds'] = 30;
-        $requireJsConfig['public']['typo3BaseUrl'] = false;
-        $publicPackageNames = ['core', 'frontend', 'backend'];
-        $requireJsExtensionVersions = [];
-        foreach ($packages as $packageName => $package) {
-            $absoluteJsPath = $package->getPackagePath() . 'Resources/Public/JavaScript/';
-            $fullJsPath = PathUtility::getAbsoluteWebPath($absoluteJsPath);
-            $fullJsPath = rtrim($fullJsPath, '/');
-            if (!empty($fullJsPath) && file_exists($absoluteJsPath)) {
-                $type = in_array($packageName, $publicPackageNames, true) ? 'public' : 'internal';
-                $requireJsConfig[$type]['paths']['TYPO3/CMS/' . GeneralUtility::underscoredToUpperCamelCase($packageName)] = $fullJsPath;
-                $requireJsExtensionVersions[] = $package->getPackageKey() . ':' . $package->getPackageMetadata()->getVersion();
-            }
-        }
-        // sanitize module names in internal 'paths'
-        $internalPathModuleNames = array_keys($requireJsConfig['internal']['paths'] ?? []);
-        $sanitizedInternalPathModuleNames = array_map(
-            static function ($moduleName) {
-                // trim spaces and slashes & add ending slash
-                return trim($moduleName, ' /') . '/';
-            },
-            $internalPathModuleNames
-        );
-        $requireJsConfig['internalNames'] = array_combine(
-            $sanitizedInternalPathModuleNames,
-            $internalPathModuleNames
-        );
-
-        // Add a GET parameter to the files loaded via requireJS in order to avoid browser caching of JS files
-        if ($isDevelopment) {
-            $requireJsConfig['public']['urlArgs'] = 'bust=' . $GLOBALS['EXEC_TIME'];
-        } else {
-            $requireJsConfig['public']['urlArgs'] = 'bust=' . GeneralUtility::hmac(
-                Environment::getProjectPath() . implode('|', $requireJsExtensionVersions)
-            );
-        }
-
-        // check if additional AMD modules need to be loaded if a single AMD module is initialized
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules'] ?? false)) {
-            $this->addInlineSettingArray(
-                'RequireJS.PostInitializationModules',
-                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules']
-            );
-        }
-
-        return $requireJsConfig;
-    }
-
-    /**
-     * Add additional configuration to require js.
-     *
-     * Configuration will be merged recursive with overrule.
-     *
-     * To add another path mapping deliver the following configuration:
-     * 		'paths' => array(
-     *			'EXTERN/mybootstrapjs' => 'sysext/.../twbs/bootstrap.min',
-     *      ),
-     *
-     * @param array $configuration The configuration that will be merged with existing one.
-     */
-    public function addRequireJsConfiguration(array $configuration)
-    {
-        if ($this->addRequireJs === true) {
-            $this->requireJsConfig = array_merge_recursive($this->requireJsConfig, $configuration);
-        } else {
-            // Delay merge until RequireJS base configuration is loaded
-            $this->additionalRequireJsConfig = array_merge_recursive($this->additionalRequireJsConfig, $configuration);
-        }
-    }
-
-    /**
-     * Generates RequireJS loader HTML markup.
-     *
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
-     */
-    protected function getRequireJsLoader(): string
-    {
-        $html = '';
-        $backendUserLoggedIn = !empty($GLOBALS['BE_USER']->user['uid']);
-
-        if (!($GLOBALS['TYPO3_REQUEST']) instanceof ServerRequestInterface
-            || !ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-        ) {
-            // no backend request - basically frontend
-            $requireJsConfig = $this->getRequireJsConfig(static::REQUIREJS_SCOPE_CONFIG);
-            $requireJsConfig['typo3BaseUrl'] = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . '?eID=requirejs';
-        } elseif (!$backendUserLoggedIn) {
-            // backend request, but no backend user logged in
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $requireJsConfig = $this->getRequireJsConfig(static::REQUIREJS_SCOPE_CONFIG);
-            $requireJsConfig['typo3BaseUrl'] = (string)$uriBuilder->buildUriFromRoute('ajax_core_requirejs');
-        } else {
-            // Backend request, having backend user logged in.
-            // Merge public and private require js configuration.
-            // Use array_merge for 'packages' definitions (scalar array indexes) and
-            // merge+replace for other, string array based configuration (like 'path' and 'shim').
-            $requireJsConfig = ArrayUtility::replaceAndAppendScalarValuesRecursive(
-                $this->publicRequireJsConfig,
-                $this->requireJsConfig
-            );
-        }
-        $requireJsUri = $this->processJsFile($this->requireJsPath . 'require.js');
-        // add (probably filtered) RequireJS configuration
-        $commonAttributes = $this->nonce !== null ? ['nonce' => $this->nonce->consume()] : [];
-        if ($this->getApplicationType() === 'BE') {
-            $html .= sprintf(
-                '<script %s></script>' . "\n",
-                GeneralUtility::implodeAttributes([
-                    ...$commonAttributes,
-                    'src' => $requireJsUri,
-                ], true)
-            );
-            $html .= sprintf(
-                '<script %s>/* %s */</script>' . "\n",
-                GeneralUtility::implodeAttributes([
-                    ...$commonAttributes,
-                    'src' => $this->getStreamlinedFileName('EXT:core/Resources/Public/JavaScript/require-jsconfig-handler.js'),
-                ], true),
-                (string)json_encode($requireJsConfig, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG)
-            );
-        } else {
-            $html .= GeneralUtility::wrapJS('var require = ' . json_encode($requireJsConfig)) . LF;
-            // directly after that, include the require.js file
-            $html .= sprintf(
-                '<script %s></script>' . "\n",
-                GeneralUtility::implodeAttributes([
-                    ...$commonAttributes,
-                    'src' => $requireJsUri,
-                ], true)
-            );
-        }
-        // use (anonymous require.js loader). Used to shim ES6 modules and when not
-        // having a valid TYP3 backend user session.
-        if (
-            ($this->getApplicationType() === 'BE' && $this->javaScriptRenderer->hasImportMap()) ||
-            !empty($requireJsConfig['typo3BaseUrl'])
-        ) {
-            $html .= sprintf(
-                '<script %s></script>' . "\n",
-                GeneralUtility::implodeAttributes([
-                    ...$commonAttributes,
-                    'src' => $this->getStreamlinedFileName('EXT:core/Resources/Public/JavaScript/requirejs-loader.js'),
-                ], true)
-            );
-        }
-
-        return $html;
-    }
-
-    /**
-     * @param string[] $keys
-     */
-    protected function filterArrayKeys(array $array, array $keys, bool $keep = true): array
-    {
-        return array_filter(
-            $array,
-            static function (string $key) use ($keys, $keep) {
-                return in_array($key, $keys, true) === $keep;
-            },
-            ARRAY_FILTER_USE_KEY
-        );
-    }
-
-    /**
      * Includes an ES6/ES11 compatible JavaScript module by
      * resolving the specifier to an import-mapped filename.
      *
@@ -1431,23 +1122,6 @@ class PageRenderer implements SingletonInterface
         $this->javaScriptRenderer->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::create($specifier)
         );
-    }
-
-    /**
-     * Determines requireJS base module name (if defined).
-     *
-     * @return string|null
-     */
-    protected function findRequireJsBaseModuleName(string $moduleName)
-    {
-        // trim spaces and slashes & add ending slash
-        $sanitizedModuleName = trim($moduleName, ' /') . '/';
-        foreach ($this->internalRequireJsPathModuleNames as $sanitizedBaseModuleName => $baseModuleName) {
-            if (str_starts_with($sanitizedModuleName, $sanitizedBaseModuleName)) {
-                return $baseModuleName;
-            }
-        }
-        return null;
     }
 
     /**
@@ -1812,8 +1486,7 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Helper function for render the main JavaScript libraries,
-     * currently: RequireJS
+     * Helper function for render the main JavaScript libraries
      *
      * @return string Content with JavaScript libraries
      */
@@ -1835,11 +1508,6 @@ class PageRenderer implements SingletonInterface
             GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'),
             $this->nonce
         );
-
-        // Include RequireJS
-        if ($this->addRequireJs) {
-            $out .= $this->getRequireJsLoader();
-        }
 
         $this->loadJavaScriptLanguageStrings();
         if ($this->getApplicationType() === 'BE') {

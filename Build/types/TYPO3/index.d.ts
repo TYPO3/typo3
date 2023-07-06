@@ -68,7 +68,6 @@ declare module '@typo3/ckeditor5-bundle' {
 // type definition for global namespace object
 interface Window {
   TYPO3: any;
-  require: (moduleName: string) => void;
   list_frame: Window;
   CKEditorInspector: any;
 }

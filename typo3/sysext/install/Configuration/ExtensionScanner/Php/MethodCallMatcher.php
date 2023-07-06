@@ -5800,4 +5800,31 @@ return [
             'Deprecation-101175-VersionState.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Page\PageRenderer->loadRequireJs' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-101266-RemoveRequireJS.rst',
+            'Deprecation-97057-DeprecateRequireJSSupport.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->loadRequireJsModule' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-101266-RemoveRequireJS.rst',
+            'Deprecation-97057-DeprecateRequireJSSupport.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\JavaScriptModuleInstruction->shallLoadRequireJs' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-101266-RemoveRequireJS.rst',
+            'Deprecation-97057-DeprecateRequireJSSupport.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

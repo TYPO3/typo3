@@ -1562,4 +1562,13 @@ return [
             'Deprecation-101175-VersionState.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Page\JavaScriptModuleInstruction::forRequireJS' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-101266-RemoveRequireJS.rst',
+            'Deprecation-97057-DeprecateRequireJSSupport.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

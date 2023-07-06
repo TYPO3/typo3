@@ -17,7 +17,6 @@
  * @internal Use in TYPO3 core only, API can change at any time!
  */
 
-const FLAG_USE_REQUIRE_JS = 1;
 const FLAG_USE_IMPORTMAP = 2;
 const FLAG_USE_TOP_WINDOW = 16;
 const deniedProperties = ['__proto__', 'prototype', 'constructor'];
@@ -83,17 +82,6 @@ export function loadModule(payload: JavaScriptItemPayload): Promise<any> {
     }
   }
 
-  if ((payload.flags & FLAG_USE_REQUIRE_JS) === FLAG_USE_REQUIRE_JS) {
-    return new Promise((resolve, reject) => {
-      const windowRef = (payload.flags & FLAG_USE_TOP_WINDOW) === FLAG_USE_TOP_WINDOW ? top.window : window;
-      windowRef.require(
-        [payload.name],
-        (module: any) => resolve(module),
-        (e: any) => reject(e)
-      );
-    });
-  }
-
   throw new Error('Unknown JavaScript module type');
 }
 
@@ -101,9 +89,6 @@ export function resolveSubjectRef(__esModule: any, payload: JavaScriptItemPayloa
   const exportName = payload.exportName;
   if (typeof exportName === 'string') {
     return __esModule[exportName];
-  }
-  if ((payload.flags & FLAG_USE_REQUIRE_JS) === FLAG_USE_REQUIRE_JS) {
-    return __esModule;
   }
   return __esModule.default;
 }

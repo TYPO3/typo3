@@ -1327,13 +1327,6 @@ export default (function() {
     window.location.href = $anchorElement.attr('href');
   };
 
-  // load required modules to hook in the post initialize function
-  if (undefined !== TYPO3.settings.RequireJS && undefined !== TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/FormEngine']) {
-    for (const moduleName of TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/FormEngine']) {
-      window.require([moduleName]);
-    }
-  }
-
   // make the form engine object publicly visible for other objects in the TYPO3 namespace
   TYPO3.FormEngine = FormEngine;
 

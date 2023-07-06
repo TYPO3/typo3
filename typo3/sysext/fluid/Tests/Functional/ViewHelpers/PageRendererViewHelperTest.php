@@ -44,10 +44,6 @@ final class PageRendererViewHelperTest extends FunctionalTestCase
                 '<f:be.pageRenderer includeJsFiles="{0: \'EXT:backend/Resources/Public/JavaScript/backend.js\'}" />',
                 '<script src="typo3/sysext/backend/Resources/Public/JavaScript/backend.js',
             ],
-            'renderIncludesRequireJsModules' => [
-                '<f:be.pageRenderer includeJavaScriptModules="{0: \'EXT:backend/Resources/Public/JavaScript/iDoNotExist.js\'}" />',
-                '"name":"EXT:backend\/Resources\/Public\/JavaScript\/iDoNotExist.js"',
-            ],
             'renderIncludesInlineSettings' => [
                 '<f:be.pageRenderer addInlineSettings="{\'foo\': \'bar\'}" />',
                 '"TYPO3":{"settings":{"foo":"bar"',

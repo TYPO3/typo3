@@ -62,12 +62,6 @@ class JavaScriptRenderer
         return ($this->javaScriptModuleInstructionFlags & JavaScriptModuleInstruction::FLAG_LOAD_IMPORTMAP) === JavaScriptModuleInstruction::FLAG_LOAD_IMPORTMAP;
     }
 
-    public function hasRequirejs(): bool
-    {
-        // @TODO since it's marked as public return false and deprecate in TYPO3 v13
-        return false;
-    }
-
     /**
      * HEADS UP: Do only use in authenticated mode as this discloses as installed extensions
      */

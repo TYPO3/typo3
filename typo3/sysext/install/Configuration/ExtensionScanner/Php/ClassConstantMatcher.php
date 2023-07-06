@@ -550,4 +550,11 @@ return [
             'Breaking-101137-PageDoktypeRecyclerRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Page\JavaScriptModuleInstruction::FLAG_LOAD_REQUIRE_JS' => [
+        'restFiles' => [
+            'Breaking-101266-RemoveRequireJS.rst',
+            'Deprecation-97057-DeprecateRequireJSSupport.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

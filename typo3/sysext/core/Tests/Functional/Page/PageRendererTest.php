@@ -19,22 +19,16 @@ namespace TYPO3\CMS\Core\Tests\Functional\Page;
 
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Log\NullLogger;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\AssetRenderer;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
-use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
-use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -49,7 +43,6 @@ final class PageRendererTest extends FunctionalTestCase
             $container->get('cache.assets'),
             $container->get(MarkerBasedTemplateService::class),
             $container->get(MetaTagManagerRegistry::class),
-            $container->get(PackageManager::class),
             $container->get(AssetRenderer::class),
             new ResourceCompressor(),
             new RelativeCssPathFixer(),
@@ -428,59 +421,6 @@ final class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString($expectedJsLibrary, $renderedString);
         self::assertStringContainsString($expectedJsFile, $renderedString);
         self::assertStringContainsString($expectedJsFooter, $renderedString);
-    }
-
-    /**
-     * @test
-     */
-    public function pageRendererMergesRequireJsPackagesOnConsecutiveCalls(): void
-    {
-        $sessionBackend = $this->createMock(SessionBackendInterface::class);
-        $sessionBackend->method('update')->with(self::anything())->willReturn([]);
-        $userSessionManager = new UserSessionManager(
-            $sessionBackend,
-            86400,
-            $this->createMock(IpLocker::class)
-        );
-        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        $GLOBALS['BE_USER']->initializeUserSessionManager($userSessionManager);
-        $GLOBALS['BE_USER']->user = ['uid' => 1];
-        $GLOBALS['BE_USER']->setLogger(new NullLogger());
-
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER']);
-
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://example.com/typo3/'))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-
-        $subject = $this->createPageRenderer();
-        $subject->setLanguage(new Locale());
-
-        $packages = [
-            [
-                'name' => 'foo',
-                'location' => '/typo3conf/ext/foo/Resources/Public/JavaScript/Contrib/foo',
-                'main' => 'lib/foo',
-            ],
-            [
-                'name' => 'bar',
-                'location' => '/typo3conf/ext/bar/Resources/Public/JavaScript/Contrib/bar',
-                'main' => 'lib/bar',
-            ],
-        ];
-
-        foreach ($packages as $package) {
-            $subject->addRequireJsConfiguration([
-                'packages' => [$package],
-            ]);
-        }
-
-        $expectedConfiguration = json_encode($packages);
-        // Remove surrounding brackets as the expectation is a substring of a larger JSON string
-        $expectedConfiguration = trim($expectedConfiguration, '[]');
-
-        $subject->loadRequireJs();
-        $renderedString = $subject->render();
-        self::assertStringContainsString($expectedConfiguration, $renderedString);
     }
 
     /**

@@ -895,18 +895,6 @@ class DragUploader {
 
 export const initialize = function (): void {
   DragUploader.init();
-
-  // load required modules to hook in the post initialize function
-  if (
-    'undefined' !== typeof TYPO3.settings
-    && 'undefined' !== typeof TYPO3.settings.RequireJS
-    && 'undefined' !== typeof TYPO3.settings.RequireJS.PostInitializationModules
-    && 'undefined' !== typeof TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader']
-  ) {
-    for (const moduleName of TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader']) {
-      window.require([moduleName]);
-    }
-  }
 };
 
 initialize();

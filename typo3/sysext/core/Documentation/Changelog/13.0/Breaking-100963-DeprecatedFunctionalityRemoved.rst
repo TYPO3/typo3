@@ -143,6 +143,7 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Core\Localization\Locales->getIsoMapping`
 - :php:`\TYPO3\CMS\Core\Localization\LanguageService->getLL`
 - :php:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction->shallLoadRequireJs`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->loadRequireJs`
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->loadRequireJsModule`
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->setRenderXhtml`
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->getRenderXhtml`
@@ -415,6 +416,7 @@ The following global variables have been removed:
 The following hooks have been removed:
 
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing']`

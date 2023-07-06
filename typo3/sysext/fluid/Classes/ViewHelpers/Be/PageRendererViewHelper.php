@@ -41,11 +41,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *        includeJsFiles="{0: 'EXT:my_ext/Resources/Public/JavaScript/Library1.js', 1: 'EXT:my_ext/Resources/Public/JavaScript/Library2.js'}"
  *        addJsInlineLabels="{'my_ext.label1': 'LLL:EXT:my_ext/Resources/Private/Language/locallang.xlf:label1'}"
  *        includeJavaScriptModules="{0: '@my-vendor/my-ext/my-module.js'}"
- *        includeRequireJsModules="{0: 'EXT:my_ext/Resources/Public/JavaScript/RequireJsModule'}"
  *        addInlineSettings="{'some.setting.key': 'some.setting.value'}"
  *    />
  *
- * This will load the specified css, js files and requireJs modules, adds a custom js
+ * This will load the specified css, js files and JavaScript modules, adds a custom js
  * inline setting, and adds a resolved label to be used in js.
  */
 final class PageRendererViewHelper extends AbstractViewHelper
@@ -59,7 +58,6 @@ final class PageRendererViewHelper extends AbstractViewHelper
         $this->registerArgument('includeJsFiles', 'array', 'List of custom JavaScript file to be loaded');
         $this->registerArgument('addJsInlineLabels', 'array', 'Custom labels to add to JavaScript inline labels');
         $this->registerArgument('includeJavaScriptModules', 'array', 'List of JavaScript modules to be loaded');
-        $this->registerArgument('includeRequireJsModules', 'array', 'List of RequireJS modules to be loaded');
         $this->registerArgument('addInlineSettings', 'array', 'Adds Javascript Inline Setting');
     }
 
@@ -71,7 +69,6 @@ final class PageRendererViewHelper extends AbstractViewHelper
         $includeJsFiles = $arguments['includeJsFiles'];
         $addJsInlineLabels = $arguments['addJsInlineLabels'];
         $includeJavaScriptModules = $arguments['includeJavaScriptModules'];
-        $includeRequireJsModules = $arguments['includeRequireJsModules'];
         $addInlineSettings = $arguments['addInlineSettings'];
 
         if ($pageTitle) {
