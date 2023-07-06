@@ -1371,9 +1371,10 @@ class DatabaseRecordList
                 && !in_array((int)$this->pageRow['doktype'], $this->getNoViewWithDokTypes($tsConfig), true)
             )
         ) {
-            if (!$isDeletePlaceHolder) {
-                $attributes = $this->getPreviewUriBuilder($table, $row)->serializeDispatcherAttributes();
-                $viewAction = '<a href="#"'
+            if (!$isDeletePlaceHolder
+                && ($attributes = $this->getPreviewUriBuilder($table, $row)->serializeDispatcherAttributes()) !== null
+            ) {
+                $viewAction = '<button'
                     . ' class="btn btn-default" ' . $attributes
                     . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
                 if ($table === 'pages') {
@@ -1381,7 +1382,7 @@ class DatabaseRecordList
                 } else {
                     $viewAction .= $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render();
                 }
-                $viewAction .= '</a>';
+                $viewAction .= '</button>';
                 $this->addActionToCellGroup($cells, $viewAction, 'view');
             } else {
                 $this->addActionToCellGroup($cells, $this->spaceIcon, 'view');
@@ -2576,13 +2577,14 @@ class DatabaseRecordList
                 break;
             case 'show':
                 // "Show" link (only pages and tt_content elements)
-                if ($table === 'pages' || $table === 'tt_content') {
-                    $attributes = $this->getPreviewUriBuilder($table, $row)->serializeDispatcherAttributes();
+                if (($table === 'pages' || $table === 'tt_content')
+                    && ($attributes = $this->getPreviewUriBuilder($table, $row)->serializeDispatcherAttributes()) !== null
+                ) {
                     $title = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'));
-                    $code = '<a href="#" ' . $attributes
+                    $code = '<button ' . $attributes
                         . ' title="' . $title . '"'
                         . ' aria-label="' . $title . '">'
-                        . $code . '</a>';
+                        . $code . '</button>';
                 }
                 break;
             case 'info':

@@ -137,11 +137,12 @@ class ImportController
             ->withRootLine(BackendUtility::BEgetRootLine($pageUid))
             ->buildDispatcherDataAttributes();
         $viewButton = $buttonBar->makeLinkButton()
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-            ->setShowLabelText(true)
             ->setHref('#')
+            ->setDataAttributes($previewDataAttributes ?? [])
+            ->setDisabled(!$previewDataAttributes)
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
-            ->setDataAttributes($previewDataAttributes ?? []);
+            ->setShowLabelText(true);
         $buttonBar->addButton($viewButton);
     }
 

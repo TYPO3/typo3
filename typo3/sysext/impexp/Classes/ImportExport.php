@@ -542,7 +542,9 @@ abstract class ImportExport
                 $viewID = $this->mode === 'export' ? $uid : ($this->doesImport ? ($this->importMapId['pages'][$uid] ?? 0) : 0);
                 if ($viewID) {
                     $attributes = PreviewUriBuilder::create($viewID)->serializeDispatcherAttributes();
-                    $line['title'] = sprintf('<a href="#" %s>%s</a>', $attributes, $line['title']);
+                    if ($attributes) {
+                        $line['title'] = sprintf('<a href="#" %s>%s</a>', $attributes, $line['title']);
+                    }
                 }
             }
             $line['active'] = !$this->isRecordDisabled($table, $uid) ? 'active' : 'hidden';

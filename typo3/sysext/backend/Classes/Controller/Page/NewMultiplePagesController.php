@@ -74,11 +74,12 @@ class NewMultiplePagesController
             ->withRootLine(BackendUtility::BEgetRootLine($pageUid))
             ->buildDispatcherDataAttributes();
         $viewButton = $buttonBar->makeLinkButton()
+            ->setHref('#')
             ->setDataAttributes($previewDataAttributes ?? [])
+            ->setDisabled(!$previewDataAttributes)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-            ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
-            ->setHref('#');
+            ->setShowLabelText(true);
         $buttonBar->addButton($viewButton);
 
         $calculatedPermissions = new Permission($backendUser->calcPerms($pageRecord));

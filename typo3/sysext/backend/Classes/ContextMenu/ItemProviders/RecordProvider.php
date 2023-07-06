@@ -442,7 +442,9 @@ class RecordProvider extends AbstractProvider
      */
     protected function canBeViewed(): bool
     {
-        return $this->table === 'tt_content' && $this->parentPageCanBeViewed();
+        return $this->table === 'tt_content'
+            && $this->parentPageCanBeViewed()
+            && $this->previewLinkCanBeBuild();
     }
 
     /**
@@ -642,5 +644,13 @@ class RecordProvider extends AbstractProvider
     protected function getIdentifier(): string
     {
         return $this->record['uid'];
+    }
+
+    /**
+     * Returns true if a view link can be build for the record
+     */
+    protected function previewLinkCanBeBuild(): bool
+    {
+        return $this->getViewLink() !== '';
     }
 }

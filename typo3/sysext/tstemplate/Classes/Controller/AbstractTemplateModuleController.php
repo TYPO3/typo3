@@ -141,9 +141,10 @@ abstract class AbstractTemplateModuleController
             $viewButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
                 ->setDataAttributes($previewDataAttributes ?? [])
-                ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
+                ->setDisabled(!$previewDataAttributes)
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
+                ->setShowLabelText(true);
             $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 99);
         }
     }

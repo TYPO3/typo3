@@ -32,9 +32,9 @@
                     <td class="t3-page-column t3-page-lang-label nowrap">
                         <div class="btn-group">
                             <f:if condition="{languageColumn.allowViewPage}">
-                                <a href="#" class="btn btn-default btn-sm" {languageColumn.previewUrlAttributes -> f:format.raw()} title="{languageColumn.viewPageLinkTitle}">
+                                <button class="btn btn-default btn-sm" {f:if(condition: languageColumn.previewUrlAttributes, then: '{languageColumn.previewUrlAttributes -> f:format.raw()}', else: 'disabled="true"')} title="{languageColumn.viewPageLinkTitle}">
                                     <core:icon identifier="actions-view" />
-                                </a>
+                                </button>
                             </f:if>
                             <f:if condition="{languageColumn.allowEditPage}">
                                 <a href="{languageColumn.pageEditUrl}" class="btn btn-default btn-sm" title="{languageColumn.pageEditTitle}">
