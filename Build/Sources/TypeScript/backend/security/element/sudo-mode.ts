@@ -16,12 +16,12 @@ import { html, LitElement, nothing, PropertyValues, TemplateResult } from 'lit';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { styleTag, lll } from '@typo3/core/lit-helper';
+import Viewport from '@typo3/backend/viewport';
 
 interface SudoModeResponse {
   message: string;
   redirect?: {
     uri: string,
-    target: string,
   }
 }
 
@@ -100,8 +100,7 @@ export class SudoMode extends LitElement {
       .then(async (ajaxResponse: AjaxResponse) => {
         const response: SudoModeResponse = await ajaxResponse.resolve('application/json');
         if (response.redirect) {
-          const targetDocument = response.redirect.target === 'top' ? top.document : document;
-          targetDocument.location.href = response.redirect.uri;
+          Viewport.ContentContainer.setUrl(response.redirect.uri);
         }
       })
       .catch(async (ajaxResponse: AjaxResponse) => {

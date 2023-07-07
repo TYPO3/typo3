@@ -142,7 +142,6 @@ final class SudoModeController implements LoggerAwareInterface
                 self::ROUTE_PATH_APPLY,
                 $this->buildUriParametersForClaim($claim, 'apply')
             ),
-            'target' => 'top',
         ];
         if ($useInstallToolPassword && $this->passwordVerification->verifyInstallToolPassword($password)) {
             $this->logger->info('Verified with install tool password', $loggerContext);
