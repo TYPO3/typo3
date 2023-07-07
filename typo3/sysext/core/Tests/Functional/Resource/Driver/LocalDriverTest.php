@@ -18,11 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Resource\Driver;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\Capabilities;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
-use TYPO3\CMS\Core\Resource\ResourceStorageInterface;
 use TYPO3\CMS\Core\Tests\Functional\Resource\Driver\Fixtures\LocalDriverFilenameFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -177,7 +177,7 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, null, [$driverConfiguration]);
         $subject->processConfiguration();
-        self::assertSame($expectedIsPublic, $subject->hasCapability(ResourceStorageInterface::CAPABILITY_PUBLIC));
+        self::assertSame($expectedIsPublic, $subject->hasCapability(Capabilities::CAPABILITY_PUBLIC));
         self::assertSame($fileName, $subject->createFile($fileName, '/'));
         self::assertSame($expectedPublicUrl, $subject->getPublicUrl($fileName));
     }
@@ -209,7 +209,7 @@ final class LocalDriverTest extends FunctionalTestCase
         $subject = $this->getAccessibleMock(LocalDriver::class, ['hasCapability'], [], '', false);
         $subject->expects(self::once())
             ->method('hasCapability')
-            ->with(ResourceStorageInterface::CAPABILITY_PUBLIC)
+            ->with(Capabilities::CAPABILITY_PUBLIC)
             ->willReturn(
                 true
             );

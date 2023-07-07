@@ -21,23 +21,6 @@ namespace TYPO3\CMS\Core\Resource;
 interface ResourceStorageInterface
 {
     /**
-     * Capability for being browsable by (backend) users
-     */
-    public const CAPABILITY_BROWSABLE = 1;
-    /**
-     * Capability for publicly accessible storages (= accessible from the web)
-     */
-    public const CAPABILITY_PUBLIC = 2;
-    /**
-     * Capability for writable storages. This only signifies writability in
-     * general - this might also be further limited by configuration.
-     */
-    public const CAPABILITY_WRITABLE = 4;
-    /**
-     * Whether identifiers contain hierarchy information (folder structure).
-     */
-    public const CAPABILITY_HIERARCHICAL_IDENTIFIERS = 8;
-    /**
      * Name of the default processing folder
      */
     public const DEFAULT_ProcessingFolder = '_processed_';

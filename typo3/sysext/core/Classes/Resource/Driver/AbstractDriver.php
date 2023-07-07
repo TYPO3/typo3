@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource\Driver;
 
+use TYPO3\CMS\Core\Resource\Capabilities;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -27,12 +28,9 @@ abstract class AbstractDriver implements DriverInterface
      * CAPABILITIES
      *******************/
     /**
-     * The capabilities of this driver. See \TYPO3\CMS\Core\Resource\ResourceStorageInterface::::CAPABILITY_* constants
-     * for possible values. This value should be set in the constructor of derived classes.
-     *
-     * @var int
+     * The capabilities of this driver. This value should be set in the constructor of derived classes.
      */
-    protected $capabilities = 0;
+    protected Capabilities $capabilities;
 
     /**
      * The storage uid the driver was instantiated for
@@ -95,14 +93,8 @@ abstract class AbstractDriver implements DriverInterface
 
     /**
      * Returns the capabilities of this driver.
-     *
-     * @return int
-     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_BROWSABLE
-     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_PUBLIC
-     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_WRITABLE
-     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_HIERARCHICAL_IDENTIFIERS
      */
-    public function getCapabilities()
+    public function getCapabilities(): Capabilities
     {
         return $this->capabilities;
     }
@@ -110,12 +102,11 @@ abstract class AbstractDriver implements DriverInterface
     /**
      * Returns TRUE if this driver has the given capability.
      *
-     * @param int $capability A capability, as defined in a CAPABILITY_* constant
-     * @return bool
+     * @param Capabilities::CAPABILITY_* $capability
      */
-    public function hasCapability($capability)
+    public function hasCapability(int $capability): bool
     {
-        return ($this->capabilities & $capability) === $capability;
+        return $this->getCapabilities()->hasCapability($capability);
     }
 
     /*******************

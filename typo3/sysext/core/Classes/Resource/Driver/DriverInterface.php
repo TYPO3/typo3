@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +16,8 @@
  */
 
 namespace TYPO3\CMS\Core\Resource\Driver;
+
+use TYPO3\CMS\Core\Resource\Capabilities;
 
 /**
  * An interface Drivers have to implement to fulfil the needs
@@ -41,29 +45,22 @@ interface DriverInterface
 
     /**
      * Returns the capabilities of this driver.
-     *
-     * @return int
-     * @see ResourceStorageInterface::CAPABILITY_ constants
      */
-    public function getCapabilities();
+    public function getCapabilities(): Capabilities;
 
     /**
      * Merges the capabilities merged by the user at the storage
      * configuration into the actual capabilities of the driver
      * and returns the result.
-     *
-     * @param int $capabilities
-     * @return int
      */
-    public function mergeConfigurationCapabilities($capabilities);
+    public function mergeConfigurationCapabilities(Capabilities $capabilities): Capabilities;
 
     /**
      * Returns TRUE if this driver has the given capability.
      *
-     * @param int $capability A capability, as defined in a CAPABILITY_* constant
-     * @return bool
+     * @param Capabilities::CAPABILITY_* $capability
      */
-    public function hasCapability($capability);
+    public function hasCapability(int $capability): bool;
 
     /**
      * Returns TRUE if this driver uses case-sensitive identifiers. NOTE: This

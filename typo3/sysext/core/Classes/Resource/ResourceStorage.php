@@ -178,11 +178,8 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * The capabilities of this storage as defined in the storage record.
-     * Also see the CAPABILITY_* constants below
-     *
-     * @var int
      */
-    protected $capabilities;
+    protected Capabilities $capabilities;
 
     /**
      * @var EventDispatcherInterface
@@ -242,12 +239,15 @@ class ResourceStorage implements ResourceStorageInterface
         } else {
             $this->configuration = [];
         }
-        $this->capabilities =
-            ($this->storageRecord['is_browsable'] ?? null ? self::CAPABILITY_BROWSABLE : 0) |
-            ($this->storageRecord['is_public'] ?? null ? self::CAPABILITY_PUBLIC : 0) |
-            ($this->storageRecord['is_writable'] ?? null ? self::CAPABILITY_WRITABLE : 0) |
-            // Always let the driver decide whether to set this capability
-            self::CAPABILITY_HIERARCHICAL_IDENTIFIERS;
+
+        $capabilityBits = 0;
+        $capabilityBits += ($this->storageRecord['is_browsable'] ?? null ? Capabilities::CAPABILITY_BROWSABLE : 0);
+        $capabilityBits += ($this->storageRecord['is_public'] ?? null ? Capabilities::CAPABILITY_PUBLIC : 0);
+        $capabilityBits += ($this->storageRecord['is_writable'] ?? null ? Capabilities::CAPABILITY_WRITABLE : 0);
+        // Always let the driver decide whether to set this capability
+        $capabilityBits += Capabilities::CAPABILITY_HIERARCHICAL_IDENTIFIERS;
+
+        $this->capabilities = new Capabilities($capabilityBits);
 
         $this->driver = $driver;
         $this->driver->setStorageUid($storageRecord['uid'] ?? null);
@@ -359,27 +359,20 @@ class ResourceStorage implements ResourceStorageInterface
      ********************************/
     /**
      * Returns the capabilities of this storage.
-     *
-     * @return int
-     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_BROWSABLE
-     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_PUBLIC
-     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_WRITABLE
-     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_HIERARCHICAL_IDENTIFIERS
      */
-    public function getCapabilities()
+    public function getCapabilities(): Capabilities
     {
-        return (int)$this->capabilities;
+        return $this->capabilities;
     }
 
     /**
      * Returns TRUE if this storage has the given capability.
      *
-     * @param int $capability A capability, as defined in a CAPABILITY_* constant
-     * @return bool
+     * @param Capabilities::CAPABILITY_* $capability
      */
-    protected function hasCapability($capability)
+    protected function hasCapability(int $capability): bool
     {
-        return ($this->capabilities & $capability) == $capability;
+        return $this->capabilities->hasCapability($capability);
     }
 
     /**
@@ -392,7 +385,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function isPublic()
     {
-        return $this->hasCapability(self::CAPABILITY_PUBLIC);
+        return $this->hasCapability(Capabilities::CAPABILITY_PUBLIC);
     }
 
     /**
@@ -403,7 +396,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function isWritable()
     {
-        return $this->hasCapability(self::CAPABILITY_WRITABLE);
+        return $this->hasCapability(Capabilities::CAPABILITY_WRITABLE);
     }
 
     /**
@@ -413,7 +406,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function isBrowsable()
     {
-        return $this->isOnline() && $this->hasCapability(self::CAPABILITY_BROWSABLE);
+        return $this->isOnline() && $this->hasCapability(Capabilities::CAPABILITY_BROWSABLE);
     }
 
     /**
@@ -421,7 +414,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function hasHierarchicalIdentifiers(): bool
     {
-        return $this->hasCapability(self::CAPABILITY_HIERARCHICAL_IDENTIFIERS);
+        return $this->hasCapability(Capabilities::CAPABILITY_HIERARCHICAL_IDENTIFIERS);
     }
 
     /**
@@ -1355,7 +1348,7 @@ class ResourceStorage implements ResourceStorageInterface
 
             // If an event listener did not handle the URL generation, use the default way to determine public URL
             if ($publicUrl === null) {
-                if ($this->hasCapability(self::CAPABILITY_PUBLIC)) {
+                if ($this->hasCapability(Capabilities::CAPABILITY_PUBLIC)) {
                     $publicUrl = $this->driver->getPublicUrl($resourceObject->getIdentifier());
                 }
 

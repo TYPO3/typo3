@@ -262,7 +262,6 @@ final class ResourceStorageTest extends FunctionalTestCase
     {
         $driverMock = $this->getMockBuilder(LocalDriver::class)
             ->onlyMethods(['renameFile', 'sanitizeFileName'])
-            ->disableOriginalConstructor()
             ->getMock();
         $driverMock->method('sanitizeFileName')
             ->willReturn('a_b.jpg');

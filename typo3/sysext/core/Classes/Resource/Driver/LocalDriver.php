@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\SelfEmittableLazyOpenStream;
+use TYPO3\CMS\Core\Resource\Capabilities;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException;
@@ -29,7 +30,6 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\Exception\ResourcePermissionsUnavailableException;
 use TYPO3\CMS\Core\Resource\FolderInterface;
-use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Type\File\FileInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -76,26 +76,24 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     public function __construct(array $configuration = [])
     {
         parent::__construct($configuration);
-        // The capabilities default of this driver. See CAPABILITY_* constants for possible values
-        $this->capabilities =
-            ResourceStorage::CAPABILITY_BROWSABLE
-            | ResourceStorage::CAPABILITY_PUBLIC
-            | ResourceStorage::CAPABILITY_WRITABLE
-            | ResourceStorage::CAPABILITY_HIERARCHICAL_IDENTIFIERS;
+        // The capabilities default of this driver. See Capabilities::CAPABILITY_* constants for possible values
+
+        $this->capabilities = new Capabilities(
+            Capabilities::CAPABILITY_BROWSABLE
+            | Capabilities::CAPABILITY_PUBLIC
+            | Capabilities::CAPABILITY_WRITABLE
+            | Capabilities::CAPABILITY_HIERARCHICAL_IDENTIFIERS
+        );
     }
 
     /**
      * Merges the capabilities merged by the user at the storage
      * configuration into the actual capabilities of the driver
      * and returns the result.
-     *
-     * @param int $capabilities
-     * @return int
      */
-    public function mergeConfigurationCapabilities($capabilities)
+    public function mergeConfigurationCapabilities(Capabilities $capabilities): Capabilities
     {
-        $this->capabilities &= $capabilities;
-
+        $this->capabilities->and($capabilities);
         return $this->capabilities;
     }
 
@@ -108,7 +106,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $this->determineBaseUrl();
         if ($this->baseUri === null) {
             // remove public flag
-            $this->capabilities &= ~ResourceStorage::CAPABILITY_PUBLIC;
+            $this->capabilities->removeCapability(Capabilities::CAPABILITY_PUBLIC);
         }
     }
 
@@ -127,7 +125,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     protected function determineBaseUrl()
     {
         // only calculate baseURI if the storage does not enforce jumpUrl Script
-        if ($this->hasCapability(ResourceStorage::CAPABILITY_PUBLIC)) {
+        if ($this->hasCapability(Capabilities::CAPABILITY_PUBLIC)) {
             if (!empty($this->configuration['baseUri'])) {
                 $this->baseUri = rtrim($this->configuration['baseUri'], '/') . '/';
             } elseif (str_starts_with($this->absoluteBasePath, Environment::getPublicPath())) {

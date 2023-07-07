@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\Capabilities;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
@@ -481,7 +482,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         // This is a hack, as capabilities is not settable from the outside
         $objectReflection = new \ReflectionObject($subject);
         $property = $objectReflection->getProperty('capabilities');
-        $property->setValue($subject, $subject->getCapabilities() & 7);
+        $property->setValue($subject, $subject->getCapabilities()->addCapabilities(Capabilities::CAPABILITY_BROWSABLE, Capabilities::CAPABILITY_PUBLIC, Capabilities::CAPABILITY_WRITABLE));
         $result = $subject->searchFiles($search, $folder);
         $expectedFiles = array_map([$subject, 'getFile'], $expectedIdentifiers);
         self::assertSame($expectedFiles, iterator_to_array($result));
