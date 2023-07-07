@@ -34,15 +34,15 @@ class DummyClassWithAllTypesOfMethods
     {
     }
 
-    public static function methodWithMandatoryParam($param): void
+    public function methodWithMandatoryParam($param): void
     {
     }
 
-    public static function methodWithDefaultValueParam($param = 'foo'): void
+    public function methodWithDefaultValueParam($param = 'foo'): void
     {
     }
 
-    public static function methodWithTypeHintedParam(string $param): void
+    public function methodWithTypeHintedParam(string $param): void
     {
     }
 

@@ -41,11 +41,7 @@ final class ClassSchemaTest extends UnitTestCase
                 'publicProperty',
                 'protectedProperty',
                 'privateProperty',
-                'publicStaticProperty',
-                'protectedStaticProperty',
-                'privateStaticProperty',
                 'publicPropertyWithDefaultValue',
-                'publicStaticPropertyWithDefaultValue',
                 'stringTypedProperty',
                 'nullableStringTypedProperty',
                 'propertyWithTransientAnnotation',
@@ -99,21 +95,11 @@ final class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsNonStaticProperties(): void
+    public function classSchemaDetectsDynamicProperties(): void
     {
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('publicProperty'));
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedProperty'));
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('privateProperty'));
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsStaticProperties(): void
-    {
-        self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('publicStaticProperty'));
-        self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedStaticProperty'));
-        self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('privateStaticProperty'));
     }
 
     /**

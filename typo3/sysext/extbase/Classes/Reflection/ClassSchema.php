@@ -160,6 +160,10 @@ class ClassSchema
         $annotationReader = new AnnotationReader();
 
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
+            if ($reflectionProperty->isStatic()) {
+                continue;
+            }
+
             $propertyName = $reflectionProperty->getName();
 
             $propertyCharacteristicsBit = 0;
@@ -250,6 +254,10 @@ class ClassSchema
         $annotationReader = new AnnotationReader();
 
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
+            if ($reflectionMethod->isStatic()) {
+                continue;
+            }
+
             $methodName = $reflectionMethod->getName();
 
             $this->methods[$methodName] = [];

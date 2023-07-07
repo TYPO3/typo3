@@ -35,15 +35,7 @@ class DummyClassWithAllTypesOfProperties extends AbstractEntity
 
     private $privateProperty;
 
-    public static $publicStaticProperty;
-
-    protected static $protectedStaticProperty;
-
-    private static $privateStaticProperty;
-
     public $publicPropertyWithDefaultValue = 'foo';
-
-    public static $publicStaticPropertyWithDefaultValue = 'foo';
 
     public string $stringTypedProperty = '';
 
