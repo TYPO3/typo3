@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 use TYPO3\CMS\Backend\Form\Element\JsonElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -32,6 +33,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class JsonElementTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+    }
 
     /**
      * @test

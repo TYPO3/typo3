@@ -20,7 +20,6 @@ use TYPO3\CMS\Backend\Form\Event\ModifyInlineElementControlsEvent;
 use TYPO3\CMS\Backend\Form\Event\ModifyInlineElementEnabledControlsEvent;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -527,11 +526,6 @@ class InlineRecordContainer extends AbstractContainer
             $out .= $cellContent !== '' ? ' <div class="btn-group btn-group-sm" role="group">' . $cellContent . '</div>' : '';
         }
         return $out;
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     protected function getLanguageService(): LanguageService

@@ -21,7 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\CustomFileControlsEvent;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -284,10 +283,13 @@ class FilesControlContainer extends AbstractContainer
             ]);
         }
 
-        $resultArray['html'] = $view->render('Form/FilesControlContainer');
-        $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $this->javaScriptModules);
-        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/container/files-control-container.js');
+        $resultArray['javaScriptModules'] = array_merge(
+            $resultArray['javaScriptModules'],
+            $this->javaScriptModules,
+            [JavaScriptModuleInstruction::create('@typo3/backend/form-engine/container/files-control-container.js')]
+        );
 
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend($view->render('Form/FilesControlContainer'));
         return $resultArray;
     }
 
@@ -425,11 +427,6 @@ class FilesControlContainer extends AbstractContainer
             );
         }
         return $flexFormParts;
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     protected function getLanguageService(): LanguageService

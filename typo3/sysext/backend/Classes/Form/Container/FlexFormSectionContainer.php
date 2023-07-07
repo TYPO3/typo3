@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -157,11 +156,6 @@ class FlexFormSectionContainer extends AbstractContainer
         )->instance($containerId);
 
         return $resultArray;
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     protected function getLanguageService(): LanguageService

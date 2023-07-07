@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Form\Event\ModifyFileReferenceEnabledControlsEvent;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -533,11 +532,6 @@ class FileReferenceContainer extends AbstractContainer
         }
 
         return '<dl class="row row-cols-auto g-2">' . $title . '</dl>';
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     protected function getLanguageService(): LanguageService

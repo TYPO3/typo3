@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -134,5 +135,19 @@ abstract class AbstractContainer extends AbstractNode
             'storeLastActiveTab' => true,
         ]);
         return $view->render('Form/Tabs');
+    }
+
+    protected function wrapWithFieldsetAndLegend(string $fieldContent): string
+    {
+        $legend = htmlspecialchars($this->data['parameterArray']['fieldConf']['label']);
+        if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
+            $legend .= ' <code>[' . htmlspecialchars($this->data['fieldName']) . ']</code>';
+        }
+        return '<fieldset><legend class="form-legend">' . $legend . '</legend>' . $fieldContent . '</fieldset>';
+    }
+
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

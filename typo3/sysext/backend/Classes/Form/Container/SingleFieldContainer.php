@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -303,11 +302,6 @@ class SingleFieldContainer extends AbstractContainer
     protected function isAssociativeArray($object)
     {
         return is_array($object) && !empty($object) && array_keys($object) !== range(0, count($object) - 1);
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     protected function getLanguageService(): LanguageService

@@ -137,7 +137,7 @@ abstract class AbstractFormElement extends AbstractNode
     protected function wrapWithFieldsetAndLegend(string $innerHTML): string
     {
         $legend = htmlspecialchars($this->data['parameterArray']['fieldConf']['label']);
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
+        if ($this->getBackendUser()->shallDisplayDebugInformation()) {
             $fieldName = $this->data['flexFormFieldName'] ?? $this->data['fieldName'];
             $legend .= ' <code>[' . htmlspecialchars($fieldName) . ']</code>';
         }

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -373,7 +372,7 @@ class InlineControlContainer extends AbstractContainer
         // Close the wrap for all inline fields (container)
         $html .= '</div>';
 
-        $resultArray['html'] = $html;
+        $resultArray['html'] = $this->wrapWithFieldsetAndLegend($html);
         return $resultArray;
     }
 
@@ -573,11 +572,6 @@ class InlineControlContainer extends AbstractContainer
             );
         }
         return $flexFormParts;
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     protected function getLanguageService(): LanguageService
