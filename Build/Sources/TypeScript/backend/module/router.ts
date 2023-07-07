@@ -196,9 +196,21 @@ export class ModuleRouter extends LitElement {
     }
 
     if (!params.has('token')) {
-      // non token-urls (e.g. backend install tool) cannot be mapped by
-      // the main backend controller right now
-      return;
+      // InstallTool doesn't use a backend-route with a token,
+      // but has backend-routes that act as wrappers.
+      // Rewrite the URL for display in the browser URL bar.
+      // @todo: rewrite installtool as webcomponent backend
+      // module in order to advertise a proper module URL on it's own
+      if (params.has('install[controller]')) {
+        const controller = params.get('install[controller]');
+        params.delete('install[controller]');
+        params.delete('install[context]');
+        url.pathname = url.pathname.replace('/typo3/install.php', '/typo3/module/tools/' + controller);
+      } else {
+        // non token-urls cannot be mapped by
+        // the main backend controller right now
+        return;
+      }
     }
 
     params.delete('token');
