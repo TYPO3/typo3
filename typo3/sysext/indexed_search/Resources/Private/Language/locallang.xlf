@@ -256,13 +256,13 @@ All search words are converted to lowercase.
 			</trans-unit>
 
 			<trans-unit id="displayResults.previous" resname="displayResults.previous">
-				<source>&lt; Previous</source>
+				<source>Previous</source>
 			</trans-unit>
 			<trans-unit id="displayResults.page" resname="displayResults.page">
 				<source>Page</source>
 			</trans-unit>
 			<trans-unit id="displayResults.next" resname="displayResults.next">
-				<source>Next &gt;</source>
+				<source>Next</source>
 			</trans-unit>
 			<trans-unit id="displayResults" resname="displayResults">
 				<source><![CDATA[Displaying results <strong>%1$s to %2$s</strong> out of <strong>%3$s</strong>]]></source>

@@ -78,7 +78,7 @@ final class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
         // show on all pages after the 1st one
         if ($currentPage > 0) {
             $label = LocalizationUtility::translate('displayResults.previous', 'IndexedSearch') ?? '';
-            $content .= '<li>' . $this->makecurrentPageSelector_link($label, $currentPage - 1, $freeIndexUid) . '</li>';
+            $content .= '<li class="tx-indexedsearch-browselist-prev">' . $this->makecurrentPageSelector_link($label, $currentPage - 1, $freeIndexUid) . '</li>';
         }
         // Check if $maximumNumberOfResultPages is in range
         $maximumNumberOfResultPages = MathUtility::forceIntegerInRange($maximumNumberOfResultPages, 1, $pageCount, 10);
@@ -106,7 +106,7 @@ final class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
         // next link
         if ($currentPage < $pageCount - 1) {
             $label = LocalizationUtility::translate('displayResults.next', 'IndexedSearch') ?? '';
-            $content .= '<li>' . $this->makecurrentPageSelector_link($label, $currentPage + 1, $freeIndexUid) . '</li>';
+            $content .= '<li class="tx-indexedsearch-browselist-next">' . $this->makecurrentPageSelector_link($label, $currentPage + 1, $freeIndexUid) . '</li>';
         }
 
         if (!$this->tag->hasAttribute('class')) {
