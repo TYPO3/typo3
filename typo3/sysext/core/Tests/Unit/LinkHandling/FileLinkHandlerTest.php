@@ -62,7 +62,7 @@ final class FileLinkHandlerTest extends UnitTestCase
                     'uid' => 23,
                 ],
                 [
-                    'file' => 23,
+                    'file' => '23',
                 ],
                 't3://file?uid=23',
             ],
@@ -72,7 +72,7 @@ final class FileLinkHandlerTest extends UnitTestCase
                     'fragment' => 'page-13',
                 ],
                 [
-                    'file' => 23,
+                    'file' => '23',
                     'fragment' => 'page-13',
                 ],
                 't3://file?uid=23#page-13',

@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
@@ -38,6 +39,8 @@ final class FileControllerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $parentFolderMock = $this->createMock(FolderInterface::class);
         $this->fileResourceMock = $this->getMockBuilder(File::class)
             ->onlyMethods(['toArray', 'getModificationTime', 'getExtension', 'getParentFolder'])
             ->disableOriginalConstructor()
@@ -45,7 +48,7 @@ final class FileControllerTest extends UnitTestCase
         $this->fileResourceMock->method('toArray')->willReturn(['id' => 'foo']);
         $this->fileResourceMock->method('getModificationTime')->willReturn(123456789);
         $this->fileResourceMock->method('getExtension')->willReturn('html');
-        $this->fileResourceMock->method('getParentFolder')->willReturn(null);
+        $this->fileResourceMock->method('getParentFolder')->willReturn($parentFolderMock);
     }
 
     /**

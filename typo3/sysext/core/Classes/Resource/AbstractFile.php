@@ -138,32 +138,20 @@ abstract class AbstractFile implements FileInterface
         return $this->properties;
     }
 
-    /**
-     * Returns the identifier of this file
-     *
-     * @return string
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
     /**
-     * Get hashed identifier
-     *
-     * @return string
+     * @return non-empty-string
      */
-    public function getHashedIdentifier()
+    public function getHashedIdentifier(): string
     {
         return $this->properties['identifier_hash'];
     }
 
-    /**
-     * Returns the name of this file
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         // Do not check if file has been deleted because we might need the
         // name for undeleting it.
@@ -392,12 +380,9 @@ abstract class AbstractFile implements FileInterface
      ****************************************/
 
     /**
-     * Get the storage this file is located in
-     *
-     * @return ResourceStorage
      * @throws \RuntimeException
      */
-    public function getStorage()
+    public function getStorage(): ResourceStorage
     {
         if ($this->storage === null) {
             throw new \RuntimeException('You\'re using fileObjects without a storage.', 1381570091);
@@ -600,12 +585,7 @@ abstract class AbstractFile implements FileInterface
      */
     abstract public function updateProperties(array $properties);
 
-    /**
-     * Returns the parent folder.
-     *
-     * @return FolderInterface
-     */
-    public function getParentFolder()
+    public function getParentFolder(): FolderInterface
     {
         return $this->getStorage()->getFolder($this->getStorage()->getFolderIdentifierFromFileIdentifier($this->getIdentifier()));
     }

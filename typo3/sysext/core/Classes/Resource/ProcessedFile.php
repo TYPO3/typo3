@@ -317,9 +317,9 @@ class ProcessedFile extends AbstractFile
      * when the original image is in the boundaries of the maxW/maxH stuff), then just return the identifier of
      * the original file
      *
-     * @return string
+     * @return non-empty-string
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return (!$this->usesOriginalFile()) ? $this->identifier : $this->getOriginalFile()->getIdentifier();
     }
@@ -331,9 +331,9 @@ class ProcessedFile extends AbstractFile
      * when the original image is in the boundaries of the maxW/maxH stuff)
      * then just return the name of the original file
      *
-     * @return string
+     * @return non-empty-string
      */
-    public function getName()
+    public function getName(): string
     {
         if ($this->usesOriginalFile()) {
             return $this->originalFile->getName();

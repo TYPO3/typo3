@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -37,8 +38,8 @@ final class AbstractFileTest extends UnitTestCase
 
         $mockedStorageForParent = $this->createMock(ResourceStorage::class);
 
-        $parentFolderFixture = $this->getMockForAbstractClass(AbstractFile::class);
-        $parentFolderFixture->setIdentifier($parentIdentifier)->setStorage($mockedStorageForParent);
+        $parentFolderFixture = $this->createMock(FolderInterface::class);
+        $parentFolderFixture->method('getStorage')->willReturn($mockedStorageForParent);
 
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)
             ->onlyMethods(['getFolderIdentifierFromFileIdentifier', 'getFolder'])

@@ -89,12 +89,7 @@ class Folder implements FolderInterface
         $this->name = $name;
     }
 
-    /**
-     * Returns the name of this folder.
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -144,12 +139,7 @@ class Folder implements FolderInterface
         $this->name = $name;
     }
 
-    /**
-     * Returns the storage this folder belongs to.
-     *
-     * @return ResourceStorage
-     */
-    public function getStorage()
+    public function getStorage(): ResourceStorage
     {
         return $this->storage;
     }
@@ -158,19 +148,14 @@ class Folder implements FolderInterface
      * Returns the path of this folder inside the storage. It depends on the
      * type of storage whether this is a real path or just some unique identifier.
      *
-     * @return string
+     * @return non-empty-string
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    /**
-     * Get hashed identifier
-     *
-     * @return string
-     */
-    public function getHashedIdentifier()
+    public function getHashedIdentifier(): string
     {
         return $this->storage->hashFileIdentifier($this->identifier);
     }
@@ -539,10 +524,9 @@ class Folder implements FolderInterface
      *
      * The parent folder of the root folder is the root folder.
      *
-     * @return FolderInterface
      * @throws InsufficientFolderAccessPermissionsException
      */
-    public function getParentFolder()
+    public function getParentFolder(): FolderInterface
     {
         return $this->getStorage()->getFolder($this->getStorage()->getFolderIdentifierFromFileIdentifier($this->getIdentifier()));
     }

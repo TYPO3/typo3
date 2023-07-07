@@ -214,7 +214,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
                 'file:23',
                 [
                     'type' => LinkService::TYPE_FILE,
-                    'file' => 23,
+                    'file' => '23',
                 ],
                 't3://file?uid=23',
             ],
@@ -222,7 +222,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
                 'file:23#page-13',
                 [
                     'type' => LinkService::TYPE_FILE,
-                    'file' => 23,
+                    'file' => '23',
                     'fragment' => 'page-13',
                 ],
                 't3://file?uid=23#page-13',

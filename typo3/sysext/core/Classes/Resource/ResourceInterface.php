@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,41 +17,18 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
-/**
- * ResourceInterface
- */
 interface ResourceInterface
 {
-    /**
-     * Returns the identifier of this file
-     *
-     * @return string
-     */
-    public function getIdentifier();
+    public function getIdentifier(): string;
+
+    public function getName(): string;
+
+    public function getStorage(): ResourceStorage;
 
     /**
-     * Returns the name of this file
-     *
-     * @return string
+     * @return non-empty-string
      */
-    public function getName();
+    public function getHashedIdentifier(): string;
 
-    /**
-     * Get the storage this file is located in
-     *
-     * @return ResourceStorage
-     */
-    public function getStorage();
-
-    /**
-     * Get hashed identifier
-     *
-     * @return string
-     */
-    public function getHashedIdentifier();
-
-    /**
-     * @return FolderInterface
-     */
-    public function getParentFolder();
+    public function getParentFolder(): FolderInterface;
 }
