@@ -76,22 +76,20 @@ class ImageMagick6Preset extends AbstractImagePreset
             } else {
                 $executable = 'identify';
             }
-            if (@is_file($path . $executable)) {
-                $command = escapeshellarg($path . $executable) . ' -version';
-                $executingResult = [];
-                CommandUtility::exec($command, $executingResult);
-                // First line of exec command should contain string GraphicsMagick
-                $firstResultLine = array_shift($executingResult);
-                // Example: "Version: ImageMagick 6.6.0-4 2012-05-02 Q16 http://www.imagemagick.org"
-                if (str_contains($firstResultLine, 'ImageMagick')) {
-                    [, $version] = explode('ImageMagick', $firstResultLine);
-                    // Example: "6.6.0-4"
-                    [$version] = explode(' ', trim($version));
-                    if (version_compare($version, '6.0.0') >= 0) {
-                        $this->foundPath = $path;
-                        $result = true;
-                        break;
-                    }
+            $command = escapeshellarg($path . $executable) . ' -version';
+            $executingResult = [];
+            CommandUtility::exec($command, $executingResult);
+            // First line of exec command should contain string GraphicsMagick
+            $firstResultLine = array_shift($executingResult);
+            // Example: "Version: ImageMagick 6.6.0-4 2012-05-02 Q16 http://www.imagemagick.org"
+            if (str_contains($firstResultLine, 'ImageMagick')) {
+                [, $version] = explode('ImageMagick', $firstResultLine);
+                // Example: "6.6.0-4"
+                [$version] = explode(' ', trim($version));
+                if (version_compare($version, '6.0.0') >= 0) {
+                    $this->foundPath = $path;
+                    $result = true;
+                    break;
                 }
             }
         }
