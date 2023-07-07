@@ -15,6 +15,7 @@
         }
     }
 
+    .alert,
     .table-fit {
         box-shadow: none;
         border-radius: 0;
@@ -22,6 +23,10 @@
         border-right: 0;
         border-bottom: 0;
         margin-bottom: 0;
+    }
+
+    .alert {
+        padding: var(--panel-header-padding-y) var(--typo3-component-padding-x);
     }
 
     .pagination {

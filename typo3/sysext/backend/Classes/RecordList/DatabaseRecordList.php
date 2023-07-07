@@ -779,18 +779,29 @@ class DatabaseRecordList
             ';
         }
 
-        if (!(BackendUtility::isTableWorkspaceEnabled($table))) {
+        $recordListMessages = '';
+        $recordlistMessageEntries = [];
+        if ($backendUser->workspace > 0 && ExtensionManagementUtility::isLoaded('workspaces') && !BackendUtility::isTableWorkspaceEnabled($table)) {
             // In case the table is not editable in workspace inform the user about the missing actions
             if ($backendUser->workspaceAllowsLiveEditingInTable($table)) {
-                $message = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editingLiveRecordsWarning');
+                $recordlistMessageEntries[] = [
+                    'message' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editingLiveRecordsWarning'),
+                    'severity' => ContextualFeedbackSeverity::WARNING,
+                ];
             } else {
-                $message = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.notEditableInWorkspace');
+                $recordlistMessageEntries[] = [
+                    'message' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.notEditableInWorkspace'),
+                    'severity' => ContextualFeedbackSeverity::INFO,
+                ];
             }
-            $tableActions .= '
-                <span class="badge badge-warning">
-                    ' . htmlspecialchars($message, ENT_QUOTES | ENT_HTML5) . '
-                </span>
-                ';
+        }
+
+        foreach ($recordlistMessageEntries as $messageEntry) {
+            $recordListMessages .= '<div class="alert alert-' . $messageEntry['severity']->getCssClass() . '">';
+            $recordListMessages .= $this->iconFactory->getIcon($messageEntry['severity']->getIconIdentifier(), Icon::SIZE_SMALL)->render();
+            $recordListMessages .= ' ';
+            $recordListMessages .= htmlspecialchars($messageEntry['message'], ENT_QUOTES | ENT_HTML5);
+            $recordListMessages .= '</div>';
         }
 
         $collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse show';
@@ -801,12 +812,13 @@ class DatabaseRecordList
                     <input type="hidden" name="cmd_table" value="' . htmlspecialchars($tableIdentifier) . '" />
                     <input type="hidden" name="cmd" />
                     <div class="recordlist-heading ' . ($multiRecordSelectionActions !== '' ? 'multi-record-selection-panel' : '') . '">
-                    <div class="recordlist-heading-row">
-                        <div class="recordlist-heading-title">' . $tableHeader . '</div>
-                        <div class="recordlist-heading-actions">' . $tableActions . '</div>
+                        <div class="recordlist-heading-row">
+                            <div class="recordlist-heading-title">' . $tableHeader . '</div>
+                            <div class="recordlist-heading-actions">' . $tableActions . '</div>
+                        </div>
+                        ' . $multiRecordSelectionActions . '
                     </div>
-                    ' . $multiRecordSelectionActions . '
-                    </div>
+                    ' . $recordListMessages . '
                     <div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($tableIdentifier) . '">
                         <div class="table-fit">
                             <table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover">

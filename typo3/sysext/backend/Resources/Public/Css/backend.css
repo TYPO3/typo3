@@ -3749,7 +3749,8 @@ typo3-backend-live-search-result-item-action>* .livesearch-result-item-title,typ
 typo3-backend-live-search-result-item-action>* .livesearch-result-item-title .small,typo3-backend-live-search-result-item-action>* .livesearch-result-item-title small,typo3-backend-live-search-result-item>* .livesearch-result-item-title .small,typo3-backend-live-search-result-item>* .livesearch-result-item-title small{opacity:var(--livesearch-item-opacity)}
 .recordlist{overflow:hidden;background:var(--panel-bg);box-shadow:var(--panel-box-shadow);border-radius:var(--panel-border-radius);border:var(--panel-border-width) solid var(--panel-default-border-color);margin-bottom:var(--typo3-spacing)}
 .recordlist table tr td.deletePlaceholder{text-decoration:line-through}
-.recordlist .table-fit{box-shadow:none;border-radius:0;border-left:0;border-right:0;border-bottom:0;margin-bottom:0}
+.recordlist .alert,.recordlist .table-fit{box-shadow:none;border-radius:0;border-left:0;border-right:0;border-bottom:0;margin-bottom:0}
+.recordlist .alert{padding:var(--panel-header-padding-y) var(--typo3-component-padding-x)}
 .recordlist .pagination{display:inline-flex}
 .recordlist+.recordlist{margin-top:calc(var(--typo3-spacing) * 1.5)}
 .recordlist-heading{display:flex;align-items:center;flex-wrap:wrap;color:var(--panel-default-heading-color);background:var(--panel-default-heading-bg);padding:var(--panel-header-padding-y) var(--panel-header-padding-x);gap:var(--panel-header-padding-y) var(--panel-header-padding-x)}
