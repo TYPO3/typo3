@@ -97,10 +97,10 @@ A module can be added to the current page response either via
 ..  code-block:: php
 
     // via PageRenderer
-    $this->packageRenderer->loadJavaScriptModule('@vendor/my-extension/example.js');
+    $this->pageRenderer->loadJavaScriptModule('@vendor/my-extension/example.js');
 
     // via JavaScriptRenderer
-    $this->packageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+    $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
         JavaScriptModuleInstruction::create('@vendor/my-extension/example.js')
     );
 
