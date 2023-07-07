@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
+use TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -99,7 +100,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     #[Test]
     public function nonexistentTypeConverterOptionsReturnNull(): void
     {
-        self::assertNull((new PropertyMappingConfiguration())->getConfigurationValue('foo', 'bar'));
+        self::assertNull((new PropertyMappingConfiguration())->getConfigurationValue(StringConverter::class, 'bar'));
     }
 
     #[Test]
@@ -197,9 +198,9 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     {
         $subject = new PropertyMappingConfiguration();
         // using stdClass so that class_parents() in getTypeConvertersWithParentClasses() is happy
-        $subject->forProperty('items.*')->setTypeConverterOptions(\stdClass::class, ['k1' => 'v1']);
+        $subject->forProperty('items.*')->setTypeConverterOptions(StringConverter::class, ['k1' => 'v1']);
         $configuration = $subject->getConfigurationFor('items')->getConfigurationFor('6');
-        self::assertSame('v1', $configuration->getConfigurationValue(\stdClass::class, 'k1'));
+        self::assertSame('v1', $configuration->getConfigurationValue(StringConverter::class, 'k1'));
     }
 
     #[Test]
@@ -207,16 +208,16 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     {
         $subject = new PropertyMappingConfiguration();
         // using stdClass so that class_parents() in getTypeConvertersWithParentClasses() is happy
-        $subject->forProperty('items.*.foo')->setTypeConverterOptions(\stdClass::class, ['k1' => 'v1']);
+        $subject->forProperty('items.*.foo')->setTypeConverterOptions(StringConverter::class, ['k1' => 'v1']);
         $configuration = $subject->forProperty('items.6.foo');
-        self::assertSame('v1', $configuration->getConfigurationValue(\stdClass::class, 'k1'));
+        self::assertSame('v1', $configuration->getConfigurationValue(StringConverter::class, 'k1'));
     }
 
     #[Test]
     public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithShouldMap(): void
     {
         $subject = new PropertyMappingConfiguration();
-        $subject->forProperty('items.*')->setTypeConverterOptions(\stdClass::class, ['k1' => 'v1']);
+        $subject->forProperty('items.*')->setTypeConverterOptions(StringConverter::class, ['k1' => 'v1']);
         $configuration = $subject->forProperty('items');
         self::assertTrue($configuration->shouldMap('6'));
     }

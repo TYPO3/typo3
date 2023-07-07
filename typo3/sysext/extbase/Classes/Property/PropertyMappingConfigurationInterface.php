@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,47 +25,76 @@ interface PropertyMappingConfigurationInterface
     /**
      * returns TRUE if the given propertyName should be mapped, FALSE otherwise.
      *
-     * @param string $propertyName
-     * @return bool
+     * @param non-empty-string $propertyName
      */
-    public function shouldSkip($propertyName);
+    public function shouldSkip(string $propertyName): bool;
 
     /**
      * Whether unknown (unconfigured) properties should be skipped during
      * mapping, instead if causing an error.
-     *
-     * @return bool
      */
-    public function shouldSkipUnknownProperties();
+    public function shouldSkipUnknownProperties(): bool;
 
     /**
      * Returns the sub-configuration for the passed $propertyName. Must ALWAYS return a valid configuration object!
      *
-     * @param string $propertyName
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface the property mapping configuration for the given $propertyName.
+     * @param non-empty-string $propertyName
+     * @return PropertyMappingConfigurationInterface the property mapping configuration for the given $propertyName.
      */
-    public function getConfigurationFor($propertyName);
+    public function getConfigurationFor(string $propertyName): PropertyMappingConfigurationInterface;
 
     /**
      * Maps the given $sourcePropertyName to a target property name.
      * Can be used to rename properties from source to target.
      *
-     * @param string $sourcePropertyName
-     * @return string property name of target
+     * @param non-empty-string $sourcePropertyName
+     * @return non-empty-string property name of target
      */
-    public function getTargetPropertyName($sourcePropertyName);
+    public function getTargetPropertyName(string $sourcePropertyName): string;
 
     /**
-     * @param string $typeConverterClassName
-     * @param string $key
+     * @param class-string<TypeConverterInterface> $typeConverterClassName
+     * @param non-empty-string|int $key
      * @return mixed configuration value for the specific $typeConverterClassName. Can be used by Type Converters to fetch converter-specific configuration
      */
-    public function getConfigurationValue($typeConverterClassName, $key);
+    public function getConfigurationValue(string $typeConverterClassName, string|int $key): mixed;
 
     /**
      * This method can be used to explicitly force a TypeConverter to be used for this Configuration.
      *
-     * @return \TYPO3\CMS\Extbase\Property\TypeConverterInterface|null The type converter to be used for this particular PropertyMappingConfiguration, or NULL if the system-wide configured type converter should be used.
+     * @return TypeConverterInterface|null The type converter to be used for this particular PropertyMappingConfiguration, or NULL if the system-wide configured type converter should be used.
      */
-    public function getTypeConverter();
+    public function getTypeConverter(): ?TypeConverterInterface;
+
+    public function allowAllProperties(): PropertyMappingConfigurationInterface;
+
+    /**
+     * @param class-string<TypeConverterInterface> $typeConverter
+     */
+    public function setTypeConverterOption(string $typeConverter, string|int $optionKey, mixed $optionValue): PropertyMappingConfigurationInterface;
+
+    /**
+     * @param non-empty-string $propertyName
+     */
+    public function shouldMap(string $propertyName): bool;
+
+    /**
+     * @param class-string<TypeConverterInterface> $typeConverter
+     */
+    public function setTypeConverterOptions(string $typeConverter, array $options): PropertyMappingConfigurationInterface;
+
+    /**
+     * @param non-empty-string $propertyPath
+     */
+    public function forProperty(string $propertyPath): PropertyMappingConfigurationInterface;
+
+    /**
+     * @param non-empty-string ...$propertyNames
+     */
+    public function allowProperties(string ...$propertyNames): PropertyMappingConfigurationInterface;
+
+    /**
+     * @param array $splitPropertyPath
+     */
+    public function traverseProperties(array $splitPropertyPath): PropertyMappingConfigurationInterface;
 }

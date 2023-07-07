@@ -49,7 +49,7 @@ class PropertyMapper implements SingletonInterface
      * @throws Exception
      * @return mixed an instance of $targetType
      */
-    public function convert($source, string $targetType, ?PropertyMappingConfigurationInterface $configuration = null)
+    public function convert(mixed $source, string $targetType, ?PropertyMappingConfigurationInterface $configuration = null): mixed
     {
         $configuration ??= $this->configurationBuilder->build();
         $currentPropertyPath = [];
@@ -102,7 +102,7 @@ class PropertyMapper implements SingletonInterface
      *
      * @internal since TYPO3 v12.0
      */
-    protected function doMapping($source, string $targetType, PropertyMappingConfigurationInterface $configuration, array &$currentPropertyPath)
+    protected function doMapping(mixed $source, string $targetType, PropertyMappingConfigurationInterface $configuration, array &$currentPropertyPath)
     {
         if (is_object($source)) {
             $targetType = $this->parseCompositeType($targetType);
@@ -153,7 +153,6 @@ class PropertyMapper implements SingletonInterface
     /**
      * Determine the type converter to be used. If no converter has been found, an exception is raised.
      *
-     * @param mixed $source
      * @return TypeConverterInterface Type Converter which should be used to convert between $source and $targetType.
      *
      * @throws Exception\TypeConverterException
@@ -163,7 +162,7 @@ class PropertyMapper implements SingletonInterface
      *
      * @internal since TYPO3 v12.0
      */
-    protected function findTypeConverter($source, string $targetType, PropertyMappingConfigurationInterface $configuration): TypeConverterInterface
+    protected function findTypeConverter(mixed $source, string $targetType, PropertyMappingConfigurationInterface $configuration): TypeConverterInterface
     {
         if ($configuration->getTypeConverter() !== null) {
             return $configuration->getTypeConverter();
@@ -180,12 +179,11 @@ class PropertyMapper implements SingletonInterface
     /**
      * Determine the type of the source data, or throw an exception if source was an unsupported format.
      *
-     * @param mixed $source
      * @throws Exception\InvalidSourceException
      *
      * @internal since TYPO3 v12.0
      */
-    protected function determineSourceType($source): string
+    protected function determineSourceType(mixed $source): string
     {
         if (is_string($source)) {
             return 'string';

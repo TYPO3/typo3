@@ -2281,12 +2281,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/Argument.php
 
 		-
-			message: '#^Parameter \#2 \$optionKey of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:setTypeConverterOption\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 3
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfiguration.php
-
-		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -2296,12 +2290,6 @@ parameters:
 			message: '#^Offset non\-empty\-string on array\{\} on left side of \?\? does not exist\.$#'
 			identifier: nullCoalesce.offset
 			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
-
-		-
-			message: '#^Parameter \#2 \$optionKey of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:setTypeConverterOption\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 2
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
 
 		-
@@ -2473,40 +2461,16 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/ObjectStorage.php
 
 		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationInterface\:\:shouldMap\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Property/PropertyMapper.php
-
-		-
 			message: '#^Dead catch \- TYPO3\\CMS\\Extbase\\Property\\Exception\\TargetNotFoundException is never thrown in the try block\.$#'
 			identifier: catch.neverThrown
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Property/PropertyMapper.php
 
 		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationInterface\:\:traverseProperties\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Property/PropertyMappingConfiguration.php
-
-		-
 			message: '#^Parameter \#1 \$originalResource of method TYPO3\\CMS\\Extbase\\Domain\\Model\\File\:\:setOriginalResource\(\) expects TYPO3\\CMS\\Core\\Resource\\File\|TYPO3\\CMS\\Core\\Resource\\FileReference\|TYPO3\\CMS\\Core\\Resource\\Folder, TYPO3\\CMS\\Core\\Resource\\ResourceInterface given\.$#'
 			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/AbstractFileFolderConverter.php
-
-		-
-			message: '#^Parameter \#2 \$key of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationInterface\:\:getConfigurationValue\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/ObjectConverter.php
-
-		-
-			message: '#^Parameter \#2 \$key of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationInterface\:\:getConfigurationValue\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 3
-			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/PersistentObjectConverter.php
 
 		-
 			message: '#^Dead catch \- Symfony\\Component\\PropertyAccess\\Exception\\NoSuchIndexException is never thrown in the try block\.$#'
@@ -2593,12 +2557,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerTest.php
 
 		-
-			message: '#^Parameter \#2 \$optionKey of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:setTypeConverterOption\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_test/Classes/Controller/TestController.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Http\\\\ForwardResponse'' and TYPO3\\CMS\\Extbase\\Http\\ForwardResponse will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -2677,22 +2635,10 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php
 
 		-
-			message: '#^Parameter \#2 \$optionKey of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:setTypeConverterOption\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 4
-			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php
-
-		-
 			message: '#^Property class@anonymous/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest\.php\:331\:\:\$name is unused\.$#'
 			identifier: property.unused
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php
-
-		-
-			message: '#^Parameter \#2 \$optionKey of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:setTypeConverterOption\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/PersistentObjectConverterTest.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SplObjectStorage'' and SplObjectStorage will always evaluate to true\.$#'
@@ -2767,12 +2713,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ArgumentTest.php
 
 		-
-			message: '#^Parameter \#2 \$key of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:getConfigurationValue\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ArgumentTest.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments\:\:nonExistingMethod\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -2789,12 +2729,6 @@ parameters:
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ArgumentsTest.php
-
-		-
-			message: '#^Parameter \#2 \$key of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:getConfigurationValue\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 8
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/MvcPropertyMappingConfigurationServiceTest.php
 
 		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface\:\:expects\(\)\.$#'
@@ -2837,18 +2771,6 @@ parameters:
 			identifier: staticMethod.alreadyNarrowedType
 			count: 6
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Typo3QuerySettingsTest.php
-
-		-
-			message: '#^Parameter \#2 \$key of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:getConfigurationValue\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Property/PropertyMappingConfigurationBuilderTest.php
-
-		-
-			message: '#^Parameter \#2 \$key of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationInterface\:\:getConfigurationValue\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Property/PropertyMappingConfigurationBuilderTest.php
 
 		-
 			message: '#^Constructor of an anonymous class has an unused parameter \$copy\.$#'
@@ -3229,21 +3151,9 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Mvc/Property/PropertyMappingConfiguration.php
 
 		-
-			message: '#^Parameter \#2 \$optionKey of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:setTypeConverterOption\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Property/PropertyMappingConfiguration.php
-
-		-
 			message: '#^Parameter \#1 \$uid of method TYPO3\\CMS\\Core\\Resource\\ResourceFactory\:\:getStorageObject\(\) expects int\|null, string given\.$#'
 			identifier: argument.type
 			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Property/TypeConverter/UploadedFileReferenceConverter.php
-
-		-
-			message: '#^Parameter \#2 \$key of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationInterface\:\:getConfigurationValue\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 4
 			path: ../../typo3/sysext/form/Classes/Mvc/Property/TypeConverter/UploadedFileReferenceConverter.php
 
 		-

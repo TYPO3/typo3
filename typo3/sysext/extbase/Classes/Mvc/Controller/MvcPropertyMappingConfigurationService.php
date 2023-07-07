@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Exception\Crypto\InvalidHashStringException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
 use TYPO3\CMS\Extbase\Security\HashScope;
@@ -163,9 +163,9 @@ class MvcPropertyMappingConfigurationService implements SingletonInterface
      * All other properties are specified as allowed properties.
      *
      * @param array $propertyConfiguration
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration
+     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $propertyMappingConfiguration
      */
-    protected function modifyPropertyMappingConfiguration($propertyConfiguration, PropertyMappingConfiguration $propertyMappingConfiguration)
+    protected function modifyPropertyMappingConfiguration($propertyConfiguration, PropertyMappingConfigurationInterface $propertyMappingConfiguration)
     {
         if (!is_array($propertyConfiguration)) {
             return;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -31,63 +33,56 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * 2. Dimension: Configuration Key
      * Value: Configuration Value
      *
-     * @var array
+     * @var array<class-string<TypeConverterInterface>, non-empty-string|int>
      */
-    protected $configuration;
+    protected array $configuration = [];
 
     /**
      * Stores the configuration for specific child properties.
      *
-     * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface[]
+     * @var array<self::PROPERTY_PATH_PLACEHOLDER|non-empty-string,PropertyMappingConfigurationInterface>
      */
-    protected $subConfigurationForProperty = [];
+    protected array $subConfigurationForProperty = [];
 
     /**
      * Keys which should be renamed
      *
-     * @var array
+     * @var array<non-empty-string, non-empty-string>
      */
-    protected $mapping = [];
+    protected array $mapping = [];
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface
-     */
-    protected $typeConverter;
+    protected ?TypeConverterInterface $typeConverter = null;
 
     /**
      * List of allowed property names to be converted
      *
-     * @var array
+     * @var array<non-empty-string, non-empty-string>
      */
-    protected $propertiesToBeMapped = [];
+    protected array $propertiesToBeMapped = [];
 
     /**
      * List of property names to be skipped during property mapping
      *
-     * @var array
+     * @var array<non-empty-string, non-empty-string>
      */
-    protected $propertiesToSkip = [];
+    protected array $propertiesToSkip = [];
 
     /**
      * List of disallowed property names which will be ignored while property mapping
      *
-     * @var array
+     * @var array<non-empty-string, non-empty-string>
      */
-    protected $propertiesNotToBeMapped = [];
+    protected array $propertiesNotToBeMapped = [];
 
     /**
      * If TRUE, unknown properties will be skipped during property mapping
-     *
-     * @var bool
      */
-    protected $skipUnknownProperties = false;
+    protected bool $skipUnknownProperties = false;
 
     /**
      * If TRUE, unknown properties will be mapped.
-     *
-     * @var bool
      */
-    protected $mapUnknownProperties = false;
+    protected bool $mapUnknownProperties = false;
 
     /**
      * The behavior is as follows:
@@ -97,10 +92,10 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * - if allowAllProperties* has been called, we allow unknown properties
      * - else, return FALSE.
      *
-     * @param string $propertyName
+     * @param non-empty-string $propertyName
      * @return bool TRUE if the given propertyName should be mapped, FALSE otherwise.
      */
-    public function shouldMap($propertyName)
+    public function shouldMap(string $propertyName): bool
     {
         if (isset($this->propertiesNotToBeMapped[$propertyName])) {
             return false;
@@ -120,10 +115,9 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * Check if the given $propertyName should be skipped during mapping.
      *
-     * @param string $propertyName
-     * @return bool
+     * @param non-empty-string $propertyName
      */
-    public function shouldSkip($propertyName)
+    public function shouldSkip(string $propertyName): bool
     {
         return isset($this->propertiesToSkip[$propertyName]);
     }
@@ -131,9 +125,9 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * Allow all properties in property mapping, even unknown ones.
      *
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
+     * @return $this
      */
-    public function allowAllProperties()
+    public function allowAllProperties(): self
     {
         $this->mapUnknownProperties = true;
         return $this;
@@ -145,11 +139,12 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      *
      * Example: allowProperties('title', 'content', 'author')
      *
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
+     * @param non-empty-string ...$propertyNames
+     * @return $this
      */
-    public function allowProperties()
+    public function allowProperties(string ...$propertyNames): self
     {
-        foreach (func_get_args() as $propertyName) {
+        foreach ($propertyNames as $propertyName) {
             $this->propertiesToBeMapped[$propertyName] = $propertyName;
         }
         return $this;
@@ -161,11 +156,12 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      *
      * Example: skipProperties('unused', 'dummy')
      *
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
+     * @param non-empty-string ...$propertyNames
+     * @return $this
      */
-    public function skipProperties()
+    public function skipProperties(string ...$propertyNames): self
     {
-        foreach (func_get_args() as $propertyName) {
+        foreach ($propertyNames as $propertyName) {
             $this->propertiesToSkip[$propertyName] = $propertyName;
         }
         return $this;
@@ -177,13 +173,14 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      *
      * Example: allowAllPropertiesExcept('password', 'userGroup')
      *
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
+     * @param non-empty-string ...$propertyNames
+     * @return $this
      */
-    public function allowAllPropertiesExcept()
+    public function allowAllPropertiesExcept(string ...$propertyNames): self
     {
         $this->mapUnknownProperties = true;
 
-        foreach (func_get_args() as $propertyName) {
+        foreach ($propertyNames as $propertyName) {
             $this->propertiesNotToBeMapped[$propertyName] = $propertyName;
         }
         return $this;
@@ -193,21 +190,19 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * When this is enabled, properties that are disallowed will be skipped
      * instead of triggering an error during mapping.
      *
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
+     * @return $this
      */
-    public function skipUnknownProperties()
+    public function skipUnknownProperties(): self
     {
         $this->skipUnknownProperties = true;
         return $this;
     }
 
     /**
-     * Whether unknown (unconfigured) properties should be skipped during
+     * Whether unknown (non configured) properties should be skipped during
      * mapping, instead if causing an error.
-     *
-     * @return bool
      */
-    public function shouldSkipUnknownProperties()
+    public function shouldSkipUnknownProperties(): bool
     {
         return $this->skipUnknownProperties;
     }
@@ -215,10 +210,10 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * Returns the sub-configuration for the passed $propertyName. Must ALWAYS return a valid configuration object!
      *
-     * @param string $propertyName
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface the property mapping configuration for the given $propertyName.
+     * @param non-empty-string $propertyName
+     * @return PropertyMappingConfigurationInterface the property mapping configuration for the given $propertyName.
      */
-    public function getConfigurationFor($propertyName)
+    public function getConfigurationFor(string $propertyName): PropertyMappingConfigurationInterface
     {
         if (isset($this->subConfigurationForProperty[$propertyName])) {
             return $this->subConfigurationForProperty[$propertyName];
@@ -233,10 +228,10 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * Maps the given $sourcePropertyName to a target property name.
      *
-     * @param string $sourcePropertyName
-     * @return string property name of target
+     * @param non-empty-string $sourcePropertyName
+     * @return non-empty-string property name of target
      */
-    public function getTargetPropertyName($sourcePropertyName)
+    public function getTargetPropertyName(string $sourcePropertyName): string
     {
         if (isset($this->mapping[$sourcePropertyName])) {
             return $this->mapping[$sourcePropertyName];
@@ -245,11 +240,11 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     }
 
     /**
-     * @param string $typeConverterClassName
-     * @param string $key
+     * @param class-string<TypeConverterInterface> $typeConverterClassName
+     * @param non-empty-string|int $key
      * @return mixed configuration value for the specific $typeConverterClassName. Can be used by Type Converters to fetch converter-specific configuration.
      */
-    public function getConfigurationValue($typeConverterClassName, $key)
+    public function getConfigurationValue(string $typeConverterClassName, string|int $key): mixed
     {
         if (!isset($this->configuration[$typeConverterClassName][$key])) {
             return null;
@@ -261,11 +256,11 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * Define renaming from Source to Target property.
      *
-     * @param string $sourcePropertyName
-     * @param string $targetPropertyName
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
+     * @param non-empty-string $sourcePropertyName
+     * @param non-empty-string $targetPropertyName
+     * @return $this
      */
-    public function setMapping($sourcePropertyName, $targetPropertyName)
+    public function setMapping(string $sourcePropertyName, string $targetPropertyName): self
     {
         $this->mapping[$sourcePropertyName] = $targetPropertyName;
         return $this;
@@ -274,10 +269,10 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * Set all options for the given $typeConverter.
      *
-     * @param string $typeConverter class name of type converter
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
+     * @param class-string<TypeConverterInterface> $typeConverter class name of type converter
+     * @return $this
      */
-    public function setTypeConverterOptions($typeConverter, array $options)
+    public function setTypeConverterOptions(string $typeConverter, array $options): self
     {
         foreach ($this->getTypeConvertersWithParentClasses($typeConverter) as $typeConverter) {
             $this->configuration[$typeConverter] = $options;
@@ -288,12 +283,12 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * Set a single option (denoted by $optionKey) for the given $typeConverter.
      *
-     * @param string $typeConverter class name of type converter
-     * @param string $optionKey
+     * @param class-string<TypeConverterInterface> $typeConverter class name of type converter
+     * @param non-empty-string|int $optionKey
      * @param mixed $optionValue
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
+     * @return $this
      */
-    public function setTypeConverterOption($typeConverter, $optionKey, $optionValue)
+    public function setTypeConverterOption(string $typeConverter, string|int $optionKey, mixed $optionValue): self
     {
         foreach ($this->getTypeConvertersWithParentClasses($typeConverter) as $typeConverter) {
             $this->configuration[$typeConverter][$optionKey] = $optionValue;
@@ -307,10 +302,10 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * When setting an option on a subclassed type converter, this option must also be set on
      * all its parent type converters.
      *
-     * @param string $typeConverter The type converter class
-     * @return array Class names of type converters
+     * @param class-string<TypeConverterInterface> $typeConverter The type converter class
+     * @return array<class-string> Class names of type converters
      */
-    protected function getTypeConvertersWithParentClasses($typeConverter)
+    protected function getTypeConvertersWithParentClasses(string $typeConverter): array
     {
         $typeConverterClasses = class_parents($typeConverter);
         $typeConverterClasses = $typeConverterClasses ?: [];
@@ -323,27 +318,24 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * inside a fluent interface like:
      * $configuration->forProperty('foo.bar')->setTypeConverterOption(....)
      *
-     * @param string $propertyPath
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration (or a subclass thereof)
+     * @param non-empty-string $propertyPath
      */
-    public function forProperty($propertyPath)
+    public function forProperty(string $propertyPath): PropertyMappingConfigurationInterface
     {
-        $splittedPropertyPath = explode('.', $propertyPath);
-        return $this->traverseProperties($splittedPropertyPath);
+        $splitPropertyPath = explode('.', $propertyPath);
+        return $this->traverseProperties($splitPropertyPath);
     }
 
     /**
      * Traverse the property configuration. Only used by forProperty().
-     *
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration (or a subclass thereof)
      */
-    public function traverseProperties(array $splittedPropertyPath)
+    public function traverseProperties(array $splitPropertyPath): PropertyMappingConfigurationInterface
     {
-        if (empty($splittedPropertyPath)) {
+        if (empty($splitPropertyPath)) {
             return $this;
         }
 
-        $currentProperty = array_shift($splittedPropertyPath);
+        $currentProperty = array_shift($splitPropertyPath);
         if (!isset($this->subConfigurationForProperty[$currentProperty])) {
             $type = static::class;
             if (isset($this->subConfigurationForProperty[self::PROPERTY_PATH_PLACEHOLDER])) {
@@ -352,15 +344,13 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
                 $this->subConfigurationForProperty[$currentProperty] = new $type();
             }
         }
-        return $this->subConfigurationForProperty[$currentProperty]->traverseProperties($splittedPropertyPath);
+        return $this->subConfigurationForProperty[$currentProperty]->traverseProperties($splitPropertyPath);
     }
 
     /**
      * Return the type converter set for this configuration.
-     *
-     * @return \TYPO3\CMS\Extbase\Property\TypeConverterInterface|null
      */
-    public function getTypeConverter()
+    public function getTypeConverter(): ?TypeConverterInterface
     {
         return $this->typeConverter;
     }
@@ -368,7 +358,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * Set a type converter which should be used for this specific conversion.
      *
-     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
+     * @return $this
      */
     public function setTypeConverter(TypeConverterInterface $typeConverter)
     {
