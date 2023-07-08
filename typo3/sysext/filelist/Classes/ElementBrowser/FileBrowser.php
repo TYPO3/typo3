@@ -119,7 +119,13 @@ class FileBrowser extends AbstractResourceBrowser
             $markup[] = '</div>';
 
             // Create the filelist
-            $this->filelist->start($this->selectedFolder, MathUtility::forceIntegerInRange($this->currentPage, 1, 100000), 'asc', false, Mode::BROWSE);
+            $this->filelist->start(
+                $this->selectedFolder,
+                MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
+                $this->getRequest()->getQueryParams()['sort'] ?? 'asc',
+                ($this->getRequest()->getQueryParams()['reverse'] ?? '') === '1',
+                Mode::BROWSE
+            );
             $this->filelist->setResourceDisplayMatcher($this->resourceDisplayMatcher);
             $this->filelist->setResourceSelectableMatcher($this->resourceSelectableMatcher);
             $searchDemand = $this->searchWord !== ''
