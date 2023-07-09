@@ -37,11 +37,28 @@ final class JavaScriptRendererTest extends FunctionalTestCase
         );
         $subject->addGlobalAssignment(['section*/' => ['key*/' => 'value*/']]);
         self::assertSame(
-            '<script src="anything.js" async="async">'
-                . '/* [{"type":"globalAssignment","payload":{"section*\/":{"key*\/":"value*\/"}}},'
-                . '{"type":"javaScriptModuleInstruction","payload":{"name":"@typo3\/test\/module.js","exportName":null,'
-                . '"flags":2,"items":[{"type":"invoke","method":"test*\/","args":["arg*\/"]}]}}] */</script>',
-            trim($subject->render())
+            '<script>Object.assign(globalThis, {"section*\/":{"key*\/":"value*\/"}})</script>'
+                . PHP_EOL
+                . '<script src="anything.js" async="async">/* [{"type":"javaScriptModuleInstruction","payload":{"name":"@typo3\/test\/module.js","exportName":null,"flags":2,"items":[{"type":"invoke","method":"test*\/","args":["arg*\/"]}]}}] */</script>',
+            trim($subject->render(null, '/'))
+        );
+    }
+
+    #[Test]
+    public function globalVariablesAreMerged(): void
+    {
+        $subject = JavaScriptRenderer::create('');
+        $subject->addGlobalAssignment([
+            'test' => 'test1',
+            'bar' => 'overwrite',
+            'window' => [
+                'window' => 'foo',
+                'bar' => 'baz',
+            ],
+        ]);
+        self::assertSame(
+            '<script>Object.assign(globalThis, {"test":"test1","bar":"baz"})</script>',
+            trim($subject->render(null, '/'))
         );
     }
 }

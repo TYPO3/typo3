@@ -103,4 +103,20 @@ final class JavaScriptItems implements \JsonSerializable
             ),
         ];
     }
+
+    /**
+     * @return list<array>
+     */
+    public function getGlobalAssignments(): array
+    {
+        return $this->globalAssignments;
+    }
+
+    /**
+     * @return list<JavaScriptModuleInstruction>
+     */
+    public function getJavaScriptModuleInstructions(): array
+    {
+        return $this->javaScriptModuleInstructions;
+    }
 }
