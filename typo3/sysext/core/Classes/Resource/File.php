@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -57,10 +59,9 @@ class File extends AbstractFile
     /**
      * Returns a property value
      *
-     * @param string $key
-     * @return mixed Property value
+     * @param non-empty-string $key
      */
-    public function getProperty($key)
+    public function getProperty(string $key): mixed
     {
         if (parent::hasProperty($key)) {
             return parent::getProperty($key);
@@ -101,10 +102,8 @@ class File extends AbstractFile
      ******************/
     /**
      * Get the contents of this file
-     *
-     * @return string File contents
      */
-    public function getContents()
+    public function getContents(): string
     {
         return $this->getStorage()->getFileContents($this);
     }
@@ -112,9 +111,9 @@ class File extends AbstractFile
     /**
      * Gets SHA1 hash.
      *
-     * @return string
+     * @return non-empty-string
      */
-    public function getSha1()
+    public function getSha1(): string
     {
         if (empty($this->properties['sha1'])) {
             $this->properties['sha1'] = parent::getSha1();
@@ -125,10 +124,9 @@ class File extends AbstractFile
     /**
      * Replace the current file contents with the given string
      *
-     * @param string $contents The contents to write to the file.
-     * @return File The file object (allows chaining).
+     * @return $this
      */
-    public function setContents($contents)
+    public function setContents(string $contents): self
     {
         $this->getStorage()->setFileContents($this, $contents);
         return $this;
@@ -139,10 +137,8 @@ class File extends AbstractFile
      ***********************/
     /**
      * Returns TRUE if this file is indexed
-     *
-     * @return bool|null
      */
-    public function isIndexed()
+    public function isIndexed(): bool
     {
         return true;
     }
@@ -251,9 +247,9 @@ class File extends AbstractFile
      * Returns an array representation of the file.
      * (This is used by the generic listing module vidi when displaying file records.)
      *
-     * @return array Array of main data of the file. Don't rely on all data to be present here, it's just a selection of the most relevant information.
+     * @return array<non-empty-string, mixed> Array of main data of the file. Don't rely on all data to be present here, it's just a selection of the most relevant information.
      */
-    public function toArray()
+    public function toArray(): array
     {
         $array = [
             'id' => $this->getCombinedIdentifier(),
@@ -304,10 +300,8 @@ class File extends AbstractFile
      *
      * WARNING: Access to the file may be restricted by further means, e.g. some
      * web-based authentication. You have to take care of this yourself.
-     *
-     * @return string|null NULL if file is missing or deleted, the generated url otherwise
      */
-    public function getPublicUrl()
+    public function getPublicUrl(): ?string
     {
         if ($this->isMissing() || $this->deleted) {
             return null;

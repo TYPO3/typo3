@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -174,10 +176,9 @@ class ProcessedFile extends AbstractFile
     /**
      * Replace the current file contents with the given string
      *
-     * @param string $contents The contents to write to the file.
      * @throws \BadMethodCallException
      */
-    public function setContents($contents)
+    public function setContents(string $contents): self
     {
         throw new \BadMethodCallException('Setting contents not possible for processed file.', 1305438528);
     }
@@ -212,9 +213,9 @@ class ProcessedFile extends AbstractFile
     /**
      * Returns TRUE if this file is indexed
      *
-     * @return bool
+     * @return false
      */
-    public function isIndexed()
+    public function isIndexed(): bool
     {
         // Processed files are never indexed; instead you might be looking for isPersisted()
         return false;
@@ -374,9 +375,9 @@ class ProcessedFile extends AbstractFile
     /**
      * Basic array function for the DB update
      *
-     * @return array
+     * @return array<non-empty-string, mixed>
      */
-    public function toArray()
+    public function toArray(): array
     {
         if ($this->usesOriginalFile()) {
             $properties = $this->originalFile->getProperties();
@@ -454,11 +455,8 @@ class ProcessedFile extends AbstractFile
 
     /**
      * Delete processed file
-     *
-     * @param bool $force
-     * @return bool
      */
-    public function delete($force = false)
+    public function delete(bool $force = false): bool
     {
         if (!$force && $this->isUnchanged()) {
             return false;
@@ -473,11 +471,9 @@ class ProcessedFile extends AbstractFile
     /**
      * Getter for file-properties
      *
-     * @param string $key
-     *
-     * @return mixed
+     * @param non-empty-string $key
      */
-    public function getProperty($key)
+    public function getProperty(string $key): mixed
     {
         // The uid always (!) has to come from this file and never the original file (see getOriginalFile() to get this)
         if ($this->isUnchanged() && $key !== 'uid') {
@@ -587,9 +583,9 @@ class ProcessedFile extends AbstractFile
     /**
      * Returns a publicly accessible URL for this file
      *
-     * @return string|null NULL if file is deleted, the generated URL otherwise
+     * @return non-empty-string|null NULL if file is deleted, the generated URL otherwise
      */
-    public function getPublicUrl()
+    public function getPublicUrl(): ?string
     {
         if ($this->processingUrl) {
             return $this->processingUrl;

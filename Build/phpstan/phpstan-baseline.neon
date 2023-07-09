@@ -726,16 +726,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Imaging/IconFactory.php
 
 		-
-			message: "#^Binary operation \"\\*\" between float and string results in an error\\.$#"
-			count: 4
-			path: ../../typo3/sysext/core/Classes/Imaging/ImageManipulation/Area.php
-
-		-
-			message: "#^Binary operation \"/\" between float and non\\-falsy\\-string results in an error\\.$#"
-			count: 4
-			path: ../../typo3/sysext/core/Classes/Imaging/ImageManipulation/Area.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageManipulation\\\\CropVariant\\:\\:\\$allowedAspectRatios \\(array\\<TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageManipulation\\\\Ratio\\>\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Imaging/ImageManipulation/CropVariant.php
@@ -832,21 +822,6 @@ parameters:
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\:\\:moveTo\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\:\\:setContents\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns \\$this\\(TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\:\\:setIdentifier\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns \\$this\\(TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\:\\:setStorage\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns \\$this\\(TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
 
@@ -2359,11 +2334,6 @@ parameters:
 			message: "#^Variable \\$referenceConfiguration on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/DataProcessing/FilesProcessor.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\DataProcessing\\\\GalleryProcessor\\:\\:getCroppedDimensionalProperty\\(\\) should return int but returns string\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/DataProcessing/GalleryProcessor.php
 
 		-
 			message: "#^Variable \\$compressJs on left side of \\?\\? always exists and is not nullable\\.$#"

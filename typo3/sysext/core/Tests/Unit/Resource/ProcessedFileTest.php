@@ -47,6 +47,8 @@ final class ProcessedFileTest extends UnitTestCase
         parent::setUp();
         $this->storageMock = $this->createMock(ResourceStorage::class);
         $this->storageMock->method('getUid')->willReturn(5);
+        $this->storageMock->method('hashFile')->willReturn('');
+        $this->storageMock->method('deleteFile')->willReturn(true);
 
         $this->folderMock = $this->createMock(Folder::class);
         $this->folderMock->method('getStorage')->willReturn($this->storageMock);
