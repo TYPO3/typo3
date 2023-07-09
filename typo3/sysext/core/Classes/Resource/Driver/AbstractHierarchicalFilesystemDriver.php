@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -91,10 +93,10 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
     /**
      * Returns the identifier of the folder the file resides in
      *
-     * @param string $fileIdentifier
-     * @return mixed
+     * @param non-empty-string $fileIdentifier
+     * @return non-empty-string
      */
-    public function getParentFolderIdentifierOfIdentifier($fileIdentifier)
+    public function getParentFolderIdentifierOfIdentifier(string $fileIdentifier): string
     {
         $fileIdentifier = $this->canonicalizeAndCheckFileIdentifier($fileIdentifier);
         return rtrim(GeneralUtility::fixWindowsFilePath(PathUtility::dirname($fileIdentifier)), '/') . '/';

@@ -825,7 +825,7 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, ['copyFileToTemporaryPath'], [$driverConfiguration]);
         $subject->processConfiguration();
-        $subject->expects(self::once())->method('copyFileToTemporaryPath');
+        $subject->expects(self::once())->method('copyFileToTemporaryPath')->willReturn('');
         $subject->getFileForLocalProcessing('/someDir/someFile');
     }
 

@@ -230,6 +230,13 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function __construct(DriverInterface $driver, array $storageRecord, EventDispatcherInterface $eventDispatcher = null)
     {
+        if (!isset($storageRecord['uid'])) {
+            throw new \InvalidArgumentException(
+                '$storageRecord[\'uid\'] is unexpectedly not set',
+                1688920972
+            );
+        }
+
         $this->storageRecord = $storageRecord;
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
         if (is_array($storageRecord['configuration'] ?? null)) {
@@ -250,7 +257,7 @@ class ResourceStorage implements ResourceStorageInterface
         $this->capabilities = new Capabilities($capabilityBits);
 
         $this->driver = $driver;
-        $this->driver->setStorageUid($storageRecord['uid'] ?? null);
+        $this->driver->setStorageUid((int)$storageRecord['uid']);
         $this->driver->mergeConfigurationCapabilities($this->capabilities);
         try {
             $this->driver->processConfiguration();
@@ -2501,7 +2508,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function getFolder($identifier, $returnInaccessibleFolderObject = false)
     {
         $data = $this->driver->getFolderInfoByIdentifier($identifier);
-        $folder = $this->createFolderObject($data['identifier'] ?? '', $data['name'] ?? '');
+        $folder = $this->createFolderObject($data['identifier'], $data['name']);
 
         try {
             $this->assureFolderReadPermission($folder);

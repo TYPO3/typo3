@@ -28,20 +28,18 @@ interface DriverInterface
     /**
      * Processes the configuration for this driver.
      */
-    public function processConfiguration();
+    public function processConfiguration(): void;
 
     /**
      * Sets the storage uid the driver belongs to
-     *
-     * @param int $storageUid
      */
-    public function setStorageUid($storageUid);
+    public function setStorageUid(int $storageUid): void;
 
     /**
      * Initializes this object. This is called by the storage after the driver
      * has been attached.
      */
-    public function initialize();
+    public function initialize(): void;
 
     /**
      * Returns the capabilities of this driver.
@@ -68,114 +66,106 @@ interface DriverInterface
      * underlying file system treats the identifiers; the setting should
      * therefore always reflect the file system and not try to change its
      * behaviour
-     *
-     * @return bool
      */
-    public function isCaseSensitiveFileSystem();
+    public function isCaseSensitiveFileSystem(): bool;
 
     /**
      * Cleans a fileName from not allowed characters
      *
-     * @param string $fileName
+     * @param non-empty-string $fileName
      * @param string $charset Charset of the a fileName
      *                        (defaults to current charset; depending on context)
-     * @return string the cleaned filename
+     * @return non-empty-string the sanitized filename
      */
-    public function sanitizeFileName($fileName, $charset = '');
+    public function sanitizeFileName(string $fileName, string $charset = ''): string;
 
     /**
      * Hashes a file identifier, taking the case sensitivity of the file system
      * into account. This helps mitigating problems with case-insensitive
      * databases.
      *
-     * @param string $identifier
-     * @return string
+     * @param non-empty-string $identifier
+     * @return non-empty-string
      */
-    public function hashIdentifier($identifier);
+    public function hashIdentifier(string $identifier): string;
 
     /**
      * Returns the identifier of the root level folder of the storage.
      *
-     * @return string
+     * @return non-empty-string
      */
-    public function getRootLevelFolder();
+    public function getRootLevelFolder(): string;
 
     /**
      * Returns the identifier of the default folder new files should be put into.
      *
-     * @return string
+     * @return non-empty-string
      */
-    public function getDefaultFolder();
+    public function getDefaultFolder(): string;
 
     /**
      * Returns the identifier of the folder the file resides in
      *
-     * @param string $fileIdentifier
-     * @return string
+     * @param non-empty-string $fileIdentifier
+     * @return non-empty-string
      */
-    public function getParentFolderIdentifierOfIdentifier($fileIdentifier);
+    public function getParentFolderIdentifierOfIdentifier(string $fileIdentifier): string;
 
     /**
      * Returns the public URL to a file.
      * Either fully qualified URL or relative to public web path (rawurlencoded).
      *
-     * @param string $identifier
-     * @return string|null NULL if file is missing or deleted, the generated url otherwise
+     * @param non-empty-string $identifier
+     * @return non-empty-string|null NULL if file is missing or deleted, the generated url otherwise
      */
-    public function getPublicUrl($identifier);
+    public function getPublicUrl(string $identifier): ?string;
 
     /**
      * Creates a folder, within a parent folder.
      * If no parent folder is given, a root level folder will be created
      *
-     * @param string $newFolderName
-     * @param string $parentFolderIdentifier
-     * @param bool $recursive
-     * @return string the Identifier of the new folder
+     * @param non-empty-string $newFolderName
+     * @return non-empty-string the Identifier of the new folder
      */
-    public function createFolder($newFolderName, $parentFolderIdentifier = '', $recursive = false);
+    public function createFolder(string $newFolderName, string $parentFolderIdentifier = '', bool $recursive = false): string;
 
     /**
      * Renames a folder in this storage.
      *
-     * @param string $folderIdentifier
-     * @param string $newName
-     * @return array A map of old to new file identifiers of all affected resources
+     * @param non-empty-string $folderIdentifier
+     * @param non-empty-string $newName
+     * @return array<string, string> A map of old to new file identifiers of all affected resources
      */
-    public function renameFolder($folderIdentifier, $newName);
+    public function renameFolder(string $folderIdentifier, string $newName): array;
 
     /**
      * Removes a folder in filesystem.
      *
-     * @param string $folderIdentifier
-     * @param bool $deleteRecursively
-     * @return bool
+     * @param non-empty-string $folderIdentifier
      */
-    public function deleteFolder($folderIdentifier, $deleteRecursively = false);
+    public function deleteFolder(string $folderIdentifier, bool $deleteRecursively = false): bool;
 
     /**
      * Checks if a file exists.
      *
-     * @param string $fileIdentifier
-     * @return bool
+     * @param non-empty-string $fileIdentifier
      */
-    public function fileExists($fileIdentifier);
+    public function fileExists(string $fileIdentifier): bool;
 
     /**
      * Checks if a folder exists.
      *
-     * @param string $folderIdentifier
-     * @return bool
+     * @param non-empty-string $folderIdentifier
      */
-    public function folderExists($folderIdentifier);
+    public function folderExists(string $folderIdentifier): bool;
 
     /**
      * Checks if a folder contains files and (if supported) other folders.
      *
-     * @param string $folderIdentifier
+     * @param non-empty-string $folderIdentifier
      * @return bool TRUE if there are no files and folders within $folder
      */
-    public function isFolderEmpty($folderIdentifier);
+    public function isFolderEmpty(string $folderIdentifier): bool;
 
     /**
      * Adds a file from the local server hard disk to a given path in TYPO3s
@@ -183,104 +173,100 @@ interface DriverInterface
      * further check is done here! After a successful operation the original
      * file must not exist anymore.
      *
-     * @param string $localFilePath within public web path
-     * @param string $targetFolderIdentifier
+     * @param non-empty-string $localFilePath within public web path
+     * @param non-empty-string $targetFolderIdentifier
      * @param string $newFileName optional, if not given original name is used
      * @param bool $removeOriginal if set the original file will be removed
      *                                after successful operation
-     * @return string the identifier of the new file
+     * @return non-empty-string the identifier of the new file
      */
-    public function addFile($localFilePath, $targetFolderIdentifier, $newFileName = '', $removeOriginal = true);
+    public function addFile(string $localFilePath, string $targetFolderIdentifier, string $newFileName = '', bool $removeOriginal = true): string;
 
     /**
      * Creates a new (empty) file and returns the identifier.
      *
-     * @param string $fileName
-     * @param string $parentFolderIdentifier
-     * @return string
+     * @param non-empty-string $fileName
+     * @param non-empty-string $parentFolderIdentifier
+     * @return non-empty-string
      */
-    public function createFile($fileName, $parentFolderIdentifier);
+    public function createFile(string $fileName, string $parentFolderIdentifier): string;
 
     /**
      * Copies a file *within* the current storage.
      * Note that this is only about an inner storage copy action,
      * where a file is just copied to another folder in the same storage.
      *
-     * @param string $fileIdentifier
-     * @param string $targetFolderIdentifier
-     * @param string $fileName
-     * @return string the Identifier of the new file
+     * @param non-empty-string $fileIdentifier
+     * @param non-empty-string $targetFolderIdentifier
+     * @param non-empty-string $fileName
+     * @return non-empty-string the Identifier of the new file
      */
-    public function copyFileWithinStorage($fileIdentifier, $targetFolderIdentifier, $fileName);
+    public function copyFileWithinStorage(string $fileIdentifier, string $targetFolderIdentifier, string $fileName): string;
 
     /**
      * Renames a file in this storage.
      *
-     * @param string $fileIdentifier
-     * @param string $newName The target path (including the file name!)
-     * @return string The identifier of the file after renaming
+     * @param non-empty-string $fileIdentifier
+     * @param non-empty-string $newName The target path (including the file name!)
+     * @return non-empty-string The identifier of the file after renaming
      */
-    public function renameFile($fileIdentifier, $newName);
+    public function renameFile(string $fileIdentifier, string $newName): string;
 
     /**
      * Replaces a file with file in local file system.
      *
-     * @param string $fileIdentifier
-     * @param string $localFilePath
-     * @return bool TRUE if the operation succeeded
+     * @param non-empty-string $fileIdentifier
+     * @param non-empty-string $localFilePath
      */
-    public function replaceFile($fileIdentifier, $localFilePath);
+    public function replaceFile(string $fileIdentifier, string $localFilePath): bool;
 
     /**
      * Removes a file from the filesystem. This does not check if the file is
      * still used or if it is a bad idea to delete it for some other reason
      * this has to be taken care of in the upper layers (e.g. the Storage)!
      *
-     * @param string $fileIdentifier
-     * @return bool TRUE if deleting the file succeeded
+     * @param non-empty-string $fileIdentifier
      */
-    public function deleteFile($fileIdentifier);
+    public function deleteFile(string $fileIdentifier): bool;
 
     /**
      * Creates a hash for a file.
      *
-     * @param string $fileIdentifier
-     * @param string $hashAlgorithm The hash algorithm to use
-     * @return string
+     * @param non-empty-string $fileIdentifier
+     * @param non-empty-string $hashAlgorithm The hash algorithm to use
      */
-    public function hash($fileIdentifier, $hashAlgorithm);
+    public function hash(string $fileIdentifier, string $hashAlgorithm): string;
 
     /**
      * Moves a file *within* the current storage.
      * Note that this is only about an inner-storage move action,
      * where a file is just moved to another folder in the same storage.
      *
-     * @param string $fileIdentifier
-     * @param string $targetFolderIdentifier
-     * @param string $newFileName
-     * @return string
+     * @param non-empty-string $fileIdentifier
+     * @param non-empty-string $targetFolderIdentifier
+     * @param non-empty-string $newFileName
+     * @return non-empty-string
      */
-    public function moveFileWithinStorage($fileIdentifier, $targetFolderIdentifier, $newFileName);
+    public function moveFileWithinStorage(string $fileIdentifier, string $targetFolderIdentifier, string $newFileName): string;
 
     /**
      * Folder equivalent to moveFileWithinStorage().
      *
-     * @param string $sourceFolderIdentifier
-     * @param string $targetFolderIdentifier
-     * @param string $newFolderName
-     * @return array All files which are affected, map of old => new file identifiers
+     * @param non-empty-string $sourceFolderIdentifier
+     * @param non-empty-string $targetFolderIdentifier
+     * @param non-empty-string $newFolderName
+     * @return array<non-empty-string, non-empty-string> All files which are affected, map of old => new file identifiers
      */
-    public function moveFolderWithinStorage($sourceFolderIdentifier, $targetFolderIdentifier, $newFolderName);
+    public function moveFolderWithinStorage(string $sourceFolderIdentifier, string $targetFolderIdentifier, string $newFolderName): array;
 
     /**
      * Folder equivalent to copyFileWithinStorage().
      *
-     * @param string $sourceFolderIdentifier
-     * @param string $targetFolderIdentifier
-     * @param string $newFolderName
-     * @return bool
+     * @param non-empty-string $sourceFolderIdentifier
+     * @param non-empty-string $targetFolderIdentifier
+     * @param non-empty-string $newFolderName
      */
-    public function copyFolderWithinStorage($sourceFolderIdentifier, $targetFolderIdentifier, $newFolderName);
+    public function copyFolderWithinStorage(string $sourceFolderIdentifier, string $targetFolderIdentifier, string $newFolderName): bool;
 
     /**
      * Returns the contents of a file. Beware that this requires to load the
@@ -288,68 +274,64 @@ interface DriverInterface
      * external location. So this might be an expensive operation (both in terms
      * of processing resources and money) for large files.
      *
-     * @param string $fileIdentifier
-     * @return string The file contents
+     * @param non-empty-string $fileIdentifier
      */
-    public function getFileContents($fileIdentifier);
+    public function getFileContents(string $fileIdentifier): string;
 
     /**
      * Sets the contents of a file to the specified value.
      *
-     * @param string $fileIdentifier
-     * @param string $contents
-     * @return int The number of bytes written to the file
+     * @param non-empty-string $fileIdentifier
+     * @return int<0, max> The number of bytes written to the file
      */
-    public function setFileContents($fileIdentifier, $contents);
+    public function setFileContents(string $fileIdentifier, string $contents): int;
 
     /**
      * Checks if a file inside a folder exists
      *
-     * @param string $fileName
-     * @param string $folderIdentifier
-     * @return bool
+     * @param non-empty-string $fileName
+     * @param non-empty-string $folderIdentifier
      */
-    public function fileExistsInFolder($fileName, $folderIdentifier);
+    public function fileExistsInFolder(string $fileName, string $folderIdentifier): bool;
 
     /**
      * Checks if a folder inside a folder exists.
      *
-     * @param string $folderName
-     * @param string $folderIdentifier
-     * @return bool
+     * @param non-empty-string $folderName
+     * @param non-empty-string $folderIdentifier
      */
-    public function folderExistsInFolder($folderName, $folderIdentifier);
+    public function folderExistsInFolder(string $folderName, string $folderIdentifier): bool;
 
     /**
      * Returns a path to a local copy of a file for processing it. When changing the
      * file, you have to take care of replacing the current version yourself!
      *
-     * @param string $fileIdentifier
+     * @param non-empty-string $fileIdentifier
      * @param bool $writable Set this to FALSE if you only need the file for read
      *                       operations. This might speed up things, e.g. by using
      *                       a cached local version. Never modify the file if you
      *                       have set this flag!
-     * @return string The path to the file on the local disk
+     * @return non-empty-string The path to the file on the local disk
      */
-    public function getFileForLocalProcessing($fileIdentifier, $writable = true);
+    public function getFileForLocalProcessing(string $fileIdentifier, bool $writable = true): string;
 
     /**
      * Returns the permissions of a file/folder as an array
      * (keys r, w) of boolean flags
      *
-     * @param string $identifier
-     * @return array
+     * @param non-empty-string $identifier
+     * @return array{r: bool, w: bool}
      */
-    public function getPermissions($identifier);
+    public function getPermissions(string $identifier): array;
 
     /**
      * Directly output the contents of the file to the output
      * buffer. Should not take care of header files or flushing
      * buffer before. Will be taken care of by the Storage.
      *
-     * @param string $identifier
+     * @param non-empty-string $identifier
      */
-    public function dumpFileContents($identifier);
+    public function dumpFileContents(string $identifier): void;
 
     /**
      * Checks if a given identifier is within a container, e.g. if
@@ -360,74 +342,86 @@ interface DriverInterface
      * matches the container identifier to allow access to the root
      * folder of a filemount.
      *
-     * @param string $folderIdentifier
-     * @param string $identifier identifier to be checked against $folderIdentifier
+     * @param non-empty-string $folderIdentifier
+     * @param non-empty-string $identifier identifier to be checked against $folderIdentifier
      * @return bool TRUE if $content is within or matches $folderIdentifier
      */
-    public function isWithin($folderIdentifier, $identifier);
+    public function isWithin(string $folderIdentifier, string $identifier): bool;
 
     /**
      * Returns information about a file.
      *
-     * @param string $fileIdentifier
-     * @param array $propertiesToExtract Array of properties which are be extracted
+     * @param non-empty-string $fileIdentifier
+     * @param list<string> $propertiesToExtract Array of properties which are be extracted
      *                                   If empty all will be extracted
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getFileInfoByIdentifier($fileIdentifier, array $propertiesToExtract = []);
+    public function getFileInfoByIdentifier(string $fileIdentifier, array $propertiesToExtract = []): array;
 
     /**
-     * Returns information about a file.
+     * Returns information about a folder.
      *
-     * @param string $folderIdentifier
-     * @return array
+     * @param non-empty-string $folderIdentifier
+     * @return array{
+     *   identifier: non-empty-string,
+     *   name: string,
+     *   mtime: int,
+     *   ctime: int,
+     *   storage: int,
+     * }
      */
-    public function getFolderInfoByIdentifier($folderIdentifier);
+    public function getFolderInfoByIdentifier(string $folderIdentifier): array;
 
     /**
      * Returns the identifier of a file inside the folder
      *
-     * @param string $fileName
-     * @param string $folderIdentifier
-     * @return string file identifier
+     * @param non-empty-string $fileName
+     * @param non-empty-string $folderIdentifier
+     * @return non-empty-string file identifier
      */
-    public function getFileInFolder($fileName, $folderIdentifier);
+    public function getFileInFolder(string $fileName, string $folderIdentifier): string;
 
     /**
      * Returns a list of files inside the specified path
      *
-     * @param string $folderIdentifier
-     * @param int $start
-     * @param int $numberOfItems
-     * @param bool $recursive
-     * @param array $filenameFilterCallbacks callbacks for filtering the items
+     * @param non-empty-string $folderIdentifier
+     * @param int<0, max> $start
+     * @param int<0, max> $numberOfItems
+     * @param list<callable> $filenameFilterCallbacks callbacks for filtering the items
      * @param string $sort Property name used to sort the items.
      *                     Among them may be: '' (empty, no sorting), name,
      *                     fileext, size, tstamp and rw.
      *                     If a driver does not support the given property, it
      *                     should fall back to "name".
      * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
-     * @return array of FileIdentifiers
+     * @return list<string> of FileIdentifiers
      */
-    public function getFilesInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $filenameFilterCallbacks = [], $sort = '', $sortRev = false);
+    public function getFilesInFolder(
+        string $folderIdentifier,
+        int $start = 0,
+        int $numberOfItems = 0,
+        bool $recursive = false,
+        array $filenameFilterCallbacks = [],
+        string $sort = '',
+        bool $sortRev = false
+    ): array;
 
     /**
      * Returns the identifier of a folder inside the folder
      *
-     * @param string $folderName The name of the target folder
-     * @param string $folderIdentifier
-     * @return string folder identifier
+     * @param non-empty-string $folderName The name of the target folder
+     * @param non-empty-string $folderIdentifier
+     * @return non-empty-string folder identifier
      */
-    public function getFolderInFolder($folderName, $folderIdentifier);
+    public function getFolderInFolder(string $folderName, string $folderIdentifier): string;
 
     /**
      * Returns a list of folders inside the specified path
      *
-     * @param string $folderIdentifier
-     * @param int $start
-     * @param int $numberOfItems
-     * @param bool $recursive
-     * @param array $folderNameFilterCallbacks callbacks for filtering the items
+     * @param non-empty-string $folderIdentifier
+     * @param int<0, max> $start
+     * @param int<0, max> $numberOfItems
+     * @param list<callable> $folderNameFilterCallbacks callbacks for filtering the items
      * @param string $sort Property name used to sort the items.
      *                     Among them may be: '' (empty, no sorting), name,
      *                     fileext, size, tstamp and rw.
@@ -437,25 +431,31 @@ interface DriverInterface
      * @return array<string|int, string> folder identifiers (where key and value are identical, but int-like identifiers
      *         will get converted to int array keys)
      */
-    public function getFoldersInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $folderNameFilterCallbacks = [], $sort = '', $sortRev = false);
+    public function getFoldersInFolder(
+        string $folderIdentifier,
+        int $start = 0,
+        int $numberOfItems = 0,
+        bool $recursive = false,
+        array $folderNameFilterCallbacks = [],
+        string $sort = '',
+        bool $sortRev = false
+    ): array;
 
     /**
      * Returns the number of files inside the specified path
      *
-     * @param string  $folderIdentifier
-     * @param bool $recursive
-     * @param array   $filenameFilterCallbacks callbacks for filtering the items
-     * @return int Number of files in folder
+     * @param non-empty-string $folderIdentifier
+     * @param list<callable> $filenameFilterCallbacks callbacks for filtering the items
+     * @return int<0, max> Number of files in folder
      */
-    public function countFilesInFolder($folderIdentifier, $recursive = false, array $filenameFilterCallbacks = []);
+    public function countFilesInFolder(string $folderIdentifier, bool $recursive = false, array $filenameFilterCallbacks = []): int;
 
     /**
      * Returns the number of folders inside the specified path
      *
-     * @param string  $folderIdentifier
-     * @param bool $recursive
-     * @param array   $folderNameFilterCallbacks callbacks for filtering the items
-     * @return int Number of folders in folder
+     * @param non-empty-string $folderIdentifier
+     * @param list<callable> $folderNameFilterCallbacks callbacks for filtering the items
+     * @return int<0, max> Number of folders in folder
      */
-    public function countFoldersInFolder($folderIdentifier, $recursive = false, array $folderNameFilterCallbacks = []);
+    public function countFoldersInFolder(string $folderIdentifier, bool $recursive = false, array $folderNameFilterCallbacks = []): int;
 }

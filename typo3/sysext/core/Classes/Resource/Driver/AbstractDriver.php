@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -83,10 +85,8 @@ abstract class AbstractDriver implements DriverInterface
 
     /**
      * Sets the storage uid the driver belongs to
-     *
-     * @param int $storageUid
      */
-    public function setStorageUid($storageUid)
+    public function setStorageUid(int $storageUid): void
     {
         $this->storageUid = $storageUid;
     }
@@ -129,26 +129,13 @@ abstract class AbstractDriver implements DriverInterface
      * into account. This helps mitigating problems with case-insensitive
      * databases.
      *
-     * @param string $identifier
-     * @return string
+     * @param non-empty-string $identifier
+     * @return non-empty-string
      */
-    public function hashIdentifier($identifier)
+    public function hashIdentifier(string $identifier): string
     {
         $identifier = $this->canonicalizeAndCheckFileIdentifier($identifier);
         return sha1($identifier);
-    }
-
-    /**
-     * Basic implementation of the method that does directly return the
-     * file name as is.
-     *
-     * @param string $fileName Input string, typically the body of a fileName
-     * @param string $charset Charset of the a fileName (defaults to current charset; depending on context)
-     * @return string Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_' and trailing dots removed
-     */
-    public function sanitizeFileName($fileName, $charset = '')
-    {
-        return $fileName;
     }
 
     /**
@@ -157,10 +144,8 @@ abstract class AbstractDriver implements DriverInterface
      * underlying file system treats the identifiers; the setting should
      * therefore always reflect the file system and not try to change its
      * behaviour
-     *
-     * @return bool
      */
-    public function isCaseSensitiveFileSystem()
+    public function isCaseSensitiveFileSystem(): bool
     {
         if (isset($this->configuration['caseSensitive'])) {
             return (bool)$this->configuration['caseSensitive'];
@@ -179,8 +164,8 @@ abstract class AbstractDriver implements DriverInterface
     /**
      * Makes sure the identifier given as parameter is valid
      *
-     * @param string $fileIdentifier The file Identifier
-     * @return string
+     * @param non-empty-string $fileIdentifier The file Identifier
+     * @return non-empty-string
      * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
      */
     abstract protected function canonicalizeAndCheckFileIdentifier($fileIdentifier);

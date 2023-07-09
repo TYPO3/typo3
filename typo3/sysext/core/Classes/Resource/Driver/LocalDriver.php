@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -100,7 +102,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Processes the configuration for this driver.
      */
-    public function processConfiguration()
+    public function processConfiguration(): void
     {
         $this->absoluteBasePath = $this->calculateBasePath($this->configuration);
         $this->determineBaseUrl();
@@ -114,7 +116,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * Initializes this object. This is called by the storage after the driver
      * has been attached.
      */
-    public function initialize()
+    public function initialize(): void
     {
     }
 
@@ -178,10 +180,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * Returns the public URL to a file.
      * For the local driver, this will always return a path relative to public web path.
      *
-     * @param string $identifier
+     * @param non-empty-string $identifier
      * @return string|null NULL if file is missing or deleted, the generated url otherwise
      */
-    public function getPublicUrl($identifier)
+    public function getPublicUrl(string $identifier): ?string
     {
         $publicUrl = null;
         if ($this->baseUri !== null) {
@@ -196,9 +198,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Returns the Identifier of the root level folder of the storage.
      *
-     * @return string
+     * @return non-empty-string
      */
-    public function getRootLevelFolder()
+    public function getRootLevelFolder(): string
     {
         return '/';
     }
@@ -206,9 +208,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Returns identifier of the default folder new files should be put into.
      *
-     * @return string
+     * @return non-empty-string
      */
-    public function getDefaultFolder()
+    public function getDefaultFolder(): string
     {
         $identifier = '/user_upload/';
         $createFolder = !$this->folderExists($identifier);
@@ -222,12 +224,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * Creates a folder, within a parent folder.
      * If no parent folder is given, a rootlevel folder will be created
      *
-     * @param string $newFolderName
-     * @param string $parentFolderIdentifier
-     * @param bool $recursive
-     * @return string the Identifier of the new folder
+     * @param non-empty-string $newFolderName
+     * @return non-empty-string the Identifier of the new folder
      */
-    public function createFolder($newFolderName, $parentFolderIdentifier = '', $recursive = false)
+    public function createFolder(string $newFolderName, string $parentFolderIdentifier = '', bool $recursive = false): string
     {
         $parentFolderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($parentFolderIdentifier);
         $newFolderName = trim($newFolderName, '/');
@@ -250,12 +250,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Returns information about a file.
      *
-     * @param string $fileIdentifier In the case of the LocalDriver, this is the (relative) path to the file.
-     * @param array $propertiesToExtract Array of properties which should be extracted, if empty all will be extracted
-     * @return array
+     * @param non-empty-string $fileIdentifier In the case of the LocalDriver, this is the (relative) path to the file.
+     * @param list<non-empty-string> $propertiesToExtract Array of properties which should be extracted, if empty all will be extracted
+     * @return array<non-empty-string, mixed>
      * @throws \InvalidArgumentException
      */
-    public function getFileInfoByIdentifier($fileIdentifier, array $propertiesToExtract = [])
+    public function getFileInfoByIdentifier(string $fileIdentifier, array $propertiesToExtract = []): array
     {
         $absoluteFilePath = $this->getAbsolutePath($fileIdentifier);
         // don't use $this->fileExists() because we need the absolute path to the file anyways, so we can directly
@@ -273,10 +273,16 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * Returns information about a folder.
      *
      * @param string $folderIdentifier In the case of the LocalDriver, this is the (relative) path to the file.
-     * @return array
+     * @return array{
+     *   identifier: non-empty-string,
+     *   name: string,
+     *   mtime: int,
+     *   ctime: int,
+     *   storage: int,
+     * }
      * @throws Exception\FolderDoesNotExistException
      */
-    public function getFolderInfoByIdentifier($folderIdentifier)
+    public function getFolderInfoByIdentifier($folderIdentifier): array
     {
         $folderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($folderIdentifier);
 
@@ -304,11 +310,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * Previously in \TYPO3\CMS\Core\Utility\File\BasicFileUtility::cleanFileName()
      *
      * @param string $fileName Input string, typically the body of a fileName
-     * @param string $charset Charset of the a fileName (defaults to utf-8)
-     * @return string Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_' and trailing dots removed
+     * @param non-empty-string $charset Charset of the a fileName (defaults to utf-8)
+     * @return non-empty-string Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_' and trailing dots removed
      * @throws Exception\InvalidFileNameException
      */
-    public function sanitizeFileName($fileName, $charset = 'utf-8')
+    public function sanitizeFileName(string $fileName, string $charset = 'utf-8'): string
     {
         if ($charset === 'utf-8') {
             $fileName = \Normalizer::normalize((string)$fileName) ?: $fileName;
@@ -442,11 +448,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Returns a file inside the specified path
      *
-     * @param string $fileName
-     * @param string $folderIdentifier
-     * @return string File Identifier
+     * @param non-empty-string $fileName
+     * @param non-empty-string $folderIdentifier
+     * @return non-empty-string File Identifier
      */
-    public function getFileInFolder($fileName, $folderIdentifier)
+    public function getFileInFolder(string $fileName, string $folderIdentifier): string
     {
         return $this->canonicalizeAndCheckFileIdentifier($folderIdentifier . '/' . $fileName);
     }
@@ -467,7 +473,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
      * @return array of FileIdentifiers
      */
-    public function getFilesInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $filenameFilterCallbacks = [], $sort = '', $sortRev = false)
+    public function getFilesInFolder(string $folderIdentifier, int $start = 0, int $numberOfItems = 0, bool $recursive = false, array $filenameFilterCallbacks = [], string $sort = '', bool $sortRev = false): array
     {
         return $this->getDirectoryItemList($folderIdentifier, $start, $numberOfItems, $filenameFilterCallbacks, true, false, $recursive, $sort, $sortRev);
     }
@@ -475,12 +481,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Returns the number of files inside the specified path
      *
-     * @param string $folderIdentifier
-     * @param bool $recursive
-     * @param array $filenameFilterCallbacks callbacks for filtering the items
-     * @return int Number of files in folder
+     * @param non-empty-string $folderIdentifier
+     * @param list<callable> $filenameFilterCallbacks callbacks for filtering the items
+     * @return int<0, max> Number of files in folder
      */
-    public function countFilesInFolder($folderIdentifier, $recursive = false, array $filenameFilterCallbacks = [])
+    public function countFilesInFolder(string $folderIdentifier, bool $recursive = false, array $filenameFilterCallbacks = []): int
     {
         return count($this->getFilesInFolder($folderIdentifier, 0, 0, $recursive, $filenameFilterCallbacks));
     }
@@ -502,7 +507,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * @return array<string|int, string> folder identifiers (where key and value are identical, but int-like identifiers
      *         will get converted to int array keys)
      */
-    public function getFoldersInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $folderNameFilterCallbacks = [], $sort = '', $sortRev = false)
+    public function getFoldersInFolder(string $folderIdentifier, int $start = 0, int $numberOfItems = 0, bool $recursive = false, array $folderNameFilterCallbacks = [], string $sort = '', bool $sortRev = false): array
     {
         return $this->getDirectoryItemList($folderIdentifier, $start, $numberOfItems, $folderNameFilterCallbacks, false, true, $recursive, $sort, $sortRev);
     }
@@ -510,12 +515,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Returns the number of folders inside the specified path
      *
-     * @param string  $folderIdentifier
-     * @param bool $recursive
-     * @param array   $folderNameFilterCallbacks callbacks for filtering the items
-     * @return int Number of folders in folder
+     * @param non-empty-string $folderIdentifier
+     * @param list<callable> $folderNameFilterCallbacks callbacks for filtering the items
+     * @return int<0, max> Number of folders in folder
      */
-    public function countFoldersInFolder($folderIdentifier, $recursive = false, array $folderNameFilterCallbacks = [])
+    public function countFoldersInFolder(string $folderIdentifier, bool $recursive = false, array $folderNameFilterCallbacks = []): int
     {
         return count($this->getFoldersInFolder($folderIdentifier, 0, 0, $recursive, $folderNameFilterCallbacks));
     }
@@ -746,7 +750,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    public function hash($fileIdentifier, $hashAlgorithm)
+    public function hash(string $fileIdentifier, string $hashAlgorithm): string
     {
         if (!in_array($hashAlgorithm, $this->supportedHashAlgorithms)) {
             throw new \InvalidArgumentException('Hash algorithm "' . $hashAlgorithm . '" is not supported.', 1304964032);
@@ -769,15 +773,15 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * This assumes that the local file exists, so no further check is done here!
      * After a successful the original file must not exist anymore.
      *
-     * @param string $localFilePath within public web path
-     * @param string $targetFolderIdentifier
+     * @param non-empty-string $localFilePath within public web path
+     * @param non-empty-string $targetFolderIdentifier
      * @param string $newFileName optional, if not given original name is used
      * @param bool $removeOriginal if set the original file will be removed after successful operation
-     * @return string the identifier of the new file
+     * @return non-empty-string the identifier of the new file
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    public function addFile($localFilePath, $targetFolderIdentifier, $newFileName = '', $removeOriginal = true)
+    public function addFile(string $localFilePath, string $targetFolderIdentifier, string $newFileName = '', bool $removeOriginal = true): string
     {
         $localFilePath = $this->canonicalizeAndCheckFilePath($localFilePath);
         // as for the "virtual storage" for backwards-compatibility, this check always fails, as the file probably lies under public web path
@@ -814,11 +818,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Checks if a file exists.
      *
-     * @param string $fileIdentifier
-     *
-     * @return bool
+     * @param non-empty-string $fileIdentifier
      */
-    public function fileExists($fileIdentifier)
+    public function fileExists(string $fileIdentifier): bool
     {
         $absoluteFilePath = $this->getAbsolutePath($fileIdentifier);
         return is_file($absoluteFilePath);
@@ -827,11 +829,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Checks if a file inside a folder exists
      *
-     * @param string $fileName
-     * @param string $folderIdentifier
-     * @return bool
+     * @param non-empty-string $fileName
+     * @param non-empty-string $folderIdentifier
      */
-    public function fileExistsInFolder($fileName, $folderIdentifier)
+    public function fileExistsInFolder(string $fileName, string $folderIdentifier): bool
     {
         $identifier = $folderIdentifier . '/' . $fileName;
         $identifier = $this->canonicalizeAndCheckFileIdentifier($identifier);
@@ -841,11 +842,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Checks if a folder exists.
      *
-     * @param string $folderIdentifier
-     *
-     * @return bool
+     * @param non-empty-string $folderIdentifier
      */
-    public function folderExists($folderIdentifier)
+    public function folderExists(string $folderIdentifier): bool
     {
         $absoluteFilePath = $this->getAbsolutePath($folderIdentifier);
         return is_dir($absoluteFilePath);
@@ -854,11 +853,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Checks if a folder inside a folder exists.
      *
-     * @param string $folderName
-     * @param string $folderIdentifier
-     * @return bool
+     * @param non-empty-string $folderName
+     * @param non-empty-string $folderIdentifier
      */
-    public function folderExistsInFolder($folderName, $folderIdentifier)
+    public function folderExistsInFolder(string $folderName, string $folderIdentifier): bool
     {
         $identifier = $folderIdentifier . '/' . $folderName;
         $identifier = $this->canonicalizeAndCheckFolderIdentifier($identifier);
@@ -868,11 +866,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Returns the Identifier for a folder within a given folder.
      *
-     * @param string $folderName The name of the target folder
-     * @param string $folderIdentifier
-     * @return string
+     * @param non-empty-string $folderName The name of the target folder
+     * @param non-empty-string $folderIdentifier
+     * @return non-empty-string
      */
-    public function getFolderInFolder($folderName, $folderIdentifier)
+    public function getFolderInFolder(string $folderName, string $folderIdentifier): string
     {
         $folderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($folderIdentifier . '/' . $folderName);
         return $folderIdentifier;
@@ -881,12 +879,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Replaces the contents (and file-specific metadata) of a file object with a local file.
      *
-     * @param string $fileIdentifier
-     * @param string $localFilePath
-     * @return bool TRUE if the operation succeeded
+     * @param non-empty-string $fileIdentifier
+     * @param non-empty-string $localFilePath
      * @throws \RuntimeException
      */
-    public function replaceFile($fileIdentifier, $localFilePath)
+    public function replaceFile(string $fileIdentifier, string $localFilePath): bool
     {
         $filePath = $this->getAbsolutePath($fileIdentifier);
         if (is_uploaded_file($localFilePath)) {
@@ -906,12 +903,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * Note that this is only about an intra-storage copy action, where a file is just
      * copied to another folder in the same storage.
      *
-     * @param string $fileIdentifier
-     * @param string $targetFolderIdentifier
-     * @param string $fileName
-     * @return string the Identifier of the new file
+     * @param non-empty-string $fileIdentifier
+     * @param non-empty-string $targetFolderIdentifier
+     * @param non-empty-string $fileName
+     * @return non-empty-string the Identifier of the new file
      */
-    public function copyFileWithinStorage($fileIdentifier, $targetFolderIdentifier, $fileName)
+    public function copyFileWithinStorage(string $fileIdentifier, string $targetFolderIdentifier, string $fileName): string
     {
         $sourcePath = $this->getAbsolutePath($fileIdentifier);
         $newIdentifier = $targetFolderIdentifier . '/' . $fileName;
@@ -928,13 +925,13 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * Note that this is only about an inner-storage move action, where a file is just
      * moved to another folder in the same storage.
      *
-     * @param string $fileIdentifier
-     * @param string $targetFolderIdentifier
-     * @param string $newFileName
-     * @return string
+     * @param non-empty-string $fileIdentifier
+     * @param non-empty-string $targetFolderIdentifier
+     * @param non-empty-string $newFileName
+     * @return non-empty-string
      * @throws \RuntimeException
      */
-    public function moveFileWithinStorage($fileIdentifier, $targetFolderIdentifier, $newFileName)
+    public function moveFileWithinStorage(string $fileIdentifier, string $targetFolderIdentifier, string $newFileName): string
     {
         $sourcePath = $this->getAbsolutePath($fileIdentifier);
         $targetIdentifier = $targetFolderIdentifier . '/' . $newFileName;
@@ -1032,14 +1029,14 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Folder equivalent to moveFileWithinStorage().
      *
-     * @param string $sourceFolderIdentifier
-     * @param string $targetFolderIdentifier
-     * @param string $newFolderName
+     * @param non-empty-string $sourceFolderIdentifier
+     * @param non-empty-string $targetFolderIdentifier
+     * @param non-empty-string $newFolderName
      *
-     * @return array A map of old to new file identifiers
+     * @return array<non-empty-string, non-empty-string> A map of old to new file identifiers
      * @throws \RuntimeException
      */
-    public function moveFolderWithinStorage($sourceFolderIdentifier, $targetFolderIdentifier, $newFolderName)
+    public function moveFolderWithinStorage(string $sourceFolderIdentifier, string $targetFolderIdentifier, string $newFolderName): array
     {
         $sourcePath = $this->getAbsolutePath($sourceFolderIdentifier);
         $relativeTargetPath = $this->canonicalizeAndCheckFolderIdentifier($targetFolderIdentifier . '/' . $newFolderName);
@@ -1058,14 +1055,14 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Folder equivalent to copyFileWithinStorage().
      *
-     * @param string $sourceFolderIdentifier
-     * @param string $targetFolderIdentifier
-     * @param string $newFolderName
+     * @param non-empty-string $sourceFolderIdentifier
+     * @param non-empty-string $targetFolderIdentifier
+     * @param non-empty-string $newFolderName
      *
-     * @return bool
+     * @return true
      * @throws Exception\FileOperationErrorException
      */
-    public function copyFolderWithinStorage($sourceFolderIdentifier, $targetFolderIdentifier, $newFolderName)
+    public function copyFolderWithinStorage(string $sourceFolderIdentifier, string $targetFolderIdentifier, string $newFolderName): bool
     {
         // This target folder path already includes the topmost level, i.e. the folder this method knows as $folderToCopy.
         // We can thus rely on this folder being present and just create the subfolder we want to copy to.
@@ -1110,13 +1107,13 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Renames a file in this storage.
      *
-     * @param string $fileIdentifier
-     * @param string $newName The target path (including the file name!)
-     * @return string The identifier of the file after renaming
+     * @param non-empty-string $fileIdentifier
+     * @param non-empty-string $newName The target path (including the file name!)
+     * @return non-empty-string The identifier of the file after renaming
      * @throws Exception\ExistingTargetFileNameException
      * @throws \RuntimeException
      */
-    public function renameFile($fileIdentifier, $newName)
+    public function renameFile(string $fileIdentifier, string $newName): string
     {
         // Makes sure the Path given as parameter is valid
         $newName = $this->sanitizeFileName($newName);
@@ -1141,12 +1138,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Renames a folder in this storage.
      *
-     * @param string $folderIdentifier
-     * @param string $newName
-     * @return array A map of old to new file identifiers of all affected files and folders
+     * @param non-empty-string $folderIdentifier
+     * @param non-empty-string $newName
+     * @return array<string, string> A map of old to new file identifiers of all affected files and folders
      * @throws \RuntimeException if renaming the folder failed
      */
-    public function renameFolder($folderIdentifier, $newName)
+    public function renameFolder(string $folderIdentifier, string $newName): array
     {
         $folderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($folderIdentifier);
         $newName = $this->sanitizeFileName($newName);
@@ -1185,11 +1182,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * still used or if it is a bad idea to delete it for some other reason
      * this has to be taken care of in the upper layers (e.g. the Storage)!
      *
-     * @param string $fileIdentifier
-     * @return bool TRUE if deleting the file succeeded
+     * @param non-empty-string $fileIdentifier
      * @throws \RuntimeException
      */
-    public function deleteFile($fileIdentifier)
+    public function deleteFile(string $fileIdentifier): bool
     {
         $filePath = $this->getAbsolutePath($fileIdentifier);
         $result = unlink($filePath);
@@ -1203,13 +1199,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Removes a folder from this storage.
      *
-     * @param string $folderIdentifier
-     * @param bool $deleteRecursively
-     * @return bool
+     * @param non-empty-string $folderIdentifier
      * @throws Exception\FileOperationErrorException
      * @throws Exception\InvalidPathException
      */
-    public function deleteFolder($folderIdentifier, $deleteRecursively = false)
+    public function deleteFolder(string $folderIdentifier, bool $deleteRecursively = false): bool
     {
         $folderPath = $this->getAbsolutePath($folderIdentifier);
         $recycleDirectory = $this->getRecycleDirectory($folderPath);
@@ -1230,10 +1224,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Checks if a folder contains files and (if supported) other folders.
      *
-     * @param string $folderIdentifier
+     * @param non-empty-string $folderIdentifier
      * @return bool TRUE if there are no files and folders within $folder
      */
-    public function isFolderEmpty($folderIdentifier)
+    public function isFolderEmpty(string $folderIdentifier): bool
     {
         $path = $this->getAbsolutePath($folderIdentifier);
         $dirHandle = opendir($path);
@@ -1254,13 +1248,13 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * Returns (a local copy of) a file for processing it. This makes a copy
      * first when in writable mode, so if you change the file, you have to update it yourself afterwards.
      *
-     * @param string $fileIdentifier
+     * @param non-empty-string $fileIdentifier
      * @param bool $writable Set this to FALSE if you only need the file for read operations.
      *                          This might speed up things, e.g. by using a cached local version.
      *                          Never modify the file if you have set this flag!
-     * @return string The path to the file on the local disk
+     * @return non-empty-string The path to the file on the local disk
      */
-    public function getFileForLocalProcessing($fileIdentifier, $writable = true)
+    public function getFileForLocalProcessing(string $fileIdentifier, bool $writable = true): string
     {
         if ($writable === false) {
             return $this->getAbsolutePath($fileIdentifier);
@@ -1271,11 +1265,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Returns the permissions of a file/folder as an array (keys r, w) of boolean flags
      *
-     * @param string $identifier
-     * @return array
+     * @param non-empty-string $identifier
+     * @return array{r: bool, w: bool}
      * @throws Exception\ResourcePermissionsUnavailableException
      */
-    public function getPermissions($identifier)
+    public function getPermissions(string $identifier): array
     {
         $path = $this->getAbsolutePath($identifier);
         $permissionBits = fileperms($path);
@@ -1293,11 +1287,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * a file or folder is within another folder. It will also return
      * TRUE if both canonicalized identifiers are equal.
      *
-     * @param string $folderIdentifier
-     * @param string $identifier identifier to be checked against $folderIdentifier
+     * @param non-empty-string $folderIdentifier
+     * @param non-empty-string $identifier identifier to be checked against $folderIdentifier
      * @return bool TRUE if $content is within or matches $folderIdentifier
      */
-    public function isWithin($folderIdentifier, $identifier)
+    public function isWithin(string $folderIdentifier, string $identifier): bool
     {
         $folderIdentifier = $this->canonicalizeAndCheckFileIdentifier($folderIdentifier);
         $entryIdentifier = $this->canonicalizeAndCheckFileIdentifier($identifier);
@@ -1315,12 +1309,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Creates a new (empty) file and returns the identifier.
      *
-     * @param string $fileName
-     * @param string $parentFolderIdentifier
-     * @return string
+     * @param non-empty-string $fileName
+     * @param non-empty-string $parentFolderIdentifier
+     * @return non-empty-string
      * @throws \RuntimeException
      */
-    public function createFile($fileName, $parentFolderIdentifier)
+    public function createFile(string $fileName, string $parentFolderIdentifier): string
     {
         $fileName = $this->sanitizeFileName(ltrim($fileName, '/'));
         $parentFolderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($parentFolderIdentifier);
@@ -1343,10 +1337,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * external location. So this might be an expensive operation (both in terms of
      * processing resources and money) for large files.
      *
-     * @param string $fileIdentifier
+     * @param non-empty-string $fileIdentifier
      * @return string The file contents if file exists and else empty string
      */
-    public function getFileContents($fileIdentifier)
+    public function getFileContents(string $fileIdentifier): string
     {
         $filePath = $this->getAbsolutePath($fileIdentifier);
         return is_readable($filePath) ? (string)file_get_contents($filePath) : '';
@@ -1355,12 +1349,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Sets the contents of a file to the specified value.
      *
-     * @param string $fileIdentifier
-     * @param string $contents
-     * @return int The number of bytes written to the file
+     * @param non-empty-string $fileIdentifier
+     * @return int<0, max> The number of bytes written to the file
      * @throws \RuntimeException if the operation failed
      */
-    public function setFileContents($fileIdentifier, $contents)
+    public function setFileContents(string $fileIdentifier, string $contents): int
     {
         $filePath = $this->getAbsolutePath($fileIdentifier);
         $result = file_put_contents($filePath, $contents);
@@ -1392,9 +1385,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * buffer. Should not take care of header files or flushing
      * buffer before. Will be taken care of by the Storage.
      *
-     * @param string $identifier
+     * @param non-empty-string $identifier
      */
-    public function dumpFileContents($identifier)
+    public function dumpFileContents(string $identifier): void
     {
         readfile($this->getAbsolutePath($this->canonicalizeAndCheckFileIdentifier($identifier)), false);
     }
