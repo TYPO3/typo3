@@ -119,7 +119,6 @@ class InfoModuleController
      */
     protected function getButtons(): void
     {
-        $languageService = $this->getLanguageService();
         $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
 
         if ($this->id) {
