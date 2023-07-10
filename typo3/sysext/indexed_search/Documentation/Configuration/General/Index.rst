@@ -21,7 +21,7 @@ typical), then you will have to set this config-option:
 
 .. code-block:: typoscript
 
-   page.config.index_enable = 1
+   config.index_enable = 1
 
 When this option is set you should begin to see your pages being
 indexed when they are shown next time. Remember that only cached pages
