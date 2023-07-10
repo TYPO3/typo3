@@ -12,4 +12,4 @@ you have set up the "crawler" extension and have a cron-job running
 that will process the crawler queue as we fill it! For this, please
 refer to the `documentation of the "crawler" extension`__!
 
-__ https://docs.typo3.org/typo3cms/extensions/crawler/
+__ https://docs.typo3.org/p/tomasnorre/crawler/main/en-us/UseCases/IndexedSearch/Index.html#indexed-search
