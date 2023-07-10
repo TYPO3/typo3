@@ -1437,6 +1437,7 @@ return [
                 'utm_creative_format',
                 'utm_marketing_tactic',
                 'gtm_debug',
+                '_gl',
                 // Google ads
                 'gad',
                 'gclid',
