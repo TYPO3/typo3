@@ -430,10 +430,7 @@ class IndexSearchRepository
             $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             $idList = $pageRepository->getPageIdsRecursive($searchRootPageIdList, 9999);
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->in(
-                    'ISEC.page_id',
-                    $queryBuilder->createNamedParameter($idList, Connection::PARAM_INT_ARRAY)
-                )
+                $queryBuilder->quoteArrayBasedValueListToIntegerList($idList)
             );
         }
 
@@ -888,9 +885,8 @@ class IndexSearchRepository
             ->where(
                 $queryBuilder->expr()->in(
                     'IP.phash',
-                    $queryBuilder->createNamedParameter(
-                        GeneralUtility::intExplode(',', $list, true),
-                        Connection::PARAM_INT_ARRAY
+                    $queryBuilder->quoteArrayBasedValueListToIntegerList(
+                        GeneralUtility::intExplode(',', $list, true)
                     )
                 ),
                 QueryHelper::stripLogicalOperatorPrefix($this->mediaTypeWhere()),
@@ -948,10 +944,7 @@ class IndexSearchRepository
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
                     'ISEC.page_id',
-                    $queryBuilder->createNamedParameter(
-                        $pageIdList,
-                        Connection::PARAM_INT_ARRAY
-                    )
+                    $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdList)
                 )
             );
         }
