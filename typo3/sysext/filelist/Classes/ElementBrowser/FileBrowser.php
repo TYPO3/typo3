@@ -122,7 +122,7 @@ class FileBrowser extends AbstractResourceBrowser
             $this->filelist->start(
                 $this->selectedFolder,
                 MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
-                $this->getRequest()->getQueryParams()['sort'] ?? 'asc',
+                $this->getRequest()->getQueryParams()['sort'] ?? '',
                 ($this->getRequest()->getQueryParams()['reverse'] ?? '') === '1',
                 Mode::BROWSE
             );
