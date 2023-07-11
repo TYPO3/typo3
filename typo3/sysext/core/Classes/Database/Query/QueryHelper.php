@@ -47,7 +47,7 @@ class QueryHelper
         $orderExpressions = GeneralUtility::trimExplode(',', $input, true);
 
         return array_map(
-            static function ($expression) {
+            static function (string $expression): array {
                 $fieldNameOrderArray = GeneralUtility::trimExplode(' ', $expression, true);
                 $fieldName = $fieldNameOrderArray[0] ?? null;
                 $order = $fieldNameOrderArray[1] ?? null;
@@ -75,7 +75,7 @@ class QueryHelper
         $tableExpressions = GeneralUtility::trimExplode(',', $input, true);
 
         return array_map(
-            static function ($expression) {
+            static function (string $expression): array {
                 [$tableName, $as, $alias] = array_pad(GeneralUtility::trimExplode(' ', $expression, true), 3, null);
 
                 if (!empty($as) && strtolower($as) === 'as' && !empty($alias)) {

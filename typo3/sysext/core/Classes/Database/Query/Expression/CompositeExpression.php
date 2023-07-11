@@ -52,7 +52,7 @@ class CompositeExpression extends DoctrineCompositeExpression
             // doctrine/dbal solved the issue to avoid empty parts by making it mandatory to avoid instantiating this
             // class without a part. As we allow this and handle empty parts later on, we apply the empty check here.
             // @see https://github.com/doctrine/dbal/issues/2388
-            array_filter($parts, static fn ($value) => !(($value instanceof DoctrineCompositeExpression) ? $value->count() === 0 : empty($value)));
+            array_filter($parts, static fn (CompositeExpression|DoctrineCompositeExpression|string $value): bool => !(($value instanceof DoctrineCompositeExpression) ? $value->count() === 0 : empty($value)));
         }
         $this->parts = $parts;
     }
@@ -64,7 +64,7 @@ class CompositeExpression extends DoctrineCompositeExpression
     public static function and($part=null, ...$parts): self
     {
         $mergedParts = array_merge([$part], $parts);
-        array_filter($mergedParts, static fn ($value) => !(($value instanceof DoctrineCompositeExpression) ? $value->count() === 0 : empty($value)));
+        array_filter($mergedParts, static fn (CompositeExpression|DoctrineCompositeExpression|string|null $value): bool => !(($value instanceof DoctrineCompositeExpression) ? $value->count() === 0 : empty($value)));
         return (new self(self::TYPE_AND, []))->with(...$mergedParts);
     }
 
@@ -75,7 +75,7 @@ class CompositeExpression extends DoctrineCompositeExpression
     public static function or($part=null, ...$parts): self
     {
         $mergedParts = array_merge([$part], $parts);
-        array_filter($mergedParts, static fn ($value) => !(($value instanceof DoctrineCompositeExpression) ? $value->count() === 0 : empty($value)));
+        array_filter($mergedParts, static fn (CompositeExpression|DoctrineCompositeExpression|string|null $value): bool => !(($value instanceof DoctrineCompositeExpression) ? $value->count() === 0 : empty($value)));
         return (new self(self::TYPE_OR, []))->with(...$mergedParts);
     }
 

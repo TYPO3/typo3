@@ -1177,7 +1177,7 @@ class QueryBuilder
 
         // Ensure all values are quoted as int for used dbms
         $connection = $this;
-        array_walk($values, static function (&$value) use ($connection) {
+        array_walk($values, static function (mixed &$value) use ($connection): void {
             $value = $connection->quote($value, Connection::PARAM_INT);
         });
 
@@ -1211,7 +1211,7 @@ class QueryBuilder
 
         // Ensure all values are quoted as string values for used dbmns
         $connection = $this;
-        array_walk($values, static function (&$value) use ($connection) {
+        array_walk($values, static function (mixed &$value) use ($connection): void {
             $value = $connection->quote($value);
         });
 

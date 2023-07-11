@@ -143,7 +143,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      */
     public function quoteIdentifiers(array $input): array
     {
-        return array_map([$this, 'quoteIdentifier'], $input);
+        return array_map($this->quoteIdentifier(...), $input);
     }
 
     /**
@@ -456,7 +456,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
         // If types are incoming already (meaning they're hand over to insert() for instance), don't auto-set them.
         $setAllTypes = $types === [];
         $tableDetails = $this->getSchemaInformation()->introspectTable($tableName);
-        array_walk($data, function (&$value, $key) use ($tableDetails, $setAllTypes, &$types) {
+        array_walk($data, function (mixed &$value, string $key) use ($tableDetails, $setAllTypes, &$types): void {
             if ($tableDetails->hasColumn($key)) {
                 $type = $tableDetails->getColumn($key)->getType();
                 if ($setAllTypes) {

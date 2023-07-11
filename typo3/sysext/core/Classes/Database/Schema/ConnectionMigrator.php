@@ -151,7 +151,7 @@ class ConnectionMigrator
                 // Ignore new indexes that work on columns that need changes
                 foreach ($changedTable->addedIndexes as $indexName => $addedIndex) {
                     $indexColumns = array_map(
-                        static function ($columnName) {
+                        static function (string $columnName): string {
                             // Strip MySQL prefix length information to get real column names
                             $columnName = preg_replace('/\(\d+\)$/', '', $columnName) ?? '';
                             // Strip sqlite '"' from column names
@@ -212,7 +212,7 @@ class ConnectionMigrator
             $tablesForConnection = array_keys(
                 array_filter(
                     $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'],
-                    static function ($tableConnectionName) use ($connectionName) {
+                    static function (string $tableConnectionName) use ($connectionName): bool {
                         return $tableConnectionName === $connectionName;
                     }
                 )
@@ -1024,7 +1024,7 @@ class ConnectionMigrator
      */
     protected function calculateUpdateSuggestionsHashes(array $statements): array
     {
-        return array_combine(array_map('md5', $statements), $statements);
+        return array_combine(array_map(md5(...), $statements), $statements);
     }
 
     /**
@@ -1039,7 +1039,7 @@ class ConnectionMigrator
     {
         return array_filter(
             $tableDiffs,
-            function ($table) use ($validTableNames) {
+            function (TableDiff|Table $table) use ($validTableNames): bool {
                 if ($table instanceof Table) {
                     $tableName = $table->getName();
                 } else {
@@ -1083,7 +1083,7 @@ class ConnectionMigrator
 
                 // Remove the length information from column names for indexes if required.
                 $cleanedColumnNames = array_map(
-                    static function (string $columnName) use ($connection) {
+                    static function (string $columnName) use ($connection): string {
                         if ($connection->getDatabasePlatform() instanceof MySQLPlatform) {
                             // Returning the unquoted, unmodified version of the column name since
                             // it can include the length information for BLOB/TEXT columns which

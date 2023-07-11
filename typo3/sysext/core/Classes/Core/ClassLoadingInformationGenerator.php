@@ -235,7 +235,7 @@ EOF;
         $classMapFile .= ");\n";
 
         foreach ($psr4 as $prefix => $relativePaths) {
-            $psr4File .= sprintf('    %s => array(%s),', var_export($prefix, true), implode(',', array_map([$this, 'getPathCode'], $relativePaths))) . "\n";
+            $psr4File .= sprintf('    %s => array(%s),', var_export($prefix, true), implode(',', array_map($this->getPathCode(...), $relativePaths))) . "\n";
         }
         $psr4File .= ");\n";
 

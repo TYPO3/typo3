@@ -59,7 +59,7 @@ final class SchemaInformation
     {
         $tableNames = [];
         $tables = $this->introspectSchema()->getTables();
-        array_walk($tables, static function (Table $table) use (&$tableNames) {
+        array_walk($tables, static function (Table $table) use (&$tableNames): void {
             $tableNames[] = $table->getName();
         });
         return $tableNames;

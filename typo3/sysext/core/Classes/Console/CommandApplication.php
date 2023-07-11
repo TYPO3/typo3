@@ -125,7 +125,7 @@ class CommandApplication implements ApplicationInterface
         }
 
         $allCommands = $commandRegistry->getNames();
-        $expr = implode('[^:]*:', array_map('preg_quote', explode(':', $commandName))) . '[^:]*';
+        $expr = implode('[^:]*:', array_map(preg_quote(...), explode(':', $commandName))) . '[^:]*';
         $commands = preg_grep('{^' . $expr . '}', $allCommands);
 
         if ($commands === false || count($commands) === 0) {

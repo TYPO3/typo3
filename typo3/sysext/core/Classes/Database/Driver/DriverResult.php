@@ -144,7 +144,7 @@ class DriverResult implements ResultInterface
         }
 
         assert(is_array($data));
-        return array_map([$this, 'mapResourceToString'], $data);
+        return array_map($this->mapResourceToString(...), $data);
     }
 
     /**
@@ -157,7 +157,7 @@ class DriverResult implements ResultInterface
     {
         if (is_array($record)) {
             return array_map(
-                static function ($value) {
+                static function (mixed $value): mixed {
                     if (is_resource($value)) {
                         $value = stream_get_contents($value);
                     }
