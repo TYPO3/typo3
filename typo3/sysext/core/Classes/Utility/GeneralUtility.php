@@ -2528,7 +2528,7 @@ class GeneralUtility
      * @param string $url potential URL to check
      * @return string $url or empty string
      */
-    public static function sanitizeLocalUrl($url = '')
+    public static function sanitizeLocalUrl($url)
     {
         $sanitizedUrl = '';
         if (!empty($url)) {
