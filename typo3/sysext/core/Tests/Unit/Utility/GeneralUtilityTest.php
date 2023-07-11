@@ -96,6 +96,9 @@ final class GeneralUtilityTest extends UnitTestCase
         return $path;
     }
 
+    /**
+     * @return array<string, array{0: string, 1: string}>
+     */
     public static function cmpIPv4DataProviderMatching(): array
     {
         return [
@@ -115,7 +118,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider cmpIPv4DataProviderMatching
      */
-    public function cmpIPv4ReturnsTrueForMatchingAddress($ip, $list): void
+    public function cmpIPv4ReturnsTrueForMatchingAddress(string $ip, string $list): void
     {
         self::assertTrue(GeneralUtility::cmpIPv4($ip, $list));
     }
@@ -123,7 +126,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for cmpIPv4ReturnsFalseForNotMatchingAddress
      *
-     * @return array Data sets
+     * @return array<string, array{0: string, 1: string}>
      */
     public static function cmpIPv4DataProviderNotMatching(): array
     {
@@ -141,7 +144,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider cmpIPv4DataProviderNotMatching
      */
-    public function cmpIPv4ReturnsFalseForNotMatchingAddress($ip, $list): void
+    public function cmpIPv4ReturnsFalseForNotMatchingAddress(string $ip, string $list): void
     {
         self::assertFalse(GeneralUtility::cmpIPv4($ip, $list));
     }
@@ -152,7 +155,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for cmpIPv6ReturnsTrueForMatchingAddress
      *
-     * @return array Data sets
+     * @return array<string, array{0: string, 1: string}>
      */
     public static function cmpIPv6DataProviderMatching(): array
     {
@@ -174,7 +177,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider cmpIPv6DataProviderMatching
      */
-    public function cmpIPv6ReturnsTrueForMatchingAddress($ip, $list): void
+    public function cmpIPv6ReturnsTrueForMatchingAddress(string $ip, string $list): void
     {
         self::assertTrue(GeneralUtility::cmpIPv6($ip, $list));
     }
@@ -182,7 +185,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for cmpIPv6ReturnsFalseForNotMatchingAddress
      *
-     * @return array Data sets
+     * @return array<string, array{0: string, 1: string}>
      */
     public static function cmpIPv6DataProviderNotMatching(): array
     {
@@ -202,7 +205,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider cmpIPv6DataProviderNotMatching
      */
-    public function cmpIPv6ReturnsFalseForNotMatchingAddress($ip, $list): void
+    public function cmpIPv6ReturnsFalseForNotMatchingAddress(string $ip, string $list): void
     {
         self::assertFalse(GeneralUtility::cmpIPv6($ip, $list));
     }
@@ -213,7 +216,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for normalizeIPv6ReturnsCorrectlyNormalizedFormat
      *
-     * @return array Data sets
+     * @return array<string, array{0: string, 1: string}>
      */
     public static function normalizeCompressIPv6DataProviderCorrect(): array
     {
@@ -231,7 +234,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider normalizeCompressIPv6DataProviderCorrect
      */
-    public function normalizeIPv6CorrectlyNormalizesAddresses($compressed, $normalized): void
+    public function normalizeIPv6CorrectlyNormalizesAddresses(string $compressed, string $normalized): void
     {
         self::assertEquals($normalized, GeneralUtility::normalizeIPv6($compressed));
     }
@@ -242,7 +245,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for checkValidIpReturnsTrueForValidIp
      *
-     * @return array Data sets
+     * @return array<string, array{0: string}>
      */
     public static function validIpDataProvider(): array
     {
@@ -258,7 +261,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider validIpDataProvider
      */
-    public function validIpReturnsTrueForValidIp($ip): void
+    public function validIpReturnsTrueForValidIp(string $ip): void
     {
         self::assertTrue(GeneralUtility::validIP($ip));
     }
@@ -266,13 +269,12 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for checkValidIpReturnsFalseForInvalidIp
      *
-     * @return array Data sets
+     * @return array<string, array{0: string}>
      */
     public static function invalidIpDataProvider(): array
     {
         return [
-            'null' => [null],
-            'zero' => [0],
+            'zero string' => ['0'],
             'string' => ['test'],
             'string empty' => [''],
             'string NULL' => ['NULL'],
@@ -285,7 +287,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider invalidIpDataProvider
      */
-    public function validIpReturnsFalseForInvalidIp($ip): void
+    public function validIpReturnsFalseForInvalidIp(string $ip): void
     {
         self::assertFalse(GeneralUtility::validIP($ip));
     }
@@ -296,7 +298,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for cmpFqdnReturnsTrue
      *
-     * @return array Data sets
+     * @return array<string, array{0: string, 1: string}>
      */
     public static function cmpFqdnValidDataProvider(): array
     {
@@ -318,7 +320,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider cmpFqdnValidDataProvider
      */
-    public function cmpFqdnReturnsTrue($baseHost, $list): void
+    public function cmpFqdnReturnsTrue(string $baseHost, string $list): void
     {
         self::assertTrue(GeneralUtility::cmpFQDN($baseHost, $list));
     }
@@ -326,7 +328,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for cmpFqdnReturnsFalse
      *
-     * @return array Data sets
+     * @return array<string, array{0: string, 1: string}>
      */
     public static function cmpFqdnInvalidDataProvider(): array
     {
@@ -340,7 +342,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider cmpFqdnInvalidDataProvider
      */
-    public function cmpFqdnReturnsFalse($baseHost, $list): void
+    public function cmpFqdnReturnsFalse(string $baseHost, string $list): void
     {
         self::assertFalse(GeneralUtility::cmpFQDN($baseHost, $list));
     }
@@ -525,7 +527,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for valid validEmail's
      *
-     * @return array Valid email addresses
+     * @return array<string, array{0: string}>
      */
     public static function validEmailValidDataProvider(): array
     {
@@ -553,7 +555,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider validEmailValidDataProvider
      */
-    public function validEmailReturnsTrueForValidMailAddress($address): void
+    public function validEmailReturnsTrueForValidMailAddress(string $address): void
     {
         self::assertTrue(GeneralUtility::validEmail($address));
     }
@@ -561,17 +563,14 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for invalid validEmail's
      *
-     * @return array Invalid email addresses
+     * @return array<string, array{0: string}>
      */
     public static function validEmailInvalidDataProvider(): array
     {
         return [
             'empty string' => [''],
-            'empty array' => [[]],
-            'integer' => [42],
-            'float' => [42.23],
-            'array' => [['foo']],
-            'object' => [new \stdClass()],
+            'integer string' => ['42'],
+            'float string' => ['42.23'],
             '@ sign only' => ['@'],
             'string longer than 320 characters' => [str_repeat('0123456789', 33)],
             'duplicate @' => ['test@@example.com'],
@@ -599,7 +598,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider validEmailInvalidDataProvider
      */
-    public function validEmailReturnsFalseForInvalidMailAddress($address): void
+    public function validEmailReturnsFalseForInvalidMailAddress(string $address): void
     {
         self::assertFalse(GeneralUtility::validEmail($address));
     }
@@ -1189,7 +1188,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for valid isValidUrl's
      *
-     * @return array Valid resource
+     * @return array<string, array{0: string}>
      */
     public static function validUrlValidResourceDataProvider(): array
     {
@@ -1220,7 +1219,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider validUrlValidResourceDataProvider
      */
-    public function validURLReturnsTrueForValidResource($url): void
+    public function validURLReturnsTrueForValidResource(string $url): void
     {
         self::assertTrue(GeneralUtility::isValidUrl($url));
     }
@@ -1228,7 +1227,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for invalid isValidUrl's
      *
-     * @return array Invalid resource
+     * @return array<string, array{0: string}>
      */
     public static function isValidUrlInvalidResourceDataProvider(): array
     {
@@ -1255,7 +1254,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider isValidUrlInvalidResourceDataProvider
      */
-    public function validURLReturnsFalseForInvalidResource($url): void
+    public function validURLReturnsFalseForInvalidResource(string $url): void
     {
         self::assertFalse(GeneralUtility::isValidUrl($url));
     }
@@ -1306,7 +1305,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for valid sanitizeLocalUrl paths
      *
-     * @return array Valid url
+     * @return array<string, array{0: string}>
      */
     public static function sanitizeLocalUrlValidPathsDataProvider(): array
     {
@@ -1366,7 +1365,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for valid sanitizeLocalUrl's
      *
-     * @return array Valid url
+     * @return array<string, array{0: string, 1: string, 2: string}>
      */
     public static function sanitizeLocalUrlValidUrlsDataProvider(): array
     {
@@ -1443,7 +1442,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for invalid sanitizeLocalUrl's
      *
-     * @return array Valid url
+     * @return array<string, array{0: string}>
      */
     public static function sanitizeLocalUrlInvalidDataProvider(): array
     {
@@ -1507,7 +1506,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider sanitizeLocalUrlInvalidDataProvider
      */
-    public function sanitizeLocalUrlDeniesEncodedInvalidUrls($url): void
+    public function sanitizeLocalUrlDeniesEncodedInvalidUrls(string $url): void
     {
         self::assertEquals('', GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
     }
@@ -3254,6 +3253,8 @@ final class GeneralUtilityTest extends UnitTestCase
 
     /**
      * Data provider for validPathStrDetectsInvalidCharacters.
+     *
+     * @return array<string, array{0: string}>
      */
     public static function validPathStrInvalidCharactersDataProvider(): array
     {
@@ -3296,6 +3297,8 @@ final class GeneralUtilityTest extends UnitTestCase
 
     /**
      * Data provider for positive values within validPathStr()
+     *
+     * @return array<string, array{0: string}>
      */
     public static function validPathStrDataProvider(): array
     {
@@ -3313,7 +3316,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * @dataProvider validPathStrDataProvider
      * @test
      */
-    public function validPathStrWorksWithUnicodeFileNames($path): void
+    public function validPathStrWorksWithUnicodeFileNames(string $path): void
     {
         self::assertTrue(GeneralUtility::validPathStr($path));
     }
@@ -3812,6 +3815,9 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expected, $result['index']['vDEF']);
     }
 
+    /**
+     * @return array<string, array{0: string, 1: string, 2: string}>
+     */
     public static function locationHeaderUrlDataProvider(): array
     {
         return [

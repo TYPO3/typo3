@@ -111,7 +111,7 @@ class GeneralUtility
      * @param string $list Is a comma-list of IP-addresses to match with. CIDR-notation should be used. For IPv4 addresses only, the *-wildcard is also allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168). If list is "*" no check is done and the function returns TRUE immediately. An empty list always returns FALSE.
      * @return bool TRUE if an IP-mask from $list matches $baseIP
      */
-    public static function cmpIP($baseIP, $list): bool
+    public static function cmpIP(string $baseIP, string $list): bool
     {
         $list = trim($list);
         if ($list === '') {
@@ -133,7 +133,7 @@ class GeneralUtility
      * @param string $list Is a comma-list of IP-addresses to match with. CIDR-notation, *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.0.0/16 equals 192.168.*.* equals 192.168), could also contain IPv6 addresses
      * @return bool TRUE if an IP-mask from $list matches $baseIP
      */
-    public static function cmpIPv4($baseIP, $list): bool
+    public static function cmpIPv4(string $baseIP, string $list): bool
     {
         $IPpartsReq = explode('.', $baseIP);
         if (count($IPpartsReq) === 4) {
@@ -182,7 +182,7 @@ class GeneralUtility
      *   must be specified in CIDR-notation, not with * wildcard, otherwise self::validIPv6() will fail.
      * @return bool TRUE If a baseIP matches any prefix
      */
-    public static function cmpIPv6($baseIP, $list): bool
+    public static function cmpIPv6(string $baseIP, string $list): bool
     {
         // Policy default: Deny connection
         $success = false;
@@ -237,7 +237,7 @@ class GeneralUtility
      * @param string $address Given IPv6 address
      * @return string Normalized address
      */
-    public static function normalizeIPv6($address): string
+    public static function normalizeIPv6(string $address): string
     {
         $normalizedAddress = '';
         // According to RFC lowercase-representation is recommended
@@ -301,7 +301,7 @@ class GeneralUtility
      * @param string $ip IP address to be tested
      * @return bool TRUE if $ip is either of IPv4 or IPv6 format.
      */
-    public static function validIP($ip): bool
+    public static function validIP(string $ip): bool
     {
         return filter_var($ip, FILTER_VALIDATE_IP) !== false;
     }
@@ -314,7 +314,7 @@ class GeneralUtility
      * @param string $ip IP address to be tested
      * @return bool TRUE if $ip is of IPv4 format.
      */
-    public static function validIPv4($ip): bool
+    public static function validIPv4(string $ip): bool
     {
         return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false;
     }
@@ -327,7 +327,7 @@ class GeneralUtility
      * @param string $ip IP address to be tested
      * @return bool TRUE if $ip is of IPv6 format.
      */
-    public static function validIPv6($ip): bool
+    public static function validIPv6(string $ip): bool
     {
         return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false;
     }
@@ -339,7 +339,7 @@ class GeneralUtility
      * @param string $list A comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
      * @return bool TRUE if a domain name mask from $list matches $baseIP
      */
-    public static function cmpFQDN($baseHost, $list)
+    public static function cmpFQDN(string $baseHost, string $list): bool
     {
         $baseHost = trim($baseHost);
         if (empty($baseHost)) {
@@ -407,7 +407,7 @@ class GeneralUtility
      * @param string $url URL to compare with the TYPO3 request host
      * @return bool Whether the URL matches the TYPO3 request host
      */
-    public static function isOnCurrentHost($url)
+    public static function isOnCurrentHost(string $url): bool
     {
         return stripos($url . '/', self::getIndpEnv('TYPO3_REQUEST_HOST') . '/') === 0;
     }
@@ -609,12 +609,8 @@ class GeneralUtility
      * @param string $email Input string to evaluate
      * @return bool Returns TRUE if the $email address (input string) is valid
      */
-    public static function validEmail($email)
+    public static function validEmail(string $email): bool
     {
-        // Early return in case input is not a string
-        if (!is_string($email)) {
-            return false;
-        }
         if (trim($email) !== $email) {
             return false;
         }
@@ -692,7 +688,7 @@ class GeneralUtility
      * @param string $url The URL to be validated
      * @return bool Whether the given URL is valid
      */
-    public static function isValidUrl($url)
+    public static function isValidUrl(string $url): bool
     {
         $parsedUrl = parse_url($url);
         if (!$parsedUrl || !isset($parsedUrl['scheme'])) {
@@ -1424,7 +1420,7 @@ class GeneralUtility
      * @param string $url File/URL to read
      * @return string|false The content from the resource given as input. FALSE if an error has occurred.
      */
-    public static function getUrl($url)
+    public static function getUrl(string $url): string|false
     {
         // Looks like it's an external file, use Guzzle by default
         if (preg_match('/^(?:http|ftp)s?|s(?:ftp|cp):/', $url)) {
@@ -1926,7 +1922,7 @@ class GeneralUtility
      * @param string $path URL / path to prepend full URL addressing to.
      * @return ($path is non-empty-string ? non-empty-string : string)
      */
-    public static function locationHeaderUrl($path)
+    public static function locationHeaderUrl(string $path): string
     {
         if (str_starts_with($path, '//')) {
             return $path;
@@ -2460,7 +2456,7 @@ class GeneralUtility
      * @return bool TRUE, $theFile is allowed path string, FALSE otherwise
      * @see https://php.net/manual/en/security.filesystem.nullbytes.php
      */
-    public static function validPathStr($theFile)
+    public static function validPathStr(string $theFile): bool
     {
         return !str_contains($theFile, '//') && !str_contains($theFile, '\\')
             && preg_match('#(?:^\\.\\.|/\\.\\./|[[:cntrl:]])#u', $theFile) === 0;
@@ -2528,7 +2524,7 @@ class GeneralUtility
      * @param string $url potential URL to check
      * @return string $url or empty string
      */
-    public static function sanitizeLocalUrl($url)
+    public static function sanitizeLocalUrl(string $url): string
     {
         $sanitizedUrl = '';
         if (!empty($url)) {
