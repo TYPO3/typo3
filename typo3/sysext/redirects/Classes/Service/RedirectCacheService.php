@@ -83,10 +83,19 @@ class RedirectCacheService
                 $queryBuilder->expr()->in('source_host', $queryBuilder->createNamedParameter($sourceHost))
             );
         }
+
+        // Ensure we have redirects which respect query parameters first, paired with a
+        // cross dbms deterministic sorting criteria (`uid`) as last criteria.
+        $queryBuilder
+            ->orderBy('respect_query_parameters', 'desc')
+            ->addOrderBy('uid', 'asc');
+
         $statement = $queryBuilder->executeQuery();
         while ($row = $statement->fetchAssociative()) {
-            if ($row['is_regexp']) {
-                $redirects['regexp'][$row['source_path']][$row['uid']] = $row;
+            if ($row['is_regexp'] && $row['respect_query_parameters']) {
+                $redirects['regexp_query_parameters'][$row['source_path']][$row['uid']] = $row;
+            } elseif ($row['is_regexp'] && !$row['respect_query_parameters']) {
+                $redirects['regexp_flat'][$row['source_path']][$row['uid']] = $row;
             } elseif ($row['respect_query_parameters']) {
                 $redirects['respect_query_parameters'][$row['source_path']][$row['uid']] = $row;
             } else {

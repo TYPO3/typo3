@@ -371,6 +371,7 @@ class RedirectServiceTest extends UnitTestCase
         $row = [
             'target' => 'https://example.com',
             'force_https' => '0',
+            'respect_query_parameters' => '0',
             'keep_query_parameters' => '0',
             'target_statuscode' => '307',
             'disabled' => '0',
@@ -379,7 +380,7 @@ class RedirectServiceTest extends UnitTestCase
         ];
         $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
             [
-                'regexp' => [
+                'regexp_flat' => [
                     '/f.*?/' => [
                         1 => $row,
                     ],
