@@ -865,4 +865,67 @@ final class RedirectServiceTest extends FunctionalTestCase
         self::assertEquals(['wildcard-manual-matched' => $uri->getPath()], $dispatchedEvents[1]->getMatchedRedirect());
         self::assertSame(['wildcard-manual-matched' => $uri->getPath()], $redirectMatch);
     }
+
+    public static function regExpRedirectsWithArgumentMatchesWithSimilarRegExpWithoutQueryParamInRecordDataProvider(): \Generator
+    {
+        // Regression test for https://forge.typo3.org/issues/101191
+        yield '#1 Non-query argument regex redirect not respecting get arguments before query-argument regex does not match before query-argument regex' => [
+            'dataSet' => __DIR__ . '/Fixtures/RegExp/case1.csv',
+            'url' => 'https://acme.com/foo/lightbar.html?type=101',
+            'statusCode' => 301,
+            'redirectUid' => 2,
+            'targetUrl' => 'https://acme.com/page3?type=101',
+        ];
+
+        yield '#2 Non-query argument regex redirect respecting get arguments before query-argument regex does not match before query-argument regex' => [
+            'dataSet' => __DIR__ . '/Fixtures/RegExp/case2.csv',
+            'url' => 'https://acme.com/foo/lightbar.html?type=101',
+            'statusCode' => 301,
+            'redirectUid' => 2,
+            'targetUrl' => 'https://acme.com/page3?type=101',
+        ];
+
+        // Redirect respecting query arguments but has a too open regexp provided and matching takes precedence over
+        // a later redirect with a "better" match. This is a configuration error and therefore the correct way to handle
+        // this case. For example missing trailing `$` or leaving the `respect_query_parameters` option unchecked would
+        // mitigate this.
+        yield '#3 To open non-query argument regex redirect respecting get arguments before query-argument regex proceeds query-argument regex' => [
+            'dataSet' => __DIR__ . '/Fixtures/RegExp/case3.csv',
+            'url' => 'https://acme.com/foo/lightbar.html?type=101',
+            'statusCode' => 301,
+            'redirectUid' => 1,
+            'targetUrl' => 'https://acme.com/page2',
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider regExpRedirectsWithArgumentMatchesWithSimilarRegExpWithoutQueryParamInRecordDataProvider
+     */
+    public function regExpRedirectsWithArgumentMatchesWithSimilarRegExpWithoutQueryParamInRecord(
+        string $importDataSet,
+        string $url,
+        int $statusCode,
+        int $redirectUid,
+        string $targetUrl
+    ): void {
+        $this->importCSVDataSet($importDataSet);
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1, 'https://acme.com/')
+        );
+        $this->setUpFrontendRootPage(
+            1,
+            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($url)
+        );
+        self::assertEquals($statusCode, $response->getStatusCode());
+        self::assertIsArray($response->getHeader('X-Redirect-By'));
+        self::assertIsArray($response->getHeader('location'));
+        self::assertEquals('TYPO3 Redirect ' . $redirectUid, $response->getHeader('X-Redirect-By')[0]);
+        self::assertEquals($targetUrl, $response->getHeader('location')[0]);
+    }
 }

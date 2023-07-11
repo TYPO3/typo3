@@ -108,9 +108,9 @@ class RedirectService implements LoggerAwareInterface
                 }
             }
 
-            // check all redirects that are registered as regex
-            if (!empty($redirects['regexp'])) {
-                $allRegexps = array_keys($redirects['regexp']);
+            // check all regex redirects respecting query arguments
+            if (!empty($redirects['regexp_query_parameters'])) {
+                $allRegexps = array_keys($redirects['regexp_query_parameters']);
                 $regExpPath = $path;
                 if (!empty($query)) {
                     $regExpPath .= '?' . ltrim($query, '?');
@@ -118,7 +118,7 @@ class RedirectService implements LoggerAwareInterface
                 foreach ($allRegexps as $regexp) {
                     $matchResult = @preg_match((string)$regexp, $regExpPath);
                     if ($matchResult > 0) {
-                        if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['regexp'][$regexp])) {
+                        if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['regexp_query_parameters'][$regexp])) {
                             return $matchedRedirect;
                         }
                         continue;
@@ -127,20 +127,43 @@ class RedirectService implements LoggerAwareInterface
                     // Log invalid regular expression
                     if ($matchResult === false) {
                         $this->logger->warning('Invalid regex in redirect', ['regex' => $regexp]);
+                    }
+                }
+            }
+
+            // check all redirects that are registered as regex
+            if (!empty($redirects['regexp_flat'])) {
+                $allRegexps = array_keys($redirects['regexp_flat']);
+                $regExpPath = $path;
+                if (!empty($query)) {
+                    $regExpPath .= '?' . ltrim($query, '?');
+                }
+                foreach ($allRegexps as $regexp) {
+                    $matchResult = @preg_match((string)$regexp, $regExpPath);
+                    if ($matchResult > 0) {
+                        if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['regexp_flat'][$regexp])) {
+                            return $matchedRedirect;
+                        }
                         continue;
                     }
 
-                    // We need a second match run to evaluate against path only, even when query parameters where
-                    // provided to ensure regexp without query parameters in mind are still processed.
-                    // We need to do this only if there are query parameters in the request, otherwise first
-                    // preg_match would have found it.
-                    if (!empty($query)) {
+                    // Log invalid regular expression
+                    if ($matchResult === false) {
+                        $this->logger->warning('Invalid regex in redirect', ['regex' => $regexp]);
+                    }
+                }
+
+                // We need a second match run to evaluate against path only, even when query parameters where
+                // provided to ensure regexp without query parameters in mind are still processed.
+                // We need to do this only if there are query parameters in the request, otherwise first
+                // preg_match would have found it.
+                if (!empty($query)) {
+                    foreach ($allRegexps as $regexp) {
                         $matchResult = preg_match((string)$regexp, $path);
                         if ($matchResult > 0) {
-                            if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['regexp'][$regexp])) {
+                            if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['regexp_flat'][$regexp])) {
                                 return $matchedRedirect;
                             }
-                            continue;
                         }
                     }
                 }
