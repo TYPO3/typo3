@@ -43,7 +43,7 @@ class BackendUserSessionRepository
 
         // Map array to correct keys
         $allSessions = array_map(
-            static function ($session) {
+            static function (array $session): array {
                 return [
                     'id' => $session['ses_id'], // this is the hashed sessionId
                     'ip' => $session['ses_iplock'],
@@ -73,7 +73,7 @@ class BackendUserSessionRepository
 
         return array_filter(
             $allActive,
-            static function ($session) use ($backendUser) {
+            static function (array $session) use ($backendUser): bool {
                 return (int)$session['ses_userid'] === $backendUser->getUid();
             }
         );

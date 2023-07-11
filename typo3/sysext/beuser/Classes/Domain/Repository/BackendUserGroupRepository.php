@@ -73,7 +73,7 @@ class BackendUserGroupRepository extends Repository
     {
         $query = $this->createQuery();
         // being explicit here, albeit `Typo3DbQueryParser::parseDynamicOperand` uses prepared parameters
-        $uidList = array_map('intval', $uidList);
+        $uidList = array_map(intval(...), $uidList);
         $query->matching($query->in('uid', $uidList));
         return $query->execute(true);
     }

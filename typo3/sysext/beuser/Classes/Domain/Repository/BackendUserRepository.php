@@ -41,7 +41,7 @@ class BackendUserRepository extends Repository
     public function findByUidList(array $uidList)
     {
         $query = $this->createQuery();
-        $query->matching($query->in('uid', array_map('intval', $uidList)));
+        $query->matching($query->in('uid', array_map(intval(...), $uidList)));
         /** @var QueryResult $result */
         $result = $query->execute();
         return $result;

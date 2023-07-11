@@ -148,7 +148,7 @@ class LogEntryRepository extends Repository
             $userIds = $groupResolver->findAllUsersInGroups([$groupId], 'be_groups', 'be_users');
             if (!empty($userIds)) {
                 $userIds = array_column($userIds, 'uid');
-                $userIds = array_map('intval', $userIds);
+                $userIds = array_map(intval(...), $userIds);
                 $queryConstraints[] = $query->in('userid', $userIds);
             } else {
                 // If there are no group members -> use -1 as constraint to not find anything

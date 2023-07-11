@@ -405,7 +405,7 @@ class BackendUserController extends ActionController
                 'paginator' => $paginator,
                 'pagination' => $pagination,
                 'totalAmountOfBackendUserGroups' => $backendUsers->count(),
-                'compareGroupUidList' => array_map(static function ($value) { // uid as key and force value to 1
+                'compareGroupUidList' => array_map(static function (int $value): int { // uid as key and force value to 1
                     return 1;
                 }, array_flip($compareGroupUidList)),
                 'compareGroupList' => !empty($compareGroupUidList) ? $this->backendUserGroupRepository->findByUidList($compareGroupUidList) : [],
