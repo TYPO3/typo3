@@ -73,6 +73,6 @@ final class GroupResolverTest extends FunctionalTestCase
     {
         $subject = GeneralUtility::makeInstance(GroupResolver::class);
         $users = $subject->findAllUsersInGroups($groupIds, 'be_groups', 'be_users');
-        self::assertEquals($expectedUsers, array_map('intval', array_column($users, 'uid')));
+        self::assertEquals($expectedUsers, array_map(intval(...), array_column($users, 'uid')));
     }
 }

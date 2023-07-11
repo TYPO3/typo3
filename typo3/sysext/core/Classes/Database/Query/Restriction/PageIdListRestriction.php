@@ -45,7 +45,7 @@ final class PageIdListRestriction implements QueryRestrictionInterface
             if (empty($this->tableNames) || in_array($tableAlias, $this->tableNames, true)) {
                 $constraints[] = $expressionBuilder->in(
                     $tableAlias . '.pid',
-                    array_map('intval', $this->pageIds)
+                    array_map(intval(...), $this->pageIds)
                 );
             }
         }

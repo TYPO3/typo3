@@ -1441,7 +1441,7 @@ class DataHandler implements LoggerAwareInterface
             && $status === 'update'
         ) {
             // Do not allow a non system maintainer admin to change admin flag and password of system maintainers
-            $systemMaintainers = array_map('intval', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
+            $systemMaintainers = array_map(intval(...), $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
             // False if current user is not in system maintainer list or if switch to user mode is active
             $isCurrentUserSystemMaintainer = $this->BE_USER->isSystemMaintainer();
             $isTargetUserInSystemMaintainerList = in_array((int)$id, $systemMaintainers, true);

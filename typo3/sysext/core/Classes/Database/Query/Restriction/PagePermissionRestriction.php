@@ -111,7 +111,7 @@ class PagePermissionRestriction implements QueryRestrictionInterface
         );
 
         // User groups (if any are set)
-        $groupIds = array_map('intval', $this->userAspect->getGroupIds());
+        $groupIds = array_map(intval(...), $this->userAspect->getGroupIds());
         if (!empty($groupIds)) {
             $constraint = $constraint->with(
                 $expressionBuilder->and(

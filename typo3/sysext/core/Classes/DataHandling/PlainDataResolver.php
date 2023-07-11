@@ -284,7 +284,7 @@ class PlainDataResolver
                 $queryBuilder->expr()->in(
                     'uid',
                     // do not use named parameter here as the list can get too long
-                    array_map('intval', $ids)
+                    array_map(intval(...), $ids)
                 )
             );
 
@@ -312,7 +312,7 @@ class PlainDataResolver
 
         $sortedIds = $queryBuilder->executeQuery()->fetchAllAssociative();
 
-        return array_map('intval', array_column($sortedIds, 'uid'));
+        return array_map(intval(...), array_column($sortedIds, 'uid'));
     }
 
     /**

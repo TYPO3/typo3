@@ -1167,7 +1167,7 @@ class DataMapProcessor
                 return MathUtility::canBeInterpretedAsInteger($id);
             }
         );
-        return array_map('intval', $ids);
+        return array_map(intval(...), $ids);
     }
 
     /**

@@ -125,7 +125,7 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
     {
         // todo: flushByTag is not necessarily implemented since it's neither defined of the interface, nor defined in
         //       this class as abstract method. Therefore this potentially triggers a fatal error during runtime.
-        array_walk($tags, [$this, 'flushByTag']);
+        array_walk($tags, $this->flushByTag(...));
     }
 
     /**

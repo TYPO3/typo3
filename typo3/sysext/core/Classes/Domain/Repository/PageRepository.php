@@ -1791,7 +1791,7 @@ class PageRepository implements LoggerAwareInterface
         if ($pageIds === []) {
             return [];
         }
-        $pageIds = array_map('intval', $pageIds);
+        $pageIds = array_map(intval(...), $pageIds);
         if ($depth === 0) {
             return $pageIds;
         }

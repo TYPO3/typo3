@@ -277,13 +277,13 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         // maximum SQL query limits.
         if (count($tags) > 100) {
             $chunks = array_chunk($tags, 100);
-            array_walk($chunks, [$this, 'flushByTags']);
+            array_walk($chunks, $this->flushByTags(...));
             return;
         }
         // VERY simple quoting of tags is sufficient here for performance. Tags are already
         // validated to not contain any bad characters, e.g. they are automatically generated
         // inside this class and suffixed with a pure integer enforced by DB.
-        $quotedTagList = array_map(static function ($value) {
+        $quotedTagList = array_map(static function (string $value): string {
             return '\'' . $value . '\'';
         }, $tags);
 

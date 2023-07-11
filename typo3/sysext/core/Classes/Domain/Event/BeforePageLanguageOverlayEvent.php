@@ -49,7 +49,7 @@ final class BeforePageLanguageOverlayEvent
 
     public function setPageIds(array $pageIds): void
     {
-        $this->pageIds = array_map('intval', $pageIds);
+        $this->pageIds = array_map(intval(...), $pageIds);
     }
 
     public function getLanguageAspect(): LanguageAspect

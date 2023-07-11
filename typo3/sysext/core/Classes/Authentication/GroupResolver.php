@@ -141,7 +141,7 @@ class GroupResolver
 
         // Ensure the given groups exist
         $mainGroups = $this->fetchRowsFromDatabase($groupIds);
-        $groupIds = array_map('intval', array_column($mainGroups, 'uid'));
+        $groupIds = array_map(intval(...), array_column($mainGroups, 'uid'));
         if (empty($groupIds)) {
             return [];
         }

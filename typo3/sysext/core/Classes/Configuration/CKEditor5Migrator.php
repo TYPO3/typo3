@@ -225,7 +225,7 @@ class CKEditor5Migrator
         }
 
         // Handle custom plugin names to ckeditor
-        $this->configuration['editor']['config']['removePlugins'] = array_map(function ($entry) {
+        $this->configuration['editor']['config']['removePlugins'] = array_map(static function (string $entry): string {
             if (isset(self::PLUGIN_MAP[$entry])) {
                 return self::PLUGIN_MAP[$entry];
             }
@@ -294,7 +294,7 @@ class CKEditor5Migrator
                     $item['groups'] = self::TOOLBAR_MAIN_GROUPS_MAP[$item['name']];
                 }
                 // Flatten CKEditor4 arrays that only have strings assigned
-                if (count($item) === count(array_filter($item, static fn ($value) => is_string($value)))) {
+                if (count($item) === count(array_filter($item, static fn (mixed $value): bool => is_string($value)))) {
                     $migratedToolbarItems = $item;
                     $migratedToolbarItems = $this->migrateToolbarButtons($migratedToolbarItems);
                     $migratedToolbarItems = $this->migrateToolbarSpacers($migratedToolbarItems);
@@ -313,7 +313,7 @@ class CKEditor5Migrator
                 }
                 // Expand CKEditor4 toolbar groups
                 if (is_string($item['name'] ?? null) && is_array($item['groups'] ?? null)) {
-                    $itemGroups = array_filter($item['groups'], static fn ($itemGroup) => is_string($itemGroup));
+                    $itemGroups = array_filter($item['groups'], static fn (mixed $itemGroup): bool => is_string($itemGroup));
 
                     // Process Main CKEditor4 Groups
                     $unGroupedToolbarItems = [];
@@ -569,7 +569,7 @@ class CKEditor5Migrator
                 $this->configuration['editor']['config']['contentsCss'] = (array)$this->configuration['editor']['config']['contentsCss'];
             }
 
-            $this->configuration['editor']['config']['contentsCss'] = array_map(static function (mixed $styleSrc) {
+            $this->configuration['editor']['config']['contentsCss'] = array_map(static function (mixed $styleSrc): mixed {
                 // Trim values, if input is a string, otherwise leave as-is (will be filtered out)
                 return is_string($styleSrc) ? trim($styleSrc) : $styleSrc;
             }, $this->configuration['editor']['config']['contentsCss']);
@@ -767,7 +767,7 @@ class CKEditor5Migrator
             return;
         }
 
-        $this->configuration['editor']['config']['extraPlugins'] = array_filter($this->configuration['editor']['config']['extraPlugins'], function ($value) use ($name) {
+        $this->configuration['editor']['config']['extraPlugins'] = array_filter($this->configuration['editor']['config']['extraPlugins'], static function (string $value) use ($name) {
             return $value !== $name;
         });
 

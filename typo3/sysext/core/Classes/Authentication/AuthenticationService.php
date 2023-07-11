@@ -42,7 +42,7 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
     {
         $isProcessed = false;
         if ($passwordTransmissionStrategy === 'normal') {
-            $loginData = array_map('trim', $loginData);
+            $loginData = array_map(trim(...), $loginData);
             $loginData['uident_text'] = $loginData['uident'];
             $isProcessed = true;
         }

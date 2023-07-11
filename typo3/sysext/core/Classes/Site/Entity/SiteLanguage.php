@@ -148,7 +148,7 @@ class SiteLanguage
             } elseif (is_scalar($fallbackLanguageIds)) {
                 $fallbackLanguageIds = [$fallbackLanguageIds];
             }
-            $this->fallbackLanguageIds = array_map('intval', $fallbackLanguageIds);
+            $this->fallbackLanguageIds = array_map(intval(...), $fallbackLanguageIds);
         }
         if (isset($configuration['enabled'])) {
             $this->enabled = (bool)$configuration['enabled'];

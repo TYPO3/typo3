@@ -395,7 +395,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return true;
         }
         $systemMaintainers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];
-        $systemMaintainers = array_map('intval', $systemMaintainers);
+        $systemMaintainers = array_map(intval(...), $systemMaintainers);
         if (!empty($systemMaintainers)) {
             return in_array((int)$this->user['uid'], $systemMaintainers, true);
         }
@@ -1503,12 +1503,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 'recursivedeleteFolder' => false,
             ];
             if ($this->isAdmin()) {
-                $filePermissions = array_map('is_bool', $filePermissions);
+                $filePermissions = array_map(is_bool(...), $filePermissions);
             } else {
                 $userGroupRecordPermissions = GeneralUtility::trimExplode(',', $this->groupData['file_permissions'] ?? '', true);
                 array_walk(
                     $userGroupRecordPermissions,
-                    static function ($permission) use (&$filePermissions) {
+                    static function (string $permission) use (&$filePermissions): void {
                         $filePermissions[$permission] = true;
                     }
                 );
@@ -1518,7 +1518,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 if (!empty($permissionsTsConfig)) {
                     array_walk(
                         $permissionsTsConfig,
-                        static function ($value, $permission) use (&$filePermissions) {
+                        static function (string $value, string $permission) use (&$filePermissions): void {
                             $filePermissions[$permission] = (bool)$value;
                         }
                     );
@@ -1545,7 +1545,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             if (!empty($storageFilePermissions)) {
                 array_walk(
                     $storageFilePermissions,
-                    static function ($value, $permission) use (&$finalUserPermissions) {
+                    static function (string $value, string $permission) use (&$finalUserPermissions): void {
                         $finalUserPermissions[$permission] = (bool)$value;
                     }
                 );
@@ -1694,7 +1694,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $entryPointRootLineUids = [];
             foreach ($webMountsOfUser as $webMountPageId) {
                 $rootLine = BackendUtility::BEgetRootLine($webMountPageId, '', true);
-                $entryPointRootLineUids[$webMountPageId] = array_map('intval', array_column($rootLine, 'uid'));
+                $entryPointRootLineUids[$webMountPageId] = array_map(intval(...), array_column($rootLine, 'uid'));
             }
             foreach ($entryPointRootLineUids as $webMountOfUser => $uidsOfRootLine) {
                 // Remove the DB mounts of the user if the DB mount is not in the list of

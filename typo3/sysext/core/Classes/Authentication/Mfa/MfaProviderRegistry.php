@@ -74,7 +74,7 @@ class MfaProviderRegistry
      */
     public function getActiveProviders(AbstractUserAuthentication $user): array
     {
-        return array_filter($this->providers, static function ($provider) use ($user) {
+        return array_filter($this->providers, static function (MfaProviderManifestInterface $provider) use ($user): bool {
             return $provider->isActive(MfaProviderPropertyManager::create($provider, $user));
         });
     }
@@ -117,7 +117,7 @@ class MfaProviderRegistry
      */
     public function getLockedProviders(AbstractUserAuthentication $user): array
     {
-        return array_filter($this->providers, static function ($provider) use ($user) {
+        return array_filter($this->providers, static function (MfaProviderManifestInterface $provider) use ($user): bool {
             return $provider->isLocked(MfaProviderPropertyManager::create($provider, $user));
         });
     }

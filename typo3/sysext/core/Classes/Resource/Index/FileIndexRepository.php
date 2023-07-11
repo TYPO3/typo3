@@ -441,7 +441,7 @@ class FileIndexRepository implements SingletonInterface
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->notIn(
                     'uid',
-                    array_map('intval', $uidList)
+                    array_map(intval(...), $uidList)
                 )
             );
         }
