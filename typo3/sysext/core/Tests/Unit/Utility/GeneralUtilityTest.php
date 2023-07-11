@@ -1263,6 +1263,7 @@ final class GeneralUtilityTest extends UnitTestCase
     //////////////////////////////////
     // Tests concerning isOnCurrentHost
     //////////////////////////////////
+
     /**
      * @test
      */
@@ -1275,9 +1276,9 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for invalid isOnCurrentHost's
      *
-     * @return array Invalid Hosts
+     * @return array<string, array{0: string}>
      */
-    public function checkisOnCurrentHostInvalidHosts(): array
+    public static function checkisOnCurrentHostInvalidHostsDataProvider(): array
     {
         return [
             'empty string' => [''],
@@ -1287,6 +1288,16 @@ final class GeneralUtilityTest extends UnitTestCase
             'absolute path' => ['/abspath/file.txt?arg=value'],
             'different host' => [GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '.example.org'],
         ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider checkisOnCurrentHostInvalidHostsDataProvider
+     */
+    public function isOnCurrentHostWithNotCurrentHostReturnsFalse(string $hostCandidate): void
+    {
+        self::assertFalse(GeneralUtility::isOnCurrentHost($hostCandidate));
     }
 
     ////////////////////////////////////////
