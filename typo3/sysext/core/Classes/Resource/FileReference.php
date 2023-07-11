@@ -239,13 +239,11 @@ class FileReference implements FileInterface
     }
 
     /**
-     * Returns the size of this file
-     *
-     * @return int
+     * @return int<0, max>
      */
-    public function getSize()
+    public function getSize(): int
     {
-        return (int)$this->originalFile->getSize();
+        return $this->originalFile->getSize();
     }
 
     /**

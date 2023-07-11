@@ -169,12 +169,10 @@ abstract class AbstractFile implements FileInterface
     }
 
     /**
-     * Returns the size of this file
-     *
      * @throws \RuntimeException
-     * @return int|null Returns null if size is not available for the file
+     * @return int<0, max>
      */
-    public function getSize()
+    public function getSize(): int
     {
         if ($this->deleted) {
             throw new \RuntimeException('File has been deleted.', 1329821480);
@@ -185,7 +183,7 @@ abstract class AbstractFile implements FileInterface
         } else {
             $size = $this->properties['size'];
         }
-        return $size ? (int)$size : null;
+        return MathUtility::canBeInterpretedAsInteger($size) ? (int)$size : 0;
     }
 
     /**

@@ -40,11 +40,14 @@ interface FileInterface extends ResourceInterface
     public function getProperty($key);
 
     /**
-     * Returns the size of this file
+     * MUST return the size of the file as unsigned int i.e. 0-max.
      *
-     * @return int
+     * In case of errors, e.g. when the file is deleted or not readable,
+     * this method MAY either throw an Exception or return 0.
+     *
+     * @return int<0, max>
      */
-    public function getSize();
+    public function getSize(): int;
 
     /**
      * Returns the Sha1 of this file
