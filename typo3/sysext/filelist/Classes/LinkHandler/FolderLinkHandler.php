@@ -58,7 +58,13 @@ class FolderLinkHandler extends AbstractResourceLinkHandler
             $markup[] = '</div>';
 
             // Create the filelist
-            $this->filelist->start($this->selectedFolder, MathUtility::forceIntegerInRange($this->currentPage, 1, 100000), 'asc', false, Mode::BROWSE);
+            $this->filelist->start(
+                $this->selectedFolder,
+                MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
+                $request->getQueryParams()['sort'] ?? '',
+                ($request->getQueryParams()['reverse'] ?? '') === '1',
+                Mode::BROWSE
+            );
             $this->filelist->setResourceDisplayMatcher($this->resourceDisplayMatcher);
             $this->filelist->setResourceSelectableMatcher($this->resourceSelectableMatcher);
 
