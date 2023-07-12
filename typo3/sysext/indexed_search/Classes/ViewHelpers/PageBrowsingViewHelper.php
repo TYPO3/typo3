@@ -95,9 +95,10 @@ final class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
         }
         $pageLabel = LocalizationUtility::translate('displayResults.page', 'IndexedSearch');
         for ($a = $minPage; $a <= $maxPage; $a++) {
+            $isCurrentPage = $a === $currentPage;
             $label = trim($pageLabel . ' ' . ($a + 1));
-            $label = $this->makecurrentPageSelector_link($label, $a, $freeIndexUid);
-            if ($a === $currentPage) {
+            $label = $this->makecurrentPageSelector_link($label, $a, $freeIndexUid, $isCurrentPage);
+            if ($isCurrentPage) {
                 $content .= '<li class="tx-indexedsearch-browselist-currentPage"><strong>' . $label . '</strong></li>';
             } else {
                 $content .= '<li>' . $label . '</li>';
@@ -123,20 +124,25 @@ final class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
      * @param string $str String to wrap in <a> tag
      * @param int $p currentPage value
      * @param string $freeIndexUid List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
+     * @param bool $isCurrentPage
      * @return string Input string wrapped in <a> tag with onclick event attribute set.
      */
-    protected function makecurrentPageSelector_link($str, $p, $freeIndexUid)
+    protected function makecurrentPageSelector_link($str, $p, $freeIndexUid, bool $isCurrentPage = false)
     {
         $this->providePageSelectorJavaScript();
+        $attributes = [
+            'href' => '#',
+            'class' => 'tx-indexedsearch-page-selector',
+            'data-prefix' => self::$prefixId,
+            'data-pointer' => $p,
+            'data-freeIndexUid' => $freeIndexUid,
+        ];
+        if ($isCurrentPage) {
+            $attributes['aria-current'] = 'page';
+        }
         return sprintf(
             '<a %s>%s</a>',
-            GeneralUtility::implodeAttributes([
-                'href' => '#',
-                'class' => 'tx-indexedsearch-page-selector',
-                'data-prefix' => self::$prefixId,
-                'data-pointer' => $p,
-                'data-freeIndexUid' => $freeIndexUid,
-            ], true),
+            GeneralUtility::implodeAttributes($attributes, true),
             htmlspecialchars($str)
         );
     }
