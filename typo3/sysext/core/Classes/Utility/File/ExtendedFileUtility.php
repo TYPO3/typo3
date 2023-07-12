@@ -801,7 +801,7 @@ class ExtendedFileUtility extends BasicFileUtility
         if ($sourceFileObject instanceof File) {
             try {
                 // Try to rename the File
-                $resultObject = $sourceFileObject->rename($targetFile, $this->existingFilesConflictMode);
+                $resultObject = $sourceFileObject->rename($targetFile, (string)$this->existingFilesConflictMode);
                 if ($resultObject->getName() !== $targetFile) {
                     $this->writeLog(SystemLogFileAction::RENAME, SystemLogErrorClassification::USER_ERROR, 'File renamed from "{identifier}" to "{destination}". Filename had to be sanitized', ['identifier' => $sourceFile, 'destination' => $targetFile]);
                     $this->addMessageToFlashMessageQueue('FileUtility.FileNameSanitized', [$targetFile, $resultObject->getName()], ContextualFeedbackSeverity::WARNING);
