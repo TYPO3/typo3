@@ -195,7 +195,7 @@ ERROR_TEXT="\n"
 # Check for maximum line length
 #
 checkForLineLength() {
-	if egrep -q '^[^#].{74}' "$MSG"; then
+	if grep -q -E '^[^#].{74}' "$MSG"; then
 		COMMIT_MSG_ERROR_FOUND=1
 		ERROR_TEXT="${ERROR_TEXT} - The maximum line length of 74 characters is exceeded.\n"
 	fi
@@ -204,7 +204,7 @@ checkForLineLength() {
 # Check for existence of the commit type text
 #
 checkForCommitType() {
-	if ! egrep -q '\[[^]]+\] .+$' "$MSG"; then
+	if ! grep -q -E '\[[^]]+\] .+$' "$MSG"; then
 		COMMIT_MSG_ERROR_FOUND=1
 		ERROR_TEXT="${ERROR_TEXT} - Your first line has to contain a commit type like '[BUGFIX]'.\n"
 	fi
@@ -213,7 +213,7 @@ checkForCommitType() {
 # Check for existence of a "Resolves: " line.
 #
 checkForResolves() {
-	if ! egrep -q '^(Resolves|Fixes): \#[0-9]+$' "$MSG"; then
+	if ! grep -q -E '^(Resolves|Fixes): #[0-9]+$' "$MSG"; then
 		COMMIT_MSG_ERROR_FOUND=1
 		ERROR_TEXT="${ERROR_TEXT} - You need at least one 'Resolves|Fixes: #<issue number>' line.\n"
 	fi
@@ -222,7 +222,7 @@ checkForResolves() {
 # Check for existence of a "Releases: " line.
 #
 checkForReleases() {
-	if ! egrep -q '^Releases: (main|[0-9]+\.[0-9])(, *(main|[0-9]+\.[0-9]))*$' "$MSG"; then
+	if ! grep -q -E '^Releases: (main|[0-9]+\.[0-9])(, *(main|[0-9]+\.[0-9]))*$' "$MSG"; then
 		COMMIT_MSG_ERROR_FOUND=1
 		ERROR_TEXT="${ERROR_TEXT} - You need a 'Releases:' line. For instance: Releases: main, 8.7\n"
 	fi
