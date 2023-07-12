@@ -68,10 +68,10 @@ class DataHandlerSlugUpdateHook
     /**
      * Acts on potential slug changes.
      *
-     * Hook `processDatamap_postProcessFieldArray` is executed after `DataHandler::fillInFields` which
-     * ensure access to pages.slug field and applies possible evaluations (`eval => 'trim,...`).
+     * Hook `processDatamap_afterDatabaseOperations` is a record has been persisted and after `DataHandler::fillInFields`
+     * which ensure access to `pages.slug` field and applies possible evaluations (`eval => 'trim,...`).
      */
-    public function processDatamap_postProcessFieldArray(string $status, string $table, $id, array $fieldArray, DataHandler $dataHandler): void
+    public function processDatamap_afterDatabaseOperations(string $status, string $table, $id, array $fieldArray, DataHandler $dataHandler): void
     {
         $persistedChangedItem = $this->persistedChangedItems[(int)$id] ?? null;
 
@@ -85,7 +85,7 @@ class DataHandlerSlugUpdateHook
         ) {
             return;
         }
-        // We need to merge the current changed to the retrieved record, because they are not persisted yet.
+        // We merge the fieldArray dataset into with the original record to spare a database query here.
         $persistedChangedItem = $persistedChangedItem->withChanged(array_merge($persistedChangedItem->getOriginal(), $fieldArray));
         $this->slugService->rebuildSlugsForSlugChange($id, $persistedChangedItem, $dataHandler->getCorrelationId());
     }
