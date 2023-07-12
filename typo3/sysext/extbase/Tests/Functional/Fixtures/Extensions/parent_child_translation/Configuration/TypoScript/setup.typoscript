@@ -1,0 +1,10 @@
+plugin.tx_parentchildtranslation_parentchildtranslation {
+    view {
+        templateRootPaths.0 = EXT:parent_child_translation/Resources/Private/Templates/
+        templateRootPaths.1 = {$plugin.tx_parentchildtranslation_parentchildtranslation.view.templateRootPath}
+        partialRootPaths.0 = EXT:parent_child_translation/Resources/Private/Partials/
+        partialRootPaths.1 = {$plugin.tx_parentchildtranslation_parentchildtranslation.view.partialRootPath}
+        layoutRootPaths.0 = EXT:parent_child_translation/Resources/Private/Layouts/
+        layoutRootPaths.1 = {$plugin.tx_parentchildtranslation_parentchildtranslation.view.layoutRootPath}
+    }
+}

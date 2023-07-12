@@ -1,0 +1,20 @@
+<html xmlns:f="https://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<ul>
+    <f:for as="item" each="{items}" iteration="iteration">
+        <li>Parents:
+            <ul>
+                <li>Parent: {item.title}</li>
+                <li>Child: {item.child.title}</li>
+                <li>Squeezes:
+                    <ul>
+                        <f:for as="squeeze" each="{item.squeeze}" iteration="iteration">
+                            <li>Squeeze: {squeeze.title}
+                            <li>Child: {squeeze.child.title}</li>
+                        </f:for>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </f:for>
+</ul>
+</html>

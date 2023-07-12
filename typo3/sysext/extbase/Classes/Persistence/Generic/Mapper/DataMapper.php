@@ -402,8 +402,11 @@ class DataMapper
                 //pass language of parent record to child objects, so they can be overlaid correctly in case
                 //e.g. findByUid is used.
                 //the languageUid is used for getRecordOverlay later on, despite RespectSysLanguage being false
-                $languageUid = (int)$parentObject->_getProperty('_languageUid');
-                $query->getQuerySettings()->setLanguageUid($languageUid);
+                $parentLanguageUid = (int)$parentObject->_getProperty('_languageUid');
+                // do not override the language when the parent language uid is set to all languages (-1)
+                if ($parentLanguageUid !== -1) {
+                    $query->getQuerySettings()->setLanguageUid($parentLanguageUid);
+                }
             }
         }
 

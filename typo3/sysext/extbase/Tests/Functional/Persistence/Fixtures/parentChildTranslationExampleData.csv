@@ -1,0 +1,24 @@
+pages,,,,,,,
+,uid,pid,sys_language_uid,l10n_parent,title,,
+,1,0,0,0,ParentChildTranslation,,
+,2,0,1,1,ElternKindÜbersetzung,,
+tx_parentchildtranslation_domain_model_child,,,,,,,
+,uid,pid,sys_language_uid,l10n_parent,title,,
+,1,1,0,0,Child 1 EN,,
+,2,1,0,0,Child 2 EN,,
+,3,1,1,1,Kind 1 DE,,
+,4,1,1,2,Kind 2 DE,,
+,5,1,0,0,Child 3 EN,,
+,6,1,1,5,Kind 3 DE,,
+tx_parentchildtranslation_domain_model_main,,,,,,,
+,uid,pid,sys_language_uid,l10n_parent,title,child,squeeze
+,1,1,-1,0,Parent 1,1,1
+,2,1,-1,0,Parent 2,2,1
+tx_parentchildtranslation_domain_model_squeeze,,,,,,,
+,uid,pid,sys_language_uid,l10n_parent,title,parent,child
+,1,1,-1,0,Squeeze 1,1,1
+,2,1,-1,0,Squeeze 2,2,5
+tt_content,,,,,,,
+,uid,pid,sys_language_uid,l18n_parent,header,CType,list_type
+,1,1,0,0,Parent Child Translation,list,parentchildtranslation_parentchildtranslation
+,2,1,1,1,Eltern Kind Übersetzung,list,parentchildtranslation_parentchildtranslation
