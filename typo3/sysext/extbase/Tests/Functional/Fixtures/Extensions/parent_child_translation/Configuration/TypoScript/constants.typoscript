@@ -1,0 +1,10 @@
+plugin.tx_parentchildtranslation_parentchildtranslation {
+    view {
+        # cat=plugin.tx_parentchildtranslation_parentchildtranslation/file; type=string; label=Path to template root (FE)
+        templateRootPath = EXT:parent_child_translation/Resources/Private/Templates/
+        # cat=plugin.tx_parentchildtranslation_parentchildtranslation/file; type=string; label=Path to template partials (FE)
+        partialRootPath = EXT:parent_child_translation/Resources/Private/Partials/
+        # cat=plugin.tx_parentchildtranslation_parentchildtranslation/file; type=string; label=Path to template layouts (FE)
+        layoutRootPath = EXT:parent_child_translation/Resources/Private/Layouts/
+    }
+}

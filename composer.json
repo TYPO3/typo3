@@ -299,6 +299,7 @@
 			"TYPO3Tests\\ActionControllerArgumentTest\\": "typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_argument_test/Classes/",
 			"TYPO3Tests\\ActionControllerTest\\": "typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_test/Classes/",
 			"TYPO3Tests\\BlogExample\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/",
+			"TYPO3Tests\\ParentChildTranslation\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/parent_child_translation/Classes/",
 			"TYPO3Tests\\TestEid\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_eid/Classes/",
 			"TYPO3Tests\\FluidTest\\": "typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/",
 			"TYPO3Tests\\FormCachingTests\\" : "typo3/sysext/form/Tests/Functional/RequestHandling/Fixtures/Extensions/form_caching_tests/Classes/",
