@@ -150,10 +150,10 @@ final class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
             self::class,
             implode(' ', [
                 "document.addEventListener('click', (evt) => {",
-                    'evt.preventDefault();',
                     "if (!evt.target.classList.contains('tx-indexedsearch-page-selector')) {",
                         'return;',
                     '}',
+                    'evt.preventDefault();',
                     'var data = evt.target.dataset;',
                     "document.getElementById(data.prefix + '_pointer').value = data.pointer;",
                     "document.getElementById(data.prefix + '_freeIndexUid').value = data.freeIndexUid;",
