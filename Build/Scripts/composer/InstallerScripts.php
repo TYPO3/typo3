@@ -25,43 +25,40 @@ namespace TYPO3\CMS\Composer\Scripts;
  ***************************************************************/
 
 use Composer\Script\Event;
-use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
-use TYPO3\CMS\Composer\Plugin\Util\Filesystem;
+use Symfony\Component\Filesystem\Filesystem;
 
 class InstallerScripts
 {
-    public static function enableCommitMessageHook(Event $event)
+    public static function enableCommitMessageHook(Event $event): void
     {
-        $symfonyFilesystem = new SymfonyFilesystem();
         $filesystem = new Filesystem();
         try {
             $filesystem->copy('Build/git-hooks/commit-msg', '.git/hooks/commit-msg');
             if (!is_executable('.git/hooks/commit-msg')) {
-                $symfonyFilesystem->chmod('.git/hooks/commit-msg', 0755);
+                $filesystem->chmod('.git/hooks/commit-msg', 0755);
             }
         } catch (\Symfony\Component\Filesystem\Exception\IOException $e) {
             $event->getIO()->writeError('<warning>Exception:enableCommitMessageHook:' . $e->getMessage() . '</warning>');
         }
     }
 
-    public static function enablePreCommitHook(Event $event)
+    public static function enablePreCommitHook(Event $event): void
     {
         if (DIRECTORY_SEPARATOR === '\\') {
             return;
         }
-        $symfonyFilesystem = new SymfonyFilesystem();
         $filesystem = new Filesystem();
         try {
             $filesystem->copy('Build/git-hooks/unix+mac/pre-commit', '.git/hooks/pre-commit');
             if (!is_executable('.git/hooks/pre-commit')) {
-                $symfonyFilesystem->chmod('.git/hooks/pre-commit', 0755);
+                $filesystem->chmod('.git/hooks/pre-commit', 0755);
             }
         } catch (\Symfony\Component\Filesystem\Exception\IOException $e) {
             $event->getIO()->writeError('<warning>Exception:enablePreCommitHook:' . $e->getMessage() . '</warning>');
         }
     }
 
-    public static function disablePreCommitHook(Event $event)
+    public static function disablePreCommitHook(Event $event): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove('.git/hooks/pre-commit');
