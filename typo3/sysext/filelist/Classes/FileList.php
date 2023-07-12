@@ -1471,7 +1471,7 @@ class FileList
         // We always map it to the id here.
         $params['expandFolder'] = $params['id'];
         $params = array_filter($params, static function ($value) {
-            return (is_string($value) && trim($value) !== '') || (is_array($value) && $value !== []);
+            return (is_array($value) && $value !== []) || (trim((string)$value) !== '');
         });
 
         return (string)$this->uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $params);
