@@ -346,8 +346,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
     {
         $astBuilderVisitor = $this->get(IncludeTreeAstBuilderVisitor::class);
         $traverser = new IncludeTreeTraverser();
-        $traverser->addVisitor($astBuilderVisitor);
-        $traverser->traverse($rootInclude);
+        $traverser->traverse($rootInclude, [$astBuilderVisitor]);
         return $astBuilderVisitor->getAst();
     }
 }

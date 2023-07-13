@@ -433,9 +433,7 @@ class SettingsController extends AbstractController
                     new RootNode()
                 );
                 $astConstantCommentVisitor = new (AstConstantCommentVisitor::class);
-                $this->astTraverser->resetVisitors();
-                $this->astTraverser->addVisitor($astConstantCommentVisitor);
-                $this->astTraverser->traverse($ast);
+                $this->astTraverser->traverse($ast, [$astConstantCommentVisitor]);
                 $constants = $astConstantCommentVisitor->getConstants();
                 // @todo: It would be better to fetch all LocalConfiguration settings of an extension at once
                 //        and feed it as pseudo-TS to the AST builder. This way the full AstConstantCommentVisitor

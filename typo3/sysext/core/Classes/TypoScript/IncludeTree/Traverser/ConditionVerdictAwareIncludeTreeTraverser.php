@@ -36,32 +36,22 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeVisitorInterface;
  */
 final class ConditionVerdictAwareIncludeTreeTraverser implements IncludeTreeTraverserInterface
 {
-    /**
-     * @var IncludeTreeVisitorInterface[]
-     */
-    private array $visitors;
-
-    public function addVisitor(IncludeTreeVisitorInterface $visitor): void
+    public function traverse(RootInclude $rootInclude, array $visitors): void
     {
-        $this->visitors[] = $visitor;
+        foreach ($visitors as $visitor) {
+            if (!$visitor instanceof IncludeTreeVisitorInterface) {
+                throw new \RuntimeException(
+                    'Visitors must implement IncludeTreeVisitorInterface',
+                    1689244840
+                );
+            }
+        }
+        $this->traverseRecursive($rootInclude, $visitors, 0);
     }
 
-    /**
-     * Reset to re-use traverser multiple times with different set of visitors.
-     */
-    public function resetVisitors(): void
+    private function traverseRecursive(IncludeInterface $include, array $visitors, int $currentDepth): void
     {
-        $this->visitors = [];
-    }
-
-    public function traverse(RootInclude $rootInclude): void
-    {
-        $this->traverseRecursive($rootInclude, 0);
-    }
-
-    private function traverseRecursive(IncludeInterface $include, int $currentDepth): void
-    {
-        foreach ($this->visitors as $visitor) {
+        foreach ($visitors as $visitor) {
             $visitor->visitBeforeChildren($include, $currentDepth);
         }
         if ($include instanceof IncludeConditionInterface && !$include->getConditionVerdict()) {
@@ -69,8 +59,8 @@ final class ConditionVerdictAwareIncludeTreeTraverser implements IncludeTreeTrav
             return;
         }
         foreach ($include->getNextChild() as $child) {
-            $this->traverseRecursive($child, $currentDepth + 1);
-            foreach ($this->visitors as $visitor) {
+            $this->traverseRecursive($child, $visitors, $currentDepth + 1);
+            foreach ($visitors as $visitor) {
                 $visitor->visit($child, $currentDepth);
             }
         }

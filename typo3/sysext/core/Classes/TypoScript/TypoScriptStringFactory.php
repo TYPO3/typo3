@@ -55,8 +55,7 @@ final class TypoScriptStringFactory
         $includeTree = $stringTreeBuilder->getTreeFromString($name, $typoScript, $this->tokenizer, $cache);
         $includeTreeTraverserConditionVerdictAware = new IncludeTreeTraverser();
         $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
-        $includeTreeTraverserConditionVerdictAware->addVisitor($astBuilderVisitor);
-        $includeTreeTraverserConditionVerdictAware->traverse($includeTree);
+        $includeTreeTraverserConditionVerdictAware->traverse($includeTree, [$astBuilderVisitor]);
         return $astBuilderVisitor->getAst();
     }
 

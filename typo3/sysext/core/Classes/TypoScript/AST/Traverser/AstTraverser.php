@@ -30,42 +30,38 @@ use TYPO3\CMS\Core\TypoScript\AST\Visitor\AstVisitorInterface;
 final class AstTraverser
 {
     /**
-     * @var AstVisitorInterface[]
+     * @param AstVisitorInterface[] $visitors
      */
-    private array $visitors;
-
-    public function addVisitor(AstVisitorInterface $visitor): void
+    public function traverse(RootNode $rootNode, array $visitors): void
     {
-        $this->visitors[] = $visitor;
+        foreach ($visitors as $visitor) {
+            if (!$visitor instanceof AstVisitorInterface) {
+                throw new \RuntimeException(
+                    'Visitors must implement AstTreeVisitorInterface',
+                    1689244842
+                );
+            }
+        }
+        $currentObjectPath = new CurrentObjectPath();
+        $this->traverseRecursive($visitors, $rootNode, $rootNode, $currentObjectPath, 0);
     }
 
     /**
-     * Reset to re-use traverser multiple times with different set of visitors.
+     * @param AstVisitorInterface[] $visitors
      */
-    public function resetVisitors(): void
-    {
-        $this->visitors = [];
-    }
-
-    public function traverse(RootNode $rootNode): void
-    {
-        $currentObjectPath = new CurrentObjectPath();
-        $this->traverseRecursive($rootNode, $rootNode, $currentObjectPath, 0);
-    }
-
-    private function traverseRecursive(RootNode $nodeRoot, NodeInterface $node, CurrentObjectPath $currentObjectPath, int $currentDepth): void
+    private function traverseRecursive(array $visitors, RootNode $nodeRoot, NodeInterface $node, CurrentObjectPath $currentObjectPath, int $currentDepth): void
     {
         $currentObjectPath->append($node);
-        foreach ($this->visitors as $visitor) {
+        foreach ($visitors as $visitor) {
             $visitor->visitBeforeChildren($nodeRoot, $node, $currentObjectPath, $currentDepth);
         }
         foreach ($node->getNextChild() as $child) {
-            $this->traverseRecursive($nodeRoot, $child, $currentObjectPath, $currentDepth + 1);
-            foreach ($this->visitors as $visitor) {
+            $this->traverseRecursive($visitors, $nodeRoot, $child, $currentObjectPath, $currentDepth + 1);
+            foreach ($visitors as $visitor) {
                 $visitor->visit($nodeRoot, $child, $currentObjectPath, $currentDepth);
             }
         }
-        foreach ($this->visitors as $visitor) {
+        foreach ($visitors as $visitor) {
             $visitor->visitAfterChildren($nodeRoot, $node, $currentObjectPath, $currentDepth);
         }
         $currentObjectPath->removeLast();

@@ -139,16 +139,16 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
         $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn ($condition) => $condition['active']), 'value'));
         $treeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
-        $treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $treeTraverserVisitors = [];
+        $treeTraverserVisitors[] = $conditionEnforcerVisitor;
         $constantAstBuilderVisitor = $this->container->get(IncludeTreeCommentAwareAstBuilderVisitor::class);
-        $treeTraverser->addVisitor($constantAstBuilderVisitor);
-        $treeTraverser->traverse($constantIncludeTree);
+        $treeTraverserVisitors[] = $constantAstBuilderVisitor;
+        $treeTraverser->traverse($constantIncludeTree, $treeTraverserVisitors);
         $constantAst = $constantAstBuilderVisitor->getAst();
         $constantAst->setIdentifier('TypoScript constants');
         if ($sortAlphabetically) {
             $astTraverser = new AstTraverser();
-            $astTraverser->addVisitor(new AstSortChildrenVisitor());
-            $astTraverser->traverse($constantAst);
+            $astTraverser->traverse($constantAst, [new AstSortChildrenVisitor()]);
         }
 
         // Flatten constant AST. Needed for setup condition display and setup AST constant substitution.
@@ -160,18 +160,18 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
         $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn ($condition) => $condition['active']), 'value'));
         $treeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
-        $treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $treeTraverserVisitors = [];
+        $treeTraverserVisitors[] = $conditionEnforcerVisitor;
         $setupAstBuilderVisitor = $this->container->get(IncludeTreeCommentAwareAstBuilderVisitor::class);
         $setupAstBuilderVisitor->setFlatConstants($flattenedConstants);
-        $treeTraverser->addVisitor($setupAstBuilderVisitor);
-        $treeTraverser->traverse($setupIncludeTree);
+        $treeTraverserVisitors[] = $setupAstBuilderVisitor;
+        $treeTraverser->traverse($setupIncludeTree, $treeTraverserVisitors);
         // Build the setup AST
         $setupAst = $setupAstBuilderVisitor->getAst();
         $setupAst->setIdentifier('TypoScript setup');
         if ($sortAlphabetically) {
             $astTraverser = new AstTraverser();
-            $astTraverser->addVisitor(new AstSortChildrenVisitor());
-            $astTraverser->traverse($setupAst);
+            $astTraverser->traverse($setupAst, [new AstSortChildrenVisitor()]);
         }
 
         $view = $this->moduleTemplateFactory->create($request);
@@ -255,10 +255,11 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
         $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn ($condition) => $condition['active']), 'value'));
         $treeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
-        $treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $treeTraverserVisitors = [];
+        $treeTraverserVisitors[] = $conditionEnforcerVisitor;
         $constantAstBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
-        $treeTraverser->addVisitor($constantAstBuilderVisitor);
-        $treeTraverser->traverse($constantIncludeTree);
+        $treeTraverserVisitors[] = $constantAstBuilderVisitor;
+        $treeTraverser->traverse($constantIncludeTree, $treeTraverserVisitors);
 
         $astNodeFinderVisitor = new AstNodeFinderVisitor();
         $astNodeFinderVisitor->setNodeIdentifier($nodeIdentifier);
@@ -266,8 +267,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
             $constantAst = $constantAstBuilderVisitor->getAst();
             $constantAst->setIdentifier('TypoScript constants');
             $astTraverser = new AstTraverser();
-            $astTraverser->addVisitor($astNodeFinderVisitor);
-            $astTraverser->traverse($constantAst);
+            $astTraverser->traverse($constantAst, [$astNodeFinderVisitor]);
         } else {
             // Build the setup include tree
             $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, new LosslessTokenizer(), $site);
@@ -277,16 +277,16 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
             $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
             $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn ($condition) => $condition['active']), 'value'));
             $treeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
-            $treeTraverser->addVisitor($conditionEnforcerVisitor);
+            $treeTraverserVisitors = [];
+            $treeTraverserVisitors[] = $conditionEnforcerVisitor;
             $setupAstBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
             $setupAstBuilderVisitor->setFlatConstants($flattenedConstants);
-            $treeTraverser->addVisitor($setupAstBuilderVisitor);
-            $treeTraverser->traverse($setupIncludeTree);
+            $treeTraverserVisitors[] = $setupAstBuilderVisitor;
+            $treeTraverser->traverse($setupIncludeTree, $treeTraverserVisitors);
             $setupAst = $setupAstBuilderVisitor->getAst();
             $setupAst->setIdentifier('TypoScript setup');
             $astTraverser = new AstTraverser();
-            $astTraverser->addVisitor($astNodeFinderVisitor);
-            $astTraverser->traverse($setupAst);
+            $astTraverser->traverse($setupAst, [$astNodeFinderVisitor]);
         }
         $foundNode = $astNodeFinderVisitor->getFoundNode();
         $foundNodeCurrentObjectPath = $astNodeFinderVisitor->getFoundNodeCurrentObjectPath();
@@ -420,8 +420,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
     {
         $conditionAggregatorVisitor = new IncludeTreeConditionAggregatorVisitor();
         $treeTraverser = new IncludeTreeTraverser();
-        $treeTraverser->addVisitor($conditionAggregatorVisitor);
-        $treeTraverser->traverse($constantTree);
+        $treeTraverser->traverse($constantTree, [$conditionAggregatorVisitor]);
         $constantConditions = $conditionAggregatorVisitor->getConditions();
         $conditionsFromPost = $parsedBody['constantConditions'] ?? [];
         $conditionsFromModuleData = array_flip((array)$moduleData->get('constantConditions'));
@@ -462,10 +461,11 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
         $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
         $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flattenedConstants);
         $treeTraverser = new IncludeTreeTraverser();
-        $treeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
+        $treeTraverserVisitors = [];
+        $treeTraverserVisitors[] = $setupConditionConstantSubstitutionVisitor;
         $conditionAggregatorVisitor = new IncludeTreeConditionAggregatorVisitor();
-        $treeTraverser->addVisitor($conditionAggregatorVisitor);
-        $treeTraverser->traverse($setupTree);
+        $treeTraverserVisitors[] = $conditionAggregatorVisitor;
+        $treeTraverser->traverse($setupTree, $treeTraverserVisitors);
         $setupConditions = $conditionAggregatorVisitor->getConditions();
         $conditionsFromPost = $parsedBody['setupConditions'] ?? [];
         $conditionsFromModuleData = array_flip((array)$moduleData->get('setupConditions'));

@@ -1260,10 +1260,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // TypoScript sys_templates, we try to retrieve the full constants TypoScript from cache.
             $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
             $conditionMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
-            $includeTreeTraverser->addVisitor($conditionMatcherVisitor);
             // It does not matter if we use IncludeTreeTraverser or ConditionVerdictAwareIncludeTreeTraverser here:
             // Condition list is flat, not nested. IncludeTreeTraverser has an if() less, so we use that one.
-            $includeTreeTraverser->traverse($constantConditionIncludeTree);
+            $includeTreeTraverser->traverse($constantConditionIncludeTree, [$conditionMatcherVisitor]);
             $constantConditionList = $conditionMatcherVisitor->getConditionListWithVerdicts();
             // Needed for cache identifier calculations. Put into a variable here to not serialize multiple times.
             $serializedConstantConditionList = serialize($constantConditionList);
@@ -1289,12 +1288,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
             $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
             $conditionMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
-            $includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
+            $includeTreeTraverserConditionVerdictAwareVisitors = [];
+            $includeTreeTraverserConditionVerdictAwareVisitors[] = $conditionMatcherVisitor;
             $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
-            $includeTreeTraverserConditionVerdictAware->addVisitor($constantAstBuilderVisitor);
+            $includeTreeTraverserConditionVerdictAwareVisitors[] = $constantAstBuilderVisitor;
             // We must use ConditionVerdictAwareIncludeTreeTraverser here: This one does not walk into
             // children for not matching conditions, which is important to create the correct AST.
-            $includeTreeTraverserConditionVerdictAware->traverse($constantIncludeTree);
+            $includeTreeTraverserConditionVerdictAware->traverse($constantIncludeTree, $includeTreeTraverserConditionVerdictAwareVisitors);
             $constantsAst = $constantAstBuilderVisitor->getAst();
             $flatConstants = $constantsAst->flatten();
             if (!$this->no_cache) {
@@ -1302,13 +1302,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 // list cache entry. To do that, we need all (!) conditions, but the above ConditionVerdictAwareIncludeTreeTraverser
                 // did not find nested conditions if an upper condition did not match. We thus have to traverse include tree a
                 // second time with the IncludeTreeTraverser that does traverse into not matching conditions as well.
-                $includeTreeTraverser->resetVisitors();
+                $includeTreeTraverserVisitors = [];
                 $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
                 $conditionMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
-                $includeTreeTraverser->addVisitor($conditionMatcherVisitor);
+                $includeTreeTraverserVisitors[] = $constantAstBuilderVisitor;
                 $constantConditionIncludeListAccumulatorVisitor = new IncludeTreeConditionIncludeListAccumulatorVisitor();
-                $includeTreeTraverser->addVisitor($constantConditionIncludeListAccumulatorVisitor);
-                $includeTreeTraverser->traverse($constantIncludeTree);
+                $includeTreeTraverserVisitors[] = $constantConditionIncludeListAccumulatorVisitor;
+                $includeTreeTraverser->traverse($constantIncludeTree, $includeTreeTraverserVisitors);
                 $constantConditionList = $conditionMatcherVisitor->getConditionListWithVerdicts();
                 // Needed for cache identifier calculations. Put into a variable here to not serialize multiple times.
                 $serializedConstantConditionList = serialize($constantConditionList);
@@ -1331,16 +1331,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (!$this->no_cache && $setupConditionIncludeTree = $typoscriptCache->require($setupConditionIncludeListCacheIdentifier)) {
             // We got the flat list of all setup conditions for this TypoScript combination from cache. Good. We traverse
             // this list to calculate "current" condition verdicts, which we need as hash to be part of page cache identifier.
-            $includeTreeTraverser->resetVisitors();
+            $includeTreeTraverserVisitors = [];
             $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
             $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flatConstants);
-            $includeTreeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
+            $includeTreeTraverserVisitors[] = $setupConditionConstantSubstitutionVisitor;
             $setupMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
             $setupMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
-            $includeTreeTraverser->addVisitor($setupMatcherVisitor);
+            $includeTreeTraverserVisitors[] = $setupMatcherVisitor;
             // It does not matter if we use IncludeTreeTraverser or ConditionVerdictAwareIncludeTreeTraverser here:
             // Condition list is flat, not nested. IncludeTreeTraverser has an if() less, so we use that one.
-            $includeTreeTraverser->traverse($setupConditionIncludeTree);
+            $includeTreeTraverser->traverse($setupConditionIncludeTree, $includeTreeTraverserVisitors);
             $setupConditionList = $setupMatcherVisitor->getConditionListWithVerdicts();
             $gotSetupConditionsFromCache = true;
         }
@@ -1356,19 +1356,19 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 // Note $typoscriptCache *is* hand over here, we can potentially grab the fully cached includeTree here, or cache entry will be created.
                 $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site, $typoscriptCache);
             }
-            $includeTreeTraverser->resetVisitors();
+            $includeTreeTraverserVisitors = [];
             $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
             $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flatConstants);
-            $includeTreeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
+            $includeTreeTraverserVisitors[] = $setupConditionConstantSubstitutionVisitor;
             $setupMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
             $setupMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
-            $includeTreeTraverser->addVisitor($setupMatcherVisitor);
+            $includeTreeTraverserVisitors[] = $setupMatcherVisitor;
             $setupConditionIncludeListAccumulatorVisitor = new IncludeTreeConditionIncludeListAccumulatorVisitor();
-            $includeTreeTraverser->addVisitor($setupConditionIncludeListAccumulatorVisitor);
+            $includeTreeTraverserVisitors[] = $setupConditionIncludeListAccumulatorVisitor;
             // It is important we use IncludeTreeTraverser here: We to have the condition verdicts of *all* conditions, plus
             // want to accumulate all of them. The ConditionVerdictAwareIncludeTreeTraverser wouldn't walk into nested
             // conditions if an upper one does not match.
-            $includeTreeTraverser->traverse($setupIncludeTree);
+            $includeTreeTraverser->traverse($setupIncludeTree, $includeTreeTraverserVisitors);
             $setupConditionList = $setupMatcherVisitor->getConditionListWithVerdicts();
             if (!$this->no_cache) {
                 $typoscriptCache->set($setupConditionIncludeListCacheIdentifier, 'return unserialize(\'' . addcslashes(serialize($setupConditionIncludeListAccumulatorVisitor->getConditionIncludes()), '\'\\') . '\');');
@@ -1454,17 +1454,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // Note $typoscriptCache *is* hand over here, we can potentially grab the fully cached includeTree here, or cache entry will be created.
                     $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site, $typoscriptCache);
                 }
-                $includeTreeTraverserConditionVerdictAware->resetVisitors();
+                $includeTreeTraverserConditionVerdictAwareVisitors = [];
                 $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
                 $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flatConstants);
-                $includeTreeTraverserConditionVerdictAware->addVisitor($setupConditionConstantSubstitutionVisitor);
+                $includeTreeTraverserConditionVerdictAwareVisitors[] = $setupConditionConstantSubstitutionVisitor;
                 $setupMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
                 $setupMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
-                $includeTreeTraverserConditionVerdictAware->addVisitor($setupMatcherVisitor);
+                $includeTreeTraverserConditionVerdictAwareVisitors[] = $setupMatcherVisitor;
                 $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
                 $setupAstBuilderVisitor->setFlatConstants($flatConstants);
-                $includeTreeTraverserConditionVerdictAware->addVisitor($setupAstBuilderVisitor);
-                $includeTreeTraverserConditionVerdictAware->traverse($setupIncludeTree);
+                $includeTreeTraverserConditionVerdictAwareVisitors[] = $setupAstBuilderVisitor;
+                $includeTreeTraverserConditionVerdictAware->traverse($setupIncludeTree, $includeTreeTraverserConditionVerdictAwareVisitors);
                 $setupAst = $setupAstBuilderVisitor->getAst();
                 $frontendTypoScript->setSetupTree($setupAst);
 

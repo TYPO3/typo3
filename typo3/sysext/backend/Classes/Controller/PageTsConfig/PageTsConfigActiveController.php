@@ -114,8 +114,7 @@ final class PageTsConfigActiveController
             $siteSettingsTreeRoot->addChild($siteSettingsNode);
             $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
             $includeTreeTraverser = new IncludeTreeTraverser();
-            $includeTreeTraverser->addVisitor($astBuilderVisitor);
-            $includeTreeTraverser->traverse($siteSettingsTreeRoot);
+            $includeTreeTraverser->traverse($siteSettingsTreeRoot, [$astBuilderVisitor]);
             $siteSettingsAst = $astBuilderVisitor->getAst();
             // Trigger unique identifier creation for entire tree
             $siteSettingsAst->setIdentifier('pageTsConfig-siteSettingsAst');
@@ -123,8 +122,7 @@ final class PageTsConfigActiveController
             if ($sortAlphabetically) {
                 // Traverse AST to sort if needed
                 $astTraverser = new AstTraverser();
-                $astTraverser->addVisitor(new AstSortChildrenVisitor());
-                $astTraverser->traverse($siteSettingsAst);
+                $astTraverser->traverse($siteSettingsAst, [new AstSortChildrenVisitor()]);
             }
         }
 
@@ -159,23 +157,20 @@ final class PageTsConfigActiveController
         $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($pageTsConfigConditions, static fn ($condition) => $condition['active']), 'value'));
         $treeTraverser = new IncludeTreeTraverser();
-        $treeTraverser->addVisitor($conditionEnforcerVisitor);
-        $treeTraverser->traverse($pagesTsConfigTree);
+        $treeTraverser->traverse($pagesTsConfigTree, [$conditionEnforcerVisitor]);
 
         // Create AST with constants from site and conditions
         $includeTreeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
         $astBuilderVisitor = $this->container->get(IncludeTreeCommentAwareAstBuilderVisitor::class);
         $astBuilderVisitor->setFlatConstants($siteSettingsFlat);
-        $includeTreeTraverser->addVisitor($astBuilderVisitor);
-        $includeTreeTraverser->traverse($pagesTsConfigTree);
+        $includeTreeTraverser->traverse($pagesTsConfigTree, [$astBuilderVisitor]);
         $pageTsConfigAst = $astBuilderVisitor->getAst();
         // Trigger unique identifier creation for entire tree
         $pageTsConfigAst->setIdentifier('pageTsConfig');
         if ($sortAlphabetically) {
             // Traverse AST to sort if needed
             $astTraverser = new AstTraverser();
-            $astTraverser->addVisitor(new AstSortChildrenVisitor());
-            $astTraverser->traverse($pageTsConfigAst);
+            $astTraverser->traverse($pageTsConfigAst, [new AstSortChildrenVisitor()]);
         }
 
         $view = $this->moduleTemplateFactory->create($request);
@@ -205,12 +200,13 @@ final class PageTsConfigActiveController
     private function handleToggledPageTsConfigConditions(RootInclude $pageTsConfigTree, ModuleData $moduleData, ?array $parsedBody, array $flattenedConstants): array
     {
         $treeTraverser = new IncludeTreeTraverser();
+        $treeTraverserVisitors = [];
         $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
         $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flattenedConstants);
-        $treeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
+        $treeTraverserVisitors[] = $setupConditionConstantSubstitutionVisitor;
         $conditionAggregatorVisitor = new IncludeTreeConditionAggregatorVisitor();
-        $treeTraverser->addVisitor($conditionAggregatorVisitor);
-        $treeTraverser->traverse($pageTsConfigTree);
+        $treeTraverserVisitors[] = $conditionAggregatorVisitor;
+        $treeTraverser->traverse($pageTsConfigTree, $treeTraverserVisitors);
         $pageTsConfigConditions = $conditionAggregatorVisitor->getConditions();
         $conditionsFromPost = $parsedBody['pageTsConfigConditions'] ?? [];
         $conditionsFromModuleData = array_flip((array)$moduleData->get('pageTsConfigConditions'));

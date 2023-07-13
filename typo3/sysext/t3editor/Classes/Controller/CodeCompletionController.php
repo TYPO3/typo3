@@ -80,8 +80,7 @@ class CodeCompletionController
         $site = $request->getAttribute('site');
         $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->lossyTokenizer, $site);
         $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
-        $this->treeTraverser->addVisitor($setupAstBuilderVisitor);
-        $this->treeTraverser->traverse($setupIncludeTree);
+        $this->treeTraverser->traverse($setupIncludeTree, [$setupAstBuilderVisitor]);
         $setupAst = $setupAstBuilderVisitor->getAst();
         $result = $this->treeWalkCleanup($setupAst->toArray());
         return $result;
