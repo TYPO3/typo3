@@ -111,7 +111,7 @@ class Icons {
         (new AjaxRequest(TYPO3.settings.ajaxUrls.icons)).withQueryArguments(queryArguments).get()
           .then(async (response: AjaxResponse): Promise<string> => {
             const markup = await response.resolve();
-            if (markup.includes('t3js-icon') && markup.includes('<span class="icon-markup">')) {
+            if (!response.response.redirected && markup.startsWith('<span') && markup.includes('t3js-icon') && markup.includes('<span class="icon-markup">')) {
               ClientStorage.set('icon_' + cacheIdentifier, markup);
             }
             return markup;
