@@ -43,7 +43,6 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.avatar',
             'type' => 'avatar',
             'table' => 'be_users',
-            'allowed' => 'common-image-types',
         ],
         'lang' => [
             'type' => 'language',
