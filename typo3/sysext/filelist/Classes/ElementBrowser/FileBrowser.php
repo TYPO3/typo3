@@ -59,8 +59,8 @@ class FileBrowser extends AbstractResourceBrowser
         $this->searchWord = (string)trim($request->getParsedBody()['searchTerm'] ?? $request->getQueryParams()['searchTerm'] ?? '');
 
         $fileExtensions = GeneralUtility::trimExplode(';', explode('|', $this->bparams)[3], true);
-        $allowed = str_replace('allowed=', '', $fileExtensions[0]);
-        $disallowed = str_replace('disallowed=', '', $fileExtensions[1]);
+        $allowed = str_replace('allowed=', '', $fileExtensions[0] ?? '');
+        $disallowed = str_replace('disallowed=', '', $fileExtensions[1] ?? '');
 
         $this->fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
         if ($allowed !== '' && !str_contains($allowed, 'sys_file') && !str_contains($allowed, '*')) {
