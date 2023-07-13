@@ -98,9 +98,7 @@ final class PageTsConfigFactory
                     $siteSettingsTreeRoot = new RootInclude();
                     $siteSettingsTreeRoot->addChild($siteSettingsNode);
                     $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
-                    $includeTreeTraverserConditionVerdictAware->resetVisitors();
-                    $includeTreeTraverserConditionVerdictAware->addVisitor($astBuilderVisitor);
-                    $includeTreeTraverserConditionVerdictAware->traverse($siteSettingsTreeRoot);
+                    $includeTreeTraverserConditionVerdictAware->traverse($siteSettingsTreeRoot, [$astBuilderVisitor]);
                     $siteSettingsFlat = $astBuilderVisitor->getAst()->flatten();
                     $this->cache->set($siteSettingsCacheIdentifier, 'return unserialize(\'' . addcslashes(serialize(['flatConstants' => $siteSettingsFlat]), '\'\\') . '\');');
                 }
@@ -108,11 +106,11 @@ final class PageTsConfigFactory
         }
 
         // Create AST with constants from site and conditions
-        $includeTreeTraverserConditionVerdictAware->resetVisitors();
+        $includeTreeTraverserConditionVerdictAwareVisitors = [];
         if (!empty($siteSettingsFlat)) {
             $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
             $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($siteSettingsFlat);
-            $includeTreeTraverserConditionVerdictAware->addVisitor($setupConditionConstantSubstitutionVisitor);
+            $includeTreeTraverserConditionVerdictAwareVisitors[] = $setupConditionConstantSubstitutionVisitor;
         }
         $lastPageFullRecord = [];
         $pageId = 0;
@@ -132,11 +130,11 @@ final class PageTsConfigFactory
         ];
         $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
         $conditionMatcherVisitor->initializeExpressionMatcherWithVariables($conditionMatcherVariables);
-        $includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
+        $includeTreeTraverserConditionVerdictAwareVisitors[] = $conditionMatcherVisitor;
         $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
         $astBuilderVisitor->setFlatConstants($siteSettingsFlat);
-        $includeTreeTraverserConditionVerdictAware->addVisitor($astBuilderVisitor);
-        $includeTreeTraverserConditionVerdictAware->traverse($pagesTsConfigTree);
+        $includeTreeTraverserConditionVerdictAwareVisitors[] = $astBuilderVisitor;
+        $includeTreeTraverserConditionVerdictAware->traverse($pagesTsConfigTree, $includeTreeTraverserConditionVerdictAwareVisitors);
 
         return new PageTsConfig($astBuilderVisitor->getAst());
     }

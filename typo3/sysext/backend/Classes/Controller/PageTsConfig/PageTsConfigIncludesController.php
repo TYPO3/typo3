@@ -106,8 +106,7 @@ final class PageTsConfigIncludesController
             /** @var IncludeTreeAstBuilderVisitor $astBuilderVisitor */
             $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
             $includeTreeTraverser = new IncludeTreeTraverser();
-            $includeTreeTraverser->addVisitor($astBuilderVisitor);
-            $includeTreeTraverser->traverse($siteSettingsTree);
+            $includeTreeTraverser->traverse($siteSettingsTree, [$astBuilderVisitor]);
             $siteSettingsAst = $astBuilderVisitor->getAst();
             $siteSettingsFlat = $siteSettingsAst->flatten();
         }
@@ -141,13 +140,14 @@ final class PageTsConfigIncludesController
 
         // Set enabled conditions in page TSconfig include tree and let it handle constant substitutions in page TSconfig conditions.
         $treeTraverser = new IncludeTreeTraverser();
+        $treeTraverserVisitors = [];
         $syntaxScannerVisitor = new IncludeTreeSyntaxScannerVisitor();
-        $treeTraverser->addVisitor($syntaxScannerVisitor);
+        $treeTraverserVisitors[] = $syntaxScannerVisitor;
         $pageTsConfigConditions = $this->handleToggledPageTsConfigConditions($pageTsConfigTree, $moduleData, $parsedBody, $siteSettingsFlat);
         $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($pageTsConfigConditions, static fn (array $condition): bool => (bool)$condition['active']), 'value'));
-        $treeTraverser->addVisitor($conditionEnforcerVisitor);
-        $treeTraverser->traverse($pageTsConfigTree);
+        $treeTraverserVisitors[] = $conditionEnforcerVisitor;
+        $treeTraverser->traverse($pageTsConfigTree, $treeTraverserVisitors);
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title'] ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '');
@@ -226,8 +226,7 @@ final class PageTsConfigIncludesController
         $nodeFinderVisitor = new IncludeTreeNodeFinderVisitor();
         $nodeFinderVisitor->setNodeIdentifier($includeIdentifier);
         $treeTraverser = new IncludeTreeTraverser();
-        $treeTraverser->addVisitor($nodeFinderVisitor);
-        $treeTraverser->traverse($includeTree);
+        $treeTraverser->traverse($includeTree, [$nodeFinderVisitor]);
         $foundNode = $nodeFinderVisitor->getFoundNode();
 
         if (!$foundNode instanceof IncludeInterface) {
@@ -303,8 +302,7 @@ final class PageTsConfigIncludesController
         $sourceAggregatorVisitor = new IncludeTreeSourceAggregatorVisitor();
         $sourceAggregatorVisitor->setStartNodeIdentifier($includeIdentifier);
         $treeTraverser = new IncludeTreeTraverser();
-        $treeTraverser->addVisitor($sourceAggregatorVisitor);
-        $treeTraverser->traverse($includeTree);
+        $treeTraverser->traverse($includeTree, [$sourceAggregatorVisitor]);
         $source =  $sourceAggregatorVisitor->getSource();
 
         return $this->responseFactory
@@ -321,12 +319,13 @@ final class PageTsConfigIncludesController
     private function handleToggledPageTsConfigConditions(RootInclude $pageTsConfigTree, ModuleData $moduleData, ?array $parsedBody, array $flattenedConstants): array
     {
         $treeTraverser = new IncludeTreeTraverser();
+        $treeTraverserVisitors = [];
         $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
         $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flattenedConstants);
-        $treeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
+        $treeTraverserVisitors[] = $setupConditionConstantSubstitutionVisitor;
         $conditionAggregatorVisitor = new IncludeTreeConditionAggregatorVisitor();
-        $treeTraverser->addVisitor($conditionAggregatorVisitor);
-        $treeTraverser->traverse($pageTsConfigTree);
+        $treeTraverserVisitors[] = $conditionAggregatorVisitor;
+        $treeTraverser->traverse($pageTsConfigTree, $treeTraverserVisitors);
         $pageTsConfigConditions = $conditionAggregatorVisitor->getConditions();
         $conditionsFromPost = $parsedBody['pageTsConfigConditions'] ?? [];
         $conditionsFromModuleData = array_flip((array)$moduleData->get('pageTsConfigConditions'));

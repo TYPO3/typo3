@@ -47,6 +47,7 @@ final class UserTsConfigFactory
     public function create(BackendUserAuthentication $backendUser): UserTsConfig
     {
         $includeTreeTraverserConditionVerdictAware = new ConditionVerdictAwareIncludeTreeTraverser();
+        $includeTreeTraverserConditionVerdictAwareVisitors = [];
         $userTsConfigTree = $this->tsConfigTreeBuilder->getUserTsConfigTree($backendUser, $this->tokenizer, $this->cache);
         $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
         // User TSconfig is not within page context, that what page TSconfig is for, so 'page', 'pageId',
@@ -55,10 +56,10 @@ final class UserTsConfigFactory
             'page' => [],
             'pageId' => 0,
         ]);
-        $includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
+        $includeTreeTraverserConditionVerdictAwareVisitors[] = $conditionMatcherVisitor;
         $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
-        $includeTreeTraverserConditionVerdictAware->addVisitor($astBuilderVisitor);
-        $includeTreeTraverserConditionVerdictAware->traverse($userTsConfigTree);
+        $includeTreeTraverserConditionVerdictAwareVisitors[] = $astBuilderVisitor;
+        $includeTreeTraverserConditionVerdictAware->traverse($userTsConfigTree, $includeTreeTraverserConditionVerdictAwareVisitors);
         return new UserTsConfig($astBuilderVisitor->getAst());
     }
 }

@@ -241,26 +241,26 @@ class BackendConfigurationManager implements SingletonInterface
         ];
         $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
         $conditionMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
-        $this->includeTreeTraverserConditionVerdictAware->resetVisitors();
-        $this->includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
+        $includeTreeTraverserConditionVerdictAwareVisitors = [];
+        $includeTreeTraverserConditionVerdictAwareVisitors[] = $conditionMatcherVisitor;
         $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
-        $this->includeTreeTraverserConditionVerdictAware->addVisitor($constantAstBuilderVisitor);
-        $this->includeTreeTraverserConditionVerdictAware->traverse($constantIncludeTree);
+        $includeTreeTraverserConditionVerdictAwareVisitors[] = $constantAstBuilderVisitor;
+        $this->includeTreeTraverserConditionVerdictAware->traverse($constantIncludeTree, $includeTreeTraverserConditionVerdictAwareVisitors);
         $constantsAst = $constantAstBuilderVisitor->getAst();
         $flatConstants = $constantsAst->flatten();
 
         $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->lossyTokenizer, $site, $this->typoScriptCache);
+        $includeTreeTraverserConditionVerdictAwareVisitors = [];
         $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
         $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flatConstants);
-        $this->includeTreeTraverserConditionVerdictAware->resetVisitors();
-        $this->includeTreeTraverserConditionVerdictAware->addVisitor($setupConditionConstantSubstitutionVisitor);
+        $includeTreeTraverserConditionVerdictAwareVisitors[] = $setupConditionConstantSubstitutionVisitor;
         $setupMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
         $setupMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
-        $this->includeTreeTraverserConditionVerdictAware->addVisitor($setupMatcherVisitor);
+        $includeTreeTraverserConditionVerdictAwareVisitors[] = $setupMatcherVisitor;
         $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
         $setupAstBuilderVisitor->setFlatConstants($flatConstants);
-        $this->includeTreeTraverserConditionVerdictAware->addVisitor($setupAstBuilderVisitor);
-        $this->includeTreeTraverserConditionVerdictAware->traverse($setupIncludeTree);
+        $includeTreeTraverserConditionVerdictAwareVisitors[] = $setupAstBuilderVisitor;
+        $this->includeTreeTraverserConditionVerdictAware->traverse($setupIncludeTree, $includeTreeTraverserConditionVerdictAwareVisitors);
         $setupAst = $setupAstBuilderVisitor->getAst();
 
         $setupArray = $setupAst->toArray();

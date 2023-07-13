@@ -29,9 +29,8 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeVisitorInterface;
  */
 interface IncludeTreeTraverserInterface
 {
-    public function addVisitor(IncludeTreeVisitorInterface $visitor): void;
-
-    public function resetVisitors(): void;
-
-    public function traverse(RootInclude $rootInclude): void;
+    /**
+     * @param IncludeTreeVisitorInterface[] $visitors
+     */
+    public function traverse(RootInclude $rootInclude, array $visitors): void;
 }

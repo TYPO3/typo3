@@ -122,16 +122,14 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn ($condition) => $condition['active']), 'value'));
-        $this->treeTraverser->resetVisitors();
-        $this->treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $treeTraverserVisitors = [];
+        $treeTraverserVisitors[] = $conditionEnforcerVisitor;
         $constantSyntaxScannerVisitor = new IncludeTreeSyntaxScannerVisitor();
-        $this->treeTraverser->addVisitor($constantSyntaxScannerVisitor);
-        $this->treeTraverser->traverse($constantIncludeTree);
+        $treeTraverserVisitors[] = $constantSyntaxScannerVisitor;
+        $this->treeTraverser->traverse($constantIncludeTree, $treeTraverserVisitors);
         // Build the constant AST and flatten it. Needed for setup include tree to substitute constants in setup conditions.
         $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
-        $this->treeTraverserConditionVerdictAware->resetVisitors();
-        $this->treeTraverserConditionVerdictAware->addVisitor($constantAstBuilderVisitor);
-        $this->treeTraverserConditionVerdictAware->traverse($constantIncludeTree);
+        $this->treeTraverserConditionVerdictAware->traverse($constantIncludeTree, [$constantAstBuilderVisitor]);
         $constantAst = $constantAstBuilderVisitor->getAst();
         $flattenedConstants = $constantAst->flatten();
 
@@ -142,11 +140,11 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, $parsedBody, $flattenedConstants);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn ($condition) => $condition['active']), 'value'));
-        $this->treeTraverser->resetVisitors();
-        $this->treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $treeTraverserVisitors = [];
+        $treeTraverserVisitors[] = $conditionEnforcerVisitor;
         $setupSyntaxScannerVisitor = new IncludeTreeSyntaxScannerVisitor();
-        $this->treeTraverser->addVisitor($setupSyntaxScannerVisitor);
-        $this->treeTraverser->traverse($setupIncludeTree);
+        $treeTraverserVisitors[] = $setupSyntaxScannerVisitor;
+        $this->treeTraverser->traverse($setupIncludeTree, $treeTraverserVisitors);
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
@@ -197,9 +195,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
 
         $nodeFinderVisitor = GeneralUtility::makeInstance(IncludeTreeNodeFinderVisitor::class);
         $nodeFinderVisitor->setNodeIdentifier($includeIdentifier);
-        $this->treeTraverser->resetVisitors();
-        $this->treeTraverser->addVisitor($nodeFinderVisitor);
-        $this->treeTraverser->traverse($includeTree);
+        $this->treeTraverser->traverse($includeTree, [$nodeFinderVisitor]);
         $foundNode = $nodeFinderVisitor->getFoundNode();
 
         if (!$foundNode instanceof IncludeInterface) {
@@ -239,9 +235,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
 
         $sourceAggregatorVisitor = new IncludeTreeSourceAggregatorVisitor();
         $sourceAggregatorVisitor->setStartNodeIdentifier($includeIdentifier);
-        $this->treeTraverser->resetVisitors();
-        $this->treeTraverser->addVisitor($sourceAggregatorVisitor);
-        $this->treeTraverser->traverse($includeTree);
+        $this->treeTraverser->traverse($includeTree, [$sourceAggregatorVisitor]);
         $source =  $sourceAggregatorVisitor->getSource();
 
         return $this->responseFactory
@@ -258,9 +252,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
     private function handleToggledConstantConditions(RootInclude $constantTree, ModuleData $moduleData, ?array $parsedBody): array
     {
         $conditionAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeConditionAggregatorVisitor::class);
-        $this->treeTraverser->resetVisitors();
-        $this->treeTraverser->addVisitor($conditionAggregatorVisitor);
-        $this->treeTraverser->traverse($constantTree);
+        $this->treeTraverser->traverse($constantTree, [$conditionAggregatorVisitor]);
         $constantConditions = $conditionAggregatorVisitor->getConditions();
         $conditionsFromPost = $parsedBody['constantsConditions'] ?? [];
         $conditionsFromModuleData = array_flip((array)$moduleData->get('constantConditions'));
@@ -298,13 +290,13 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
      */
     private function handleToggledSetupConditions(RootInclude $constantTree, ModuleData $moduleData, ?array $parsedBody, array $flattenedConstants): array
     {
-        $this->treeTraverser->resetVisitors();
         $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
         $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flattenedConstants);
-        $this->treeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
+        $treeTraverserVisitors = [];
+        $treeTraverserVisitors[] = $setupConditionConstantSubstitutionVisitor;
         $conditionAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeConditionAggregatorVisitor::class);
-        $this->treeTraverser->addVisitor($conditionAggregatorVisitor);
-        $this->treeTraverser->traverse($constantTree);
+        $treeTraverserVisitors[] = $conditionAggregatorVisitor;
+        $this->treeTraverser->traverse($constantTree, $treeTraverserVisitors);
         $setupConditions = $conditionAggregatorVisitor->getConditions();
         $conditionsFromPost = $parsedBody['setupConditions'] ?? [];
         $conditionsFromModuleData = array_flip((array)$moduleData->get('setupConditions'));
