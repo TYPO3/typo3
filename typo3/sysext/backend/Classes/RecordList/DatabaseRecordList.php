@@ -918,7 +918,7 @@ class DatabaseRecordList
         $downloadButtonLabel = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_download.xlf:download');
         $downloadButtonTitle = sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_download.xlf:' . ($totalItems === 1 ? 'downloadRecord' : 'downloadRecords')), $totalItems);
         $downloadCancelTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel');
-        $downloadSettingsUrl = $this->uriBuilder->buildUriFromRoute(
+        $downloadSettingsUrl = (string)$this->uriBuilder->buildUriFromRoute(
             'ajax_record_download_settings',
             ['id' => $this->id, 'table' => $table, 'searchString' => $this->searchString, 'searchLevels' => $this->searchLevels]
         );
@@ -1409,7 +1409,7 @@ class DatabaseRecordList
                 $iconIdentifier = 'actions-page-open';
             }
             $params['returnUrl'] = $this->listURL();
-            $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
+            $editLink = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
             $editAction = '<a class="btn btn-default" href="' . htmlspecialchars($editLink) . '"'
                 . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')) . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '</a>';
         } else {

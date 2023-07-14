@@ -53,7 +53,7 @@ class PageMovingPagePositionMap extends PagePositionMap
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $queryParams = $request->getQueryParams();
-        $url = $uriBuilder->buildUriFromRoute(
+        $url = (string)$uriBuilder->buildUriFromRoute(
             'move_element',
             [
                 'table' => $queryParams['table'] ?? '',
