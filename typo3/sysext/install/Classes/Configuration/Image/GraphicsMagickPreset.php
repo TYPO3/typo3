@@ -80,7 +80,7 @@ class GraphicsMagickPreset extends AbstractImagePreset
                 CommandUtility::exec($command, $executingResult);
                 // First line of exec command should contain string GraphicsMagick
                 $firstResultLine = array_shift($executingResult);
-                if (str_contains($firstResultLine, 'GraphicsMagick')) {
+                if (is_string($firstResultLine) && str_contains($firstResultLine, 'GraphicsMagick')) {
                     $this->foundPath = $path;
                     $result = true;
                     break;
