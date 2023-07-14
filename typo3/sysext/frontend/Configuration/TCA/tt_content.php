@@ -71,11 +71,6 @@ return [
                 'renderType' => 'selectSingle',
                 'items' => [
                     [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.standard',
-                        'value' => '--div--',
-                        'group' => 'default',
-                    ],
-                    [
                         'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.0',
                         'value' => 'header',
                         'icon' => 'content-header',
@@ -106,11 +101,6 @@ return [
                         'group' => 'default',
                     ],
                     [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.lists',
-                        'value' => '--div--',
-                        'group' => 'lists',
-                    ],
-                    [
                         'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.4',
                         'value' => 'bullets',
                         'icon' => 'content-bullets',
@@ -127,11 +117,6 @@ return [
                         'value' => 'uploads',
                         'icon' => 'content-special-uploads',
                         'group' => 'lists',
-                    ],
-                    [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.menu',
-                        'value' => '--div--',
-                        'group' => 'menu',
                     ],
                     [
                         'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.menu_abstract',
@@ -198,11 +183,6 @@ return [
                         'value' => 'menu_sitemap_pages',
                         'icon' => 'content-menu-sitemap-pages',
                         'group' => 'menu',
-                    ],
-                    [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.special',
-                        'value' => '--div--',
-                        'group' => 'special',
                     ],
                     [
                         'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.13',

@@ -74,11 +74,6 @@ return [
                 'renderType' => 'selectSingle',
                 'items' => [
                     [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.page',
-                        'value' => '--div--',
-                        'group' => 'default',
-                    ],
-                    [
                         'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:doktype.I.0',
                         'value' => (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,
                         'icon' => 'apps-pagetree-page-default',
@@ -89,11 +84,6 @@ return [
                         'value' => (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_BE_USER_SECTION,
                         'icon' => 'apps-pagetree-page-backend-users',
                         'group' => 'default',
-                    ],
-                    [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.link',
-                        'value' => '--div--',
-                        'group' => 'link',
                     ],
                     [
                         'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.2',
@@ -112,11 +102,6 @@ return [
                         'value' => (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_LINK,
                         'icon' => 'apps-pagetree-page-shortcut-external',
                         'group' => 'link',
-                    ],
-                    [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.special',
-                        'value' => '--div--',
-                        'group' => 'special',
                     ],
                     [
                         'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:doktype.I.folder',
