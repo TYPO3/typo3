@@ -52,7 +52,7 @@ class IconController extends AbstractController
      */
     public function getCacheIdentifierAction(): ResponseInterface
     {
-        return new HtmlResponse($this->iconRegistry->getCacheIdentifier());
+        return new HtmlResponse($this->iconRegistry->getBackendIconsCacheIdentifier());
     }
 
     /**
