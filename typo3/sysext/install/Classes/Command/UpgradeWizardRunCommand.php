@@ -106,7 +106,10 @@ class UpgradeWizardRunCommand extends Command
         if ($input->getArgument('wizardName')) {
             $wizardToExecute = $input->getArgument('wizardName');
             $wizardToExecute = is_string($wizardToExecute) ? $wizardToExecute : '';
-            if (($upgradeWizard = $this->getWizard($wizardToExecute)) !== null) {
+            if ($this->upgradeWizardsService->isWizardDone($wizardToExecute)) {
+                $this->output->note(sprintf('Wizard %s marked as done. Skipped.', $wizardToExecute));
+                $result = Command::SUCCESS;
+            } elseif (($upgradeWizard = $this->getWizard($wizardToExecute)) !== null) {
                 $prerequisitesFulfilled = $this->handlePrerequisites([$upgradeWizard]);
                 if ($prerequisitesFulfilled === true) {
                     $result = $this->runSingleWizard($upgradeWizard);
