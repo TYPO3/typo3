@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller\Page;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Form\Processor\SelectItemProcessor;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -48,6 +50,7 @@ class NewMultiplePagesController
     public function __construct(
         protected readonly IconFactory $iconFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly SelectItemProcessor $selectItemProcessor,
     ) {
     }
 
@@ -191,25 +194,40 @@ class NewMultiplePagesController
         $types[] = PageRepository::DOKTYPE_SPACER;
 
         if (!$this->getBackendUser()->isAdmin() && isset($this->getBackendUser()->groupData['pagetypes_select'])) {
-            $types = GeneralUtility::trimExplode(',', $this->getBackendUser()->groupData['pagetypes_select'], true);
+            $types = GeneralUtility::intExplode(',', $this->getBackendUser()->groupData['pagetypes_select'], true);
         }
-        $removeItems = isset($pagesTsConfig['doktype.']['removeItems']) ? GeneralUtility::trimExplode(',', $pagesTsConfig['doktype.']['removeItems'], true) : [];
-        $allowedDoktypes = array_diff($types, $removeItems);
+        $removeItems = isset($pagesTsConfig['doktype.']['removeItems']) ? GeneralUtility::intExplode(',', $pagesTsConfig['doktype.']['removeItems'], true) : [];
+        $allowedPageTypes = array_diff($types, $removeItems);
 
-        // All doktypes in the TCA
-        $availableDoktypes = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
+        // Transform items to SelectItem for easier usage.
+        $pageTypeConfig = $GLOBALS['TCA']['pages']['columns']['doktype']['config'];
+        $availablePageTypes = $pageTypeConfig['items'];
+        $transformToSelectItem = function (array $item) use ($pageTypeConfig): SelectItem {
+            if ($item['value'] !== '--div--') {
+                $item['value'] = (int)$item['value'];
+            }
+            return SelectItem::fromTcaItemArray($item, $pageTypeConfig['type']);
+        };
+        $availablePageTypes = array_map($transformToSelectItem, $availablePageTypes);
 
-        // Sort by group and allowedDoktypes
+        // Filter out unavailable types.
+        $filterPageTypes = fn (SelectItem $item): bool => $item->isDivider() || in_array($item->getValue(), $allowedPageTypes, true);
+        $availablePageTypes = array_filter($availablePageTypes, $filterPageTypes);
+
+        // Sort items.
+        $sortedItems = $this->selectItemProcessor->groupAndSortItems($availablePageTypes, $pageTypeConfig['itemGroups'], $pageTypeConfig['sortItems'] ?? []);
+
+        // Collect already sorted items and group them by group label.
         $groupedData = [];
         $groupLabel = '';
-        foreach ($availableDoktypes as $doktypeData) {
-            // If it is a group, save the group label for the children underneath
-            if ($doktypeData['value'] === '--div--') {
-                $groupLabel = $doktypeData['label'];
+        foreach ($sortedItems as $selectItem) {
+            // If it is a group, save the group label for the children underneath.
+            if ($selectItem['value'] === '--div--') {
+                // Dividers defined inside the items array are not translated
+                // by the GroupAndSortService.
+                $groupLabel = $this->getLanguageService()->sL($selectItem['label']);
             } else {
-                if (in_array($doktypeData['value'], $allowedDoktypes)) {
-                    $groupedData[$groupLabel][] = $doktypeData;
-                }
+                $groupedData[$groupLabel][] = $selectItem;
             }
         }
 

@@ -94,6 +94,9 @@ services:
   TYPO3\CMS\Backend\Form\InlineStackProcessor:
     shared: false
 
+  TYPO3\CMS\Backend\Form\Processor\SelectItemProcessor:
+    public: true
+
   TYPO3\CMS\Backend\RecordList\DatabaseRecordList:
     shared: false
     public: true

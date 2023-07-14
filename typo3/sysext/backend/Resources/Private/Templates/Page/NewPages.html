@@ -223,9 +223,9 @@
                                     </span>
                                     <select id="page_new_select_{line.index}" class="form-select t3js-newmultiplepages-select-doktype" name="pages[NEW{line.index}][doktype]" data-target="#page_new_icon_{line.index}">
                                         <f:for each="{line.pageTypes}" as="typegroup" key="group">
-                                            <optgroup label="{f:translate(key: '{group}')}">
+                                            <optgroup label="{group}">
                                                 <f:for each="{typegroup}" as="type">
-                                                    <option data-icon='{core:icon(identifier: "{type.icon}")}' value="{type.value}">{f:translate(key: '{type.label}')}</option>
+                                                    <option data-icon='{core:icon(identifier: type.icon)}' value="{type.value}">{f:translate(key: type.label)}</option>
                                                 </f:for>
                                             </optgroup>
                                         </f:for>
