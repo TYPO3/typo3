@@ -198,6 +198,7 @@ class DateTimePicker {
       minuteIncrement: 1,
       noCalendar: false,
       weekNumbers: true,
+      time_24hr: !Intl.DateTimeFormat(navigator.language, { hour: 'numeric' }).resolvedOptions().hour12,
       plugins: [
         ShortcutButtonsPlugin({
           theme: 'typo3',
