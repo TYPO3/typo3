@@ -255,7 +255,7 @@ class InternalLinktype extends AbstractLinktype
                         ],
                         [
                             $errorParams['page']['title'],
-                            $errorParams['page']['uid'],
+                            (string)$errorParams['page']['uid'],
                         ],
                         $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.pagedeleted')
                     );
@@ -268,7 +268,7 @@ class InternalLinktype extends AbstractLinktype
                         ],
                         [
                             $errorParams['page']['title'],
-                            $errorParams['page']['uid'],
+                            (string)$errorParams['page']['uid'],
                         ],
                         $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.pagenotvisible')
                     );
@@ -276,7 +276,7 @@ class InternalLinktype extends AbstractLinktype
                 default:
                     $errorPage = str_replace(
                         '###uid###',
-                        $errorParams['page']['uid'],
+                        (string)$errorParams['page']['uid'],
                         $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.pagenotexisting')
                     );
             }
@@ -291,7 +291,7 @@ class InternalLinktype extends AbstractLinktype
                         ],
                         [
                             $errorParams['content']['title'],
-                            $errorParams['content']['uid'],
+                            (string)$errorParams['content']['uid'],
                         ],
                         $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.contentdeleted')
                     );
@@ -304,7 +304,7 @@ class InternalLinktype extends AbstractLinktype
                         ],
                         [
                             $errorParams['content']['title'],
-                            $errorParams['content']['uid'],
+                            (string)$errorParams['content']['uid'],
                         ],
                         $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.contentnotvisible')
                     );
@@ -319,15 +319,15 @@ class InternalLinktype extends AbstractLinktype
                         ],
                         [
                             $errorParams['content']['title'],
-                            $errorParams['content']['uid'],
-                            $errorParams['content']['wrongPage'],
-                            $errorParams['content']['rightPage'],
+                            (string)$errorParams['content']['uid'],
+                            (string)$errorParams['content']['wrongPage'],
+                            (string)$errorParams['content']['rightPage'],
                         ],
                         $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.contentmoved')
                     );
                     break;
                 default:
-                    $errorContent = str_replace('###uid###', $errorParams['content']['uid'], $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.contentnotexisting'));
+                    $errorContent = str_replace('###uid###', (string)$errorParams['content']['uid'], $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.contentnotexisting'));
             }
         }
         if (isset($errorPage) && isset($errorContent)) {
