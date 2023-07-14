@@ -246,7 +246,10 @@ class IconRegistry implements SingletonInterface
         }
     }
 
-    protected function getBackendIconsCacheIdentifier(): string
+    /**
+     * @internal
+     */
+    public function getBackendIconsCacheIdentifier(): string
     {
         return $this->cacheIdentifier;
     }
@@ -472,20 +475,6 @@ class IconRegistry implements SingletonInterface
             return null;
         }
         return $this->mimeTypeMapping[$mimeType];
-    }
-
-    /**
-     * Calculates the cache identifier based on the current registry
-     *
-     * @internal
-     */
-    public function getCacheIdentifier(): string
-    {
-        if (!$this->fullInitialized) {
-            $this->initialize();
-        }
-
-        return sha1((string)json_encode($this->icons));
     }
 
     /**

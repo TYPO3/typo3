@@ -56,7 +56,7 @@ class IconController
      */
     public function getCacheIdentifier(): ResponseInterface
     {
-        return new HtmlResponse($this->iconRegistry->getCacheIdentifier());
+        return new HtmlResponse(sha1($this->iconRegistry->getBackendIconsCacheIdentifier()));
     }
 
     /**
