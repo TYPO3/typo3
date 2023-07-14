@@ -13,6 +13,7 @@
 
 import { ModalResponseEvent } from '@typo3/backend/modal-interface';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
+import Client from '@typo3/backend/storage/client';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Modal from '@typo3/backend/modal';
 
@@ -50,6 +51,8 @@ class SetupModule {
 
   private static handleConfirmationResponse(evt: ModalResponseEvent): void {
     if (evt.detail.result && evt.detail.payload === 'resetConfiguration') {
+      Client.unsetByPrefix('');
+
       const input: HTMLInputElement = document.querySelector('#setValuesToDefault');
       input.value = '1';
       input.form.submit();
