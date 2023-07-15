@@ -190,7 +190,6 @@ export class Typo3LinkEditing extends Core.Plugin {
     const editor = this.editor;
     (window as any).editor = editor;
 
-    // @todo for whatever reason, `a.target` is not persisted
     // @todo YAML additionalAttributes is not implemented yet
     editor.model.schema.extend('$text', { allowAttributes: ['linkTitle', 'linkClass', 'linkTarget', 'linkRel'] });
 
@@ -217,7 +216,7 @@ export class Typo3LinkEditing extends Core.Plugin {
       }
     });
     editor.conversion.for('upcast').elementToAttribute({
-      view: { name: 'a', attributes: { title: true } },
+      view: { name: 'a', attributes: { class: true } },
       model: { key: 'linkClass', value: (viewElement: ViewElement) => viewElement.getAttribute('class') }
     });
     // linkTarget <=> target
@@ -230,7 +229,7 @@ export class Typo3LinkEditing extends Core.Plugin {
       }
     });
     editor.conversion.for('upcast').elementToAttribute({
-      view: { name: 'a', attributes: { title: true } },
+      view: { name: 'a', attributes: { target: true } },
       model: { key: 'linkTarget', value: (viewElement: ViewElement) => viewElement.getAttribute('target') }
     });
     // linkRel <=> rel
@@ -243,7 +242,7 @@ export class Typo3LinkEditing extends Core.Plugin {
       }
     });
     editor.conversion.for('upcast').elementToAttribute({
-      view: { name: 'a', attributes: { title: true } },
+      view: { name: 'a', attributes: { rel: true } },
       model: { key: 'linkRel', value: (viewElement: ViewElement) => viewElement.getAttribute('rel') }
     });
 
