@@ -1,4 +1,5 @@
 actor: InstallTester
+
 modules:
   enabled:
     - WebDriver:
@@ -8,10 +9,22 @@ modules:
         host: chrome
         capabilities:
           chromeOptions:
-            args: [ "--headless", "--no-sandbox", "window-size=1280,1024", "--disable-gpu" ]
+            args: [ "--no-sandbox", "window-size=1280,1024", "--disable-gpu" ]
     - Asserts
 
 env:
+  headless:
+    modules:
+      enabled:
+        - WebDriver:
+            url: '%typo3TestingAcceptanceBaseUrl%/typo3temp/var/tests/acceptance'
+            browser: chrome
+            wait: 2
+            host: chrome
+            capabilities:
+              chromeOptions:
+                args: [ "--headless", "--no-sandbox", "window-size=1280,1024", "--disable-gpu" ]
+
   mysql:
     extensions:
       enabled:

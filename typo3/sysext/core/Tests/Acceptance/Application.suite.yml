@@ -13,7 +13,7 @@ modules:
         host: chrome
         capabilities:
           chromeOptions:
-            args: ["--headless", "--no-sandbox", "window-size=1280,1024", "--disable-gpu"]
+            args: ["--no-sandbox", "window-size=1280,1024", "--disable-gpu"]
     - \TYPO3\TestingFramework\Core\Acceptance\Helper\Acceptance
     - \TYPO3\TestingFramework\Core\Acceptance\Helper\Login:
         sessions:
@@ -22,6 +22,19 @@ modules:
             admin: 886526ce72b86870739cc41991144ec1
     - Asserts
     - Codeception\Module\Cli
+
+env:
+  headless:
+    modules:
+      enabled:
+        - WebDriver:
+            url: '%typo3TestingAcceptanceBaseUrl%/typo3temp/var/tests/acceptance'
+            browser: chrome
+            wait: 2
+            host: chrome
+            capabilities:
+              chromeOptions:
+                args: ["--headless", "--no-sandbox", "window-size=1280,1024", "--disable-gpu"]
 
 extensions:
   enabled:
