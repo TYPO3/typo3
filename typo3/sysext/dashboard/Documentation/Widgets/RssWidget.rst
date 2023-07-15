@@ -36,6 +36,7 @@ Example
      dashboard.widget.t3news:
        class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
        arguments:
+         $view: '@dashboard.views.widget'
          $cache: '@cache.dashboard.rss'
          $buttonProvider: '@dashboard.buttons.t3news'
          $options:
