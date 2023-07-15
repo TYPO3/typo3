@@ -15,6 +15,16 @@ modules:
     - Asserts
     - Codeception\Module\Cli
 
+env:
+  headless:
+    modules:
+      enabled:
+        - WebDriver:
+            url: '%typo3TestingAcceptanceBaseUrl%/typo3temp/var/tests/acceptance'
+            browser: chrome
+            wait: 2
+            host: chrome
+
 extensions:
     enabled:
         - TYPO3\CMS\Core\Tests\Acceptance\Support\Extension\BackendCoreEnvironment
