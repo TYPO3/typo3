@@ -195,7 +195,23 @@ export class Typo3LinkEditing extends Core.Plugin {
     (window as any).editor = editor;
 
     // @todo YAML additionalAttributes is not implemented yet
-    editor.model.schema.extend('$text', { allowAttributes: ['linkTitle', 'linkClass', 'linkTarget', 'linkRel'] });
+    editor.model.schema.extend('$text', { allowAttributes: ['linkTitle', 'linkClass', 'linkTarget', 'linkRel', 'linkDataRteError'] });
+
+    // linkDataRteError <=> data-rte-error
+    // This is used for marking broken links (e.g. by linkvalidator) when editing in RTE.
+    // Broken links are styled differently. This will not get persisted to the database.
+    editor.conversion.for('downcast').attributeToElement({
+      model: 'linkDataRteError',
+      view: (value: string|null, { writer }) => {
+        const linkElement = writer.createAttributeElement('a', { 'data-rte-error': value }, { priority: 5 });
+        writer.setCustomProperty('linkDataRteError', true, linkElement);
+        return linkElement;
+      }
+    });
+    editor.conversion.for('upcast').elementToAttribute({
+      view: { name: 'a', attributes: { 'data-rte-error': true } },
+      model: { key: 'linkDataRteError', value: (viewElement: ViewElement) => viewElement.getAttribute('data-rte-error') }
+    });
 
     // linkTitle <=> title
     editor.conversion.for('downcast').attributeToElement({
