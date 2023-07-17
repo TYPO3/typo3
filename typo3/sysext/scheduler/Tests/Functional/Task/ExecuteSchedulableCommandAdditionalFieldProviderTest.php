@@ -15,41 +15,29 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
+namespace TYPO3\CMS\Scheduler\Tests\Functional\Task;
 
 use Symfony\Component\Console\Command\Command;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Console\CommandRegistry;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
-use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
-use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * @todo: Turn into functional tests to avoid mocking party and set SchedulerModuleController final when done.
- */
-final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTestCase
+final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
+    protected array $coreExtensionsToLoad = ['scheduler'];
 
     /**
      * @test
      */
     public function argumentsAndOptionsWithSameNameAreAdded(): void
     {
-        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        $GLOBALS['LANG'] = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
-        $mockScheduler = $this->createMock(Scheduler::class);
-        GeneralUtility::setSingletonInstance(Scheduler::class, $mockScheduler);
-
-        $mockTaskRepository = $this->getMockBuilder(SchedulerTaskRepository::class)->disableOriginalConstructor()->getMock();
-        GeneralUtility::addInstance(SchedulerTaskRepository::class, $mockTaskRepository);
-
+        // Create a fake command and register it.
         $command = new class () extends Command {
             protected function configure(): void
             {
@@ -60,12 +48,10 @@ final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTes
                     ->addOption('action');
             }
         };
-
         $mockCommandRegistry = $this->getMockBuilder(CommandRegistry::class)->disableOriginalConstructor()->getMock();
         $mockCommandRegistry->method('getSchedulableCommands')->willReturn(
             (static function () use ($command) { yield $command->getName() => $command; })()
         );
-
         GeneralUtility::setSingletonInstance(CommandRegistry::class, $mockCommandRegistry);
 
         $task = GeneralUtility::makeInstance(ExecuteSchedulableCommandTask::class);
@@ -79,7 +65,7 @@ final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTes
         $fields = $subject->getAdditionalFields(
             $taskInfo,
             $task,
-            $this->getMockBuilder(SchedulerModuleController::class)->disableOriginalConstructor()->getMock()
+            $this->get(SchedulerModuleController::class)
         );
 
         self::assertCount(4, $fields);

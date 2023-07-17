@@ -29,6 +29,8 @@ use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 
 /**
  * CLI command for the 'scheduler' extension which executes
+ *
+ * @internal Specific command implementation, not part of TYPO3 API.
  */
 class SchedulerCommand extends Command
 {
@@ -93,10 +95,8 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
 
     /**
      * Execute scheduler tasks
-     *
-     * @todo: this should at some point become a protected method
      */
-    public function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = new SymfonyStyle($input, $output);
 

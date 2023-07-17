@@ -55,7 +55,7 @@ use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[BackendController]
-class SchedulerModuleController
+final class SchedulerModuleController
 {
     protected Action $currentAction;
 
@@ -91,7 +91,6 @@ class SchedulerModuleController
             'time' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i',
         ]);
 
-        $backendUser = $this->getBackendUser();
         $moduleData = $request->getAttribute('moduleData');
 
         // Simple actions from list view.
@@ -100,7 +99,6 @@ class SchedulerModuleController
             return $this->renderListTasksView($view, $moduleData);
         }
         if (!empty($queryParams['action']['stop'])) {
-            // @todo: Same as above.
             $this->stopTask($view, (int)$queryParams['action']['stop']);
             return $this->renderListTasksView($view, $moduleData);
         }
