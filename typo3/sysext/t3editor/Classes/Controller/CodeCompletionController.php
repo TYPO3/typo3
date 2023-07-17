@@ -19,6 +19,7 @@ namespace TYPO3\CMS\T3editor\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class CodeCompletionController
 {
     public function __construct(

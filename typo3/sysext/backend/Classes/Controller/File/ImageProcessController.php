@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Resource\Service\ImageProcessingService;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class ImageProcessController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;

@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -32,8 +33,10 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Controller class to create a zip file for given items from a file or folder.
+ *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class FileDownloadController
 {
     protected ResourceFactory $resourceFactory;

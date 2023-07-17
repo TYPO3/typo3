@@ -9,10 +9,6 @@ services:
     # Tasks require EXT:scheduler to be installed, ignore for now.
     exclude: '../Classes/Task'
 
-  TYPO3\CMS\Recycler\Controller\RecyclerModuleController:
-    tags: [ 'backend.controller' ]
-
   TYPO3\CMS\Recycler\Controller\RecyclerAjaxController:
-    tags: [ 'backend.controller' ]
     arguments:
       $runtimeCache: '@cache.runtime'

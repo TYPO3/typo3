@@ -9,9 +9,6 @@ services:
     # Tasks require EXT:scheduler to be installed, ignore for now.
     exclude: '../Classes/Task'
 
-  TYPO3\CMS\Reports\Controller\ReportController:
-    tags: ['backend.controller']
-
   TYPO3\CMS\Reports\Report\Status\Status:
     public: true
 

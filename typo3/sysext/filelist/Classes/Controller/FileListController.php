@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -62,9 +63,11 @@ use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Type\ViewMode;
 
 /**
- * Script Class for creating the list of files in the File > Filelist module
+ * Script Class for creating the list of files in the File > Filelist module.
+ *
  * @internal this is a concrete TYPO3 controller implementation and solely used for EXT:filelist and not part of TYPO3's Core API.
  */
+#[Controller]
 class FileListController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;

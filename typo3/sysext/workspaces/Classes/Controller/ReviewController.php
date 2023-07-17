@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Workspaces\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -38,6 +39,7 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 /**
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class ReviewController
 {
     public function __construct(

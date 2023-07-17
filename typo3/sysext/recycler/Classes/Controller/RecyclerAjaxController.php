@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Recycler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -38,9 +39,11 @@ use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
- * Controller class for the 'recycler' extension. Handles the AJAX Requests
+ * Controller class for the 'recycler' extension. Handles the AJAX requests.
+ *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class RecyclerAjaxController
 {
     /**

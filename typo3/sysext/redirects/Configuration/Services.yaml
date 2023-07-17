@@ -15,12 +15,6 @@ services:
     arguments:
       - 'redirects'
 
-  TYPO3\CMS\Redirects\Controller\RecordHistoryRollbackController:
-    tags: ['backend.controller']
-
-  TYPO3\CMS\Redirects\Controller\ManagementController:
-    tags: ['backend.controller']
-
   TYPO3\CMS\Redirects\Report\Status\RedirectStatus:
     public: true
 

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Dashboard\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
 /**
  * @internal
  */
+#[Controller]
 class DashboardController
 {
     protected Dashboard $currentDashboard;

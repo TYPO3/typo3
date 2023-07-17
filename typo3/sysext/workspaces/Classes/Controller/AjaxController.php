@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Workspaces\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -27,9 +28,11 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
- * Implements the AJAX functionality for the various asynchronous calls
+ * Implements the AJAX functionality for the various asynchronous calls.
+ *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class AjaxController
 {
     public function __construct(

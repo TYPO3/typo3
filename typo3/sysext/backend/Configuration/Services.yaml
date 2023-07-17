@@ -64,14 +64,6 @@ services:
     shared: false
     public: true
 
-  TYPO3\CMS\Backend\Controller\LinkBrowserController:
-    shared: false
-    public: true
-
-  TYPO3\CMS\Backend\Controller\File\ImageProcessController:
-    shared: false
-    public: true
-
   TYPO3\CMS\Backend\History\RecordHistoryRollback:
     public: true
 

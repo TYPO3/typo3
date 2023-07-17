@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Setup\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -60,6 +61,7 @@ use TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent;
  *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class SetupModuleController
 {
     protected const PASSWORD_NOT_UPDATED = 0;
