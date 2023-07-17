@@ -74,6 +74,11 @@ class CacheLifetimeCalculator
             }
         }
 
+        $endTimeTimeout = PHP_INT_MAX;
+        if ($pageRecord['endtime'] ?? false) {
+            $endTimeTimeout = $pageRecord['endtime'] - $GLOBALS['EXEC_TIME'];
+        }
+
         // Calculate the timeout time for records on the page and adjust cache timeout if necessary
         // Get the configuration
         $tablesToConsider = $this->getCurrentPageCacheConfiguration($pageId, $renderingInstructions);
@@ -83,7 +88,7 @@ class CacheLifetimeCalculator
         // value will be subtracted later. So we never get the time "before"
         // the cache change.
         $currentTimestamp = (int)$GLOBALS['ACCESS_TIME'];
-        $cacheTimeout = min($this->calculatePageCacheLifetime($tablesToConsider, $currentTimestamp), $cacheTimeout);
+        $cacheTimeout = min($this->calculatePageCacheLifetime($tablesToConsider, $currentTimestamp), $cacheTimeout, $endTimeTimeout);
 
         $event = new ModifyCacheLifetimeForPageEvent(
             $cacheTimeout,
