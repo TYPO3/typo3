@@ -39,39 +39,27 @@ class StorageRepository implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @var array|null
+     * @var array<positive-int, array<mixed>>|null
      */
-    protected $storageRowCache;
+    protected ?array $storageRowCache = null;
 
     /**
-     * @var array<int, LocalPath>|null
+     * @var array<int<0, max>, LocalPath>|null
      */
-    protected $localDriverStorageCache;
+    protected ?array $localDriverStorageCache = null;
+
+    protected readonly string $table;
 
     /**
-     * @var string
+     * @var array<int<0, max>, ResourceStorage>
      */
-    protected $table = 'sys_file_storage';
+    protected array $storageInstances = [];
 
-    /**
-     * @var DriverRegistry
-     */
-    protected $driverRegistry;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var ResourceStorage[]|null
-     */
-    protected $storageInstances;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher, DriverRegistry $driverRegistry)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->driverRegistry = $driverRegistry;
+    public function __construct(
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly DriverRegistry $driverRegistry,
+    ) {
+        $this->table = 'sys_file_storage';
     }
 
     /**
@@ -105,7 +93,7 @@ class StorageRepository implements LoggerAwareInterface
     /**
      * Gets a storage object from a combined identifier
      *
-     * @param string $identifier An identifier of the form [storage uid]:[object identifier]
+     * @param non-empty-string $identifier An identifier of the form [storage uid]:[object identifier]
      */
     public function findByCombinedIdentifier(string $identifier): ?ResourceStorage
     {
@@ -126,7 +114,7 @@ class StorageRepository implements LoggerAwareInterface
     /**
      * Initializes the Storage
      */
-    protected function initializeLocalCache()
+    protected function initializeLocalCache(): void
     {
         if ($this->storageRowCache === null) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -141,7 +129,7 @@ class StorageRepository implements LoggerAwareInterface
             $this->storageRowCache = [];
             while ($row = $result->fetchAssociative()) {
                 if (!empty($row['uid'])) {
-                    $this->storageRowCache[$row['uid']] = $row;
+                    $this->storageRowCache[(int)$row['uid']] = $row;
                 }
             }
 
@@ -182,17 +170,17 @@ class StorageRepository implements LoggerAwareInterface
     public function flush(): void
     {
         $this->storageRowCache = null;
-        $this->storageInstances = null;
+        $this->storageInstances = [];
         $this->localDriverStorageCache = null;
     }
 
     /**
      * Finds storages by type, i.e. the driver used
      *
-     * @param string $storageType
-     * @return ResourceStorage[]
+     * @param non-empty-string $storageType
+     * @return list<ResourceStorage>
      */
-    public function findByStorageType($storageType)
+    public function findByStorageType(string $storageType): array
     {
         $this->initializeLocalCache();
 
@@ -214,9 +202,9 @@ class StorageRepository implements LoggerAwareInterface
      * Returns a list of mountpoints that are available in the VFS.
      * In case no storage exists this automatically created a storage for fileadmin/
      *
-     * @return ResourceStorage[]
+     * @return list<ResourceStorage>
      */
-    public function findAll()
+    public function findAll(): array
     {
         $this->initializeLocalCache();
 
@@ -234,14 +222,12 @@ class StorageRepository implements LoggerAwareInterface
     /**
      * Create the initial local storage base e.g. for the fileadmin/ directory.
      *
-     * @param string $name
-     * @param string $basePath
-     * @param string $pathType
-     * @param string $description
-     * @param bool $default set to default storage
-     * @return int uid of the inserted record
+     * @param non-empty-string $name
+     * @param non-empty-string $basePath
+     * @param non-empty-string $pathType
+     * @return int<0, max>
      */
-    public function createLocalStorage($name, $basePath, $pathType, $description = '', $default = false)
+    public function createLocalStorage(string $name, string $basePath, string $pathType, string $description = '', bool $default = false): int
     {
         $caseSensitive = $this->testCaseSensitivity($pathType === 'relative' ? Environment::getPublicPath() . '/' . $basePath : $basePath);
         // create the FlexForm for the driver configuration
@@ -288,10 +274,9 @@ class StorageRepository implements LoggerAwareInterface
     /**
      * Test if the local filesystem is case sensitive
      *
-     * @param string $absolutePath
-     * @return bool
+     * @param non-empty-string $absolutePath
      */
-    protected function testCaseSensitivity($absolutePath)
+    protected function testCaseSensitivity(string $absolutePath): bool
     {
         $caseSensitive = true;
         $path = rtrim($absolutePath, '/') . '/aAbB';
@@ -322,21 +307,16 @@ class StorageRepository implements LoggerAwareInterface
      * Creates an instance of the storage from given UID. The $recordData can
      * be supplied to increase performance.
      *
-     * @param int $uid The uid of the storage to instantiate.
-     * @param array $recordData The record row from database.
-     * @param mixed|null $fileIdentifier Identifier for a file. Used for auto-detection of a storage, but only if $uid === 0 (Local default storage) is used
-     * @throws \InvalidArgumentException
+     * @param int<0, max> $uid The uid of the storage to instantiate.
+     * @param array $recordData<string, mixed> The record row from database.
+     * @param non-empty-string|null $fileIdentifier Identifier for a file. Used for auto-detection of a storage, but only if $uid === 0 (Local default storage) is used
      */
-    public function getStorageObject($uid, array $recordData = [], &$fileIdentifier = null): ResourceStorage
+    public function getStorageObject(int $uid, array $recordData = [], ?string &$fileIdentifier = null): ResourceStorage
     {
-        if (!is_numeric($uid)) {
-            throw new \InvalidArgumentException('The UID of storage has to be numeric. UID given: "' . $uid . '"', 1314085991);
-        }
-        $uid = (int)$uid;
         if ($uid === 0 && $fileIdentifier !== null) {
             $uid = $this->findBestMatchingStorageByLocalPath($fileIdentifier);
         }
-        if (empty($this->storageInstances[$uid])) {
+        if (!isset($this->storageInstances[$uid])) {
             $storageConfiguration = null;
             $event = $this->eventDispatcher->dispatch(new BeforeResourceStorageInitializationEvent($uid, $recordData, $fileIdentifier));
             $recordData = $event->getRecord();
@@ -381,9 +361,10 @@ class StorageRepository implements LoggerAwareInterface
      *
      * The file identifier is adapted accordingly to match the new storage's base path.
      *
-     * @param string $localPath
+     * @param non-empty-string $localPath
+     * @return int<0, max>
      */
-    protected function findBestMatchingStorageByLocalPath(&$localPath): int
+    protected function findBestMatchingStorageByLocalPath(string &$localPath): int
     {
         if ($this->localDriverStorageCache === null) {
             $this->initializeLocalStorageCache();
@@ -460,7 +441,7 @@ class StorageRepository implements LoggerAwareInterface
      *
      * @param array|null $storageConfiguration Storage configuration (if given, this won't be extracted from the FlexForm value but the supplied array used instead)
      */
-    protected function createStorageObject(array $storageRecord, array $storageConfiguration = null): ResourceStorage
+    protected function createStorageObject(array $storageRecord, ?array $storageConfiguration = null): ResourceStorage
     {
         if (!$storageConfiguration && !empty($storageRecord['configuration'])) {
             $storageConfiguration = $this->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
@@ -487,7 +468,7 @@ class StorageRepository implements LoggerAwareInterface
     /**
      * Creates a driver object for a specified storage object.
      *
-     * @param string $driverIdentificationString The driver class (or identifier) to use.
+     * @param non-empty-string $driverIdentificationString The driver class (or identifier) to use.
      * @param array $driverConfiguration The configuration of the storage
      */
     protected function getDriverObject(string $driverIdentificationString, array $driverConfiguration): DriverInterface
