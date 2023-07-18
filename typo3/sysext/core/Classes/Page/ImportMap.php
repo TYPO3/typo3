@@ -115,8 +115,7 @@ class ImportMap
 
     public function render(
         string $urlPrefix,
-        null|string|ConsumableString $nonce,
-        bool $includePolyfill = true
+        null|string|ConsumableString $nonce
     ): string {
         if (count($this->extensionsToLoad) === 0 || count($this->getImportMaps()) === 0) {
             return '';
@@ -131,19 +130,6 @@ class ImportMap
         );
         $nonceAttr = $nonce !== null ? ' nonce="' . htmlspecialchars((string)$nonce) . '"' : '';
         $html[] = sprintf('<script type="importmap"%s>%s</script>', $nonceAttr, $json);
-
-        if ($includePolyfill) {
-            $importmapPolyfill = $urlPrefix . PathUtility::getPublicResourceWebPath(
-                'EXT:core/Resources/Public/JavaScript/Contrib/es-module-shims.js',
-                false
-            );
-
-            $html[] = sprintf(
-                '<script src="%s"%s></script>',
-                htmlspecialchars($importmapPolyfill),
-                $nonceAttr
-            );
-        }
 
         return implode(PHP_EOL, $html) . PHP_EOL;
     }

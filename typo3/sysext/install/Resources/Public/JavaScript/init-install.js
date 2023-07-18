@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-"use strict";self.TYPO3={},window.importShim("@typo3/install/install.js");
+"use strict";self.TYPO3={},import("@typo3/install/install.js");

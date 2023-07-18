@@ -41,8 +41,6 @@ trait ControllerTrait
             // (for browsers that do not support https://caniuse.com/mdn-api_shadowroot_adoptedstylesheets)
             ->extend(Directive::StyleSrc, SourceKeyword::unsafeInline)
             ->set(Directive::StyleSrcAttr, SourceKeyword::unsafeInline)
-            ->extend(Directive::ImgSrc, SourceScheme::data)
-            // `frame-src blob:` required for es-module-shims blob: URLs
-            ->extend(Directive::FrameSrc, SourceScheme::blob);
+            ->extend(Directive::ImgSrc, SourceScheme::data);
     }
 }

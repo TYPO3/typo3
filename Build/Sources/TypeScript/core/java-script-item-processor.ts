@@ -41,24 +41,6 @@ export interface JavaScriptItem {
   payload: JavaScriptItemPayload;
 }
 
-/**
- * Fallback to importShim() once import() failed the first time
- * (considering importmaps are not supported by the browser).
- */
-let useShim = false;
-
-const moduleImporter = (moduleName: string): Promise<any> => {
-  if (useShim) {
-    return (window as any).importShim(moduleName);
-  } else {
-    return import(moduleName).catch(() => {
-      // Consider that importmaps are not supported and use shim from now on
-      useShim = true;
-      return moduleImporter(moduleName);
-    });
-  }
-};
-
 export function loadModule(payload: JavaScriptItemPayload): Promise<any> {
   if (!payload.name) {
     throw new Error('JavaScript module name is required');
@@ -66,7 +48,7 @@ export function loadModule(payload: JavaScriptItemPayload): Promise<any> {
 
   if ((payload.flags & FLAG_USE_IMPORTMAP) === FLAG_USE_IMPORTMAP) {
     if (!(payload.flags & FLAG_USE_TOP_WINDOW)) {
-      return moduleImporter(payload.name);
+      return import(payload.name);
     } else {
       const event = new CustomEvent<{ specifier: string; importPromise: null|Promise<any>; }>(
         'typo3:import-javascript-module',

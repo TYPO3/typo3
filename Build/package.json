@@ -148,7 +148,6 @@
     "d3-dispatch": "^3.0.1",
     "d3-drag": "^3.0.0",
     "d3-selection": "^3.0.0",
-    "es-module-shims": "^1.7.2",
     "flatpickr": "^4.6.13",
     "interactjs": "^1.10.17",
     "jquery": "^3.6.4",

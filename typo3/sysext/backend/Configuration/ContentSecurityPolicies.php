@@ -32,7 +32,7 @@ return Map::fromEntries([
         new Mutation(MutationMode::Extend, Directive::ImgSrc, SourceScheme::data),
         // muuri.js is creating workers from `blob:` (?!?)
         new Mutation(MutationMode::Set, Directive::WorkerSrc, SourceKeyword::self, SourceScheme::blob),
-        // `frame-src blob:` required for es-module-shims blob: URLs
-        new Mutation(MutationMode::Extend, Directive::FrameSrc, SourceScheme::blob),
+        // `frame-src self` required for backend nav and list iframes
+        new Mutation(MutationMode::Extend, Directive::FrameSrc, SourceKeyword::self)
     ),
 ]);

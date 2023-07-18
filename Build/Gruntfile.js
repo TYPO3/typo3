@@ -704,7 +704,6 @@ module.exports = function (grunt) {
         files: {
           'autosize.js': 'autosize/dist/autosize.esm.js',
           'cropperjs.js': 'cropperjs/dist/cropper.esm.js',
-          'es-module-shims.js': 'es-module-shims/dist/es-module-shims.js',
           'luxon.js': 'luxon/build/es6/luxon.js',
           '../../../../../backend/Resources/Public/Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
         }
@@ -718,7 +717,6 @@ module.exports = function (grunt) {
       },
       thirdparty: {
         files: {
-          '<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js': ['<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js': ['<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js'],

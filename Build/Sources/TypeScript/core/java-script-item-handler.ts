@@ -22,9 +22,7 @@ if (document.currentScript) {
   const textContent = scriptElement.textContent.replace(/^\s*\/\*\s*|\s*\*\/\s*/g, '');
   const items = JSON.parse(textContent);
 
-  const moduleImporter = (moduleName: string) => import(moduleName).catch(() => (window as any).importShim(moduleName));
-
-  moduleImporter('@typo3/core/java-script-item-processor.js').then(({ JavaScriptItemProcessor }) => {
+  import('@typo3/core/java-script-item-processor').then(({ JavaScriptItemProcessor }) => {
     const processor = new JavaScriptItemProcessor();
     processor.processItems(items);
   });
