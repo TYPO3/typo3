@@ -63,7 +63,7 @@ use TYPO3\CMS\Frontend\Resource\PublicUrlPrefixer;
  * If the content has been built together within the cache (cache_pages), it is fetched directly, and
  * any so-called "uncached" content is generated again.
  *
- * Some further hooks allow to post-processing the content.
+ * Some further events allow to post-process the content.
  *
  * Then the right HTTP response headers are compiled together and sent as well.
  */
@@ -73,6 +73,8 @@ class RequestHandler implements RequestHandlerInterface
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ListenerProvider $listenerProvider,
         private readonly TimeTracker $timeTracker,
+        private readonly FilePathSanitizer $filePathSanitizer,
+        private readonly TypoScriptService $typoScriptService,
     ) {
     }
 
@@ -247,9 +249,9 @@ class RequestHandler implements RequestHandlerInterface
         }
         if ($controller->config['config']['pageRendererTemplateFile'] ?? false) {
             try {
-                $file = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($controller->config['config']['pageRendererTemplateFile'], true);
+                $file = $this->filePathSanitizer->sanitize($controller->config['config']['pageRendererTemplateFile'], true);
                 $pageRenderer->setTemplateFile($file);
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // do nothing
             }
         }
@@ -316,7 +318,7 @@ class RequestHandler implements RequestHandlerInterface
         $pageRenderer->addInlineComment(GeneralUtility::makeInstance(Typo3Information::class)->getInlineHeaderComment());
         if ($controller->pSetup['shortcutIcon'] ?? false) {
             try {
-                $favIcon = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($controller->pSetup['shortcutIcon']);
+                $favIcon = $this->filePathSanitizer->sanitize($controller->pSetup['shortcutIcon']);
                 $iconFileInfo = GeneralUtility::makeInstance(ImageInfo::class, Environment::getPublicPath() . '/' . $favIcon);
                 if ($iconFileInfo->isFile()) {
                     $iconMimeType = $iconFileInfo->getMimeType();
@@ -326,7 +328,7 @@ class RequestHandler implements RequestHandlerInterface
                     }
                     $pageRenderer->setFavIcon(PathUtility::getAbsoluteWebPath($controller->absRefPrefix . $favIcon));
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // do nothing
             }
         }
@@ -360,8 +362,8 @@ class RequestHandler implements RequestHandlerInterface
                         $ss = $CSSfile;
                     } else {
                         try {
-                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($CSSfile, true);
-                        } catch (Exception $e) {
+                            $ss = $this->filePathSanitizer->sanitize($CSSfile, true);
+                        } catch (Exception) {
                             $ss = null;
                         }
                     }
@@ -409,8 +411,8 @@ class RequestHandler implements RequestHandlerInterface
                         $ss = $CSSfile;
                     } else {
                         try {
-                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($CSSfile, true);
-                        } catch (Exception $e) {
+                            $ss = $this->filePathSanitizer->sanitize($CSSfile, true);
+                        } catch (Exception) {
                             $ss = null;
                         }
                     }
@@ -463,8 +465,8 @@ class RequestHandler implements RequestHandlerInterface
                         $ss = $JSfile;
                     } else {
                         try {
-                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile, true);
-                        } catch (Exception $e) {
+                            $ss = $this->filePathSanitizer->sanitize($JSfile, true);
+                        } catch (Exception) {
                             $ss = null;
                         }
                     }
@@ -520,8 +522,8 @@ class RequestHandler implements RequestHandlerInterface
                         $ss = $JSfile;
                     } else {
                         try {
-                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile, true);
-                        } catch (Exception $e) {
+                            $ss = $this->filePathSanitizer->sanitize($JSfile, true);
+                        } catch (Exception) {
                             $ss = null;
                         }
                     }
@@ -578,8 +580,8 @@ class RequestHandler implements RequestHandlerInterface
                         $ss = $JSfile;
                     } else {
                         try {
-                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile, true);
-                        } catch (Exception $e) {
+                            $ss = $this->filePathSanitizer->sanitize($JSfile, true);
+                        } catch (Exception) {
                             $ss = null;
                         }
                     }
@@ -619,8 +621,8 @@ class RequestHandler implements RequestHandlerInterface
                         $ss = $JSfile;
                     } else {
                         try {
-                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile, true);
-                        } catch (Exception $e) {
+                            $ss = $this->filePathSanitizer->sanitize($JSfile, true);
+                        } catch (Exception) {
                             $ss = null;
                         }
                     }
@@ -805,9 +807,7 @@ class RequestHandler implements RequestHandlerInterface
     protected function generateMetaTagHtml(array $metaTagTypoScript, ContentObjectRenderer $cObj)
     {
         $pageRenderer = $this->getPageRenderer();
-
-        $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-        $conf = $typoScriptService->convertTypoScriptArrayToPlainArray($metaTagTypoScript);
+        $conf = $this->typoScriptService->convertTypoScriptArrayToPlainArray($metaTagTypoScript);
         foreach ($conf as $key => $properties) {
             $replace = false;
             if (is_array($properties)) {

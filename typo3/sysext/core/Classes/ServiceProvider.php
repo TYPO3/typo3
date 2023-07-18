@@ -95,7 +95,6 @@ class ServiceProvider extends AbstractServiceProvider
             Service\DependencyOrderingService::class => [ static::class, 'getDependencyOrderingService' ],
             Service\FlexFormService::class => [ static::class, 'getFlexFormService' ],
             Service\OpcodeCacheService::class => [ static::class, 'getOpcodeCacheService' ],
-            TimeTracker\TimeTracker::class => [ static::class, 'getTimeTracker' ],
             TypoScript\TypoScriptStringFactory::class => [ static::class, 'getTypoScriptStringFactory' ],
             TypoScript\TypoScriptService::class => [ static::class, 'getTypoScriptService' ],
             TypoScript\AST\Traverser\AstTraverser::class => [ static::class, 'getAstTraverser' ],
@@ -450,11 +449,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getOpcodeCacheService(ContainerInterface $container): Service\OpcodeCacheService
     {
         return self::new($container, Service\OpcodeCacheService::class);
-    }
-
-    public static function getTimeTracker(ContainerInterface $container): TimeTracker\TimeTracker
-    {
-        return self::new($container, TimeTracker\TimeTracker::class);
     }
 
     public static function getTypoScriptStringFactory(ContainerInterface $container): TypoScript\TypoScriptStringFactory

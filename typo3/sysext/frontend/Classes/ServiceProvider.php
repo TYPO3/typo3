@@ -19,17 +19,17 @@ namespace TYPO3\CMS\Frontend;
 
 use ArrayObject;
 use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
-use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 
 /**
  * @internal
@@ -50,9 +50,15 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return [
             Http\Application::class => [ static::class, 'getApplication' ],
-            Http\RequestHandler::class => [ static::class, 'getRequestHandler' ],
             'frontend.middlewares' => [ static::class, 'getFrontendMiddlewares' ],
         ];
+    }
+
+    public function getExtensions(): array
+    {
+        return [
+            Http\RequestHandler::class => [ static::class, 'provideFallbackRequestHandler' ],
+        ] + parent::getExtensions();
     }
 
     public static function getApplication(ContainerInterface $container): Http\Application
@@ -70,13 +76,18 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
-    public static function getRequestHandler(ContainerInterface $container): Http\RequestHandler
-    {
-        return new Http\RequestHandler(
-            $container->get(EventDispatcherInterface::class),
-            $container->get(ListenerProvider::class),
-            $container->get(TimeTracker::class),
-        );
+    public static function provideFallbackRequestHandler(
+        ContainerInterface $container,
+        RequestHandlerInterface $requestHandler = null
+    ): RequestHandlerInterface {
+        // Provide fallback request handler instace for the case where the system is not installed yet (that means when we run without symfony DI).
+        // This request handler is intended to be never executed, as the frontend application will perform an early redirect to the install tool.
+        return $requestHandler ?? new class () implements RequestHandlerInterface {
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                throw new \RuntimeException('not implemented', 1689684150);
+            }
+        };
     }
 
     /**

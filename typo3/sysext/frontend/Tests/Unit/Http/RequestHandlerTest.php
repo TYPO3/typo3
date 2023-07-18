@@ -29,10 +29,12 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Http\RequestHandler;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -152,6 +154,8 @@ final class RequestHandlerTest extends UnitTestCase
                 new NoopEventDispatcher(),
                 new ListenerProvider(new Container()),
                 new TimeTracker(false),
+                new FilePathSanitizer(),
+                new TypoScriptService(),
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
@@ -309,6 +313,8 @@ final class RequestHandlerTest extends UnitTestCase
                 new NoopEventDispatcher(),
                 new ListenerProvider(new Container()),
                 new TimeTracker(false),
+                new FilePathSanitizer(),
+                new TypoScriptService(),
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
@@ -361,6 +367,8 @@ final class RequestHandlerTest extends UnitTestCase
                 new NoopEventDispatcher(),
                 new ListenerProvider(new Container()),
                 new TimeTracker(false),
+                new FilePathSanitizer(),
+                new TypoScriptService(),
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
@@ -477,6 +485,8 @@ final class RequestHandlerTest extends UnitTestCase
                 new NoopEventDispatcher(),
                 new ListenerProvider(new Container()),
                 new TimeTracker(false),
+                new FilePathSanitizer(),
+                new TypoScriptService(),
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
