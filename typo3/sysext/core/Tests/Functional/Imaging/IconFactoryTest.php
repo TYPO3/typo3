@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class IconFactoryTest extends FunctionalTestCase
@@ -58,7 +57,7 @@ final class IconFactoryTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = GeneralUtility::getContainer()->get(IconFactory::class);
+        $this->subject = $this->get(IconFactory::class);
     }
 
     /**
@@ -148,7 +147,7 @@ final class IconFactoryTest extends FunctionalTestCase
      */
     public function getIconReturnsCorrectMarkupIfIconIsRegisteredAsSpinningIcon(): void
     {
-        $iconRegistry = GeneralUtility::getContainer()->get(IconRegistry::class);
+        $iconRegistry = $this->get(IconRegistry::class);
         $iconRegistry->registerIcon(
             $this->registeredSpinningIconIdentifier,
             SvgIconProvider::class,
@@ -529,6 +528,87 @@ final class IconFactoryTest extends FunctionalTestCase
         $result = $this->subject->getIconForRecord('tt_content', $mockRecord)->render();
         self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">', $result);
         self::assertStringContainsString('<span class="icon-overlay icon-overlay-hidden">', $result);
+    }
+
+    public static function getIconForRecordDefaultsToBasePageIconForCustomPageTypesIfTheyDontDefineOwnIconsDataProvider(): iterable
+    {
+        yield 'Custom page without default icon' => [
+            'record' => [
+                'doktype' => '1337',
+                'hidden' => '0',
+                'content_from_pid' => '0',
+                'nav_hide' => '0',
+                'is_siteroot' => '0',
+                'module' => '',
+            ],
+            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">',
+        ];
+
+        yield 'nav_hide=1' => [
+            'record' => [
+                'doktype' => '1337',
+                'nav_hide' => '1',
+                'is_siteroot' => '0',
+                'module' => '',
+                'content_from_pid' => '0',
+            ],
+            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-hideinmenu" data-identifier="apps-pagetree-page-hideinmenu">',
+        ];
+
+        yield 'is_siteroot=1' => [
+            'record' => [
+                'doktype' => '1337',
+                'nav_hide' => '0',
+                'is_siteroot' => '1',
+                'module' => '',
+                'content_from_pid' => '0',
+            ],
+            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-domain" data-identifier="apps-pagetree-page-domain">',
+        ];
+
+        yield 'module=fe_users' => [
+            'record' => [
+                'doktype' => '1337',
+                'nav_hide' => '0',
+                'is_siteroot' => '0',
+                'module' => 'fe_users',
+                'content_from_pid' => '0',
+            ],
+            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-folder-contains-fe_users" data-identifier="apps-pagetree-folder-contains-fe_users">',
+        ];
+
+        yield 'content_from_pid=1' => [
+            'record' => [
+                'doktype' => '1337',
+                'nav_hide' => '0',
+                'is_siteroot' => '0',
+                'module' => '',
+                'content_from_pid' => '1',
+            ],
+            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-content-from-page" data-identifier="apps-pagetree-page-content-from-page">',
+        ];
+
+        yield 'content_from_pid=1, nav_hide=1' => [
+            'record' => [
+                'doktype' => '1337',
+                'nav_hide' => '1',
+                'is_siteroot' => '0',
+                'module' => '',
+                'content_from_pid' => '1',
+            ],
+            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-content-from-page-hideinmenu" data-identifier="apps-pagetree-page-content-from-page-hideinmenu">',
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getIconForRecordDefaultsToBasePageIconForCustomPageTypesIfTheyDontDefineOwnIconsDataProvider
+     */
+    public function getIconForRecordDefaultsToBasePageIconForCustomPageTypesIfTheyDontDefineOwnIcons(array $record, string $expected): void
+    {
+        $result = $this->subject->getIconForRecord('pages', $record)->render();
+
+        self::assertStringContainsString($expected, $result);
     }
 
     /**
