@@ -430,7 +430,10 @@ class IndexSearchRepository
             $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             $idList = $pageRepository->getPageIdsRecursive($searchRootPageIdList, 9999);
             $queryBuilder->andWhere(
-                $queryBuilder->quoteArrayBasedValueListToIntegerList($idList)
+                $queryBuilder->expr()->in(
+                    'ISEC.page_id',
+                    $queryBuilder->quoteArrayBasedValueListToIntegerList($idList)
+                )
             );
         }
 
