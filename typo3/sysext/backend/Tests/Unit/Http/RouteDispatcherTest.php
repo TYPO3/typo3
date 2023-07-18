@@ -59,7 +59,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1425381442);
 
-        $route = new Route('not important', ['access' => 'public', 'referrer' => false, 'target' => 42]);
+        $route = new Route('not important', ['access' => 'public', 'target' => 42]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
         $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
