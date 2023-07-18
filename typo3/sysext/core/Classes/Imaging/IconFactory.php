@@ -199,7 +199,7 @@ class IconFactory
                         );
                     } else {
                         $suffix = (int)$row['nav_hide'] === 0 ? 'contentFromPid' : 'contentFromPid-hideinmenu';
-                        $recordType[4] = $this->getRecordTypeForPageType($recordType[1], $suffix, $table);
+                        $recordType[4] = $this->getRecordTypeForPageType($recordType[1], $suffix, $table, 'page');
                     }
                 }
             }
@@ -284,13 +284,13 @@ class IconFactory
      * Returns recordType for icon based on a typeName and a suffix.
      * Fallback to page as typeName if resulting type is not configured.
      */
-    protected function getRecordTypeForPageType(string $typeName, string $suffix, string $table): string
+    protected function getRecordTypeForPageType(string $typeName, string $suffix, string $table, string $fallbackTypeName = '1'): string
     {
         $recordType = $typeName . '-' . $suffix;
 
         // Check if typeicon class exists. If not fallback to page as typeName
         if (!isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$recordType])) {
-            $recordType = 'page-' . $suffix;
+            $recordType = $fallbackTypeName . '-' . $suffix;
         }
         return $recordType;
     }
