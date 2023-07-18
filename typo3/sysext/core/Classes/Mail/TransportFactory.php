@@ -87,7 +87,7 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 if ($host === '') {
                     throw new Exception('$GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'transport_smtp_server\'] needs to be set when transport is set to "smtp".', 1291068606);
                 }
-                if ($port === null || $port === '') {
+                if ($port === null) {
                     $port = 25;
                 } else {
                     $port = (int)$port;
