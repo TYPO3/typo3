@@ -250,13 +250,19 @@ class SiteConfiguration implements SingletonInterface
 
     /**
      * Fetch the settings for a specific site and return the parsed Site Settings object.
+     *
+     * @todo This method resolves placeholders during the loading, which is okay as this is only used in context where
+     *       the replacement is needed. However, this may change in the future, for example if loading is needed for
+     *       implementing a GUI for the settings - which should either get a dedicated method or a flag to control if
+     *       placeholder should be resolved during yaml file loading or not. The SiteConfiguration save action currently
+     *       avoid calling this method.
      */
     protected function getSiteSettings(string $siteIdentifier, array $siteConfiguration): SiteSettings
     {
         $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
         if (file_exists($fileName)) {
             $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
-            $settings = $loader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
+            $settings = $loader->load(GeneralUtility::fixWindowsFilePath($fileName));
         } else {
             $settings = $siteConfiguration['settings'] ?? [];
         }
