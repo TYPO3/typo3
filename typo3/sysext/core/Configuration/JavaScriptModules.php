@@ -11,7 +11,6 @@ return [
         ],
         'autosize' => 'EXT:core/Resources/Public/JavaScript/Contrib/autosize.js',
         'bootstrap' => 'EXT:core/Resources/Public/JavaScript/Contrib/bootstrap.js',
-        'broadcastchannel.js' => 'EXT:core/Resources/Public/JavaScript/Contrib/broadcastchannel.js',
         'cropperjs' => 'EXT:core/Resources/Public/JavaScript/Contrib/cropperjs.js',
         'd3-dispatch' => 'EXT:core/Resources/Public/JavaScript/Contrib/d3-dispatch.js',
         'd3-drag' => 'EXT:core/Resources/Public/JavaScript/Contrib/d3-drag.js',

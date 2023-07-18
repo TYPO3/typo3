@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import 'broadcastchannel';
 import { BroadcastMessage } from '@typo3/backend/broadcast-message';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
 

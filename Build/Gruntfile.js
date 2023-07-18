@@ -666,7 +666,6 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          'broadcastchannel.js': 'broadcastchannel-polyfill/index.js',
           'flatpickr/flatpickr.min.js': 'flatpickr/dist/flatpickr.js',
           'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
           'flatpickr/plugins/shortcut-buttons.min.js': 'shortcut-buttons-flatpickr/dist/shortcut-buttons-flatpickr.min.js',
@@ -720,7 +719,6 @@ module.exports = function (grunt) {
       thirdparty: {
         files: {
           '<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js': ['<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel.js': ['<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js': ['<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js'],
