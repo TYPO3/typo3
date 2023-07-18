@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  * - reduce the "power" and flexibility (I'd say it's a burden) of the "god class" PageRenderer.
  * - reduce the burden of storing everything in PageRenderer
  *
- * As a side-effect this allows to:
+ * As a side effect this allows to:
  * - Add a single CSS snippet or CSS file per content block, but assure that the CSS is only added once to the output.
  *
  * Note on the implementation:
@@ -42,30 +42,11 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  */
 class AssetCollector implements SingletonInterface
 {
-    /**
-     * @var array
-     */
-    protected $javaScripts = [];
-
-    /**
-     * @var array
-     */
-    protected $inlineJavaScripts = [];
-
-    /**
-     * @var array
-     */
-    protected $styleSheets = [];
-
-    /**
-     * @var array
-     */
-    protected $inlineStyleSheets = [];
-
-    /**
-     * @var array
-     */
-    protected $media = [];
+    protected array $javaScripts = [];
+    protected array $inlineJavaScripts = [];
+    protected array $styleSheets = [];
+    protected array $inlineStyleSheets = [];
+    protected array $media = [];
 
     /**
      * @param string $source URI to JavaScript file (allows EXT: syntax)
@@ -144,7 +125,7 @@ class AssetCollector implements SingletonInterface
     }
 
     /**
-     * @param array $additionalInformation One dimensional hash map (array with non numerical keys) with scalar values
+     * @param array $additionalInformation One dimensional hash map (array with non-numerical keys) with scalar values
      */
     public function addMedia(string $fileName, array $additionalInformation): self
     {
@@ -156,7 +137,7 @@ class AssetCollector implements SingletonInterface
 
     private function ensureAllValuesAreSerializable(array $additionalInformation): array
     {
-        // Currently just filtering all non scalar values
+        // Currently just filtering all non-scalar values
         return array_filter($additionalInformation, 'is_scalar');
     }
 
@@ -241,10 +222,10 @@ class AssetCollector implements SingletonInterface
     }
 
     /**
-     * @param array $assets Takes a reference to prevent a deep copy. The variable is not changed (const).
+     * @param array $assets The array to filter
      * @param bool|null $priority null: no filter; else filters for the given priority
      */
-    protected function filterAssetsPriority(array &$assets, ?bool $priority): array
+    protected function filterAssetsPriority(array $assets, ?bool $priority): array
     {
         if ($priority === null) {
             return $assets;
