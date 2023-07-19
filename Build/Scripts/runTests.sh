@@ -78,48 +78,53 @@ handleDbmsAndDriverOptions() {
 
 cleanBuildFiles() {
     # > builds
-    echo -n "Clean builds ... " ; rm -rf \
+    echo -n "Clean builds ... "
+    rm -rf \
         ../../../Build/JavaScript \
-        ../../../Build/node_modules ; \
-        echo "done"
+        ../../../Build/node_modules
+    echo "done"
 }
 
 cleanCacheFiles() {
     # > caches
-    echo -n "Clean caches ... " ; rm -rf \
+    echo -n "Clean caches ... "
+    rm -rf \
         ../../../.cache \
         ../../../Build/.cache \
         ../../../Build/composer/.cache/ \
-        ../../../.php-cs-fixer.cache ; \
-        echo "done"
+        ../../../.php-cs-fixer.cache
+    echo "done"
 }
 
 cleanTestFiles() {
     # > composer distribution test
-    echo -n "Clean composer distribution test ... " ; rm -rf \
+    echo -n "Clean composer distribution test ... "
+    rm -rf \
         ../../../Build/composer/composer.json \
         ../../../Build/composer/composer.lock \
         ../../../Build/composer/public/index.php \
         ../../../Build/composer/public/typo3 \
         ../../../Build/composer/public/typo3conf/ext \
         ../../../Build/composer/var/ \
-        ../../../Build/composer/vendor/ ; \
-       echo "done"
+        ../../../Build/composer/vendor/
+   echo "done"
 
     # > test related
-    echo -n "Clean test related files ... " ; rm -rf \
+    echo -n "Clean test related files ... "
+    rm -rf \
         ../../../Build/phpunit/FunctionalTests-Job-*.xml \
         ../../../typo3/sysext/core/Tests/Acceptance/AcceptanceTests-Job-* \
         ../../../typo3/sysext/core/Tests/Acceptance/Support/_generated \
-        ../../../typo3temp/var/tests/ ; \
-        echo "done"
+        ../../../typo3temp/var/tests/
+    echo "done"
 }
 
 cleanRenderedDocumentationFiles() {
     # > caches
-    echo -n "Clean rendered documentation files ... " ; rm -rf \
-        ../../../typo3/sysext/*/Documentation-GENERATED-temp ; \
-        echo "done"
+    echo -n "Clean rendered documentation files ... "
+    rm -rf \
+        ../../../typo3/sysext/*/Documentation-GENERATED-temp
+    echo "done"
 }
 
 # Load help text into $HELP
@@ -331,7 +336,7 @@ fi
 
 # Go to the directory this script is located, so everything else is relative
 # to this dir, no matter from where this script is called.
-THIS_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
+THIS_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
 cd "$THIS_SCRIPT_DIR" || exit 1
 
 # Go to directory that contains the local docker-compose.yml file
@@ -388,7 +393,7 @@ fi
 # Reset in case getopts has been used previously in the shell
 OPTIND=1
 # Array for invalid options
-INVALID_OPTIONS=();
+INVALID_OPTIONS=()
 # Simple option parsing based on getopts (! not getopt)
 while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
     case ${OPT} in
@@ -527,6 +532,7 @@ case ${TEST_SUITE} in
                 echo >&2
                 echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
+                ;;
         esac
         docker-compose down
         ;;
@@ -561,6 +567,7 @@ case ${TEST_SUITE} in
                 echo >&2
                 echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
+                ;;
         esac
         docker-compose down
         ;;
@@ -757,6 +764,7 @@ case ${TEST_SUITE} in
                 echo >&2
                 echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
+                ;;
         esac
         docker-compose down
         ;;
@@ -802,6 +810,7 @@ case ${TEST_SUITE} in
                 echo >&2
                 echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
+                ;;
         esac
         docker-compose down
         ;;
@@ -890,6 +899,7 @@ case ${TEST_SUITE} in
         echo >&2
         echo "${HELP}" >&2
         exit 1
+        ;;
 esac
 
 case ${DBMS} in
@@ -911,6 +921,7 @@ case ${DBMS} in
     *)
         DBMS_OUTPUT="DBMS not recognized: $DBMS"
         exit 1
+        ;;
 esac
 
 # Print summary
