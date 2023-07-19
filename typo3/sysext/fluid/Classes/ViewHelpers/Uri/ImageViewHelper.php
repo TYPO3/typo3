@@ -123,6 +123,7 @@ final class ImageViewHelper extends AbstractViewHelper
         $this->registerArgument('maxWidth', 'int', 'maximum width of the image');
         $this->registerArgument('maxHeight', 'int', 'maximum height of the image');
         $this->registerArgument('absolute', 'bool', 'Force absolute URL', false, false);
+        $this->registerArgument('base64', 'bool', 'Base64 encode the image', false, false);
     }
 
     /**
@@ -183,6 +184,10 @@ final class ImageViewHelper extends AbstractViewHelper
             }
 
             $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
+
+            if ($arguments['base64']) {
+                return 'data:' . $processedImage->getMimeType() . ';base64,' . base64_encode($processedImage->getContents());
+            }
             return $imageService->getImageUri($processedImage, $absolute);
         } catch (ResourceDoesNotExistException $e) {
             // thrown if file does not exist

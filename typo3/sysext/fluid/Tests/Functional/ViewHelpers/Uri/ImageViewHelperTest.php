@@ -364,4 +364,17 @@ final class ImageViewHelperTest extends FunctionalTestCase
             (new TemplateView($context))->render(),
         );
     }
+
+    #[Test]
+    public function base64Argument(): void
+    {
+        GeneralUtility::setIndpEnv('TYPO3_REQUEST_DIR', 'https://typo3-testing.local/');
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" base64="1" width="5" height="5" />');
+        self::assertEquals(
+            'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQIAEgASAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAFAAUDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAdEAEAAgICAwAAAAAAAAAAAAABAgMAEQQhEiIl/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAXEQADAQAAAAAAAAAAAAAAAAABAhEA/9oADAMBAAIRAxEAPwCBv53C5IfMiW1vjKyVqsgjEDRo0JJOt+3a6xjGU4jQZYC7/9k=',
+            (new TemplateView($context))->render(),
+        );
+    }
 }

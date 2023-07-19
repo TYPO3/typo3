@@ -130,6 +130,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('maxWidth', 'int', 'maximum width of the image');
         $this->registerArgument('maxHeight', 'int', 'maximum height of the image');
         $this->registerArgument('absolute', 'bool', 'Force absolute URL', false, false);
+        $this->registerArgument('base64', 'bool', 'Base64 encode the image', false, false);
     }
 
     /**
@@ -183,7 +184,12 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
                 $processingInstructions['fileExtension'] = $this->arguments['fileExtension'];
             }
             $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
-            $imageUri = $this->imageService->getImageUri($processedImage, $this->arguments['absolute']);
+
+            if ($this->arguments['base64']) {
+                $imageSrc = 'data:' . $processedImage->getMimeType() . ';base64,' . base64_encode($processedImage->getContents());
+            } else {
+                $imageSrc = $this->imageService->getImageUri($processedImage, $this->arguments['absolute']);
+            }
 
             if (!$this->tag->hasAttribute('data-focus-area')) {
                 $focusArea = $cropVariantCollection->getFocusArea($cropVariant);
@@ -191,7 +197,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
                     $this->tag->addAttribute('data-focus-area', $focusArea->makeAbsoluteBasedOnFile($image));
                 }
             }
-            $this->tag->addAttribute('src', $imageUri);
+            $this->tag->addAttribute('src', $imageSrc);
             $this->tag->addAttribute('width', $processedImage->getProperty('width'));
             $this->tag->addAttribute('height', $processedImage->getProperty('height'));
 
