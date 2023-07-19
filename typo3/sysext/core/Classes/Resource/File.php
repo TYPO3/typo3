@@ -37,13 +37,15 @@ class File extends AbstractFile
      */
     private $metaDataAspect;
 
+    protected string $identifier;
+
     /**
      * Constructor for a file object. Should normally not be used directly, use
      * the corresponding factory methods instead.
      */
     public function __construct(array $fileData, ResourceStorage $storage, array $metaData = [])
     {
-        $this->identifier = $fileData['identifier'] ?? null;
+        $this->identifier = $fileData['identifier'] ?? '';
         $this->name = $fileData['name'] ?? '';
         $this->properties = $fileData;
         $this->storage = $storage;
@@ -51,6 +53,11 @@ class File extends AbstractFile
         if (!empty($metaData)) {
             $this->getMetaData()->add($metaData);
         }
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
     }
 
     /*******************************

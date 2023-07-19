@@ -24,9 +24,22 @@ use TYPO3\CMS\Core\Resource\AbstractFile;
  */
 final class TestingFile extends AbstractFile
 {
+    private string $identifier;
+
     public function updateProperties(array $properties): void
     {
         // stub
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(string $identifier): self
+    {
+        $this->identifier = $identifier;
+        return $this;
     }
 
     public function isIndexed(): bool

@@ -97,6 +97,8 @@ class ProcessedFile extends AbstractFile
      */
     protected string $processingUrl;
 
+    protected string $identifier = '';
+
     /**
      * Constructor for a processed file object. Should normally not be used
      * directly, use the corresponding factory methods instead.
@@ -124,7 +126,7 @@ class ProcessedFile extends AbstractFile
         $this->processingConfiguration = $this->processingConfiguration ?: (array)unserialize($databaseRow['configuration'] ?? '');
 
         $this->originalFileSha1 = $databaseRow['originalfilesha1'];
-        $this->identifier = $databaseRow['identifier'];
+        $this->identifier = (string)$databaseRow['identifier'];
         $this->name = $databaseRow['name'];
         $this->properties = $databaseRow;
         $this->processingUrl = $databaseRow['processing_url'] ?? '';
@@ -287,6 +289,11 @@ class ProcessedFile extends AbstractFile
     public function getIdentifier(): string
     {
         return (!$this->usesOriginalFile()) ? $this->identifier : $this->getOriginalFile()->getIdentifier();
+    }
+
+    public function setIdentifier(string $identifier): void
+    {
+        $this->identifier = $identifier;
     }
 
     /**

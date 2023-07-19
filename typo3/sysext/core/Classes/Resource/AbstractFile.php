@@ -46,15 +46,6 @@ abstract class AbstractFile implements FileInterface
     protected $storage;
 
     /**
-     * The identifier of this file to identify it on the storage.
-     * On some drivers, this is the path to the file, but drivers could also just
-     * provide any other unique identifier for this file on the specific storage.
-     *
-     * @var string
-     */
-    protected $identifier;
-
-    /**
      * The file name of this file
      *
      * @var string
@@ -102,11 +93,6 @@ abstract class AbstractFile implements FileInterface
     public function getProperties()
     {
         return $this->properties;
-    }
-
-    public function getIdentifier(): string
-    {
-        return $this->identifier;
     }
 
     /**
@@ -356,19 +342,6 @@ abstract class AbstractFile implements FileInterface
     {
         $this->storage = $storage;
         $this->properties['storage'] = $storage->getUid();
-        return $this;
-    }
-
-    /**
-     * Set the identifier of this file
-     *
-     * @internal Should only be used by other parts of the File API (e.g. drivers after moving a file)
-     * @param string $identifier
-     * @return $this
-     */
-    public function setIdentifier($identifier)
-    {
-        $this->identifier = $identifier;
         return $this;
     }
 
