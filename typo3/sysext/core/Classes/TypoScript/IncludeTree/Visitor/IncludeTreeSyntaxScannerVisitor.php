@@ -32,10 +32,13 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineInterface;
 final class IncludeTreeSyntaxScannerVisitor implements IncludeTreeVisitorInterface
 {
     /**
-     * @var array {int, array{type: string, include: IncludeInterface, line: LineInterface}}
+     * @var list<array{type: string, include: IncludeInterface, line: LineInterface}>
      */
     private array $errors = [];
 
+    /**
+     * @return list<array{type: string, include: IncludeInterface, line: LineInterface}>
+     */
     public function getErrors(): array
     {
         return $this->errors;
