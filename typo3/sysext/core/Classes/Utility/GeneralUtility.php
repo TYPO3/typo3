@@ -729,7 +729,7 @@ class GeneralUtility
      * @param string $delimiter Delimiter string to explode with
      * @param string $string The string to explode
      * @param bool $removeEmptyValues If set, all empty values (='') will NOT be set in output
-     * @return int[] Exploded values, all converted to integers
+     * @return array<int, int> Exploded values, all converted to integers
      */
     public static function intExplode($delimiter, $string, $removeEmptyValues = false)
     {
@@ -742,6 +742,9 @@ class GeneralUtility
             }
         }
         unset($value);
+        // @todo: refactor this method to first remove empty values using `array_filter`,
+        // and then `array_walk` with `intval` on the result
+        /** @var array<int, int> $result */
         return $result;
     }
 
@@ -793,6 +796,7 @@ class GeneralUtility
      *                   the last element containing the rest of string. If the limit parameter is negative, all components
      *                   except the last -limit are returned.
      * @return list<string> Exploded values
+     * @phpstan-return ($removeEmptyValues is true ? list<non-empty-string> : list<string>) Exploded values
      */
     public static function trimExplode($delim, $string, $removeEmptyValues = false, $limit = 0): array
     {
