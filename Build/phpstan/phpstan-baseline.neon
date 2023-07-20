@@ -1416,11 +1416,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Request.php
 
 		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\JoinConditionInterface\\:\\:getProperty1Name\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php

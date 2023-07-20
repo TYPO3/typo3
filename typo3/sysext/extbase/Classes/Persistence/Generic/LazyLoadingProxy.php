@@ -72,7 +72,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
     /**
      * Populate this proxy by asking the $population closure.
      *
-     * @return object The instance (hopefully) returned
+     * @return object|null The instance (hopefully) returned
      */
     public function _loadRealInstance()
     {
@@ -137,7 +137,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
         if ($realInstance instanceof DomainObjectInterface) {
             return $realInstance->_getProperty($propertyName);
         }
-        return $realInstance->{$propertyName};
+        return $realInstance?->{$propertyName};
     }
 
     /**
