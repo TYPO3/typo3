@@ -21,8 +21,10 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
+use TYPO3Tests\BlogExample\Domain\Model\Enum\Salutation;
 use TYPO3Tests\BlogExample\Domain\Repository\AdministratorRepository;
 use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
+use TYPO3Tests\BlogExample\Domain\Repository\PersonRepository;
 use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
 final class QueryParserTest extends FunctionalTestCase
@@ -191,5 +193,16 @@ final class QueryParserTest extends FunctionalTestCase
             $query->like('posts.title', '%w/o%'),
         ))->execute()->current();
         self::assertSame(7, $blog->getUid());
+    }
+
+    /**
+     * @test
+     */
+    public function queryForPersonSalutationEnum(): void
+    {
+        $blogRepository = $this->get(PersonRepository::class);
+        $query = $blogRepository->createQuery();
+        $person = $query->matching($query->equals('salutation', Salutation::MR))->execute()->getFirst();
+        self::assertSame(4, $person->getUid());
     }
 }

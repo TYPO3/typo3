@@ -80,6 +80,11 @@ return [
                 'max' => 256,
             ],
         ],
+        'salutation' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
         'tags' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.tags',
             'config' => [
@@ -117,7 +122,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, firstname, lastname, email, avatar, tags, tags_special'],
+        '1' => ['showitem' => 'sys_language_uid, firstname, lastname, email, salutation, avatar, tags, tags_special'],
     ],
     'palettes' => [
         '1' => ['showitem' => ''],

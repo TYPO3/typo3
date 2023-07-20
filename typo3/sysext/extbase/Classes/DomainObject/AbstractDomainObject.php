@@ -200,7 +200,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     public function _memorizePropertyCleanState(string $propertyName): void
     {
         $propertyValue = $this->_getProperty($propertyName);
-        if (is_object($propertyValue)) {
+        if (is_object($propertyValue) && !($propertyValue instanceof \UnitEnum)) {
             $propertyValueClone = clone $propertyValue;
             // We need to make sure the clone and the original object
             // are identical when compared with == (see _isDirty()).

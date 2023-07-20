@@ -48,6 +48,7 @@ CREATE TABLE tx_blogexample_domain_model_person (
 	firstname varchar(255) DEFAULT '' NOT NULL,
 	lastname varchar(255) DEFAULT '' NOT NULL,
 	email varchar(255) DEFAULT '' NOT NULL,
+	salutation varchar(4) DEFAULT '' NOT NULL,
 	tags int(11) unsigned DEFAULT '0' NOT NULL,
 	tags_special int(11) unsigned DEFAULT '0' NOT NULL
 );

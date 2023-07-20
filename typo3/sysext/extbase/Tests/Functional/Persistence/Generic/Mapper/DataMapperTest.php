@@ -33,6 +33,8 @@ use TYPO3Tests\BlogExample\Domain\Model\DateExample;
 use TYPO3Tests\BlogExample\Domain\Model\DateTimeImmutableExample;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
 use TYPO3Tests\TestDataMapper\Domain\Model\CustomDateTime;
+use TYPO3Tests\TestDataMapper\Domain\Model\Enum\IntegerBackedEnum;
+use TYPO3Tests\TestDataMapper\Domain\Model\Enum\StringBackedEnum;
 use TYPO3Tests\TestDataMapper\Domain\Model\Example;
 use TYPO3Tests\TestDataMapper\Domain\Model\TraversableDomainObjectExample;
 
@@ -204,6 +206,52 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertCount(1, $mappedObjectArray);
         self::assertSame(1234, $mappedObjectArray[0]->getUid());
         self::assertSame('From persistence', $mappedObjectArray[0]->getTitle());
+    }
+
+    /**
+     * @test
+     */
+    public function thawPropertiesThawsBackedEnum(): void
+    {
+        $rows = [[
+            'uid' => 1,
+            'string_backed_enum' => 'One',
+            'nullable_string_backed_enum' => 'One',
+            'integer_backed_enum' => 1,
+            'nullable_integer_backed_enum' => 1,
+        ]];
+
+        /** @var Example[] $objects */
+        $objects = $this->get(DataMapper::class)->map(Example::class, $rows);
+
+        $object = $objects[0] ?? null;
+        self::assertInstanceOf(Example::class, $object);
+
+        self::assertSame(StringBackedEnum::ONE, $object->stringBackedEnum);
+        self::assertSame(StringBackedEnum::ONE, $object->nullableStringBackedEnum);
+        self::assertSame(IntegerBackedEnum::ONE, $object->integerBackedEnum);
+        self::assertSame(IntegerBackedEnum::ONE, $object->nullableIntegerBackedEnum);
+    }
+
+    /**
+     * @test
+     */
+    public function thawPropertiesThawsNullableBackedEnum(): void
+    {
+        $rows = [[
+            'uid' => 1,
+            'nullable_string_backed_enum' => 'Invalid',
+            'nullable_integer_backed_enum' => 0,
+        ]];
+
+        /** @var Example[] $objects */
+        $objects = $this->get(DataMapper::class)->map(Example::class, $rows);
+
+        $object = $objects[0] ?? null;
+        self::assertInstanceOf(Example::class, $object);
+
+        self::assertNull($object->nullableStringBackedEnum);
+        self::assertNull($object->nullableIntegerBackedEnum);
     }
 
     /**
@@ -452,6 +500,8 @@ final class DataMapperTest extends FunctionalTestCase
             'traversable domain object to identifier' => [1, new TraversableDomainObjectExample()],
             'integer value is returned unchanged' => [1234, 1234],
             'float is converted to string' => ['1234.56', 1234.56],
+            'string backed enum converted to string' => ['One', StringBackedEnum::ONE],
+            'int backed enum converted to int' => [1, IntegerBackedEnum::ONE],
         ];
     }
 

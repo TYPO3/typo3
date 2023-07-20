@@ -47,6 +47,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoPropertyTypesException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
@@ -249,7 +250,7 @@ class DataMapper
                 'float' => (float)$propertyValue,
                 'string' => (string)$propertyValue,
                 'array' => null, // $this->mapArray($propertyValue); // Not supported, yet!
-                'object' => $this->thawObjectProperty($columnMap, $object, $propertyName, $propertyValue, $propertyClassName),
+                'object' => $this->thawObjectProperty($property, $columnMap, $object, $propertyName, $propertyValue, $propertyClassName),
                 default => null,
             };
 
@@ -264,6 +265,7 @@ class DataMapper
      * @param class-string|null $targetClassName
      */
     private function thawObjectProperty(
+        Property $propertySchema,
         ColumnMap $columnMap,
         DomainObjectInterface $parent,
         string $propertyName,
@@ -272,6 +274,12 @@ class DataMapper
     ): ?object {
         if ($targetClassName === null) {
             return null;
+        }
+
+        if (is_subclass_of($targetClassName, \BackedEnum::class)) {
+            return $propertySchema->isNullable()
+                 ? $targetClassName::tryFrom($propertyValue)
+                 : $targetClassName::from($propertyValue);
         }
 
         if (in_array($targetClassName, [\SplObjectStorage::class, ObjectStorage::class], true)) {
@@ -851,6 +859,10 @@ class DataMapper
     {
         if ($input === null) {
             return 'NULL';
+        }
+
+        if ($input instanceof \BackedEnum) {
+            return $input->value;
         }
 
         if ($input instanceof LazyLoadingProxy) {

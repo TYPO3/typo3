@@ -25,6 +25,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
+use TYPO3Tests\BlogExample\Domain\Model\Enum\Salutation;
+use TYPO3Tests\BlogExample\Domain\Model\Person;
 use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 
 final class AddTest extends FunctionalTestCase
@@ -168,5 +170,23 @@ final class AddTest extends FunctionalTestCase
             ->executeQuery()
             ->fetchAssociative();
         self::assertNull($newBlogRecord['subtitle'] ?? null);
+    }
+
+    /**
+     * @test
+     */
+    public function addObjectPersistsEnumProperty(): void
+    {
+        $person = new Person();
+        $person->setSalutation(Salutation::MR);
+
+        $this->persistentManager->add($person);
+        $this->persistentManager->persistAll();
+        unset($person);
+
+        /** @var Person $person */
+        $person = $this->persistentManager->getObjectByIdentifier(1, Person::class);
+
+        self::assertSame(Salutation::MR, $person->getSalutation());
     }
 }

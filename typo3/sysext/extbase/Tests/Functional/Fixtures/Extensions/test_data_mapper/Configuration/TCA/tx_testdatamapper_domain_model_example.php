@@ -54,5 +54,25 @@ return [
                 'type' => 'passthrough',
             ],
         ],
+        'string_backed_enum' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
+        'nullable_string_backed_enum' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
+        'integer_backed_enum' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
+        'nullable_integer_backed_enum' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
     ],
 ];

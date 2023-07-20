@@ -31,6 +31,8 @@ class Person extends AbstractEntity
 
     protected string $email = '';
 
+    protected Enum\Salutation $salutation = Enum\Salutation::NONE;
+
     /**
      * @var ObjectStorage<Tag>
      */
@@ -84,6 +86,16 @@ class Person extends AbstractEntity
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function getSalutation(): Enum\Salutation
+    {
+        return $this->salutation;
+    }
+
+    public function setSalutation(Enum\Salutation $salutation): void
+    {
+        $this->salutation = $salutation;
     }
 
     /**
