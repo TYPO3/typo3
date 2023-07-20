@@ -1001,6 +1001,7 @@ class GeneralUtility
      *                   the last element containing the rest of string. If the limit parameter is negative, all components
      *                   except the last -limit are returned.
      * @return list<string> Exploded values
+     * @phpstan-return ($removeEmptyValues is true ? list<non-empty-string> : list<string>) Exploded values
      */
     public static function trimExplode($delim, $string, $removeEmptyValues = false, $limit = 0): array
     {
