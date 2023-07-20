@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Administrator;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
@@ -71,5 +72,15 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
         self::assertInstanceOf(Administrator::class, $administrator, 'Assert that $administrator is an instance of Administrator');
 
         self::assertSame('Blog Admin', $administrator->getUsername());
+    }
+
+    /**
+     * @test
+     */
+    public function nonExistingLazyLoadedPropertyReturnsNull(): void
+    {
+        $lazyLoadingProxy = new LazyLoadingProxy(new Blog(), 'administrator', 0);
+
+        self::assertNull(ObjectAccess::getProperty($lazyLoadingProxy, 'name'));
     }
 }
