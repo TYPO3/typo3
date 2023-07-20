@@ -35,13 +35,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class RelationHandler
 {
     /**
-     * $fetchAllFields if false getFromDB() fetches only uid, pid, thumbnail and label fields (as defined in TCA)
-     *
-     * @var bool
-     */
-    protected $fetchAllFields = true;
-
-    /**
      * If set, values that are not ids in tables are normally discarded. By this options they will be preserved.
      *
      * @var bool
@@ -311,16 +304,6 @@ class RelationHandler
                 $this->sortList($conf['foreign_default_sortby']);
             }
         }
-    }
-
-    /**
-     * Sets $fetchAllFields
-     *
-     * @param bool $allFields enables fetching of all fields in getFromDB()
-     */
-    public function setFetchAllFields($allFields)
-    {
-        $this->fetchAllFields = (bool)$allFields;
     }
 
     /**
@@ -1097,8 +1080,6 @@ class RelationHandler
     /**
      * Reads all records from internal tableArray into the internal ->results array
      * where keys are table names and for each table, records are stored with uids as their keys.
-     * If $this->fetchAllFields is false you can save a little memory
-     * since only uid,pid and a few other fields are selected.
      *
      * @return array
      */

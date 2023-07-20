@@ -5827,4 +5827,11 @@ return [
             'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Database\RelationHandler->setFetchAllFields' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-101398-FetchAllFieldsRelationHandler.rst',
+        ],
+    ],
 ];
