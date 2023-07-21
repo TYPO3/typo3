@@ -30,7 +30,9 @@ class ReflectionServiceTest extends UnitTestCase
     public function reflectionServiceIsResetDuringWakeUp(): void
     {
         $insecureString = file_get_contents(__DIR__ . '/Fixture/InsecureSerializedReflectionService.txt');
-        $reflectionService = unserialize($insecureString);
+        // Note: We need to use the silence operator here for `unserialize()`, otherwise PHP8.3 would emit a warning
+        //       because of unneeded bytes in the content which needs to be unserialized.
+        $reflectionService = @unserialize($insecureString);
 
         $reflectionClass = new \ReflectionClass($reflectionService);
         $classSchemaProperty = $reflectionClass->getProperty('classSchemata');
