@@ -650,41 +650,41 @@ class DataMapper
     {
         if ($this->propertyMapsByForeignKey($parentObject, $propertyName)) {
             $result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
-            $propertyValue = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
-        } elseif (empty($fieldValue)) {
-            $propertyValue = $this->getEmptyRelationValue($parentObject, $propertyName);
-        } else {
-            $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-            if ($this->persistenceSession->hasIdentifier((string)$fieldValue, $property->getType())) {
-                $propertyValue = $this->persistenceSession->getObjectByIdentifier((string)$fieldValue, $property->getType());
-            } else {
-                $primaryType = $this->reflectionService
-                    ->getClassSchema(get_class($parentObject))
-                    ->getProperty($propertyName)
-                    ->getPrimaryType();
-
-                if (!$primaryType instanceof Type) {
-                    throw NoPropertyTypesException::create($parentObject::class, $propertyName);
-                }
-
-                $className = $primaryType->getClassName();
-                if (!is_string($className)) {
-                    throw new \LogicException(
-                        sprintf('Evaluated type of class property %s::%s is not a class name. Check the type declaration of the property to use a valid class name.', $parentObject::class, $propertyName),
-                        1660217846
-                    );
-                }
-
-                if ($this->persistenceSession->hasIdentifier((string)$fieldValue, $className)) {
-                    $propertyValue = $this->persistenceSession->getObjectByIdentifier((string)$fieldValue, $className);
-                } else {
-                    $result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
-                    $propertyValue = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
-                }
-            }
+            return $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
         }
 
-        return $propertyValue;
+        if (empty($fieldValue)) {
+            return $this->getEmptyRelationValue($parentObject, $propertyName);
+        }
+
+        $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
+        if ($this->persistenceSession->hasIdentifier((string)$fieldValue, $property->getType())) {
+            return $this->persistenceSession->getObjectByIdentifier((string)$fieldValue, $property->getType());
+        }
+
+        $primaryType = $this->reflectionService
+            ->getClassSchema(get_class($parentObject))
+            ->getProperty($propertyName)
+            ->getPrimaryType();
+
+        if (!$primaryType instanceof Type) {
+            throw NoPropertyTypesException::create($parentObject::class, $propertyName);
+        }
+
+        $className = $primaryType->getClassName();
+        if (!is_string($className)) {
+            throw new \LogicException(
+                sprintf('Evaluated type of class property %s::%s is not a class name. Check the type declaration of the property to use a valid class name.', $parentObject::class, $propertyName),
+                1660217846
+            );
+        }
+
+        if ($this->persistenceSession->hasIdentifier((string)$fieldValue, $className)) {
+            return $this->persistenceSession->getObjectByIdentifier((string)$fieldValue, $className);
+        }
+
+        $result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
+        return $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
     }
 
     /**
