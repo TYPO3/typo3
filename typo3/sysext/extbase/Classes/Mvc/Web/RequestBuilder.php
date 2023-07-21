@@ -127,13 +127,6 @@ class RequestBuilder implements SingletonInterface
             $files = [$files];
         }
 
-        // backwards compatibility
-        $fileParameters = $this->mapUploadedFilesToParameters($files, []);
-        if (count($fileParameters) === 1) {
-            $fileParameters = reset($fileParameters);
-        }
-        $parameters = array_replace_recursive($parameters, $fileParameters);
-
         $controllerClassName = $this->resolveControllerClassName($defaultValues, $parameters);
         $actionName = $this->resolveActionName($defaultValues, $controllerClassName, $parameters);
 
@@ -154,40 +147,6 @@ class RequestBuilder implements SingletonInterface
             $extbaseAttribute->setArgument($argumentName, $argumentValue);
         }
         return new Request($mainRequest->withAttribute('extbase', $extbaseAttribute));
-    }
-
-    protected function mapUploadedFilesToParameters(array|UploadedFile $files, array $parameters)
-    {
-        if (is_array($files)) {
-            foreach ($files as $key => $file) {
-                if (is_array($file)) {
-                    $parameters[$key] = $this->mapUploadedFilesToParameters($file, $parameters[$key] ?? []);
-                } else {
-                    $parameters[$key] = $this->mapUploadedFileToParameters($file);
-                }
-            }
-        } else {
-            $parameters = $this->mapUploadedFileToParameters($files);
-        }
-        return $parameters;
-    }
-
-    /**
-     * Backwards Compatibility File Mapping to Parameters
-     *
-     * @deprecated since v12, will be removed in v13. Use $request->getUploadedFiles() instead
-     */
-    protected function mapUploadedFileToParameters(UploadedFile $uploadedFile): array
-    {
-        $parameters = [];
-        $parameters['name'] = $uploadedFile->getClientFilename();
-        $parameters['type'] = $uploadedFile->getClientMediaType();
-        $parameters['error'] = $uploadedFile->getError();
-        if ($uploadedFile->getSize() > 0) {
-            $parameters['size'] = $uploadedFile->getSize();
-        }
-        $parameters['tmp_name'] = $uploadedFile->getTemporaryFileName();
-        return $parameters;
     }
 
     /**

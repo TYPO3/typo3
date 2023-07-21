@@ -453,6 +453,7 @@ The following fallbacks have been removed:
 - Using backend FormEngine, the current ServerRequestInterface request must be provided in key "request" as
   initialData to FormDataCompiler, the fallback to :php:`$GLOBALS['TYPO3_REQUEST'] has been removed.
 - Compatibility layer for "TCEforms" key in FlexFormTools has been removed
+- Compatibility layer for using array parameters for files in extbase (use `UploadedFile` instead)
 
 The following upgrade wizards have been removed:
 

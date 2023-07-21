@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
+use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
@@ -203,7 +204,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function untangleFilesArrayDetectsASingleUploadedFileInBackend(): void
+    public function uploadedFileCanBeRetrievedFromRequest(): void
     {
         $_FILES['dummy'] = [
             'name' => 'name.pdf',
@@ -241,26 +242,28 @@ final class RequestBuilderTest extends FunctionalTestCase
         // @todo: Get rid of getIndpEnv var usage in TSFE
         $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
 
-        $mainRequest = ServerRequestFactory::fromGlobals()
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $mainRequest = ServerRequestFactory::fromGlobals()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
-        $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)
-            ->withAttribute('module', $module);
+        $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
         $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
-        self::assertSame('name.pdf', $request->getArgument('name'));
-        self::assertSame('application/pdf', $request->getArgument('type'));
-        self::assertSame('/tmp/php/php1h4j1o', $request->getArgument('tmp_name'));
-        self::assertSame(UPLOAD_ERR_OK, $request->getArgument('error'));
-        self::assertSame(98174, $request->getArgument('size'));
+        $uploadedFiles = $request->getUploadedFiles();
+        self::assertInstanceOf(UploadedFile::class, $uploadedFiles['dummy']);
+        /** @var UploadedFile $uploadedFile */
+        $uploadedFile = $uploadedFiles['dummy'];
+        self::assertSame('name.pdf', $uploadedFile->getClientFilename());
+        self::assertSame('application/pdf', $uploadedFile->getClientMediaType());
+        self::assertSame(UPLOAD_ERR_OK, $uploadedFile->getError());
+        self::assertSame(98174, $uploadedFile->getSize());
+        self::assertSame('/tmp/php/php1h4j1o', $uploadedFile->getTemporaryFileName());
     }
 
     /**
      * @test
      */
-    public function untangleFilesArrayDetectsMultipleUploadedFileInBackend(): void
+    public function multipleUploadedFileCanBeRetrievedFromRequest(): void
     {
         $_FILES['dummy'] = [
             'error' => [
@@ -312,31 +315,30 @@ final class RequestBuilderTest extends FunctionalTestCase
         // @todo: Get rid of getIndpEnv var usage in TSFE
         $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
 
-        $mainRequest = ServerRequestFactory::fromGlobals()
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $mainRequest = ServerRequestFactory::fromGlobals()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
-        $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)
-            ->withAttribute('module', $module);
+        $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
         $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
-
-        $argument = $request->getArgument('pdf');
-        self::assertIsArray($argument);
-        self::assertSame('name.pdf', $argument['name']);
-        self::assertSame('application/pdf', $argument['type']);
-        self::assertSame('/tmp/php/php1h4j1o', $argument['tmp_name']);
-        self::assertSame(UPLOAD_ERR_OK, $argument['error']);
-        self::assertSame(98174, $argument['size']);
-
-        $argument = $request->getArgument('jpg');
-        self::assertIsArray($argument);
-        self::assertSame('name.jpg', $argument['name']);
-        self::assertSame('image/jpg', $argument['type']);
-        self::assertSame('/tmp/php/php6hst32', $argument['tmp_name']);
-        self::assertSame(UPLOAD_ERR_OK, $argument['error']);
-        self::assertNotTrue(isset($argument['size']));
+        $uploadedFiles = $request->getUploadedFiles();
+        self::assertInstanceOf(UploadedFile::class, $uploadedFiles['dummy']['pdf']);
+        self::assertInstanceOf(UploadedFile::class, $uploadedFiles['dummy']['jpg']);
+        /** @var UploadedFile $uploadedFile1 */
+        $uploadedFile1 = $uploadedFiles['dummy']['pdf'];
+        self::assertSame('name.pdf', $uploadedFile1->getClientFilename());
+        self::assertSame('application/pdf', $uploadedFile1->getClientMediaType());
+        self::assertSame(UPLOAD_ERR_OK, $uploadedFile1->getError());
+        self::assertSame(98174, $uploadedFile1->getSize());
+        self::assertSame('/tmp/php/php1h4j1o', $uploadedFile1->getTemporaryFileName());
+        /** @var UploadedFile $uploadedFile2 */
+        $uploadedFile2 = $uploadedFiles['dummy']['jpg'];
+        self::assertSame('name.jpg', $uploadedFile2->getClientFilename());
+        self::assertSame('image/jpg', $uploadedFile2->getClientMediaType());
+        self::assertSame(UPLOAD_ERR_OK, $uploadedFile2->getError());
+        self::assertSame(0, $uploadedFile2->getSize());
+        self::assertSame('/tmp/php/php6hst32', $uploadedFile2->getTemporaryFileName());
     }
 
     /**
