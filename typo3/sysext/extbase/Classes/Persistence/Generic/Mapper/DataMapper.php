@@ -847,60 +847,63 @@ class DataMapper
      * Multi value objects or arrays will be converted to a comma-separated list for use in IN SQL queries.
      *
      * @param mixed $input The value that will be converted.
-     * @param ColumnMap $columnMap Optional column map for retrieving the date storage format.
+     * @param ColumnMap|null $columnMap Optional column map for retrieving the date storage format.
      * @throws \InvalidArgumentException
      * @throws UnexpectedTypeException
      * @return int|string
      */
-    public function getPlainValue($input, $columnMap = null)
+    public function getPlainValue(mixed $input, ?ColumnMap $columnMap = null): int|string
     {
         if ($input === null) {
             return 'NULL';
         }
+
         if ($input instanceof LazyLoadingProxy) {
             $input = $input->_loadRealInstance();
         }
 
         if (is_bool($input)) {
-            $parameter = (int)$input;
-        } elseif (is_int($input)) {
-            $parameter = $input;
-        } elseif ($input instanceof \DateTimeInterface) {
+            return (int)$input;
+        }
+
+        if (is_int($input)) {
+            return $input;
+        }
+
+        if ($input instanceof \DateTimeInterface) {
             if ($columnMap !== null && $columnMap->getDateTimeStorageFormat() !== null) {
                 $storageFormat = $columnMap->getDateTimeStorageFormat();
-                switch ($storageFormat) {
-                    case 'datetime':
-                        $parameter = $input->format('Y-m-d H:i:s');
-                        break;
-                    case 'date':
-                        $parameter = $input->format('Y-m-d');
-                        break;
-                    case 'time':
-                        $parameter = $input->format('H:i');
-                        break;
-                    default:
-                        throw new \InvalidArgumentException('Column map DateTime format "' . $storageFormat . '" is unknown. Allowed values are date, datetime or time.', 1395353470);
-                }
-            } else {
-                $parameter = $input->format('U');
+                return match ($storageFormat) {
+                    'datetime' => $input->format('Y-m-d H:i:s'),
+                    'date' => $input->format('Y-m-d'),
+                    'time' => $input->format('H:i'),
+                    default => throw new \InvalidArgumentException('Column map DateTime format "' . $storageFormat . '" is unknown. Allowed values are date, datetime or time.', 1395353470),
+                };
             }
-        } elseif ($input instanceof DomainObjectInterface) {
-            $parameter = (int)$input->getUid();
-        } elseif (TypeHandlingUtility::isValidTypeForMultiValueComparison($input)) {
+
+            return $input->format('U');
+        }
+
+        if ($input instanceof DomainObjectInterface) {
+            return (int)$input->getUid();
+        }
+
+        if (TypeHandlingUtility::isValidTypeForMultiValueComparison($input)) {
             $plainValueArray = [];
             foreach ($input as $inputElement) {
                 $plainValueArray[] = $this->getPlainValue($inputElement, $columnMap);
             }
-            $parameter = implode(',', $plainValueArray);
-        } elseif (is_object($input)) {
-            if (TypeHandlingUtility::isCoreType($input)) {
-                $parameter = (string)$input;
-            } else {
-                throw new UnexpectedTypeException('An object of class "' . get_class($input) . '" could not be converted to a plain value.', 1274799934);
-            }
-        } else {
-            $parameter = (string)$input;
+            return implode(',', $plainValueArray);
         }
-        return $parameter;
+
+        if (is_object($input)) {
+            if (TypeHandlingUtility::isCoreType($input)) {
+                return (string)$input;
+            }
+
+            throw new UnexpectedTypeException('An object of class "' . get_class($input) . '" could not be converted to a plain value.', 1274799934);
+        }
+
+        return (string)$input;
     }
 }
