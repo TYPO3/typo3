@@ -209,17 +209,22 @@ class DataMapper
                 continue;
             }
             $columnMap = $dataMap->getColumnMap($propertyName);
-            $columnName = $columnMap->getColumnName();
+            if (!$columnMap instanceof ColumnMap) {
+                continue;
+            }
 
+            $columnName = $columnMap->getColumnName();
             if (!isset($row[$columnName])) {
                 continue;
             }
+
+            $propertyValue = $row[$columnName];
 
             $nonProxyPropertyTypes = $property->getFilteredTypes([$property, 'filterLazyLoadingProxyAndLazyObjectStorage']);
             if ($nonProxyPropertyTypes === []) {
                 throw new UnknownPropertyTypeException(
                     'The type of property ' . $className . '::' . $propertyName . ' could not be identified, therefore the desired value (' .
-                    var_export($row[$columnName], true) . ') cannot be mapped onto it. The type of a class property is usually defined via property types or php doc blocks. ' .
+                    var_export($propertyValue, true) . ') cannot be mapped onto it. The type of a class property is usually defined via property types or php doc blocks. ' .
                     'Make sure the property has a property type or valid @var tag set which defines the type.',
                     1579965021
                 );
@@ -228,62 +233,72 @@ class DataMapper
             if (count($nonProxyPropertyTypes) > 1) {
                 throw new UnknownPropertyTypeException(
                     'The type of property ' . $className . '::' . $propertyName . ' could not be identified because the property is defined as union or intersection type, therefore the desired value (' .
-                    var_export($row[$columnName], true) . ') cannot be mapped onto it. Make sure to use only a single type.',
+                    var_export($propertyValue, true) . ') cannot be mapped onto it. Make sure to use only a single type.',
                     1660215701
                 );
             }
 
-            $propertyType = $nonProxyPropertyTypes[0]->getClassName() ?? $nonProxyPropertyTypes[0]->getBuiltinType();
+            $primaryType = $nonProxyPropertyTypes[0];
 
-            $propertyValue = null;
-            switch ($propertyType) {
-                case 'int':
-                case 'integer':
-                    $propertyValue = (int)$row[$columnName];
-                    break;
-                case 'float':
-                    $propertyValue = (float)$row[$columnName];
-                    break;
-                case 'bool':
-                case 'boolean':
-                    $propertyValue = (bool)$row[$columnName];
-                    break;
-                case 'string':
-                    $propertyValue = (string)$row[$columnName];
-                    break;
-                case 'array':
-                    // $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!
-                    break;
-                case \SplObjectStorage::class:
-                case ObjectStorage::class:
-                    $propertyValue = $this->mapResultToPropertyValue(
-                        $object,
-                        $propertyName,
-                        $this->fetchRelated($object, $propertyName, $row[$columnName])
-                    );
-                    break;
-                default:
-                    if (is_subclass_of($propertyType, \DateTimeInterface::class)) {
-                        $propertyValue = $this->mapDateTime(
-                            $row[$columnName],
-                            $columnMap->getDateTimeStorageFormat(),
-                            $propertyType
-                        );
-                    } elseif (TypeHandlingUtility::isCoreType($propertyType)) {
-                        $propertyValue = $this->mapCoreType($propertyType, $row[$columnName]);
-                    } else {
-                        $propertyValue = $this->mapObjectToClassProperty(
-                            $object,
-                            $propertyName,
-                            $row[$columnName]
-                        );
-                    }
-            }
+            $propertyType = $primaryType->getBuiltinType();
+            $propertyClassName = $primaryType->getClassName();
+
+            $propertyValue = match ($propertyType) {
+                'int', 'integer' => (int)$propertyValue,
+                'bool', 'boolean' => (bool)$propertyValue,
+                'float' => (float)$propertyValue,
+                'string' => (string)$propertyValue,
+                'array' => null, // $this->mapArray($propertyValue); // Not supported, yet!
+                'object' => $this->thawObjectProperty($columnMap, $object, $propertyName, $propertyValue, $propertyClassName),
+                default => null,
+            };
 
             if ($propertyValue !== null || $property->isNullable()) {
                 $object->_setProperty($propertyName, $propertyValue);
             }
         }
+    }
+
+    /**
+     * @param non-empty-string $propertyName
+     * @param class-string|null $targetClassName
+     */
+    private function thawObjectProperty(
+        ColumnMap $columnMap,
+        DomainObjectInterface $parent,
+        string $propertyName,
+        mixed $propertyValue,
+        ?string $targetClassName
+    ): ?object {
+        if ($targetClassName === null) {
+            return null;
+        }
+
+        if (in_array($targetClassName, [\SplObjectStorage::class, ObjectStorage::class], true)) {
+            return $this->mapResultToPropertyValue(
+                $parent,
+                $propertyName,
+                $this->fetchRelated($parent, $propertyName, $propertyValue)
+            );
+        }
+
+        if (is_subclass_of($targetClassName, \DateTimeInterface::class)) {
+            return $this->mapDateTime(
+                $propertyValue,
+                $columnMap->getDateTimeStorageFormat(),
+                $targetClassName
+            );
+        }
+
+        if (TypeHandlingUtility::isCoreType($targetClassName)) {
+            return $this->mapCoreType($targetClassName, $propertyValue);
+        }
+
+        return $this->mapObjectToClassProperty(
+            $parent,
+            $propertyName,
+            $propertyValue
+        );
     }
 
     /**
