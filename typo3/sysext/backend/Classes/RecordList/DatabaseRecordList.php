@@ -1342,7 +1342,7 @@ class DatabaseRecordList
         $backendUser = $this->getBackendUserAuthentication();
         $userTsConfig = $backendUser->getTSConfig();
         $rowUid = $row['uid'];
-        if (ExtensionManagementUtility::isLoaded('workspaces') && isset($row['_ORIG_uid'])) {
+        if (isset($row['_ORIG_uid'])) {
             $rowUid = $row['_ORIG_uid'];
         }
         $isDeletePlaceHolder = $this->isRecordDeletePlaceholder($row);
