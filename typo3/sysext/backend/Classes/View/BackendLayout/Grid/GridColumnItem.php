@@ -130,6 +130,21 @@ class GridColumnItem extends AbstractGridObject
         return BackendUtility::getLinkToDataHandlerAction($params);
     }
 
+    public function getDeleteMessage(): string
+    {
+        $refCountMsg = BackendUtility::referenceCount(
+            'tt_content',
+            $this->record['uid'],
+            LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord')
+        ) . BackendUtility::translationCount(
+            'tt_content',
+            $this->record['uid'],
+            LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
+        );
+
+        return $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteWarning') . $refCountMsg;
+    }
+
     public function getFooterInfo(): string
     {
         $record = $this->getRecord();
