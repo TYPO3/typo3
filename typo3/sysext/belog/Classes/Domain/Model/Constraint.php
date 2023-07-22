@@ -92,7 +92,7 @@ class Constraint
 
     public function setNumber(int $number): void
     {
-        $this->number = (int)$number;
+        $this->number = $number;
     }
 
     public function getNumber(): int
