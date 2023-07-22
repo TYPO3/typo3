@@ -59,7 +59,7 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
             GeneralUtility::makeInstance(Context::class)->setAspect('typoscript', GeneralUtility::makeInstance(TypoScriptAspect::class, true));
             $request = $request->withAttribute('noCache', true);
         }
-        $this->getTimeTracker()->LR = (bool)$this->getConfigurationOption('LR');
+        $this->getTimeTracker()->LR = $this->getConfigurationOption('LR');
         return $request;
     }
 
