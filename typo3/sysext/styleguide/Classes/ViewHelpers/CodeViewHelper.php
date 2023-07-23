@@ -38,6 +38,7 @@ class CodeViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('language', 'string', 'the language identifier, e.g. html, php, etc.', true);
         $this->registerArgument('codeonly', 'bool', 'if true show only the code but not the example', false, false);
+        $this->registerArgument('exampleonly', 'bool', 'if true show only the example but not the code', false, false);
     }
 
     public function render(): string
@@ -65,13 +66,15 @@ class CodeViewHelper extends AbstractViewHelper
             $markup[] = $content;
             $markup[] = '</div>';
         }
-        $markup[] = '<div class="example code">';
-        $markup[] = '<pre>';
-        $markup[] = '<code class="language-' . htmlspecialchars($this->arguments['language']) . '">';
-        $markup[] = htmlspecialchars($content);
-        $markup[] = '</code>';
-        $markup[] = '</pre>';
-        $markup[] = '</div>';
+        if (!$this->arguments['exampleonly']) {
+            $markup[] = '<div class="example code">';
+            $markup[] = '<pre>';
+            $markup[] = '<code class="language-' . htmlspecialchars($this->arguments['language']) . '">';
+            $markup[] = htmlspecialchars($content);
+            $markup[] = '</code>';
+            $markup[] = '</pre>';
+            $markup[] = '</div>';
+        }
         return implode('', $markup);
     }
 }

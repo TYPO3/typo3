@@ -36,6 +36,9 @@
 			<trans-unit id="typography" xml:space="preserve">
 				<source>Typography</source>
 			</trans-unit>
+			<trans-unit id="cards" xml:space="preserve">
+				<source>Cards</source>
+			</trans-unit>
 			<trans-unit id="colors" xml:space="preserve">
 				<source>Colors</source>
 			</trans-unit>

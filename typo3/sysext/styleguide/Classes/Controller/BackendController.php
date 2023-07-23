@@ -53,6 +53,7 @@ class BackendController
         'trees',
         'tab',
         'tables',
+        'cards',
         'avatar',
         'buttons',
         'infobox',
@@ -215,6 +216,19 @@ class BackendController
             'currentAction' => 'tables',
         ]);
         return $moduleTemplate->renderResponse('Backend/Tables');
+    }
+
+    private function cardsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'cards');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'cards',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Cards');
     }
 
     private function frontendCreateAction(): ResponseInterface
