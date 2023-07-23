@@ -127,9 +127,15 @@ class ValidatorResolver implements SingletonInterface
                 // The outer simpleType check reduces lookups to the class loader
                 // @todo: Whether the property holds a simple type or not and whether it holds a collection is known in
                 //        in the ClassSchema. The information could be made available and not evaluated here again.
-                if (TypeHandlingUtility::isCollectionType($propertyTargetClassName)) {
+                $primaryCollectionValueType = $property->getPrimaryCollectionValueType();
+                if ($primaryType->isCollection() && $primaryCollectionValueType instanceof Type) {
                     /** @var CollectionValidator $collectionValidator */
-                    $collectionValidator = $this->createValidator(CollectionValidator::class, ['elementType' => $property->getElementType()]);
+                    $collectionValidator = $this->createValidator(
+                        CollectionValidator::class,
+                        [
+                            'elementType' => $primaryCollectionValueType->getClassName() ?? $primaryCollectionValueType->getBuiltinType(),
+                        ]
+                    );
                     $objectValidator->addPropertyValidator($property->getName(), $collectionValidator);
                 } elseif (class_exists($propertyTargetClassName)
                     && !TypeHandlingUtility::isCoreType($propertyTargetClassName)

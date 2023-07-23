@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidDataTypeException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException;
@@ -100,8 +101,9 @@ class ObjectConverter extends AbstractTypeConverter
                 throw new InvalidTargetException('Setter for property "' . $propertyName . '" had no type hint or documentation in target object of type "' . $targetType . '".', 1303379158);
             }
             $property = $classSchema->getProperty($propertyName);
-            if ($property->getElementType() !== null) {
-                return $methodParameter->getType() . '<' . $property->getElementType() . '>';
+            $primaryCollectionValueType = $property->getPrimaryCollectionValueType();
+            if ($primaryCollectionValueType instanceof Type) {
+                return $methodParameter->getType() . '<' . ($primaryCollectionValueType->getClassName() ?? $primaryCollectionValueType->getBuiltinType()) . '>';
             }
             return $methodParameter->getType();
         }

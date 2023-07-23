@@ -101,6 +101,15 @@ class Property
         return $this->getFilteredTypes(fn (Type $type) => $type->getClassName() !== LazyLoadingProxy::class)[0] ?? null;
     }
 
+    public function getPrimaryCollectionValueType(): ?Type
+    {
+        if (!$this->getPrimaryType()->isCollection()) {
+            return null;
+        }
+
+        return $this->getPrimaryType()->getCollectionValueTypes()[0] ?? null;
+    }
+
     /**
      * @return list<Type>
      */
@@ -121,33 +130,6 @@ class Property
         );
 
         return $filteredTypes !== [];
-    }
-
-    /**
-     * If the property is a collection of one of the types defined in
-     * \TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::$collectionTypes,
-     * the element type is evaluated and represents the type of collection
-     * items inside the collection.
-     *
-     * Returns null if the property is not a collection and therefore no element type is defined.
-     *
-     * @return non-empty-string|null
-     *
-     * @deprecated since v12, will be removed in v13.
-     */
-    public function getElementType(): ?string
-    {
-        $primaryType = $this->getPrimaryType();
-        if ($primaryType === null) {
-            return null;
-        }
-
-        if (!$primaryType->isCollection() || $primaryType->getCollectionValueTypes() === []) {
-            return null;
-        }
-
-        $primaryCollectionValueType = $primaryType->getCollectionValueTypes()[0];
-        return $primaryCollectionValueType->getClassName() ?? $primaryCollectionValueType->getBuiltinType();
     }
 
     public function isPublic(): bool

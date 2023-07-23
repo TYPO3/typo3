@@ -40,7 +40,7 @@ class Model extends AbstractEntity
     protected $bar;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Model>
      */
     protected $baz;
 
