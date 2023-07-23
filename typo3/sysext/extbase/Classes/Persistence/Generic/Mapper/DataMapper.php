@@ -657,11 +657,6 @@ class DataMapper
             return $this->getEmptyRelationValue($parentObject, $propertyName);
         }
 
-        $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-        if ($this->persistenceSession->hasIdentifier((string)$fieldValue, $property->getType())) {
-            return $this->persistenceSession->getObjectByIdentifier((string)$fieldValue, $property->getType());
-        }
-
         $primaryType = $this->reflectionService
             ->getClassSchema(get_class($parentObject))
             ->getProperty($propertyName)

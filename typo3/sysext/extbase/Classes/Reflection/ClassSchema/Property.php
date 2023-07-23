@@ -67,21 +67,6 @@ class Property
     }
 
     /**
-     * Returns the type (string, integer, ...) set by the `@var` doc comment and php property type declarations
-     *
-     * Returns null if type could not be evaluated
-     *
-     * @return non-empty-string|null
-     *
-     * @deprecated since v12, will be removed in v13.
-     */
-    public function getType(): ?string
-    {
-        $primaryType = $this->getTypes()[0] ?? null;
-        return $primaryType?->getClassName() ?? $primaryType?->getBuiltinType();
-    }
-
-    /**
      * Returns the types (string, integer, ...) set by the `@var` doc comment and php property type declarations
      *
      * Returns empty array if types could not be evaluated
