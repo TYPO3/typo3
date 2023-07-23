@@ -101,13 +101,12 @@ class BackendUserRepository extends Repository
             $constraints[] = $query->logicalNot($query->equals('lastlogin', 0));
         }
         // In backend user group
-        // @TODO: Refactor for real n:m relations
         if ($demand->getBackendUserGroup()) {
             $constraints[] = $query->logicalOr(
-                $query->equals('usergroup', (int)$demand->getBackendUserGroup()),
-                $query->like('usergroup', (int)$demand->getBackendUserGroup() . ',%'),
-                $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()),
-                $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup() . ',%'),
+                $query->equals('usergroup', $demand->getBackendUserGroup()),
+                $query->like('usergroup', $demand->getBackendUserGroup() . ',%'),
+                $query->like('usergroup', '%,' . $demand->getBackendUserGroup()),
+                $query->like('usergroup', '%,' . $demand->getBackendUserGroup() . ',%'),
             );
         }
         $query->matching($query->logicalAnd(...$constraints));
