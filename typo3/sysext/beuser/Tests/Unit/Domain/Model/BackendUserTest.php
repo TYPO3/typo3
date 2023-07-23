@@ -99,4 +99,73 @@ final class BackendUserTest extends UnitTestCase
         $this->subject->setIsAdministrator(false);
         self::assertFalse($this->subject->getIsAdministrator(), 'Admin status is not false, after setting to false.');
     }
+
+    public static function isActiveConditionsFulfilledDataProvider(): array
+    {
+        return [
+            'enabled user, no start- and endtime' => [
+                null,
+                null,
+            ],
+            'enabled user, starttime in past and no endtime' => [
+                (new \DateTime())->modify('-10 days'),
+                null,
+            ],
+            'enabled user, no starttime and endtime in future' => [
+                null,
+                (new \DateTime())->modify('+10 days'),
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider isActiveConditionsFulfilledDataProvider
+     */
+    public function isActiveForActiveConditionsFulfilledReturnsTrue(
+        ?\DateTime $startDateTime,
+        ?\DateTime $endDateTime
+    ): void {
+        $this->subject->setStartDateAndTime($startDateTime);
+        $this->subject->setEndDateAndTime($endDateTime);
+
+        self::assertTrue($this->subject->isActive());
+    }
+
+    public static function isActiveConditionsNotFulfilledDataProvider(): array
+    {
+        return [
+            'disabled user, no start- and endtime' => [
+                true,
+                null,
+                null,
+            ],
+            'enabled user, starttime in future and no endtime' => [
+                false,
+                (new \DateTime())->modify('+10 days'),
+                null,
+            ],
+            'enabled user, no starttime and endtime in past' => [
+                false,
+                null,
+                (new \DateTime())->modify('-10 days'),
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider isActiveConditionsNotFulfilledDataProvider
+     */
+    public function isActiveReturnsExpectedActiveState(
+        bool $disabled,
+        ?\DateTime $startDateTime,
+        ?\DateTime $endDateTime
+    ): void {
+        $this->subject->setIsDisabled($disabled);
+        $this->subject->setStartDateAndTime($startDateTime);
+        $this->subject->setEndDateAndTime($endDateTime);
+
+        self::assertFalse($this->subject->isActive());
+    }
 }

@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -46,6 +47,7 @@ final class SwitchUserViewHelper extends AbstractTagBasedViewHelper
 
     public function render(): string
     {
+        /** @var BackendUser $targetUser */
         $targetUser = $this->arguments['backendUser'];
         $currentUser = self::getBackendUserAuthentication();
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);

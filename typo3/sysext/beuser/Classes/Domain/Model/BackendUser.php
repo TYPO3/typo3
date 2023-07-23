@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -29,140 +31,85 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class BackendUser extends AbstractEntity
 {
     /**
-     * @var string
      * @Extbase\Validate("NotEmpty")
      */
-    protected $userName = '';
+    protected string $userName = '';
 
     /**
      * @var ObjectStorage<BackendUserGroup>
      */
-    protected $backendUserGroups;
+    protected ObjectStorage $backendUserGroups;
 
     /**
      * Comma separated list of uids in multi-select
      * Might retrieve the labels from TCA/DataMapper
-     *
-     * @var string
      */
-    protected $allowedLanguages = '';
+    protected string $allowedLanguages = '';
 
-    /**
-     * @var string
-     */
-    protected $dbMountPoints = '';
+    protected string $dbMountPoints = '';
+    protected string $description = '';
+    protected string $fileMountPoints = '';
+    protected bool $isAdministrator = false;
+    protected bool $isDisabled = false;
+    protected ?\DateTime $startDateAndTime = null;
+    protected ?\DateTime $endDateAndTime = null;
+    protected string $email = '';
+    protected string $realName = '';
+    protected ?\DateTime $lastLoginDateAndTime = null;
 
-    /**
-     * @var string
-     */
-    protected $description = '';
+    public function __construct()
+    {
+        $this->initializeObject();
+    }
 
-    /**
-     * @var string
-     */
-    protected $fileMountPoints = '';
+    public function initializeObject(): void
+    {
+        $this->backendUserGroups = new ObjectStorage();
+    }
 
-    /**
-     * @var bool
-     */
-    protected $isAdministrator = false;
-
-    /**
-     * @var bool
-     */
-    protected $isDisabled = false;
-
-    /**
-     * @var \DateTime|null
-     */
-    protected $startDateAndTime;
-
-    /**
-     * @var \DateTime|null
-     */
-    protected $endDateAndTime;
-
-    /**
-     * @var string
-     */
-    protected $email = '';
-
-    /**
-     * @var string
-     */
-    protected $realName = '';
-
-    /**
-     * @var \DateTime|null
-     */
-    protected $lastLoginDateAndTime;
-
-    /**
-     * @param string $allowedLanguages
-     */
-    public function setAllowedLanguages($allowedLanguages)
+    public function setAllowedLanguages(string $allowedLanguages): void
     {
         $this->allowedLanguages = $allowedLanguages;
     }
 
-    /**
-     * @return string
-     */
-    public function getAllowedLanguages()
+    public function getAllowedLanguages(): string
     {
         return $this->allowedLanguages;
     }
 
-    /**
-     * @param string $dbMountPoints
-     */
-    public function setDbMountPoints($dbMountPoints)
+    public function setDbMountPoints(string $dbMountPoints): void
     {
         $this->dbMountPoints = $dbMountPoints;
     }
 
-    /**
-     * @return string
-     */
-    public function getDbMountPoints()
+    public function getDbMountPoints(): string
     {
         return $this->dbMountPoints;
     }
 
-    /**
-     * @param string $fileMountPoints
-     */
-    public function setFileMountPoints($fileMountPoints)
+    public function setFileMountPoints(string $fileMountPoints): void
     {
         $this->fileMountPoints = $fileMountPoints;
     }
 
-    /**
-     * @return string
-     */
-    public function getFileMountPoints()
+    public function getFileMountPoints(): string
     {
         return $this->fileMountPoints;
     }
 
     /**
      * Check if user is active, not disabled
-     *
-     * @return bool
      */
-    public function isActive()
+    public function isActive(): bool
     {
         if ($this->getIsDisabled()) {
             return false;
         }
         $now = new \DateTime('now');
-        return !$this->getStartDateAndTime() && !$this->getEndDateAndTime() || $this->getStartDateAndTime() <= $now && (!$this->getEndDateAndTime() || $this->getEndDateAndTime() > $now);
+        return (!$this->getStartDateAndTime() && !$this->getEndDateAndTime()) || ($this->getStartDateAndTime() <= $now && (!$this->getEndDateAndTime() || $this->getEndDateAndTime() > $now));
     }
 
-    /**
-     * @param ObjectStorage<BackendUserGroup> $backendUserGroups
-     */
-    public function setBackendUserGroups($backendUserGroups)
+    public function setBackendUserGroups(ObjectStorage $backendUserGroups): void
     {
         $this->backendUserGroups = $backendUserGroups;
     }
@@ -170,17 +117,15 @@ class BackendUser extends AbstractEntity
     /**
      * @return ObjectStorage<BackendUserGroup>
      */
-    public function getBackendUserGroups()
+    public function getBackendUserGroups(): ObjectStorage
     {
         return $this->backendUserGroups;
     }
 
     /**
      * Check if user is currently logged in
-     *
-     * @return bool
      */
-    public function isCurrentlyLoggedIn()
+    public function isCurrentlyLoggedIn(): bool
     {
         return $this->getUid() === (int)($this->getBackendUser()->user['uid'] ?? 0);
     }
@@ -200,178 +145,92 @@ class BackendUser extends AbstractEntity
             && ($this->getBackendUser()->getTSConfig()['options.']['passwordReset'] ?? true);
     }
 
-    /**
-     * Gets the user name.
-     *
-     * @return string the user name, will not be empty
-     */
-    public function getUserName()
+    public function getUserName(): string
     {
         return $this->userName;
     }
 
-    /**
-     * Sets the user name.
-     *
-     * @param string $userName the user name to set, must not be empty
-     */
-    public function setUserName($userName)
+    public function setUserName(string $userName): void
     {
         $this->userName = $userName;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * Checks whether this user is an administrator.
-     *
-     * @return bool whether this user is an administrator
-     */
-    public function getIsAdministrator()
+    public function getIsAdministrator(): bool
     {
         return $this->isAdministrator;
     }
 
-    /**
-     * Sets whether this user should be an administrator.
-     *
-     * @param bool $isAdministrator whether this user should be an administrator
-     */
-    public function setIsAdministrator($isAdministrator)
+    public function setIsAdministrator(bool $isAdministrator): void
     {
         $this->isAdministrator = $isAdministrator;
     }
 
-    /**
-     * Checks whether this user is disabled.
-     *
-     * @return bool whether this user is disabled
-     */
-    public function getIsDisabled()
+    public function getIsDisabled(): bool
     {
         return $this->isDisabled;
     }
 
-    /**
-     * Sets whether this user is disabled.
-     *
-     * @param bool $isDisabled whether this user is disabled
-     */
-    public function setIsDisabled($isDisabled)
+    public function setIsDisabled(bool $isDisabled): void
     {
         $this->isDisabled = $isDisabled;
     }
 
-    /**
-     * Returns the point in time from which this user is enabled.
-     *
-     * @return \DateTime|null the start date and time
-     */
-    public function getStartDateAndTime()
+    public function getStartDateAndTime(): ?\DateTime
     {
         return $this->startDateAndTime;
     }
 
-    /**
-     * Sets the point in time from which this user is enabled.
-     *
-     * @param \DateTime|null $dateAndTime the start date and time
-     */
-    public function setStartDateAndTime(\DateTime $dateAndTime = null)
+    public function setStartDateAndTime(\DateTime $dateAndTime = null): void
     {
         $this->startDateAndTime = $dateAndTime;
     }
 
-    /**
-     * Returns the point in time before which this user is enabled.
-     *
-     * @return \DateTime|null the end date and time
-     */
-    public function getEndDateAndTime()
+    public function getEndDateAndTime(): ?\DateTime
     {
         return $this->endDateAndTime;
     }
 
-    /**
-     * Sets the point in time before which this user is enabled.
-     *
-     * @param \DateTime|null $dateAndTime the end date and time
-     */
-    public function setEndDateAndTime(\DateTime $dateAndTime = null)
+    public function setEndDateAndTime(\DateTime $dateAndTime = null): void
     {
         $this->endDateAndTime = $dateAndTime;
     }
 
-    /**
-     * Gets the e-mail address of this user.
-     *
-     * @return string the e-mail address, might be empty
-     */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * Sets the e-mail address of this user.
-     *
-     * @param string $email the e-mail address, may be empty
-     */
-    public function setEmail($email)
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * Returns this user's real name.
-     *
-     * @return string the real name. might be empty
-     */
-    public function getRealName()
+    public function getRealName(): string
     {
         return $this->realName;
     }
 
-    /**
-     * Sets this user's real name.
-     *
-     * @param string $name the user's real name, may be empty.
-     */
-    public function setRealName($name)
+    public function setRealName(string $name): void
     {
         $this->realName = $name;
     }
 
-    /**
-     * Gets this user's last login date and time.
-     *
-     * @return \DateTime|null this user's last login date and time, will be NULL if this user has never logged in before
-     */
-    public function getLastLoginDateAndTime()
+    public function getLastLoginDateAndTime(): ?\DateTime
     {
         return $this->lastLoginDateAndTime;
     }
 
-    /**
-     * Sets this user's last login date and time.
-     *
-     * @param \DateTime|null $dateAndTime this user's last login date and time
-     */
-    public function setLastLoginDateAndTime(\DateTime $dateAndTime = null)
+    public function setLastLoginDateAndTime(\DateTime $dateAndTime = null): void
     {
         $this->lastLoginDateAndTime = $dateAndTime;
     }

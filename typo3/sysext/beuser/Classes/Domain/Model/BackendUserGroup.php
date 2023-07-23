@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -25,87 +27,62 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class BackendUserGroup extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $title;
-
-    /**
-     * @var string
-     */
-    protected $description;
-
-    /**
-     * @var bool
-     */
-    protected $hidden;
+    protected string $title = '';
+    protected string $description = '';
+    protected bool $hidden = false;
 
     /**
      * @var ObjectStorage<BackendUserGroup>
      * @Extbase\ORM\Lazy
      */
-    protected $subGroups;
+    protected ObjectStorage $subGroups;
 
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function __construct()
+    {
+        $this->initializeObject();
+    }
+
+    public function initializeObject(): void
+    {
+        $this->subGroups = new ObjectStorage();
+    }
+
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @param bool $hidden
-     */
-    public function setHidden($hidden)
+    public function setHidden(bool $hidden): void
     {
         $this->hidden = $hidden;
     }
 
-    /**
-     * @return bool
-     */
-    public function getHidden()
+    public function getHidden(): bool
     {
         return $this->hidden;
     }
 
-    /**
-     * @param ObjectStorage<BackendUserGroup> $subGroups
-     */
-    public function setSubGroups($subGroups)
+    public function setSubGroups(ObjectStorage $subGroups): void
     {
         $this->subGroups = $subGroups;
     }
 
-    /**
-     * @return ObjectStorage<BackendUserGroup>
-     */
-    public function getSubGroups()
+    public function getSubGroups(): ObjectStorage
     {
         return $this->subGroups;
     }
