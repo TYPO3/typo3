@@ -80,4 +80,47 @@ final class IconTest extends UnitTestCase
     {
         self::assertTrue($this->subject->getState()->equals(IconState::STATE_DISABLED));
     }
+
+    public static function setSizeSetsExpectedValuesDataProvider(): \Generator
+    {
+        yield 'SIZE_DEFAULT' => [
+            Icon::SIZE_DEFAULT,
+            [16, 16],
+        ];
+        yield 'SIZE_SMALL' => [
+            Icon::SIZE_DEFAULT,
+            [16, 16],
+        ];
+        yield 'SIZE_OVERLAY' => [
+            Icon::SIZE_OVERLAY,
+            [16, 16],
+        ];
+        yield 'SIZE_MEDIUM' => [
+            Icon::SIZE_MEDIUM,
+            [32, 32],
+        ];
+        yield 'SIZE_LARGE' => [
+            Icon::SIZE_LARGE,
+            [48, 48],
+        ];
+        yield 'SIZE_MEGA' => [
+            Icon::SIZE_MEGA,
+            [64, 64],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider setSizeSetsExpectedValuesDataProvider
+     */
+    public function setSizeSetsExpectedValues(string $size, array $expectedDimensions): void
+    {
+        $icon = new Icon();
+        $icon->setSize($size);
+
+        [$width, $height] = $expectedDimensions;
+
+        self::assertSame($width, $icon->getDimension()->getWidth());
+        self::assertSame($height, $icon->getDimension()->getHeight());
+    }
 }
