@@ -133,7 +133,7 @@ export class FileStorageBrowser extends LitElement {
           </div>
         </div>
         <div class="svg-tree-loader">
-          <typo3-backend-icon identifier="spinner-circle-light" size="large"></typo3-backend-icon>
+          <typo3-backend-icon identifier="spinner-circle" size="large"></typo3-backend-icon>
         </div>
       </div>
     `;

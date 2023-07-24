@@ -742,7 +742,7 @@ export class SvgTree extends LitElement {
   protected render(): TemplateResult {
     return html`
       <div class="node-loader">
-        <typo3-backend-icon identifier="spinner-circle-light" size="small"></typo3-backend-icon>
+        <typo3-backend-icon identifier="spinner-circle" size="small"></typo3-backend-icon>
       </div>
       <svg version="1.1"
            direction="ltr"

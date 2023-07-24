@@ -142,7 +142,7 @@ class Localization {
             '',
             SeverityEnum.info,
             ($slide: JQuery): void => {
-              Icons.getIcon('spinner-circle-dark', Icons.sizes.large).then((markup: string): void => {
+              Icons.getIcon('spinner-circle', Icons.sizes.large).then((markup: string): void => {
                 $slide.html('<div class="text-center">' + markup + '</div>');
 
                 this.loadAvailableLanguages(
@@ -197,7 +197,7 @@ class Localization {
             TYPO3.lang['localize.view.summary'],
             '',
             SeverityEnum.info, ($slide: JQuery): void => {
-              Icons.getIcon('spinner-circle-dark', Icons.sizes.large).then((markup: string): void => {
+              Icons.getIcon('spinner-circle', Icons.sizes.large).then((markup: string): void => {
                 $slide.html('<div class="text-center">' + markup + '</div>');
               });
               this.getSummary(

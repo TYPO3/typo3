@@ -34,6 +34,7 @@ import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import ClientStorage f
           display: inline-flex;
           overflow: hidden;
           white-space: nowrap;
+          color: var(--icon-color-primary);
           height: var(--icon-size, 1em);
           width: var(--icon-size, 1em);
           line-height: var(--icon-size, 1em);
@@ -68,10 +69,6 @@ import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import ClientStorage f
           height: 68.75%;
           width: 68.75%;
           text-align: center
-        }
-
-        .icon-color {
-          fill: var(--icon-color-primary)
         }
 
         .icon-spin .icon-markup {

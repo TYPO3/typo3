@@ -491,7 +491,7 @@ export default (function() {
       if (button !== null) {
         button.disabled = true;
 
-        Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then(function (markup: string) {
+        Icons.getIcon('spinner-circle', Icons.sizes.small).then(function (markup: string) {
           button.querySelector('.t3js-icon').outerHTML = markup;
         });
       }

@@ -96,7 +96,7 @@ const configuration: Configuration = {
     buttonStructureNewPage: 'treeNewPageBottom',
     iconMailform: 'content-form',
     iconSave: 'actions-document-save',
-    iconSaveSpinner: 'spinner-circle-dark',
+    iconSaveSpinner: 'spinner-circle',
     inspectorSection: 'inspectorSection',
     moduleLoadingIndicator: 'moduleLoadingIndicator',
     moduleWrapper: 'moduleWrapper',

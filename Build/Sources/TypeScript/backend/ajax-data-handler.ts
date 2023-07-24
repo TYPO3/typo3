@@ -287,7 +287,7 @@ class AjaxDataHandler {
    * Replace the given icon with a spinner icon
    */
   private _showSpinnerIcon(iconElement: Element): void {
-    Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then((icon: string): void => {
+    Icons.getIcon('spinner-circle', Icons.sizes.small).then((icon: string): void => {
       iconElement.replaceWith(document.createRange().createContextualFragment(icon));
     });
   }

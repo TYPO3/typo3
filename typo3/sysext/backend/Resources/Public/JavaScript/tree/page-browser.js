@@ -25,7 +25,7 @@ var __decorate=function(e,t,n,r){var i,o=arguments.length,s=o<3?t:null===r?r=Obj
           ${this.renderLoader()}
         `))}renderLoader(){return html`
       <div class="svg-tree-loader">
-        <typo3-backend-icon identifier="spinner-circle-light" size="large"></typo3-backend-icon>
+        <typo3-backend-icon identifier="spinner-circle" size="large"></typo3-backend-icon>
       </div>
     `}unsetTemporaryMountPoint(){this.mountPointPath=null,Persistent.unset("pageTree_temporaryMountPoint").then((()=>{this.tree.refreshTree()}))}renderMountPoint(){return null===this.mountPointPath?nothing:html`
       <div class="node-mount-point">

@@ -3318,6 +3318,12 @@
       "svg": "svgs/form/form-finisher.svg",
       "sprite": "sprites/form.svg#form-finisher"
     },
+    "form-gridcolumn": {
+      "identifier": "form-gridcolumn",
+      "category": "form",
+      "svg": "svgs/form/form-gridcolumn.svg",
+      "sprite": "sprites/form.svg#form-gridcolumn"
+    },
     "form-gridcontainer": {
       "identifier": "form-gridcontainer",
       "category": "form",
@@ -4470,18 +4476,6 @@
       "svg": "svgs/overlay/overlay-warning.svg",
       "sprite": "sprites/overlay.svg#overlay-warning"
     },
-    "spinner-circle-dark": {
-      "identifier": "spinner-circle-dark",
-      "category": "spinner",
-      "svg": "svgs/spinner/spinner-circle-dark.svg",
-      "sprite": "sprites/spinner.svg#spinner-circle-dark"
-    },
-    "spinner-circle-light": {
-      "identifier": "spinner-circle-light",
-      "category": "spinner",
-      "svg": "svgs/spinner/spinner-circle-light.svg",
-      "sprite": "sprites/spinner.svg#spinner-circle-light"
-    },
     "spinner-circle": {
       "identifier": "spinner-circle",
       "category": "spinner",
@@ -4685,6 +4679,9 @@
     "actions-variable-select": "actions-variable-add",
     "information-application-context": "actions-window-cog",
     "empty-empty": "miscellaneous-placeholder",
-    "module-templates": "module-template"
+    "module-templates": "module-template",
+    "module-tstemplate": "module-tsconfig",
+    "spinner-circle-light": "spinner-circle",
+    "spinner-circle-dark": "spinner-circle"
   }
 }

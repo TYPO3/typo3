@@ -70,7 +70,7 @@ class ClearCache {
         const id = parseInt(me.dataset.id, 10);
         ClearCache.setDisabled(me, true);
 
-        Icons.getIcon('spinner-circle-dark', Icons.sizes.small, null, 'disabled').then((icon: string): void => {
+        Icons.getIcon('spinner-circle', Icons.sizes.small, null, 'disabled').then((icon: string): void => {
           me.querySelector(Identifiers.icon).outerHTML = icon;
         });
 
