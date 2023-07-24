@@ -96,7 +96,7 @@ class ElementInformationController
                 } else {
                     $this->row = BackendUtility::getRecordWSOL($this->table, $uid);
                     if ($this->row) {
-                        if (!empty($this->row['t3ver_oid'])) {
+                        if (isset($this->row['_ORIG_uid'])) {
                             // Make $uid the uid of the versioned record, while $this->row['uid'] is live record uid
                             $uid = (int)$this->row['_ORIG_uid'];
                         }
