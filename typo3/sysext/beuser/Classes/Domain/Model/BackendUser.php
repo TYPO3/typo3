@@ -357,46 +357,6 @@ class BackendUser extends AbstractEntity
     }
 
     /**
-     * Checks whether this user is currently activated.
-     *
-     * This function takes the "disabled" flag, the start date/time and the end date/time into account.
-     *
-     * @return bool whether this user is currently activated
-     */
-    public function isActivated()
-    {
-        return !$this->getIsDisabled() && $this->isActivatedViaStartDateAndTime() && $this->isActivatedViaEndDateAndTime();
-    }
-
-    /**
-     * Checks whether this user is activated as far as the start date and time is concerned.
-     *
-     * @return bool whether this user is activated as far as the start date and time is concerned
-     */
-    protected function isActivatedViaStartDateAndTime()
-    {
-        if ($this->getStartDateAndTime() === null) {
-            return true;
-        }
-        $now = new \DateTime('now');
-        return $this->getStartDateAndTime() <= $now;
-    }
-
-    /**
-     * Checks whether this user is activated as far as the end date and time is concerned.
-     *
-     * @return bool whether this user is activated as far as the end date and time is concerned
-     */
-    protected function isActivatedViaEndDateAndTime()
-    {
-        if ($this->getEndDateAndTime() === null) {
-            return true;
-        }
-        $now = new \DateTime('now');
-        return $now <= $this->getEndDateAndTime();
-    }
-
-    /**
      * Gets this user's last login date and time.
      *
      * @return \DateTime|null this user's last login date and time, will be NULL if this user has never logged in before
