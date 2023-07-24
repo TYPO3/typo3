@@ -160,9 +160,13 @@ class ExtensionManagementService implements SingletonInterface
     /**
      * Install the extension
      *
-     * @return bool|array Returns FALSE if dependencies cannot be resolved, otherwise array with installation information
+     * @return array{
+     *     downloaded?: array<string, Extension>,
+     *     updated?: array<string, Extension>,
+     *     installed?: array<string, string>,
+     * }|false Returns FALSE if dependencies cannot be resolved, otherwise array with installation information
      */
-    public function installExtension(Extension $extension)
+    public function installExtension(Extension $extension): array|false
     {
         $this->downloadMainExtension($extension);
         if (!$this->checkDependencies($extension)) {
@@ -275,9 +279,9 @@ class ExtensionManagementService implements SingletonInterface
      * This is not strictly necessary but cleaner all in all
      *
      * @param Extension[] $updateQueue
-     * @return array
+     * @return array{updated?: array<string, Extension>}
      */
-    protected function uninstallDependenciesToBeUpdated(array $updateQueue)
+    protected function uninstallDependenciesToBeUpdated(array $updateQueue): array
     {
         $resolvedDependencies = [];
         foreach ($updateQueue as $extensionToUpdate) {
@@ -290,9 +294,9 @@ class ExtensionManagementService implements SingletonInterface
     /**
      * Install dependent extensions
      *
-     * @return array
+     * @return array{installed?: array<string, string>}
      */
-    protected function installDependencies(array $installQueue)
+    protected function installDependencies(array $installQueue): array
     {
         if (empty($installQueue)) {
             return [];
@@ -314,9 +318,9 @@ class ExtensionManagementService implements SingletonInterface
      * expects an array of extension objects to download
      *
      * @param Extension[] $downloadQueue
-     * @return array
+     * @return array{downloaded?: array<string, Extension>}
      */
-    protected function downloadDependencies(array $downloadQueue)
+    protected function downloadDependencies(array $downloadQueue): array
     {
         $resolvedDependencies = [];
         foreach ($downloadQueue as $extensionToDownload) {
