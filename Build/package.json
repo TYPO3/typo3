@@ -139,7 +139,7 @@
     "@lit/reactive-element": "^1.6.1",
     "@lodder/grunt-postcss": "^3.1.1",
     "@popperjs/core": "^2.11.6",
-    "@typo3/icons": "^3.6.0",
+    "@typo3/icons": "^4.0.0",
     "autosize": "^6.0.1",
     "bootstrap": "^5.3.0",
     "chart.js": "^4.2.1",

@@ -101,7 +101,7 @@ class SystemInformationMenu {
       this.timer = null;
     }
 
-    Icons.getIcon('spinner-circle-light', Icons.sizes.small).then((spinner: string): void => {
+    Icons.getIcon('spinner-circle', Icons.sizes.small).then((spinner: string): void => {
       toolbarItemIcon.replaceWith(document.createRange().createContextualFragment(spinner));
     });
 

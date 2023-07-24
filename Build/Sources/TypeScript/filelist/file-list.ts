@@ -310,7 +310,7 @@ export default class Filelist {
     const targetContent: string | null = button?.innerHTML;
     if (button) {
       button.setAttribute('disabled', 'disabled');
-      Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then((spinner: string): void => {
+      Icons.getIcon('spinner-circle', Icons.sizes.small).then((spinner: string): void => {
         button.innerHTML = spinner;
       });
     }

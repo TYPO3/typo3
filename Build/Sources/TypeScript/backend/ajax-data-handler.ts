@@ -270,7 +270,7 @@ class AjaxDataHandler {
    * @private
    */
   private _showSpinnerIcon($iconElement: JQuery): void {
-    Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then((icon: string): void => {
+    Icons.getIcon('spinner-circle', Icons.sizes.small).then((icon: string): void => {
       $iconElement.replaceWith(icon);
     });
   }

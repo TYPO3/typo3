@@ -86,7 +86,7 @@ class Wizard {
       };
     }
 
-    return Icons.getIcon('spinner-circle-dark', Icons.sizes.large, null, null).then((markup: string) => {
+    return Icons.getIcon('spinner-circle', Icons.sizes.large, null, null).then((markup: string) => {
       const $processingSlide = $('<div />', { class: 'text-center' }).append(markup);
       this.addSlide(
         'final-processing-slide', top.TYPO3.lang['wizard.processing.title'],
