@@ -148,7 +148,7 @@ class Repository {
         successMessage += '\n' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.header'] + ': ';
         for (const [index, value] of Object.entries(data.result)) {
           successMessage += '\n\n' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.item'] + ' ' + index + ': ';
-          for (const extkey of value) {
+          for (const extkey of Object.keys(value)) {
             successMessage += '\n* ' + extkey;
           }
         }

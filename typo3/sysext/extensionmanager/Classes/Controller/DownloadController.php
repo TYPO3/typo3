@@ -281,7 +281,14 @@ class DownloadController extends AbstractController
      * Install an extension from TER
      * Downloads the extension, resolves dependencies and installs it
      *
-     * @return array{0: bool, 1: array<string, array<int, array{code: int, message: string}>>}
+     * @return array{
+     *     0: array{
+         *     downloaded?: array<string, Extension>,
+         *     updated?: array<string, Extension>,
+         *     installed?: array<string, string>,
+         * }|false,
+     *     1: array<string, array<int, array{code: int, message: string}>>,
+     * }
      */
     protected function installFromTer(Extension $extension, string $downloadPath = 'Local'): array
     {
