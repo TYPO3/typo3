@@ -47,6 +47,11 @@ class Icon
     public const SIZE_LARGE = 'large'; // 48px
 
     /**
+     * @var string the mega size
+     */
+    public const SIZE_MEGA = 'mega'; // 64px
+
+    /**
      * @internal
      * @var string the overlay size, which depends on icon size
      */

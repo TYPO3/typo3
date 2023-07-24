@@ -40,6 +40,9 @@ class Dimension
     public function __construct($size = Icon::SIZE_MEDIUM)
     {
         switch ($size) {
+            case Icon::SIZE_MEGA:
+                $sizeInPixel = 64;
+                break;
             case Icon::SIZE_LARGE:
                 $sizeInPixel = 48;
                 break;
