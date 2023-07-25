@@ -75,6 +75,7 @@ return [
             'runtimeDbQuotingOfTcaConfiguration' => true,
             'security.frontend.htmlSanitizeParseFuncDefault' => true,
             'security.frontend.enforceLoginSigning' => true,
+            'security.frontend.allowInsecureSiteResolutionByQueryParameters' => false,
             'security.backend.htmlSanitizeRte' => false,
             'security.backend.enforceReferrer' => true,
             'yamlImportsFollowDeclarationOrder' => false,

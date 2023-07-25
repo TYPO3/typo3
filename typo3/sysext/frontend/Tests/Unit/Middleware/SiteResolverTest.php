@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -120,6 +121,8 @@ class SiteResolverTest extends UnitTestCase
             ]),
         ]);
 
+        $featuresMock = $this->createFeaturesMock();
+        GeneralUtility::addInstance(Features::class, $featuresMock);
         $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -173,6 +176,8 @@ class SiteResolverTest extends UnitTestCase
             ]),
         ]);
 
+        $featuresMock = $this->createFeaturesMock();
+        GeneralUtility::addInstance(Features::class, $featuresMock);
         $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -263,6 +268,8 @@ class SiteResolverTest extends UnitTestCase
             ]),
         ]);
 
+        $featuresMock = $this->createFeaturesMock();
+        GeneralUtility::addInstance(Features::class, $featuresMock);
         $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -373,6 +380,8 @@ class SiteResolverTest extends UnitTestCase
             ]),
         ]);
 
+        $featuresMock = $this->createFeaturesMock();
+        GeneralUtility::addInstance(Features::class, $featuresMock);
         $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -388,5 +397,17 @@ class SiteResolverTest extends UnitTestCase
             self::assertEquals($expectedLanguageId, $result['language-id']);
             self::assertEquals($expectedBase, $result['language-base']);
         }
+    }
+
+    private function createFeaturesMock(): Features
+    {
+        $mock = $this->getMockBuilder(Features::class)
+            ->onlyMethods(['isFeatureEnabled'])
+            ->getMock();
+        $mock->expects(self::any())
+            ->method('isFeatureEnabled')
+            ->with('security.frontend.allowInsecureSiteResolutionByQueryParameters')
+            ->willReturn(false);
+        return $mock;
     }
 }

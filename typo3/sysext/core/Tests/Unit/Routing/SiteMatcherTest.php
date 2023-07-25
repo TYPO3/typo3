@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Routing;
 
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Routing\SiteRouteResult;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteMatcherTest extends UnitTestCase
@@ -71,6 +73,8 @@ class SiteMatcherTest extends UnitTestCase
                 ],
             ],
         ]);
+        $featuresMock = $this->createFeaturesMock();
+        GeneralUtility::addInstance(Features::class, $featuresMock);
         $finderMock = $this->createSiteFinderMock($site, $secondSite);
         $subject = new SiteMatcher($finderMock);
 
@@ -167,6 +171,8 @@ class SiteMatcherTest extends UnitTestCase
                 ],
             ],
         ]);
+        $featuresMock = $this->createFeaturesMock();
+        GeneralUtility::addInstance(Features::class, $featuresMock);
         $finderMock = $this->createSiteFinderMock($site, $secondSite);
         $subject = new SiteMatcher($finderMock);
 
@@ -248,6 +254,8 @@ class SiteMatcherTest extends UnitTestCase
             ],
         ]);
 
+        $featuresMock = $this->createFeaturesMock();
+        GeneralUtility::addInstance(Features::class, $featuresMock);
         $finderMock = $this->createSiteFinderMock($mainSite, $dkSite, $frSite);
         $subject = new SiteMatcher($finderMock);
 
@@ -257,6 +265,18 @@ class SiteMatcherTest extends UnitTestCase
 
         self::assertSame($expectedSite, $result->getSite()->getIdentifier());
         self::assertSame($expectedLocale, $result->getLanguage()->getLocale());
+    }
+
+    private function createFeaturesMock(): Features
+    {
+        $mock = $this->getMockBuilder(Features::class)
+            ->onlyMethods(['isFeatureEnabled'])
+            ->getMock();
+        $mock->expects(self::any())
+            ->method('isFeatureEnabled')
+            ->with('security.frontend.allowInsecureSiteResolutionByQueryParameters')
+            ->willReturn(false);
+        return $mock;
     }
 
     private function createSiteFinderMock(Site ...$sites): SiteFinder
