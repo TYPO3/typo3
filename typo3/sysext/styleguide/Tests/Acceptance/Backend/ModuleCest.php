@@ -102,10 +102,10 @@ class ModuleCest
 
     private function seeResponse(BackendTester $I, string $message): void
     {
-        $I->seeElement('.t3js-generator-action .icon-spinner-circle-dark');
+        $I->seeElement('.t3js-generator-action .icon-spinner-circle');
         $I->switchToMainFrame();
         $I->waitForText($message, 60, '.alert-message');
         $I->switchToContentFrame();
-        $I->dontSeeElement('.t3js-generator-action .icon-spinner-circle-dark');
+        $I->dontSeeElement('.t3js-generator-action .icon-spinner-circle');
     }
 }

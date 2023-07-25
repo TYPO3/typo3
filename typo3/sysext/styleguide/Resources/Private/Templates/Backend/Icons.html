@@ -103,7 +103,7 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                    <div class="input-group-addon"><core:icon identifier="actions-search" size="default" /></div>
                                     <input type="text" class="form-control input-lg" id="search-field" placeholder="Icon identifier">
                                 </div>
                             </div>
@@ -123,8 +123,8 @@
                         <f:for each="{deprecatedIcons}" key="icon" as="alternativeIcon">
                             <div class="col-md-2 icon-container icon-deprecated-container" data-icon-identifier="{icon}">
                                 <span class="icon-container-icon"><core:icon identifier="{icon}" size="large" /></span>
-                                <span class="icon-container-label"><i class="fa fa-arrow-circle-left"></i> {icon}</span>
-                                <span class="icon-container-label"><i class="fa fa-arrow-circle-right"></i> {alternativeIcon}</span>
+                                <span class="icon-container-label">{icon}</span>
+                                <span class="icon-container-label"><core:icon identifier="actions-arrow-down-right-alt" size="small" /> {alternativeIcon}</span>
                             </div>
                         </f:for>
                     </div>

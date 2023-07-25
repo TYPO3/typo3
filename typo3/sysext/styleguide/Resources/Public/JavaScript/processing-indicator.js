@@ -20,15 +20,15 @@ import Notification from '@typo3/backend/notification.js';
 
 let itemProcessing = 0;
 
-Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then(function(spinner) {
+Icons.getIcon('spinner-circle', Icons.sizes.small).then(function(spinner) {
   document.querySelectorAll('.t3js-generator-action').forEach((button) => {
     let url = button.dataset.href;
     button.addEventListener('click', (e) => {
       e.preventDefault();
-      let originalIcon = button.querySelector('i').outerHTML;
+      let originalIcon = button.querySelector('span').outerHTML;
       let disabledButton = button.parentNode.querySelector('button.disabled');
 
-      e.target.querySelector('i').outerHTML = spinner;
+      e.target.querySelector('span').outerHTML = spinner;
       NProgress.start();
       itemProcessing++
       e.target.classList.add('disabled');
