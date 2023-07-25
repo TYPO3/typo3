@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NullResponse;
@@ -107,8 +109,9 @@ final class SiteResolverTest extends UnitTestCase
                 ],
             ],
         ]));
+        $featuresMock = $this->createFeaturesMock();
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $subject = new SiteResolver(new SiteMatcher($siteFinder, $requestContextFactory));
+        $subject = new SiteResolver(new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory));
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -161,8 +164,9 @@ final class SiteResolverTest extends UnitTestCase
             ]),
         );
 
+        $featuresMock = $this->createFeaturesMock();
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $subject = new SiteResolver(new SiteMatcher($siteFinder, $requestContextFactory));
+        $subject = new SiteResolver(new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory));
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -252,8 +256,9 @@ final class SiteResolverTest extends UnitTestCase
             ]),
         );
 
+        $featuresMock = $this->createFeaturesMock();
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $subject = new SiteResolver(new SiteMatcher($siteFinder, $requestContextFactory));
+        $subject = new SiteResolver(new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory));
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -363,8 +368,9 @@ final class SiteResolverTest extends UnitTestCase
             ]),
         );
 
+        $featuresMock = $this->createFeaturesMock();
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $subject = new SiteResolver(new SiteMatcher($siteFinder, $requestContextFactory));
+        $subject = new SiteResolver(new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory));
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -379,6 +385,18 @@ final class SiteResolverTest extends UnitTestCase
             self::assertEquals($expectedLanguageId, $result['language-id']);
             self::assertEquals($expectedBase, $result['language-base']);
         }
+    }
+
+    private function createFeaturesMock(): MockObject&Features
+    {
+        $mock = $this->getMockBuilder(Features::class)
+            ->onlyMethods(['isFeatureEnabled'])
+            ->getMock();
+        $mock->expects(self::any())
+            ->method('isFeatureEnabled')
+            ->with('security.frontend.allowInsecureSiteResolutionByQueryParameters')
+            ->willReturn(false);
+        return $mock;
     }
 
     private function createSiteFinder(Site ...$sites): SiteFinder

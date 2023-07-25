@@ -273,9 +273,15 @@ final class SlugSiteRequestTest extends AbstractTestCase
     {
         yield 'valid same-site request is redirected' => ['https://website.local/?id=1000&L=0', 307];
         yield 'valid same-site request is processed' => ['https://website.local/?id=1100&L=0', 200];
+        yield 'invalid off-site request with unknown domain is denied' => ['https://otherdomain.website.local/?id=3000&L=0', 404];
+        yield 'invalid off-site request with unknown domain and without L parameter is denied' => ['https://otherdomain.website.local/?id=3000', 404];
     }
 
     /**
+     * For variants, please see `SlugSiteRequestAllowInsecureSiteResolutionByQueryParametersEnabledTest`
+     * and `SlugSiteRequestAllowInsecureSiteResolutionByQueryParametersDisabledTest` which had to be placed
+     * in separate test class files, due to hard limitations of the TYPO3 Testing Framework.
+     *
      * @test
      * @dataProvider siteWithPageIdRequestsAreCorrectlyHandledDataProvider
      */

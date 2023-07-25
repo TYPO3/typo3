@@ -96,6 +96,17 @@ class SiteRouteResult implements RouteResultInterface
     }
 
     /**
+     * @internal
+     */
+    public function withLanguage(SiteLanguage $language): self
+    {
+        $clone = clone $this;
+        $clone->language = $language;
+
+        return $clone;
+    }
+
+    /**
      * @param mixed $offset
      * @return mixed|UriInterface|string|SiteInterface|SiteLanguage
      * @todo: Set return type to mixed in v13

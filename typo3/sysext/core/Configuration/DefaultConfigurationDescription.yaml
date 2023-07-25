@@ -210,6 +210,9 @@ SYS:
               security.frontend.enforceContentSecurityPolicy:
                 type: bool
                 description: 'If on, HTTP Content-Security-Policy header will be applied for each HTTP frontend request.'
+              security.frontend.allowInsecureSiteResolutionByQueryParameters:
+                type: bool
+                description: 'If on, site resolution can be overwritten by `&id=...&L=...` parameters, URI path & host are just used as default.'
               security.usePasswordPolicyForFrontendUsers:
                 type: bool
                 description: 'If on, the configured password policy in `$GLOBALS[TYPO3_CONF_VARS][FE][passwordPolicy]`
