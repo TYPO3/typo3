@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\TableDiff;
@@ -57,7 +58,8 @@ END;
     {
         $statement = $this->sysLogTable->prepare('UPDATE sys_log SET channel = ? WHERE type = ?');
         foreach (Type::channelMap() as $type => $channel) {
-            $statement->bindValue($channel, $type);
+            $statement->bindValue(1, $channel);
+            $statement->bindValue(2, $type, ParameterType::INTEGER);
             $statement->executeStatement();
         }
 
@@ -80,7 +82,8 @@ END;
 
         $statement = $this->sysLogTable->prepare('UPDATE sys_log SET level = ? WHERE type = ?');
         foreach (Type::levelMap() as $type => $level) {
-            $statement->bindValue($level, $type);
+            $statement->bindValue(1, $level);
+            $statement->bindValue(2, $type, ParameterType::INTEGER);
             $statement->executeStatement();
         }
 
