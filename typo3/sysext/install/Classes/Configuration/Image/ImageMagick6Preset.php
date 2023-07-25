@@ -76,7 +76,13 @@ class ImageMagick6Preset extends AbstractImagePreset
             } else {
                 $executable = 'identify';
             }
-            $command = escapeshellarg($path . $executable) . ' -version';
+
+            $binaryPath = $path . $executable;
+            if (!file_exists($binaryPath) || !is_executable($binaryPath)) {
+                break;
+            }
+
+            $command = escapeshellarg($binaryPath) . ' -version';
             $executingResult = [];
             CommandUtility::exec($command, $executingResult);
             // First line of exec command should contain string GraphicsMagick
