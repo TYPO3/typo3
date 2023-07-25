@@ -85,14 +85,14 @@ final class SecurityTest extends FunctionalTestCase
             [
                 '<p title="<encode-me>"></p>',
                 [
-                    '<p title="<encode-me>"></p>',
+                    '<p title="&lt;encode-me&gt;"></p>',
                     '<p title="&lt;encode-me&gt;"></p>',
                 ],
             ],
             [
                 '<p title=<encode-me>></p>',
                 [
-                    '<p title="<encode-me>"></p>',
+                    '<p title="&lt;encode-me&gt;"></p>',
                     '<p title="&lt;encode-me&gt;"></p>',
                 ],
             ],
