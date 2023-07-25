@@ -72,7 +72,7 @@ class FileInfoElement extends AbstractFormElement
                     . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                     . '</span>';
             }
-            if ($file->isImage()) {
+            if ($file->isImage() || $file->isMediaFile()) {
                 $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, ['width' => 150, 'height' => 150]);
                 $previewImage = $processedFile->getPublicUrl();
                 if ($previewImage) {
