@@ -18,9 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\Routing\Exception\NoConfigurationException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -48,6 +50,7 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
 class SiteMatcher implements SingletonInterface
 {
     public function __construct(
+        protected readonly Features $features,
         protected readonly SiteFinder $finder,
         protected readonly RequestContextFactory $requestContextFactory
     ) {
@@ -79,75 +82,42 @@ class SiteMatcher implements SingletonInterface
      */
     public function matchRequest(ServerRequestInterface $request): RouteResultInterface
     {
-        $site = new NullSite();
-        $language = null;
-        $defaultLanguage = null;
+        // Remove script file name (index.php) from request uri
+        $uri = $this->canonicalizeUri($request->getUri(), $request);
+        $pageId = $this->resolvePageIdQueryParam($request);
+        $languageId = $this->resolveLanguageIdQueryParam($request);
 
-        $pageId = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0;
+        $routeResult = $this->matchSiteByUri($uri, $request);
 
-        // First, check if we have a _GET/_POST parameter for "id", then a site information can be resolved based.
-        if ($pageId > 0) {
-            // Loop over the whole rootline without permissions to get the actual site information
+        // Allow insecure pageId based site resolution if explicitly enabled and only if both, ?id= and ?L= are defined
+        // (pageId based site resolution without L parameter has always been prohibited, so we do not support that)
+        if (
+            $this->features->isFeatureEnabled('security.frontend.allowInsecureSiteResolutionByQueryParameters') &&
+            $pageId !== null && $languageId !== null
+        ) {
+            return $this->matchSiteByQueryParams($pageId, $languageId, $routeResult, $uri);
+        }
+
+        // Allow the default language to be resolved in case all languages use a prefix
+        // and therefore did not match based on path if an explicit pageId is given,
+        // (example "https://www.example.com/?id=.." was entered, but all languages have "https://www.example.com/lang-key/")
+        // @todo remove this fallback, in order for SiteBaseRedirectResolver to produce a redirect instead (requires functionals to be adapted)
+        if ($pageId !== null && $routeResult->getLanguage() === null) {
+            $routeResult = $routeResult->withLanguage($routeResult->getSite()->getDefaultLanguage());
+        }
+
+        // adjust the language aspect if it was given by query param `&L` (and ?id is given)
+        // @todo remove, this is added for backwards (and functional tests) compatibility reasons
+        if ($languageId !== null && $pageId !== null) {
             try {
-                $site = $this->finder->getSiteByPageId((int)$pageId);
-                // If a "L" parameter is given, we take that one into account.
-                $languageId = $request->getQueryParams()['L'] ?? $request->getParsedBody()['L'] ?? null;
-                if ($languageId !== null) {
-                    $language = $site->getLanguageById((int)$languageId);
-                } else {
-                    // Use this later below
-                    $defaultLanguage = $site->getDefaultLanguage();
-                }
-            } catch (SiteNotFoundException $e) {
-                // No site found by the given page
-            } catch (\InvalidArgumentException $e) {
-                // The language fetched by getLanguageById() was not available, now the PSR-15 middleware
-                // redirects to the default page.
+                // override/set language by `&L=` query param
+                $routeResult = $routeResult->withLanguage($routeResult->getSite()->getLanguageById($languageId));
+            } catch (\InvalidArgumentException) {
+                // ignore; language id not available
             }
         }
 
-        $uri = $request->getUri();
-        if (!empty($uri->getPath())) {
-            $normalizedParams = $request->getAttribute('normalizedParams');
-            if ($normalizedParams instanceof NormalizedParams) {
-                $urlPath = ltrim($uri->getPath(), '/');
-                $scriptName = ltrim($normalizedParams->getScriptName(), '/');
-                $scriptPath = ltrim($normalizedParams->getSitePath(), '/');
-                if ($scriptName !== '' && str_starts_with($urlPath, $scriptName)) {
-                    $urlPath = '/' . $scriptPath . substr($urlPath, mb_strlen($scriptName));
-                    $uri = $uri->withPath($urlPath);
-                }
-            }
-        }
-
-        // No language found at this point means that the URL was not used with a valid "?id=1&L=2" parameter
-        // which resulted in a site / language combination that was found. Now, the matching is done
-        // on the incoming URL.
-        if (!($language instanceof SiteLanguage)) {
-            $collection = $this->getRouteCollectionForAllSites();
-            $requestContext = $this->requestContextFactory->fromUri($uri, $request->getMethod());
-            $matcher = new BestUrlMatcher($collection, $requestContext);
-            try {
-                $result = $matcher->match($uri->getPath());
-                return new SiteRouteResult(
-                    $uri,
-                    $result['site'],
-                    // if no language is found, this usually results due to "/" called instead of "/fr/"
-                    // but it could also be the reason that "/index.php?id=23" was called, so the default
-                    // language is used as a fallback here then.
-                    $result['language'] ?? $defaultLanguage,
-                    $result['tail']
-                );
-            } catch (NoConfigurationException | ResourceNotFoundException $e) {
-                // At this point we discard a possible found site via ?id=123
-                // Because ?id=123 _can_ only work if the actual domain/site base works
-                // so www.domain-without-site-configuration/index.php?id=123 (where 123 is a page referring
-                // to a page within a site configuration will never be resolved here) properly
-                $site = new NullSite();
-            }
-        }
-
-        return new SiteRouteResult($uri, $site, $language);
+        return $routeResult;
     }
 
     /**
@@ -205,5 +175,95 @@ class SiteMatcher implements SingletonInterface
             }
         }
         return $collection;
+    }
+
+    /**
+     * @return ?positive-int
+     */
+    protected function resolvePageIdQueryParam(ServerRequestInterface $request): ?int
+    {
+        $pageId = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? null;
+        if ($pageId === null) {
+            return null;
+        }
+        return (int)$pageId <= 0 ? null : (int)$pageId;
+    }
+
+    /**
+     * @return ?positive-int
+     */
+    protected function resolveLanguageIdQueryParam(ServerRequestInterface $request): ?int
+    {
+        $languageId = $request->getQueryParams()['L'] ?? $request->getParsedBody()['L'] ?? null;
+        if ($languageId === null) {
+            return null;
+        }
+        return (int)$languageId < 0 ? null : (int)$languageId;
+    }
+
+    /**
+     * Remove script file name (index.php) from request uri
+     */
+    protected function canonicalizeUri(UriInterface $uri, ServerRequestInterface $request): UriInterface
+    {
+        if ($uri->getPath() === '') {
+            return $uri;
+        }
+
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        if (!$normalizedParams instanceof NormalizedParams) {
+            return $uri;
+        }
+
+        $urlPath = ltrim($uri->getPath(), '/');
+        $scriptName = ltrim($normalizedParams->getScriptName(), '/');
+        $scriptPath = ltrim($normalizedParams->getSitePath(), '/');
+        if ($scriptName !== '' && str_starts_with($urlPath, $scriptName)) {
+            $urlPath = '/' . $scriptPath . substr($urlPath, mb_strlen($scriptName));
+            $uri = $uri->withPath($urlPath);
+        }
+
+        return $uri;
+    }
+
+    protected function matchSiteByUri(UriInterface $uri, ServerRequestInterface $request): SiteRouteResult
+    {
+        $collection = $this->getRouteCollectionForAllSites();
+        $requestContext = $this->requestContextFactory->fromUri($uri, $request->getMethod());
+        $matcher = new BestUrlMatcher($collection, $requestContext);
+        try {
+            /** @var array{site: SiteInterface, language: ?SiteLanguage, tail: string} $match */
+            $match = $matcher->match($uri->getPath());
+            return new SiteRouteResult(
+                $uri,
+                $match['site'],
+                $match['language'],
+                $match['tail']
+            );
+        } catch (NoConfigurationException | ResourceNotFoundException) {
+            return new SiteRouteResult($uri, new NullSite(), null, '');
+        }
+    }
+
+    protected function matchSiteByQueryParams(
+        int $pageId,
+        int $languageId,
+        SiteRouteResult $fallback,
+        UriInterface $uri,
+    ): SiteRouteResult {
+        try {
+            $site = $this->finder->getSiteByPageId($pageId);
+        } catch (SiteNotFoundException) {
+            return $fallback;
+        }
+
+        try {
+            // override/set language by `&L=` query param
+            $language = $site->getLanguageById($languageId);
+        } catch (\InvalidArgumentException) {
+            return $fallback;
+        }
+
+        return new SiteRouteResult($uri, $site, $language);
     }
 }

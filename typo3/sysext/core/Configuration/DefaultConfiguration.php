@@ -75,6 +75,7 @@ return [
             'security.backend.htmlSanitizeRte' => false,
             'security.backend.enforceReferrer' => true,
             'security.frontend.enforceContentSecurityPolicy' => false,
+            'security.frontend.allowInsecureSiteResolutionByQueryParameters' => false,
             'security.usePasswordPolicyForFrontendUsers' => false,
         ],
         'createGroup' => '',

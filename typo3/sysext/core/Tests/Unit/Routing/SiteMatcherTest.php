@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Routing;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
@@ -74,9 +76,10 @@ final class SiteMatcherTest extends UnitTestCase
                 ],
             ],
         ]);
+        $featuresMock = $this->createFeaturesMock();
         $finderMock = $this->createSiteFinder($site, $secondSite);
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $subject = new SiteMatcher($finderMock, $requestContextFactory);
+        $subject = new SiteMatcher($featuresMock, $finderMock, $requestContextFactory);
 
         $request = new ServerRequest('http://9-5.typo3.test/da/my-page/');
         /** @var SiteRouteResult $result */
@@ -171,9 +174,10 @@ final class SiteMatcherTest extends UnitTestCase
                 ],
             ],
         ]);
+        $featuresMock = $this->createFeaturesMock();
         $finderMock = $this->createSiteFinder($site, $secondSite);
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $subject = new SiteMatcher($finderMock, $requestContextFactory);
+        $subject = new SiteMatcher($featuresMock, $finderMock, $requestContextFactory);
 
         $request = new ServerRequest('https://www.example.com/de');
         /** @var SiteRouteResult $result */
@@ -253,9 +257,10 @@ final class SiteMatcherTest extends UnitTestCase
             ],
         ]);
 
+        $featuresMock = $this->createFeaturesMock();
         $finderMock = $this->createSiteFinder($mainSite, $dkSite, $frSite);
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $subject = new SiteMatcher($finderMock, $requestContextFactory);
+        $subject = new SiteMatcher($featuresMock, $finderMock, $requestContextFactory);
 
         $request = new ServerRequest($requestUri);
         /** @var SiteRouteResult $result */
@@ -263,6 +268,18 @@ final class SiteMatcherTest extends UnitTestCase
 
         self::assertSame($expectedSite, $result->getSite()->getIdentifier());
         self::assertSame($expectedLocale, (string)$result->getLanguage()->getLocale());
+    }
+
+    private function createFeaturesMock(): MockObject&Features
+    {
+        $mock = $this->getMockBuilder(Features::class)
+            ->onlyMethods(['isFeatureEnabled'])
+            ->getMock();
+        $mock->expects(self::any())
+            ->method('isFeatureEnabled')
+            ->with('security.frontend.allowInsecureSiteResolutionByQueryParameters')
+            ->willReturn(false);
+        return $mock;
     }
 
     private function createSiteFinder(Site ...$sites): SiteFinder
