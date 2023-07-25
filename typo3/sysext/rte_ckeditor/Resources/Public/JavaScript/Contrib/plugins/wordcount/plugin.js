@@ -5,8 +5,8 @@
 
 CKEDITOR.plugins.add("wordcount",
     {
-        lang: "ar,bg,ca,cs,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,ko,ja,nl,no,pl,pt,pt-br,ru,sk,sv,tr,uk,zh-cn,zh,ro", // %REMOVE_LINE_CORE%
-        version: "1.17.7",
+        lang: "ar,bg,ca,cs,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,ka,ko,ja,nl,no,pl,pt,pt-br,ru,sk,sv,tr,uk,zh-cn,zh,ro", // %REMOVE_LINE_CORE%
+        version: "1.17.12",
         requires: "htmlwriter,notification,undo",
         bbcodePluginLoaded: false,
         onLoad: function() {
@@ -175,18 +175,16 @@ CKEDITOR.plugins.add("wordcount",
                     return html.replace(/\[.*?\]/gi, "");
                 }
 
-                var tmp = document.createElement("div");
-
                 // Add filter before strip
                 html = filter(html);
 
-                tmp.innerHTML = html;
-
-                if (tmp.textContent == "" && typeof tmp.innerText == "undefined") {
+                // Parse filtered HTML, without applying it to any element in DOM
+                var tmp = new DOMParser().parseFromString(html, 'text/html');
+                if (!tmp.body || !tmp.body.textContent) {
                     return "";
                 }
 
-                return tmp.textContent || tmp.innerText;
+                return tmp.body.textContent || tmp.body.innerText;
             }
 
             /**
@@ -255,8 +253,15 @@ CKEDITOR.plugins.add("wordcount",
             }
 
             function countWords(text) {
-                var normalizedText = text.replace(/(\r\n|\n|\r)/gm, " ").replace(/^\s+|\s+$/g, "")
-                    .replace("&nbsp;", " ");
+                
+                /**
+                 * we may end up with a couple of extra spaces in a row with all these replacements, but that's ok 
+                 * since we're going to split on one or more delimiters when we generate the words array
+                 **/
+                var normalizedText = text.replace(/(<([^>]+)>)/ig, " ")    //replace html tags, i think?
+                    .replace(/(\r\n|\n|\r)/gm, " ")                        //replace new lines(in many forms)
+                    .replace(/^\s+|\s+$/g, " ")                            //replace leading or trailing multiple spaces
+                    .replace("&nbsp;", " ");                               //replace html entities indicating a space
 
                 normalizedText = strip(normalizedText);
 
@@ -279,7 +284,13 @@ CKEDITOR.plugins.add("wordcount",
 
                 if (!config.warnOnLimitOnly) {
                     if (config.hardLimit) {
-                        editorInstance.execCommand("undo");
+                        if (editor.mode === "source" && editor.plugins.codemirror) {
+                            window["codemirror_" + editor.id].undo();
+                        } else {
+                            editorInstance.execCommand("undo");
+                            editorInstance.execCommand("undo");
+                        }
+                           
                     }
                 }
 
@@ -455,12 +466,14 @@ CKEDITOR.plugins.add("wordcount",
             }
 
             editor.on("key",
-                function(event) {
+                function (event) {
+                    var ms = isCloseToLimits() ? 5 : 250;
+
                     if (editor.mode === "source") {
                         clearTimeout(timeoutId);
                         timeoutId = setTimeout(
                             updateCounter.bind(this, event.editor),
-                            250
+                            ms
                         );
                     }
 
@@ -468,13 +481,11 @@ CKEDITOR.plugins.add("wordcount",
                         clearTimeout(timeoutId);
                         timeoutId = setTimeout(
                             updateCounter.bind(this, event.editor),
-                            250
+                            ms
                         );
                     }
                 },
-                editor,
-                null,
-                100);
+                editor);
 
             editor.on("change",
                 function(event) {
@@ -485,9 +496,7 @@ CKEDITOR.plugins.add("wordcount",
                         ms
                     );
                 },
-                editor,
-                null,
-                100);
+                editor);
 
             editor.on("uiSpace",
                 function (event) {
@@ -542,7 +551,9 @@ CKEDITOR.plugins.add("wordcount",
                             paragraphs = -1;
 
                         var mySelection = event.editor.getSelection(),
-                            selectedText = mySelection.getNative().toString().trim();
+                            selectedText = mySelection.getNative() 
+                              ? mySelection.getNative().toString().trim()
+                              : '';
 
 
                         // BeforeGetData and getData events are fired when calling

@@ -4,11 +4,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang('wordcount', 'de', {
     WordCount: 'Wörter:',
+    WordCountRemaining: 'Verbleibende Wörter',
     CharCount: 'Zeichen:',
+    CharCountRemaining: 'Verbleibende Zeichen',
     CharCountWithHTML: 'Zeichen (inkl. HTML):',
+    CharCountWithHTMLRemaining: 'Verbleibende Zeichen (inkl. HTML)',
     Paragraphs: 'Absätze:',
-    ParagraphsRemaining: 'Paragraphs remaining',
-    pasteWarning: 'Content can not be pasted because it is above the allowed limit',
-    Selected: 'Selected: ',
+    ParagraphsRemaining: 'Verbleibende Absätze',
+    pasteWarning: 'Text kann nicht eingefügt werden. Text ist zu lang.',
+    Selected: 'Ausgewählt: ',
     title: 'Statistik'
 });
