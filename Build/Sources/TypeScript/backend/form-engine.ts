@@ -136,9 +136,20 @@ export default (function() {
    * @param {string} entryPoint the entry point, which should be expanded by default
    */
   FormEngine.openPopupWindow = function(mode: string, params: string, entryPoint: string): ModalElement {
+    const queryParams: {mode: string, bparams: string, expandPage?: string, expandFolder?: string} = {
+      mode: mode,
+      bparams: params
+    };
+    if (entryPoint) {
+      if (mode === 'db') {
+        queryParams.expandPage = entryPoint;
+      } else {
+        queryParams.expandFolder = entryPoint;
+      }
+    }
     return Modal.advanced({
       type: Modal.types.iframe,
-      content: FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params + (entryPoint ? ('&' + (mode === 'db' ? 'expandPage' : 'expandFolder') + '=' + entryPoint) : ''),
+      content: FormEngine.browserUrl + '&' + (new URLSearchParams(queryParams)).toString(),
       size: Modal.sizes.large
     });
   };
