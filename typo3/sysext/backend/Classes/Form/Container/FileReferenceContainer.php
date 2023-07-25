@@ -236,7 +236,7 @@ class FileReferenceContainer extends AbstractContainer
                             </span>&nbsp;
                             ' . htmlspecialchars($fileObject->getName()) . '
                             <br />';
-                    } elseif ($fileObject->isImage()) {
+                    } elseif ($fileObject->isImage() || $fileObject->isMediaFile()) {
                         $imageSetup = $this->data['inlineParentConfig']['appearance']['headerThumbnail'] ?? [];
                         $cropVariantCollection = CropVariantCollection::create($databaseRow['crop'] ?? '');
                         if (!$cropVariantCollection->getCropArea()->isEmpty()) {
