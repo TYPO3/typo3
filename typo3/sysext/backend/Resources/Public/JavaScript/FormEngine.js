@@ -114,7 +114,7 @@ define(['jquery',
   FormEngine.openPopupWindow = function(mode, params) {
     return Modal.advanced({
       type: Modal.types.iframe,
-      content: FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params,
+      content: FormEngine.browserUrl + '&' + (new URLSearchParams({mode: mode, bparams: params})).toString(),
       size: Modal.sizes.large
     });
   };
