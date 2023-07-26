@@ -995,7 +995,7 @@ class GeneralUtility
      * then this method is for you.
      *
      * @param string $string GETvars string
-     * @return array<string, string> Array of values. All values AND keys are rawurldecoded() as they properly should be. But this means that any implosion of the array again must rawurlencode it!
+     * @return array<array-key, string> Array of values. All values AND keys are rawurldecoded() as they properly should be. But this means that any implosion of the array again must rawurlencode it!
      * @see implodeArrayForUrl()
      */
     public static function explodeUrl2Array($string)
