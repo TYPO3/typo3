@@ -107,6 +107,7 @@ class FormEditorController extends AbstractBackendController
             static fn (string $name) => JavaScriptModuleInstruction::create($name),
             $this->prototypeConfiguration['formEditor']['dynamicJavaScriptModules']['additionalViewModelModules'] ?? []
         );
+        array_map($this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(...), $additionalViewModelJavaScriptModules);
         $formEditorAppInitialData = [
             'formEditorDefinitions' => $formEditorDefinitions,
             'formDefinition' => $formDefinition,
@@ -152,6 +153,7 @@ class FormEditorController extends AbstractBackendController
             JavaScriptModuleInstruction::create('@typo3/form/backend/helper.js', 'Helper')
                 ->invoke('dispatchFormEditor', $javaScriptModules, $formEditorAppInitialData)
         );
+        array_map($pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(...), $javaScriptModules);
         $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
         $pageRenderer->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf');
         $stylesheets = $this->resolveResourcePaths($this->prototypeConfiguration['formEditor']['stylesheets']);
