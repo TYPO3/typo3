@@ -114,6 +114,7 @@ class FormManagerController extends AbstractBackendController
             JavaScriptModuleInstruction::create('@typo3/form/backend/helper.js', 'Helper')
                 ->invoke('dispatchFormManager', $jsModules, $this->getFormManagerAppInitialData())
         );
+        array_map($this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(...), $javaScriptModules);
         $moduleTemplate->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
         $moduleTemplate->setTitle(
