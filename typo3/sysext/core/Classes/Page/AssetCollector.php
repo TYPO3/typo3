@@ -37,8 +37,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  * Note on the implementation:
  * - We use a Singleton to make use of the AssetCollector throughout Frontend process (similar to PageRenderer).
  * - Although this is not optimal, I don't see any other way to do so in the current code.
- *
- * https://developer.wordpress.org/reference/functions/wp_enqueue_style/
  */
 class AssetCollector implements SingletonInterface
 {
