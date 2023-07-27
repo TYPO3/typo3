@@ -28,7 +28,6 @@ final class RedirectModuleCest
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
-
         $I->click('Redirects');
         $I->switchToContentFrame();
         $I->canSee('Redirect Management', 'h1');
@@ -64,11 +63,19 @@ final class RedirectModuleCest
 
         $I->amGoingTo('test edit on source path');
         $I->click('table.table-striped > tbody > tr > td:nth-child(3) > a');
-        $this->openAndCloseTheEditForm($I, $sourceHost . ', ' . $sourcePath);
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->canSee('Edit Redirect "' . $sourceHost . ', ' . $sourcePath . '" on root level');
+        $I->click('div.module-docheader .btn.t3js-editform-close');
+        $I->waitForElementVisible('table.table-striped');
+        $I->canSee('Redirect Management', 'h1');
 
         $I->amGoingTo('test edit on edit button');
         $I->click('table.table-striped > tbody > tr > td:nth-child(7) > div > a:nth-child(2)');
-        $this->openAndCloseTheEditForm($I, $sourceHost . ', ' . $sourcePath);
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->canSee('Edit Redirect "' . $sourceHost . ', ' . $sourcePath . '" on root level');
+        $I->click('div.module-docheader .btn.t3js-editform-close');
+        $I->waitForElementVisible('table.table-striped');
+        $I->canSee('Redirect Management', 'h1');
     }
 
     protected function possibleRedirectStatusCodes(): array
@@ -91,17 +98,6 @@ final class RedirectModuleCest
         $I->click('a[title="Add redirect"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->canSee('Create new Redirect on root level');
-
         $I->seeElement('//select[contains(@name, "data[sys_redirect]") and contains(@name, "[target_statuscode]")]//option[@value="' . $example['code'] . '"]');
-    }
-
-    private function openAndCloseTheEditForm(ApplicationTester $I, string $name): void
-    {
-        $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->canSee('Edit Redirect "' . $name . '" on root level');
-
-        $I->click('div.module-docheader .btn.t3js-editform-close');
-        $I->waitForElementVisible('table.table-striped');
-        $I->canSee('Redirect Management', 'h1');
     }
 }

@@ -124,6 +124,7 @@ final class SiteModuleCest
         $I->click('button[name="yes"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
         $I->switchToContentFrame();
+        $I->waitForText('New Language [9]');
         $I->see('New Language [9]', 'option');
 
         $I->amGoingTo('Undo the generation of the new site configuration');
@@ -160,6 +161,7 @@ final class SiteModuleCest
         $I->click('TypoScript');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
+        $I->waitForElementVisible('div.module-docheader select.t3-js-jumpMenuBox');
         $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Edit TypoScript Record');
         $I->waitForText('Root TypoScript record');
 
@@ -260,6 +262,7 @@ page.10.value = This is a default text for default rendering without dynamic con
         $I->click('button[name="yes"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
         $I->switchToContentFrame();
+        $I->wait(1);
         $I->canSee('English [0]', 'option');
         $I->selectOption('.t3js-create-new-selector', '0');
         $I->waitForElementVisible('div.inlineIsNewRecord:nth-child(1)');

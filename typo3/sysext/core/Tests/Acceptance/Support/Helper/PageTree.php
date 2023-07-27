@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree;
@@ -49,8 +51,8 @@ final class PageTree extends AbstractPageTree
         // Change the new page title.
         // We can't use $I->fillField() here since this sends a clear() to the element
         // which drops the node creation in the tree. So we do it manually with selenium.
-        $element = $this->tester->executeInSelenium(static function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use ($nodeEditInput) {
-            return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector($nodeEditInput));
+        $element = $this->tester->executeInSelenium(static function (RemoteWebDriver $webdriver) use ($nodeEditInput) {
+            return $webdriver->findElement(WebDriverBy::cssSelector($nodeEditInput));
         });
         $element->sendKeys($pageTitle);
 
