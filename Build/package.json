@@ -30,7 +30,7 @@
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
     "@typescript-eslint/typescript-estree": "^5.59.0",
-    "autoprefixer": "^9.8.6",
+    "autoprefixer": "^10.4.14",
     "es-module-lexer": "^1.2.1",
     "eslint": "^8.38.0",
     "eslint-plugin-lit": "^1.8.3",
@@ -163,6 +163,9 @@
     "source-sans": "^3.46.0",
     "tablesort": "^5.3.0",
     "taboverride": "^4.0.3"
+  },
+  "overrides": {
+    "postcss": "^8.4"
   },
   "resolutions": {
     "colors": "<1.4.1"
