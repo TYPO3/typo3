@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
@@ -61,7 +60,6 @@ class SetupDatabaseService
     public function __construct(
         private readonly LateBootService $lateBootService,
         private readonly ConfigurationManager $configurationManager,
-        private readonly LanguageServiceFactory $languageServiceFactory,
         private readonly PermissionsCheck $databasePermissionsCheck,
         private readonly Registry $registry,
     ) {
@@ -256,7 +254,6 @@ class SetupDatabaseService
 
     public function getBackendUserPasswordValidationErrors(string $password): array
     {
-        $GLOBALS['LANG'] = $this->languageServiceFactory->create('default');
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
         $passwordPolicyValidator = GeneralUtility::makeInstance(
             PasswordPolicyValidator::class,
