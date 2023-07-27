@@ -74,6 +74,7 @@ final class FileClipboardCest
         $I->click('styleguide');
 
         $I->amGoingTo('add multiple elements to clipboard');
+        $I->wait(1);
         $I->click('Clipboard #1 (multi-selection mode)');
         $I->click('.t3js-multi-record-selection-check-actions-toggle');
         $I->click('button[data-multi-record-selection-check-action="check-all"]');

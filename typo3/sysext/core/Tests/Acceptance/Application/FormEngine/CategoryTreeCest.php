@@ -45,9 +45,11 @@ final class CategoryTreeCest
         $I->waitForElementVisible('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
         $I->click('[data-modulemenu-identifier="web_list"]');
         $I->switchToContentFrame();
-        // Collapse all tables to ensures sys_category table fits into window
+        // Collapse all tables to ensure sys_category table fits into window
         $I->click('button[data-table="pages"] .icon-actions-view-list-collapse');
+        $I->wait(1);
         $I->click('button[data-table="be_groups"] .icon-actions-view-list-collapse');
+        $I->wait(1);
         $I->click('button[data-table="be_users"] .icon-actions-view-list-collapse');
         $I->wait(1);
         $I->waitForElementVisible('#recordlist-sys_category tr[data-uid="7"] a[aria-label="Edit record"]');

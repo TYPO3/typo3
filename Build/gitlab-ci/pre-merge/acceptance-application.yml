@@ -1,5 +1,7 @@
 acceptance application mariadb php 8.3 pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules

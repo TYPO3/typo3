@@ -64,6 +64,7 @@ final class PageModuleCest
     private function renamePage(ApplicationTester $I, string $oldTitle, string $newTitle): void
     {
         $I->canSeeElement('typo3-backend-editable-page-title');
+        $I->wait(1);
         $currentPageTitle = $I->executeJS("return document.querySelector('typo3-backend-editable-page-title').pageTitle");
         if ($currentPageTitle !== $oldTitle) {
             $I->fail('The current page title "' . $currentPageTitle . '" does not match "' . $oldTitle . '"');

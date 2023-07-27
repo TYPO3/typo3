@@ -1,5 +1,7 @@
 unit javascript:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -13,6 +15,8 @@ unit javascript:
 
 unit php 8.1 max:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -25,6 +29,8 @@ unit php 8.1 max:
     - Build/Scripts/runTests.sh -s unit -p 8.1
 unit php 8.1 max deprecated:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -37,6 +43,8 @@ unit php 8.1 max deprecated:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
 unit php 8.1 max random:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -50,6 +58,8 @@ unit php 8.1 max random:
 
 unit php 8.1 min:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -62,6 +72,8 @@ unit php 8.1 min:
     - Build/Scripts/runTests.sh -s unit -p 8.1
 unit php 8.1 min deprecated:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -74,6 +86,8 @@ unit php 8.1 min deprecated:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
 unit php 8.1 min random:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -87,6 +101,8 @@ unit php 8.1 min random:
 
 unit php 8.2 max:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -99,6 +115,8 @@ unit php 8.2 max:
     - Build/Scripts/runTests.sh -s unit -p 8.2
 unit php 8.2 max deprecated:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -111,6 +129,8 @@ unit php 8.2 max deprecated:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.2
 unit php 8.2 max random:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -124,6 +144,8 @@ unit php 8.2 max random:
 
 unit php 8.3 max:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -136,6 +158,8 @@ unit php 8.3 max:
     - Build/Scripts/runTests.sh -s unit -p 8.3
 unit php 8.3 max deprecated:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -148,6 +172,8 @@ unit php 8.3 max deprecated:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.3
 unit php 8.3 max random:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -161,6 +187,8 @@ unit php 8.3 max random:
 
 unit php 8.2 min:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -173,6 +201,8 @@ unit php 8.2 min:
     - Build/Scripts/runTests.sh -s unit -p 8.2
 unit php 8.2 min deprecated:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -185,6 +215,8 @@ unit php 8.2 min deprecated:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.2
 unit php 8.2 min random:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -198,6 +230,8 @@ unit php 8.2 min random:
 
 unit php 8.3 min:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -210,6 +244,8 @@ unit php 8.3 min:
     - Build/Scripts/runTests.sh -s unit -p 8.3
 unit php 8.3 min deprecated:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -222,6 +258,8 @@ unit php 8.3 min deprecated:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.3
 unit php 8.3 min random:
   stage: unit
+  tags:
+    - metal2
   needs: []
   only:
     - schedules

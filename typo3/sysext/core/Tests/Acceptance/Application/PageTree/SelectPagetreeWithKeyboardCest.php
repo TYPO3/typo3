@@ -146,30 +146,6 @@ final class SelectPagetreeWithKeyboardCest
     }
 
     /**
-     * Check if the END key is working
-     */
-    public function focusLastPageTreeItemWithEndKey(ApplicationTester $I): void
-    {
-        $I->markTestSkipped('Test assumption needs to be revalidated. END key should jump to the last node.');
-
-        $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
-        $I->assertEquals(
-            'Root',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
-        );
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::END);
-        $I->assertEquals(
-            'Dummy 1-41',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
-        );
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::UP);
-        $I->assertEquals(
-            'Dummy 1-40',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
-        );
-    }
-
-    /**
      * Check if the Home key is working
      */
     public function focusFirstPageTreeItemWithHomeKey(ApplicationTester $I): void
