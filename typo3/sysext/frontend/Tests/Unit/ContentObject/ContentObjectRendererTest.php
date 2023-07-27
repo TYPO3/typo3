@@ -1330,7 +1330,7 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeFileReturnsUidOfFileObject(string $typoScriptPath): void
     {
-        $uid = StringUtility::getUniqueId();
+        $uid = 1;
         $file = $this->createMock(File::class);
         $file->expects(self::once())->method('getUid')->willReturn($uid);
         $this->subject->setCurrentFile($file);

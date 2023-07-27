@@ -609,7 +609,7 @@ class ExtendedFileUtility extends BasicFileUtility
      * $cmds['altName'] (string): Use an alternative name if the target already exists
      *
      * @param array $cmds Command details as described above
-     * @return \TYPO3\CMS\Core\Resource\File|false
+     * @return \TYPO3\CMS\Core\Resource\ResourceInterface|false
      */
     protected function func_copy($cmds)
     {

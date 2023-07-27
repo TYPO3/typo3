@@ -180,7 +180,7 @@ final class FileTest extends UnitTestCase
         $targetFolder = $this->createMock(Folder::class);
         $targetFolder->method('getStorage')->willReturn($targetStorage);
         $fixture = new File([], $this->storageMock);
-        $targetStorage->expects(self::once())->method('copyFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
+        $targetStorage->expects(self::once())->method('copyFile')->with(self::equalTo($fixture), self::equalTo($targetFolder))->willReturn($fixture);
         $fixture->copyTo($targetFolder);
     }
 
@@ -193,7 +193,7 @@ final class FileTest extends UnitTestCase
         $targetFolder = $this->createMock(Folder::class);
         $targetFolder->method('getStorage')->willReturn($targetStorage);
         $fixture = new File([], $this->storageMock);
-        $targetStorage->expects(self::once())->method('moveFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
+        $targetStorage->expects(self::once())->method('moveFile')->with(self::equalTo($fixture), self::equalTo($targetFolder))->willReturn($fixture);
         $fixture->moveTo($targetFolder);
     }
 
