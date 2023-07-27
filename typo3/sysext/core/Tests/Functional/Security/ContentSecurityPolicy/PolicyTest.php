@@ -145,6 +145,22 @@ final class PolicyTest extends FunctionalTestCase
     }
 
     /**
+     * `strict-dynamic` is only allowed for `script-src*` and implicitly adds a `nonce-proxy`.
+     *
+     * @test
+     */
+    public function strictDynamicIsApplied(): void
+    {
+        $policy = (new Policy(SourceKeyword::self, SourceKeyword::strictDynamic))
+            ->extend(Directive::ScriptSrc, SourceKeyword::strictDynamic)
+            ->extend(Directive::StyleSrc, SourceKeyword::strictDynamic);
+        self::assertSame(
+            "default-src 'self'; script-src 'self' 'strict-dynamic' 'nonce-{$this->nonce->b64}'",
+            $policy->compile($this->nonce)
+        );
+    }
+
+    /**
      * @test
      */
     public function directiveIsRemoved(): void

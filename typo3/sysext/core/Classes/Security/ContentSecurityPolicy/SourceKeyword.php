@@ -51,25 +51,23 @@ enum SourceKeyword: string implements SourceInterface
             Directive::ScriptSrc, Directive::ScriptSrcAttr, Directive::ScriptSrcElem,
             Directive::StyleSrc, Directive::StyleSrcAttr, Directive::StyleSrcElem,
         ];
+        $onlyApplicableTo[self::strictDynamic] = [
+            Directive::ScriptSrc, Directive::ScriptSrcAttr, Directive::ScriptSrcElem,
+        ];
         return !isset($onlyApplicableTo[$this]) || in_array($directive, $onlyApplicableTo[$this], true);
     }
 
     public function applySourceImplications(SourceCollection $sources): ?SourceCollection
     {
-        if ($this !== self::strictDynamic) {
-            return null;
+        // apply implications for `'strict-dynamic'`
+        if ($this === self::strictDynamic) {
+            // add nonce-proxy in case it's not defined
+            if (!$sources->contains(self::nonceProxy)
+                && !$sources->containsTypes(Nonce::class)
+            ) {
+                return $sources->with(self::nonceProxy);
+            }
         }
-        // adjust existing directives when using 'strict-dynamic' (e.g. for Google Maps)
-        // see https://www.w3.org/TR/CSP3/#strict-dynamic-usage
-        $newSources = $sources
-            ->without(SourceKeyword::self, SourceKeyword::unsafeInline)
-            ->withoutTypes(UriValue::class, SourceScheme::class);
-        if (!$sources->contains(self::nonceProxy) && !$sources->containsTypes(Nonce::class)) {
-            $newSources = $newSources->with(self::nonceProxy);
-        }
-        if ($sources === $newSources) {
-            return null;
-        }
-        return $newSources;
+        return null;
     }
 }
