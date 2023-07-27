@@ -84,6 +84,7 @@ final class RecyclerModuleCest
         $newPage = $this->pageTree->getPageXPathByPageName(self::$pageTitle);
         $I->click($newPage);
         $I->switchToContentFrame();
+        $I->wait(1);
         $I->waitForText(self::$sysNoteSubject, 10, 'a[aria-label="Edit record"]');
     }
 

@@ -49,7 +49,11 @@ final class InfoModuleCest
     public function seeInfoSubModules(ApplicationTester $I, Example $exampleData): void
     {
         $I->amGoingTo('select ' . $exampleData['option'] . ' in dropdown');
+        $I->waitForElementVisible('.t3-js-jumpMenuBox');
+        $I->wait(1);
         $I->selectOption('.t3-js-jumpMenuBox', $exampleData['option']);
+        $I->wait(1);
+        $I->waitForText($exampleData['expect']);
         $I->see($exampleData['expect'], 'h1');
     }
 }

@@ -17,12 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Template;
 
-use Codeception\Exception\ElementNotFound;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
-/**
- * Template tests
- */
 final class TemplateCest
 {
     public function _before(ApplicationTester $I): void
@@ -90,11 +86,6 @@ final class TemplateCest
         // fill title input field
         $I->fillField('//input[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[title]")]', 'Acceptance Test Site');
         $I->click("//button[@name='_savedok']");
-        try {
-            $I->wait(0.2);
-            $I->click('.close', '#alert-container');
-        } catch (ElementNotFound) {
-        }
         $I->waitForElementNotVisible('#t3js-ui-block', 30);
         $I->waitForElement('#EditDocumentController');
         $I->waitForElementNotVisible('#t3js-ui-block');
@@ -104,7 +95,9 @@ final class TemplateCest
         $config = $I->grabTextFrom('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]');
         $config = str_replace('HELLO WORLD!', 'Hello Acceptance Test!', $config);
         $I->fillField('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]', $config);
-
+        $I->switchToMainFrame();
+        $I->waitForElementNotVisible('typo3-notification-message', 20);
+        $I->switchToContentFrame();
         $I->click('//*/button[@name="_savedok"][1]');
         $I->wait(10);
         $I->waitForElement('a.t3js-editform-close');

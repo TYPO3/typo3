@@ -34,21 +34,28 @@ final class ViewModuleCest
 
     public function CheckPagePreviewInBackend(ApplicationTester $I): void
     {
+        $I->waitForElementVisible('#tx_viewpage_iframe');
         $I->switchToIFrame('#tx_viewpage_iframe');
-        $I->canSee('TYPO3 Styleguide Frontend');
-        $I->canSee('This is the generated frontend for the Styleguide Extension.');
+        $I->waitForText('TYPO3 Styleguide Frontend');
+        $I->see('TYPO3 Styleguide Frontend');
+        $I->see('This is the generated frontend for the Styleguide Extension.');
     }
 
-    public function CheckChangingPreviewWinowSize(ApplicationTester $I): void
+    public function CheckChangingPreviewWindowSize(ApplicationTester $I): void
     {
+        $I->waitForElementVisible('#viewpage-topbar-preset-button');
+        $I->waitForElementNotVisible('#nprogress', 120);
         $I->click('#viewpage-topbar-preset-button');
+        $I->waitForText('Nexus 7');
         $I->click('Nexus 7');
         $width = $I->grabValueFrom('input[name="width"]');
         $height = $I->grabValueFrom('input[name="height"]');
         $I->assertEquals($width, 600);
         $I->assertEquals($height, 960);
 
+        $I->waitForElementVisible('#viewpage-topbar-preset-button');
         $I->click('#viewpage-topbar-preset-button');
+        $I->waitForText('iPhone 4');
         $I->click('iPhone 4');
         $width = $I->grabValueFrom('input[name="width"]');
         $height = $I->grabValueFrom('input[name="height"]');

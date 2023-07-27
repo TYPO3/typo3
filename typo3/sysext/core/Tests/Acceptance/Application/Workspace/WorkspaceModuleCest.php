@@ -56,9 +56,13 @@ final class WorkspaceModuleCest
         $I->switchToContentFrame();
 
         $I->canSeeElement('typo3-backend-editable-page-title');
+        $I->wait(1);
         $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('[data-action=\"edit\"]').click()");
+        $I->wait(1);
         $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('input').value = '" . self::$newPageTitle . "'");
+        $I->wait(1);
         $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('[data-action=\"save\"]').click()");
+        $I->wait(1);
 
         $I->switchToMainFrame();
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
@@ -77,6 +81,7 @@ final class WorkspaceModuleCest
     {
         $I->click('Workspaces');
         $I->switchToContentFrame();
+        $I->waitForElementVisible('select[name=mass-action]');
         $I->selectOption('select[name=mass-action]', 'Publish');
 
         $modalDialog->canSeeDialog();
