@@ -57,9 +57,13 @@ class WorkspaceModuleCest
 
         $I->comment('Rename page');
         $I->switchToContentFrame();
+        $I->waitForElement('button[data-action="edit"]');
         $I->click('button[data-action="edit"]');
+        $I->wait(1);
         $I->fillField('input[class*="t3js-title-edit-input"]', $newPageTitle);
+        $I->wait(1);
         $I->click('button[data-action="submit"]');
+        $I->wait(1);
 
         $I->switchToMainFrame();
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
@@ -78,6 +82,7 @@ class WorkspaceModuleCest
     {
         $I->click('Workspaces');
         $I->switchToContentFrame();
+        $I->waitForElementVisible('select[name=mass-action]');
         $I->selectOption('select[name=mass-action]', 'Publish');
 
         $modalDialog->canSeeDialog();

@@ -21,9 +21,6 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
-/**
- * Tests concerning Reports Module
- */
 class ContentElementsCest
 {
     protected string $sidebar = '.sidebar.list-group';
@@ -36,27 +33,38 @@ class ContentElementsCest
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3js-module-docheader-bar a[title="View webpage"]');
+        $I->wait(1);
         $I->click('.t3js-module-docheader-bar a[title="View webpage"]');
+        $I->wait(1);
         $I->executeInSelenium(static function (RemoteWebDriver $webdriver) {
             $handles = $webdriver->getWindowHandles();
             $lastWindow = end($handles);
             $webdriver->switchTo()->window($lastWindow);
         });
+        $I->wait(1);
         $I->see('TYPO3 Styleguide Frontend', '.content');
+    }
+
+    public function _after(ApplicationTester $I): void
+    {
+        // Close FE tab again and switch to BE to avoid side effects
+        $I->executeInSelenium(static function (RemoteWebDriver $webdriver) {
+            $handles = $webdriver->getWindowHandles();
+            $webdriver->close();
+            $firstWindow = current($handles);
+            $webdriver->switchTo()->window($firstWindow);
+        });
     }
 
     public function seeAllContentElements(ApplicationTester $I): void
     {
         $I->see('styleguide frontend demo');
-
         foreach ($this->contentElementsDataProvider() as $contentElement) {
             $I->scrollTo('//a[contains(., "' . $contentElement['link'] . '")]');
             $I->click($contentElement['link'], $this->sidebar);
-
             foreach ($contentElement['seeElement'] ?? [] as $element) {
                 $I->seeElement($element);
             }
-
             foreach ($contentElement['see'] ?? [] as $text) {
                 $I->see($text, '.content.col');
             }
@@ -125,39 +133,6 @@ class ContentElementsCest
                 'seeElement' => ['.frame-type-table', 'table.table'],
                 'see' => [
                     'row4 col4',
-                ],
-            ],
-            [
-                'link' => 'felogin_login',
-                'seeElement' => ['.frame-type-felogin_login', 'input[type=password]', 'input[type=text][name=user]', 'input[type=submit]'],
-                'see' => [
-                    'Enter your username and password here in order to log in on the website',
-                    'Username',
-                    'Password',
-                ],
-            ],
-            [
-                'link' => 'form_formframework',
-                'seeElement' => [
-                    '.frame-type-form_formframework',
-                    'input[placeholder="Name"]',
-                    'input[placeholder="Email address"]',
-                ],
-                'see' => [
-                    'Simple form',
-                    'Advanced form - all fields',
-                ],
-            ],
-            [
-                'link' => 'list',
-                'seeElement' => [
-                    '.frame-type-list',
-                    '.tx-indexedsearch-searchbox',
-                ],
-                'see' => [
-                    'Indexed Search',
-                    'Advanced search',
-                    'Rules',
                 ],
             ],
             [

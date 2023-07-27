@@ -108,10 +108,11 @@ class BookmarkCest
         $firstShortcutSelector = self::$topBarModuleSelector . ' .t3js-topbar-shortcut';
         $I->click('.t3js-shortcut-edit', $firstShortcutSelector);
         $secondShortcutSelector = self::$topBarModuleSelector . ' form.shortcut-form';
+        $I->waitForElementVisible($secondShortcutSelector . ' input[name="shortcut-title"]');
         $I->fillField($secondShortcutSelector . ' input[name="shortcut-title"]', 'Scheduled tasks renamed');
         $I->click('.shortcut-form-save', $secondShortcutSelector);
 
-        // searching in a specific context fails with an "Stale Element Reference Exception"
+        // searching in a specific context fails with a "Stale Element Reference Exception"
         // see http://docs.seleniumhq.org/exceptions/stale_element_reference.jsp
         // currently don't know how to fix that so we search in the whole context.
         $I->waitForText('Scheduled tasks renamed');
@@ -127,7 +128,7 @@ class BookmarkCest
         $I->canSee('Scheduled tasks renamed', self::$topBarModuleSelector);
         $I->click('.t3js-shortcut-delete', self::$topBarModuleSelector . ' .t3js-topbar-shortcut');
         $dialog->clickButtonInDialog('OK');
-
+        $I->waitForElementNotVisible('Scheduled tasks renamed');
         $I->cantSee('Scheduled tasks renamed', self::$topBarModuleSelector);
     }
 

@@ -38,15 +38,29 @@ class IndexedSearchCest
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3js-module-docheader-bar a[title="View webpage"]');
+        $I->wait(1);
         $I->click('.t3js-module-docheader-bar a[title="View webpage"]');
+        $I->wait(1);
         $I->executeInSelenium(static function (RemoteWebDriver $webdriver) {
             $handles = $webdriver->getWindowHandles();
             $lastWindow = end($handles);
             $webdriver->switchTo()->window($lastWindow);
         });
-
+        $I->wait(1);
+        $I->see('TYPO3 Styleguide Frontend', '.content');
         $I->scrollTo('//a[contains(., "list")]');
         $I->click('list', $this->sidebarSelector);
+    }
+
+    public function _after(ApplicationTester $I): void
+    {
+        // Close FE tab again and switch to BE to avoid side effects
+        $I->executeInSelenium(static function (RemoteWebDriver $webdriver) {
+            $handles = $webdriver->getWindowHandles();
+            $webdriver->close();
+            $firstWindow = current($handles);
+            $webdriver->switchTo()->window($firstWindow);
+        });
     }
 
     public function seeSearchResults(ApplicationTester $I): void

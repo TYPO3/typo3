@@ -20,12 +20,10 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Frontend;
 use Codeception\Example;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
+use Facebook\WebDriver\WebDriverBy;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
-/**
- * Tests concerning Reports Module
- */
 class SitemapXmlCest
 {
     protected string $sidebar = '.sidebar.list-group';
@@ -144,7 +142,7 @@ class SitemapXmlCest
         return $I->executeInSelenium(
             function (RemoteWebDriver $webDriver) use ($slug, $sibling) {
                 return $webDriver->findElement(
-                    \Facebook\WebDriver\WebDriverBy::xpath(
+                    WebDriverBy::xpath(
                         '//a[contains(text(),"' . $slug . '")]/ancestor::td/following-sibling::td[' . $sibling . ']'
                     )
                 );

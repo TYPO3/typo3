@@ -62,6 +62,7 @@ class InlineContentElementLocalizeSynchronizeCest
         // Save, go back to page
         $I->switchToWindow();
         $I->switchToContentFrame();
+        $I->waitForElementVisible('.module-docheader a[title="Close"]');
         $I->click('.module-docheader a[title="Close"]');
         $I->switchToWindow();
         $I->waitForText('Save and close');
@@ -105,6 +106,7 @@ class InlineContentElementLocalizeSynchronizeCest
         $I->switchToWindow();
         $I->waitForText('Save and close');
         $I->click('Save and close');
+        $I->waitForElementNotVisible('.t3js-modal.show');
         // Open the localized element and see that the second image can be synchronized
         $I->switchToContentFrame();
         $I->waitForText('(copy 1)');

@@ -37,15 +37,29 @@ class FrontendLoginCest
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3js-module-docheader-bar a[title="View webpage"]');
+        $I->wait(1);
         $I->click('.t3js-module-docheader-bar a[title="View webpage"]');
+        $I->wait(1);
         $I->executeInSelenium(static function (RemoteWebDriver $webdriver) {
             $handles = $webdriver->getWindowHandles();
             $lastWindow = end($handles);
             $webdriver->switchTo()->window($lastWindow);
         });
-
+        $I->wait(1);
+        $I->see('TYPO3 Styleguide Frontend', '.content');
         $I->scrollTo('//a[contains(., "felogin_login")]');
         $I->click('felogin_login', $this->sidebarSelector);
+    }
+
+    public function _after(ApplicationTester $I): void
+    {
+        // Close FE tab again and switch to BE to avoid side effects
+        $I->executeInSelenium(static function (RemoteWebDriver $webdriver) {
+            $handles = $webdriver->getWindowHandles();
+            $webdriver->close();
+            $firstWindow = current($handles);
+            $webdriver->switchTo()->window($firstWindow);
+        });
     }
 
     public function seeLoginFailed(ApplicationTester $I): void
