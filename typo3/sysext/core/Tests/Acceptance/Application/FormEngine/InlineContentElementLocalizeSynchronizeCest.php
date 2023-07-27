@@ -49,6 +49,7 @@ class InlineContentElementLocalizeSynchronizeCest
         $I->click('Images');
         $I->click('span[data-identifier="actions-insert-record"]', 'div.active');
         $I->switchToWindow();
+        $I->wait(2);
         $I->switchToIFrame('modal_frame');
         // Find page 'styleguide' in page tree of modal and click it
         $context = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
@@ -65,8 +66,10 @@ class InlineContentElementLocalizeSynchronizeCest
         $I->waitForElementVisible('.module-docheader a[title="Close"]');
         $I->click('.module-docheader a[title="Close"]');
         $I->switchToWindow();
+        $I->wait(1);
         $I->waitForText('Save and close');
         $I->click('Save and close');
+        $I->wait(1);
         // Switch to "All languages" view and localize content element
         $I->switchToContentFrame();
         $I->waitForElementVisible('select[name=actionMenu]');
@@ -89,6 +92,7 @@ class InlineContentElementLocalizeSynchronizeCest
         $I->click('Images');
         $I->click('span[data-identifier="actions-insert-record"]', 'div.active');
         $I->switchToWindow();
+        $I->wait(2);
         $I->switchToIFrame('modal_frame');
         // Find page 'styleguide' in page tree of modal and click it
         $context = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
@@ -104,8 +108,10 @@ class InlineContentElementLocalizeSynchronizeCest
         $I->switchToContentFrame();
         $I->click('.module-docheader a[title="Close"]');
         $I->switchToWindow();
+        $I->wait(1);
         $I->waitForText('Save and close');
         $I->click('Save and close');
+        $I->wait(1);
         $I->waitForElementNotVisible('.t3js-modal.show');
         // Open the localized element and see that the second image can be synchronized
         $I->switchToContentFrame();

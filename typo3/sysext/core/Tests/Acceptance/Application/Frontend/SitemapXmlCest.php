@@ -39,6 +39,7 @@ class SitemapXmlCest
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3js-module-docheader-bar a[title="View webpage"]');
+        $I->wait(2);
         $I->click('.t3js-module-docheader-bar a[title="View webpage"]');
         $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
             $handles = $webdriver->getWindowHandles();
@@ -48,7 +49,6 @@ class SitemapXmlCest
 
         // Get current url
         $url = $this->getCurrentURL($I);
-
         // Add Sitemap parameter to URL
         $I->amOnUrl($url . '?type=1533906435');
     }

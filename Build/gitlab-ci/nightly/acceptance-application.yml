@@ -1,5 +1,7 @@
 acceptance application mariadb 10.3 php 7.4 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -14,6 +16,8 @@ acceptance application mariadb 10.3 php 7.4 locked:
       - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 acceptance application mariadb 10.3 php 7.4 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -32,6 +36,8 @@ acceptance application mariadb 10.3 php 7.4 max:
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 acceptance application mariadb 10.3 php 7.4 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -51,6 +57,8 @@ acceptance application mariadb 10.3 php 7.4 min:
 
 acceptance application mariadb 10.3 php 8.0 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -65,6 +73,8 @@ acceptance application mariadb 10.3 php 8.0 locked:
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.0 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 acceptance application mariadb 10.3 php 8.0 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -83,6 +93,8 @@ acceptance application mariadb 10.3 php 8.0 max:
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.0 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 acceptance application mariadb 10.3 php 8.0 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -102,6 +114,8 @@ acceptance application mariadb 10.3 php 8.0 min:
 
 acceptance application mariadb 10.10 php 8.2 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -116,6 +130,8 @@ acceptance application mariadb 10.10 php 8.2 locked:
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 acceptance application mariadb 10.10 php 8.2 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -134,6 +150,8 @@ acceptance application mariadb 10.10 php 8.2 max:
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 acceptance application mariadb 10.10 php 8.2 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules

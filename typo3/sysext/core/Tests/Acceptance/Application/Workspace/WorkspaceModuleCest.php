@@ -58,6 +58,7 @@ class WorkspaceModuleCest
         $I->comment('Rename page');
         $I->switchToContentFrame();
         $I->waitForElement('button[data-action="edit"]');
+        $I->wait(1);
         $I->click('button[data-action="edit"]');
         $I->wait(1);
         $I->fillField('input[class*="t3js-title-edit-input"]', $newPageTitle);

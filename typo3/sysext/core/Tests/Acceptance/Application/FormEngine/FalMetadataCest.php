@@ -54,7 +54,9 @@ class FalMetadataCest
     public function checkIfUpdatedFileMetadataIsUpdatedInContent(ApplicationTester $I, PageTree $pageTree, FileTree $fileTree): void
     {
         $I->amGoingTo('Create new CE with image');
+        $I->wait(1);
         $I->click('.t3js-page-new-ce button');
+        $I->wait(1);
         $I->switchToMainFrame();
         $I->waitForElement('.t3js-modal.show');
         $I->wait(3);
@@ -67,6 +69,7 @@ class FalMetadataCest
         $I->click('Images');
         $I->click('Add image');
         $I->switchToWindow();
+        $I->wait(2);
         $I->switchToIFrame('modal_frame');
         $I->waitForElement('.svg-tree-wrapper .nodes .node', 5);
         $I->click('.node[title="styleguide"]');
@@ -146,6 +149,7 @@ class FalMetadataCest
     public function checkIfFileMetadataIsInheritedInContent(ApplicationTester $I): void
     {
         $I->amGoingTo('Create new CE with image with filled metadata');
+        $I->wait(1);
         $I->click('.t3js-page-new-ce button');
         $I->switchToMainFrame();
         $I->waitForElement('.t3js-modal.show');
@@ -159,6 +163,7 @@ class FalMetadataCest
         $I->click('Images');
         $I->click('Add image');
         $I->switchToWindow();
+        $I->wait(2);
         $I->switchToIFrame('modal_frame');
         $I->waitForElement('.svg-tree-wrapper .nodes .node', 5);
         $I->click('.node[title="styleguide"]');

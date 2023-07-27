@@ -101,6 +101,7 @@ class Mouse
     {
         $I = $this->tester;
         try {
+            $I->wait(0.5);
             return $I->executeInSelenium(static function (RemoteWebDriver $webDriver) use ($selector) {
                 return $webDriver->findElement(WebDriverBy::cssSelector($selector));
             });

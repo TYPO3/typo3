@@ -1,5 +1,7 @@
 annotations php 7.4 pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -10,6 +12,8 @@ annotations php 7.4 pre-merge:
 
 cgl pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -20,6 +24,8 @@ cgl pre-merge:
 
 grunt clean pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -33,6 +39,8 @@ grunt clean pre-merge:
 
 integration various pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -61,6 +69,8 @@ integration various pre-merge:
 
 lint php 7.4 pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -71,6 +81,8 @@ lint php 7.4 pre-merge:
 
 lint php 8.2 pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -81,6 +93,8 @@ lint php 8.2 pre-merge:
 
 lint scss ts html pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -96,6 +110,8 @@ lint scss ts html pre-merge:
 
 phpstan php 7.4 pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules

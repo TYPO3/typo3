@@ -1,5 +1,7 @@
 acceptance install mariadb 10.3 php 7.4 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -12,6 +14,8 @@ acceptance install mariadb 10.3 php 7.4 locked:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 7.4
 acceptance install mariadb 10.3 php 7.4 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -28,6 +32,8 @@ acceptance install mariadb 10.3 php 7.4 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 7.4
 acceptance install mariadb 10.3 php 7.4 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -45,6 +51,8 @@ acceptance install mariadb 10.3 php 7.4 min:
 
 acceptance install mariadb 10.3 php 8.0 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -57,6 +65,8 @@ acceptance install mariadb 10.3 php 8.0 locked:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.6 -p 8.0
 acceptance install mariadb 10.3 php 8.0 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -73,6 +83,8 @@ acceptance install mariadb 10.3 php 8.0 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.6 -p 8.0
 acceptance install mariadb 10.3 php 8.0 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -90,6 +102,8 @@ acceptance install mariadb 10.3 php 8.0 min:
 
 acceptance install mariadb 10.3 php 8.1 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -102,6 +116,8 @@ acceptance install mariadb 10.3 php 8.1 locked:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
 acceptance install mariadb 10.3 php 8.1 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -118,6 +134,8 @@ acceptance install mariadb 10.3 php 8.1 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
 acceptance install mariadb 10.3 php 8.1 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -135,6 +153,8 @@ acceptance install mariadb 10.3 php 8.1 min:
 
 acceptance install mariadb 10.10 php 8.2 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -147,6 +167,8 @@ acceptance install mariadb 10.10 php 8.2 locked:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.2
 acceptance install mariadb 10.3 php 8.2 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -163,6 +185,8 @@ acceptance install mariadb 10.3 php 8.2 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.2
 acceptance install mariadb 10.10 php 8.2 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -180,6 +204,8 @@ acceptance install mariadb 10.10 php 8.2 min:
 
 acceptance install mysql php 7.4:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -192,6 +218,8 @@ acceptance install mysql php 7.4:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 5.5 -p 7.4
 acceptance install mysql php 7.4 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -208,6 +236,8 @@ acceptance install mysql php 7.4 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 5.5 -p 7.4
 acceptance install mysql php 7.4 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -225,6 +255,8 @@ acceptance install mysql php 7.4 min:
 
 acceptance install mysql php 8.0:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -237,6 +269,8 @@ acceptance install mysql php 8.0:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 5.5 -p 8.0
 acceptance install mysql php 8.0 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -253,6 +287,8 @@ acceptance install mysql php 8.0 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 5.5 -p 8.0
 acceptance install mysql php 8.0 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -270,6 +306,8 @@ acceptance install mysql php 8.0 min:
 
 acceptance install mysql php 8.1:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -282,6 +320,8 @@ acceptance install mysql php 8.1:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 5.5 -p 8.1
 acceptance install mysql php 8.1 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -298,6 +338,8 @@ acceptance install mysql php 8.1 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 5.5 -p 8.1
 acceptance install mysql php 8.1 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -315,6 +357,8 @@ acceptance install mysql php 8.1 min:
 
 acceptance install postgres php 7.4 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -327,6 +371,8 @@ acceptance install postgres php 7.4 locked:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 10 -p 7.4
 acceptance install postgres php 7.4 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -343,6 +389,8 @@ acceptance install postgres php 7.4 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 10 -p 7.4
 acceptance install postgres php 7.4 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -360,6 +408,8 @@ acceptance install postgres php 7.4 min:
 
 acceptance install postgres php 8.0 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -372,6 +422,8 @@ acceptance install postgres php 8.0 locked:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 10 -p 8.0
 acceptance install postgres php 8.0 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -388,6 +440,8 @@ acceptance install postgres php 8.0 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 10 -p 8.0
 acceptance install postgres php 8.0 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -405,6 +459,8 @@ acceptance install postgres php 8.0 min:
 
 acceptance install postgres php 8.1 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -417,6 +473,8 @@ acceptance install postgres php 8.1 locked:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 10 -p 8.1
 acceptance install postgres php 8.1 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -433,6 +491,8 @@ acceptance install postgres php 8.1 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 10 -p 8.1
 acceptance install postgres php 8.1 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -450,6 +510,8 @@ acceptance install postgres php 8.1 min:
 
 acceptance install sqlite php 7.4 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -462,6 +524,8 @@ acceptance install sqlite php 7.4 locked:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 7.4
 acceptance install sqlite php 7.4 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -478,6 +542,8 @@ acceptance install sqlite php 7.4 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 7.4
 acceptance install sqlite php 7.4 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -495,6 +561,8 @@ acceptance install sqlite php 7.4 min:
 
 acceptance install sqlite php 8.0 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -507,6 +575,8 @@ acceptance install sqlite php 8.0 locked:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.0
 acceptance install sqlite php 8.0 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -523,6 +593,8 @@ acceptance install sqlite php 8.0 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.0
 acceptance install sqlite php 8.0 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -540,6 +612,8 @@ acceptance install sqlite php 8.0 min:
 
 acceptance install sqlite php 8.1 locked:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -552,6 +626,8 @@ acceptance install sqlite php 8.1 locked:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.1
 acceptance install sqlite php 8.1 max:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -568,6 +644,8 @@ acceptance install sqlite php 8.1 max:
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.1
 acceptance install sqlite php 8.1 min:
   stage: acceptance
+  tags:
+    - metal2
   needs: []
   only:
     - schedules

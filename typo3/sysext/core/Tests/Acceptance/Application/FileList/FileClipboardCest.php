@@ -83,6 +83,7 @@ class FileClipboardCest extends AbstractFileCest
         $I->switchToContentFrame();
 
         $I->amGoingTo('add multiple elements to clipboard');
+        $I->wait(1);
         $I->click('Clipboard #1 (multi-selection mode)');
         $I->click('.dropdown-toggle');
         $I->click('button[data-multi-record-selection-check-action="check-all"]');

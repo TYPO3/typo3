@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# TYPO3 core test runner based on docker.
+# TYPO3 core test runner based on docker or podman
 #
 
 waitFor() {
@@ -24,6 +24,7 @@ waitFor() {
 cleanUp() {
     ATTACHED_CONTAINERS=$(${CONTAINER_BIN} ps --filter network=${NETWORK} --format='{{.Names}}')
     for ATTACHED_CONTAINER in ${ATTACHED_CONTAINERS}; do
+        ${CONTAINER_BIN} kill ${ATTACHED_CONTAINER} >/dev/null
         ${CONTAINER_BIN} rm -f ${ATTACHED_CONTAINER} >/dev/null
     done
     ${CONTAINER_BIN} network rm ${NETWORK} >/dev/null
@@ -213,6 +214,11 @@ Options:
             - unitJavascript: JavaScript unit tests
             - unitRandom: PHP unit tests in random order, add -o <number> to use specific seed
 
+    -b <docker|podman>
+        Container environment:
+            - docker (default)
+            - podman
+
     -a <mysqli|pdo_mysql|sqlsrv|pdo_sqlsrv>
         Only with -s functional|functionalDeprecated
         Specifies to use another driver, following combinations are available:
@@ -249,7 +255,7 @@ Options:
             - 10.9   short-term, maintained until 2023-08
             - 10.10  short-term, maintained until 2023-11
             - 10.11  long-term, maintained until 2028-02
-        With "-d mariadb":
+        With "-d mysql":
             - 5.5   unmaintained since 2018-12 (default)
             - 5.6   unmaintained since 2021-02
             - 5.7   maintained until 2023-10
@@ -352,12 +358,19 @@ EOF
 }
 
 # Test if docker exists, else exit out with error
-if ! type "docker" >/dev/null; then
-    echo "This script relies on docker. Please install" >&2
+if ! type "docker" >/dev/null 2>&1 && ! type "podman" >/dev/null 2>&1; then
+    echo "This script relies on docker or podman. Please install" >&2
     exit 1
 fi
 
-# Option defaults
+# Go to the directory this script is located, so everything else is relative
+# to this dir, no matter from where this script is called, then go up two dirs.
+THIS_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
+cd "$THIS_SCRIPT_DIR" || exit 1
+cd ../../ || exit 1
+CORE_ROOT="${PWD}"
+
+# Default variables
 TEST_SUITE="unit"
 DBMS="sqlite"
 DBMS_VERSION=""
@@ -372,6 +385,16 @@ DATABASE_DRIVER=""
 CHUNKS=0
 THISCHUNK=0
 CONTAINER_BIN="docker"
+COMPOSER_ROOT_VERSION="11.5.x-dev"
+PHPSTAN_CONFIG_FILE="phpstan.local.neon"
+CONTAINER_INTERACTIVE="-it --init"
+HOST_UID=$(id -u)
+HOST_PID=$(id -g)
+USERSET=""
+SUFFIX=$(echo $RANDOM)
+NETWORK="typo3-core-${SUFFIX}"
+CI_PARAMS=""
+CONTAINER_HOST="host.docker.internal"
 
 # Option parsing updates above default vars
 # Reset in case getopts has been used previously in the shell
@@ -379,10 +402,16 @@ OPTIND=1
 # Array for invalid options
 INVALID_OPTIONS=()
 # Simple option parsing based on getopts (! not getopt)
-while getopts ":a:s:c:d:i:p:e:xy:o:nhug" OPT; do
+while getopts ":a:b:s:c:d:i:p:e:xy:o:nhug" OPT; do
     case ${OPT} in
         s)
             TEST_SUITE=${OPTARG}
+            ;;
+        b)
+            if ! [[ ${OPTARG} =~ ^(docker|podman)$ ]]; then
+                INVALID_OPTIONS+=("${OPTARG}")
+            fi
+            CONTAINER_BIN=${OPTARG}
             ;;
         a)
             DATABASE_DRIVER=${OPTARG}
@@ -456,72 +485,63 @@ fi
 
 handleDbmsOptions
 
-COMPOSER_ROOT_VERSION="11.5.x-dev"
-HOST_UID=$(id -u)
-USERSET=""
-if [ $(uname) != "Darwin" ]; then
+# ENV var "CI" is set by gitlab-ci. Use it to force some CI details.
+if [ "${CI}" == "true" ]; then
+    PHPSTAN_CONFIG_FILE="phpstan.ci.neon"
+    CONTAINER_INTERACTIVE=""
+    CONTAINER_BIN="podman"
+    CI_PARAMS="--pull=never"
+fi
+
+if [ $(uname) != "Darwin" ] && [ ${CONTAINER_BIN} = "docker" ]; then
+    # Run docker jobs as current user to prevent permission issues. Not needed with podman.
     USERSET="--user $HOST_UID"
 fi
 
-# Go to the directory this script is located, so everything else is relative
-# to this dir, no matter from where this script is called, then go up two dirs.
-THIS_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
-cd "$THIS_SCRIPT_DIR" || exit 1
-cd ../../ || exit 1
-CORE_ROOT="${PWD}"
-
-# Create .cache dir: composer and various npm jobs need this.
-mkdir -p .cache
-mkdir -p typo3temp/var/tests
-
-PHPSTAN_CONFIG_FILE="phpstan.local.neon"
-IMAGE_PREFIX="docker.io/"
-# Non-CI fetches TYPO3 images (php and nodejs) from ghcr.io
-TYPO3_IMAGE_PREFIX="ghcr.io/"
-CONTAINER_INTERACTIVE="-it --init"
-
-IS_CORE_CI=0
-# ENV var "CI" is set by gitlab-ci. We use it here to distinct 'local' and 'CI' environment.
-if [ "${CI}" == "true" ]; then
-    IS_CORE_CI=1
-    PHPSTAN_CONFIG_FILE="phpstan.ci.neon"
-    # In CI, we need to pull images from docker.io for the registry proxy to kick in.
-    TYPO3_IMAGE_PREFIX="docker.io/"
-    IMAGE_PREFIX=""
-    CONTAINER_INTERACTIVE=""
+if ! type ${CONTAINER_BIN} >/dev/null 2>&1; then
+    echo "Selected container environment \"${CONTAINER_BIN}\" not found. Please install or use -b option to select one." >&2
+    exit 1
 fi
 
-IMAGE_PHP="${TYPO3_IMAGE_PREFIX}typo3/core-testing-$(echo "php${PHP_VERSION}" | sed -e 's/\.//'):latest"
-IMAGE_NODEJS="${TYPO3_IMAGE_PREFIX}typo3/core-testing-js:latest"
-IMAGE_NODEJS_CHROME="${TYPO3_IMAGE_PREFIX}typo3/core-testing-js-chrome:latest"
-IMAGE_ALPINE="${IMAGE_PREFIX}alpine:3.8"
-IMAGE_SELENIUM="${IMAGE_PREFIX}selenium/standalone-chrome:4.0.0-20211102"
-IMAGE_REDIS="${IMAGE_PREFIX}redis:4-alpine"
-IMAGE_MEMCACHED="${IMAGE_PREFIX}memcached:1.5-alpine"
-IMAGE_MARIADB="${IMAGE_PREFIX}mariadb:${DBMS_VERSION}"
-IMAGE_MYSQL="${IMAGE_PREFIX}mysql:${DBMS_VERSION}"
-IMAGE_POSTGRES="${IMAGE_PREFIX}postgres:${DBMS_VERSION}-alpine"
-IMAGE_MSSQL="${IMAGE_PREFIX}typo3/core-testing-mssql2019:latest"
+IMAGE_PHP="ghcr.io/typo3/core-testing-$(echo "php${PHP_VERSION}" | sed -e 's/\.//'):latest"
+IMAGE_NODEJS="ghcr.io/typo3/core-testing-js:latest"
+IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-js-chrome:latest"
+IMAGE_ALPINE="docker.io/alpine:3.8"
+IMAGE_SELENIUM="docker.io/selenium/standalone-chrome:4.0.0-20211102"
+IMAGE_REDIS="docker.io/redis:4-alpine"
+IMAGE_MEMCACHED="docker.io/memcached:1.5-alpine"
+IMAGE_MARIADB="docker.io/mariadb:${DBMS_VERSION}"
+IMAGE_MYSQL="docker.io/mysql:${DBMS_VERSION}"
+IMAGE_POSTGRES="docker.io/postgres:${DBMS_VERSION}-alpine"
 
 # Detect arm64 to use seleniarm image.
 ARCH=$(uname -m)
 if [ ${ARCH} = "arm64" ]; then
-    IMAGE_SELENIUM="${IMAGE_PREFIX}seleniarm/standalone-chromium:4.1.2-20220227"
-    echo "Architecture" ${ARCH} "requires" ${IMAGE_SELENIUM} "to run acceptance tests."
+    IMAGE_SELENIUM="docker.io/seleniarm/standalone-chromium:4.1.2-20220227"
 fi
 
 # Set $1 to first mass argument, this is the optional test file or test directory to execute
 shift $((OPTIND - 1))
 TEST_FILE=${1}
 
-SUFFIX=$(echo $RANDOM)
-NETWORK="typo3-core-${SUFFIX}"
+# Create .cache dir: composer and various npm jobs need this.
+mkdir -p .cache
+mkdir -p typo3temp/var/tests
+
 ${CONTAINER_BIN} network create ${NETWORK} >/dev/null
 
-CONTAINER_COMMON_PARAMS="${CONTAINER_INTERACTIVE} --rm --network $NETWORK --add-host "host.docker.internal:host-gateway" $USERSET -v ${CORE_ROOT}:${CORE_ROOT} -w ${CORE_ROOT}"
 COMPOSER_IGNORE_PLATFORM_REQ=""
 if [ "${PHP_VERSION}" = "8.3" ]; then
     COMPOSER_IGNORE_PLATFORM_REQ="--ignore-platform-req=php+"
+fi
+
+if [ ${CONTAINER_BIN} = "docker" ]; then
+    # docker needs the add-host for xdebug remote debugging. podman has host.container.internal built in
+    CONTAINER_COMMON_PARAMS="${CONTAINER_INTERACTIVE} --rm --network ${NETWORK} --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -v ${CORE_ROOT}:${CORE_ROOT} -w ${CORE_ROOT}"
+else
+    # podman
+    CONTAINER_HOST="host.containers.internal"
+    CONTAINER_COMMON_PARAMS="${CONTAINER_INTERACTIVE} ${CI_PARAMS} --rm --network ${NETWORK} -v ${CORE_ROOT}:${CORE_ROOT} -w ${CORE_ROOT}"
 fi
 
 if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
@@ -529,7 +549,7 @@ if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
     XDEBUG_CONFIG=" "
 else
     XDEBUG_MODE="-e XDEBUG_MODE=debug -e XDEBUG_TRIGGER=foo"
-    XDEBUG_CONFIG="client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal"
+    XDEBUG_CONFIG="client_port=${PHP_XDEBUG_PORT} client_host=${CONTAINER_HOST}"
 fi
 
 # Suite execution
@@ -549,8 +569,8 @@ case ${TEST_SUITE} in
         if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
             SELENIUM_GRID="-p 7900:7900 -e SE_VNC_NO_PASSWORD=1 -e VNC_NO_PASSWORD=1"
         fi
-        ${CONTAINER_BIN} run -d ${SELENIUM_GRID} --name ac-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec,relatime ${IMAGE_SELENIUM} >/dev/null
-        ${CONTAINER_BIN} run -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "host.docker.internal:host-gateway" $USERSET -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
+        ${CONTAINER_BIN} run ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
+        ${CONTAINER_BIN} run ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
         waitFor chrome 4444
         waitFor chrome 7900
         waitFor web 8000
@@ -561,23 +581,26 @@ case ${TEST_SUITE} in
         fi
         case ${DBMS} in
             mariadb)
-                ${CONTAINER_BIN} run --name mariadb-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+                ${CONTAINER_BIN} run ${CI_PARAMS} --name mariadb-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+                DATABASE_IP=$(${CONTAINER_BIN} inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadb-ac-${SUFFIX})
                 waitFor mariadb-ac-${SUFFIX} 3306
-                CONTAINERPARAMS="-e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mariadb-ac-${SUFFIX}"
+                CONTAINERPARAMS="-e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=${DATABASE_IP}"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-mariadb ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
             mysql)
-                ${CONTAINER_BIN} run --name mysql-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+                ${CONTAINER_BIN} run ${CI_PARAMS} --name mysql-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+                DATABASE_IP=$(${CONTAINER_BIN} inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql-ac-${SUFFIX})
                 waitFor mysql-ac-${SUFFIX} 3306
-                CONTAINERPARAMS="-e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mysql-ac-${SUFFIX}"
+                CONTAINERPARAMS="-e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=${DATABASE_IP}"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-mysql ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
-                ${CONTAINER_BIN} run --name postgres-ac-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
+                ${CONTAINER_BIN} run ${CI_PARAMS} --name postgres-ac-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
+                DATABASE_IP=$(${CONTAINER_BIN} inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' postgres-ac-${SUFFIX})
                 waitFor postgres-ac-${SUFFIX} 5432
-                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_pgsql -e typo3DatabaseName=func_test -e typo3DatabaseUsername=funcu -e typo3DatabasePassword=funcp -e typo3DatabaseHost=postgres-ac-${SUFFIX}"
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_pgsql -e typo3DatabaseName=func_test -e typo3DatabaseUsername=funcu -e typo3DatabasePassword=funcp -e typo3DatabaseHost=${DATABASE_IP}"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-postgres ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
@@ -594,8 +617,13 @@ case ${TEST_SUITE} in
         if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
             SELENIUM_GRID="-p 7900:7900 -e SE_VNC_NO_PASSWORD=1 -e VNC_NO_PASSWORD=1"
         fi
-        ${CONTAINER_BIN} run -d ${SELENIUM_GRID} --name ac-istall-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec,relatime ${IMAGE_SELENIUM} >/dev/null
-        ${CONTAINER_BIN} run -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "host.docker.internal:host-gateway" $USERSET -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
+        if [ ${CONTAINER_BIN} = "docker" ]; then
+            ${CONTAINER_BIN} run -d ${SELENIUM_GRID} --name ac-istall-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
+            ${CONTAINER_BIN} run -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
+        else
+            ${CONTAINER_BIN} run ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-istall-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
+            ${CONTAINER_BIN} run ${CI_PARAMS} -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
+        fi
         waitFor chrome 4444
         waitFor chrome 7900
         waitFor web 8000
@@ -610,9 +638,10 @@ case ${TEST_SUITE} in
                 if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
                     CODECEPION_ENV="--env mysql,headless"
                 fi
-                ${CONTAINER_BIN} run --name mariadb-ac-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+                ${CONTAINER_BIN} run ${CI_PARAMS} --name mariadb-ac-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+                DATABASE_IP=$(${CONTAINER_BIN} inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadb-ac-install-${SUFFIX})
                 waitFor mariadb-ac-install-${SUFFIX} 3306
-                CONTAINERPARAMS="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=mariadb-ac-install-${SUFFIX}"
+                CONTAINERPARAMS="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=${DATABASE_IP}"
                 COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${CODECEPION_ENV} --html reports.html"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-install-mariadb ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
                 SUITE_EXIT_CODE=$?
@@ -622,9 +651,10 @@ case ${TEST_SUITE} in
                 if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
                     CODECEPION_ENV="--env mysql,headless"
                 fi
-                ${CONTAINER_BIN} run --name mysql-ac-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+                ${CONTAINER_BIN} run ${CI_PARAMS} --name mysql-ac-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+                DATABASE_IP=$(${CONTAINER_BIN} inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql-ac-install-${SUFFIX})
                 waitFor mysql-ac-install-${SUFFIX} 3306
-                CONTAINERPARAMS="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=mysql-ac-install-${SUFFIX}"
+                CONTAINERPARAMS="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=${DATABASE_IP}"
                 COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${CODECEPION_ENV} --html reports.html"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-install-mysql ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
                 SUITE_EXIT_CODE=$?
@@ -634,9 +664,10 @@ case ${TEST_SUITE} in
                 if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
                     CODECEPION_ENV="--env postgresql,headless"
                 fi
-                ${CONTAINER_BIN} run --name postgres-ac-install-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
+                ${CONTAINER_BIN} run ${CI_PARAMS} --name postgres-ac-install-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
+                DATABASE_IP=$(${CONTAINER_BIN} inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' postgres-ac-install-${SUFFIX})
                 waitFor postgres-ac-install-${SUFFIX} 5432
-                CONTAINERPARAMS="-e typo3InstallPostgresqlDatabasePort=5432 -e typo3InstallPostgresqlDatabaseName=${USER} -e typo3InstallPostgresqlDatabaseHost=postgres-ac-install-${SUFFIX} -e typo3InstallPostgresqlDatabaseUsername=funcu -e typo3InstallPostgresqlDatabasePassword=funcp"
+                CONTAINERPARAMS="-e typo3InstallPostgresqlDatabasePort=5432 -e typo3InstallPostgresqlDatabaseName=${USER} -e typo3InstallPostgresqlDatabaseHost=${DATABASE_IP} -e typo3InstallPostgresqlDatabaseUsername=funcu -e typo3InstallPostgresqlDatabasePassword=funcp"
                 COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${CODECEPION_ENV} --html reports.html"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-install-postgres ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
                 SUITE_EXIT_CODE=$?
@@ -647,7 +678,7 @@ case ${TEST_SUITE} in
                 if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
                     CODECEPION_ENV="--env sqlite,headless"
                 fi
-                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}"
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid"
                 COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${CODECEPION_ENV} --html reports.html"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-install-sqlite ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
                 SUITE_EXIT_CODE=$?
@@ -779,15 +810,15 @@ case ${TEST_SUITE} in
         else
             COMMAND="bin/phpunit -c Build/phpunit/FunctionalTests.xml --exclude-group not-${DBMS} ${EXTRA_TEST_OPTIONS} ${TEST_FILE}"
         fi
-        ${CONTAINER_BIN} run --name redis-func-${SUFFIX} --network ${NETWORK} -d ${IMAGE_REDIS} >/dev/null
-        ${CONTAINER_BIN} run --name memcached-func-${SUFFIX} --network ${NETWORK} -d ${IMAGE_MEMCACHED} >/dev/null
+        ${CONTAINER_BIN} run ${CI_PARAMS} --name redis-func-${SUFFIX} --network ${NETWORK} -d ${IMAGE_REDIS} >/dev/null
+        ${CONTAINER_BIN} run ${CI_PARAMS} --name memcached-func-${SUFFIX} --network ${NETWORK} -d ${IMAGE_MEMCACHED} >/dev/null
         waitFor redis-func-${SUFFIX} 6379
         waitFor memcached-func-${SUFFIX} 11211
         CONTAINER_COMMON_PARAMS="${CONTAINER_COMMON_PARAMS} -e typo3TestingRedisHost=redis-func-${SUFFIX} -e typo3TestingMemcachedHost=memcached-func-${SUFFIX}"
         case ${DBMS} in
             mariadb)
                 echo "Using driver: ${DATABASE_DRIVER}"
-                ${CONTAINER_BIN} run --name mariadb-func-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+                ${CONTAINER_BIN} run ${CI_PARAMS} --name mariadb-func-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
                 waitFor mariadb-func-${SUFFIX} 3306
                 CONTAINERPARAMS="-e typo3DatabaseDriver=${DATABASE_DRIVER} -e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabaseHost=mariadb-func-${SUFFIX} -e typo3DatabasePassword=funcp"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name functional-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
@@ -795,7 +826,7 @@ case ${TEST_SUITE} in
                 ;;
             mysql)
                 echo "Using driver: ${DATABASE_DRIVER}"
-                ${CONTAINER_BIN} run --name mysql-func-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+                ${CONTAINER_BIN} run ${CI_PARAMS} --name mysql-func-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
                 waitFor mysql-func-${SUFFIX} 3306
                 CONTAINERPARAMS="-e typo3DatabaseDriver=${DATABASE_DRIVER} -e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabaseHost=mysql-func-${SUFFIX} -e typo3DatabasePassword=funcp"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name functional-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
@@ -810,7 +841,7 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
-                ${CONTAINER_BIN} run --name postgres-func-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
+                ${CONTAINER_BIN} run ${CI_PARAMS} --name postgres-func-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
                 waitFor postgres-func-${SUFFIX} 5432
                 CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_pgsql -e typo3DatabaseName=bamboo -e typo3DatabaseUsername=funcu -e typo3DatabaseHost=postgres-func-${SUFFIX} -e typo3DatabasePassword=funcp"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name functional-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
@@ -819,7 +850,7 @@ case ${TEST_SUITE} in
             sqlite)
                 # create sqlite tmpfs mount typo3temp/var/tests/functional-sqlite-dbs/ to avoid permission issues
                 mkdir -p "${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/"
-                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}"
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name functional-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
@@ -827,15 +858,15 @@ case ${TEST_SUITE} in
         ;;
     functionalDeprecated)
         COMMAND="bin/phpunit -c Build/phpunit/FunctionalTestsDeprecated.xml --exclude-group not-${DBMS} ${EXTRA_TEST_OPTIONS} ${TEST_FILE}"
-        ${CONTAINER_BIN} run --name redis-func-dep-${SUFFIX} --network ${NETWORK} -d ${IMAGE_REDIS} >/dev/null
-        ${CONTAINER_BIN} run --name memcached-func-dep-${SUFFIX} --network ${NETWORK} -d ${IMAGE_MEMCACHED} >/dev/null
+        ${CONTAINER_BIN} run ${CI_PARAMS} --name redis-func-dep-${SUFFIX} --network ${NETWORK} -d ${IMAGE_REDIS} >/dev/null
+        ${CONTAINER_BIN} run ${CI_PARAMS} --name memcached-func-dep-${SUFFIX} --network ${NETWORK} -d ${IMAGE_MEMCACHED} >/dev/null
         waitFor redis-func-dep-${SUFFIX} 6379
         waitFor memcached-func-dep-${SUFFIX} 11211
         CONTAINER_COMMON_PARAMS="${CONTAINER_COMMON_PARAMS} -e typo3TestingRedisHost=redis-func-dep-${SUFFIX} -e typo3TestingMemcachedHost=memcached-func-dep-${SUFFIX}"
         case ${DBMS} in
             mariadb)
                 echo "Using driver: ${DATABASE_DRIVER}"
-                ${CONTAINER_BIN} run --name mariadb-func-dep-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+                ${CONTAINER_BIN} run ${CI_PARAMS} --name mariadb-func-dep-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
                 waitFor mariadb-func-dep-${SUFFIX} 3306
                 CONTAINERPARAMS="-e typo3DatabaseDriver=${DATABASE_DRIVER} -e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabaseHost=mariadb-func-dep-${SUFFIX} -e typo3DatabasePassword=funcp"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name functional-deprecated-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
@@ -843,7 +874,7 @@ case ${TEST_SUITE} in
                 ;;
             mysql)
                 echo "Using driver: ${DATABASE_DRIVER}"
-                ${CONTAINER_BIN} run --name mysql-func-dep-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+                ${CONTAINER_BIN} run ${CI_PARAMS} --name mysql-func-dep-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
                 waitFor mysql-func-dep-${SUFFIX} 3306
                 CONTAINERPARAMS="-e typo3DatabaseDriver=${DATABASE_DRIVER} -e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabaseHost=mysql-func-dep-${SUFFIX} -e typo3DatabasePassword=funcp"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name functional-deprecated-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
@@ -858,7 +889,7 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
-                ${CONTAINER_BIN} run --name postgres-func-dep-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
+                ${CONTAINER_BIN} run ${CI_PARAMS} --name postgres-func-dep-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
                 waitFor postgres-func-dep-${SUFFIX} 5432
                 CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_pgsql -e typo3DatabaseName=bamboo -e typo3DatabaseUsername=funcu -e typo3DatabaseHost=postgres-func-dep-${SUFFIX} -e typo3DatabasePassword=funcp"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name functional-deprecated-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
@@ -867,7 +898,7 @@ case ${TEST_SUITE} in
             sqlite)
                 # create sqlite tmpfs mount typo3temp/var/tests/functional-sqlite-dbs/ to avoid permission issues
                 mkdir -p "${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/"
-                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}"
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name functional-deprecated-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
@@ -930,12 +961,12 @@ case ${TEST_SUITE} in
         ${CONTAINER_BIN} volume ls -q -f driver=local -f dangling=true | awk '$0 ~ /^[0-9a-f]{64}$/ { print }' | xargs -I {} ${CONTAINER_BIN} volume rm {}
         echo ""
         # pull typo3/core-testing-*:latest versions of those ones that exist locally
-        echo "> pull ${TYPO3_IMAGE_PREFIX}typo3/core-testing-*:latest versions of those ones that exist locally"
-        ${CONTAINER_BIN} images ${TYPO3_IMAGE_PREFIX}typo3/core-testing-*:latest --format "{{.Repository}}:latest" | xargs -I {} ${CONTAINER_BIN} pull {}
+        echo "> pull ghcr.io/typo3/core-testing-*:latest versions of those ones that exist locally"
+        ${CONTAINER_BIN} images ghcr.io/typo3/core-testing-*:latest --format "{{.Repository}}:latest" | xargs -I {} ${CONTAINER_BIN} pull {}
         echo ""
         # remove "dangling" typo3/core-testing-* images (those tagged as <none>)
-        echo "> remove \"dangling\" ${TYPO3_IMAGE_PREFIX}typo3/core-testing-* images (those tagged as <none>)"
-        ${CONTAINER_BIN} images ${TYPO3_IMAGE_PREFIX}typo3/core-testing-* --filter "dangling=true" --format "{{.ID}}" | xargs -I {} ${CONTAINER_BIN} rmi -f {}
+        echo "> remove \"dangling\" ghcr.io/typo3/core-testing-* images (those tagged as <none>)"
+        ${CONTAINER_BIN} images ghcr.io/typo3/core-testing-* --filter "dangling=true" --format "{{.ID}}" | xargs -I {} ${CONTAINER_BIN} rmi -f {}
         echo ""
         ;;
     *)
@@ -953,11 +984,7 @@ cleanUp
 echo "" >&2
 echo "###########################################################################" >&2
 echo "Result of ${TEST_SUITE}" >&2
-if [[ ${IS_CORE_CI} -eq 1 ]]; then
-    echo "Environment: CI" >&2
-else
-    echo "Environment: local" >&2
-fi
+echo "Container runtime: ${CONTAINER_BIN}" >&2
 echo "PHP: ${PHP_VERSION}" >&2
 if [[ ${TEST_SUITE} =~ ^(functional|functionalDeprecated|acceptance|acceptanceInstall)$ ]]; then
     case "${DBMS}" in

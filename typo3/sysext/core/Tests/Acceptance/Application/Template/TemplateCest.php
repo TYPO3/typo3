@@ -46,6 +46,7 @@ class TemplateCest
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
+        $I->wait(2);
         $I->see('This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.');
 
         $I->wantTo('show templates overview on website root page (uid = 1 and pid = 0)');
@@ -54,6 +55,7 @@ class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
         $I->waitForText('No template');
+        $I->wait(2);
         $I->see('There was no template on this page!');
         $I->see('You need to create a template record below in order to edit your configuration.');
 
@@ -74,11 +76,13 @@ class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
         $I->waitForText('Create new website');
+        $I->wait(2);
         $I->click("//input[@name='newWebsite']");
         $I->waitForText('Edit constants for template');
 
         $I->wantTo('change to Info/Modify and see the template overview table');
         $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');
+        $I->wait(3);
         $I->waitForElement('.table-striped');
         $I->see('Title');
         $I->see('Description');
@@ -111,6 +115,7 @@ class TemplateCest
         $I->see('Acceptance Test Site');
 
         $I->wantTo('change the template within the TypoScript Object Browser');
+        $I->wait(1);
         $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
         $I->waitForText('CONSTANTS ROOT');
         $I->selectOption('//select[@name="SET[ts_browser_type]"]', 'Setup');
@@ -142,6 +147,7 @@ class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
         $I->switchToContentFrame();
         $I->waitForText('No template');
+        $I->wait(2);
         $I->see('There was no template on this page!');
         $I->see('You need to create a template record below in order to edit your configuration.');
         $I->seeLink('Click here to go.');
@@ -166,6 +172,7 @@ class TemplateCest
         $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " toggle ")])[4]');
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
         $I->switchToContentFrame();
+        $I->wait(2);
         $I->waitForText('No template');
         $I->see('There was no template on this page!');
         $I->see('You need to create a template record below in order to edit your configuration.');
@@ -199,9 +206,9 @@ class TemplateCest
         $I->switchToMainFrame();
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
+        $I->wait(2);
         $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
         $I->waitForText('CONSTANTS ROOT');
-
         $I->amGoingTo('type "styles" into the search field and submit.');
         $I->fillField('#search_field', 'styles');
         $I->click("//input[@name='search']");
@@ -220,6 +227,7 @@ class TemplateCest
         $I->switchToContentFrame();
 
         $I->amGoingTo('Switch to object browser.');
+        $I->wait(2);
         $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
         $I->waitForText('CONSTANTS ROOT');
         $I->selectOption('select[name="SET[ts_browser_type]"]', 'Setup');

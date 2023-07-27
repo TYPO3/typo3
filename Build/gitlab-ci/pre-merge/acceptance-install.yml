@@ -1,5 +1,7 @@
 acceptance install mariadb 10.3 php 7.4 pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -14,6 +16,8 @@ acceptance install mariadb 10.3 php 7.4 pre-merge:
 
 acceptance install mariadb 10.10 php 8.2 pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -28,6 +32,8 @@ acceptance install mariadb 10.10 php 8.2 pre-merge:
 
 acceptance install mysql php 8.2 pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -42,6 +48,8 @@ acceptance install mysql php 8.2 pre-merge:
 
 acceptance install postgres php 7.4 pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -56,6 +64,8 @@ acceptance install postgres php 7.4 pre-merge:
 
 acceptance install sqlite php 8.1 pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules

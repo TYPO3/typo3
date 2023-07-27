@@ -50,11 +50,14 @@ class InlineFalCest
     public function seeFalRelationInfo(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $infoButtonSelector = '.tab-content button[data-action="infowindow"]';
-
+        $I->wait(2);
         $filename = $I->grabTextFrom(self::$filenameSelector);
         $I->click($infoButtonSelector);
+        $I->wait(2);
         $modalDialog->canSeeDialog();
+        $I->wait(2);
         $I->switchToIFrame('.modal-iframe');
+        $I->wait(2);
         $modalTitle = $I->grabTextFrom('.card-title');
         $I->assertStringContainsString($filename, $modalTitle);
     }
