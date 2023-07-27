@@ -219,7 +219,6 @@ class ServiceProvider extends AbstractServiceProvider
         return new Service\SetupDatabaseService(
             $container->get(Service\LateBootService::class),
             $container->get(ConfigurationManager::class),
-            $container->get(LanguageServiceFactory::class),
             $container->get(PermissionsCheck::class),
             $container->get(Registry::class),
         );
