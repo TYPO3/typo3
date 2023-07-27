@@ -14,13 +14,16 @@ Description
 Native return and param type declarations have been introduced for the following
 methods of :php:`\TYPO3\CMS\Core\Utility\GeneralUtility`:
 
+- :php:`array2xml`
 - :php:`cmpFQDN`
 - :php:`cmpIP`
 - :php:`cmpIPv4`
 - :php:`cmpIPv6`
 - :php:`explodeUrl2Array`
 - :php:`getUrl`
+- :php:`get_tag_attributes`
 - :php:`implodeArrayForUrl`
+- :php:`implodeAttributes`
 - :php:`intExplode`
 - :php:`isOnCurrentHost`
 - :php:`isValidUrl`
@@ -28,12 +31,18 @@ methods of :php:`\TYPO3\CMS\Core\Utility\GeneralUtility`:
 - :php:`normalizeIPv6`
 - :php:`revExplode`
 - :php:`sanitizeLocalUrl`
+- :php:`split_tag_attributes`
 - :php:`trimExplode`
 - :php:`validEmail`
 - :php:`validIP`
 - :php:`validIPv4`
 - :php:`validIPv6`
 - :php:`validPathStr`
+- :php:`wrapJS`
+- :php:`xml2arrayProcess`
+- :php:`xml2array`
+- :php:`xml2tree`
+- :php:`xmlRecompileFromStructValArray`
 
 Impact
 ======

@@ -917,7 +917,7 @@ class GeneralUtility
      * @param bool $decodeEntities Whether to decode HTML entities
      * @return array<string, string> Array with the attribute values.
      */
-    public static function get_tag_attributes($tag, bool $decodeEntities = false)
+    public static function get_tag_attributes(string $tag, bool $decodeEntities = false): array
     {
         $components = self::split_tag_attributes($tag);
         // Attribute name is stored here
@@ -953,7 +953,7 @@ class GeneralUtility
      * @param string $tag HTML-tag string (or attributes only)
      * @return string[] Array with the attribute values.
      */
-    public static function split_tag_attributes($tag)
+    public static function split_tag_attributes(string $tag): array
     {
         $tag_tmp = trim(preg_replace('/^<[^[:space:]]*/', '', trim($tag)) ?? '');
         // Removes any > in the end of the string
@@ -989,7 +989,7 @@ class GeneralUtility
      * @param bool $keepBlankAttributes If TRUE, don't check if values are blank. Default is to omit attributes with blank values.
      * @return string Imploded attributes, eg. 'bgcolor="red" border="0"'
      */
-    public static function implodeAttributes(array $arr, $xhtmlSafe = false, $keepBlankAttributes = false)
+    public static function implodeAttributes(array $arr, bool $xhtmlSafe = false, bool $keepBlankAttributes = false): string
     {
         if ($xhtmlSafe) {
             $newArr = [];
@@ -1019,7 +1019,7 @@ class GeneralUtility
      * @param array<string, string> $attributes (optional) script tag HTML attributes
      * @return string The wrapped JS code, ready to put into a XHTML page
      */
-    public static function wrapJS(string $string, array $attributes = [])
+    public static function wrapJS(string $string, array $attributes = []): string
     {
         if (trim($string)) {
             // remove nl from the beginning
@@ -1044,9 +1044,9 @@ class GeneralUtility
      * @param string $string XML data input
      * @param int $depth Number of element levels to resolve the XML into an array. Any further structure will be set as XML.
      * @param array $parserOptions Options that will be passed to PHP's xml_parser_set_option()
-     * @return mixed The array with the parsed structure unless the XML parser returns with an error in which case the error message string is returned.
+     * @return array|string The array with the parsed structure unless the XML parser returns with an error in which case the error message string is returned.
      */
-    public static function xml2tree($string, $depth = 999, $parserOptions = [])
+    public static function xml2tree(string $string, int $depth = 999, array $parserOptions = []): array|string
     {
         $parser = xml_parser_create();
         $vals = [];
@@ -1126,7 +1126,7 @@ class GeneralUtility
      * @return string An XML string made from the input content in the array.
      * @see xml2array()
      */
-    public static function array2xml(array $array, $NSprefix = '', $level = 0, $docTag = 'phparray', $spaceInd = 0, array $options = [], array $stackData = [])
+    public static function array2xml(array $array, string $NSprefix = '', int $level = 0, string $docTag = 'phparray', int $spaceInd = 0, array $options = [], array $stackData = []): string
     {
         // The list of byte values which will trigger binary-safe storage. If any value has one of these char values in it, it will be encoded in base64
         $binaryChars = "\0" . chr(1) . chr(2) . chr(3) . chr(4) . chr(5) . chr(6) . chr(7) . chr(8) . chr(11) . chr(12) . chr(14) . chr(15) . chr(16) . chr(17) . chr(18) . chr(19) . chr(20) . chr(21) . chr(22) . chr(23) . chr(24) . chr(25) . chr(26) . chr(27) . chr(28) . chr(29) . chr(30) . chr(31);
@@ -1237,11 +1237,11 @@ class GeneralUtility
      * @param string $string XML content to convert into an array
      * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:"
      * @param bool $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
-     * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
+     * @return array|string If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
      * @see array2xml()
      * @see xml2arrayProcess()
      */
-    public static function xml2array($string, $NSprefix = '', $reportDocTag = false)
+    public static function xml2array(string $string, string $NSprefix = '', bool $reportDocTag = false): array|string
     {
         $runtimeCache = static::makeInstance(CacheManager::class)->getCache('runtime');
         $firstLevelCache = $runtimeCache->get('generalUtilityXml2Array') ?: [];
@@ -1261,10 +1261,10 @@ class GeneralUtility
      * @param string $string XML content to convert into an array
      * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:"
      * @param bool $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
-     * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
+     * @return array|string If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
      * @see array2xml()
      */
-    public static function xml2arrayProcess($string, $NSprefix = '', $reportDocTag = false)
+    public static function xml2arrayProcess(string $string, string $NSprefix = '', bool $reportDocTag = false): array|string
     {
         $string = trim((string)$string);
         // Create parser:
@@ -1370,7 +1370,7 @@ class GeneralUtility
      * @param array<int, array<string, mixed>> $vals An array of XML parts, see xml2tree
      * @return string Re-compiled XML data.
      */
-    public static function xmlRecompileFromStructValArray(array $vals)
+    public static function xmlRecompileFromStructValArray(array $vals): string
     {
         $XMLcontent = '';
         foreach ($vals as $val) {
