@@ -65,6 +65,7 @@ final class RecyclerModuleCest
         $this->goToRecyclerModule($I);
 
         // Select depth infinite
+        $I->wait(1);
         $I->selectOption('select[name="depth"]', 999);
 
         $I->amGoingTo('See if the deleted page and its content appear in the recycler');

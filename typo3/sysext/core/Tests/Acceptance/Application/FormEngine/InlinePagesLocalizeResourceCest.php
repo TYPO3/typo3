@@ -59,11 +59,14 @@ final class InlinePagesLocalizeResourceCest
         $I->switchToContentFrame();
         $I->click('.module-docheader a[title="Close"]');
         $I->switchToWindow('typo3-backend');
+        $I->wait(1);
         $I->waitForText('Save and close');
         $I->click('Save and close');
+        $I->wait(1);
         // Edit the page translation and see if that resource has been added.
         $I->switchToContentFrame();
         $I->waitForText('staticdata - language 1');
+        $I->wait(1);
         $I->click('staticdata - language 1');
         $I->waitForText('Edit Page "staticdata - language 1"', 3, 'h1');
         $I->click('Resources');

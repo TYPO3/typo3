@@ -173,9 +173,11 @@ final class UsersCest extends AbstractCest
         $I->waitForElement($this->inPageTree . ' .node', 5);
         $pageTree->openPath($pagePath);
         $I->switchToContentFrame();
+        $I->wait(1);
         $I->waitForElementVisible('#typo3-permissionList tr:nth-child(2) [title="Change permissions"]');
         $I->click('#typo3-permissionList tr:nth-child(2) [title="Change permissions"]');
         $I->waitForElementVisible('#PermissionControllerEdit');
+        $I->wait(1);
         $I->selectOption('//select[@id="selectGroup"]', ['value' => $userGroupId]);
         $recursionLevelOption = $I->grabTextFrom('//select[@id="recursionLevel"]/option[' . $recursionLevel . ']');
         $I->selectOption('//select[@id="recursionLevel"]', ['value' => $recursionLevelOption]);
@@ -184,13 +186,9 @@ final class UsersCest extends AbstractCest
 
     private function setModAccess(ApplicationTester $I, int $userGroupId, array $modAccessByName): void
     {
-        try {
-            $I->seeElement($this->inModuleHeader . ' [name=BackendUserModuleMenu]');
-        } catch (\Exception $e) {
-            $I->switchToMainFrame();
-            $I->click('Backend Users');
-            $I->switchToContentFrame();
-        }
+        $I->switchToMainFrame();
+        $I->click('Backend Users');
+        $I->switchToContentFrame();
 
         $I->waitForElementVisible($this->inModuleHeader . ' [name=BackendUserModuleMenu]');
         $I->selectOption($this->inModuleHeader . ' [name=BackendUserModuleMenu]', ['text' => 'Backend user groups']);

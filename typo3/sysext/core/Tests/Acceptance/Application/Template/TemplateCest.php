@@ -50,6 +50,7 @@ final class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
         $I->waitForElementVisible('div.module-docheader select.t3-js-jumpMenuBox');
+        $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Edit TypoScript Record');
         $I->waitForText('No TypoScript record');
         $I->see('No TypoScript record on the current page');
@@ -64,6 +65,7 @@ final class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
+        $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
         $I->wait(3);
         $I->waitForText('Root TypoScript record');
@@ -71,6 +73,7 @@ final class TemplateCest
 
         $I->wantTo('change to Override TypoScript and see the TypoScript record overview table');
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
+        $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('.t3-js-jumpMenuBox', 'Edit TypoScript Record');
         $I->wait(3);
         $I->waitForElement('.table-striped');
@@ -109,6 +112,7 @@ final class TemplateCest
 
         $I->wantTo('change the TypoScript record within the TypoScript Object Browser');
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
+        $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('.t3-js-jumpMenuBox', 'Active TypoScript');
         $I->click('#panel-tree-heading-setup');
         $I->waitForText('Setup');
@@ -139,6 +143,7 @@ final class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
+        $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
         $I->waitForText('No TypoScript record');
         $I->see('No TypoScript record on the current page');
@@ -148,6 +153,7 @@ final class TemplateCest
 
         $I->wantTo('see that the page has a TypoScript record');
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
+        $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('.t3-js-jumpMenuBox', 'Edit TypoScript Record');
         $I->waitForElement('.table-striped');
         $I->waitForText('Title');
@@ -172,6 +178,7 @@ final class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
+        $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
         $I->waitForText('No TypoScript record');
         $I->see('No TypoScript record on the current page');
@@ -179,6 +186,7 @@ final class TemplateCest
         $I->clickWithLeftButton('//input[@name=\'createExtension\']');
         $I->wantTo('see that the page has a TypoScript record');
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
+        $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('.t3-js-jumpMenuBox', 'Edit TypoScript Record');
         $I->waitForElement('.table-striped');
         $I->waitForText('Title');
@@ -204,6 +212,7 @@ final class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
+        $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('.t3-js-jumpMenuBox', 'Active TypoScript');
         $I->waitForText('Active TypoScript for record');
         $I->amGoingTo('type "styles" into the search field and submit.');

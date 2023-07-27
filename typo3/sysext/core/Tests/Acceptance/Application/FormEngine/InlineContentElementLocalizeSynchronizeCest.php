@@ -67,8 +67,10 @@ final class InlineContentElementLocalizeSynchronizeCest
         $I->waitForElementVisible('.module-docheader a[title="Close"]');
         $I->click('.module-docheader a[title="Close"]');
         $I->switchToWindow('typo3-backend');
+        $I->wait(1);
         $I->waitForText('Save and close');
         $I->click('Save and close');
+        $I->wait(1);
         // Switch to "All languages" view and localize content element
         $I->switchToContentFrame();
         $I->waitForElementVisible('select[name=actionMenu]');
@@ -107,8 +109,10 @@ final class InlineContentElementLocalizeSynchronizeCest
         $I->switchToContentFrame();
         $I->click('.module-docheader a[title="Close"]');
         $I->switchToWindow('typo3-backend');
+        $I->wait(1);
         $I->waitForText('Save and close');
         $I->click('Save and close');
+        $I->wait(1);
         $I->waitForElementNotVisible('.t3js-modal.show');
         // Open the localized element and see that the second image can be synchronized
         $I->switchToContentFrame();

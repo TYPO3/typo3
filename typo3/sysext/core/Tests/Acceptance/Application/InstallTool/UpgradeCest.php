@@ -86,6 +86,7 @@ final class UpgradeCest extends AbstractCest
 
     public function seeCheckForBrokenExtensions(ApplicationTester $I, ModalDialog $modalDialog): void
     {
+        $I->wait(1);
         $I->click('Check Extension Compatibility…');
         $modalDialog->canSeeDialog();
         $I->see('ext_localconf.php of all loaded extensions successfully loaded', ModalDialog::$openedModalSelector);
@@ -109,39 +110,5 @@ final class UpgradeCest extends AbstractCest
         $I->see('Checks whether the current TCA needs migrations and displays the new migration paths which need to be adjusted manually', ModalDialog::$openedModalSelector);
 
         $I->click('.t3js-modal-close');
-    }
-
-    public function seeScanExtensionFiles(ApplicationTester $I, ModalDialog $modalDialog): void
-    {
-        $I->markTestSkipped('Skipped since there is currently no 3rd party extension.');
-        $buttonText = 'Rescan';
-
-        $I->click('Scan Extension Files…');
-        $modalDialog->canSeeDialog();
-        $I->wait(5);
-        $I->click('Extension: styleguide', ModalDialog::$openedModalSelector);
-        $I->waitForText($buttonText, 30, ModalDialog::$openedModalSelector);
-
-        // Trigger scan for single extension
-        $I->click($buttonText);
-        $I->waitForText($buttonText, 30, ModalDialog::$openedModalSelector);
-
-        // We need to ensure that all notifications are gone to avoid click interceptions
-        $I->wait(10);
-
-        // Scan all available extensions
-        $I->click('Scan all');
-        $I->waitForElement('.t3js-extensionscan-finished', 20, ModalDialog::$openedModalSelector);
-
-        // Wait for all flash messages to disappear
-        $I->waitForText('Marked not affected files', 30, self::$alertContainerSelector);
-
-        // We need to ensure that all notifications are gone to avoid click interceptions
-        $I->wait(10);
-
-        $I->amGoingTo('Close the modal now');
-        $I->click('.t3js-modal-close');
-        $I->wait(3);
-
     }
 }

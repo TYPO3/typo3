@@ -34,9 +34,12 @@ final class ViewModuleCest
 
     public function CheckPagePreviewInBackend(ApplicationTester $I): void
     {
+        $I->wait(1);
         $I->waitForElementVisible('#tx_viewpage_iframe');
+        $I->wait(1);
         $I->switchToIFrame('#tx_viewpage_iframe');
-        $I->waitForText('TYPO3 Styleguide Frontend');
+        $I->wait(1);
+        $I->waitForText('TYPO3 Styleguide Frontend', 20);
         $I->see('TYPO3 Styleguide Frontend');
         $I->see('This is the generated frontend for the Styleguide Extension.');
     }

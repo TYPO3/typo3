@@ -55,7 +55,7 @@ final class WorkspaceModuleCest
         $I->comment('Rename page');
         $I->switchToContentFrame();
 
-        $I->canSeeElement('typo3-backend-editable-page-title');
+        $I->waitForElementVisible('typo3-backend-editable-page-title');
         $I->wait(1);
         $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('[data-action=\"edit\"]').click()");
         $I->wait(1);

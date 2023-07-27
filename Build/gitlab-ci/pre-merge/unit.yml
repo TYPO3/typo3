@@ -1,5 +1,7 @@
 unit javascript pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -14,6 +16,8 @@ unit javascript pre-merge:
 
 unit php 8.1 deprecated pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -23,6 +27,8 @@ unit php 8.1 deprecated pre-merge:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
 unit php 8.1 random pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -33,6 +39,8 @@ unit php 8.1 random pre-merge:
 
 unit php 8.2 deprecated pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -42,6 +50,8 @@ unit php 8.2 deprecated pre-merge:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.2
 unit php 8.3 deprecated pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -52,6 +62,8 @@ unit php 8.3 deprecated pre-merge:
 
 unit php 8.2 pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules
@@ -61,6 +73,8 @@ unit php 8.2 pre-merge:
     - Build/Scripts/runTests.sh -s unit -p 8.2
 unit php 8.3 pre-merge:
   stage: main
+  tags:
+    - metal2
   except:
     refs:
       - schedules

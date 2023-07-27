@@ -1,5 +1,7 @@
 annotations php 8.1:
   stage: integrity
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -9,6 +11,8 @@ annotations php 8.1:
 
 cgl:
   stage: integrity
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -19,6 +23,8 @@ cgl:
 
 grunt clean:
   stage: integrity
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -31,6 +37,8 @@ grunt clean:
 
 integration various:
   stage: integrity
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -56,6 +64,8 @@ integration various:
 
 iso database max:
   stage: integrity
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -69,6 +79,8 @@ iso database max:
 
 lint php 8.1:
   stage: integrity
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -77,6 +89,8 @@ lint php 8.1:
 
 lint scss ts html:
   stage: integrity
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -91,6 +105,8 @@ lint scss ts html:
 
 phpstan php 8.1 locked:
   stage: integrity
+  tags:
+    - metal2
   needs: []
   only:
     - schedules
@@ -100,6 +116,8 @@ phpstan php 8.1 locked:
 
 phpstan php 8.1 max:
   stage: integrity
+  tags:
+    - metal2
   needs: []
   only:
     - schedules

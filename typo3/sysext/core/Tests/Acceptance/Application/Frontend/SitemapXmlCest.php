@@ -33,8 +33,9 @@ final class SitemapXmlCest
         $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
-        $I->waitForElementNotVisible('#nprogress');
         $I->waitForElementVisible('.module-docheader-bar-column-left a:first-child');
+        $I->wait(1);
+        $I->waitForElementNotVisible('#nprogress', 120);
         $dataDispatchArgs = $I->grabAttributeFrom('.module-docheader-bar-column-left a:first-child', 'data-dispatch-args');
         $url = json_decode($dataDispatchArgs, false, 512, JSON_THROW_ON_ERROR);
         // Add Sitemap parameter to URL
