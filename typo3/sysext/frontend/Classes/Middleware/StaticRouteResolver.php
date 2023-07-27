@@ -125,7 +125,7 @@ class StaticRouteResolver implements MiddlewareInterface
         $parameters['type'] = $urlParams['pagetype'] ?? 0;
         $parameters['_language'] = $request->getAttribute('language', null);
         $uri = $site->getRouter()->generateUri(
-            (int)$urlParams['pageuid'],
+            (int)($urlParams['pageuid'] ?? 0),
             $parameters,
             '',
             RouterInterface::ABSOLUTE_URL
