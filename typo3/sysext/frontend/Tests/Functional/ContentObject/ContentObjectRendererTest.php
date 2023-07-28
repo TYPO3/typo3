@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
@@ -24,6 +25,10 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -32,6 +37,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Typolink\LinkFactory;
+use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ContentObjectRendererTest extends FunctionalTestCase
@@ -41,8 +48,6 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
-
-    protected ContentObjectRenderer $subject;
 
     protected array $pathsToProvideInTestInstance = ['typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload'];
 
@@ -60,19 +65,6 @@ final class ContentObjectRendererTest extends FunctionalTestCase
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
         GeneralUtility::flushInternalRuntimeCaches();
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier('test');
-
-        $typoScriptFrontendController = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            GeneralUtility::makeInstance(Context::class),
-            $site,
-            $site->getDefaultLanguage(),
-            new PageArguments(1, '0', []),
-            GeneralUtility::makeInstance(FrontendUserAuthentication::class)
-        );
-        $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
-        $this->subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
-        $this->subject->setRequest($this->getPreparedRequest());
     }
 
     protected function getPreparedRequest(): ServerRequestInterface
@@ -81,12 +73,6 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         return $request->withQueryParams(['id' => 1])->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
     }
 
-    /**
-     * Data provider for the getQuery test
-     *
-     * @return array multi-dimensional array with the second level like this:
-     * @see getQuery
-     */
     public static function getQueryDataProvider(): array
     {
         return [
@@ -228,7 +214,19 @@ final class ContentObjectRendererTest extends FunctionalTestCase
             ],
         ];
 
-        $result = $this->subject->getQuery($table, $conf, true);
+        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier('test');
+        $typoScriptFrontendController = GeneralUtility::makeInstance(
+            TypoScriptFrontendController::class,
+            GeneralUtility::makeInstance(Context::class),
+            $site,
+            $site->getDefaultLanguage(),
+            new PageArguments(1, '0', []),
+            GeneralUtility::makeInstance(FrontendUserAuthentication::class)
+        );
+        $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
+
+        $result = $subject->getQuery($table, $conf, true);
 
         $databasePlatform = (new ConnectionPool())->getConnectionForTable('tt_content')->getDatabasePlatform();
         foreach ($expected as $field => $value) {
@@ -244,30 +242,648 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function typolinkReturnsCorrectLinkForEmails(): void
+    public function typolinkLinkResultIsInstanceOfLinkResultInterface(): void
     {
-        $expected = '<a href="mailto:test@example.com">Send me an email</a>';
         $subject = new ContentObjectRenderer();
         $subject->setRequest($this->getPreparedRequest());
-        $result = $subject->typoLink('Send me an email', ['parameter' => 'mailto:test@example.com']);
-        self::assertEquals($expected, $result);
-
-        $result = $subject->typoLink('Send me an email', ['parameter' => 'test@example.com']);
-        self::assertEquals($expected, $result);
+        $linkResult = $subject->typoLink('', ['parameter' => 'https://example.tld', 'returnLast' => 'result']);
+        self::assertInstanceOf(LinkResultInterface::class, $linkResult);
     }
 
     /**
      * @test
      */
-    public function typolinkReturnsCorrectLinkForSpamEncryptedEmails(): void
+    public function typoLinkReturnsOnlyLinkTextIfNoLinkResolvingIsPossible(): void
+    {
+        $linkService = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
+        $linkService->method('resolve')->with('foo')->willThrowException(new InvalidPathException('', 1666303735));
+        $linkFactory = new LinkFactory($linkService, $this->get(EventDispatcherInterface::class), $this->get(TypoLinkCodecService::class), $this->get('cache.runtime'), $this->get(SiteFinder::class));
+        $linkFactory->setLogger(new NullLogger());
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
+        $subject = new ContentObjectRenderer();
+        $subject->setRequest($this->getPreparedRequest());
+        self::assertSame('foo', $subject->typoLink('foo', ['parameter' => 'foo']));
+    }
+
+    /**
+     * @test
+     */
+    public function typoLinkLogsErrorIfNoLinkResolvingIsPossible(): void
+    {
+        $linkService = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
+        $linkService->method('resolve')->with('foo')->willThrowException(new InvalidPathException('', 1666303765));
+        $linkFactory = new LinkFactory($linkService, $this->get(EventDispatcherInterface::class), $this->get(TypoLinkCodecService::class), $this->get('cache.runtime'), $this->get(SiteFinder::class));
+        $logger = $this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock();
+        $logger->expects(self::atLeastOnce())->method('warning')->with('The link could not be generated', self::anything());
+        $linkFactory->setLogger($logger);
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
+        $subject = new ContentObjectRenderer();
+        $subject->setRequest($this->getPreparedRequest());
+        self::assertSame('foo', $subject->typoLink('foo', ['parameter' => 'foo']));
+    }
+
+    public static function typolinkReturnsCorrectLinksDataProvider(): array
+    {
+        return [
+            'Link to url' => [
+                'TYPO3',
+                [
+                    'directImageLink' => false,
+                    'parameter' => 'http://typo3.org',
+                ],
+                '<a href="http://typo3.org">TYPO3</a>',
+            ],
+            'Link to url without schema' => [
+                'TYPO3',
+                [
+                    'directImageLink' => false,
+                    'parameter' => 'typo3.org',
+                ],
+                '<a href="http://typo3.org">TYPO3</a>',
+            ],
+            'Link to url without link text' => [
+                '',
+                [
+                    'directImageLink' => false,
+                    'parameter' => 'http://typo3.org',
+                ],
+                '<a href="http://typo3.org">http://typo3.org</a>',
+            ],
+            'Link to url with attributes' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org',
+                    'ATagParams' => 'class="url-class"',
+                    'extTarget' => '_blank',
+                    'title' => 'Open new window',
+                ],
+                '<a href="http://typo3.org" target="_blank" class="url-class" rel="noreferrer" title="Open new window">TYPO3</a>',
+            ],
+            'Link to url with attributes and custom target name' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org',
+                    'ATagParams' => 'class="url-class"',
+                    'extTarget' => 'someTarget',
+                    'title' => 'Open new window',
+                ],
+                '<a href="http://typo3.org" target="someTarget" class="url-class" rel="noreferrer" title="Open new window">TYPO3</a>',
+            ],
+            'Link to url with attributes in parameter' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org _blank url-class "Open new window"',
+                ],
+                '<a href="http://typo3.org" target="_blank" rel="noreferrer" title="Open new window" class="url-class">TYPO3</a>',
+            ],
+            'Link to url with attributes in parameter and custom target name' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org someTarget url-class "Open new window"',
+                ],
+                '<a href="http://typo3.org" target="someTarget" rel="noreferrer" title="Open new window" class="url-class">TYPO3</a>',
+            ],
+            'Link to url with script tag' => [
+                '',
+                [
+                    'directImageLink' => false,
+                    'parameter' => 'http://typo3.org<script>alert(123)</script>',
+                ],
+                '<a href="http://typo3.org&lt;script&gt;alert(123)&lt;/script&gt;">http://typo3.org&lt;script&gt;alert(123)&lt;/script&gt;</a>',
+            ],
+            'Link to email address' => [
+                'Email address',
+                [
+                    'parameter' => 'foo@example.com',
+                ],
+                '<a href="mailto:foo@example.com">Email address</a>',
+            ],
+            'Link to email with mailto' => [
+                'Send me an email',
+                [
+                    'parameter' => 'mailto:test@example.com',
+                ],
+                '<a href="mailto:test@example.com">Send me an email</a>',
+            ],
+            'Link to email address with subject + cc' => [
+                'Email address',
+                [
+                    'parameter' => 'foo@bar.org?subject=This%20is%20a%20test',
+                ],
+                '<a href="mailto:foo@bar.org?subject=This%20is%20a%20test">Email address</a>',
+            ],
+            'Link to email address without link text' => [
+                '',
+                [
+                    'parameter' => 'foo@bar.org',
+                ],
+                '<a href="mailto:foo@bar.org">foo@bar.org</a>',
+            ],
+            'Link to email with attributes' => [
+                'Email address',
+                [
+                    'parameter' => 'foo@bar.org',
+                    'ATagParams' => 'class="email-class"',
+                    'title' => 'Write an email',
+                ],
+                '<a href="mailto:foo@bar.org" class="email-class" title="Write an email">Email address</a>',
+            ],
+            'Link to email with attributes in parameter' => [
+                'Email address',
+                [
+                    'parameter' => 'foo@bar.org - email-class "Write an email"',
+                ],
+                '<a href="mailto:foo@bar.org" title="Write an email" class="email-class">Email address</a>',
+            ],
+            'Link url using stdWrap' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org',
+                    'parameter.' => [
+                        'cObject' => 'TEXT',
+                        'cObject.' => [
+                            'value' => 'http://typo3.com',
+                        ],
+                    ],
+                ],
+                '<a href="http://typo3.com">TYPO3</a>',
+            ],
+            'Link url using stdWrap with class attribute in parameter' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org - url-class',
+                    'parameter.' => [
+                        'cObject' => 'TEXT',
+                        'cObject.' => [
+                            'value' => 'http://typo3.com',
+                        ],
+                    ],
+                ],
+                '<a href="http://typo3.com" class="url-class">TYPO3</a>',
+            ],
+            'Link url using stdWrap with class attribute in parameter and overridden target' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org default-target url-class',
+                    'parameter.' => [
+                        'cObject' => 'TEXT',
+                        'cObject.' => [
+                            'value' => 'http://typo3.com new-target different-url-class',
+                        ],
+                    ],
+                ],
+                '<a href="http://typo3.com" target="new-target" rel="noreferrer" class="different-url-class">TYPO3</a>',
+            ],
+            'Link url using stdWrap with class attribute in parameter and overridden target and returnLast' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org default-target url-class',
+                    'parameter.' => [
+                        'cObject' => 'TEXT',
+                        'cObject.' => [
+                            'value' => 'http://typo3.com new-target different-url-class',
+                        ],
+                    ],
+                    'returnLast' => 'url',
+                ],
+                'http://typo3.com',
+            ],
+            'Open in new window' => [
+                'Nice Text',
+                [
+                    'parameter' => 'https://example.com 13x84:target=myexample',
+                ],
+                '<a href="https://example.com" target="myexample" data-window-url="https://example.com" data-window-target="myexample" data-window-features="width=13,height=84" rel="noreferrer">Nice Text</a>',
+            ],
+            'Open in new window with window name' => [
+                'Nice Text',
+                [
+                    'parameter' => 'https://example.com 13x84',
+                ],
+                '<a href="https://example.com" target="FEopenLink" data-window-url="https://example.com" data-window-target="FEopenLink" data-window-features="width=13,height=84" rel="noreferrer">Nice Text</a>',
+            ],
+            'Link to file' => [
+                'My file',
+                [
+                    'directImageLink' => false,
+                    'parameter' => 'fileadmin/foo.bar',
+                ],
+                '<a href="fileadmin/foo.bar">My file</a>',
+            ],
+            'Link to file without link text' => [
+                '',
+                [
+                    'directImageLink' => false,
+                    'parameter' => 'fileadmin/foo.bar',
+                ],
+                '<a href="fileadmin/foo.bar">fileadmin/foo.bar</a>',
+            ],
+            'Link to file with attributes' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'class="file-class"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ],
+                '<a href="fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
+            ],
+            'Link to file with attributes and additional href' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'href="foo-bar"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ],
+                '<a href="fileadmin/foo.bar" target="_blank" title="Title of the file">My file</a>',
+            ],
+            'Link to file with attributes and additional href and class' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'href="foo-bar" class="file-class"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ],
+                '<a href="fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
+            ],
+            'Link to file with attributes and additional class and href' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'class="file-class" href="foo-bar"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ],
+                '<a href="fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
+            ],
+            'Link to file with attributes and additional class and href and title' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'class="file-class" href="foo-bar" title="foo-bar"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ],
+                '<a href="fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
+            ],
+            'Link to file with attributes and empty ATagParams' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => '',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ],
+                '<a href="fileadmin/foo.bar" target="_blank" title="Title of the file">My file</a>',
+            ],
+            'Link to file with attributes in parameter' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar _blank file-class "Title of the file"',
+                ],
+                '<a href="fileadmin/foo.bar" target="_blank" title="Title of the file" class="file-class">My file</a>',
+            ],
+            'Link to file with script tag in name' => [
+                '',
+                [
+                    'directImageLink' => false,
+                    'parameter' => 'fileadmin/<script>alert(123)</script>',
+                ],
+                '<a href="fileadmin/&lt;script&gt;alert(123)&lt;/script&gt;">fileadmin/&lt;script&gt;alert(123)&lt;/script&gt;</a>',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider typolinkReturnsCorrectLinksDataProvider
+     */
+    public function typolinkReturnsCorrectLinksAndUrls(string $linkText, array $configuration, string $expectedResult): void
+    {
+        $subject = new ContentObjectRenderer();
+        $subject->setRequest($this->getPreparedRequest());
+        self::assertEquals($expectedResult, $subject->typoLink($linkText, $configuration));
+    }
+
+    public static function typolinkReturnsCorrectLinkForSpamEncryptedEmailsDataProvider(): array
+    {
+        return [
+            'plain mail without mailto scheme' => [
+                [
+                    'spamProtectEmailAddresses' => 0,
+                    'spamProtectEmailAddresses_atSubst' => '',
+                    'spamProtectEmailAddresses_lastDotSubst' => '',
+                ],
+                'some.body@test.typo3.org',
+                'some.body@test.typo3.org',
+                '<a href="mailto:some.body@test.typo3.org">some.body@test.typo3.org</a>',
+            ],
+            'plain mail with mailto scheme' => [
+                [
+                    'spamProtectEmailAddresses' => 0,
+                    'spamProtectEmailAddresses_atSubst' => '',
+                    'spamProtectEmailAddresses_lastDotSubst' => '',
+                ],
+                'some.body@test.typo3.org',
+                'mailto:some.body@test.typo3.org',
+                '<a href="mailto:some.body@test.typo3.org">some.body@test.typo3.org</a>',
+            ],
+            'plain with at and dot substitution' => [
+                [
+                    'spamProtectEmailAddresses' => 0,
+                    'spamProtectEmailAddresses_atSubst' => '(at)',
+                    'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
+                ],
+                'some.body@test.typo3.org',
+                'mailto:some.body@test.typo3.org',
+                '<a href="mailto:some.body@test.typo3.org">some.body@test.typo3.org</a>',
+            ],
+            'mono-alphabetic substitution offset +1' => [
+                [
+                    'spamProtectEmailAddresses' => 1,
+                    'spamProtectEmailAddresses_atSubst' => '',
+                    'spamProtectEmailAddresses_lastDotSubst' => '',
+                ],
+                'some.body@test.typo3.org',
+                'mailto:some.body@test.typo3.org',
+                '<a href="#" data-mailto-token="nbjmup+tpnf/cpezAuftu/uzqp4/psh" data-mailto-vector="1">some.body(at)test.typo3.org</a>',
+            ],
+            'mono-alphabetic substitution offset +1 with at substitution' => [
+                [
+                    'spamProtectEmailAddresses' => 1,
+                    'spamProtectEmailAddresses_atSubst' => '@',
+                    'spamProtectEmailAddresses_lastDotSubst' => '',
+                ],
+                'some.body@test.typo3.org',
+                'mailto:some.body@test.typo3.org',
+                '<a href="#" data-mailto-token="nbjmup+tpnf/cpezAuftu/uzqp4/psh" data-mailto-vector="1">some.body@test.typo3.org</a>',
+            ],
+            'mono-alphabetic substitution offset +1 with at and dot substitution' => [
+                [
+                    'spamProtectEmailAddresses' => 1,
+                    'spamProtectEmailAddresses_atSubst' => '(at)',
+                    'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
+                ],
+                'some.body@test.typo3.org',
+                'mailto:some.body@test.typo3.org',
+                '<a href="#" data-mailto-token="nbjmup+tpnf/cpezAuftu/uzqp4/psh" data-mailto-vector="1">some.body(at)test.typo3(dot)org</a>',
+            ],
+            'mono-alphabetic substitution offset -1 with at and dot substitution' => [
+                [
+                    'spamProtectEmailAddresses' => -1,
+                    'spamProtectEmailAddresses_atSubst' => '(at)',
+                    'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
+                ],
+                'some.body@test.typo3.org',
+                'mailto:some.body@test.typo3.org',
+                '<a href="#" data-mailto-token="lzhksn9rnld-ancxZsdrs-sxon2-nqf" data-mailto-vector="-1">some.body(at)test.typo3(dot)org</a>',
+            ],
+            'mono-alphabetic substitution offset -1 with at and dot markup substitution' => [
+                [
+                    'spamProtectEmailAddresses' => -1,
+                    'spamProtectEmailAddresses_atSubst' => '<span class="at"></span>',
+                    'spamProtectEmailAddresses_lastDotSubst' => '<span class="dot"></span>',
+                ],
+                'some.body@test.typo3.org',
+                'mailto:some.body@test.typo3.org',
+                '<a href="#" data-mailto-token="lzhksn9rnld-ancxZsdrs-sxon2-nqf" data-mailto-vector="-1">some.body<span class="at"></span>test.typo3<span class="dot"></span>org</a>',
+            ],
+            'mono-alphabetic substitution offset 2 with at and dot substitution and encoded subject' => [
+                [
+                    'spamProtectEmailAddresses' => 2,
+                    'spamProtectEmailAddresses_atSubst' => '(at)',
+                    'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
+                ],
+                'some.body@test.typo3.org',
+                'mailto:some.body@test.typo3.org?subject=foo%20bar',
+                '<a href="#" data-mailto-token="ocknvq,uqog0dqfaBvguv0varq50qti?uwdlgev=hqq%42dct" data-mailto-vector="2">some.body(at)test.typo3(dot)org</a>',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider typolinkReturnsCorrectLinkForSpamEncryptedEmailsDataProvider
+     */
+    public function typolinkReturnsCorrectLinkForSpamEncryptedEmails(array $tsfeConfig, string $linkText, string $parameter, string $expected): void
     {
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $tsfe->config['config'] = $tsfeConfig;
         $subject = new ContentObjectRenderer($tsfe);
-        $subject->setRequest($this->getPreparedRequest());
+        self::assertEquals($expected, $subject->typoLink($linkText, ['parameter' => $parameter]));
+    }
 
-        $tsfe->config['config']['spamProtectEmailAddresses'] = 1;
-        $result = $subject->typoLink('Send me an email', ['parameter' => 'mailto:test@example.com']);
-        self::assertEquals('<a href="#" data-mailto-token="nbjmup+uftuAfybnqmf/dpn" data-mailto-vector="1">Send me an email</a>', $result);
+    public static function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefixDataProvider(): array
+    {
+        return [
+            'Link to file' => [
+                'My file',
+                [
+                    'directImageLink' => false,
+                    'parameter' => 'fileadmin/foo.bar',
+                ],
+                '/',
+                '<a href="/fileadmin/foo.bar">My file</a>',
+            ],
+            'Link to file with longer absRefPrefix' => [
+                'My file',
+                [
+                    'directImageLink' => false,
+                    'parameter' => 'fileadmin/foo.bar',
+                ],
+                '/sub/',
+                '<a href="/sub/fileadmin/foo.bar">My file</a>',
+            ],
+            'Link to absolute file' => [
+                'My file',
+                [
+                    'directImageLink' => false,
+                    'parameter' => '/images/foo.bar',
+                ],
+                '/',
+                '<a href="/images/foo.bar">My file</a>',
+            ],
+            'Link to absolute file with longer absRefPrefix' => [
+                'My file',
+                [
+                    'directImageLink' => false,
+                    'parameter' => '/images/foo.bar',
+                ],
+                '/sub/',
+                '<a href="/images/foo.bar">My file</a>',
+            ],
+            'Link to absolute file with identical longer absRefPrefix' => [
+                'My file',
+                [
+                    'directImageLink' => false,
+                    'parameter' => '/sub/fileadmin/foo.bar',
+                ],
+                '/sub/',
+                '<a href="/sub/fileadmin/foo.bar">My file</a>',
+            ],
+            'Link to file with empty absRefPrefix' => [
+                'My file',
+                [
+                    'directImageLink' => false,
+                    'parameter' => 'fileadmin/foo.bar',
+                ],
+                '',
+                '<a href="fileadmin/foo.bar">My file</a>',
+            ],
+            'Link to absolute file with empty absRefPrefix' => [
+                'My file',
+                [
+                    'directImageLink' => false,
+                    'parameter' => '/fileadmin/foo.bar',
+                ],
+                '',
+                '<a href="/fileadmin/foo.bar">My file</a>',
+            ],
+            'Link to file with attributes with absRefPrefix' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'class="file-class"',
+                    'title' => 'Title of the file',
+                ],
+                '/',
+                '<a href="/fileadmin/foo.bar" class="file-class" title="Title of the file">My file</a>',
+            ],
+            'Link to file with attributes with longer absRefPrefix' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'class="file-class"',
+                    'title' => 'Title of the file',
+                ],
+                '/sub/',
+                '<a href="/sub/fileadmin/foo.bar" class="file-class" title="Title of the file">My file</a>',
+            ],
+            'Link to absolute file with attributes with absRefPrefix' => [
+                'My file',
+                [
+                    'parameter' => '/images/foo.bar',
+                    'ATagParams' => 'class="file-class"',
+                    'title' => 'Title of the file',
+                ],
+                '/',
+                '<a href="/images/foo.bar" class="file-class" title="Title of the file">My file</a>',
+            ],
+            'Link to absolute file with attributes with longer absRefPrefix' => [
+                'My file',
+                [
+                    'parameter' => '/images/foo.bar',
+                    'ATagParams' => 'class="file-class"',
+                    'title' => 'Title of the file',
+                ],
+                '/sub/',
+                '<a href="/images/foo.bar" class="file-class" title="Title of the file">My file</a>',
+            ],
+            'Link to absolute file with attributes with identical longer absRefPrefix' => [
+                'My file',
+                [
+                    'parameter' => '/sub/fileadmin/foo.bar',
+                    'ATagParams' => 'class="file-class"',
+                    'title' => 'Title of the file',
+                ],
+                '/sub/',
+                '<a href="/sub/fileadmin/foo.bar" class="file-class" title="Title of the file">My file</a>',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider typolinkReturnsCorrectLinksForFilesWithAbsRefPrefixDataProvider
+     */
+    public function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefix(string $linkText, array $configuration, string $absRefPrefix, string $expectedResult): void
+    {
+        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $tsfe->absRefPrefix = $absRefPrefix;
+        $subject = new ContentObjectRenderer($tsfe);
+        self::assertEquals($expectedResult, $subject->typoLink($linkText, $configuration));
+    }
+
+    public static function typoLinkProperlyEncodesLinkResultDataProvider(): array
+    {
+        return [
+            'Link to file' => [
+                'My file',
+                [
+                    'directImageLink' => false,
+                    'parameter' => '/fileadmin/foo.bar',
+                    'returnLast' => 'result',
+                ],
+                json_encode([
+                    'href' => '/fileadmin/foo.bar',
+                    'target' => null,
+                    'class' => null,
+                    'title' => null,
+                    'linkText' => 'My file',
+                    'additionalAttributes' => [],
+                ]),
+            ],
+            'Link example' => [
+                'My example',
+                [
+                    'directImageLink' => false,
+                    'parameter' => 'https://example.tld',
+                    'returnLast' => 'result',
+                ],
+                json_encode([
+                    'href' => 'https://example.tld',
+                    'target' => null,
+                    'class' => null,
+                    'title' => null,
+                    'linkText' => 'My example',
+                    'additionalAttributes' => [],
+                ]),
+            ],
+            'Link to file with attributes' => [
+                'My file',
+                [
+                    'parameter' => '/fileadmin/foo.bar',
+                    'ATagParams' => 'class="file-class"',
+                    'returnLast' => 'result',
+                ],
+                json_encode([
+                    'href' => '/fileadmin/foo.bar',
+                    'target' => null,
+                    'class' => 'file-class',
+                    'title' => null,
+                    'linkText' => 'My file',
+                    'additionalAttributes' => [],
+                ]),
+            ],
+            'Link parsing' => [
+                'Url',
+                [
+                    'parameter' => 'https://example.com _blank css-class "test title"',
+                    'returnLast' => 'result',
+                ],
+                json_encode([
+                    'href' => 'https://example.com',
+                    'target' => '_blank',
+                    'class' => 'css-class',
+                    'title' => 'test title',
+                    'linkText' => 'Url',
+                    'additionalAttributes' => ['rel' => 'noreferrer'],
+                ]),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider typoLinkProperlyEncodesLinkResultDataProvider
+     * @test
+     */
+    public function typoLinkProperlyEncodesLinkResult(string $linkText, array $configuration, string $expectedResult): void
+    {
+        $subject = new ContentObjectRenderer();
+        $subject->setRequest($this->getPreparedRequest());
+        self::assertEquals($expectedResult, $subject->typoLink($linkText, $configuration));
     }
 
     /**
@@ -395,10 +1011,11 @@ And another one';
      */
     public function checkIfReturnsExpectedValues(array $configuration, bool $expected): void
     {
-        $this->subject->data = [
+        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $subject->data = [
             'known' => 'somevalue',
         ];
-        self::assertSame($expected, $this->subject->checkIf($configuration));
+        self::assertSame($expected, $subject->checkIf($configuration));
     }
 
     public static function imageLinkWrapWrapsTheContentAsConfiguredDataProvider(): iterable
@@ -578,9 +1195,19 @@ And another one';
             'crop' => '{"default":{"cropArea":{"x":0,"y":0,"width":1,"height":1},"selectedRatio":"NaN","focusArea":null}}',
         ];
         $fileReference = new FileReference($fileReferenceData);
-        $this->subject->setCurrentFile($fileReference);
-        $this->subject->setRequest($this->getPreparedRequest());
-        $result = $this->subject->imageLinkWrap($content, $fileReference, $configuration);
+        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier('test');
+        $typoScriptFrontendController = GeneralUtility::makeInstance(
+            TypoScriptFrontendController::class,
+            GeneralUtility::makeInstance(Context::class),
+            $site,
+            $site->getDefaultLanguage(),
+            new PageArguments(1, '0', []),
+            GeneralUtility::makeInstance(FrontendUserAuthentication::class)
+        );
+        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
+        $subject->setCurrentFile($fileReference);
+        $subject->setRequest($this->getPreparedRequest());
+        $result = $subject->imageLinkWrap($content, $fileReference, $configuration);
 
         foreach ($expected as $expectedString => $shouldContain) {
             if ($shouldContain) {
