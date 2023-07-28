@@ -1442,9 +1442,11 @@ class PageRenderer implements SingletonInterface
 
         // @todo hookup with PSR-7 request/response
         $sitePath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
+
+        $useNonce = $this->getApplicationType() === 'BE';
         $out .= $this->javaScriptRenderer->renderImportMap(
             $sitePath,
-            $this->nonce
+            $useNonce ? $this->nonce : null,
         );
 
         $this->loadJavaScriptLanguageStrings();

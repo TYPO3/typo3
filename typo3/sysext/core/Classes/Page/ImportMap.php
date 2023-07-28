@@ -24,6 +24,12 @@ use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Page\Event\ResolveJavaScriptImportEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashValue;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Mutation;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationMode;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyRegistry;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -43,6 +49,7 @@ class ImportMap
     public function __construct(
         protected readonly HashService $hashService,
         protected readonly array $packages,
+        protected readonly ?PolicyRegistry $policyRegistry = null,
         protected readonly ?FrontendInterface $cache = null,
         protected readonly string $cacheIdentifier = '',
         protected readonly ?EventDispatcherInterface $eventDispatcher = null,
@@ -129,8 +136,23 @@ class ImportMap
             $importMap,
             JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_THROW_ON_ERROR
         );
-        $nonceAttr = $nonce !== null ? ' nonce="' . htmlspecialchars((string)$nonce) . '"' : '';
-        $html[] = sprintf('<script type="importmap"%s>%s</script>', $nonceAttr, $json);
+        $attributes = [
+            'type' => 'importmap',
+        ];
+        if ($nonce !== null) {
+            $attributes['nonce'] = (string)$nonce;
+        } else {
+            $this->policyRegistry?->appendMutationCollection(
+                new MutationCollection(
+                    new Mutation(MutationMode::Extend, Directive::ScriptSrc, HashValue::hash($json))
+                )
+            );
+        }
+        $html[] = sprintf(
+            '<script %s>%s</script>',
+            GeneralUtility::implodeAttributes($attributes, true),
+            $json
+        );
 
         return implode(PHP_EOL, $html) . PHP_EOL;
     }
