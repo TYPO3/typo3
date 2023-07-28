@@ -91,7 +91,7 @@ class Policy
     {
         $collection = $this->asMergedSourceCollection(...$sources);
         $collection = $this->purgeNonApplicableSources($directive, $collection);
-        if ($collection->isEmpty()) {
+        if ($collection->isEmpty() && !$directive->isStandAlone()) {
             return $this;
         }
         foreach ($directive->getAncestors() as $ancestorDirective) {
@@ -209,7 +209,7 @@ class Policy
         $service = GeneralUtility::makeInstance(ModelService::class, $cache);
         foreach ($this->prepare()->directives as $directive => $collection) {
             $directiveParts = $service->compileSources($nonce, $collection);
-            if ($directiveParts !== []) {
+            if ($directiveParts !== [] || $directive->isStandAlone()) {
                 array_unshift($directiveParts, $directive->value);
                 $policyParts[] = implode(' ', $directiveParts);
             }
@@ -269,7 +269,7 @@ class Policy
 
     protected function changeDirectiveSources(Directive $directive, SourceCollection $sources): self
     {
-        if ($sources->isEmpty()) {
+        if ($sources->isEmpty() && !$directive->isStandAlone()) {
             return $this;
         }
         $target = clone $this;

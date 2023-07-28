@@ -108,6 +108,17 @@ final class PolicyTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function nonAncestorDirectiveDoesNotExtendDefault(): void
+    {
+        $policy = (new Policy(SourceKeyword::self))
+            ->extend(Directive::Sandbox)
+            ->extend(Directive::TrustedTypes);
+        self::assertSame("default-src 'self'; sandbox; trusted-types", $policy->compile($this->nonce));
+    }
+
+    /**
+     * @test
+     */
     public function newDirectiveDoesNotExtendDefault(): void
     {
         $policy = (new Policy(SourceKeyword::self))

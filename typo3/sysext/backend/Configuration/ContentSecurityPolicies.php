@@ -33,6 +33,10 @@ return Map::fromEntries([
         // muuri.js is creating workers from `blob:` (?!?)
         new Mutation(MutationMode::Set, Directive::WorkerSrc, SourceKeyword::self, SourceScheme::blob),
         // `frame-src self` required for backend nav and list iframes
-        new Mutation(MutationMode::Extend, Directive::FrameSrc, SourceKeyword::self)
+        new Mutation(MutationMode::Extend, Directive::FrameSrc, SourceKeyword::self),
+        // deny `<base>` element which might be used for cross-origin targets
+        new Mutation(MutationMode::Set, Directive::BaseUri, SourceKeyword::none),
+        // deny `<object>` and `<embed>` elements
+        new Mutation(MutationMode::Set, Directive::ObjectSrc, SourceKeyword::none),
     ),
 ]);

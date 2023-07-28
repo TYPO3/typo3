@@ -23,6 +23,12 @@ namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
  */
 enum Directive: string
 {
+    private const STAND_ALONE = [
+        self::Sandbox,
+        self::TrustedTypes,
+        self::UpgradeInsecureRequests,
+    ];
+
     case DefaultSrc = 'default-src';
     case BaseUri = 'base-uri';
     case ChildSrc = 'child-src';
@@ -37,17 +43,19 @@ enum Directive: string
     case ObjectSrc = 'object-src';
     // @deprecated (used for Safari, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/plugin-types)
     case PluginTypes = 'plugin-types';
+    case ReportTo = 'report-to';
     // @deprecated (see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/report-uri)
+    // but `report-uri` is still used for being compatible other older browsers
     case ReportUri = 'report-uri';
+    case RequireTrustedTypesFor = 'require-trusted-types-for';
     case Sandbox = 'sandbox';
     case ScriptSrc = 'script-src';
     case ScriptSrcAttr = 'script-src-attr';
     case ScriptSrcElem = 'script-src-elem';
-    case StrictDynamic = 'strict-dynamic';
     case StyleSrc = 'style-src';
     case StyleSrcAttr = 'style-src-attr';
     case StyleSrcElem = 'style-src-elem';
-    case UnsafeHashes = 'unsafe-hashes';
+    case TrustedTypes = 'trusted-types';
     case UpgradeInsecureRequests = 'upgrade-insecure-requests';
     case WorkerSrc = 'worker-src';
 
@@ -56,11 +64,7 @@ enum Directive: string
      */
     public function getAncestors(): array
     {
-        $ancestors = self::ancestorMap()[$this] ?? [];
-        if ($this !== self::DefaultSrc) {
-            $ancestors[] = self::DefaultSrc;
-        }
-        return $ancestors;
+        return self::ancestorMap()[$this] ?? [];
     }
 
     /**
@@ -73,18 +77,36 @@ enum Directive: string
     }
 
     /**
+     * Determines whether the current directive can be used without any values,
+     * like for instance `sandbox`, `trusted-types` or `upgrade-insecure-requests`.
+     */
+    public function isStandAlone(): bool
+    {
+        return in_array($this, self::STAND_ALONE, true);
+    }
+
+    /**
      * @return \WeakMap<self, list<self>>
      */
     private static function ancestorMap(): \WeakMap
     {
         /** @var \WeakMap<self, list<self>> $map temporary, internal \WeakMap */
         $map = new \WeakMap();
-        $map[self::ScriptSrcAttr] = [self::ScriptSrc];
-        $map[self::ScriptSrcElem] = [self::ScriptSrc];
-        $map[self::StyleSrcAttr] = [self::StyleSrc];
-        $map[self::StyleSrcElem] = [self::StyleSrc];
-        $map[self::FrameSrc] = [self::ChildSrc];
-        $map[self::WorkerSrc] = [self::ChildSrc, self::ScriptSrc];
+        $map[self::ChildSrc] = [self::DefaultSrc];
+        $map[self::ConnectSrc] = [self::DefaultSrc];
+        $map[self::FontSrc] = [self::DefaultSrc];
+        $map[self::FrameSrc] = [self::ChildSrc, self::DefaultSrc];
+        $map[self::ImgSrc] = [self::DefaultSrc];
+        $map[self::ManifestSrc] = [self::DefaultSrc];
+        $map[self::MediaSrc] = [self::DefaultSrc];
+        $map[self::ObjectSrc] = [self::DefaultSrc];
+        $map[self::ScriptSrc] = [self::DefaultSrc];
+        $map[self::ScriptSrcAttr] = [self::ScriptSrc, self::DefaultSrc];
+        $map[self::ScriptSrcElem] = [self::ScriptSrc, self::DefaultSrc];
+        $map[self::StyleSrc] = [self::DefaultSrc];
+        $map[self::StyleSrcAttr] = [self::StyleSrc, self::DefaultSrc];
+        $map[self::StyleSrcElem] = [self::StyleSrc, self::DefaultSrc];
+        $map[self::WorkerSrc] = [self::ChildSrc, self::ScriptSrc, self::DefaultSrc];
         return $map;
     }
 

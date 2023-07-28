@@ -26,5 +26,7 @@ return Map::fromEntries([
         new Mutation(MutationMode::Set, Directive::StyleSrcAttr, SourceKeyword::unsafeInline),
         // allow `data:` images
         new Mutation(MutationMode::Extend, Directive::ImgSrc, SourceScheme::data),
+        // limits `<base>` element to be use just for same-origin URIs
+        new Mutation(MutationMode::Set, Directive::BaseUri, SourceKeyword::self),
     ),
 ]);
