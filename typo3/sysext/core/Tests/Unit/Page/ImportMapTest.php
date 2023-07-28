@@ -116,7 +116,7 @@ final class ImportMapTest extends UnitTestCase
     {
         $this->packages = ['core'];
 
-        $importMap = new ImportMap($this->hashService, $this->getPackages(), null, '', null, false);
+        $importMap = new ImportMap($this->hashService, $this->getPackages(), null, null, '', null, false);
         $nestedUrl = $importMap->resolveImport('@typo3/core/nested/module.js');
 
         self::assertEquals('Fixtures/ImportMap/core/Resources/Public/JavaScript/nested/module.js', $nestedUrl);
