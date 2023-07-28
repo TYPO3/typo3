@@ -30,25 +30,10 @@ class LocalPath
     public const TYPE_ABSOLUTE = 1;
     public const TYPE_RELATIVE = 2;
 
-    /**
-     * @var string
-     */
-    protected $raw;
-
-    /**
-     * @var string|null
-     */
-    protected $relative;
-
-    /**
-     * @var string
-     */
-    protected $absolute;
-
-    /**
-     * @var int
-     */
-    protected $type;
+    protected string $raw;
+    protected ?string $relative = null;
+    protected string $absolute;
+    protected int $type;
 
     public function __construct(string $value, int $type)
     {
@@ -76,7 +61,7 @@ class LocalPath
     }
 
     /**
-     * @return string normalize path as provided
+     * @return string normalized path as provided
      */
     public function getRaw(): string
     {
