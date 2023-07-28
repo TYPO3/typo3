@@ -260,18 +260,12 @@ class InaccessibleFolder extends Folder
         $this->throwInaccessibleException();
     }
 
-    /**
-     * @return int
-     */
-    public function getModificationTime()
+    public function getModificationTime(): int
     {
         return 0;
     }
 
-    /**
-     * @return int
-     */
-    public function getCreationTime()
+    public function getCreationTime(): int
     {
         return 0;
     }

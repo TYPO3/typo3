@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -33,67 +35,49 @@ interface FolderInterface extends ResourceInterface
     public const ROLE_USER_MOUNT = 'user-mount';
 
     /**
-     * @return array<string|int, Folder>
+     * @phpstan-return array<array-key, Folder>
      */
-    public function getSubfolders();
+    public function getSubfolders(): array;
 
     /**
      * Returns the object for a subfolder of the current folder, if it exists.
-     *
-     * @param string $name Name of the subfolder
-     * @return Folder
      */
-    public function getSubfolder($name);
+    public function getSubfolder(string $name): Folder;
 
     /**
      * Checks if a folder exists in this folder.
-     *
-     * @param string $name
-     * @return bool
      */
-    public function hasFolder($name);
+    public function hasFolder(string $name): bool;
 
     /**
      * Checks if a file exists in this folder
-     *
-     * @param string $name
-     * @return bool
      */
-    public function hasFile($name);
+    public function hasFile(string $name): bool;
 
     /**
      * Fetches a file from a folder, must be a direct descendant of a folder.
-     *
-     * @return File|ProcessedFile|null
      */
-    public function getFile(string $fileName);
+    public function getFile(string $fileName): ?FileInterface;
 
     /**
      * Renames this folder.
      *
-     * @param string $newName
-     * @return Folder
+     * @return $this
      */
-    public function rename($newName);
+    public function rename(string $newName): self;
 
     /**
      * Deletes this folder from its storage. This also means that this object becomes useless.
-     *
-     * @return bool TRUE if deletion succeeded
      */
-    public function delete();
+    public function delete(): bool;
 
     /**
      * Returns the modification time of the folder as Unix timestamp
-     *
-     * @return int
      */
-    public function getModificationTime();
+    public function getModificationTime(): int;
 
     /**
      * Returns the creation time of the folder as Unix timestamp
-     *
-     * @return int
      */
-    public function getCreationTime();
+    public function getCreationTime(): int;
 }
