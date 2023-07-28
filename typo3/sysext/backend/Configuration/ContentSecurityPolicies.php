@@ -34,5 +34,9 @@ return Map::fromEntries([
         new Mutation(MutationMode::Set, Directive::WorkerSrc, SourceKeyword::self, SourceScheme::blob),
         // `frame-src blob:` required for es-module-shims blob: URLs
         new Mutation(MutationMode::Extend, Directive::FrameSrc, SourceScheme::blob),
+        // deny `<base>` element which might be used for cross-origin targets
+        new Mutation(MutationMode::Set, Directive::BaseUri, SourceKeyword::none),
+        // deny `<object>` and `<embed>` elements
+        new Mutation(MutationMode::Set, Directive::ObjectSrc, SourceKeyword::none),
     ),
 ]);

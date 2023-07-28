@@ -25,8 +25,10 @@ enum SourceScheme: string implements SourceInterface
 {
     case blob = 'blob';
     case data = 'data';
+    case filesystem = 'filesystem';
     case http = 'http';
     case https = 'https';
+    case mediastream = 'mediastream';
     case ws = 'ws';
     case wss = 'wss';
 }
