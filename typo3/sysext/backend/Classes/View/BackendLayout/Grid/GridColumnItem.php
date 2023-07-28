@@ -24,7 +24,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -186,7 +186,7 @@ class GridColumnItem extends AbstractGridObject
         $icons = [];
 
         $icon = $this->iconFactory
-            ->getIconForRecord($table, $row, Icon::SIZE_SMALL)
+            ->getIconForRecord($table, $row, IconSize::SMALL)
             ->setTitle(BackendUtility::getRecordIconAltText($row, $table))
             ->render();
         if ($this->getBackendUser()->recordEditAccessInternals($table, $row)) {
@@ -196,7 +196,7 @@ class GridColumnItem extends AbstractGridObject
 
         if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
             $icons[] = '<a href="#" title="' . htmlspecialchars($lockInfo['msg']) . '">'
-                . $this->iconFactory->getIcon('status-user-backend', Icon::SIZE_SMALL, 'overlay-edit')->render() . '</a>';
+                . $this->iconFactory->getIcon('status-user-backend', IconSize::SMALL, 'overlay-edit')->render() . '</a>';
         }
         return implode(' ', $icons);
     }

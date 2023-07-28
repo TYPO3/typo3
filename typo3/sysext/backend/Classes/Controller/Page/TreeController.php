@@ -31,8 +31,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -361,9 +361,9 @@ class TreeController
         $visibleText = $page['title'];
         $tooltip = BackendUtility::titleAttribForPages($page, '', false);
         if ($pageId !== 0) {
-            $icon = $this->iconFactory->getIconForRecord('pages', $page, Icon::SIZE_SMALL);
+            $icon = $this->iconFactory->getIconForRecord('pages', $page, IconSize::SMALL);
         } else {
-            $icon = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL);
+            $icon = $this->iconFactory->getIcon('apps-pagetree-root', IconSize::SMALL);
         }
 
         if ($this->useNavTitle && trim($page['nav_title'] ?? '') !== '') {

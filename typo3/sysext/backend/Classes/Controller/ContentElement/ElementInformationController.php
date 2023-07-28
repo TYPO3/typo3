@@ -33,8 +33,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\File;
@@ -162,13 +162,13 @@ class ElementInformationController
         if ($this->type === 'folder') {
             $pageTitle['title'] = htmlspecialchars($this->folderObject->getName());
             $pageTitle['table'] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder');
-            $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->folderObject, Icon::SIZE_SMALL)->render();
+            $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->folderObject, IconSize::SMALL)->render();
         } elseif ($this->type === 'file') {
             $pageTitle['table'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-            $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->fileObject, Icon::SIZE_SMALL)->render();
+            $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->fileObject, IconSize::SMALL)->render();
         } else {
             $pageTitle['table'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-            $pageTitle['icon'] = $this->iconFactory->getIconForRecord($this->table, $this->row, Icon::SIZE_SMALL);
+            $pageTitle['icon'] = $this->iconFactory->getIconForRecord($this->table, $this->row, IconSize::SMALL);
         }
         return $pageTitle;
     }
@@ -578,7 +578,7 @@ class ElementInformationController
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
-                $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
+                $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, IconSize::SMALL)->render();
                 $line['row'] = $row;
                 $line['record'] = $record;
                 $line['recordTitle'] = BackendUtility::getRecordTitle($row['tablename'], $record, false, true);
@@ -657,7 +657,7 @@ class ElementInformationController
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
-                $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
+                $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, IconSize::SMALL)->render();
                 $line['row'] = $row;
                 $line['record'] = $record;
                 $line['recordTitle'] = BackendUtility::getRecordTitle($row['ref_table'], $record, false, true);

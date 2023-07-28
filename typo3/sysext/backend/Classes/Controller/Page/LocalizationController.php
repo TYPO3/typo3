@@ -29,8 +29,8 @@ use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -124,7 +124,7 @@ class LocalizationController
             if ($language['flagIcon'] === 'empty-empty') {
                 $language['flagIcon'] = '';
             } else {
-                $language['flagIcon'] = $this->iconFactory->getIcon($language['flagIcon'], Icon::SIZE_SMALL)->render();
+                $language['flagIcon'] = $this->iconFactory->getIcon($language['flagIcon'], IconSize::SMALL)->render();
             }
         }
 
@@ -164,7 +164,7 @@ class LocalizationController
                 $records[$colPos] = [];
             }
             $records[$colPos][] = [
-                'icon' => $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render(),
+                'icon' => $this->iconFactory->getIconForRecord('tt_content', $row, IconSize::SMALL)->render(),
                 'title' => $row[$GLOBALS['TCA']['tt_content']['ctrl']['label']],
                 'uid' => $row['uid'],
             ];

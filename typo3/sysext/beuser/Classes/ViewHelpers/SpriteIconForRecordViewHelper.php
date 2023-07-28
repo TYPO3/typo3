@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Beuser\ViewHelpers;
 
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -81,6 +81,6 @@ final class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
             $row['endTime'] = $object->getEndDateAndTime();
         }
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        return $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();
+        return $iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render();
     }
 }

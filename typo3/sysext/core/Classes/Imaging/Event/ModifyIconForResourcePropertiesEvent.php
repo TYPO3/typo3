@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Imaging\Event;
 
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 
 /**
@@ -27,7 +28,7 @@ final class ModifyIconForResourcePropertiesEvent
 {
     public function __construct(
         private readonly ResourceInterface $resource,
-        private readonly string $size,
+        private readonly IconSize $size,
         private readonly array $options,
         private ?string $iconIdentifier,
         private ?string $overlayIdentifier
@@ -39,9 +40,18 @@ final class ModifyIconForResourcePropertiesEvent
         return $this->resource;
     }
 
-    public function getSize(): string
+    public function getIconSize(): IconSize
     {
         return $this->size;
+    }
+
+    /**
+     * @deprecated will be removed in v13, use getIconSize instead.
+     */
+    public function getSize(): string
+    {
+        $this->size->triggerDeprecation();
+        return $this->size->value;
     }
 
     public function getOptions(): array

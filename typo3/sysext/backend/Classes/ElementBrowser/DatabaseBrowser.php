@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
-use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -157,11 +157,11 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         if (is_array($mainPageRecord)) {
             $pText = htmlspecialchars(GeneralUtility::fixed_lgd_cs($mainPageRecord['title'], $titleLen));
 
-            $out .= '<p>' . $this->iconFactory->getIconForRecord('pages', $mainPageRecord, Icon::SIZE_SMALL)->render() . '&nbsp;';
+            $out .= '<p>' . $this->iconFactory->getIconForRecord('pages', $mainPageRecord, IconSize::SMALL)->render() . '&nbsp;';
             if (in_array('pages', $tablesArr, true)) {
                 $out .= '<span data-uid="' . htmlspecialchars((string)$mainPageRecord['uid']) . '" data-table="pages" data-title="' . htmlspecialchars($mainPageRecord['title']) . '">';
                 $out .= '<a href="#" data-close="0">'
-                    . $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render()
+                    . $this->iconFactory->getIcon('actions-plus', IconSize::SMALL)->render()
                     . '</a>'
                     . '<a href="#" data-close="1">'
                     . $pText

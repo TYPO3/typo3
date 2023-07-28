@@ -24,8 +24,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -129,7 +129,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                         $shortcutRecord = BackendUtility::getRecord($tableName, $split[1]);
                         if (is_array($shortcutRecord)) {
                             $shortcutRecord = $this->translateShortcutRecord($record, $shortcutRecord, $tableName, (int)$split[1]);
-                            $icon = $this->getIconFactory()->getIconForRecord($tableName, $shortcutRecord, Icon::SIZE_SMALL)->render();
+                            $icon = $this->getIconFactory()->getIconForRecord($tableName, $shortcutRecord, IconSize::SMALL)->render();
                             $icon = BackendUtility::wrapClickMenuOnIcon(
                                 $icon,
                                 $tableName,

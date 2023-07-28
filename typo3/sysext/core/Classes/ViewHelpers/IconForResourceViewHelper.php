@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ViewHelpers;
 
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -57,7 +57,7 @@ final class IconForResourceViewHelper extends AbstractViewHelper
     public function initializeArguments(): void
     {
         $this->registerArgument('resource', ResourceInterface::class, 'Resource', true);
-        $this->registerArgument('size', 'string', 'The icon size', false, Icon::SIZE_SMALL);
+        $this->registerArgument('size', 'string', 'The icon size', false, IconSize::SMALL);
         $this->registerArgument('overlay', 'string', 'Overlay identifier', false, null);
         $this->registerArgument('options', 'array', 'An associative array with additional options', false, []);
         $this->registerArgument('alternativeMarkupIdentifier', 'string', 'Alternative markup identifier', false);

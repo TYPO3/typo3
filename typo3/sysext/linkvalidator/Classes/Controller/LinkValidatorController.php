@@ -26,8 +26,8 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -384,7 +384,7 @@ class LinkValidatorController
 
         return [
             'title' => $table . ':' . $row['record_uid'],
-            'icon' => $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
+            'icon' => $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render(),
             'headline' => $row['headline'],
             'label' => sprintf($languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.field'), $fieldLabel),
             'path' => BackendUtility::getRecordPath($row['record_pid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0),

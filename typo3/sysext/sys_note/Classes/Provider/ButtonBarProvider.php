@@ -24,8 +24,8 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ModifyButtonBarEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -87,7 +87,7 @@ final class ButtonBarProvider
         $buttons[ButtonBar::BUTTON_POSITION_RIGHT][2][] = $event->getButtonBar()
             ->makeLinkButton()
             ->setTitle(htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:new_internal_note')))
-            ->setIcon(GeneralUtility::makeInstance(IconFactory::class)->getIcon('sysnote-type-0', Icon::SIZE_SMALL))
+            ->setIcon(GeneralUtility::makeInstance(IconFactory::class)->getIcon('sysnote-type-0', IconSize::SMALL))
             ->setHref($uri);
 
         ksort($buttons[ButtonBar::BUTTON_POSITION_RIGHT]);

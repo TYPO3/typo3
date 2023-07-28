@@ -36,8 +36,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -344,7 +344,7 @@ class SetupModuleController
             ->setValue('1')
             ->setForm('SetupModuleController')
             ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL));
 
         $buttonBar->addButton($saveButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
@@ -540,7 +540,7 @@ class SetupModuleController
                         . '" class="btn btn-default"'
                         . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.openFileBrowser')) . '"'
                         . ' data-setup-avatar-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '|||allowed=' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? '') . ';disallowed=|-0-be_users-avatar-avatar'])) . '"'
-                        . '>' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
+                        . '>' . $this->iconFactory->getIcon('actions-insert-record', IconSize::SMALL)
                         . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.openFileBrowser'))
                         . '</button>';
                     if ($avatarFileUid) {
@@ -549,7 +549,7 @@ class SetupModuleController
                         $html .= '<button type="button" id="clear_button_' . htmlspecialchars($fieldName)
                         . '" class="btn btn-default"'
                         . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.clear')) . '" '
-                        . '>' . $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)
+                        . '>' . $this->iconFactory->getIcon('actions-delete', IconSize::SMALL)
                         . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.clear'))
                         . '</button>';
                     }

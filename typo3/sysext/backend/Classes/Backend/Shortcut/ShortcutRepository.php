@@ -24,8 +24,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
@@ -522,16 +522,16 @@ class ShortcutRepository
 
                 if ($shortcut['type'] === 'edit') {
                     $row = BackendUtility::getRecordWSOL($table, $recordid) ?? [];
-                    $icon = $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();
+                    $icon = $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render();
                 } elseif ($shortcut['type'] === 'new') {
-                    $icon = $this->iconFactory->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
+                    $icon = $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render();
                 }
                 break;
             case 'file_edit':
-                $icon = $this->iconFactory->getIcon('mimetypes-text-html', Icon::SIZE_SMALL)->render();
+                $icon = $this->iconFactory->getIcon('mimetypes-text-html', IconSize::SMALL)->render();
                 break;
             case 'wizard_rte':
-                $icon = $this->iconFactory->getIcon('mimetypes-word', Icon::SIZE_SMALL)->render();
+                $icon = $this->iconFactory->getIcon('mimetypes-word', IconSize::SMALL)->render();
                 break;
             default:
                 $iconIdentifier = '';
@@ -541,7 +541,7 @@ class ShortcutRepository
                 if ($iconIdentifier === '') {
                     $iconIdentifier = 'empty-empty';
                 }
-                $icon = $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render();
+                $icon = $this->iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render();
         }
 
         return $icon;

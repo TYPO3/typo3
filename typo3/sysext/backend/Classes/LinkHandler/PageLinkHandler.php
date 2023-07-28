@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -138,7 +138,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             // Create header for listing, showing the page title/icon
             $this->view->assign('activePage', $activePageRecord);
             $this->view->assign('activePageTitle', BackendUtility::getRecordTitle('pages', $activePageRecord, true));
-            $this->view->assign('activePageIcon', $this->iconFactory->getIconForRecord('pages', $activePageRecord, Icon::SIZE_SMALL)->render());
+            $this->view->assign('activePageIcon', $this->iconFactory->getIconForRecord('pages', $activePageRecord, IconSize::SMALL)->render());
             if ($this->isPageLinkable($activePageRecord)) {
                 $this->view->assign('activePageLink', $linkService->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => $pageId]));
             }
@@ -177,7 +177,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
                 BackendUtility::workspaceOL('tt_content', $contentElement);
                 $contentElement['url'] = $linkService->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => $pageId, 'fragment' => $contentElement['uid']]);
                 $contentElement['isSelected'] = (int)($this->linkParts['url']['fragment'] ?? 0) === (int)$contentElement['uid'];
-                $contentElement['icon'] = $this->iconFactory->getIconForRecord('tt_content', $contentElement, Icon::SIZE_SMALL)->render();
+                $contentElement['icon'] = $this->iconFactory->getIconForRecord('tt_content', $contentElement, IconSize::SMALL)->render();
                 $contentElement['title'] = BackendUtility::getRecordTitle('tt_content', $contentElement, true);
             }
             $this->view->assign('contentElements', $contentElements);

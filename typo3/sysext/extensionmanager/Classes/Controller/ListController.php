@@ -22,8 +22,8 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
@@ -219,12 +219,12 @@ class ListController extends AbstractController
             $action = $this->request->hasArgument('returnTo') ? $this->request->getArgument('returnTo') : 'ter';
             $uri = $this->uriBuilder->reset()->uriFor(in_array($action, ['index', 'ter'], true) ? $action : 'ter', [], 'List');
             $title = $this->translate('extConfTemplate.backToList');
-            $icon = $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
+            $icon = $this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL);
             $classes = '';
         } else {
             $uri = $this->uriBuilder->reset()->uriFor('form', [], 'UploadExtensionFile');
             $title = $this->translate('extensionList.uploadExtension');
-            $icon = $this->iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL);
+            $icon = $this->iconFactory->getIcon('actions-edit-upload', IconSize::SMALL);
             $classes = 't3js-upload';
         }
         $button = $buttonBar->makeLinkButton()

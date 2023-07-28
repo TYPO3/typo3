@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
-use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -248,10 +248,10 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         $mainPageRecord = BackendUtility::getRecordWSOL('pages', $selectedPage);
         if (is_array($mainPageRecord)) {
             $pText = htmlspecialchars(GeneralUtility::fixed_lgd_cs($mainPageRecord['title'], $titleLen));
-            $html[] = '<p>' . $this->iconFactory->getIconForRecord('pages', $mainPageRecord, Icon::SIZE_SMALL)->render() . '&nbsp;';
+            $html[] = '<p>' . $this->iconFactory->getIconForRecord('pages', $mainPageRecord, IconSize::SMALL)->render() . '&nbsp;';
             if ($table === 'pages') {
                 $html[] = '<span data-uid="' . htmlspecialchars((string)$mainPageRecord['uid']) . '" data-table="pages" data-title="' . htmlspecialchars($mainPageRecord['title']) . '">';
-                $html[] =    '<a href="#" data-close="0">' . $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render() . '</a>';
+                $html[] =    '<a href="#" data-close="0">' . $this->iconFactory->getIcon('actions-plus', IconSize::SMALL)->render() . '</a>';
                 $html[] =    '<a href="#" data-close="1">' . $pText . '</a>';
                 $html[] = '</span>';
             } else {

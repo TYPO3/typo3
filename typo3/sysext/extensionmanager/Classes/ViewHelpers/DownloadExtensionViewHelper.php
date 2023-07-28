@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -102,7 +102,7 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
                     class="btn btn-default"
                     value="' . htmlspecialchars($titleAndValue) . '"
                 >
-                    ' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL)->render() . '
+                    ' . $this->iconFactory->getIcon('actions-download', IconSize::SMALL)->render() . '
                 </button>
             </div>';
 

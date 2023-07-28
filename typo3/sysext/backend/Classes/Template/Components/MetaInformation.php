@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Backend\Template\Components;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -206,7 +206,7 @@ class MetaInformation
                     $theIcon = $iconFactory
                         ->getIconForResource(
                             $this->resource,
-                            Icon::SIZE_SMALL,
+                            IconSize::SMALL,
                             null,
                             ['mount-root' => true]
                         )
@@ -216,7 +216,7 @@ class MetaInformation
                     $theIcon = $iconFactory
                         ->getIconForResource(
                             $this->resource,
-                            Icon::SIZE_SMALL
+                            IconSize::SMALL
                         )
                         ->setTitle($title)
                         ->render();
@@ -232,7 +232,7 @@ class MetaInformation
         } elseif (is_array($pageRecord) && !empty($pageRecord['uid'])) {
             // If there IS a real page
             $theIcon = $iconFactory
-                ->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)
+                ->getIconForRecord('pages', $pageRecord, IconSize::SMALL)
                 ->setTitle(BackendUtility::getRecordIconAltText($pageRecord))
                 ->render();
             // Make Icon:
@@ -243,7 +243,7 @@ class MetaInformation
             // On root-level of page tree
             // Make Icon
             $theIcon = $iconFactory
-                ->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)
+                ->getIcon('apps-pagetree-root', IconSize::SMALL)
                 ->setTitle($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
                 ->render();
             if ($this->getBackendUser()->isAdmin()) {

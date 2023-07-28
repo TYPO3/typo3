@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
 
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -70,9 +70,9 @@ class DropDownRadio extends AbstractDropDownItem implements DropDownItemInterfac
         // Status Icon
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         if ($this->isActive()) {
-            $statusIcon = '<span class="text-primary">' . $iconFactory->getIcon('actions-dot', Icon::SIZE_SMALL)->render() . '</span>';
+            $statusIcon = '<span class="text-primary">' . $iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() . '</span>';
         } else {
-            $statusIcon = $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render();
+            $statusIcon = $iconFactory->getIcon('empty-empty', IconSize::SMALL)->render();
         }
 
         return '<' . $this->getTag() . ' ' . $this->getAttributesString() . '>'

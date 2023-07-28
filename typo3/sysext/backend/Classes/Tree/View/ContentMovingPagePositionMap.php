@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Backend\Tree\View;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 
 /**
  * Position map class for moving content elements
@@ -74,7 +74,7 @@ class ContentMovingPagePositionMap extends AbstractContentPagePositionMap
         }
         return '
             <a class="btn btn-link" href="' . htmlspecialchars($location) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:moveElementToHere')) . '">
-                ' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '
+                ' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . '
             </a>';
     }
 
@@ -88,7 +88,7 @@ class ContentMovingPagePositionMap extends AbstractContentPagePositionMap
     {
         return '
             <span class="py-2" title="' . BackendUtility::getRecordIconAltText($row, 'tt_content') . '">
-                ' . $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render() . '
+                ' . $this->iconFactory->getIconForRecord('tt_content', $row, IconSize::SMALL)->render() . '
                 ' . ($this->moveUid === (int)$row['uid'] ? '<strong>' : '') . '
                 ' . BackendUtility::getRecordTitle('tt_content', $row, true) . '
                 ' . ($this->moveUid === (int)$row['uid'] ? '</strong>' : '') . '

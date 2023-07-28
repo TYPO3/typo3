@@ -28,20 +28,20 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
  * $saveButton = $buttonBar->makeInputButton()
  *      ->setName('save')
  *      ->setValue('1')
- *      ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+ *      ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL))
  *      ->setTitle('Save');
  *
  * $saveAndCloseButton = $buttonBar->makeInputButton()
  *      ->setName('save_and_close')
  *      ->setValue('1')
  *      ->setTitle('Save and close')
- *      ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
+ *      ->setIcon($this->iconFactory->getIcon('actions-document-save-close', IconSize::SMALL));
  *
  * $saveAndShowPageButton = $buttonBar->makeInputButton()
  *      ->setName('save_and_show')
  *      ->setValue('1')
  *      ->setTitle('Save and show')
- *      ->setIcon($this->iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL));
+ *      ->setIcon($this->iconFactory->getIcon('actions-document-save-view', IconSize::SMALL));
  *
  * $splitButtonElement = $buttonBar->makeSplitButton()
  *      ->addItem($saveButton, TRUE)

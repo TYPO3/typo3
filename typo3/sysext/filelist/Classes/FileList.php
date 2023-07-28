@@ -34,8 +34,8 @@ use TYPO3\CMS\Core\Authentication\JsConfirmation;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
@@ -340,7 +340,7 @@ class FileList
             $resourceView = new ResourceView(
                 $resource,
                 $userPermissions,
-                $this->iconFactory->getIconForResource($resource, Icon::SIZE_SMALL)
+                $this->iconFactory->getIconForResource($resource, IconSize::SMALL)
             );
             $resourceView->moduleUri = $this->createModuleUriForResource($resource);
             $resourceView->editDataUri = $this->createEditDataUriForResource($resource);
@@ -449,7 +449,7 @@ class FileList
         if ($this->sort === $field) {
             // Check reverse sorting
             $params['reverse'] = ($this->sortRev ? '0' : '1');
-            $sortArrow = $this->iconFactory->getIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc'), Icon::SIZE_SMALL)->render();
+            $sortArrow = $this->iconFactory->getIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc'), IconSize::SMALL)->render();
         } else {
             $params['reverse'] = 0;
             $sortArrow = '';
@@ -550,7 +550,7 @@ class FileList
         $markup[] = '<tr>';
         $markup[] = '  <td colspan="' . count($this->fieldArray) . '">';
         $markup[] = '    <a href="' . htmlspecialchars($link->uri) . '">';
-        $markup[] = '      ' . ($iconIdentifier !== null ? $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() : '');
+        $markup[] = '      ' . ($iconIdentifier !== null ? $this->iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render() : '');
         $markup[] = '      <i>[' . $link->label . ']</i>';
         $markup[] = '    </a>';
         $markup[] = '  </td>';
@@ -907,7 +907,7 @@ class FileList
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
             $output .= '<div class="btn-group dropdown" title="' . htmlspecialchars($title) . '" >'
                 . '<a href="#actions_' . $resourceView->resource->getHashedIdentifier() . '" class="btn btn-sm btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">'
-                . $this->iconFactory->getIcon('actions-menu-alternative', Icon::SIZE_SMALL)->render()
+                . $this->iconFactory->getIcon('actions-menu-alternative', IconSize::SMALL)->render()
                 . '</a>'
                 . '<ul id="actions_' . $resourceView->resource->getHashedIdentifier() . '" class="dropdown-menu">' . $cellOutput . '</ul>'
                 . '</div>';
@@ -948,7 +948,7 @@ class FileList
 
         $button = GeneralUtility::makeInstance(InputButton::class);
         $button->setTitle($resourceView->getName());
-        $button->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL));
+        $button->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
         $button->setDataAttributes(['filelist-action' => 'select']);
 
         return $button;
@@ -964,7 +964,7 @@ class FileList
         $button = GeneralUtility::makeInstance(LinkButton::class);
         $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent'));
         $button->setHref($resourceView->editContentUri);
-        $button->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
+        $button->setIcon($this->iconFactory->getIcon('actions-page-open', IconSize::SMALL));
 
         return $button;
     }
@@ -978,7 +978,7 @@ class FileList
         $button = GeneralUtility::makeInstance(LinkButton::class);
         $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
         $button->setHref($resourceView->editDataUri);
-        $button->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL));
+        $button->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL));
 
         return $button;
     }
@@ -994,7 +994,7 @@ class FileList
         $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view'));
         $button->setHref($resourceView->getPublicUrl());
         $button->setAttributes(['target' => '_blank']);
-        $button->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
+        $button->setIcon($this->iconFactory->getIcon('actions-document-view', IconSize::SMALL));
 
         return $button;
     }
@@ -1008,7 +1008,7 @@ class FileList
         $button = GeneralUtility::makeInstance(LinkButton::class);
         $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace'));
         $button->setHref($resourceView->replaceUri);
-        $button->setIcon($this->iconFactory->getIcon('actions-edit-replace', Icon::SIZE_SMALL));
+        $button->setIcon($this->iconFactory->getIcon('actions-edit-replace', IconSize::SMALL));
 
         return $button;
     }
@@ -1022,7 +1022,7 @@ class FileList
         $button = GeneralUtility::makeInstance(GenericButton::class);
         $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename'));
         $button->setAttributes(['type' => 'button', 'data-filelist-action' => 'rename']);
-        $button->setIcon($this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL));
+        $button->setIcon($this->iconFactory->getIcon('actions-edit-rename', IconSize::SMALL));
 
         return $button;
     }
@@ -1044,7 +1044,7 @@ class FileList
             'data-filelist-action' => 'download',
             'data-filelist-action-url' => $this->uriBuilder->buildUriFromRoute('file_download'),
         ]);
-        $button->setIcon($this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL));
+        $button->setIcon($this->iconFactory->getIcon('actions-download', IconSize::SMALL));
 
         return $button;
     }
@@ -1060,7 +1060,7 @@ class FileList
         $button = GeneralUtility::makeInstance(LinkButton::class);
         $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload'));
         $button->setHref($this->uriBuilder->buildUriFromRoute('file_upload', ['target' => $resourceView->getIdentifier(), 'returnUrl' => $this->createModuleUri()]));
-        $button->setIcon($this->iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL));
+        $button->setIcon($this->iconFactory->getIcon('actions-edit-upload', IconSize::SMALL));
 
         return $button;
     }
@@ -1077,7 +1077,7 @@ class FileList
             'type' => 'button',
             'data-filelist-action' => 'show',
         ]);
-        $button->setIcon($this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL));
+        $button->setIcon($this->iconFactory->getIcon('actions-document-info', IconSize::SMALL));
 
         return $button;
     }
@@ -1108,7 +1108,7 @@ class FileList
         $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete');
         $button = GeneralUtility::makeInstance(GenericButton::class);
         $button->setTitle($title);
-        $button->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL));
+        $button->setIcon($this->iconFactory->getIcon('actions-edit-delete', IconSize::SMALL));
         $button->setAttributes([
             'type' => 'button',
             'data-title' => $title,
@@ -1209,7 +1209,7 @@ class FileList
             $dropdownItem = GeneralUtility::makeInstance(DropDownItem::class);
             $dropdownItem->setLabel($title);
             $dropdownItem->setHref($url);
-            $dropdownItem->setIcon($this->iconFactory->getIcon($language['flagIcon'], Icon::SIZE_SMALL, 'overlay-' . $actionType));
+            $dropdownItem->setIcon($this->iconFactory->getIcon($language['flagIcon'], IconSize::SMALL, 'overlay-' . $actionType));
             $dropdownItems[] = $dropdownItem;
         }
 
@@ -1219,7 +1219,7 @@ class FileList
 
         $dropdownButton = GeneralUtility::makeInstance(DropDownButton::class);
         $dropdownButton->setLabel('Translations');
-        $dropdownButton->setIcon($this->iconFactory->getIcon('actions-translate', Icon::SIZE_SMALL));
+        $dropdownButton->setIcon($this->iconFactory->getIcon('actions-translate', IconSize::SMALL));
         foreach ($dropdownItems as $dropdownItem) {
             $dropdownButton->addItem($dropdownItem);
         }
@@ -1238,7 +1238,7 @@ class FileList
             $button = GeneralUtility::makeInstance(LinkButton::class);
             $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSelected === 'copy' ? 'copyrelease' : 'copy')));
             $button->setHref($this->clipObj->selUrlFile($resourceView->getIdentifier(), true, $isSelected === 'copy'));
-            $button->setIcon($this->iconFactory->getIcon($isSelected === 'copy' ? 'actions-edit-copy-release' : 'actions-edit-copy', Icon::SIZE_SMALL));
+            $button->setIcon($this->iconFactory->getIcon($isSelected === 'copy' ? 'actions-edit-copy-release' : 'actions-edit-copy', IconSize::SMALL));
             return $button;
         }
 
@@ -1256,7 +1256,7 @@ class FileList
             $button = GeneralUtility::makeInstance(LinkButton::class);
             $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSelected === 'cut' ? 'cutrelease' : 'cut')));
             $button->setHref($this->clipObj->selUrlFile($resourceView->getIdentifier(), true, $isSelected === 'cut'));
-            $button->setIcon($this->iconFactory->getIcon($isSelected === 'cut' ? 'actions-edit-cut-release' : 'actions-edit-cut', Icon::SIZE_SMALL));
+            $button->setIcon($this->iconFactory->getIcon($isSelected === 'cut' ? 'actions-edit-cut-release' : 'actions-edit-cut', IconSize::SMALL));
             $actions['cut'] = $button;
 
             return $button;
@@ -1298,7 +1298,7 @@ class FileList
             'title' => $pasteTitle,
             'bs-content' => $this->clipObj->confirmMsgText('_FILE', $resourceView->getName(), 'into', $elementsToConfirm),
         ]);
-        $button->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL));
+        $button->setIcon($this->iconFactory->getIcon('actions-document-paste-into', IconSize::SMALL));
 
         return $button;
     }
@@ -1329,7 +1329,7 @@ class FileList
                 <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">
                     <span class="dropdown-item-columns">
                         <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                            ' . $this->iconFactory->getIcon('actions-selection-elements-all', Icon::SIZE_SMALL)->render() . '
+                            ' . $this->iconFactory->getIcon('actions-selection-elements-all', IconSize::SMALL)->render() . '
                         </span>
                         <span class="dropdown-item-column dropdown-item-column-title">
                             ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '
@@ -1343,7 +1343,7 @@ class FileList
                 <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '">
                     <span class="dropdown-item-columns">
                         <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                            ' . $this->iconFactory->getIcon('actions-selection-elements-none', Icon::SIZE_SMALL)->render() . '
+                            ' . $this->iconFactory->getIcon('actions-selection-elements-none', IconSize::SMALL)->render() . '
                         </span>
                         <span class="dropdown-item-column dropdown-item-column-title">
                             ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '
@@ -1357,7 +1357,7 @@ class FileList
                 <button type="button" class="dropdown-item" data-multi-record-selection-check-action="toggle" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '">
                     <span class="dropdown-item-columns">
                         <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                        ' . $this->iconFactory->getIcon('actions-selection-elements-invert', Icon::SIZE_SMALL)->render() . '
+                        ' . $this->iconFactory->getIcon('actions-selection-elements-invert', IconSize::SMALL)->render() . '
                         </span>
                         <span class="dropdown-item-column dropdown-item-column-title">
                             ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '
@@ -1369,7 +1369,7 @@ class FileList
         return '
             <div class="btn-group dropdown">
                 <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
-                    ' . $this->iconFactory->getIcon('actions-selection', Icon::SIZE_SMALL) . '
+                    ' . $this->iconFactory->getIcon('actions-selection', IconSize::SMALL) . '
                 </button>
                 <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                     ' . implode(PHP_EOL, $dropdownItems) . '

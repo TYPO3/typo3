@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -184,8 +184,8 @@ class CheckboxElement extends AbstractFormElement
         if (!$this->iconRegistry->isRegistered($iconIdentifierUnchecked)) {
             $iconIdentifierUnchecked = 'empty-empty';
         }
-        $iconChecked = $this->iconFactory->getIcon($iconIdentifierChecked, Icon::SIZE_SMALL)->render('inline');
-        $iconUnchecked = $this->iconFactory->getIcon($iconIdentifierUnchecked, Icon::SIZE_SMALL)->render('inline');
+        $iconChecked = $this->iconFactory->getIcon($iconIdentifierChecked, IconSize::SMALL)->render('inline');
+        $iconUnchecked = $this->iconFactory->getIcon($iconIdentifierUnchecked, IconSize::SMALL)->render('inline');
 
         return '
             <div class="form-check form-check-type-icon-toggle' . ($inline ? ' form-check-inline' : '') . (!$disabled ? '' : ' disabled') . '">

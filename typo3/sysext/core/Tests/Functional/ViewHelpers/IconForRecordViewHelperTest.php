@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -39,7 +40,7 @@ final class IconForRecordViewHelperTest extends FunctionalTestCase
         $iconFactoryMock = $this->createMock(IconFactory::class);
         $iconFactoryMock->method('getIconForRecord')->with(self::anything())->willReturn($iconMock);
         $iconFactoryMock->expects(self::atLeastOnce())->method('getIconForRecord')
-            ->with('tt_content', ['uid' => 123], Icon::SIZE_LARGE);
+            ->with('tt_content', ['uid' => 123], IconSize::LARGE->value);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
 
         $context = $this->get(RenderingContextFactory::class)->create();

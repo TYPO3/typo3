@@ -16,7 +16,7 @@
 namespace TYPO3\CMS\Backend\RecordList;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -61,7 +61,7 @@ class ElementBrowserRecordList extends DatabaseRecordList
         $ATag_alt = '<a href="#" data-close="1" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:addToList')) . '">';
         $ATag_e = '</a>';
         $out = '<span data-uid="' . htmlspecialchars($row['uid']) . '" data-table="' . htmlspecialchars($table) . '" data-title="' . htmlspecialchars($title) . '">';
-        $out .= $ATag . $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render() . $ATag_e . $ATag_alt . $code . $ATag_e;
+        $out .= $ATag . $this->iconFactory->getIcon('actions-plus', IconSize::SMALL)->render() . $ATag_e . $ATag_alt . $code . $ATag_e;
         $out .= '</span>';
 
         return $out;

@@ -27,8 +27,8 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -440,7 +440,7 @@ class FormManagerController extends AbstractBackendController
             $references[] = [
                 'recordPageTitle' => is_array($pageRecord) ? $this->getRecordTitle('pages', $pageRecord) : '',
                 'recordTitle' => $this->getRecordTitle($referenceRow['tablename'], $record, true),
-                'recordIcon' => $iconFactory->getIconForRecord($referenceRow['tablename'], $record, Icon::SIZE_SMALL)->render(),
+                'recordIcon' => $iconFactory->getIconForRecord($referenceRow['tablename'], $record, IconSize::SMALL)->render(),
                 'recordUid' => $referenceRow['recuid'],
                 'recordEditUrl' => $this->getModuleUrl('record_edit', $urlParameters),
             ];
@@ -494,14 +494,14 @@ class FormManagerController extends AbstractBackendController
             ->setHref('#')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.create_new_form'))
             ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
         $buttonBar->addButton($addFormButton, ButtonBar::BUTTON_POSITION_LEFT);
 
         // Reload
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref($this->request->getAttribute('normalizedParams')->getRequestUri())
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Shortcut

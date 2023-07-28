@@ -20,8 +20,8 @@ use TYPO3\CMS\Backend\Form\Event\ModifyInlineElementControlsEvent;
 use TYPO3\CMS\Backend\Form\Event\ModifyInlineElementEnabledControlsEvent;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -258,7 +258,7 @@ class InlineRecordContainer extends AbstractContainer
             $markup[] = '    <div class="media">';
             $markup[] = '        <div class="media-left">';
             $markup[] = '            <span class="icon-emphasized">';
-            $markup[] = '                ' . $this->iconFactory->getIcon('actions-exclamation', Icon::SIZE_SMALL)->render();
+            $markup[] = '                ' . $this->iconFactory->getIcon('actions-exclamation', IconSize::SMALL)->render();
             $markup[] = '            </span>';
             $markup[] = '        </div>';
             $markup[] = '        <div class="media-body">';
@@ -322,7 +322,7 @@ class InlineRecordContainer extends AbstractContainer
         return '
             <button class="form-irre-header-cell form-irre-header-button" ' . $ariaAttributesString . '>
                 <div class="form-irre-header-icon" id="' . $objectId . '_iconcontainer">
-                    ' . $this->iconFactory->getIconForRecord($foreignTable, $record, Icon::SIZE_SMALL)->setTitle(BackendUtility::getRecordIconAltText($record, $foreignTable))->render() . '
+                    ' . $this->iconFactory->getIconForRecord($foreignTable, $record, IconSize::SMALL)->setTitle(BackendUtility::getRecordIconAltText($record, $foreignTable))->render() . '
                 </div>
                 <div class="form-irre-header-body"><span id="' . $objectId . '_label">' . $recordTitle . '</span></div>
             </button>
@@ -383,18 +383,18 @@ class InlineRecordContainer extends AbstractContainer
         $event = $this->eventDispatcher->dispatch(new ModifyInlineElementEnabledControlsEvent($data, $rec));
         if ($data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
             $cells['localize'] = $this->iconFactory
-                ->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)
+                ->getIcon('actions-edit-localize-status-low', IconSize::SMALL)
                 ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize.isLocalizable'))
                 ->render();
         }
         // "Info": (All records)
         if ($event->isControlEnabled('info')) {
             if ($isNewItem) {
-                $cells['info'] = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+                $cells['info'] = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
             } else {
                 $cells['info'] = '
 				<button type="button" class="btn btn-default" data-action="infowindow" data-info-table="' . htmlspecialchars($foreignTable) . '" data-info-uid="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo')) . '">
-					' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '
+					' . $this->iconFactory->getIcon('actions-document-info', IconSize::SMALL)->render() . '
 				</button>';
             }
         }
@@ -409,7 +409,7 @@ class InlineRecordContainer extends AbstractContainer
                     }
                     $cells['new'] = '
                         <button type="button" class="btn btn-default t3js-create-new-button" data-record-uid="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record'))) . '" ' . $style . '>
-                            ' . $this->iconFactory->getIcon('actions-' . ($isPagesTable ? 'page-new' : 'add'), Icon::SIZE_SMALL)->render() . '
+                            ' . $this->iconFactory->getIcon('actions-' . ($isPagesTable ? 'page-new' : 'add'), IconSize::SMALL)->render() . '
                         </button>';
                 }
             }
@@ -424,7 +424,7 @@ class InlineRecordContainer extends AbstractContainer
                 }
                 $cells['sort.up'] = '
                     <button type="button" class="btn btn-default' . $class . '" data-action="sort" data-direction="up" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:moveUp')) . '">
-                        ' . $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() . '
+                        ' . $this->iconFactory->getIcon($icon, IconSize::SMALL)->render() . '
                     </button>';
                 // Down
                 $icon = 'actions-move-down';
@@ -436,7 +436,7 @@ class InlineRecordContainer extends AbstractContainer
 
                 $cells['sort.down'] = '
                     <button type="button" class="btn btn-default' . $class . '" data-action="sort" data-direction="down" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:moveDown')) . '">
-                        ' . $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() . '
+                        ' . $this->iconFactory->getIcon($icon, IconSize::SMALL)->render() . '
                     </button>';
             }
             // "Delete" link:
@@ -447,7 +447,7 @@ class InlineRecordContainer extends AbstractContainer
                 )
             ) {
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete'));
-                $icon = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();
+                $icon = $this->iconFactory->getIcon('actions-edit-delete', IconSize::SMALL)->render();
 
                 $recordInfo = $data['databaseRow']['uid_local'][0]['title'] ?? $data['recordTitle'] ?? '';
                 if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
@@ -472,13 +472,13 @@ class InlineRecordContainer extends AbstractContainer
                     $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')));
                     $cells['hide'] = '
                         <button type="button" class="btn btn-default t3js-toggle-visibility-button" data-hidden-field="' . htmlspecialchars($hiddenField) . '" title="' . $title . '">
-                            ' . $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render() . '
+                            ' . $this->iconFactory->getIcon('actions-edit-unhide', IconSize::SMALL)->render() . '
                         </button>';
                 } else {
                     $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')));
                     $cells['hide'] = '
                         <button type="button" class="btn btn-default t3js-toggle-visibility-button" data-hidden-field="' . htmlspecialchars($hiddenField) . '" title="' . $title . '">
-                            ' . $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render() . '
+                            ' . $this->iconFactory->getIcon('actions-edit-hide', IconSize::SMALL)->render() . '
                         </button>';
                 }
             }
@@ -486,14 +486,14 @@ class InlineRecordContainer extends AbstractContainer
             if ($event->isControlEnabled('dragdrop') && $permsEdit && $enableManualSorting && ($inlineConfig['appearance']['useSortable'] ?? false)) {
                 $cells['dragdrop'] = '
                     <span class="btn btn-default sortableHandle" data-id="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move')) . '">
-                        ' . $this->iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->render() . '
+                        ' . $this->iconFactory->getIcon('actions-move-move', IconSize::SMALL)->render() . '
                     </span>';
             }
         } elseif (($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false) && $isParentExisting) {
             if ($event->isControlEnabled('localize') && ($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false)) {
                 $cells['localize'] = '
                     <button type="button" class="btn btn-default t3js-synchronizelocalize-button" data-type="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize')) . '">
-                        ' . $this->iconFactory->getIcon('actions-document-localize', Icon::SIZE_SMALL)->render() . '
+                        ' . $this->iconFactory->getIcon('actions-document-localize', IconSize::SMALL)->render() . '
                     </button>';
             }
         }
@@ -501,7 +501,7 @@ class InlineRecordContainer extends AbstractContainer
         if ($lockInfo = BackendUtility::isRecordLocked($foreignTable, $rec['uid'])) {
             $cells['locked'] = '
 				<button type="button" class="btn btn-default" title="' . htmlspecialchars($lockInfo['msg']) . '">
-					' . $this->iconFactory->getIcon('status-user-backend', Icon::SIZE_SMALL, 'overlay-edit')->render() . '
+					' . $this->iconFactory->getIcon('status-user-backend', IconSize::SMALL, 'overlay-edit')->render() . '
 				</button>';
         }
 

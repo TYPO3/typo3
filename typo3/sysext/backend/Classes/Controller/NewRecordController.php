@@ -34,8 +34,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -281,7 +281,7 @@ class NewRecordController
                     ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new_pages', ['id' => $this->id, 'returnUrl' => $this->returnUrl]))
                     ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'))
                     ->setShowLabelText(true)
-                    ->setIcon($this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL));
+                    ->setIcon($this->iconFactory->getIcon('actions-page-new', IconSize::SMALL));
                 $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
         }
@@ -291,7 +291,7 @@ class NewRecordController
                 ->setHref($this->returnUrl)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL));
             $buttonBar->addButton($returnButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
 
@@ -320,7 +320,7 @@ class NewRecordController
                     ->setDataAttributes($previewDataAttributes ?? [])
                     ->setDisabled(!$previewDataAttributes)
                     ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                    ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
+                    ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
                     ->setShowLabelText(true);
                 $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 30);
             }
@@ -357,10 +357,10 @@ class NewRecordController
         $displayNewPagesIntoLink = $this->newPagesInto && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']);
         $displayNewPagesAfterLink = $this->newPagesAfter && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']);
         $iconFile = [
-            'backendaccess' => $this->iconFactory->getIcon('status-user-group-backend', Icon::SIZE_SMALL)->render(),
-            'content' => $this->iconFactory->getIcon('content-panel', Icon::SIZE_SMALL)->render(),
-            'frontendaccess' => $this->iconFactory->getIcon('status-user-group-frontend', Icon::SIZE_SMALL)->render(),
-            'system' => $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render(),
+            'backendaccess' => $this->iconFactory->getIcon('status-user-group-backend', IconSize::SMALL)->render(),
+            'content' => $this->iconFactory->getIcon('content-panel', IconSize::SMALL)->render(),
+            'frontendaccess' => $this->iconFactory->getIcon('status-user-group-frontend', IconSize::SMALL)->render(),
+            'system' => $this->iconFactory->getIcon('apps-pagetree-root', IconSize::SMALL)->render(),
         ];
         $groupTitles = [
             'backendaccess' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:recordgroup.backendaccess'),
@@ -532,7 +532,7 @@ class NewRecordController
         );
         return '
             <a class="list-group-item list-group-item-action" href="' . htmlspecialchars($recordLink) . '">
-                ' . $this->iconFactory->getIconForRecord($table, [], Icon::SIZE_SMALL)->render() . '
+                ' . $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render() . '
                 ' . $linkText . '
             </a>';
     }
@@ -551,7 +551,7 @@ class NewRecordController
         );
         return '
             <a href="' . htmlspecialchars($url) . '" class="list-group-item list-group-item-action">
-                ' . $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render() . '
+                ' . $this->iconFactory->getIconForRecord('pages', [], IconSize::SMALL)->render() . '
                 ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:pageSelectPosition')) . '
             </a>';
     }

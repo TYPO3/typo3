@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -83,7 +83,7 @@ final class ToggleExtensionInstallationStateViewHelper extends AbstractTagBasedV
         $icon = $extension['installed'] ? 'uninstall' : 'install';
         $this->tag->addAttribute('class', 'onClickMaskExtensionManager btn btn-default');
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->tag->setContent($iconFactory->getIcon('actions-system-extension-' . $icon, Icon::SIZE_SMALL)->render());
+        $this->tag->setContent($iconFactory->getIcon('actions-system-extension-' . $icon, IconSize::SMALL)->render());
         return $this->tag->render();
     }
 

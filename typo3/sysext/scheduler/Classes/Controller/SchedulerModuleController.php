@@ -29,8 +29,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SysLog\Action\Database as SystemLogDatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
@@ -804,7 +804,7 @@ final class SchedulerModuleController
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $reloadButton = $buttonBar->makeLinkButton()
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL))
             ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage'));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
     }
@@ -816,7 +816,7 @@ final class SchedulerModuleController
         $addButton = $buttonBar->makeLinkButton()
             ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'))
             ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
             ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage', ['action' => 'add']));
         $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
     }
@@ -828,7 +828,7 @@ final class SchedulerModuleController
         $addButton = $buttonBar->makeInputButton()
             ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.group.add'))
             ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
             ->setName('createSchedulerGroup')
             ->setValue('1')
             ->setClasses('t3js-create-group');
@@ -841,7 +841,7 @@ final class SchedulerModuleController
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $closeButton = $buttonBar->makeLinkButton()
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:close'))
-            ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL))
             ->setShowLabelText(true)
             ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage'))
             ->setClasses('t3js-scheduler-close');
@@ -850,7 +850,7 @@ final class SchedulerModuleController
             ->setName('CMD')
             ->setValue('save')
             ->setForm('tx_scheduler_form')
-            ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL))
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:save'))
             ->setShowLabelText(true);
         $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
@@ -864,7 +864,7 @@ final class SchedulerModuleController
             ->setName('CMD')
             ->setValue('new')
             ->setForm('tx_scheduler_form')
-            ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-document-new', IconSize::SMALL))
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new'))
             ->setShowLabelText(true);
         $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
@@ -883,7 +883,7 @@ final class SchedulerModuleController
                 'button-close-text' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'),
                 'bs-content' => $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.delete'),
             ])
-            ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-edit-delete', IconSize::SMALL))
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'))
             ->setShowLabelText(true);
         $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 6);

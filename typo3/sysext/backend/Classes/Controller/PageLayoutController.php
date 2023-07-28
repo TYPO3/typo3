@@ -43,8 +43,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -582,14 +582,14 @@ class PageLayoutController
             ->setDataAttributes(['id' => $this->pageinfo['uid']])
             ->setClasses('t3js-clear-page-cache')
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
-            ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', IconSize::SMALL));
         $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
 
         // Reload
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref($request->getAttribute('normalizedParams')->getRequestUri())
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
@@ -635,7 +635,7 @@ class PageLayoutController
             ->setDataAttributes($previewDataAttributes ?? [])
             ->setDisabled(!$previewDataAttributes)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-            ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
             ->setShowLabelText(true);
     }
 
@@ -668,7 +668,7 @@ class PageLayoutController
             ->setHref((string)$this->uriBuilder->buildUriFromRoute('record_edit', $params))
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties'))
             ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-page-open', IconSize::SMALL));
     }
 
     /**

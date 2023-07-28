@@ -16,8 +16,8 @@
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -226,7 +226,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         // Html stuff for filter and select filter on top of right side of multi select boxes
         $filterTextfield[] = '<span class="input-group input-group-sm">';
         $filterTextfield[] =    '<span class="input-group-text">';
-        $filterTextfield[] =        $this->iconFactory->getIcon('actions-filter', Icon::SIZE_SMALL)->render();
+        $filterTextfield[] =        $this->iconFactory->getIcon('actions-filter', IconSize::SMALL)->render();
         $filterTextfield[] =    '</span>';
         $filterTextfield[] =    '<input class="t3js-formengine-multiselect-filter-textfield form-control" value="">';
         $filterTextfield[] = '</span>';
@@ -314,7 +314,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '"';
             $html[] =                           '>';
-            $html[] =                               $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL)->render();
+            $html[] =                               $this->iconFactory->getIcon('actions-move-to-top', IconSize::SMALL)->render();
             $html[] =                           '</a>';
         }
         if ($maxItems > 1) {
@@ -323,14 +323,14 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '"';
             $html[] =                           '>';
-            $html[] =                               $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render();
+            $html[] =                               $this->iconFactory->getIcon('actions-move-up', IconSize::SMALL)->render();
             $html[] =                           '</a>';
             $html[] =                           '<a href="#"';
             $html[] =                               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-down"';
             $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '"';
             $html[] =                           '>';
-            $html[] =                               $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render();
+            $html[] =                               $this->iconFactory->getIcon('actions-move-down', IconSize::SMALL)->render();
             $html[] =                           '</a>';
         }
         if ($maxItems > 1 && $size >= 5) {
@@ -339,7 +339,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             $html[] =                               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
             $html[] =                               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '"';
             $html[] =                           '>';
-            $html[] =                               $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL)->render();
+            $html[] =                               $this->iconFactory->getIcon('actions-move-to-bottom', IconSize::SMALL)->render();
             $html[] =                           '</a>';
         }
         $html[] =                                $alternativeFieldControlHtml;
@@ -348,7 +348,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
         $html[] =                                   ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
         $html[] =                               '>';
-        $html[] =                                   $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL)->render();
+        $html[] =                                   $this->iconFactory->getIcon('actions-selection-delete', IconSize::SMALL)->render();
         $html[] =                               '</a>';
         $html[] =                           '</div>';
         $html[] =                       '</div>';

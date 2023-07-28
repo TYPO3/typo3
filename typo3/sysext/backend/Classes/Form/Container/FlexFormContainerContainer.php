@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -63,11 +63,11 @@ class FlexFormContainerContainer extends AbstractContainer
         if ($userHasAccessToDefaultLanguage) {
             $moveAndDeleteContent[] = ''
                 . '<button type="button" class="btn btn-default t3js-delete">'
-                . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'))->render()
+                . $this->iconFactory->getIcon('actions-edit-delete', IconSize::SMALL)->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'))->render()
                 . '</button>';
             $moveAndDeleteContent[] = ''
                 . '<button type="button" class="btn btn-default t3js-sortable-handle sortableHandle">'
-                . $this->iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:sortable.dragmove'))->render()
+                . $this->iconFactory->getIcon('actions-move-move', IconSize::SMALL)->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:sortable.dragmove'))->render()
                 . '</button>';
         }
 

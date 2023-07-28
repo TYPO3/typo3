@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -52,13 +52,13 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
         $extension = $this->arguments['extension'];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         if (ExtensionManagementUtility::isLoaded($extension['key'])) {
-            return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+            return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
         }
         if (
             !in_array($extension['type'], Extension::returnAllowedInstallTypes()) ||
             $extension['type'] === 'System'
         ) {
-            return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+            return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
         }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         /** @var RenderingContext $renderingContext */
@@ -78,7 +78,7 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
         $this->tag->addAttribute('title', htmlspecialchars($this->getLanguageService()->sL(
             'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.remove'
         )));
-        $this->tag->setContent($iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render());
+        $this->tag->setContent($iconFactory->getIcon('actions-edit-delete', IconSize::SMALL)->render());
         return $this->tag->render();
     }
 

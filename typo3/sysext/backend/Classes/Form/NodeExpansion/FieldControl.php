@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Backend\Form\NodeExpansion;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\NodeFactory;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -134,7 +134,7 @@ class FieldControl extends AbstractNode
 
             $html = [];
             $html[] = '<a ' . GeneralUtility::implodeAttributes($linkAttributes, true) . '>';
-            $html[] =     $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->setTitle($title)->render();
+            $html[] =     $this->iconFactory->getIcon($icon, IconSize::SMALL)->setTitle($title)->render();
             $html[] = '</a>';
 
             $finalControlResult = $this->initializeResultArray();

@@ -25,8 +25,8 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
@@ -143,7 +143,7 @@ class ImportController
             ->setDataAttributes($previewDataAttributes ?? [])
             ->setDisabled(!$previewDataAttributes)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-            ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
             ->setShowLabelText(true);
         $buttonBar->addButton($viewButton);
     }

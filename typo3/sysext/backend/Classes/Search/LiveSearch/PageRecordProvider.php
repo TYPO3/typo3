@@ -36,8 +36,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -206,7 +206,7 @@ final class PageRecordProvider implements SearchProviderInterface
             $actions = [
                 (new ResultItemAction('open_page_details'))
                     ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showList'))
-                    ->setIcon($this->iconFactory->getIcon('actions-list', Icon::SIZE_SMALL))
+                    ->setIcon($this->iconFactory->getIcon('actions-list', IconSize::SMALL))
                     ->setUrl($this->getShowLink($row)),
             ];
 
@@ -218,11 +218,11 @@ final class PageRecordProvider implements SearchProviderInterface
             if ($previewUrl !== null) {
                 $actions[] = (new ResultItemAction('preview_page'))
                     ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                    ->setIcon($this->iconFactory->getIcon('actions-file-view', Icon::SIZE_SMALL))
+                    ->setIcon($this->iconFactory->getIcon('actions-file-view', IconSize::SMALL))
                     ->setUrl((string)$previewUrl);
             }
 
-            $icon = $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL);
+            $icon = $this->iconFactory->getIconForRecord('pages', $row, IconSize::SMALL);
             $items[] = (new ResultItem(self::class))
                 ->setItemTitle(BackendUtility::getRecordTitle('pages', $row))
                 ->setTypeLabel($this->languageService->sL($GLOBALS['TCA']['pages']['ctrl']['title']))

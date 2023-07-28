@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -63,7 +63,7 @@ class DistributionController extends AbstractController
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $uri = $this->uriBuilder->reset()->uriFor('distributions', [], 'List');
         $title = $this->translate('extConfTemplate.backToList');
-        $icon = $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
+        $icon = $this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL);
         $button = $buttonBar->makeLinkButton()
             ->setHref($uri)
             ->setTitle($title)

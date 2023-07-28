@@ -22,8 +22,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Tree\FileStorageTreeProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -163,7 +163,7 @@ class TreeController
         if ($isStorage && !$folder->getStorage()->isOnline()) {
             $item['name'] .= ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
         }
-        $icon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL, null, $isStorage ? ['mount-root' => true] : []);
+        $icon = $this->iconFactory->getIconForResource($folder, IconSize::SMALL, null, $isStorage ? ['mount-root' => true] : []);
         $item['icon'] = $icon->getIdentifier();
         $item['overlayIcon'] = $icon->getOverlayIcon() ? $icon->getOverlayIcon()->getIdentifier() : '';
         unset($item['resource']);

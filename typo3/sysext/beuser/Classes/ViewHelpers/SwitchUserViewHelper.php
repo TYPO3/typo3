@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
 
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
@@ -60,11 +60,11 @@ final class SwitchUserViewHelper extends AbstractTagBasedViewHelper
             $this->tag->setTagName('span');
             $this->tag->addAttribute('class', $this->tag->getAttribute('class') . ' disabled');
             $this->tag->addAttribute('disabled', 'disabled');
-            $this->tag->setContent($iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render());
+            $this->tag->setContent($iconFactory->getIcon('empty-empty', IconSize::SMALL)->render());
         } else {
             $this->tag->addAttribute('title', self::getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:switchBackMode'));
             $this->tag->addAttribute('targetUser', (string)$targetUser->getUid());
-            $this->tag->setContent($iconFactory->getIcon('actions-system-backend-user-switch', Icon::SIZE_SMALL)->render());
+            $this->tag->setContent($iconFactory->getIcon('actions-system-backend-user-switch', IconSize::SMALL)->render());
         }
 
         $this->tag->forceClosingTag(true);

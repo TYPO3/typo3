@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
-use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -80,7 +80,7 @@ class LanguageColumn extends AbstractGridObject
     {
         $localizedPageRecord = $this->context->getLocalizedPageRecord() ?? $this->context->getPageRecord();
         return BackendUtility::wrapClickMenuOnIcon(
-            $this->iconFactory->getIconForRecord('pages', $localizedPageRecord, Icon::SIZE_SMALL)->render(),
+            $this->iconFactory->getIconForRecord('pages', $localizedPageRecord, IconSize::SMALL)->render(),
             'pages',
             $localizedPageRecord['uid']
         );

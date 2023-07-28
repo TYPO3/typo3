@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
@@ -71,7 +71,7 @@ final class PageInfoViewHelper extends AbstractBackendViewHelper
         if (is_array($pageRecord) && ($pageRecord['uid'] ?? false)) {
             // If there IS a real page
             $altText = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
-            $theIcon = '<span title="' . $altText . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
+            $theIcon = '<span title="' . $altText . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, IconSize::SMALL)->render() . '</span>';
             // Make Icon:
             $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid']);
 
@@ -80,7 +80,7 @@ final class PageInfoViewHelper extends AbstractBackendViewHelper
         } else {
             // On root-level of page tree
             // Make Icon
-            $theIcon = '<span title="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '">' . $iconFactory->getIcon('apps-pagetree-page-domain', Icon::SIZE_SMALL)->render() . '</span>';
+            $theIcon = '<span title="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '">' . $iconFactory->getIcon('apps-pagetree-page-domain', IconSize::SMALL)->render() . '</span>';
             if ($GLOBALS['BE_USER']->isAdmin()) {
                 $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages');
             }

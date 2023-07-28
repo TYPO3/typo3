@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Beuser\ViewHelpers;
 
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -85,7 +85,7 @@ final class PermissionsViewHelper extends AbstractViewHelper
                 . ' data-bits="' . htmlspecialchars((string)$mask) . '"'
                 . ' data-mode="' . htmlspecialchars($mode) . '"'
                 . ' class="btn btn-permission change-permission ' . htmlspecialchars($iconClass) . '">'
-                . $iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE)
+                . $iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE)
                 . '</button>';
         }
 

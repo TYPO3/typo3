@@ -27,8 +27,8 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -64,12 +64,12 @@ class ReviewController
         $pageUid = (int)($queryParams['id'] ?? 0);
 
         $icons = [
-            'language' => $this->iconFactory->getIcon('flags-multiple', Icon::SIZE_SMALL)->render(),
-            'integrity' => $this->iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
-            'success' => $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render(),
-            'info' => $this->iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
-            'warning' => $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render(),
-            'error' => $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render(),
+            'language' => $this->iconFactory->getIcon('flags-multiple', IconSize::SMALL)->render(),
+            'integrity' => $this->iconFactory->getIcon('status-dialog-information', IconSize::SMALL)->render(),
+            'success' => $this->iconFactory->getIcon('status-dialog-ok', IconSize::SMALL)->render(),
+            'info' => $this->iconFactory->getIcon('status-dialog-information', IconSize::SMALL)->render(),
+            'warning' => $this->iconFactory->getIcon('status-dialog-warning', IconSize::SMALL)->render(),
+            'error' => $this->iconFactory->getIcon('status-dialog-error', IconSize::SMALL)->render(),
         ];
         $this->pageRenderer->addInlineSetting('Workspaces', 'icons', $icons);
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
@@ -206,7 +206,7 @@ class ReviewController
                 ->setClasses('t3js-preview-link')
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:tooltip.generatePagePreview'))
-                ->setIcon($this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-version-workspaces-preview-link', IconSize::SMALL));
             $buttonBar->addButton($showButton);
         }
     }
@@ -228,7 +228,7 @@ class ReviewController
                 ->setHref($editWorkspaceRecordUrl)
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:button.editWorkspaceSettings'))
-                ->setIcon($this->iconFactory->getIcon('actions-cog-alt', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-cog-alt', IconSize::SMALL));
             $buttonBar->addButton(
                 $editSettingsButton,
                 ButtonBar::BUTTON_POSITION_LEFT,

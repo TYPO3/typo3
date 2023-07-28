@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -212,7 +212,7 @@ class PageInformationController extends InfoModuleController
                     $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     $editButton = '<a class="btn btn-default" href="' . htmlspecialchars($url)
                         . '" title="' . htmlspecialchars($iTitle) . '">'
-                        . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+                        . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render() . '</a>';
                 }
                 switch ($field) {
                     case 'title':
@@ -234,7 +234,7 @@ class PageInformationController extends InfoModuleController
                                     '<span title="' .
                                     htmlspecialchars($lang->sL($GLOBALS['TCA'][$f2]['ctrl']['title'])) .
                                     '">' .
-                                    $this->iconFactory->getIconForRecord($f2, [], Icon::SIZE_SMALL)->render() .
+                                    $this->iconFactory->getIconForRecord($f2, [], IconSize::SMALL)->render() .
                                     '</span>';
                             }
                         } else {
@@ -379,14 +379,14 @@ class PageInformationController extends InfoModuleController
                         $editButton =
                             '<button ' . ($attributes ?? 'disabled="true"') . ' class="btn btn-default" title="' .
                             htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' .
-                            $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() .
+                            $this->iconFactory->getIcon('actions-view-page', IconSize::SMALL)->render() .
                             '</button>';
 
                         if ($this->getBackendUser()->check('tables_modify', 'pages')) {
                             $editButton .=
                                 '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' .
                                 htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editDefaultLanguagePage')) . '">' .
-                                $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() .
+                                $this->iconFactory->getIcon('actions-page-open', IconSize::SMALL)->render() .
                                 '</a>';
                         }
                     }
@@ -424,7 +424,7 @@ class PageInformationController extends InfoModuleController
     protected function getIcon(array $row): string
     {
         // Initialization
-        $icon = '<span title="' . BackendUtility::getRecordIconAltText($row, 'pages') . '">' . $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL)->render() . '</span>';
+        $icon = '<span title="' . BackendUtility::getRecordIconAltText($row, 'pages') . '">' . $this->iconFactory->getIconForRecord('pages', $row, IconSize::SMALL)->render() . '</span>';
         // The icon with link
         if ($this->getBackendUser()->recordEditAccessInternals('pages', $row)) {
             $icon = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $row['uid']);

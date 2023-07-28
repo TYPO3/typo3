@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
-use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
@@ -88,7 +88,7 @@ class TranslationStatusController extends InfoModuleController
         $tree->tree[] = [
             'row' => $treeStartingRecord,
             // Creating top icon; the current page
-            'HTML' => $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render(),
+            'HTML' => $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, IconSize::SMALL)->render(),
         ];
         // Create the tree from starting point
         if ($this->currentDepth) {
@@ -179,12 +179,12 @@ class TranslationStatusController extends InfoModuleController
             ]);
             $info = '<button ' . ($previewUriBuilder->serializeDispatcherAttributes() ?? 'disabled="true"')
                 . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
-                $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() . '</button>';
+                $this->iconFactory->getIcon('actions-view-page', IconSize::SMALL)->render() . '</button>';
             if ($backendUser->check('tables_modify', 'pages')) {
                 $info .= '<a href="' . htmlspecialchars($editUrl)
                     . '" class="btn btn-default" title="' . $lang->sL(
                         'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editDefaultLanguagePage'
-                    ) . '">' . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() . '</a>';
+                    ) . '">' . $this->iconFactory->getIcon('actions-page-open', IconSize::SMALL)->render() . '</a>';
             }
             $info .= '&nbsp;';
             $info .= $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1')) . '">D</span>' : '&nbsp;';
@@ -226,7 +226,7 @@ class TranslationStatusController extends InfoModuleController
                         } else {
                             $pageModuleLink = $info;
                         }
-                        $icon = $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL);
+                        $icon = $this->iconFactory->getIconForRecord('pages', $row, IconSize::SMALL);
                         $iconMarkup = '<span title="' . BackendUtility::getRecordIconAltText($row, 'pages') . '">' . $icon->render() . '</span>';
                         $tCells[] = '<td class="' . $status . ' col-border-left">' .
                             BackendUtility::wrapClickMenuOnIcon($iconMarkup, 'pages', (int)$row['uid']) .
@@ -247,11 +247,11 @@ class TranslationStatusController extends InfoModuleController
                                 ->withLanguage($languageId)
                                 ->serializeDispatcherAttributes() ?? 'disabled="true"')
                             . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
-                            $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</button>';
+                            $this->iconFactory->getIcon('actions-view', IconSize::SMALL)->render() . '</button>';
                         $info .= '<a href="' . htmlspecialchars($editUrl)
                             . '" class="btn btn-default" title="' . $lang->sL(
                                 'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLanguageOverlayRecord'
-                            ) . '">' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
+                            ) . '">' . $this->iconFactory->getIcon('actions-open', IconSize::SMALL)->render() . '</a>';
                         $tCells[] = '<td class="' . $status . '"><div class="btn-group">' . $info . '</div></td>';
                         $tCells[] = '<td class="' . $status . '" title="' . $lang->sL(
                             'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount'
@@ -262,8 +262,8 @@ class TranslationStatusController extends InfoModuleController
                             . '<input type="checkbox" data-lang="' . $languageId . '" data-uid="' . (int)$data['row']['uid'] . '" name="newOL[' . $languageId . '][' . $data['row']['uid'] . ']" id="' . htmlspecialchars($idName) . '" class="form-check-input" value="1" />'
                             . '<label class="form-check-label" for="' . $idName . '">'
                             . '<span class="form-check-label-icon">'
-                            . '<span class="form-check-label-icon-checked">' . $this->iconFactory->getIcon('actions-check', Icon::SIZE_SMALL)->render() . '</span>'
-                            . '<span class="form-check-label-icon-unchecked">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>'
+                            . '<span class="form-check-label-icon-checked">' . $this->iconFactory->getIcon('actions-check', IconSize::SMALL)->render() . '</span>'
+                            . '<span class="form-check-label-icon-unchecked">' . $this->iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>'
                             . '</span>'
                             . '</label>'
                             . '</div>';
@@ -295,7 +295,7 @@ class TranslationStatusController extends InfoModuleController
             $editIco = '<a href="' . htmlspecialchars($editUrl)
                 . '" class="btn btn-default" title="' . $lang->sL(
                     'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPageProperties'
-                ) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+                ) . '">' . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render() . '</a>';
         } else {
             $editIco = '';
         }
@@ -327,7 +327,7 @@ class TranslationStatusController extends InfoModuleController
                     $editButton = '<a href="' . htmlspecialchars($editUrl)
                         . '" class="btn btn-default" title="' . $lang->sL(
                             'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLangOverlays'
-                        ) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+                        ) . '">' . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render() . '</a>';
                 } else {
                     $editButton = '';
                 }
@@ -337,7 +337,7 @@ class TranslationStatusController extends InfoModuleController
                 ]);
                 $newButton = '<a href="' . htmlspecialchars($createLink) . '" data-edit-url="' . htmlspecialchars($createLink) . '" class="btn btn-default disabled t3js-language-new" data-lang="' . $languageId . '" title="' . $lang->sL(
                     'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'
-                ) . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '</a>';
+                ) . '">' . $this->iconFactory->getIcon('actions-document-new', IconSize::SMALL)->render() . '</a>';
 
                 $headerCells[] = '<th>' . $editButton . '</th>';
                 $headerCells[] = '<th>' . $newButton . '</th>';

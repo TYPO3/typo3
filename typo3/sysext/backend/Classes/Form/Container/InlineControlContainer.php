@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -426,7 +426,7 @@ class InlineControlContainer extends AbstractContainer
                 $className = '';
         }
         // Create the button:
-        $icon = $icon ? $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() : '';
+        $icon = $icon ? $this->iconFactory->getIcon($icon, IconSize::SMALL)->render() : '';
         $button = $this->wrapWithButton($icon . ' ' . $title, $attributes);
         return '<div' . ($className ? ' class="' . $className . '"' : '') . 'title="' . $title . '">' . $button . '</div>';
     }
@@ -477,7 +477,7 @@ class InlineControlContainer extends AbstractContainer
             $item .= '
                 <button type="button" class="btn btn-default t3js-element-browser" data-mode="db" data-params="' . htmlspecialchars('|||' . implode(',', $allowed) . '|' . $objectPrefix) . '"
                     ' . $buttonStyle . ' title="' . $createNewRelationText . '">
-                    ' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)->render() . '
+                    ' . $this->iconFactory->getIcon('actions-insert-record', IconSize::SMALL)->render() . '
                     ' . $createNewRelationText . '
                 </button>';
         }
@@ -541,7 +541,7 @@ class InlineControlContainer extends AbstractContainer
             }
             $item .= '
                 <button type="button" class="btn btn-default t3js-create-new-button" title="' . $createNewRelationText . '">
-                    ' . $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render() . $createNewRelationText . '
+                    ' . $this->iconFactory->getIcon('actions-plus', IconSize::SMALL)->render() . $createNewRelationText . '
                 </button>';
         } else {
             $item .= '

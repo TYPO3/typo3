@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Controller\FormSlugAjaxController;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -181,10 +181,10 @@ class InputSlugElement extends AbstractFormElement
         $mainFieldHtml[] =                      ' value="' . htmlspecialchars($itemValue) . '"';
         $mainFieldHtml[] =                  ' />';
         $mainFieldHtml[] =                  '<button class="btn btn-default t3js-form-field-slug-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
-        $mainFieldHtml[] =                      $this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL)->render();
+        $mainFieldHtml[] =                      $this->iconFactory->getIcon('actions-version-workspaces-preview-link', IconSize::SMALL)->render();
         $mainFieldHtml[] =                  '</button>';
         $mainFieldHtml[] =                  '<button class="btn btn-default t3js-form-field-slug-recreate" type="button" title="' . htmlspecialchars($recreateButtonTitle) . '">';
-        $mainFieldHtml[] =                      $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render();
+        $mainFieldHtml[] =                      $this->iconFactory->getIcon('actions-refresh', IconSize::SMALL)->render();
         $mainFieldHtml[] =                  '</button>';
         $mainFieldHtml[] =              '</div>';
         $mainFieldHtml[] =          '</div>';

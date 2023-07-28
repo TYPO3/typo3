@@ -23,59 +23,30 @@ class Dimension
     /**
      * @var int
      */
-    protected $width;
+    protected int $width;
 
     /**
      * @var int
      */
-    protected $height;
+    protected int $height;
 
     /**
-     * Constructor which fetches the size and resolves it to a pixel size
-     *
-     * @param string $size the icon size
-     *
      * @throws \InvalidArgumentException
      */
-    public function __construct($size = Icon::SIZE_MEDIUM)
+    public function __construct(IconSize $size = IconSize::MEDIUM)
     {
-        switch ($size) {
-            case Icon::SIZE_MEGA:
-                $sizeInPixel = 64;
-                break;
-            case Icon::SIZE_LARGE:
-                $sizeInPixel = 48;
-                break;
-            case Icon::SIZE_MEDIUM:
-                $sizeInPixel = 32;
-                break;
-            case Icon::SIZE_DEFAULT:
-            case Icon::SIZE_SMALL:
-            case Icon::SIZE_OVERLAY:
-                $sizeInPixel = 16;
-                break;
-            default:
-                throw new \InvalidArgumentException('The given size ' . $size . ' is not a valid size, see Icon class for options', 1438871603);
-        }
+        $dimensions = $size->getDimensions();
 
-        $this->width = (int)$sizeInPixel;
-        $this->height = (int)$sizeInPixel;
+        $this->width = $dimensions[0];
+        $this->height = $dimensions[1];
     }
 
-    /**
-     * Returns the width
-     * @return int
-     */
-    public function getWidth()
+    public function getWidth(): int
     {
         return $this->width;
     }
 
-    /**
-     * Returns the height
-     * @return int
-     */
-    public function getHeight()
+    public function getHeight(): int
     {
         return $this->height;
     }

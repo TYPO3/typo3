@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -136,7 +136,7 @@ class ExtensionComposerStatusController extends AbstractController
                     ->setClasses('typo3-goBack')
                     ->setTitle($this->translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                     ->setShowLabelText(true)
-                    ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
+                    ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
             );
         }
     }

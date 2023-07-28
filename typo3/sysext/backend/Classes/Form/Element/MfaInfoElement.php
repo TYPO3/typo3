@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -114,7 +114,7 @@ class MfaInfoElement extends AbstractFormElement
                 $childHtml[] = '<ul class="list-group t3js-mfa-active-providers-list">';
                 foreach ($activeProviders as $identifier => $activeProvider) {
                     $childHtml[] = '<li class="list-group-item" id="provider-' . htmlspecialchars((string)$identifier) . '" style="line-height: 2.1em;">';
-                    $childHtml[] =  $this->iconFactory->getIcon($activeProvider->getIconIdentifier(), Icon::SIZE_SMALL);
+                    $childHtml[] =  $this->iconFactory->getIcon($activeProvider->getIconIdentifier(), IconSize::SMALL);
                     $childHtml[] =  htmlspecialchars($lang->sL($activeProvider->getTitle()));
                     if (in_array($identifier, $lockedProviders, true)) {
                         $childHtml[] = '<span class="badge badge-danger">' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.locked')) . '</span>';
@@ -131,7 +131,7 @@ class MfaInfoElement extends AbstractFormElement
                         $childHtml[] =  ' data-provider="' . htmlspecialchars((string)$identifier) . '"';
                         $childHtml[] =  ' title="' . htmlspecialchars(sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfaProvider'), $lang->sL($activeProvider->getTitle()))) . '"';
                         $childHtml[] =  '>';
-                        $childHtml[] =      $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)->render('inline');
+                        $childHtml[] =      $this->iconFactory->getIcon('actions-delete', IconSize::SMALL)->render('inline');
                         $childHtml[] = '</button>';
                     }
                     $childHtml[] = '</li>';
@@ -156,7 +156,7 @@ class MfaInfoElement extends AbstractFormElement
             $html[] =         ' data-confirmation-cancel-text="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"';
             $html[] =         ' data-confirmation-deactivate-text="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deactivate')) . '"';
             $html[] =     '>';
-            $html[] =     $this->iconFactory->getIcon('actions-toggle-off', Icon::SIZE_SMALL)->render('inline');
+            $html[] =     $this->iconFactory->getIcon('actions-toggle-off', IconSize::SMALL)->render('inline');
             $html[] =     htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfa'));
             $html[] =     '</button>';
             $html[] = '</div>';

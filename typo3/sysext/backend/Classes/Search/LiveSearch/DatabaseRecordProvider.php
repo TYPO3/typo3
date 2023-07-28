@@ -36,8 +36,8 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -252,7 +252,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             if ($editLink !== '') {
                 $actions[] = (new ResultItemAction('edit_record'))
                     ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit'))
-                    ->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL))
+                    ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
                     ->setUrl($editLink);
             }
 
@@ -264,7 +264,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 $extraData['breadcrumb'] = BackendUtility::getRecordPath($row['pid'], 'AND ' . $this->userPermissions, 0);
             }
 
-            $icon = $this->iconFactory->getIconForRecord($tableName, $row, Icon::SIZE_SMALL);
+            $icon = $this->iconFactory->getIconForRecord($tableName, $row, IconSize::SMALL);
             $items[] = (new ResultItem(self::class))
                 ->setItemTitle(BackendUtility::getRecordTitle($tableName, $row))
                 ->setTypeLabel($this->languageService->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']))

@@ -23,8 +23,8 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -178,7 +178,7 @@ class SuggestWizardDefaultReceiver
                 if (!$this->checkRecordAccess($row, $row['uid'])) {
                     continue;
                 }
-                $icon = $this->iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL);
+                $icon = $this->iconFactory->getIconForRecord($this->table, $row, IconSize::SMALL);
                 $uid = ($row['t3ver_oid'] ?? 0) > 0 ? $row['t3ver_oid'] : $row['uid'];
                 $path = $this->getRecordPath($row, $uid);
                 $label = $this->getLabel($row);

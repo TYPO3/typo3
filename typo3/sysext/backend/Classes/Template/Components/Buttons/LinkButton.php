@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *      ->setDataAttributes([
  *          'foo' => 'bar'
  *      ])
- *      ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+ *      ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL))
  *      ->setTitle('Save');
  * $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
  */

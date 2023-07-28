@@ -5835,4 +5835,11 @@ return [
             'Breaking-101398-FetchAllFieldsRelationHandler.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent->getSize' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-101475-IconSizeStringConstants.rst',
+        ],
+    ],
 ];

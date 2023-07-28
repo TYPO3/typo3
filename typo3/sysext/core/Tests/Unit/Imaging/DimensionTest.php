@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 use TYPO3\CMS\Core\Imaging\Dimension;
-use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -33,7 +33,7 @@ final class DimensionTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new Dimension(Icon::SIZE_MEDIUM);
+        $this->subject = new Dimension(IconSize::MEDIUM);
     }
 
     /**

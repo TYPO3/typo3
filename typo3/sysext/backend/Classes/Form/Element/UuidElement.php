@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use Symfony\Component\Uid\Uuid;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -101,7 +101,7 @@ class UuidElement extends AbstractFormElement
                         title="' . htmlspecialchars(sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf:copyToClipboard.title'), 'UUID')) . '"
                         text="' . $itemValue . '"
                     >
-                        ' . $this->iconFactory->getIcon('actions-clipboard', Icon::SIZE_SMALL) . '
+                        ' . $this->iconFactory->getIcon('actions-clipboard', IconSize::SMALL) . '
                     </typo3-copy-to-clipboard>
                 </div>';
 

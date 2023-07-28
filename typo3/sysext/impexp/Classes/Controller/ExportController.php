@@ -26,8 +26,8 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception as CoreException;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -297,7 +297,7 @@ class ExportController
             [$tableName, $recordUid] = explode(':', $tableNameColonUid);
             if ($record = BackendUtility::getRecordWSOL((string)$tableName, (int)$recordUid)) {
                 $records[] = [
-                    'icon' => $this->iconFactory->getIconForRecord($tableName, $record, Icon::SIZE_SMALL)->render(),
+                    'icon' => $this->iconFactory->getIconForRecord($tableName, $record, IconSize::SMALL)->render(),
                     'title' => BackendUtility::getRecordTitle($tableName, $record, true),
                     'tableName' => $tableName,
                     'recordUid' => $recordUid,
@@ -319,10 +319,10 @@ class ExportController
                 // If the page is actually the root, handle it differently.
                 // NOTE: we don't compare integers, because the number comes from the split string above
                 if ($referenceParts[1] === '0') {
-                    $iconAndTitle = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+                    $iconAndTitle = $this->iconFactory->getIcon('apps-pagetree-root', IconSize::SMALL)->render() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
                 } else {
                     $record = BackendUtility::getRecordWSOL('pages', (int)$referenceParts[1]);
-                    $iconAndTitle = $this->iconFactory->getIconForRecord('pages', $record, Icon::SIZE_SMALL)->render()
+                    $iconAndTitle = $this->iconFactory->getIconForRecord('pages', $record, IconSize::SMALL)->render()
                         . BackendUtility::getRecordTitle('pages', $record, true);
                 }
                 $tableList[] = [

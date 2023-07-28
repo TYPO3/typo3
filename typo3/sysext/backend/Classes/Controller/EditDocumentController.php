@@ -48,8 +48,8 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -1213,7 +1213,7 @@ class EditDocumentController
                 '<div class="media">' .
                     '<div class="media-left">' .
                         '<span class="icon-emphasized">' .
-                            $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render() .
+                            $this->iconFactory->getIcon('actions-close', IconSize::SMALL)->render() .
                         '</span>' .
                     '</div>' .
                     '<div class="media-body">' .
@@ -1356,7 +1356,7 @@ class EditDocumentController
             ->setClasses('t3js-editform-close')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
             ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL));
         $buttonBar->addButton($closeButton, $position, $group);
     }
 
@@ -1367,7 +1367,7 @@ class EditDocumentController
     {
         $saveButton = $buttonBar->makeInputButton()
             ->setForm('EditDocumentController')
-            ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL))
             ->setName('_savedok')
             ->setShowLabelText(true)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
@@ -1408,7 +1408,7 @@ class EditDocumentController
                 if ($previewUrl !== '') {
                     $viewButton = $buttonBar->makeLinkButton()
                         ->setHref($previewUrl)
-                        ->setIcon($this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL))
+                        ->setIcon($this->iconFactory->getIcon('actions-view', IconSize::SMALL))
                         ->setShowLabelText(true)
                         ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.viewDoc'))
                         ->setClasses('t3js-editform-view');
@@ -1448,7 +1448,7 @@ class EditDocumentController
         ) {
             $newButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
-                ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.newDoc'))
                 ->setClasses('t3js-editform-new');
@@ -1488,7 +1488,7 @@ class EditDocumentController
                 ->setHref('#')
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.duplicateDoc'))
-                ->setIcon($this->iconFactory->getIcon('actions-document-duplicates-select', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-document-duplicates-select', IconSize::SMALL))
                 ->setClasses('t3js-editform-duplicate');
             if (!$this->isSavedRecord) {
                 $duplicateButton->setDataAttributes(['is-new' => '']);
@@ -1576,7 +1576,7 @@ class EditDocumentController
                     'translation-count-message' => $translationCountMessage,
                 ])
                 ->setHref($deleteUrl)
-                ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-edit-delete', IconSize::SMALL))
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteItem'));
             $buttonBar->addButton($deleteButton, $position, $group);
@@ -1599,7 +1599,7 @@ class EditDocumentController
             $historyButton = $buttonBar->makeLinkButton()
                 ->setHref($historyUrl)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:recordHistory'))
-                ->setIcon($this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-document-history-open', IconSize::SMALL));
             $buttonBar->addButton($historyButton, $position, $group);
         }
     }
@@ -1616,7 +1616,7 @@ class EditDocumentController
                 ->setHref($this->R_URI . '&columnsOnly=')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:editWholeRecord'))
                 ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL));
 
             $buttonBar->addButton($columnsOnlyButton, $position, $group);
         }
@@ -1637,7 +1637,7 @@ class EditDocumentController
                 ->makeLinkButton()
                 ->setHref('#')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openInNewWindow'))
-                ->setIcon($this->iconFactory->getIcon('actions-window-open', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-window-open', IconSize::SMALL))
                 ->setDataAttributes([
                     'dispatch-action' => 'TYPO3.WindowManager.localOpen',
                     'dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute([

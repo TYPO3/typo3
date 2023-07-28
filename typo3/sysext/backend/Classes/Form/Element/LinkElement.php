@@ -21,8 +21,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\ModifyLinkExplanationEvent;
 use TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
@@ -217,7 +217,7 @@ class LinkElement extends AbstractFormElement
         $expansionHtml[] =              '<input class="form-control t3js-form-field-link-explanation" title="' . $explanation . '" value="' . $explanation . '" readonly>';
         $expansionHtml[] =              '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $expansionHtml[] =              '<button class="btn btn-default t3js-form-field-link-explanation-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
-        $expansionHtml[] =                  $this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL)->render();
+        $expansionHtml[] =                  $this->iconFactory->getIcon('actions-version-workspaces-preview-link', IconSize::SMALL)->render();
         $expansionHtml[] =              '</button>';
         $expansionHtml[] =              '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $expansionHtml[] =          '</div>';
@@ -355,20 +355,20 @@ class LinkElement extends AbstractFormElement
                     }
                     $data = [
                         'text' => $pageRecord['_thePathFull'] . '[' . $pageRecord['uid'] . ']' . $fragmentTitle,
-                        'icon' => $this->iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render(),
+                        'icon' => $this->iconFactory->getIconForRecord('pages', $pageRecord, IconSize::SMALL)->render(),
                     ];
                 }
                 break;
             case LinkService::TYPE_EMAIL:
                 $data = [
                     'text' => $linkData['email'] ?? '',
-                    'icon' => $this->iconFactory->getIcon('content-elements-mailform', Icon::SIZE_SMALL)->render(),
+                    'icon' => $this->iconFactory->getIcon('content-elements-mailform', IconSize::SMALL)->render(),
                 ];
                 break;
             case LinkService::TYPE_URL:
                 $data = [
                     'text' => $linkData['url'] ?? '',
-                    'icon' => $this->iconFactory->getIcon('apps-pagetree-page-shortcut-external', Icon::SIZE_SMALL)->render(),
+                    'icon' => $this->iconFactory->getIcon('apps-pagetree-page-shortcut-external', IconSize::SMALL)->render(),
 
                 ];
                 break;
@@ -377,7 +377,7 @@ class LinkElement extends AbstractFormElement
                 if ($file instanceof File) {
                     $data = [
                         'text' => $file->getPublicUrl(),
-                        'icon' => $this->iconFactory->getIconForFileExtension($file->getExtension(), Icon::SIZE_SMALL)->render(),
+                        'icon' => $this->iconFactory->getIconForFileExtension($file->getExtension(), IconSize::SMALL)->render(),
                     ];
                 }
                 break;
@@ -386,7 +386,7 @@ class LinkElement extends AbstractFormElement
                 if ($folder instanceof Folder) {
                     $data = [
                         'text' => $folder->getPublicUrl(),
-                        'icon' => $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL)->render(),
+                        'icon' => $this->iconFactory->getIcon('apps-filetree-folder-default', IconSize::SMALL)->render(),
                     ];
                 }
                 break;
@@ -398,12 +398,12 @@ class LinkElement extends AbstractFormElement
                     $tableTitle = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
                     $data = [
                         'text' => sprintf('%s [%s:%d]', $recordTitle, $tableTitle, $linkData['uid']),
-                        'icon' => $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_SMALL)->render(),
+                        'icon' => $this->iconFactory->getIconForRecord($table, $record, IconSize::SMALL)->render(),
                     ];
                 } else {
                     $data = [
                         'text' => sprintf('%s', $linkData['uid']),
-                        'icon' => $this->iconFactory->getIcon('tcarecords-' . $table . '-default', Icon::SIZE_SMALL, 'overlay-missing')->render(),
+                        'icon' => $this->iconFactory->getIcon('tcarecords-' . $table . '-default', IconSize::SMALL, 'overlay-missing')->render(),
                     ];
                 }
                 break;
@@ -412,14 +412,14 @@ class LinkElement extends AbstractFormElement
                 if ($telephone) {
                     $data = [
                         'text' => $telephone,
-                        'icon' => $this->iconFactory->getIcon('actions-device-mobile', Icon::SIZE_SMALL)->render(),
+                        'icon' => $this->iconFactory->getIcon('actions-device-mobile', IconSize::SMALL)->render(),
                     ];
                 }
                 break;
             case LinkService::TYPE_UNKNOWN:
                 $data = [
                     'text' => $linkData['file'] ?? $linkData['url'] ?? '',
-                    'icon' => $this->iconFactory->getIcon('actions-link', Icon::SIZE_SMALL)->render(),
+                    'icon' => $this->iconFactory->getIcon('actions-link', IconSize::SMALL)->render(),
                 ];
                 break;
             default:

@@ -16,8 +16,8 @@
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Tree\TableConfiguration\ArrayTreeRenderer;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
@@ -104,7 +104,7 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 $finalPageTsConfigItems = [];
                 foreach ($itemsFromPageTsConfig as $item) {
                     if ($item['icon'] !== null) {
-                        $item['icon'] = $iconFactory->getIcon($item['icon'], Icon::SIZE_SMALL)->getMarkup('inline');
+                        $item['icon'] = $iconFactory->getIcon($item['icon'], IconSize::SMALL)->getMarkup('inline');
                     }
                     $finalPageTsConfigItems[] = $item;
                 }

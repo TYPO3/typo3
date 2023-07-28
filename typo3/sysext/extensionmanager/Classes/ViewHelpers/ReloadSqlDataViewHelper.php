@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,7 +56,7 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
 
         $staticSqlDataFile = $extension['packagePath'] . 'ext_tables_static+adt.sql';
         if (!file_exists($staticSqlDataFile)) {
-            return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+            return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
         }
 
         $registry = GeneralUtility::makeInstance(Registry::class);
@@ -94,7 +94,7 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
         $this->tag->addAttribute('title', htmlspecialchars($this->getLanguageService()->sL(
             'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:' . $languageKey
         )));
-        $this->tag->setContent($iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render());
+        $this->tag->setContent($iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render());
 
         return $this->tag->render();
     }

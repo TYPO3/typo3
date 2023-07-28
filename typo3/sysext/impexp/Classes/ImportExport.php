@@ -22,8 +22,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -532,7 +532,7 @@ abstract class ImportExport
                     ->getIconForRecord(
                         $table,
                         (array)($this->dat['records'][$table . ':' . $uid]['data'] ?? []),
-                        Icon::SIZE_SMALL
+                        IconSize::SMALL
                     )
                     ->setTitle($line['ref'])
                     ->render();
@@ -689,7 +689,7 @@ abstract class ImportExport
             $line['preCode'] = ''
                 . $this->renderIndent($indent + 1)
                 . $this->iconFactory
-                    ->getIcon($iconName, Icon::SIZE_SMALL)
+                    ->getIcon($iconName, IconSize::SMALL)
                     ->setTitle($line['ref'])
                     ->render();
             if (!$staticFixed || $this->showStaticRelations) {
@@ -732,7 +732,7 @@ abstract class ImportExport
             $line['preCode'] = ''
                 . $this->renderIndent($indent + 1)
                 . $this->iconFactory
-                    ->getIcon('status-reference-hard', Icon::SIZE_SMALL)
+                    ->getIcon('status-reference-hard', IconSize::SMALL)
                     ->setTitle($line['ref'])
                     ->render();
             $line['title'] = htmlspecialchars($fileInfo['filename']);
@@ -787,7 +787,7 @@ abstract class ImportExport
                 $line['preCode'] = ''
                     . $this->renderIndent($indent + 1)
                     . $this->iconFactory
-                        ->getIcon('status-reference-hard', Icon::SIZE_SMALL)
+                        ->getIcon('status-reference-hard', IconSize::SMALL)
                         ->setTitle($line['ref'])
                         ->render();
                 $line['title'] = htmlspecialchars($fileInfo['filename']) . ' <em>(Original)</em>';
@@ -812,7 +812,7 @@ abstract class ImportExport
                     $line['preCode'] = ''
                         . $this->renderIndent($indent + 1)
                         . $this->iconFactory
-                            ->getIcon('actions-insert-reference', Icon::SIZE_SMALL)
+                            ->getIcon('actions-insert-reference', IconSize::SMALL)
                             ->setTitle($line['ref'])
                             ->render();
                     $line['title'] = htmlspecialchars($fileInfo['filename']) . ' <em>(Resource)</em>';
@@ -843,7 +843,7 @@ abstract class ImportExport
             $line['preCode'] = ''
                 . $this->renderIndent($indent)
                 . $this->iconFactory
-                    ->getIcon('status-reference-soft', Icon::SIZE_SMALL)
+                    ->getIcon('status-reference-soft', IconSize::SMALL)
                     ->setTitle($line['ref'])
                     ->render();
             $line['title'] = sprintf(

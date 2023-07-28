@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Filelist\ElementBrowser;
 
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
-use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
@@ -108,7 +108,7 @@ class FileBrowser extends AbstractResourceBrowser
             $markup[] = '        <div class="hidden t3js-multi-record-selection-actions">';
             $markup[] = '            <strong>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection')) . '</strong>';
             $markup[] = '            <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="import" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:importSelection')) . '">';
-            $markup[] = '                ' . $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL);
+            $markup[] = '                ' . $this->iconFactory->getIcon('actions-document-import-t3d', IconSize::SMALL);
             $markup[] = '                ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:importSelection'));
             $markup[] = '            </button>';
             $markup[] = '        </div>';

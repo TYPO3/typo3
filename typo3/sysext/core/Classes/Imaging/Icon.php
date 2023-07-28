@@ -27,26 +27,31 @@ class Icon
 {
     /**
      * @var string the default size
+     * @deprecated Use TYPO3\CMS\Core\Imaging\IconSize::DEFAULT instead
      */
     public const SIZE_DEFAULT = 'default'; // 1em
 
     /**
      * @var string the small size
+     * @deprecated Use TYPO3\CMS\Core\Imaging\IconSize::SMALL instead
      */
     public const SIZE_SMALL = 'small'; // 16px
 
     /**
      * @var string the default size
+     * @deprecated Use TYPO3\CMS\Core\Imaging\IconSize::MEDIUM instead
      */
     public const SIZE_MEDIUM = 'medium'; // 32px
 
     /**
      * @var string the large size
+     * @deprecated Use TYPO3\CMS\Core\Imaging\IconSize::LARGE instead
      */
     public const SIZE_LARGE = 'large'; // 48px
 
     /**
      * @var string the mega size
+     * @deprecated Use TYPO3\CMS\Core\Imaging\IconSize::MEGA instead
      */
     public const SIZE_MEGA = 'mega'; // 64px
 
@@ -74,7 +79,7 @@ class Icon
     /**
      * Contains the size string ("large", "small" or "default")
      */
-    protected string $size = '';
+    protected IconSize $size;
 
     /**
      * Flag to indicate if the icon has a spinning animation
@@ -181,16 +186,20 @@ class Icon
 
     public function getSize(): string
     {
-        return $this->size;
+        return $this->size->value;
     }
 
     /**
      * Sets the size and creates the new dimension
      *
-     * @return $this
+     * @todo: Change $size to allow IconSize only in v14
      */
-    public function setSize(string $size): self
+    public function setSize(string|IconSize $size): self
     {
+        if (is_string($size)) {
+            $size = IconSize::from($size);
+            $size->triggerDeprecation();
+        }
         $this->size = $size;
         $this->dimension = GeneralUtility::makeInstance(Dimension::class, $size);
         return $this;
@@ -251,7 +260,7 @@ class Icon
         $classes = [];
         $classes[] = 't3js-icon';
         $classes[] = 'icon';
-        $classes[] = 'icon-size-' . $this->size;
+        $classes[] = 'icon-size-' . $this->getSize();
         $classes[] = 'icon-state-' . htmlspecialchars($this->state instanceof IconState ? $this->state->value : IconState::STATE_DEFAULT->value);
         $classes[] = 'icon-' . $this->getIdentifier();
         if ($this->isSpinning()) {

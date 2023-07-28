@@ -26,8 +26,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
@@ -215,12 +215,12 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['t3ver_oid'] = $calculatedT3verOid;
                     $versionArray['livepid'] = $record['livepid'];
                     $versionArray['stage'] = $versionRecord['t3ver_stage'];
-                    $versionArray['icon_Live'] = $iconFactory->getIconForRecord($table, $origRecord, Icon::SIZE_SMALL)->getIdentifier();
-                    $versionArray['icon_Workspace'] = $iconFactory->getIconForRecord($table, $versionRecord, Icon::SIZE_SMALL)->getIdentifier();
+                    $versionArray['icon_Live'] = $iconFactory->getIconForRecord($table, $origRecord, IconSize::SMALL)->getIdentifier();
+                    $versionArray['icon_Workspace'] = $iconFactory->getIconForRecord($table, $versionRecord, IconSize::SMALL)->getIdentifier();
                     $languageValue = $this->getLanguageValue($table, $versionRecord);
                     $versionArray['languageValue'] = $languageValue;
                     $versionArray['language'] = [
-                        'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon'), Icon::SIZE_SMALL)->getIdentifier(),
+                        'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon'), IconSize::SMALL)->getIdentifier(),
                     ];
                     $versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
                     $versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);

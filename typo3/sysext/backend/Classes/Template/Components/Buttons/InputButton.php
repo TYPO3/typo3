@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * $saveButton = $buttonBar->makeInputButton()
  *      ->setName('save')
  *      ->setValue('1')
- *      ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+ *      ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL))
  *      ->setTitle('Save');
  * $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
  */

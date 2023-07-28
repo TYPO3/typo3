@@ -35,8 +35,8 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -449,7 +449,7 @@ class FileListController implements LoggerAwareInterface
         $refreshButton = $buttonBar->makeLinkButton()
             ->setHref($request->getAttribute('normalizedParams')->getRequestUri())
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
         $buttonBar->addButton($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // ViewMode
@@ -527,7 +527,7 @@ class FileListController implements LoggerAwareInterface
                     )
                     ->setShowLabelText(true)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.upOneLevel'))
-                    ->setIcon($this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL));
+                    ->setIcon($this->iconFactory->getIcon('actions-view-go-up', IconSize::SMALL));
                 $buttonBar->addButton($levelUpButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
             }
         } catch (\Exception $e) {
@@ -557,7 +557,7 @@ class FileListController implements LoggerAwareInterface
                 ->setClasses('t3js-drag-uploader-trigger')
                 ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload'))
-                ->setIcon($this->iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-edit-upload', IconSize::SMALL));
             $buttonBar->addButton($uploadButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         }
 
@@ -572,7 +572,7 @@ class FileListController implements LoggerAwareInterface
                 ])
                 ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_folder'))
-                ->setIcon($this->iconFactory->getIcon('actions-folder-add', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-folder-add', IconSize::SMALL));
             $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
 
@@ -590,7 +590,7 @@ class FileListController implements LoggerAwareInterface
                 ))
                 ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_file'))
-                ->setIcon($this->iconFactory->getIcon('actions-file-add', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-file-add', IconSize::SMALL));
             $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
         }
 
@@ -626,7 +626,7 @@ class FileListController implements LoggerAwareInterface
                         ])
                         ->setShowLabelText(true)
                         ->setTitle($pastButtonTitle)
-                        ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL));
+                        ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', IconSize::SMALL));
                     $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
                 }
             }

@@ -21,8 +21,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\CustomFileControlsEvent;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver;
@@ -322,7 +322,7 @@ class FilesControlContainer extends AbstractContainer
             ];
             $controls[] = '
                 <button ' . GeneralUtility::implodeAttributes($attributes, true) . '>
-				    ' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)->render() . '
+				    ' . $this->iconFactory->getIcon('actions-insert-record', IconSize::SMALL)->render() . '
 				    ' . htmlspecialchars($buttonText) . '
 			    </button>';
         }
@@ -371,7 +371,7 @@ class FilesControlContainer extends AbstractContainer
                     ];
                     $controls[] = '
                         <button ' . GeneralUtility::implodeAttributes($attributes, true) . '>
-					        ' . $this->iconFactory->getIcon('actions-upload', Icon::SIZE_SMALL)->render() . '
+					        ' . $this->iconFactory->getIcon('actions-upload', IconSize::SMALL)->render() . '
                             ' . htmlspecialchars($buttonText) . '
                         </button>';
 
@@ -400,7 +400,7 @@ class FilesControlContainer extends AbstractContainer
                     // @todo Should be implemented as web component
                     $controls[] = '
                         <button ' . GeneralUtility::implodeAttributes($attributes, true) . '>
-							' . $this->iconFactory->getIcon('actions-online-media-add', Icon::SIZE_SMALL)->render() . '
+							' . $this->iconFactory->getIcon('actions-online-media-add', IconSize::SMALL)->render() . '
 							' . htmlspecialchars($buttonText) . '
                         </button>';
 

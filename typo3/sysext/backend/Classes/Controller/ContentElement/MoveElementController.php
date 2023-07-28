@@ -27,8 +27,8 @@ use TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap;
 use TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -162,7 +162,7 @@ final class MoveElementController
                     ->setHref($this->R_URI)
                     ->setShowLabelText(true)
                     ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:goBack'))
-                    ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                    ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL));
                 $buttonBar->addButton($backButton);
             }
         }

@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\TimeTracker;
 
 use Psr\Log\LogLevel;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -183,7 +183,7 @@ class TimeTracker implements SingletonInterface
             $placeholder = '<br /><span style="width: 300px; height: 1px; display: inline-block;"></span>';
         }
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->tsStackLog[$k]['message'][] = $iconFactory->getIcon($this->wrapIcon[$logLevel], Icon::SIZE_SMALL)->render() . $this->wrapError[$logLevel][0] . htmlspecialchars($content) . $this->wrapError[$logLevel][1] . $placeholder;
+        $this->tsStackLog[$k]['message'][] = $iconFactory->getIcon($this->wrapIcon[$logLevel], IconSize::SMALL)->render() . $this->wrapError[$logLevel][0] . htmlspecialchars($content) . $this->wrapError[$logLevel][1] . $placeholder;
     }
 
     /**

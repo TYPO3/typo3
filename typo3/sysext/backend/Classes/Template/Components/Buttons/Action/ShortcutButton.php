@@ -25,8 +25,8 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -210,9 +210,9 @@ class ShortcutButton implements ButtonInterface, PositionInterface
             $shortcutButton = GeneralUtility::makeInstance(GenericButton::class);
             if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
                 $shortcutButton->setLabel($alreadyBookmarkedText);
-                $shortcutButton->setIcon($iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL));
+                $shortcutButton->setIcon($iconFactory->getIcon('actions-system-shortcut-active', IconSize::SMALL));
             } else {
-                $shortcutButton->setIcon($iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL));
+                $shortcutButton->setIcon($iconFactory->getIcon('actions-system-shortcut-new', IconSize::SMALL));
                 $shortcutButton->setLabel($confirmationText);
                 $shortcutButton->setAttributes($this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText));
             }
@@ -226,10 +226,10 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         $shortcutItem->setTag('button');
         if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
             $shortcutItem->setLabel($alreadyBookmarkedText);
-            $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL));
+            $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-active', IconSize::SMALL));
         } else {
             $shortcutItem->setLabel($confirmationText);
-            $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL));
+            $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-new', IconSize::SMALL));
             $shortcutItem->setAttributes($this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText));
         }
         $dropdownItems[] = $shortcutItem;
@@ -248,12 +248,12 @@ class ShortcutButton implements ButtonInterface, PositionInterface
                 UriBuilder::SHAREABLE_URL
             ),
         ]);
-        $clipboardItem->setIcon($iconFactory->getIcon('actions-link', Icon::SIZE_SMALL));
+        $clipboardItem->setIcon($iconFactory->getIcon('actions-link', IconSize::SMALL));
         $dropdownItems[] = $clipboardItem;
 
         $dropdownButton = GeneralUtility::makeInstance(DropDownButton::class);
         $dropdownButton->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.share'));
-        $dropdownButton->setIcon($iconFactory->getIcon('actions-share-alt', Icon::SIZE_SMALL));
+        $dropdownButton->setIcon($iconFactory->getIcon('actions-share-alt', IconSize::SMALL));
         foreach ($dropdownItems as $dropdownItem) {
             $dropdownButton->addItem($dropdownItem);
         }

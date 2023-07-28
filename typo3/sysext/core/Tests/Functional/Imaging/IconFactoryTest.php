@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Imaging;
 
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -66,10 +66,10 @@ final class IconFactoryTest extends FunctionalTestCase
     public static function differentSizesDataProvider(): array
     {
         return [
-            ['size ' . Icon::SIZE_DEFAULT => ['input' => Icon::SIZE_DEFAULT, 'expected' => Icon::SIZE_DEFAULT]],
-            ['size ' . Icon::SIZE_SMALL => ['input' => Icon::SIZE_SMALL, 'expected' => Icon::SIZE_SMALL]],
-            ['size ' . Icon::SIZE_MEDIUM => ['input' => Icon::SIZE_MEDIUM, 'expected' => Icon::SIZE_MEDIUM]],
-            ['size ' . Icon::SIZE_LARGE => ['input' => Icon::SIZE_LARGE, 'expected' => Icon::SIZE_LARGE]],
+            ['size ' . IconSize::DEFAULT->name => ['input' => IconSize::DEFAULT, 'expected' => IconSize::DEFAULT->value]],
+            ['size ' . IconSize::SMALL->name => ['input' => IconSize::SMALL, 'expected' => IconSize::SMALL->value]],
+            ['size ' . IconSize::MEDIUM->name => ['input' => IconSize::MEDIUM, 'expected' => IconSize::MEDIUM->value]],
+            ['size ' . IconSize::LARGE->name => ['input' => IconSize::LARGE, 'expected' => IconSize::LARGE->value]],
         ];
     }
 
@@ -179,7 +179,7 @@ final class IconFactoryTest extends FunctionalTestCase
      */
     public function getIconThrowsExceptionIfInvalidSizeIsGiven(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\ValueError::class);
         $this->subject->getIcon($this->registeredIconIdentifier, 'foo')->render();
     }
 
@@ -350,7 +350,7 @@ final class IconFactoryTest extends FunctionalTestCase
     public function getIconForResourceWithOpenFolderReturnsOpenFolderIcon(): void
     {
         $folderObject = $this->getTestSubjectFolderObject('/test');
-        $result = $this->subject->getIconForResource($folderObject, Icon::SIZE_MEDIUM, null, ['folder-open' => true])->render();
+        $result = $this->subject->getIconForResource($folderObject, IconSize::MEDIUM, null, ['folder-open' => true])->render();
         self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-filetree-folder-opened" data-identifier="apps-filetree-folder-opened">', $result);
     }
 
@@ -374,7 +374,7 @@ final class IconFactoryTest extends FunctionalTestCase
     public function getIconForResourceWithMountRootReturnsMountFolderIcon(): void
     {
         $folderObject = $this->getTestSubjectFolderObject('/mount');
-        $result = $this->subject->getIconForResource($folderObject, Icon::SIZE_MEDIUM, null, ['mount-root' => true])->render();
+        $result = $this->subject->getIconForResource($folderObject, IconSize::MEDIUM, null, ['mount-root' => true])->render();
         self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-filetree-mount" data-identifier="apps-filetree-mount">', $result);
     }
 

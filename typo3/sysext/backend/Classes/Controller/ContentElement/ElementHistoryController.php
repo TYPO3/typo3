@@ -29,8 +29,8 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\DiffUtility;
@@ -119,7 +119,7 @@ class ElementHistoryController
                 $this->displayMultipleDiff($completeDiff);
                 $button = $buttonBar->makeLinkButton()
                     ->setHref($this->buildUrl(['historyEntry' => '']))
-                    ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
+                    ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
                     ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:fullView'))
                     ->setShowLabelText(true);
                 $buttonBar->addButton($button);
@@ -144,7 +144,7 @@ class ElementHistoryController
                             'element' => 'pages:' . $parentPage['pid'],
                             'historyEntry' => '',
                         ]))
-                        ->setIcon($this->iconFactory->getIcon('apps-pagetree-page-default', Icon::SIZE_SMALL))
+                        ->setIcon($this->iconFactory->getIcon('apps-pagetree-page-default', IconSize::SMALL))
                         ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:elementHistory_link'))
                         ->setShowLabelText(true);
                     $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 2);
@@ -196,7 +196,7 @@ class ElementHistoryController
                 ->setHref($this->returnUrl)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL));
             $buttonBar->addButton($backButton);
         }
     }

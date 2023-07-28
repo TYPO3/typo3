@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ViewHelpers;
 
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -69,7 +69,7 @@ final class IconViewHelper extends AbstractViewHelper
     public function initializeArguments(): void
     {
         $this->registerArgument('identifier', 'string', 'Identifier of the icon as registered in the Icon Registry.', true);
-        $this->registerArgument('size', 'string', 'Desired size of the icon. All values of the Icons.sizes enum are allowed, these are: "small", "default", "large" and "overlay".', false, Icon::SIZE_SMALL);
+        $this->registerArgument('size', 'string', 'Desired size of the icon. All values of the IconSize enum are allowed, these are: "small", "default", "medium", "large" and "mega".', false, IconSize::SMALL->value);
         $this->registerArgument('overlay', 'string', 'Identifier of an overlay icon as registered in the Icon Registry.', false);
         $this->registerArgument('state', 'string', 'Sets the state of the icon. All values of the Icons.states enum are allowed, these are: "default" and "disabled".', false, IconState::STATE_DEFAULT->value);
         $this->registerArgument('alternativeMarkupIdentifier', 'string', 'Alternative icon identifier. Takes precedence over the identifier if supported by the IconProvider.', false);
@@ -81,7 +81,7 @@ final class IconViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $identifier = $arguments['identifier'];
-        $size = $arguments['size'];
+        $size = IconSize::from($arguments['size']);
         $overlay = $arguments['overlay'];
         $state = IconState::tryFrom($arguments['state']);
         $alternativeMarkupIdentifier = $arguments['alternativeMarkupIdentifier'];

@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Backend\Form\Utility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -151,7 +151,7 @@ class FormEngineUtility
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return $iconFactory
-            ->getIcon($icon, Icon::SIZE_SMALL)
+            ->getIcon($icon, IconSize::SMALL)
             ->setTitle($title)
             ->render();
     }

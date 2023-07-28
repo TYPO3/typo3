@@ -16,8 +16,8 @@
 namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
@@ -67,7 +67,7 @@ class OuterWrapContainer extends AbstractContainer
         }
 
         $icon = $this->iconFactory
-            ->getIconForRecord($table, $row, Icon::SIZE_SMALL)
+            ->getIconForRecord($table, $row, IconSize::SMALL)
             ->setTitle($recordPath)
             ->render();
 

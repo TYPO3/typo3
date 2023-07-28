@@ -21,8 +21,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -147,7 +147,7 @@ class PagePositionMap
                     if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $pageTree->tree[$cc]['invertedDepth'])) {
                         end($lines);
                         $margin = 'style="margin-left: ' . (($dat['invertedDepth'] - 1) * 16 + 9) . 'px;"';
-                        $lines[] = '<ul class="treelist" ' . $margin . '><li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($id, $id)) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '</a></span></li></ul>';
+                        $lines[] = '<ul class="treelist" ' . $margin . '><li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($id, $id)) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . '</a></span></li></ul>';
                     }
                 }
                 // If going down
@@ -159,7 +159,7 @@ class PagePositionMap
                     if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($prev_dat['row']['pid'])) {
                         $prevPid = -$prev_dat['row']['uid'];
                         end($lines);
-                        $lines[] = '<li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink((int)$prevPid, $prev_dat['row']['pid'])) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '</a></span></li>';
+                        $lines[] = '<li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink((int)$prevPid, $prev_dat['row']['pid'])) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . '</a></span></li>';
                     }
                     // Then set the current prevPid
                     $prevPid = -$prev_dat['row']['pid'];
@@ -176,11 +176,11 @@ class PagePositionMap
             }
             // print arrow on the same level
             if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid'])) {
-                $lines[] = '<span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($prevPid, $dat['row']['pid'])) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '</a></span>';
+                $lines[] = '<span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($prevPid, $dat['row']['pid'])) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . '</a></span>';
             }
             // The line with the icon and title:
             $icon = $this->iconFactory
-                ->getIconForRecord('pages', $dat['row'], Icon::SIZE_SMALL)
+                ->getIconForRecord('pages', $dat['row'], IconSize::SMALL)
                 ->setTitle(BackendUtility::getRecordIconAltText($dat['row'], 'pages'))
                 ->render();
 
@@ -199,7 +199,7 @@ class PagePositionMap
         $prev_dat = end($pageTree->tree);
         if ($prev_dat['row']['uid'] == $id) {
             if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id)) {
-                $lines[] = '<ul class="treelist" style="margin-left: 25px"><li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($id, $id)) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '</a></span></li></ul>';
+                $lines[] = '<ul class="treelist" style="margin-left: 25px"><li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($id, $id)) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . '</a></span></li></ul>';
             }
         }
         for ($a = $latestInvDepth; $a <= $this->depth; $a++) {
@@ -209,7 +209,7 @@ class PagePositionMap
                 if ($latestInvDepth < $dat['invertedDepth']) {
                     $lines[] = '</ul>';
                 }
-                $lines[] = '<span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink((int)$prevPid, $dat['row']['pid'])) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '</a></span>';
+                $lines[] = '<span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink((int)$prevPid, $dat['row']['pid'])) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . '</a></span>';
             }
         }
 

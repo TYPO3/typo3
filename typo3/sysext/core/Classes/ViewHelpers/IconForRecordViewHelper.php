@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ViewHelpers;
 
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -57,7 +57,7 @@ final class IconForRecordViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('table', 'string', 'the table for the record icon', true);
         $this->registerArgument('row', 'array', 'the record row', true);
-        $this->registerArgument('size', 'string', 'the icon size', false, Icon::SIZE_SMALL);
+        $this->registerArgument('size', 'string', 'the icon size', false, IconSize::SMALL);
         $this->registerArgument('alternativeMarkupIdentifier', 'string', 'alternative markup identifier', false);
     }
 

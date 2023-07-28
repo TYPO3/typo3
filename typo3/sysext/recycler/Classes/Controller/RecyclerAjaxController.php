@@ -29,8 +29,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -181,7 +181,7 @@ class RecyclerAjaxController
                 $groupedRecords[$table]['records'][] = [
                     'uid' => $row['uid'],
                     'pid' => $row['pid'],
-                    'icon' => $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
+                    'icon' => $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render(),
                     'pageTitle' => $pageTitle,
                     'crdate' => isset($GLOBALS['TCA'][$table]['ctrl']['crdate']) ? BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]) : '',
                     'tstamp' => isset($GLOBALS['TCA'][$table]['ctrl']['tstamp']) ? BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]) : '',

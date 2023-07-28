@@ -16,8 +16,8 @@
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -239,7 +239,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $html[] =                    '<th class="col-title"><label for="' . $checkboxId . '">' . $title . '</label></th>';
                     $html[] =                    '<th class="text-end">';
                     $html[] =                       '<button type="button" class="btn btn-default btn-sm t3js-revert-selection">';
-                    $html[] =                           $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render() . ' ';
+                    $html[] =                           $this->iconFactory->getIcon('actions-edit-undo', IconSize::SMALL)->render() . ' ';
                     $html[] =                           htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.revertSelection'));
                     $html[] =                       '</button>';
                     $html[] =                    '</th>';
@@ -288,7 +288,7 @@ class SelectCheckBoxElement extends AbstractFormElement
         if (empty($overloadHelpText)) {
             return '';
         }
-        $text = $this->iconFactory->getIcon('actions-system-help-open', Icon::SIZE_SMALL)->render();
+        $text = $this->iconFactory->getIcon('actions-system-help-open', IconSize::SMALL)->render();
         $abbrClassAdd = ' help-teaser-icon';
         $text = '<abbr class="help-teaser' . $abbrClassAdd . '">' . $text . '</abbr>';
         $wrappedText = '<span class="help-link" data-bs-content="<p></p>"';

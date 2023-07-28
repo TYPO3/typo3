@@ -42,8 +42,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -298,7 +298,7 @@ class RecordListController
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'returnUrl' => $listUrl]))
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordGeneral'))
                 ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
             $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
 
@@ -312,7 +312,7 @@ class RecordListController
                     ->setDataAttributes($previewDataAttributes ?? [])
                     ->setDisabled(!$previewDataAttributes)
                     ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                    ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
+                    ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
                     ->setShowLabelText(true);
                 $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 15);
             }
@@ -331,7 +331,7 @@ class RecordListController
                     ->setHref((string)$editLink)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:editPage'))
                     ->setShowLabelText(true)
-                    ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
+                    ->setIcon($this->iconFactory->getIcon('actions-page-open', IconSize::SMALL));
                 $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
         }
@@ -350,7 +350,7 @@ class RecordListController
                         'bs-content' => $confirmMessage,
                         'title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste'),
                     ])
-                    ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL))
+                    ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', IconSize::SMALL))
                     ->setShowLabelText(true);
                 $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
             }
@@ -362,7 +362,7 @@ class RecordListController
                 ->setDataAttributes(['id' => $this->id])
                 ->setClasses('t3js-clear-page-cache')
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
-                ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', IconSize::SMALL));
             $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }
         if ($table && (!isset($this->modTSconfig['noExportRecordsLinks'])
@@ -375,7 +375,7 @@ class RecordListController
                 $exportButton = $buttonBar->makeLinkButton()
                     ->setHref($url)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.export'))
-                    ->setIcon($this->iconFactory->getIcon('actions-document-export-t3d', Icon::SIZE_SMALL))
+                    ->setIcon($this->iconFactory->getIcon('actions-document-export-t3d', IconSize::SMALL))
                     ->setShowLabelText(true);
                 $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 50);
             }
@@ -384,7 +384,7 @@ class RecordListController
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref($listUrl)
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // ViewMode
@@ -445,7 +445,7 @@ class RecordListController
                 ->setHref($this->returnUrl)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL));
             $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT);
         }
     }

@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Backend\Form\FieldWizard;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -63,7 +63,7 @@ class TableList extends AbstractNode
                 $allowedTablesHtml[] = '</span>';
             } else {
                 $label = $languageService->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'] ?? '');
-                $icon = $this->iconFactory->getIconForRecord($tableName, [], Icon::SIZE_SMALL)->render();
+                $icon = $this->iconFactory->getIconForRecord($tableName, [], IconSize::SMALL)->render();
                 if ((bool)($config['fieldControl']['elementBrowser']['disabled'] ?? false)) {
                     $allowedTablesHtml[] = '<span class="tablelist-item-nolink">';
                     $allowedTablesHtml[] =  $icon;

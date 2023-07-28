@@ -77,11 +77,13 @@ class IconFactory
 
     /**
      * @param string $identifier
-     * @param string $size "default", "small", "medium" or "large", see the constants of the Icon class
+     * @param string|IconSize $size
      * @param string $overlayIdentifier
      * @return Icon
+     *
+     * @todo: Change $size to allow IconSize only in v14
      */
-    public function getIcon($identifier, $size = Icon::SIZE_MEDIUM, $overlayIdentifier = null, \TYPO3\CMS\Core\Type\Icon\IconState|IconState $state = null)
+    public function getIcon($identifier, string|IconSize $size = IconSize::MEDIUM, $overlayIdentifier = null, \TYPO3\CMS\Core\Type\Icon\IconState|IconState $state = null)
     {
         if ($state instanceof IconState) {
             $stateValue = $state->value;
@@ -95,7 +97,11 @@ class IconFactory
             }
             $stateValue = (string)$state;
         }
-        $cacheIdentifier = md5($identifier . $size . $overlayIdentifier . $stateValue);
+        if (is_string($size)) {
+            $size = IconSize::from($size);
+            $size->triggerDeprecation();
+        }
+        $cacheIdentifier = md5($identifier . $size->value . $overlayIdentifier . $stateValue);
         if (!empty(static::$iconCache[$cacheIdentifier])) {
             return static::$iconCache[$cacheIdentifier];
         }
@@ -128,11 +134,17 @@ class IconFactory
      *
      * @param string $table The TCA table name
      * @param array $row The DB record of the TCA table
-     * @param string $size "default", "small", "medium" or "large", see the constants of the Icon class
+     * @param string|IconSize $size
      * @return Icon
+     *
+     * @todo: Change $size to allow IconSize only in v14
      */
-    public function getIconForRecord($table, array $row, $size = Icon::SIZE_MEDIUM)
+    public function getIconForRecord($table, array $row, $size = IconSize::MEDIUM)
     {
+        if (is_string($size)) {
+            $size = IconSize::from($size);
+            $size->triggerDeprecation();
+        }
         $iconIdentifier = $this->mapRecordTypeToIconIdentifier($table, $row);
         $overlayIdentifier = $this->mapRecordTypeToOverlayIdentifier($table, $row);
         return $this->getIcon($iconIdentifier, $size, $overlayIdentifier);
@@ -393,12 +405,18 @@ class IconFactory
      * Get Icon for a file by its extension
      *
      * @param string $fileExtension
-     * @param string $size "large" "small" or "default", see the constants of the Icon class
+     * @param string|IconSize $size
      * @param string $overlayIdentifier
      * @return Icon
+     *
+     * @todo: Change $size to allow IconSize only in v14
      */
-    public function getIconForFileExtension($fileExtension, $size = Icon::SIZE_MEDIUM, $overlayIdentifier = null)
+    public function getIconForFileExtension($fileExtension, string|IconSize $size = IconSize::MEDIUM, $overlayIdentifier = null)
     {
+        if (is_string($size)) {
+            $size = IconSize::from($size);
+            $size->triggerDeprecation();
+        }
         $iconName = $this->iconRegistry->getIconIdentifierForFileExtension($fileExtension);
         return $this->getIcon($iconName, $size, $overlayIdentifier);
     }
@@ -416,14 +434,16 @@ class IconFactory
      * There is a hook in place to manipulate the icon name and overlays.
      *
      * @param ResourceInterface $resource
-     * @param string $size "large" "small" or "default", see the constants of the Icon class
+     * @param string|IconSize $size
      * @param string $overlayIdentifier
      * @param array $options An associative array with additional options.
      * @return Icon
+     *
+     * @todo: Change $size to allow IconSize only in v14
      */
     public function getIconForResource(
         ResourceInterface $resource,
-        $size = Icon::SIZE_MEDIUM,
+        string|IconSize $size = IconSize::MEDIUM,
         $overlayIdentifier = null,
         array $options = []
     ) {
@@ -503,6 +523,11 @@ class IconFactory
             }
         }
 
+        if (is_string($size)) {
+            $size = IconSize::from($size);
+            $size->triggerDeprecation();
+        }
+
         $event = $this->eventDispatcher->dispatch(
             new ModifyIconForResourcePropertiesEvent(
                 $resource,
@@ -519,23 +544,20 @@ class IconFactory
      * Creates an icon object
      *
      * @param string $identifier
-     * @param string $size "large", "small" or "default", see the constants of the Icon class
+     * @param IconSize $size
      * @param string $overlayIdentifier
      * @param array $iconConfiguration the icon configuration array
      * @return Icon
      */
-    protected function createIcon($identifier, $size, $overlayIdentifier = null, array $iconConfiguration = [])
+    protected function createIcon($identifier, IconSize $size, $overlayIdentifier = null, array $iconConfiguration = [])
     {
         $icon = GeneralUtility::makeInstance(Icon::class);
         $icon->setIdentifier($identifier);
         $icon->setSize($size);
-        $iconState = IconState::tryFrom($iconConfiguration['state']);
-        if ($iconState === null) {
-            $iconState = IconState::STATE_DEFAULT;
-        }
+        $iconState = IconState::tryFrom($iconConfiguration['state']) ?? IconState::STATE_DEFAULT;
         $icon->setState($iconState);
         if (!empty($overlayIdentifier)) {
-            $icon->setOverlayIcon($this->getIcon($overlayIdentifier, Icon::SIZE_OVERLAY));
+            $icon->setOverlayIcon($this->getIcon($overlayIdentifier, IconSize::OVERLAY));
         }
         if (!empty($iconConfiguration['options']['spinning'])) {
             $icon->setSpinning(true);

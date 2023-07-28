@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\AbstractSvgIconProvider;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -226,10 +226,10 @@ abstract class AbstractTreeView
         $aUrl = $anchor;
         if ($isOpen) {
             $class = 'treelist-control-open';
-            $icon = $iconFactory->getIcon('actions-chevron-down', Icon::SIZE_SMALL);
+            $icon = $iconFactory->getIcon('actions-chevron-down', IconSize::SMALL);
         } else {
             $class = 'treelist-control-collapsed';
-            $icon = $iconFactory->getIcon('actions-chevron-right', Icon::SIZE_SMALL);
+            $icon = $iconFactory->getIcon('actions-chevron-right', IconSize::SMALL);
         }
         return '<a class="treelist-control ' . $class . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '>' . $icon->render(AbstractSvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
     }
@@ -270,7 +270,7 @@ abstract class AbstractTreeView
     {
         $title = $this->getTitleAttrib($row);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon = $row['is_siteroot'] ? $iconFactory->getIcon('apps-pagetree-folder-root', Icon::SIZE_SMALL) : $iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL);
+        $icon = $row['is_siteroot'] ? $iconFactory->getIcon('apps-pagetree-folder-root', IconSize::SMALL) : $iconFactory->getIconForRecord($this->table, $row, IconSize::SMALL);
         return $icon->setTitle($title)->render();
     }
 

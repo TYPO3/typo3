@@ -26,8 +26,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -314,7 +314,7 @@ class Clipboard
                     $records[] = [
                         'identifier' => '_FILE|' . md5($value),
                         'icon' => $this->iconFactory
-                            ->getIconForResource($fileObject, Icon::SIZE_SMALL)
+                            ->getIconForResource($fileObject, IconSize::SMALL)
                             ->setTitle($fileObject->getName() . ' ' . $size)
                             ->render(),
                         'title' => $this->linkItemText(htmlspecialchars($linkItemText), $combinedIdentifier, $filesRequested),
@@ -336,7 +336,7 @@ class Clipboard
                     $isRequestedTable = $currentTable !== '_FILE';
                     $records[] = [
                         'identifier' => $table . '|' . $uid,
-                        'icon' => $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_SMALL)->render(),
+                        'icon' => $this->iconFactory->getIconForRecord($table, $record, IconSize::SMALL)->render(),
                         'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle(
                             $table,
                             $record
@@ -427,7 +427,7 @@ class Clipboard
                 $title = '<span class="text-body-secondary">' . $title . '</span>';
             }
             $records[] = [
-                'icon' => $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_SMALL)->render(),
+                'icon' => $this->iconFactory->getIconForRecord($table, $record, IconSize::SMALL)->render(),
                 'title' => $title,
                 'infoDataDispatch' => [
                     'action' => 'TYPO3.InfoWindow.showItem',

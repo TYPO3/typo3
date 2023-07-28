@@ -27,8 +27,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
@@ -289,7 +289,7 @@ class FileController
             $result->toArray(),
             [
                 'date' => BackendUtility::date($result->getModificationTime()),
-                'icon' => $this->iconFactory->getIconForFileExtension($result->getExtension(), Icon::SIZE_SMALL)->render(),
+                'icon' => $this->iconFactory->getIconForFileExtension($result->getExtension(), IconSize::SMALL)->render(),
                 'thumbUrl' => $thumbUrl,
                 'path' => $path,
             ]

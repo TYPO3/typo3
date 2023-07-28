@@ -37,8 +37,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locale;
@@ -730,7 +730,7 @@ class DatabaseIntegrityController
                     $out .= '</div>';
                     if (!$this->noDownloadB) {
                         $out .= '<button class="btn btn-default" type="submit" name="download_file" value="Click to download file">';
-                        $out .=    $this->iconFactory->getIcon('actions-file-csv-download', Icon::SIZE_SMALL)->render();
+                        $out .=    $this->iconFactory->getIcon('actions-file-csv-download', IconSize::SMALL)->render();
                         $out .= '  Click to download file';
                         $out .= '</button>';
                     }
@@ -838,14 +838,14 @@ class DatabaseIntegrityController
                     . HttpUtility::buildQueryString(['SET' => $request->getParsedBody()['SET'] ?? []], '&'),
             ]);
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'
-                . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render()
+                . $this->iconFactory->getIcon('actions-open', IconSize::SMALL)->render()
                 . '</a>';
             $out .= '</div><div class="btn-group" role="group">';
             $out .= sprintf(
                 '<a class="btn btn-default" href="#" data-dispatch-action="%s" data-dispatch-args-list="%s">%s</a>',
                 'TYPO3.InfoWindow.showItem',
                 htmlspecialchars($table . ',' . $row['uid']),
-                $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render()
+                $this->iconFactory->getIcon('actions-document-info', IconSize::SMALL)->render()
             );
             $out .= '</div>';
         } else {
@@ -860,7 +860,7 @@ class DatabaseIntegrityController
                     ],
                     'redirect' => (string)$uriBuilder->buildUriFromRoute('system_dbint'),
                 ])) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:undelete_only')) . '">';
-            $out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render() . '</a>';
+            $out .= $this->iconFactory->getIcon('actions-edit-restore', IconSize::SMALL)->render() . '</a>';
             $out .= '</div>';
         }
         $_params = [$table => $row];
@@ -1693,29 +1693,29 @@ class DatabaseIntegrityController
                 if ($loopCount) {
                     $lineHTML[] = ''
                         . '<button class="btn btn-default" title="Remove condition" name="qG_del' . htmlspecialchars($subscript) . '">'
-                        . $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)->render()
+                        . $this->iconFactory->getIcon('actions-delete', IconSize::SMALL)->render()
                         . '</button>';
                 }
                 $lineHTML[] = ''
                     . '<button class="btn btn-default" title="Add condition" name="qG_ins' . htmlspecialchars($subscript) . '">'
-                    . $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render()
+                    . $this->iconFactory->getIcon('actions-plus', IconSize::SMALL)->render()
                     . '</button>';
                 if ($c != 0) {
                     $lineHTML[] = ''
                         . '<button class="btn btn-default" title="Move up" name="qG_up' . htmlspecialchars($subscript) . '">'
-                        . $this->iconFactory->getIcon('actions-chevron-up', Icon::SIZE_SMALL)->render()
+                        . $this->iconFactory->getIcon('actions-chevron-up', IconSize::SMALL)->render()
                         . '</button>';
                 }
                 if ($c != 0 && $fieldType !== 'newlevel') {
                     $lineHTML[] = ''
                         . '<button class="btn btn-default" title="New level" name="qG_nl' . htmlspecialchars($subscript) . '">'
-                        . $this->iconFactory->getIcon('actions-chevron-right', Icon::SIZE_SMALL)->render()
+                        . $this->iconFactory->getIcon('actions-chevron-right', IconSize::SMALL)->render()
                         . '</button>';
                 }
                 if ($fieldType === 'newlevel') {
                     $lineHTML[] = ''
                         . '<button class="btn btn-default" title="Collapse new level" name="qG_remnl' . htmlspecialchars($subscript) . '">'
-                        . $this->iconFactory->getIcon('actions-chevron-left', Icon::SIZE_SMALL)->render()
+                        . $this->iconFactory->getIcon('actions-chevron-left', IconSize::SMALL)->render()
                         . '</button>';
                 }
                 $lineHTML[] = '</div>';
@@ -1742,7 +1742,7 @@ class DatabaseIntegrityController
         $html[] = '	   <input data-formengine-input-name="' . htmlspecialchars($name) . '" value="' . $value . '" class="form-control form-control-clearable t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" type="text" id="' . $id . '">';
         $html[] = '	   <input name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($timestamp) . '" type="hidden">';
         $html[] = '	   <button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#' . $id . '">';
-        $html[] =          $this->iconFactory->getIcon('actions-calendar-alternative', Icon::SIZE_SMALL)->render();
+        $html[] =          $this->iconFactory->getIcon('actions-calendar-alternative', IconSize::SMALL)->render();
         $html[] = '    </button>';
         $html[] = '  </div>';
         $html[] = '</div>';
@@ -2189,7 +2189,7 @@ class DatabaseIntegrityController
 
     protected function updateIcon(): string
     {
-        return '<button class="btn btn-default" title="Update" name="just_update">' . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</button>';
+        return '<button class="btn btn-default" title="Update" name="just_update">' . $this->iconFactory->getIcon('actions-refresh', IconSize::SMALL)->render() . '</button>';
     }
 
     protected function setAndCleanUpExternalLists(string $name, string $list, string $force = ''): void
@@ -2406,15 +2406,15 @@ class DatabaseIntegrityController
         $markup[] = '  </div>';
         $markup[] = '  <div class="form-group">';
         $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[LOAD]" value="Load">';
-        $markup[] =        $this->iconFactory->getIcon('actions-upload', Icon::SIZE_SMALL)->render();
+        $markup[] =        $this->iconFactory->getIcon('actions-upload', IconSize::SMALL)->render();
         $markup[] = '      Load';
         $markup[] = '    </button>';
         $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[SAVE]" value="Save">';
-        $markup[] =        $this->iconFactory->getIcon('actions-save', Icon::SIZE_SMALL)->render();
+        $markup[] =        $this->iconFactory->getIcon('actions-save', IconSize::SMALL)->render();
         $markup[] = '      Save';
         $markup[] = '    </button>';
         $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[REMOVE]" value="Remove">';
-        $markup[] =        $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)->render();
+        $markup[] =        $this->iconFactory->getIcon('actions-delete', IconSize::SMALL)->render();
         $markup[] = '      Remove';
         $markup[] = '    </button>';
         $markup[] = '  </div>';
@@ -2674,19 +2674,19 @@ class DatabaseIntegrityController
         // Page stats
         $pageStatistic = [
             'total_pages' => [
-                'icon' => $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render(),
+                'icon' => $this->iconFactory->getIconForRecord('pages', [], IconSize::SMALL)->render(),
                 'count' => count($databaseIntegrityCheck->getPageIdArray()),
             ],
             'translated_pages' => [
-                'icon' => $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render(),
+                'icon' => $this->iconFactory->getIconForRecord('pages', [], IconSize::SMALL)->render(),
                 'count' => count($databaseIntegrityCheck->getPageTranslatedPageIDArray()),
             ],
             'hidden_pages' => [
-                'icon' => $this->iconFactory->getIconForRecord('pages', ['hidden' => 1], Icon::SIZE_SMALL)->render(),
+                'icon' => $this->iconFactory->getIconForRecord('pages', ['hidden' => 1], IconSize::SMALL)->render(),
                 'count' => $databaseIntegrityCheck->getRecStats()['hidden'] ?? 0,
             ],
             'deleted_pages' => [
-                'icon' => $this->iconFactory->getIconForRecord('pages', ['deleted' => 1], Icon::SIZE_SMALL)->render(),
+                'icon' => $this->iconFactory->getIconForRecord('pages', ['deleted' => 1], IconSize::SMALL)->render(),
                 'count' => isset($databaseIntegrityCheck->getRecStats()['deleted']['pages']) ? count($databaseIntegrityCheck->getRecStats()['deleted']['pages']) : 0,
             ],
         ];
@@ -2698,7 +2698,7 @@ class DatabaseIntegrityController
             foreach ($doktype as $setup) {
                 if ($setup['value'] !== '--div--') {
                     $doktypes[] = [
-                        'icon' => $this->iconFactory->getIconForRecord('pages', ['doktype' => $setup['value']], Icon::SIZE_SMALL)->render(),
+                        'icon' => $this->iconFactory->getIconForRecord('pages', ['doktype' => $setup['value']], IconSize::SMALL)->render(),
                         'title' => $languageService->sL($setup['label']) . ' (' . $setup['value'] . ')',
                         'count' => (int)($databaseIntegrityCheck->getRecStats()['doktype'][$setup['value']] ?? 0),
                     ];
@@ -2751,7 +2751,7 @@ class DatabaseIntegrityController
                             $lostRecordList[] =
                                 '<div class="record">' .
                                     '<a href="' . htmlspecialchars($fixLink) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fixLostRecord')) . '">' .
-                                        $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() .
+                                        $this->iconFactory->getIcon('status-dialog-error', IconSize::SMALL)->render() .
                                     '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) .
                                 '</div>';
                         } else {
@@ -2763,7 +2763,7 @@ class DatabaseIntegrityController
                     }
                 }
                 $tableStatistic[$t] = [
-                    'icon' => $this->iconFactory->getIconForRecord($t, [], Icon::SIZE_SMALL)->render(),
+                    'icon' => $this->iconFactory->getIconForRecord($t, [], IconSize::SMALL)->render(),
                     'title' => $languageService->sL($GLOBALS['TCA'][$t]['ctrl']['title']),
                     'count' => $recordCount,
                     'lostRecords' => implode(LF, $lostRecordList),

@@ -31,8 +31,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -184,12 +184,12 @@ final class PageTsConfigRecordsOverviewController
             $line['title'] = $identifier;
             if (isset($pageArray[$identifier . '_'])) {
                 $line['link'] = $this->uriBuilder->buildUriFromRoute($currentModule->getIdentifier(), ['id' => $identifier]);
-                $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();
+                $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), IconSize::SMALL)->render();
                 $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($title, 30);
                 $line['lines'] = ($pageArray[$identifier . '_']['writtenLines'] === 0 ? '' : $pageArray[$identifier . '_']['writtenLines']);
             } else {
                 $line['link'] = '';
-                $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();
+                $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), IconSize::SMALL)->render();
                 $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($title, 30);
                 $line['lines'] = '';
             }

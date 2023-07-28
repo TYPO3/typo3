@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Impexp\View;
 use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
 use TYPO3\CMS\Backend\Tree\View\AbstractTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Export;
 
@@ -142,7 +142,7 @@ class ExportPageTreeView extends AbstractTreeView
                 'uid' => 0,
             ];
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $rootHtml = $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
+            $rootHtml = $iconFactory->getIcon('apps-pagetree-root', IconSize::SMALL)->render();
         }
 
         $this->tree[] = [
@@ -262,6 +262,6 @@ class ExportPageTreeView extends AbstractTreeView
     protected function getPageIcon(array $row): string
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        return $iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)->render();
+        return $iconFactory->getIconForRecord($this->table, $row, IconSize::SMALL)->render();
     }
 }

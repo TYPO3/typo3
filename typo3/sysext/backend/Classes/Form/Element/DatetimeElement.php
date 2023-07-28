@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -206,7 +206,7 @@ class DatetimeElement extends AbstractFormElement
         $expansionHtml[] =              '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $expansionHtml[] =              '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $expansionHtml[] =              '<button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#' . $attributes['id'] . '">';
-        $expansionHtml[] =                  $this->iconFactory->getIcon('actions-edit-pick-date', Icon::SIZE_SMALL)->render();
+        $expansionHtml[] =                  $this->iconFactory->getIcon('actions-edit-pick-date', IconSize::SMALL)->render();
         $expansionHtml[] =              '</button>';
         $expansionHtml[] =          '</div>';
         $expansionHtml[] =      '</div>';

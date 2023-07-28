@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -1047,7 +1048,7 @@ class BackendUtility
                         . '<div class="preview-thumbnails-element">'
                             . '<div class="preview-thumbnails-element-image">'
                                 . $iconFactory
-                                    ->getIcon('mimetypes-other-other', Icon::SIZE_MEDIUM, 'overlay-missing')
+                                    ->getIcon('mimetypes-other-other', IconSize::MEDIUM, 'overlay-missing')
                                     ->setTitle(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing') . ' ' . $fileObject->getName())
                                     ->render()
                             . '</div>'
@@ -1085,7 +1086,7 @@ class BackendUtility
                 } else {
                     // Icon
                     $imgTag = $iconFactory
-                        ->getIconForResource($fileObject, Icon::SIZE_MEDIUM)
+                        ->getIconForResource($fileObject, IconSize::MEDIUM)
                         ->setTitle($fileObject->getName())
                         ->render();
                 }

@@ -16,8 +16,8 @@
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -257,7 +257,7 @@ class GroupElement extends AbstractFormElement
             $html[] =       '<div class="autocomplete t3-form-suggest-container">';
             $html[] =           '<div class="input-group">';
             $html[] =               '<span class="input-group-addon">';
-            $html[] =                   $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render();
+            $html[] =                   $this->iconFactory->getIcon('actions-search', IconSize::SMALL)->render();
             $html[] =               '</span>';
             $html[] =               '<input type="search" class="t3-form-suggest form-control"';
             $html[] =                   ' placeholder="' . $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:search.find_record') . '"';
@@ -293,7 +293,7 @@ class GroupElement extends AbstractFormElement
                 $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
                 $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '"';
                 $html[] =           '>';
-                $html[] =               $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL)->render();
+                $html[] =               $this->iconFactory->getIcon('actions-move-to-top', IconSize::SMALL)->render();
                 $html[] =           '</a>';
             }
             if ($maxItems > 1 && $size > 1 && $showMoveIcons) {
@@ -302,14 +302,14 @@ class GroupElement extends AbstractFormElement
                 $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
                 $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '"';
                 $html[] =           '>';
-                $html[] =               $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render();
+                $html[] =               $this->iconFactory->getIcon('actions-move-up', IconSize::SMALL)->render();
                 $html[] =           '</a>';
                 $html[] =           '<a href="#"';
                 $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-down"';
                 $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
                 $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '"';
                 $html[] =           '>';
-                $html[] =               $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render();
+                $html[] =               $this->iconFactory->getIcon('actions-move-down', IconSize::SMALL)->render();
                 $html[] =           '</a>';
             }
             if ($maxItems > 1 && $size >= 5 && $showMoveIcons) {
@@ -318,7 +318,7 @@ class GroupElement extends AbstractFormElement
                 $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
                 $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '"';
                 $html[] =           '>';
-                $html[] =               $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL)->render();
+                $html[] =               $this->iconFactory->getIcon('actions-move-to-bottom', IconSize::SMALL)->render();
                 $html[] =           '</a>';
             }
             if ($showDeleteControl) {
@@ -328,7 +328,7 @@ class GroupElement extends AbstractFormElement
                 $html[] =               ' data-uid="' . htmlspecialchars($row['uid']) . '"';
                 $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
                 $html[] =           '>';
-                $html[] =               $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL)->render();
+                $html[] =               $this->iconFactory->getIcon('actions-selection-delete', IconSize::SMALL)->render();
                 $html[] =           '</a>';
             }
         }

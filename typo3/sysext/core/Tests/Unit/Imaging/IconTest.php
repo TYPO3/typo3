@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\IconState;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -38,7 +39,7 @@ final class IconTest extends UnitTestCase
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('has')->with(self::anything())->willReturn(false);
         $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $containerMock);
-        $this->subject = $iconFactory->getIcon($this->iconIdentifier, Icon::SIZE_SMALL, $this->overlayIdentifier, IconState::STATE_DISABLED);
+        $this->subject = $iconFactory->getIcon($this->iconIdentifier, IconSize::SMALL, $this->overlayIdentifier, IconState::STATE_DISABLED);
     }
 
     /**
@@ -70,7 +71,7 @@ final class IconTest extends UnitTestCase
      */
     public function getSizeIdentifierReturnsCorrectIdentifier(): void
     {
-        self::assertEquals(Icon::SIZE_SMALL, $this->subject->getSize());
+        self::assertEquals(IconSize::SMALL->value, $this->subject->getSize());
     }
 
     /**
@@ -83,28 +84,28 @@ final class IconTest extends UnitTestCase
 
     public static function setSizeSetsExpectedValuesDataProvider(): \Generator
     {
-        yield 'SIZE_DEFAULT' => [
-            Icon::SIZE_DEFAULT,
+        yield 'IconSize::DEFAULT' => [
+            IconSize::DEFAULT,
             [16, 16],
         ];
-        yield 'SIZE_SMALL' => [
-            Icon::SIZE_DEFAULT,
+        yield 'IconSize::SMALL' => [
+            IconSize::SMALL,
             [16, 16],
         ];
-        yield 'SIZE_OVERLAY' => [
-            Icon::SIZE_OVERLAY,
+        yield 'IconSize::OVERLAY' => [
+            IconSize::OVERLAY,
             [16, 16],
         ];
-        yield 'SIZE_MEDIUM' => [
-            Icon::SIZE_MEDIUM,
+        yield 'IconSize::MEDIUM' => [
+            IconSize::MEDIUM,
             [32, 32],
         ];
-        yield 'SIZE_LARGE' => [
-            Icon::SIZE_LARGE,
+        yield 'IconSize::LARGE' => [
+            IconSize::LARGE,
             [48, 48],
         ];
-        yield 'SIZE_MEGA' => [
-            Icon::SIZE_MEGA,
+        yield 'IconSize::MEGA' => [
+            IconSize::MEGA,
             [64, 64],
         ];
     }
@@ -113,7 +114,7 @@ final class IconTest extends UnitTestCase
      * @test
      * @dataProvider setSizeSetsExpectedValuesDataProvider
      */
-    public function setSizeSetsExpectedValues(string $size, array $expectedDimensions): void
+    public function setSizeSetsExpectedValues(IconSize $size, array $expectedDimensions): void
     {
         $icon = new Icon();
         $icon->setSize($size);

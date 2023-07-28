@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Backend\Form\FieldWizard;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -102,7 +102,7 @@ class OtherLanguageThumbnails extends AbstractNode
             if ($processedImages !== []) {
                 $iconIdentifier = $this->data['systemLanguageRows'][(int)$sysLanguageUid]['flagIconIdentifier'] ?? 'flags-multiple';
                 $html[] = '<div class="t3-form-original-language">';
-                $html[] =   $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render();
+                $html[] =   $this->iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render();
                 $html[] =   implode(LF, $processedImages);
                 $html[] = '</div>';
             }

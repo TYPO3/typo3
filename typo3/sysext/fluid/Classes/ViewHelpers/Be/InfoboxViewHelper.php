@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -106,7 +106,7 @@ final class InfoboxViewHelper extends AbstractViewHelper
             $iconTemplate = '' .
                 '<div class="media-left">' .
                     '<span class="icon-emphasized">' .
-                        $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() .
+                        $iconFactory->getIcon($icon, IconSize::SMALL)->render() .
                     '</span>' .
                 '</div>';
         }
