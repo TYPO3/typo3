@@ -55,10 +55,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
 
     /**
      * A list of all supported hash algorithms, written all lower case.
-     *
-     * @var array
      */
-    protected $supportedHashAlgorithms = ['sha1', 'md5'];
+    protected array $supportedHashAlgorithms = ['sha1', 'md5'];
 
     /**
      * The base URL that points to this driver's storage. As long is this

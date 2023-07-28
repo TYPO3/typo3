@@ -36,26 +36,27 @@ abstract class AbstractDriver implements DriverInterface
 
     /**
      * The storage uid the driver was instantiated for
-     *
-     * @var int
      */
-    protected $storageUid;
+    protected ?int $storageUid = null;
 
     /**
      * A list of all supported hash algorithms, written all lower case and
      * without any dashes etc. (e.g. sha1 instead of SHA-1)
      * Be sure to set this in inherited classes!
      *
-     * @var array
+     * @phpstan-var list<string>
+     *
+     * @todo: Remove this from this class. Properties of abstract classes MUST NOT be api. If all drivers
+     *        need to implement this, consider creating a new method stub in the DriverInterface or consider
+     *        creating a new SupportedHashAlgorithmsAwareInterface that demands implementations to provide said
+     *        information. Inside this abstract class, this property is useless, however.
      */
-    protected $supportedHashAlgorithms = [];
+    protected array $supportedHashAlgorithms = [];
 
     /**
      * The configuration of this driver
-     *
-     * @var array
      */
-    protected $configuration = [];
+    protected array $configuration = [];
 
     /**
      * Creates this object.
@@ -68,11 +69,8 @@ abstract class AbstractDriver implements DriverInterface
     /**
      * Checks a fileName for validity. This could be overridden in concrete
      * drivers if they have different file naming rules.
-     *
-     * @param string $fileName
-     * @return bool TRUE if file name is valid
      */
-    protected function isValidFilename($fileName)
+    protected function isValidFilename(string $fileName): bool
     {
         if (str_contains($fileName, '/')) {
             return false;
@@ -102,7 +100,7 @@ abstract class AbstractDriver implements DriverInterface
     /**
      * Returns TRUE if this driver has the given capability.
      *
-     * @param Capabilities::CAPABILITY_* $capability
+     * @phpstan-param Capabilities::CAPABILITY_* $capability
      */
     public function hasCapability(int $capability): bool
     {
@@ -116,10 +114,10 @@ abstract class AbstractDriver implements DriverInterface
     /**
      * Returns a temporary path for a given file, including the file extension.
      *
-     * @param string $fileIdentifier
-     * @return non-empty-string
+     * @phpstan-param non-empty-string $fileIdentifier
+     * @phpstan-return non-empty-string
      */
-    protected function getTemporaryPathForFile($fileIdentifier)
+    protected function getTemporaryPathForFile(string $fileIdentifier): string
     {
         return GeneralUtility::tempnam('fal-tempfile-', '.' . PathUtility::pathinfo($fileIdentifier, PATHINFO_EXTENSION));
     }
@@ -129,8 +127,8 @@ abstract class AbstractDriver implements DriverInterface
      * into account. This helps mitigating problems with case-insensitive
      * databases.
      *
-     * @param non-empty-string $identifier
-     * @return non-empty-string
+     * @phpstan-param non-empty-string $identifier
+     * @phpstan-return non-empty-string
      */
     public function hashIdentifier(string $identifier): string
     {
@@ -156,25 +154,24 @@ abstract class AbstractDriver implements DriverInterface
     /**
      * Makes sure the path given as parameter is valid
      *
-     * @param string $filePath The file path (most times filePath)
-     * @return string
+     * @phpstan-param non-empty-string $filePath The file path (most times filePath)
+     * @phpstan-return non-empty-string
      */
-    abstract protected function canonicalizeAndCheckFilePath($filePath);
+    abstract protected function canonicalizeAndCheckFilePath(string $filePath): string;
 
     /**
      * Makes sure the identifier given as parameter is valid
      *
-     * @param non-empty-string $fileIdentifier The file Identifier
-     * @return non-empty-string
-     * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
+     * @phpstan-param non-empty-string $fileIdentifier The file Identifier
+     * @phpstan-return non-empty-string
      */
-    abstract protected function canonicalizeAndCheckFileIdentifier($fileIdentifier);
+    abstract protected function canonicalizeAndCheckFileIdentifier(string $fileIdentifier): string;
 
     /**
      * Makes sure the identifier given as parameter is valid
      *
-     * @param string $folderIdentifier The folder identifier
-     * @return string
+     * @phpstan-param non-empty-string $folderIdentifier The folder identifier
+     * @phpstan-return non-empty-string
      */
-    abstract protected function canonicalizeAndCheckFolderIdentifier($folderIdentifier);
+    abstract protected function canonicalizeAndCheckFolderIdentifier(string $folderIdentifier): string;
 }
