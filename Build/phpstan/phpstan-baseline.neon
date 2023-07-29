@@ -1539,7 +1539,7 @@ parameters:
 		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
 
 		-

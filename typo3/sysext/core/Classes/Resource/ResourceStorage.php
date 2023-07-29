@@ -131,66 +131,45 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class ResourceStorage implements ResourceStorageInterface
 {
-    /**
-     * The storage driver instance belonging to this storage.
-     *
-     * @var Driver\DriverInterface
-     */
-    protected $driver;
+    protected DriverInterface $driver;
 
     /**
      * The database record for this storage
-     *
-     * @var array
      */
-    protected $storageRecord;
+    protected array $storageRecord;
 
     /**
      * The configuration belonging to this storage (decoded from the configuration field).
-     *
-     * @var array
      */
-    protected $configuration;
+    protected array $configuration;
 
-    /**
-     * @var Service\FileProcessingService
-     */
-    protected $fileProcessingService;
+    protected ?FileProcessingService $fileProcessingService = null;
 
     /**
      * Whether to check if file or folder is in user mounts
      * and the action is allowed for a user
      * Default is FALSE so that resources are accessible for
      * front end rendering or admins.
-     *
-     * @var bool
      */
-    protected $evaluatePermissions = false;
+    protected bool $evaluatePermissions = false;
 
     /**
      * User filemounts, added as an array, and used as filters
-     *
-     * @var array
      */
-    protected $fileMounts = [];
+    protected array $fileMounts = [];
 
     /**
      * The file permissions of the user (and their group) merged together and
      * available as an array
-     *
-     * @var array
      */
-    protected $userPermissions = [];
+    protected array $userPermissions = [];
 
     /**
      * The capabilities of this storage as defined in the storage record.
      */
     protected Capabilities $capabilities;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
     /**
      * @var Folder|null
@@ -200,28 +179,21 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * All processing folders of this storage used in any storage
      *
-     * @var Folder[]
+     * @var Folder[]|null
      */
-    protected $processingFolders;
+    protected ?array $processingFolders = null;
 
     /**
      * whether this storage is online or offline in this request
-     *
-     * @var bool
      */
-    protected $isOnline;
+    protected ?bool $isOnline = null;
 
-    /**
-     * @var bool
-     */
-    protected $isDefault = false;
+    protected bool $isDefault = false;
 
     /**
      * The filters used for the files and folder names.
-     *
-     * @var array
      */
-    protected $fileAndFolderNameFilters = [];
+    protected array $fileAndFolderNameFilters = [];
 
     /**
      * Levels numbers used to generate hashed subfolders in the processing folder
@@ -234,8 +206,11 @@ class ResourceStorage implements ResourceStorageInterface
      * @param array $storageRecord The storage record row from the database
      * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct(DriverInterface $driver, array $storageRecord, ?EventDispatcherInterface $eventDispatcher = null)
-    {
+    public function __construct(
+        DriverInterface $driver,
+        array $storageRecord,
+        ?EventDispatcherInterface $eventDispatcher = null
+    ) {
         if (!isset($storageRecord['uid'])) {
             throw new \InvalidArgumentException(
                 '$storageRecord[\'uid\'] is unexpectedly not set',
@@ -301,7 +276,7 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Sets the configuration.
      */
-    public function setConfiguration(array $configuration)
+    public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;
     }
@@ -2713,10 +2688,7 @@ class ResourceStorage implements ResourceStorageInterface
         return GeneralUtility::makeInstance(FileIndexRepository::class);
     }
 
-    /**
-     * @return Service\FileProcessingService
-     */
-    protected function getFileProcessingService()
+    protected function getFileProcessingService(): FileProcessingService
     {
         if (!$this->fileProcessingService) {
             $this->fileProcessingService = GeneralUtility::makeInstance(FileProcessingService::class);
