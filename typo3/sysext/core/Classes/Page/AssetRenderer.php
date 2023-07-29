@@ -18,9 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Page;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Page\Event\BeforeJavaScriptsRenderingEvent;
 use TYPO3\CMS\Core\Page\Event\BeforeStylesheetsRenderingEvent;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -45,7 +45,7 @@ class AssetRenderer
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
-    public function renderInlineJavaScript($priority = false, ?ConsumableString $nonce = null): string
+    public function renderInlineJavaScript($priority = false, ?ConsumableNonce $nonce = null): string
     {
         $this->eventDispatcher->dispatch(
             new BeforeJavaScriptsRenderingEvent($this->assetCollector, true, $priority)
@@ -56,7 +56,7 @@ class AssetRenderer
         return $this->render($assets, $template, $nonce);
     }
 
-    public function renderJavaScript($priority = false, ?ConsumableString $nonce = null): string
+    public function renderJavaScript($priority = false, ?ConsumableNonce $nonce = null): string
     {
         $this->eventDispatcher->dispatch(
             new BeforeJavaScriptsRenderingEvent($this->assetCollector, false, $priority)
@@ -70,7 +70,7 @@ class AssetRenderer
         return $this->render($assets, $template, $nonce);
     }
 
-    public function renderInlineStyleSheets($priority = false, ?ConsumableString $nonce = null): string
+    public function renderInlineStyleSheets($priority = false, ?ConsumableNonce $nonce = null): string
     {
         $this->eventDispatcher->dispatch(
             new BeforeStylesheetsRenderingEvent($this->assetCollector, true, $priority)
@@ -81,7 +81,7 @@ class AssetRenderer
         return $this->render($assets, $template, $nonce);
     }
 
-    public function renderStyleSheets(bool $priority = false, string $endingSlash = '', ?ConsumableString $nonce = null): string
+    public function renderStyleSheets(bool $priority = false, string $endingSlash = '', ?ConsumableNonce $nonce = null): string
     {
         $this->eventDispatcher->dispatch(
             new BeforeStylesheetsRenderingEvent($this->assetCollector, false, $priority)
@@ -96,7 +96,7 @@ class AssetRenderer
         return $this->render($assets, $template, $nonce);
     }
 
-    protected function render(array $assets, string $template, ?ConsumableString $nonce = null): string
+    protected function render(array $assets, string $template, ?ConsumableNonce $nonce = null): string
     {
         $results = [];
         foreach ($assets as $assetData) {

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Html;
 
 use Masterminds\HTML5;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
@@ -72,10 +73,10 @@ class HtmlWorker
     }
 
     /**
-     * @param string $nonce none value to be added
+     * @param string|ConsumableNonce $nonce none value to be added
      * @param string ...$nodeNames element node names to be processed (e.g. `style`)
      */
-    public function addNonceAttribute(string $nonce, string ...$nodeNames): self
+    public function addNonceAttribute(string|ConsumableNonce $nonce, string ...$nodeNames): self
     {
         if ($nodeNames === []) {
             return $this;
@@ -85,7 +86,7 @@ class HtmlWorker
             $expression = sprintf('//%s[not(@*)]', $nodeName);
             /** @var \DOMElement $element */
             foreach ($xpath->query($expression, $this->mount) as $element) {
-                $element->setAttribute('nonce', $nonce);
+                $element->setAttribute('nonce', (string)$nonce);
             }
         }
         return $this;

@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
-use TYPO3\CMS\Core\Security\Nonce;
-
 /**
  * Representation of Content-Security-Policy source keywords
  * see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/Sources#sources
@@ -62,9 +60,7 @@ enum SourceKeyword: string implements SourceInterface
         // apply implications for `'strict-dynamic'`
         if ($this === self::strictDynamic) {
             // add nonce-proxy in case it's not defined
-            if (!$sources->contains(self::nonceProxy)
-                && !$sources->containsTypes(Nonce::class)
-            ) {
+            if (!$sources->contains(self::nonceProxy)) {
                 return $sources->with(self::nonceProxy);
             }
         }

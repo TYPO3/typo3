@@ -73,7 +73,7 @@ class Events extends AbstractSubModule implements DataProviderInterface
         $events = $values['events'] ?? null;
 
         $dumper = new HtmlDumper(null, null, AbstractDumper::DUMP_LIGHT_ARRAY);
-        $dumper->setNonce($this->requestId->nonce->b64);
+        $dumper->setNonce($this->requestId->nonce);
         $dumper->setTheme('light');
 
         $view->assign('events', $events instanceof Data ? $dumper->dump($events, true) : null);

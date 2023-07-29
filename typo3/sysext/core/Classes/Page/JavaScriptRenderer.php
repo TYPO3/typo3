@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Page;
 
-use TYPO3\CMS\Core\Domain\ConsumableString;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -108,7 +108,7 @@ class JavaScriptRenderer
         return $this->items->toArray();
     }
 
-    public function render(null|string|ConsumableString $nonce = null): string
+    public function render(null|string|ConsumableNonce $nonce = null): string
     {
         if ($this->isEmpty()) {
             return '';
@@ -126,7 +126,7 @@ class JavaScriptRenderer
         );
     }
 
-    public function renderImportMap(string $sitePath, null|string|ConsumableString $nonce = null): string
+    public function renderImportMap(string $sitePath, null|string|ConsumableNonce $nonce = null): string
     {
         if (!$this->isEmpty()) {
             $this->importMap->includeImportsFor('@typo3/core/java-script-item-handler.js');

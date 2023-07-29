@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Adminpanel\Utility;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -30,7 +31,7 @@ class ResourceUtility
      * one array - returns an array of full html tags
      *
      * @param ModuleInterface[] $modules
-     * @param array<string, string> $attributes
+     * @param array<string, string|ConsumableNonce> $attributes
      * @return array{js: string, css: string}
      */
     public static function getAdditionalResourcesForModules(array $modules, array $attributes = []): array
@@ -98,7 +99,7 @@ class ResourceUtility
     /**
      * Get a css tag for file - with absolute web path resolving
      *
-     * @param array<string, string> $attributes
+     * @param array<string, string|ConsumableNonce> $attributes
      */
     protected static function getCssTag(string $cssFileLocation, array $attributes): string
     {
@@ -116,7 +117,7 @@ class ResourceUtility
     /**
      * Get a script tag for JavaScript with absolute paths
      *
-     * @param array<string, string> $attributes
+     * @param array<string, string|ConsumableNonce> $attributes
      */
     protected static function getJsTag(string $jsFileLocation, array $attributes): string
     {
@@ -132,7 +133,7 @@ class ResourceUtility
     /**
      * Return a string with tags for main admin panel resources
      *
-     * @param array<string, string> $attributes
+     * @param array<string, string|ConsumableNonce> $attributes
      */
     public static function getResources(array $attributes = []): array
     {

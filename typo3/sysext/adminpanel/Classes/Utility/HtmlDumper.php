@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Utility;
 
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Html\HtmlWorker;
 
@@ -27,14 +28,14 @@ use TYPO3\CMS\Frontend\Html\HtmlWorker;
  */
 final class HtmlDumper extends \Symfony\Component\VarDumper\Dumper\HtmlDumper
 {
-    protected ?string $nonce = null;
+    protected ?ConsumableNonce $nonce = null;
 
-    public function setNonce(string $nonce): void
+    public function setNonce(ConsumableNonce $nonce): void
     {
         $this->nonce = $nonce;
         $this->dumpSuffix = str_replace(
             '<script>',
-            sprintf('<script nonce="%s">', htmlspecialchars($nonce)),
+            sprintf('<script nonce="%s">', htmlspecialchars($nonce->consume())),
             $this->dumpSuffix
         );
     }

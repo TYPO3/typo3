@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
-use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -36,7 +36,7 @@ final class PageRendererTest extends UnitTestCase
         parent::setUp();
         $importMapMock = $this->createMock(ImportMap::class);
         $importMapMock->method('render')
-            ->with(self::isType('string'), self::isInstanceOf(ConsumableString::class))
+            ->with(self::isType('string'), self::isInstanceOf(ConsumableNonce::class))
             ->willReturn('');
         $importMapFactoryMock = $this->createMock(ImportMapFactory::class);
         $importMapFactoryMock->method('create')->willReturn($importMapMock);

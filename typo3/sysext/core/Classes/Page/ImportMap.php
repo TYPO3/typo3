@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Core\Page;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Page\Event\ResolveJavaScriptImportEvent;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -114,7 +114,7 @@ class ImportMap
 
     public function render(
         string $urlPrefix,
-        null|string|ConsumableString $nonce,
+        null|string|ConsumableNonce $nonce,
         bool $includePolyfill = true
     ): string {
         if (count($this->extensionsToLoad) === 0 || count($this->getImportMaps()) === 0) {

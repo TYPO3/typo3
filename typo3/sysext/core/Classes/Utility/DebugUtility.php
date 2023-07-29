@@ -229,6 +229,6 @@ class DebugUtility
 
     protected static function resolveNonceValue(): string
     {
-        return GeneralUtility::makeInstance(RequestId::class)->nonce->b64;
+        return GeneralUtility::makeInstance(RequestId::class)->nonce->consume();
     }
 }

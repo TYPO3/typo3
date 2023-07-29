@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
@@ -33,6 +32,7 @@ use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\DocType;
@@ -332,7 +332,7 @@ class PageRenderer implements SingletonInterface
     protected $endingSlash = '';
 
     protected JavaScriptRenderer $javaScriptRenderer;
-    protected ?ConsumableString $nonce = null;
+    protected ?ConsumableNonce $nonce = null;
     protected DocType $docType = DocType::html5;
     protected bool $applyNonceHint = false;
 
@@ -371,7 +371,7 @@ class PageRenderer implements SingletonInterface
                 case 'streamFactory':
                     break;
                 case 'nonce':
-                    $this->setNonce(new ConsumableString($value));
+                    $this->setNonce(new ConsumableNonce($value));
                     break;
                 case 'metaTagRegistry':
                     $this->metaTagRegistry->updateState($value);
@@ -405,7 +405,7 @@ class PageRenderer implements SingletonInterface
                 case 'streamFactory':
                     break;
                 case 'nonce':
-                    if ($value instanceof ConsumableString) {
+                    if ($value instanceof ConsumableNonce) {
                         $state[$var] = $value->value;
                     }
                     break;
@@ -845,7 +845,7 @@ class PageRenderer implements SingletonInterface
         return $this->renderXhtml;
     }
 
-    public function setNonce(?ConsumableString $nonce): void
+    public function setNonce(?ConsumableNonce $nonce): void
     {
         $this->nonce = $nonce;
     }

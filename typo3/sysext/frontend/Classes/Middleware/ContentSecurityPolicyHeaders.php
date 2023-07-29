@@ -25,7 +25,6 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\RequestId;
-use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
@@ -52,7 +51,7 @@ final class ContentSecurityPolicyHeaders implements MiddlewareInterface
             return $handler->handle($request);
         }
         // make sure, the nonce value is set before processing the remaining middlewares
-        $request = $request->withAttribute('nonce', new ConsumableString($this->requestId->nonce->b64));
+        $request = $request->withAttribute('nonce', $this->requestId->nonce);
         $response = $handler->handle($request);
 
         $site = $request->getAttribute('site');
