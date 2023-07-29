@@ -142,7 +142,7 @@ class RecordListController
         $dbList->showClipboardActions = true;
         $dbList->disableSingleTableView = $this->modTSconfig['disableSingleTableView'] ?? false;
         $dbList->listOnlyInSingleTableMode = $this->modTSconfig['listOnlyInSingleTableView'] ?? false;
-        $dbList->hideTables = $this->modTSconfig['hideTables'] ?? false;
+        $dbList->hideTables = $this->modTSconfig['hideTables'] ?? '';
         $dbList->hideTranslations = $this->modTSconfig['hideTranslations'] ?? false;
         $dbList->tableTSconfigOverTCA = $this->modTSconfig['table.'] ?? false;
         $dbList->allowedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['allowedNewTables'] ?? '', true);
