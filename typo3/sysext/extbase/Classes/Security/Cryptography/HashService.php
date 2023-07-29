@@ -34,15 +34,11 @@ class HashService implements SingletonInterface
      *
      * @param string $string The string for which a hash should be generated
      * @return string The hash of the string
-     * @throws \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException if something else than a string was given as parameter
      */
     public function generateHmac(string $string): string
     {
-        $encryptionKey = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-        if (!$encryptionKey) {
-            throw new InvalidArgumentForHashGenerationException('Encryption Key was empty!', 1255069597);
-        }
-        return hash_hmac('sha1', $string, $encryptionKey);
+        $secret = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+        return hash_hmac('sha1', $string, $secret);
     }
 
     /**
