@@ -18,13 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http\Security;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Security\InvalidReferrerException;
 use TYPO3\CMS\Core\Http\Security\MissingReferrerException;
 use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Security\Nonce;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ReferrerEnforcerTest extends UnitTestCase
@@ -184,7 +183,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
      */
     public function nonceIsAppliedToResponse(): void
     {
-        $nonce = Nonce::create();
+        $nonce = new ConsumableNonce();
         $subject = $this->buildSubject(
             'https://example.org/typo3/login',
             '',
@@ -192,12 +191,12 @@ final class ReferrerEnforcerTest extends UnitTestCase
         );
         $response = $subject->handle(['flags' => ['refresh-always']]);
         self::assertStringContainsString(
-            'nonce="' . htmlspecialchars($nonce->b64) . '">',
+            'nonce="' . htmlspecialchars($nonce->value) . '">',
             (string)$response->getBody()
         );
     }
 
-    private function buildSubject(string $requestUri, string $referrer, Nonce $nonce = null): ReferrerEnforcer
+    private function buildSubject(string $requestUri, string $referrer, ConsumableNonce $nonce = null): ReferrerEnforcer
     {
         $requestUriInstance = new Uri($requestUri);
         $host = sprintf(
@@ -214,7 +213,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
         $request = $this->createMock(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnCallback(static fn(string $name): mixed => match ($name) {
             'normalizedParams' => $normalizedParams,
-            'nonce' => $nonce !== null ? new ConsumableString($nonce->b64) : null,
+            'nonce' => $nonce,
             default => null,
         });
         $request->method('getServerParams')->willReturn(['HTTP_REFERER' => $referrer]);

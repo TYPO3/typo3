@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -230,10 +229,10 @@ class Policy
     /**
      * Compiles this policy and returns the serialized representation to be used as HTTP header value.
      *
-     * @param Nonce $nonce used to substitute `SourceKeyword::nonceProxy` items during compilation
+     * @param ConsumableNonce $nonce used to substitute `SourceKeyword::nonceProxy` items during compilation
      * @param ?FrontendInterface $cache to be used for storing compiled CSP aspects (disabled in install tool)
      */
-    public function compile(Nonce $nonce, ?FrontendInterface $cache = null): string
+    public function compile(ConsumableNonce $nonce, ?FrontendInterface $cache = null): string
     {
         $policyParts = [];
         $service = GeneralUtility::makeInstance(ModelService::class, $cache);

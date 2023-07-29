@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Utility;
 
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
@@ -155,10 +154,5 @@ class DebugUtility
     public static function useAnsiColor(bool $ansiColorUsage): void
     {
         static::$ansiColorUsage = $ansiColorUsage;
-    }
-
-    protected static function resolveNonceValue(): string
-    {
-        return GeneralUtility::makeInstance(RequestId::class)->nonce->b64;
     }
 }

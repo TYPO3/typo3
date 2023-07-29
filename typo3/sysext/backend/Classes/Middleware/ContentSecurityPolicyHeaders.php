@@ -24,7 +24,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\RequestId;
-use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
@@ -45,7 +44,7 @@ final class ContentSecurityPolicyHeaders implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request = $request->withAttribute('nonce', new ConsumableString($this->requestId->nonce->b64));
+        $request = $request->withAttribute('nonce', $this->requestId->nonce);
         $response = $handler->handle($request);
 
         $scope = Scope::backend();

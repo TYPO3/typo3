@@ -80,7 +80,7 @@ class MainController
      */
     public function render(ServerRequestInterface $request): string
     {
-        $resources = ResourceUtility::getResources(['nonce' => $this->requestId->nonce->b64]);
+        $resources = ResourceUtility::getResources(['nonce' => $this->requestId->nonce]);
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Main.html';
@@ -100,7 +100,7 @@ class MainController
             $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('adminpanel_requestcache');
             $requestId = $request->getAttribute('adminPanelRequestId');
             $data = $cache->get($requestId);
-            $moduleResources = ResourceUtility::getAdditionalResourcesForModules($this->modules, ['nonce' => $this->requestId->nonce->b64]);
+            $moduleResources = ResourceUtility::getAdditionalResourcesForModules($this->modules, ['nonce' => $this->requestId->nonce]);
             $settingsModules = array_filter($this->modules, static function (ModuleInterface $module): bool {
                 return $module instanceof PageSettingsProviderInterface;
             });

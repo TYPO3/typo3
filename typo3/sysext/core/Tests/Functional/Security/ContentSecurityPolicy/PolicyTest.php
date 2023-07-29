@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Security\ContentSecurityPolicy;
 
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashProxy;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashValue;
@@ -27,18 +28,17 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Policy;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceScheme;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
-use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PolicyTest extends FunctionalTestCase
 {
-    private Nonce $nonce;
+    private ConsumableNonce $nonce;
     protected bool $initializeDatabase = false;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->nonce = Nonce::create();
+        $this->nonce = new ConsumableNonce();
     }
 
     /**
@@ -206,7 +206,7 @@ final class PolicyTest extends FunctionalTestCase
     public function nonceProxyIsCompiled(): void
     {
         $policy = (new Policy(SourceKeyword::self, SourceKeyword::nonceProxy));
-        self::assertSame("default-src 'self' 'nonce-{$this->nonce->b64}'", $policy->compile($this->nonce));
+        self::assertSame("default-src 'self' 'nonce-{$this->nonce->value}'", $policy->compile($this->nonce));
     }
 
     /**
@@ -220,7 +220,7 @@ final class PolicyTest extends FunctionalTestCase
             ->extend(Directive::ScriptSrc, SourceKeyword::strictDynamic)
             ->extend(Directive::StyleSrc, SourceKeyword::strictDynamic);
         self::assertSame(
-            "default-src 'self'; script-src 'self' 'strict-dynamic' 'nonce-{$this->nonce->b64}'",
+            "default-src 'self'; script-src 'self' 'strict-dynamic' 'nonce-{$this->nonce->value}'",
             $policy->compile($this->nonce)
         );
     }
@@ -259,7 +259,7 @@ final class PolicyTest extends FunctionalTestCase
             ->set(Directive::WorkerSrc, SourceKeyword::self, SourceScheme::blob)
             ->extend(Directive::FrameSrc, SourceScheme::blob);
         self::assertSame(
-            "default-src 'self'; script-src 'self' 'nonce-{$this->nonce->b64}'; "
+            "default-src 'self'; script-src 'self' 'nonce-{$this->nonce->value}'; "
             . "style-src 'self' 'unsafe-inline'; style-src-attr 'unsafe-inline'; "
             . "img-src 'self' data:; worker-src 'self' blob:; frame-src 'self' blob:",
             $policy->compile($this->nonce)

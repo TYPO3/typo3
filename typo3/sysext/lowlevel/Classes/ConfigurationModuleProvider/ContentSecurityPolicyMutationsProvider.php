@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\ConfigurationModuleProvider;
 
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ModelService;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationOrigin;
@@ -25,7 +26,6 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Policy;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceInterface;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceValueInterface;
-use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
@@ -38,7 +38,7 @@ class ContentSecurityPolicyMutationsProvider extends AbstractProvider
 
     public function getConfiguration(): array
     {
-        $nonce = Nonce::create();
+        $nonce = new ConsumableNonce();
         $data = [];
         /**
          * @var Scope $scope

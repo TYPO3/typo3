@@ -19,9 +19,9 @@ namespace TYPO3\CMS\Core\Http\Security;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -85,7 +85,7 @@ class ReferrerEnforcer
                 'EXT:core/Resources/Public/JavaScript/referrer-refresh.js'
             );
             $attributes = ['src' => $scriptUri];
-            if ($nonce instanceof ConsumableString) {
+            if ($nonce instanceof ConsumableNonce) {
                 $attributes['nonce'] = $nonce->consume();
             }
             // simulating navigate event by clicking anchor link

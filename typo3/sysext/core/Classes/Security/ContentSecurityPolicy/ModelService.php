@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Security\Nonce;
 
 /**
  * Helpers for working with Content-Security-Policy models.
@@ -120,7 +119,7 @@ class ModelService
         return $serialized;
     }
 
-    public function compileSources(Nonce $nonce, SourceCollection $collection): array
+    public function compileSources(ConsumableNonce $nonce, SourceCollection $collection): array
     {
         $compiled = [];
         foreach ($collection->sources as $source) {
@@ -137,15 +136,12 @@ class ModelService
     }
 
     /**
-     * @param Nonce|null $nonce used to substitute `SourceKeyword::nonceProxy` items during compilation
+     * @param ConsumableNonce|null $nonce used to substitute `SourceKeyword::nonceProxy` items during compilation
      */
-    public function serializeSource(SourceInterface $source, Nonce $nonce = null): string
+    public function serializeSource(SourceInterface $source, ConsumableNonce $nonce = null): string
     {
-        if ($source instanceof Nonce) {
-            return "'nonce-" . $source->b64 . "'";
-        }
         if ($source === SourceKeyword::nonceProxy && $nonce !== null) {
-            return "'nonce-" . $nonce->b64 . "'";
+            return "'nonce-" . $nonce->value . "'";
         }
         if ($source instanceof SourceKeyword) {
             return "'" . $source->value . "'";

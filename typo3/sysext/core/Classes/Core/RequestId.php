@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Core;
 
-use TYPO3\CMS\Core\Security\Nonce;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 
 /**
  * @internal
@@ -27,14 +27,14 @@ final class RequestId
     public readonly string $long;
     public readonly string $short;
     public readonly int $microtime;
-    public readonly Nonce $nonce;
+    public readonly ConsumableNonce $nonce;
 
     public function __construct()
     {
         $this->long = bin2hex(random_bytes(20));
         $this->short = substr($this->long, 0, 13);
         $this->microtime = (int)(microtime(true) * 1000000);
-        $this->nonce = Nonce::create();
+        $this->nonce = new ConsumableNonce();
     }
 
     public function __toString(): string

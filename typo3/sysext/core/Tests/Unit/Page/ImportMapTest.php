@@ -18,11 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\Package\MetaData;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -69,7 +69,7 @@ final class ImportMapTest extends UnitTestCase
         $this->packages = ['core'];
 
         $importMap = new ImportMap($this->getPackages());
-        $output = $importMap->render('/', new ConsumableString('rAnd0m'));
+        $output = $importMap->render('/', new ConsumableNonce());
 
         self::assertSame('', $output);
     }
@@ -83,7 +83,7 @@ final class ImportMapTest extends UnitTestCase
 
         $importMap = new ImportMap($this->getPackages());
         $url = $importMap->resolveImport('lit');
-        $output = $importMap->render('/', new ConsumableString('rAnd0m'));
+        $output = $importMap->render('/', new ConsumableNonce());
 
         self::assertSame('', $output);
         self::assertNull($url);
@@ -111,7 +111,7 @@ final class ImportMapTest extends UnitTestCase
 
         $importMap = new ImportMap($this->getPackages());
         $url = $importMap->resolveImport('lit');
-        $output = $importMap->render('/', new ConsumableString('rAnd0m'));
+        $output = $importMap->render('/', new ConsumableNonce());
 
         self::assertStringStartsWith('Fixtures/ImportMap/core/Resources/Public/JavaScript/Contrib/lit/index.js?bust=', $url);
         self::assertStringContainsString('"lit/":"/Fixtures/ImportMap/core/Resources/Public/JavaScript/Contrib/lit/"', $output);
@@ -128,7 +128,7 @@ final class ImportMapTest extends UnitTestCase
 
         $importMap = new ImportMap($this->getPackages());
         $importMap->includeImportsFor('@typo3/core/Module1.js');
-        $output = $importMap->render('/', new ConsumableString('rAnd0m'));
+        $output = $importMap->render('/', new ConsumableNonce());
 
         self::assertStringContainsString('"@typo3/core/":"/Fixtures/ImportMap/core/Resources/Public/JavaScript/', $output);
         self::assertStringContainsString('"@typo3/core/Module1.js":"/Fixtures/ImportMap/core/Resources/Public/JavaScript/Module1.js?bust=', $output);
@@ -143,7 +143,7 @@ final class ImportMapTest extends UnitTestCase
 
         $importMap = new ImportMap($this->getPackages());
         $importMap->includeImportsFor('@typo3/core/Module1.js');
-        $output = $importMap->render('/', new ConsumableString('rAnd0m'));
+        $output = $importMap->render('/', new ConsumableNonce());
 
         self::assertStringContainsString('"@typo3/core/":"/Fixtures/ImportMap/core/Resources/Public/JavaScript/', $output);
         self::assertStringContainsString('"@typo3/core/Module1.js":"/Fixtures/ImportMap/core/Resources/Public/JavaScript/Module1.js?bust=', $output);
@@ -159,7 +159,7 @@ final class ImportMapTest extends UnitTestCase
 
         $importMap = new ImportMap($this->getPackages());
         $importMap->includeImportsFor('@typo3/package2/File.js');
-        $output = $importMap->render('/', new ConsumableString('rAnd0m'));
+        $output = $importMap->render('/', new ConsumableNonce());
 
         self::assertStringContainsString('"@typo3/package2/File.js":"/Fixtures/ImportMap/package3/Resources/Public/JavaScript/Overrides/Package2/File.js?bust=', $output);
         self::assertThat(
@@ -178,7 +178,7 @@ final class ImportMapTest extends UnitTestCase
         $this->packages = ['core', 'package2'];
         $importMap = new ImportMap($this->getPackages());
         $importMap->includeImportsFor('@typo3/package2/file.js');
-        $output = $importMap->render('/', new ConsumableString('rAnd0m'));
+        $output = $importMap->render('/', new ConsumableNonce());
 
         self::assertStringContainsString('@typo3/core/', $output);
     }
@@ -191,7 +191,7 @@ final class ImportMapTest extends UnitTestCase
         $this->packages = ['core', 'package2', 'package4'];
         $importMap = new ImportMap($this->getPackages());
         $importMap->includeImportsFor('@typo3/package2/file.js');
-        $output = $importMap->render('/', new ConsumableString('rAnd0m'));
+        $output = $importMap->render('/', new ConsumableNonce());
 
         self::assertThat(
             $output,
@@ -210,7 +210,7 @@ final class ImportMapTest extends UnitTestCase
         $importMap = new ImportMap($this->getPackages());
         $importMap->includeAllImports();
         $importMap->includeImportsFor('@typo3/package2/file.js');
-        $output = $importMap->render('/', new ConsumableString('rAnd0m'));
+        $output = $importMap->render('/', new ConsumableNonce());
 
         self::assertStringContainsString('@typo3/core/', $output);
         self::assertStringContainsString('@acme/package4/Backend/Helper.js', $output);

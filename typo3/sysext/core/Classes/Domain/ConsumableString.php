@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Core\Domain;
  * This can be used to make decisions during runtime, depending on whether
  * a provided value actually has been used (e.g. in rendered content).
  */
-final class ConsumableString implements \Countable, \Stringable
+class ConsumableString implements \Countable, \Stringable
 {
     /**
      * @internal use the `consume()` method instead

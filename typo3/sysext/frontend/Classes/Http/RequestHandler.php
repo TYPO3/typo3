@@ -22,7 +22,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Domain\ConsumableString;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Information\Typo3Information;
@@ -32,6 +31,7 @@ use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
@@ -116,7 +116,7 @@ class RequestHandler implements RequestHandlerInterface
         if ($controller->isGeneratePage()) {
             $this->timeTracker->push('Page generation');
 
-            // forward `ConsumableString` containing a nonce to `PageRenderer`
+            // forward `ConsumableNonce` containing a nonce to `PageRenderer`
             $nonce = $request->getAttribute('nonce');
             $this->getPageRenderer()->setNonce($nonce);
 
@@ -146,7 +146,7 @@ class RequestHandler implements RequestHandlerInterface
             // already - this is due to the fact that the `PageRenderer` state has been serialized
             // before and note executed via `$pageRenderer->render()` and did not consume any nonce values
             // (see serialization in `generatePageContent()`).
-            if ($nonce instanceof ConsumableString && (count($nonce) > 0 || $controller->isINTincScript())) {
+            if ($nonce instanceof ConsumableNonce && (count($nonce) > 0 || $controller->isINTincScript())) {
                 // nonce was consumed
                 $controller->config['INTincScript'][] = [
                     'target' => NonceValueSubstitution::class . '->substituteNonce',

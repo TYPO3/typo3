@@ -45,6 +45,6 @@ final class NonceViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
-        return $this->requestId->nonce->b64;
+        return $this->requestId->nonce->consume();
     }
 }
