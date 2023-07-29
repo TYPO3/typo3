@@ -39,25 +39,33 @@ abstract class AbstractFile implements FileInterface
 
     /**
      * The storage this file is located in
+     *
+     * @var ResourceStorage|null
      */
-    protected ?ResourceStorage $storage = null;
+    protected $storage;
 
     /**
      * The identifier of this file to identify it on the storage.
      * On some drivers, this is the path to the file, but drivers could also just
      * provide any other unique identifier for this file on the specific storage.
+     *
+     * @var string
      */
-    protected ?string $identifier = null;
+    protected $identifier;
 
     /**
      * The file name of this file
+     *
+     * @var string
      */
-    protected ?string $name = null;
+    protected $name;
 
     /**
      * If set to true, this file is regarded as being deleted.
+     *
+     * @var bool
      */
-    protected bool $deleted = false;
+    protected $deleted = false;
 
     /**
      * any other file
@@ -125,7 +133,7 @@ abstract class AbstractFile implements FileInterface
      *
      * @return array<non-empty-string, mixed>
      */
-    public function getProperties(): array
+    public function getProperties()
     {
         return $this->properties;
     }
@@ -178,8 +186,10 @@ abstract class AbstractFile implements FileInterface
 
     /**
      * Returns the uid of this file
+     *
+     * @return int
      */
-    public function getUid(): int
+    public function getUid()
     {
         return (int)$this->getProperty('uid');
     }
@@ -229,7 +239,11 @@ abstract class AbstractFile implements FileInterface
      */
     public function getExtension(): string
     {
-        return strtolower(PathUtility::pathinfo($this->getName(), PATHINFO_EXTENSION));
+        $pathinfo = PathUtility::pathinfo($this->getName());
+
+        $extension = strtolower($pathinfo['extension'] ?? '');
+
+        return $extension;
     }
 
     /**
@@ -257,31 +271,39 @@ abstract class AbstractFile implements FileInterface
      * "other"
      * see the constants in this class
      *
-     * @phpstan-return self::FILETYPE_*
+     * @return int $fileType
      */
-    public function getType(): int
-    {
-        return (int)$this->properties['type'] ??= $this->evaluateType();
-    }
-
-    /**
-     * @phpstan-return self::FILETYPE_*
-     */
-    private function evaluateType(): int
+    public function getType()
     {
         // this basically extracts the mimetype and guess the filetype based
         // on the first part of the mimetype works for 99% of all cases, and
         // we don't need to make an SQL statement like EXT:media does currently
-        $mimeType = $this->getMimeType();
-        [$fileType] = explode('/', $mimeType);
-        return match (strtolower($fileType)) {
-            'text' => self::FILETYPE_TEXT,
-            'image' => self::FILETYPE_IMAGE,
-            'audio' => self::FILETYPE_AUDIO,
-            'video' => self::FILETYPE_VIDEO,
-            'application', 'software' => self::FILETYPE_APPLICATION,
-            default => self::FILETYPE_UNKNOWN,
-        };
+        if (!($this->properties['type'] ?? false)) {
+            $mimeType = $this->getMimeType();
+            [$fileType] = explode('/', $mimeType);
+            switch (strtolower($fileType)) {
+                case 'text':
+                    $this->properties['type'] = self::FILETYPE_TEXT;
+                    break;
+                case 'image':
+                    $this->properties['type'] = self::FILETYPE_IMAGE;
+                    break;
+                case 'audio':
+                    $this->properties['type'] = self::FILETYPE_AUDIO;
+                    break;
+                case 'video':
+                    $this->properties['type'] = self::FILETYPE_VIDEO;
+                    break;
+                case 'application':
+
+                case 'software':
+                    $this->properties['type'] = self::FILETYPE_APPLICATION;
+                    break;
+                default:
+                    $this->properties['type'] = self::FILETYPE_UNKNOWN;
+            }
+        }
+        return (int)$this->properties['type'];
     }
 
     /**
@@ -364,7 +386,7 @@ abstract class AbstractFile implements FileInterface
      *
      * @return bool TRUE if this file physically exists
      */
-    public function exists(): bool
+    public function exists()
     {
         if ($this->deleted) {
             return false;
@@ -379,7 +401,7 @@ abstract class AbstractFile implements FileInterface
      * @internal Should only be used by other parts of the File API (e.g. drivers after moving a file)
      * @return $this
      */
-    public function setStorage(ResourceStorage $storage): self
+    public function setStorage(ResourceStorage $storage)
     {
         $this->storage = $storage;
         $this->properties['storage'] = $storage->getUid();
@@ -393,7 +415,7 @@ abstract class AbstractFile implements FileInterface
      * @param string $identifier
      * @return $this
      */
-    public function setIdentifier(string $identifier): self
+    public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
         return $this;
@@ -405,7 +427,7 @@ abstract class AbstractFile implements FileInterface
      *
      * @return string Combined storage and file identifier, e.g. StorageUID:path/and/fileName.png
      */
-    public function getCombinedIdentifier(): string
+    public function getCombinedIdentifier()
     {
         if (!empty($this->properties['storage']) && MathUtility::canBeInterpretedAsInteger($this->properties['storage'])) {
             $combinedIdentifier = $this->properties['storage'] . ':' . $this->getIdentifier();
@@ -436,15 +458,17 @@ abstract class AbstractFile implements FileInterface
      * Marks this file as deleted. This should only be used inside the
      * File Abstraction Layer, as it is a low-level API method.
      */
-    public function setDeleted(): void
+    public function setDeleted()
     {
         $this->deleted = true;
     }
 
     /**
      * Returns TRUE if this file has been deleted
+     *
+     * @return bool
      */
-    public function isDeleted(): bool
+    public function isDeleted()
     {
         return $this->deleted;
     }
@@ -467,13 +491,13 @@ abstract class AbstractFile implements FileInterface
      * Copies this file into a target folder
      *
      * @param Folder $targetFolder Folder to copy file into.
-     * @param string|null $targetFileName an optional destination fileName
+     * @param string $targetFileName an optional destination fileName
      * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
      *
      * @throws \RuntimeException
-     * @return FileInterface The new (copied) file.
+     * @return File The new (copied) file.
      */
-    public function copyTo(Folder $targetFolder, ?string $targetFileName = null, string $conflictMode = DuplicationBehavior::RENAME): FileInterface
+    public function copyTo(Folder $targetFolder, $targetFileName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
         if ($this->deleted) {
             throw new \RuntimeException('File has been deleted.', 1329821483);
@@ -485,13 +509,13 @@ abstract class AbstractFile implements FileInterface
      * Moves the file into the target folder
      *
      * @param Folder $targetFolder Folder to move file into.
-     * @param string|null $targetFileName an optional destination fileName
+     * @param string $targetFileName an optional destination fileName
      * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
      *
      * @throws \RuntimeException
-     * @return $this This file object, with updated properties.
+     * @return File This file object, with updated properties.
      */
-    public function moveTo(Folder $targetFolder, ?string $targetFileName = null, string $conflictMode = DuplicationBehavior::RENAME): self
+    public function moveTo(Folder $targetFolder, $targetFileName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
         if ($this->deleted) {
             throw new \RuntimeException('File has been deleted.', 1329821484);
@@ -544,7 +568,7 @@ abstract class AbstractFile implements FileInterface
      * This method is used to reconstitute settings from the
      * database into this object after being instantiated.
      */
-    abstract public function updateProperties(array $properties): void;
+    abstract public function updateProperties(array $properties);
 
     public function getParentFolder(): FolderInterface
     {

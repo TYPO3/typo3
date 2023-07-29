@@ -816,7 +816,12 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Page/PageRenderer.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\:\\:getType\\(\\) should return 0\\|1\\|2\\|3\\|4\\|5 but returns int\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\:\\:copyTo\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\:\\:moveTo\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
 
@@ -946,13 +951,8 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
 
 		-
-			message: "#^Parameter \\#1 \\$fileObject of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Index\\\\Indexer\\:\\:updateIndexEntry\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File, T of TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
 			message: "#^Parameter \\#1 \\$fileObject of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Index\\\\Indexer\\:\\:updateIndexEntry\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface given\\.$#"
-			count: 1
+			count: 2
 			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
 
 		-

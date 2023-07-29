@@ -278,7 +278,7 @@ class ProcessedFile extends AbstractFile
      *
      * @return bool TRUE if this file physically exists
      */
-    public function exists(): bool
+    public function exists()
     {
         if ($this->usesOriginalFile()) {
             return $this->originalFile->exists();
@@ -346,8 +346,12 @@ class ProcessedFile extends AbstractFile
      * Updates properties of this object. Do not use this to reconstitute an object from the database; use
      * reconstituteFromDatabaseRecord() instead!
      */
-    public function updateProperties(array $properties): void
+    public function updateProperties(array $properties)
     {
+        if (!is_array($this->properties)) {
+            $this->properties = [];
+        }
+
         if (array_key_exists('uid', $properties) && MathUtility::canBeInterpretedAsInteger($properties['uid'])) {
             $this->properties['uid'] = $properties['uid'];
         }
@@ -480,8 +484,10 @@ class ProcessedFile extends AbstractFile
 
     /**
      * Returns the uid of this file
+     *
+     * @return int
      */
-    public function getUid(): int
+    public function getUid()
     {
         return $this->properties['uid'] ?? 0;
     }

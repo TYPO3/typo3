@@ -1930,10 +1930,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::func_move()
      *
-     * @template T of FileInterface
-     * @phpstan-param T $file
-     * @phpstan-return T
-     *
      * @param FileInterface $file
      * @param Folder $targetFolder
      * @param string $targetFileName an optional destination fileName

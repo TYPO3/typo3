@@ -154,7 +154,7 @@ class File extends AbstractFile
      * @param array $properties
      * @internal
      */
-    public function updateProperties(array $properties): void
+    public function updateProperties(array $properties)
     {
         // Setting identifier and name to update values; we have to do this
         // here because we might need a new identifier when loading
