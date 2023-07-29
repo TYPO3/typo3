@@ -2,11 +2,11 @@
 
 .. _breaking-101305-1689059968:
 
-==================================================================================
-Breaking: #101305 - Introduce type declarations for some methods in GeneralUtility
-==================================================================================
+================================================================================================
+Breaking: #101305 - Introduce type declarations for networking-related methods in GeneralUtility
+================================================================================================
 
-See :issue:`101305`, :issue:`101453`
+See :issue:`101305`
 
 Description
 ===========
@@ -18,17 +18,12 @@ methods of :php:`\TYPO3\CMS\Core\Utility\GeneralUtility`:
 - :php:`cmpIP`
 - :php:`cmpIPv4`
 - :php:`cmpIPv6`
-- :php:`explodeUrl2Array`
 - :php:`getUrl`
-- :php:`implodeArrayForUrl`
-- :php:`intExplode`
 - :php:`isOnCurrentHost`
 - :php:`isValidUrl`
 - :php:`locationHeaderUrl`
 - :php:`normalizeIPv6`
-- :php:`revExplode`
 - :php:`sanitizeLocalUrl`
-- :php:`trimExplode`
 - :php:`validEmail`
 - :php:`validIP`
 - :php:`validIPv4`
