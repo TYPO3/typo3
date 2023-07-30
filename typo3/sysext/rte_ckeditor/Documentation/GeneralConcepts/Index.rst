@@ -7,23 +7,18 @@
 General Concepts
 ================
 
-Editing Modes
-=============
+User interfaces
+===============
 
-CKEditor has three editing modes:
+CKEditor has multiple user interfaces, of which TYPO3 uses the following:
 
-Article Editor mode (classic RTE)
+Classic
    Editing is done within a fixed container.
    It is possible to customize how the editor behaves and how the content is styled.
 
    Used in the TYPO3 Backend.
 
-Document Editor mode
-   Editing is done as in Microsoft Word or Google Docs,
-   where the document itself mimics a sheet of paper.
-   The focus is on structuring content and not mainly on the layout itself.
-
-Inline Editor mode
+Inline
    All formatting styles are reused from the surrounding HTML and CSS styles,
    allowing for a seamless frontend editing.
 
@@ -31,5 +26,5 @@ Inline Editor mode
    which can be found on `GitHub <https://github.com/FriendsOfTYPO3/frontend_editing>`__.
    frontend_editing is not covered in this document.
 
-For a demonstration of all three modes,
-see the `CKEditor demo <https://ckeditor.com/ckeditor-4/demo/#article>`__.
+For a demonstration of all user interfaces,
+see the `CKEditor demo <https://ckeditor.com/ckeditor-5/demo/editor-types/>`__.
