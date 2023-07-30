@@ -28,11 +28,10 @@ custom actions.
 Example
 -------
 
-..  warning::
-    Some code in this example is experimental API and may change until TYPO3 v12 LTS.
-
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Search/EventListener/AddLiveSearchResultActionsListener.php
+
+    <?php
 
     namespace MyVendor\MyExtension\Search\EventListener;
 
@@ -84,9 +83,8 @@ Example
     :caption: EXT:my_extension/Configuration/Services.yaml
 
     MyVendor\MyExtension\Search\EventListener\AddLiveSearchResultActionsListener:
-    tags:
-      -
-        name: event.listener
-        identifier: 'my-extension/add-live-search-result-actions-listener'
+      tags:
+        - name: event.listener
+          identifier: 'site/add-live-search-result-actions-listener'
 
 .. index:: Backend, ext:backend
