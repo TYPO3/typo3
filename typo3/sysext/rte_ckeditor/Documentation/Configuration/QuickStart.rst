@@ -56,29 +56,23 @@ We explain the example :file:`Minimal.yaml` from the Core:
 
    # Load default processing options
    imports:
-       - { resource: "EXT:rte_ckeditor/Configuration/RTE/Processing.yaml" }
-       - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml" }
+       - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Processing.yaml' }
+       - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml' }
 
    # Minimal configuration for the editor
    editor:
      config:
-       toolbarGroups:
-         - { name: basicstyles, groups: [ basicstyles] }
-         - { name: clipboard, groups: [clipboard, undo] }
-       removeButtons:
-         - Anchor
-         - Superscript
-         - Subscript
-         - Underline
-         - Strike
+       toolbar:
+         items:
+           - bold
+           - italic
+           - '|'
+           - clipboard
+           - undo
+           - redo
 
 line #2
    Imports existing files to make basic parts reusable and improve structure of configuration
 
-line #9 toolbarGroups
-   See `toolbarGroups <https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-toolbarGroups>`__
-   and `Understanding CKEditor Toolbar Concepts <https://ckeditor.com/docs/ckeditor4/latest/guide/dev_toolbarconcepts.html>`__
-
-line #12 removeButtons
-   This deactivates default buttons rendered in the toolbar,
-   see `removeButtons <https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-removeButtons>`__
+line #9 toolbar
+   See `toolbar <https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html>`__

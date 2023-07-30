@@ -6,13 +6,7 @@
 Configuration Examples
 ======================
 
-.. tip::
-
-   Use the CKEditor `Toolbar Configurator
-   <https://ckeditor.com/latest/samples/toolbarconfigurator/index.html#basic>`__
-   to assist you in creating your custom configuration.
-
-How Do I Use a Different Preset?
+How do I use a different preset?
 ================================
 
 Instead of using the default "default" preset, you can change this, for example
@@ -43,7 +37,7 @@ with ctype="text":
 For more examples, see :ref:`t3tsconfig:pageTsRte` in "TSconfig Reference".
 
 
-How Do I Create My Own Preset?
+How do I create my own preset?
 ==============================
 
 In your sitepackage extension:
@@ -70,109 +64,155 @@ In :file:`Configuration/RTE/MyPreset.yaml`, create your configuration, for examp
        contentsCss:
          - "EXT:my_extension/Resources/Public/Css/rte.css"
 
-How Do I Customize the Toolbar?
+How do I customize the toolbar?
 ===============================
 
-Since CKEditor 4, there are 2 ways to customize the toolbar buttons:
+The toolbar can be customized individually by configuring required toolbar
+items in the YAML configuration. The following configuration shows the toolbar
+configuration of the minimal editor setup included in file
+:file:`EXT:rte_ckeditor/Configuration/RTE/Minimal.yaml`:
 
-Using `editor.config.toolbar <https://ckeditor.com/docs/ckeditor4/latest/guide/dev_toolbarconcepts.html#item-by-item-configuration>`_
-   This has the advantage,
-   that each button is configured individually
-   and it gives you more control over what is displayed in the toolbar.
+.. code-block:: yaml
 
-Using `editor.config.toolbarGroups <https://ckeditor.com/docs/ckeditor4/latest/guide/dev_toolbarconcepts.html#toolbar-groups-configuration>`__
-   This has the advantage,
-   that new buttons that have been added by plugins will automatically appear.
+   # Minimal configuration for the editor
+   editor:
+     config:
+       toolbar:
+         items:
+           - bold
+           - italic
+           - '|'
+           - clipboard
+           - undo
+           - redo
 
-This is explained in the
-`Toolbar documentation <https://ckeditor.com/latest/samples/old/toolbar/toolbar.html>`__
+The :yaml:`'|'` can be used as a separator between groups of toolbar items.
 
-.. _config-example-toolbargroup:
+Additional configuration options are available in the official CKEditor 5
+`Toolbar documentation <https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html>`__
 
-Configuration Using the toolbarGroups Method
---------------------------------------------
+.. _config-example-toolbargrouping:
 
-Each button is in a specific toolbarGroup. You can configure various toolbars, containing
-one or more toolbarGroups.
+Grouping toolbar items in drop-downs
+------------------------------------
 
-Example::
+To save space in the toolbar or to arrange the features thematically, it is
+possible to group several items into a dropdown as shown in the following
+example:
 
-   toolbarGroups:
-     - { name: clipboard, groups: [ clipboard, cleanup, undo ] }
+.. code-block:: yaml
 
-In the example, the toolbar "clipboard" will contain the toolbarGroups "clipboard", "cleanup" and
-"undo" and all buttons which are assigned to these groups will be displayed in the toolbar
-in the defined order.
-
-To find out which buttons exist and which are in which toolbar group, you can
-go to the `toolbar configurator <https://ckeditor.com/latest/samples/toolbarconfigurator/index.html#basic>`__.
-
-While you hover over the various toolbars, a selection box corresponding to the toolbar
-will be displayed in the sample toolbar at the top.
-
-.. image:: images/toolbargroups.png
-   :class: with-shadow
-
-When you are ready, click :guilabel:`"Get toolbar config"` to see the configuration.
-
-How do I add Custom Plugins?
-============================
-
-See `EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml
-<https://github.com/typo3/typo3/blob/main/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml>`__
-for a list of plugins, that are already integrated in `rte_ckeditor`. Besides this, the wordcount plugin was added as
-npm package. You can find it within :file:`typo3/sysext/rte_ckeditor/Resources/Public/JavaScript/Contrib/plugins/wordcount/`.
-
-Additionally, a large number of `plugins <https://ckeditor.com/cke4/addons/plugins/all>`__
-are available and can be freely used.
+   # Minimal configuration for the editor
+   editor:
+     config:
+       toolbar:
+         items:
+           - bold
+           - italic
+           - { label: 'Additional', icon: 'threeVerticalDots', items: [ 'specialCharacters', 'horizontalLine' ] }
 
 
-In this example, we integrate the plugin `codesnippet <https://ckeditor.com/cke4/addon/codesnippet>`__.
+.. _config-example-customplugin:
+
+How do I create a custom plugin?
+================================
+
+With CKEditor 5 the plugin architecture has changed and CKEditor 4 plugins
+are not compatible with CKEditor 5. It is advised to read the
+`CKEditor 4 to 5 migration <https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/migration-from-ckeditor-4.html#plugins>`__
+to understand the conceptual changes, also related to plugins.
+
+Writing a custom plugin for CKEditor 5 can be done in TypeScript or JavaScript,
+using the `CKEditor5 plugin system <https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/plugins.html>`__.
+
+In this example, we integrate a simple timestamp plugin to CKEditor 5.
+Make sure to replace `<my_extension>` with your extension key.
 
 .. rst-class:: bignums
 
-1. Go to the start page of the plugin
+1. Create the file :file:`<my_extension>/Resources/Public/JavaScript/Ckeditor/timestamp-plugin.js`
+   and add the following ES6 JavaScript code:
 
-   For example: `codesnippet <https://ckeditor.com/cke4/addon/codesnippet>`__.
+   .. code-block:: javascript
 
-2. Click :guilabel:`Download`
+      import {Core, UI} from '@typo3/ckeditor5-bundle.js';
 
-3. Unzip the plugin zip archive,
+      export default class Timestamp extends Core.Plugin {
+        static pluginName = 'Timestamp';
 
-   For example extract the files to the directory
-   :file:`my_extension/Resources/Public/CKeditor/Plugins/codesnippet/`
+        init() {
+          const editor = this.editor;
 
-4. Include the path to the plugin in your Yaml configuration, for example:
+          // The button must be registered among the UI components of the editor
+          // to be displayed in the toolbar.
+          editor.ui.componentFactory.add(Timestamp.pluginName, () => {
+            // The button will be an instance of ButtonView.
+            const button = new UI.ButtonView();
 
-   :file:`EXT:my_extension/Configuration/RTE/MyPreset.yaml`::
+            button.set( {
+              label: 'Timestamp',
+              withText: true
+            } );
 
-       editor:
-          externalPlugins:
-              codesnippet:
-                  resource: "EXT:my_extension/Resources/Public/CKeditor/Plugins/codesnippet/"
+            //Execute a callback function when the button is clicked
+            button.on('execute', () => {
+              const now = new Date();
 
-   Each CKEditor plugin must have a javascript file called :file:`plugin.js` per convention.
-   If this is not the case, you must reference the whole path including the javascript file.
+              //Change the model using the model writer
+              editor.model.change(writer => {
 
-5. Configure
+                //Insert the text at the user's current position
+                editor.model.insertContent(writer.createText( now.toString()));
+              });
+            });
 
-   Check if further configuration is necessary, by looking in the plugin documentation
+            return button;
+          });
+        }
+      }
 
-   .. todo: link to an example configuration of a CKEditor plugin (example config e.g. of "wordcount" plugin)
+2. Register the ES6 JavaScript in :file:`EXT:<my_extension>/Configuration/JavaScriptModules.php`
 
-6. Make sure the new button is visible in the toolbar
+   .. code-block:: php
 
-   Now, remove cache and reopen a text element, look for the new button
-   "Insert Code Snippet".
+      <?php
 
-   If the button is not displayed, it is possible, that the toolbarGroup has not
-   been activated. Search for "toolbar" in the plugin to find out which toolbarGroup
-   is being used, in the case of the plugin "codesnippet", it is the toolbarGroup
-   "insert". This should be activated by default.
+      return [
+          'dependencies' => ['backend'],
+          'tags' => [
+              'backend.form',
+          ],
+          'imports' => [
+              '@myvendor/mypackage/timestamp-plugin.js' => 'EXT:<my_extension>/Resources/Public/JavaScript/Ckeditor/timestamp-plugin.js',
+          ],
+      ];
 
-7. Use the plugin
+3. Include the plugin in the CKEditor configuration
 
-   .. image:: images/codesnippet.png
+   .. code-block:: yaml
+      :linenos:
+
+      editor:
+        config:
+          importModules:
+            - '@myvender/mypackage/timestamp-plugin.js'
+          toolbar:
+            items:
+              - bold
+              - italic
+              - '|'
+              - clipboard
+              - undo
+              - redo
+              - '|'
+              - timestamp
+
+   The :yaml:`importModules` item in line 4 imports the previously registered ES6
+   module. The :yaml:`timestamp` item in line 14 adds the plugin to the toolbar.
+
+4. Use the plugin
+
+   .. image:: images/timestamp-plugin.png
       :class: with-shadow
 
 

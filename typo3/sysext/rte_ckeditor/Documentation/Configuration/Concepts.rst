@@ -129,7 +129,7 @@ for the sys_news database table, which can be found in
 .. code-block:: php
 
    'content' => [
-      'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.text',
+      'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.text',
       'config' => [
          'type' => 'text',
          'cols' => 48,
@@ -155,6 +155,7 @@ The option :typoscript:`RTE.default.preset = news` can also be set on a per-fiel
 and per-type basis:
 
 .. code-block:: typoscript
+   :linenos:
 
    # per-field
    RTE.config.tt_content.bodytext.preset = minimal
