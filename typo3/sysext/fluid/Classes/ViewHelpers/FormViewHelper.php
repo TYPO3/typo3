@@ -208,10 +208,10 @@ class FormViewHelper extends AbstractFormViewHelper
             $uriBuilder = $this->renderingContext->getUriBuilder();
             $uriBuilder
                 ->reset()
-                ->setTargetPageType($this->arguments['pageType'] ?? 0)
-                ->setNoCache($this->arguments['noCache'] ?? false)
+                ->setTargetPageType((int)($this->arguments['pageType'] ?? 0))
+                ->setNoCache((bool)($this->arguments['noCache'] ?? false))
                 ->setSection($this->arguments['section'] ?? '')
-                ->setCreateAbsoluteUri($this->arguments['absolute'] ?? false)
+                ->setCreateAbsoluteUri((bool)($this->arguments['absolute'] ?? false))
                 ->setArguments(isset($this->arguments['additionalParams']) ? (array)$this->arguments['additionalParams'] : [])
                 ->setAddQueryString($this->arguments['addQueryString'] ?? false)
                 ->setArgumentsToBeExcludedFromQueryString(isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [])
