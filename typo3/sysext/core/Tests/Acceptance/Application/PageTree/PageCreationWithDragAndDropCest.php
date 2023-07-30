@@ -41,11 +41,11 @@ final class PageCreationWithDragAndDropCest
         $this->pageTree = $pageTree;
         $I->useExistingSession('admin');
         $I->click('List');
-        $I->waitForElement(static::$treeNode, 5);
-        $I->waitForElement(static::$dragNode, 5);
+        $I->waitForElement(static::$treeNode);
+        $I->waitForElement(static::$dragNode);
         $this->pageTree->openPath(['styleguide TCA demo']);
         // Wait until DOM actually rendered everything
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
     }
 
     /**
@@ -73,9 +73,10 @@ final class PageCreationWithDragAndDropCest
     {
         $mouse->dragAndDrop(static::$dragNode, $this->pageTree->getPageXPathByPageName('elements basic'));
 
+        $I->waitForElementVisible(static::$nodeEditInput);
         $I->seeElement(static::$nodeEditInput);
         $I->pressKey(static::$nodeEditInput, WebDriverKeys::ESCAPE);
-        $I->waitForElementNotVisible(static::$nodeEditInput, 5);
+        $I->waitForElementNotVisible(static::$nodeEditInput);
     }
 
     /**
@@ -85,6 +86,7 @@ final class PageCreationWithDragAndDropCest
     {
         $mouse->dragAndDrop(static::$dragNode, $this->pageTree->getPageXPathByPageName('staticdata'));
 
+        $I->waitForElementVisible(static::$nodeEditInput);
         $I->seeElement(static::$nodeEditInput);
 
         // We can't use $I->fillField() here since this sends a clear() to the element
@@ -96,6 +98,6 @@ final class PageCreationWithDragAndDropCest
         $element->sendKeys('');
 
         $I->pressKey(static::$nodeEditInput, WebDriverKeys::ENTER);
-        $I->waitForElementNotVisible(static::$nodeEditInput, 5);
+        $I->waitForElementNotVisible(static::$nodeEditInput);
     }
 }
