@@ -44,7 +44,11 @@ class PageTreeFilterCest
      */
     public function filterTreeForPage(ApplicationTester $I): void
     {
+        // Filling the field seems racy - sometimes it is not set? We'll wait for two
+        // seconds before and after to see if this improves things for now.
+        $I->wait(2);
         $I->fillField($this->filterInputField, 'Group');
+        $I->wait(2);
         $this->waitForPageTreeLoad($I);
         // [#91884] no Enter key press on purpose. The search should start by itself without additional Enter key press
         // and this assertion makes sure the filter worked
