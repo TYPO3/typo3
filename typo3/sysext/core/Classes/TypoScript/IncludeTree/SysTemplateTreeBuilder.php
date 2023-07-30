@@ -371,7 +371,7 @@ final class SysTemplateTreeBuilder
                     $node = $this->cache->require($identifier);
                     if ($node) {
                         $parentNode->addChild($node);
-                        return;
+                        continue;
                     }
                 }
                 $fileContent = file_get_contents($file);
