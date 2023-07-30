@@ -36,6 +36,7 @@ final class SitemapXmlCest
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
         $I->waitForElementNotVisible('#nprogress');
+        $I->waitForElementVisible('.module-docheader-bar-column-left a:first-child');
         $dataDispatchArgs = $I->grabAttributeFrom('.module-docheader-bar-column-left a:first-child', 'data-dispatch-args');
         $url = json_decode($dataDispatchArgs, false, 512, JSON_THROW_ON_ERROR);
         // Add Sitemap parameter to URL

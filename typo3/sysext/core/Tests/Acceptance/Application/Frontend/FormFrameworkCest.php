@@ -38,6 +38,7 @@ final class FormFrameworkCest
         $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
+        $I->waitForElementVisible('.t3js-module-docheader-bar a[title="View webpage"]');
         $I->click('.t3js-module-docheader-bar a[title="View webpage"]');
         $I->executeInSelenium(static function (RemoteWebDriver $webdriver) {
             $handles = $webdriver->getWindowHandles();
