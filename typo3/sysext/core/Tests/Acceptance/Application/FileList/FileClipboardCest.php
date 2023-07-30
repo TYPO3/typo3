@@ -42,10 +42,14 @@ class FileClipboardCest extends AbstractFileCest
      */
     public function seeSwitchModes(ApplicationTester $I): void
     {
+        $I->waitForElementVisible($this->copyModeMove);
         $I->seeCheckboxIsChecked($this->copyModeMove);
+        $I->waitForElementVisible($this->copyModeCopy);
         $I->dontSeeCheckboxIsChecked($this->copyModeCopy);
         $I->click('//*/label[@for="clipboard-copymode-copy"]');
+        $I->waitForElementVisible($this->copyModeMove);
         $I->dontSeeCheckboxIsChecked($this->copyModeMove);
+        $I->waitForElementVisible($this->copyModeCopy);
         $I->seeCheckboxIsChecked($this->copyModeCopy);
     }
 
