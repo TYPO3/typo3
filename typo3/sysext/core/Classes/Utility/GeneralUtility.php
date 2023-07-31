@@ -2399,12 +2399,11 @@ class GeneralUtility
      * the TYPO3's base folder and implies a check with
      * \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr().
      *
-     * @param string $filename The input filename/filepath to evaluate
+     * @param string $fileName The input filename/filepath to evaluate
      * @return string Returns the absolute filename of $filename if valid, otherwise blank string.
      */
-    public static function getFileAbsFileName($filename)
+    public static function getFileAbsFileName(string $fileName): string
     {
-        $fileName = (string)$filename;
         if ($fileName === '') {
             return '';
         }
@@ -2455,9 +2454,8 @@ class GeneralUtility
      * Returns TRUE if the path is absolute, without backpath '..' and within TYPO3s project or public folder OR within the lockRootPath
      *
      * @param string $path File path to evaluate
-     * @return bool
      */
-    public static function isAllowedAbsPath($path)
+    public static function isAllowedAbsPath(string $path): bool
     {
         if (substr($path, 0, 6) === 'vfs://') {
             return true;
@@ -2477,7 +2475,7 @@ class GeneralUtility
      * @param string $source Path to source directory, relative to document root or absolute
      * @param string $destination Path to destination directory, relative to document root or absolute
      */
-    public static function copyDirectory($source, $destination)
+    public static function copyDirectory(string $source, string $destination): void
     {
         if (!str_contains($source, Environment::getProjectPath() . '/')) {
             $source = Environment::getPublicPath() . '/' . $source;
@@ -2552,7 +2550,7 @@ class GeneralUtility
      * @return bool Returns TRUE if the file was moved.
      * @see upload_to_tempfile()
      */
-    public static function upload_copy_move($source, $destination)
+    public static function upload_copy_move(string $source, string $destination): bool
     {
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Utility\GeneralUtility::class]['moveUploadedFile'] ?? null)) {
             $params = ['source' => $source, 'destination' => $destination, 'method' => 'upload_copy_move'];
@@ -2587,7 +2585,7 @@ class GeneralUtility
      * @see unlink_tempfile()
      * @see upload_copy_move()
      */
-    public static function upload_to_tempfile($uploadedFileName)
+    public static function upload_to_tempfile(string $uploadedFileName): string
     {
         if (is_uploaded_file($uploadedFileName)) {
             $tempFile = self::tempnam('upload_temp_');
@@ -2616,7 +2614,7 @@ class GeneralUtility
      * @see upload_to_tempfile()
      * @see tempnam()
      */
-    public static function unlink_tempfile($uploadedTempFileName)
+    public static function unlink_tempfile(string $uploadedTempFileName): ?bool
     {
         if ($uploadedTempFileName) {
             $uploadedTempFileName = self::fixWindowsFilePath((string)$uploadedTempFileName);
@@ -2648,7 +2646,7 @@ class GeneralUtility
      * @see unlink_tempfile()
      * @see upload_to_tempfile()
      */
-    public static function tempnam($filePrefix, $fileSuffix = '')
+    public static function tempnam(string $filePrefix, string $fileSuffix = ''): string
     {
         $temporaryPath = Environment::getVarPath() . '/transient/';
         if (!is_dir($temporaryPath)) {
@@ -2677,7 +2675,7 @@ class GeneralUtility
      * @return mixed Content from method/function call
      * @throws \InvalidArgumentException
      */
-    public static function callUserFunction($funcName, &$params, ?object $ref = null)
+    public static function callUserFunction(string|\Closure $funcName, mixed &$params, ?object $ref = null): mixed
     {
         // Check if we're using a closure and invoke it directly.
         if (is_object($funcName) && is_a($funcName, \Closure::class)) {
@@ -2804,11 +2802,11 @@ class GeneralUtility
      *
      * @template T of object
      * @param class-string<T> $className name of the class to instantiate
-     * @param array<int, mixed> $constructorArguments Arguments for the constructor
+     * @param mixed ...$constructorArguments Arguments for the constructor
      * @return T the created instance
      * @internal
      */
-    public static function makeInstanceForDi(string $className, ...$constructorArguments): object
+    public static function makeInstanceForDi(string $className, mixed ...$constructorArguments): object
     {
         $finalClassName = static::$finalClassNameCache[$className] ?? static::$finalClassNameCache[$className] = self::getClassName($className);
 
@@ -2829,7 +2827,7 @@ class GeneralUtility
      * @internal This is not a public API method, do not use in own extensions.
      *           Public to be accessible by extbase hydration.
      */
-    public static function getClassName($className)
+    public static function getClassName(string $className): string
     {
         if (class_exists($className)) {
             while (static::classHasImplementation($className)) {
@@ -2845,7 +2843,7 @@ class GeneralUtility
      * @param class-string $className
      * @return class-string
      */
-    protected static function getImplementationForClass($className)
+    protected static function getImplementationForClass(string $className): string
     {
         return $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className]['className'];
     }
@@ -2854,9 +2852,8 @@ class GeneralUtility
      * Checks if a class has a configured implementation
      *
      * @param class-string $className
-     * @return bool
      */
-    protected static function classHasImplementation($className)
+    protected static function classHasImplementation(string $className): bool
     {
         return !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className]['className']);
     }
@@ -2877,7 +2874,7 @@ class GeneralUtility
      * @param class-string $className
      * @internal
      */
-    public static function setSingletonInstance($className, SingletonInterface $instance)
+    public static function setSingletonInstance(string $className, SingletonInterface $instance): void
     {
         self::checkInstanceClassName($className, $instance);
         // Check for XCLASS registration (same is done in makeInstance() in order to store the singleton of the final class name)
@@ -2899,7 +2896,7 @@ class GeneralUtility
      * @throws \InvalidArgumentException
      * @internal
      */
-    public static function removeSingletonInstance($className, SingletonInterface $instance)
+    public static function removeSingletonInstance(string $className, SingletonInterface $instance): void
     {
         self::checkInstanceClassName($className, $instance);
         if (!isset(self::$singletonInstances[$className])) {
@@ -2924,7 +2921,7 @@ class GeneralUtility
      * @internal
      * @param array<class-string, SingletonInterface> $newSingletonInstances
      */
-    public static function resetSingletonInstances(array $newSingletonInstances)
+    public static function resetSingletonInstances(array $newSingletonInstances): void
     {
         static::$singletonInstances = [];
         foreach ($newSingletonInstances as $className => $instance) {
@@ -2944,7 +2941,7 @@ class GeneralUtility
      * @internal
      * @return array<class-string, SingletonInterface>
      */
-    public static function getSingletonInstances()
+    public static function getSingletonInstances(): array
     {
         return static::$singletonInstances;
     }
@@ -2960,7 +2957,7 @@ class GeneralUtility
      * @internal
      * @return array<class-string, array<object>>
      */
-    public static function getInstances()
+    public static function getInstances(): array
     {
         return static::$nonSingletonInstances;
     }
@@ -2976,10 +2973,9 @@ class GeneralUtility
      *
      * @see makeInstance
      * @param class-string $className
-     * @param object $instance
      * @throws \InvalidArgumentException if class extends \TYPO3\CMS\Core\SingletonInterface
      */
-    public static function addInstance($className, $instance)
+    public static function addInstance(string $className, object $instance): void
     {
         self::checkInstanceClassName($className, $instance);
         if ($instance instanceof SingletonInterface) {
@@ -2994,11 +2990,9 @@ class GeneralUtility
     /**
      * Checks that `$className` is non-empty and that `$instance` is an instance of `$className`.
      *
-     * @param string $className
-     * @param object $instance
      * @throws \InvalidArgumentException if $className is empty or if $instance is no instance of $className
      */
-    protected static function checkInstanceClassName($className, $instance)
+    protected static function checkInstanceClassName(string $className, object $instance): void
     {
         if ($className === '') {
             throw new \InvalidArgumentException('$className must not be empty.', 1288967479);
@@ -3018,7 +3012,7 @@ class GeneralUtility
      *
      * @see makeInstance
      */
-    public static function purgeInstances()
+    public static function purgeInstances(): void
     {
         self::$container = null;
         self::$singletonInstances = [];
@@ -3034,7 +3028,7 @@ class GeneralUtility
      *
      * @internal
      */
-    public static function flushInternalRuntimeCaches()
+    public static function flushInternalRuntimeCaches(): void
     {
         self::$finalClassNameCache = [];
         self::$indpEnvCache = [];
@@ -3099,10 +3093,10 @@ class GeneralUtility
      * @param string $value the string to encode, may be empty
      * @return string the encoded value already quoted (with single quotes),
      */
-    public static function quoteJSvalue($value)
+    public static function quoteJSvalue(string $value): string
     {
         $json = (string)json_encode(
-            (string)$value,
+            $value,
             JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG
         );
 
@@ -3125,11 +3119,8 @@ class GeneralUtility
      *
      * `<div data-value="[[JSON]]">...</div>`
      * (`[[JSON]]` represents return value of this function)
-     *
-     * @param mixed $value
-     * @param bool $useHtmlEntities
      */
-    public static function jsonEncodeForHtmlAttribute($value, bool $useHtmlEntities = true): string
+    public static function jsonEncodeForHtmlAttribute(mixed $value, bool $useHtmlEntities = true): string
     {
         $json = (string)json_encode($value, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
         return $useHtmlEntities ? htmlspecialchars($json) : $json;
@@ -3140,10 +3131,8 @@ class GeneralUtility
      *
      * `<script>const value = JSON.parse('[[JSON]]');</script>`
      * (`[[JSON]]` represents return value of this function)
-     *
-     * @param mixed $value
      */
-    public static function jsonEncodeForJavaScript($value): string
+    public static function jsonEncodeForJavaScript(mixed $value): string
     {
         $json = (string)json_encode($value, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
         return strtr(
@@ -3169,10 +3158,7 @@ class GeneralUtility
         return htmlspecialchars($value, ENT_SUBSTITUTE);
     }
 
-    /**
-     * @return LoggerInterface
-     */
-    protected static function getLogger()
+    protected static function getLogger(): LoggerInterface
     {
         return static::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
