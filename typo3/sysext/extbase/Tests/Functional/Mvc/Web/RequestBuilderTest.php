@@ -95,8 +95,7 @@ final class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('html', $request->getFormat());
@@ -129,8 +128,7 @@ final class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('json', $request->getFormat());
@@ -163,8 +161,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withQueryParams(['format' => 'json']);
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('json', $request->getFormat());
@@ -234,7 +231,8 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'] = 'https://example.com/';
+        $_SERVER['HTTP_HOST'] = 'https://example.com/';
+        $_SERVER['SERVER_NAME'] = 'https://example.com/';
         // Needed for GeneralUtility::getIndpEnv('SCRIPT_NAME') to return correct value instead of
         // 'vendor/phpunit/phpunit/phpunit', used eg. in TypoScriptFrontendController absRefPrefix='auto
         // and other places.
@@ -245,14 +243,12 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = ServerRequestFactory::fromGlobals()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
         $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         $uploadedFiles = $request->getUploadedFiles();
-        self::assertInstanceOf(UploadedFile::class, $uploadedFiles['dummy']);
-        /** @var UploadedFile $uploadedFile */
         $uploadedFile = $uploadedFiles['dummy'];
+        self::assertInstanceOf(UploadedFile::class, $uploadedFile);
         self::assertSame('name.pdf', $uploadedFile->getClientFilename());
         self::assertSame('application/pdf', $uploadedFile->getClientMediaType());
         self::assertSame(UPLOAD_ERR_OK, $uploadedFile->getError());
@@ -307,7 +303,8 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'] = 'https://example.com/';
+        $_SERVER['HTTP_HOST'] = 'https://example.com/';
+        $_SERVER['SERVER_NAME'] = 'https://example.com/';
         // Needed for GeneralUtility::getIndpEnv('SCRIPT_NAME') to return correct value instead of
         // 'vendor/phpunit/phpunit/phpunit', used eg. in TypoScriptFrontendController absRefPrefix='auto
         // and other places.
@@ -318,22 +315,19 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = ServerRequestFactory::fromGlobals()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
         $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         $uploadedFiles = $request->getUploadedFiles();
-        self::assertInstanceOf(UploadedFile::class, $uploadedFiles['dummy']['pdf']);
-        self::assertInstanceOf(UploadedFile::class, $uploadedFiles['dummy']['jpg']);
-        /** @var UploadedFile $uploadedFile1 */
         $uploadedFile1 = $uploadedFiles['dummy']['pdf'];
+        self::assertInstanceOf(UploadedFile::class, $uploadedFile1);
         self::assertSame('name.pdf', $uploadedFile1->getClientFilename());
         self::assertSame('application/pdf', $uploadedFile1->getClientMediaType());
         self::assertSame(UPLOAD_ERR_OK, $uploadedFile1->getError());
         self::assertSame(98174, $uploadedFile1->getSize());
         self::assertSame('/tmp/php/php1h4j1o', $uploadedFile1->getTemporaryFileName());
-        /** @var UploadedFile $uploadedFile2 */
         $uploadedFile2 = $uploadedFiles['dummy']['jpg'];
+        self::assertInstanceOf(UploadedFile::class, $uploadedFile2);
         self::assertSame('name.jpg', $uploadedFile2->getClientFilename());
         self::assertSame('image/jpg', $uploadedFile2->getClientMediaType());
         self::assertSame(UPLOAD_ERR_OK, $uploadedFile2->getError());
@@ -466,8 +460,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['controller' => 'NonExistentController']);
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('Blog', $request->getControllerName());
@@ -501,8 +494,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['controller' => 'User']);
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('User', $request->getControllerName());
@@ -607,8 +599,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('list', $request->getControllerActionName());
@@ -641,8 +632,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['action' => 'show']);
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('show', $request->getControllerActionName());
@@ -712,8 +702,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('show', $request->getControllerActionName());
@@ -753,8 +742,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('show', $request->getControllerActionName());
@@ -790,8 +778,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('show', $request->getControllerActionName());
@@ -829,8 +816,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('list', $request->getControllerActionName());
@@ -873,8 +859,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = $this->get(RequestBuilder::class);
-        $request = $requestBuilder->build($mainRequest);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('show', $request->getControllerActionName());
@@ -882,7 +867,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('show', $request->getArgument('action'));
     }
 
-    protected function prepareServerRequest(string $url, $method = 'GET'): ServerRequestInterface
+    private function prepareServerRequest(string $url, string $method = 'GET'): ServerRequestInterface
     {
         $request = (new ServerRequest($url, $method))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
