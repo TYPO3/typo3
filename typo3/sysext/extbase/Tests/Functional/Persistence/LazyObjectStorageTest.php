@@ -27,18 +27,15 @@ use TYPO3Tests\BlogExample\Domain\Model\Post;
 final class LazyObjectStorageTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['extbase'];
-    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * Sets up this test suite.
-     */
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
-
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/LazyObjectStorageTestImport.csv');
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }

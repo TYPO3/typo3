@@ -83,36 +83,30 @@ return [
         'tags' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.tags',
             'config' => [
-                'type' => 'inline',
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_blogexample_domain_model_tag',
                 'MM' => 'tx_blogexample_domain_model_tag_mm',
                 'MM_match_fields' => [
                     'fieldname' => 'tags',
+                    'tablenames' => 'tx_blogexample_domain_model_person',
                 ],
-                'appearance' => [
-                    'useCombination' => 1,
-                    'useSortable' => 1,
-                    'collapseAll' => 1,
-                    'expandSingle' => 1,
-                ],
+                'MM_opposite_field' => 'items',
             ],
         ],
         'tags_special' => [
             'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.tags_special',
             'config' => [
-                'type' => 'inline',
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_blogexample_domain_model_tag',
                 'MM' => 'tx_blogexample_domain_model_tag_mm',
                 'MM_match_fields' => [
                     'fieldname' => 'tags_special',
+                    'tablenames' => 'tx_blogexample_domain_model_person',
                 ],
-                'appearance' => [
-                    'useCombination' => 1,
-                    'useSortable' => 1,
-                    'collapseAll' => 1,
-                    'expandSingle' => 1,
-                ],
+                'MM_opposite_field' => 'items',
             ],
         ],
     ],

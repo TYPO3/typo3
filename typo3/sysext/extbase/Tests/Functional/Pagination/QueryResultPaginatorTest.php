@@ -35,7 +35,7 @@ final class QueryResultPaginatorTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/QueryResultPaginatorTestImport.csv');
         $this->postRepository = $this->get(PostRepository::class);
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;

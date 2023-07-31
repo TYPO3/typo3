@@ -63,29 +63,28 @@ return [
                 'max' => 256,
             ],
         ],
-        'posts' => [
+        'items' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_tag.posts',
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_tag.items',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectMultipleSideBySide',
+                'type' => 'group',
+                'allowed' => 'tx_blogexample_domain_model_person,tx_blogexample_domain_model_post',
                 'size' => 10,
-                'autoSizeMax' => 30,
-                'multiple' => 0,
-                'foreign_table' => 'tx_blogexample_domain_model_post',
-                'MM' => 'tx_blogexample_post_tag_mm',
-                // @todo: Broken. tx_blogexample_post_tag should be the local side, not the foreign side,
-                //        since it is used from both _post and _person table. This field should drop
-                //        MM_opposite_field and add MM_oppositeUsage instead, similar to sys_category items.
-                //        The counterparts in _post and _person table need adaptions, too.
-                //        It also does not make much sense to call this field 'posts' in the first place,
-                //        since it is used from _person, too.
-                'MM_opposite_field' => 'tags',
+                'MM' => 'tx_blogexample_domain_model_tag_mm',
+                'MM_oppositeUsage' => [
+                    'tx_blogexample_domain_model_person' => [
+                        'tags',
+                        'tags_special',
+                    ],
+                    'tx_blogexample_domain_model_post' => [
+                        'tags',
+                    ],
+                ],
             ],
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, hidden, name, posts'],
+        '1' => ['showitem' => 'sys_language_uid, hidden, name, items'],
     ],
     'palettes' => [
         '1' => ['showitem' => ''],

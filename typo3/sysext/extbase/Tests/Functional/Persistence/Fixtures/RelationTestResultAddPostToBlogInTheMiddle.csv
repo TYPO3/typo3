@@ -1,0 +1,88 @@
+"pages"
+,"uid","pid","sorting","title","deleted","perms_everybody"
+,1,0,128,"Root",0,15
+tx_blogexample_domain_model_blog
+,uid,pid,title,description,logo,deleted,posts,administrator,categories,t3ver_oid,t3ver_state,t3ver_wsid,hidden
+,1,0,Blog1,"Blog1 Description",,0,11,0,0,0,0,0,0
+tx_blogexample_domain_model_post
+,uid,pid,blog,author,reviewer,tags,categories,title,content,sorting,deleted,hidden,related_posts,t3ver_oid,t3ver_state,t3ver_wsid
+,1,0,1,3,2,10,3,Post1,"Lorem ipsum...",1,0,0,1,0,0,0
+,2,0,1,2,2,1,0,Post2,"Lorem ipsum...",2,0,0,0,0,0,0
+,3,0,1,2,1,1,0,Post3,"Lorem ipsum...",3,0,0,0,0,0,0
+,4,0,1,1,2,1,0,Post4,"Lorem ipsum...",4,0,0,0,0,0,0
+,5,0,1,1,0,1,0,Post5,"Lorem ipsum...",5,0,0,0,0,0,0
+,6,0,1,0,0,1,0,Post6,"Lorem ipsum...",7,0,0,0,0,0,0
+,7,0,1,1,2,1,0,Post7,"Lorem ipsum...",8,0,0,0,0,0,0
+,8,0,1,1,2,1,0,Post8,"Lorem ipsum...",9,0,0,0,0,0,0
+,9,0,1,1,2,1,0,Post9, "Lorem ipsum...",10,0,0,0,0,0,0
+,10,0,1,1,2,1,0,Post10,"Lorem ipsum...",11,0,0,0,0,0,0
+,11,0,2,2,1,0,0,post1,"Lorem ipsum...",11,0,0,0,0,0,0
+,12,0,3,0,2,1,0,"post with tag","Lorem ipsum...",1,0,0,0,0,0,0
+,13,0,3,1,2,0,0,"post with tagged author","Lorem ipsum...",2,0,0,0,0,0,0
+,14,0,3,1,2,1,0,"post with tag and tagged author","Lorem ipsum...",2,0,0,0,0,0,0
+,20,0,3,1,3,0,0,"post20 hidden","Lorem ipsum...",11,0,1,0,0,0,0
+,30,0,3,1,3,0,0,"post30 deleted","Lorem ipsum...",11,1,0,0,0,0,0
+,31,0,1,0,0,0,0,"INSERTED POST at position 6","Bla Bla Bla",6,0,0,0,0,0,0
+tx_blogexample_domain_model_person
+,uid,pid,firstname,lastname,salutation,email,tags,tags_special
+,1,0,Author,"With tag and special tag","",author-1@test.typo3.org,2,2
+,2,0,Author,"With tag","",author-2@test.typo3.org,1,0
+,3,0,Author,"With special tag","",author-3@test.typo3.org,0,1
+,4,0,"Another Author","With special tag","Mr.",author-4@test.typo3.org,0,1
+tx_blogexample_domain_model_tag
+,uid,pid,items,name,deleted
+,1,0,10,Tag1,0
+,2,0,2,Tag2,0
+,3,0,1,Tag3,0
+,4,0,1,Tag4,0
+,5,0,1,Tag5,0
+,6,0,1,Tag6,0
+,7,0,1,Tag7,0
+,8,0,1,Tag8,0
+,9,0,1,Tag9,0
+,10,0,1,Tag10,0
+,11,0,0,TagForAuthor1,0
+,12,0,0,Tag12,0
+,13,0,0,SpecialTagForAuthor1,0
+,14,0,0,SharedTag,0
+tx_blogexample_domain_model_tag_mm
+,uid_local,uid_foreign,tablenames,fieldname,sorting,sorting_foreign
+,1,11,tx_blogexample_domain_model_person,tags,1,1
+,1,13,tx_blogexample_domain_model_person,tags_special,2,1
+,2,11,tx_blogexample_domain_model_person,tags,1,2
+,3,13,tx_blogexample_domain_model_person,tags_special,1,2
+,4,13,tx_blogexample_domain_model_person,tags_special,1,3
+,1,14,tx_blogexample_domain_model_person,tags,3,1
+,1,14,tx_blogexample_domain_model_person,tags_special,4,2
+,1,1,tx_blogexample_domain_model_post,tags,1,1
+,2,1,tx_blogexample_domain_model_post,tags,1,2
+,3,1,tx_blogexample_domain_model_post,tags,1,3
+,4,1,tx_blogexample_domain_model_post,tags,1,4
+,5,1,tx_blogexample_domain_model_post,tags,1,5
+,6,1,tx_blogexample_domain_model_post,tags,1,6
+,7,1,tx_blogexample_domain_model_post,tags,1,7
+,8,1,tx_blogexample_domain_model_post,tags,1,8
+,9,1,tx_blogexample_domain_model_post,tags,1,9
+,10,1,tx_blogexample_domain_model_post,tags,1,10
+sys_category
+,uid,pid,title,deleted,hidden
+,1,0,"Category 1",0,0
+,2,0,"Category 2",0,0
+,3,0,"Category 3",0,0
+,4,0,"Category 4",0,0
+,5,0,"Category 5",0,1
+sys_category_record_mm
+,uid_local,uid_foreign,tablenames,fieldname,sorting,sorting_foreign
+,1,1,tx_blogexample_domain_model_post,categories,1,1
+,2,1,tx_blogexample_domain_model_post,categories,1,2
+,3,1,tx_blogexample_domain_model_post,categories,1,3
+,5,1,tx_blogexample_domain_model_post,categories,1,4
+,1,2,tx_blogexample_domain_model_post,categories,1,2
+,4,1,tx_my_extension,categories,1,2
+,4,5,tx_my_extension,categories,1,2
+,1,1,tx_blogexample_domain_model_blog,categories,1,1
+,2,1,tx_blogexample_domain_model_blog,categories,1,2
+,4,1,tx_blogexample_domain_model_blog,categories,1,3
+,2,2,tx_blogexample_domain_model_blog,categories,1,1
+,3,101,tx_blogexample_domain_model_blog,categories,1,1
+,1,101,tx_blogexample_domain_model_blog,categories,1,2

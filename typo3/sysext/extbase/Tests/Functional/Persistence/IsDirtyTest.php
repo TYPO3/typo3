@@ -27,29 +27,14 @@ use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 
 final class IsDirtyTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
-
-    protected BlogRepository $blogRepository;
-    protected AdministratorRepository $adminRepository;
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-post-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-tag-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/persons.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_users.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_groups.csv');
-
-        $this->blogRepository = $this->get(BlogRepository::class);
-        $this->adminRepository = $this->get(AdministratorRepository::class);
-
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/IsDirtyTestImport.csv');
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
@@ -59,7 +44,7 @@ final class IsDirtyTest extends FunctionalTestCase
      */
     public function objectFetchedFromDbIsNotDirty(): void
     {
-        $blog = $this->blogRepository->findByUid(3);
+        $blog = $this->get(BlogRepository::class)->findByUid(3);
         self::assertFalse($blog->_isDirty());
     }
 
@@ -68,12 +53,10 @@ final class IsDirtyTest extends FunctionalTestCase
      */
     public function lazyLoadingProxyReplacedByRealInstanceIsNotDirty(): void
     {
-        $blog = $this->blogRepository->findByUid(3);
+        $blog = $this->get(BlogRepository::class)->findByUid(3);
         self::assertInstanceOf(LazyLoadingProxy::class, $blog->getAdministrator()); // precondition
-
-        $admin = $this->adminRepository->findByUid(3);
+        $admin = $this->get(AdministratorRepository::class)->findByUid(3);
         self::assertInstanceOf(Administrator::class, $admin); // precondition
-
         $blog->setAdministrator($admin);
         self::assertFalse($blog->_isDirty());
     }
@@ -83,9 +66,8 @@ final class IsDirtyTest extends FunctionalTestCase
      */
     public function lazyLoadingProxyReplacedByWrongInstanceIsDirty(): void
     {
-        $blog = $this->blogRepository->findByUid(3);
+        $blog = $this->get(BlogRepository::class)->findByUid(3);
         self::assertInstanceOf(LazyLoadingProxy::class, $blog->getAdministrator()); //precondition
-
         $blog->setAdministrator(new Administrator());
         self::assertTrue($blog->_isDirty());
     }
@@ -95,16 +77,13 @@ final class IsDirtyTest extends FunctionalTestCase
      */
     public function realInstanceReplacedByLazyLoadingProxyIsNotDirty(): void
     {
-        $blog = $this->blogRepository->findByUid(3);
+        $blog = $this->get(BlogRepository::class)->findByUid(3);
         $lazyLoadingProxy = $blog->getAdministrator();
         self::assertInstanceOf(LazyLoadingProxy::class, $lazyLoadingProxy); //precondition
-
-        $admin = $this->adminRepository->findByUid(3);
+        $admin = $this->get(AdministratorRepository::class)->findByUid(3);
         self::assertInstanceOf(Administrator::class, $admin); // precondition
-
         $blog->setAdministrator($admin);
         $blog->_memorizeCleanState();
-
         $blog->_setProperty('administrator', $lazyLoadingProxy);
         self::assertFalse($blog->_isDirty());
     }
@@ -114,18 +93,15 @@ final class IsDirtyTest extends FunctionalTestCase
      */
     public function lazyLoadingProxyByWrongLazyLoadingProxyIsDirtyAndUpdated(): void
     {
-        $blogOne = $this->blogRepository->findByUid(3);
+        $blogRepository = $this->get(BlogRepository::class);
+        $blogOne = $blogRepository->findByUid(3);
         self::assertInstanceOf(LazyLoadingProxy::class, $blogOne->getAdministrator()); //precondition
-
-        $blogTwo = $this->blogRepository->findByUid(2);
+        $blogTwo = $blogRepository->findByUid(2);
         self::assertInstanceOf(LazyLoadingProxy::class, $blogTwo->getAdministrator()); //precondition
-
         $blogOne->_setProperty('administrator', $blogTwo->getAdministrator());
         self::assertTrue($blogOne->_isDirty());
-
-        $this->blogRepository->update($blogOne);
-
-        $updatedBlogOne = $this->blogRepository->findByUid(3);
+        $blogRepository->update($blogOne);
+        $updatedBlogOne = $blogRepository->findByUid(3);
         self::assertSame($updatedBlogOne->getAdministrator()->getUid(), $blogTwo->getAdministrator()->getUid());
     }
 }

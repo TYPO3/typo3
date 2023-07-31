@@ -27,7 +27,9 @@ use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
 final class InTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
 
     protected BlogRepository $blogRepository;
     protected PostRepository $postRepository;
@@ -35,16 +37,9 @@ final class InTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-tag-mm.csv');
-
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/InTestImport.csv');
         $this->blogRepository = $this->get(BlogRepository::class);
         $this->postRepository = $this->get(PostRepository::class);
-
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
@@ -56,13 +51,10 @@ final class InTest extends FunctionalTestCase
     {
         $blog1 = $this->blogRepository->findByUid(1);
         $blog2 = $this->blogRepository->findByUid(2);
-
         $inQuery = $this->postRepository->createQuery();
-
         $inQuery->matching(
             $inQuery->in('blog', [$blog1, $blog2])
         );
-
         self::assertSame(11, $inQuery->count());
     }
 
@@ -73,21 +65,15 @@ final class InTest extends FunctionalTestCase
     {
         $blog1 = $this->blogRepository->findByUid(1);
         $blog2 = $this->blogRepository->findByUid(2);
-
         $inQuery = $this->postRepository->createQuery();
-
         $inQuery->matching(
             $inQuery->in('blog', [$blog1, $blog2])
         );
-
         self::assertSame(11, $inQuery->count());
-
         $newInQuery = $this->postRepository->createQuery();
-
         $newInQuery->matching(
             $newInQuery->in('blog', [$blog1])
         );
-
         self::assertSame(10, $newInQuery->count());
     }
 
@@ -98,17 +84,13 @@ final class InTest extends FunctionalTestCase
     {
         $blog1 = $this->blogRepository->findByUid(1);
         $blog2 = $this->blogRepository->findByUid(2);
-
         $objectStorage = new ObjectStorage();
         $objectStorage->attach($blog1);
         $objectStorage->attach($blog2);
-
         $inQuery = $this->postRepository->createQuery();
-
         $inQuery->matching(
             $inQuery->in('blog', $objectStorage)
         );
-
         self::assertSame(11, $inQuery->count());
     }
 
@@ -119,28 +101,20 @@ final class InTest extends FunctionalTestCase
     {
         $blog1 = $this->blogRepository->findByUid(1);
         $blog2 = $this->blogRepository->findByUid(2);
-
         $objectStorage = new ObjectStorage();
         $objectStorage->attach($blog1);
         $objectStorage->attach($blog2);
-
         $inQuery = $this->postRepository->createQuery();
-
         $inQuery->matching(
             $inQuery->in('blog', $objectStorage)
         );
-
         self::assertSame(11, $inQuery->count());
-
         $newObjectStorage = new ObjectStorage();
         $newObjectStorage->attach($blog1);
-
         $newInQuery = $this->postRepository->createQuery();
-
         $newInQuery->matching(
             $newInQuery->in('blog', $newObjectStorage)
         );
-
         self::assertSame(10, $newInQuery->count());
     }
 
@@ -152,13 +126,10 @@ final class InTest extends FunctionalTestCase
         $query = $this->blogRepository->createQuery();
         $query->matching($query->in('uid', [1, 2]));
         $queryResult = $query->execute();
-
         $inQuery = $this->postRepository->createQuery();
-
         $inQuery->matching(
             $inQuery->in('blog', $queryResult)
         );
-
         self::assertSame(11, $inQuery->count());
     }
 
@@ -170,21 +141,15 @@ final class InTest extends FunctionalTestCase
         $query = $this->blogRepository->createQuery();
         $query->matching($query->in('uid', [1, 2]));
         $queryResult = $query->execute();
-
         $inQuery = $this->postRepository->createQuery();
-
         $inQuery->matching(
             $inQuery->in('blog', $queryResult)
         );
-
         self::assertSame(11, $inQuery->count());
-
         $newInQuery = $this->postRepository->createQuery();
-
         $newInQuery->matching(
             $newInQuery->in('blog', $queryResult)
         );
-
         self::assertSame(11, $newInQuery->count());
     }
 
@@ -194,18 +159,11 @@ final class InTest extends FunctionalTestCase
     public function inConditionWorksWithLazyObjectStorage(): void
     {
         $blog = $this->blogRepository->findByUid(1);
-
-        self::assertInstanceOf(
-            LazyObjectStorage::class,
-            $blog->getPosts()
-        );
-
+        self::assertInstanceOf(LazyObjectStorage::class, $blog->getPosts());
         $inQuery = $this->postRepository->createQuery();
-
         $inQuery->matching(
             $inQuery->in('uid', $blog->getPosts())
         );
-
         self::assertSame(10, $inQuery->count());
     }
 
@@ -215,26 +173,16 @@ final class InTest extends FunctionalTestCase
     public function inConditionWorksWithLazyObjectStorageOnSecondCall(): void
     {
         $blog = $this->blogRepository->findByUid(1);
-
-        self::assertInstanceOf(
-            LazyObjectStorage::class,
-            $blog->getPosts()
-        );
-
+        self::assertInstanceOf(LazyObjectStorage::class, $blog->getPosts());
         $inQuery = $this->postRepository->createQuery();
-
         $inQuery->matching(
             $inQuery->in('uid', $blog->getPosts())
         );
-
         self::assertSame(10, $inQuery->count());
-
         $newInQuery = $this->postRepository->createQuery();
-
         $newInQuery->matching(
             $newInQuery->in('uid', $blog->getPosts())
         );
-
         self::assertSame(10, $newInQuery->count());
     }
 }

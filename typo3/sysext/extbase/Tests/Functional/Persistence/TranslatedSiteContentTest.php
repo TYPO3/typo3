@@ -37,7 +37,9 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     protected const TABLE_Content = 'tt_content';
     protected const TABLE_Pages = 'pages';
 
-    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
 
     protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
@@ -58,10 +60,8 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        // @todo: Copy those files to local directory
-        $this->importCSVDataSet(__DIR__ . '/../../../../frontend/Tests/Functional/Rendering/DataSet/LiveDefaultPages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../../../../frontend/Tests/Functional/Rendering/DataSet/LiveDefaultElements.csv');
-
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/LiveDefaultPages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/LiveDefaultElements.csv');
         $this->contentRepository = $this->get(TtContentRepository::class);
         $this->setUpFrontendRootPage(1, [
             'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Configuration/TypoScript/setup.typoscript',

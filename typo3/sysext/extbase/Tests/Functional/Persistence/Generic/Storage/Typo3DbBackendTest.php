@@ -45,12 +45,10 @@ final class Typo3DbBackendTest extends FunctionalTestCase
      */
     public function uidOfAlreadyPersistedValueObjectIsDeterminedCorrectly(): void
     {
-        $this->importCSVDataSet('typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbBackendTestImport.csv');
         $domainObject = new Tag('Tag10');
-
         $typo3DbBackend = $this->get(Typo3DbBackend::class);
         $result = $typo3DbBackend->getUidOfAlreadyPersistedValueObject($domainObject);
-
         self::assertSame(10, $result);
     }
 
@@ -59,7 +57,7 @@ final class Typo3DbBackendTest extends FunctionalTestCase
      */
     public function getObjectDataByQueryChangesUidIfInPreview(): void
     {
-        $this->importCSVDataSet('typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbBackendTestImport.csv');
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())

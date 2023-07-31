@@ -34,34 +34,27 @@ use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
 final class TranslationTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
-
-    protected PostRepository $postRepository;
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
-        /*
-         * Posts Dataset for the tests:
-         *
-         * Post1
-         *   -> EN: Post1
-         *   -> GR: Post1
-         * Post2
-         *   -> EN: Post2
-         * Post3
-         * Post10 [hidden]
-         *   -> GR: Post10 [hidden]
-         */
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/translated-posts.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-tag-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/TranslationTestImport.csv');
 
-        $this->setUpBasicFrontendEnvironment();
+        $context = GeneralUtility::makeInstance(Context::class);
+        $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF));
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $pageRepository = new PageRepository($context);
+        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
+        $frontendControllerMock->sys_page = $pageRepository;
+        $GLOBALS['TSFE'] = $frontendControllerMock;
 
-        $this->postRepository = $this->get(PostRepository::class);
         // ConfigurationManager is used by PersistenceManager to retrieve configuration.
         // We set a proper extensionName and pluginName for the ConfigurationManager singleton
         // here, to not run into warnings due to incomplete test setup.
@@ -73,36 +66,13 @@ final class TranslationTest extends FunctionalTestCase
     }
 
     /**
-     * Minimal frontend environment to satisfy Extbase Typo3DbBackend
-     */
-    protected function setUpBasicFrontendEnvironment(): void
-    {
-        // in v9 overlay and language mode has different default values, so we need to set them here explicitly
-        // to match v8 behaviour
-        $context = GeneralUtility::makeInstance(Context::class);
-        $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF));
-
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
-            ->withAttribute('frontend.typoscript', $frontendTypoScript);
-
-        $pageRepositoryFixture = new PageRepository($context);
-        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
-        $frontendControllerMock->sys_page = $pageRepositoryFixture;
-        $GLOBALS['TSFE'] = $frontendControllerMock;
-    }
-
-    /**
      * Tests if repository returns correct number of posts in the default language
      *
      * @test
      */
     public function countReturnsCorrectNumberOfPosts(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
@@ -118,13 +88,11 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function countReturnsCorrectNumberOfPostsInEnglishLanguage(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
-
         $postCount = $query->execute()->count();
         self::assertSame(2, $postCount);
     }
@@ -134,15 +102,12 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function countReturnsCorrectNumberOfPostsInGreekLanguage(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_OFF));
-
         $postCount = $query->execute()->count();
-
         self::assertSame(2, $postCount);
     }
 
@@ -151,18 +116,14 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingPostsReturnsEnglishPostsWithFallback(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
-
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
-
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
-
         self::assertCount(2, $posts);
         self::assertSame('A EN:Post2', $posts[0]->getTitle());
         self::assertSame('B EN:Post1', $posts[1]->getTitle());
@@ -173,16 +134,14 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingPostsByInClauseReturnsDefaultPostsWithFallback(): void
     {
-        $query = $this->postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(false);
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED));
-
         $query->matching($query->in('uid', [4]));
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
-
         self::assertCount(1, $posts);
         self::assertSame('Post2', $posts[0]->getTitle());
     }
@@ -194,18 +153,14 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingPostsReturnsGreekPostsWithFallback(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_OFF));
-
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
-
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
-
         self::assertCount(2, $posts);
         self::assertSame('GR:Post1', $posts[0]->getTitle());
         self::assertSame('GR:Post11', $posts[1]->getTitle());
@@ -218,18 +173,14 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingPostsReturnsGreekPostsWithHideNonTranslated(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON));
-
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
-
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
-
         self::assertCount(2, $posts);
         self::assertSame('GR:Post1', $posts[0]->getTitle());
         self::assertSame('GR:Post11', $posts[1]->getTitle());
@@ -255,16 +206,14 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingTranslatedPostByInClauseWithStrictLanguageSettings(array $input, array $expectedTitles): void
     {
-        $query = $this->postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON));
-
         $query->matching($query->in('uid', $input));
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
-
         // @todo: wrong assertion
         // We're simulating a strict language configuration where a blog post (uid=12 or uid=1) has been translated to another
         // language. However, Extbase is not able to find the translated record via ->in() and therefore returns an
@@ -280,22 +229,18 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingTranslatedPostByEqualsUidClauseWithStrictLanguageSettings(array $input, array $expectedTitles): void
     {
-        $query = $this->postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON));
-
         $constraints = [];
         foreach ($input as $uid) {
             $constraints[] = $query->equals('uid', $uid);
         }
-
         $query->matching($query->logicalOr(...$constraints));
-
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
-
         // @todo: wrong assertion
         // We're simulating a strict language configuration where a blog post (uid=12 or uid=1) has been translated to another
         // language. However, Extbase is not able to find the translated record via ->equals(uid=12 OR uid=1 OR ...) and therefore returns an
@@ -310,18 +255,14 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function orderingByTitleRespectsEnglishTitles(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
-
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
-
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
-
         self::assertCount(2, $posts);
         self::assertSame('A EN:Post2', $posts[0]->getTitle());
         self::assertSame('B EN:Post1', $posts[1]->getTitle());
@@ -335,21 +276,17 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function orderingByBlogTitle(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
-
         $query->setOrderings([
             'blog.title' => QueryInterface::ORDER_ASCENDING,
             'uid' => QueryInterface::ORDER_ASCENDING,
         ]);
-
         /** @var Post[]|array $posts */
         $posts = $query->execute()->toArray();
-
         self::assertCount(2, $posts);
         self::assertSame('B EN:Post1', $posts[0]->getTitle());
         self::assertSame('A EN:Post2', $posts[1]->getTitle());
@@ -364,19 +301,16 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingHiddenPostsWithIgnoreEnableField(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setIgnoreEnableFields(true);
         $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
-        //we need it to have stable results on pgsql
+        // we need it to have stable results on pgsql
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
-
         /** @var Post[] $posts */
         $posts = $query->execute()->toArray();
-
         self::assertCount(5, $posts);
         self::assertSame('Post10', $posts[3]->getTitle());
     }
@@ -389,8 +323,7 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingHiddenPostsReturnsHiddenOverlay(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
@@ -398,12 +331,9 @@ final class TranslationTest extends FunctionalTestCase
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_OFF));
         // We need it to have stable results on pgsql
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
-
         /** @var Post[] $posts */
         $posts = $query->execute()->toArray();
-
         self::assertCount(3, $posts);
-
         self::assertSame('GR:Post1', $posts[0]->getTitle());
         self::assertSame('GR:Post10', $posts[1]->getTitle());
         self::assertSame('GR:Post11', $posts[2]->getTitle());
@@ -420,8 +350,7 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingHiddenPostsReturnsHiddenOverlayOverlayEnabled(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
@@ -429,12 +358,9 @@ final class TranslationTest extends FunctionalTestCase
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED));
         //we need it to have stable results on pgsql
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
-
         /** @var Post[] $posts */
         $posts = $query->execute()->toArray();
-
         self::assertCount(5, $posts);
-
         self::assertSame('GR:Post1', $posts[0]->getTitle());
         self::assertSame('Post2', $posts[1]->getTitle());
         self::assertSame('Post3', $posts[2]->getTitle());
@@ -450,12 +376,11 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingTranslatedPostByTitle(): void
     {
-        $query = $this->postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_OFF));
-
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('title', 'GR:Post1'));
         /** @var Post[]|array $posts */
@@ -472,12 +397,11 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingTranslatedPostByBlogTitle(): void
     {
-        $query = $this->postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_OFF));
-
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('blog.title', 'Blog1'));
         /** @var Post[]|array $posts */
@@ -492,12 +416,11 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingPostByTagName(): void
     {
-        $query = $this->postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectStoragePage(false);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF));
-
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('tags.name', 'Tag1'));
         /** @var Post[]|array $posts */
@@ -511,12 +434,11 @@ final class TranslationTest extends FunctionalTestCase
      */
     public function fetchingTranslatedPostByTagName(): void
     {
-        $query = $this->postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectStoragePage(false);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
-
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
         $query->matching($query->equals('tags.name', 'Tag1'));
         /** @var Post[]|array $posts */

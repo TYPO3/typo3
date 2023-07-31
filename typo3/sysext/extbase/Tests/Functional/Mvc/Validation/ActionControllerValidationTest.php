@@ -41,6 +41,12 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ActionControllerValidationTestImport.csv');
+    }
+
     public static function forwardedActionValidatesPreviouslyIgnoredArgumentDataProvider(): array
     {
         return [
@@ -65,10 +71,6 @@ final class ActionControllerValidationTest extends FunctionalTestCase
     {
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
-
-        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/blogs.csv');
-        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
         $response = new Response();
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -118,10 +120,6 @@ final class ActionControllerValidationTest extends FunctionalTestCase
     {
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
-
-        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/blogs.csv');
-        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
         $response = new Response();
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -185,10 +183,6 @@ final class ActionControllerValidationTest extends FunctionalTestCase
     {
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
-
-        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/blogs.csv');
-        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
         $response = new Response();
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())

@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -39,31 +37,21 @@ use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
 final class RelationTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
 
-    protected Blog $blog;
-    protected PersistenceManager $persistenceManager;
+    private Blog $blog;
+    private PersistenceManager $persistenceManager;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/persons.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-tag-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/categories.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/category-mm.csv');
-
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RelationTestImport.csv');
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-
         $this->persistenceManager = $this->get(PersistenceManager::class);
         $this->blog = $this->get(BlogRepository::class)->findByUid(1);
-
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->workspace = 0;
     }
@@ -75,55 +63,14 @@ final class RelationTest extends FunctionalTestCase
      */
     public function attachPostToBlogAtTheEnd(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
-        $queryBuilder->getRestrictions()->removeAll()->add(new WorkspaceRestriction(0));
-        $countPostsOriginal = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'blog',
-                    $queryBuilder->createNamedParameter($this->blog->getUid(), Connection::PARAM_INT)
-                )
-            )->executeQuery()
-            ->fetchOne();
-
         $newPostTitle = 'sdufhisdhuf';
         $newPost = new Post();
         $newPost->setBlog($this->blog);
         $newPost->setTitle($newPostTitle);
         $newPost->setContent('Bla Bla Bla');
-
         $this->blog->addPost($newPost);
         $this->updateAndPersistBlog();
-
-        $queryBuilder->resetQueryParts();
-        $countPosts  = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'blog',
-                    $queryBuilder->createNamedParameter($this->blog->getUid(), Connection::PARAM_INT)
-                )
-            )->executeQuery()
-            ->fetchOne();
-        self::assertEquals($countPostsOriginal + 1, $countPosts);
-
-        $queryBuilder->resetQueryParts();
-        $post = $queryBuilder
-            ->select('title', 'sorting')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'blog',
-                    $queryBuilder->createNamedParameter($this->blog->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertSame($newPostTitle, $post['title']);
-        self::assertEquals($countPostsOriginal + 1, $post['sorting']);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/RelationTestResultAttachPostToBlogAtTheEnd.csv');
     }
 
     /**
@@ -133,74 +80,13 @@ final class RelationTest extends FunctionalTestCase
      */
     public function removeLastPostFromBlog(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
-        $queryBuilder->getRestrictions()
-            ->removeAll()->add(new DeletedRestriction());
-        $countPostsOriginal = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_post')
-            ->executeQuery()
-            ->fetchOne();
-
-        $queryBuilder->resetQueryParts();
-        $post = $queryBuilder
-            ->select('title', 'sorting')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'blog',
-                    $queryBuilder->createNamedParameter($this->blog->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertEquals(10, $post['sorting']);
-
         $posts = $this->blog->getPosts();
         $postsArray = $posts->toArray();
         $latestPost = array_pop($postsArray);
-
         self::assertEquals(10, $latestPost->getUid());
-
         $this->blog->removePost($latestPost);
         $this->updateAndPersistBlog();
-
-        $queryBuilder->resetQueryParts();
-        $countPosts = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_post')
-            ->executeQuery()
-            ->fetchOne();
-        self::assertEquals($countPostsOriginal - 1, $countPosts);
-
-        $queryBuilder->resetQueryParts();
-        $post = $queryBuilder
-            ->select('title', 'sorting')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($latestPost->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertNull($post['uid'] ?? null);
-
-        $queryBuilder->resetQueryParts();
-        $post = $queryBuilder
-            ->select('title', 'sorting')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'blog',
-                    $queryBuilder->createNamedParameter($this->blog->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertSame('Post9', $post['title']);
-        self::assertEquals(9, $post['sorting']);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/RelationTestResultRemoveLastPostFromBlog.csv');
     }
 
     /**
@@ -210,17 +96,7 @@ final class RelationTest extends FunctionalTestCase
      */
     public function addPostToBlogInTheMiddle(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
-        $queryBuilder->getRestrictions()
-            ->removeAll()->add(new DeletedRestriction());
-        $countPostsOriginal = $queryBuilder
-        ->count('*')
-        ->from('tx_blogexample_domain_model_post')
-        ->executeQuery()
-        ->fetchOne();
-
         $newPost = new Post();
-
         $posts = clone $this->blog->getPosts();
         $this->blog->getPosts()->removeAll($posts);
         $counter = 1;
@@ -236,46 +112,7 @@ final class RelationTest extends FunctionalTestCase
             $counter++;
         }
         $this->updateAndPersistBlog();
-
-        $queryBuilder->resetQueryParts();
-        $countPosts = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_post')
-            ->executeQuery()
-            ->fetchOne();
-        self::assertEquals($countPostsOriginal + 1, $countPosts);
-
-        //last post
-        $queryBuilder->resetQueryParts();
-        $post = $queryBuilder
-            ->select('title', 'sorting')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'blog',
-                    $queryBuilder->createNamedParameter($this->blog->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertSame('Post10', $post['title']);
-        self::assertEquals(11, $post['sorting']);
-
-        // check sorting of the post added in the middle
-        $queryBuilder->resetQueryParts();
-        $post = $queryBuilder
-            ->select('title', 'sorting')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($newPost->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertSame($newPostTitle, $post['title']);
-        self::assertEquals(6, $post['sorting']);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/RelationTestResultAddPostToBlogInTheMiddle.csv');
     }
 
     /**
@@ -285,15 +122,6 @@ final class RelationTest extends FunctionalTestCase
      */
     public function removeMiddlePostFromBlog(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
-        $queryBuilder->getRestrictions()
-            ->removeAll()->add(new DeletedRestriction());
-        $countPostsOriginal = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_post')
-            ->executeQuery()
-            ->fetchOne();
-
         $posts = clone $this->blog->getPosts();
         $counter = 1;
         foreach ($posts as $post) {
@@ -303,29 +131,7 @@ final class RelationTest extends FunctionalTestCase
             $counter++;
         }
         $this->updateAndPersistBlog();
-
-        $queryBuilder->resetQueryParts();
-        $countPosts = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_post')
-            ->executeQuery()
-            ->fetchOne();
-        self::assertEquals($countPostsOriginal - 1, $countPosts);
-
-        $queryBuilder->resetQueryParts();
-        $post = $queryBuilder
-            ->select('title', 'sorting')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'blog',
-                    $queryBuilder->createNamedParameter($this->blog->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertSame('Post10', $post['title']);
-        self::assertEquals(10, $post['sorting']);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/RelationTestResultRemoveMiddlePostFromBlog.csv');
     }
 
     /**
@@ -335,15 +141,6 @@ final class RelationTest extends FunctionalTestCase
      */
     public function movePostFromEndToTheMiddle(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
-        $queryBuilder->getRestrictions()
-            ->removeAll()->add(new DeletedRestriction());
-        $countPostsOriginal = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_post')
-            ->executeQuery()
-            ->fetchOne();
-
         $posts = clone $this->blog->getPosts();
         $postsArray = $posts->toArray();
         $latestPost = array_pop($postsArray);
@@ -362,47 +159,7 @@ final class RelationTest extends FunctionalTestCase
             $counter++;
         }
         $this->updateAndPersistBlog();
-
-        $queryBuilder->resetQueryParts();
-        $countPosts = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_post')
-            ->executeQuery()
-            ->fetchOne();
-        self::assertEquals($countPostsOriginal, $countPosts);
-
-        $queryBuilder->getRestrictions()->removeAll();
-        $post = $queryBuilder
-            ->select('title', 'sorting')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'blog',
-                    $queryBuilder->createNamedParameter($this->blog->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertSame('Post9', $post['title']);
-        self::assertEquals(10, $post['sorting']);
-
-        $queryBuilder->resetQueryParts();
-        $post = $queryBuilder
-            ->select('title', 'uid')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->and(
-                    $queryBuilder->expr()->eq(
-                        'blog',
-                        $queryBuilder->createNamedParameter($this->blog->getUid(), Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq('sorting', $queryBuilder->createNamedParameter(6, Connection::PARAM_INT))
-                )
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertSame('MOVED POST Post10', $post['title']);
-        self::assertEquals(10, $post['uid']);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/RelationTestResultMovePostFromEndToTheMiddle.csv');
     }
 
     /**
@@ -412,49 +169,14 @@ final class RelationTest extends FunctionalTestCase
      */
     public function attachTagToPostAtTheEnd(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_tag');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
-        $countOriginal = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_tag')
-            ->executeQuery()
-            ->fetchOne();
-
         $newTagTitle = 'sdufhisdhuf';
-
         $newTag = new Tag($newTagTitle);
-
         $postRepository = $this->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $post->addTag($newTag);
-
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
-
-        $queryBuilder->resetQueryParts();
-        $count = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_tag')
-            ->executeQuery()
-            ->fetchOne();
-        self::assertEquals($countOriginal + 1, $count);
-
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
-        $tag = $queryBuilder
-            ->select('uid_foreign')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid_local',
-                    $queryBuilder->createNamedParameter($post->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertEquals($newTag->getUid(), $tag['uid_foreign']);
+        self::assertCSVDataSet(__DIR__ . '/Fixtures/RelationTestResultAttachTagToPostAtTheEnd.csv');
     }
 
     /**
@@ -464,15 +186,6 @@ final class RelationTest extends FunctionalTestCase
      */
     public function removeLastTagFromPost(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_tag');
-        $queryBuilder->getRestrictions()
-            ->removeAll()->add(new DeletedRestriction());
-        $countOriginal = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_tag')
-            ->executeQuery()
-            ->fetchOne();
-
         $postRepository = $this->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = $post->getTags();
@@ -486,49 +199,7 @@ final class RelationTest extends FunctionalTestCase
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
 
-        $queryBuilder->resetQueryParts();
-        $countTags = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_tag')
-            ->executeQuery()
-            ->fetchOne();
-        self::assertEquals($countOriginal, $countTags);
-
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
-        $tag = $queryBuilder
-            ->select('uid_foreign')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid_local',
-                    $queryBuilder->createNamedParameter($post->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertEquals(9, $tag['uid_foreign']);
-
-        $queryBuilder->resetQueryParts();
-        $tag = $queryBuilder
-            ->select('uid_foreign')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->and(
-                    $queryBuilder->expr()->eq(
-                        'uid_local',
-                        $queryBuilder->createNamedParameter($post->getUid(), Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'uid_foreign',
-                        $queryBuilder->createNamedParameter($latestTag->getUid(), Connection::PARAM_INT)
-                    )
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertNull($tag['uid_foreign'] ?? null);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/RelationTestResultRemoveLastTagFromPost.csv');
     }
 
     /**
@@ -538,18 +209,6 @@ final class RelationTest extends FunctionalTestCase
      */
     public function addTagToPostInTheMiddle(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
-        $countTagsOriginal = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchOne();
-
         $postRepository = $this->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = clone $post->getTags();
@@ -568,48 +227,7 @@ final class RelationTest extends FunctionalTestCase
 
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
-
-        $queryBuilder->resetQueryParts();
-        $countTags = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchOne();
-        self::assertEquals($countTagsOriginal + 1, $countTags);
-
-        $queryBuilder->resetQueryParts();
-        $tag = $queryBuilder
-            ->select('uid_foreign')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid_local',
-                    $queryBuilder->createNamedParameter($post->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertEquals(10, $tag['uid_foreign']);
-
-        $queryBuilder->resetQueryParts();
-        $tag = $queryBuilder
-            ->select('uid_foreign')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->and(
-                    $queryBuilder->expr()->eq(
-                        'uid_local',
-                        $queryBuilder->createNamedParameter($post->getUid(), Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq('sorting', $queryBuilder->createNamedParameter(6, Connection::PARAM_INT))
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertEquals($newTag->getUid(), $tag['uid_foreign']);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/RelationTestResultAddTagToPostInTheMiddle.csv');
     }
 
     /**
@@ -619,19 +237,6 @@ final class RelationTest extends FunctionalTestCase
      */
     public function removeMiddleTagFromPost(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
-        $countTags = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchOne();
-        self::assertEquals(10, $countTags);
-
         $postRepository = $this->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = clone $post->getTags();
@@ -645,49 +250,7 @@ final class RelationTest extends FunctionalTestCase
 
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
-
-        $queryBuilder->resetQueryParts();
-        $countTags = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchOne();
-        self::assertEquals(9, $countTags);
-
-        $queryBuilder->resetQueryParts();
-        $tag = $queryBuilder
-            ->select('uid_foreign', 'sorting')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid_local',
-                    $queryBuilder->createNamedParameter($post->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertEquals(10, $tag['uid_foreign']);
-        self::assertEquals(10, $tag['sorting']);
-
-        $queryBuilder->resetQueryParts();
-        $tag = $queryBuilder
-            ->select('uid_foreign')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->and(
-                    $queryBuilder->expr()->eq(
-                        'uid_local',
-                        $queryBuilder->createNamedParameter($post->getUid(), Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq('sorting', $queryBuilder->createNamedParameter(5, Connection::PARAM_INT))
-                )
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertNull($tag['uid_foreign'] ?? null);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/RelationTestResultRemoveMiddleTagFromPost.csv');
     }
 
     /**
@@ -697,19 +260,6 @@ final class RelationTest extends FunctionalTestCase
      */
     public function moveTagFromEndToTheMiddle(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
-        $countTags = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchOne();
-        self::assertEquals(10, $countTags);
-
         $postRepository = $this->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = clone $post->getTags();
@@ -733,103 +283,7 @@ final class RelationTest extends FunctionalTestCase
 
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
-
-        $queryBuilder->resetQueryParts();
-        $countTags = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchOne();
-        self::assertEquals(10, $countTags);
-
-        $queryBuilder->resetQueryParts();
-        $tag = $queryBuilder
-            ->select('uid_foreign', 'sorting')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid_local',
-                    $queryBuilder->createNamedParameter($post->getUid(), Connection::PARAM_INT)
-                )
-            )->orderBy('sorting', 'DESC')
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertEquals(9, $tag['uid_foreign']);
-        self::assertEquals(10, $tag['sorting']);
-
-        $sorting = '6';
-        $queryBuilder->resetQueryParts();
-        $tag = $queryBuilder
-            ->select('uid_foreign')
-            ->from('tx_blogexample_post_tag_mm')
-            ->where(
-                $queryBuilder->expr()->and(
-                    $queryBuilder->expr()->eq(
-                        'uid_local',
-                        $queryBuilder->createNamedParameter($post->getUid(), Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'sorting',
-                        $queryBuilder->createNamedParameter($sorting)
-                    )
-                )
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertEquals(10, $tag['uid_foreign']);
-    }
-
-    /**
-     * Test if timestamp field is updated when updating a record
-     *
-     * @test
-     */
-    public function timestampFieldIsUpdatedOnPostSave(): void
-    {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
-        $rawPost = $queryBuilder
-            ->select('*')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-
-        $postRepository = $this->get(PostRepository::class);
-        $post = $postRepository->findByUid(1);
-        $post->setTitle('newTitle');
-
-        $postRepository->update($post);
-        $this->persistenceManager->persistAll();
-
-        $queryBuilder->resetQueryParts();
-        $rawPost2 = $queryBuilder
-            ->select('*')
-            ->from('tx_blogexample_domain_model_post')
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertTrue($rawPost2['tstamp'] > $rawPost['tstamp']);
-    }
-
-    /**
-     * Test query matching for mm relation without MM_match_fields defined
-     *
-     * @test
-     */
-    public function mmRelationWithoutMatchFieldIsResolved(): void
-    {
-        $postRepository = $this->get(PostRepository::class);
-        $posts = $postRepository->findByTagAndBlog('Tag2', $this->blog);
-        self::assertCount(1, $posts);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/RelationTestResultMoveTagFromEndToTheMiddle.csv');
     }
 
     /**
@@ -1058,7 +512,7 @@ final class RelationTest extends FunctionalTestCase
         ];
     }
 
-    protected function applyQueryRequest(QueryInterface $query, array $queryRequest): void
+    private function applyQueryRequest(QueryInterface $query, array $queryRequest): void
     {
         if (isset($queryRequest['order']) && !$queryRequest['order']) {
             $query->setOrderings([]);
@@ -1106,7 +560,7 @@ final class RelationTest extends FunctionalTestCase
         $this->assertDistinctIds($postIds);
     }
 
-    protected function provideFindPostsByPublisherQuery(int $publisherId): QueryInterface
+    private function provideFindPostsByPublisherQuery(int $publisherId): QueryInterface
     {
         $postRepository = $this->get(PostRepository::class);
         $query = $postRepository->createQuery();
@@ -1156,7 +610,7 @@ final class RelationTest extends FunctionalTestCase
         $this->assertDistinctIds($blogIds);
     }
 
-    protected function provideFindBlogsByPostsSinceQuery(\DateTime $date): QueryInterface
+    private function provideFindBlogsByPostsSinceQuery(\DateTime $date): QueryInterface
     {
         $blogRepository = $this->get(BlogRepository::class);
         $query = $blogRepository->createQuery();
@@ -1199,7 +653,7 @@ final class RelationTest extends FunctionalTestCase
         $this->assertDistinctIds($personIds);
     }
 
-    protected function provideFindPersonsByTagNameQuery(string $tagName): QueryInterface
+    private function provideFindPersonsByTagNameQuery(string $tagName): QueryInterface
     {
         $personRepository = $this->get(PersonRepository::class);
         $query = $personRepository->createQuery();
@@ -1245,7 +699,7 @@ final class RelationTest extends FunctionalTestCase
         $this->assertDistinctIds($postsIds);
     }
 
-    protected function provideFindPostsByAuthorTagName(string $tagName): QueryInterface
+    private function provideFindPostsByAuthorTagName(string $tagName): QueryInterface
     {
         $postRepository = $this->get(PostRepository::class);
         $query = $postRepository->createQuery();
@@ -1261,7 +715,7 @@ final class RelationTest extends FunctionalTestCase
     /**
      * Helper method for persisting blog
      */
-    protected function updateAndPersistBlog(): void
+    private function updateAndPersistBlog(): void
     {
         $blogRepository = $this->get(BlogRepository::class);
         $blogRepository->update($this->blog);
@@ -1272,7 +726,7 @@ final class RelationTest extends FunctionalTestCase
      * @param AbstractEntity[] $entities
      * @return int[]
      */
-    protected function resolveEntityIds(array $entities): array
+    private function resolveEntityIds(array $entities): array
     {
         return array_map(
             static fn (AbstractEntity $entity): int => $entity->getUid(),
@@ -1283,7 +737,7 @@ final class RelationTest extends FunctionalTestCase
     /**
      * @return int[]
      */
-    protected function resolveRecordIds(array $records): array
+    private function resolveRecordIds(array $records): array
     {
         return array_column($records, 'uid');
     }
@@ -1291,7 +745,7 @@ final class RelationTest extends FunctionalTestCase
     /**
      * Counts amount of distinct IDS.
      */
-    protected function countDistinctIds(array $ids): int
+    private function countDistinctIds(array $ids): int
     {
         return count(array_unique($ids));
     }
@@ -1300,7 +754,7 @@ final class RelationTest extends FunctionalTestCase
      * Asserts distinct IDs by comparing the sum of the occurrence of
      * a particular ID to the amount of existing distinct IDs.
      */
-    protected function assertDistinctIds(array $ids): void
+    private function assertDistinctIds(array $ids): void
     {
         $counts = array_count_values($ids);
         self::assertEquals(count($counts), array_sum($counts));
