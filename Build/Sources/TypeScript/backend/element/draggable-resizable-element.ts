@@ -175,7 +175,7 @@ export class DraggableResizableElement extends LitElement {
     Object.assign(this.style, this.getOffsetStyles(this.offset));
   }
 
-  protected createRenderRoot(): Element | ShadowRoot {
+  protected createRenderRoot(): HTMLElement | DocumentFragment {
     return this;
   }
 

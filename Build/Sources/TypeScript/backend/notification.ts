@@ -141,11 +141,7 @@ export class NotificationMessage extends LitElement {
 
   @state() executingAction: number = -1;
 
-  createRenderRoot(): Element|ShadowRoot {
-    return this;
-  }
-
-  async firstUpdated() {
+  public async firstUpdated(): Promise<void> {
     await new Promise(resolve => window.setTimeout(resolve, 200));
     await this.requestUpdate();
     if (this.notificationDuration > 0) {
@@ -154,7 +150,7 @@ export class NotificationMessage extends LitElement {
     }
   }
 
-  async close(): Promise<void> {
+  public async close(): Promise<void> {
     const onfinish = () => {
       this.parentNode && this.parentNode.removeChild(this);
     };
@@ -177,7 +173,11 @@ export class NotificationMessage extends LitElement {
     }
   }
 
-  render() {
+  protected createRenderRoot(): HTMLElement | DocumentFragment {
+    return this;
+  }
+
+  protected render() {
     const className = Severity.getCssClass(this.notificationSeverity);
     let icon = '';
     switch (this.notificationSeverity) {
