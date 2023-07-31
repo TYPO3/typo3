@@ -128,7 +128,9 @@ abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMoni
      */
     public function _getProperty(string $propertyName)
     {
-        return $this->{$propertyName};
+        return $this->_hasProperty($propertyName) && isset($this->{$propertyName})
+            ? $this->{$propertyName}
+            : null;
     }
 
     /**
@@ -262,7 +264,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMoni
                 }
             }
         } else {
-            if ($this->isPropertyDirty($this->_getCleanProperty($propertyName), $this->{$propertyName}) === true) {
+            if ($this->isPropertyDirty($this->_getCleanProperty($propertyName), $this->_getProperty($propertyName)) === true) {
                 return true;
             }
         }

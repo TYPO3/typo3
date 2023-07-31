@@ -133,4 +133,13 @@ class IsDirtyTest extends FunctionalTestCase
         $updatedBlogOne = $this->blogRepository->findByUid(3);
         self::assertSame($updatedBlogOne->getAdministrator()->getUid(), $blogTwo->getAdministrator()->getUid());
     }
+
+    /**
+     * @test
+     */
+    public function undefinedPropertyIsAlwaysClean(): void
+    {
+        $blogOne = $this->blogRepository->findByUid(1);
+        self::assertFalse($blogOne->_isDirty('undefinedProperty'));
+    }
 }
