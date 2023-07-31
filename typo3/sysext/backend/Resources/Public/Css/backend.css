@@ -3718,7 +3718,7 @@ a.card:hover{--typo3-card-border-color:var(--typo3-card-hover-border-color);text
 .form-row-xxl>.form-group{margin-bottom:0}
 .form-row-xxl>.form-group>[class*=form-row]{margin-bottom:0}
 }
-.form-legend{font-size:var(--typo3-component-font-size);font-weight:var(--typo3-legend-font-weight);word-break:break-all}
+.form-legend{font-size:var(--typo3-component-font-size);font-weight:var(--typo3-legend-font-weight);word-break:break-all;float:none}
 .form-label{word-break:break-all}
 .form-description{opacity:.75;margin-bottom:.5rem}
 .form-label+.form-description{margin-top:-.25rem}
