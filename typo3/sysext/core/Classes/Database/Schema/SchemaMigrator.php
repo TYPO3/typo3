@@ -264,7 +264,7 @@ class SchemaMigrator
         $tables = $defaultTcaSchema->enrich($tables);
         // Ensure the default TCA fields are ordered
         foreach ($tables as $k => $table) {
-            $prioritizedColumnNames = $defaultTcaSchema->getPrioritizedFieldNames($table->getName());
+            $prioritizedColumnNames = $this->getPrioritizedFieldNames($table->getName());
             // no TCA table
             if (empty($prioritizedColumnNames)) {
                 continue;
@@ -292,6 +292,81 @@ class SchemaMigrator
         }
 
         return $tables;
+    }
+
+    /**
+     * Have fields triggered by 'ctrl' settings first in the list. This is done for cosmetic
+     * reasons to improve readability of db schema when opening tables in a database browser.
+     *
+     * @return string[]
+     */
+    protected function getPrioritizedFieldNames(string $tableName): array
+    {
+        if (!isset($GLOBALS['TCA'][$tableName]['ctrl'])) {
+            return [];
+        }
+
+        $prioritizedFieldNames = [
+            'uid',
+            'pid',
+        ];
+
+        $tableDefinition = $GLOBALS['TCA'][$tableName]['ctrl'];
+
+        if (!empty($tableDefinition['crdate'])) {
+            $prioritizedFieldNames[] = $tableDefinition['crdate'];
+        }
+        if (!empty($tableDefinition['tstamp'])) {
+            $prioritizedFieldNames[] = $tableDefinition['tstamp'];
+        }
+        if (!empty($tableDefinition['delete'])) {
+            $prioritizedFieldNames[] = $tableDefinition['delete'];
+        }
+        if (!empty($tableDefinition['enablecolumns']['disabled'])) {
+            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['disabled'];
+        }
+        if (!empty($tableDefinition['enablecolumns']['starttime'])) {
+            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['starttime'];
+        }
+        if (!empty($tableDefinition['enablecolumns']['endtime'])) {
+            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['endtime'];
+        }
+        if (!empty($tableDefinition['enablecolumns']['fe_group'])) {
+            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['fe_group'];
+        }
+        if (!empty($tableDefinition['languageField'])) {
+            $prioritizedFieldNames[] = $tableDefinition['languageField'];
+            if (!empty($tableDefinition['transOrigPointerField'])) {
+                $prioritizedFieldNames[] = $tableDefinition['transOrigPointerField'];
+                $prioritizedFieldNames[] = 'l10n_state';
+            }
+            if (!empty($tableDefinition['translationSource'])) {
+                $prioritizedFieldNames[] = $tableDefinition['translationSource'];
+            }
+            if (!empty($tableDefinition['transOrigDiffSourceField'])) {
+                $prioritizedFieldNames[] = $tableDefinition['transOrigDiffSourceField'];
+            }
+        }
+        if (!empty($tableDefinition['sortby'])) {
+            $prioritizedFieldNames[] = $tableDefinition['sortby'];
+        }
+        if (!empty($tableDefinition['descriptionColumn'])) {
+            $prioritizedFieldNames[] = $tableDefinition['descriptionColumn'];
+        }
+        if (!empty($tableDefinition['editlock'])) {
+            $prioritizedFieldNames[] = $tableDefinition['editlock'];
+        }
+        if (!empty($tableDefinition['origUid'])) {
+            $prioritizedFieldNames[] = $tableDefinition['origUid'];
+        }
+        if (!empty($tableDefinition['versioningWS'])) {
+            $prioritizedFieldNames[] = 't3ver_wsid';
+            $prioritizedFieldNames[] = 't3ver_oid';
+            $prioritizedFieldNames[] = 't3ver_state';
+            $prioritizedFieldNames[] = 't3ver_stage';
+        }
+
+        return $prioritizedFieldNames;
     }
 
     /**

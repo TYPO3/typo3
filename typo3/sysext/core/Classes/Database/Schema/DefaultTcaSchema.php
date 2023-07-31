@@ -48,15 +48,16 @@ class DefaultTcaSchema
      */
     public function enrich(array $tables): array
     {
-        $tables = $this->enrichSingleTableFields($tables);
+        $tables = $this->enrichSingleTableFieldsFromTcaCtrl($tables);
+        $tables = $this->enrichSingleTableFieldsFromTcaColumns($tables);
         $tables = $this->enrichMmTables($tables);
         return $tables;
     }
 
     /**
-     * Add single fields of TCA tables like uid, sorting and similar.
+     * Add single fields like uid, sorting and similar, based on tables TCA 'ctrl' settings.
      */
-    protected function enrichSingleTableFields($tables)
+    protected function enrichSingleTableFieldsFromTcaCtrl($tables)
     {
         foreach ($GLOBALS['TCA'] as $tableName => $tableDefinition) {
             $isTableDefined = $this->isTableDefined($tables, $tableName);
@@ -421,6 +422,27 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addIndex(['t3ver_oid', 't3ver_wsid'], 't3ver_oid');
             }
+        }
+
+        return $tables;
+    }
+
+    /**
+     * Add single fields based on tables TCA 'columns'.
+     */
+    protected function enrichSingleTableFieldsFromTcaColumns($tables)
+    {
+        foreach ($GLOBALS['TCA'] as $tableName => $tableDefinition) {
+            $isTableDefined = $this->isTableDefined($tables, $tableName);
+            if (!$isTableDefined) {
+                continue;
+            }
+
+            // If the table is given in existing $tables list, add all fields to the first
+            // position of that table - in case it is in there multiple times which happens
+            // if extensions add single fields to tables that have been defined in
+            // other ext_tables.sql, too.
+            $tablePosition = $this->getTableFirstPosition($tables, $tableName);
 
             // In the following, columns for TCA fields with a dedicated TCA type are
             // added. In the unlikely case that no columns exist, we can skip the table.
@@ -694,82 +716,6 @@ class DefaultTcaSchema
             }
         }
         return $tables;
-    }
-
-    /**
-     * If the enrich() method adds fields, they should be added in the beginning of a table.
-     * This has is done for cosmetically reasons to improve readability of db schema when
-     * opening tables in a database browser.
-     *
-     * @return string[]
-     */
-    public function getPrioritizedFieldNames(string $tableName): array
-    {
-        if (!isset($GLOBALS['TCA'][$tableName]['ctrl'])) {
-            return [];
-        }
-
-        $prioritizedFieldNames = [
-            'uid',
-            'pid',
-        ];
-
-        $tableDefinition = $GLOBALS['TCA'][$tableName]['ctrl'];
-
-        if (!empty($tableDefinition['crdate'])) {
-            $prioritizedFieldNames[] = $tableDefinition['crdate'];
-        }
-        if (!empty($tableDefinition['tstamp'])) {
-            $prioritizedFieldNames[] = $tableDefinition['tstamp'];
-        }
-        if (!empty($tableDefinition['delete'])) {
-            $prioritizedFieldNames[] = $tableDefinition['delete'];
-        }
-        if (!empty($tableDefinition['enablecolumns']['disabled'])) {
-            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['disabled'];
-        }
-        if (!empty($tableDefinition['enablecolumns']['starttime'])) {
-            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['starttime'];
-        }
-        if (!empty($tableDefinition['enablecolumns']['endtime'])) {
-            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['endtime'];
-        }
-        if (!empty($tableDefinition['enablecolumns']['fe_group'])) {
-            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['fe_group'];
-        }
-        if (!empty($tableDefinition['languageField'])) {
-            $prioritizedFieldNames[] = $tableDefinition['languageField'];
-            if (!empty($tableDefinition['transOrigPointerField'])) {
-                $prioritizedFieldNames[] = $tableDefinition['transOrigPointerField'];
-                $prioritizedFieldNames[] = 'l10n_state';
-            }
-            if (!empty($tableDefinition['translationSource'])) {
-                $prioritizedFieldNames[] = $tableDefinition['translationSource'];
-            }
-            if (!empty($tableDefinition['transOrigDiffSourceField'])) {
-                $prioritizedFieldNames[] = $tableDefinition['transOrigDiffSourceField'];
-            }
-        }
-        if (!empty($tableDefinition['sortby'])) {
-            $prioritizedFieldNames[] = $tableDefinition['sortby'];
-        }
-        if (!empty($tableDefinition['descriptionColumn'])) {
-            $prioritizedFieldNames[] = $tableDefinition['descriptionColumn'];
-        }
-        if (!empty($tableDefinition['editlock'])) {
-            $prioritizedFieldNames[] = $tableDefinition['editlock'];
-        }
-        if (!empty($tableDefinition['origUid'])) {
-            $prioritizedFieldNames[] = $tableDefinition['origUid'];
-        }
-        if (!empty($tableDefinition['versioningWS'])) {
-            $prioritizedFieldNames[] = 't3ver_wsid';
-            $prioritizedFieldNames[] = 't3ver_oid';
-            $prioritizedFieldNames[] = 't3ver_state';
-            $prioritizedFieldNames[] = 't3ver_stage';
-        }
-
-        return $prioritizedFieldNames;
     }
 
     /**
