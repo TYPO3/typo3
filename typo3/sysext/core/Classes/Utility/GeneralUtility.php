@@ -1443,7 +1443,7 @@ class GeneralUtility
      * @param bool $changePermissions If TRUE, permissions are forced to be set
      * @return bool TRUE if the file was successfully opened and written to.
      */
-    public static function writeFile($file, $content, $changePermissions = false)
+    public static function writeFile(string $file, string $content, bool $changePermissions = false): bool
     {
         if (!@is_file($file)) {
             $changePermissions = true;
@@ -1468,9 +1468,9 @@ class GeneralUtility
      *
      * @param string $path Path of file or folder, must not be escaped. Path can be absolute or relative
      * @param bool $recursive If set, also fixes permissions of files and folders in the folder (if $path is a folder)
-     * @return mixed TRUE on success, FALSE on error, always TRUE on Windows OS
+     * @return bool TRUE on success, FALSE on error, always TRUE on Windows OS
      */
-    public static function fixPermissions($path, $recursive = false)
+    public static function fixPermissions(string $path, bool $recursive = false): bool
     {
         $targetPermissions = null;
         if (Environment::isWindows()) {
@@ -1535,7 +1535,7 @@ class GeneralUtility
      * @param string $content Content string to write
      * @return string|null Returns NULL on success, otherwise an error string telling about the problem.
      */
-    public static function writeFileToTypo3tempDir($filepath, $content)
+    public static function writeFileToTypo3tempDir(string $filepath, string $content): ?string
     {
         // Parse filepath into directory and basename:
         $fI = pathinfo($filepath);
@@ -1612,7 +1612,7 @@ class GeneralUtility
      * @param string $newFolder Absolute path to folder, see PHP mkdir() function. Removes trailing slash internally.
      * @return bool TRUE if operation was successful
      */
-    public static function mkdir($newFolder)
+    public static function mkdir(string $newFolder): bool
     {
         $result = @mkdir($newFolder, (int)octdec((string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] ?? '0')));
         if ($result) {
@@ -1626,14 +1626,10 @@ class GeneralUtility
      * sets permissions on newly created directories.
      *
      * @param string $directory Target directory to create
-     * @throws \InvalidArgumentException If $directory is not a string
      * @throws \RuntimeException If directory could not be created
      */
-    public static function mkdir_deep($directory)
+    public static function mkdir_deep(string $directory): void
     {
-        if (!is_string($directory)) {
-            throw new \InvalidArgumentException('The specified directory is of type "' . gettype($directory) . '" but a string is expected.', 1303662955);
-        }
         // Ensure there is only one slash
         $fullPath = rtrim($directory, '/') . '/';
         if ($fullPath !== '/' && !is_dir($fullPath)) {
@@ -1649,13 +1645,11 @@ class GeneralUtility
      * functions sets proper permission mask but does not set proper user and
      * group.
      *
-     * @static
-     * @param string $fullDirectoryPath
-     * @return string Path to the the first created directory in the hierarchy
+     * @return string Path to the first created directory in the hierarchy
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep
      * @throws \RuntimeException If directory could not be created
      */
-    protected static function createDirectoryPath($fullDirectoryPath)
+    protected static function createDirectoryPath(string $fullDirectoryPath): string
     {
         $currentPath = $fullDirectoryPath;
         $firstCreatedPath = '';
@@ -1682,7 +1676,7 @@ class GeneralUtility
      * @param bool $removeNonEmpty Allow deletion of non-empty directories
      * @return bool TRUE if operation was successful
      */
-    public static function rmdir($path, $removeNonEmpty = false)
+    public static function rmdir(string $path, bool $removeNonEmpty = false): bool
     {
         $OK = false;
         // Remove trailing slash
@@ -1739,7 +1733,7 @@ class GeneralUtility
      * @param string $path Path to list directories from
      * @return string[]|string|null Returns an array with the directory entries as values. If no path is provided, the return value will be null.
      */
-    public static function get_dirs($path)
+    public static function get_dirs(string $path): array|string|null
     {
         $dirs = null;
         if ($path) {
@@ -1770,7 +1764,7 @@ class GeneralUtility
      * @param string $excludePattern A regular expression pattern of file names to exclude. For example: 'clear.gif' or '(clear.gif|.htaccess)'. The pattern will be wrapped with: '/^' and '$/'.
      * @return array<string, string>|string Array of the files found, or an error message in case the path could not be opened.
      */
-    public static function getFilesInDir($path, $extensionList = '', $prependPath = false, $order = '', $excludePattern = '')
+    public static function getFilesInDir(string $path, string $extensionList = '', bool $prependPath = false, string $order = '', string $excludePattern = ''): array|string
     {
         $excludePattern = (string)$excludePattern;
         $path = rtrim($path, '/');
@@ -1835,7 +1829,7 @@ class GeneralUtility
      * @param string $excludePattern regex pattern of files/directories to exclude
      * @return array<string, string> An array with the found files/directories.
      */
-    public static function getAllFilesAndFoldersInPath(array $fileArr, $path, $extList = '', $regDirs = false, $recursivityLevels = 99, $excludePattern = '')
+    public static function getAllFilesAndFoldersInPath(array $fileArr, string $path, string $extList = '', bool $regDirs = false, int $recursivityLevels = 99, string $excludePattern = ''): array
     {
         if ($regDirs) {
             $fileArr[md5($path)] = $path;
@@ -1859,7 +1853,7 @@ class GeneralUtility
      * @param string $prefixToRemove The prefix path to remove (if found as first part of string!)
      * @return string[]|string The input $fileArr processed, or a string with an error message, when an error occurred.
      */
-    public static function removePrefixPathFromList(array $fileArr, string $prefixToRemove)
+    public static function removePrefixPathFromList(array $fileArr, string $prefixToRemove): array|string
     {
         foreach ($fileArr as &$absFileRef) {
             if (str_starts_with($absFileRef, $prefixToRemove)) {
@@ -1885,9 +1879,8 @@ class GeneralUtility
      * For example "fileadmin/directory/../other_directory/" will be resolved to "fileadmin/other_directory/"
      *
      * @param string $pathStr File path in which "/../" is resolved
-     * @return string
      */
-    public static function resolveBackPath($pathStr)
+    public static function resolveBackPath(string $pathStr): string
     {
         if (!str_contains($pathStr, '..')) {
             return $pathStr;
@@ -1967,7 +1960,7 @@ class GeneralUtility
      * @param string $measurement The measurement (e.g. "100k")
      * @return int The bytes value (e.g. 102400)
      */
-    public static function getBytesFromSizeMeasurement($measurement)
+    public static function getBytesFromSizeMeasurement(string $measurement): int
     {
         $bytes = (float)$measurement;
         if (stripos($measurement, 'G')) {
@@ -1996,7 +1989,7 @@ class GeneralUtility
      * @param string $file Relative path to file including all potential query parameters (not htmlspecialchared yet)
      * @return string Relative path with version filename including the timestamp
      */
-    public static function createVersionNumberedFilename($file): string
+    public static function createVersionNumberedFilename(string $file): string
     {
         $isFrontend = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
@@ -2056,7 +2049,7 @@ class GeneralUtility
      * @param string $content JavaScript to write to file.
      * @return string filename to include in the <script> tag
      */
-    public static function writeJavaScriptContentToTemporaryFile(string $content)
+    public static function writeJavaScriptContentToTemporaryFile(string $content): string
     {
         $script = 'typo3temp/assets/js/' . md5($content) . '.js';
         if (!@is_file(Environment::getPublicPath() . '/' . $script)) {
@@ -2072,7 +2065,7 @@ class GeneralUtility
      * @param string $content CSS styles to write to file.
      * @return string filename to include in the <link> tag
      */
-    public static function writeStyleSheetContentToTemporaryFile(string $content)
+    public static function writeStyleSheetContentToTemporaryFile(string $content): string
     {
         $script = 'typo3temp/assets/css/' . md5($content) . '.css';
         if (!@is_file(Environment::getPublicPath() . '/' . $script)) {
@@ -2088,7 +2081,7 @@ class GeneralUtility
      * @param string|bool|array<string, string|bool|null>|null $value
      * @internal
      */
-    public static function setIndpEnv($envName, $value)
+    public static function setIndpEnv(string $envName, string|bool|array|null $value)
     {
         self::$indpEnvCache[$envName] = $value;
     }
@@ -2101,7 +2094,7 @@ class GeneralUtility
      * @return string|bool|array<string, string|bool|null>|null Value based on the input key, independent of server/OS environment.
      * @throws \UnexpectedValueException
      */
-    public static function getIndpEnv($getEnvName)
+    public static function getIndpEnv(string $getEnvName): string|bool|array|null
     {
         if (array_key_exists($getEnvName, self::$indpEnvCache)) {
             return self::$indpEnvCache[$getEnvName];
@@ -2378,10 +2371,8 @@ class GeneralUtility
      * HTTPS request, as possible proxies are not taken into
      * account. It provides raw information about the current
      * webservers configuration only.
-     *
-     * @return bool
      */
-    protected static function webserverUsesHttps()
+    protected static function webserverUsesHttps(): bool
     {
         if (!empty($_SERVER['SSL_SESSION_ID'])) {
             return true;

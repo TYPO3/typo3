@@ -2428,18 +2428,6 @@ final class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::mkdir_deep('http://localhost');
     }
 
-    /**
-     * @test
-     */
-    public function mkdirDeepThrowsExceptionIfBaseDirectoryIsNotOfTypeString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1303662955);
-
-        // @phpstan-ignore-next-line We're explicitly checking the behavior for a contract violation.
-        GeneralUtility::mkdir_deep([]);
-    }
-
     ///////////////////////////////
     // Tests concerning rmdir
     ///////////////////////////////
