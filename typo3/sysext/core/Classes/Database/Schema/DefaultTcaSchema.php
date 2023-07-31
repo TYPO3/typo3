@@ -686,11 +686,14 @@ class DefaultTcaSchema
                     }
                 }
 
-                // @todo: If there is no "uid" primary key field, the combination of "uid_local & uid_foreign", or
-                //        "uid_local & uid_foreign & tablenames & fieldname" *should* be specified as combined primary key.
-                //        However, workspaces has a bug and currently inserts broken duplicate rows. A primary
-                //        key, or at least an unique constraint should be added when this is resolved.
-                //        Note especially galera clusters rely on this.
+                // Primary key handling: If there is a uid field, PK has been added above already.
+                // Otherwise, the PK combination is either "uid_local, uid_foreign", or
+                // "uid_local, uid_foreign, tablenames, fieldname" if this is a multi-foreign setup.
+                if (!$hasUid && $tables[$tablePosition]->getPrimaryKey() === null && !empty($tcaColumn['config']['MM_oppositeUsage'])) {
+                    $tables[$tablePosition]->setPrimaryKey(['uid_local', 'uid_foreign', 'tablenames', 'fieldname']);
+                } elseif (!$hasUid && $tables[$tablePosition]->getPrimaryKey() === null) {
+                    $tables[$tablePosition]->setPrimaryKey(['uid_local', 'uid_foreign']);
+                }
             }
         }
         return $tables;

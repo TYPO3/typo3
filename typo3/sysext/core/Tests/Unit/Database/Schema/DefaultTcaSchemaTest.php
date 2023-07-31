@@ -761,6 +761,12 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                     'uid_foreign',
                     ['uid_foreign']
                 ),
+                new Index(
+                    'primary',
+                    ['uid_local', 'uid_foreign'],
+                    true,
+                    true
+                ),
             ]
         );
         self::assertEquals($expectedMmTable, $result[1]);
@@ -917,6 +923,12 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 new Index(
                     'uid_foreign',
                     ['uid_foreign']
+                ),
+                new Index(
+                    'primary',
+                    ['uid_local', 'uid_foreign', 'tablenames', 'fieldname'],
+                    true,
+                    true
                 ),
             ]
         );
