@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ExtendedSingletonClassFixture;
-use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFilesystemFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityMakeInstanceInjectLoggerFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityTestClass;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OriginalClassFixture;
@@ -1932,11 +1931,11 @@ final class GeneralUtilityTest extends UnitTestCase
         }
         // Create and prepare test file
         $filename = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
-        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
+        GeneralUtility::writeFileToTypo3tempDir($filename, '42');
         $currentGroupId = posix_getegid();
         // Set target group and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $currentGroupId;
-        GeneralUtilityFilesystemFixture::fixPermissions($filename);
+        GeneralUtility::fixPermissions($filename);
         clearstatcache();
         self::assertEquals($currentGroupId, filegroup($filename));
     }
@@ -1951,11 +1950,11 @@ final class GeneralUtilityTest extends UnitTestCase
         }
         // Create and prepare test file
         $filename = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
-        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
+        GeneralUtility::writeFileToTypo3tempDir($filename, '42');
         chmod($filename, 482);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
-        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($filename);
+        $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
         clearstatcache();
         self::assertTrue($fixPermissionsResult);
         self::assertEquals('0660', substr(decoct(fileperms($filename)), 2));
@@ -1971,11 +1970,11 @@ final class GeneralUtilityTest extends UnitTestCase
         }
         // Create and prepare test file
         $filename = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
-        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
+        GeneralUtility::writeFileToTypo3tempDir($filename, '42');
         chmod($filename, 482);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
-        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($filename);
+        $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
         clearstatcache();
         self::assertTrue($fixPermissionsResult);
         self::assertEquals('0660', substr(decoct(fileperms($filename)), 2));
@@ -1991,11 +1990,11 @@ final class GeneralUtilityTest extends UnitTestCase
         }
         // Create and prepare test directory
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
-        GeneralUtilityFilesystemFixture::mkdir($directory);
+        GeneralUtility::mkdir($directory);
         chmod($directory, 1551);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
-        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($directory);
+        $fixPermissionsResult = GeneralUtility::fixPermissions($directory);
         clearstatcache();
         self::assertTrue($fixPermissionsResult);
         self::assertEquals('0770', substr(decoct(fileperms($directory)), 1));
@@ -2011,11 +2010,11 @@ final class GeneralUtilityTest extends UnitTestCase
         }
         // Create and prepare test directory
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
-        GeneralUtilityFilesystemFixture::mkdir($directory);
+        GeneralUtility::mkdir($directory);
         chmod($directory, 1551);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
-        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($directory . '/');
+        $fixPermissionsResult = GeneralUtility::fixPermissions($directory . '/');
         // Get actual permissions and clean up
         clearstatcache();
         self::assertTrue($fixPermissionsResult);
@@ -2032,11 +2031,11 @@ final class GeneralUtilityTest extends UnitTestCase
         }
         // Create and prepare test directory
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
-        GeneralUtilityFilesystemFixture::mkdir($directory);
+        GeneralUtility::mkdir($directory);
         chmod($directory, 1551);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
-        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($directory);
+        $fixPermissionsResult = GeneralUtility::fixPermissions($directory);
         // Get actual permissions and clean up
         clearstatcache();
         self::assertTrue($fixPermissionsResult);
@@ -2053,15 +2052,15 @@ final class GeneralUtilityTest extends UnitTestCase
         }
         // Create and prepare test directory and file structure
         $baseDirectory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
-        GeneralUtilityFilesystemFixture::mkdir($baseDirectory);
+        GeneralUtility::mkdir($baseDirectory);
         chmod($baseDirectory, 1751);
-        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($baseDirectory . '/file', '42');
+        GeneralUtility::writeFileToTypo3tempDir($baseDirectory . '/file', '42');
         chmod($baseDirectory . '/file', 482);
-        GeneralUtilityFilesystemFixture::mkdir($baseDirectory . '/foo');
+        GeneralUtility::mkdir($baseDirectory . '/foo');
         chmod($baseDirectory . '/foo', 1751);
-        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($baseDirectory . '/foo/file', '42');
+        GeneralUtility::writeFileToTypo3tempDir($baseDirectory . '/foo/file', '42');
         chmod($baseDirectory . '/foo/file', 482);
-        GeneralUtilityFilesystemFixture::mkdir($baseDirectory . '/.bar');
+        GeneralUtility::mkdir($baseDirectory . '/.bar');
         chmod($baseDirectory . '/.bar', 1751);
         // Use this if writeFileToTypo3tempDir is fixed to create hidden files in subdirectories
         // \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($baseDirectory . '/.bar/.file', '42');
@@ -2073,7 +2072,7 @@ final class GeneralUtilityTest extends UnitTestCase
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
-        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($baseDirectory, true);
+        $fixPermissionsResult = GeneralUtility::fixPermissions($baseDirectory, true);
         // Get actual permissions
         clearstatcache();
         $resultBaseDirectoryPermissions = substr(decoct(fileperms($baseDirectory)), 1);
@@ -2139,10 +2138,10 @@ final class GeneralUtilityTest extends UnitTestCase
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $filename = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
-        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
+        GeneralUtility::writeFileToTypo3tempDir($filename, '42');
         chmod($filename, 482);
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']);
-        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($filename);
+        $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
         clearstatcache();
         self::assertTrue($fixPermissionsResult);
         self::assertEquals('0644', substr(decoct(fileperms($filename)), 2));
@@ -2157,10 +2156,10 @@ final class GeneralUtilityTest extends UnitTestCase
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
-        GeneralUtilityFilesystemFixture::mkdir($directory);
+        GeneralUtility::mkdir($directory);
         chmod($directory, 1551);
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']);
-        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($directory);
+        $fixPermissionsResult = GeneralUtility::fixPermissions($directory);
         clearstatcache();
         self::assertTrue($fixPermissionsResult);
         self::assertEquals('0755', substr(decoct(fileperms($directory)), 1));
@@ -2175,7 +2174,7 @@ final class GeneralUtilityTest extends UnitTestCase
     public function mkdirCreatesDirectory(): void
     {
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
-        $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
+        $mkdirResult = GeneralUtility::mkdir($directory);
         clearstatcache();
         self::assertTrue($mkdirResult);
         self::assertDirectoryExists($directory);
@@ -2187,7 +2186,7 @@ final class GeneralUtilityTest extends UnitTestCase
     public function mkdirCreatesHiddenDirectory(): void
     {
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('.test_');
-        $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
+        $mkdirResult = GeneralUtility::mkdir($directory);
         clearstatcache();
         self::assertTrue($mkdirResult);
         self::assertDirectoryExists($directory);
@@ -2199,7 +2198,7 @@ final class GeneralUtilityTest extends UnitTestCase
     public function mkdirCreatesDirectoryWithTrailingSlash(): void
     {
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_') . '/';
-        $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
+        $mkdirResult = GeneralUtility::mkdir($directory);
         clearstatcache();
         self::assertTrue($mkdirResult);
         self::assertDirectoryExists($directory);
@@ -2216,7 +2215,7 @@ final class GeneralUtilityTest extends UnitTestCase
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         $oldUmask = umask(19);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0772';
-        GeneralUtilityFilesystemFixture::mkdir($directory);
+        GeneralUtility::mkdir($directory);
         clearstatcache();
         $resultDirectoryPermissions = substr(decoct(fileperms($directory)), 1);
         umask($oldUmask);
