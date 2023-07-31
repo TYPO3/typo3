@@ -35,10 +35,10 @@ The following PHP classes that have previously been marked as deprecated with v1
 - :php:`\TYPO3\CMS\Core\TypoScript\TemplateService`
 - :php:`\TYPO3\CMS\Core\Utility\ResourceUtility`
 - :php:`\TYPO3\CMS\Dashboard\Views\Factory`
-- :php:`\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher`
-- :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin`
 - :php:`\TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons\CshViewHelper`
 - :php:`\TYPO3\CMS\Fluid\ViewHelpers\Be\Labels\CshViewHelper`
+- :php:`\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher`
+- :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin`
 
 The following PHP classes have been declared :php:`final`:
 
@@ -75,9 +75,9 @@ The following PHP class aliases that have previously been marked as deprecated w
 
 - :php:`\TYPO3\CMS\Backend\ElementBrowser\FileBrowser`
 - :php:`\TYPO3\CMS\Backend\ElementBrowser\FolderBrowser`
-- :php:`\TYPO3\CMS\Backend\Form\Element\InputLinkElement`
-- :php:`\TYPO3\CMS\Backend\Form\Element\InputDateTimeElement`
 - :php:`\TYPO3\CMS\Backend\Form\Element\InputColorPickerElement`
+- :php:`\TYPO3\CMS\Backend\Form\Element\InputDateTimeElement`
+- :php:`\TYPO3\CMS\Backend\Form\Element\InputLinkElement`
 - :php:`\TYPO3\CMS\Backend\Provider\PageTsBackendLayoutDataProvider`
 - :php:`\TYPO3\CMS\Frontend\Service\TypoLinkCodecService`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkResultFactory`
@@ -91,12 +91,12 @@ The following PHP class aliases that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Recordlist\Controller\AccessDeniedException`
 - :php:`\TYPO3\CMS\Recordlist\Controller\ClearPageCacheController`
 - :php:`\TYPO3\CMS\Recordlist\Controller\ElementBrowserController`
-- :php:`\TYPO3\CMS\Recordlist\Controller\RecordListController`
 - :php:`\TYPO3\CMS\Recordlist\Controller\RecordDownloadController`
-- :php:`\TYPO3\CMS\Recordlist\Event\RenderAdditionalContentToRecordListEvent`
+- :php:`\TYPO3\CMS\Recordlist\Controller\RecordListController`
 - :php:`\TYPO3\CMS\Recordlist\Event\ModifyRecordListHeaderColumnsEvent`
 - :php:`\TYPO3\CMS\Recordlist\Event\ModifyRecordListRecordActionsEvent`
 - :php:`\TYPO3\CMS\Recordlist\Event\ModifyRecordListTableActionsEvent`
+- :php:`\TYPO3\CMS\Recordlist\Event\RenderAdditionalContentToRecordListEvent`
 - :php:`\TYPO3\CMS\Recordlist\LinkHandler\AbstractLinkHandler`
 - :php:`\TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler`
 - :php:`\TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHandler`
@@ -109,8 +109,8 @@ The following PHP class aliases that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList`
 - :php:`\TYPO3\CMS\Recordlist\RecordList\DownloadRecordList`
 - :php:`\TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface`
-- :php:`\TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent`
 - :php:`\TYPO3\CMS\Recordlist\View\FolderUtilityRenderer`
+- :php:`\TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent`
 
 The following PHP class methods that have previously been marked as deprecated with v12 have been removed:
 
@@ -140,8 +140,8 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Core\Database\Query\QueryBuilder->execute`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getExtURL`
 - :php:`\TYPO3\CMS\Core\Environment->getBackendPath`
-- :php:`\TYPO3\CMS\Core\Localization\Locales->getIsoMapping`
 - :php:`\TYPO3\CMS\Core\Localization\LanguageService->getLL`
+- :php:`\TYPO3\CMS\Core\Localization\Locales->getIsoMapping`
 - :php:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction->shallLoadRequireJs`
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->loadRequireJs`
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->loadRequireJsModule`
@@ -182,6 +182,10 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getFormat`
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getRequest`
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->getTemplatePathAndFilename`
+- :php:`\TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->getErrorMessage`
+- :php:`\TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->isPropagationStopped`
+- :php:`\TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->setAsInvalid`
+- :php:`\TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->setHashedPassword`
 - :php:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->getUserTSconf`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrlWrap`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkEnableFields`
@@ -193,48 +197,45 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->whichWorkspace`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->createFromUriString`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getATagParams`
-- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getTypoLink`
-- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getUrlToCurrentLocation`
-- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getTypoLink_URL`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getMailTo`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getQueryArguments`
 - :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getTreeList`
-- :php:`\TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->setAsInvalid`
-- :php:`\TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->setHashedPassword`
-- :php:`\TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent->getErrorMessage`
-- :php:`\TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent->addModule`
-- :php:`\TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent->getModules`
+- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getTypoLink_URL`
+- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getTypoLink`
+- :php:`\TYPO3\CMS\Frontend\Typolink\LinkFactory->getUrlToCurrentLocation`
 - :php:`\TYPO3\CMS\Scheduler\Scheduler->addTask`
-- :php:`\TYPO3\CMS\Scheduler\Scheduler->removeTask`
-- :php:`\TYPO3\CMS\Scheduler\Scheduler->saveTask`
-- :php:`\TYPO3\CMS\Scheduler\Scheduler->fetchTask`
 - :php:`\TYPO3\CMS\Scheduler\Scheduler->fetchTaskRecord`
 - :php:`\TYPO3\CMS\Scheduler\Scheduler->fetchTaskWithCondition`
+- :php:`\TYPO3\CMS\Scheduler\Scheduler->fetchTask`
 - :php:`\TYPO3\CMS\Scheduler\Scheduler->isValidTaskObject`
+- :php:`\TYPO3\CMS\Scheduler\Scheduler->removeTask`
+- :php:`\TYPO3\CMS\Scheduler\Scheduler->saveTask`
 - :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->isExecutionRunning`
 - :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->markExecution`
-- :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkExecution`
-- :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkAllExecutions`
 - :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->remove`
+- :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkAllExecutions`
+- :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkExecution`
+- :php:`\TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent->addModule`
+- :php:`\TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent->getModules`
 
 The following PHP static class methods that have previously been marked as deprecated for v12 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::ADMCMD_previewCmds`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::cshItem`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getClickMenuOnIconTagParameters`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getDropdownMenu`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getPreviewUrl`
-- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getThumbnailUrl`
-- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordToolTip`
-- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getClickMenuOnIconTagParameters`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getThumbnailUrl`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalCode`
-- :php:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::transform`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES`
 - :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get`
 - :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances`
 - :php:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction::forRequireJS`
+- :php:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::transform`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::debugInPopUpWindow`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::debugRows`
 - :php:`\TYPO3\CMS\Core\Utility\DebugUtility::printArray`
@@ -250,32 +251,35 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::_POST`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript`
-- :php:`TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule`
-- :php:`TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter`
+- :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule`
+- :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter`
 
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:
 
 - :php:`\TYPO3\CMS\Backend\Form\FormDataCompiler->compile` (argument 2 is now required)
 - :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage->setSeverity` (argument 1 is now of type :php:`ContextualFeedbackSeverity`)
-- :php:`\TYPO3\CMS\Core\Messaging\FlashMessages->__construct` (argument 3 is now of type :php:`ContextualFeedbackSeverity`)
-- :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->getAllMessages` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
-- :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->getAllMessagesAndFlush` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
-- :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->removeAllFlashMessagesFromSession` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->clear` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->getAllMessagesAndFlush` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->getAllMessages` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->removeAllFlashMessagesFromSession` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessages->__construct` (argument 3 is now of type :php:`ContextualFeedbackSeverity`)
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->setLanguage()` (argument 1 is now of type :php:`Locale`)
 - :php:`\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility->addMessageToFlashMessageQueue` (argument 2 is now of type :php:`ContextualFeedbackSeverity|null`)
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode` (argument 4 :php:`$limit` has been removed)
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->addFlashMessage` (argument 2 is now of type :php:`ContextualFeedbackSeverity`)
+- :php:`\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate` (argument 4 has been removed)
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->start` (argument 3 :php:`$request` has been removed)
-- :php:`\TYPO3\CMS\Core\Page\PageRenderer->setLanguage()` (argument 1 is now of type :php:`Locale`)
 - :php:`\TYPO3\CMS\Reports\Status->__construct` (argument 4 is now of type :php:`ContextualFeedbackSeverity`)
 - :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider->addMessage` (argument 2 is now of type :php:`ContextualFeedbackSeverity`)
-- :php:`\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate` (argument 4 has been removed)
 
 The following public class properties have been dropped:
 
-- :php:`\TYPO3\CMS\Core\Localization\LanguageService->debugKey`
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->BE_USER`
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->thisScript`
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService->debugKey`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkLD`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkTarget`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkUrl`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrl`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->extTarget`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fileTarget`
@@ -284,9 +288,6 @@ The following public class properties have been dropped:
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tmpl`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->xhtmlDoctype`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->xhtmlVersion`
-- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkLD`
-- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkTarget`
-- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkUrl`
 
 The following class methods visibility have been changed to protected:
 
@@ -430,10 +431,6 @@ The following single field configurations have been removed from TCA:
 
 - :php:`MM_insert_fields` (for TCA fields with `MM` configuration)
 
-The following single field configurations have been removed from :php:`$GLOBALS['TYPO3_USER_SETTINGS']`:
-
-- :php:`dummy`
-
 The following events have been removed:
 
 - :php:`\TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent`
@@ -474,10 +471,6 @@ The following features have been removed:
 
 - Regular expression based validators in ext:form backend UI
 
-The following database tables have been removed:
-
-- :sql:`table`
-
 The following database table fields have been removed:
 
 - :sql:`fe_users.TSconfig`
@@ -510,18 +503,6 @@ The following JavaScript methods have been removed:
 The following CKEditor plugins have been removed:
 
 - :js:`SoftHyphen`
-
-The following RequireJS module names have been removed:
-
-- :js:`Dummy`
-
-The following module configuration have been removed:
-
-- :php:`dummy`
-
-The following command line options have been removed:
-
-- :bash:`a:command --option`
 
 The following dependency injection service aliases have been removed:
 

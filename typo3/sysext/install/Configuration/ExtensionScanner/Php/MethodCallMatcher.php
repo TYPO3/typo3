@@ -5687,6 +5687,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-100355-DeprecateMethodsInPasswordChangeEventInExtfelogin.rst',
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->determineScriptUrl' => [
