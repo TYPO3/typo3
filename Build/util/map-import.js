@@ -12,6 +12,15 @@ const isContrib = (importValue) => {
 
 const mapImport = (targetModule, context) => {
 
+  if (
+    targetModule.charAt(0) === '.' &&
+    (context.indexOf('node_modules/lit') !== -1 || context.indexOf('node_modules/@lit/') !== -1)
+  ) {
+    return path
+      .resolve(path.dirname(context), targetModule)
+      .replace(/^.*\/node_modules\//g, '');
+  }
+
   if (isContrib(targetModule)) {
     return targetModule;
   }

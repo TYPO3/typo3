@@ -1,4 +1,4 @@
-import{_$LH as o}from"./lit-html.js";
+import{_$LH as o}from"lit-html/lit-html.js";
 /**
  * @license
  * Copyright 2020 Google LLC

@@ -1,4 +1,4 @@
-import{directive as s}from"../directive.js";import{UnsafeHTMLDirective as e}from"./unsafe-html.js";
+import{directive as s}from"lit-html/directive.js";import{UnsafeHTMLDirective as e}from"lit-html/directives/unsafe-html.js";
 /**
  * @license
  * Copyright 2017 Google LLC

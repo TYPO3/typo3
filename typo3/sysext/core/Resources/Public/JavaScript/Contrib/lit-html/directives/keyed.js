@@ -1,4 +1,4 @@
-import{nothing as r}from"../lit-html.js";import{directive as t,Directive as e}from"../directive.js";import{setCommittedValue as s}from"../directive-helpers.js";
+import{nothing as r}from"lit-html/lit-html.js";import{directive as t,Directive as e}from"lit-html/directive.js";import{setCommittedValue as s}from"lit-html/directive-helpers.js";
 /**
  * @license
  * Copyright 2021 Google LLC

@@ -1,4 +1,4 @@
-import{noChange as t}from"../lit-html.js";import{directive as r,Directive as e,PartType as n}from"../directive.js";
+import{noChange as t}from"lit-html/lit-html.js";import{directive as r,Directive as e,PartType as n}from"lit-html/directive.js";
 /**
  * @license
  * Copyright 2020 Google LLC

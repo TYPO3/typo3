@@ -1,4 +1,4 @@
-import{nothing as i}from"../lit-html.js";import{AsyncDirective as t}from"../async-directive.js";import{directive as s}from"../directive.js";
+import{nothing as i}from"lit-html/lit-html.js";import{AsyncDirective as t}from"lit-html/async-directive.js";import{directive as s}from"lit-html/directive.js";
 /**
  * @license
  * Copyright 2020 Google LLC

@@ -1,4 +1,4 @@
-import{render as t,nothing as i}from"../lit-html.js";import{directive as s,Directive as e}from"../directive.js";import{isTemplateResult as o,getCommittedValue as r,setCommittedValue as h,insertPart as n,clearPart as c}from"../directive-helpers.js";
+import{render as t,nothing as i}from"lit-html/lit-html.js";import{directive as s,Directive as e}from"lit-html/directive.js";import{isTemplateResult as o,getCommittedValue as r,setCommittedValue as h,insertPart as n,clearPart as c}from"lit-html/directive-helpers.js";
 /**
  * @license
  * Copyright 2017 Google LLC

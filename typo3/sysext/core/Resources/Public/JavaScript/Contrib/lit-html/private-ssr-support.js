@@ -1,4 +1,4 @@
-import{_$LH as e,noChange as t}from"./lit-html.js";
+import{_$LH as e,noChange as t}from"lit-html/lit-html.js";
 /**
  * @license
  * Copyright 2019 Google LLC

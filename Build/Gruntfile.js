@@ -305,6 +305,7 @@ module.exports = function (grunt) {
       ts_files: {
         options: {
           process: (source, srcpath) => {
+            /* note: This requires grunt-task 'es-module-lexer-init' to be executed prior to this task */
             const [imports] = esModuleLexer.parse(source, srcpath);
 
             source = require('./util/map-import.js').mapImports(source, srcpath, imports);
@@ -405,7 +406,13 @@ module.exports = function (grunt) {
       },
       lit: {
         options: {
-          process: (content) => content.replace(/\/\/# sourceMappingURL=[^ ]+/, '')
+          process: (source, srcpath) => {
+            /* note: This requires grunt-task 'es-module-lexer-init' to be executed prior to this task */
+            const [imports] = esModuleLexer.parse(source, srcpath);
+            source = require('./util/map-import.js').mapImports(source, srcpath, imports);
+
+            return source.replace(/\/\/# sourceMappingURL=[^ ]+/, '');
+          }
         },
         files: [{
           expand: true,
@@ -901,7 +908,7 @@ module.exports = function (grunt) {
       compile_assets: ['scripts', 'css'],
       compile_flags: ['flags-build'],
       minify_assets: ['terser:thirdparty', 'terser:t3editor'],
-      copy_static: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy:lit', 'copy:t3editor'],
+      copy_static: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy-lit', 'copy:t3editor'],
       build: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy:t3editor'],
     },
   });
@@ -966,6 +973,8 @@ module.exports = function (grunt) {
    */
   grunt.registerTask('compile-typescript', ['tsconfig', 'eslint', 'exec:ts']);
 
+  grunt.registerTask('copy-lit', ['es-module-lexer-init', 'copy:lit']);
+
   /**
    * grunt scripts task
    *
@@ -976,7 +985,7 @@ module.exports = function (grunt) {
    * - 2) Copy all generated JavaScript files to public folders
    * - 3) Minify build
    */
-  grunt.registerTask('scripts', ['compile-typescript', 'newer:terser:typescript', 'newer:copy:ts_files']);
+  grunt.registerTask('scripts', ['compile-typescript', 'newer:terser:typescript', 'es-module-lexer-init', 'newer:copy:ts_files']);
 
   /**
    * grunt clear-build task
@@ -1009,6 +1018,22 @@ module.exports = function (grunt) {
 
     grunt.file.write('tsconfig.json', JSON.stringify(config, null, 4) + '\n');
   });
+
+  /**
+   * @internal
+   */
+  grunt.task.registerTask('es-module-lexer-init', function() {
+    const done = this.async();
+
+    esModuleLexer.init
+      .then(() => done(true))
+      .catch((e) => done(e));
+  });
+
+  /**
+   * @internal
+   */
+  grunt.registerTask('copy-lit', ['es-module-lexer-init', 'copy:lit']);
 
   /**
    * Outputs a "bell" character. When output, modern terminals flash shortly or produce a notification (usually configurable).

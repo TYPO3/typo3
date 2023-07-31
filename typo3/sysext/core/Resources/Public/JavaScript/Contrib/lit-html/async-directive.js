@@ -1,4 +1,4 @@
-import{isSingleExpression as i}from"./directive-helpers.js";import{Directive as t,PartType as e}from"./directive.js";export{Directive,PartType,directive}from"./directive.js";
+import{isSingleExpression as i}from"lit-html/directive-helpers.js";import{Directive as t,PartType as e}from"lit-html/directive.js";export{Directive,PartType,directive}from"lit-html/directive.js";
 /**
  * @license
  * Copyright 2017 Google LLC
