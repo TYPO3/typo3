@@ -34,6 +34,7 @@ import Utility from '@typo3/backend/utility';
 import { selector } from '@typo3/core/literals';
 import '@typo3/backend/form-engine/element/extra/char-counter';
 import type { PromiseControls } from '@typo3/backend/event/interaction-request-assignment';
+import Hotkeys from '@typo3/backend/hotkeys';
 
 interface OnFieldChangeItem {
   name: string;
@@ -1272,6 +1273,12 @@ export default (function() {
   };
 
   FormEngine.saveDocument = function(): void {
+    const currentlyFocussed = document.activeElement;
+    if (currentlyFocussed instanceof HTMLInputElement || currentlyFocussed instanceof HTMLSelectElement || currentlyFocussed instanceof HTMLTextAreaElement) {
+      // Blur currently focussed :input element to trigger FormEngine's internal data normalization
+      currentlyFocussed.blur();
+    }
+
     FormEngine.formElement.doSave.value = 1;
     FormEngine.formElement.requestSubmit();
   };
@@ -1291,6 +1298,13 @@ export default (function() {
       FormEngine.Validation.initialize(FormEngine.formElement);
       FormEngine.reinitialize();
       $('#t3js-ui-block').remove();
+
+      Hotkeys.setScope('backend/form-engine');
+      Hotkeys.register([Hotkeys.normalizedCtrlModifierKey, 's'], (e: KeyboardEvent): void => {
+        e.preventDefault();
+
+        FormEngine.saveDocument();
+      }, { scope: 'backend/form-engine', allowOnEditables: true, bindElement: FormEngine.formElement._savedok });
     });
   };
 

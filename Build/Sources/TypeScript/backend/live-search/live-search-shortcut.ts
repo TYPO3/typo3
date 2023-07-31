@@ -1,25 +1,13 @@
 import { BroadcastMessage } from '@typo3/backend/broadcast-message';
 import BroadcastService from '@typo3/backend/broadcast-service';
-import RegularEvent from '@typo3/core/event/regular-event';
 import Modal from '../modal';
-
-enum ModifierKeys {
-  META = 'Meta',
-  CTRL = 'Control'
-}
+import Hotkeys from '@typo3/backend/hotkeys';
+import DocumentService from '@typo3/core/document-service';
 
 class LiveSearchShortcut {
   public constructor() {
-    // navigator.platform is deprecated, but https://developer.mozilla.org/en-US/docs/Web/API/User-Agent_Client_Hints_API is experimental for now
-    const expectedModifierKey = navigator.platform.toLowerCase().startsWith('mac') ? ModifierKeys.META : ModifierKeys.CTRL;
-
-    new RegularEvent('keydown', (e: KeyboardEvent): void => {
-      if (e.repeat) {
-        return;
-      }
-
-      const modifierKeyIsDown = expectedModifierKey === ModifierKeys.META && e.metaKey || expectedModifierKey === ModifierKeys.CTRL && e.ctrlKey;
-      if (modifierKeyIsDown && ['k', 'K'].includes(e.key)) {
+    DocumentService.ready().then((): void => {
+      Hotkeys.register([Hotkeys.normalizedCtrlModifierKey, 'k'], (e: KeyboardEvent): void => {
         if (Modal.currentModal) {
           // A modal window is already active, keep default behavior of browser
           return;
@@ -33,8 +21,8 @@ class LiveSearchShortcut {
           'trigger-open',
           {}
         ));
-      }
-    }).bindTo(document);
+      }, { allowOnEditables: true /* @todo: bindElement cannot be used at the moment as the suitable element exists twice! */ });
+    });
   }
 }
 

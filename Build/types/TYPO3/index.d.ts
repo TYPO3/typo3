@@ -8,6 +8,8 @@ declare namespace TYPO3 {
   export let FORMEDITOR_APP: import('@typo3/form/backend/form-editor').FormEditor;
   export let FORMMANAGER_APP: import('@typo3/form/backend/form-manager').FormManager;
   export let FormEngine: typeof import('@typo3/backend/form-engine').default;
+  export let HotkeyStorage: typeof import('@typo3/backend/hotkeys/hotkey-storage').default;
+  export let Hotkeys: typeof import('@typo3/backend/hotkeys').default;
   export let Icons: typeof import('@typo3/backend/icons').default;
   export let InfoWindow: typeof import('@typo3/backend/info-window').default;
   export let LoginRefresh: typeof import('@typo3/backend/login-refresh').default;
