@@ -1,6 +1,6 @@
-import{property as r}from"@lit/reactive-element/decorators/property.js";
+import{property as t}from"@lit/reactive-element/decorators/property.js";
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */function t(t){return r({...t,state:!0})}export{t as state};
+ */function r(r){return t({...r,state:!0,attribute:!1})}export{r as state};
