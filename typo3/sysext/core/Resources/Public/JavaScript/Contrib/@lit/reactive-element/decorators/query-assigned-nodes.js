@@ -1,4 +1,4 @@
-import{decorateProperty as e}from"./base.js";import{queryAssignedElements as t}from"./query-assigned-elements.js";
+import{decorateProperty as e}from"@lit/reactive-element/decorators/base.js";import{queryAssignedElements as t}from"@lit/reactive-element/decorators/query-assigned-elements.js";
 /**
  * @license
  * Copyright 2017 Google LLC

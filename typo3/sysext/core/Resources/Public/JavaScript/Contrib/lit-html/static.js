@@ -1,4 +1,4 @@
-import{html as t,svg as r}from"./lit-html.js";
+import{html as t,svg as r}from"lit-html/lit-html.js";
 /**
  * @license
  * Copyright 2020 Google LLC

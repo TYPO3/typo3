@@ -1,4 +1,4 @@
-import{nothing as t}from"../lit-html.js";
+import{nothing as t}from"lit-html/lit-html.js";
 /**
  * @license
  * Copyright 2018 Google LLC

@@ -1,4 +1,4 @@
-import{decorateProperty as r}from"./base.js";
+import{decorateProperty as r}from"@lit/reactive-element/decorators/base.js";
 /**
  * @license
  * Copyright 2017 Google LLC

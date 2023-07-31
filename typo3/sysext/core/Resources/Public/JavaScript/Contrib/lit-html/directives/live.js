@@ -1,4 +1,4 @@
-import{noChange as r,nothing as e}from"../lit-html.js";import{directive as i,Directive as t,PartType as n}from"../directive.js";import{isSingleExpression as o,setCommittedValue as s}from"../directive-helpers.js";
+import{noChange as r,nothing as e}from"lit-html/lit-html.js";import{directive as i,Directive as t,PartType as n}from"lit-html/directive.js";import{isSingleExpression as o,setCommittedValue as s}from"lit-html/directive-helpers.js";
 /**
  * @license
  * Copyright 2020 Google LLC

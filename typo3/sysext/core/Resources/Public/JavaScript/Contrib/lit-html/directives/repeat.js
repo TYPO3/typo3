@@ -1,4 +1,4 @@
-import{noChange as e}from"../lit-html.js";import{directive as s,Directive as t,PartType as r}from"../directive.js";import{getCommittedValue as l,setChildPartValue as o,insertPart as i,removePart as n,setCommittedValue as f}from"../directive-helpers.js";
+import{noChange as e}from"lit-html/lit-html.js";import{directive as s,Directive as t,PartType as r}from"lit-html/directive.js";import{getCommittedValue as l,setChildPartValue as o,insertPart as i,removePart as n,setCommittedValue as f}from"lit-html/directive-helpers.js";
 /**
  * @license
  * Copyright 2017 Google LLC

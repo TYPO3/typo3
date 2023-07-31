@@ -1,4 +1,4 @@
-import{_$LE as t}from"./lit-element.js";
+import{_$LE as t}from"lit-element/lit-element.js";
 /**
  * @license
  * Copyright 2017 Google LLC

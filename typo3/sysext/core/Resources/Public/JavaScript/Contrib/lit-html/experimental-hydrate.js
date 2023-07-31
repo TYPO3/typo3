@@ -1,4 +1,4 @@
-import{noChange as e,_$LH as t}from"./lit-html.js";import{PartType as r}from"./directive.js";import{isPrimitive as n,isTemplateResult as o,isSingleExpression as a}from"./directive-helpers.js";
+import{noChange as e,_$LH as t}from"lit-html/lit-html.js";import{PartType as r}from"lit-html/directive.js";import{isPrimitive as n,isTemplateResult as o,isSingleExpression as a}from"lit-html/directive-helpers.js";
 /**
  * @license
  * Copyright 2019 Google LLC

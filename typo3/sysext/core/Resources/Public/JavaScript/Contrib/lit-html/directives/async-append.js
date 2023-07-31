@@ -1,4 +1,4 @@
-import{directive as r,PartType as e}from"../directive.js";import{AsyncReplaceDirective as s}from"./async-replace.js";import{clearPart as t,insertPart as o,setChildPartValue as i}from"../directive-helpers.js";
+import{directive as r,PartType as e}from"lit-html/directive.js";import{AsyncReplaceDirective as s}from"lit-html/directives/async-replace.js";import{clearPart as t,insertPart as o,setChildPartValue as i}from"lit-html/directive-helpers.js";
 /**
  * @license
  * Copyright 2017 Google LLC

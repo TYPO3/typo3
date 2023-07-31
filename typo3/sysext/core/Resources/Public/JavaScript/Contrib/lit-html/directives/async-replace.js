@@ -1,4 +1,4 @@
-import{noChange as t}from"../lit-html.js";import{AsyncDirective as i}from"../async-directive.js";import{PseudoWeakRef as s,Pauser as r,forAwaitOf as e}from"./private-async-helpers.js";import{directive as n}from"../directive.js";
+import{noChange as t}from"lit-html/lit-html.js";import{AsyncDirective as i}from"lit-html/async-directive.js";import{PseudoWeakRef as s,Pauser as r,forAwaitOf as e}from"lit-html/directives/private-async-helpers.js";import{directive as n}from"lit-html/directive.js";
 /**
  * @license
  * Copyright 2017 Google LLC
