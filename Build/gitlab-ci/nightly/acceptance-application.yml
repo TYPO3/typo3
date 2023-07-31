@@ -12,9 +12,6 @@ acceptance application mariadb 10.3 php 8.1 min:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
@@ -34,9 +31,6 @@ acceptance application mariadb 10.10 php 8.2 max:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
@@ -52,9 +46,6 @@ acceptance application mysql 8.0 php 8.1 locked:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
@@ -73,9 +64,6 @@ acceptance application mysql 8.0 php 8.1 max:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
@@ -94,9 +82,6 @@ acceptance application mysql 8.0 php 8.1 min:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
@@ -116,9 +101,6 @@ acceptance application sqlite php 8.2 max:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
@@ -137,9 +119,6 @@ acceptance application sqlite php 8.1 min:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1

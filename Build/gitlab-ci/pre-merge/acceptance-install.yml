@@ -8,9 +8,6 @@ acceptance install mariadb 10.3 php 8.1 pre-merge:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
@@ -25,9 +22,6 @@ acceptance install mysql 8.0 php 8.1 pre-merge:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -j 8.0 -p 8.1
@@ -42,9 +36,6 @@ acceptance install postgres 10 php 8.2 pre-merge:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -k 10 -p 8.2
@@ -59,9 +50,6 @@ acceptance install sqlite php 8.1 pre-merge:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.1
