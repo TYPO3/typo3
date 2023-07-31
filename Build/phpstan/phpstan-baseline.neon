@@ -1121,11 +1121,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:getMaxUploadFileSize\\(\\) should return int but returns float\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
 			message: "#^Binary operation \"&\" between string and string\\|false results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/IpAnonymizationUtility.php

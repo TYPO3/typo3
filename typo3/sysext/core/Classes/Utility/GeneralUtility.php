@@ -1951,9 +1951,9 @@ class GeneralUtility
      * This might be handy to find out the real upload limit that is possible for this
      * TYPO3 installation.
      *
-     * @return int The maximum size of uploads that are allowed (measured in kilobytes)
+     * @return int Maximum size of uploads that are allowed in KiB (divider 1024)
      */
-    public static function getMaxUploadFileSize()
+    public static function getMaxUploadFileSize(): int
     {
         $uploadMaxFilesize = (string)ini_get('upload_max_filesize');
         $postMaxSize = (string)ini_get('post_max_size');
@@ -1964,7 +1964,7 @@ class GeneralUtility
         // If the total amount of post data is smaller (!) than the upload_max_filesize directive,
         // then this is the real limit in PHP
         $phpUploadLimit = $phpPostLimit > 0 && $phpPostLimit < $phpUploadLimit ? $phpPostLimit : $phpUploadLimit;
-        return floor($phpUploadLimit) / 1024;
+        return (int)(floor($phpUploadLimit) / 1024);
     }
 
     /**

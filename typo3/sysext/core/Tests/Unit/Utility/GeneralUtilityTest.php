@@ -3928,4 +3928,13 @@ final class GeneralUtilityTest extends UnitTestCase
 
         GeneralUtility::rmdir($testFileDirectory, true);
     }
+
+    /**
+     * @test
+     */
+    public function getMaxUploadFileSizeReturnsPositiveInt(): void
+    {
+        $result = GeneralUtility::getMaxUploadFileSize();
+        self::assertGreaterThan(0, $result);
+    }
 }
