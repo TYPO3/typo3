@@ -31,7 +31,9 @@ use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 
 final class AddTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
 
     protected PersistenceManager $persistentManager;
     protected BlogRepository $blogRepository;
@@ -61,8 +63,7 @@ final class AddTest extends FunctionalTestCase
         $this->persistentManager->persistAll();
 
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_blog');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
+        $queryBuilder->getRestrictions()->removeAll();
         $newBlogCount = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_blog')
@@ -90,8 +91,7 @@ final class AddTest extends FunctionalTestCase
         $this->persistentManager->persistAll();
 
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_blog');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
+        $queryBuilder->getRestrictions()->removeAll();
         $newBlogRecord = $queryBuilder
             ->select('*')
             ->from('tx_blogexample_domain_model_blog')
@@ -120,8 +120,7 @@ final class AddTest extends FunctionalTestCase
         $this->persistentManager->persistAll();
 
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_blog');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
+        $queryBuilder->getRestrictions()->removeAll();
         $newBlogRecord = $queryBuilder
             ->select('*')
             ->from('tx_blogexample_domain_model_blog')
@@ -156,8 +155,7 @@ final class AddTest extends FunctionalTestCase
         $this->persistentManager->persistAll();
 
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_blog');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
+        $queryBuilder->getRestrictions()->removeAll();
         $newBlogRecord = $queryBuilder
             ->select('*')
             ->from('tx_blogexample_domain_model_blog')

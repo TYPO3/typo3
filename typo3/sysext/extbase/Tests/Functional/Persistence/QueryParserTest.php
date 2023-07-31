@@ -29,23 +29,14 @@ use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
 final class QueryParserTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/categories.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/persons.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-tag-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/category-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_users.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_groups.csv');
-
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/QueryParserTestImport.csv');
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
@@ -55,8 +46,7 @@ final class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForOrQuery(): void
     {
-        $postRepository = $this->get(PostRepository::class);
-        $query = $postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $query->matching(
             $query->logicalAnd(
                 $query->equals('blog', 3),
@@ -66,9 +56,7 @@ final class QueryParserTest extends FunctionalTestCase
                 )
             )
         );
-
-        $result = $query->execute()->toArray();
-        self::assertCount(3, $result);
+        self::assertCount(3, $query->execute()->toArray());
     }
 
     /**
@@ -78,13 +66,11 @@ final class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithRelationHasAndBelongsToManyReturnsExpectedResult(): void
     {
-        $postRepository = $this->get(PostRepository::class);
-        $query = $postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $query->matching(
             $query->equals('tags.name', 'Tag12')
         );
-        $result = $query->execute()->toArray();
-        self::assertCount(2, $result);
+        self::assertCount(2, $query->execute()->toArray());
     }
 
     /**
@@ -94,14 +80,11 @@ final class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithRelationHasManyWithoutParentKeyFieldNameReturnsExpectedResult(): void
     {
-        $administratorRepository = $this->get(AdministratorRepository::class);
-        $query = $administratorRepository->createQuery();
+        $query = $this->get(AdministratorRepository::class)->createQuery();
         $query->matching(
             $query->equals('usergroup.title', 'Group A')
         );
-
-        $result = $query->execute()->toArray();
-        self::assertCount(2, $result);
+        self::assertCount(2, $query->execute()->toArray());
     }
 
     /**
@@ -111,14 +94,12 @@ final class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithRelationHasOneAndHasAndBelongsToManyWithoutParentKeyFieldNameReturnsExpectedResult(): void
     {
-        $postRepository = $this->get(PostRepository::class);
-        $query = $postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $query->matching(
             $query->equals('author.firstname', 'Author')
         );
-        $result = $query->execute()->toArray();
         // there are 16 post in total, 2 without author, 1 hidden, 1 deleted => 12 posts
-        self::assertCount(12, $result);
+        self::assertCount(12, $query->execute()->toArray());
     }
 
     /**
@@ -126,16 +107,14 @@ final class QueryParserTest extends FunctionalTestCase
      */
     public function orReturnsExpectedResult(): void
     {
-        $postRepository = $this->get(PostRepository::class);
-        $query = $postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $query->matching(
             $query->logicalOr(
                 $query->equals('tags.name', 'Tag12'),
                 $query->equals('tags.name', 'Tag11')
             )
         );
-        $result = $query->execute()->toArray();
-        self::assertCount(2, $result);
+        self::assertCount(2, $query->execute()->toArray());
     }
 
     /**
@@ -143,8 +122,7 @@ final class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForAndQuery(): void
     {
-        $postRepository = $this->get(PostRepository::class);
-        $query = $postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $query->matching(
             $query->logicalAnd(
                 $query->equals('blog', 3),
@@ -152,8 +130,7 @@ final class QueryParserTest extends FunctionalTestCase
                 $query->equals('author.tags.name', 'TagForAuthor1')
             )
         );
-        $result = $query->execute()->toArray();
-        self::assertCount(1, $result);
+        self::assertCount(1, $query->execute()->toArray());
     }
 
     /**
@@ -161,12 +138,8 @@ final class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithFindInSetReturnsExpectedResult(): void
     {
-        $administratorRepository = $this->get(AdministratorRepository::class);
-        $query = $administratorRepository->createQuery();
-
-        $result = $query->matching($query->contains('usergroup', 1))
-            ->execute();
-        self::assertCount(2, $result);
+        $query = $this->get(AdministratorRepository::class)->createQuery();
+        self::assertCount(2, $query->matching($query->contains('usergroup', 1))->execute());
     }
 
     /**
@@ -174,8 +147,7 @@ final class QueryParserTest extends FunctionalTestCase
      */
     public function queryForPostWithCategoriesReturnsPostWithCategories(): void
     {
-        $postRepository = $this->get(PostRepository::class);
-        $query = $postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         $post = $query->matching($query->equals('uid', 1))->execute()->current();
         self::assertCount(3, $post->getCategories());
     }
@@ -185,8 +157,7 @@ final class QueryParserTest extends FunctionalTestCase
      */
     public function queryForBlogsAndPostsWithNoPostsShowsBlogRecord(): void
     {
-        $blogRepository = $this->get(BlogRepository::class);
-        $query = $blogRepository->createQuery();
+        $query = $this->get(BlogRepository::class)->createQuery();
         /** @var Blog $blog */
         $blog = $query->matching($query->logicalOr(
             $query->like('description', '%w/o%'),
@@ -200,8 +171,7 @@ final class QueryParserTest extends FunctionalTestCase
      */
     public function queryForPersonSalutationEnum(): void
     {
-        $blogRepository = $this->get(PersonRepository::class);
-        $query = $blogRepository->createQuery();
+        $query = $this->get(PersonRepository::class)->createQuery();
         $person = $query->matching($query->equals('salutation', Salutation::MR))->execute()->getFirst();
         self::assertSame(4, $person->getUid());
     }

@@ -26,19 +26,19 @@ final class EnableFieldsTest extends AbstractDataHandlerActionTestCase
 {
     public const TABLE_Blog = 'tx_blogexample_domain_model_blog';
 
-    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_groups.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_users.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs-with-fe_groups.csv');
-
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/EnableFieldsTestImport.csv');
         $this->setUpFrontendSite(1);
-        $this->setUpFrontendRootPage(1, ['typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/JsonRenderer.typoscript']);
+        $this->setUpFrontendRootPage(
+            1,
+            ['typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/JsonRenderer.typoscript']
+        );
     }
 
     /**

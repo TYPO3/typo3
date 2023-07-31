@@ -24,22 +24,14 @@ use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
 final class RepositoryTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
-
-    protected PostRepository $postRepository;
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-tag-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/persons.csv');
-
-        $this->postRepository = $this->get(PostRepository::class);
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
     }
 
     public static function findByRespectsSingleCriteriaDataProvider(): \Generator
@@ -48,12 +40,10 @@ final class RepositoryTest extends FunctionalTestCase
             ['blog' => 1],
             10,
         ];
-
         yield 'findBy(["blog" => 1]) => 1' => [
             ['blog' => 2],
             1,
         ];
-
         yield 'findBy(["blog" => 1]) => 3' => [
             ['blog' => 3],
             3,
@@ -66,7 +56,7 @@ final class RepositoryTest extends FunctionalTestCase
      */
     public function findByRespectsSingleCriteria(array $criteria, int $expectedCount): void
     {
-        self::assertCount($expectedCount, $this->postRepository->findBy($criteria));
+        self::assertCount($expectedCount, $this->get(PostRepository::class)->findBy($criteria));
     }
 
     /**
@@ -74,7 +64,7 @@ final class RepositoryTest extends FunctionalTestCase
      */
     public function findByRespectsMultipleCriteria(): void
     {
-        self::assertCount(6, $this->postRepository->findBy(['blog' => 1, 'author' => 1]));
+        self::assertCount(6, $this->get(PostRepository::class)->findBy(['blog' => 1, 'author' => 1]));
     }
 
     /**
@@ -82,16 +72,14 @@ final class RepositoryTest extends FunctionalTestCase
      */
     public function findByRespectsSingleOrderBy(): void
     {
-        $posts = $this->postRepository->findBy(
+        $posts = $this->get(PostRepository::class)->findBy(
             ['blog' => 1, 'author' => 1],
             ['title' => QueryInterface::ORDER_DESCENDING]
         )->toArray();
-
         $titles = array_map(
             static fn (Post $post): string => $post->getTitle(),
             $posts
         );
-
         self::assertSame([
             'Post9',
             'Post8',
@@ -107,11 +95,10 @@ final class RepositoryTest extends FunctionalTestCase
      */
     public function findByRespectsMultipleOrderBy(): void
     {
-        $posts = $this->postRepository->findBy(
+        $posts = $this->get(PostRepository::class)->findBy(
             [],
             ['blog.uid' => QueryInterface::ORDER_ASCENDING, 'title' => QueryInterface::ORDER_DESCENDING]
         )->toArray();
-
         self::assertSame(
             [
                 [
@@ -183,17 +170,15 @@ final class RepositoryTest extends FunctionalTestCase
      */
     public function findByRespectsLimit(): void
     {
-        $posts = $this->postRepository->findBy(
+        $posts = $this->get(PostRepository::class)->findBy(
             ['author' => 1],
             ['uid' => QueryInterface::ORDER_DESCENDING],
             3
         )->toArray();
-
         $titles = array_map(
             static fn (Post $post): array => ['uid' => $post->getUid(), 'title' => $post->getTitle()],
             $posts
         );
-
         self::assertSame([
             [
                 'uid' => 14,
@@ -215,18 +200,16 @@ final class RepositoryTest extends FunctionalTestCase
      */
     public function findByRespectsOffset(): void
     {
-        $posts = $this->postRepository->findBy(
+        $posts = $this->get(PostRepository::class)->findBy(
             ['author' => 1],
             ['uid' => QueryInterface::ORDER_DESCENDING],
             3,
             1
         )->toArray();
-
         $titles = array_map(
             static fn (Post $post): array => ['uid' => $post->getUid(), 'title' => $post->getTitle()],
             $posts
         );
-
         self::assertSame([
             [
                 'uid' => 13,
@@ -249,7 +232,6 @@ final class RepositoryTest extends FunctionalTestCase
             ['uid' => 1],
             1,
         ];
-
         yield 'findOneBy(["blog" => 100]) => null' => [
             ['uid' => 100],
             null,
@@ -263,8 +245,7 @@ final class RepositoryTest extends FunctionalTestCase
     public function findOneByRespectsSingleCriteria(array $criteria, int|null $expectedUid): void
     {
         /** @var Post|null $post */
-        $post = $this->postRepository->findOneBy($criteria);
-
+        $post = $this->get(PostRepository::class)->findOneBy($criteria);
         self::assertSame($expectedUid, $post?->getUid());
     }
 
@@ -274,8 +255,7 @@ final class RepositoryTest extends FunctionalTestCase
      */
     public function findOneByRespectsMultipleCriteria(): void
     {
-        $post = $this->postRepository->findOneBy(['blog' => 1, 'author' => 1]);
-
+        $post = $this->get(PostRepository::class)->findOneBy(['blog' => 1, 'author' => 1]);
         self::assertSame('Post4', $post?->getTitle());
     }
 
@@ -284,11 +264,10 @@ final class RepositoryTest extends FunctionalTestCase
      */
     public function findOneByRespectsOrderBy(): void
     {
-        $post = $this->postRepository->findOneBy(
+        $post = $this->get(PostRepository::class)->findOneBy(
             ['blog' => 1, 'author' => 1],
             ['title' => QueryInterface::ORDER_DESCENDING]
         );
-
         self::assertSame('Post9', $post?->getTitle());
     }
 
@@ -299,7 +278,7 @@ final class RepositoryTest extends FunctionalTestCase
     {
         self::assertSame(
             10,
-            $this->postRepository->count(
+            $this->get(PostRepository::class)->count(
                 ['blog' => 1],
             )
         );
@@ -312,7 +291,7 @@ final class RepositoryTest extends FunctionalTestCase
     {
         self::assertSame(
             1,
-            $this->postRepository->count(
+            $this->get(PostRepository::class)->count(
                 ['blog' => 1, 'author' => 3],
             )
         );

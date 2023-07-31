@@ -117,8 +117,8 @@
 			<trans-unit id="tx_blogexample_domain_model_tag.name" resname="tx_blogexample_domain_model_tag.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_tag.posts" resname="tx_blogexample_domain_model_tag.posts">
-				<source>Related posts</source>
+			<trans-unit id="tx_blogexample_domain_model_tag.items" resname="tx_blogexample_domain_model_tag.items">
+				<source>Related items</source>
 			</trans-unit>
 			<trans-unit id="tx_blogexample_domain_model_info" resname="tx_blogexample_domain_model_info">
 				<source>Additional Info</source>

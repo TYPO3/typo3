@@ -45,11 +45,65 @@ final class WorkspaceTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $this->importCsvDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
-        $this->importCsvDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
-        $this->importCsvDataSet(__DIR__ . '/../Persistence/Fixtures/categories.csv');
-        $this->importCsvDataSet(__DIR__ . '/../Persistence/Fixtures/category-mm.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceTestImport.csv');
+    }
+
+    /**
+     * Minimal frontend environment to satisfy Extbase Typo3DbBackend
+     */
+    private function setupSubjectInFrontend(int $workspaceId = 1): void
+    {
+        $context = new Context(
+            [
+                'workspace' => new WorkspaceAspect($workspaceId),
+            ]
+        );
+        GeneralUtility::setSingletonInstance(Context::class, $context);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $this->blogRepository = $this->get(BlogRepository::class);
+        // ConfigurationManager is used by PersistenceManager to retrieve configuration.
+        // We set a proper extensionName and pluginName for the ConfigurationManager singleton
+        // here, to not run into warnings due to incomplete test setup.
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration([
+            'extensionName' => 'blog_example',
+            'pluginName' => 'test',
+        ]);
+    }
+
+    /**
+     * Minimal backend user configuration to satisfy Extbase Typo3DbBackend
+     */
+    private function setupSubjectInBackend(int $workspaceId = 1): void
+    {
+        $backendUser = new BackendUserAuthentication();
+        $backendUser->workspace = $workspaceId;
+        $GLOBALS['BE_USER'] = $backendUser;
+        $context = new Context(
+            [
+                'backend.user' => new UserAspect($backendUser),
+                'workspace' => new WorkspaceAspect($workspaceId),
+            ]
+        );
+        GeneralUtility::setSingletonInstance(Context::class, $context);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $this->blogRepository = $this->get(BlogRepository::class);
+        // ConfigurationManager is used by PersistenceManager to retrieve configuration.
+        // We set a proper extensionName and pluginName for the ConfigurationManager singleton
+        // here, to not run into warnings due to incomplete test setup.
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration([
+            'extensionName' => 'blog_example',
+            'pluginName' => 'test',
+        ]);
     }
 
     public static function contextDataProvider(): array
@@ -77,10 +131,8 @@ final class WorkspaceTest extends FunctionalTestCase
         }
 
         $query = $this->blogRepository->createQuery();
-
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectStoragePage(false);
-
         // In workspace all records need to be fetched, thus enableFields is ignored
         // This means we select even hidden (but not deleted) records for count()
         self::assertSame(6, $query->execute()->count());
@@ -100,7 +152,6 @@ final class WorkspaceTest extends FunctionalTestCase
         }
 
         $query = $this->blogRepository->createQuery();
-
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([0]);
         $query->matching(
@@ -148,21 +199,15 @@ final class WorkspaceTest extends FunctionalTestCase
         }
 
         $query = $this->blogRepository->createQuery();
-
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectStoragePage(false);
-
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
-
         $blogs = $query->execute()->toArray();
-
         self::assertCount(4, $blogs);
-
         // Check first blog was overlaid with workspace preview
         $firstBlog = array_shift($blogs);
         self::assertSame(1, $firstBlog->getUid());
         self::assertSame('WorkspaceOverlay Blog1', $firstBlog->getTitle());
-
         // Check second-last blog was enabled in workspace preview
         array_pop($blogs);
         $lastBlog = array_pop($blogs);
@@ -183,15 +228,11 @@ final class WorkspaceTest extends FunctionalTestCase
         }
 
         $query = $this->blogRepository->createQuery();
-
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([0]);
-
         $query->matching($query->equals('uid', 1));
-
         $blog = $query->execute()->getFirst();
         $posts = $blog->getPosts()->toArray();
-
         self::assertSame('WorkspaceOverlay Blog1', $blog->getTitle());
         self::assertCount(10, (array)$posts);
         self::assertSame('WorkspaceOverlay Post1', $posts[0]->getTitle());
@@ -210,7 +251,6 @@ final class WorkspaceTest extends FunctionalTestCase
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectStoragePage(false);
         $query->matching($query->equals('uid', 1));
-
         /** @var Blog $blog */
         $blog = $query->execute()->getFirst();
         self::assertEquals('Blog1', $blog->getTitle());
@@ -222,73 +262,14 @@ final class WorkspaceTest extends FunctionalTestCase
      */
     public function fetchingBlogReturnsOverlaidWorkspaceVersionForManyToManyRelations(): void
     {
-        $this->setupSubjectInFrontend(1);
+        $this->setupSubjectInFrontend();
         $query = $this->blogRepository->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectStoragePage(false);
         $query->matching($query->equals('uid', 1));
-
         /** @var Blog $blog */
         $blog = $query->execute()->getFirst();
         self::assertEquals('WorkspaceOverlay Blog1', $blog->getTitle());
         self::assertCount(2, $blog->getCategories());
-    }
-
-    /**
-     * Minimal frontend environment to satisfy Extbase Typo3DbBackend
-     */
-    protected function setupSubjectInFrontend(int $workspaceId = 1): void
-    {
-        $context = new Context(
-            [
-                'workspace' => new WorkspaceAspect($workspaceId),
-            ]
-        );
-        GeneralUtility::setSingletonInstance(Context::class, $context);
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
-            ->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $this->blogRepository = $this->get(BlogRepository::class);
-        // ConfigurationManager is used by PersistenceManager to retrieve configuration.
-        // We set a proper extensionName and pluginName for the ConfigurationManager singleton
-        // here, to not run into warnings due to incomplete test setup.
-        $configurationManager = $this->get(ConfigurationManager::class);
-        $configurationManager->setConfiguration([
-            'extensionName' => 'blog_example',
-            'pluginName' => 'test',
-        ]);
-    }
-
-    /**
-     * Minimal backend user configuration to satisfy Extbase Typo3DbBackend
-     */
-    protected function setupSubjectInBackend(int $workspaceId = 1): void
-    {
-        $backendUser = new BackendUserAuthentication();
-        $backendUser->workspace = $workspaceId;
-        $GLOBALS['BE_USER'] = $backendUser;
-        $context = new Context(
-            [
-                'backend.user' => new UserAspect($backendUser),
-                'workspace' => new WorkspaceAspect($workspaceId),
-            ]
-        );
-        GeneralUtility::setSingletonInstance(Context::class, $context);
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
-            ->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $this->blogRepository = $this->get(BlogRepository::class);
-        // ConfigurationManager is used by PersistenceManager to retrieve configuration.
-        // We set a proper extensionName and pluginName for the ConfigurationManager singleton
-        // here, to not run into warnings due to incomplete test setup.
-        $configurationManager = $this->get(ConfigurationManager::class);
-        $configurationManager->setConfiguration([
-            'extensionName' => 'blog_example',
-            'pluginName' => 'test',
-        ]);
     }
 }

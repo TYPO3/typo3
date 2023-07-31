@@ -523,7 +523,7 @@ final class DataMapperTest extends FunctionalTestCase
      */
     public function getPlainValueCallsGetRealInstanceOnInputIfInputIsInstanceOfLazyLoadingProxy(): void
     {
-        $this->importCSVDataSet('typo3/sysext/extbase/Tests/Functional/Persistence/Generic/Mapper/Fixtures/administrators.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DataMapperTestImport.csv');
         $dataMapper = $this->get(DataMapper::class);
         $rowsBlog = [
             [
@@ -543,9 +543,7 @@ final class DataMapperTest extends FunctionalTestCase
      */
     public function fetchRelatedRespectsForeignDefaultSortByTCAConfiguration(): void
     {
-        // Arrange
-        $this->importCSVDataSet('typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.csv');
-        $this->importCSVDataSet('typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/comments.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DataMapperTestImport.csv');
 
         $dataMapper = $this->get(DataMapper::class);
 

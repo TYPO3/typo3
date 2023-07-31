@@ -25,29 +25,19 @@ use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
 final class CountTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
 
     /**
      * @var int number of all records
      */
     protected int $numberOfRecordsInFixture = 14;
-    protected PostRepository $postRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-post-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-tag-mm.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/persons.csv');
-
-        $this->postRepository = $this->get(PostRepository::class);
-
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/CountTestImport.csv');
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
@@ -57,7 +47,7 @@ final class CountTest extends FunctionalTestCase
      */
     public function simpleCountTest(): void
     {
-        $query = $this->postRepository->createQuery();
+        $query = $this->get(PostRepository::class)->createQuery();
         self::assertSame($this->numberOfRecordsInFixture, $query->count());
     }
 
@@ -66,11 +56,9 @@ final class CountTest extends FunctionalTestCase
      */
     public function offsetCountTest(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $query->setLimit($this->numberOfRecordsInFixture+1);
         $query->setOffset(6);
-
         self::assertSame($this->numberOfRecordsInFixture - 6, $query->count());
     }
 
@@ -79,11 +67,9 @@ final class CountTest extends FunctionalTestCase
      */
     public function exceedingOffsetCountTest(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $query->setLimit($this->numberOfRecordsInFixture+1);
         $query->setOffset($this->numberOfRecordsInFixture + 5);
-
         self::assertSame(0, $query->count());
     }
 
@@ -92,10 +78,8 @@ final class CountTest extends FunctionalTestCase
      */
     public function limitCountTest(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $query->setLimit(4);
-
         self::assertSame(4, $query->count());
     }
 
@@ -104,12 +88,10 @@ final class CountTest extends FunctionalTestCase
      */
     public function limitAndOffsetCountTest(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $query
             ->setOffset($this->numberOfRecordsInFixture - 3)
             ->setLimit(4);
-
         self::assertSame(3, $query->count());
     }
 
@@ -118,12 +100,10 @@ final class CountTest extends FunctionalTestCase
      */
     public function inConstraintCountTest(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $query->matching(
             $query->in('uid', [1, 2, 3])
         );
-
         self::assertSame(3, $query->count());
     }
 
@@ -134,12 +114,10 @@ final class CountTest extends FunctionalTestCase
      */
     public function subpropertyJoinCountTest(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $query->matching(
             $query->equals('blog.title', 'Blog1')
         );
-
         self::assertSame(10, $query->count());
     }
 
@@ -150,12 +128,10 @@ final class CountTest extends FunctionalTestCase
      */
     public function subpropertyJoinSameTableCountTest(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $query->matching(
             $query->equals('relatedPosts.title', 'Post2')
         );
-
         self::assertSame(1, $query->count());
     }
 
@@ -166,19 +142,16 @@ final class CountTest extends FunctionalTestCase
      */
     public function subpropertyInMultipleLeftJoinCountTest(): void
     {
-        $query = $this->postRepository->createQuery();
-
+        $query = $this->get(PostRepository::class)->createQuery();
         $query->matching(
             $query->logicalOr(
                 $query->equals('tags.uid', 1),
                 $query->equals('tags.uid', 2)
             )
         );
-
         // QueryResult is lazy, so we have to run valid method to initialize
         $result = $query->execute();
         $result->valid();
-
         self::assertSame(10, $result->count());
     }
 

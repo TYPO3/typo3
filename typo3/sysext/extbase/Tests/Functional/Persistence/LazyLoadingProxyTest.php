@@ -18,9 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -32,21 +30,10 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
     protected array $coreExtensionsToLoad = ['extbase'];
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * Sets up this test suite.
-     */
     protected function setUp(): void
     {
         parent::setUp();
-
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('fe_users')
-            ->insert('fe_users', [
-                'uid' => 1,
-                'username' => 'Blog Admin',
-                'tx_extbase_type' => Administrator::class,
-            ]);
-
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/LazyLoadingProxyTestImport.csv');
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
@@ -80,7 +67,6 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
     public function nonExistingLazyLoadedPropertyReturnsNull(): void
     {
         $lazyLoadingProxy = new LazyLoadingProxy(new Blog(), 'administrator', 0);
-
         self::assertNull(ObjectAccess::getProperty($lazyLoadingProxy, 'name'));
     }
 }

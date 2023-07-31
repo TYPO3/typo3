@@ -1,0 +1,22 @@
+"pages"
+,"uid","pid","sorting","title","deleted","perms_everybody"
+,1,0,128,"Root",0,15
+fe_groups
+,uid,pid,title,subgroup,description,deleted
+,1,0,"Group A",,,0
+,2,0,"Group B",,,0
+"fe_users",,,,,,,,
+,"uid","pid","username","deleted","usergroup","disable","tx_extbase_type",
+,1,0,"usera",0,1,0,,
+,2,0,"userb",0,2,0,,
+"tx_blogexample_domain_model_blog",,,,,,,,,
+,"uid","pid","title","description","logo","l18n_diffsource","fe_group","deleted","posts"
+,1,1,"Blog1","Blog1 Description",,,,0,0
+,2,1,"Blog2","Blog2 Description",,,1,0,0
+,3,1,"Blog3","Blog3 Description",,,2,0,0
+"sys_refindex",,,,,,,,
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"001cd2e4390e0152274a1a31cabbf067","fe_users",1,"usergroup",0,0,"fe_groups",1
+,"df54ed0e6e6fa030108438926d5c264f","fe_users",2,"usergroup",0,0,"fe_groups",2
+,"cb722646d5c745f583dc5e0f3de5f8ba","tx_blogexample_domain_model_blog",2,"fe_group",0,0,"fe_groups",1,
+,"584906a3be1faa5c4d1bfd6dd0328502","tx_blogexample_domain_model_blog",3,"fe_group",0,0,"fe_groups",2,

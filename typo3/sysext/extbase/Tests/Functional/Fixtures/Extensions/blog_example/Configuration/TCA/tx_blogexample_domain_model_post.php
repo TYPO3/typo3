@@ -178,15 +178,15 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_post.tags',
             'config' => [
-                'type' => 'inline',
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_blogexample_domain_model_tag',
-                'MM' => 'tx_blogexample_post_tag_mm',
-                'appearance' => [
-                    'useCombination' => 1,
-                    'useSortable' => 1,
-                    'collapseAll' => 1,
-                    'expandSingle' => 1,
+                'MM' => 'tx_blogexample_domain_model_tag_mm',
+                'MM_match_fields' => [
+                    'fieldname' => 'tags',
+                    'tablenames' => 'tx_blogexample_domain_model_post',
                 ],
+                'MM_opposite_field' => 'items',
             ],
         ],
         'comments' => [

@@ -52,7 +52,7 @@ final class ControllerArgumentsMappingTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/translatedBlogExampleData.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixture/ControllerArgumentsMappingTestImport.csv');
 
         $configuration = [
             'persistence' => [

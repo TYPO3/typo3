@@ -37,15 +37,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    protected PostRepository $postRepository;
-    protected PersistenceManager $persistenceManager;
+    private PostRepository $postRepository;
+    private PersistenceManager $persistenceManager;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/translatedBlogExampleData.csv');
-
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/QueryLocalizedDataTestImport.csv');
         $configuration = [
             'persistence' => [
                 'storagePid' => 20,
@@ -57,7 +55,6 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
         $this->postRepository = $this->get(PostRepository::class);
         $this->persistenceManager = $this->get(PersistenceManager::class);
-
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
@@ -1077,10 +1074,9 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
     /**
      * Compares array of domain objects with array containing properties values
      *
-     * @param array $objects
      * @param array $expected array of expected property values [ ['property' => 'value'], ['property' => 'value2']]
      */
-    protected function assertObjectsProperties($objects, $expected): void
+    private function assertObjectsProperties(array $objects, array $expected): void
     {
         $actual = [];
         foreach ($objects as $key => $post) {
@@ -1100,11 +1096,9 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
      * to access protected properties, and iterator_to_array added.
      *
      * @param mixed $subject Object or array to get the property path from
-     * @param string $propertyPath
-     *
      * @return mixed Value of the property
      */
-    protected static function getPropertyPath($subject, $propertyPath)
+    private static function getPropertyPath(mixed $subject, string $propertyPath): mixed
     {
         $propertyPathSegments = explode('.', $propertyPath);
         try {
@@ -1114,7 +1108,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                     $subject = iterator_to_array(clone $subject, false);
                 }
             }
-        } catch (PropertyNotAccessibleException $error) {
+        } catch (PropertyNotAccessibleException) {
             // Workaround for this test
             $propertyReflection = new \ReflectionProperty($subject, $pathSegment);
             return $propertyReflection->getValue($subject);

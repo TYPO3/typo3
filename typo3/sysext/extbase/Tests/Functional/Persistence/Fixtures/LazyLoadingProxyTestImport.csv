@@ -1,0 +1,3 @@
+"fe_users"
+,"uid","pid","username","deleted","usergroup","disable","tx_extbase_type"
+,1,0,"Blog Admin",0,1,0,"TYPO3Tests\BlogExample\Domain\Model\Administrator"

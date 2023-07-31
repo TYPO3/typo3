@@ -5,7 +5,7 @@ CREATE TABLE tx_blogexample_domain_model_blog (
 	title varchar(255) DEFAULT '' NOT NULL,
 	subtitle varchar(255) DEFAULT '',
 	description text NOT NULL,
-	logo tinyblob NOT NULL,
+	logo tinyblob NOT NULL default '',
 	administrator int(11) DEFAULT '0' NOT NULL,
 
 	posts varchar(255) DEFAULT '' NOT NULL
@@ -58,37 +58,7 @@ CREATE TABLE tx_blogexample_domain_model_person (
 #
 CREATE TABLE tx_blogexample_domain_model_tag (
 	name varchar(255) DEFAULT '' NOT NULL,
-	posts int(11) unsigned DEFAULT '0' NOT NULL
-);
-
-#
-# Table structure for table 'tx_blogexample_domain_model_tag_mm'
-# @todo: Should be dropped when TCA is fixed.
-#
-CREATE TABLE tx_blogexample_domain_model_tag_mm (
-	uid_local int(11) unsigned DEFAULT '0' NOT NULL,
-	uid_foreign int(11) unsigned DEFAULT '0' NOT NULL,
-	tablenames varchar(255) DEFAULT '' NOT NULL,
-	fieldname varchar(255) DEFAULT '' NOT NULL,
-	sorting int(11) unsigned DEFAULT '0' NOT NULL,
-	sorting_foreign int(11) unsigned DEFAULT '0' NOT NULL,
-
-	KEY uid_local (uid_local),
-	KEY uid_foreign (uid_foreign)
-);
-
-#
-# Table structure for table 'tx_blogexample_post_tag_mm'
-# @todo: Should be dropped when TCA is fixed.
-#
-CREATE TABLE tx_blogexample_post_tag_mm (
-	uid_local int(11) unsigned DEFAULT '0' NOT NULL,
-	uid_foreign int(11) unsigned DEFAULT '0' NOT NULL,
-	sorting int(11) unsigned DEFAULT '0' NOT NULL,
-	sorting_foreign int(11) unsigned DEFAULT '0' NOT NULL,
-
-	KEY uid_local (uid_local),
-	KEY uid_foreign (uid_foreign)
+	items int(11) unsigned DEFAULT '0' NOT NULL
 );
 
 #
