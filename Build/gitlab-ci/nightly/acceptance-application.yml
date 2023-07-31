@@ -8,9 +8,6 @@ acceptance application mariadb 10.3 php 7.4 locked:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
       - Build/Scripts/runTests.sh -s composerInstall -p 7.4
@@ -29,9 +26,6 @@ acceptance application mariadb 10.3 php 7.4 max:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
@@ -50,9 +44,6 @@ acceptance application mariadb 10.3 php 7.4 min:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
@@ -68,9 +59,6 @@ acceptance application mariadb 10.3 php 8.0 locked:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.0
@@ -89,9 +77,6 @@ acceptance application mariadb 10.3 php 8.0 max:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.0
@@ -110,9 +95,6 @@ acceptance application mariadb 10.3 php 8.0 min:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.0
@@ -128,9 +110,6 @@ acceptance application mariadb 10.10 php 8.2 locked:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
@@ -149,9 +128,6 @@ acceptance application mariadb 10.10 php 8.2 max:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
@@ -170,9 +146,6 @@ acceptance application mariadb 10.10 php 8.2 min:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-    reports:
-      junit:
-        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
