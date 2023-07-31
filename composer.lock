@@ -8759,12 +8759,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "b25d2d10ea471b523e307b64b230573b3a3e79ca"
+                "reference": "682049f48e028d37683aafbda817ebe29c37d35a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/b25d2d10ea471b523e307b64b230573b3a3e79ca",
-                "reference": "b25d2d10ea471b523e307b64b230573b3a3e79ca",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/682049f48e028d37683aafbda817ebe29c37d35a",
+                "reference": "682049f48e028d37683aafbda817ebe29c37d35a",
                 "shasum": ""
             },
             "require-dev": {
@@ -8823,7 +8823,7 @@
                 "issues": "https://github.com/TYPO3/styleguide/issues",
                 "source": "https://github.com/TYPO3/styleguide/tree/main"
             },
-            "time": "2023-07-03T09:32:29+00:00"
+            "time": "2023-07-28T09:14:29+00:00"
         },
         {
             "name": "typo3/testing-framework",
