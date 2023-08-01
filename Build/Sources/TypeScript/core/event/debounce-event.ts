@@ -15,36 +15,24 @@ import { Listener } from './event-interface';
 import RegularEvent from './regular-event';
 
 /**
- * Debounces an event listener that is executed after the event happened, either at the start or at the end.
+ * Debounces an event listener that is executed after the event happened.
  * A debounced event listener is not executed again until a certain amount of time has passed without it being called.
  */
 class DebounceEvent extends RegularEvent {
-  constructor(eventName: string, callback: Listener, wait: number = 250, immediate: boolean = false) {
+  constructor(eventName: string, callback: Listener, wait: number = 250) {
     super(eventName, callback);
-    this.callback = this.debounce(this.callback, wait, immediate);
+    this.callback = this.debounce(this.callback, wait);
   }
 
-  private debounce(callback: Listener, wait: number, immediate: boolean): Listener {
+  private debounce(callback: Listener, wait: number): Listener {
     let timeout: number = null;
 
     return function (this: Node, ...args: unknown[]): void {
-      const callNow = immediate && !timeout;
-
-      // Reset timeout handler to make sure the callback is executed once
       clearTimeout(timeout);
-      if (callNow) {
+      timeout = setTimeout((): void => {
+        timeout = null;
         callback.apply(this, args);
-        timeout = setTimeout((): void => {
-          timeout = null;
-        }, wait);
-      } else {
-        timeout = setTimeout((): void => {
-          timeout = null;
-          if (!immediate) {
-            callback.apply(this, args);
-          }
-        }, wait);
-      }
+      }, wait);
     };
   }
 }
