@@ -30,12 +30,10 @@ class RecoveryCodes
 {
     private const MIN_LENGTH = 8;
 
-    protected string $mode;
     protected PasswordHashFactory $passwordHashFactory;
 
-    public function __construct(string $mode)
+    public function __construct(protected readonly string $mode)
     {
-        $this->mode = $mode;
         $this->passwordHashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
     }
 

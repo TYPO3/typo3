@@ -42,21 +42,12 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class RecoveryCodesProvider implements MfaProviderInterface
 {
-    protected MfaProviderRegistry $mfaProviderRegistry;
-    protected Context $context;
-    protected UriBuilder $uriBuilder;
-    protected FlashMessageService $flashMessageService;
-
     public function __construct(
-        MfaProviderRegistry $mfaProviderRegistry,
-        Context $context,
-        UriBuilder $uriBuilder,
-        FlashMessageService $flashMessageService
+        protected readonly MfaProviderRegistry $mfaProviderRegistry,
+        protected readonly Context $context,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly FlashMessageService $flashMessageService
     ) {
-        $this->mfaProviderRegistry = $mfaProviderRegistry;
-        $this->context = $context;
-        $this->uriBuilder = $uriBuilder;
-        $this->flashMessageService = $flashMessageService;
     }
 
     private const MAX_ATTEMPTS = 3;
