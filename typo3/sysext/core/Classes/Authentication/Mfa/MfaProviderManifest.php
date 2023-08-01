@@ -28,34 +28,18 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class MfaProviderManifest implements MfaProviderManifestInterface
 {
-    private string $identifier;
-    private string $title;
-    private string $description;
-    private string $setupInstructions;
-    private string $iconIdentifier;
-    private bool $isDefaultProviderAllowed;
-    private string $serviceName;
-    private ContainerInterface $container;
     private ?MfaProviderInterface $instance = null;
 
     public function __construct(
-        string $identifier,
-        string $title,
-        string $description,
-        string $setupInstructions,
-        string $iconIdentifier,
-        bool $isDefaultProviderAllowed,
-        string $serviceName,
-        ContainerInterface $container
+        private readonly string $identifier,
+        private readonly string $title,
+        private readonly string $description,
+        private readonly string $setupInstructions,
+        private readonly string $iconIdentifier,
+        private readonly bool $isDefaultProviderAllowed,
+        private readonly string $serviceName,
+        private readonly ContainerInterface $container
     ) {
-        $this->identifier = $identifier;
-        $this->title = $title;
-        $this->description = $description;
-        $this->setupInstructions = $setupInstructions;
-        $this->iconIdentifier = $iconIdentifier;
-        $this->isDefaultProviderAllowed = $isDefaultProviderAllowed;
-        $this->serviceName = $serviceName;
-        $this->container = $container;
     }
 
     public function getIdentifier(): string

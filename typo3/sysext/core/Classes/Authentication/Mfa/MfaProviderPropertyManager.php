@@ -33,18 +33,14 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    protected AbstractUserAuthentication $user;
     protected array $mfa;
-    protected string $providerIdentifier;
     protected array $providerProperties;
     protected const DATABASE_FIELD_NAME = 'mfa';
 
-    public function __construct(AbstractUserAuthentication $user, string $provider)
+    public function __construct(protected readonly AbstractUserAuthentication $user, protected readonly string $providerIdentifier)
     {
-        $this->user = $user;
         $this->mfa = json_decode($user->user[self::DATABASE_FIELD_NAME] ?? '', true) ?? [];
-        $this->providerIdentifier = $provider;
-        $this->providerProperties = $this->mfa[$provider] ?? [];
+        $this->providerProperties = $this->mfa[$this->providerIdentifier] ?? [];
     }
 
     /**

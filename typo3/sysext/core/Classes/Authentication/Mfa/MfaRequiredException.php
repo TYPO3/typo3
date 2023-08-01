@@ -27,11 +27,8 @@ use TYPO3\CMS\Core\Exception;
  */
 class MfaRequiredException extends Exception
 {
-    private MfaProviderManifestInterface $provider;
-
-    public function __construct(MfaProviderManifestInterface $provider, $code = 0, $message = '', \Throwable $previous = null)
+    public function __construct(private readonly MfaProviderManifestInterface $provider, $code = 0, $message = '', \Throwable $previous = null)
     {
-        $this->provider = $provider;
         parent::__construct($message, $code, $previous);
     }
 
