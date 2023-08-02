@@ -24,7 +24,7 @@ copied to a separate :file:`settings.yaml` file in the site configuration folder
 A migration wizard is provided as upgrade wizard to migrate settings into the
 new file.
 
-..  info::
+..  note::
 
     Settings are not removed from the :file:`config.yaml` for now but will not
     have any effect anymore as soon as a :file:`settings.yaml` exists.
