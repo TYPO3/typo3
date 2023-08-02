@@ -86,17 +86,17 @@ abstract class AbstractElementBrowser
     /**
      * Main initialization
      */
-    protected function initialize()
+    protected function initialize(ServerRequestInterface $request)
     {
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $this->getRequest(), $this->getLanguageService());
-        $view = $this->backendViewFactory->create($this->request);
+        $view = $this->backendViewFactory->create($request);
         $this->view = $view;
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element-browser.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
         $this->determineScriptUrl();
-        $this->initVariables();
+        $this->initVariables($request);
     }
 
     /**
@@ -117,9 +117,9 @@ abstract class AbstractElementBrowser
         );
     }
 
-    protected function initVariables()
+    protected function initVariables(ServerRequestInterface $request)
     {
-        $this->bparams = $this->getRequest()->getParsedBody()['bparams'] ?? $this->getRequest()->getQueryParams()['bparams'] ?? '';
+        $this->bparams = $request->getParsedBody()['bparams'] ?? $request->getQueryParams()['bparams'] ?? '';
     }
 
     protected function getBodyTagParameters(): string
@@ -166,7 +166,7 @@ abstract class AbstractElementBrowser
         $this->request = $request;
         // initialize here, this is a dirty hack as long as the interface does not support setting a request object properly
         // see ElementBrowserController.php for the process on how the program code flow is used
-        $this->initialize();
+        $this->initialize($request);
     }
 
     protected function getRequest(): ServerRequestInterface

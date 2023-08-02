@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Filelist\ElementBrowser;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -34,15 +35,15 @@ class CreateFolderBrowser extends AbstractResourceBrowser
     public const IDENTIFIER = 'create_folder';
     protected string $identifier = self::IDENTIFIER;
 
-    protected function initialize(): void
+    protected function initialize(ServerRequestInterface $request): void
     {
-        parent::initialize();
+        parent::initialize($request);
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/create-folder.js');
     }
 
-    protected function initVariables(): void
+    protected function initVariables(ServerRequestInterface $request): void
     {
-        parent::initVariables();
+        parent::initVariables($request);
         $this->resourceDisplayMatcher = GeneralUtility::makeInstance(Matcher::class);
         $this->resourceDisplayMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
     }

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Filelist\ElementBrowser;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -34,15 +35,15 @@ class FolderBrowser extends AbstractResourceBrowser
     public const IDENTIFIER = 'folder';
     protected string $identifier = self::IDENTIFIER;
 
-    protected function initialize(): void
+    protected function initialize(ServerRequestInterface $request): void
     {
-        parent::initialize();
+        parent::initialize($request);
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/browse-folders.js');
     }
 
-    protected function initVariables(): void
+    protected function initVariables(ServerRequestInterface $request): void
     {
-        parent::initVariables();
+        parent::initVariables($request);
         $this->resourceDisplayMatcher = GeneralUtility::makeInstance(Matcher::class);
         $this->resourceDisplayMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
         $this->resourceSelectableMatcher = GeneralUtility::makeInstance(Matcher::class);

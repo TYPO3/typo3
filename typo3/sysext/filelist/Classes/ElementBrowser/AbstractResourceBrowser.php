@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Filelist\ElementBrowser;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\ElementBrowser\AbstractElementBrowser;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -56,9 +57,9 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
     /**
      * Loads additional JavaScript
      */
-    protected function initialize(): void
+    protected function initialize(ServerRequestInterface $request): void
     {
-        parent::initialize();
+        parent::initialize($request);
         $this->view = $this->backendViewFactory->create($this->getRequest(), ['typo3/cms-filelist']);
         $this->view->assign('initialNavigationWidth', $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250);
 
@@ -68,10 +69,9 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
     }
 
-    protected function initVariables(): void
+    protected function initVariables(ServerRequestInterface $request): void
     {
-        parent::initVariables();
-        $request = $this->getRequest();
+        parent::initVariables($request);
 
         $this->currentPage = (int)($request->getParsedBody()['currentPage'] ?? $request->getQueryParams()['currentPage'] ?? 1);
         $this->expandFolder = $request->getParsedBody()['expandFolder'] ?? $request->getQueryParams()['expandFolder'] ?? null;

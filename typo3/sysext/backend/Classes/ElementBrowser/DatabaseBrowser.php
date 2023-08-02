@@ -48,9 +48,9 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
     protected $expandPage;
     protected array $modTSconfig = [];
 
-    protected function initialize()
+    protected function initialize(ServerRequestInterface $request)
     {
-        parent::initialize();
+        parent::initialize($request);
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/browse-database.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tree/page-browser.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/column-selector-button.js');
@@ -58,10 +58,10 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/record-search.js');
     }
 
-    protected function initVariables()
+    protected function initVariables(ServerRequestInterface $request)
     {
-        parent::initVariables();
-        $this->expandPage = $this->getRequest()->getParsedBody()['expandPage'] ?? $this->getRequest()->getQueryParams()['expandPage'] ?? null;
+        parent::initVariables($request);
+        $this->expandPage = $request->getParsedBody()['expandPage'] ?? $request->getQueryParams()['expandPage'] ?? null;
     }
 
     /**

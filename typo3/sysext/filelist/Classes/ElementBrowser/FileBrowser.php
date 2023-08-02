@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Filelist\ElementBrowser;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -45,16 +46,15 @@ class FileBrowser extends AbstractResourceBrowser
     /**
      * Loads additional JavaScript
      */
-    protected function initialize(): void
+    protected function initialize(ServerRequestInterface $request): void
     {
-        parent::initialize();
+        parent::initialize($request);
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/browse-files.js');
     }
 
-    protected function initVariables(): void
+    protected function initVariables(ServerRequestInterface $request): void
     {
-        parent::initVariables();
-        $request = $this->getRequest();
+        parent::initVariables($request);
 
         $this->searchWord = (string)trim($request->getParsedBody()['searchTerm'] ?? $request->getQueryParams()['searchTerm'] ?? '');
 
