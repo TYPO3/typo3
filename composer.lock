@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "84f944b2212024f60a0148e1e59df630",
+    "content-hash": "9a27f5786fb75f20199faa098bbc6933",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8825,16 +8825,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "8.0.0",
+            "version": "8.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "8f0101f06646a2aa181b7642a4139a5113f1701c"
+                "reference": "0f64df79ad145ee193f692a2e84e7d6c993d7b5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/8f0101f06646a2aa181b7642a4139a5113f1701c",
-                "reference": "8f0101f06646a2aa181b7642a4139a5113f1701c",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/0f64df79ad145ee193f692a2e84e7d6c993d7b5f",
+                "reference": "0f64df79ad145ee193f692a2e84e7d6c993d7b5f",
                 "shasum": ""
             },
             "require": {
@@ -8843,12 +8843,12 @@
                 "php": "^8.1",
                 "phpunit/phpunit": "^10.1",
                 "psr/container": "^1.1.0 || ^2.0.0",
-                "typo3/cms-backend": "12.*.*@dev",
-                "typo3/cms-core": "12.*.*@dev",
-                "typo3/cms-extbase": "12.*.*@dev",
-                "typo3/cms-fluid": "12.*.*@dev",
-                "typo3/cms-frontend": "12.*.*@dev",
-                "typo3/cms-install": "12.*.*@dev"
+                "typo3/cms-backend": "12.*.*@dev || 13.*.*@dev",
+                "typo3/cms-core": "12.*.*@dev || 13.*.*@dev",
+                "typo3/cms-extbase": "12.*.*@dev || 13.*.*@dev",
+                "typo3/cms-fluid": "12.*.*@dev || 13.*.*@dev",
+                "typo3/cms-frontend": "12.*.*@dev || 13.*.*@dev",
+                "typo3/cms-install": "12.*.*@dev || 13.*.*@dev"
             },
             "replace": {
                 "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "*"
@@ -8857,7 +8857,7 @@
                 "friendsofphp/php-cs-fixer": "^3.11.0",
                 "phpstan/phpstan": "^1.9.2",
                 "phpstan/phpstan-phpunit": "^1.1.1",
-                "typo3/cms-workspaces": "12.*.*@dev"
+                "typo3/cms-workspaces": "12.*.*@dev || 13.*.*@dev"
             },
             "type": "library",
             "autoload": {
@@ -8893,9 +8893,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/8.0.0"
+                "source": "https://github.com/TYPO3/testing-framework/tree/8.0.2"
             },
-            "time": "2023-04-25T12:42:00+00:00"
+            "time": "2023-08-02T16:10:26+00:00"
         }
     ],
     "aliases": [],
