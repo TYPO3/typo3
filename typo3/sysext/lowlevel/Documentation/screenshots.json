@@ -1,7 +1,7 @@
 {
-    "suites": {
-        "Styleguide": {
-            "screenshots": {
+	"suites": {
+		"Styleguide": {
+			"screenshots": {
 				"_default": [
 					{"action": "resizeWindow", "width": 1024, "height": 600},
 					{"action": "setScreenshotsImagePath","path": "Images/AutomaticScreenshots"},
@@ -80,7 +80,7 @@
 						"captionText": "The :guilabel:`Manage Reference Index` action"
 					}
 				]
-            }
-        }
-    }
+			}
+		}
+	}
 }

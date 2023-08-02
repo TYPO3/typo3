@@ -1,14 +1,14 @@
 {
-    "name": "typo3tests/tca-select-tree-items",
-    "type": "typo3-cms-extension",
-    "description": "TcaSelectTreeItems Test",
-    "license": "GPL-2.0-or-later",
+	"name": "typo3tests/tca-select-tree-items",
+	"type": "typo3-cms-extension",
+	"description": "TcaSelectTreeItems Test",
+	"license": "GPL-2.0-or-later",
 	"require": {
 		"typo3/cms-core": "13.0.*@dev"
 	},
-    "extra": {
-        "typo3/cms": {
-            "extension-key": "test_tca_select_tree_items"
-        }
-    }
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_tca_select_tree_items"
+		}
+	}
 }
