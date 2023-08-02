@@ -36,7 +36,7 @@ tx_blogexample_domain_model_person
 ,4,0,"Another Author","With special tag","Mr.",author-4@test.typo3.org,0,1
 tx_blogexample_post_post_mm
 ,uid_local,uid_foreign,sorting,sorting_foreign
-,2,1,1,1
+,1,2,1,1
 tx_blogexample_domain_model_tag
 ,uid,pid,items,name,deleted
 ,1,0,10,Tag1,0
