@@ -32,7 +32,7 @@
 					{"action": "click", "link": "//*[@id='contentMenu1']//*[contains(text(), 'Export')]"},
 					{"action": "click", "link": ".scaffold-content-navigation-switcher-close"},
 					{"action": "switchToContentFrame"},
-					{"action": "waitForText", "text": "Export pagetree configuration", "timeout":  5},
+					{"action": "waitForText", "text": "Export pagetree configuration", "timeout": 5},
 					{"action": "resizeWindow", "width": 592, "height": 750},
 					{"action": "resizeToFullPage"},
 					{
@@ -126,7 +126,7 @@
 					{"action": "click", "link": "//*[@id='contentMenu1']//*[contains(text(), 'Export')]"},
 					{"action": "click", "link": ".scaffold-content-navigation-switcher-close"},
 					{"action": "switchToContentFrame"},
-					{"action": "waitForText", "text": "Export pagetree configuration", "timeout":  5},
+					{"action": "waitForText", "text": "Export pagetree configuration", "timeout": 5},
 					{"action": "click", "link": "File & Preset"},
 					{"action": "selectOption", "select": "select[name='preset[select]']", "option": "1"},
 					{"action": "fillField", "field": "input[name='tx_impexp[preset][title]']", "value": "My Preset"},

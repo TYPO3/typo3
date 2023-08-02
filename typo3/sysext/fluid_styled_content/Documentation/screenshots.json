@@ -1,7 +1,7 @@
 {
-    "suites": {
-        "Core": {
-            "screenshots": {
+	"suites": {
+		"Core": {
+			"screenshots": {
 				"_default": [
 					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots"},
 					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots"},
@@ -177,7 +177,7 @@
 					}
 				]
 			}
-        },
+		},
 		"Styleguide": {
 			"screenshots": {
 				"_default": [
@@ -394,5 +394,5 @@
 				]
 			}
 		}
-    }
+	}
 }
