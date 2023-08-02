@@ -300,8 +300,12 @@ class Recordlist {
         if (value > parseInt(trigger.max, 10)) {
           value = parseInt(trigger.max, 10);
         }
+        trigger.value = value.toString(10);
         if (e.key === 'Enter' && value !== parseInt(trigger.dataset.currentpage, 10)) {
-          window.location.href = trigger.dataset.currenturl + value.toString();
+          const form = trigger.closest('form[name="list-table-form-pages"]') as HTMLFormElement;
+          const submitUrl = new URL(form.action, window.origin);
+          submitUrl.searchParams.set('pointer', value.toString());
+          window.location.href = submitUrl.toString();
         }
       });
     });

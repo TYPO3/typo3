@@ -27,7 +27,7 @@
                 </f:if>
 
                 <f:variable name="pageInput">
-                    <input type="number" autocomplete="off" data-currentpage="{currentPage}" data-currenturl="{currentUrl}&pointer=" name="pointer"  min="1" max="{totalPages}" value="{currentPage}" size="3" class="t3js-recordlist-paging form-control form-control-sm paginator-input" /></label><span aria-hidden="true">
+                    <input type="number" autocomplete="off" data-currentpage="{currentPage}" name="pointer"  min="1" max="{totalPages}" value="{currentPage}" size="3" class="t3js-recordlist-paging form-control form-control-sm paginator-input" /></label><span aria-hidden="true">
                 </f:variable>
                 <li class="page-item ps-2">
                     <label><f:format.raw><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:pageIndicator" arguments="{pageInput: pageInput, totalPages: totalPages}"/></f:format.raw></span>

@@ -1378,6 +1378,7 @@ class DatabaseRecordList
                 && ($attributes = $this->getPreviewUriBuilder($table, $row)->serializeDispatcherAttributes()) !== null
             ) {
                 $viewAction = '<button'
+                    . ' type="button"'
                     . ' class="btn btn-default" ' . $attributes
                     . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
                 if ($table === 'pages') {
