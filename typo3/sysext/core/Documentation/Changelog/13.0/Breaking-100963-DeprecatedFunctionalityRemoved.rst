@@ -448,7 +448,7 @@ The following fallbacks have been removed:
 - Usage of :php:`JScode` containing inline JavaScript for handing custom signals
 - Usage property :php:`$resultArray['requireJsModules']` of the form engine result array
 - Using backend FormEngine, the current ServerRequestInterface request must be provided in key "request" as
-  initialData to FormDataCompiler, the fallback to :php:`$GLOBALS['TYPO3_REQUEST'] has been removed.
+  initialData to FormDataCompiler, the fallback to :php:`$GLOBALS['TYPO3_REQUEST']` has been removed.
 - Compatibility layer for "TCEforms" key in FlexFormTools has been removed
 - Compatibility layer for using array parameters for files in extbase (use `UploadedFile` instead)
 

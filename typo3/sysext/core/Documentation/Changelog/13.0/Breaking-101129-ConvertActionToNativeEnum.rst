@@ -13,7 +13,7 @@ Description
 
 The class :php:`\TYPO3\CMS\Scheduler\Task\Enumeration\Action` is now
 converted to a native backed enum. In addition the class is moved to
-the namespace :php:`\TYPO3\CMS\Scheduler\` and renamed to
+the namespace :php:`\TYPO3\CMS\Scheduler` and renamed to
 SchedulerManagementAction.
 
 Impact
