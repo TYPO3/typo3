@@ -18,10 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Redirects\Service\IntegrityService;
 
 class CheckIntegrityCommand extends Command
@@ -63,16 +65,37 @@ class CheckIntegrityCommand extends Command
     {
         $this->registry->remove(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY);
 
+        $conflictingRedirects = [];
         $list = [];
         $site = $input->getArgument('site') ?: null;
+
+        $table = new Table($output);
+        $table->setHeaders(
+            [
+                LocalizationUtility::translate(
+                    'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.source_host'
+                ),
+                LocalizationUtility::translate(
+                    'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.source_path'
+                ),
+                LocalizationUtility::translate(
+                    'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target'
+                ),
+            ]
+        );
+
         foreach ($this->integrityService->findConflictingRedirects($site) as $conflict) {
-            $list[] = $conflict;
-            $output->writeln(sprintf(
-                'Redirect (Host: %s, Path: %s) conflicts with %s',
+            $conflictingRedirects[] = [
                 $conflict['redirect']['source_host'],
                 $conflict['redirect']['source_path'],
-                $conflict['uri']
-            ));
+                $conflict['uri'],
+            ];
+            $list[] = $conflict;
+        }
+
+        if ($conflictingRedirects !== []) {
+            $table->setRows($conflictingRedirects);
+            $table->render();
         }
         $this->registry->set(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY, $list);
         return Command::SUCCESS;
