@@ -1,3 +1,15 @@
+functional deprecated mariadb 10.10 php 8.3 max:
+  stage: functional
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.10 -p 8.3
 functional deprecated mariadb 10.10 php 8.2 max:
   stage: functional
   needs: []
@@ -23,6 +35,18 @@ functional deprecated mariadb 10.3 php 8.1 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.3 -p 8.1
 
+functional deprecated mysql 8.0 php 8.3 max:
+  stage: functional
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mysql -j 8.0 -p 8.3
 functional deprecated mysql 8.0 php 8.2 max:
   stage: functional
   needs: []
@@ -48,6 +72,18 @@ functional deprecated mysql 8.0 php 8.1 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s functionalDeprecated -d mysql -j 8.0 -p 8.1
 
+functional deprecated postgres 15 php 8.3 max:
+  stage: functional
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d postgres -k 15 -p 8.3
 functional deprecated postgres 15 php 8.2 max:
   stage: functional
   needs: []
@@ -73,6 +109,18 @@ functional deprecated postgres 10 php 8.1 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s functionalDeprecated -d postgres -k 10 -p 8.1
 
+functional deprecated sqlite php 8.3 max:
+  stage: functional
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d sqlite -p 8.3
 functional deprecated sqlite php 8.2 max:
   stage: functional
   needs: []
@@ -98,6 +146,19 @@ functional deprecated sqlite php 8.1 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s functionalDeprecated -d sqlite -p 8.1
 
+functional mariadb 10.10 php 8.3 max:
+  stage: functional
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
+    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.10 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mariadb 10.10 php 8.2 max:
   stage: functional
   needs: []
@@ -125,6 +186,19 @@ functional mariadb 10.3 php 8.1 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
+functional mysql 8.0 php 8.3 max:
+  stage: functional
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
+    - Build/Scripts/runTests.sh -s functional -d mysql -j 8.0 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mysql 8.0 php 8.2 max:
   stage: functional
   needs: []
@@ -152,6 +226,19 @@ functional mysql 8.0 php 8.1 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s functional -d mysql -j 8.0 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
+functional postgres 15 php 8.3 max:
+  stage: functional
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
+    - Build/Scripts/runTests.sh -s functional -d postgres -k 15 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional postgres 15 php 8.2 max:
   stage: functional
   needs: []
@@ -179,6 +266,19 @@ functional postgres 10 php 8.1 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
+functional sqlite php 8.3 max:
+  stage: functional
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
+    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional sqlite php 8.2 max:
   stage: functional
   needs: []
