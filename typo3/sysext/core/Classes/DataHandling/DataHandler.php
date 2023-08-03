@@ -3466,7 +3466,7 @@ class DataHandler implements LoggerAwareInterface
         if ($theNewRootID) {
             foreach ($copyTablesArray as $table) {
                 // All records under the page is copied.
-                if ($table && is_array($GLOBALS['TCA'][$table]) && $table !== 'pages') {
+                if ($table && is_array($GLOBALS['TCA'][$table] ?? false) && $table !== 'pages') {
                     $fields = ['uid'];
                     $languageField = null;
                     $transOrigPointerField = null;
