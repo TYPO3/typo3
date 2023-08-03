@@ -33,8 +33,10 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator\CustomValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
+use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 use TYPO3Tests\ActionControllerTest\Controller\TestController;
 
@@ -211,10 +213,14 @@ final class ActionControllerTest extends FunctionalTestCase
             ],
         );
 
+        $templatePaths = $this->createMock(TemplatePaths::class);
+        $templatePaths->expects(self::once())->method('setTemplateRootPaths')->with(['a template path']);
+        $templatePaths->expects(self::once())->method('setLayoutRootPaths')->with(['a layout path']);
+        $templatePaths->expects(self::once())->method('setPartialRootPaths')->with(['a partial path']);
+        $renderingContext = $this->createMock(RenderingContextInterface::class);
+        $renderingContext->expects(self::once())->method('getTemplatePaths')->willReturn($templatePaths);
         $viewMock = $this->createMock(TemplateView::class);
-        $viewMock->expects(self::once())->method('setTemplateRootPaths')->with(['a template path']);
-        $viewMock->expects(self::once())->method('setLayoutRootPaths')->with(['a layout path']);
-        $viewMock->expects(self::once())->method('setPartialRootPaths')->with(['a partial path']);
+        $viewMock->expects(self::once())->method('getRenderingContext')->willReturn($renderingContext);
 
         $subject = $this->get(TestController::class);
         $subject->injectConfigurationManager($configurationManagerMock);
@@ -235,10 +241,14 @@ final class ActionControllerTest extends FunctionalTestCase
             ],
         );
 
+        $templatePaths = $this->createMock(TemplatePaths::class);
+        $templatePaths->expects(self::never())->method('setTemplateRootPaths')->with(['a template path']);
+        $templatePaths->expects(self::never())->method('setLayoutRootPaths')->with(['a layout path']);
+        $templatePaths->expects(self::never())->method('setPartialRootPaths')->with(['a partial path']);
+        $renderingContext = $this->createMock(RenderingContextInterface::class);
+        $renderingContext->expects(self::once())->method('getTemplatePaths')->willReturn($templatePaths);
         $viewMock = $this->createMock(TemplateView::class);
-        $viewMock->expects(self::never())->method('setTemplateRootPaths');
-        $viewMock->expects(self::never())->method('setLayoutRootPaths');
-        $viewMock->expects(self::never())->method('setPartialRootPaths');
+        $viewMock->expects(self::once())->method('getRenderingContext')->willReturn($renderingContext);
 
         $subject = $this->get(TestController::class);
         $subject->injectConfigurationManager($configurationManagerMock);

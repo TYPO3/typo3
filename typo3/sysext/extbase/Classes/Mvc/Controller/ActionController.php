@@ -30,6 +30,8 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\View\FluidViewAdapter;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Event\Mvc\BeforeActionCallEvent;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -54,7 +56,7 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView;
-use TYPO3Fluid\Fluid\View\ViewInterface;
+use TYPO3Fluid\Fluid\View\ViewInterface as FluidStandaloneViewInterface;
 
 /**
  * A multi action controller. This is by far the most common base class for Controllers.
@@ -77,8 +79,8 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * The current view, as resolved by resolveView()
-     *
-     * @var ViewInterface
+     * @todo Use "protected ViewInterface $view;" in v14.
+     * @var FluidStandaloneViewInterface|ViewInterface $view
      */
     protected $view;
 
@@ -86,7 +88,7 @@ abstract class ActionController implements ControllerInterface
      * The default view object to use if none of the resolved views can render
      * a response for the current request.
      *
-     * @var class-string<ViewInterface>
+     * @var class-string
      */
     protected string $defaultViewObjectName = TemplateView::class;
 
@@ -386,11 +388,8 @@ abstract class ActionController implements ControllerInterface
      */
     protected function renderAssetsForRequest(RequestInterface $request): void
     {
-        if (!$this->view instanceof AbstractTemplateView) {
-            // Only AbstractTemplateView (from Fluid engine, so this includes all TYPO3 Views based
-            // on TYPO3's AbstractTemplateView) supports renderSection(). The method is not
-            // declared on ViewInterface - so we must assert a specific class. We silently skip
-            // asset processing if the View doesn't match, so we don't risk breaking custom Views.
+        if (!($this->view instanceof AbstractTemplateView) && !($this->view instanceof FluidViewAdapter)) {
+            // @todo: Simplify to if (!($this->view instanceof FluidViewAdapter)) in v14.
             return;
         }
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -466,8 +465,9 @@ abstract class ActionController implements ControllerInterface
      * By default, this method tries to locate a view with a name matching the current action.
      *
      * @internal
+     * @todo Set "protected function resolveView(): ViewInterface" in v14.
      */
-    protected function resolveView(): ViewInterface
+    protected function resolveView(): FluidStandaloneViewInterface|ViewInterface
     {
         if ($this->viewResolver instanceof GenericViewResolver) {
             /*
@@ -484,7 +484,7 @@ abstract class ActionController implements ControllerInterface
             $this->request->getFormat()
         );
         $this->setViewConfiguration($view);
-        if ($view instanceof AbstractTemplateView) {
+        if ($view instanceof FluidViewAdapter) {
             $renderingContext = $view->getRenderingContext();
             if ($renderingContext instanceof RenderingContext) {
                 $renderingContext->setRequest($this->request);
@@ -499,29 +499,28 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @internal
+     * @todo: Set signature to setViewConfiguration(ViewInterface $view) in v14.
      */
-    protected function setViewConfiguration(ViewInterface $view): void
+    protected function setViewConfiguration(FluidStandaloneViewInterface|ViewInterface $view): void
     {
+        if (!$view instanceof FluidViewAdapter && !method_exists($view, 'getRenderingContext')) {
+            // @todo: simplify to "if (!$view instanceof FluidViewAdapter) in v14.
+            // This specific magic is tailored to Fluid. Return if we're not dealing with a fluid view here.
+            return;
+        }
+        $renderingContext = $view->getRenderingContext();
+        $templatePaths = $renderingContext->getTemplatePaths();
         $configuration = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
         );
-        if (!empty($configuration['view']['templateRootPaths'])
-            && is_array($configuration['view']['templateRootPaths'])
-            && method_exists($view, 'setTemplateRootPaths')
-        ) {
-            $view->setTemplateRootPaths($configuration['view']['templateRootPaths']);
+        if (!empty($configuration['view']['templateRootPaths']) && is_array($configuration['view']['templateRootPaths'])) {
+            $templatePaths->setTemplateRootPaths($configuration['view']['templateRootPaths']);
         }
-        if (!empty($configuration['view']['layoutRootPaths'])
-            && is_array($configuration['view']['layoutRootPaths'])
-            && method_exists($view, 'setLayoutRootPaths')
-        ) {
-            $view->setLayoutRootPaths($configuration['view']['layoutRootPaths']);
+        if (!empty($configuration['view']['layoutRootPaths']) && is_array($configuration['view']['layoutRootPaths'])) {
+            $templatePaths->setLayoutRootPaths($configuration['view']['layoutRootPaths']);
         }
-        if (!empty($configuration['view']['partialRootPaths'])
-            && is_array($configuration['view']['partialRootPaths'])
-            && method_exists($view, 'setPartialRootPaths')
-        ) {
-            $view->setPartialRootPaths($configuration['view']['partialRootPaths']);
+        if (!empty($configuration['view']['partialRootPaths']) && is_array($configuration['view']['partialRootPaths'])) {
+            $templatePaths->setPartialRootPaths($configuration['view']['partialRootPaths']);
         }
     }
 

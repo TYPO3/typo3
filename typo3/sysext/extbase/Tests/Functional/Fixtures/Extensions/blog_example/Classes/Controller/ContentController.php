@@ -45,8 +45,10 @@ class ContentController extends ActionController
         $content = $this->contentRepository->findAll();
         $value = [];
         $value[$this->getRuntimeIdentifier()] = $this->getStructure($content);
-        // this is required so we don't try to json_encode content of the image
-        $this->view->setConfiguration([
+        // this is required, so we don't try to json_encode content of the image
+        /** @var JsonView $view */
+        $view = $this->view;
+        $view->setConfiguration([
             'value' => [
                 '_descendAll' => [
                     '_descendAll' => [
@@ -61,7 +63,7 @@ class ContentController extends ActionController
                 ],
             ],
         ]);
-        $this->view->assign('value', $value);
+        $view->assign('value', $value);
 
         return $this->jsonResponse();
     }

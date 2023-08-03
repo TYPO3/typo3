@@ -169,10 +169,12 @@ class FormManagerController extends AbstractBackendController
             ];
         }
 
-        $this->view->assign('response', $response);
         // createAction uses the Extbase JsonView::class.
         // That's why we have to set the view variables in this way.
-        $this->view->setVariablesToRender([
+        /** @var JsonView $view */
+        $view = $this->view;
+        $view->assign('response', $response);
+        $view->setVariablesToRender([
             'response',
         ]);
 
@@ -234,10 +236,12 @@ class FormManagerController extends AbstractBackendController
             ];
         }
 
-        $this->view->assign('response', $response);
         // createAction uses the Extbase JsonView::class.
         // That's why we have to set the view variables in this way.
-        $this->view->setVariablesToRender([
+        /** @var JsonView $view */
+        $view = $this->view;
+        $view->assign('response', $response);
+        $view->setVariablesToRender([
             'response',
         ]);
 
@@ -264,11 +268,13 @@ class FormManagerController extends AbstractBackendController
             throw new PersistenceManagerException(sprintf('Read from "%s" is not allowed', $formPersistenceIdentifier), 1614500660);
         }
 
-        $this->view->assign('references', $this->getProcessedReferencesRows($formPersistenceIdentifier));
-        $this->view->assign('formPersistenceIdentifier', $formPersistenceIdentifier);
         // referencesAction uses the extbase JsonView::class.
         // That's why we have to set the view variables in this way.
-        $this->view->setVariablesToRender([
+        /** @var JsonView $view */
+        $view = $this->view;
+        $view->assign('references', $this->getProcessedReferencesRows($formPersistenceIdentifier));
+        $view->assign('formPersistenceIdentifier', $formPersistenceIdentifier);
+        $view->setVariablesToRender([
             'references',
             'formPersistenceIdentifier',
         ]);

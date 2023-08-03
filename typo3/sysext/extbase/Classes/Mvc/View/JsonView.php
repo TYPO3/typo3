@@ -18,16 +18,16 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3Fluid\Fluid\View\AbstractView;
 
 /**
  * A JSON view
  */
 #[Autoconfigure(public: true, shared: false)]
-class JsonView extends AbstractView
+class JsonView implements ViewInterface
 {
     /**
      * Definition for the class name exposure configuration,
@@ -186,7 +186,7 @@ class JsonView extends AbstractView
      * @param mixed $value Value of object
      * @return self an instance of $this, to enable chaining
      */
-    public function assign($key, $value)
+    public function assign($key, $value): ViewInterface
     {
         $this->variables[$key] = $value;
         return $this;
@@ -198,7 +198,7 @@ class JsonView extends AbstractView
      * @param array $values array in the format array(key1 => value1, key2 => value2).
      * @return self an instance of $this, to enable chaining
      */
-    public function assignMultiple(array $values)
+    public function assignMultiple(array $values): ViewInterface
     {
         foreach ($values as $key => $value) {
             $this->assign($key, $value);
@@ -223,15 +223,28 @@ class JsonView extends AbstractView
         $this->configuration = $configuration;
     }
 
+    /**
+     * @deprecated Will be removed in TYPO3 v14.0.
+     */
     public function renderSection($sectionName, array $variables = [], $ignoreUnknown = false)
     {
+        trigger_error(
+            __CLASS__ . '->' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v14.',
+            E_USER_DEPRECATED
+        );
         // No-op: renderSection does not make sense for this view
         return '';
     }
 
+    /**
+     * @deprecated Will be removed in TYPO3 v14.0.
+     */
     public function renderPartial($partialName, $sectionName, array $variables, $ignoreUnknown = false)
     {
-        // No-op: renderPartial does not make sense for this view
+        trigger_error(
+            __CLASS__ . '->' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v14.',
+            E_USER_DEPRECATED
+        );
         return '';
     }
 
@@ -242,7 +255,7 @@ class JsonView extends AbstractView
      *
      * @return string The JSON encoded variables
      */
-    public function render(): string
+    public function render(string $templateFileName = ''): string
     {
         $propertiesToRender = $this->renderArray();
         return json_encode($propertiesToRender, JSON_UNESCAPED_UNICODE);

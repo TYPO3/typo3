@@ -991,11 +991,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/CollectionValidator.php
 
 		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:setConfiguration\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/ContentController.php
-
-		-
 			message: "#^Variable \\$expectations on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerArgumentTest.php
@@ -1301,11 +1296,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Controller/FormEditorController.php
 
 		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:setVariablesToRender\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Controller/FormEditorController.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Mvc\\\\Persistence\\\\FormPersistenceManagerInterface\\:\\:isAllowedPersistencePath\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/form/Classes/Controller/FormEditorController.php
@@ -1314,11 +1304,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$namespace of method TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\:\\:addInlineSettingArray\\(\\) expects string, null given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Controller/FormEditorController.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:setVariablesToRender\\(\\)\\.$#"
-			count: 3
-			path: ../../typo3/sysext/form/Classes/Controller/FormManagerController.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Mvc\\\\Persistence\\\\FormPersistenceManagerInterface\\:\\:getUniqueIdentifier\\(\\)\\.$#"

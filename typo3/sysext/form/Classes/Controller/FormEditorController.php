@@ -216,10 +216,12 @@ class FormEditorController extends AbstractBackendController
             ];
         }
 
-        $this->view->assign('response', $response);
         // saveFormAction uses the extbase JsonView::class.
         // That's why we have to set the view variables in this way.
-        $this->view->setVariablesToRender([
+        /** @var JsonView $view */
+        $view = $this->view;
+        $view->assign('response', $response);
+        $view->setVariablesToRender([
             'response',
         ]);
 
