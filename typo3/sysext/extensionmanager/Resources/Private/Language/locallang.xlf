@@ -42,6 +42,9 @@
 			<trans-unit id="button.remove" resname="button.remove">
 				<source>Remove extension</source>
 			</trans-unit>
+			<trans-unit id="button.reimport" resname="button.reimport">
+				<source>Re-import data</source>
+			</trans-unit>
 			<trans-unit id="button.updateExtension" resname="button.updateExtension">
 				<source>Update extension</source>
 			</trans-unit>
@@ -229,6 +232,12 @@
 			</trans-unit>
 			<trans-unit id="extensionList.databaseReload" resname="extensionList.databaseReload">
 				<source>Nothing has changed since last import. You might want to reload static database data.</source>
+			</trans-unit>
+			<trans-unit id="extensionList.databaseReload.title" resname="extensionList.databaseReload.title">
+				<source>Re-import of static database data</source>
+			</trans-unit>
+			<trans-unit id="extensionList.databaseReload.message" resname="extensionList.databaseReload.message">
+				<source>This re-import will overwrite any existing static data in the database.</source>
 			</trans-unit>
 			<trans-unit id="extensionList.updateConfirmation.questionVersionComments" resname="extensionList.updateConfirmation.questionVersionComments">
 				<source>Version Comments</source>
