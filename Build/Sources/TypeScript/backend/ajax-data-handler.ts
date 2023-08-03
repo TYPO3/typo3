@@ -17,11 +17,11 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DocumentService from '@typo3/core/document-service';
 import { SeverityEnum } from './enum/severity';
 import ResponseInterface from './ajax-data-handler/response-interface';
-import $ from 'jquery';
 import BroadcastService from '@typo3/backend/broadcast-service';
 import Icons from './icons';
 import Modal from './modal';
 import Notification from './notification';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 enum Identifiers {
   hide = '.t3js-record-hide',
@@ -106,38 +106,38 @@ class AjaxDataHandler {
   // @todo: Many extensions rely on this behavior but it's misplaced in AjaxDataHandler. Move into recordlist.ts and deprecate in v11.
   private initialize(): void {
     // HIDE/UNHIDE: click events for all action icons to hide/unhide
-    $(document).on('click', Identifiers.hide, (e: JQueryEventObject): void => {
+    new RegularEvent('click', (e: Event, anchorElement: HTMLElement): void => {
       e.preventDefault();
-      const $anchorElement = $(e.currentTarget);
-      const $iconElement = $anchorElement.find(Identifiers.icon);
-      const $rowElement = $anchorElement.closest('tr[data-uid]');
-      const params = $anchorElement.data('params');
+
+      const iconElement = anchorElement.querySelector(Identifiers.icon);
+      const rowElement = anchorElement.closest('tr[data-uid]');
+      const params = anchorElement.dataset.params;
 
       // add a spinner
-      this._showSpinnerIcon($iconElement);
+      this._showSpinnerIcon(iconElement);
 
       // make the AJAX call to toggle the visibility
       this.process(params).then((result: ResponseInterface): void => {
         if (!result.hasErrors) {
           // adjust overlay icon
-          this.toggleRow($rowElement);
+          this.toggleRow(rowElement);
         }
       });
-    });
+    }).delegateTo(document, Identifiers.hide);
 
     // DELETE: click events for all action icons to delete
-    $(document).on('click', Identifiers.delete, (evt: JQueryEventObject): void => {
+    new RegularEvent('click', (evt: Event, anchorElement: HTMLElement): void => {
       evt.preventDefault();
-      const $anchorElement = $(evt.currentTarget);
-      const modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), SeverityEnum.warning, [
+
+      const modal = Modal.confirm(anchorElement.dataset.title, anchorElement.dataset.message, SeverityEnum.warning, [
         {
-          text: $anchorElement.data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
+          text: anchorElement.dataset.buttonCloseText || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
         {
-          text: $anchorElement.data('button-ok-text') || TYPO3.lang['button.delete'] || 'Delete',
+          text: anchorElement.dataset.buttonOkText || TYPO3.lang['button.delete'] || 'Delete',
           btnClass: 'btn-warning',
           name: 'delete',
         },
@@ -147,26 +147,24 @@ class AjaxDataHandler {
           modal.hideModal();
         } else if ((e.target as HTMLInputElement).getAttribute('name') === 'delete') {
           modal.hideModal();
-          this.deleteRecord($anchorElement);
+          this.deleteRecord(anchorElement);
         }
       });
-    });
+    }).delegateTo(document, Identifiers.delete);
   }
 
   /**
    * Toggle row visibility after record has been changed
-   *
-   * @param {JQuery} $rowElement
    */
-  private toggleRow($rowElement: JQuery): void {
-    const $anchorElement = $rowElement.find(Identifiers.hide);
-    const table = $anchorElement.closest('table[data-table]').data('table');
-    const params = $anchorElement.data('params');
+  private toggleRow(rowElement: Element): void {
+    const anchorElement = rowElement.querySelector(Identifiers.hide) as HTMLElement;
+    const table = (anchorElement.closest('table[data-table]') as HTMLTableElement).dataset.table;
+    const params = anchorElement.dataset.params;
     let nextParams;
     let nextState;
     let iconName;
 
-    if ($anchorElement.data('state') === 'hidden') {
+    if (anchorElement.dataset.state === 'hidden') {
       nextState = 'visible';
       nextParams = params.replace('=0', '=1');
       iconName = 'actions-edit-hide';
@@ -175,26 +173,32 @@ class AjaxDataHandler {
       nextParams = params.replace('=1', '=0');
       iconName = 'actions-edit-unhide';
     }
-    $anchorElement.data('state', nextState).data('params', nextParams);
+    anchorElement.dataset.state = nextState;
+    anchorElement.dataset.params = nextParams;
 
-    const $iconElement = $anchorElement.find(Identifiers.icon);
+    const iconElement = anchorElement.querySelector(Identifiers.icon);
     Icons.getIcon(iconName, Icons.sizes.small).then((icon: string): void => {
-      $iconElement.replaceWith(icon);
+      iconElement.replaceWith(document.createRange().createContextualFragment(icon));
     });
 
     // Set overlay for the record icon
-    const $recordIcon = $rowElement.find('.col-icon ' + Identifiers.icon);
+    const recordIcon = rowElement.querySelector('.col-icon ' + Identifiers.icon);
     if (nextState === 'hidden') {
       Icons.getIcon('miscellaneous-placeholder', Icons.sizes.small, 'overlay-hidden').then((icon: string): void => {
-        $recordIcon.append($(icon).find('.icon-overlay'));
+        const iconFragment = document.createRange().createContextualFragment(icon);
+        recordIcon.append(iconFragment.querySelector('.icon-overlay'));
       });
     } else {
-      $recordIcon.find('.icon-overlay').remove();
+      recordIcon.querySelector('.icon-overlay').remove();
     }
 
-    $rowElement.fadeTo('fast', 0.4, (): void => {
-      $rowElement.fadeTo('fast', 1);
+    const animationEvent = new RegularEvent('animationend', (): void => {
+      rowElement.classList.remove('record-pulse');
+      animationEvent.release();
     });
+    animationEvent.bindTo(rowElement);
+    rowElement.classList.add('record-pulse');
+
     if (table === 'pages') {
       AjaxDataHandler.refreshPageTree();
     }
@@ -203,46 +207,51 @@ class AjaxDataHandler {
   /**
    * Delete record by given element (icon in table)
    * don't call it directly!
-   *
-   * @param {JQuery} $anchorElement
    */
-  private deleteRecord($anchorElement: JQuery): void {
-    const params = $anchorElement.data('params');
-    let $iconElement = $anchorElement.find(Identifiers.icon);
+  private deleteRecord(anchorElement: HTMLElement): void {
+    const params = anchorElement.dataset.params;
+    let iconElement = anchorElement.querySelector(Identifiers.icon);
 
     // add a spinner
-    this._showSpinnerIcon($iconElement);
+    this._showSpinnerIcon(iconElement);
 
-    const $table = $anchorElement.closest('table[data-table]');
-    const table = $table.data('table');
-    let $rowElements = $anchorElement.closest('tr[data-uid]');
-    const uid = $rowElements.data('uid');
+    const tableElement = anchorElement.closest('table[data-table]') as HTMLTableElement;
+    const table = tableElement.dataset.table;
+    const rowElement = anchorElement.closest('tr[data-uid]') as HTMLTableRowElement;
+    const uid = parseInt(rowElement.dataset.uid, 10);
 
     // make the AJAX call to toggle the visibility
     const eventData = { component: 'datahandler', action: 'delete', table, uid };
     this.process(params, eventData).then((result: ResponseInterface): void => {
       // revert to the old class
       Icons.getIcon('actions-edit-delete', Icons.sizes.small).then((icon: string): void => {
-        $iconElement = $anchorElement.find(Identifiers.icon);
-        $iconElement.replaceWith(icon);
+        iconElement = anchorElement.querySelector(Identifiers.icon);
+        iconElement.replaceWith(document.createRange().createContextualFragment(icon));
       });
       if (!result.hasErrors) {
-        const $panel = $anchorElement.closest('.panel');
-        const $panelHeading = $panel.find('.panel-heading');
-        const $translatedRowElements = $table.find('[data-l10nparent=' + uid + ']').closest('tr[data-uid]');
-        $rowElements = $rowElements.add($translatedRowElements);
+        const panel = anchorElement.closest('.recordlist');
+        const panelHeading = panel.querySelector('.recordlist-heading-title');
+        const translatedRowElement = tableElement.querySelector('[data-l10nparent="' + uid + '"]')?.closest('tr[data-uid]') as HTMLTableRowElement|undefined;
 
-        $rowElements.fadeTo('slow', 0.4, (): void => {
-          $rowElements.slideUp('slow', (): void => {
-            $rowElements.remove();
-            if ($table.find('tbody tr').length === 0) {
-              $panel.slideUp('slow');
-            }
-          });
-        });
-        if ($anchorElement.data('l10parent') === '0' || $anchorElement.data('l10parent') === '') {
-          const count = Number($panelHeading.find('.t3js-table-total-items').html());
-          $panelHeading.find('.t3js-table-total-items').text(count - 1);
+        if (translatedRowElement !== undefined) {
+          new RegularEvent('transitionend', (): void => {
+            translatedRowElement.remove();
+          }).bindTo(translatedRowElement);
+          translatedRowElement.classList.add('record-deleted');
+        }
+
+        new RegularEvent('transitionend', (): void => {
+          rowElement.remove();
+
+          if (tableElement.querySelectorAll('tbody tr').length === 0) {
+            panel.remove();
+          }
+        }).bindTo(rowElement);
+        rowElement.classList.add('record-deleted');
+
+        if (anchorElement.dataset.l10parent === '0' || anchorElement.dataset.l10parent === '') {
+          const count = parseInt(panelHeading.querySelector('.t3js-table-total-items').textContent, 10);
+          panelHeading.querySelector('.t3js-table-total-items').textContent = (count - 1).toString();
         }
 
         if (table === 'pages') {
@@ -265,13 +274,10 @@ class AjaxDataHandler {
 
   /**
    * Replace the given icon with a spinner icon
-   *
-   * @param {Object} $iconElement
-   * @private
    */
-  private _showSpinnerIcon($iconElement: JQuery): void {
+  private _showSpinnerIcon(iconElement: Element): void {
     Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then((icon: string): void => {
-      $iconElement.replaceWith(icon);
+      iconElement.replaceWith(document.createRange().createContextualFragment(icon));
     });
   }
 }

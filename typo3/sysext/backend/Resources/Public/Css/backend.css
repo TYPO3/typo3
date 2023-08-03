@@ -3762,12 +3762,19 @@ typo3-backend-live-search-result-item-action>*,typo3-backend-live-search-result-
 typo3-backend-live-search-result-item-action>* .livesearch-result-item-icon,typo3-backend-live-search-result-item>* .livesearch-result-item-icon{display:flex;gap:.5em;flex-grow:0;flex-shrink:0;align-items:center}
 typo3-backend-live-search-result-item-action>* .livesearch-result-item-title,typo3-backend-live-search-result-item>* .livesearch-result-item-title{flex-grow:1;word-break:break-word}
 typo3-backend-live-search-result-item-action>* .livesearch-result-item-title .small,typo3-backend-live-search-result-item-action>* .livesearch-result-item-title small,typo3-backend-live-search-result-item>* .livesearch-result-item-title .small,typo3-backend-live-search-result-item>* .livesearch-result-item-title small{opacity:var(--livesearch-item-opacity)}
+@keyframes record-pulse{
+0%,100%{opacity:1}
+50%{opacity:.4}
+}
 .recordlist{overflow:hidden;background:var(--panel-bg);box-shadow:var(--panel-box-shadow);border-radius:var(--panel-border-radius);border:var(--panel-border-width) solid var(--panel-default-border-color);margin-bottom:var(--typo3-spacing)}
 .recordlist table tr td.deletePlaceholder{text-decoration:line-through}
 .recordlist .alert,.recordlist .table-fit{box-shadow:none;border-radius:0;border-left:0;border-right:0;border-bottom:0;margin-bottom:0}
 .recordlist .alert{padding:var(--panel-header-padding-y) var(--typo3-component-padding-x)}
 .recordlist .pagination{display:inline-flex}
 .recordlist+.recordlist{margin-top:calc(var(--typo3-spacing) * 1.5)}
+.recordlist tr{transition:opacity .5s;opacity:1}
+.recordlist tr.record-pulse{animation:record-pulse 1s ease-out 0s 1 normal none}
+.recordlist tr.record-deleted{opacity:0!important}
 .recordlist-heading{display:flex;align-items:center;flex-wrap:wrap;color:var(--panel-default-heading-color);background:var(--panel-default-heading-bg);padding:var(--panel-header-padding-y) var(--panel-header-padding-x);gap:var(--panel-header-padding-y) var(--panel-header-padding-x)}
 .recordlist-heading-row{flex-grow:1;display:flex;align-items:center;flex-wrap:wrap;max-width:100%;gap:var(--panel-header-padding-y) var(--panel-header-padding-x)}
 .recordlist-heading-title{font-weight:700;flex-grow:1;width:250px;max-width:100%}

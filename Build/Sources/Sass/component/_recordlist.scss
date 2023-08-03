@@ -1,6 +1,18 @@
 //
 // Recordlist
 //
+
+@keyframes record-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .4;
+    }
+}
+
 .recordlist {
     overflow: hidden;
     background: var(--panel-bg);
@@ -35,6 +47,19 @@
 
     + .recordlist {
         margin-top: calc(var(--typo3-spacing) * 1.5);
+    }
+
+    tr {
+        transition: opacity .5s;
+        opacity: 1;
+
+        &.record-pulse {
+            animation: record-pulse 1s ease-out 0s 1 normal none;
+        }
+
+        &.record-deleted {
+            opacity: 0 !important;
+        }
     }
 }
 
