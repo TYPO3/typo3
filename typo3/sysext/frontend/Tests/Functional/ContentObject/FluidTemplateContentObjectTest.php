@@ -37,7 +37,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet('typo3/sysext/frontend/Tests/Functional/ContentObject/Fixtures/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv');
         $this->writeSiteConfiguration(
             'fluid_template',
             $this->buildSiteConfiguration(self::ROOT_PAGE_ID, '/'),

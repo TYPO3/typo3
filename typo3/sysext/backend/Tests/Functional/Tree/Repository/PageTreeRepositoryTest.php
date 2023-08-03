@@ -28,7 +28,7 @@ final class PageTreeRepositoryTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet('typo3/sysext/backend/Tests/Functional/Tree/Repository/Fixtures/PageTree.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTree.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
     }
