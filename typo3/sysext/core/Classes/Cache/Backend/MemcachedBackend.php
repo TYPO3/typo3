@@ -99,9 +99,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
         if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
             throw new Exception('The PHP extension "memcache" or "memcached" must be installed and loaded in order to use the Memcached backend.', 1213987706);
         }
-
-        parent::__construct($context, $options);
-
         if ($this->usedPeclModule === '') {
             if (extension_loaded('memcache')) {
                 $this->usedPeclModule = 'memcache';
@@ -109,6 +106,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
                 $this->usedPeclModule = 'memcached';
             }
         }
+        parent::__construct($context, $options);
     }
 
     /**
