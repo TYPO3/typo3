@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting;
 
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
@@ -55,13 +56,21 @@ class ResolutionRepository
      */
     public function findByScope(Scope $scope): array
     {
-        $result = $this->getConnection()->select(
-            ['*'],
-            self::TABLE_NAME,
-            ['scope' => (string)$scope],
-            [],
-            ['created' => 'asc']
-        );
+        try {
+            $result = $this->getConnection()->select(
+                ['*'],
+                self::TABLE_NAME,
+                ['scope' => (string)$scope],
+                [],
+                ['created' => 'asc']
+            );
+        } catch (TableNotFoundException) {
+            // We usually don't take care of non-existing table throughout the system.
+            // This one however can happen when major upgrading TYPO3 and calling the
+            // backend first time. It is fair to catch this case to prevent forcing admins
+            // to unlock standalone install tool or to use cli to fix db schema.
+            return [];
+        }
         return array_map(
             static fn (array $row) => Resolution::fromArray($row),
             $result->fetchAllAssociative()
