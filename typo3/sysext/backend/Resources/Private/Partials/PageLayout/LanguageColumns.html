@@ -69,7 +69,7 @@
                         <tr>
                             <f:for each="{languageColumns}" as="languageColumn">
                                 <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
-                                <td data-colpos="{column.columnNumber}" valign="top">
+                                <td data-colpos="{column.columnNumber}" valign="top" class="t3-grid-cell t3-page-column">
                                     <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
                                 </td>
                             </f:for>
