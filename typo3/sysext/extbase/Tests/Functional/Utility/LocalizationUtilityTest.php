@@ -35,7 +35,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
         $this->configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
         $property = $reflectionClass->getProperty('configurationManager');
-        $property->setValue($this->configurationManagerInterfaceMock);
+        $property->setValue(null, $this->configurationManagerInterfaceMock);
     }
 
     /**
@@ -45,7 +45,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     {
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
         $property = $reflectionClass->getProperty('configurationManager');
-        $property->setValue(null);
+        $property->setValue(null, null);
         parent::tearDown();
     }
 
