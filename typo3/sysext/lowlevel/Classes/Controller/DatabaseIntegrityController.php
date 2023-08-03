@@ -1613,10 +1613,10 @@ class DatabaseIntegrityController
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
                     if ($conf['comparison'] === 100 || $conf['comparison'] === 101) {
                         // between
-                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', $conf['inputValue'], 'date');
-                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue1]', $conf['inputValue1'], 'date');
+                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', (string)$conf['inputValue'], 'date');
+                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue1]', (string)$conf['inputValue1'], 'date');
                     } else {
-                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', $conf['inputValue'], 'date');
+                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', (string)$conf['inputValue'], 'date');
                     }
                     $lineHTML[] = '</div>';
                     break;
@@ -1625,10 +1625,10 @@ class DatabaseIntegrityController
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
                     if ($conf['comparison'] === 100 || $conf['comparison'] === 101) {
                         // between:
-                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', $conf['inputValue'], 'datetime');
-                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue1]', $conf['inputValue1'], 'datetime');
+                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', (string)$conf['inputValue'], 'datetime');
+                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue1]', (string)$conf['inputValue1'], 'datetime');
                     } else {
-                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', $conf['inputValue'], 'datetime');
+                        $lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', (string)$conf['inputValue'], 'datetime');
                     }
                     $lineHTML[] = '</div>';
                     break;
