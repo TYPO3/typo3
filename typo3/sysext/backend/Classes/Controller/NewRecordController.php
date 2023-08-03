@@ -502,12 +502,12 @@ class NewRecordController
                 $ret = 1;
             } else {
                 // No element is in array, return alphabetic order
-                $ret = strnatcasecmp($this->tRows[$a]['title'], $this->tRows[$b]['title']);
+                $ret = strnatcasecmp($this->tRows[$a]['title'] ?? '', $this->tRows[$b]['title'] ?? '');
             }
             return $ret;
         }
         // Return alphabetic order
-        return strnatcasecmp($this->tRows[$a]['title'], $this->tRows[$b]['title']);
+        return strnatcasecmp($this->tRows[$a]['title'] ?? '', $this->tRows[$b]['title'] ?? '');
     }
 
     /**
