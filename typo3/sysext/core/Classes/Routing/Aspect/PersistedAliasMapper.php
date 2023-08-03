@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Site\SiteAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Classic usage when using a "URL segment" (e.g. slug) field within a database table.
@@ -194,6 +195,10 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
 
     protected function findByIdentifier(string $value): ?array
     {
+        if (!MathUtility::canBeInterpretedAsInteger($value)) {
+            return null;
+        }
+
         $queryBuilder = $this->createQueryBuilder();
         $result = $queryBuilder
             ->select(...$this->persistenceFieldNames)
