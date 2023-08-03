@@ -51,7 +51,7 @@
                 <core:icon identifier="{provider.iconIdentifier}" size="large"/>
             </div>
             <div class="card-header-body">
-                <h1 class="card-title">
+                <h2 class="card-title">
                     {providerTitle}
                     <be:mfa.ifHasState state="active" provider="{provider}">
                         <span class="badge badge-{be:mfa.ifHasState(state: 'locked', provider: provider, then: 'danger', else: 'success')}">
@@ -63,7 +63,7 @@
                             <core:icon identifier="actions-star" />
                         </span>
                     </f:if>
-                </h1>
+                </h2>
             </div>
         </div>
         <div class="card-body">
