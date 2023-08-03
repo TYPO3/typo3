@@ -289,6 +289,26 @@ final class PersistedAliasMapperTest extends FunctionalTestCase
         self::assertSame($expectedResult, $this->subject->generate($parameters['uid']));
     }
 
+    /**
+     * @test
+     */
+    public function generateWithUidOfExistingPageReturnsPageSlug(): void
+    {
+        $result = $this->subject->generate('3010');
+
+        self::assertSame('30xx-slug', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function generateWithUidOfExistingPageSuffixedWithGarbageStringReturnsNull(): void
+    {
+        $result = $this->subject->generate('3010-i-am-garbage');
+
+        self::assertNull($result);
+    }
+
     private function writeSiteConfiguration(Site $site): void
     {
         try {

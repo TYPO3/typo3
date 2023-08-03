@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Site\SiteAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Very useful for building an a path segment from a combined value of the database.
@@ -203,6 +204,10 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
 
     protected function findByIdentifier(string $value): ?array
     {
+        if (!MathUtility::canBeInterpretedAsInteger($value)) {
+            return null;
+        }
+
         $queryBuilder = $this->createQueryBuilder();
         $result = $queryBuilder
             ->select('*')
