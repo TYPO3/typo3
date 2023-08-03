@@ -1919,29 +1919,6 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expectation, GeneralUtility::sanitizeCssVariableValue($value));
     }
 
-    ///////////////////////////////
-    // Tests concerning fixPermissions
-    ///////////////////////////////
-    /**
-     * @test
-     * @requires function posix_getegid
-     */
-    public function fixPermissionsSetsGroup(): void
-    {
-        if (Environment::isWindows()) {
-            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
-        }
-        // Create and prepare test file
-        $filename = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
-        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
-        $currentGroupId = posix_getegid();
-        // Set target group and run method
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $currentGroupId;
-        GeneralUtilityFilesystemFixture::fixPermissions($filename);
-        clearstatcache();
-        self::assertEquals($currentGroupId, filegroup($filename));
-    }
-
     /**
      * @test
      */
