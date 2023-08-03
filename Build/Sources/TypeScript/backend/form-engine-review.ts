@@ -13,11 +13,10 @@
 
 import 'bootstrap';
 import DocumentService from '@typo3/core/document-service';
-import $ from 'jquery';
 import FormEngine from '@typo3/backend/form-engine';
 import '@typo3/backend/element/icon-element';
 import Popover from './popover';
-import { Popover as BootstrapPopover } from 'bootstrap';
+import { Popover as BootstrapPopover, Tab as BootstrapTab } from 'bootstrap';
 
 /**
  * Module: @typo3/backend/form-engine-review
@@ -50,19 +49,15 @@ class FormEngineReview {
 
   /**
    * Fetches all fields that have a failed validation
-   *
-   * @return {$}
    */
-  public static findInvalidField(): any {
-    return $(document).find('.tab-content .' + FormEngine.Validation.errorClass);
+  public static findInvalidField(): NodeListOf<HTMLElement> {
+    return document.querySelectorAll('.tab-content .' + FormEngine.Validation.errorClass);
   }
 
   /**
    * Renders an invisible button to toggle the review panel into the least possible toolbar
-   *
-   * @param {Object} context
    */
-  public static attachButtonToModuleHeader(context: any): void {
+  public attachButtonToModuleHeader(): void {
     const leastButtonBar: HTMLElement = document.querySelector('.t3js-module-docheader-bar-buttons').lastElementChild.querySelector('[role="toolbar"]');
 
     const icon = document.createElement('typo3-backend-icon');
@@ -71,7 +66,7 @@ class FormEngineReview {
 
     const button = document.createElement('button');
     button.type = 'button';
-    button.classList.add('btn', 'btn-danger', 'btn-sm', 'hidden', context.toggleButtonClass);
+    button.classList.add('btn', 'btn-danger', 'btn-sm', 'hidden', this.toggleButtonClass);
     button.title = TYPO3.lang['buttons.reviewFailedValidationFields'];
     button.appendChild(icon);
 
@@ -83,68 +78,68 @@ class FormEngineReview {
    * Initialize the events
    */
   public initialize(): void {
-    const me: any = this;
-    const $document: any = $(document);
-
     DocumentService.ready().then((): void => {
-      FormEngineReview.attachButtonToModuleHeader(me);
+      this.attachButtonToModuleHeader();
     });
-    $document.on('t3-formengine-postfieldvalidation', this.checkForReviewableField);
+    document.addEventListener('t3-formengine-postfieldvalidation', (): void => {
+      this.checkForReviewableField();
+    });
   }
 
   /**
    * Checks if fields have failed validation. In such case, the markup is rendered and the toggle button is unlocked.
    */
-  public checkForReviewableField = (): void => {
-    const me: any = this;
-    const $invalidFields: any = FormEngineReview.findInvalidField();
+  public checkForReviewableField(): void {
+    const invalidFields = FormEngineReview.findInvalidField();
     const toggleButton: HTMLElement = document.querySelector('.' + this.toggleButtonClass);
     if (toggleButton === null) {
       return;
     }
 
-    if ($invalidFields.length > 0) {
-      const $list: any = $('<div />', { class: 'list-group' });
+    if (invalidFields.length > 0) {
+      const erroneousListGroup = document.createElement('div');
+      erroneousListGroup.classList.add('list-group');
 
-      $invalidFields.each(function(this: Element): void {
-        const $field: any = $(this);
-        const $input: JQuery = $field.find('[data-formengine-validation-rules]');
-
+      for (const invalidField of invalidFields) {
+        const relatedInputField = invalidField.querySelector('[data-formengine-validation-rules]') as HTMLElement;
         const link = document.createElement('a');
         link.classList.add('list-group-item');
         link.href = '#';
-        link.textContent = $field.find(me.labelSelector).text() || $field.find(me.legendSelector).text();
-        link.addEventListener('click', (e: Event) => me.switchToField(e, $input));
+        link.textContent = invalidField.querySelector(this.labelSelector)?.textContent || invalidField.querySelector(this.legendSelector)?.textContent || '';
+        link.addEventListener('click', (e: Event) => this.switchToField(e, relatedInputField));
 
-        $list.append(link);
-      });
+        erroneousListGroup.append(link);
+      }
 
       toggleButton.classList.remove('hidden');
       Popover.setOptions(toggleButton, <BootstrapPopover.Options>{
         html: true,
-        content: $list[0]
+        content: erroneousListGroup as Element
       });
     } else {
       toggleButton.classList.add('hidden');
       Popover.hide(toggleButton);
     }
-  };
+  }
 
   /**
    * Finds the field in the form and focuses it
-   *
-   * @param {Event} e
    */
-  public switchToField = (e: Event, $referenceField: JQuery): void => {
+  public switchToField(e: Event, inputField: HTMLElement): void {
     e.preventDefault();
 
     // iterate possibly nested tab panels
-    $referenceField.parents('[id][role="tabpanel"]').each(function(this: Element): void {
-      $('[aria-controls="' + $(this).attr('id') + '"]').tab('show');
-    });
+    let ref = inputField;
+    while (ref) {
+      if (ref.matches('[id][role="tabpanel"]')) {
+        const tabContainer = document.querySelector('[aria-controls="' + ref.id + '"]');
+        new BootstrapTab(tabContainer).show();
+      }
+      ref = ref.parentElement;
+    }
 
-    $referenceField.focus();
-  };
+    inputField.focus();
+  }
 }
 
 // create an instance and return it

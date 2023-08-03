@@ -405,7 +405,7 @@ export default (function() {
 
     FormEngineValidation.markParentTab($(field), isValid);
 
-    $(document).trigger('t3-formengine-postfieldvalidation');
+    document.dispatchEvent(new CustomEvent('t3-formengine-postfieldvalidation'));
 
     return returnValue;
   };
