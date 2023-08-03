@@ -309,7 +309,7 @@ class Clipboard
                     $folder = $fileObject instanceof Folder;
                     $size = $folder ? '' : '(' . GeneralUtility::formatSize((int)$fileObject->getSize()) . 'bytes)';
                     /** @var File $fileObject */
-                    if (!$folder && $fileObject->isImage()) {
+                    if (!$folder && ($fileObject->isImage() || $fileObject->isMediaFile())) {
                         $processedFile = $fileObject->process(
                             ProcessedFile::CONTEXT_IMAGEPREVIEW,
                             [

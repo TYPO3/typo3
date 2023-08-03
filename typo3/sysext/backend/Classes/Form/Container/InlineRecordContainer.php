@@ -388,7 +388,7 @@ class InlineRecordContainer extends AbstractContainer
                     }
                     $imageSetup = array_merge(['maxWidth' => '145', 'maxHeight' => '45'], $imageSetup);
 
-                    if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && $fileObject->isImage()) {
+                    if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && ($fileObject->isImage() || $fileObject->isMediaFile())) {
                         $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $imageSetup);
                         // Only use a thumbnail if the processing process was successful by checking if image width is set
                         if ($processedImage->getProperty('width')) {
