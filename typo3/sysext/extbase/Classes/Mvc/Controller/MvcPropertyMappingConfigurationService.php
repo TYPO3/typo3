@@ -28,17 +28,18 @@ use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationExcepti
 use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
 
 /**
- * This is a Service which can generate a request hash and check whether the currently given arguments
+ * This is a service which can generate a request hash and check whether the currently given arguments
  * fit to the request hash.
  *
  * It is used when forms are generated and submitted:
- * After a form has been generated, the method "generateRequestHash" is called with the names of all form fields.
- * It cleans up the array of form fields and creates another representation of it, which is then serialized and hashed.
+ * After a form has been generated, the method "generateTrustedPropertiesToken" is called with the names of all form fields.
+ * It cleans up the array of form fields and creates another representation of it, which is then json encoded and a hmac
+ * is appended. This is called the request hash.
  *
- * Both serialized form field list and the added hash form the request hash, which will be sent over the wire (as an argument __hmac).
+ * The json encoded form field list and the appended hmac will be submitted with the form (as attribute __trustedProperties).
  *
  * On the validation side, the validation happens in two steps:
- * 1) Check if the request hash is consistent (the hash value fits to the serialized string)
+ * 1) Check if the request hash is consistent (the hmac value fits to the json encoded field list string)
  * 2) Check that _all_ GET/POST parameters submitted occur inside the form field list of the request hash.
  *
  * Note: It is crucially important that a private key is computed into the hash value! This is done inside the HashService.
@@ -105,20 +106,20 @@ class MvcPropertyMappingConfigurationService implements SingletonInterface
         if ($fieldNamePrefix !== '') {
             $formFieldArray = ($formFieldArray[$fieldNamePrefix] ?? []);
         }
-        return $this->serializeAndHashFormFieldArray($formFieldArray);
+        return $this->encodeAndHashFormFieldArray($formFieldArray);
     }
 
     /**
-     * Serialize and hash the form field array
+     * Encode and hash the form field array
      *
-     * @param array $formFieldArray form field array to be serialized and hashed
+     * @param array $formFieldArray form field array to be encoded and hashed
      *
      * @return string Hash
      */
-    protected function serializeAndHashFormFieldArray(array $formFieldArray)
+    protected function encodeAndHashFormFieldArray(array $formFieldArray)
     {
-        $serializedFormFieldArray = json_encode($formFieldArray);
-        return $this->hashService->appendHmac($serializedFormFieldArray);
+        $encodedFormFieldArray = json_encode($formFieldArray);
+        return $this->hashService->appendHmac($encodedFormFieldArray);
     }
 
     /**
@@ -137,11 +138,11 @@ class MvcPropertyMappingConfigurationService implements SingletonInterface
         }
 
         try {
-            $serializedTrustedProperties = $this->hashService->validateAndStripHmac($trustedPropertiesToken);
+            $encodedTrustedProperties = $this->hashService->validateAndStripHmac($trustedPropertiesToken);
         } catch (InvalidHashException | InvalidArgumentForHashGenerationException $e) {
             throw new BadRequestException('The HMAC of the form could not be validated.', 1581862822);
         }
-        $trustedProperties = json_decode($serializedTrustedProperties, true);
+        $trustedProperties = json_decode($encodedTrustedProperties, true);
         foreach ($trustedProperties as $propertyName => $propertyConfiguration) {
             if (!$controllerArguments->hasArgument($propertyName)) {
                 continue;

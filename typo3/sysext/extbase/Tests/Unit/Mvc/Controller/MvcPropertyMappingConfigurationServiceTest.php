@@ -127,9 +127,9 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     public function generateTrustedPropertiesTokenGeneratesTheCorrectHashesInNormalOperation($input, $expected): void
     {
         $requestHashService = $this->getMockBuilder(MvcPropertyMappingConfigurationService::class)
-            ->onlyMethods(['serializeAndHashFormFieldArray'])
+            ->onlyMethods(['encodeAndHashFormFieldArray'])
             ->getMock();
-        $requestHashService->expects(self::once())->method('serializeAndHashFormFieldArray')->with($expected);
+        $requestHashService->expects(self::once())->method('encodeAndHashFormFieldArray')->with($expected);
         $requestHashService->generateTrustedPropertiesToken($input);
     }
 
@@ -142,7 +142,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $this->expectException(InvalidArgumentForHashGenerationException::class);
         $this->expectExceptionCode($expectExceptionCode);
         $requestHashService = $this->getMockBuilder(MvcPropertyMappingConfigurationService::class)
-            ->onlyMethods(['serializeAndHashFormFieldArray'])
+            ->onlyMethods(['encodeAndHashFormFieldArray'])
             ->getMock();
         $requestHashService->generateTrustedPropertiesToken($input);
     }
@@ -150,7 +150,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function serializeAndHashFormFieldArrayWorks(): void
+    public function encodeAndHashFormFieldArrayWorks(): void
     {
         $formFieldArray = [
             'bla' => [
@@ -169,7 +169,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $requestHashService->injectHashService($hashService);
 
         $expected = json_encode($formFieldArray) . $mockHash;
-        $actual = $requestHashService->_call('serializeAndHashFormFieldArray', $formFieldArray);
+        $actual = $requestHashService->_call('encodeAndHashFormFieldArray', $formFieldArray);
         self::assertEquals($expected, $actual);
     }
 
