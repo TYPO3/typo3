@@ -183,7 +183,7 @@
 				<source>Search extensions</source>
 			</trans-unit>
 			<trans-unit id="extensionList.search" resname="extensionList.search">
-				<source>Search</source>
+				<source>Search term</source>
 			</trans-unit>
 			<trans-unit id="extensionList.filter.showAll" resname="extensionList.filter.showAll">
 				<source>All</source>

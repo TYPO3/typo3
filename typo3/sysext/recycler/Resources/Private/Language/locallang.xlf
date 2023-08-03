@@ -13,7 +13,7 @@
 				<source>All Record Types</source>
 			</trans-unit>
 			<trans-unit id="filter.search">
-				<source>Enter search term</source>
+				<source>Search term</source>
 			</trans-unit>
 			<trans-unit id="filter.depth">
 				<source>Depth</source>

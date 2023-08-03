@@ -27,6 +27,9 @@
         <div id="lowlevel-config" class="form-row">
             <div class="form-group">
                 <form action="#">
+                    <label for="searchValue" class="form-label">
+                        <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
+                    </label>
                     <div class="input-group">
                         <input
                             type="text"
@@ -36,7 +39,6 @@
                             data-persist-collapse-search-key="collapse-search-term-lowlevel-configuration-{treeLabelHash}"
                             value=""
                             minlength="3"
-                            placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}"
                         />
                         <button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
                     </div>

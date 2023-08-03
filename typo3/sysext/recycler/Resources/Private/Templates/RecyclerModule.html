@@ -14,8 +14,9 @@
         <form id="recycler-form">
             <div class="form-row">
                 <div class="form-group align-self-end">
+                    <label for="search-text" class="form-label"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:filter.search" /></label>
                     <div class="input-group">
-                        <input type="text" name="search-text" class="form-control form-control-clearable" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}">
+                        <input type="text" id="search-text" name="search-text" class="form-control form-control-clearable">
                         <button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
                     </div>
                 </div>

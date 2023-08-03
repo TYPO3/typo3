@@ -19,11 +19,14 @@
 
     <h1><f:translate key="getExtensions">Get Extensions</f:translate></h1>
     <f:render partial="List/UploadForm" />
-    <div class="form-row justify-content-between">
+    <div class="form-row justify-content-between align-items-end">
         <div class="form-group">
             <f:form class="typo3-extensionmanager-searchTerForm" action="ter">
+                <label for="Tx_Extensionmanager_extensionkey_ter" class="form-label">
+                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString" />
+                </label>
                 <div class="input-group">
-                    <f:form.textfield name="search" value="{search}" class="form-control" placeholder="{f:translate(key:'extensionList.search')}" />
+                    <f:form.textfield name="search" value="{search}" class="form-control" id="Tx_Extensionmanager_extensionkey_ter" />
                     <button type="submit" class="btn btn-default" title="{f:translate(key:'searchTemplate.submitButton')}">
                         <core:icon identifier="actions-search" />
                     </button>

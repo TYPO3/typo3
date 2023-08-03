@@ -93,25 +93,28 @@
 </f:section>
 
 <f:section name="Options">
-    <div class="form-row-md">
+    <div class="form-row-md align-items-md-end">
         <div class="form-group">
             <form action="#">
+                <label for="searchValue" class="form-label">
+                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString" />
+                </label>
                 <div class="input-group">
                     <input
                         type="text"
                         class="form-control form-control-clearable t3js-collapse-search-term"
+                        id="searchValue"
                         name="searchValue"
                         data-persist-collapse-search-key="collapse-search-term-pagets"
                         value=""
                         minlength="3"
-                        placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}"
                     />
                     <button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
                 </div>
             </form>
         </div>
         <div class="form-group">
-            <div class="form-row-sm">
+            <div class="form-row-md">
                 <f:if condition="{siteSettingsAst}">
                     <div class="form-group">
                         <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">

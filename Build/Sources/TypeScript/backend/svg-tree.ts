@@ -1445,7 +1445,10 @@ export class Toolbar extends LitElement {
       <div class="tree-toolbar">
         <div class="svg-toolbar__menu">
           <div class="svg-toolbar__search">
-              <input type="search" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
+              <label for="svgToolbarSearch" class="visually-hidden">
+                ${lll('labels.label.searchString')}
+              </label>
+              <input type="search" id="svgToolbarSearch" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
           </div>
         </div>
         <div class="svg-toolbar__submenu">
