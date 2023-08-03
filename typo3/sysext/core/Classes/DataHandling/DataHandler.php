@@ -4428,13 +4428,15 @@ class DataHandler implements LoggerAwareInterface
                 $updateFields = [
                     $translationSourceFieldName => $newFieldValue,
                 ];
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable($table)
-                    ->update($table, $updateFields, ['uid' => (int)$languageSourceMap[$record['uid']]]);
-                if ($this->BE_USER->workspace > 0) {
+                if (isset($languageSourceMap[$record['uid']])) {
                     GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getConnectionForTable($table)
-                        ->update($table, $updateFields, ['t3ver_oid' => (int)$languageSourceMap[$record['uid']], 't3ver_wsid' => $this->BE_USER->workspace]);
+                        ->update($table, $updateFields, ['uid' => (int)$languageSourceMap[$record['uid']]]);
+                    if ($this->BE_USER->workspace > 0) {
+                        GeneralUtility::makeInstance(ConnectionPool::class)
+                            ->getConnectionForTable($table)
+                            ->update($table, $updateFields, ['t3ver_oid' => (int)$languageSourceMap[$record['uid']], 't3ver_wsid' => $this->BE_USER->workspace]);
+                    }
                 }
             }
         }
