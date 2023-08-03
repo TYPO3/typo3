@@ -1930,7 +1930,7 @@ class GeneralUtility
 
             foreach ($allowedFileExtensionArray as $allowedFileExtension) {
                 if (
-                    ($extensionList === ',,' || stripos($extensionList, ',' . substr($entry, strlen($allowedFileExtension) * -1, strlen($allowedFileExtension)) . ',') !== false)
+                    ($extensionList === ',,' || str_ends_with(mb_strtolower($entry), mb_strtolower('.' . $allowedFileExtension)))
                     && ($excludePattern === '' || !preg_match('/^' . $excludePattern . '$/', $entry))
                 ) {
                     if ($order !== 'mtime') {

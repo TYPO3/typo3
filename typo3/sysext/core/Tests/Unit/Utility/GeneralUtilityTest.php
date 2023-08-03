@@ -2614,6 +2614,9 @@ final class GeneralUtilityTest extends UnitTestCase
         file_put_contents($path . '/subDirectory/test.php', 'butter');
         file_put_contents($path . '/subDirectory/other.php', 'milk');
         file_put_contents($path . '/subDirectory/stuff.csv', 'honey');
+        mkdir($path . '/beStylesheet');
+        file_put_contents($path . '/beStylesheet/backend.css', '.topbar-header-site { color: red; }');
+        file_put_contents($path . '/beStylesheet/backend.scss', '.topbar-header-site { color: green; }');
         file_put_contents($path . '/excludeMe.txt', 'cocoa nibs');
         file_put_contents($path . '/double.setup.typoscript', 'cool TS');
         file_put_contents($path . '/testB.txt', 'olive oil');
@@ -2643,6 +2646,17 @@ final class GeneralUtilityTest extends UnitTestCase
         $path = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($path);
         self::assertContains('.secret.txt', $files);
+    }
+
+    /**
+     * @test
+     */
+    public function getFilesInDirOnlyFindWithMatchingExtension(): void
+    {
+        $path = $this->getFilesInDirCreateTestDirectory();
+        $files = GeneralUtility::getFilesInDir($path . '/beStylesheet', 'css');
+        self::assertContains('backend.css', $files);
+        self::assertNotContains('backend.scss', $files);
     }
 
     /**
