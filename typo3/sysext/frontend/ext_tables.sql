@@ -57,7 +57,6 @@ CREATE TABLE fe_users (
 	country varchar(40) DEFAULT '' NOT NULL,
 	www varchar(80) DEFAULT '' NOT NULL,
 	company varchar(80) DEFAULT '' NOT NULL,
-	image tinytext,
 	is_online int(10) unsigned DEFAULT '0' NOT NULL,
 	mfa mediumblob,
 
@@ -95,13 +94,10 @@ CREATE TABLE tt_content (
 	bullets_type tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	uploads_description tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	uploads_type tinyint(3) unsigned DEFAULT '0' NOT NULL,
-	assets int(11) unsigned DEFAULT '0' NOT NULL,
-	image int(11) unsigned DEFAULT '0' NOT NULL,
 	imagewidth mediumint(11) unsigned DEFAULT '0' NOT NULL,
 	imageorient tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	imagecols tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	imageborder tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	media int(11) unsigned DEFAULT '0' NOT NULL,
 	layout int(11) unsigned DEFAULT '0' NOT NULL,
 	frame_class varchar(60) DEFAULT 'default' NOT NULL,
 	cols int(11) unsigned DEFAULT '0' NOT NULL,
@@ -147,5 +143,4 @@ CREATE TABLE tt_content (
 CREATE TABLE backend_layout (
 	title varchar(255) DEFAULT '' NOT NULL,
 	config text NOT NULL,
-	icon text
 );

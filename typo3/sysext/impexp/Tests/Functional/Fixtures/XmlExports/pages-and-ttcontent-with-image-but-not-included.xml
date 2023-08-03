@@ -235,19 +235,10 @@
 				<field index="t3ver_oid" type="integer">0</field>
 				<field index="CType">textpic</field>
 				<field index="header">Test content</field>
-				<field index="image" type="integer">1</field>
 				<field index="header_link">file:1</field>
+				<field index="image" type="integer">1</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="image" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>sys_file_reference</table>
-						</element>
-					</relations>
-				</field>
 				<field index="header_link" type="array">
 					<softrefs type="array">
 						<keys type="array">
@@ -265,6 +256,15 @@
 						</keys>
 						<tokenizedContent>{softref:2487ce518ed56d22f20f259928ff43f1}</tokenizedContent>
 					</softrefs>
+				</field>
+				<field index="image" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>sys_file_reference</table>
+						</element>
+					</relations>
 				</field>
 			</related>
 		</tablerow>

@@ -5,7 +5,6 @@ CREATE TABLE tx_blogexample_domain_model_blog (
 	title varchar(255) DEFAULT '' NOT NULL,
 	subtitle varchar(255) DEFAULT '',
 	description text NOT NULL,
-	logo tinyblob NOT NULL default '',
 	administrator int(11) DEFAULT '0' NOT NULL,
 
 	posts varchar(255) DEFAULT '' NOT NULL

@@ -3,7 +3,7 @@
 ,1,0,128,"Root",0,15
 tx_blogexample_domain_model_blog
 ,uid,pid,title,description,logo,deleted,posts,administrator,categories,t3ver_oid,t3ver_state,t3ver_wsid,hidden
-,1,0,Blog1,"Blog1 Description",,0,11,0,0,0,0,0,0
+,1,0,Blog1,"Blog1 Description",0,0,11,0,0,0,0,0,0
 tx_blogexample_domain_model_post
 ,uid,pid,blog,author,reviewer,tags,categories,title,content,sorting,deleted,hidden,related_posts,t3ver_oid,t3ver_state,t3ver_wsid
 ,1,0,1,3,2,10,3,Post1,"Lorem ipsum...",1,0,0,1,0,0,0

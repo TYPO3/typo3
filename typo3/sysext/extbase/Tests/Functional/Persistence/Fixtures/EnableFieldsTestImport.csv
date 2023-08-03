@@ -11,9 +11,9 @@ fe_groups
 ,2,0,"userb",0,2,0,,
 "tx_blogexample_domain_model_blog",,,,,,,,,
 ,"uid","pid","title","description","logo","l18n_diffsource","fe_group","deleted","posts"
-,1,1,"Blog1","Blog1 Description",,,,0,0
-,2,1,"Blog2","Blog2 Description",,,1,0,0
-,3,1,"Blog3","Blog3 Description",,,2,0,0
+,1,1,"Blog1","Blog1 Description",0,,,0,0
+,2,1,"Blog2","Blog2 Description",0,,1,0,0
+,3,1,"Blog3","Blog3 Description",0,,2,0,0
 "sys_refindex",,,,,,,,
 ,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
 ,"001cd2e4390e0152274a1a31cabbf067","fe_users",1,"usergroup",0,0,"fe_groups",1

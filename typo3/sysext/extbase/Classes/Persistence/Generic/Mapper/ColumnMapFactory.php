@@ -79,7 +79,7 @@ class ColumnMapFactory
     }
 
     /**
-     * This method tries to determine the type of type of relation to other tables and sets it based on
+     * This method tries to determine the type of relation to other tables and sets it based on
      * the $TCA column configuration
      *
      * @param ColumnMap $columnMap The column map

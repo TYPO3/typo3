@@ -39,7 +39,6 @@ CREATE TABLE be_sessions (
 #
 CREATE TABLE be_users (
 	username varchar(50) DEFAULT '' NOT NULL,
-	avatar int(11) unsigned NOT NULL default '0',
 	password varchar(255) DEFAULT '' NOT NULL,
 	admin tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	usergroup text,
@@ -80,7 +79,6 @@ CREATE TABLE pages (
 	subtitle varchar(255) DEFAULT '' NOT NULL,
 	layout int(11) unsigned DEFAULT '0' NOT NULL,
 	target varchar(80) DEFAULT '' NOT NULL,
-	media int(11) unsigned DEFAULT '0' NOT NULL,
 	keywords text,
 	cache_timeout int(10) unsigned DEFAULT '0' NOT NULL,
 	cache_tags varchar(255) DEFAULT '' NOT NULL,
@@ -280,9 +278,6 @@ CREATE TABLE sys_file_reference (
 CREATE TABLE sys_file_collection (
 	title tinytext,
 	type varchar(30) DEFAULT 'static' NOT NULL,
-
-	# for type=static
-	files int(11) DEFAULT '0' NOT NULL,
 
 	# for type=folder:
 	folder_identifier varchar(255) DEFAULT '' NOT NULL,

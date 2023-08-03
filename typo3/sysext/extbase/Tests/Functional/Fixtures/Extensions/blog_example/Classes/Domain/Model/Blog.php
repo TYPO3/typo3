@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3Tests\BlogExample\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -47,9 +48,11 @@ class Blog extends AbstractEntity
     protected string $description = '';
 
     /**
-     * A relative path to a logo image
+     * A logo
+     *
+     * @var ObjectStorage<FileReference>
      */
-    protected string $logo = '';
+    protected ObjectStorage $logo;
 
     /**
      * The posts of this blog
@@ -76,6 +79,7 @@ class Blog extends AbstractEntity
     {
         $this->posts = new ObjectStorage();
         $this->categories = new ObjectStorage();
+        $this->logo = new ObjectStorage();
     }
 
     public function getSubtitle(): string
@@ -93,12 +97,18 @@ class Blog extends AbstractEntity
         return $this->title;
     }
 
-    public function setLogo(string $logo): void
+    /**
+     * @param ObjectStorage<FileReference> $logo
+     */
+    public function setLogo(ObjectStorage $logo): void
     {
         $this->logo = $logo;
     }
 
-    public function getLogo(): string
+    /**
+     * @return ObjectStorage<FileReference>
+     */
+    public function getLogo(): ObjectStorage
     {
         return $this->logo;
     }

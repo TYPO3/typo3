@@ -439,7 +439,7 @@ class DefaultTcaSchema
             }
 
             // If the table is given in existing $tables list, add all fields to the first
-            // position of that table - in case it is in there multiple times which happens
+            // position of that table - in case it is supplied multiple times which happens
             // if extensions add single fields to tables that have been defined in
             // other ext_tables.sql, too.
             $tablePosition = $this->getTableFirstPosition($tables, $tableName);
@@ -559,6 +559,25 @@ class DefaultTcaSchema
                         'length' => 36,
                         'default' => '',
                         'notnull' => true,
+                    ]
+                );
+            }
+
+            // Add file fields for all tables, defining file columns (TCA type=file)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'file'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    'integer',
+                    [
+                        'default' => 0,
+                        'notnull' => true,
+                        'unsigned' => true,
                     ]
                 );
             }
