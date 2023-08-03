@@ -93,6 +93,34 @@ class ExtensionManager {
             ],
           );
         }).delegateTo(extensionList, '.removeExtension');
+
+        new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
+          e.preventDefault();
+
+          Modal.confirm(
+            TYPO3.lang['extensionList.databaseReload.title'],
+            TYPO3.lang['extensionList.databaseReload.message'],
+            Severity.warning,
+            [
+              {
+                text: TYPO3.lang['button.cancel'],
+                active: true,
+                btnClass: 'btn-default',
+                trigger: (): void => {
+                  Modal.dismiss();
+                },
+              }, {
+                text: TYPO3.lang['button.reimport'],
+                btnClass: 'btn-warning',
+                trigger: (): void => {
+                  window.location.href = target.href;
+                  Modal.dismiss();
+                },
+              },
+            ],
+          );
+        }).delegateTo(extensionList, '.reloadSqlData');
+
       }
       $(document).on('click', '.onClickMaskExtensionManager', (): void => {
         NProgress.start();
