@@ -37,9 +37,9 @@ final class TcaSelectItemsTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet('typo3/sysext/backend/Tests/Functional/Form/Fixtures/TcaSelectItems/be_users.csv');
-        $this->importCSVDataSet('typo3/sysext/backend/Tests/Functional/Form/Fixtures/TcaSelectItems/base.csv');
-        $this->importCSVDataSet('typo3/sysext/core/Tests/Functional/Fixtures/sys_file_storage.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/base.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/sys_file_storage.csv');
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
         $GLOBALS['BE_USER'] = $this->setUpBackendUser(1);
     }
@@ -1337,7 +1337,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        $this->importCSVDataSet('typo3/sysext/backend/Tests/Functional/Form/Fixtures/TcaSelectItems/sys_file_reference.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/sys_file_reference.csv');
         $GLOBALS['TCA']['foreign_table']['ctrl']['selicon_field'] = 'fal_field';
 
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));

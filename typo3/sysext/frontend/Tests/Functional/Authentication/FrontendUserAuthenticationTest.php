@@ -38,7 +38,7 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet('typo3/sysext/frontend/Tests/Functional/Fixtures/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
             'frontend_authentication',
             $this->buildSiteConfiguration(self::ROOT_PAGE_ID, '/'),
@@ -54,7 +54,7 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
 
         self::assertStringNotContainsString('fe_typo_user', $response->getHeaderLine('Set-Cookie'));
-        $this->assertCSVDataSet('typo3/sysext/frontend/Tests/Functional/Authentication/Fixtures/fe_sessions_empty.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/fe_sessions_empty.csv');
     }
 
     /**
@@ -62,7 +62,7 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
      */
     public function canCreateNewAndExistingSessionWithValidRequestToken(): void
     {
-        $this->importCSVDataSet('typo3/sysext/frontend/Tests/Functional/Authentication/Fixtures/fe_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/fe_users.csv');
 
         $nonce = Nonce::create();
         $requestToken = RequestToken::create('core/user-auth/fe')->toHashSignedJwt($nonce);
@@ -82,7 +82,7 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest($request);
 
         self::assertStringContainsString('fe_typo_user', $response->getHeaderLine('Set-Cookie'));
-        $this->assertCSVDataSet('typo3/sysext/frontend/Tests/Functional/Authentication/Fixtures/fe_sessions_filled.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/fe_sessions_filled.csv');
 
         // Now check whether the existing session is retrieved by providing the retrieved JWT token in the cookie params.
         $cookie = SetCookie::fromString($response->getHeaderLine('Set-Cookie'));

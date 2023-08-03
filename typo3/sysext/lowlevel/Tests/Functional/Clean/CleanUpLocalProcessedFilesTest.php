@@ -50,7 +50,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
 
-        $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/lowlevel/Tests/Functional/Fixtures/DataSet/sys_file_processedfile.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DataSet/sys_file_processedfile.csv');
         $this->subject = GeneralUtility::makeInstance(CleanUpLocalProcessedFilesCommand::class);
 
         $helperSet = new HelperSet();
@@ -97,7 +97,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
     {
         $this->commandTester->execute(['--force' => true]);
 
-        $this->assertCSVDataSet('typo3/sysext/lowlevel/Tests/Functional/Fixtures/Modify/oneDeleted.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/Modify/oneDeleted.csv');
     }
 
     /**
@@ -124,7 +124,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
                 '--dry-run' => true,
             ]
         );
-        $this->assertCSVDataSet('typo3/sysext/lowlevel/Tests/Functional/Fixtures/DataSet/sys_file_processedfile.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DataSet/sys_file_processedfile.csv');
 
         // `dry-run` should not remove files, therefore we need to test if  `_processed_`file still exists.
         self::assertFileExists(GeneralUtility::getFileAbsFileName('fileadmin/_processed_/0/a/NotReferencedImage.png'));

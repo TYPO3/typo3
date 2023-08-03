@@ -32,8 +32,8 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet('typo3/sysext/core/Tests/Functional/Utility/Fixtures/DataSet/sys_refindex.csv');
-        $this->importCSVDataSet('typo3/sysext/core/Tests/Functional/Utility/Fixtures/DataSet/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DataSet/sys_refindex.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DataSet/sys_file.csv');
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
     }
 

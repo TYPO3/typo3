@@ -205,8 +205,8 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
      */
     public function deletedDefaultLanguageItemIsHandledAsIfNoRecordsExistAndReturnsAllOriginLanguages(): void
     {
-        $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-default-language-deleted-element.csv');
-        $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-danish-language-deleted-source.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-default-language-deleted-element.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language-deleted-source.csv');
 
         $request = (new ServerRequest())->withQueryParams([
             'pageId'         => 2, // page uid, the records are stored on
