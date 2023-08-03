@@ -22,6 +22,7 @@ import Md5 from '@typo3/backend/hashing/md5';
 import DocumentSaveActions from '@typo3/backend/document-save-actions';
 import Modal from '@typo3/backend/modal';
 import Severity from '@typo3/backend/severity';
+import Utility from './utility';
 
 type CustomEvaluationCallback = (value: string) => string;
 
@@ -110,7 +111,7 @@ export default (function() {
 
     const config = $mainField.data('config');
     if (typeof config !== 'undefined') {
-      const evalList = FormEngineValidation.trimExplode(',', config.evalList);
+      const evalList = Utility.trimExplode(',', config.evalList);
       let value = $field.val();
 
       for (let i = 0; i < evalList.length; i++) {
@@ -221,7 +222,7 @@ export default (function() {
 
     const config = $mainField.data('config');
     if (typeof config !== 'undefined') {
-      const evalList = FormEngineValidation.trimExplode(',', config.evalList);
+      const evalList = Utility.trimExplode(',', config.evalList);
       let newValue = $humanReadableField.val();
 
       for (let i = 0; i < evalList.length; i++) {
@@ -288,7 +289,7 @@ export default (function() {
             if (rule.minItems || rule.maxItems) {
               $relatedField = $(document).find('[name="' + field.dataset.relatedfieldname + '"]');
               if ($relatedField.length) {
-                selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
+                selected = Utility.trimExplode(',', $relatedField.val()).length;
               } else {
                 selected = parseInt(field.value, 10);
               }
@@ -324,7 +325,7 @@ export default (function() {
           if (rule.minItems || rule.maxItems) {
             $relatedField = $(document).find('[name="' + field.dataset.relatedfieldname + '"]');
             if ($relatedField.length) {
-              selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
+              selected = Utility.trimExplode(',', $relatedField.val()).length;
             } else if (field instanceof HTMLSelectElement) {
               selected = field.querySelectorAll('option:checked').length;
             } else {
@@ -348,7 +349,7 @@ export default (function() {
         case 'group':
         case 'folder':
           if (rule.minItems || rule.maxItems) {
-            selected = FormEngineValidation.trimExplode(',', field.value).length;
+            selected = Utility.trimExplode(',', field.value).length;
             if (typeof rule.minItems !== 'undefined') {
               minItems = rule.minItems * 1;
               if (!isNaN(minItems) && selected < minItems) {
@@ -365,7 +366,7 @@ export default (function() {
           break;
         case 'inline':
           if (rule.minItems || rule.maxItems) {
-            selected = FormEngineValidation.trimExplode(',', field.value).length;
+            selected = Utility.trimExplode(',', field.value).length;
             if (typeof rule.minItems !== 'undefined') {
               minItems = rule.minItems * 1;
               if (!isNaN(minItems) && selected < minItems) {
@@ -588,25 +589,6 @@ export default (function() {
     if (paletteField !== null) {
       paletteField.classList.add('has-change');
     }
-  };
-
-  /**
-   * Helper function to get clean trimmed array from comma list
-   *
-   * @param {String} delimiter
-   * @param {String} string
-   * @returns {Array}
-   */
-  FormEngineValidation.trimExplode = function(delimiter: string, string: string): string[] {
-    const result = [];
-    const items = string.split(delimiter);
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i].trim();
-      if (item.length > 0) {
-        result.push(item);
-      }
-    }
-    return result;
   };
 
   /**

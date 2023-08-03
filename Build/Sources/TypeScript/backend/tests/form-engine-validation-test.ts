@@ -171,21 +171,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
   /**
    * @test
    */
-  describe('tests for trimExplode', () => {
-    it('works for comma as separator and list without spaces', () => {
-      expect(FormEngineValidation.trimExplode(',', 'foo,bar,baz')).toEqual(['foo', 'bar', 'baz']);
-    });
-    it('works for comma as separator and list with spaces', () => {
-      expect(FormEngineValidation.trimExplode(',', ' foo , bar , baz ')).toEqual(['foo', 'bar', 'baz']);
-    });
-    it('works for pipe as separator and list with spaces', () => {
-      expect(FormEngineValidation.trimExplode('|', ' foo | bar | baz ')).toEqual(['foo', 'bar', 'baz']);
-    });
-  });
-
-  /**
-   * @test
-   */
   describe('tests for parseInt', () => {
     it('works for value 0', () => {
       expect(FormEngineValidation.parseInt(0)).toBe(0);
