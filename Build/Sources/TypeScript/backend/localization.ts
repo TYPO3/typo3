@@ -128,7 +128,7 @@ class Localization {
               .replace('{0}', $triggerButton.data('page'))
               .replace('{1}', $triggerButton.data('languageName')),
             slideStep1,
-            SeverityEnum.info,
+            SeverityEnum.notice,
             (): void => {
               if (availableLocalizationModes.length === 1) {
                 // In case only one mode is available, select the mode and continue
@@ -141,7 +141,7 @@ class Localization {
             'localize-choose-language',
             TYPO3.lang['localize.view.chooseLanguage'],
             '',
-            SeverityEnum.info,
+            SeverityEnum.notice,
             ($slide: JQuery): void => {
               Icons.getIcon('spinner-circle', Icons.sizes.large).then((markup: string): void => {
                 $slide.html('<div class="text-center">' + markup + '</div>');
@@ -197,7 +197,7 @@ class Localization {
             'localize-summary',
             TYPO3.lang['localize.view.summary'],
             '',
-            SeverityEnum.info, ($slide: JQuery): void => {
+            SeverityEnum.notice, ($slide: JQuery): void => {
               Icons.getIcon('spinner-circle', Icons.sizes.large).then((markup: string): void => {
                 $slide.html('<div class="text-center">' + markup + '</div>');
               });

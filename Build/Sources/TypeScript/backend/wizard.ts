@@ -65,7 +65,7 @@ class Wizard {
     identifier: string,
     title: string,
     content: string = '',
-    severity: SeverityEnum = SeverityEnum.info,
+    severity: SeverityEnum = SeverityEnum.notice,
     callback?: SlideCallback,
   ): Wizard {
     const slide: Slide = {
@@ -91,7 +91,7 @@ class Wizard {
       this.addSlide(
         'final-processing-slide', top.TYPO3.lang['wizard.processing.title'],
         $processingSlide[0].outerHTML,
-        Severity.info,
+        Severity.notice,
         callback,
       );
     });
@@ -116,7 +116,7 @@ class Wizard {
         },
       }, {
         text: top.TYPO3.lang['wizard.button.next'],
-        btnClass: 'btn-' + Severity.getCssClass(firstSlide.severity),
+        btnClass: 'btn-primary',
         name: 'next',
       }],
       callback: (): void => {
@@ -193,10 +193,6 @@ class Wizard {
             .replace('{0}', nextSlideNumber)
             .replace('{1}', this.setup.$carousel.data('slideCount')));
       }
-
-      $nextButton
-        .removeClass('btn-' + Severity.getCssClass(this.setup.slides[currentIndex - 1].severity))
-        .addClass('btn-' + Severity.getCssClass(this.setup.slides[currentIndex].severity));
 
       $modal
         .removeClass('modal-severity-' + Severity.getCssClass(this.setup.slides[currentIndex - 1].severity))
