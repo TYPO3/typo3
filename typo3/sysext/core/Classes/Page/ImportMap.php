@@ -106,7 +106,7 @@ class ImportMap
                     if ($loadImportConfiguration) {
                         $this->loadDependency($package);
                     }
-                    return $imports[$prefix] . implode(array_slice($specifierParts, $i));
+                    return $imports[$prefix] . implode('/', array_slice($specifierParts, $i));
                 }
             }
         }
