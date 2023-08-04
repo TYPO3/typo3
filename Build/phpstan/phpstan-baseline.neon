@@ -321,6 +321,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Core/ClassLoadingInformationGenerator.php
 
 		-
+			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-string and '' will always evaluate to false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Crypto/HashService.php
+
+		-
 			message: "#^Binary operation \"&\" between string and int\\<1, max\\> results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
