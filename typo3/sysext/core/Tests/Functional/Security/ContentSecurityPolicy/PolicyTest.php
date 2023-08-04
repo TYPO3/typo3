@@ -189,8 +189,16 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function nonceProxyIsCompiled(): void
     {
+        $this->nonce->consume();
         $policy = (new Policy(SourceKeyword::self, SourceKeyword::nonceProxy));
         self::assertSame("default-src 'self' 'nonce-{$this->nonce->value}'", $policy->compile($this->nonce));
+    }
+
+    #[Test]
+    public function nonceProxyIsOmittedIfNotConsumed(): void
+    {
+        $policy = (new Policy(SourceKeyword::self, SourceKeyword::nonceProxy));
+        self::assertSame("default-src 'self'", $policy->compile($this->nonce));
     }
 
     /**
@@ -199,6 +207,7 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function strictDynamicIsApplied(): void
     {
+        $this->nonce->consume();
         $policy = (new Policy(SourceKeyword::self, SourceKeyword::strictDynamic))
             ->extend(Directive::ScriptSrc, SourceKeyword::strictDynamic)
             ->extend(Directive::StyleSrc, SourceKeyword::strictDynamic);
@@ -227,6 +236,7 @@ final class PolicyTest extends FunctionalTestCase
     #[Test]
     public function backendPolicyIsCompiled(): void
     {
+        $this->nonce->consume();
         $policy = (new Policy())
             ->default(SourceKeyword::self)
             ->extend(Directive::ScriptSrc, SourceKeyword::nonceProxy)

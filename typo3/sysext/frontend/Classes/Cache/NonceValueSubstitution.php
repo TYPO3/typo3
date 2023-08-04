@@ -27,10 +27,10 @@ class NonceValueSubstitution
      */
     public function substituteNonce(array $context): ?string
     {
-        $currentNonce = $GLOBALS['TYPO3_REQUEST']?->getAttribute('nonce')?->value ?? '';
-        if (empty($currentNonce) || empty($context['content']) || empty($context['nonce'])) {
+        $currentNonce = $GLOBALS['TYPO3_REQUEST']?->getAttribute('nonce');
+        if ($currentNonce === null || empty($context['content']) || empty($context['nonce'])) {
             return null;
         }
-        return str_replace($context['nonce'], $currentNonce, $context['content']);
+        return str_replace($context['nonce'], $currentNonce->consume(), $context['content']);
     }
 }
