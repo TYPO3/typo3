@@ -132,7 +132,7 @@ class ModelService
                 $compiled[] = $this->serializeSource($source, $nonce);
             }
         }
-        return $compiled;
+        return array_filter($compiled);
     }
 
     /**
@@ -141,7 +141,7 @@ class ModelService
     public function serializeSource(SourceInterface $source, ConsumableNonce $nonce = null): string
     {
         if ($source === SourceKeyword::nonceProxy && $nonce !== null) {
-            return "'nonce-" . $nonce->value . "'";
+            return $nonce->count() > 0 ? "'nonce-" . $nonce->value . "'" : '';
         }
         if ($source instanceof SourceKeyword) {
             return "'" . $source->value . "'";
