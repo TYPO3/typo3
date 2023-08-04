@@ -13,7 +13,7 @@ Description
 
 Due to the deprecation of Switchable Controller Actions for Extbase, it is
 recommended to use custom content types as plugins. When using Extbase's API
-:php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin()` with
+:php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin()` with
 the 5th argument being set to
 :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT`
 or TYPO3's native API :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin()`
@@ -39,7 +39,8 @@ Example
 Example for a custom Extbase plugin with TYPO3's Core "felogin" extension
 in `EXT:felogin/Configuration/TCA/Overrides/tt_content.php`:
 
-.. code-block:: php
+..  code-block:: php
+    :caption: EXT:felogin/Configuration/TCA/Overrides/tt_content.php
 
     call_user_func(static function () {
         $contentTypeName = 'felogin_login';
@@ -66,5 +67,28 @@ in `EXT:felogin/Configuration/TCA/Overrides/tt_content.php`:
             'after:palette:headers'
         );
     });
+
+It is configured to be a content element with its own ctype by having the 5th
+parameter set to :php:`ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT`.
+
+..  code-block:: php
+    :caption: EXT:felogin/ext_localconf.php
+    :emphasize-lines: 14
+
+    use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
+    ExtensionUtility::configurePlugin(
+        'Felogin',
+        'Login',
+        [
+            LoginController::class => 'login, overview',
+            PasswordRecoveryController::class => 'recovery,showChangePassword,changePassword',
+        ],
+        [
+            LoginController::class => 'login, overview',
+            PasswordRecoveryController::class => 'recovery,showChangePassword,changePassword',
+        ],
+        ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    );
 
 .. index:: Backend, TCA, ext:core
