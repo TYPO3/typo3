@@ -26,8 +26,6 @@ class Severity {
     let severityClass;
     switch (severity) {
       case this.loading:
-        severityClass = 'notice alert-loading';
-        break;
       case this.notice:
         severityClass = 'notice';
         break;

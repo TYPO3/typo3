@@ -19,7 +19,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import SecurityUtility from '@typo3/core/security-utility';
 import FlashMessage from '../../renderable/flash-message';
 import InfoBox from '../../renderable/info-box';
-import ProgressBar from '../../renderable/progress-bar';
+import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
@@ -119,8 +119,8 @@ class LanguagePacks extends AbstractInteractableModule {
   private activateLanguage(iso: string): void {
     const modalContent = this.getModalBody();
     const $outputContainer = this.findInModal(this.selectorOutputContainer);
-    const message = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.empty().append(message);
+    const progressBar = document.createElement('typo3-install-progress-bar');
+    $outputContainer.empty().append(progressBar);
 
     this.getNotificationBox().empty();
     (new AjaxRequest(Router.getUrl()))
@@ -155,8 +155,8 @@ class LanguagePacks extends AbstractInteractableModule {
   private deactivateLanguage(iso: string): void {
     const modalContent = this.getModalBody();
     const $outputContainer = this.findInModal(this.selectorOutputContainer);
-    const message = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.empty().append(message);
+    const progressBar = document.createElement('typo3-install-progress-bar');
+    $outputContainer.empty().append(progressBar);
     this.getNotificationBox().empty();
     (new AjaxRequest(Router.getUrl()))
       .post({

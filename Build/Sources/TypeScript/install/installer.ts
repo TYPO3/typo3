@@ -17,7 +17,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import PasswordStrength from './module/password-strength';
 import InfoBox from './renderable/info-box';
-import ProgressBar from './renderable/progress-bar';
+import './renderable/progress-bar';
 import Severity from './renderable/severity';
 import '@typo3/backend/element/icon-element';
 import MessageInterface from '@typo3/install/message-interface';
@@ -440,8 +440,8 @@ class Installer {
     for (const element of $(this.selectorBody + ' form').serializeArray()) {
       postData[element.name] = element.value;
     }
-    const message: JQuery = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.empty().append(message);
+    const progressBar = document.createElement('typo3-install-progress-bar');
+    $outputContainer.empty().append(progressBar);
     (new AjaxRequest(this.getUrl()))
       .post(postData)
       .then(async (response: AjaxResponse): Promise<void> => {

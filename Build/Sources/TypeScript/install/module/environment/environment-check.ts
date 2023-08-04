@@ -19,7 +19,7 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import MessageInterface from '../../message-interface';
 import InfoBox from '../../renderable/info-box';
-import ProgressBar from '../../renderable/progress-bar';
+import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import RegularEvent from '@typo3/core/event/regular-event';
@@ -67,8 +67,9 @@ class EnvironmentCheck extends AbstractInteractableModule {
     }
     const outputContainer: HTMLElement = modalContent.querySelector(this.selectorOutputContainer);
     if (outputContainer !== null) {
+      const progressBar = document.createElement('typo3-install-progress-bar');
       outputContainer.innerHTML = '';
-      outputContainer.append(ProgressBar.render(Severity.loading, 'Loading...', '').get(0));
+      outputContainer.append(progressBar);
     }
     (new AjaxRequest(Router.getUrl('environmentCheckGetStatus')))
       .get({ cache: 'no-cache' })

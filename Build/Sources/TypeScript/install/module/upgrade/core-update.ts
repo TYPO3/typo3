@@ -209,7 +209,7 @@ class CoreUpdate extends AbstractInteractableModule {
    * Remove an enabled loading message
    */
   private removeLoadingMessage(): void {
-    this.findInModal(this.selectorOutput).find('.alert-loading').remove();
+    this.findInModal(this.selectorOutput).find('typo3-install-progress-bar').remove();
   }
 
   /**

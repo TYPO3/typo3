@@ -19,7 +19,7 @@ import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import InfoBox from '../../renderable/info-box';
-import ProgressBar from '../../renderable/progress-bar';
+import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
@@ -56,8 +56,8 @@ class ExtensionCompatTester extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
     const $outputContainer = this.findInModal(this.selectorOutputContainer);
     if ($outputContainer.length) {
-      const message = ProgressBar.render(Severity.loading, 'Loading...', '');
-      $outputContainer.append(message);
+      const progressBar = document.createElement('typo3-install-progress-bar');
+      $outputContainer.append(progressBar);
     }
 
     (new AjaxRequest(Router.getUrl('extensionCompatTesterLoadedExtensionList')))
@@ -68,7 +68,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
           modalContent.empty().append(data.html);
           Modal.setButtons(data.buttons);
           const $innerOutputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
-          const progressBar = ProgressBar.render(Severity.loading, 'Loading...', '');
+          const progressBar = document.createElement('typo3-install-progress-bar');
           $innerOutputContainer.append(progressBar);
 
           if (data.success === true) {
@@ -103,7 +103,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
   }
 
   private unlockModal(): void {
-    this.findInModal(this.selectorOutputContainer).find('.alert-loading').remove();
+    this.findInModal(this.selectorOutputContainer).find('typo3-install-progress-bar').remove();
     this.findInModal(this.selectorCheckTrigger).removeClass('disabled').prop('disabled', false);
   }
 
@@ -157,8 +157,8 @@ class ExtensionCompatTester extends AbstractInteractableModule {
     const executeToken = this.getModuleContent().data('extension-compat-tester-uninstall-extension-token');
     const modalContent = this.getModalBody();
     const $outputContainer = $(this.selectorOutputContainer);
-    const message = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.append(message);
+    const progressBar = document.createElement('typo3-install-progress-bar');
+    $outputContainer.append(progressBar);
     (new AjaxRequest(Router.getUrl()))
       .post({
         install: {

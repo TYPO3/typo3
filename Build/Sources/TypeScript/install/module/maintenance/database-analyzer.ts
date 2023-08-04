@@ -18,7 +18,7 @@ import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import InfoBox from '../../renderable/info-box';
-import ProgressBar from '../../renderable/progress-bar';
+import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
@@ -83,7 +83,10 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
     const executeTrigger = modalFooter.find(this.selectorExecuteTrigger);
     const analyzeTrigger = modalFooter.find(this.selectorAnalyzeTrigger);
 
-    outputContainer.empty().append(ProgressBar.render(Severity.loading, 'Analyzing current database schema...', ''));
+    const progressBar = document.createElement('typo3-install-progress-bar');
+    progressBar.label = 'Analyzing current database schema...';
+
+    outputContainer.empty().append(progressBar);
     outputContainer.on('change', 'input[type="checkbox"]', (): void => {
       const hasCheckedCheckboxes = outputContainer.find(':checked').length > 0;
       this.setModalButtonState(executeTrigger, hasCheckedCheckboxes);
@@ -96,7 +99,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
           const data = await response.resolve();
           if (data.success === true) {
             if (Array.isArray(data.status)) {
-              outputContainer.find('.alert-loading').remove();
+              outputContainer.find('typo3-install-progress-bar').remove();
               data.status.forEach((element: MessageInterface): void => {
                 const message = InfoBox.render(element.severity, element.title, element.message);
                 outputContainer.append(message);
@@ -163,7 +166,9 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
     outputContainer.find('.t3js-databaseAnalyzer-suggestion-line input:checked').each((index: number, element: Element): void => {
       selectedHashes.push($(element).data('hash'));
     });
-    outputContainer.empty().append(ProgressBar.render(Severity.loading, 'Executing database updates...', ''));
+    const progressBar = document.createElement('typo3-install-progress-bar');
+    progressBar.label = 'Executing database updates...';
+    outputContainer.empty().append(progressBar);
 
     (new AjaxRequest(Router.getUrl()))
       .post({

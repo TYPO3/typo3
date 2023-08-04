@@ -20,10 +20,11 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import SecurityUtility from '@typo3/core/security-utility';
 import FlashMessage from '../../renderable/flash-message';
 import InfoBox from '../../renderable/info-box';
-import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+// import '../../renderable/progress-bar';
+import { ProgressBar } from '../../renderable/progress-bar';
 
 type UpgradeWizardsBlockingDatabaseAddsResponse = {
   success: boolean;
@@ -93,11 +94,13 @@ class UpgradeWizards extends AbstractInteractableModule {
   }
 
   private static removeLoadingMessage($container: JQuery): void {
-    $container.find('.alert-loading').remove();
+    $container.find('typo3-install-progress-bar').remove();
   }
 
-  private static renderProgressBar(title: string): JQuery {
-    return ProgressBar.render(Severity.loading, title, '');
+  private static renderProgressBar(title: string): ProgressBar {
+    const progressBar = document.createElement('typo3-install-progress-bar');
+    progressBar.label = title;
+    return progressBar;
   }
 
   public initialize(currentModal: JQuery): void {

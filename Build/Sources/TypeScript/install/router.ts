@@ -19,7 +19,7 @@ import { AbstractInteractableModule } from './module/abstract-interactable-modul
 import { AbstractInlineModule } from './module/abstract-inline-module';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import InfoBox from './renderable/info-box';
-import ProgressBar from './renderable/progress-bar';
+import './renderable/progress-bar';
 import Severity from './renderable/severity';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import '@typo3/backend/element/spinner-element';
@@ -355,8 +355,9 @@ class Router {
 
   public login(): void {
     const $outputContainer: JQuery = $('.t3js-login-output');
-    const message: JQuery = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.empty().append(message);
+    const progressBar = document.createElement('typo3-install-progress-bar');
+
+    $outputContainer.empty().append(progressBar);
     (new AjaxRequest(this.getUrl()))
       .post({
         install: {

@@ -11,32 +11,37 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import Severity from './severity';
+import { customElement, property } from 'lit/decorators';
+import { html, LitElement, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined';
 
 /**
  * Module: @typo3/install/module/progress-bar
  */
-class ProgressBar {
-  private template: JQuery = $(
-    '<div class="progress">' +
-      '<div class="t3js-progressbar progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" ' +
-        'aria-valuemin="0" aria-valuemax="100" style="width: 100%"> <span></span>' +
-      '</div>' +
-    '</div>');
+@customElement('typo3-install-progress-bar')
+export class ProgressBar extends LitElement {
+  @property({ type: String }) label: string = 'Loading...';
+  @property({ type: String }) progress: string = '100';
 
-  public render(severity: number, title: string, progress: string): JQuery {
-    const progressBar = this.template.clone();
-    progressBar.addClass('progress-bar-' + Severity.getCssClass(severity));
-    if (progress) {
-      progressBar.css('width', progress + '%');
-      progressBar.attr('aria-valuenow', progress);
-    }
-    if (title) {
-      progressBar.find('span').text(title);
-    }
-    return progressBar;
+  public createRenderRoot(): HTMLElement | ShadowRoot {
+    // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
+    return this;
+  }
+
+  public render(): TemplateResult {
+    return html`
+      <div class="progress progress-bar-${Severity.getCssClass(Severity.loading)}">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="${this.progress}" aria-valuemin="0" aria-valuemax="100" style="width: ${this.progress}%">
+         <span>${this.label}</span>
+        </div>
+      </div>
+    `;
   }
 }
 
-export default new ProgressBar();
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-install-progress-bar': ProgressBar;
+  }
+}

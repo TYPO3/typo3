@@ -18,7 +18,7 @@ import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import InfoBox from '../../renderable/info-box';
-import ProgressBar from '../../renderable/progress-bar';
+import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
@@ -78,9 +78,9 @@ class MailTest extends AbstractInteractableModule {
 
     const executeToken: string = this.getModuleContent().data('mail-test-token');
     const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
-    const message: JQuery = ProgressBar.render(Severity.loading, 'Loading...', '');
+    const progressBar = document.createElement('typo3-install-progress-bar');
 
-    $outputContainer.empty().append(message);
+    $outputContainer.empty().append(progressBar);
     (new AjaxRequest(Router.getUrl())).post({
       install: {
         action: 'mailTest',

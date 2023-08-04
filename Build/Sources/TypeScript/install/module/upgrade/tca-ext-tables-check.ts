@@ -17,7 +17,7 @@ import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import InfoBox from '../../renderable/info-box';
-import ProgressBar from '../../renderable/progress-bar';
+import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
@@ -45,7 +45,8 @@ class TcaExtTablesCheck extends AbstractInteractableModule {
 
     const outputContainer: HTMLElement = document.querySelector(this.selectorOutputContainer);
     if (outputContainer !== null) {
-      outputContainer.append(ProgressBar.render(Severity.loading, 'Loading...', '').get(0));
+      const progressBar = document.createElement('typo3-install-progress-bar');
+      outputContainer.append(progressBar);
     }
     const modalContent: HTMLElement = this.getModalBody().get(0);
     (new AjaxRequest(Router.getUrl('tcaExtTablesCheck')))

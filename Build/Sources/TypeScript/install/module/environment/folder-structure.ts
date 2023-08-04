@@ -19,7 +19,7 @@ import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import InfoBox from '../../renderable/info-box';
-import ProgressBar from '../../renderable/progress-bar';
+import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 
@@ -37,7 +37,7 @@ class FolderStructure extends AbstractInteractableModule {
   private selectorPermissionContainer: string = '.t3js-folderStructure-permissions';
 
   private static removeLoadingMessage($container: JQuery): void {
-    $container.find('.alert-loading').remove();
+    $container.find('typo3-install-progress-bar').remove();
   }
 
   public initialize(currentModal: JQuery): void {
@@ -56,9 +56,9 @@ class FolderStructure extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
     const $errorBadge = $(this.selectorGridderBadge);
     $errorBadge.text('').hide();
-    modalContent.find(this.selectorOutputContainer).empty().append(
-      ProgressBar.render(Severity.loading, 'Loading...', ''),
-    );
+
+    const progressBar = document.createElement('typo3-install-progress-bar');
+    modalContent.find(this.selectorOutputContainer).empty().append(progressBar);
     (new AjaxRequest(Router.getUrl('folderStructureGetStatus')))
       .get({ cache: 'no-cache' })
       .then(
@@ -113,8 +113,8 @@ class FolderStructure extends AbstractInteractableModule {
 
     const modalContent: JQuery = this.getModalBody();
     const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
-    const message = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.empty().append(message);
+    const progressBar = document.createElement('typo3-install-progress-bar');
+    $outputContainer.empty().append(progressBar);
     (new AjaxRequest(Router.getUrl('folderStructureFix')))
       .get({ cache: 'no-cache' })
       .then(
