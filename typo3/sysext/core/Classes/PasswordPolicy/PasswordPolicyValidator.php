@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 /**
  * Validates a password using validators configured in $GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies'].
  * The class must be instantiated with an action (see PasswordPolicyAction) and a password policy name.
- *
- * @internal only to be used within ext:core, not part of TYPO3 Core API.
  */
 class PasswordPolicyValidator
 {
