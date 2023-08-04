@@ -49,9 +49,9 @@ class ListenerProvider implements ListenerProviderInterface
      * @param string|null $method
      * @internal
      */
-    public function addListener(string $event, string $service, string $method = null): void
+    public function addListener(string $event, string $service, string $method = null, string $identifier = null): void
     {
-        $this->listeners[$event][] = [
+        $this->listeners[$event][$identifier ?? $service] = [
             'service' => $service,
             'method' => $method,
         ];

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\EventListener;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Event\LoginAttemptFailedEvent;
 use TYPO3\CMS\Core\Authentication\Event\MfaVerificationFailedEvent;
@@ -68,7 +69,9 @@ final class FailedLoginAttemptNotification
      * (default 3600, see $warningPeriod). If so, an email with a warning is sent. This also
      * includes failed multi-factor authentication failures.
      */
-    public function __invoke(LoginAttemptFailedEvent|MfaVerificationFailedEvent $event): void
+    #[AsEventListener(identifier: 'typo3/cms-backend/failed-login-attempt-notification', event: LoginAttemptFailedEvent::class)]
+    #[AsEventListener(identifier: 'typo3/cms-backend/failed-mfa-verification-notification', event: MfaVerificationFailedEvent::class)]
+    public function __invoke(LoginAttemptFailedEvent | MfaVerificationFailedEvent $event): void
     {
         if (!$event->isBackendAttempt()) {
             // This notification only works for backend users

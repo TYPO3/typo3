@@ -185,13 +185,6 @@ services:
     shared: false
     public: true
 
-  TYPO3\CMS\Backend\EventListener\FailedLoginAttemptNotification:
-    tags:
-      - name: event.listener
-        identifier: 'typo3/cms-backend/failed-login-attempt-notification'
-      - name: event.listener
-        identifier: 'typo3/cms-backend/failed-mfa-verification-notification'
-
   TYPO3\CMS\Backend\Security\EmailLoginNotification:
     tags:
       - name: event.listener

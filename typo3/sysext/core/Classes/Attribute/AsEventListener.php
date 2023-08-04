@@ -20,13 +20,13 @@ namespace TYPO3\CMS\Core\Attribute;
 /**
  * Service tag to autoconfigure event listeners.
  */
-#[\Attribute(\Attribute::TARGET_CLASS|\Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class AsEventListener
 {
     public const TAG_NAME = 'event.listener';
 
     public function __construct(
-        public string $identifier,
+        public ?string $identifier = null,
         public ?string $event = null,
         public ?string $method = null,
         public ?string $before = null,

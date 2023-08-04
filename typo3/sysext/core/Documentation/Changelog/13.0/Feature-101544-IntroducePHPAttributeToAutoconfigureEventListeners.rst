@@ -11,20 +11,22 @@ See :issue:`101544`
 Description
 ===========
 
-A new custom PHP attribute :php:`\TYPO3\CMS\Core\Attribute\AsEventListener` has
-been added in order to autoconfigure a class as an event listener.
+A new custom PHP attribute :php:`\TYPO3\CMS\Core\Attribute\AsEventListener`
+has been added in order to autoconfigure a class as an event listener.
 
-The attribute must declar an `identifier` for the event listener (unique),
-the optional `before` and `after` attributes allow for custom sorting
-against `identifier`.
+The attribute supports the following properties, which are all optional,
+as if you would register the listener by manually tagging it in the
+:file:`Services.yaml` or :file:`Services.php` file:
 
-The optional `event` attribute is the FQN of the PSR-14 Event.
+* `identifier` - Event listener identifier (unique) - uses the service name if not provided
+* `event` - FQN of the PSR-14 Event to listen to
+* `method` - Method to be called - if omitted, `__invoke` is called by the listener provider.
+* `before` - List of listener identifiers
+* `after` - List of listener identifiers
 
-If no `method` attribute is given, the class is treated as Invokable,
-thus `__invoke` method is called by the listener provider.
-
-The new attributes is repeatable, which allows to register the same class
-to listen for different events.
+The attribute can be used on class and method level. Additionally, the new
+attributes is repeatable, which allows to register the same class to listen
+for different events.
 
 Migration example
 =================
@@ -94,10 +96,35 @@ Repeatable example
     use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
     use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
 
-    #[AsEventListener(identifier: 'my-extension/null-mailer-initialization')]
-    #[AsEventListener(identifier: 'my-extension/null-mailer-sent-message')]
+    #[AsEventListener(identifier: 'my-extension/null-mailer-initialization', event: 'AfterMailerInitializationEvent')]
+    #[AsEventListener(identifier: 'my-extension/null-mailer-sent-message', event: 'BeforeMailerSentMessageEvent')]
     final class NullMailer
     {
+        public function __invoke(
+            AfterMailerInitializationEvent | BeforeMailerSentMessageEvent $event
+        ): void {
+            $event->getMailer()->injectMailSettings(['transport' => 'null']);
+        }
+    }
+
+
+Method level example
+====================
+
+..  code-block:: php
+
+    <?php
+
+    namespace MyCompany\MyExtension\EventListener;
+
+    use TYPO3\CMS\Core\Attribute\AsEventListener;
+    use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
+    use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
+
+    final class NullMailer
+    {
+        #[AsEventListener(identifier: 'my-extension/null-mailer-initialization', event: AfterMailerInitializationEvent::class)]
+        #[AsEventListener(identifier: 'my-extension/null-mailer-sent-message', event: 'BeforeMailerSentMessageEvent')]
         public function __invoke(
             AfterMailerInitializationEvent | BeforeMailerSentMessageEvent $event
         ): void {

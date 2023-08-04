@@ -55,8 +55,8 @@ final class ListenerProviderTest extends UnitTestCase
 
         self::assertEquals([
             'Event\\Name' => [
-                [ 'service' => 'listener1', 'method' => null ],
-                [ 'service' => 'listener2', 'method' => 'methodName' ],
+                'listener1' => [ 'service' => 'listener1', 'method' => null ],
+                'listener2' => [ 'service' => 'listener2', 'method' => 'methodName' ],
             ],
         ], $this->listenerProvider->getAllListenerDefinitions());
     }

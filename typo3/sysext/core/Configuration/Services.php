@@ -22,13 +22,13 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
 
     $containerBuilder->registerAttributeForAutoconfiguration(
         AsEventListener::class,
-        static function (ChildDefinition $definition, AsEventListener $attribute): void {
+        static function (ChildDefinition $definition, AsEventListener $attribute, \Reflector $reflector): void {
             $definition->addTag(
                 AsEventListener::TAG_NAME,
                 [
                     'identifier' => $attribute->identifier,
                     'event' => $attribute->event,
-                    'method' => $attribute->method,
+                    'method' => $attribute->method ?? ($reflector instanceof \ReflectionMethod ? $reflector->getName() : null),
                     'before' => $attribute->before,
                     'after' => $attribute->after,
                 ]

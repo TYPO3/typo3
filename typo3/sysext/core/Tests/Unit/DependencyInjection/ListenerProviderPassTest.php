@@ -68,17 +68,17 @@ final class ListenerProviderPassTest extends UnitTestCase
         self::assertEquals(
             [
                 'TYPO3\\CMS\\Core\\Mail\\Event\\AfterMailerInitializationEvent' => [
-                    [
+                    'package2.listener' => [
                         'service' => 'package2.listener',
                         'method' => 'onEvent',
                     ],
-                    [
+                    'legacy-hook' => [
                         'service' => 'package1.listener1',
                         'method' => null,
                     ],
                 ],
                 'TYPO3\\CMS\\Core\\Foo\\Event\\TestEvent' => [
-                    [
+                    'legacy-hook' => [
                         'service' => 'package3.listener',
                         'method' => null,
                     ],
