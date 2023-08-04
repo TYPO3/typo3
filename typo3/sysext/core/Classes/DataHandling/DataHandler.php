@@ -19,6 +19,7 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\JsonType;
+use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootExceptio
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -9361,6 +9363,12 @@ class DataHandler implements LoggerAwareInterface
 
                     // Delete Opcode Cache
                     GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
+
+                    // Delete DI Cache only on development context
+                    if (Environment::getContext()->isDevelopment()) {
+                        $container = GeneralUtility::makeInstance(ContainerInterface::class);
+                        $container->get('cache.di')->getBackend()->forceFlush();
+                    }
                 }
                 break;
         }
