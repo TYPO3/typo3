@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\EventListener;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
@@ -48,6 +49,7 @@ final class AddPageTypeZeroSource
         PageRepository::DOKTYPE_SYSFOLDER,
     ];
 
+    #[AsEventListener(identifier: 'redirects-add-page-type-zero-source', after: 'redirects-add-plain-slug-replacement-source')]
     public function __invoke(SlugRedirectChangeItemCreatedEvent $event): void
     {
         // Create full resolved uri for page type zero.

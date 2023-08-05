@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\EventListener;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
 use TYPO3\CMS\Redirects\RedirectUpdate\PlainSlugReplacementRedirectSource;
@@ -36,6 +37,7 @@ final class AddPlainSlugReplacementSource
         PageRepository::DOKTYPE_SYSFOLDER,
     ];
 
+    #[AsEventListener('redirects-add-plain-slug-replacement-source')]
     public function __invoke(SlugRedirectChangeItemCreatedEvent $event): void
     {
         $changeItem = $event->getSlugRedirectChangeItem();

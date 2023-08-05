@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\EventListener;
 
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -32,6 +33,7 @@ final class PageTreeItemsHighlighter
     ) {
     }
 
+    #[AsEventListener('typo3-workspaces/page-tree-items-highlighter')]
     public function __invoke(AfterPageTreeItemsPreparedEvent $event): void
     {
         $items = $event->getItems();

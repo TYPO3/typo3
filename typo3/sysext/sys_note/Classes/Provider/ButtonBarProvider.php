@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ModifyButtonBarEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -51,6 +52,7 @@ final class ButtonBarProvider
      *
      * @throws RouteNotFoundException
      */
+    #[AsEventListener('note-to-button-bar')]
     public function __invoke(ModifyButtonBarEvent $event): void
     {
         $buttons = $event->getButtons();

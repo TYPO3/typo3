@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\SysNote\Provider;
 
 use TYPO3\CMS\Backend\Controller\Event\ModifyPageLayoutContentEvent;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 use TYPO3\CMS\SysNote\Renderer\NoteRenderer;
 
@@ -35,6 +36,7 @@ final class PageModuleProvider
     /**
      * Add sys_notes as additional content to the header and footer of the page module
      */
+    #[AsEventListener('note-to-page-module')]
     public function __invoke(ModifyPageLayoutContentEvent $event): void
     {
         $request = $event->getRequest();

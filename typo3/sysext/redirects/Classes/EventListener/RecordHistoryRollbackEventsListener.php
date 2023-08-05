@@ -19,10 +19,12 @@ namespace TYPO3\CMS\Redirects\EventListener;
 
 use TYPO3\CMS\Backend\History\Event\AfterHistoryRollbackFinishedEvent;
 use TYPO3\CMS\Backend\History\Event\BeforeHistoryRollbackStartEvent;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook;
 
 class RecordHistoryRollbackEventsListener
 {
+    #[AsEventListener('redirects-enable-hook')]
     public function afterHistoryRollbackFinishedEvent(AfterHistoryRollbackFinishedEvent $event): void
     {
         // Re-Enable hook to after rollback finished
@@ -30,6 +32,7 @@ class RecordHistoryRollbackEventsListener
             DataHandlerSlugUpdateHook::class;
     }
 
+    #[AsEventListener('redirects-disable-hook')]
     public function beforeHistoryRollbackStartEvent(BeforeHistoryRollbackStartEvent $event): void
     {
         // Disable hook to prevent slug change again on rollback

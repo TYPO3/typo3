@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\EventListener;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -51,6 +52,7 @@ class DataStructureIdentifierListener
      * and if the field "overrideFinishers" is active. Add both to the identifier to
      * hand these information over to parseDataStructureByIdentifierPostProcess() hook.
      */
+    #[AsEventListener('form-framework/modify-data-structure-identifier')]
     public function modifyDataStructureIdentifier(AfterFlexFormDataStructureIdentifierInitializedEvent $event): void
     {
         $row = $event->getRow();
@@ -90,6 +92,7 @@ class DataStructureIdentifierListener
      * Adds the list of existing form definitions to the form selection drop down
      * and adds sheets to override finisher settings if requested.
      */
+    #[AsEventListener('form-framework/modify-data-structure')]
     public function modifyDataStructure(AfterFlexFormDataStructureParsedEvent $event): void
     {
         $identifier = $event->getIdentifier();

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Slot;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Resource\File;
@@ -39,6 +40,7 @@ class ResourcePublicationSlot implements SingletonInterface
      */
     protected $fileIdentifiers = [];
 
+    #[AsEventListener('form-framework/resource-getPublicUrl')]
     public function getPublicUrl(GeneratePublicUrlForResourceEvent $event): void
     {
         $resource = $event->getResource();

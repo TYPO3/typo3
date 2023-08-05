@@ -33,36 +33,6 @@ services:
         command: 'redirects:cleanup'
         description: 'Cleanup old redirects periodically for given constraints like days, hit count or domains.'
 
-  TYPO3\CMS\Redirects\EventListener\AfterBackendPageRendererEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'redirects-after-backend-page-renderer-event'
-
-  TYPO3\CMS\Redirects\EventListener\RecordHistoryRollbackEventsListener:
-    tags:
-      - name: event.listener
-        identifier: 'redirects-disable-hook'
-        method: 'beforeHistoryRollbackStartEvent'
-      - name: event.listener
-        identifier: 'redirects-enable-hook'
-        method: 'afterHistoryRollbackFinishedEvent'
-
-  TYPO3\CMS\Redirects\EventListener\IncrementHitCount:
-    tags:
-      - name: event.listener
-        identifier: 'redirects-increment-hit-count'
-
-  TYPO3\CMS\Redirects\EventListener\AddPlainSlugReplacementSource:
-    tags:
-      - name: event.listener
-        identifier: 'redirects-add-plain-slug-replacement-source'
-
-  TYPO3\CMS\Redirects\EventListener\AddPageTypeZeroSource:
-    tags:
-      - name: event.listener
-        identifier: 'redirects-add-page-type-zero-source'
-        after: 'redirects-add-plain-slug-replacement-source'
-
   TYPO3\CMS\Redirects\Configuration\CheckIntegrityConfiguration:
     arguments:
       $extensionConfiguration: '@extension.configuration.redirects'

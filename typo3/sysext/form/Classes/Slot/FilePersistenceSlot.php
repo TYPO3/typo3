@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Slot;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileContentsSetEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileCreatedEvent;
@@ -106,6 +107,7 @@ final class FilePersistenceSlot implements SingletonInterface
         return true;
     }
 
+    #[AsEventListener('form-framework/creation')]
     public function onPreFileCreate(BeforeFileCreatedEvent $event): void
     {
         $combinedFileIdentifier = $this->buildCombinedIdentifier(
@@ -119,6 +121,7 @@ final class FilePersistenceSlot implements SingletonInterface
         );
     }
 
+    #[AsEventListener('form-framework/add')]
     public function onPreFileAdd(BeforeFileAddedEvent $event): void
     {
         $combinedFileIdentifier = $this->buildCombinedIdentifier(
@@ -138,6 +141,7 @@ final class FilePersistenceSlot implements SingletonInterface
         );
     }
 
+    #[AsEventListener('form-framework/rename')]
     public function onPreFileRename(BeforeFileRenamedEvent $event): void
     {
         $combinedFileIdentifier = $this->buildCombinedIdentifier(
@@ -151,6 +155,7 @@ final class FilePersistenceSlot implements SingletonInterface
         );
     }
 
+    #[AsEventListener('form-framework/replace')]
     public function onPreFileReplace(BeforeFileReplacedEvent $event): void
     {
         $combinedFileIdentifier = $this->buildCombinedIdentifier(
@@ -164,6 +169,7 @@ final class FilePersistenceSlot implements SingletonInterface
         );
     }
 
+    #[AsEventListener('form-framework/move')]
     public function onPreFileMove(BeforeFileMovedEvent $event): void
     {
         // Skip check, in case file extension would not change during this
@@ -187,6 +193,7 @@ final class FilePersistenceSlot implements SingletonInterface
         );
     }
 
+    #[AsEventListener('form-framework/update-content')]
     public function onPreFileSetContents(BeforeFileContentsSetEvent $event): void
     {
         $combinedFileIdentifier = $this->buildCombinedIdentifier(

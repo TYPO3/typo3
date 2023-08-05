@@ -21,19 +21,6 @@ services:
   TYPO3\CMS\Linkvalidator\Result\LinkAnalyzerResult:
     public: true
 
-  # EventListeners
-  TYPO3\CMS\Linkvalidator\EventListener\CheckBrokenRteLinkEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'rte-check-link-external'
-        method: 'checkExternalLink'
-      - name: event.listener
-        identifier: 'rte-check-link-to-page'
-        method: 'checkPageLink'
-      - name: event.listener
-        identifier: 'rte-check-link-to-file'
-        method: 'checkFileLink'
-
   # Linktype registry
   TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry:
     public: true

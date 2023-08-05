@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\SysNote\Provider;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Info\Controller\Event\ModifyInfoModuleContentEvent;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 use TYPO3\CMS\SysNote\Renderer\NoteRenderer;
@@ -36,6 +37,7 @@ final class InfoModuleProvider
      * Add sys_notes as additional content to the header and footer of the
      * "Pagetree overview" and "Localization overview" modules in "Web > Info".
      */
+    #[AsEventListener('note-to-info-module')]
     public function __invoke(ModifyInfoModuleContentEvent $event): void
     {
         if (!$event->hasAccess()

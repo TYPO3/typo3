@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\SysNote\Provider;
 
 use TYPO3\CMS\Backend\Controller\Event\RenderAdditionalContentToRecordListEvent;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 use TYPO3\CMS\SysNote\Renderer\NoteRenderer;
 
@@ -32,6 +33,7 @@ class RecordListProvider
     {
     }
 
+    #[AsEventListener('note-to-record-list')]
     public function __invoke(RenderAdditionalContentToRecordListEvent $event): void
     {
         $request = $event->getRequest();
