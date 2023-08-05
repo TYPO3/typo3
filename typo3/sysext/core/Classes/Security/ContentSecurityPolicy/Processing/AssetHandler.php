@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy\Processing;
 
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\InvestigateMutationsEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Mutation;
@@ -35,6 +36,7 @@ class AssetHandler
 {
     use HandlerTrait;
 
+    #[AsEventListener('security-csp-asset-handler')]
     public function __invoke(InvestigateMutationsEvent $event): void
     {
         // skip, in case there are mutations already

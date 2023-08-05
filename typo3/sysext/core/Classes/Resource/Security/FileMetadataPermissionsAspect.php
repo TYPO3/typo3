@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Resource\Security;
 
 use TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -132,6 +133,7 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
     /**
      * Deny access to the edit form. This is not mandatory, but better to show this right away that access is denied.
      */
+    #[AsEventListener('evaluate-file-meta-data-edit-form-access')]
     public function isAllowedToShowEditForm(ModifyEditFormUserAccessEvent $event): void
     {
         if (!$event->doesUserHaveAccess()

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Localization;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Package\PackageManager;
 
@@ -32,6 +33,7 @@ class CacheWarmer
     ) {
     }
 
+    #[AsEventListener]
     public function warmupCaches(CacheWarmupEvent $event): void
     {
         if ($event->hasGroup('system')) {

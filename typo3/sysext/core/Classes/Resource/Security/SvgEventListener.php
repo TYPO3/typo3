@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Security;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Resource\Event\AfterFileContentsSetEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent;
@@ -39,6 +40,7 @@ class SvgEventListener
         $this->typeCheck = $typeCheck;
     }
 
+    #[AsEventListener('svg-resource-storage-listener-before-file-added')]
     public function beforeFileAdded(BeforeFileAddedEvent $event): void
     {
         $filePath = $event->getSourceFilePath();
@@ -47,6 +49,7 @@ class SvgEventListener
         }
     }
 
+    #[AsEventListener('svg-resource-storage-listener-before-file-replaced')]
     public function beforeFileReplaced(BeforeFileReplacedEvent $event): void
     {
         $filePath = $event->getLocalFilePath();
@@ -55,6 +58,7 @@ class SvgEventListener
         }
     }
 
+    #[AsEventListener('svg-resource-storage-listener-after-file-content-set')]
     public function afterFileContentsSet(AfterFileContentsSetEvent $event): void
     {
         $file = $event->getFile();

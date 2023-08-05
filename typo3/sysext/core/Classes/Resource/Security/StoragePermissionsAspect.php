@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource\Security;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
@@ -38,6 +39,7 @@ final class StoragePermissionsAspect
     /**
      * The event listener for the event where storage objects are created
      */
+    #[AsEventListener('backend-user-permissions')]
     public function addUserPermissionsToStorage(AfterResourceStorageInitializationEvent $event): void
     {
         $storage = $event->getStorage();

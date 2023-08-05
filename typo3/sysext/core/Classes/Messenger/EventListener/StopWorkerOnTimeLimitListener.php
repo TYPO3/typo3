@@ -21,6 +21,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Symfony\Component\Messenger\Event\WorkerStartedEvent;
 use Symfony\Component\Messenger\Exception\InvalidArgumentException;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 
 /**
  * Stops the worker when the time limit is reached.
@@ -41,12 +42,15 @@ class StopWorkerOnTimeLimitListener
             throw new InvalidArgumentException('Time limit must be greater than zero.', 1631254000);
         }
     }
+
+    #[AsEventListener('messenger-stopontime-on-worker-started')]
     public function onWorkerStarted(WorkerStartedEvent $event): void
     {
         $startTime = microtime(true);
         $this->endTime = $startTime + $this->timeLimitInSeconds;
     }
 
+    #[AsEventListener('messenger-stopontime-on-worker-running')]
     public function onWorkerRunning(WorkerRunningEvent $event): void
     {
         if ($this->endTime < microtime(true)) {

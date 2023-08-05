@@ -105,13 +105,6 @@ services:
 
   TYPO3\CMS\Core\Core\ClassLoadingInformation:
     public: false
-    tags:
-      - name: event.listener
-        identifier: 'non-composer-class-loader'
-        method: 'updateClassLoadingInformationAfterPackageActivation'
-      - name: event.listener
-        identifier: 'non-composer-class-loader'
-        method: 'updateClassLoadingInformationAfterPackageDeactivation'
 
   TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider:
     shared: false
@@ -137,19 +130,6 @@ services:
 
   TYPO3\CMS\Core\Routing\Enhancer\VariableProcessorCache:
     shared: true
-
-  # FAL security checks for backend users
-  TYPO3\CMS\Core\Resource\Security\StoragePermissionsAspect:
-    tags:
-      - name: event.listener
-        identifier: 'backend-user-permissions'
-        method: 'addUserPermissionsToStorage'
-
-  TYPO3\CMS\Core\Cache\DatabaseSchemaService:
-    tags:
-      - name: event.listener
-        identifier: 'caching-framework'
-        method: 'addCachingFrameworkDatabaseSchema'
 
   # Soft Reference Parsers
   TYPO3\CMS\Core\DataHandling\SoftReference\SubstituteSoftReferenceParser:
@@ -197,12 +177,6 @@ services:
     arguments:
       $coreCache: '@cache.core'
 
-  TYPO3\CMS\Core\Localization\CacheWarmer:
-    tags:
-      - name: event.listener
-        method: 'warmupCaches'
-        event: TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent
-
   TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider:
     public: true
 
@@ -211,10 +185,6 @@ services:
     arguments:
       $coreCache: '@cache.core'
       $cacheIdentifier: '@=service("TYPO3\\CMS\\Core\\Package\\Cache\\PackageDependentCacheIdentifier").withPrefix("ExpressionLanguageProviders").toString()'
-    tags:
-      - name: event.listener
-        method: 'warmupCaches'
-        event: TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent
 
   TYPO3\CMS\Core\Locking\ResourceMutex:
     public: true
@@ -228,71 +198,14 @@ services:
     arguments:
       $eventDispatcher: '@Psr\EventDispatcher\EventDispatcherInterface'
 
-  TYPO3\CMS\Core\Page\ImportMapCacheWarmer:
-    tags:
-      - name: event.listener
-        method: 'warmupCaches'
-        event: TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent
-
   TYPO3\CMS\Core\Page\ImportMapFactory:
     public: true
     arguments:
       $assetsCache: '@cache.assets'
       $cacheIdentifier: '@=service("TYPO3\\CMS\\Core\\Package\\Cache\\PackageDependentCacheIdentifier").withPrefix("ImportMap").toString()'
 
-  # clean up files
-  TYPO3\CMS\Core\Resource\Processing\FileDeletionAspect:
-    tags:
-      - name: event.listener
-        identifier: 'delete-processed-files-after-add'
-        method: 'cleanupProcessedFilesPostFileAdd'
-      - name: event.listener
-        identifier: 'delete-processed-files-after-replace'
-        method: 'cleanupProcessedFilesPostFileReplace'
-      - name: event.listener
-        identifier: 'delete-processed-files-after-delete'
-        method: 'removeFromRepositoryAfterFileDeleted'
-
-  # synchronize folder relations
-  TYPO3\CMS\Core\Resource\SynchronizeFolderRelations:
-    tags:
-      - name: event.listener
-        identifier: 'synchronize-file-collections-after-folder-renamed'
-        method: 'synchronizeFileCollectionsAfterRename'
-      - name: event.listener
-        identifier: 'synchronize-filemounts-after-folder-renamed'
-        method: 'synchronizeFilemountsAfterRename'
-
   TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver:
     public: true
-
-  TYPO3\CMS\Core\Resource\Security\SvgEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'svg-resource-storage-listener-before-file-added'
-        method: 'beforeFileAdded'
-        event: TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent
-      - name: event.listener
-        identifier: 'svg-resource-storage-listener-before-file-replaced'
-        method: 'beforeFileReplaced'
-        event: TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent
-      - name: event.listener
-        identifier: 'svg-resource-storage-listener-after-file-content-set'
-        method: 'afterFileContentsSet'
-        event: TYPO3\CMS\Core\Resource\Event\AfterFileContentsSetEvent
-
-  TYPO3\CMS\Core\Resource\MetaDataEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'synchronize-file-meta-data-translations-after-update'
-        method: 'afterFileMetaDataUpdated'
-        event: TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataUpdatedEvent
-
-  TYPO3\CMS\Core\Resource\Security\FileMetadataPermissionsAspect:
-    tags:
-      - name: event.listener
-        identifier: 'evaluate-file-meta-data-edit-form-access'
-        method: 'isAllowedToShowEditForm'
 
   TYPO3\CMS\Core\Resource\Security\SvgHookHandler:
     public: true
@@ -456,13 +369,6 @@ services:
     arguments:
       # 1 hour
       $timeLimitInSeconds: 3600
-    tags:
-      - name: event.listener
-        identifier: 'messenger-stopontime-on-worker-running'
-        method: 'onWorkerRunning'
-      - name: event.listener
-        identifier: 'messenger-stopontime-on-worker-started'
-        method: 'onWorkerStarted'
 
   Symfony\Component\Messenger\Transport\Sync\SyncTransport:
     tags:
@@ -527,16 +433,6 @@ services:
 
   TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyRegistry:
     public: true
-
-  TYPO3\CMS\Core\Security\ContentSecurityPolicy\Processing\AssetHandler:
-    tags:
-      - name: event.listener
-        identifier: 'security-csp-asset-handler'
-
-  TYPO3\CMS\Core\Security\ContentSecurityPolicy\Processing\GoogleMapsHandler:
-    tags:
-      - name: event.listener
-        identifier: 'security-csp-google-maps-handler'
 
   # External dependencies
 

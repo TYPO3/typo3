@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -51,6 +52,7 @@ class SynchronizeFolderRelations
      *
      * @throws \TYPO3\CMS\Core\Exception
      */
+    #[AsEventListener('synchronize-file-collections-after-folder-renamed')]
     public function synchronizeFileCollectionsAfterRename(AfterFolderRenamedEvent $event): void
     {
         $sourceIdentifier = $event->getSourceFolder()->getCombinedIdentifier();
@@ -90,6 +92,7 @@ class SynchronizeFolderRelations
      *
      * @throws \TYPO3\CMS\Core\Exception
      */
+    #[AsEventListener('synchronize-filemounts-after-folder-renamed')]
     public function synchronizeFilemountsAfterRename(AfterFolderRenamedEvent $event): void
     {
         $storageId = $event->getSourceFolder()->getStorage()->getUid();

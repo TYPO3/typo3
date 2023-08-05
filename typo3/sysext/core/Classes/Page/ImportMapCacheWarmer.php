@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Page;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 
 /**
@@ -31,6 +32,7 @@ final class ImportMapCacheWarmer
         $this->importMapFactory = $importMapFactory;
     }
 
+    #[AsEventListener]
     public function warmupCaches(CacheWarmupEvent $event): void
     {
         if ($event->hasGroup('system')) {

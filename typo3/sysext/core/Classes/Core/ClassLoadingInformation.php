@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Core;
 
 use Composer\Autoload\ClassLoader;
 use TYPO3\ClassAliasLoader\ClassAliasMap;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent;
 use TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -107,7 +108,8 @@ class ClassLoadingInformation
     /**
      * @internal
      */
-    public static function updateClassLoadingInformationAfterPackageDeactivation(AfterPackageDeactivationEvent $event): void
+    #[AsEventListener(identifier: 'non-composer-class-loader', event: AfterPackageDeactivationEvent::class)]
+    public static function updateClassLoadingInformationAfterPackageDeactivation(): void
     {
         if (Environment::isComposerMode()) {
             return;
@@ -118,7 +120,8 @@ class ClassLoadingInformation
     /**
      * @internal
      */
-    public static function updateClassLoadingInformationAfterPackageActivation(AfterPackageActivationEvent $event): void
+    #[AsEventListener(identifier: 'non-composer-class-loader', event: AfterPackageActivationEvent::class)]
+    public static function updateClassLoadingInformationAfterPackageActivation(): void
     {
         if (Environment::isComposerMode()) {
             return;

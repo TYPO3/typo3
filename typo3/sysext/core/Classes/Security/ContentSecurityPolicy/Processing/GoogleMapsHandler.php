@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy\Processing;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\InvestigateMutationsEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Mutation;
@@ -53,6 +54,7 @@ class GoogleMapsHandler
         }
     }
 
+    #[AsEventListener('security-csp-google-maps-handler')]
     public function __invoke(InvestigateMutationsEvent $event): void
     {
         $effectiveDirective = $this->resolveEffectiveDirective($event->report);

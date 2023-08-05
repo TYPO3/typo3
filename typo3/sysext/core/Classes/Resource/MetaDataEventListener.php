@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataUpdatedEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,6 +29,7 @@ final class MetaDataEventListener
 {
     private const TABLE_NAME = 'sys_file_metadata';
 
+    #[AsEventListener('synchronize-file-meta-data-translations-after-update')]
     public function afterFileMetaDataUpdated(AfterFileMetaDataUpdatedEvent $event): void
     {
         $record = $event->getRecord();

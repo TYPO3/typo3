@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Cache;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent;
 
 /**
@@ -26,6 +27,7 @@ final class DatabaseSchemaService
      * An event listener to inject the required caching framework database tables to the
      * tables definitions string
      */
+    #[AsEventListener('caching-framework')]
     public function addCachingFrameworkDatabaseSchema(AlterTableDefinitionStatementsEvent $event): void
     {
         $event->addSqlData($this->getCachingFrameworkRequiredDatabaseSchema());

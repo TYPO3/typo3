@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ExpressionLanguage;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -64,6 +65,7 @@ class ProviderConfigurationLoader
     /**
      * @internal
      */
+    #[AsEventListener]
     public function warmupCaches(CacheWarmupEvent $event): void
     {
         if ($event->hasGroup('system')) {
