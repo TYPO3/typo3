@@ -63,6 +63,22 @@ final class ListenerProviderTest extends UnitTestCase
 
     /**
      * @test
+     */
+    public function addedListenerCorrectlySetsTheListenerIdentifier(): void
+    {
+        $this->listenerProvider->addListener(event: 'Event\\Name', service: 'service.name1');
+        $this->listenerProvider->addListener(event: 'Event\\Name', service: 'service.name2', identifier: 'listenerIdentifier2');
+
+        self::assertEquals([
+            'Event\\Name' => [
+                'service.name1' => [ 'service' => 'service.name1', 'method' => null ],
+                'listenerIdentifier2' => [ 'service' => 'service.name2', 'method' => null ],
+            ],
+        ], $this->listenerProvider->getAllListenerDefinitions());
+    }
+
+    /**
+     * @test
      * @dataProvider listeners
      */
     public function dispatchesEvent($listener, string $method = null): void
