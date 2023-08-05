@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\IndexedSearch\Service;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,6 +30,7 @@ final class DatabaseSchemaService
      * A event listener to inject the required mysql fulltext definition
      * to schema migration.
      */
+    #[AsEventListener('indexed-search')]
     public function addMysqlFulltextIndex(AlterTableDefinitionStatementsEvent $event): void
     {
         $useMysqlFulltext = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search', 'useMysqlFulltext');

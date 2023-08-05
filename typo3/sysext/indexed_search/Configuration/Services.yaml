@@ -6,15 +6,3 @@ services:
 
   TYPO3\CMS\IndexedSearch\:
     resource: '../Classes/*'
-
-  TYPO3\CMS\IndexedSearch\Service\DatabaseSchemaService:
-    tags:
-      - name: event.listener
-        identifier: 'indexed-search'
-        method: 'addMysqlFulltextIndex'
-
-  TYPO3\CMS\IndexedSearch\EventListener\FrontendGenerationPageIndexingTrigger:
-    tags:
-      - name: event.listener
-        identifier: 'indexed-search'
-        method: 'indexPageContent'

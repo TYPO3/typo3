@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\T3editor\EventListener;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\Event\ModifyEditFileFormDataEvent;
 use TYPO3\CMS\T3editor\Exception\InvalidModeException;
@@ -33,6 +34,7 @@ final class InitializeT3editorInEditFileForm
     {
     }
 
+    #[AsEventListener('typo3-t3editor/initialize-t3editor-in-edit-file-form')]
     public function __invoke(ModifyEditFileFormDataEvent $event): void
     {
         // Compile and register t3editor configuration

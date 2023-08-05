@@ -18,13 +18,15 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\EventListener;
 
 use TYPO3\CMS\Backend\Module\BeforeModuleCreationEvent;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 
 /**
  * Set default extbase icon for extbase modules
  */
 final class AddDefaultModuleIcon
 {
-    public function __invoke(BeforeModuleCreationEvent $event)
+    #[AsEventListener('extbase/add-default-extbase-module-icon')]
+    public function __invoke(BeforeModuleCreationEvent $event): void
     {
         if (!$event->hasConfigurationValue('controllerActions')
             || $event->getConfigurationValue('icon')

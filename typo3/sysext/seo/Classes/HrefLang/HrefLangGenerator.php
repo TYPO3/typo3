@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\HrefLang;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -42,6 +43,7 @@ class HrefLangGenerator
     ) {
     }
 
+    #[AsEventListener('typo3-seo/hreflangGenerator')]
     public function __invoke(ModifyHrefLangTagsEvent $event): void
     {
         $hrefLangs = $event->getHrefLangs();

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Event;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\Event\BeforeRequestTokenProcessedEvent;
 use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 final class ProcessRequestTokenListener
 {
+    #[AsEventListener('felogin-process-request-token')]
     public function __invoke(BeforeRequestTokenProcessedEvent $event): void
     {
         $user = $event->getUser();

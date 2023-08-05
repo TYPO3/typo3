@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Reports\Report;
 
 use TYPO3\CMS\Backend\Controller\Event\ModifyGenericBackendMessagesEvent;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -45,6 +46,7 @@ final class WarningsForAboutModule
      * properly or the status report has been checked manually. We then add
      * a system warning message.
      */
+    #[AsEventListener('typo3-reports/warnings')]
     public function __invoke(ModifyGenericBackendMessagesEvent $event): void
     {
         if (!$this->context->getAspect('backend.user')->isAdmin()) {

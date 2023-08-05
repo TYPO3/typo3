@@ -12,11 +12,6 @@ services:
   TYPO3\CMS\Reports\Report\Status\Status:
     public: true
 
-  TYPO3\CMS\Reports\Report\WarningsForAboutModule:
-    tags:
-      - name: event.listener
-        identifier: 'typo3-reports/warnings'
-
   TYPO3\CMS\Reports\Registry\StatusRegistry:
     arguments:
       - !tagged_iterator reports.status

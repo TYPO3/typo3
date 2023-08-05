@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\EventListener;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
@@ -45,6 +46,7 @@ class FrontendGenerationPageIndexingTrigger
      * Trigger indexing of content, after evaluating if this page could / should be indexed.
      * This is triggered for all page content that can be cached.
      */
+    #[AsEventListener('indexed-search')]
     public function indexPageContent(AfterCacheableContentIsGeneratedEvent $event): void
     {
         if (!$event->isCachingEnabled()) {

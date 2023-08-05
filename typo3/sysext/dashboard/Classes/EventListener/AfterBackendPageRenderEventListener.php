@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\EventListener;
 
+use TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
@@ -28,6 +30,7 @@ final class AfterBackendPageRenderEventListener
     {
     }
 
+    #[AsEventListener(event: AfterBackendPageRenderEvent::class)]
     public function __invoke(): void
     {
         $this->pageRenderer->addCssFile('EXT:dashboard/Resources/Public/Css/Modal/style.css');

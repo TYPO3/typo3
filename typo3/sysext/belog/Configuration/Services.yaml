@@ -6,9 +6,3 @@ services:
 
   TYPO3\CMS\Belog\:
     resource: '../Classes/*'
-
-  TYPO3\CMS\Belog\Controller\SystemInformationController:
-    tags:
-      - name: event.listener
-        identifier: 'belog/show-latest-errors'
-        method: 'appendMessage'

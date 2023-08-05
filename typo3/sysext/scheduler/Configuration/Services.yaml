@@ -30,9 +30,3 @@ services:
         command: 'scheduler:execute'
         description: 'Execute given Scheduler tasks.'
         schedulable: false
-
-  TYPO3\CMS\Scheduler\SystemInformation\ToolbarItemProvider:
-    tags:
-      - name: event.listener
-        identifier: 'scheduler/show-latest-errors'
-        method: 'getItem'

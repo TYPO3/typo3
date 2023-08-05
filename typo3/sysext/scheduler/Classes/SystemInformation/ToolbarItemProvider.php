@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -44,6 +45,7 @@ final class ToolbarItemProvider
         $this->lastRunInformation = GeneralUtility::makeInstance(Registry::class)->get('tx_scheduler', 'lastRun', []);
     }
 
+    #[AsEventListener('scheduler/show-latest-errors')]
     public function getItem(SystemInformationToolbarCollectorEvent $event): void
     {
         $systemInformationToolbarItem = $event->getToolbarItem();

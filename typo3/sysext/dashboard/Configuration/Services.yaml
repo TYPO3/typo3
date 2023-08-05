@@ -10,8 +10,3 @@ services:
   TYPO3\CMS\Dashboard\:
     resource: '../Classes/*'
     exclude: '../Classes/Widgets/*'
-
-  TYPO3\CMS\Dashboard\EventListener\AfterBackendPageRenderEventListener:
-    tags:
-      - name: event.listener
-        event: TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent

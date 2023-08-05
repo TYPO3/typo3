@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -44,6 +45,7 @@ final class SystemInformationController
      * Modifies the SystemInformation toolbar to inject a new message
      * @throws RouteNotFoundException
      */
+    #[AsEventListener('belog/show-latest-errors')]
     public function appendMessage(SystemInformationToolbarCollectorEvent $event): void
     {
         $systemInformationToolbarItem = $event->getToolbarItem();
