@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Attribute;
 
-use Attribute;
-
 /**
  * Service tag to autoconfigure Backend controllers
  */
-#[Attribute(Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Controller
 {
     public const TAG_NAME='backend.controller';

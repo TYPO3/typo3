@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Log;
 
-use Attribute;
-
 /**
  * Attribute for Logger channel declarations
  */
-#[Attribute(Attribute::TARGET_PARAMETER|Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_PARAMETER | \Attribute::TARGET_CLASS)]
 class Channel
 {
     public string $name;

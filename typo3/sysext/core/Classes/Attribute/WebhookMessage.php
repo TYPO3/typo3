@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Attribute;
 
-use Attribute;
-
 /**
  * Service tag to mark a message as a webhook-compatible message
  */
-#[Attribute(Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class WebhookMessage
 {
     public const TAG_NAME = 'core.webhook_message';

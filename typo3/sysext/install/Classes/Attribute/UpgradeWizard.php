@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Attribute;
 
-use Attribute;
-
 /**
  * Service tag to autoconfigure upgrade wizards
  */
-#[Attribute(Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class UpgradeWizard
 {
     public const TAG_NAME = 'install.upgradewizard';
