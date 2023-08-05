@@ -17,8 +17,8 @@ import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import SecurityUtility from '@typo3/core/security-utility';
-import FlashMessage from '../../renderable/flash-message';
-import InfoBox from '../../renderable/info-box';
+import { FlashMessage } from '../../renderable/flash-message';
+import { InfoBox } from '../../renderable/info-box';
 import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
@@ -52,7 +52,7 @@ class LanguagePacks extends AbstractInteractableModule {
     skipped: 0,
   };
 
-  private notifications: JQuery[] = [];
+  private notifications: Element[] = [];
 
   private static pluralize(count: number, word: string = 'pack', suffix: string = 's', additionalCount: number = 0): string {
     return count !== 1 && additionalCount !== 1 ? word + suffix : word;
@@ -104,8 +104,7 @@ class LanguagePacks extends AbstractInteractableModule {
             contentContainer.append(this.languageMatrixHtml(data));
             contentContainer.append(this.extensionMatrixHtml(data));
           } else {
-            const message = InfoBox.render(Severity.error, 'Something went wrong', '');
-            this.addNotification(message);
+            this.addNotification(InfoBox.create(Severity.error, 'Something went wrong'));
           }
 
           this.renderNotifications();
@@ -137,12 +136,10 @@ class LanguagePacks extends AbstractInteractableModule {
           $outputContainer.empty();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
-              const message = InfoBox.render(element.severity, element.title, element.message);
-              this.addNotification(message);
+              this.addNotification(InfoBox.create(element.severity, element.title, element.message));
             });
           } else {
-            const message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            this.addNotification(message);
+            this.addNotification(InfoBox.create(Severity.error, 'Something went wrong'));
           }
           this.getData();
         },
@@ -172,12 +169,10 @@ class LanguagePacks extends AbstractInteractableModule {
           $outputContainer.empty();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
-              const message = InfoBox.render(element.severity, element.title, element.message);
-              this.addNotification(message);
+              this.addNotification(InfoBox.create(element.severity, element.title, element.message));
             });
           } else {
-            const message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            this.addNotification(message);
+            this.addNotification(InfoBox.create(Severity.error, 'Something went wrong'));
           }
           this.getData();
         },
@@ -275,15 +270,14 @@ class LanguagePacks extends AbstractInteractableModule {
     const $outputContainer = this.findInModal(this.selectorOutputContainer);
     if (this.packsUpdateDetails.handled === this.packsUpdateDetails.toHandle) {
       // All done - create summary, update 'last update' of iso list, render main view
-      const message = InfoBox.render(
+      this.addNotification(InfoBox.create(
         Severity.ok,
         'Language packs updated',
         this.packsUpdateDetails.new + ' new language ' + LanguagePacks.pluralize(this.packsUpdateDetails.new) + ' downloaded, ' +
         this.packsUpdateDetails.updated + ' language ' + LanguagePacks.pluralize(this.packsUpdateDetails.updated) + ' updated, ' +
         this.packsUpdateDetails.skipped + ' language ' + LanguagePacks.pluralize(this.packsUpdateDetails.skipped) + ' skipped, ' +
-        this.packsUpdateDetails.failed + ' language ' + LanguagePacks.pluralize(this.packsUpdateDetails.failed) + ' not available',
-      );
-      this.addNotification(message);
+        this.packsUpdateDetails.failed + ' language ' + LanguagePacks.pluralize(this.packsUpdateDetails.failed) + ' not available'
+      ));
       if (updateIsoTimes === true) {
         (new AjaxRequest(Router.getUrl()))
           .post({
@@ -299,8 +293,7 @@ class LanguagePacks extends AbstractInteractableModule {
               if (data.success === true) {
                 this.getData();
               } else {
-                const m = FlashMessage.render(Severity.error, 'Something went wrong', '');
-                this.addNotification(m);
+                this.addNotification(FlashMessage.create(Severity.error, 'Something went wrong'));
               }
             },
             (error: AjaxResponse): void => {
@@ -527,10 +520,10 @@ class LanguagePacks extends AbstractInteractableModule {
       ),
     );
     if (rowCount === 0) {
-      return InfoBox.render(
+      return InfoBox.create(
         Severity.ok,
         'Language packs have been found for every installed extension.',
-        'To download the latest changes, use the refresh button in the list above.',
+        'To download the latest changes, use the refresh button in the list above.'
       );
     }
     return $markupContainer.html();
@@ -540,7 +533,7 @@ class LanguagePacks extends AbstractInteractableModule {
     return this.findInModal(this.selectorNotifications);
   }
 
-  private addNotification(notification: JQuery): void {
+  private addNotification(notification: Element): void {
     this.notifications.push(notification);
   }
 

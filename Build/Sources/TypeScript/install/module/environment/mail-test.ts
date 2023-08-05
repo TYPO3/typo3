@@ -17,9 +17,8 @@ import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import InfoBox from '../../renderable/info-box';
+import { InfoBox } from '../../renderable/info-box';
 import '../../renderable/progress-bar';
-import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
 
@@ -55,8 +54,7 @@ class MailTest extends AbstractInteractableModule {
             const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
             if (data.messages && Array.isArray(data.messages)) {
               data.messages.forEach((element: MessageInterface): void => {
-                const message = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.append(message);
+                $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
             if (data.sendPossible) {
@@ -93,8 +91,7 @@ class MailTest extends AbstractInteractableModule {
         $outputContainer.empty();
         if (Array.isArray(data.status)) {
           data.status.forEach((element: MessageInterface): void => {
-            const message = InfoBox.render(element.severity, element.title, element.message);
-            $outputContainer.empty().append(message);
+            $outputContainer.empty().append(InfoBox.create(element.severity, element.title, element.message));
           });
         } else {
           Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');

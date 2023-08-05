@@ -15,8 +15,8 @@ import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import FlashMessage from '../../renderable/flash-message';
-import InfoBox from '../../renderable/info-box';
+import { FlashMessage } from '../../renderable/flash-message';
+import { InfoBox } from '../../renderable/info-box';
 import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
@@ -57,19 +57,25 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
-              modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.render(
+              modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.create(
                 Severity.warning,
                 'TCA migrations need to be applied',
-                'Check the following list and apply needed changes.',
-              ).get(0));
+                'Check the following list and apply needed changes.'
+              ));
               data.status.forEach((element: MessageInterface): void => {
-                modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.render(element.severity, element.title, element.message).get(0));
+                modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.create(element.severity, element.title, element.message));
               });
             } else {
-              modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.render(Severity.ok, 'No TCA migrations need to be applied', 'Your TCA looks good.').get(0));
+              modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.create(
+                Severity.ok,
+                'No TCA migrations need to be applied',
+                'Your TCA looks good.'
+              ));
             }
           } else {
-            modalContent.querySelector(this.selectorOutputContainer).append(FlashMessage.render(Severity.error, 'Something went wrong', 'Use "Check for broken extensions"').get(0));
+            modalContent.querySelector(this.selectorOutputContainer).append(
+              FlashMessage.create(Severity.error, 'Something went wrong', 'Use "Check for broken extensions"')
+            );
           }
           this.setModalButtonsState(true);
         },

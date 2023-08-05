@@ -18,9 +18,8 @@ import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import MessageInterface from '../../message-interface';
-import InfoBox from '../../renderable/info-box';
+import { InfoBox } from '../../renderable/info-box';
 import '../../renderable/progress-bar';
-import Severity from '../../renderable/severity';
 import Router from '../../router';
 import RegularEvent from '@typo3/core/event/regular-event';
 
@@ -89,9 +88,7 @@ class EnvironmentCheck extends AbstractInteractableModule {
                 if (status.severity === 2) {
                   errorCount++;
                 }
-                modalContent.querySelector(this.selectorOutputContainer).append(
-                  InfoBox.render(status.severity, status.title, status.message).get(0)
-                );
+                modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.create(status.severity, status.title, status.message));
               }
             }
             if (errorBadge !== null) {

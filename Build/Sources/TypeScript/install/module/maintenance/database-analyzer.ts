@@ -17,7 +17,7 @@ import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import InfoBox from '../../renderable/info-box';
+import { InfoBox } from '../../renderable/info-box';
 import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
@@ -101,8 +101,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
             if (Array.isArray(data.status)) {
               outputContainer.find('typo3-install-progress-bar').remove();
               data.status.forEach((element: MessageInterface): void => {
-                const message = InfoBox.render(element.severity, element.title, element.message);
-                outputContainer.append(message);
+                outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
             if (Array.isArray(data.suggestions)) {
@@ -143,7 +142,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
               this.setModalButtonState(executeTrigger, outputContainer.find(':checked').length > 0);
             }
             if (data.suggestions.length === 0 && data.status.length === 0) {
-              outputContainer.append(InfoBox.render(Severity.ok, 'Database schema is up to date. Good job!', ''));
+              outputContainer.append(InfoBox.create(Severity.ok, 'Database schema is up to date. Good job!'));
             }
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');

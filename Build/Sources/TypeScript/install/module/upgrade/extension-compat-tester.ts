@@ -18,7 +18,7 @@ import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import InfoBox from '../../renderable/info-box';
+import { InfoBox } from '../../renderable/info-box';
 import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
@@ -73,13 +73,9 @@ class ExtensionCompatTester extends AbstractInteractableModule {
 
           if (data.success === true) {
             this.loadExtLocalconf().then((): void => {
-              $innerOutputContainer.append(
-                InfoBox.render(Severity.ok, 'ext_localconf.php of all loaded extensions successfully loaded', ''),
-              );
+              $innerOutputContainer.append(InfoBox.create(Severity.ok, 'ext_localconf.php of all loaded extensions successfully loaded'));
               this.loadExtTables().then((): void => {
-                $innerOutputContainer.append(
-                  InfoBox.render(Severity.ok, 'ext_tables.php of all loaded extensions successfully loaded', ''),
-                );
+                $innerOutputContainer.append(InfoBox.create(Severity.ok, 'ext_tables.php of all loaded extensions successfully loaded'));
               }, async (error: AjaxResponse): Promise<void> => {
                 this.renderFailureMessages('ext_tables.php', (await error.response.json()).brokenExtensions, $innerOutputContainer);
               }).finally((): void => {
@@ -87,9 +83,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
               });
             }, async (error: AjaxResponse): Promise<void> => {
               this.renderFailureMessages('ext_localconf.php', (await error.response.json()).brokenExtensions, $innerOutputContainer);
-              $innerOutputContainer.append(
-                InfoBox.render(Severity.notice, 'Skipped scanning ext_tables.php files due to previous errors', ''),
-              );
+              $innerOutputContainer.append(InfoBox.create(Severity.notice, 'Skipped scanning ext_tables.php files due to previous errors'));
               this.unlockModal();
             });
           } else {
@@ -116,10 +110,10 @@ class ExtensionCompatTester extends AbstractInteractableModule {
           .text('Uninstall extension "' + extension.name + '"');
       }
       $outputContainer.append(
-        InfoBox.render(
+        InfoBox.create(
           Severity.error,
           'Loading ' + scope + ' of extension "' + extension.name + '" failed',
-          (extension.isProtected ? 'Extension is mandatory and cannot be uninstalled.' : ''),
+          extension.isProtected ? 'Extension is mandatory and cannot be uninstalled.' : ''
         ),
         uninstallAction,
       );
@@ -173,8 +167,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
           if (data.success) {
             if (Array.isArray(data.status)) {
               data.status.forEach((element: MessageInterface): void => {
-                const aMessage = InfoBox.render(element.severity, element.title, element.message);
-                modalContent.find(this.selectorOutputContainer).empty().append(aMessage);
+                modalContent.find(this.selectorOutputContainer).empty().append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
             this.findInModal(this.selectorUninstallTrigger).addClass('hidden');

@@ -18,7 +18,7 @@ import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import InfoBox from '../../renderable/info-box';
+import { InfoBox } from '../../renderable/info-box';
 import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
@@ -74,8 +74,7 @@ class FolderStructure extends AbstractInteractableModule {
               data.errorStatus.forEach(((aElement: any): void => {
                 errorCount++;
                 $errorBadge.text(errorCount).show();
-                const message = InfoBox.render(aElement.severity, aElement.title, aElement.message);
-                modalContent.find(this.selectorErrorList).append(message);
+                modalContent.find(this.selectorErrorList).append(InfoBox.create(aElement.severity, aElement.title, aElement.message));
               }));
             } else {
               modalContent.find(this.selectorErrorContainer).hide();
@@ -86,21 +85,17 @@ class FolderStructure extends AbstractInteractableModule {
               modalContent.find(this.selectorOkContainer).show();
               modalContent.find(this.selectorOkList).empty();
               data.okStatus.forEach(((aElement: any): void => {
-                const message = InfoBox.render(aElement.severity, aElement.title, aElement.message);
-                modalContent.find(this.selectorOkList).append(message);
+                modalContent.find(this.selectorOkList).append(InfoBox.create(aElement.severity, aElement.title, aElement.message));
               }));
             } else {
               modalContent.find(this.selectorOkContainer).hide();
             }
           }
           let element = data.folderStructureFilePermissionStatus;
-          modalContent.find(this.selectorPermissionContainer).empty().append(
-            InfoBox.render(element.severity, element.title, element.message),
-          );
+          modalContent.find(this.selectorPermissionContainer).empty().append(InfoBox.create(element.severity, element.title, element.message));
+
           element = data.folderStructureDirectoryPermissionStatus;
-          modalContent.find(this.selectorPermissionContainer).append(
-            InfoBox.render(element.severity, element.title, element.message),
-          );
+          modalContent.find(this.selectorPermissionContainer).append(InfoBox.create(element.severity, element.title, element.message));
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
@@ -124,14 +119,10 @@ class FolderStructure extends AbstractInteractableModule {
           if (data.success === true && Array.isArray(data.fixedStatus)) {
             if (data.fixedStatus.length > 0) {
               data.fixedStatus.forEach((element: any): void => {
-                $outputContainer.append(
-                  InfoBox.render(element.severity, element.title, element.message),
-                );
+                $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             } else {
-              $outputContainer.append(
-                InfoBox.render(Severity.warning, 'Nothing fixed', ''),
-              );
+              $outputContainer.append(InfoBox.create(Severity.warning, 'Nothing fixed'));
             }
             this.getStatus();
           } else {

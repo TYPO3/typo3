@@ -16,7 +16,7 @@ import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import InfoBox from '../../renderable/info-box';
+import { InfoBox } from '../../renderable/info-box';
 import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
@@ -58,22 +58,17 @@ class TcaExtTablesCheck extends AbstractInteractableModule {
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
-              modalContent.querySelector(this.selectorOutputContainer).append(
-                InfoBox.render(
-                  Severity.warning,
-                  'Following extensions change TCA in ext_tables.php',
-                  'Check ext_tables.php files, look for ExtensionManagementUtility calls and $GLOBALS[\'TCA\'] modifications',
-                ).get(0)
-              );
+              modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.create(
+                Severity.warning,
+                'Following extensions change TCA in ext_tables.php',
+                'Check ext_tables.php files, look for ExtensionManagementUtility calls and $GLOBALS[\'TCA\'] modifications'
+              ));
+
               data.status.forEach((element: MessageInterface): void => {
-                const infobox: HTMLElement = InfoBox.render(element.severity, element.title, element.message).get(0);
-                modalContent.append(infobox);
-                modalContent.querySelector(this.selectorOutputContainer).append(infobox);
+                modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.create(element.severity, element.title, element.message));
               });
             } else {
-              modalContent.querySelector(this.selectorOutputContainer).append(
-                InfoBox.render(Severity.ok, 'No TCA changes in ext_tables.php files. Good job!', '').get(0)
-              );
+              modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.create(Severity.ok, 'No TCA changes in ext_tables.php files. Good job!'));
             }
           } else {
             Notification.error('Something went wrong', 'Please use the module "Check for broken extensions" to find a possible extension causing this issue.');

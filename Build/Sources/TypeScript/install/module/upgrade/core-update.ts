@@ -11,14 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import MessageInterface from '../../message-interface';
-import FlashMessage from '../../renderable/flash-message';
+import { FlashMessage } from '../../renderable/flash-message';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 
@@ -201,8 +200,7 @@ class CoreUpdate extends AbstractInteractableModule {
    * @param messageTitle
    */
   private addLoadingMessage(messageTitle: string): void {
-    const domMessage = FlashMessage.render(Severity.loading, messageTitle);
-    this.findInModal(this.selectorOutput).append(domMessage);
+    this.addMessage(Severity.loading, messageTitle);
   }
 
   /**
@@ -243,8 +241,7 @@ class CoreUpdate extends AbstractInteractableModule {
    * Show a status message
    */
   private addMessage(severity: number, title: string, message?: string): void {
-    const domMessage = FlashMessage.render(severity, title, message);
-    this.findInModal(this.selectorOutput).append(domMessage);
+    this.findInModal(this.selectorOutput).append(FlashMessage.create(severity, title, message));
   }
 }
 

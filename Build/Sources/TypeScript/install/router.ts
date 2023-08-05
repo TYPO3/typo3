@@ -18,7 +18,7 @@ import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from './module/abstract-interactable-module';
 import { AbstractInlineModule } from './module/abstract-inline-module';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
-import InfoBox from './renderable/info-box';
+import { InfoBox } from './renderable/info-box';
 import './renderable/progress-bar';
 import Severity from './renderable/severity';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
@@ -37,10 +37,12 @@ class Router {
   private controller: string;
   private context: string;
 
-  public setContent(content: string): void
-  {
+  public setContent(content: string|Element|DocumentFragment): void {
     const container = this.rootContainer.querySelector(this.contentSelector) as HTMLElement;
-    container.innerHTML = content;
+    if (typeof content === 'string') {
+      content = document.createRange().createContextualFragment(content);
+    }
+    container.replaceChildren(content);
   }
 
   public initialize(): void {
@@ -190,7 +192,7 @@ class Router {
           if (data.success === true) {
             this.loadMainLayout();
           } else {
-            this.setContent(InfoBox.render(Severity.error, 'Something went wrong', '').html());
+            this.setContent(InfoBox.create(Severity.error, 'Something went wrong'));
           }
         },
         (error: AjaxResponse): void => {
@@ -215,7 +217,7 @@ class Router {
             }
             this.loadCards();
           } else {
-            this.rootContainer.innerHTML = InfoBox.render(Severity.error, 'Something went wrong', '').html();
+            this.rootContainer.replaceChildren(InfoBox.create(Severity.error, 'Something went wrong'));
           }
         },
         (error: AjaxResponse): void => {
@@ -228,7 +230,9 @@ class Router {
     if (error.response.status === 403) {
       // Install tool session expired - depending on context render error message or login
       if (this.context === 'backend') {
-        this.rootContainer.innerHTML = InfoBox.render(Severity.error, 'The install tool session expired. Please reload the backend and try again.').html();
+        this.rootContainer.replaceChildren(
+          InfoBox.create(Severity.error, 'The install tool session expired. Please reload the backend and try again.')
+        );
       } else {
         this.checkEnableInstallToolFile();
       }
@@ -373,8 +377,7 @@ class Router {
             this.executeSilentConfigurationUpdate();
           } else {
             data.status.forEach((element: MessageInterface): void => {
-              const message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.empty().append(message);
+              $outputContainer.empty().append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
         },
@@ -409,7 +412,7 @@ class Router {
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             this.setContent(data.html);
           } else {
-            this.setContent(InfoBox.render(Severity.error, 'Something went wrong', '').html());
+            this.setContent(InfoBox.create(Severity.error, 'Something went wrong'));
           }
         },
         (error: AjaxResponse): void => {

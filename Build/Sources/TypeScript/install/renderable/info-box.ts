@@ -11,33 +11,52 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import Severity from './severity';
+import { customElement, property } from 'lit/decorators';
+import { html, LitElement, nothing, TemplateResult } from 'lit';
 
 /**
  * Module: @typo3/install/module/info-box
  */
-class InfoBox {
-  private template: JQuery = $(
-    '<div class="t3js-infobox callout callout-sm">' +
-      '<h4 class="callout-title"></h4>' +
-      '<div class="callout-body"></div>' +
-    '</div>',
-  );
+@customElement('typo3-install-infobox')
+export class InfoBox extends LitElement {
+  @property({ type: Number }) severity: number;
+  @property({ type: String }) subject: string;
+  @property({ type: String }) content: string;
 
-  public render(severity: number, title: string, message?: string): JQuery {
-    const infoBox: JQuery = this.template.clone();
-    infoBox.addClass('callout-' + Severity.getCssClass(severity));
-    if (title) {
-      infoBox.find('h4').text(title);
+  public static create(severity: number, subject: string, content: string = ''): InfoBox {
+    const infobox = document.createElement('typo3-install-infobox');
+    infobox.severity = severity;
+    infobox.subject = subject;
+
+    if (content) {
+      infobox.content = content;
     }
-    if (message) {
-      infoBox.find('.callout-body').text(message);
-    } else {
-      infoBox.find('.callout-body').remove();
+
+    return infobox;
+  }
+
+  public createRenderRoot(): HTMLElement | ShadowRoot {
+    // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
+    return this;
+  }
+
+  public render(): TemplateResult {
+    let content: TemplateResult | symbol = nothing;
+    if (this.content) {
+      content = html`<div class="callout-body">${this.content}</div>`;
     }
-    return infoBox;
+    return html`
+      <div class="t3js-infobox callout callout-sm callout-${Severity.getCssClass(this.severity)}">
+        <h4 class="callout-title">${this.subject}</h4>
+        ${content}
+      </div>
+    `;
   }
 }
 
-export default new InfoBox();
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-install-infobox': InfoBox;
+  }
+}

@@ -18,12 +18,11 @@ import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import SecurityUtility from '@typo3/core/security-utility';
-import FlashMessage from '../../renderable/flash-message';
-import InfoBox from '../../renderable/info-box';
+import { FlashMessage } from '../../renderable/flash-message';
+import { InfoBox } from '../../renderable/info-box';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
-// import '../../renderable/progress-bar';
 import { ProgressBar } from '../../renderable/progress-bar';
 
 type UpgradeWizardsBlockingDatabaseAddsResponse = {
@@ -200,14 +199,12 @@ class UpgradeWizards extends AbstractInteractableModule {
           if (data.success === true) {
             if (Array.isArray(data.status) && data.status.length > 0) {
               data.status.forEach((element: MessageInterface): void => {
-                const message = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.append(message);
+                $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
           } else {
-            const message = FlashMessage.render(Severity.error, 'Something went wrong', '');
             UpgradeWizards.removeLoadingMessage($outputContainer);
-            $outputContainer.append(message);
+            $outputContainer.append(FlashMessage.create(Severity.error, 'Something went wrong'));
           }
         },
         (error: AjaxResponse): void => {
@@ -274,15 +271,13 @@ class UpgradeWizards extends AbstractInteractableModule {
           UpgradeWizards.removeLoadingMessage($outputContainer);
           if (Array.isArray(data.status) && data.status.length > 0) {
             data.status.forEach((element: MessageInterface): void => {
-              const message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.append(message);
+              $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
           if (data.success === true) {
             this.wizardsList();
           } else if (!Array.isArray(data.status) || data.status.length === 0) {
-            const message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            $outputContainer.append(message);
+            $outputContainer.append(FlashMessage.create(Severity.error, 'Something went wrong'));
           } else {
             const $toolbar = $('<div class="btn-toolbar mt-3 mb-4"></div>');
             const $retryButton = $('<button class="btn btn-default">Retry database migration</button>');
@@ -392,8 +387,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           if (data.success === true) {
             if (Array.isArray(data.status)) {
               data.status.forEach((element: MessageInterface): void => {
-                const message = FlashMessage.render(element.severity, element.title, element.message);
-                $outputContainer.append(message);
+                $outputContainer.append(FlashMessage.create(element.severity, element.title, element.message));
               });
             }
             if (data.userInput.wizardHtml.length > 0) {
@@ -437,8 +431,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           if (data.success === true) {
             if (Array.isArray(data.status)) {
               data.status.forEach((element: MessageInterface): void => {
-                const message = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.append(message);
+                $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
             this.wizardsList();
@@ -467,8 +460,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           if (data.success === true) {
             if (Array.isArray(data.status) && data.status.length > 0) {
               data.status.forEach((element: MessageInterface): void => {
-                const message = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.append(message);
+                $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
             const body = modalContent.find(this.selectorWizardsDoneBodyTemplate).clone();

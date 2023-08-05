@@ -11,28 +11,52 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import Severity from './severity';
+import { customElement, property } from 'lit/decorators';
+import { html, LitElement, nothing, TemplateResult } from 'lit';
 
 /**
  * Module: @typo3/install/module/flash-message
  */
-class FlashMessage {
-  private template: JQuery = $('<div class="t3js-message typo3-message alert"><h4></h4><p class="messageText"></p></div>');
+@customElement('typo3-install-flashmessage')
+export class FlashMessage extends LitElement {
+  @property({ type: Number }) severity: number;
+  @property({ type: String }) subject: string;
+  @property({ type: String }) content: string;
 
-  public render(severity: number, title: string, message?: string): JQuery {
-    const flashMessage = this.template.clone();
-    flashMessage.addClass('alert-' + Severity.getCssClass(severity));
-    if (title) {
-      flashMessage.find('h4').text(title);
+  public static create(severity: number, subject: string, content: string = ''): FlashMessage {
+    const message = document.createElement('typo3-install-flashmessage');
+    message.severity = severity;
+    message.subject = subject;
+
+    if (content) {
+      message.content = content;
     }
-    if (message) {
-      flashMessage.find('.messageText').text(message);
-    } else {
-      flashMessage.find('.messageText').remove();
+
+    return message;
+  }
+
+  public createRenderRoot(): HTMLElement | ShadowRoot {
+    // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
+    return this;
+  }
+
+  public render(): TemplateResult {
+    let content: TemplateResult | symbol = nothing;
+    if (this.content) {
+      content = html`<p class="messageText">${this.content}</p>`;
     }
-    return flashMessage;
+    return html`
+      <div class="t3js-message typo3-message alert alert-${Severity.getCssClass(this.severity)}">
+        <h4>${this.subject}</h4>
+        ${content}
+      </div>
+    `;
   }
 }
 
-export default new FlashMessage();
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-install-flashmessage': FlashMessage;
+  }
+}

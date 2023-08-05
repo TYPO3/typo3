@@ -17,7 +17,7 @@ import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import InfoBox from '../../renderable/info-box';
+import { InfoBox } from '../../renderable/info-box';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
@@ -73,7 +73,7 @@ class ImageProcessing extends AbstractInteractableModule {
     const promises: Array<Promise<void>> = [];
     modalContent.querySelectorAll(this.selectorTestContainer).forEach((container: HTMLElement, index: number): void => {
       container.innerHTML = '';
-      container.append(InfoBox.render(Severity.loading, 'Loading...', '').get(0));
+      container.append(InfoBox.create(Severity.loading, 'Loading...'));
       const request = (new AjaxRequest(Router.getUrl(container.dataset.test)))
         .get({ cache: 'no-cache' })
         .then(
@@ -83,7 +83,7 @@ class ImageProcessing extends AbstractInteractableModule {
               container.innerHTML = '';
               if (Array.isArray(data.status)) {
                 data.status.forEach((element: MessageInterface): void => {
-                  container.append(InfoBox.render(element.severity, element.title, element.message).get(0));
+                  container.append(InfoBox.create(element.severity, element.title, element.message));
                 });
               }
               const aTwin: HTMLElement = twinImageTemplate.cloneNode(true) as HTMLElement;

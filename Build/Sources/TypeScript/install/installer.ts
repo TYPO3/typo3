@@ -16,9 +16,8 @@ import $ from 'jquery';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import PasswordStrength from './module/password-strength';
-import InfoBox from './renderable/info-box';
+import { InfoBox } from './renderable/info-box';
 import './renderable/progress-bar';
-import Severity from './renderable/severity';
 import '@typo3/backend/element/icon-element';
 import MessageInterface from '@typo3/install/message-interface';
 
@@ -184,22 +183,19 @@ class Installer {
           if (Array.isArray(data.environmentStatusErrors)) {
             data.environmentStatusErrors.forEach((element: any): void => {
               hasMessage = true;
-              const message = InfoBox.render(element.severity, element.title, element.message);
-              $detailContainer.append(message);
+              $detailContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
           if (Array.isArray(data.environmentStatusWarnings)) {
             data.environmentStatusWarnings.forEach((element: any): void => {
               hasMessage = true;
-              const message = InfoBox.render(element.severity, element.title, element.message);
-              $detailContainer.append(message);
+              $detailContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
           if (Array.isArray(data.structureErrors)) {
             data.structureErrors.forEach((element: any): void => {
               hasMessage = true;
-              const message = InfoBox.render(element.severity, element.title, element.message);
-              $detailContainer.append(message);
+              $detailContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
           if (hasMessage) {
@@ -318,8 +314,7 @@ class Installer {
           if (Array.isArray(data.status)) {
             $outputContainer.empty();
             data.status.forEach((element: MessageInterface): void => {
-              const message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.append(message);
+              $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
         }
@@ -370,8 +365,7 @@ class Installer {
         } else {
           if (Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
-              const message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.empty().append(message);
+              $outputContainer.empty().append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
         }
@@ -397,8 +391,7 @@ class Installer {
           if (Array.isArray(data.status)) {
             $outputContainer.empty();
             data.status.forEach((element: MessageInterface): void => {
-              const message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.append(message);
+              $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
         }
@@ -452,8 +445,7 @@ class Installer {
           if (Array.isArray(data.status)) {
             $outputContainer.empty();
             data.status.forEach((element: MessageInterface): void => {
-              const message = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.append(message);
+              $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
         }

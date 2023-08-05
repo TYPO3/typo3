@@ -14,7 +14,6 @@
 import Severity from './severity';
 import { customElement, property } from 'lit/decorators';
 import { html, LitElement, TemplateResult } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined';
 
 /**
  * Module: @typo3/install/module/progress-bar
