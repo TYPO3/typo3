@@ -7,6 +7,7 @@ namespace TYPO3\CMS\Core;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -31,6 +32,22 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
                     'method' => $attribute->method ?? ($reflector instanceof \ReflectionMethod ? $reflector->getName() : null),
                     'before' => $attribute->before,
                     'after' => $attribute->after,
+                ]
+            );
+        }
+    );
+
+    $containerBuilder->registerAttributeForAutoconfiguration(
+        AsCommand::class,
+        static function (ChildDefinition $definition, AsCommand $attribute): void {
+            $definition->addTag(
+                'console.command',
+                [
+                    'command' => $attribute->name,
+                    'description' => $attribute->description,
+                    // `schedulable` and `hidden` flags are not configurable via symfony attribute parameters, use sane defaults
+                    'schedulable' => true,
+                    'hidden' => false,
                 ]
             );
         }
