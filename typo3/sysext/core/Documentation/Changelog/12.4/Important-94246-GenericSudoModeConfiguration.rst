@@ -27,7 +27,8 @@ markup rendering and payload processing in controller :php:`\TYPO3\CMS\Backend\C
 
 #.  A backend route is processed, that requires sudo mode for route URI `/my/route`
     in :php:`\TYPO3\CMS\Backend\Http\RouteDispatcher`.
-#.  :php:`AccessHandler` tries to find a valid and not expired :php:`AccessGrant` item for the specific
+#.  Using :php:`AccessFactory` and :php:`AccessStorage`, the :php:`RouteDispatcher`
+    tries to find a valid and not expired :php:`AccessGrant` item for the specific
     :php:`RouteAccessSubject('/my/route')` aspect in the current backend user session data.
 #.  In case no :php:`AccessGrant` can be determined, a new :php:`AccessClaim` is created
     for the specific :php:`RouteAccessSubject` instance and temporarily persisted in the
