@@ -151,9 +151,6 @@ services:
   TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory:
     public: true
 
-  TYPO3\CMS\Backend\Security\SudoMode\Access\AccessHandler:
-    public: true
-
   TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage:
     public: true
 
