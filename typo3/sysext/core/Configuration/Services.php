@@ -7,6 +7,8 @@ namespace TYPO3\CMS\Core;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -17,6 +19,22 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     // Services, to be read from container-aware dispatchers (on demand), therefore marked 'public'
     $containerBuilder->registerForAutoconfiguration(MiddlewareInterface::class)->addTag('typo3.middleware');
     $containerBuilder->registerForAutoconfiguration(RequestHandlerInterface::class)->addTag('typo3.request_handler');
+
+    $containerBuilder->registerAttributeForAutoconfiguration(
+        AsCommand::class,
+        static function (ChildDefinition $definition, AsCommand $attribute): void {
+            $definition->addTag(
+                'console.command',
+                [
+                    'command' => $attribute->name,
+                    'description' => $attribute->description,
+                    // `schedulable` and `hidden` flags are not configurable via symfony attribute parameters, use sane defaults
+                    'schedulable' => true,
+                    'hidden' => false,
+                ]
+            );
+        }
+    );
 
     $containerBuilder->addCompilerPass(new DependencyInjection\SingletonPass('typo3.singleton'));
     $containerBuilder->addCompilerPass(new DependencyInjection\LoggerAwarePass('psr.logger_aware'));
