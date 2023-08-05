@@ -130,6 +130,7 @@ export class SvgTree extends LitElement {
   protected scrollBottom: number = 0;
   protected searchTerm: string|null = null;
   protected unfilteredNodes: string = '';
+  protected muteErrorNotifications: boolean = false;
 
   protected networkErrorTitle: string = top.TYPO3.lang.tree_networkError;
   protected networkErrorMessage: string = top.TYPO3.lang.tree_networkErrorDescription;
@@ -152,6 +153,7 @@ export class SvgTree extends LitElement {
     this.nodesContainer = this.container.select('.nodes') as TreeWrapperSelection<SVGGElement>;
     this.iconsContainer = this.svg.select('defs') as TreeWrapperSelection<SVGGElement>;
 
+    this.registerUnloadHandler();
     this.updateScrollPosition();
     this.loadCommonIcons();
     this.loadData();
@@ -670,6 +672,9 @@ export class SvgTree extends LitElement {
    * Displays a notification message and refresh nodes
    */
   public errorNotification(error: any = null, refresh: boolean = false): void {
+    if (this.muteErrorNotifications) {
+      return;
+    }
     if (Array.isArray(error)) {
       error.forEach((message: any) => { Notification.error(
         message.title,
@@ -1410,6 +1415,28 @@ export class SvgTree extends LitElement {
     return link.target.siblingsPosition === 1 ? 'group-identifier-' + link.source.stateIdentifier : null;
   }
 
+  /**
+   * If the svg-tree component is embedded in an iframe, and if the iframe src get changed by navigating to another url,
+   * pending AjaxRequest will get cancelled by the browser, without letting us the opportunity to properly handle
+   * the thrown error. As a workaround, we register an unload event on the iframe's window,
+   * and turn on the muteErrorNotifications flag.
+   */
+  private registerUnloadHandler(): void {
+    try {
+      // Do not proceed if we are not embedded in an iframe (of if CSP prevent for accessing frameElement),
+      if (!window.frameElement) {
+        return
+      }
+      window.addEventListener(
+        'unload',
+        () => this.muteErrorNotifications = true,
+        { once: true }
+      );
+    } catch (e) {
+      console.error('Failed to check the existence of window.frameElement – using a foreign origin?');
+      // Do nothing if an error occured during the event registration
+    }
+  }
 }
 
 
