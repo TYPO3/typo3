@@ -59,11 +59,12 @@ final class ListenerProviderPass implements CompilerPassInterface
 
         foreach ($unorderedEventListeners as $eventName => $listeners) {
             // Configure ListenerProvider factory to include these listeners
-            foreach ($this->orderer->orderByDependencies($listeners) as $listener) {
+            foreach ($this->orderer->orderByDependencies($listeners) as $listenerIdentifier => $listener) {
                 $listenerProviderDefinition->addMethodCall('addListener', [
                     $eventName,
                     $listener['service'],
                     $listener['method'],
+                    $listenerIdentifier,
                 ]);
             }
         }
