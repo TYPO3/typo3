@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Search\Event\ModifyResultItemInLiveSearchEvent;
 use TYPO3\CMS\Backend\Search\LiveSearch\DatabaseRecordProvider;
 use TYPO3\CMS\Backend\Search\LiveSearch\ResultItem;
 use TYPO3\CMS\Backend\Search\LiveSearch\ResultItemAction;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -43,6 +44,7 @@ final class AddLiveSearchResultActionsListener
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
     }
 
+    #[AsEventListener('typo3/cms-backend/add-live-search-result-actions-listener')]
     public function __invoke(ModifyResultItemInLiveSearchEvent $event): void
     {
         $resultItem = $event->getResultItem();

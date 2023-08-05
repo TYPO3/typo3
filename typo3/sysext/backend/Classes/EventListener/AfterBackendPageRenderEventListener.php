@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\EventListener;
 
+use TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent;
 use TYPO3\CMS\Backend\Search\LiveSearch\DatabaseRecordProvider;
 use TYPO3\CMS\Backend\Search\LiveSearch\PageRecordProvider;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
@@ -31,6 +33,7 @@ final class AfterBackendPageRenderEventListener
     {
     }
 
+    #[AsEventListener(event: AfterBackendPageRenderEvent::class)]
     public function __invoke(): void
     {
         $javaScriptRenderer = $this->pageRenderer->getJavaScriptRenderer();

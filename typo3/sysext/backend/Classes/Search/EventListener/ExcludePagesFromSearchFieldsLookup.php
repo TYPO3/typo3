@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Search\EventListener;
 
 use TYPO3\CMS\Backend\Search\Event\BeforeSearchInDatabaseRecordProviderEvent;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 
 /**
  * Event listener to exclude the "pages" table from the table lookup of the database record provider
@@ -26,6 +27,7 @@ use TYPO3\CMS\Backend\Search\Event\BeforeSearchInDatabaseRecordProviderEvent;
  */
 final class ExcludePagesFromSearchFieldsLookup
 {
+    #[AsEventListener('typo3/cms-backend/exclude-pages-from-search-fields-lookup')]
     public function __invoke(BeforeSearchInDatabaseRecordProviderEvent $event): void
     {
         $event->ignoreTable('pages');

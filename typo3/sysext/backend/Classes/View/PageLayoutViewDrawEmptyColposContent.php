@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View;
 
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Localization\LanguageService;
 
 /**
@@ -25,6 +26,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  */
 class PageLayoutViewDrawEmptyColposContent
 {
+    #[AsEventListener('backend-empty-colpos')]
     public function __invoke(AfterSectionMarkupGeneratedEvent $event): void
     {
         if (($event->getColumnConfig()['name'] ?? '') === 'unused'

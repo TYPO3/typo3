@@ -22,6 +22,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
@@ -62,6 +63,7 @@ final class EmailLoginNotification implements LoggerAwareInterface
     /**
      * Sends an email notification to warning_email_address and/or the logged-in user's email address.
      */
+    #[AsEventListener('typo3/cms-backend/login-notification')]
     public function emailAtLogin(AfterUserLoggedInEvent $event): void
     {
         if (!$event->getUser() instanceof BackendUserAuthentication) {

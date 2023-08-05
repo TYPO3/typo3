@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ContextMenu;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Page\Event\ResolveJavaScriptImportEvent;
 
 class ImportMapConfigurator
 {
+    #[AsEventListener]
     public function __invoke(ResolveJavaScriptImportEvent $event): void
     {
         if ($event->specifier === '@typo3/backend/context-menu.js') {
