@@ -293,10 +293,6 @@ The following class methods visibility have been changed to protected:
 
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getRecordOverlay`
 
-The following class methods visibility have been changed to private:
-
-- :php:`\Full\Class\Name->methodName`
-
 The following class methods are now marked as internal:
 
 - :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isSetSessionCookie`
@@ -306,7 +302,8 @@ The following class methods are now marked as internal:
 - :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->unpack_uc`
 - :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->appendCookieToResponse`
 
-The following class methods now have a native return type and removed the #[\ReturnTypeWillChange] attribute:
+The following class methods now have a native return type and removed the
+:php:`#[\ReturnTypeWillChange]` attribute:
 
 - :php:`\TYPO3\CMS\Core\Collection\AbstractRecordCollection->current`
 - :php:`\TYPO3\CMS\Core\Collection\AbstractRecordCollection->key`
@@ -352,6 +349,7 @@ The following class properties have been marked as internal:
 - :php:`\TYPO3\CMS\Core\Authentication\FrontendUserAuthentication->is_permanent`
 
 The following class properties have changed/enforced type:
+
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->endingSlash` (is now string)
 
 The following eID entrypoints have been removed:
@@ -444,7 +442,7 @@ The following fallbacks have been removed:
 - Usage of the jsonArray property :php:`scriptCall` for AjaxController's
 - Binding the selected menu items to callback actions in context menus
 - Checking for :php:`\TYPO3\CMS\Core\Site\SiteLanguageAwareTrait` is removed in :php:`\TYPO3\CMS\Core\Routing\Aspect\AspectFactory`
-- f:format.html ViewHelper no longer works in BE context
+- :html:`f:format.html` ViewHelper no longer works in BE context
 - Usage of :php:`JScode` containing inline JavaScript for handing custom signals
 - Usage property :php:`$resultArray['requireJsModules']` of the form engine result array
 - Using backend FormEngine, the current ServerRequestInterface request must be provided in key "request" as
@@ -476,7 +474,7 @@ The following database table fields have been removed:
 - :sql:`fe_users.TSconfig`
 - :sql:`fe_groups.TSconfig`
 
-The following Backend route identifiers have been removed:
+The following backend route identifiers have been removed:
 
 - `ajax_core_requirejs`
 
