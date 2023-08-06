@@ -120,10 +120,13 @@ linktypes
 
          file: Check links to files located in your local TYPO3 installation.
 
-         external: Check links to external files.
+         external: Check links to external URLs.
 
          This list may be extended by other extensions providing a linktype
          checker.
+
+         ..  warning::
+             External links can lead to some :ref:`known issues<usagePitfallsExternalLinks>`.
 
    Default
          db,file,external
