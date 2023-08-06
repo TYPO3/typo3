@@ -49,6 +49,7 @@ send status mails when broken links are detected.
    Configuration/Index
    Development/Index
    LargeSites/Index
+   KnownProblems/Index
 
 .. Meta Menu
 
