@@ -146,7 +146,7 @@ configuration of the backend ``module.tx_[pluginkey]`` is used.
 There are different ways to include the TypoScript configuration for the
 backend:
 
-- a) use the API function ``\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup()``,
+- a) use the API function :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup()`,
 - b) add the configuration to your existing TypoScript record.
 
 In both cases, the ``form editor`` will work as expected regardless the

@@ -27,7 +27,7 @@ formEditor.iconIdentifier
       ToDo
 
 :aspect:`Description`
-        An icon identifier which must be registered through the ``\TYPO3\CMS\Core\Imaging\IconRegistry``.
+        An icon identifier which must be registered through the :php:`\TYPO3\CMS\Core\Imaging\IconRegistry`.
         This icon will be shown within
 
         - :ref:`"Inspector [FormElementHeaderEditor]"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.formelementheadereditor>`.
