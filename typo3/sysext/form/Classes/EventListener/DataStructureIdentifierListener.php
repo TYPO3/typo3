@@ -240,8 +240,8 @@ class DataStructureIdentifierListener
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
                     'convertToFlexFormSheets',
-                    // Either process leaf form field configuration not within a FlexForm section or FlexForm section
-                    '^(.*)(?:\.config\.type|\.section)$',
+                    // Parse section container single elements, top level elements and section containers.
+                    '^([^\.]*)(?:el\._arrayContainer\.el\..*\.config\.type|\.config\.type|\.section)$',
                     GeneralUtility::makeInstance(FinisherOptionGenerator::class, $converterDto)
                 )
             );
