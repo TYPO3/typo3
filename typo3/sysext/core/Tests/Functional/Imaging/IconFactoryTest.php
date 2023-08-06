@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Imaging;
 
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Imaging\Event\ModifyRecordOverlayIconIdentifierEvent;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -609,6 +612,32 @@ final class IconFactoryTest extends FunctionalTestCase
         $result = $this->subject->getIconForRecord('pages', $record)->render();
 
         self::assertStringContainsString($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function modifyRecordOverlayIconIdentifierEventIsTriggered(): void
+    {
+        $modifyRecordOverlayIconIdentifierEvent = null;
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'modify-record-overlay-icon-identifier-event-listener',
+            static function (ModifyRecordOverlayIconIdentifierEvent $event) use (&$modifyRecordOverlayIconIdentifierEvent) {
+                $modifyRecordOverlayIconIdentifierEvent = $event;
+                $modifyRecordOverlayIconIdentifierEvent->setOverlayIconIdentifier('overlay-identifier');
+            }
+        );
+
+        $listenerProvider = $container->get(ListenerProvider::class);
+        $listenerProvider->addListener(ModifyRecordOverlayIconIdentifierEvent::class, 'modify-record-overlay-icon-identifier-event-listener');
+
+        $this->subject->getIconForRecord('pages', [])->render();
+
+        self::assertInstanceOf(ModifyRecordOverlayIconIdentifierEvent::class, $modifyRecordOverlayIconIdentifierEvent);
+        self::assertEquals('overlay-identifier', $modifyRecordOverlayIconIdentifierEvent->getOverlayIconIdentifier());
     }
 
     /**

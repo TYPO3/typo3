@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Imaging;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent;
+use TYPO3\CMS\Core\Imaging\Event\ModifyRecordOverlayIconIdentifierEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
@@ -390,15 +391,9 @@ class IconFactory
             }
         }
 
-        // Hook to define an alternative iconName
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['overrideIconOverlay'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObject, 'postOverlayPriorityLookup')) {
-                $iconName = $hookObject->postOverlayPriorityLookup($table, $row, $status, $iconName);
-            }
-        }
-
-        return $iconName;
+        return $this->eventDispatcher->dispatch(
+            new ModifyRecordOverlayIconIdentifierEvent($iconName, $table, $row, $status)
+        )->getOverlayIconIdentifier();
     }
 
     /**

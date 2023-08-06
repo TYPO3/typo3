@@ -1030,4 +1030,10 @@ return [
             'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Core\Imaging\IconFactory\'][\'overrideIconOverlay\']' => [
+        'restFiles' => [
+            'Breaking-101603-RemovedHookForOverridingIconOverlayIdentifier.rst',
+            'Feature-101603-PSR-14EventForModifyingRecordOverlayIconIdentifier.rst',
+        ],
+    ],
 ];
