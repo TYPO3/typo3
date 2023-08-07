@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
-use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
+use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -247,7 +247,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1325952534);
         $folderMock = $this->createMock(Folder::class);
-        $mockedDriver = $this->getMockForAbstractClass(AbstractDriver::class);
+        $mockedDriver = $this->createMock(DriverInterface::class);
         $mockedDriver->expects(self::once())->method('isFolderEmpty')->willReturn(false);
         $subject = $this->getAccessibleMock(ResourceStorage::class, ['checkFolderActionPermission'], [], '', false);
         $subject->method('checkFolderActionPermission')->willReturn(true);

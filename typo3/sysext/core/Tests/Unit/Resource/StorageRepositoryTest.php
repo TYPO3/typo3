@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
-use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
+use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Resource\LocalPath;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -31,7 +31,7 @@ final class StorageRepositoryTest extends UnitTestCase
      */
     public function getDriverObjectAcceptsDriverClassName(): void
     {
-        $mockedDriver = $this->getMockForAbstractClass(AbstractDriver::class);
+        $mockedDriver = $this->createMock(DriverInterface::class);
         $driverFixtureClass = get_class($mockedDriver);
         $registry = new DriverRegistry();
         $registry->registerDriverClass($driverFixtureClass);
@@ -44,7 +44,7 @@ final class StorageRepositoryTest extends UnitTestCase
             ]
         );
         $obj = $subject->_call('getDriverObject', $driverFixtureClass, []);
-        self::assertInstanceOf(AbstractDriver::class, $obj);
+        self::assertInstanceOf(DriverInterface::class, $obj);
     }
 
     public static function storageDetectionDataProvider(): array
