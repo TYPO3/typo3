@@ -49,7 +49,7 @@ acceptance application mysql 8.0 php 8.1 locked:
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s acceptance -d mysql -j 8.0 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s acceptance -d mysql -i 8.0 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 acceptance application mysql 8.0 php 8.1 max:
   stage: acceptance
   needs: []
@@ -67,7 +67,7 @@ acceptance application mysql 8.0 php 8.1 max:
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
-    - Build/Scripts/runTests.sh -s acceptance -d mysql -j 8.0 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s acceptance -d mysql -i 8.0 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 acceptance application mysql 8.0 php 8.1 min:
   stage: acceptance
   needs: []
@@ -85,7 +85,7 @@ acceptance application mysql 8.0 php 8.1 min:
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-    - Build/Scripts/runTests.sh -s acceptance -d mysql -j 8.0 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s acceptance -d mysql -i 8.0 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
 acceptance application sqlite php 8.2 max:
   stage: acceptance
@@ -141,7 +141,7 @@ acceptance application postgres 15 php 8.2 max:
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 15 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s acceptance -d postgres -i 15 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 acceptance application postgres 10 php 8.1 min:
   stage: acceptance
   needs: []
@@ -159,4 +159,4 @@ acceptance application postgres 10 php 8.1 min:
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s acceptance -d postgres -i 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL

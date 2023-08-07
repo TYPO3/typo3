@@ -46,7 +46,7 @@ acceptance install mysql 8.0 php 8.2 max:
       - typo3temp/var/tests/AcceptanceReports
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -j 8.0 -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 8.0 -p 8.2
 acceptance install mysql 8.0 php 8.1 min:
   stage: acceptance
   needs: []
@@ -62,7 +62,7 @@ acceptance install mysql 8.0 php 8.1 min:
       - typo3temp/var/tests/AcceptanceReports
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -j 8.0 -p 8.1
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 8.0 -p 8.1
 
 acceptance install postgres 15 php 8.2 max:
   stage: acceptance
@@ -79,7 +79,7 @@ acceptance install postgres 15 php 8.2 max:
       - typo3temp/var/tests/AcceptanceReports
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -k 15 -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 15 -p 8.2
 acceptance install postgres 10 php 8.1 min:
   stage: acceptance
   needs: []
@@ -95,7 +95,7 @@ acceptance install postgres 10 php 8.1 min:
       - typo3temp/var/tests/AcceptanceReports
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -k 10 -p 8.1
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 10 -p 8.1
 
 acceptance install sqlite php 8.2 max:
   stage: acceptance
