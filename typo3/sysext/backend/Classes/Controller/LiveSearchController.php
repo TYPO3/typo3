@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Search\Event\BeforeLiveSearchFormIsBuiltEvent;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchRepository;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -37,6 +39,7 @@ class LiveSearchController
     public function __construct(
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly SearchRepository $searchService,
+        protected readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
     /**
@@ -76,9 +79,15 @@ class LiveSearchController
             'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_helpDescriptionContent',
             'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_help.shortcutOpen',
         ];
-        $randomHintKey = array_rand($hints);
 
-        $searchDemand = SearchDemand::fromRequest($request);
+        $event = $this->eventDispatcher->dispatch(
+            new BeforeLiveSearchFormIsBuiltEvent($hints, $request)
+        );
+        $hints = $event->getHints();
+        $searchDemand = $event->getSearchDemand();
+        $randomHintKey = array_rand($hints);
+        $additionalViewData = $event->getAdditionalViewData();
+
         $searchProviders = $this->searchService->getSearchProviderState($searchDemand);
 
         $activeOptions = 0;
@@ -86,6 +95,9 @@ class LiveSearchController
         $activeOptions += count(array_filter($searchProviders, fn(array $searchProviderOption): bool => $searchProviderOption['isActive']));
 
         $view = $this->backendViewFactory->create($request, ['typo3/cms-backend']);
+        if ($additionalViewData !== []) {
+            $view->assignMultiple($additionalViewData);
+        }
         $view->assignMultiple([
             'searchDemand' => $searchDemand,
             'hint' => $hints[$randomHintKey],

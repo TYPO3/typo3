@@ -1,0 +1,14 @@
+{
+	"name": "typo3tests/live-search-controller-events",
+	"type": "typo3-cms-extension",
+	"description": "LiveSearchControllerEvents Test",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "13.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_live_search_controller_events"
+		}
+	}
+}
