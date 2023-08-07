@@ -119,11 +119,13 @@ class RelationHandler
     protected array $MM_match_fields = [];
 
     /**
-     * This is set to TRUE if the MM table has a UID field.
-     *
-     * @var bool
+     * When "multiple" is true, the MM table has the "uid" column as primary key. With
+     * "multiple", items can be selected more than once, combination "uid_local" and "uid_foreign"
+     * (plus "tablenames" and "fieldname" for "multi-foreign" setups) are not unique and can not
+     * be primary-keyed.
+     * Query results and insert/update operations are influenced by this a bit.
      */
-    protected $MM_hasUidField;
+    protected bool $multiple = false;
 
     /**
      * Extra MM table where
@@ -229,7 +231,7 @@ class RelationHandler
         // SECTION: MM reverse relations
         $this->MM_is_foreign = (bool)($conf['MM_opposite_field'] ?? false);
         $this->MM_table_where = $conf['MM_table_where'] ?? null;
-        $this->MM_hasUidField = $conf['MM_hasUidField'] ?? null;
+        $this->multiple = (bool)($conf['multiple'] ?? false);
         $this->MM_match_fields = (isset($conf['MM_match_fields']) && is_array($conf['MM_match_fields'])) ? $conf['MM_match_fields'] : [];
         $this->currentTable = $currentTable;
         if (!empty($conf['MM_oppositeUsage']) && is_array($conf['MM_oppositeUsage'])) {
@@ -609,7 +611,7 @@ class RelationHandler
             if ($prep) {
                 $queryBuilder->addSelect('tablenames');
             }
-            if ($this->MM_hasUidField) {
+            if ($this->multiple) {
                 $queryBuilder->addSelect('uid');
             }
             if ($additionalWhere_tablenames) {
@@ -621,10 +623,9 @@ class RelationHandler
 
             $result = $queryBuilder->executeQuery();
             $oldMMs = [];
-            // This array is similar to $oldMMs but also holds the uid of the MM-records, if any (configured by MM_hasUidField).
+            // This array is similar to $oldMMs but also holds the uid of the MM-records if 'multiple' is true.
             // If the UID is present it will be used to update sorting and delete MM-records.
-            // This is necessary if the "multiple" feature is used for the MM relations.
-            // $oldMMs is still needed for the in_array() search used to look if an item from $this->itemArray is in $oldMMs
+            // $oldMMs is still needed for the in_array() search used to look if an item from $this->itemArray is in $oldMMs.
             $oldMMs_inclUid = [];
             while ($row = $result->fetchAssociative()) {
                 if (!$this->MM_is_foreign && $prep) {
@@ -674,7 +675,7 @@ class RelationHandler
                     if ($additionalWhere->count()) {
                         $queryBuilder->andWhere($additionalWhere);
                     }
-                    if ($this->MM_hasUidField) {
+                    if ($this->multiple) {
                         $queryBuilder->andWhere(
                             $expressionBuilder->eq(
                                 'uid',
@@ -720,7 +721,7 @@ class RelationHandler
                 $updateRefIndex_records = [];
                 foreach ($oldMMs as $oldMM_key => $mmItem) {
                     // If UID field is present, of course we need only use that for deleting.
-                    if ($this->MM_hasUidField) {
+                    if ($this->multiple) {
                         $removeClauses = $removeClauses->with($queryBuilder->expr()->eq(
                             'uid',
                             $queryBuilder->createNamedParameter($oldMMs_inclUid[$oldMM_key], Connection::PARAM_INT)
@@ -1122,7 +1123,7 @@ class RelationHandler
      * The difference is that "itemArray" may hold a single table/uid combination multiple times,
      * for instance in a type=group relation having multiple=true, while "results" hold each
      * resolved relation only once.
-     * The methods creates a sanitized "itemArray" from resolved "results" list, normalized
+     * The method creates a sanitized "itemArray" from resolved "results" list, normalized
      * the return array to always contain both table name and uid, and keep incoming
      * "itemArray" sort order and keeps "multiple" selections.
      *

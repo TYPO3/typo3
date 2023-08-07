@@ -610,11 +610,11 @@ class DefaultTcaSchema
                     );
                 }
 
-                // Add 'uid' field with primary key if MM_hasUidField is set.
-                // @todo: ['config']['MM_hasUidField'] is only (?!) needed when ['config']['multiple'] = true. It seems
-                //        as if we could drop TCA MM_hasUidField and simply test for 'multiple' to simplify things.
-                $hasUid = (bool)($tcaColumn['config']['MM_hasUidField'] ?? false);
-                if ($hasUid && !$this->isColumnDefinedForTable($tables, $mmTableName, 'uid')) {
+                // Add 'uid' field with primary key if multiple is set: 'multiple' allows using a left or right
+                // side more than once in a relation which would lead to duplicate primary key entries. To
+                // avoid this, we add a uid column and make it primary key instead.
+                $needsUid = (bool)($tcaColumn['config']['multiple'] ?? false);
+                if ($needsUid && !$this->isColumnDefinedForTable($tables, $mmTableName, 'uid')) {
                     $tables[$tablePosition]->addColumn(
                         $this->quote('uid'),
                         'integer',
@@ -711,9 +711,9 @@ class DefaultTcaSchema
                 // Primary key handling: If there is a uid field, PK has been added above already.
                 // Otherwise, the PK combination is either "uid_local, uid_foreign", or
                 // "uid_local, uid_foreign, tablenames, fieldname" if this is a multi-foreign setup.
-                if (!$hasUid && $tables[$tablePosition]->getPrimaryKey() === null && !empty($tcaColumn['config']['MM_oppositeUsage'])) {
+                if (!$needsUid && $tables[$tablePosition]->getPrimaryKey() === null && !empty($tcaColumn['config']['MM_oppositeUsage'])) {
                     $tables[$tablePosition]->setPrimaryKey(['uid_local', 'uid_foreign', 'tablenames', 'fieldname']);
-                } elseif (!$hasUid && $tables[$tablePosition]->getPrimaryKey() === null) {
+                } elseif (!$needsUid && $tables[$tablePosition]->getPrimaryKey() === null) {
                     $tables[$tablePosition]->setPrimaryKey(['uid_local', 'uid_foreign']);
                 }
             }

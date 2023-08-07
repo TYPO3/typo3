@@ -86,7 +86,6 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'tx_testirremm_offer',
                 'MM' => 'tx_testirremm_offer_price_rel',
-                'MM_hasUidField' => true,
                 'MM_opposite_field' => 'prices',
                 'maxitems' => 10,
                 'appearance' => [

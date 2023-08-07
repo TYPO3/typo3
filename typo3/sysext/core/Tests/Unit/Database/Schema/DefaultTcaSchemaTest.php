@@ -775,12 +775,12 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsMmWithTcaHasUid(): void
+    public function enrichAddsMmWithUidWhenMultipleIsSet(): void
     {
         $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
             'type' => 'select',
             'MM' => 'tx_myext_atable_afield_mm',
-            'MM_hasUidField' => true,
+            'multiple' => true,
         ];
         $result = $this->subject->enrich([$this->defaultTable]);
         $expectedMmTable = new Table(

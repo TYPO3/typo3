@@ -77,7 +77,6 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'tx_testirremm_hotel',
                 'MM' => 'tx_testirremm_hotel_offer_rel',
-                'MM_hasUidField' => true,
                 'MM_opposite_field' => 'offers',
                 'maxitems' => 10,
                 'appearance' => [
@@ -94,7 +93,6 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'tx_testirremm_price',
                 'MM' => 'tx_testirremm_offer_price_rel',
-                'MM_hasUidField' => true,
                 'maxitems' => 10,
                 'appearance' => [
                     'showSynchronizationLink' => 1,

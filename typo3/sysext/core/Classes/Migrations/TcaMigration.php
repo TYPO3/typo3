@@ -88,6 +88,7 @@ class TcaMigration
         $tca = $this->removePassContentFromTypeNone($tca);
         $tca = $this->migrateItemsToAssociativeArray($tca);
         $tca = $this->removeMmInsertFields($tca);
+        $tca = $this->removeMmHasUidField($tca);
 
         return $tca;
     }
@@ -1457,6 +1458,24 @@ class TcaMigration
                     unset($tca[$table]['columns'][$fieldName]['config']['MM_insert_fields']);
                     $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
                         . '\'MM_insert_fields\'. This config key is obsolete and should be removed. '
+                        . 'Please adjust your TCA accordingly.';
+                }
+            }
+        }
+        return $tca;
+    }
+
+    protected function removeMmHasUidField(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (isset($fieldConfig['config']['MM_hasUidField'])) {
+                    unset($tca[$table]['columns'][$fieldName]['config']['MM_hasUidField']);
+                    $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
+                        . '\'MM_hasUidField\'. This config key is obsolete and should be removed. '
                         . 'Please adjust your TCA accordingly.';
                 }
             }

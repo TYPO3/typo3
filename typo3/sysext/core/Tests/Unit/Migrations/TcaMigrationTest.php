@@ -3659,4 +3659,66 @@ final class TcaMigrationTest extends UnitTestCase
         ];
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function migrationRemovesMmHasUidFieldIfFalse(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'group',
+                            'MM_hasUidField' => false,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'group',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function migrationRemovesMmHasUidFieldIfTrue(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'group',
+                            'MM_hasUidField' => true,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'group',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($expected, (new TcaMigration())->migrate($input));
+    }
 }

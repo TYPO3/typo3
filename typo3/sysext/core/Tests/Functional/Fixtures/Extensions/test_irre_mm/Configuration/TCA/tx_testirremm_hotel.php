@@ -77,7 +77,6 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'tx_testirremm_offer',
                 'MM' => 'tx_testirremm_hotel_offer_rel',
-                'MM_hasUidField' => true,
                 'maxitems' => 10,
                 'appearance' => [
                     'showSynchronizationLink' => 1,
