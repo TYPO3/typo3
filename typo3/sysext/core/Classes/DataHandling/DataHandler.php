@@ -4268,10 +4268,10 @@ class DataHandler implements LoggerAwareInterface
             // Save the position to which the original record is requested to be moved
             $originalRecordDestinationPid = $destPid;
             $sortInfo = $this->getSortNumber($table, $uid, $destPid);
-            // Setting the destPid to the new pid of the record.
-            $destPid = $sortInfo['pid'];
             // If not an array, there was an error (which is already logged)
             if (is_array($sortInfo)) {
+                // Setting the destPid to the new pid of the record.
+                $destPid = $sortInfo['pid'];
                 if ($table !== 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
                     // clear cache before moving
                     $this->registerRecordIdForPageCacheClearing($table, $uid);
