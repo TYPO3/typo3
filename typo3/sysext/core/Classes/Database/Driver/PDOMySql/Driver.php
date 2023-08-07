@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Core\Database\Driver\PDOMySql;
 use Doctrine\DBAL\Driver\AbstractMySQLDriver;
 use Doctrine\DBAL\Driver\Connection as DriverConnectionInterface;
 use Doctrine\DBAL\Driver\PDO\Exception;
-use PDO;
-use PDOException;
 use TYPO3\CMS\Core\Database\Driver\DriverConnection;
 
 /**
@@ -37,11 +35,11 @@ final class Driver extends AbstractMySQLDriver
         $driverOptions = $params['driverOptions'] ?? [];
 
         if (! empty($params['persistent'])) {
-            $driverOptions[PDO::ATTR_PERSISTENT] = true;
+            $driverOptions[\PDO::ATTR_PERSISTENT] = true;
         }
 
         try {
-            $pdo = new PDO(
+            $pdo = new \PDO(
                 $this->constructPdoDsn($params),
                 $params['user'] ?? '',
                 $params['password'] ?? '',
@@ -51,7 +49,7 @@ final class Driver extends AbstractMySQLDriver
             if (!isset($driverOptions[\PDO::ATTR_EMULATE_PREPARES])) {
                 $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
             }
-        } catch (PDOException $exception) {
+        } catch (\PDOException $exception) {
             throw Exception::new($exception);
         }
 

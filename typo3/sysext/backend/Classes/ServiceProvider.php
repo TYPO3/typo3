@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend;
 
-use ArrayObject;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Http\Application;
@@ -168,9 +167,9 @@ class ServiceProvider extends AbstractServiceProvider
      * @throws InvalidDataException
      * @throws CoreException
      */
-    public static function getBackendMiddlewares(ContainerInterface $container): ArrayObject
+    public static function getBackendMiddlewares(ContainerInterface $container): \ArrayObject
     {
-        return new ArrayObject($container->get(MiddlewareStackResolver::class)->resolve('backend'));
+        return new \ArrayObject($container->get(MiddlewareStackResolver::class)->resolve('backend'));
     }
 
     public static function configureBackendRouter(ContainerInterface $container, Router $router = null): Router
@@ -203,9 +202,9 @@ class ServiceProvider extends AbstractServiceProvider
         return $router;
     }
 
-    public static function getBackendRoutes(ContainerInterface $container): ArrayObject
+    public static function getBackendRoutes(ContainerInterface $container): \ArrayObject
     {
-        return new ArrayObject();
+        return new \ArrayObject();
     }
 
     public static function getBackendRoutesWarmer(ContainerInterface $container): \Closure
@@ -220,9 +219,9 @@ class ServiceProvider extends AbstractServiceProvider
         };
     }
 
-    public static function getBackendModules(ContainerInterface $container): ArrayObject
+    public static function getBackendModules(ContainerInterface $container): \ArrayObject
     {
-        return new ArrayObject();
+        return new \ArrayObject();
     }
 
     public static function getBackendModulesWarmer(ContainerInterface $container): \Closure

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend;
 
-use ArrayObject;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -94,8 +93,8 @@ class ServiceProvider extends AbstractServiceProvider
      * @throws InvalidDataException
      * @throws CoreException
      */
-    public static function getFrontendMiddlewares(ContainerInterface $container): ArrayObject
+    public static function getFrontendMiddlewares(ContainerInterface $container): \ArrayObject
     {
-        return new ArrayObject($container->get(MiddlewareStackResolver::class)->resolve('frontend'));
+        return new \ArrayObject($container->get(MiddlewareStackResolver::class)->resolve('frontend'));
     }
 }

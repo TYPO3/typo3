@@ -24,7 +24,6 @@ use Doctrine\DBAL\Driver\Result as ResultInterface;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Driver\Statement as StatementInterface;
 use Doctrine\DBAL\ParameterType;
-use PDO;
 
 /**
  * This is a full "clone" of the class of package doctrine/dbal. Scope is to use instanatiate TYPO3's DriverResult
@@ -35,9 +34,9 @@ use PDO;
 class DriverConnection implements ConnectionInterface, ServerInfoAwareConnection
 {
     protected DoctrineDbalPDOConnection $doctrineDbalPDOConnection;
-    protected PDO $connection;
+    protected \PDO $connection;
 
-    public function __construct(PDO $connection)
+    public function __construct(\PDO $connection)
     {
         $this->connection = $connection;
         $this->doctrineDbalPDOConnection = new DoctrineDbalPDOConnection($connection);
@@ -104,7 +103,7 @@ class DriverConnection implements ConnectionInterface, ServerInfoAwareConnection
         return $this->doctrineDbalPDOConnection->rollBack();
     }
 
-    public function getWrappedConnection(): PDO
+    public function getWrappedConnection(): \PDO
     {
         return $this->doctrineDbalPDOConnection->getWrappedConnection();
     }

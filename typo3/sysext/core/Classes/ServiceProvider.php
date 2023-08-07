@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core;
 
-use ArrayObject;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Command\HelpCommand;
@@ -316,9 +315,9 @@ class ServiceProvider extends AbstractServiceProvider
         return $iconRegistry;
     }
 
-    public static function getIcons(ContainerInterface $container): ArrayObject
+    public static function getIcons(ContainerInterface $container): \ArrayObject
     {
-        return new ArrayObject();
+        return new \ArrayObject();
     }
 
     public static function getIconRegistry(ContainerInterface $container): Imaging\IconRegistry
@@ -526,9 +525,9 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
-    public static function getMiddlewares(ContainerInterface $container): ArrayObject
+    public static function getMiddlewares(ContainerInterface $container): \ArrayObject
     {
-        return new ArrayObject();
+        return new \ArrayObject();
     }
 
     public static function getContentSecurityPolicies(ContainerInterface $container): Map

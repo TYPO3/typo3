@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
-use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
@@ -347,7 +346,7 @@ class ElementInformationController
                     unset($fieldList[$key]);
                 }
             }
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $fieldList = [];
         }
 

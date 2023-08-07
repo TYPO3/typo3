@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Service;
 
-use Generator;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\Address;
@@ -122,7 +121,7 @@ final class RecoveryServiceTest extends UnitTestCase
         $subject->sendRecoveryEmail($this->extbaseRequest, $userData, $recoveryConfiguration['forgotHash']);
     }
 
-    public static function configurationDataProvider(): Generator
+    public static function configurationDataProvider(): \Generator
     {
         yield 'minimal configuration' => [
             'uid'                 => 1,

@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller\Resource;
 
-use Exception;
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
@@ -58,7 +56,7 @@ final class ResourceController
 
         try {
             if (!$origin instanceof File && !$origin instanceof Folder) {
-                throw new InvalidArgumentException('Resource must be a file or a folder', 1676979120);
+                throw new \InvalidArgumentException('Resource must be a file or a folder', 1676979120);
             }
             if ($origin->getStorage()->getUid() === 0) {
                 throw new InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1676299579);
@@ -68,10 +66,10 @@ final class ResourceController
             }
             $resourceName = $request->getParsedBody()['resourceName'] ?? null;
             if (!$resourceName || trim((string)$resourceName) === '') {
-                throw new InvalidArgumentException('The resource name cannot be empty', 1676978732);
+                throw new \InvalidArgumentException('The resource name cannot be empty', 1676978732);
             }
             $resource = $origin->rename($resourceName);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $message = match ($exception->getCode()) {
                 1676979120 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNotFileOrFolder'),
                 1676299579 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceOutsideOfStorages'),

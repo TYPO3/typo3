@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
-use ArrayObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
@@ -31,7 +30,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveReturnsMiddlewareStack(): void
     {
-        $middlewares = new ArrayObject(array_replace_recursive(
+        $middlewares = new \ArrayObject(array_replace_recursive(
             [],
             require __DIR__ . '/Fixtures/Package1/Configuration/RequestMiddlewares.php',
             require __DIR__ . '/Fixtures/Package2/Configuration/RequestMiddlewares.php'
@@ -59,7 +58,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveReturnsEmptyMiddlewareStackForZeroPackages(): void
     {
-        $middlewares = new ArrayObject();
+        $middlewares = new \ArrayObject();
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
         $dependencyOrderingServiceMock = $this->createMock(DependencyOrderingService::class);
@@ -81,7 +80,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveAllowsDisablingAMiddleware(): void
     {
-        $middlewares = new ArrayObject(array_replace_recursive(
+        $middlewares = new \ArrayObject(array_replace_recursive(
             [],
             require __DIR__ . '/Fixtures/Package1/Configuration/RequestMiddlewares.php',
             require __DIR__ . '/Fixtures/Package2Disables1/Configuration/RequestMiddlewares.php'
@@ -109,7 +108,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveAllowsReplacingAMiddleware(): void
     {
-        $middlewares = new ArrayObject(array_replace_recursive(
+        $middlewares = new \ArrayObject(array_replace_recursive(
             [],
             require __DIR__ . '/Fixtures/Package1/Configuration/RequestMiddlewares.php',
             require __DIR__ . '/Fixtures/Package2Replaces1/Configuration/RequestMiddlewares.php'

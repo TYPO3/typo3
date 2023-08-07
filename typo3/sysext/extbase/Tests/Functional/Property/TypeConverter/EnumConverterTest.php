@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
-use Generator;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Tests\Fixture\IntegerBackedEnum;
 use TYPO3\CMS\Extbase\Tests\Fixture\StringBackedEnum;
@@ -40,7 +39,7 @@ final class EnumConverterTest extends FunctionalTestCase
         self::assertSame($expected, $enumItem);
     }
 
-    public static function convertEnumDataProvider(): Generator
+    public static function convertEnumDataProvider(): \Generator
     {
         yield 'convert by name 1' => [
             UnbackedEnum::class,

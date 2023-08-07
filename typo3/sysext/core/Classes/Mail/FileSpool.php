@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Mail;
 
-use DirectoryIterator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\DelayedEnvelope;
 use Symfony\Component\Mailer\Envelope;
@@ -114,7 +113,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
      */
     public function recover(int $timeout = 900): void
     {
-        foreach (new DirectoryIterator($this->path) as $file) {
+        foreach (new \DirectoryIterator($this->path) as $file) {
             $file = (string)$file->getRealPath();
 
             if (str_ends_with($file, '.message.sending')) {
@@ -128,7 +127,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
 
     public function flushQueue(TransportInterface $transport): int
     {
-        $directoryIterator = new DirectoryIterator($this->path);
+        $directoryIterator = new \DirectoryIterator($this->path);
 
         $count = 0;
         $time = time();

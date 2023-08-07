@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Reflection;
 use Doctrine\Common\Annotations\AnnotationReader;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlockFactory;
-use ReflectionAttribute;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
@@ -322,7 +321,7 @@ class ClassSchema
 
                 $ignoreValidationParametersFromAttribute = array_filter(
                     $reflectionAttributes,
-                    static fn (ReflectionAttribute $attribute): bool
+                    static fn (\ReflectionAttribute $attribute): bool
                         => $attribute->getName() === IgnoreValidation::class && $attribute->newInstance()->argumentName === $parameterName
                 );
 

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
-use LogicException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -38,7 +37,7 @@ class LocalPath
     public function __construct(string $value, int $type)
     {
         if ($type !== self::TYPE_ABSOLUTE && $type !== self::TYPE_RELATIVE) {
-            throw new LogicException(sprintf('Unexpected type "%d"', $type), 1625826491);
+            throw new \LogicException(sprintf('Unexpected type "%d"', $type), 1625826491);
         }
 
         // @todo `../` is erased here, check again if this is a valid scenario

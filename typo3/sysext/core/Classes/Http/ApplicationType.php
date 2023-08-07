@@ -62,7 +62,7 @@ enum ApplicationType: string
     /**
      * Create an ApplicationType object from a given PSR-7 request.
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
     public static function fromRequest(ServerRequestInterface $request): self
     {
@@ -71,7 +71,7 @@ enum ApplicationType: string
             // Request object has no valid type. Type is set by the Frontend / Backend / Install
             // application. If it's missing, we've not been called behind a legit TYPO3 application object.
             // This is bogus, we throw a generic RuntimeException that should not be caught.
-            throw new RuntimeException('No valid attribute "applicationType" found in request object.', 1606222812);
+            throw new \RuntimeException('No valid attribute "applicationType" found in request object.', 1606222812);
         }
         if (($type & SystemEnvironmentBuilder::REQUESTTYPE_FE) === SystemEnvironmentBuilder::REQUESTTYPE_FE) {
             return self::FRONTEND;

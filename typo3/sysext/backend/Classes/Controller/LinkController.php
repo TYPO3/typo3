@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller;
 
-use Exception;
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
@@ -57,7 +55,7 @@ final class LinkController
 
         try {
             if (!$resource instanceof File && !$resource instanceof Folder) {
-                throw new InvalidArgumentException('Resource must be a file or a folder', 1679039649);
+                throw new \InvalidArgumentException('Resource must be a file or a folder', 1679039649);
             }
             if ($resource->getStorage()->getUid() === 0) {
                 throw new InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1679039650);
@@ -75,7 +73,7 @@ final class LinkController
                 ];
             }
             $link = $this->linkService->asString($parameters);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $message = match ($exception->getCode()) {
                 1679039649 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNotFileOrFolder'),
                 1679039650 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceOutsideOfStorages'),

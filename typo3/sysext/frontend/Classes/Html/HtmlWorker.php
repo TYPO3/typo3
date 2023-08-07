@@ -17,11 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Html;
 
-use DOMDocument;
-use DOMDocumentFragment;
-use DOMElement;
-use DOMNode;
-use DOMXPath;
 use Masterminds\HTML5;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
@@ -50,8 +45,8 @@ class HtmlWorker
      */
     public const REMOVE_ENCLOSURE_ON_FAILURE = 4;
 
-    protected ?DOMNode $mount = null;
-    protected ?DOMDocument $document = null;
+    protected ?\DOMNode $mount = null;
+    protected ?\DOMDocument $document = null;
 
     public function __construct(
         protected readonly LinkFactory $linkFactory,
@@ -61,7 +56,7 @@ class HtmlWorker
 
     public function __toString(): string
     {
-        if (!$this->mount instanceof DOMNode || !$this->document instanceof DOMDocument) {
+        if (!$this->mount instanceof \DOMNode || !$this->document instanceof \DOMDocument) {
             return '';
         }
         return $this->parser->saveHTML($this->mount->childNodes);
@@ -86,10 +81,10 @@ class HtmlWorker
         if ($nodeNames === []) {
             return $this;
         }
-        $xpath = new DOMXPath($this->document);
+        $xpath = new \DOMXPath($this->document);
         foreach ($nodeNames as $nodeName) {
             $expression = sprintf('//%s[not(@*)]', $nodeName);
-            /** @var DOMElement $element */
+            /** @var \DOMElement $element */
             foreach ($xpath->query($expression, $this->mount) as $element) {
                 $element->setAttribute('nonce', $nonce);
             }
@@ -99,16 +94,16 @@ class HtmlWorker
 
     public function transformUri(string $selector, int $flags = 0): self
     {
-        if (!$this->mount instanceof DOMNode || !$this->document instanceof DOMDocument) {
+        if (!$this->mount instanceof \DOMNode || !$this->document instanceof \DOMDocument) {
             return $this;
         }
         $subjects = $this->parseSelector($selector);
         // use xpath to traverse potential candidates having "links"
-        $xpath = new DOMXPath($this->document);
+        $xpath = new \DOMXPath($this->document);
         foreach ($subjects as $subject) {
             $attrName = $subject['attr'];
             $expression = sprintf('//%s[@%s]', $subject['node'], $attrName);
-            /** @var DOMElement $element */
+            /** @var \DOMElement $element */
             foreach ($xpath->query($expression, $this->mount) as $element) {
                 $elementAttrValue = $element->getAttribute($attrName);
                 $scheme = parse_url($elementAttrValue, PHP_URL_SCHEME);
@@ -138,10 +133,10 @@ class HtmlWorker
     }
 
     /**
-     * @param DOMElement $element current element encountered failure
+     * @param \DOMElement $element current element encountered failure
      * @param array{node: string, attr: string} $subject node-attr combination
      */
-    protected function onTransformUriFailure(DOMElement $element, array $subject, int $flags): void
+    protected function onTransformUriFailure(\DOMElement $element, array $subject, int $flags): void
     {
         if (($flags & self::REMOVE_TAG_ON_FAILURE) === self::REMOVE_TAG_ON_FAILURE) {
             $element->parentNode->removeChild($element);
@@ -184,7 +179,7 @@ class HtmlWorker
         return array_filter($items);
     }
 
-    protected function mountFragment(DOMDocumentFragment $fragment): DOMNode
+    protected function mountFragment(\DOMDocumentFragment $fragment): \DOMNode
     {
         $document = $fragment->ownerDocument;
         $mount = $document->createElement('div');
