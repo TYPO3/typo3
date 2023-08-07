@@ -102,7 +102,7 @@ final class TemplatePathsTest extends UnitTestCase
      */
     public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInFrontendMode(): void
     {
-        $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
+        $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
             'plugin.' => [
                 'tx_test.' => [
@@ -159,7 +159,7 @@ final class TemplatePathsTest extends UnitTestCase
      */
     public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInBackendMode(): void
     {
-        $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
+        $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
             'module.' => [
                 'tx_test.' => [
@@ -216,7 +216,7 @@ final class TemplatePathsTest extends UnitTestCase
      */
     public function getContextSpecificViewConfigurationDoesNotResolveFromTypoScriptAndDoesNotSortInUnspecifiedMode(): void
     {
-        $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
+        $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
             'plugin.' => [
                 'tx_test.' => [

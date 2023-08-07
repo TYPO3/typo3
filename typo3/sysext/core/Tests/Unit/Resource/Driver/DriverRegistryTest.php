@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
-use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -30,7 +29,7 @@ final class DriverRegistryTest extends UnitTestCase
      */
     public function registeredDriverClassesCanBeRetrieved(): void
     {
-        $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
+        $className = get_class($this->createMock(DriverInterface::class));
         $subject = new DriverRegistry();
         $subject->registerDriverClass($className, 'foobar');
         $returnedClassName = $subject->getDriverClass('foobar');
@@ -55,7 +54,7 @@ final class DriverRegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314979451);
-        $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
+        $className = get_class($this->createMock(DriverInterface::class));
         $className2 = get_class($this->getMockForAbstractClass(DriverInterface::class));
         $subject = new DriverRegistry();
         $subject->registerDriverClass($className, 'foobar');
@@ -78,7 +77,7 @@ final class DriverRegistryTest extends UnitTestCase
      */
     public function getDriverClassAcceptsClassNameIfClassIsRegistered(): void
     {
-        $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
+        $className = get_class($this->createMock(DriverInterface::class));
         $subject = new DriverRegistry();
         $subject->registerDriverClass($className, 'foobar');
         self::assertEquals($className, $subject->getDriverClass($className));
@@ -89,7 +88,7 @@ final class DriverRegistryTest extends UnitTestCase
      */
     public function driverRegistryIsInitializedWithPreconfiguredDrivers(): void
     {
-        $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
+        $className = get_class($this->createMock(DriverInterface::class));
         $shortName = StringUtility::getUniqueId('class_');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
             $shortName => [
@@ -105,7 +104,7 @@ final class DriverRegistryTest extends UnitTestCase
      */
     public function driverExistsReturnsTrueForAllExistingDrivers(): void
     {
-        $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
+        $className = get_class($this->createMock(DriverInterface::class));
         $shortName = StringUtility::getUniqueId('class_');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
             $shortName => [

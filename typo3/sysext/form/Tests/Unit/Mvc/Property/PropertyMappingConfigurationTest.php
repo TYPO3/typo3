@@ -21,8 +21,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration as ExtbasePropertyMappingConfiguration;
-use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
@@ -266,7 +266,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     public function afterBuildingFinishedCopiesValidators(): void
     {
         // Some other Validator
-        $otherValidator = $this->getMockForAbstractClass(AbstractValidator::class);
+        $otherValidator = $this->createMock(ValidatorInterface::class);
 
         // Don't add any validators for now
         $validators = new \SplObjectStorage();
