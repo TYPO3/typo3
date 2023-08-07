@@ -29,48 +29,74 @@ cleanUp() {
     ${CONTAINER_BIN} network rm ${NETWORK} >/dev/null
 }
 
-# Options -a and -d depend on each other. The function
-# validates input combinations and sets defaults.
-handleDbmsAndDriverOptions() {
+handleDbmsOptions() {
+    # -a, -d, -i depend on each other. Validate input combinations and set defaults.
     case ${DBMS} in
         mariadb)
             [ -z "${DATABASE_DRIVER}" ] && DATABASE_DRIVER="mysqli"
             if [ "${DATABASE_DRIVER}" != "mysqli" ] && [ "${DATABASE_DRIVER}" != "pdo_mysql" ]; then
-                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
+                echo "Invalid combination -d ${DBMS} -a ${DATABASE_DRIVER}" >&2
                 echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                exit 1
+            fi
+            [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="10.3"
+            if ! [[ ${DBMS_VERSION} =~ ^(10.3|10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11|11.0|11.1)$ ]]; then
+                echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
+                echo >&2
+                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             ;;
         mysql)
             [ -z "${DATABASE_DRIVER}" ] && DATABASE_DRIVER="mysqli"
             if [ "${DATABASE_DRIVER}" != "mysqli" ] && [ "${DATABASE_DRIVER}" != "pdo_mysql" ]; then
-                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
+                echo "Invalid combination -d ${DBMS} -a ${DATABASE_DRIVER}" >&2
                 echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                exit 1
+            fi
+            [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="8.0"
+            if ! [[ ${DBMS_VERSION} =~ ^(8.0)$ ]]; then
+                echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
+                echo >&2
+                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             ;;
         postgres)
             if [ -n "${DATABASE_DRIVER}" ]; then
-                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
+                echo "Invalid combination -d ${DBMS} -a ${DATABASE_DRIVER}" >&2
                 echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                exit 1
+            fi
+            [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="10"
+            if ! [[ ${DBMS_VERSION} =~ ^(10|11|12|13|14|15)$ ]]; then
+                echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
+                echo >&2
+                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             ;;
         sqlite)
             if [ -n "${DATABASE_DRIVER}" ]; then
-                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
+                echo "Invalid combination -d ${DBMS} -a ${DATABASE_DRIVER}" >&2
                 echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                exit 1
+            fi
+            if [ -n "${DBMS_VERSION}" ]; then
+                echo "Invalid combination -d ${DBMS} -i ${DATABASE_DRIVER}" >&2
+                echo >&2
+                echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             ;;
         *)
             echo "Invalid option -d ${DBMS}" >&2
             echo >&2
-            echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+            echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
             exit 1
             ;;
     esac
@@ -135,7 +161,7 @@ Usage: $0 [options] [file]
 
 Options:
     -s <...>
-        Specifies which test suite to run
+        Specifies the test suite to run
             - acceptance: main application acceptance tests
             - acceptanceInstall: installation acceptance tests, only with -d mariadb|postgres|sqlite
             - buildCss: execute scss to css builder
@@ -200,9 +226,9 @@ Options:
             - mysql: use MySQL
             - postgres: use postgres
 
-    -i <10.3|10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11|11.0|11.1>
-        Only with -d mariadb
-        Specifies on which version of mariadb tests are performed
+    -i version
+        Specify a specific database version
+        With "-d mariadb":
             - 10.3   short-term, maintained until 2023-05-25 (default)
             - 10.4   short-term, maintained until 2024-06-18
             - 10.5   short-term, maintained until 2025-06-24
@@ -214,15 +240,9 @@ Options:
             - 10.11  long-term, maintained until 2028-02
             - 11.0   development series
             - 11.1   short-term development series
-
-    -j <8.0>
-        Only with -d mysql
-        Specifies on which version of mysql tests are performed
+        With "-d mariadb":
             - 8.0   maintained until 2026-04 (default)
-
-    -k <10|11|12|13|14|15>
-        Only with -d postgres
-        Specifies on which version of postgres tests are performed
+        With "-d postgres":
             - 10    unmaintained since 2022-11-10 (default)
             - 11    maintained until 2023-11-09
             - 12    maintained until 2024-11-14
@@ -295,7 +315,7 @@ Examples:
     ./Build/Scripts/runTests.sh -x -p 8.1 -s functional -d postgres typo3/sysext/core/Tests/Functional/Authentication
 
     # Run functional tests on postgres 11
-    ./Build/Scripts/runTests.sh -s functional -d postgres -k 11
+    ./Build/Scripts/runTests.sh -s functional -d postgres -i 11
 
     # Run restricted set of application acceptance tests
     ./Build/Scripts/runTests.sh -s acceptance typo3/sysext/core/Tests/Acceptance/Application/Login/BackendLoginCest.php:loginButtonMouseOver
@@ -314,6 +334,7 @@ fi
 # Option defaults
 TEST_SUITE="unit"
 DBMS="sqlite"
+DBMS_VERSION=""
 PHP_VERSION="8.1"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
@@ -321,9 +342,6 @@ EXTRA_TEST_OPTIONS=""
 PHPUNIT_RANDOM=""
 CGLCHECK_DRY_RUN=""
 DATABASE_DRIVER=""
-MARIADB_VERSION="10.3"
-MYSQL_VERSION="8.0"
-POSTGRES_VERSION="10"
 CHUNKS=0
 THISCHUNK=0
 CONTAINER_BIN="docker"
@@ -334,7 +352,7 @@ OPTIND=1
 # Array for invalid options
 INVALID_OPTIONS=()
 # Simple option parsing based on getopts (! not getopt)
-while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhu" OPT; do
+while getopts ":a:s:c:d:i:p:e:xy:o:nhu" OPT; do
     case ${OPT} in
         s)
             TEST_SUITE=${OPTARG}
@@ -355,22 +373,7 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhu" OPT; do
             DBMS=${OPTARG}
             ;;
         i)
-            MARIADB_VERSION=${OPTARG}
-            if ! [[ ${MARIADB_VERSION} =~ ^(10.3|10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11|11.0|11.1)$ ]]; then
-                INVALID_OPTIONS+=("${OPTARG}")
-            fi
-            ;;
-        j)
-            MYSQL_VERSION=${OPTARG}
-            if ! [[ ${MYSQL_VERSION} =~ ^(8.0)$ ]]; then
-                INVALID_OPTIONS+=("${OPTARG}")
-            fi
-            ;;
-        k)
-            POSTGRES_VERSION=${OPTARG}
-            if ! [[ ${POSTGRES_VERSION} =~ ^(10|11|12|13|14|15)$ ]]; then
-                INVALID_OPTIONS+=("${OPTARG}")
-            fi
+            DBMS_VERSION=${OPTARG}
             ;;
         p)
             PHP_VERSION=${OPTARG}
@@ -417,9 +420,11 @@ if [ ${#INVALID_OPTIONS[@]} -ne 0 ]; then
         echo "-"${I} >&2
     done
     echo >&2
-    echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"
+    echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
     exit 1
 fi
+
+handleDbmsOptions
 
 COMPOSER_ROOT_VERSION="12.4.x-dev"
 HOST_UID=$(id -u)
@@ -463,13 +468,11 @@ IMAGE_ALPINE="${IMAGE_PREFIX}alpine:3.8"
 IMAGE_SELENIUM="${IMAGE_PREFIX}selenium/standalone-chrome:4.0.0-20211102"
 IMAGE_REDIS="${IMAGE_PREFIX}redis:4-alpine"
 IMAGE_MEMCACHED="${IMAGE_PREFIX}memcached:1.5-alpine"
-IMAGE_MARIADB="${IMAGE_PREFIX}mariadb:${MARIADB_VERSION}"
-IMAGE_MYSQL="${IMAGE_PREFIX}mysql:${MYSQL_VERSION}"
-IMAGE_POSTGRES="${IMAGE_PREFIX}postgres:${POSTGRES_VERSION}-alpine"
+IMAGE_MARIADB="${IMAGE_PREFIX}mariadb:${DBMS_VERSION}"
+IMAGE_MYSQL="${IMAGE_PREFIX}mysql:${DBMS_VERSION}"
+IMAGE_POSTGRES="${IMAGE_PREFIX}postgres:${DBMS_VERSION}-alpine"
 
-# Detect arm64 and use a seleniarm image.
-# In a perfect world selenium would have a arm64 integrated, but that is not on the horizon.
-# So for the time being we have to use seleniarm image.
+# Detect arm64 to use seleniarm image.
 ARCH=$(uname -m)
 if [ ${ARCH} = "arm64" ]; then
     IMAGE_SELENIUM="${IMAGE_PREFIX}seleniarm/standalone-chromium:4.1.2-20220227"
@@ -497,7 +500,6 @@ fi
 # Suite execution
 case ${TEST_SUITE} in
     acceptance)
-        handleDbmsAndDriverOptions
         if [ "${CHUNKS}" -gt 0 ]; then
             ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-splitter-${SUFFIX} ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
             COMMAND="bin/codecept run Application -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --html reports.html"
@@ -539,7 +541,6 @@ case ${TEST_SUITE} in
         esac
         ;;
     acceptanceInstall)
-        handleDbmsAndDriverOptions
         ${CONTAINER_BIN} run -d --name ac-istall-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec,relatime ${IMAGE_SELENIUM} >/dev/null
         ${CONTAINER_BIN} run -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "host.docker.internal:host-gateway" $USERSET -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
         waitFor chrome 4444
@@ -715,7 +716,6 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         ;;
     functional)
-        handleDbmsAndDriverOptions
         if [ "${CHUNKS}" -gt 0 ]; then
             ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name func-splitter-${SUFFIX} ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/splitFunctionalTests.php -v ${CHUNKS}
             COMMAND="bin/phpunit -c Build/phpunit/FunctionalTests-Job-${THISCHUNK}.xml --exclude-group not-${DBMS} ${EXTRA_TEST_OPTIONS} ${TEST_FILE}"
@@ -761,7 +761,6 @@ case ${TEST_SUITE} in
         esac
         ;;
     functionalDeprecated)
-        handleDbmsAndDriverOptions
         COMMAND="bin/phpunit -c Build/phpunit/FunctionalTestsDeprecated.xml --exclude-group not-${DBMS} ${EXTRA_TEST_OPTIONS} ${TEST_FILE}"
         ${CONTAINER_BIN} run --name redis-func-dep-${SUFFIX} --network ${NETWORK} -d ${IMAGE_REDIS} >/dev/null
         ${CONTAINER_BIN} run --name memcached-func-dep-${SUFFIX} --network ${NETWORK} -d ${IMAGE_MEMCACHED} >/dev/null
@@ -889,14 +888,8 @@ fi
 echo "PHP: ${PHP_VERSION}" >&2
 if [[ ${TEST_SUITE} =~ ^(functional|functionalDeprecated|acceptance|acceptanceInstall)$ ]]; then
     case "${DBMS}" in
-        mariadb)
-            echo "DBMS: ${DBMS}  version ${MARIADB_VERSION}  driver ${DATABASE_DRIVER}" >&2
-            ;;
-        mysql)
-            echo "DBMS: ${DBMS}  version ${MYSQL_VERSION}  driver ${DATABASE_DRIVER}" >&2
-            ;;
-        postgres)
-            echo "DBMS: ${DBMS}  version ${POSTGRES_VERSION}" >&2
+        mariadb|mysql|postgres)
+            echo "DBMS: ${DBMS}  version ${DBMS_VERSION}  driver ${DATABASE_DRIVER}" >&2
             ;;
         sqlite)
             echo "DBMS: ${DBMS}" >&2
