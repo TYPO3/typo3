@@ -20,7 +20,6 @@ use TYPO3\CMS\Backend\Controller\AbstractLinkBrowserController;
 use TYPO3\CMS\Backend\LinkHandler\LinkHandlerInterface;
 use TYPO3\CMS\Backend\LinkHandler\LinkHandlerVariableProviderInterface;
 use TYPO3\CMS\Backend\LinkHandler\LinkHandlerViewProviderInterface;
-use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
@@ -31,7 +30,6 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -42,8 +40,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Filelist\FileList;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
@@ -190,11 +186,6 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
         $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && $this->displayThumbs;
     }
 
-    public function isCurrentlySelectedItem(array $values): bool
-    {
-        return false;
-    }
-
     public function modifyLinkAttributes(array $fieldDefinitions): array
     {
         return $fieldDefinitions;
@@ -203,11 +194,6 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
     public function isUpdateSupported(): bool
     {
         return true;
-    }
-
-    public function getScriptUrl(): string
-    {
-        return $this->linkBrowser->getScriptUrl();
     }
 
     /**
@@ -228,14 +214,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
 
     protected function createUri(ServerRequestInterface $request, array $parameters = []): string
     {
-        $parameters = $this->getUrlParameters($parameters);
-        if (($route = $request->getAttribute('route')) instanceof Route) {
-            $scriptUrl = (string)$this->uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $parameters);
-        } else {
-            $scriptUrl = ($this->linkBrowser->getScriptUrl() ?: PathUtility::basename(Environment::getCurrentScript())) . HttpUtility::buildQueryString($parameters, '&');
-        }
-
-        return $scriptUrl;
+        return (string)$this->uriBuilder->buildUriFromRequest($request, $this->getUrlParameters($parameters));
     }
 
     protected function getViewModeButton(ServerRequestInterface $request): ButtonInterface
@@ -270,13 +249,13 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
         return $viewModeButton;
     }
 
-    public function getUrlParameters(array $parameters): array
+    public function getUrlParameters(array $values): array
     {
-        $parameters = array_replace_recursive([
-            'expandFolder' => $parameters['identifier'] ?? $this->expandFolder,
-        ], $parameters);
+        $values = array_replace_recursive([
+            'expandFolder' => $values['identifier'] ?? $this->expandFolder,
+        ], $values);
 
-        return array_merge($this->linkBrowser->getUrlParameters($parameters), $parameters);
+        return array_merge($this->linkBrowser->getUrlParameters($values), $values);
     }
 
     protected function getLanguageService(): LanguageService

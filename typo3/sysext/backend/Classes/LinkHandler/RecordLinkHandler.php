@@ -207,25 +207,6 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
     }
 
     /**
-     * Checks if the submitted page matches the current page.
-     *
-     * @param array $values Values to be checked
-     * @return bool Returns TRUE if the given values match the currently selected item
-     */
-    public function isCurrentlySelectedItem(array $values): bool
-    {
-        return !empty($this->linkParts) && (int)$this->linkParts['pid'] === (int)$values['pid'];
-    }
-
-    /**
-     * Returns the URL of the current script
-     */
-    public function getScriptUrl(): string
-    {
-        return $this->linkBrowser->getScriptUrl();
-    }
-
-    /**
      * Render elements of configured table
      */
     protected function renderTableRecords(ServerRequestInterface $request): string

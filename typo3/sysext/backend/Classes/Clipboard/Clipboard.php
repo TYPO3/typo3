@@ -788,8 +788,8 @@ class Clipboard
                 1633604720
             );
         }
-        return (string)$this->uriBuilder->buildUriFromRoute(
-            $this->request->getAttribute('route')->getOption('_identifier'),
+        return (string)$this->uriBuilder->buildUriFromRequest(
+            $this->request,
             array_replace($this->request->getQueryParams(), $parameters)
         );
     }

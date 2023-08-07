@@ -5842,4 +5842,18 @@ return [
             'Deprecation-101475-IconSizeStringConstants.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface->getScriptUrl' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-101612-LinkParameterProviderInterfaceChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface->isCurrentlySelectedItem' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-101612-LinkParameterProviderInterfaceChanged.rst',
+        ],
+    ],
 ];

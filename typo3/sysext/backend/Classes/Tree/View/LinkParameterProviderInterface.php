@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,29 +20,10 @@ namespace TYPO3\CMS\Backend\Tree\View;
 interface LinkParameterProviderInterface
 {
     /**
-     * Returns the URL of the current script
-     *
-     * @return string
-     */
-    public function getScriptUrl();
-
-    /**
      * Provides an array or GET parameters for URL generation
      *
      * @param array $values Array of values to include into the parameters or which might influence the parameters
-     *
      * @return string[] Array of parameters which have to be added to URLs
      */
-    public function getUrlParameters(array $values);
-
-    /**
-     * Check if given value is currently the selected item
-     *
-     * This method is only used in the page tree.
-     *
-     * @param array $values Values to be checked
-     *
-     * @return bool Returns TRUE if the given values match the currently selected item
-     */
-    public function isCurrentlySelectedItem(array $values);
+    public function getUrlParameters(array $values): array;
 }

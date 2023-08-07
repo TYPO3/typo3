@@ -135,8 +135,8 @@ class FileBrowser extends AbstractResourceBrowser
 
             // Build the file upload and folder creation form
             $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
-            $markup[] = $folderUtilityRenderer->uploadForm($this->selectedFolder, $this->fileExtensionFilter);
-            $markup[] = $folderUtilityRenderer->createFolder($this->selectedFolder);
+            $markup[] = $folderUtilityRenderer->uploadForm($this->getRequest(), $this->selectedFolder, $this->fileExtensionFilter);
+            $markup[] = $folderUtilityRenderer->createFolder($this->getRequest(), $this->selectedFolder);
 
             $contentHtml = implode('', $markup);
         }

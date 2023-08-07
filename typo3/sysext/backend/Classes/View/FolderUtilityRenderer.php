@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -26,7 +27,6 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Renders utility forms used in the views for files/folders of Element and Link Browser
@@ -54,7 +54,7 @@ class FolderUtilityRenderer
      *
      * @return string HTML for the create folder form.
      */
-    public function createFolder(Folder $folderObject)
+    public function createFolder(ServerRequestInterface $request, Folder $folderObject)
     {
         $lang = $this->getLanguageService();
 
@@ -77,11 +77,11 @@ class FolderUtilityRenderer
             . htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';
 
         // Make footer of upload form, including the submit button:
-        $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
+        $redirectValue = (string)$this->uriBuilder->buildUriFromRequest(
+            $request,
             $this->parameterProvider->getUrlParameters(
                 ['identifier' => $folderObject->getCombinedIdentifier()]
-            ),
-            '&'
+            )
         );
         $markup[] = '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
 
@@ -96,7 +96,7 @@ class FolderUtilityRenderer
      *
      * @return string HTML for an upload form.
      */
-    public function uploadForm(Folder $folderObject, ?FileExtensionFilter $fileExtensionFilter = null)
+    public function uploadForm(ServerRequestInterface $request, Folder $folderObject, ?FileExtensionFilter $fileExtensionFilter = null)
     {
         if (!$folderObject->checkActionPermission('write')) {
             return '';
@@ -140,10 +140,7 @@ class FolderUtilityRenderer
 
         $formAction = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
         $combinedIdentifier = $folderObject->getCombinedIdentifier();
-        $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
-            $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier]),
-            '&'
-        );
+        $redirectValue = (string)$this->uriBuilder->buildUriFromRequest($request, $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier]));
         $markup[] = '<form class="pt-3 pb-3" action="' . htmlspecialchars($formAction) . '" method="post" name="editform" enctype="multipart/form-data">';
         $markup[] = '<input type="hidden" name="data[upload][0][target]" value="' . htmlspecialchars($combinedIdentifier) . '" />';
         $markup[] = '<input type="hidden" name="data[upload][0][data]" value="0" />';

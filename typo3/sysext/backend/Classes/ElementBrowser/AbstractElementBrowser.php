@@ -45,13 +45,6 @@ abstract class AbstractElementBrowser
     protected string $identifier = '';
 
     /**
-     * URL of current request
-     *
-     * @var string
-     */
-    protected $thisScript = '';
-
-    /**
      * Active with TYPO3 Element Browser: Contains the name of the form field for which this window
      * opens - thus allows us to make references back to the main window in which the form is.
      * Example value: "data[pages][39][bodytext]|||tt_content|"
@@ -95,7 +88,6 @@ abstract class AbstractElementBrowser
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
-        $this->determineScriptUrl();
         $this->initVariables($request);
     }
 
@@ -105,16 +97,6 @@ abstract class AbstractElementBrowser
     public function getIdentifier(): string
     {
         return $this->identifier;
-    }
-
-    /**
-     * Sets the script url depending on being a module or script request
-     */
-    protected function determineScriptUrl()
-    {
-        $this->thisScript = (string)$this->uriBuilder->buildUriFromRoute(
-            $this->getRequest()->getAttribute('route')->getOption('_identifier')
-        );
     }
 
     protected function initVariables(ServerRequestInterface $request)

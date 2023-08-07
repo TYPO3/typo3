@@ -238,7 +238,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
      * @param array $values Array of values to include into the parameters
      * @return string[] Array of parameters which have to be added to URLs
      */
-    public function getUrlParameters(array $values)
+    public function getUrlParameters(array $values): array
     {
         $pid = $values['pid'] ?? $this->expandPage;
         return [
@@ -246,24 +246,5 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             'expandPage' => $pid,
             'bparams' => $this->bparams,
         ];
-    }
-
-    /**
-     * @param array $values Values to be checked
-     * @return bool Returns TRUE if the given values match the currently selected item
-     */
-    public function isCurrentlySelectedItem(array $values)
-    {
-        return false;
-    }
-
-    /**
-     * Returns the URL of the current script
-     *
-     * @return string
-     */
-    public function getScriptUrl()
-    {
-        return $this->thisScript;
     }
 }

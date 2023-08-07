@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Filelist\ElementBrowser;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\ElementBrowser\AbstractElementBrowser;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface;
-use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface;
@@ -26,13 +25,10 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Filelist\FileList;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
 use TYPO3\CMS\Filelist\Type\ViewMode;
@@ -153,34 +149,28 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
     }
 
     /**
-     * @param array $parameters Array of values to include into the parameters
+     * @param array $values Array of values to include into the parameters
      * @return string[] Array of parameters which have to be added to URLs
      */
-    public function getUrlParameters(array $parameters): array
+    public function getUrlParameters(array $values): array
     {
-        $parameters = array_replace_recursive([
+        $values = array_replace_recursive([
             'mode' => $this->identifier,
-            'expandFolder' => $parameters['identifier'] ?? $this->expandFolder,
+            'expandFolder' => $values['identifier'] ?? $this->expandFolder,
             'bparams' => $this->bparams,
-        ], $parameters);
+        ], $values);
 
-        $parameters = array_filter($parameters, static function ($value) {
+        $values = array_filter($values, static function ($value) {
             return $value !== null && trim($value) !== '';
         });
 
-        return $parameters;
+        return $values;
     }
 
     protected function createUri(array $parameters = []): string
     {
         $parameters = $this->getUrlParameters($parameters);
-        if (($route = $this->getRequest()->getAttribute('route')) instanceof Route) {
-            $scriptUrl = (string)$this->uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $parameters);
-        } else {
-            $scriptUrl = ($this->thisScript ?: PathUtility::basename(Environment::getCurrentScript())) . HttpUtility::buildQueryString($parameters, '&');
-        }
-
-        return $scriptUrl;
+        return (string)$this->uriBuilder->buildUriFromRequest($this->getRequest(), $parameters);
     }
 
     /**
@@ -199,15 +189,5 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
             $store = false;
         }
         return [$data, $store];
-    }
-
-    public function isCurrentlySelectedItem(array $values): bool
-    {
-        return false;
-    }
-
-    public function getScriptUrl(): string
-    {
-        return $this->thisScript;
     }
 }

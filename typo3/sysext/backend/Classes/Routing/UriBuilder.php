@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Backend\Routing;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Route as SymfonyRoute;
 use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteTypeNotAllowedException;
@@ -121,6 +123,19 @@ class UriBuilder implements SingletonInterface
             $parameters['redirectParams'] = $redirect->getFormattedParameters();
         }
         return $this->buildUriFromRoute($name, $parameters, $referenceType);
+    }
+
+    /**
+     * A shorthand function to link to e.g. the same as in the current request, so the internal attribute "route"
+     * is properly covered and does not need to be exposed all the time.
+     */
+    public function buildUriFromRequest(ServerRequestInterface $request, array $parameters = [], string $referenceType = self::ABSOLUTE_PATH): UriInterface
+    {
+        $route = $request->getAttribute('route');
+        if (!$route instanceof Route && !$route instanceof SymfonyRoute) {
+            throw new RouteNotFoundException('No route object was given inside the request object', 1691423325);
+        }
+        return $this->buildUriFromRoute($route->getOption('_identifier'), $parameters, $referenceType);
     }
 
     /**

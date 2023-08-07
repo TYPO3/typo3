@@ -203,35 +203,14 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
     /**
      * @param array $values Array of values to include into the parameters or which might influence the parameters
-     *
      * @return string[] Array of parameters which have to be added to URLs
      */
-    public function getUrlParameters(array $values)
+    public function getUrlParameters(array $values): array
     {
         $parameters = [
             'expandPage' => isset($values['pid']) ? (int)$values['pid'] : $this->expandPage,
         ];
         return array_merge($this->linkBrowser->getUrlParameters($values), $parameters);
-    }
-
-    /**
-     * @param array $values Values to be checked
-     *
-     * @return bool Returns TRUE if the given values match the currently selected item
-     */
-    public function isCurrentlySelectedItem(array $values)
-    {
-        return !empty($this->linkParts) && (int)$this->linkParts['url']['pageuid'] === (int)$values['pid'];
-    }
-
-    /**
-     * Returns the URL of the current script
-     *
-     * @return string
-     */
-    public function getScriptUrl()
-    {
-        return $this->linkBrowser->getScriptUrl();
     }
 
     /**

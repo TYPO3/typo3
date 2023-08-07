@@ -2678,8 +2678,8 @@ class DatabaseRecordList
             $urlParameters['sortRev'] = $this->sortRev;
         }
 
-        return (string)$this->uriBuilder->buildUriFromRoute(
-            $this->request->getAttribute('route')->getOption('_identifier'),
+        return (string)$this->uriBuilder->buildUriFromRequest(
+            $this->request,
             array_replace($urlParameters, $this->overrideUrlParameters)
         );
     }

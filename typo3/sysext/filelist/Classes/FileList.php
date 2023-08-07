@@ -1474,7 +1474,7 @@ class FileList
             return (is_array($value) && $value !== []) || (trim((string)$value) !== '');
         });
 
-        return (string)$this->uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $params);
+        return (string)$this->uriBuilder->buildUriFromRequest($request, $params);
     }
 
     protected function createEditDataUriForResource(ResourceInterface $resource): ?string

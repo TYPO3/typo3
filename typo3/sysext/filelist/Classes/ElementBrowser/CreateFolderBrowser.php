@@ -57,7 +57,7 @@ class CreateFolderBrowser extends AbstractResourceBrowser
 
             // Build the folder creation form
             $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
-            $markup[] = $folderUtilityRenderer->createFolder($this->selectedFolder);
+            $markup[] = $folderUtilityRenderer->createFolder($this->getRequest(), $this->selectedFolder);
 
             // Create the filelist header bar
             $markup[] = '<div class="row justify-content-between mb-2">';

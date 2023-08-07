@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Routing;
 
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -44,7 +47,49 @@ final class UriBuilderTest extends FunctionalTestCase
     public function buildUriFromRouteResolvesSubModule(): void
     {
         $subject = GeneralUtility::makeInstance(UriBuilder::class);
-        $route = $subject->buildUriFromRoute('site_configuration.edit');
-        self::assertStringEndsWith('/module/site/configuration/edit', $route->getPath());
+        $uri = $subject->buildUriFromRoute('site_configuration.edit');
+        self::assertStringEndsWith('/module/site/configuration/edit', $uri->getPath());
+    }
+
+    /**
+     * @test
+     */
+    public function buildUriFromRequestCanLinkToValidRoute(): void
+    {
+        $subject = GeneralUtility::makeInstance(UriBuilder::class);
+        $route = GeneralUtility::makeInstance(Router::class)->getRoute('site_configuration.edit');
+        $route->setOption('_identifier', 'site_configuration.edit');
+        $request = new ServerRequest('https://example.com/', 'GET');
+        $request = $request->withAttribute('route', $route);
+        $uri = $subject->buildUriFromRequest($request, ['foo' => 'bar']);
+        self::assertStringEndsWith('/module/site/configuration/edit', $uri->getPath());
+    }
+
+    /**
+     * @test
+     */
+    public function buildUriFromRequestWithInvalidRouteThrowsException(): void
+    {
+        self::expectException(RouteNotFoundException::class);
+        self::expectExceptionCode(1476050190);
+        $subject = GeneralUtility::makeInstance(UriBuilder::class);
+        $route = GeneralUtility::makeInstance(Router::class)->getRoute('site_configuration.edit');
+        $request = new ServerRequest('https://example.com/', 'GET');
+        // Route is not found in the registry of routes
+        $route->setOption('_identifier', 'foo.bar');
+        $request = $request->withAttribute('route', $route);
+        $subject->buildUriFromRequest($request, ['foo' => 'bar']);
+    }
+
+    /**
+     * @test
+     */
+    public function buildUriFromRequestWithoutRouteThrowsException(): void
+    {
+        self::expectException(RouteNotFoundException::class);
+        self::expectExceptionCode(1691423325);
+        $subject = GeneralUtility::makeInstance(UriBuilder::class);
+        $request = new ServerRequest('https://example.com/', 'GET');
+        $subject->buildUriFromRequest($request, ['foo' => 'bar']);
     }
 }

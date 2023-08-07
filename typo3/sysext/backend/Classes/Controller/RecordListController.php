@@ -617,7 +617,7 @@ class RecordListController
             return $value !== null && trim((string)$value) !== '';
         });
 
-        return (string)$this->uriBuilder->buildUriFromRoute($request->getAttribute('route')->getOption('_identifier'), $params);
+        return (string)$this->uriBuilder->buildUriFromRequest($request, $params);
     }
 
     /**

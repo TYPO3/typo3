@@ -90,7 +90,7 @@ class FolderBrowser extends AbstractResourceBrowser
 
             // Build the folder creation form
             $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
-            $markup[] = $folderUtilityRenderer->createFolder($this->selectedFolder);
+            $markup[] = $folderUtilityRenderer->createFolder($this->getRequest(), $this->selectedFolder);
 
             $contentHtml = implode('', $markup);
         }
