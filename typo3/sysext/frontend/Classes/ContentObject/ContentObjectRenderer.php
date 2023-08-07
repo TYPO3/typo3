@@ -6684,7 +6684,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             return $content;
         }
 
-        $editUid = $dataArray['_LOCALIZED_UID'] ?: $currentRecordUID;
+        $editUid = $dataArray['_LOCALIZED_UID'] ?? $currentRecordUID;
         // Edit icons imply that the editing action is generally allowed, assuming page and content element permissions permit it.
         if (!array_key_exists('allow', $conf)) {
             $conf['allow'] = 'edit';
