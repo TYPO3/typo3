@@ -21,8 +21,6 @@ use Doctrine\DBAL\Driver\AbstractSQLiteDriver;
 use Doctrine\DBAL\Driver\Connection as DriverConnectionInterface;
 use Doctrine\DBAL\Driver\PDO\Exception;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use PDO;
-use PDOException;
 use TYPO3\CMS\Core\Database\Driver\DriverConnection as TYPO3DriverConnection;
 
 /**
@@ -60,13 +58,13 @@ class Driver extends AbstractSQLiteDriver
         }
 
         try {
-            $pdo = new PDO(
+            $pdo = new \PDO(
                 $this->_constructPdoDsn($params),
                 $params['user'] ?? '',
                 $params['password'] ?? '',
                 $driverOptions
             );
-        } catch (PDOException $exception) {
+        } catch (\PDOException $exception) {
             throw Exception::new($exception);
         }
 

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend;
 
-use ArrayObject;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
@@ -83,8 +82,8 @@ class ServiceProvider extends AbstractServiceProvider
      * @throws InvalidDataException
      * @throws CoreException
      */
-    public static function getFrontendMiddlewares(ContainerInterface $container): ArrayObject
+    public static function getFrontendMiddlewares(ContainerInterface $container): \ArrayObject
     {
-        return new ArrayObject($container->get(MiddlewareStackResolver::class)->resolve('frontend'));
+        return new \ArrayObject($container->get(MiddlewareStackResolver::class)->resolve('frontend'));
     }
 }

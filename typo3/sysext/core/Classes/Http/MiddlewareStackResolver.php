@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Http;
 
-use ArrayObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend as PhpFrontendCache;
@@ -92,7 +91,7 @@ class MiddlewareStackResolver
     /**
      * Lazy load configuration from the container
      */
-    protected function loadConfiguration(): ArrayObject
+    protected function loadConfiguration(): \ArrayObject
     {
         return $this->container->get('middlewares');
     }
@@ -100,7 +99,7 @@ class MiddlewareStackResolver
     /**
      * Order each stack and sanitize to a plain array
      */
-    protected function sanitizeMiddlewares(ArrayObject $allMiddlewares): array
+    protected function sanitizeMiddlewares(\ArrayObject $allMiddlewares): array
     {
         $middlewares = [];
 

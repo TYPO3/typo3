@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Html;
 
-use LogicException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
 
@@ -49,14 +48,14 @@ class SanitizerBuilderFactory
     public function build(string $identifier): BuilderInterface
     {
         if (empty($this->configuration[$identifier])) {
-            throw new LogicException(
+            throw new \LogicException(
                 sprintf('Undefined `htmlSanitizer` identifier `%s`', $identifier),
                 1624876139
             );
         }
         $builder = GeneralUtility::makeInstance($this->configuration[$identifier]);
         if (!$builder instanceof BuilderInterface) {
-            throw new LogicException(
+            throw new \LogicException(
                 sprintf(
                     'Builder `%s` must implement interface `%s`',
                     get_class($builder),

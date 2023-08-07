@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard;
 
-use ArrayObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -65,19 +64,19 @@ class ServiceProvider extends AbstractServiceProvider
         ] + parent::getExtensions();
     }
 
-    public static function getDashboardPresets(ContainerInterface $container): ArrayObject
+    public static function getDashboardPresets(ContainerInterface $container): \ArrayObject
     {
-        return new ArrayObject();
+        return new \ArrayObject();
     }
 
-    public static function getWidgetGroups(ContainerInterface $container): ArrayObject
+    public static function getWidgetGroups(ContainerInterface $container): \ArrayObject
     {
-        return new ArrayObject();
+        return new \ArrayObject();
     }
 
-    public static function getWidgets(ContainerInterface $container): ArrayObject
+    public static function getWidgets(ContainerInterface $container): \ArrayObject
     {
-        return new ArrayObject();
+        return new \ArrayObject();
     }
 
     public static function configureDashboardPresetRegistry(
@@ -132,7 +131,7 @@ class ServiceProvider extends AbstractServiceProvider
         return $widgetGroupRegistry;
     }
 
-    public static function configureDashboardPresets(ContainerInterface $container, ArrayObject $presets): ArrayObject
+    public static function configureDashboardPresets(ContainerInterface $container, \ArrayObject $presets): \ArrayObject
     {
         $paths = self::getPathsOfInstalledPackages();
 
@@ -152,7 +151,7 @@ class ServiceProvider extends AbstractServiceProvider
     /**
      * @param string $path supplied when invoked internally through PseudoServiceProvider
      */
-    public static function configureWidgetGroups(ContainerInterface $container, ArrayObject $widgetGroups, string $path = null): ArrayObject
+    public static function configureWidgetGroups(ContainerInterface $container, \ArrayObject $widgetGroups, string $path = null): \ArrayObject
     {
         $paths = self::getPathsOfInstalledPackages();
 
@@ -171,7 +170,7 @@ class ServiceProvider extends AbstractServiceProvider
     /**
      * @param string $path supplied when invoked internally through PseudoServiceProvider
      */
-    public static function configureWidgets(ContainerInterface $container, ArrayObject $widgets, string $path = null): ArrayObject
+    public static function configureWidgets(ContainerInterface $container, \ArrayObject $widgets, string $path = null): \ArrayObject
     {
         $paths = self::getPathsOfInstalledPackages();
 

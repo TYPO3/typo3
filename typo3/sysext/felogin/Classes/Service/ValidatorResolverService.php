@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Service;
 
-use Generator;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
@@ -34,9 +33,9 @@ class ValidatorResolverService implements SingletonInterface
      * @template T of ValidatorInterface
      * @param array<class-string<T>|array{className: class-string<T>, options: array}> $validatorConfig
      *
-     * @return Generator<T>|null
+     * @return \Generator<T>|null
      */
-    public function resolve(array $validatorConfig): ?Generator
+    public function resolve(array $validatorConfig): ?\Generator
     {
         foreach ($validatorConfig as $validator) {
             if (is_string($validator)) {

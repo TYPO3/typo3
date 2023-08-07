@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Core\Database\Driver\PDOPgSql;
 use Doctrine\DBAL\Driver\AbstractPostgreSQLDriver;
 use Doctrine\DBAL\Driver\Connection as DriverConnectionInterface;
 use Doctrine\DBAL\Driver\PDO\Exception;
-use PDO;
-use PDOException;
 use TYPO3\CMS\Core\Database\Driver\DriverConnection;
 
 /**
@@ -42,11 +40,11 @@ class Driver extends AbstractPostgreSQLDriver
         $driverOptions = $params['driverOptions'] ?? [];
 
         if (! empty($params['persistent'])) {
-            $driverOptions[PDO::ATTR_PERSISTENT] = true;
+            $driverOptions[\PDO::ATTR_PERSISTENT] = true;
         }
 
         try {
-            $pdo = new PDO(
+            $pdo = new \PDO(
                 $this->_constructPdoDsn($params),
                 $params['user'] ?? '',
                 $params['password'] ?? '',
@@ -55,11 +53,11 @@ class Driver extends AbstractPostgreSQLDriver
 
             if (defined('PDO::PGSQL_ATTR_DISABLE_PREPARES')
                 && (
-                    ! isset($driverOptions[PDO::PGSQL_ATTR_DISABLE_PREPARES])
-                    || $driverOptions[PDO::PGSQL_ATTR_DISABLE_PREPARES] === true
+                    ! isset($driverOptions[\PDO::PGSQL_ATTR_DISABLE_PREPARES])
+                    || $driverOptions[\PDO::PGSQL_ATTR_DISABLE_PREPARES] === true
                 )
             ) {
-                $pdo->setAttribute(PDO::PGSQL_ATTR_DISABLE_PREPARES, true);
+                $pdo->setAttribute(\PDO::PGSQL_ATTR_DISABLE_PREPARES, true);
             }
 
             /* defining client_encoding via SET NAMES to avoid inconsistent DSN support
@@ -69,7 +67,7 @@ class Driver extends AbstractPostgreSQLDriver
             if (isset($params['charset'])) {
                 $pdo->exec('SET NAMES \'' . $params['charset'] . '\'');
             }
-        } catch (PDOException $exception) {
+        } catch (\PDOException $exception) {
             throw Exception::new($exception);
         }
 

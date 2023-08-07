@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Package;
 
-use ArrayObject;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -39,11 +38,11 @@ final class AbstractServiceProviderTest extends UnitTestCase
     {
         $containerMock = $this->createMock(ContainerInterface::class);
 
-        $middlewares = new ArrayObject();
+        $middlewares = new \ArrayObject();
         $middlewares = Package1ServiceProviderMock::configureMiddlewares($containerMock, $middlewares);
         $middlewares = Package2ServiceProviderMock::configureMiddlewares($containerMock, $middlewares);
 
-        $expected = new ArrayObject([
+        $expected = new \ArrayObject([
             'testStack' => [
                 'firstMiddleware' => [
                     'target' => 'aClassName',
@@ -68,11 +67,11 @@ final class AbstractServiceProviderTest extends UnitTestCase
         $package2->method('getValueFromComposerManifest')->with('name')->willReturn('typo3/cms-testing');
         $package2ServiceProvider = new PseudoServiceProvider($package2);
 
-        $middlewares = new ArrayObject();
+        $middlewares = new \ArrayObject();
         $middlewares = Package1ServiceProviderMock::configureMiddlewares($containerMock, $middlewares);
         $middlewares = $package2ServiceProvider->getExtensions()['middlewares']($containerMock, $middlewares);
 
-        $expected = new ArrayObject([
+        $expected = new \ArrayObject([
             'testStack' => [
                 'firstMiddleware' => [
                     'target' => 'aClassName',
@@ -97,11 +96,11 @@ final class AbstractServiceProviderTest extends UnitTestCase
         $package2->method('getValueFromComposerManifest')->with('name')->willReturn('typo3/cms-testing');
         $package2ServiceProvider = new PseudoServiceProvider($package2);
 
-        $middlewares = new ArrayObject();
+        $middlewares = new \ArrayObject();
         $middlewares = Package1ServiceProviderMock::configureMiddlewares($containerMock, $middlewares);
         $middlewares = $package2ServiceProvider->getExtensions()['middlewares']($containerMock, $middlewares);
 
-        $expected = new ArrayObject([
+        $expected = new \ArrayObject([
             'testStack' => [
                 'firstMiddleware' => [
                     'target' => 'aClassName',
@@ -127,11 +126,11 @@ final class AbstractServiceProviderTest extends UnitTestCase
         $package2->method('getValueFromComposerManifest')->with('name')->willReturn('typo3/cms-testing');
         $package2ServiceProvider = new PseudoServiceProvider($package2);
 
-        $middlewares = new ArrayObject();
+        $middlewares = new \ArrayObject();
         $middlewares = Package1ServiceProviderMock::configureMiddlewares($containerMock, $middlewares);
         $middlewares = $package2ServiceProvider->getExtensions()['middlewares']($containerMock, $middlewares);
 
-        $expected = new ArrayObject([
+        $expected = new \ArrayObject([
             'testStack' => [
                 'firstMiddleware' => [
                     'target' => 'replacedClassName',

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Redirect;
 
-use Generator;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
@@ -58,7 +57,7 @@ final class RedirectHandlerTest extends UnitTestCase
         );
     }
 
-    public static function loginTypeLogoutDataProvider(): Generator
+    public static function loginTypeLogoutDataProvider(): \Generator
     {
         yield 'empty string on empty redirect mode' => ['', ''];
         yield 'empty string on redirect mode logout' => ['', 'logout'];
@@ -79,7 +78,7 @@ final class RedirectHandlerTest extends UnitTestCase
         self::assertEquals($expect, $result);
     }
 
-    public static function getLogoutRedirectUrlDataProvider(): Generator
+    public static function getLogoutRedirectUrlDataProvider(): \Generator
     {
         yield 'empty redirect mode should return empty returnUrl' => ['', [], [], false];
         yield 'redirect mode getpost should return param return_url' => [

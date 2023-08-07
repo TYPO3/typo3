@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Package;
 
-use ArrayObject;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderInterface;
@@ -66,7 +65,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     /**
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      */
-    public static function configureMiddlewares(ContainerInterface $container, ArrayObject $middlewares, string $path = null): ArrayObject
+    public static function configureMiddlewares(ContainerInterface $container, \ArrayObject $middlewares, string $path = null): \ArrayObject
     {
         $packageConfiguration = ($path ?? static::getPackagePath()) . 'Configuration/RequestMiddlewares.php';
         if (file_exists($packageConfiguration)) {
@@ -83,7 +82,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @param string|null $packageName supplied when invoked internally through PseudoServiceProvider
      */
-    public static function configureBackendRoutes(ContainerInterface $container, ArrayObject $routes, string $path = null, string $packageName = null): ArrayObject
+    public static function configureBackendRoutes(ContainerInterface $container, \ArrayObject $routes, string $path = null, string $packageName = null): \ArrayObject
     {
         $path = $path ?? static::getPackagePath();
         $packageName = $packageName ?? static::getPackageName();
@@ -120,7 +119,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     /**
      * @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
      */
-    public static function configureGlobalPageTsConfig(ContainerInterface $container, ArrayObject $tsConfigFiles, string $path = null): ArrayObject
+    public static function configureGlobalPageTsConfig(ContainerInterface $container, \ArrayObject $tsConfigFiles, string $path = null): \ArrayObject
     {
         $path = $path ?? static::getPackagePath();
         $tsConfigFile = null;
@@ -142,7 +141,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @param string|null $packageName supplied when invoked internally through PseudoServiceProvider
      */
-    public static function configureBackendModules(ContainerInterface $container, ArrayObject $modules, string $path = null, string $packageName = null): ArrayObject
+    public static function configureBackendModules(ContainerInterface $container, \ArrayObject $modules, string $path = null, string $packageName = null): \ArrayObject
     {
         $path = $path ?? static::getPackagePath();
         $packageName = $packageName ?? static::getPackageName();
@@ -184,7 +183,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         return $mutations;
     }
 
-    public static function configureIcons(ContainerInterface $container, ArrayObject $icons, string $path = null): ArrayObject
+    public static function configureIcons(ContainerInterface $container, \ArrayObject $icons, string $path = null): \ArrayObject
     {
         $path = $path ?? static::getPackagePath();
         $iconsFileNameForPackage = $path . 'Configuration/Icons.php';
