@@ -1456,6 +1456,7 @@ return [
                 // Piwik
                 'pk_campaign',
                 'pk_kwd',
+                '_stg_debug',
                 // Google
                 'utm_source',
                 'utm_medium',
