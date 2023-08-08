@@ -18,9 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
-use TYPO3\CMS\Extbase\Tests\Fixture\IntegerBackedEnum;
-use TYPO3\CMS\Extbase\Tests\Fixture\StringBackedEnum;
-use TYPO3\CMS\Extbase\Tests\Fixture\UnbackedEnum;
+use TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\IntegerBackedEnum;
+use TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\StringBackedEnum;
+use TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\UnbackedEnum;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class EnumConverterTest extends FunctionalTestCase
