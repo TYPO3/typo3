@@ -7,7 +7,7 @@
 <f:for each="{additionalFields}" as="field">
     <div
         class="row extraFields extra_fields_{field.htmlClassName}"
-        {f:if(condition: '{currentData.class} != {field.class}', then:'style="display: none;"')}
+        {f:if(condition: '{currentData.class} != {field.class}', then:'hidden')}
         id="{field.fieldID}_row"
     >
         <div class="form-group">
