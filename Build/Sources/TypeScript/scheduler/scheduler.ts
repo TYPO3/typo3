@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import SortableTable from '@typo3/backend/sortable-table';
 import DocumentSaveActions from '@typo3/backend/document-save-actions';
 import RegularEvent from '@typo3/core/event/regular-event';
@@ -23,6 +22,7 @@ import PersistentStorage from '@typo3/backend/storage/persistent';
 import DateTimePicker from '@typo3/backend/date-time-picker';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 import Severity from '@typo3/backend/severity';
+import DocumentService from '@typo3/core/document-service';
 
 interface TableNumberMapping {
   [s: string]: number;
@@ -34,16 +34,16 @@ interface TableNumberMapping {
  */
 class Scheduler {
   constructor() {
-    this.initializeEvents();
-    this.initializeDefaultStates();
-    this.initializeCloseConfirm();
+    DocumentService.ready().then((): void => {
+      this.initializeEvents();
+      this.initializeDefaultStates();
+      this.initializeCloseConfirm();
+    });
 
     DocumentSaveActions.getInstance().addPreSubmitCallback((): void => {
-      let taskClass = $('#task_class').val();
-      taskClass = taskClass.toLowerCase().replace(/\\/g, '-');
-
-      $('.extraFields').appendTo($('#extraFieldsHidden'));
-      $('.extra_fields_' + taskClass).appendTo($('#extraFieldsSection'));
+      // Move all hidden extra fields out of the form
+      // @todo: perhaps delete them instead?
+      document.querySelector('#extraFieldsHidden').append(...document.querySelectorAll('.extraFields[hidden]'));
     });
   }
 
@@ -86,7 +86,7 @@ class Scheduler {
     const collapseConfig: Record<string, number> = {};
     collapseConfig[table] = isCollapsed ? 1 : 0;
 
-    $.extend(storedModuleData, collapseConfig);
+    storedModuleData = { ...storedModuleData, ...collapseConfig };
     PersistentStorage.set('moduleData.scheduler_manage', storedModuleData);
   }
 
@@ -94,101 +94,100 @@ class Scheduler {
    * This method reacts on changes to the task class
    * It switches on or off the relevant extra fields
    */
-  public actOnChangedTaskClass(theSelector: JQuery): void {
-    let taskClass: string = theSelector.val();
+  public actOnChangedTaskClass(taskSelector: HTMLSelectElement): void {
+    let taskClass: string = taskSelector.value;
     taskClass = taskClass.toLowerCase().replace(/\\/g, '-');
 
-    // Hide all extra fields
-    $('.extraFields').hide();
     // Show only relevant extra fields
-    $('.extra_fields_' + taskClass).show();
-  }
-
-  /**
-   * This method reacts on changes to the type of a task, i.e. single or recurring
-   */
-  public actOnChangedTaskType(evt: JQueryEventObject): void {
-    this.toggleFieldsByTaskType($(evt.currentTarget).val());
+    for (const extraField of document.querySelectorAll('.extraFields') as NodeListOf<HTMLElement>) {
+      extraField.hidden = !extraField.classList.contains('extra_fields_' + taskClass);
+    }
   }
 
   /**
    * This method reacts on field changes of all table field for table garbage collection task
    */
-  public actOnChangeSchedulerTableGarbageCollectionAllTables(theCheckbox: JQuery): void {
-    const $numberOfDays = $('#task_tableGarbageCollection_numberOfDays');
-    const $taskTableGarbageCollectionTable = $('#task_tableGarbageCollection_table');
-    if (theCheckbox.prop('checked')) {
-      $taskTableGarbageCollectionTable.prop('disabled', true);
-      $numberOfDays.prop('disabled', true);
+  public actOnChangeSchedulerTableGarbageCollectionAllTables(checkbox: HTMLInputElement): void {
+    const numberOfDaysField = document.querySelector('#task_tableGarbageCollection_numberOfDays') as HTMLInputElement;
+    const taskTableGarbageCollectionTableField = document.querySelector('#task_tableGarbageCollection_table') as HTMLSelectElement;
+
+    if (checkbox.checked) {
+      taskTableGarbageCollectionTableField.disabled = true;
+      numberOfDaysField.disabled = true;
     } else {
       // Get number of days for selected table
-      let numberOfDays = parseInt($numberOfDays.val(), 10);
+      let numberOfDays = parseInt(numberOfDaysField.value, 10);
       if (numberOfDays < 1) {
-        const selectedTable = $taskTableGarbageCollectionTable.val();
+        const selectedTable = taskTableGarbageCollectionTableField.value;
         const defaultNumberOfDays = Scheduler.resolveDefaultNumberOfDays();
         if (defaultNumberOfDays !== null) {
           numberOfDays = defaultNumberOfDays[selectedTable];
         }
       }
 
-      $taskTableGarbageCollectionTable.prop('disabled', false);
+      taskTableGarbageCollectionTableField.disabled = false;
       if (numberOfDays > 0) {
-        $numberOfDays.prop('disabled', false);
+        numberOfDaysField.disabled = false;
       }
     }
   }
 
   /**
-   * This methods set the 'number of days' field to the default expire period
+   * This method set the 'number of days' field to the default expire period
    * of the selected table
    */
-  public actOnChangeSchedulerTableGarbageCollectionTable(theSelector: JQuery): void {
-    const $numberOfDays = $('#task_tableGarbageCollection_numberOfDays');
+  public actOnChangeSchedulerTableGarbageCollectionTable(tableSelector: HTMLSelectElement): void {
+    const numberOfDaysField = document.querySelector('#task_tableGarbageCollection_numberOfDays') as HTMLInputElement;
     const defaultNumberOfDays = Scheduler.resolveDefaultNumberOfDays();
-    if (defaultNumberOfDays !== null && defaultNumberOfDays[theSelector.val()] > 0) {
-      $numberOfDays.prop('disabled', false);
-      $numberOfDays.val(defaultNumberOfDays[theSelector.val()]);
+    if (defaultNumberOfDays !== null && defaultNumberOfDays[tableSelector.value] > 0) {
+      numberOfDaysField.disabled = false;
+      numberOfDaysField.value = defaultNumberOfDays[tableSelector.value].toString(10);
     } else {
-      $numberOfDays.prop('disabled', true);
-      $numberOfDays.val(0);
+      numberOfDaysField.disabled = true;
+      numberOfDaysField.value = '0';
     }
   }
 
   /**
    * Toggle the relevant form fields by task type
    */
-  public toggleFieldsByTaskType(taskType: number): void {
+  public toggleFieldsByTaskType(taskType: string|number): void {
     // Single task option = 1, Recurring task option = 2
     taskType = parseInt(taskType + '', 10);
-    $('#task_end_col').toggle(taskType === 2);
-    $('#task_frequency_row').toggle(taskType === 2);
-    $('#task_multiple_row').toggle(taskType === 2);
+    const taskIsRecurring = taskType === 2;
+    (document.querySelector('#task_end_col') as HTMLElement).hidden = !taskIsRecurring;
+    (document.querySelector('#task_frequency_row') as HTMLElement).hidden = !taskIsRecurring;
+    (document.querySelector('#task_multiple_row') as HTMLElement).hidden = !taskIsRecurring;
   }
 
   /**
    * Registers listeners
    */
   public initializeEvents(): void {
-    $('#task_class').on('change', (evt: JQueryEventObject): void => {
-      this.actOnChangedTaskClass($(evt.currentTarget));
-    });
+    new RegularEvent('change', (evt: Event): void => {
+      this.actOnChangedTaskClass(evt.target as HTMLSelectElement);
+    }).bindTo(document.querySelector('#task_class'));
 
-    $('#task_type').on('change', this.actOnChangedTaskType.bind(this));
+    new RegularEvent('change', (evt: Event): void => {
+      this.toggleFieldsByTaskType((evt.target as HTMLSelectElement).value);
+    }).bindTo(document.querySelector('#task_type'));
 
-    $('#task_tableGarbageCollection_allTables').on('change', (evt: JQueryEventObject): void => {
-      this.actOnChangeSchedulerTableGarbageCollectionAllTables($(evt.currentTarget));
-    });
+    new RegularEvent('change', (evt: Event): void => {
+      this.actOnChangeSchedulerTableGarbageCollectionAllTables(evt.target as HTMLInputElement);
+    }).bindTo(document.querySelector('#task_tableGarbageCollection_allTables'));
 
-    $('#task_tableGarbageCollection_table').on('change', (evt: JQueryEventObject): void => {
-      this.actOnChangeSchedulerTableGarbageCollectionTable($(evt.currentTarget));
-    });
+    new RegularEvent('change', (evt: Event): void => {
+      this.actOnChangeSchedulerTableGarbageCollectionTable(evt.target as HTMLSelectElement);
+    }).bindTo(document.querySelector('#task_tableGarbageCollection_table'));
 
-    $('[data-update-task-frequency]').on('change', (evt: JQueryEventObject): void => {
-      const $target = $(evt.currentTarget);
-      const $taskFrequency = $('#task_frequency');
-      $taskFrequency.val($target.val());
-      $target.val($target.attr('value')).trigger('blur');
-    });
+    new RegularEvent('change', (evt: Event): void => {
+      const target = evt.target as HTMLSelectElement;
+      const taskFrequencyField = document.querySelector('#task_frequency') as HTMLInputElement;
+
+      taskFrequencyField.value = target.value;
+      target.value = '';
+      target.blur();
+    }).bindTo(document.querySelector('[data-update-task-frequency]'));
 
     document.querySelectorAll('[data-scheduler-table]').forEach((table: HTMLTableElement) => {
       new SortableTable(table);
@@ -198,16 +197,19 @@ class Scheduler {
       (dateTimePickerElement: HTMLInputElement) => DateTimePicker.initialize(dateTimePickerElement)
     );
 
-    $(document).on('click', '.t3js-element-browser', (e: JQueryEventObject): void => {
+    new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
       e.preventDefault();
 
-      const el = <HTMLAnchorElement>e.currentTarget;
+      const url = new URL(target.href, window.origin);
+      url.searchParams.set('mode', target.dataset.mode);
+      url.searchParams.set('bparams', target.dataset.params);
+
       Modal.advanced({
         type: Modal.types.iframe,
-        content: el.href + '&mode=' + el.dataset.mode + '&bparams=' + el.dataset.params,
+        content: url.toString(),
         size: Modal.sizes.large
       });
-    });
+    }).delegateTo(document, '.t3js-element-browser');
 
     new RegularEvent('show.bs.collapse', this.toggleCollapseIcon.bind(this)).bindTo(document);
     new RegularEvent('hide.bs.collapse', this.toggleCollapseIcon.bind(this)).bindTo(document);
@@ -221,13 +223,13 @@ class Scheduler {
    * Initialize default states
    */
   public initializeDefaultStates(): void {
-    const $taskType = $('#task_type');
-    if ($taskType.length) {
-      this.toggleFieldsByTaskType($taskType.val());
+    const taskType = document.querySelector('#task_type') as HTMLSelectElement;
+    if (taskType !== null) {
+      this.toggleFieldsByTaskType(taskType.value);
     }
-    const $taskClass = $('#task_class');
-    if ($taskClass.length) {
-      this.actOnChangedTaskClass($taskClass);
+    const taskClass = document.querySelector('#task_class') as HTMLSelectElement;
+    if (taskClass !== null) {
+      this.actOnChangedTaskClass(taskClass);
       Scheduler.updateClearableInputs();
       Scheduler.updateElementBrowserTriggers();
     }
@@ -262,7 +264,7 @@ class Scheduler {
           collapseIcon.innerHTML = icon;
         });
     }
-    Scheduler.storeCollapseState($(e.target).data('table'), isCollapsed);
+    Scheduler.storeCollapseState((e.target as HTMLElement).dataset.table, isCollapsed);
   }
 
   private executeTasks(e: CustomEvent): void {
