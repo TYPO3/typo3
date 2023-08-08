@@ -15,14 +15,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Fixture;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures;
 
-/**
- * Dummy Class
- */
-class DummyClass
+enum StringBackedEnum: string
 {
-    public function someMethod(): void
-    {
-    }
+    case FirstCase = 'first';
+    case SecondCase = 'second';
+    case ThirdCase = 'third';
+    case A = 'B';
+    case B = 'A';
 }

@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Tests\Fixture\DummyClass;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\DebuggerUtilityAccessibleProxy;
+use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\DummyClass;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -154,7 +154,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         $closure = (static function (DummyClass $class) {});
 
         $result = DebuggerUtility::var_dump($closure, null, 8, true, false, true, [\stdClass::class]);
-        self::assertStringContainsString('function (TYPO3\CMS\Extbase\Tests\Fixture\DummyClass $class)', $result);
+        self::assertStringContainsString('function (TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\DummyClass $class)', $result);
     }
 
     /**

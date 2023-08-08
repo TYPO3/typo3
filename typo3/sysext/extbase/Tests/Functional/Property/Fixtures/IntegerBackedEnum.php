@@ -15,11 +15,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Fixture;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures;
 
-enum UnbackedEnum
+enum IntegerBackedEnum: int
 {
-    case FirstCase;
-    case SecondCase;
-    case ThirdCase;
+    case FirstCase = 1;
+    case SecondCase = 2;
+    case ThirdCase = 3;
 }

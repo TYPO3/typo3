@@ -15,11 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Fixture;
+namespace TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures;
 
-enum IntegerBackedEnum: int
+/**
+ * Dummy Class
+ */
+class DummyClass
 {
-    case FirstCase = 1;
-    case SecondCase = 2;
-    case ThirdCase = 3;
+    public function someMethod(): void
+    {
+    }
 }
