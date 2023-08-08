@@ -185,4 +185,37 @@ final class SiteWriterTest extends UnitTestCase
         );
         $subject->write($identifier, $configuration, true);
     }
+
+    #[Test]
+    public function writeAllowsPlaceholdersInImportedFiles(): void
+    {
+        $identifier = 'testsite';
+        GeneralUtility::mkdir_deep($this->fixturePath . '/' . $identifier);
+        $configFixture = __DIR__ . '/Fixtures/SiteConfigs/config3.yaml';
+        $expected = __DIR__ . '/Fixtures/SiteConfigs/config3_expected.yaml';
+        $siteConfig = $this->fixturePath . '/' . $identifier . '/config.yaml';
+        copy($configFixture, $siteConfig);
+
+        // load with resolved imports as the module does
+        $configuration = (new YamlFileLoader($this->createMock(LoggerInterface::class)))
+            ->load(
+                GeneralUtility::fixWindowsFilePath($siteConfig),
+                YamlFileLoader::PROCESS_IMPORTS
+            );
+
+        // Simulate env placeholder
+        putenv('base=https://example.com/');
+
+        $subject = new SiteWriter(
+            $this->fixturePath,
+            new NoopEventDispatcher(),
+            new YamlFileLoader($this->createMock(LoggerInterface::class))
+        );
+        $subject->write($identifier, $configuration, true);
+
+        self::assertFileEquals($expected, $siteConfig);
+
+        // Reset env placeholder
+        putenv('base');
+    }
 }

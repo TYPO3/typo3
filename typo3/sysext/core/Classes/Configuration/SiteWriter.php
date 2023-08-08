@@ -116,8 +116,10 @@ class SiteWriter
         } elseif (file_exists($fileName)) {
             // load without any processing to have the unprocessed base to modify
             $newConfiguration = $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName), 0);
-            // load the processed configuration to diff changed values
-            $processed = $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName));
+            // load the processed configuration to diff changed values,
+            // but don't process placeholders, because all properties that
+            // were modified via GUI are unprocessed values as well
+            $processed = $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
             // find properties that were modified via GUI
             $newModified = array_replace_recursive(
                 self::findRemoved($processed, $configuration),

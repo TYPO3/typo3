@@ -1,0 +1,13 @@
+languages:
+  -
+    title: Danish
+    enabled: false
+    languageId: '1'
+    base: /da
+    locale: da_DK.utf8
+    flag: da
+    navigationTitle: Dansk
+rootPageId: 1
+imports:
+  -
+    resource: 'EXT:core/Tests/Unit/Configuration/Fixtures/SiteConfigs/include2.yaml'
