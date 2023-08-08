@@ -24,14 +24,12 @@ use Doctrine\DBAL\Types\Types;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
-use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -77,7 +75,7 @@ class DatabaseIntegrityController
     protected array $MOD_SETTINGS = [];
 
     protected string $formName = '';
-    protected string $moduleName = '';
+    protected string $moduleName = 'system_dbint';
 
     /**
      * If the current user is an admin and $GLOBALS['TYPO3_CONF_VARS']['BE']['debug']
@@ -225,7 +223,6 @@ class DatabaseIntegrityController
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->moduleName = 'system_dbint';
     }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -320,11 +317,11 @@ class DatabaseIntegrityController
         }
 
         // CLEAN SETTINGS
-        $OLD_MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, [], 'system_dbint', 'ses');
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $parsedBody['SET'] ?? $queryParams['SET'] ?? [], 'system_dbint', 'ses');
+        $OLD_MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, [], $this->moduleName, 'ses');
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $parsedBody['SET'] ?? $queryParams['SET'] ?? [], $this->moduleName, 'ses');
         $queryConfig = $parsedBody['queryConfig'] ?? $queryParams['queryConfig'] ?? false;
         if ($queryConfig) {
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, ['queryConfig' => serialize($queryConfig)], 'system_dbint', 'ses');
+            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, ['queryConfig' => serialize($queryConfig)], $this->moduleName, 'ses');
         }
         $setLimitToStart = false;
         foreach ($OLD_MOD_SETTINGS as $key => $val) {
@@ -346,7 +343,7 @@ class DatabaseIntegrityController
             } else {
                 $this->MOD_SETTINGS['queryLimit'] = '0';
             }
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $this->MOD_SETTINGS, 'system_dbint', 'ses');
+            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $this->MOD_SETTINGS, $this->moduleName, 'ses');
         }
     }
 
@@ -357,7 +354,7 @@ class DatabaseIntegrityController
     {
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $shortCutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('system_dbint')
+            ->setRouteIdentifier($this->moduleName)
             ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
             ->setArguments([
                 'SET' => [
@@ -375,7 +372,7 @@ class DatabaseIntegrityController
                 ->makeMenuItem()
                 ->setHref(
                     (string)$this->uriBuilder->buildUriFromRoute(
-                        'system_dbint',
+                        $this->moduleName,
                         [
                             'id' => 0,
                             'SET' => [
@@ -423,21 +420,20 @@ class DatabaseIntegrityController
         $lang = $this->getLanguageService();
         $this->showFieldAndTableNames = $this->getBackendUserAuthentication()->shallDisplayDebugInformation();
         $searchMode = $this->MOD_SETTINGS['search'];
-        $this->setFormName('queryform');
         $submenu = '';
         $submenu .= '<div class="form-row">';
-        $submenu .= '<div class="form-group">' . self::getDropdownMenu(0, 'SET[search]', $searchMode, $this->MOD_MENU['search'], $request) . '</div>';
-        if ($this->MOD_SETTINGS['search'] === 'query') {
-            $submenu .= '<div class="form-group">' . self::getDropdownMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery'], $request) . '</div>';
+        $submenu .= '<div class="form-group">' . $this->getDropdownMenu('SET[search]', $searchMode, $this->MOD_MENU['search'], $request) . '</div>';
+        if ($searchMode === 'query') {
+            $submenu .= '<div class="form-group">' . $this->getDropdownMenu('SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery'], $request) . '</div>';
         }
         $submenu .= '</div>';
-        if ($this->MOD_SETTINGS['search'] === 'query') {
+        if ($searchMode === 'query') {
             $submenu .= '<div class="form-group">';
-            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', $request, '', '', 'id="checkSearch_query_smallparts"') . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:showSQL') . '</label></div>';
-            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', $request, '', '', 'id="checkSearch_result_labels"') . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:useFormattedStrings') . '</label></div>';
-            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'] ?? '', $request, '', '', 'id="checkLabels_noprefix"') . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:dontUseOrigValues') . '</label></div>';
-            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', $request, '', '', 'id="checkOptions_sortlabel"') . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:sortOptions') . '</label></div>';
-            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, $request, '', '', 'id="checkShow_deleted"') . '<label class="form-check-label" for="checkShow_deleted">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:showDeleted') . '</label></div>';
+            $submenu .= '<div class="form-check">' . $this->getFuncCheck('SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', $request, 'id="checkSearch_query_smallparts"') . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:showSQL') . '</label></div>';
+            $submenu .= '<div class="form-check">' . $this->getFuncCheck('SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', $request, 'id="checkSearch_result_labels"') . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:useFormattedStrings') . '</label></div>';
+            $submenu .= '<div class="form-check">' . $this->getFuncCheck('SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'] ?? '', $request, 'id="checkLabels_noprefix"') . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:dontUseOrigValues') . '</label></div>';
+            $submenu .= '<div class="form-check">' . $this->getFuncCheck('SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', $request, 'id="checkOptions_sortlabel"') . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:sortOptions') . '</label></div>';
+            $submenu .= '<div class="form-check">' . $this->getFuncCheck('SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, $request, 'id="checkShow_deleted"') . '<label class="form-check-label" for="checkShow_deleted">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:showDeleted') . '</label></div>';
             $submenu .= '</div>';
         }
         $view->assign('submenu', $submenu);
@@ -449,16 +445,10 @@ class DatabaseIntegrityController
             case 'raw':
             default:
                 $view->assign('sword', (string)($this->MOD_SETTINGS['sword'] ?? ''));
-                $view->assign('searchOptions', $this->form());
                 $view->assign('results', $this->search($request));
         }
 
         return $view->renderResponse('CustomSearch');
-    }
-
-    protected function setFormName(string $formName): void
-    {
-        $this->formName = trim($formName);
     }
 
     protected function queryMaker(ServerRequestInterface $request): string
@@ -474,9 +464,6 @@ class DatabaseIntegrityController
         }
         // Query Maker:
         $this->init('queryConfig', $this->MOD_SETTINGS['queryTable'] ?? '', '', $this->MOD_SETTINGS);
-        if ($this->formName) {
-            $this->setFormName($this->formName);
-        }
         $output .= '<h2>Make query</h2>';
         $output .= $this->makeSelectorTable($this->MOD_SETTINGS, $request);
         $mQ = $this->MOD_SETTINGS['search_query_makeQuery'] ?? '';
@@ -824,11 +811,10 @@ class DatabaseIntegrityController
             }
         }
         $out .= '<td class="col-control">';
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         if (!($row['deleted'] ?? false)) {
             $out .= '<div class="btn-group" role="group">';
-            $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+            $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     $table => [
                         $row['uid'] => 'edit',
@@ -850,7 +836,7 @@ class DatabaseIntegrityController
             $out .= '</div>';
         } else {
             $out .= '<div class="btn-group" role="group">';
-            $out .= '<a class="btn btn-default" href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tce_db', [
+            $out .= '<a class="btn btn-default" href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('tce_db', [
                     'cmd' => [
                         $table => [
                             $row['uid'] => [
@@ -858,7 +844,7 @@ class DatabaseIntegrityController
                             ],
                         ],
                     ],
-                    'redirect' => (string)$uriBuilder->buildUriFromRoute('system_dbint'),
+                    'redirect' => (string)$this->uriBuilder->buildUriFromRoute($this->moduleName),
                 ])) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:undelete_only')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore', IconSize::SMALL)->render() . '</a>';
             $out .= '</div>';
@@ -1404,7 +1390,7 @@ class DatabaseIntegrityController
                 $orderBy[] =     $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '');
                 $orderBy[] =     '<div class="input-group-text">';
                 $orderBy[] =       '<div class="form-check form-check-type-toggle">';
-                $orderBy[] =         self::getFuncCheck(0, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'] ?? '', $request, '', '', 'id="checkQueryOrderDesc"');
+                $orderBy[] =         $this->getFuncCheck('SET[queryOrderDesc]', $modSettings['queryOrderDesc'] ?? '', $request, 'id="checkQueryOrderDesc"');
                 $orderBy[] =         '<label class="form-check-label" for="checkQueryOrderDesc">Descending</label>';
                 $orderBy[] =       '</div>';
                 $orderBy[] =     '</div>';
@@ -1417,7 +1403,7 @@ class DatabaseIntegrityController
                     $orderBy[] =     $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1] ?? '', '');
                     $orderBy[] =     '<div class="input-group-text">';
                     $orderBy[] =       '<div class="form-check form-check-type-toggle">';
-                    $orderBy[] =         self::getFuncCheck(0, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'] ?? false, $request, '', '', 'id="checkQueryOrder2Desc"');
+                    $orderBy[] =         $this->getFuncCheck('SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'] ?? false, $request, 'id="checkQueryOrder2Desc"');
                     $orderBy[] =         '<label class="form-check-label" for="checkQueryOrder2Desc">Descending</label>';
                     $orderBy[] =       '</div>';
                     $orderBy[] =     '</div>';
@@ -2543,20 +2529,6 @@ class DatabaseIntegrityController
         return $storeArray;
     }
 
-    protected function form(): string
-    {
-        $languageService = $this->getLanguageService();
-        $markup = [];
-        $markup[] = '<div class="form-group">';
-        $markup[] =   '<input placeholder="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.placeholder')) . '" class="form-control" type="search" name="SET[sword]" value="' . htmlspecialchars($this->MOD_SETTINGS['sword'] ?? '') . '">';
-        $markup[] = '</div>';
-        $markup[] = '<div class="form-group">';
-        $markup[] =   '<input class="btn btn-default" type="submit" name="submit" value="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.submit')) . '">';
-        $markup[] = '</div>';
-
-        return implode(LF, $markup);
-    }
-
     protected function search(ServerRequestInterface $request): string
     {
         $swords = $this->MOD_SETTINGS['sword'] ?? '';
@@ -2745,7 +2717,7 @@ class DatabaseIntegrityController
                     foreach ($databaseIntegrityCheck->getLRecords()[$t] as $data) {
                         if (!GeneralUtility::inList($databaseIntegrityCheck->getLostPagesList(), $data['pid'])) {
                             $fixLink = (string)$this->uriBuilder->buildUriFromRoute(
-                                'system_dbint',
+                                $this->moduleName,
                                 ['SET' => ['function' => 'records'], 'fixLostRecords_table' => $t, 'fixLostRecords_uid' => $data['uid']]
                             );
                             $lostRecordList[] =
@@ -2813,29 +2785,21 @@ class DatabaseIntegrityController
     /**
      * Returns a selector box to switch the view.
      *
-     * @param mixed $mainParams The "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
      * @param string $elementName The form elements name, probably something like "SET[...]
      * @param string|int $currentValue The value to be selected currently.
-     * @param array $menuItems An array with the menu items for the selector box
-     * @param string $script The script to send the &id to, if empty it's automatically found
-     * @param string $addParams Additional parameters to pass to the script.
-     * @param array $additionalAttributes Additional attributes for the select element
+     * @param mixed $menuItems An array with the menu items for the selector box
      * @return string HTML code for selector box
      */
-    protected static function getDropdownMenu(
-        $mainParams,
-        $elementName,
-        $currentValue,
-        $menuItems,
-        ServerRequestInterface $request,
-        $script = '',
-        $addParams = '',
-        array $additionalAttributes = []
+    protected function getDropdownMenu(
+        string $elementName,
+        string|int $currentValue,
+        mixed $menuItems,
+        ServerRequestInterface $request
     ) {
         if (!is_array($menuItems) || count($menuItems) <= 1) {
             return '';
         }
-        $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $request, $script);
+        $scriptUrl = $this->uriBuilder->buildUriFromRequest($request);
         $options = [];
         foreach ($menuItems as $value => $label) {
             $options[] = '<option value="'
@@ -2847,13 +2811,13 @@ class DatabaseIntegrityController
         $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
         $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
         // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
-        $attributes = GeneralUtility::implodeAttributes(array_merge([
+        $attributes = GeneralUtility::implodeAttributes([
             'name' => $elementName,
             'data-menu-identifier' => $dataMenuIdentifier,
             'data-global-event' => 'change',
             'data-action-navigate' => '$data=~s/$value/',
             'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
-        ], $additionalAttributes), true);
+        ], true);
 
         return '
             <select class="form-select" ' . $attributes . '>
@@ -2864,25 +2828,19 @@ class DatabaseIntegrityController
     /**
      * Checkbox function menu.
      *
-     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
      * @param string $elementName The form elements name, probably something like "SET[...]
-     * @param string|bool $currentValue The value to be selected currently.
-     * @param string $script The script to send the &id to, if empty it's automatically found
-     * @param string $addParams Additional parameters to pass to the script.
+     * @param string|bool|int $currentValue The value to be selected currently.
      * @param string $tagParams Additional attributes for the checkbox input tag
      * @return string HTML code for checkbox
      */
-    protected static function getFuncCheck(
-        $mainParams,
-        $elementName,
-        $currentValue,
+    protected function getFuncCheck(
+        string $elementName,
+        string|bool|int $currentValue,
         ServerRequestInterface $request,
-        $script = '',
-        $addParams = '',
-        $tagParams = ''
+        string $tagParams = ''
     ) {
         // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
-        $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $request, $script);
+        $scriptUrl = $this->uriBuilder->buildUriFromRequest($request);
         $attributes = GeneralUtility::implodeAttributes([
             'type' => 'checkbox',
             'class' => 'form-check-input',
@@ -2899,35 +2857,5 @@ class DatabaseIntegrityController
             ($currentValue ? ' checked="checked"' : '') .
             ($tagParams ? ' ' . $tagParams : '') .
             ' />';
-    }
-
-    /**
-     * Builds the URL to the current script with given arguments
-     *
-     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
-     * @param string $addParams Additional parameters to pass to the script.
-     * @param string $script The script to send the &id to, if empty it's automatically found
-     * @return string The complete script URL
-     * @todo Check if this can be removed or replaced by routing
-     */
-    protected static function buildScriptUrl($mainParams, string $addParams, ServerRequestInterface $request, string $script = '')
-    {
-        if (!is_array($mainParams)) {
-            $mainParams = ['id' => $mainParams];
-        }
-
-        $route = $request->getAttribute('route');
-        if ($route instanceof Route) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $scriptUrl = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $mainParams);
-            $scriptUrl .= $addParams;
-        } else {
-            if (!$script) {
-                $script = PathUtility::basename(Environment::getCurrentScript());
-            }
-            $scriptUrl = $script . HttpUtility::buildQueryString($mainParams, '?') . $addParams;
-        }
-
-        return $scriptUrl;
     }
 }

@@ -30,7 +30,12 @@
                 <f:format.raw>{queryMaker}</f:format.raw>
             </f:then>
             <f:else>
-                <f:format.raw>{searchOptions}</f:format.raw>
+                <div class="form-group">
+                    <input placeholder="{f:translate(key: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.placeholder')}" class="form-control" type="search" name="SET[sword]" value="{sword}">
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-default" type="submit" name="submit" value="{f:translate(key: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.submit')}">
+                </div>
             </f:else>
         </f:if>
     </form>

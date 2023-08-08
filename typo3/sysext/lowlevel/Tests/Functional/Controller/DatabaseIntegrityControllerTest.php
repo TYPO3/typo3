@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Tests\Functional\Controller;
 
+use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -28,6 +31,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class DatabaseIntegrityControllerTest extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = [
+        'lowlevel',
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -361,12 +368,15 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         $iconFactoryMock = $this->getMockBuilder(IconFactory::class)->disableOriginalConstructor()->getMock();
         $iconFactoryMock->method('getIcon')->willReturn($iconMock);
 
-        // the route is not important for the test, it only satisfies the dependencies
-        $route = new \stdClass();
+        $route = GeneralUtility::makeInstance(Router::class)->getRoute('system_dbint');
+        $route->setOption('_identifier', 'system_dbint');
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
-        $subject->_set('iconFactory', $iconFactoryMock);
+        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [
+            $iconFactoryMock,
+            GeneralUtility::makeInstance(UriBuilder::class),
+            GeneralUtility::makeInstance(ModuleTemplateFactory::class),
+        ]);
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
         $subject->_call('makeSelectorTable', $settings, $request);
         $subject->_set('enablePrefix', true);
