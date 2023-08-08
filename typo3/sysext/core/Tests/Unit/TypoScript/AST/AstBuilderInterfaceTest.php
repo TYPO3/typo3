@@ -1656,6 +1656,96 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ],
             ],
         ];
+
+        $expectedAst = new RootNode();
+        $referenceSourceNode = new ChildNode('referenceSource');
+        $referenceSourceNode->setValue('referenceSourceValue');
+        $referenceSourceChildNode = new ChildNode('referenceSourceChild');
+        $referenceSourceChildNode->setValue('referenceSourceChildValue');
+        $referenceSourceNode->addChild($referenceSourceChildNode);
+        $expectedAst->addChild($referenceSourceNode);
+        $copySourceNode = new ChildNode('copySource');
+        $copySourceChildNode = new ChildNode('copySourceChild');
+        $copySourceChildNode->setValue('copySourceChildValue');
+        $copySourceNode->addChild($copySourceChildNode);
+        $expectedAst->addChild($copySourceNode);
+        $targetNode = new ReferenceChildNode('target');
+        $targetNode->setReferenceSourceStream(
+            (new IdentifierTokenStream())
+                ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'referenceSource', 3, 10)))
+        );
+        $targetChildNode = new ChildNode('copySourceChild');
+        $targetChildNode->setValue('copySourceChildValue');
+        $targetNode->addChild($targetChildNode);
+        $expectedAst->addChild($targetNode);
+        yield 'copy operator keeps existing reference node' => [
+            "referenceSource = referenceSourceValue\n" .
+            "referenceSource.referenceSourceChild = referenceSourceChildValue\n" .
+            "copySource.copySourceChild = copySourceChildValue\n" .
+            "target =< referenceSource\n" .
+            "target < copySource\n",
+            $expectedAst,
+            [
+                'referenceSource' => 'referenceSourceValue',
+                'referenceSource.' => [
+                    'referenceSourceChild' => 'referenceSourceChildValue',
+                ],
+                'copySource.' => [
+                    'copySourceChild' => 'copySourceChildValue',
+                ],
+                'target' => '< referenceSource',
+                'target.' => [
+                    'copySourceChild' => 'copySourceChildValue',
+                ],
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $referenceSourceNode = new ChildNode('referenceSource');
+        $referenceSourceNode->setValue('referenceSourceValue');
+        $referenceSourceChildNode = new ChildNode('referenceSourceChild');
+        $referenceSourceChildNode->setValue('referenceSourceChildValue');
+        $referenceSourceNode->addChild($referenceSourceChildNode);
+        $expectedAst->addChild($referenceSourceNode);
+        $copySourceNode = new ChildNode('copySource');
+        $copySourceChildNode = new ChildNode('copySourceChild');
+        $copySourceChildNode->setValue('copySourceChildValue');
+        $copySourceNode->addChild($copySourceChildNode);
+        $expectedAst->addChild($copySourceNode);
+        $libNode = new ChildNode('lib');
+        $targetNode = new ReferenceChildNode('target');
+        $targetNode->setReferenceSourceStream(
+            (new IdentifierTokenStream())
+                ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'referenceSource', 3, 14)))
+        );
+        $targetChildNode = new ChildNode('copySourceChild');
+        $targetChildNode->setValue('copySourceChildValue');
+        $targetNode->addChild($targetChildNode);
+        $libNode->addChild($targetNode);
+        $expectedAst->addChild($libNode);
+        yield 'copy operator keeps existing reference node in nested target' => [
+            "referenceSource = referenceSourceValue\n" .
+            "referenceSource.referenceSourceChild = referenceSourceChildValue\n" .
+            "copySource.copySourceChild = copySourceChildValue\n" .
+            "lib.target =< referenceSource\n" .
+            "lib.target < copySource\n",
+            $expectedAst,
+            [
+                'referenceSource' => 'referenceSourceValue',
+                'referenceSource.' => [
+                    'referenceSourceChild' => 'referenceSourceChildValue',
+                ],
+                'copySource.' => [
+                    'copySourceChild' => 'copySourceChildValue',
+                ],
+                'lib.' => [
+                    'target' => '< referenceSource',
+                    'target.' => [
+                        'copySourceChild' => 'copySourceChildValue',
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**

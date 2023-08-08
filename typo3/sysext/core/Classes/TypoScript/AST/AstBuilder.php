@@ -77,7 +77,7 @@ final class AstBuilder extends AbstractAstBuilder implements AstBuilderInterface
                 $this->handleIdentifierUnsetLine($line, $currentObjectPath);
             } elseif ($line instanceof IdentifierCopyLine) {
                 // "foo < bar": Copy a node source path to a target path
-                $this->handleIdentifierCopyLine($line, $currentObjectPathStack, $currentObjectPath);
+                $this->handleIdentifierCopyLine($line, $ast, $currentObjectPath);
             } elseif ($line instanceof IdentifierFunctionLine) {
                 // "foo := addToList(42)": Evaluate functions
                 $node = $this->getOrAddNodeFromIdentifierStream($currentObjectPath, $line->getIdentifierTokenStream());

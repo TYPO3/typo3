@@ -19,12 +19,12 @@ namespace TYPO3\CMS\Core\TypoScript\AST;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\TypoScript\AST\CurrentObjectPath\CurrentObjectPath;
-use TYPO3\CMS\Core\TypoScript\AST\CurrentObjectPath\CurrentObjectPathStack;
 use TYPO3\CMS\Core\TypoScript\AST\Event\EvaluateModifierFunctionEvent;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNodeInterface;
 use TYPO3\CMS\Core\TypoScript\AST\Node\NodeInterface;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ReferenceChildNode;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierCopyLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierReferenceLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierUnsetLine;
@@ -45,7 +45,7 @@ abstract class AbstractAstBuilder
     protected array $flatConstants = [];
     protected EventDispatcherInterface $eventDispatcher;
 
-    protected function handleIdentifierUnsetLine(IdentifierUnsetLine $line, CurrentObjectPath $currentObjectPath)
+    protected function handleIdentifierUnsetLine(IdentifierUnsetLine $line, CurrentObjectPath $currentObjectPath): void
     {
         $node = $currentObjectPath->getFirst();
         $identifierStream = $line->getIdentifierTokenStream()->reset();
@@ -66,60 +66,78 @@ abstract class AbstractAstBuilder
         }
     }
 
-    protected function handleIdentifierCopyLine(IdentifierCopyLine $line, CurrentObjectPathStack $currentObjectPathStack, CurrentObjectPath $currentObjectPath): ?NodeInterface
+    protected function handleIdentifierCopyLine(IdentifierCopyLine $line, RootNode $rootNode, CurrentObjectPath $currentObjectPath): ?NodeInterface
     {
         $sourceIdentifierStream = $line->getValueTokenStream()->reset();
+        $sourceNode = $rootNode;
         if ($sourceIdentifierStream->isRelative()) {
+            // Entry node is current node from current object path if relative, otherwise RootNode.
             $sourceNode = $currentObjectPath->getLast();
-        } else {
-            $sourceNode = $currentObjectPathStack->getFirst()->getFirst();
         }
         while ($identifierToken = $sourceIdentifierStream->getNext()) {
-            if (!$foundNode = $sourceNode->getChildByName($identifierToken->getValue())) {
+            // Go through source token stream and locate the sourceNode to copy from.
+            if (!$sourceNode = $sourceNode->getChildByName($identifierToken->getValue())) {
                 // Source node not found - nothing to do for this line
                 return null;
             }
-            $sourceNode = $foundNode;
         }
         $isSourceNodeValueNull = true;
         if ($sourceNode->getValue() !== null) {
+            // When the source node value is not null, it will override the target node value if that exists.
             $isSourceNodeValueNull = false;
         }
-        $targetNode = $currentObjectPath->getFirst();
+
+        // Locate/create the targets parent node the copied source should be added as child to,
+        // and get the name of the node we're dealing with.
         $targetIdentifierTokenStream = $line->getIdentifierTokenStream()->reset();
-        $previousTargetIdentifierToken = $targetIdentifierTokenStream->peekNext();
-        while ($targetIdentifierToken = $targetIdentifierTokenStream->getNext()) {
-            $hasNext = (bool)($targetIdentifierTokenStream->peekNext() ?? false);
-            if (!$hasNext) {
-                if ($isSourceNodeValueNull) {
-                    $existingTargetNodeValue = $targetNode->getChildByName($previousTargetIdentifierToken->getValue())?->getValue();
-                    if ($existingTargetNodeValue === null) {
-                        $existingTargetNodeValue = $targetNode->getChildByName($targetIdentifierToken->getValue())?->getValue();
-                    }
-                } else {
-                    // Blindly remove existing node if exists
-                    $targetNode->removeChildByName($previousTargetIdentifierToken->getValue());
-                }
-                // Clone full source tree and update identifier name
-                /** @var ChildNodeInterface $clonedNode */
-                $clonedNode = clone $sourceNode;
-                $clonedNode->updateName($targetIdentifierToken->getValue());
-                if ($isSourceNodeValueNull && $existingTargetNodeValue) {
-                    $clonedNode->setValue($existingTargetNodeValue);
-                }
-                $targetNode->addChild($clonedNode);
-                // Done
-                return $clonedNode;
+        $targetParentNode = $currentObjectPath->getFirst();
+        $targetTokenName = null;
+        while ($targetToken = $targetIdentifierTokenStream->getNext()) {
+            $targetTokenName = $targetToken->getValue();
+            if (!($targetIdentifierTokenStream->peekNext() ?? false)) {
+                break;
             }
-            $previousTargetIdentifierToken = $targetIdentifierToken;
-            $newTargetNode = $targetNode->getChildByName($targetIdentifierToken->getValue());
-            if ($newTargetNode === null) {
-                $newTargetNode = new ChildNode($targetIdentifierToken->getValue());
-                $targetNode->addChild($newTargetNode);
+            if (!$foundNode = $targetParentNode->getChildByName($targetTokenName)) {
+                // Add new node as new child of current last element in path
+                $foundNode = new ChildNode($targetTokenName);
+                $targetParentNode->addChild($foundNode);
             }
-            $targetNode = $newTargetNode;
+            $targetParentNode = $foundNode;
         }
-        return null;
+
+        $existingTarget = null;
+        if ($isSourceNodeValueNull) {
+            // When the node to copy has no value, but the existing target has,
+            // the value from the existing target is kept. Also, if the existing
+            // node is a ReferenceChildNode and the source does not override this,
+            // source children are added to the existing reference instead of
+            // dropping the existing target.
+            $existingTarget = $targetParentNode->getChildByName($targetTokenName);
+            $existingTargetNodeValue = $existingTarget?->getValue();
+        } else {
+            // Blindly remove existing target node if exists and the value is not overridden by source.
+            $targetParentNode->removeChildByName($targetTokenName);
+        }
+        if ($existingTarget instanceof ReferenceChildNode) {
+            // When existing target is a ReferenceChildNode, keep it and
+            // copy children from source into existing target.
+            $targetNode = $existingTarget;
+            foreach ($sourceNode->getNextChild() as $sourceChild) {
+                $targetNode->addChild(clone $sourceChild);
+            }
+        } else {
+            // Clone full source node tree, update name and add as child to parent node.
+            /** @var ChildNodeInterface $targetNode */
+            $targetNode = clone $sourceNode;
+            $targetNode->updateName($targetTokenName);
+            $targetParentNode->addChild($targetNode);
+        }
+        if ($isSourceNodeValueNull && $existingTargetNodeValue) {
+            // If value of old existing target should be kept, set in now.
+            $targetNode->setValue($existingTargetNodeValue);
+        }
+
+        return $targetNode;
     }
 
     /**

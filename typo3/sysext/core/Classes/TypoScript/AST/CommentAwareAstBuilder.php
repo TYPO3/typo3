@@ -101,7 +101,7 @@ final class CommentAwareAstBuilder extends AbstractAstBuilder implements AstBuil
                 $this->handleIdentifierUnsetLine($line, $currentObjectPath);
             } elseif ($line instanceof IdentifierCopyLine) {
                 // "foo < bar": Copy a node source path to a target path
-                $node = $this->handleIdentifierCopyLine($line, $currentObjectPathStack, $currentObjectPath);
+                $node = $this->handleIdentifierCopyLine($line, $ast, $currentObjectPath);
                 if ($node && $previousLineComments) {
                     foreach ($previousLineComments as $previousLineComment) {
                         $node->addComment($previousLineComment);
