@@ -87,7 +87,6 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'tx_styleguide_inline_mm',
                 'MM' => 'tx_styleguide_inline_mm_child_rel',
-                'MM_hasUidField' => true,
                 'MM_opposite_field' => 'inline_1',
                 'maxitems' => 10,
                 'appearance' => [
@@ -103,7 +102,6 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'tx_styleguide_inline_mm_childchild',
                 'MM' => 'tx_styleguide_inline_mm_child_childchild_rel',
-                'MM_hasUidField' => true,
                 'appearance' => [
                     'showSynchronizationLink' => 1,
                     'showAllLocalizationLink' => 1,
