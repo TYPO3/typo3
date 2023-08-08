@@ -346,8 +346,12 @@ CREATE TABLE tx_styleguide_elements_select (
 );
 
 
+# @todo: This is the first table statement that can vanish altogether when fal_1 is removed
+#        and https://review.typo3.org/c/Packages/TYPO3.CMS/+/80374 is done.
+#        Core parser needs a patch to deal with non-existing table definition, though.
+#        This entry can be removed when its done.
 CREATE TABLE tx_styleguide_elements_select_single_12_foreign (
-    fal_1 text
+    fal_1 int unsigned DEFAULT 0 NOT NULL,
 );
 
 
@@ -436,7 +440,6 @@ CREATE TABLE tx_styleguide_inline_1n_inline_2_child (
     parenttable text,
 
     input_1 text,
-    file_1 int(11) DEFAULT '0' NOT NULL,
     rte_1 text,
     select_tree_1 text,
     t3editor_1 text
@@ -486,7 +489,6 @@ CREATE TABLE tx_styleguide_inline_expand_inline_1_child (
     parenttable text,
 
     dummy_1 text,
-    file_1 int(11) DEFAULT '0' NOT NULL,
     rte_1 text,
     select_tree_1 text,
     t3editor_1 text
@@ -506,11 +508,6 @@ CREATE TABLE tx_styleguide_inline_expandsingle_child (
 );
 
 CREATE TABLE tx_styleguide_file (
-    file_1 int(11) DEFAULT '0' NOT NULL,
-    file_2 int(11) DEFAULT '0' NOT NULL,
-    file_3 int(11) DEFAULT '0' NOT NULL,
-    file_4 int(11) DEFAULT '0' NOT NULL,
-    file_5 int(11) DEFAULT '0' NOT NULL,
     file_flex_1 text
 );
 
@@ -826,6 +823,5 @@ CREATE TABLE tx_styleguide_l10nreadonly_inline_child (
 # Table structure for table 'tx_styleguide_inline_parentnosoftdelete'
 #
 CREATE TABLE tx_styleguide_inline_parentnosoftdelete (
-    file_1 int(11) DEFAULT '0' NOT NULL,
     text_1 text
 );
