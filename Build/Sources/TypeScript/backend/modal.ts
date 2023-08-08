@@ -658,8 +658,10 @@ try {
 if (!modalObject) {
   modalObject = new Modal();
 
-  // expose as global object
-  TYPO3.Modal = modalObject;
+  if (typeof TYPO3 !== 'undefined') {
+    // expose as global object
+    TYPO3.Modal = modalObject;
+  }
 }
 
 export default modalObject;

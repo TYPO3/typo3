@@ -11,7 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { GenericKeyValue, InputTransformer } from '@typo3/core/ajax/input-transformer';
+import { GenericKeyValue, InputTransformer } from '@typo3/core/ajax/input-transformer.js';
+import { expect } from '@open-wc/testing';
+import type { } from 'mocha';
 
 describe('@typo3/core/ajax/input-transformer', (): void => {
   it('converts object to FormData', (): void => {
@@ -21,7 +23,7 @@ describe('@typo3/core/ajax/input-transformer', (): void => {
     expected.set('bar', 'baz');
     expected.set('nested[works]', 'yes');
 
-    expect(InputTransformer.toFormData(input)).toEqual(expected);
+    expect(InputTransformer.toFormData(input)).to.eql(expected);
   });
 
   it('undefined values are removed in FormData', (): void => {
@@ -30,33 +32,33 @@ describe('@typo3/core/ajax/input-transformer', (): void => {
     expected.set('foo', 'bar');
     expected.set('bar', 'baz');
 
-    expect(InputTransformer.toFormData(input)).toEqual(expected);
+    expect(InputTransformer.toFormData(input)).to.eql(expected);
   });
 
   it('converts object to SearchParams', (): void => {
     const input: GenericKeyValue = { foo: 'bar', bar: 'baz', nested: { works: 'yes' } };
     const expected = 'foo=bar&bar=baz&nested[works]=yes';
 
-    expect(InputTransformer.toSearchParams(input)).toEqual(expected);
+    expect(InputTransformer.toSearchParams(input)).to.equal(expected);
   });
 
   it('merges array to SearchParams', (): void => {
     const input: Array<string> = ['foo=bar', 'bar=baz'];
     const expected = 'foo=bar&bar=baz';
 
-    expect(InputTransformer.toSearchParams(input)).toEqual(expected);
+    expect(InputTransformer.toSearchParams(input)).to.equal(expected);
   });
 
   it('keeps string in SearchParams', (): void => {
     const input: string = 'foo=bar&bar=baz';
     const expected = 'foo=bar&bar=baz';
 
-    expect(InputTransformer.toSearchParams(input)).toEqual(expected);
+    expect(InputTransformer.toSearchParams(input)).to.equal(expected);
   });
 
   it('undefined values are removed in SearchParams', (): void => {
     const input: GenericKeyValue = { foo: 'bar', bar: 'baz', removeme: undefined };
     const expected = 'foo=bar&bar=baz';
-    expect(InputTransformer.toSearchParams(input)).toEqual(expected);
+    expect(InputTransformer.toSearchParams(input)).to.equal(expected);
   });
 });

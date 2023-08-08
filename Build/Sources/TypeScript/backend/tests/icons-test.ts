@@ -1,63 +1,38 @@
-import Icons from '@typo3/backend/icons';
+import Icons from '@typo3/backend/icons.js';
+import { expect } from '@open-wc/testing';
+import type { } from 'mocha';
 
-describe('TYPO3/CMS/Backend/IconsTest:', () => {
-  /**
-   * @test
-   */
+describe('@typo3/backend/icons-test', () => {
   describe('tests for Icons object', () => {
     it('has all sizes', () => {
-      expect(Icons.sizes.small).toBe('small');
-      expect(Icons.sizes.default).toBe('default');
-      expect(Icons.sizes.large).toBe('large');
-      expect(Icons.sizes.overlay).toBe('overlay');
+      expect(Icons.sizes.small).to.equal('small');
+      expect(Icons.sizes.default).to.equal('default');
+      expect(Icons.sizes.large).to.equal('large');
+      expect(Icons.sizes.overlay).to.equal('overlay');
     });
     it('has all states', () => {
-      expect(Icons.states.default).toBe('default');
-      expect(Icons.states.disabled).toBe('disabled');
+      expect(Icons.states.default).to.equal('default');
+      expect(Icons.states.disabled).to.equal('disabled');
     });
     it('has all markupIdentifiers', () => {
-      expect(Icons.markupIdentifiers.default).toBe('default');
-      expect(Icons.markupIdentifiers.inline).toBe('inline');
+      expect(Icons.markupIdentifiers.default).to.equal('default');
+      expect(Icons.markupIdentifiers.inline).to.equal('inline');
     });
   });
 
-  /**
-   * @test
-   */
-  describe('tests for Icons::getIcon', () => {
-    beforeEach(() => {
-      spyOn(Icons, 'getIcon');
-      Icons.getIcon('test', Icons.sizes.small, null, Icons.states.default, Icons.markupIdentifiers.default);
-    });
-
-    it('tracks that the spy was called', () => {
-      expect(Icons.getIcon).toHaveBeenCalled();
-    });
-    it('tracks all the arguments of its calls', () => {
-      expect(Icons.getIcon).toHaveBeenCalledWith('test', Icons.sizes.small, null, Icons.states.default, Icons.markupIdentifiers.default);
-    });
-    xit('works get icon from remote server');
-  });
-
-  /**
-   * @test
-   */
   describe('tests for Icons::putInCache', () => {
     it('works for simply identifier and markup', () => {
       const promise = new Promise<void>((reveal) => reveal());
       (Icons as any).putInPromiseCache('foo', promise);
-      expect((Icons as any).getFromPromiseCache('foo')).toBe(promise);
-      expect((Icons as any).isPromiseCached('foo')).toBe(true);
+      expect((Icons as any).getFromPromiseCache('foo')).to.equal(promise);
+      expect((Icons as any).isPromiseCached('foo')).to.be.true;
     });
   });
 
-  /**
-   * @test
-   */
   describe('tests for Icons::getFromPromiseCache', () => {
     it('return undefined for uncached promise', () => {
-      expect((Icons as any).getFromPromiseCache('bar')).not.toBeDefined();
-      expect((Icons as any).isPromiseCached('bar')).toBe(false);
+      expect((Icons as any).getFromPromiseCache('bar')).to.be.undefined;
+      expect((Icons as any).isPromiseCached('bar')).to.be.false;
     });
   });
 });

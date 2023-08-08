@@ -11,16 +11,18 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { GridEditor } from '@typo3/backend/grid-editor';
+import { GridEditor } from '@typo3/backend/grid-editor.js';
+import { expect } from '@open-wc/testing';
+import type { } from 'mocha';
 
-describe('TYPO3/CMS/Backend/GridEditorTest:', () => {
+describe('@typo3/backend/grid-editor-test:', () => {
 
   describe('tests for stripMarkup', () => {
     it('works with string which contains html markup only', () => {
-      expect(GridEditor.stripMarkup('<b>\'formula\': "x > y"</b>')).toBe('\'formula\': "x > y"');
+      expect(GridEditor.stripMarkup('<b>\'formula\': "x > y"</b>')).to.equal('\'formula\': "x > y"');
     });
     it('works with string which contains html markup and normal text', () => {
-      expect(GridEditor.stripMarkup('<b>foo</b> bar')).toBe('foo bar');
+      expect(GridEditor.stripMarkup('<b>foo</b> bar')).to.equal('foo bar');
     });
   });
 

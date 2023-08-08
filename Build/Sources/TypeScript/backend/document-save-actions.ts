@@ -60,6 +60,11 @@ class DocumentSaveActions {
    * Initializes the save handling
    */
   private initializeSaveHandling(): void {
+    const docHeader = document.querySelector('.t3js-module-docheader');
+    if (docHeader === null) {
+      return;
+    }
+
     const elements = [
       'button[form]',
       'button[name^="_save"]',
@@ -114,7 +119,7 @@ class DocumentSaveActions {
           // e.g. loading a new page
         });
       }, { once: true });
-    }).delegateTo(document.querySelector('.t3js-module-docheader'), elements);
+    }).delegateTo(docHeader, elements);
   }
 
   private getAttachedForm(trigger: SubmitTriggerHTMLElement): HTMLFormElement|null {

@@ -1,6 +1,6 @@
-import FormEngineValidation from '@typo3/backend/form-engine-validation';
-
-declare function using(values: (() => Array<object>)|Array<object>|object, func: (testCase: FormatValueData|ProcessValueData) => void): void;
+import FormEngineValidation from '@typo3/backend/form-engine-validation.js';
+import { expect } from '@open-wc/testing';
+import type { } from 'mocha';
 
 interface FormEngineConfig {
   [x: string]: any;
@@ -20,6 +20,42 @@ interface ProcessValueData {
   value: string,
   config: FormEngineConfig,
   result: string
+}
+
+//type Values = Array<object>|object;
+type Values = any;
+
+/**
+ * Helper function to implement DataProvider
+ * @param {Function|Array|Object} values
+ * @param {Function} func
+ */
+function using(values: (() => Values)|Values, func: (...args: unknown[]) => void): void {
+  if (values instanceof Function) {
+    values = values();
+  }
+
+  if (values instanceof Array) {
+    values.forEach(function(value) {
+      if (!(value instanceof Array)) {
+        value = [value];
+      }
+
+      func(...value);
+    });
+  } else {
+    const objectKeys = Object.keys(values);
+
+    objectKeys.forEach(function(key) {
+      if (!(values[key] instanceof Array)) {
+        values[key] = [values[key]];
+      }
+
+      values[key].push(key);
+
+      func(...values[key]);
+    });
+  }
 }
 
 describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
@@ -110,16 +146,12 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     }
   ];
 
-  /**
-   * @dataProvider formatValueDataProvider
-   * @test
-   */
   describe('tests for formatValue', () => {
     using(formatValueDataProvider, function(testCase: FormatValueData) {
       it(testCase.description, () => {
         FormEngineValidation.initialize();
         const result = FormEngineValidation.formatValue(testCase.type, testCase.value, testCase.config);
-        expect(result).toBe(testCase.result);
+        expect(result).to.equal(testCase.result);
       });
     });
   });
@@ -155,136 +187,108 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     }
   ];
 
-  /**
-   * @dataProvider processValueDataProvider
-   * @test
-   */
   describe('test for processValue', () => {
     using(processValueDataProvider, function(testCase: ProcessValueData) {
       it(testCase.description, () => {
         const result = FormEngineValidation.processValue(testCase.command, testCase.value, testCase.config);
-        expect(result).toBe(testCase.result);
+        expect(result).to.equal(testCase.result);
       });
     });
   });
 
-  /**
-   * @test
-   */
   describe('tests for parseInt', () => {
     it('works for value 0', () => {
-      expect(FormEngineValidation.parseInt(0)).toBe(0);
+      expect(FormEngineValidation.parseInt(0)).to.equal(0);
     });
     it('works for value 1', () => {
-      expect(FormEngineValidation.parseInt(1)).toBe(1);
+      expect(FormEngineValidation.parseInt(1)).to.equal(1);
     });
     it('works for value -1', () => {
-      expect(FormEngineValidation.parseInt(-1)).toBe(-1);
+      expect(FormEngineValidation.parseInt(-1)).to.equal(-1);
     });
     it('works for value "0"', () => {
-      expect(FormEngineValidation.parseInt('0')).toBe(0);
+      expect(FormEngineValidation.parseInt('0')).to.equal(0);
     });
     it('works for value "1"', () => {
-      expect(FormEngineValidation.parseInt('1')).toBe(1);
+      expect(FormEngineValidation.parseInt('1')).to.equal(1);
     });
     it('works for value "-1"', () => {
-      expect(FormEngineValidation.parseInt('-1')).toBe(-1);
+      expect(FormEngineValidation.parseInt('-1')).to.equal(-1);
     });
     it('works for value 0.5', () => {
-      expect(FormEngineValidation.parseInt(0.5)).toBe(0);
+      expect(FormEngineValidation.parseInt(0.5)).to.equal(0);
     });
     it('works for value "0.5"', () => {
-      expect(FormEngineValidation.parseInt('0.5')).toBe(0);
+      expect(FormEngineValidation.parseInt('0.5')).to.equal(0);
     });
     it('works for value "foo"', () => {
-      expect(FormEngineValidation.parseInt('foo')).toBe(0);
+      expect(FormEngineValidation.parseInt('foo')).to.equal(0);
     });
     it('works for value true', () => {
-      expect(FormEngineValidation.parseInt(true)).toBe(0);
+      expect(FormEngineValidation.parseInt(true)).to.equal(0);
     });
     it('works for value false', () => {
-      expect(FormEngineValidation.parseInt(false)).toBe(0);
+      expect(FormEngineValidation.parseInt(false)).to.equal(0);
     });
     it('works for value null', () => {
-      expect(FormEngineValidation.parseInt(null)).toBe(0);
+      expect(FormEngineValidation.parseInt(null)).to.equal(0);
     });
   });
 
-  /**
-   * @test
-   */
   describe('tests for parseDouble', () => {
     it('works for value 0', () => {
-      expect(FormEngineValidation.parseDouble(0)).toBe('0.00');
+      expect(FormEngineValidation.parseDouble(0)).to.equal('0.00');
     });
     it('works for value 1', () => {
-      expect(FormEngineValidation.parseDouble(1)).toBe('1.00');
+      expect(FormEngineValidation.parseDouble(1)).to.equal('1.00');
     });
     it('works for value -1', () => {
-      expect(FormEngineValidation.parseDouble(-1)).toBe('-1.00');
+      expect(FormEngineValidation.parseDouble(-1)).to.equal('-1.00');
     });
     it('works for value "0"', () => {
-      expect(FormEngineValidation.parseDouble('0')).toBe('0.00');
+      expect(FormEngineValidation.parseDouble('0')).to.equal('0.00');
     });
     it('works for value "1"', () => {
-      expect(FormEngineValidation.parseDouble('1')).toBe('1.00');
+      expect(FormEngineValidation.parseDouble('1')).to.equal('1.00');
     });
     it('works for value "-1"', () => {
-      expect(FormEngineValidation.parseDouble('-1')).toBe('-1.00');
+      expect(FormEngineValidation.parseDouble('-1')).to.equal('-1.00');
     });
     it('works for value 0.5', () => {
-      expect(FormEngineValidation.parseDouble(0.5)).toBe('0.50');
+      expect(FormEngineValidation.parseDouble(0.5)).to.equal('0.50');
     });
     it('works for value "0.5"', () => {
-      expect(FormEngineValidation.parseDouble('0.5')).toBe('0.50');
+      expect(FormEngineValidation.parseDouble('0.5')).to.equal('0.50');
     });
     it('works for value "foo"', () => {
-      expect(FormEngineValidation.parseDouble('foo')).toBe('0.00');
+      expect(FormEngineValidation.parseDouble('foo')).to.equal('0.00');
     });
     it('works for value true', () => {
-      expect(FormEngineValidation.parseDouble(true)).toBe('0.00');
+      expect(FormEngineValidation.parseDouble(true)).to.equal('0.00');
     });
     it('works for value false', () => {
-      expect(FormEngineValidation.parseDouble(false)).toBe('0.00');
+      expect(FormEngineValidation.parseDouble(false)).to.equal('0.00');
     });
     it('works for value null', () => {
-      expect(FormEngineValidation.parseDouble(null)).toBe('0.00');
+      expect(FormEngineValidation.parseDouble(null)).to.equal('0.00');
     });
   });
 
-  /**
-   * @test
-   */
   describe('tests for getYear', () => {
-    const currentDate = new Date();
-    afterEach(() => {
-      jasmine.clock().mockDate(currentDate);
-    });
-
     it('works for current date', () => {
       const date = new Date();
-      expect(FormEngineValidation.getYear(date)).toBe(date.getFullYear());
+      expect(FormEngineValidation.getYear(date)).to.equal(date.getFullYear());
     });
     it('works for year 2013', () => {
-      const baseTime = new Date(2013, 9, 23);
-      jasmine.clock().mockDate(baseTime);
-      expect(FormEngineValidation.getYear(baseTime)).toBe(2013);
+      const baseTime = new Date(2013, 9, 23, 1, 0, 0);
+      expect(FormEngineValidation.getYear(baseTime)).to.equal(2013);
     });
   });
 
-  /**
-   * @test
-   */
   describe('tests for getDate', () => {
-    const currentDate = new Date();
-    afterEach(() => {
-      jasmine.clock().mockDate(currentDate);
-    });
-
     xit('works for year 2013', () => {
       const baseTime = new Date(2013, 9, 23, 13, 13, 13);
-      jasmine.clock().mockDate(baseTime);
-      expect(FormEngineValidation.getDate(baseTime)).toBe(1382479200);
+      expect(FormEngineValidation.getDate(baseTime)).to.equal(1382486400);
     });
   });
 });

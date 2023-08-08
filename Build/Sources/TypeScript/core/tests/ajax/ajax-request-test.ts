@@ -11,8 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import AjaxRequest from '@typo3/core/ajax/ajax-request.js';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response.js';
+import { expect } from '@open-wc/testing';
+import { stub, SinonStub } from 'sinon';
+import type { } from 'mocha';
 
 describe('@typo3/core/ajax/ajax-request', (): void => {
   let promiseHelper: {
@@ -20,20 +23,28 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
     reject: (error: Error) => void
   };
 
+  let fetchStub: SinonStub<Parameters<typeof fetch>, Promise<Response>>;
+
   beforeEach((): void => {
-    const fetchPromise: Promise<Response> = new Promise(((resolve: (response: Response) => void, reject: (error: Error) => void): void => {
+    const fetchPromise: Promise<Response> = new Promise((resolve, reject): void => {
       promiseHelper = {
         resolve: resolve,
         reject: reject,
       };
-    }));
-    spyOn(window, 'fetch').and.returnValue(fetchPromise);
+    });
+    fetchStub = stub(window, 'fetch');
+    fetchStub.returns(fetchPromise);
+  });
+
+  afterEach((): void => {
+    fetchStub.restore();
   });
 
   it('sends GET request', (): void => {
     (new AjaxRequest('https://example.com')).get();
-    expect(window.fetch).toHaveBeenCalledWith(new URL('https://example.com/'), jasmine.objectContaining({ method: 'GET' }));
+    expect(fetchStub).calledWithMatch(new URL('https://example.com/'), { method: 'GET' });
   });
+
 
   for (const requestMethod of ['POST', 'PUT', 'DELETE']) {
     describe(`send a ${requestMethod} request`, (): void => {
@@ -74,10 +85,10 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
       for (const providedData of requestDataProvider()) {
         const [name, requestMethod, payload, expectedFn, headers] = providedData;
         const requestFn: string = requestMethod.toLowerCase();
-        it(`with ${name}`, (done: DoneFn): void => {
+        it(`with ${name}`, (done): void => {
           const request: any = (new AjaxRequest('https://example.com'));
           request[requestFn](payload, { headers: headers });
-          expect(window.fetch).toHaveBeenCalledWith(new URL('https://example.com/'), jasmine.objectContaining({ method: requestMethod, body: expectedFn() }));
+          expect(fetchStub).calledWithMatch(new URL('https://example.com/'), { method: requestMethod, body: expectedFn() });
           done();
         });
       }
@@ -91,8 +102,8 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
         'foobar huselpusel',
         {},
         (data: any, responseBody: any): void => {
-          expect(typeof data === 'string').toBeTruthy();
-          expect(data).toEqual(responseBody);
+          expect(typeof data === 'string').to.be.true;
+          expect(data).to.be.equal(responseBody);
         }
       ];
       yield [
@@ -100,8 +111,8 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
         JSON.stringify({ foo: 'bar', baz: 'bencer' }),
         { 'Content-Type': 'application/json' },
         (data: any, responseBody: any): void => {
-          expect(typeof data === 'object').toBeTruthy();
-          expect(JSON.stringify(data)).toEqual(responseBody);
+          expect(typeof data === 'object').to.be.true;
+          expect(JSON.stringify(data)).to.equal(responseBody);
         }
       ];
       yield [
@@ -109,21 +120,21 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
         JSON.stringify({ foo: 'bar', baz: 'bencer' }),
         { 'Content-Type': 'application/json; charset=utf-8' },
         (data: any, responseBody: any): void => {
-          expect(typeof data === 'object').toBeTruthy();
-          expect(JSON.stringify(data)).toEqual(responseBody);
+          expect(typeof data === 'object').to.be.true;
+          expect(JSON.stringify(data)).to.equal(responseBody);
         }
       ];
     }
 
     for (const providedData of responseDataProvider()) {
       const [name, responseText, headers, onfulfill] = providedData;
-      it('receives a ' + name + ' response', (done: DoneFn): void => {
+      it('receives a ' + name + ' response', (done): void => {
         const response = new Response(responseText, { headers: headers });
         promiseHelper.resolve(response);
 
         (new AjaxRequest(new URL('https://example.com'))).get().then(async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          expect(window.fetch).toHaveBeenCalledWith(new URL('https://example.com/'), jasmine.objectContaining({ method: 'GET' }));
+          expect(fetchStub).calledWithMatch(new URL('https://example.com/'), { method: 'GET' });
           onfulfill(data, responseText);
           done();
         });
@@ -181,7 +192,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
       const [name, input, queryParameter, expected] = providedData;
       it('with ' + name, (): void => {
         (new AjaxRequest(input)).withQueryArguments(queryParameter).get();
-        expect(window.fetch).toHaveBeenCalledWith(expected, jasmine.objectContaining({ method: 'GET' }));
+        expect(fetchStub).calledWithMatch(expected, { method: 'GET' });
       });
     }
   });
@@ -250,7 +261,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
       const [name, input, expected] = providedData;
       it('with ' + name, (): void => {
         (new AjaxRequest('https://example.com/')).withQueryArguments(input).get();
-        expect(window.fetch).toHaveBeenCalledWith(expected, jasmine.objectContaining({ method: 'GET' }));
+        expect(fetchStub).calledWithMatch(expected, { method: 'GET' });
       });
     }
   });

@@ -11,7 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import Client from '@typo3/backend/storage/client';
+import Client from '@typo3/backend/storage/client.js';
+import { expect } from '@open-wc/testing';
+import type { } from 'mocha';
 
 describe('@typo3/backend/storage/client', () => {
   afterEach((): void => {
@@ -21,14 +23,14 @@ describe('@typo3/backend/storage/client', () => {
   it('can set and get item', () => {
     const key = 'test-key';
     Client.set(key, 'foo');
-    expect(Client.get(key)).toBe('foo');
+    expect(Client.get(key)).to.equal('foo');
   });
 
   it('can check if item is set', () => {
     const key = 'test-key';
-    expect(Client.isset(key)).toBeFalse();
+    expect(Client.isset(key)).to.be.false;
     Client.set(key, 'foo');
-    expect(Client.isset(key)).toBeTrue();
+    expect(Client.isset(key)).to.be.true;
   });
 
   it('can get multiple items by prefix', () => {
@@ -42,16 +44,16 @@ describe('@typo3/backend/storage/client', () => {
     }
 
     const items = Client.getByPrefix('test-prefix-');
-    expect(items).toEqual(entries);
+    expect(items).to.eql(entries);
   });
 
   it('can remove item', () => {
     const key = 'item-to-be-removed';
     Client.set(key, 'foo');
-    expect(Client.get(key)).not.toBeNull();
+    expect(Client.get(key)).not.to.be.null;
 
     Client.unset(key);
-    expect(Client.get(key)).toBeNull();
+    expect(Client.get(key)).to.be.null;
   });
 
   it('can remove multiple items by prefix', () => {
@@ -66,7 +68,7 @@ describe('@typo3/backend/storage/client', () => {
     Client.unsetByPrefix('test-prefix-');
 
     const items = Client.getByPrefix('test-prefix-');
-    expect(items).toHaveSize(0);
+    expect(items).to.be.empty;
   });
 
   it('can clear storage', () => {
@@ -80,6 +82,6 @@ describe('@typo3/backend/storage/client', () => {
     }
     Client.clear();
 
-    expect(localStorage.length).toHaveSize(0);
+    expect(localStorage).to.be.empty;
   });
 });
