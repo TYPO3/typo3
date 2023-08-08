@@ -186,4 +186,32 @@ final class SiteConfigurationTest extends UnitTestCase
         $configuration = array_merge($configuration, $changes);
         $this->siteConfiguration->write($identifier, $configuration, true);
     }
+
+    #[Test]
+    public function writeAllowsPlaceholdersInImportedFiles(): void
+    {
+        $identifier = 'testsite';
+        GeneralUtility::mkdir_deep($this->fixturePath . '/' . $identifier);
+        $configFixture = __DIR__ . '/Fixtures/SiteConfigs/config3.yaml';
+        $expected = __DIR__ . '/Fixtures/SiteConfigs/config3_expected.yaml';
+        $siteConfig = $this->fixturePath . '/' . $identifier . '/config.yaml';
+        copy($configFixture, $siteConfig);
+
+        // load with resolved imports as the module does
+        $configuration = (new YamlFileLoader())
+            ->load(
+                GeneralUtility::fixWindowsFilePath($siteConfig),
+                YamlFileLoader::PROCESS_IMPORTS
+            );
+
+        // Simulate env placeholder
+        putenv('base=https://example.com/');
+
+        $this->siteConfiguration->write($identifier, $configuration, true);
+
+        self::assertFileEquals($expected, $siteConfig);
+
+        // Reset env placeholder
+        putenv('base');
+    }
 }
