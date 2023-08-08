@@ -1624,7 +1624,7 @@ class BackendUtility
                             $columnTsConfig = $pageTsConfig['TCEFORM.'][$table . '.'][$col . '.'];
                         }
                     }
-                    $l = self::getLabelsFromItemsList($table, $col, $value, $columnTsConfig);
+                    $l = self::getLabelsFromItemsList($table, $col, (string)$value, $columnTsConfig);
                     if (!empty($theColConf['foreign_table']) && !$l && !empty($GLOBALS['TCA'][$theColConf['foreign_table']])) {
                         if ($noRecordLookup) {
                             $l = $value;
