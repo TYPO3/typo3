@@ -1078,7 +1078,7 @@ class EditDocumentController
                     continue;
                 }
                 // Get the ids:
-                $ids = GeneralUtility::trimExplode(',', $cKey, true);
+                $ids = GeneralUtility::trimExplode(',', (string)$cKey, true);
                 // Traverse the ids:
                 foreach ($ids as $theUid) {
                     // Don't save this document title in the document selector if the document is new.
@@ -2171,7 +2171,7 @@ class EditDocumentController
                 foreach ($conf as $cKey => $cmd) {
                     if ($cmd === 'edit') {
                         // Traverse the ids:
-                        $ids = GeneralUtility::trimExplode(',', $cKey, true);
+                        $ids = GeneralUtility::trimExplode(',', (string)$cKey, true);
                         foreach ($ids as $idKey => $theUid) {
                             if (is_array($mapArray)) {
                                 if ($mapArray[$table][$theUid] ?? false) {
