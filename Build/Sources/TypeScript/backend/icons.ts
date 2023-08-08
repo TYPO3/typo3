@@ -280,7 +280,9 @@ class Icons {
 let iconsObject: Icons;
 if (!iconsObject) {
   iconsObject = new Icons();
-  TYPO3.Icons = iconsObject;
+  if (typeof TYPO3 !== 'undefined') {
+    TYPO3.Icons = iconsObject;
+  }
 }
 
 export default iconsObject;

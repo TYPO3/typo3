@@ -309,9 +309,8 @@ module.exports = function (grunt) {
 
             source = require('./util/map-import.js').mapImports(source, srcpath, imports);
 
-            // Workaround for https://github.com/microsoft/TypeScript/issues/35802 to avoid
-            // rollup from complaining in karma/jsunit test setup:
-            //   The 'this' keyword is equivalent to 'undefined' at the top level of an ES module, and has been rewritten
+            // Workaround for https://github.com/microsoft/TypeScript/issues/35802
+            // > The 'this' keyword is equivalent to 'undefined' at the top level of an ES module
             source = source.replace('__decorate=this&&this.__decorate||function', '__decorate=function');
 
             return source;
@@ -320,11 +319,10 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= paths.root %>Build/JavaScript/',
-          src: ['**/*.js', '**/*.js.map'],
+          src: ['**/*.js', '**/*.js.map', '!*/tests/**/*'],
           dest: '<%= paths.sysext %>',
           rename: (dest, src) => dest + src
             .replace('/', '/Resources/Public/JavaScript/')
-            .replace('/Resources/Public/JavaScript/tests/', '/Tests/JavaScript/')
         }]
       },
       core_icons: {
@@ -899,6 +897,7 @@ module.exports = function (grunt) {
             expand: true,
             src: [
               '<%= paths.root %>Build/JavaScript/**/*.js',
+              '!<%= paths.root %>Build/JavaScript/*/tests/**/*',
             ],
             dest: '<%= paths.root %>Build',
             cwd: '.',

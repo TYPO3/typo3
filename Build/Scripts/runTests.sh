@@ -911,7 +911,7 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         ;;
     unitJavascript)
-        COMMAND="cd Build; npm ci || exit 1; cd ..; Build/node_modules/karma/bin/karma start Build/JSUnit/karma.conf.ci.js --single-run"
+        COMMAND="cd Build; npm ci || exit 1; CHROME_SANDBOX=false BROWSERS=chrome npm run test"
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name unit-javascript-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_NODEJS_CHROME} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
         ;;

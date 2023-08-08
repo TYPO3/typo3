@@ -522,11 +522,15 @@ interface ModuleMenuNamespace {
   App: ModuleMenu;
 }
 
-if (!top.TYPO3.ModuleMenu) {
-  top.TYPO3.ModuleMenu = {
+let moduleMenuApp: ModuleMenuNamespace = top?.TYPO3?.ModuleMenu;
+
+if (!moduleMenuApp) {
+  moduleMenuApp = {
     App: new ModuleMenu(),
-  };
+  }
+  if (top.TYPO3 !== undefined) {
+    top.TYPO3.ModuleMenu = moduleMenuApp;
+  }
 }
-const moduleMenuApp = <ModuleMenuNamespace>top.TYPO3.ModuleMenu;
 
 export default moduleMenuApp;

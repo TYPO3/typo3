@@ -99,8 +99,7 @@
             "TYPO3",
             "chosen-js",
             "requirejs",
-            "ckeditor5-bundle",
-            "jasmine"
+            "ckeditor5-bundle"
         ],
         "typeRoots": [
             "node_modules/@types",

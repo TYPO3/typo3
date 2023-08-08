@@ -11,22 +11,30 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DeferredAction from '@typo3/backend/action-button/deferred-action';
-import ImmediateAction from '@typo3/backend/action-button/immediate-action';
-import Notification from '@typo3/backend/notification';
+import DeferredAction from '@typo3/backend/action-button/deferred-action.js';
+import ImmediateAction from '@typo3/backend/action-button/immediate-action.js';
+import Notification from '@typo3/backend/notification.js';
+import Icons from '@typo3/backend/icons.js';
 import type { LitElement } from 'lit';
-import Icons from '@typo3/backend/icons';
+import { expect } from '@open-wc/testing';
+import { stub, SinonStub } from 'sinon';
+import type { } from 'mocha';
 
-describe('TYPO3/CMS/Backend/Notification:', () => {
+describe('@typo3/backend/notification:', () => {
+  let getIconStub: SinonStub<Parameters<typeof Icons['getIcon']>, Promise<string>>;
+
   beforeEach((): void => {
+    getIconStub = stub(Icons, 'getIcon');
+    getIconStub.returns(Promise.resolve('X'));
+  });
+
+  afterEach((): void => {
+    getIconStub.restore();
+
     const alertContainer = document.getElementById('alert-container');
     while (alertContainer !== null && alertContainer.firstChild) {
       alertContainer.removeChild(alertContainer.firstChild);
     }
-
-    spyOn(Icons, 'getIcon').and.callFake((): Promise<string> => {
-      return Promise.resolve('X');
-    });
   });
 
   describe('can render notifications with dismiss after 1000ms', () => {
@@ -79,12 +87,12 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
         await (document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement).updateComplete;
         const alertSelector = 'div.alert.' + dataSet.class;
         const alertBox = document.querySelector(alertSelector);
-        expect(alertBox).not.toBe(null);
-        expect(alertBox.querySelector('.alert-title').textContent).toEqual(dataSet.title);
-        expect(alertBox.querySelector('.alert-message').textContent).toEqual(dataSet.message);
+        expect(alertBox).not.to.be.null;
+        expect(alertBox.querySelector('.alert-title').textContent).to.equal(dataSet.title);
+        expect(alertBox.querySelector('.alert-message').textContent).to.equal(dataSet.message);
         // wait for the notification to disappear for the next assertion (which tests for auto dismiss)
         await new Promise(resolve => window.setTimeout(resolve, 2000));
-        expect(document.querySelector(alertSelector)).toBe(null);
+        expect(document.querySelector(alertSelector)).to.be.null;
       });
     }
   });
@@ -112,20 +120,14 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
 
     await (document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement).updateComplete;
     const alertBox = document.querySelector('div.alert');
-    expect(alertBox.querySelector('.alert-actions')).not.toBe(null);
-    expect(alertBox.querySelectorAll('.alert-actions a').length).toEqual(2);
-    expect(alertBox.querySelectorAll('.alert-actions a')[0].textContent).toEqual('My action');
-    expect(alertBox.querySelectorAll('.alert-actions a')[1].textContent).toEqual('My other action');
+    expect(alertBox.querySelector('.alert-actions')).not.to.be.null;
+    expect(alertBox.querySelectorAll('.alert-actions a').length).to.equal(2);
+    expect(alertBox.querySelectorAll('.alert-actions a')[0].textContent).to.equal('My action');
+    expect(alertBox.querySelectorAll('.alert-actions a')[1].textContent).to.equal('My other action');
   });
 
   it('immediate action is called', async () => {
-    const observer = {
-      callback: (): void => {
-        return;
-      },
-    };
-
-    spyOn(observer, 'callback').and.callThrough();
+    let called = false;
 
     Notification.info(
       'Info message',
@@ -134,7 +136,9 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
       [
         {
           label: 'My immediate action',
-          action: new ImmediateAction(observer.callback),
+          action: new ImmediateAction(() => {
+            called = true
+          }),
         },
       ],
     );
@@ -143,6 +147,6 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
     const alertBox = document.querySelector('div.alert');
     (<HTMLAnchorElement>alertBox.querySelector('.alert-actions a')).click();
     await (document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement).updateComplete;
-    expect(observer.callback).toHaveBeenCalled();
+    expect(called).to.be.true;
   });
 });

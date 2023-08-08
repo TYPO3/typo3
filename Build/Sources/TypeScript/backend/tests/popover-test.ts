@@ -1,10 +1,9 @@
 import { Popover as BootstrapPopover } from 'bootstrap';
-import Popover from '@typo3/backend/popover';
+import Popover from '@typo3/backend/popover.js';
+import { expect } from '@open-wc/testing';
+import type { } from 'mocha';
 
-describe('TYPO3/CMS/Backend/PopoverTest:', () => {
-  /**
-   * @test
-   */
+describe('@typo3/backend/popover-test', () => {
   describe('initialize', () => {
     const element = document.createElement('div');
     element.dataset.bsToggle = 'popover';
@@ -12,7 +11,7 @@ describe('TYPO3/CMS/Backend/PopoverTest:', () => {
 
     it('works with default selector', () => {
       Popover.initialize();
-      expect(element.outerHTML).toBe('<div data-bs-toggle="popover"></div>');
+      expect(element.outerHTML).to.equal('<div data-bs-toggle="popover"></div>');
     });
 
     const element2 = document.createElement('div');
@@ -21,7 +20,7 @@ describe('TYPO3/CMS/Backend/PopoverTest:', () => {
     document.body.append(element2);
     it('works with default selector and title attribute', () => {
       Popover.initialize();
-      expect(element2.outerHTML).toBe('<div data-bs-toggle="popover" data-title="foo" data-bs-title="foo"></div>');
+      expect(element2.outerHTML).to.equal('<div data-bs-toggle="popover" data-title="foo" data-bs-title="foo"></div>');
     });
 
     const element3 = document.createElement('div');
@@ -30,7 +29,7 @@ describe('TYPO3/CMS/Backend/PopoverTest:', () => {
     document.body.append(element3);
     it('works with default selector and content attribute', () => {
       Popover.initialize();
-      expect(element3.outerHTML).toBe('<div data-bs-toggle="popover" data-bs-content="foo"></div>');
+      expect(element3.outerHTML).to.equal('<div data-bs-toggle="popover" data-bs-content="foo"></div>');
     });
 
     const element4 = document.createElement('div');
@@ -38,7 +37,7 @@ describe('TYPO3/CMS/Backend/PopoverTest:', () => {
     document.body.append(element4);
     it('works with custom selector', () => {
       Popover.initialize('.t3js-popover');
-      expect(element4.outerHTML).toBe('<div class="t3js-popover"></div>');
+      expect(element4.outerHTML).to.equal('<div class="t3js-popover"></div>');
     });
   });
 
@@ -51,14 +50,14 @@ describe('TYPO3/CMS/Backend/PopoverTest:', () => {
 
     it('can set title', () => {
       Popover.initialize('.t3js-test-set-options');
-      expect(element.getAttribute('data-title')).toBe('foo-title');
-      expect(element.getAttribute('data-bs-content')).toBe('foo-content');
+      expect(element.getAttribute('data-title')).to.equal('foo-title');
+      expect(element.getAttribute('data-bs-content')).to.equal('foo-content');
       Popover.setOptions(element, <BootstrapPopover.Options>{
         'title': 'bar-title'
       });
-      expect(element.getAttribute('data-title')).toBe('foo-title');
-      expect(element.getAttribute('data-bs-content')).toBe('foo-content');
-      expect(element.getAttribute('data-bs-original-title')).toBe('bar-title');
+      expect(element.getAttribute('data-title')).to.equal('foo-title');
+      expect(element.getAttribute('data-bs-content')).to.equal('foo-content');
+      expect(element.getAttribute('data-bs-original-title')).to.equal('bar-title');
     });
 
     const element2 = document.createElement('div');
@@ -71,14 +70,14 @@ describe('TYPO3/CMS/Backend/PopoverTest:', () => {
       Popover.initialize('.t3js-test-set-options2');
       // Popover must be visible before the content can be updated manually via setOptions()
       Popover.show(element2);
-      expect(element2.getAttribute('data-title')).toBe('foo-title');
-      expect(element2.getAttribute('data-bs-content')).toBe('foo-content');
+      expect(element2.getAttribute('data-title')).to.equal('foo-title');
+      expect(element2.getAttribute('data-bs-content')).to.equal('foo-content');
       Popover.setOptions(element2, <BootstrapPopover.Options>{
         'content': 'bar-content'
       });
-      expect(element2.getAttribute('data-title')).toBe('foo-title');
-      expect(element2.getAttribute('data-bs-content')).toBe('bar-content');
-      expect(element2.getAttribute('data-bs-original-title')).toBe('foo-title');
+      expect(element2.getAttribute('data-title')).to.equal('foo-title');
+      expect(element2.getAttribute('data-bs-content')).to.equal('bar-content');
+      expect(element2.getAttribute('data-bs-original-title')).to.equal('foo-title');
     });
   });
 });

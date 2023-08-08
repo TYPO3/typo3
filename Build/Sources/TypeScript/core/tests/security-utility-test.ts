@@ -11,7 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import SecurityUtility from '@typo3/core/security-utility';
+import SecurityUtility from '@typo3/core/security-utility.js';
+import { expect } from '@open-wc/testing';
+import type { } from 'mocha';
 
 describe('@typo3/core/security-utility', (): void => {
   it('generates random hex value', (): void => {
@@ -22,7 +24,7 @@ describe('@typo3/core/security-utility', (): void => {
     }
     for (const validLength of validLengthDataProvider()) {
       const randomHexValue = (new SecurityUtility()).getRandomHexValue(validLength);
-      expect(randomHexValue.length).toBe(validLength);
+      expect(randomHexValue.length).to.equal(validLength);
     }
   });
 
@@ -33,16 +35,16 @@ describe('@typo3/core/security-utility', (): void => {
       yield 10.3; // length is "ceiled", 10.3 => 11, 10 != 11
     }
     for (const invalidLength of invalidLengthDataProvider()) {
-      expect(() => (new SecurityUtility()).getRandomHexValue(invalidLength)).toThrowError(SyntaxError);
+      expect(() => (new SecurityUtility()).getRandomHexValue(invalidLength)).to.throw(SyntaxError);
     }
   });
 
   it('encodes HTML', (): void => {
-    expect((new SecurityUtility).encodeHtml('<>"\'&')).toBe('&lt;&gt;&quot;&apos;&amp;');
+    expect((new SecurityUtility).encodeHtml('<>"\'&')).to.equal('&lt;&gt;&quot;&apos;&amp;');
   });
 
   it('removes HTML from string', (): void => {
-    expect((new SecurityUtility).stripHtml('<img src="" onerror="alert(\'1\')">oh noes')).toBe('oh noes');
-    expect((new SecurityUtility).encodeHtml('<>"\'&')).toBe('&lt;&gt;&quot;&apos;&amp;');
+    expect((new SecurityUtility).stripHtml('<img src="" onerror="alert(\'1\')">oh noes')).to.equal('oh noes');
+    expect((new SecurityUtility).encodeHtml('<>"\'&')).to.equal('&lt;&gt;&quot;&apos;&amp;');
   });
 });

@@ -11,11 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { ImmediateActionElement } from '@typo3/backend/element/immediate-action-element';
-import moduleMenuApp from '@typo3/backend/module-menu';
-import viewportObject from '@typo3/backend/viewport';
+import { ImmediateActionElement } from '@typo3/backend/element/immediate-action-element.js';
+import moduleMenuApp from '@typo3/backend/module-menu.js';
+import viewportObject from '@typo3/backend/viewport.js';
+import { expect } from '@open-wc/testing';
+import { stub } from 'sinon';
+import type { } from 'mocha';
 
-describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
+describe('@typo3/backend/element/immediate-action-element', () => {
   let root: HTMLElement; // This will hold the actual element under test.
 
   beforeEach((): void => {
@@ -29,74 +32,50 @@ describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
   });
 
   it('dispatches action when created via constructor', async () => {
-    const backup = viewportObject.Topbar;
-    const observer = {
-      refresh: (): void => {
-        return;
-      },
-    };
-    spyOn(observer, 'refresh').and.callThrough();
-    (viewportObject as any).Topbar = observer;
+    const refreshStub = stub(viewportObject.Topbar, 'refresh')
+
     const element = new ImmediateActionElement;
     element.setAttribute('action', 'TYPO3.Backend.Topbar.refresh');
-    expect(observer.refresh).not.toHaveBeenCalled();
+    expect(refreshStub).not.to.have.been.called;
     root.appendChild(element);
-    await import('@typo3/backend/viewport');
+    await import('@typo3/backend/viewport.js');
     await new Promise((resolve) => setTimeout(resolve, 100));
-    expect(observer.refresh).toHaveBeenCalled();
-    (viewportObject as any).Topbar = backup;
+    expect(refreshStub).to.have.been.called;
+
+    refreshStub.restore();
   });
 
   it('dispatches action when created via createElement', async () => {
-    const backup = viewportObject.Topbar;
-    const observer = {
-      refresh: (): void => {
-        return;
-      },
-    };
-    spyOn(observer, 'refresh').and.callThrough();
-    (viewportObject as any).Topbar = observer;
+    const refreshStub = stub(viewportObject.Topbar, 'refresh')
+
     const element = <ImmediateActionElement>document.createElement('typo3-immediate-action');
     element.setAttribute('action', 'TYPO3.Backend.Topbar.refresh');
-    expect(observer.refresh).not.toHaveBeenCalled();
+    expect(refreshStub).not.to.have.been.called;
     root.appendChild(element);
-    await import('@typo3/backend/viewport');
+    await import('@typo3/backend/viewport.js');
     await new Promise((resolve) => setTimeout(resolve, 100));
-    expect(observer.refresh).toHaveBeenCalled();
-    (viewportObject as any).Topbar = backup;
+    expect(refreshStub).to.have.been.called;
+
+    refreshStub.restore();
   });
 
   it('dispatches action when created from string', async () => {
-    const backup = moduleMenuApp.App;
-    const observer = {
-      refreshMenu: (): void => {
-        return;
-      },
-    };
-    spyOn(observer, 'refreshMenu').and.callThrough();
-    (moduleMenuApp as any).App = observer;
+    const refreshMenuStub = stub(moduleMenuApp.App, 'refreshMenu')
     const element = document.createRange().createContextualFragment('<typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>').querySelector('typo3-immediate-action');
-    expect(observer.refreshMenu).not.toHaveBeenCalled();
+    expect(refreshMenuStub).not.to.have.been.called;
     root.appendChild(element);
-    await import('@typo3/backend/module-menu');
+    await import('@typo3/backend/module-menu.js');
     await new Promise((resolve) => setTimeout(resolve, 100));
-    expect(observer.refreshMenu).toHaveBeenCalled();
-    (viewportObject as any).App = backup;
+    expect(refreshMenuStub).to.have.been.called;
+    refreshMenuStub.restore();
   });
 
   it('dispatches action when created via innerHTML', async () => {
-    const backup = moduleMenuApp.App;
-    const observer = {
-      refreshMenu: (): void => {
-        return;
-      },
-    };
-    spyOn(observer, 'refreshMenu').and.callThrough();
-    (moduleMenuApp as any).App = observer;
+    const refreshMenuStub = stub(moduleMenuApp.App, 'refreshMenu')
     root.innerHTML = '<typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>';
-    await import('@typo3/backend/module-menu');
+    await import('@typo3/backend/module-menu.js');
     await new Promise((resolve) => setTimeout(resolve, 100));
-    expect(observer.refreshMenu).toHaveBeenCalled();
-    (moduleMenuApp as any).App = backup;
+    expect(refreshMenuStub).to.have.been.called;
+    refreshMenuStub.restore();
   });
 });

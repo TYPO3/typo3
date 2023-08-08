@@ -11,7 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import BrowserSession from '@typo3/backend/storage/browser-session';
+import BrowserSession from '@typo3/backend/storage/browser-session.js';
+import { expect } from '@open-wc/testing';
+import type { } from 'mocha';
 
 describe('@typo3/backend/storage/browser-session', () => {
   afterEach((): void => {
@@ -21,14 +23,14 @@ describe('@typo3/backend/storage/browser-session', () => {
   it('can set and get item', () => {
     const key = 'test-key';
     BrowserSession.set(key, 'foo');
-    expect(BrowserSession.get(key)).toBe('foo');
+    expect(BrowserSession.get(key)).to.equal('foo');
   });
 
   it('can check if item is set', () => {
     const key = 'test-key';
-    expect(BrowserSession.isset(key)).toBeFalse();
+    expect(BrowserSession.isset(key)).to.be.false;
     BrowserSession.set(key, 'foo');
-    expect(BrowserSession.isset(key)).toBeTrue();
+    expect(BrowserSession.isset(key)).to.be.true;
   });
 
   it('can get multiple items by prefix', () => {
@@ -42,16 +44,16 @@ describe('@typo3/backend/storage/browser-session', () => {
     }
 
     const items = BrowserSession.getByPrefix('test-prefix-');
-    expect(items).toEqual(entries);
+    expect(items).to.eql(entries);
   });
 
   it('can remove item', () => {
     const key = 'item-to-be-removed';
     BrowserSession.set(key, 'foo');
-    expect(BrowserSession.get(key)).not.toBeNull();
+    expect(BrowserSession.get(key)).not.to.be.null;
 
     BrowserSession.unset(key);
-    expect(BrowserSession.get(key)).toBeNull();
+    expect(BrowserSession.get(key)).to.be.null;
   });
 
   it('can remove multiple items by prefix', () => {
@@ -66,7 +68,7 @@ describe('@typo3/backend/storage/browser-session', () => {
     BrowserSession.unsetByPrefix('test-prefix-');
 
     const items = BrowserSession.getByPrefix('test-prefix-');
-    expect(items).toHaveSize(0);
+    expect(items).to.be.empty;
   });
 
   it('can clear storage', () => {
@@ -80,6 +82,6 @@ describe('@typo3/backend/storage/browser-session', () => {
     }
     BrowserSession.clear();
 
-    expect(sessionStorage.length).toHaveSize(0);
+    expect(sessionStorage).to.be.empty;
   });
 });
