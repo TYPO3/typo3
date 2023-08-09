@@ -71,7 +71,7 @@ class ImageProcessing extends AbstractInteractableModule {
 
     const twinImageTemplate = this.findInModal(this.selectorTwinImageTemplate).get(0);
     const promises: Array<Promise<void>> = [];
-    modalContent.querySelectorAll(this.selectorTestContainer).forEach((container: HTMLElement, index: number): void => {
+    modalContent.querySelectorAll(this.selectorTestContainer).forEach((container: HTMLElement): void => {
       container.innerHTML = '';
       container.append(InfoBox.create(Severity.loading, 'Loading...'));
       const request = (new AjaxRequest(Router.getUrl(container.dataset.test)))

@@ -55,12 +55,11 @@ class Localization {
   }
 
   private initialize(): void {
-    const me = this;
     Icons.getIcon('actions-localize', Icons.sizes.large).then((localizeIconMarkup: string): void => {
       Icons.getIcon('actions-edit-copy', Icons.sizes.large).then((copyIconMarkup: string): void => {
-        $(me.triggerButton).removeClass('disabled');
+        $(this.triggerButton).removeClass('disabled');
 
-        $(document).on('click', me.triggerButton, (e: JQueryEventObject): void => {
+        $(document).on('click', this.triggerButton, (e: JQueryEventObject): void => {
           e.preventDefault();
 
           const $triggerButton = $(e.currentTarget);

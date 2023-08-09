@@ -41,9 +41,8 @@ class OnlineMedia {
   }
 
   private registerEvents(): void {
-    const me = this;
     $(document).on('click', '.t3js-online-media-add-btn', (e: JQueryEventObject): void => {
-      me.triggerModal($(e.currentTarget));
+      this.triggerModal($(e.currentTarget));
     });
   }
 

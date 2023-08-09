@@ -852,6 +852,7 @@ export class SvgTree extends LitElement {
       .attr('xlink:href', '#icon-' + iconIdentifier);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected isNodeSelectable(node: TreeNode): boolean {
     return true;
   }

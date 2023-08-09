@@ -164,24 +164,22 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private registerToggle(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      me.loadRecordDetails(this.closest(Selectors.toggleSelector).parentElement.dataset.objectId);
+      this.loadRecordDetails(targetElement.closest(Selectors.toggleSelector).parentElement.dataset.objectId);
     }).delegateTo(this.container, `${Selectors.toggleSelector} .form-irre-header-cell:not(${Selectors.controlSectionSelector}`);
   }
 
   private registerSort(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      me.changeSortingByButton(
-        (<HTMLDivElement>this.closest('[data-object-id]')).dataset.objectId,
-        <SortDirections>this.dataset.direction,
+      this.changeSortingByButton(
+        (<HTMLDivElement>targetElement.closest('[data-object-id]')).dataset.objectId,
+        <SortDirections>targetElement.dataset.direction,
       );
     }).delegateTo(this.container, Selectors.controlSectionSelector + ' [data-action="sort"]');
   }
@@ -281,22 +279,21 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private registerInfoButton(): void {
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      InfoWindow.showItem(this.dataset.infoTable, this.dataset.infoUid);
+      InfoWindow.showItem(targetElement.dataset.infoTable, targetElement.dataset.infoUid);
     }).delegateTo(this.container, Selectors.infoWindowButton);
   }
 
   private registerDeleteButton(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
       const title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
-      const content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', this.dataset.recordInfo);
+      const content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', targetElement.dataset.recordInfo);
       Modal.confirm(title, content, Severity.warning, [
         {
           text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
@@ -310,7 +307,7 @@ class FilesControlContainer extends HTMLElement {
           btnClass: 'btn-warning',
           name: 'yes',
           trigger: (e: Event, modal: ModalElement): void => {
-            me.deleteRecord((<HTMLDivElement>this.closest('[data-object-id]')).dataset.objectId);
+            this.deleteRecord((<HTMLDivElement>targetElement.closest('[data-object-id]')).dataset.objectId);
             modal.hideModal();
           }
         },
@@ -319,29 +316,28 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private registerSynchronizeLocalize(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      me.ajaxDispatcher.send(
-        me.ajaxDispatcher.newRequest(me.ajaxDispatcher.getEndpoint('file_reference_synchronizelocalize')),
-        [me.container.dataset.objectGroup, this.dataset.type],
+      this.ajaxDispatcher.send(
+        this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('file_reference_synchronizelocalize')),
+        [this.container.dataset.objectGroup, targetElement.dataset.type],
       ).then(async (response: InlineResponseInterface): Promise<void> => {
-        me.recordsContainer.insertAdjacentHTML('beforeend', response.data);
+        this.recordsContainer.insertAdjacentHTML('beforeend', response.data);
 
-        const objectIdPrefix = me.container.dataset.objectGroup + Separators.structureSeparator;
+        const objectIdPrefix = this.container.dataset.objectGroup + Separators.structureSeparator;
         for (const itemUid of response.compilerInput.delete) {
-          me.deleteRecord(objectIdPrefix + itemUid, true);
+          this.deleteRecord(objectIdPrefix + itemUid, true);
         }
 
         for (const item of Object.values(response.compilerInput.localize)) {
           if (typeof item.remove !== 'undefined') {
-            const removableRecordContainer = me.getFileReferenceContainer(objectIdPrefix + item.remove);
+            const removableRecordContainer = this.getFileReferenceContainer(objectIdPrefix + item.remove);
             removableRecordContainer.parentElement.removeChild(removableRecordContainer);
           }
 
-          me.memorizeAddRecord(item.uid, null);
+          this.memorizeAddRecord(item.uid, null);
         }
       });
     }).delegateTo(this.container, Selectors.synchronizeLocalizeRecordButtonSelector);

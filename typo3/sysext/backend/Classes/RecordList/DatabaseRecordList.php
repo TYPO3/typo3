@@ -934,7 +934,7 @@ class DatabaseRecordList
             <typo3-recordlist-record-download-button
                 class="btn btn-sm btn-default"
                 url="' . htmlspecialchars($downloadSettingsUrl) . '"
-                title="' . htmlspecialchars($downloadSettingsTitle) . '"
+                subject="' . htmlspecialchars($downloadSettingsTitle) . '"
                 ok="' . htmlspecialchars($downloadButtonTitle) . '"
                 close="' . htmlspecialchars($downloadCancelTitle) . '"
                 data-recordlist-action="download"

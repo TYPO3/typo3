@@ -27,7 +27,7 @@ enum Selectors {
  * Module: @typo3/backend/record-download-button
  *
  * @example
- * <typo3-recordlist-record-download-button url="/url/to/configuration/form" title="Download records" ok="Download" close="Cancel">
+ * <typo3-recordlist-record-download-button url="/url/to/configuration/form" subject="Download records" ok="Download" close="Cancel">
  *   <button>Download records/button>
  * </typo3-recordlist-record-download-button>
  */
@@ -35,7 +35,7 @@ enum Selectors {
 export class RecordDownloadButton extends LitElement {
   static styles = [css`:host { cursor: pointer; appearance: button; }`];
   @property({ type: String }) url: string;
-  @property({ type: String }) title: string;
+  @property({ type: String }) subject: string;
   @property({ type: String }) ok: string;
   @property({ type: String }) close: string;
 
@@ -74,7 +74,7 @@ export class RecordDownloadButton extends LitElement {
 
     const modal = Modal.advanced({
       content: this.url,
-      title: this.title || 'Download records',
+      title: this.subject || 'Download records',
       severity: SeverityEnum.notice,
       size: Modal.sizes.small,
       type: Modal.types.ajax,

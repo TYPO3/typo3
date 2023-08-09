@@ -43,11 +43,11 @@ class PasswordElement extends HTMLElement {
 
   private registerEventHandler(): void {
     if (this.passwordPolicySet) {
-      this.element.addEventListener('focusin', (e: Event): void => {
+      this.element.addEventListener('focusin', (): void => {
         this.passwordPolicyInfo.classList.remove('hidden');
       });
 
-      this.element.addEventListener('focusout', (e: Event): void => {
+      this.element.addEventListener('focusout', (): void => {
         this.passwordPolicyInfo.classList.add('hidden');
       });
     }

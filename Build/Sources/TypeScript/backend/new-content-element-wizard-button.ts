@@ -21,13 +21,13 @@ import '@typo3/backend/new-content-element-wizard';
  * Module: @typo3/backend/new-content-element-wizard-button
  *
  * @example
- * <typo3-backend-new-content-element-wizard-button class="btn btn-default" url="link/to/endpoint" title="Wizard title" ></typo3-backend-new-content-element-wizard-button>
+ * <typo3-backend-new-content-element-wizard-button class="btn btn-default" url="link/to/endpoint" subject="Wizard title" ></typo3-backend-new-content-element-wizard-button>
  */
 @customElement('typo3-backend-new-content-element-wizard-button')
 export class NewContentElementWizardButton extends LitElement {
   static styles = [css`:host { cursor: pointer; appearance: button; }`];
   @property({ type: String }) url: string;
-  @property({ type: String }) title: string;
+  @property({ type: String }) subject: string;
 
   public constructor() {
     super();
@@ -64,7 +64,7 @@ export class NewContentElementWizardButton extends LitElement {
 
     Modal.advanced({
       content: this.url,
-      title: this.title,
+      title: this.subject,
       severity: SeverityEnum.notice,
       size: Modal.sizes.large,
       type: Modal.types.ajax

@@ -1,6 +1,6 @@
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 
-declare function using(values: Function|Array<Object>|Object, func: Function): void;
+declare function using(values: (() => Array<object>)|Array<object>|object, func: (testCase: FormatValueData|ProcessValueData) => void): void;
 
 interface FormEngineConfig {
   [x: string]: any;

@@ -18,7 +18,7 @@ import Notification from '../../notification';
 import Utility from '../../utility';
 
 interface Context {
-  config: Object;
+  config: object;
   hmac: string;
 }
 
