@@ -15,11 +15,7 @@
  * Module: @typo3/form/backend/form-manager
  */
 
-// @todo once view-model.js is migrated:
-// replace ViewModelLike with typeof import('@typo3/form/backend/form-manager/view-model')
-interface ViewModelLike {
-  bootstrap: (formManager: FormManager) => void;
-}
+type ViewModel = typeof import('@typo3/form/backend/form-manager/view-model');
 
 export interface LabelValuePair {
   label: string;
@@ -60,9 +56,12 @@ export function assert(test: boolean|(() => boolean), message: string, messageCo
 export class FormManager {
   private isRunning: boolean = false;
   private configuration: FormManagerConfiguration;
-  private viewModel: ViewModelLike;
+  private viewModel: ViewModel;
 
-  public constructor(configuration: FormManagerConfiguration, viewModel: ViewModelLike) {
+  public constructor(
+    configuration: FormManagerConfiguration,
+    viewModel: ViewModel
+  ) {
     this.configuration = configuration;
     this.viewModel = viewModel;
   }
@@ -170,7 +169,10 @@ let formManagerInstance: FormManager = null;
 /**
  * Return a singleton instance of a "FormManager" object.
  */
-export function getInstance(configuration: FormManagerConfiguration, viewModel: ViewModelLike): FormManager {
+export function getInstance(
+  configuration: FormManagerConfiguration,
+  viewModel: ViewModel
+): FormManager {
   if (formManagerInstance === null) {
     formManagerInstance = new FormManager(configuration, viewModel);
   }

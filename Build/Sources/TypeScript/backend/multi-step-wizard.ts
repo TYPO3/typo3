@@ -45,7 +45,7 @@ interface Slide {
  * @exports @typo3/backend/multi-step-wizard
  */
 class MultiStepWizard {
-  private setup: MultiStepWizardSetup;
+  public setup: MultiStepWizardSetup;
   private readonly originalSetup: MultiStepWizardSetup;
 
   constructor() {
