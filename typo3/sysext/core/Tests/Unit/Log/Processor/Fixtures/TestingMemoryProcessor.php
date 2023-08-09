@@ -15,19 +15,18 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor\Fixtures;
 
-use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\TestingDriver;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\CMS\Core\Log\LogRecord;
+use TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor;
 
-final class AbstractDriverTest extends UnitTestCase
+/**
+ * Testing subclass of `AbstractMemoryProcessor`.
+ */
+final class TestingMemoryProcessor extends AbstractMemoryProcessor
 {
-    /**
-     * @test
-     */
-    public function isCaseSensitiveFileSystemReturnsTrueIfNothingIsConfigured(): void
+    public function processLogRecord(LogRecord $logRecord): LogRecord
     {
-        $subject = new TestingDriver();
-        self::assertTrue($subject->isCaseSensitiveFileSystem());
+        throw new \BadMethodCallException('Not implemented', 1691578434);
     }
 }

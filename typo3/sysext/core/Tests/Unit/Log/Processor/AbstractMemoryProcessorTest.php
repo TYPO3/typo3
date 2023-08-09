@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 
-use TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor;
+use TYPO3\CMS\Core\Tests\Unit\Log\Processor\Fixtures\TestingMemoryProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractMemoryProcessorTest extends UnitTestCase
@@ -27,7 +27,7 @@ final class AbstractMemoryProcessorTest extends UnitTestCase
      */
     public function setRealMemoryUsageSetsRealMemoryUsage(): void
     {
-        $processor = $this->getMockForAbstractClass(AbstractMemoryProcessor::class);
+        $processor = new TestingMemoryProcessor();
         $processor->setRealMemoryUsage(false);
         self::assertFalse($processor->getRealMemoryUsage());
     }
@@ -37,7 +37,7 @@ final class AbstractMemoryProcessorTest extends UnitTestCase
      */
     public function setFormatSizeSetsFormatSize(): void
     {
-        $processor = $this->getMockForAbstractClass(AbstractMemoryProcessor::class);
+        $processor = new TestingMemoryProcessor();
         $processor->setFormatSize(false);
         self::assertFalse($processor->getFormatSize());
     }

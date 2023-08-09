@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
+use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\TestingDriver;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -55,7 +56,7 @@ final class DriverRegistryTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314979451);
         $className = get_class($this->createMock(DriverInterface::class));
-        $className2 = get_class($this->getMockForAbstractClass(DriverInterface::class));
+        $className2 = TestingDriver::class;
         $subject = new DriverRegistry();
         $subject->registerDriverClass($className, 'foobar');
         $subject->registerDriverClass($className2, 'foobar');

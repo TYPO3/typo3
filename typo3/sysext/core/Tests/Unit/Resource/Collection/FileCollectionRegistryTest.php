@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Collection;
 
-use TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection;
 use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
 use TYPO3\CMS\Core\Resource\Collection\StaticFileCollection;
+use TYPO3\CMS\Core\Tests\Unit\Resource\Collection\Fixtures\TestingFileCollection;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,7 +30,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
      */
     public function registeredFileCollectionClassesCanBeRetrieved(): void
     {
-        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
+        $className = TestingFileCollection::class;
         $subject = new FileCollectionRegistry();
         $subject->registerFileCollectionClass($className, 'foobar');
         $returnedClassName = $subject->getFileCollectionClass('foobar');
@@ -56,7 +56,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1391295611);
         $subject = new FileCollectionRegistry();
-        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
+        $className = TestingFileCollection::class;
         $type = str_pad('', 40);
         $subject->registerFileCollectionClass($className, $type);
     }
@@ -69,7 +69,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1391295643);
         $subject = new FileCollectionRegistry();
-        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
+        $className = TestingFileCollection::class;
         $className2 = get_class($this->getMockForAbstractClass(StaticFileCollection::class));
         $subject->registerFileCollectionClass($className, 'foobar');
         $subject->registerFileCollectionClass($className2, 'foobar');
@@ -80,7 +80,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
      */
     public function registerFileCollectionClassOverridesExistingRegisteredFileCollectionClass(): void
     {
-        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
+        $className = TestingFileCollection::class;
         $className2 = get_class($this->getMockForAbstractClass(StaticFileCollection::class));
         $subject = new FileCollectionRegistry();
         $subject->registerFileCollectionClass($className, 'foobar');
@@ -103,7 +103,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
      */
     public function getFileCollectionClassAcceptsClassNameIfClassIsRegistered(): void
     {
-        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
+        $className = TestingFileCollection::class;
         $subject = new FileCollectionRegistry();
         $subject->registerFileCollectionClass($className, 'foobar');
         self::assertEquals($className, $subject->getFileCollectionClass('foobar'));
@@ -114,7 +114,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
      */
     public function fileCollectionRegistryIsInitializedWithPreconfiguredFileCollections(): void
     {
-        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
+        $className = TestingFileCollection::class;
         $type = substr(StringUtility::getUniqueId('type_'), 0, 30);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredCollections'] = [
             $type => $className,
@@ -128,7 +128,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
      */
     public function fileCollectionExistsReturnsTrueForAllExistingFileCollections(): void
     {
-        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
+        $className = TestingFileCollection::class;
         $type = 'foo';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredCollections'] = [
             $type => $className,

@@ -15,19 +15,17 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
+namespace TYPO3\CMS\Core\Tests\Unit\Resource\Collection\Fixtures;
 
-use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\TestingDriver;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection;
 
-final class AbstractDriverTest extends UnitTestCase
+/**
+ * Testing subclass of `AbstractFileCollection`.
+ */
+final class TestingFileCollection extends AbstractFileCollection
 {
-    /**
-     * @test
-     */
-    public function isCaseSensitiveFileSystemReturnsTrueIfNothingIsConfigured(): void
+    public function loadContents(): void
     {
-        $subject = new TestingDriver();
-        self::assertTrue($subject->isCaseSensitiveFileSystem());
+        // stub
     }
 }
