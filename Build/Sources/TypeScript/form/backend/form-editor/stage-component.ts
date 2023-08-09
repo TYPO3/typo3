@@ -21,7 +21,6 @@ import Sortable from 'sortablejs';
 
 import type {
   FormEditor,
-  ViewModel,
 } from '@typo3/form/backend/form-editor';
 import type {
   Utility,
@@ -35,6 +34,7 @@ import type {
 import type {
   InsertElementsModalConfiguration
 } from '@typo3/form/backend/form-editor/modals-component';
+type ViewModel = typeof import('./view-model');
 
 interface Configuration extends Partial<HelperConfiguration> {
   isSortable: boolean,

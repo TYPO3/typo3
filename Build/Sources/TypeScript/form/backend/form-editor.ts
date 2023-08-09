@@ -46,19 +46,10 @@ const assert = Core.assert;
 
 type AdditionalViewModelModules = JavaScriptItemPayload[];
 
+type ViewModel = typeof import('./form-editor/view-model');
+
 export interface Mediator {
   bootstrap(formEditorInstance: FormEditor, viewModel: ViewModel): void;
-}
-
-export interface ViewModel {
-  bootstrap(formEditorInstance: FormEditor, additionalViewModelModules: AdditionalViewModelModules): void;
-  enableButton(button: JQuery): void;
-  disableButton(button: JQuery): void;
-  hideComponent(component: JQuery): void;
-  showRemoveFormElementModal(formElement?: FormElement): void;
-  showRemoveCollectionElementModal(collectionElementIdentifier: string, collectionName: string, formElement?: FormElement): void;
-  setElementValidationErrorClass(element: JQuery, classIdentifier?: string): void;
-  removeElementValidationErrorClass(element: JQuery, classIdentifier?: string): void;
 }
 
 export type FormEditorConfiguration = {
