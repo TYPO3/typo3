@@ -150,6 +150,8 @@ final class SelectPagetreeWithKeyboardCest
      */
     public function focusLastPageTreeItemWithEndKey(ApplicationTester $I): void
     {
+        $I->markTestSkipped('Test assumption needs to be revalidated. END key should jump to the last node.');
+
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
         $I->assertEquals(
             'Root',

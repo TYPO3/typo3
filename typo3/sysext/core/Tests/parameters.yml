@@ -3,4 +3,5 @@
 # These values can be overridden by environment variables,
 # e.g. in Build/testing-docker/local/docker-compose.yml
 #
-typo3TestingAcceptanceBaseUrl: http://web:8000
+typo3TestingAcceptanceBaseUrl: http://web:80
+

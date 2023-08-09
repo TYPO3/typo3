@@ -60,9 +60,9 @@ final class FalMetadataCest
         $I->click('Add image');
         $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
-        $I->waitForElement('.svg-tree-wrapper .nodes .node', 5);
+        $I->waitForElement('.svg-tree-wrapper .nodes .node');
         $I->click('.node[title="styleguide"]');
-        $I->waitForText('fileadmin: /styleguide/', 5);
+        $I->waitForText('fileadmin: /styleguide/');
         $I->click('bus_lane.jpg');
         $I->switchToWindow('typo3-backend');
         $I->switchToContentFrame();
