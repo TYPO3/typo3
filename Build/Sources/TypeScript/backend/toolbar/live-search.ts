@@ -243,4 +243,12 @@ class LiveSearch {
   }
 }
 
-export default top.TYPO3.LiveSearch ?? new LiveSearch();
+let liveSearchObject: LiveSearch;
+if (!top.TYPO3.LiveSearch) {
+  liveSearchObject = new LiveSearch();
+  top.TYPO3.LiveSearch = liveSearchObject;
+} else {
+  liveSearchObject = top.TYPO3.LiveSearch;
+}
+
+export default liveSearchObject;

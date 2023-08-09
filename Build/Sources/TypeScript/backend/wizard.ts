@@ -259,7 +259,7 @@ class Wizard {
           }).width(initialStep + '%').text(
             top.TYPO3.lang['wizard.progress']
               .replace('{0}', '1')
-              .replace('{1}', slideCount),
+              .replace('{1}', slideCount.toString()),
           ),
         ),
       );
@@ -293,7 +293,7 @@ class Wizard {
   }
 }
 
-let wizardObject: any;
+let wizardObject: Wizard;
 try {
   // fetch from opening window
   if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.Wizard) {

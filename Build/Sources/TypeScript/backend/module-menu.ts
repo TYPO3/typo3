@@ -518,11 +518,15 @@ class ModuleMenu {
   }
 }
 
+interface ModuleMenuNamespace {
+  App: ModuleMenu;
+}
+
 if (!top.TYPO3.ModuleMenu) {
   top.TYPO3.ModuleMenu = {
     App: new ModuleMenu(),
   };
 }
-const moduleMenuApp = top.TYPO3.ModuleMenu;
+const moduleMenuApp = <ModuleMenuNamespace>top.TYPO3.ModuleMenu;
 
 export default moduleMenuApp;

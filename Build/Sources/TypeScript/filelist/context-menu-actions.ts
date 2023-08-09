@@ -207,7 +207,7 @@ class ContextMenuActions {
       }
     };
     (new AjaxRequest(url)).withQueryArguments(queryArguments).get().finally((): void => {
-      top.TYPO3.Backend.ContentContainer.refresh(true);
+      top.TYPO3.Backend.ContentContainer.refresh();
     });
   }
 
@@ -223,7 +223,7 @@ class ContextMenuActions {
       }
     };
     (new AjaxRequest(url)).withQueryArguments(queryArguments).get().finally((): void => {
-      top.TYPO3.Backend.ContentContainer.refresh(true);
+      top.TYPO3.Backend.ContentContainer.refresh();
     });
   }
 
@@ -238,7 +238,7 @@ class ContextMenuActions {
       }
     };
     (new AjaxRequest(url)).withQueryArguments(queryArguments).get().finally((): void => {
-      top.TYPO3.Backend.ContentContainer.refresh(true);
+      top.TYPO3.Backend.ContentContainer.refresh();
     });
   }
 
@@ -253,7 +253,7 @@ class ContextMenuActions {
       }
     };
     (new AjaxRequest(url)).withQueryArguments(queryArguments).get().finally((): void => {
-      top.TYPO3.Backend.ContentContainer.refresh(true);
+      top.TYPO3.Backend.ContentContainer.refresh();
     });
   }
 
