@@ -20,15 +20,6 @@ interface ModuleRequirements {
   mediator?: JavaScriptItemPayload;
 }
 
-interface FormEditorLike {
-  getInstance(options: any, mediator: MediatorLike, viewModel: typeof import('@typo3/form/backend/form-manager/view-model')): FormEditorLike;
-  run(): FormEditorLike;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface MediatorLike {
-}
-
 /**
  * @exports @typo3/form/backend/helper
  */
@@ -40,7 +31,11 @@ export class Helper {
         loadModule(requirements.mediator),
         loadModule(requirements.viewModel),
       ]).then((modules: [any, any, any]) =>
-        ((app: FormEditorLike, mediator: MediatorLike, viewModel: typeof import('@typo3/form/backend/form-manager/view-model')) => {
+        ((
+          app: typeof import('@typo3/form/backend/form-editor'),
+          mediator: import('@typo3/form/backend/form-editor').Mediator,
+          viewModel: import('@typo3/form/backend/form-editor').ViewModel
+        ) => {
           window.TYPO3.FORMEDITOR_APP = app.getInstance(options, mediator, viewModel).run();
         })(...modules)
       );
