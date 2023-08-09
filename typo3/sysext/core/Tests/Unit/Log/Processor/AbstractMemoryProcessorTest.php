@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 use TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-final class AbstractMemoryTest extends UnitTestCase
+final class AbstractMemoryProcessorTest extends UnitTestCase
 {
     /**
      * @test
