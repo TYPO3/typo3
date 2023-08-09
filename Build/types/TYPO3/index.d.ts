@@ -7,8 +7,8 @@
 declare namespace TYPO3 {
   export let Backend: typeof import('@typo3/backend/viewport').default;
   export let ExtensionManager: typeof import('@typo3/extensionmanager/main').default;
-  export let FORMEDITOR_APP: any; // @todo migrate to typescript, then use: InstanceType<import('@typo3/form/backend/form-editor').FormEditor>;
-  export let FORMMANAGER_APP: any; // @todo migrate to typescript, then use: InstanceType<import('@typo3/form/backend/form-manager').FormManager>;
+  export let FORMEDITOR_APP: any; // @todo migrate to typescript, then use: import('@typo3/form/backend/form-editor').FormEditor;
+  export let FORMMANAGER_APP: import('@typo3/form/backend/form-manager').FormManager;
   export let FormEngine: typeof import('@typo3/backend/form-engine').default;
   export let Icons: typeof import('@typo3/backend/icons').default;
   export let InfoWindow: typeof import('@typo3/backend/info-window').default;
