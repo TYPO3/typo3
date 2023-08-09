@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
@@ -33,7 +34,6 @@ final class ColumnDefinitionItemTest extends UnitTestCase
     public function canParseUnquotedMysqlKeywordAsTableName(): void
     {
         $subject = $this->createSubject('CREATE TABLE `aTable`(checksum VARCHAR(64));');
-
         self::assertInstanceOf(CreateColumnDefinitionItem::class, $subject);
         self::assertSame($subject->columnName->schemaObjectName, 'checksum');
     }
@@ -48,19 +48,17 @@ final class ColumnDefinitionItemTest extends UnitTestCase
     public function canParseCreateDefinitionWithTrailingComma(): void
     {
         $subject = $this->createSubject('CREATE TABLE `aTable`(aField VARCHAR(64), );');
-
         self::assertInstanceOf(CreateColumnDefinitionItem::class, $subject);
     }
 
     /**
      * Parse the CREATE TABLE statement and return the reference definition
      */
-    protected function createSubject(string $statement): CreateColumnDefinitionItem
+    private function createSubject(string $statement): AbstractCreateDefinitionItem
     {
         $parser = new Parser($statement);
         /** @var CreateTableStatement $createTableStatement */
         $createTableStatement = $parser->getAST();
-
         return $createTableStatement->createDefinition->items[0];
     }
 }

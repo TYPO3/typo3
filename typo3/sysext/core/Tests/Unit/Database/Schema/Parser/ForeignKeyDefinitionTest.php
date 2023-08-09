@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
@@ -97,12 +98,11 @@ final class ForeignKeyDefinitionTest extends UnitTestCase
     /**
      * Parse the CREATE TABLE statement and return the reference definition
      */
-    protected function createSubject(string $statement): CreateForeignKeyDefinitionItem
+    private function createSubject(string $statement): AbstractCreateDefinitionItem
     {
         $parser = new Parser($statement);
         /** @var CreateTableStatement $createTableStatement */
         $createTableStatement = $parser->getAST();
-
         return $createTableStatement->createDefinition->items[1];
     }
 }

@@ -150,7 +150,7 @@ class TableBuilder
         );
 
         $column->setNotnull(!$item->allowNull);
-        $column->setAutoincrement((bool)$item->autoIncrement);
+        $column->setAutoincrement($item->autoIncrement);
         $column->setComment($item->comment);
 
         // Set default value (unless it's an auto increment column)

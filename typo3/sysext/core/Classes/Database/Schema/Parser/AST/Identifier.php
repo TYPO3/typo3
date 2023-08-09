@@ -20,25 +20,16 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
 /**
  * Syntax node to represent identifiers used in various parts of a
  * SQL statements like table, field or index names.
+ *
+ * @internal
  */
-class Identifier
+final class Identifier
 {
-    /**
-     * @var string
-     */
-    public $schemaObjectName;
+    protected string $quoteChar = '`';
 
-    /**
-     * @var string
-     */
-    protected $quoteChar = '`';
-
-    /**
-     * Identifier constructor.
-     */
-    public function __construct(string $schemaObjectName = null)
-    {
-        $this->schemaObjectName = (string)$schemaObjectName;
+    public function __construct(
+        public readonly string $schemaObjectName
+    ) {
     }
 
     /**
@@ -47,7 +38,6 @@ class Identifier
     public function getQuotedName(): string
     {
         $c = $this->quoteChar;
-
         return $c . str_replace($c, $c . $c, $this->schemaObjectName) . $c;
     }
 }

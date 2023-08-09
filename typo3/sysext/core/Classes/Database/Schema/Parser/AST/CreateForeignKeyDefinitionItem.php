@@ -19,40 +19,18 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
 
 /**
  * Syntax node to structure a foreign key definition.
+ *
+ * @internal
  */
-class CreateForeignKeyDefinitionItem extends AbstractCreateDefinitionItem
+final class CreateForeignKeyDefinitionItem extends AbstractCreateDefinitionItem
 {
     /**
-     * @var Identifier
+     * @param IndexColumnName[] $columnNames
      */
-    public $indexName;
-
-    /**
-     * The index name
-     *
-     * @var string
-     */
-    public $name = '';
-
-    /**
-     * @var IndexColumnName[]
-     */
-    public $columnNames = [];
-
-    /**
-     * Reference definition
-     *
-     * @var ReferenceDefinition
-     */
-    public $reference;
-
-    /**
-     * CreateForeignKeyDefinitionItem constructor.
-     */
-    public function __construct(Identifier $indexName, array $columnNames, ReferenceDefinition $reference)
-    {
-        $this->indexName = $indexName;
-        $this->columnNames = $columnNames;
-        $this->reference = $reference;
+    public function __construct(
+        public readonly Identifier $indexName,
+        public readonly array $columnNames,
+        public readonly ReferenceDefinition $reference,
+    ) {
     }
 }

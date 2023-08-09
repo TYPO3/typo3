@@ -20,26 +20,15 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
 /**
  * Syntax node to represent the initial CREATE TABLE statement in the
  * syntax tree. Represents everything up to the start of the definition
- * of fields/indexes/foreign keys
+ * of fields/indexes/foreign keys.
+ *
+ * @internal
  */
-class CreateTableClause
+final class CreateTableClause
 {
-    /**
-     * @var \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier
-     */
-    public $tableName;
-
-    /**
-     * @var bool
-     */
-    public $isTemporary;
-
-    /**
-     * CreateTableClause constructor.
-     */
-    public function __construct(Identifier $tableName, bool $isTemporary = false)
-    {
-        $this->tableName = $tableName;
-        $this->isTemporary = $isTemporary;
+    public function __construct(
+        public readonly Identifier $tableName,
+        public bool $isTemporary = false
+    ) {
     }
 }

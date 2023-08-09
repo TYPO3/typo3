@@ -33,7 +33,7 @@ abstract class AbstractDataTypeBaseTestCase extends UnitTestCase
     public const CREATE_TABLE_STATEMENT = 'CREATE TABLE `aTable`(`aField` %s);';
 
     /**
-     * Wrap a column definition into a create table statement for testing
+     * Wrap a column definition into a "create" table statement for testing
      */
     protected function createTableStatement(string $columnDefinition): string
     {
@@ -48,7 +48,8 @@ abstract class AbstractDataTypeBaseTestCase extends UnitTestCase
         $parser = new Parser($this->createTableStatement($statement));
         /** @var CreateTableStatement $createTableStatement */
         $createTableStatement = $parser->getAST();
-
-        return $createTableStatement->createDefinition->items[0];
+        /** @var CreateColumnDefinitionItem $item */
+        $item = $createTableStatement->createDefinition->items[0];
+        return $item;
     }
 }

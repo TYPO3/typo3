@@ -20,19 +20,16 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
 /**
  * Syntax node for the whole definition of a table/view. Collects
  * the nodes for fields, indexes and foreign keys.
+ *
+ * @internal
  */
-class CreateDefinition
+final class CreateDefinition
 {
     /**
-     * @var array
+     * @param AbstractCreateDefinitionItem[] $items
      */
-    public $items;
-
-    /**
-     * CreateDefinition constructor.
-     */
-    public function __construct(array $items)
-    {
-        $this->items = $items;
+    public function __construct(
+        public readonly array $items
+    ) {
     }
 }

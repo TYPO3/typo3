@@ -20,102 +20,35 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\AbstractDataType;
 
 /**
- * Syntax tree node for column definitions within a create statements.
+ * Syntax tree node for column definitions within "create table" statements.
  * Holds basic attributes common to all types of columns.
+ *
+ * @internal
  */
-class CreateColumnDefinitionItem extends AbstractCreateDefinitionItem
+final class CreateColumnDefinitionItem extends AbstractCreateDefinitionItem
 {
-    /**
-     * @var \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier
-     */
-    public $columnName;
+    public bool $allowNull = true;
+    // Has explicit default value?
+    public bool $hasDefaultValue = false;
+    // The explicit default value
+    public mixed $defaultValue = null;
+    public bool $autoIncrement = false;
+    // Create non-unique index for column?
+    public bool $index = false;
+    // Create unique constraint for column?
+    public bool $unique = false;
+    // Use column as primary key for table?
+    public bool $primary = false;
+    public ?string $comment = null;
+    // Column format: "dynamic" or "fixed"
+    public ?string $columnFormat = null;
+    // The storage type for the column (ignored unless MySQL Cluster with NDB Engine)
+    public ?string $storage = null;
+    public ?ReferenceDefinition $reference = null;
 
-    /**
-     * @var \TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\AbstractDataType
-     */
-    public $dataType;
-
-    /**
-     * Allow NULL values
-     *
-     * @var bool
-     */
-    public $allowNull = true;
-
-    /**
-     * Explicit default value
-     *
-     * @var bool
-     */
-    public $hasDefaultValue = false;
-
-    /**
-     * The explicit default value
-     *
-     * @var mixed
-     */
-    public $defaultValue;
-
-    /**
-     * Set auto increment flag
-     *
-     * @var bool
-     */
-    public $autoIncrement = false;
-
-    /**
-     * Create non-unique index for column
-     *
-     * @var bool
-     */
-    public $index = false;
-
-    /**
-     * Create unique constraint for column
-     *
-     * @var bool
-     */
-    public $unique = false;
-
-    /**
-     * Use column as primary key for table
-     *
-     * @var bool
-     */
-    public $primary = false;
-
-    /**
-     * Column comment
-     *
-     * @var string
-     */
-    public $comment;
-
-    /**
-     * The column format (DYNAMIC or FIXED)
-     *
-     * @var string
-     */
-    public $columnFormat;
-
-    /**
-     * The storage type for the column (ignored unless MySQL Cluster with NDB Engine)
-     *
-     * @var string
-     */
-    public $storage;
-
-    /**
-     * @var ReferenceDefinition
-     */
-    public $reference;
-
-    /**
-     * CreateColumnDefinitionItem constructor.
-     */
-    public function __construct(Identifier $columnName, AbstractDataType $dataType)
-    {
-        $this->columnName = $columnName;
-        $this->dataType = $dataType;
+    public function __construct(
+        public readonly Identifier $columnName,
+        public readonly AbstractDataType $dataType,
+    ) {
     }
 }

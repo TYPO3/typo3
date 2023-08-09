@@ -21,46 +21,24 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
  * Syntax node to represent the REFERENCES part of a foreign key
  * definition, encapsulating ON UPDATE/ON DELETE actions as well
  * as the foreign table name and columns.
+ *
+ * @internal
  */
-class ReferenceDefinition
+final class ReferenceDefinition
 {
-    /**
-     * Match type: FULL, PARTIAL or SIMPLE
-     *
-     * @var string
-     */
-    public $match;
+    // Match type if given: FULL, PARTIAL or SIMPLE
+    public ?string $match = null;
+    // Reference option if given: RESTRICT | CASCADE | SET NULL | NO ACTION
+    public ?string $onDelete = null;
+    // Reference option if given: RESTRICT | CASCADE | SET NULL | NO ACTION
+    public ?string $onUpdate = null;
 
     /**
-     * Reference Option: RESTRICT | CASCADE | SET NULL | NO ACTION
-     *
-     * @var string
+     * @param IndexColumnName[] $columnNames
      */
-    public $onDelete;
-
-    /**
-     * Reference Option: RESTRICT | CASCADE | SET NULL | NO ACTION
-     *
-     * @var string
-     */
-    public $onUpdate;
-
-    /**
-     * @var \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier
-     */
-    public $tableName;
-
-    /**
-     * @var IndexColumnName[]
-     */
-    public $columnNames;
-
-    /**
-     * ReferenceDefinition constructor.
-     */
-    public function __construct(Identifier $tableName, array $columnNames)
-    {
-        $this->tableName = $tableName;
-        $this->columnNames = $columnNames;
+    public function __construct(
+        public readonly Identifier $tableName,
+        public readonly array $columnNames,
+    ) {
     }
 }

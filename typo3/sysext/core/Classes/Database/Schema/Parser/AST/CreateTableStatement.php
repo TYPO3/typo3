@@ -19,36 +19,20 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
 
 /**
  * Root node for a CREATE TABLE statement in the syntax tree.
+ *
+ * @internal
  */
-class CreateTableStatement extends AbstractCreateStatement
+final class CreateTableStatement extends AbstractCreateStatement
 {
-    /**
-     * @var \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier
-     */
-    public $tableName;
+    public Identifier $tableName;
+    public bool $isTemporary = false;
+    public array $tableOptions = [];
 
-    /**
-     * @var bool
-     */
-    public $isTemporary = false;
-
-    /**
-     * @var \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateDefinition
-     */
-    public $createDefinition;
-
-    /**
-     * @var array
-     */
-    public $tableOptions = [];
-
-    /**
-     * CreateTableStatement constructor.
-     */
-    public function __construct(CreateTableClause $createTableClause, CreateDefinition $createDefinition)
-    {
+    public function __construct(
+        CreateTableClause $createTableClause,
+        public readonly CreateDefinition $createDefinition
+    ) {
         $this->tableName = $createTableClause->tableName;
         $this->isTemporary = $createTableClause->isTemporary;
-        $this->createDefinition = $createDefinition;
     }
 }

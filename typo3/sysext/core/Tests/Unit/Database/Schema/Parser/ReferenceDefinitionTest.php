@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
@@ -201,12 +202,13 @@ final class ReferenceDefinitionTest extends UnitTestCase
     /**
      * Parse the CREATE TABLE statement and return the reference definition
      */
-    protected function createSubject(string $statement): ReferenceDefinition
+    private function createSubject(string $statement): ReferenceDefinition
     {
         $parser = new Parser($statement);
         /** @var CreateTableStatement $createTableStatement */
         $createTableStatement = $parser->getAST();
-
-        return $createTableStatement->createDefinition->items[0]->reference;
+        /** @var CreateColumnDefinitionItem $item */
+        $item = $createTableStatement->createDefinition->items[0];
+        return $item->reference;
     }
 }

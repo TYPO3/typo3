@@ -410,9 +410,9 @@ class Parser
         while ($this->lexer->isNextToken(Lexer::T_COMMA)) {
             $this->match(Lexer::T_COMMA);
 
-            // TYPO3 previously accepted invalid SQL files where a create definition
+            // TYPO3 previously accepted invalid SQL files where a "create" definition
             // item terminated with a comma before the final closing parenthesis.
-            // Silently swallow the extra comma and stop the create definition parsing.
+            // Silently swallow the extra comma and stop the "create" definition parsing.
             if ($this->lexer->isNextToken(Lexer::T_CLOSE_PARENTHESIS)) {
                 break;
             }
@@ -598,7 +598,7 @@ class Parser
      */
     public function indexName(): Identifier
     {
-        $indexName = new Identifier(null);
+        $indexName = new Identifier('');
         if (!$this->lexer->isNextTokenAny([Lexer::T_USING, Lexer::T_OPEN_PARENTHESIS])) {
             $indexName = $this->schemaObjectName();
         }

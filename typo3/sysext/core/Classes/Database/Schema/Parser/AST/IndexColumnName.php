@@ -21,31 +21,15 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
  * Syntax node to represent a column within an index, which can in MySQL
  * context consist of the actual column name, length information for a partial
  * index and a direction which influences default sorting and access patterns.
+ *
+ * @internal
  */
-class IndexColumnName
+final class IndexColumnName
 {
-    /**
-     * @var \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier
-     */
-    public $columnName;
-
-    /**
-     * @var int
-     */
-    public $length;
-
-    /**
-     * @var string|null
-     */
-    public $direction;
-
-    /**
-     * IndexColumnName constructor.
-     */
-    public function __construct(Identifier $columnName, int $length, string $direction = null)
-    {
-        $this->columnName = $columnName;
-        $this->length = $length;
-        $this->direction = $direction;
+    public function __construct(
+        public readonly Identifier $columnName,
+        public readonly int $length,
+        public readonly ?string $direction = null
+    ) {
     }
 }
