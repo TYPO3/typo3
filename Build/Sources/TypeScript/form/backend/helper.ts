@@ -33,7 +33,7 @@ export class Helper {
       ]).then((modules: [any, any, any]) =>
         ((
           app: typeof import('@typo3/form/backend/form-editor'),
-          mediator: import('@typo3/form/backend/form-editor').Mediator,
+          mediator: typeof import('@typo3/form/backend/form-editor/mediator'),
           viewModel: typeof import('@typo3/form/backend/form-editor/view-model')
         ) => {
           window.TYPO3.FORMEDITOR_APP = app.getInstance(options, mediator, viewModel).run();

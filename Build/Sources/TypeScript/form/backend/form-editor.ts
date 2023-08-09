@@ -47,10 +47,7 @@ const assert = Core.assert;
 type AdditionalViewModelModules = JavaScriptItemPayload[];
 
 type ViewModel = typeof import('./form-editor/view-model');
-
-export interface Mediator {
-  bootstrap(formEditorInstance: FormEditor, viewModel: ViewModel): void;
-}
+type Mediator = typeof import('./form-editor/mediator');
 
 export type FormEditorConfiguration = {
   prototypeName: string,
