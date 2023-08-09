@@ -1,2 +1,2 @@
-self.TYPO3 = {};
+self.TYPO3 = <typeof TYPO3>{};
 import('@typo3/install/installer');

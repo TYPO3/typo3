@@ -5,24 +5,27 @@
  * Add types as you use them
  */
 declare namespace TYPO3 {
-  export let Backend: any;
-  export let ExtensionManager: any;
-  export let FormEngine: any;
-  export let Icons: any;
-  export let InfoWindow: any;
-  export let LoginRefresh: any;
-  export let ModuleMenu: any;
-  export let MultiStepWizard: any;
-  export let Notification: any;
-  export let Modal: any;
-  export let OpendocsMenu: any;
-  export let Permissions: any;
-  export let Severity: any;
-  export let ShortcutMenu: any;
-  export let Storage: any;
-  export let WindowManager: any;
-  export let Wizard: any;
-  export let WorkspacesMenu: any;
+  export let Backend: typeof import('@typo3/backend/viewport').default;
+  export let ExtensionManager: typeof import('@typo3/extensionmanager/main').default;
+  export let FORMEDITOR_APP: any; // @todo migrate to typescript, then use: InstanceType<import('@typo3/form/backend/form-editor').FormEditor>;
+  export let FORMMANAGER_APP: any; // @todo migrate to typescript, then use: InstanceType<import('@typo3/form/backend/form-manager').FormManager>;
+  export let FormEngine: typeof import('@typo3/backend/form-engine').default;
+  export let Icons: typeof import('@typo3/backend/icons').default;
+  export let InfoWindow: typeof import('@typo3/backend/info-window').default;
+  export let LoginRefresh: typeof import('@typo3/backend/login-refresh').default;
+  export namespace ModuleMenu {
+    export let App: typeof import('@typo3/backend/module-menu').default.App;
+  }
+  export let MultiStepWizard: typeof import('@typo3/backend/multi-step-wizard').default;
+  export let Notification: typeof import('@typo3/backend/notification').default;
+  export let Modal: typeof import('@typo3/backend/modal').default;
+  export let LiveSearch: typeof import('@typo3/backend/toolbar/live-search').default;
+  export let LiveSearchConfigurator: typeof import('@typo3/backend/live-search/live-search-configurator').default;
+  export let Severity: import('@typo3/backend/severity').default;
+  export let ShortcutMenu: typeof import('@typo3/backend/toolbar/shortcut-menu').default;
+  export let WindowManager: typeof import('@typo3/backend/window-manager').default;
+  export let Wizard: typeof import('@typo3/backend/wizard').default;
+  export let WorkspacesMenu: typeof import('@typo3/workspaces/toolbar/workspaces-menu').default;
   export let settings: any;
   export const lang: { [key: string]: string };
   export const configuration: any;
@@ -67,7 +70,7 @@ declare module '@typo3/ckeditor5-bundle' {
 
 // type definition for global namespace object
 interface Window {
-  TYPO3: any;
+  TYPO3: Partial<typeof TYPO3>;
   list_frame: Window;
   CKEditorInspector: any;
 }

@@ -541,21 +541,21 @@ class MultiStepWizard {
   }
 }
 
-let multistepWizardObject;
+let multistepWizardObject: MultiStepWizard;
 try {
   // fetch from opening window
   if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.MultiStepWizard) {
-    multistepWizardObject = window.opener.TYPO3.MultiStepWizard;
+    multistepWizardObject = <MultiStepWizard>window.opener.TYPO3.MultiStepWizard;
   }
 
   // fetch from parent
   if (parent && parent.window.TYPO3 && parent.window.TYPO3.MultiStepWizard) {
-    multistepWizardObject = parent.window.TYPO3.MultiStepWizard;
+    multistepWizardObject = <MultiStepWizard>parent.window.TYPO3.MultiStepWizard;
   }
 
   // fetch object from outer frame
   if (top && top.TYPO3 && top.TYPO3.MultiStepWizard) {
-    multistepWizardObject = top.TYPO3.MultiStepWizard;
+    multistepWizardObject = <MultiStepWizard>top.TYPO3.MultiStepWizard;
   }
 } catch (e) {
   // This only happens if the opener, parent or top is some other url (eg a local file)

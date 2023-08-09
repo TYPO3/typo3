@@ -482,8 +482,9 @@ class Modal {
    * Initialize markup with data attributes
    *
    * @param {HTMLDocument} theDocument
+   * @internal
    */
-  private initializeMarkupTrigger(theDocument: Document): void {
+  public initializeMarkupTrigger(theDocument: Document): void {
     const modalTrigger = (evt: Event, triggerElement: HTMLElement): void => {
       evt.preventDefault();
       const content = triggerElement.dataset.bsContent || triggerElement.dataset.content || TYPO3.lang['message.confirmation'] || 'Are you sure?';
