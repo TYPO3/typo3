@@ -437,6 +437,7 @@ handleDbmsOptions
 
 COMPOSER_ROOT_VERSION="12.4.x-dev"
 HOST_UID=$(id -u)
+HOST_PID=$(id -g)
 USERSET=""
 if [ $(uname) != "Darwin" ]; then
     USERSET="--user $HOST_UID"
@@ -470,11 +471,13 @@ if [ "${CI}" == "true" ]; then
     CONTAINER_INTERACTIVE=""
 fi
 
+
+IMAGE_APACHE="${TYPO3_IMAGE_PREFIX}typo3/core-testing-apache24:latest"
 IMAGE_PHP="${TYPO3_IMAGE_PREFIX}typo3/core-testing-$(echo "php${PHP_VERSION}" | sed -e 's/\.//'):latest"
 IMAGE_NODEJS="${TYPO3_IMAGE_PREFIX}typo3/core-testing-nodejs18:latest"
 IMAGE_NODEJS_CHROME="${TYPO3_IMAGE_PREFIX}typo3/core-testing-nodejs18-chrome:latest"
 IMAGE_ALPINE="${IMAGE_PREFIX}alpine:3.8"
-IMAGE_SELENIUM="${IMAGE_PREFIX}selenium/standalone-chrome:4.0.0-20211102"
+IMAGE_SELENIUM="${IMAGE_PREFIX}selenium/standalone-chrome:4.11.0-20230801"
 IMAGE_REDIS="${IMAGE_PREFIX}redis:4-alpine"
 IMAGE_MEMCACHED="${IMAGE_PREFIX}memcached:1.5-alpine"
 IMAGE_MARIADB="${IMAGE_PREFIX}mariadb:${DBMS_VERSION}"
@@ -501,9 +504,15 @@ CONTAINER_COMMON_PARAMS="${CONTAINER_INTERACTIVE} --rm --network $NETWORK --add-
 if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
     XDEBUG_MODE="-e XDEBUG_MODE=off"
     XDEBUG_CONFIG=" "
+    PHP_FPM_OPTIONS="-d xdebug.mode=off"
 else
     XDEBUG_MODE="-e XDEBUG_MODE=debug -e XDEBUG_TRIGGER=foo"
     XDEBUG_CONFIG="client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal"
+    PHP_FPM_OPTIONS="-d xdebug.mode=debug -d xdebug.start_with_request=yes -d xdebug.client_host=host.docker.internal -d xdebug.client_port=${PHP_XDEBUG_PORT} -d memory_limit=256M"
+fi
+# if host uid is root, like for example on ci we need to set additional php-fpm command line options
+if [ "${HOST_UID}" = 0 ]; then
+    PHP_FPM_OPTIONS+=" --allow-to-run-as-root"
 fi
 
 # Suite execution
@@ -523,11 +532,15 @@ case ${TEST_SUITE} in
         if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
             SELENIUM_GRID="-p 7900:7900 -e SE_VNC_NO_PASSWORD=1 -e VNC_NO_PASSWORD=1"
         fi
+        rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance" "${CORE_ROOT}/typo3temp/var/tests/AcceptanceReports"
+        mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance"
+        APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/acceptance -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
         ${CONTAINER_BIN} run -d ${SELENIUM_GRID} --name ac-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec,relatime ${IMAGE_SELENIUM} >/dev/null
-        ${CONTAINER_BIN} run -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "host.docker.internal:host-gateway" $USERSET -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
+        ${CONTAINER_BIN} run -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "host.docker.internal:host-gateway" $USERSET -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
+        ${CONTAINER_BIN} run -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "host.docker.internal:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
         waitFor chrome 4444
         waitFor chrome 7900
-        waitFor web 8000
+        waitFor web 80
         if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "xdg-open" >/dev/null; then
             xdg-open http://localhost:7900/?autoconnect=1 >/dev/null
         elif [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "open" >/dev/null; then
@@ -556,8 +569,9 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=$?
                 ;;
             sqlite)
-                mkdir -p "${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/"
-                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}"
+                rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
+                mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-sqlite ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
                 SUITE_EXIT_CODE=$?
                 ;;
@@ -568,11 +582,15 @@ case ${TEST_SUITE} in
         if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
             SELENIUM_GRID="-p 7900:7900 -e SE_VNC_NO_PASSWORD=1 -e VNC_NO_PASSWORD=1"
         fi
+        rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance" "${CORE_ROOT}/typo3temp/var/tests/AcceptanceReports"
+        mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance"
+        APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/acceptance -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
         ${CONTAINER_BIN} run -d ${SELENIUM_GRID} --name ac-istall-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec,relatime ${IMAGE_SELENIUM} >/dev/null
-        ${CONTAINER_BIN} run -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "host.docker.internal:host-gateway" $USERSET -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
+        ${CONTAINER_BIN} run -d --name ac-install-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "host.docker.internal:host-gateway" $USERSET -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
+        ${CONTAINER_BIN} run -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "host.docker.internal:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
         waitFor chrome 4444
         waitFor chrome 7900
-        waitFor web 8000
+        waitFor web 80
         if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "xdg-open" >/dev/null; then
             xdg-open http://localhost:7900/?autoconnect=1 >/dev/null
         elif [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "open" >/dev/null; then
@@ -616,12 +634,13 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=$?
                 ;;
             sqlite)
-                mkdir -p "${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/"
+                rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
+                mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
                 CODECEPION_ENV="--env sqlite"
                 if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
                     CODECEPION_ENV="--env sqlite,headless"
                 fi
-                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}"
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
                 COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${CODECEPION_ENV} --html reports.html"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-install-sqlite ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
                 SUITE_EXIT_CODE=$?

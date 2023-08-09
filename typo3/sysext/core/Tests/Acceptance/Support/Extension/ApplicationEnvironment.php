@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorFrontend;
 use TYPO3\TestingFramework\Core\Acceptance\Extension\BackendEnvironment;
+use TYPO3\TestingFramework\Core\Testbase;
 
 /**
  * Load various core extensions and styleguide and call styleguide generator
@@ -86,6 +87,10 @@ final class ApplicationEnvironment extends BackendEnvironment
                 ],
             ],
         ],
+        'additionalFoldersToCreate' => [
+            '/fileadmin/user_upload/',
+            '/typo3temp/var/lock',
+        ],
     ];
 
     /**
@@ -104,11 +109,9 @@ final class ApplicationEnvironment extends BackendEnvironment
         $GLOBALS['BE_USER']->workspace = 0;
         Bootstrap::initializeLanguageObject();
 
-        // Create favicon.ico to suppress potential javascript errors in console
-        // which are caused by calling a non html in the browser, e.g. seo sitemap xml
-        $faviconTargetPath = '../../../../favicon.ico';
-        if (!is_file($faviconTargetPath)) {
-            symlink('typo3/sysext/backend/Resources/Public/Icons/favicon.ico', '../../../../favicon.ico');
+        $faviconLinkPath = '../../../../favicon.ico';
+        if (!is_file($faviconLinkPath)) {
+            symlink('typo3/sysext/backend/Resources/Public/Icons/favicon.ico', $faviconLinkPath);
         }
 
         $styleguideGenerator = new Generator();
@@ -118,7 +121,42 @@ final class ApplicationEnvironment extends BackendEnvironment
         // Force basePath for testing environment, required for the frontend!
         // Otherwise the page can not be found, also do not set root page to
         // 'hidden' so menus (e.g. menu_sitemap_pages) are displayed correctly
-        $styleguideGeneratorFrontend->create('/typo3temp/var/tests/acceptance/', 0);
+        $styleguideGeneratorFrontend->create('/', 0);
+
+        $testbase = new Testbase();
+        $instancePath = getenv('TYPO3_PATH_ROOT', true);
+        $copyFiles = [
+            // Create favicon.ico to suppress potential javascript errors in console
+            // which are caused by calling a non html in the browser, e.g. seo sitemap xml
+            'typo3/sysext/backend/Resources/Public/Icons/favicon.ico' => [
+                'favicon.ico',
+            ],
+            // Provide some files into the test instance normally added by installer
+            'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/root-htaccess' => [
+                '.htaccess',
+            ],
+            'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/resources-root-htaccess' => [
+                'fileadmin/.htaccess',
+            ],
+            'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-htaccess' => [
+                'fileadmin/_temp_/.htaccess',
+            ],
+            'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-index.html' => [
+                'fileadmin/_temp_/index.html',
+            ],
+            'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/typo3temp-var-htaccess' => [
+                'typo3temp/var/.htaccess',
+            ],
+        ];
+        foreach ($copyFiles as $sourceFile => $targetFiles) {
+            foreach ($targetFiles as $targetFile) {
+                $testbase->createDirectory(dirname(ltrim($targetFile, '/')));
+                copy(
+                    from: ltrim($sourceFile, '/'),
+                    to: ltrim($targetFile, '/'),
+                );
+            }
+        }
     }
 
     // @todo Eventually move this up to TF::BackendEnvironment, but then as protected.

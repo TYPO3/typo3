@@ -60,10 +60,12 @@ final class ListGroupCest
 
     private function openAndCloseTheEditForm(ApplicationTester $I, string $groupName): void
     {
+        $I->wait(3);
         $I->waitForText('Edit Backend usergroup "' . $groupName . '" on root level', 120);
         $I->see('Edit Backend usergroup "' . $groupName . '" on root level', 'h1');
 
         $I->click('div.module-docheader .btn.t3js-editform-close');
+        $I->wait(3);
         $I->waitForElementVisible('table.table-striped');
         $I->waitForText('Backend user groups', 120);
         $I->see('Backend user groups', 'h1');

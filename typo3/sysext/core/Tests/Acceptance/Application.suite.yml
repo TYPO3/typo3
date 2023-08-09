@@ -7,13 +7,13 @@ step_decorators:
 modules:
   enabled:
     - WebDriver:
-        url: '%typo3TestingAcceptanceBaseUrl%/typo3temp/var/tests/acceptance'
+        url: '%typo3TestingAcceptanceBaseUrl%'
         browser: chrome
         wait: 2
         host: chrome
         capabilities:
           chromeOptions:
-            args: ["--no-sandbox", "window-size=1280,1024", "--disable-gpu"]
+            args: ["--no-sandbox", "window-size=1280,1024", "--disable-gpu", "--unsafely-treat-insecure-origin-as-secure=http://web"]
     - \TYPO3\TestingFramework\Core\Acceptance\Helper\Acceptance
     - \TYPO3\TestingFramework\Core\Acceptance\Helper\Login:
         sessions:
@@ -28,7 +28,7 @@ env:
     modules:
       enabled:
         - WebDriver:
-            url: '%typo3TestingAcceptanceBaseUrl%/typo3temp/var/tests/acceptance'
+            url: '%typo3TestingAcceptanceBaseUrl%'
             browser: chrome
             wait: 2
             host: chrome

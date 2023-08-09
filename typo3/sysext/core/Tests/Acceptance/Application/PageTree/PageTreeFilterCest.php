@@ -107,9 +107,9 @@ final class PageTreeFilterCest
         $this->waitForPageTreeLoad($I);
 
         $I->canSee('elements group', $this->inPageTree);
-        $I->waitForElementNotVisible('//*[text()=\'inline mn\']');
-        $I->waitForElementNotVisible('//*[text()=\'inline mngroup\']');
-        $I->waitForElementNotVisible('//*[text()=\'inline expandsingle\']');
+        $I->waitForElementNotVisible('//*[text()=\'inline mn\']', 20);
+        $I->waitForElementNotVisible('//*[text()=\'inline mngroup\']', 20);
+        $I->waitForElementNotVisible('//*[text()=\'inline expandsingle\']', 20);
     }
 
     private function waitForPageTreeLoad(ApplicationTester $I): void

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Site;
 
+use Codeception\Exception\ElementNotFound;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
@@ -177,6 +178,11 @@ final class SiteModuleCest
         $I->waitForElementNotVisible('#t3js-ui-block', 30);
         $I->waitForElement('#EditDocumentController');
         $I->waitForElementNotVisible('#t3js-ui-block');
+        try {
+            $I->wait(0.2);
+            $I->click('.close', '#alert-container');
+        } catch (ElementNotFound) {
+        }
 
         // watch out for new line after each instruction. Anything else doesn't work.
         $config = 'page = PAGE
@@ -186,7 +192,12 @@ page.10.value = This is a default text for default rendering without dynamic con
 ';
         $I->fillField('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]', $config);
         $I->click('//button[@name="_savedok"]');
-        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->waitForElementNotVisible('#t3js-ui-block', 30);
+        try {
+            $I->wait(0.2);
+            $I->click('.close', '#alert-container');
+        } catch (ElementNotFound) {
+        }
 
         $I->amGoingTo('Call FE and verify it is properly rendered');
         $I->amOnPage('/');

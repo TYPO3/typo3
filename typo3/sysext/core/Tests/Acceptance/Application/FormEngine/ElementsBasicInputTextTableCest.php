@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 
+use Codeception\Exception\ElementNotFound;
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverBy;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
@@ -129,6 +130,11 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $textOriginColumn = $I->grabValueFrom('input[data-row="0"][data-col="0"]');
         $I->click('typo3-backend-table-wizard tr > th:nth-child(2) button[title="Move right"]');
         $I->click(self::$saveButtonLink);
+        try {
+            $I->wait(0.2);
+            $I->click('.close', '#alert-container');
+        } catch (ElementNotFound) {
+        }
         $textNewColumn = $I->grabValueFrom('input[data-row="0"][data-col="1"]');
         $I->assertEquals($textOriginColumn, $textNewColumn);
 
@@ -136,6 +142,11 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $textOriginColumn = $I->grabValueFrom('input[data-row="0"][data-col="1"]');
         $I->click('typo3-backend-table-wizard tr > th:nth-child(3) button[title="Move left"]');
         $I->click(self::$saveButtonLink);
+        try {
+            $I->wait(0.2);
+            $I->click('.close', '#alert-container');
+        } catch (ElementNotFound) {
+        }
         $textNewColumn = $I->grabValueFrom('input[data-row="0"][data-col="0"]');
         $I->assertEquals($textOriginColumn, $textNewColumn);
 
@@ -143,6 +154,11 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $textOriginColumn = $I->grabValueFrom('input[data-row="0"][data-col="0"]');
         $I->click('typo3-backend-table-wizard tbody tr:first-child > td button[title="Move down"]');
         $I->click(self::$saveButtonLink);
+        try {
+            $I->wait(0.2);
+            $I->click('.close', '#alert-container');
+        } catch (ElementNotFound) {
+        }
         $textNewColumn = $I->grabValueFrom('input[data-row="1"][data-col="0"]');
         $I->assertEquals($textOriginColumn, $textNewColumn);
 
@@ -150,6 +166,11 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $textOriginColumn = $I->grabValueFrom('input[data-row="2"][data-col="0"]');
         $I->click('typo3-backend-table-wizard tbody tr:nth-child(3) > td button[title="Move up"]');
         $I->click(self::$saveButtonLink);
+        try {
+            $I->wait(0.2);
+            $I->click('.close', '#alert-container');
+        } catch (ElementNotFound) {
+        }
         $textNewColumn = $I->grabValueFrom('input[data-row="1"][data-col="0"]');
         $I->assertEquals($textOriginColumn, $textNewColumn);
     }

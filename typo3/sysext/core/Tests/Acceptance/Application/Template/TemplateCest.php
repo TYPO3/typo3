@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Template;
 
+use Codeception\Exception\ElementNotFound;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 /**
@@ -68,12 +69,14 @@ final class TemplateCest
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
         $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
+        $I->wait(3);
         $I->waitForText('Root TypoScript record');
         $I->click("//input[@name='newWebsite']");
 
         $I->wantTo('change to Override TypoScript and see the TypoScript record overview table');
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
         $I->selectOption('.t3-js-jumpMenuBox', 'Edit TypoScript Record');
+        $I->wait(3);
         $I->waitForElement('.table-striped');
         $I->see('Title');
         $I->see('Description');
@@ -87,6 +90,11 @@ final class TemplateCest
         // fill title input field
         $I->fillField('//input[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[title]")]', 'Acceptance Test Site');
         $I->click("//button[@name='_savedok']");
+        try {
+            $I->wait(0.2);
+            $I->click('.close', '#alert-container');
+        } catch (ElementNotFound) {
+        }
         $I->waitForElementNotVisible('#t3js-ui-block', 30);
         $I->waitForElement('#EditDocumentController');
         $I->waitForElementNotVisible('#t3js-ui-block');
@@ -98,6 +106,7 @@ final class TemplateCest
         $I->fillField('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]', $config);
 
         $I->click('//*/button[@name="_savedok"][1]');
+        $I->wait(10);
         $I->waitForElement('a.t3js-editform-close');
         $I->click('a.t3js-editform-close');
 

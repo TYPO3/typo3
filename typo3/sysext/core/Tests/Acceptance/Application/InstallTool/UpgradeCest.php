@@ -93,8 +93,11 @@ final class UpgradeCest extends AbstractCest
 
         $I->amGoingTo('trigger "check extensions"');
         $I->click('Check extensions', ModalDialog::$openedModalButtonContainerSelector);
-        $I->see('ext_localconf.php of all loaded extensions successfully loaded', ModalDialog::$openedModalSelector);
-        $I->see('ext_tables.php of all loaded extensions successfully loaded', ModalDialog::$openedModalSelector);
+        $I->wait(1);
+        $I->waitForText('ext_localconf.php of all loaded extensions successfully loaded');
+        $I->see('ext_localconf.php of all loaded extensions successfully loaded');
+        $I->waitForText('ext_tables.php of all loaded extensions successfully loaded');
+        $I->see('ext_tables.php of all loaded extensions successfully loaded');
 
         $I->click('.t3js-modal-close');
     }
@@ -114,6 +117,7 @@ final class UpgradeCest extends AbstractCest
 
         $I->click('Scan Extension Files');
         $modalDialog->canSeeDialog();
+        $I->wait(5);
         $I->click('Extension: styleguide', ModalDialog::$openedModalSelector);
         $I->waitForText($buttonText, 30, ModalDialog::$openedModalSelector);
 
@@ -121,14 +125,22 @@ final class UpgradeCest extends AbstractCest
         $I->click($buttonText);
         $I->waitForText($buttonText, 30, ModalDialog::$openedModalSelector);
 
+        // We need to ensure that all notifications are gone to avoid click interceptions
+        $I->wait(10);
+
         // Scan all available extensions
         $I->click('Scan all');
         $I->waitForElement('.t3js-extensionscan-finished', 20, ModalDialog::$openedModalSelector);
 
         // Wait for all flash messages to disappear
-        $I->waitForText('Marked not affected files', 10, self::$alertContainerSelector);
-        $I->wait(5);
+        $I->waitForText('Marked not affected files', 30, self::$alertContainerSelector);
 
+        // We need to ensure that all notifications are gone to avoid click interceptions
+        $I->wait(10);
+
+        $I->amGoingTo('Close the modal now');
         $I->click('.t3js-modal-close');
+        $I->wait(3);
+
     }
 }
