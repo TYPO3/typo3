@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
-use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -85,18 +84,20 @@ final class CreateTableFragmentTest extends UnitTestCase
      */
     public function canParseCreateTableFragment(string $statement, string $tableName, bool $isTemporary): void
     {
-        $subject = $this->createSubject($statement);
-        self::assertInstanceOf(CreateTableStatement::class, $subject);
-        self::assertSame($tableName, $subject->tableName->schemaObjectName);
-        self::assertSame($isTemporary, $subject->isTemporary);
+        $ast = (new Parser($statement))->getAST();
+        self::assertInstanceOf(CreateTableStatement::class, $ast);
+        self::assertSame($tableName, $ast->tableName->schemaObjectName);
+        self::assertSame($isTemporary, $ast->isTemporary);
     }
 
     /**
-     * Parse the CREATE TABLE statement and return the reference definition
+     * @test
      */
-    protected function createSubject(string $statement): AbstractCreateStatement
+    public function canParseCreateTableStatementWithoutColumns(): void
     {
-        $parser = new Parser($statement);
-        return $parser->getAST();
+        $ast = (new Parser('CREATE TABLE aTable ();'))->getAST();
+        self::assertInstanceOf(CreateTableStatement::class, $ast);
+        self::assertSame('aTable', $ast->tableName->schemaObjectName);
+        self::assertSame([], $ast->createDefinition->items);
     }
 }

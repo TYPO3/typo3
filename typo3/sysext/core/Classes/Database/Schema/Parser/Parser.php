@@ -97,7 +97,7 @@ class Parser
     /**
      * Parses and builds AST for the given Query.
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     public function getAST(): AbstractCreateStatement
     {
@@ -175,7 +175,7 @@ class Parser
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     public function parse(): array
     {
@@ -198,7 +198,7 @@ class Parser
      * @param Token|null $token Got token.
      *
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     public function syntaxError(string $expected = '', ?Token $token = null): void
     {
@@ -221,7 +221,7 @@ class Parser
      * @param Token|null $token Optional token.
      *
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     public function semanticalError(string $message = '', ?Token $token = null): void
     {
@@ -285,7 +285,7 @@ class Parser
     /**
      * queryLanguage ::= CreateTableStatement
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     public function queryLanguage(): AbstractCreateStatement
     {
@@ -309,7 +309,7 @@ class Parser
      * CreateStatement ::= CREATE [TEMPORARY] TABLE
      * Abstraction to allow for support of other schema objects like views in the future.
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     public function createStatement(): AbstractCreateStatement
     {
@@ -335,7 +335,7 @@ class Parser
     /**
      * CreateTableStatement ::= CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name (create_definition,...) [tbl_options]
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function createTableStatement(): CreateTableStatement
     {
@@ -350,7 +350,7 @@ class Parser
     /**
      * CreateTableClause ::= CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function createTableClause(): CreateTableClause
     {
@@ -389,7 +389,7 @@ class Parser
      *  | CHECK (expr)
      * )
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function createDefinition(): CreateDefinition
     {
@@ -397,6 +397,13 @@ class Parser
 
         // Process opening parenthesis
         $this->match(Lexer::T_OPEN_PARENTHESIS);
+
+        if ($this->lexer->lookahead->type === Lexer::T_CLOSE_PARENTHESIS) {
+            // No columns defined in this table for now. This is invalid in most DBMS, but core may
+            // auto add fields later. Swallow ")" and return empty CreateDefinition for "no columns".
+            $this->match(Lexer::T_CLOSE_PARENTHESIS);
+            return new CreateDefinition([]);
+        }
 
         $createDefinitions[] = $this->createDefinitionItem();
 
@@ -422,8 +429,8 @@ class Parser
     /**
      * Parse the definition of a single column or index
      *
+     * @throws StatementException
      * @see createDefinition()
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
     protected function createDefinitionItem(): AbstractCreateDefinitionItem
     {
@@ -462,7 +469,7 @@ class Parser
     /**
      * Parses an index definition item contained in the create definition
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function createIndexDefinitionItem(): CreateIndexDefinitionItem
     {
@@ -553,7 +560,7 @@ class Parser
     /**
      * Parses a foreign key definition item contained in the create definition
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function createForeignKeyDefinitionItem(): CreateForeignKeyDefinitionItem
     {
@@ -587,7 +594,7 @@ class Parser
      * Return the name of an index. No name has been supplied if the next token is USING
      * which defines the index type.
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     public function indexName(): Identifier
     {
@@ -602,7 +609,7 @@ class Parser
     /**
      * IndexType ::= USING { BTREE | HASH }
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     public function indexType(): string
     {
@@ -635,7 +642,7 @@ class Parser
      *  | WITH PARSER parser_name
      *  | COMMENT 'string'
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     public function indexOptions(): array
     {
@@ -683,7 +690,7 @@ class Parser
      *     [STORAGE {DISK|MEMORY|DEFAULT}]
      *     [reference_definition]
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function createColumnDefinitionItem(): CreateColumnDefinitionItem
     {
@@ -808,7 +815,7 @@ class Parser
      *   | SET(value1,value2,value3,...) [CHARACTER SET charset_name] [COLLATE collation_name]
      *   | JSON
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function columnDataType(): AbstractDataType
     {
@@ -1003,7 +1010,7 @@ class Parser
      * DefaultValue::= DEFAULT default_value
      *
      * @return mixed
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function columnDefaultValue(): mixed
     {
@@ -1038,7 +1045,7 @@ class Parser
     /**
      * Determine length parameter of a column field definition, i.E. INT(11) or VARCHAR(255)
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function dataTypeLength(bool $required = false): int
     {
@@ -1061,7 +1068,7 @@ class Parser
     /**
      * Determine length and optional decimal parameter of a column field definition, i.E. DECIMAL(10,6)
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     private function dataTypeDecimals(): array
     {
@@ -1088,7 +1095,7 @@ class Parser
     /**
      * Parse common options for numeric datatypes
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function numericDataTypeOptions(): array
     {
@@ -1119,7 +1126,7 @@ class Parser
     /**
      * Determine the fractional seconds part support for TIME, DATETIME and TIMESTAMP columns
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function fractionalSecondsPart(): int
     {
@@ -1137,7 +1144,7 @@ class Parser
     /**
      * Parse common options for numeric datatypes
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function characterDataTypeOptions(): array
     {
@@ -1175,7 +1182,7 @@ class Parser
     /**
      * Parse shared options for enumeration datatypes (ENUM and SET)
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function enumerationDataTypeOptions(): array
     {
@@ -1209,7 +1216,7 @@ class Parser
     /**
      * Return all defined values for an enumeration datatype (ENUM, SET)
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function valueList(): array
     {
@@ -1231,7 +1238,7 @@ class Parser
     /**
      * Return a value list item for an enumeration set
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function valueListItem(): string
     {
@@ -1246,7 +1253,7 @@ class Parser
      *  [ON DELETE reference_option]
      *  [ON UPDATE reference_option]
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function referenceDefinition(): ReferenceDefinition
     {
@@ -1294,7 +1301,7 @@ class Parser
     /**
      * IndexColumnName ::= col_name [(length)] [ASC | DESC]
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function indexColumnName(): IndexColumnName
     {
@@ -1316,7 +1323,7 @@ class Parser
     /**
      * ReferenceOption ::= RESTRICT | CASCADE | SET NULL | NO ACTION
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function referenceOption(): string
     {
@@ -1377,7 +1384,7 @@ class Parser
      *  | TABLESPACE tablespace_name
      *  | UNION [=] (tbl_name[,tbl_name]...)
      *
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function tableOptions(): array
     {
@@ -1534,7 +1541,7 @@ class Parser
      * Return the value of an option, skipping the optional equal sign.
      *
      * @return mixed
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function tableOptionValue(): mixed
     {
@@ -1552,7 +1559,7 @@ class Parser
      * partition, tablespace, and other object names are known as identifiers.
      *
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier
-     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws StatementException
      */
     protected function schemaObjectName(): Identifier
     {
