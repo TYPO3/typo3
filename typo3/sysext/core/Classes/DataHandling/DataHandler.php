@@ -8386,7 +8386,7 @@ class DataHandler implements LoggerAwareInterface
         $newData = [];
         foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
             if ($conf['config']['type'] === 'slug' && (string)$curData[$field] !== '') {
-                $evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'], true);
+                $evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'] ?? '', true);
                 if (in_array('uniqueInSite', $evalCodesArray, true)) {
                     $helper = GeneralUtility::makeInstance(SlugHelper::class, $table, $field, $conf['config'], $workspaceId);
                     $state = RecordStateFactory::forName($table)->fromArray($curData);
