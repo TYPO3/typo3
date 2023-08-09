@@ -143,7 +143,7 @@
     "@popperjs/core": "^2.11.6",
     "@typo3/icons": "^3.6.0",
     "autosize": "^6.0.1",
-    "bootstrap": "^5.3.0",
+    "bootstrap": "^5.3.1",
     "broadcastchannel-polyfill": "^1.0.0",
     "chart.js": "^4.2.1",
     "chosen-js": "^1.8.7",
