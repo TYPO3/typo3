@@ -34,7 +34,7 @@ export class ImmediateActionElement extends HTMLElement {
     return ['action', 'args', 'args-list'];
   }
 
-  private static async getDelegate(action: string): Promise<Function> {
+  private static async getDelegate(action: string): Promise<(...args: any[]) => void> {
     switch (action) {
       case 'TYPO3.ModuleMenu.App.refreshMenu':
         const { default: moduleMenuApp } = await import('@typo3/backend/module-menu');
@@ -82,7 +82,7 @@ export class ImmediateActionElement extends HTMLElement {
     if (!this.action) {
       throw new Error('Missing mandatory action attribute');
     }
-    ImmediateActionElement.getDelegate(this.action).then((callback: Function): void => callback(...this.args));
+    ImmediateActionElement.getDelegate(this.action).then((callback): void => callback(...this.args));
   }
 }
 

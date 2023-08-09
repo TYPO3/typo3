@@ -280,55 +280,51 @@ class InlineControlContainer {
   }
 
   private registerToggle(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      me.loadRecordDetails(this.closest(Selectors.toggleSelector).parentElement.dataset.objectId);
+      this.loadRecordDetails(targetElement.closest(Selectors.toggleSelector).parentElement.dataset.objectId);
     }).delegateTo(this.container, `${Selectors.toggleSelector} .form-irre-header-cell:not(${Selectors.controlSectionSelector}`);
   }
 
   private registerSort(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      me.changeSortingByButton(
-        (<HTMLDivElement>this.closest('[data-object-id]')).dataset.objectId,
-        <SortDirections>this.dataset.direction,
+      this.changeSortingByButton(
+        (<HTMLDivElement>targetElement.closest('[data-object-id]')).dataset.objectId,
+        <SortDirections>targetElement.dataset.direction,
       );
     }).delegateTo(this.container, Selectors.controlSectionSelector + ' [data-action="sort"]');
   }
 
   private registerCreateRecordButton(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      if (me.isBelowMax()) {
-        let objectId = me.container.dataset.objectGroup;
-        if (typeof this.dataset.recordUid !== 'undefined') {
-          objectId += Separators.structureSeparator + this.dataset.recordUid;
+      if (this.isBelowMax()) {
+        let objectId = this.container.dataset.objectGroup;
+        if (typeof targetElement.dataset.recordUid !== 'undefined') {
+          objectId += Separators.structureSeparator + targetElement.dataset.recordUid;
         }
 
-        me.importRecord([objectId, (me.container.querySelector(Selectors.createNewRecordBySelectorSelector) as HTMLInputElement)?.value], this.dataset.recordUid ?? null);
+        this.importRecord([objectId, (this.container.querySelector(Selectors.createNewRecordBySelectorSelector) as HTMLInputElement)?.value], targetElement.dataset.recordUid ?? null);
       }
     }).delegateTo(this.container, Selectors.createNewRecordButtonSelector);
   }
 
   private registerCreateRecordBySelector(): void {
-    const me = this;
-    new RegularEvent('change', function(this: HTMLElement, e: Event) {
+    new RegularEvent('change', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      const selectTarget = <HTMLSelectElement>this;
+      const selectTarget = <HTMLSelectElement>targetElement;
       const recordUid = selectTarget.options[selectTarget.selectedIndex].getAttribute('value');
 
-      me.importRecord([me.container.dataset.objectGroup, recordUid]);
+      this.importRecord([this.container.dataset.objectGroup, recordUid]);
     }).delegateTo(this.container, Selectors.createNewRecordBySelectorSelector);
   }
 
@@ -446,7 +442,7 @@ class InlineControlContainer {
   }
 
   private registerInfoButton(): void {
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', function(this: HTMLElement, e: Event): void {
       e.preventDefault();
       e.stopImmediatePropagation();
 
@@ -455,13 +451,12 @@ class InlineControlContainer {
   }
 
   private registerDeleteButton(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
       const title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
-      const content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', this.dataset.recordInfo);
+      const content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', targetElement.dataset.recordInfo);
       const modal = Modal.confirm(title, content, Severity.warning, [
         {
           text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
@@ -477,8 +472,8 @@ class InlineControlContainer {
       ]);
       modal.addEventListener('button.clicked', (modalEvent: Event): void => {
         if ((<HTMLAnchorElement>modalEvent.target).name === 'yes') {
-          const objectId = (<HTMLDivElement>this.closest('[data-object-id]')).dataset.objectId;
-          me.deleteRecord(objectId);
+          const objectId = (<HTMLDivElement>targetElement.closest('[data-object-id]')).dataset.objectId;
+          this.deleteRecord(objectId);
         }
 
         modal.hideModal();
@@ -490,20 +485,19 @@ class InlineControlContainer {
    * @param {Event} e
    */
   private registerSynchronizeLocalize(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      me.ajaxDispatcher.send(
-        me.ajaxDispatcher.newRequest(me.ajaxDispatcher.getEndpoint('record_inline_synchronizelocalize')),
-        [me.container.dataset.objectGroup, this.dataset.type],
+      this.ajaxDispatcher.send(
+        this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_synchronizelocalize')),
+        [this.container.dataset.objectGroup, targetElement.dataset.type],
       ).then(async (response: InlineResponseInterface): Promise<void> => {
-        document.getElementById(me.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', response.data);
+        document.getElementById(this.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', response.data);
 
-        const objectIdPrefix = me.container.dataset.objectGroup + Separators.structureSeparator;
+        const objectIdPrefix = this.container.dataset.objectGroup + Separators.structureSeparator;
         for (const itemUid of response.compilerInput.delete) {
-          me.deleteRecord(objectIdPrefix + itemUid, true);
+          this.deleteRecord(objectIdPrefix + itemUid, true);
         }
 
         for (const item of Object.values(response.compilerInput.localize)) {
@@ -512,40 +506,38 @@ class InlineControlContainer {
             removableRecordContainer.parentElement.removeChild(removableRecordContainer);
           }
 
-          me.memorizeAddRecord(item.uid, null, item.selectedValue);
+          this.memorizeAddRecord(item.uid, null, item.selectedValue);
         }
       });
     }).delegateTo(this.container, Selectors.synchronizeLocalizeRecordButtonSelector);
   }
 
   private registerUniqueSelectFieldChanged(): void {
-    const me = this;
-    new RegularEvent('change', function(this: HTMLElement, e: Event) {
+    new RegularEvent('change', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      const recordContainer = (<HTMLDivElement>this.closest('[data-object-id]'));
+      const recordContainer = (<HTMLDivElement>targetElement.closest('[data-object-id]'));
       if (recordContainer !== null) {
         const objectId = recordContainer.dataset.objectId;
         const objectUid = recordContainer.dataset.objectUid;
-        me.handleChangedField(<HTMLSelectElement>this, objectId);
+        this.handleChangedField(<HTMLSelectElement>targetElement, objectId);
 
-        const formField = me.getFormFieldForElements();
+        const formField = this.getFormFieldForElements();
         if (formField === null) {
           return;
         }
-        me.updateUnique(<HTMLSelectElement>this, formField, objectUid);
+        this.updateUnique(<HTMLSelectElement>targetElement, formField, objectUid);
       }
     }).delegateTo(this.container, Selectors.uniqueValueSelectors);
   }
 
   private registerRevertUniquenessAction(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      me.revertUnique(this.dataset.uid);
+      this.revertUnique(targetElement.dataset.uid);
     }).delegateTo(this.container, Selectors.revertUniqueness);
   }
 

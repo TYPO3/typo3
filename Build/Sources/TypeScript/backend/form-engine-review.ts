@@ -83,11 +83,10 @@ class FormEngineReview {
    * Initialize the events
    */
   public initialize(): void {
-    const me: any = this;
     const $document: any = $(document);
 
     DocumentService.ready().then((): void => {
-      FormEngineReview.attachButtonToModuleHeader(me);
+      FormEngineReview.attachButtonToModuleHeader(this);
     });
     $document.on('t3-formengine-postfieldvalidation', this.checkForReviewableField);
   }
@@ -96,7 +95,6 @@ class FormEngineReview {
    * Checks if fields have failed validation. In such case, the markup is rendered and the toggle button is unlocked.
    */
   public checkForReviewableField = (): void => {
-    const me: any = this;
     const $invalidFields: any = FormEngineReview.findInvalidField();
     const toggleButton: HTMLElement = document.querySelector('.' + this.toggleButtonClass);
     if (toggleButton === null) {
@@ -106,15 +104,15 @@ class FormEngineReview {
     if ($invalidFields.length > 0) {
       const $list: any = $('<div />', { class: 'list-group' });
 
-      $invalidFields.each(function(this: Element): void {
-        const $field: any = $(this);
+      $invalidFields.each((index: number, element: Element): void => {
+        const $field: any = $(element);
         const $input: JQuery = $field.find('[data-formengine-validation-rules]');
 
         const link = document.createElement('a');
         link.classList.add('list-group-item');
         link.href = '#';
-        link.textContent = $field.find(me.labelSelector).text() || $field.find(me.legendSelector).text();
-        link.addEventListener('click', (e: Event) => me.switchToField(e, $input));
+        link.textContent = $field.find(this.labelSelector).text() || $field.find(this.legendSelector).text();
+        link.addEventListener('click', (e: Event) => this.switchToField(e, $input));
 
         $list.append(link);
       });

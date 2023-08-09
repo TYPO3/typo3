@@ -34,7 +34,7 @@ declare type ActionDispatchArgument = string | HTMLElement | Event;
  *  data-dispatch-disabled>
  */
 class ActionDispatcher {
-  private delegates: {[key: string]: Function} = {};
+  private delegates: {[key: string]: (...args: ActionDispatchArgument[]) => void} = {};
 
   public constructor() {
     this.createDelegates();

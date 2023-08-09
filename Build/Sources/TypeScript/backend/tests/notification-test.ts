@@ -31,7 +31,7 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
 
   describe('can render notifications with dismiss after 1000ms', () => {
     interface NotificationDataSet {
-      method: Function;
+      method: typeof Notification.notice | typeof Notification.info | typeof Notification.success | typeof Notification.warning | typeof Notification.error,
       title: string;
       message: string;
       class: string;

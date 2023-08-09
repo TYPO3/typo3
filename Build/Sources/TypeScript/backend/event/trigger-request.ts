@@ -22,10 +22,12 @@ class TriggerRequest extends InteractionRequest {
     if (this === ancestorRequest) {
       return true;
     }
-    let request: InteractionRequest = this;
-    while (request.parentRequest instanceof InteractionRequest) {
-      request = request.parentRequest;
-      if (request === ancestorRequest) {
+    for (
+      let parentRequest = this.parentRequest;
+      parentRequest instanceof InteractionRequest;
+      parentRequest = parentRequest.parentRequest
+    ) {
+      if (parentRequest === ancestorRequest) {
         return true;
       }
     }
@@ -36,13 +38,17 @@ class TriggerRequest extends InteractionRequest {
     if (types.includes(this.type)) {
       return true;
     }
-    let request: InteractionRequest = this;
-    while (request.parentRequest instanceof InteractionRequest) {
-      request = request.parentRequest;
-      if (types.includes(request.type)) {
+
+    for (
+      let parentRequest = this.parentRequest;
+      parentRequest instanceof InteractionRequest;
+      parentRequest = parentRequest.parentRequest
+    ) {
+      if (types.includes(parentRequest.type)) {
         return true;
       }
     }
+
     return false;
   }
 }

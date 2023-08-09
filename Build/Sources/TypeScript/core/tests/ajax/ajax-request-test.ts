@@ -15,10 +15,13 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 describe('@typo3/core/ajax/ajax-request', (): void => {
-  let promiseHelper: { resolve: Function, reject: Function };
+  let promiseHelper: {
+    resolve: (response: Response) => void,
+    reject: (error: Error) => void
+  };
 
   beforeEach((): void => {
-    const fetchPromise: Promise<Response> = new Promise(((resolve: Function, reject: Function): void => {
+    const fetchPromise: Promise<Response> = new Promise(((resolve: (response: Response) => void, reject: (error: Error) => void): void => {
       promiseHelper = {
         resolve: resolve,
         reject: reject,

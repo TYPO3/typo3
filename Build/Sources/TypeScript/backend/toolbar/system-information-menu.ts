@@ -126,7 +126,7 @@ class SystemInformationMenu {
     event.preventDefault();
     event.stopPropagation();
 
-    const moduleStorageObject: { [key: string]: Object } = {};
+    const moduleStorageObject: { [key: string]: object } = {};
     const timestamp = Math.floor(Date.now() / 1000);
     let storedSystemInformationSettings = {};
     if (PersistentStorage.isset('systeminformation')) {

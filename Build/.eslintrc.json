@@ -29,9 +29,10 @@
   "rules": {
     "@typescript-eslint/indent": ["error", 2],
     "@typescript-eslint/no-inferrable-types": "off", // we want to keep explicit type casting
-    "@typescript-eslint/ban-types": "warn",
-    "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/no-this-alias": "warn",
+    "@typescript-eslint/ban-types": "error",
+    "@typescript-eslint/no-explicit-any": "off", // too many warnings/errors for now, needs be fixed step by step
+    "@typescript-eslint/no-this-alias": "error",
+    "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/member-ordering": "error",
     "@typescript-eslint/naming-convention": [
       "error",
@@ -50,7 +51,7 @@
     "eol-last": "error",
     "guard-for-in": "error",
     "lit/no-duplicate-template-bindings": "error",
-    "lit/no-native-attributes": "warn",
+    "lit/no-native-attributes": "error",
     "lit/no-invalid-escape-sequences": "error",
     "lit/no-legacy-imports": "error",
     "lit/no-useless-template-literals": "error",

@@ -143,7 +143,7 @@ export default (function() {
   /**
    * Format field value
    */
-  FormEngineValidation.formatValue = function(type: string, value: string|number, config: Object): string {
+  FormEngineValidation.formatValue = function(type: string, value: string|number, config: object): string {
     let theString = '';
     let parsedInt: number;
     let theTime: Date;
@@ -752,7 +752,7 @@ export default (function() {
    * @param {String} value
    * @returns {Object}
    */
-  FormEngineValidation.pol = function(foreign: string, value: string): Object {
+  FormEngineValidation.pol = function(foreign: string, value: string): object {
     // @todo deprecate
     // eslint-disable-next-line no-eval
     return eval(((foreign == '-') ? '-' : '') + value);

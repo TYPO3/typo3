@@ -177,77 +177,72 @@ class SiteLanguageContainer extends HTMLElement {
   }
 
   private registerCreateRecordButton(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      let objectId = me.container.dataset.objectGroup;
-      if (typeof this.dataset.recordUid !== 'undefined') {
-        objectId += Separators.structureSeparator + this.dataset.recordUid;
+      let objectId = this.container.dataset.objectGroup;
+      if (typeof targetElement.dataset.recordUid !== 'undefined') {
+        objectId += Separators.structureSeparator + targetElement.dataset.recordUid;
       }
 
-      me.importRecord([objectId], this.dataset.recordUid ?? null);
+      this.importRecord([objectId], targetElement.dataset.recordUid ?? null);
     }).delegateTo(this.container, Selectors.createNewRecordButtonSelector);
   }
 
   private registerCreateRecordByPresetSelector(): void {
-    const me = this;
-    new RegularEvent('change', function(this: HTMLElement, e: Event) {
+    new RegularEvent('change', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      const selector = (me.container.querySelector(Selectors.createNewRecordPresetSelector) as HTMLSelectElement);
+      const selector = (this.container.querySelector(Selectors.createNewRecordPresetSelector) as HTMLSelectElement);
       const presetValue = selector?.value;
       if (presetValue === '') {
         return;
       }
 
-      let objectId = me.container.dataset.objectGroup;
-      if (typeof this.dataset.recordUid !== 'undefined') {
-        objectId += Separators.structureSeparator + this.dataset.recordUid;
+      let objectId = this.container.dataset.objectGroup;
+      if (typeof targetElement.dataset.recordUid !== 'undefined') {
+        objectId += Separators.structureSeparator + targetElement.dataset.recordUid;
       }
 
       selector.value = '';
 
-      me.importRecord([objectId, '', presetValue], this.dataset.recordUid ?? null);
+      this.importRecord([objectId, '', presetValue], targetElement.dataset.recordUid ?? null);
     }).delegateTo(this.container, Selectors.createNewRecordPresetSelector);
   }
 
   private registerCreateRecordBySelector(): void {
-    const me = this;
-    new RegularEvent('change', function(this: HTMLElement, e: Event) {
+    new RegularEvent('change', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      const selectTarget = <HTMLSelectElement>this;
+      const selectTarget = <HTMLSelectElement>targetElement;
       const recordUid = selectTarget.options[selectTarget.selectedIndex].getAttribute('value');
       if (recordUid === '') {
         return;
       }
 
-      me.importRecord([me.container.dataset.objectGroup, recordUid]);
+      this.importRecord([this.container.dataset.objectGroup, recordUid]);
     }).delegateTo(this.container, Selectors.createNewRecordBySelectorSelector);
   }
 
   private registerRecordToggle(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      me.loadRecordDetails(this.closest(Selectors.toggleSelector).parentElement.dataset.objectId);
+      this.loadRecordDetails(targetElement.closest(Selectors.toggleSelector).parentElement.dataset.objectId);
     }).delegateTo(this.container, `${Selectors.toggleSelector} .form-irre-header-cell:not(${Selectors.controlSectionSelector}`);
   }
 
   private registerDeleteButton(): void {
-    const me = this;
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, targetElement: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
       const title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
-      const content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', this.dataset.recordInfo);
+      const content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', targetElement.dataset.recordInfo);
       Modal.confirm(title, content, Severity.warning, [
         {
           text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
@@ -261,7 +256,7 @@ class SiteLanguageContainer extends HTMLElement {
           btnClass: 'btn-warning',
           name: 'yes',
           trigger: (e: Event, modal: ModalElement): void => {
-            me.deleteRecord((<HTMLDivElement>this.closest('[data-object-id]')).dataset.objectId);
+            this.deleteRecord((<HTMLDivElement>targetElement.closest('[data-object-id]')).dataset.objectId);
             modal.hideModal();
           }
         },

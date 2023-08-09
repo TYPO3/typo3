@@ -25,7 +25,7 @@
 <f:if condition="{allowEditContent} && {column.contentEditable} && {column.context.allowNewContent} && {column.active}">
     <div class="t3-page-ce t3js-page-ce" data-page="{column.context.pageId}" id="{column.uniqueId}">
         <div class="t3-page-ce-actions t3js-page-new-ce" id="colpos-{column.columnNumber}-page-{column.context.pageId}-{column.uniqueId}">
-            <typo3-backend-new-content-element-wizard-button class="btn btn-default btn-sm" url="{column.newContentUrl}" title="{newContentTitle}">
+            <typo3-backend-new-content-element-wizard-button class="btn btn-default btn-sm" url="{column.newContentUrl}" subject="{newContentTitle}">
                 <core:icon identifier="actions-plus" />
                 {newContentTitleShort}
             </typo3-backend-new-content-element-wizard-button>

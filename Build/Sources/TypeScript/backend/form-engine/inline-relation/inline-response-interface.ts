@@ -22,7 +22,7 @@ export interface InlineResponseInterface extends AjaxDispatcherResponse{
 }
 
 interface InlineData {
-  config: { [key: string]: Object };
+  config: { [key: string]: object };
   map: { [key: string]: Array<string> };
   nested: { [key: string]: Array<Array<string>> };
 }

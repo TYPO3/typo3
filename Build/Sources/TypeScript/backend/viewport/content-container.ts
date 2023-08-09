@@ -73,9 +73,9 @@ class ContentContainer extends AbstractContainer {
 
   /**
    * @param {InteractionRequest} interactionRequest
-   * @returns {JQueryDeferred<{}>}
+   * @returns {JQueryDeferred<unknown>}
    */
-  public refresh(interactionRequest?: InteractionRequest): JQueryDeferred<{}> {
+  public refresh(interactionRequest?: InteractionRequest): JQueryDeferred<unknown> {
     let deferred;
     const iFrame = <HTMLIFrameElement>this.resolveIFrameElement();
     // abort, if no IFRAME can be found
