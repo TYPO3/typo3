@@ -129,18 +129,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     email_1 text,
     email_2 text,
 
-    inputdatetime_1 text,
-    inputdatetime_2 date,
-    inputdatetime_3 text,
-    inputdatetime_4 datetime,
-    inputdatetime_5 text,
-    inputdatetime_6 text,
-    inputdatetime_7 text,
-    inputdatetime_8 text,
-    inputdatetime_9 text,
-    inputdatetime_10 text,
-    inputdatetime_11 text,
-
     text_1 text,
     text_2 text,
     text_3 text,
@@ -263,11 +251,6 @@ CREATE TABLE tx_styleguide_elements_slugs (
     input_1 text,
     input_2 text,
     input_3 text,
-    slug_1 text,
-    slug_2 text,
-    slug_3 text,
-    slug_4 text,
-    slug_5 text,
 );
 
 
@@ -335,10 +318,6 @@ CREATE TABLE tx_styleguide_elements_select (
     select_tree_4 text,
     select_tree_5 text,
     select_tree_6 text,
-
-    category_11 text,
-    category_1n text,
-    category_mm text,
 
     flex_1 text,
 
@@ -668,7 +647,6 @@ CREATE TABLE tx_styleguide_required (
     notrequired_1 text,
 
     input_1 text,
-    input_2 text,
 
     link_1 text,
 
@@ -761,7 +739,6 @@ CREATE TABLE tx_styleguide_typeforeign (
 
 CREATE TABLE tx_styleguide_valuesdefault (
     input_1 text,
-    input_2 text,
 
     number_1 int(11) DEFAULT '0' NOT NULL,
 
@@ -783,9 +760,7 @@ CREATE TABLE tx_styleguide_valuesdefault (
 CREATE TABLE tx_styleguide_l10nreadonly (
     input text,
     color text,
-    datetime text,
     link text,
-    slug text,
     checkbox int(11) DEFAULT '0' NOT NULL,
     checkbox_toggle int(11) DEFAULT '0' NOT NULL,
     checkbox_labeled_toggle int(11) DEFAULT '0' NOT NULL,
