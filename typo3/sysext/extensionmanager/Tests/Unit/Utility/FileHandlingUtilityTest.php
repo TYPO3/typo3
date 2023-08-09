@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
@@ -33,9 +35,9 @@ final class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @var array List of created fake extensions
      */
-    protected array $fakedExtensions = [];
+    private array $fakedExtensions = [];
 
-    protected string $testRoot;
+    private string $testRoot;
 
     protected function setUp(): void
     {
@@ -51,7 +53,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
      *
      * @return string The extension key
      */
-    protected function createFakeExtension(): string
+    private function createFakeExtension(): string
     {
         $extKey = strtolower(StringUtility::getUniqueId('testing'));
         $absExtPath = $this->testRoot . 'ext-' . $extKey . '/';
@@ -69,14 +71,10 @@ final class FileHandlingUtilityTest extends UnitTestCase
     {
         $extKey = $this->createFakeExtension();
         $path = $this->fakedExtensions[$extKey]['packagePath'];
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir'], [], '', false);
-        $fileHandlerMock->expects(self::once())
-            ->method('removeDirectory')
-            ->with($path);
-        $fileHandlerMock
-            ->method('getExtensionDir')
-            ->willReturn($path);
-        $fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);
+        $subject = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir'], [], '', false);
+        $subject->expects(self::once())->method('removeDirectory')->with($path);
+        $subject->method('getExtensionDir')->willReturn($path);
+        $subject->_call('makeAndClearExtensionDir', $extKey);
     }
 
     /**
@@ -85,14 +83,10 @@ final class FileHandlingUtilityTest extends UnitTestCase
     public function makeAndClearExtensionDirAddsDir(): void
     {
         $extKey = $this->createFakeExtension();
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir']);
-        $fileHandlerMock->expects(self::once())
-            ->method('addDirectory')
-            ->with($this->testRoot . 'ext-' . $extKey . '/');
-        $fileHandlerMock
-            ->method('getExtensionDir')
-            ->willReturn($this->testRoot . 'ext-' . $extKey . '/');
-        $fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);
+        $subject = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir'], [], '', false);
+        $subject->expects(self::once())->method('addDirectory')->with($this->testRoot . 'ext-' . $extKey . '/');
+        $subject->method('getExtensionDir')->willReturn($this->testRoot . 'ext-' . $extKey . '/');
+        $subject->_call('makeAndClearExtensionDir', $extKey);
     }
 
     /**
@@ -102,14 +96,16 @@ final class FileHandlingUtilityTest extends UnitTestCase
     {
         $this->expectException(ExtensionManagerException::class);
         $this->expectExceptionCode(1337280417);
-        $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory']);
+        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
         $languageServiceMock = $this->createMock(LanguageService::class);
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
-        $fileHandlerMock->injectLanguageServiceFactory($languageServiceFactoryMock);
-        $fileHandlerMock->initializeObject();
-        $fileHandlerMock->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
+        $subject = $this->getAccessibleMock(
+            FileHandlingUtility::class,
+            ['removeDirectory', 'addDirectory'],
+            [$this->createMock(PackageManager::class), $this->createMock(EmConfUtility::class), $this->createMock(OpcodeCacheService::class), $languageServiceFactoryMock]
+        );
+        $subject->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
     }
 
     /**
@@ -118,8 +114,8 @@ final class FileHandlingUtilityTest extends UnitTestCase
     public function addDirectoryAddsDirectory(): void
     {
         $extDirPath = $this->testRoot . StringUtility::getUniqueId('test-extensions-');
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, null);
-        $fileHandlerMock->_call('addDirectory', $extDirPath);
+        $subject = $this->getAccessibleMock(FileHandlingUtility::class, null, [], '', false);
+        $subject->_call('addDirectory', $extDirPath);
         self::assertDirectoryExists($extDirPath);
     }
 
@@ -130,8 +126,8 @@ final class FileHandlingUtilityTest extends UnitTestCase
     {
         $extDirPath = $this->testRoot . StringUtility::getUniqueId('test-extensions-');
         @mkdir($extDirPath);
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, null);
-        $fileHandlerMock->_call('removeDirectory', $extDirPath);
+        $subject = $this->getAccessibleMock(FileHandlingUtility::class, null, [], '', false);
+        $subject->_call('removeDirectory', $extDirPath);
         self::assertDirectoryDoesNotExist($extDirPath);
     }
 
@@ -144,8 +140,13 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $absoluteFilePath = $this->testRoot . StringUtility::getUniqueId('test_file_');
         touch($absoluteFilePath);
         symlink($absoluteFilePath, $absoluteSymlinkPath);
-        $fileHandler = new FileHandlingUtility();
-        $fileHandler->removeDirectory($absoluteSymlinkPath);
+        $subject = new FileHandlingUtility(
+            $this->createMock(PackageManager::class),
+            $this->createMock(EmConfUtility::class),
+            $this->createMock(OpcodeCacheService::class),
+            $this->createMock(LanguageServiceFactory::class)
+        );
+        $subject->removeDirectory($absoluteSymlinkPath);
         self::assertFalse(is_link($absoluteSymlinkPath));
     }
 
@@ -157,14 +158,16 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $absoluteSymlinkPath = $this->testRoot . StringUtility::getUniqueId('test_symlink_');
         $absoluteDirectoryPath = $this->testRoot . StringUtility::getUniqueId('test_dir_') . '/';
         $relativeFilePath = StringUtility::getUniqueId('test_file_');
-
         GeneralUtility::mkdir_deep($absoluteDirectoryPath);
         touch($absoluteDirectoryPath . $relativeFilePath);
-
         symlink($absoluteDirectoryPath, $absoluteSymlinkPath);
-
-        $fileHandler = new FileHandlingUtility();
-        $fileHandler->removeDirectory($absoluteSymlinkPath);
+        $subject = new FileHandlingUtility(
+            $this->createMock(PackageManager::class),
+            $this->createMock(EmConfUtility::class),
+            $this->createMock(OpcodeCacheService::class),
+            $this->createMock(LanguageServiceFactory::class)
+        );
+        $subject->removeDirectory($absoluteSymlinkPath);
         self::assertTrue(is_file($absoluteDirectoryPath . $relativeFilePath));
     }
 
@@ -174,17 +177,23 @@ final class FileHandlingUtilityTest extends UnitTestCase
     public function unpackExtensionFromExtensionDataArrayCreatesTheExtensionDirectory(): void
     {
         $extensionKey = 'test';
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, [
-            'makeAndClearExtensionDir',
-            'writeEmConfToFile',
-            'extractDirectoriesFromExtensionData',
-            'createDirectoriesForExtensionFiles',
-            'writeExtensionFiles',
-            'reloadPackageInformation',
-        ]);
-        $fileHandlerMock->expects(self::once())->method('extractDirectoriesFromExtensionData')->willReturn([]);
-        $fileHandlerMock->expects(self::once())->method('makeAndClearExtensionDir')->with($extensionKey)->willReturn('my_path');
-        $fileHandlerMock->unpackExtensionFromExtensionDataArray($extensionKey, []);
+        $subject = $this->getAccessibleMock(
+            FileHandlingUtility::class,
+            [
+                'makeAndClearExtensionDir',
+                'writeEmConfToFile',
+                'extractDirectoriesFromExtensionData',
+                'createDirectoriesForExtensionFiles',
+                'writeExtensionFiles',
+                'reloadPackageInformation',
+            ],
+            [],
+            '',
+            false
+        );
+        $subject->expects(self::once())->method('extractDirectoriesFromExtensionData')->willReturn([]);
+        $subject->expects(self::once())->method('makeAndClearExtensionDir')->with($extensionKey)->willReturn('my_path');
+        $subject->unpackExtensionFromExtensionDataArray($extensionKey, []);
     }
 
     /**
@@ -239,20 +248,26 @@ final class FileHandlingUtilityTest extends UnitTestCase
             'mod/doc/',
         ];
 
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, [
-            'makeAndClearExtensionDir',
-            'writeEmConfToFile',
-            'extractDirectoriesFromExtensionData',
-            'createDirectoriesForExtensionFiles',
-            'writeExtensionFiles',
-            'reloadPackageInformation',
-        ]);
-        $fileHandlerMock->expects(self::once())->method('extractDirectoriesFromExtensionData')->willReturn($directories);
-        $fileHandlerMock->expects(self::once())->method('createDirectoriesForExtensionFiles')->with($directories);
-        $fileHandlerMock->expects(self::once())->method('makeAndClearExtensionDir')->with($extensionData['extKey'])->willReturn('my_path');
-        $fileHandlerMock->expects(self::once())->method('writeExtensionFiles')->with($cleanedFiles);
-        $fileHandlerMock->expects(self::once())->method('reloadPackageInformation')->with('test');
-        $fileHandlerMock->unpackExtensionFromExtensionDataArray('test', $extensionData);
+        $subject = $this->getAccessibleMock(
+            FileHandlingUtility::class,
+            [
+                'makeAndClearExtensionDir',
+                'writeEmConfToFile',
+                'extractDirectoriesFromExtensionData',
+                'createDirectoriesForExtensionFiles',
+                'writeExtensionFiles',
+                'reloadPackageInformation',
+            ],
+            [],
+            '',
+            false
+        );
+        $subject->expects(self::once())->method('extractDirectoriesFromExtensionData')->willReturn($directories);
+        $subject->expects(self::once())->method('createDirectoriesForExtensionFiles')->with($directories);
+        $subject->expects(self::once())->method('makeAndClearExtensionDir')->with($extensionData['extKey'])->willReturn('my_path');
+        $subject->expects(self::once())->method('writeExtensionFiles')->with($cleanedFiles);
+        $subject->expects(self::once())->method('reloadPackageInformation')->with('test');
+        $subject->unpackExtensionFromExtensionDataArray('test', $extensionData);
     }
 
     /**
@@ -277,8 +292,8 @@ final class FileHandlingUtilityTest extends UnitTestCase
             ],
         ];
         $rootPath = $this->fakedExtensions[$this->createFakeExtension()]['packagePath'];
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
-        $fileHandlerMock->_call('writeExtensionFiles', $files, $rootPath);
+        $subject = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir'], [], '', false);
+        $subject->_call('writeExtensionFiles', $files, $rootPath);
         self::assertFileExists($rootPath . 'ChangeLog');
     }
 
@@ -324,8 +339,8 @@ final class FileHandlingUtilityTest extends UnitTestCase
                 'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE',
             ],
         ];
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
-        $extractedDirectories = $fileHandlerMock->_call('extractDirectoriesFromExtensionData', $files);
+        $subject = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir'], [], '', false);
+        $extractedDirectories = $subject->_call('extractDirectoriesFromExtensionData', $files);
         $expected = [
             'doc/',
             'mod/doc/',
@@ -343,10 +358,10 @@ final class FileHandlingUtilityTest extends UnitTestCase
             'doc/',
             'mod/doc/',
         ];
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
+        $subject = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir'], [], '', false);
         self::assertDirectoryDoesNotExist($rootPath . 'doc/');
         self::assertDirectoryDoesNotExist($rootPath . 'mod/doc/');
-        $fileHandlerMock->_call('createDirectoriesForExtensionFiles', $directories, $rootPath);
+        $subject->_call('createDirectoriesForExtensionFiles', $directories, $rootPath);
         self::assertDirectoryExists($rootPath . 'doc/');
         self::assertDirectoryExists($rootPath . 'mod/doc/');
     }
@@ -363,10 +378,12 @@ final class FileHandlingUtilityTest extends UnitTestCase
             'category' => 'Frontend',
         ];
         $rootPath = $this->fakedExtensions[$extKey]['packagePath'];
-
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
-        $fileHandlerMock->injectEmConfUtility(new EmConfUtility());
-        $fileHandlerMock->_call('writeEmConfToFile', $extKey, $emConfData, $rootPath);
+        $subject = $this->getAccessibleMock(
+            FileHandlingUtility::class,
+            ['makeAndClearExtensionDir'],
+            [$this->createMock(PackageManager::class), new EmConfUtility(), $this->createMock(OpcodeCacheService::class), $this->createMock(LanguageServiceFactory::class)]
+        );
+        $subject->_call('writeEmConfToFile', $extKey, $emConfData, $rootPath);
         self::assertFileExists($rootPath . 'ext_emconf.php');
     }
 }
