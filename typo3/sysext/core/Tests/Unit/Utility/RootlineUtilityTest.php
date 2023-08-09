@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -319,18 +318,11 @@ final class RootlineUtilityTest extends UnitTestCase
     public function getCacheIdentifierReturnsValidIdentifierWithCommasInMountPointParameter(): void
     {
         $this->subject->method('resolvePageId')->willReturn(42);
-
-        $cacheFrontendMock = $this->getMockForAbstractClass(
-            AbstractFrontend::class,
-            [],
-            '',
-            false
-        );
+        $cacheFrontend = new NullFrontend('some-frontend');
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(15));
         $context->setAspect('language', new LanguageAspect(8, 8, LanguageAspect::OVERLAYS_OFF));
-
         $this->subject->__construct(42, '47-11,48-12', $context);
-        self::assertTrue($cacheFrontendMock->isValidEntryIdentifier($this->subject->getCacheIdentifier()));
+        self::assertTrue($cacheFrontend->isValidEntryIdentifier($this->subject->getCacheIdentifier()));
     }
 }

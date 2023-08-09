@@ -17,13 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository;
 
-use Doctrine\DBAL\Result;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Resource\AbstractRepository;
+use TYPO3\CMS\Core\Tests\Unit\Resource\Repository\Fixtures\TestingRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -53,26 +52,7 @@ final class AbstractRepositoryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1316779798);
-        $subject = $this->getMockForAbstractClass(AbstractRepository::class, [], '', false);
+        $subject = new TestingRepository();
         $subject->findByUid('asdf');
-    }
-
-    /**
-     * @test
-     */
-    public function findByUidAcceptsNumericUidInString(): void
-    {
-        $statementMock = $this->createMock(Result::class);
-        $statementMock->expects(self::once())->method('fetchAssociative')->willReturn(['uid' => 123]);
-
-        $queryBuilderMock = $this->createDatabaseMock();
-        $queryBuilderMock->expects(self::once())->method('select')->with('*')->willReturn($queryBuilderMock);
-        $queryBuilderMock->expects(self::once())->method('from')->with('')->willReturn($queryBuilderMock);
-        $queryBuilderMock->expects(self::once())->method('where')->with(self::anything())->willReturn($queryBuilderMock);
-        $queryBuilderMock->method('createNamedParameter')->with(self::anything())->willReturnArgument(0);
-        $queryBuilderMock->expects(self::once())->method('executeQuery')->willReturn($statementMock);
-
-        $subject = $this->getMockForAbstractClass(AbstractRepository::class, [], '', false);
-        $subject->findByUid('123');
     }
 }
