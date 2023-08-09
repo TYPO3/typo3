@@ -49,80 +49,22 @@ use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
 
 /**
  * Extension Manager Install Utility
+ *
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
 class InstallUtility implements SingletonInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
-     */
-    protected $fileHandlingUtility;
-
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
-     */
-    protected $listUtility;
-
-    /**
-     * @var \TYPO3\CMS\Core\Package\PackageManager
-     */
-    protected $packageManager;
-
-    /**
-     * @var \TYPO3\CMS\Core\Cache\CacheManager
-     */
-    protected $cacheManager;
-
-    /**
-     * @var \TYPO3\CMS\Core\Registry
-     */
-    protected $registry;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var BootService
-     */
-    protected $bootService;
-
-    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
-    public function injectFileHandlingUtility(FileHandlingUtility $fileHandlingUtility)
-    {
-        $this->fileHandlingUtility = $fileHandlingUtility;
-    }
-
-    public function injectListUtility(ListUtility $listUtility)
-    {
-        $this->listUtility = $listUtility;
-    }
-
-    public function injectPackageManager(PackageManager $packageManager)
-    {
-        $this->packageManager = $packageManager;
-    }
-
-    public function injectCacheManager(CacheManager $cacheManager)
-    {
-        $this->cacheManager = $cacheManager;
-    }
-
-    public function injectRegistry(Registry $registry)
-    {
-        $this->registry = $registry;
-    }
-
-    public function injectBootService(BootService $bootService)
-    {
-        $this->bootService = $bootService;
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly FileHandlingUtility $fileHandlingUtility,
+        private readonly ListUtility $listUtility,
+        private readonly PackageManager $packageManager,
+        private readonly CacheManager $cacheManager,
+        private readonly Registry $registry,
+        private readonly BootService $bootService,
+    ) {
     }
 
     /**
@@ -138,21 +80,16 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             $extension = $this->enrichExtensionWithDetails($extensionKey, false);
             $this->saveDefaultConfiguration($extensionKey);
         }
-
         $this->cacheManager->flushCaches();
-
         // Load a new container as reloadCaches will load ext_localconf
         $container = $this->bootService->getContainer(false);
         $backup = $this->bootService->makeCurrent($container);
-
         $this->reloadCaches();
         $this->updateDatabase();
-
         foreach ($extensionKeys as $extensionKey) {
             $this->processExtensionSetup($extensionKey);
             $container->get(EventDispatcherInterface::class)->dispatch(new AfterPackageActivationEvent($extensionKey, 'typo3-cms-extension', $this));
         }
-
         // Reset to the original container instance
         $this->bootService->makeCurrent(null, $backup);
     }
@@ -189,52 +126,11 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * Find installed extensions which depend on the given extension.
-     * This is used at extension uninstall to stop the process if an installed
-     * extension depends on the extension to be uninstalled.
-     */
-    protected function findInstalledExtensionsThatDependOnExtension(string $extensionKey): array
-    {
-        $availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
-        $dependentExtensions = [];
-        foreach ($availableAndInstalledExtensions as $availableAndInstalledExtensionKey => $availableAndInstalledExtension) {
-            if (isset($availableAndInstalledExtension['installed']) && $availableAndInstalledExtension['installed'] === true) {
-                if (is_array($availableAndInstalledExtension['constraints'] ?? false) && is_array($availableAndInstalledExtension['constraints']['depends']) && array_key_exists($extensionKey, $availableAndInstalledExtension['constraints']['depends'])) {
-                    $dependentExtensions[] = $availableAndInstalledExtensionKey;
-                }
-            }
-        }
-        return $dependentExtensions;
-    }
-
-    /**
      * Reset and reload the available extensions
      */
     public function reloadAvailableExtensions()
     {
         $this->listUtility->reloadAvailableExtensions();
-    }
-
-    /**
-     * Wrapper function for loading extensions
-     *
-     * @param string $extensionKey
-     */
-    protected function loadExtension($extensionKey)
-    {
-        $this->packageManager->activatePackage($extensionKey);
-    }
-
-    /**
-     * Wrapper function for unloading extensions
-     *
-     * @param string $extensionKey
-     */
-    protected function unloadExtension($extensionKey)
-    {
-        $this->packageManager->deactivatePackage($extensionKey);
-        $this->eventDispatcher->dispatch(new AfterPackageDeactivationEvent($extensionKey, 'typo3-cms-extension', $this));
-        $this->cacheManager->flushCachesInGroup('system');
     }
 
     /**
@@ -294,20 +190,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * @param string $extensionKey
-     * @return array
-     * @throws ExtensionManagerException
-     */
-    protected function getExtensionArray($extensionKey)
-    {
-        $availableExtensions = $this->listUtility->getAvailableExtensions();
-        if (isset($availableExtensions[$extensionKey])) {
-            return $availableExtensions[$extensionKey];
-        }
-        throw new ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1342864081);
-    }
-
-    /**
      * Reload Cache files and Typo3LoadedExtensions
      */
     public function reloadCaches()
@@ -316,14 +198,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         ExtensionManagementUtility::loadExtLocalconf(false);
         Bootstrap::loadBaseTca(false);
         Bootstrap::loadExtTables(false);
-    }
-
-    /**
-     * Reloads PHP opcache
-     */
-    protected function reloadOpcache()
-    {
-        GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
     }
 
     /**
@@ -355,17 +229,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         }
 
         $schemaMigrator->migrate($sqlStatements, $selectedStatements);
-    }
-
-    /**
-     * Save default configuration of an extension
-     *
-     * @param string $extensionKey
-     */
-    protected function saveDefaultConfiguration($extensionKey)
-    {
-        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
-        $extensionConfiguration->synchronizeExtConfTemplateWithLocalConfiguration($extensionKey);
     }
 
     /**
@@ -402,6 +265,83 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         } else {
             throw new ExtensionManagerException('No valid extension path given.', 1342875724);
         }
+    }
+
+    /**
+     * Find installed extensions which depend on the given extension.
+     * This is used at extension uninstall to stop the process if an installed
+     * extension depends on the extension to be uninstalled.
+     */
+    protected function findInstalledExtensionsThatDependOnExtension(string $extensionKey): array
+    {
+        $availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
+        $dependentExtensions = [];
+        foreach ($availableAndInstalledExtensions as $availableAndInstalledExtensionKey => $availableAndInstalledExtension) {
+            if (isset($availableAndInstalledExtension['installed']) && $availableAndInstalledExtension['installed'] === true) {
+                if (is_array($availableAndInstalledExtension['constraints'] ?? false)
+                    && is_array($availableAndInstalledExtension['constraints']['depends'])
+                    && array_key_exists($extensionKey, $availableAndInstalledExtension['constraints']['depends'])
+                ) {
+                    $dependentExtensions[] = $availableAndInstalledExtensionKey;
+                }
+            }
+        }
+        return $dependentExtensions;
+    }
+
+    /**
+     * Wrapper function for loading extensions
+     *
+     * @param string $extensionKey
+     */
+    protected function loadExtension($extensionKey)
+    {
+        $this->packageManager->activatePackage($extensionKey);
+    }
+
+    /**
+     * Wrapper function for unloading extensions
+     *
+     * @param string $extensionKey
+     */
+    protected function unloadExtension($extensionKey)
+    {
+        $this->packageManager->deactivatePackage($extensionKey);
+        $this->eventDispatcher->dispatch(new AfterPackageDeactivationEvent($extensionKey, 'typo3-cms-extension', $this));
+        $this->cacheManager->flushCachesInGroup('system');
+    }
+
+    /**
+     * @param string $extensionKey
+     * @return array
+     * @throws ExtensionManagerException
+     */
+    protected function getExtensionArray($extensionKey)
+    {
+        $availableExtensions = $this->listUtility->getAvailableExtensions();
+        if (isset($availableExtensions[$extensionKey])) {
+            return $availableExtensions[$extensionKey];
+        }
+        throw new ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1342864081);
+    }
+
+    /**
+     * Reloads PHP opcache
+     */
+    protected function reloadOpcache()
+    {
+        GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
+    }
+
+    /**
+     * Save default configuration of an extension
+     *
+     * @param string $extensionKey
+     */
+    protected function saveDefaultConfiguration($extensionKey)
+    {
+        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+        $extensionConfiguration->synchronizeExtConfTemplateWithLocalConfiguration($extensionKey);
     }
 
     /**
