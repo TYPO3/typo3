@@ -154,7 +154,7 @@ class SiteConfiguration implements SingletonInterface
 
     /**
      * Resolve all site objects which have been found in the filesystem containing settings only from the `config.yaml`
-     * file ignoring values from the `settings.yaml` file.
+     * file ignoring values from the `settings.yaml` and `csp.yaml` file.
      *
      * @return Site[]
      * @internal Not part of public API. Used as intermediate solution until settings are handled by a dedicated GUI.
@@ -167,7 +167,6 @@ class SiteConfiguration implements SingletonInterface
             // cast $identifier to string, as the identifier can potentially only consist of (int) digit numbers
             $identifier = (string)$identifier;
             $siteSettings = new SiteSettings($configuration['settings'] ?? []);
-            $configuration['contentSecurityPolicies'] = $this->getContentSecurityPolicies($identifier);
 
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
