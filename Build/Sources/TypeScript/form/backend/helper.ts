@@ -25,17 +25,12 @@ interface FormEditorLike {
   run(): FormEditorLike;
 }
 
-interface FormManagerLike {
-  getInstance(options: any, viewModel: ViewModelLike): FormManagerLike;
-  run(): FormEditorLike;
-}
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface MediatorLike {
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ViewModelLike {
+  bootstrap: (formManager: import('@typo3/form/backend/form-manager').FormManager) => void;
 }
 
 /**
@@ -62,8 +57,11 @@ export class Helper {
         loadModule(requirements.app),
         loadModule(requirements.viewModel)
       ]).then((modules: [any, any]) =>
-        ((app: FormManagerLike, viewModel: ViewModelLike) => {
-          window.TYPO3.FORMMANAGER_APP = app.getInstance(options, viewModel).run();
+        ((
+          formManager: typeof import('@typo3/form/backend/form-manager'),
+          viewModel: ViewModelLike
+        ) => {
+          window.TYPO3.FORMMANAGER_APP = formManager.getInstance(options, viewModel).run();
         })(...modules)
       );
     });
