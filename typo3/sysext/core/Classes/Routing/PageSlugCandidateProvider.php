@@ -385,7 +385,7 @@ class PageSlugCandidateProvider
             $rootLine = GeneralUtility::makeInstance(
                 RootlineUtility::class,
                 $pageCandidate['uid'],
-                (string)$pageCandidate['MPvar'],
+                (string)($pageCandidate['MPvar'] ?? $pageCandidate['mount_pid_ol']),
                 $this->context
             )->get();
             foreach ($rootLine as $pageInRootLine) {
