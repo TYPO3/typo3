@@ -17,5 +17,6 @@ return [
             ],
         ],
         '@typo3/backend/contrib/mark.js' => 'EXT:backend/Resources/Public/JavaScript/Contrib/mark.js',
+        'alwan' => 'EXT:backend/Resources/Public/JavaScript/Contrib/alwan.js',
     ],
 ];

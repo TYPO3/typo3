@@ -629,6 +629,7 @@ module.exports = function (grunt) {
           }
         },
         files: {
+          'JavaScript/Contrib/alwan.js': 'alwan/dist/js/alwan.min.js',
           'JavaScript/Contrib/mark.js': 'mark.js/dist/mark.es6.min.js'
         }
       },
@@ -656,10 +657,6 @@ module.exports = function (grunt) {
             process: (source, srcpath) => {
               let imports = [], prefix = '';
 
-              if (srcpath === 'node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js') {
-                imports.push('jquery');
-              }
-
               if (srcpath === 'node_modules/tablesort/dist/sorts/tablesort.dotsep.min.js') {
                 prefix = 'import Tablesort from "tablesort";';
               }
@@ -678,7 +675,6 @@ module.exports = function (grunt) {
           'flatpickr/plugins/shortcut-buttons.min.js': 'shortcut-buttons-flatpickr/dist/shortcut-buttons-flatpickr.min.js',
           'interact.js': 'interactjs/dist/interact.min.js',
           'jquery.js': 'jquery/dist/jquery.js',
-          'jquery/minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
           'nprogress.js': 'nprogress/nprogress.js',
           'sortablejs.js': 'sortablejs/dist/sortable.umd.js',
           'tablesort.js': 'tablesort/dist/tablesort.min.js',
@@ -712,7 +708,6 @@ module.exports = function (grunt) {
           'autosize.js': 'autosize/dist/autosize.esm.js',
           'cropperjs.js': 'cropperjs/dist/cropper.esm.js',
           'luxon.js': 'luxon/build/es6/luxon.js',
-          '../../../../../backend/Resources/Public/Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
         }
       }
     },
