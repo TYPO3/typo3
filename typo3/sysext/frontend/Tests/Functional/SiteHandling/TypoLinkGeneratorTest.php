@@ -35,7 +35,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 final class TypoLinkGeneratorTest extends AbstractTestCase
 {
     protected array $pathsToProvideInTestInstance = [
-        'typo3/sysext/backend/Resources/Public/Images/Logo.png' => 'fileadmin/logo.png',
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/Images/typo3-logo.png' => 'fileadmin/logo.png',
     ];
 
     protected function setUp(): void
