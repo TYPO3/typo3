@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the BIGINT SQL column type
+ *
+ * @internal
  */
-class BigIntDataType extends IntegerDataType
+final class BigIntDataType extends IntegerDataType
 {
 }

@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the BINARY SQL column type
+ *
+ * @internal
  */
-class BinaryDataType extends AbstractDataType
+final class BinaryDataType extends AbstractDataType
 {
-    /**
-     * BinaryDataType constructor.
-     */
     public function __construct(int $length)
     {
         $this->length = $length;

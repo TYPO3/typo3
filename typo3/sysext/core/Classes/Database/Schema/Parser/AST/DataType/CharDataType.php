@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the CHAR SQL column type
+ *
+ * @internal
  */
-class CharDataType extends AbstractDataType
+final class CharDataType extends AbstractDataType
 {
-    /**
-     * CharDataType constructor.
-     */
     public function __construct(int $length, array $options)
     {
         $this->length = $length;

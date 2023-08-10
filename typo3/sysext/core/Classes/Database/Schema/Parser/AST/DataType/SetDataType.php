@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the SET SQL column type
+ *
+ * @internal
  */
-class SetDataType extends AbstractDataType
+final class SetDataType extends AbstractDataType
 {
-    /**
-     * SetDataType constructor.
-     */
     public function __construct(array $values, array $options)
     {
         $this->values = $values;

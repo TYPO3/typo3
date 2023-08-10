@@ -19,13 +19,9 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the DATE SQL column type
+ *
+ * @internal
  */
-class DateDataType extends AbstractDataType
+final class DateDataType extends AbstractDataType
 {
-    /**
-     * DateDataType constructor.
-     */
-    public function __construct()
-    {
-    }
 }

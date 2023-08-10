@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the ENUM SQL column type
+ *
+ * @internal
  */
-class EnumDataType extends AbstractDataType
+final class EnumDataType extends AbstractDataType
 {
-    /**
-     * EnumDataType constructor.
-     */
     public function __construct(array $values, array $options)
     {
         $this->values = $values;

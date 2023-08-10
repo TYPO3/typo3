@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the JSON SQL column type
+ *
+ * @internal
  */
-class JsonDataType extends AbstractDataType
+final class JsonDataType extends AbstractDataType
 {
-    /**
-     * JsonDataType constructor.
-     */
     public function __construct()
     {
         // JSON is not yet supported by Doctrine 2.5 and will be remapped

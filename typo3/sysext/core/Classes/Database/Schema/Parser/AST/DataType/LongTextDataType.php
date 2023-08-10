@@ -19,16 +19,14 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the LONGTEXT SQL column type
+ *
+ * @internal
  */
-class LongTextDataType extends TextDataType
+final class LongTextDataType extends TextDataType
 {
-    /**
-     * LongTextDataType constructor.
-     */
     public function __construct(array $options)
     {
         parent::__construct($options);
-
         // MySQL LONGTEXT can store 4GB of data, to be 32bit safe only claim 2GB
         $this->length = 2147483647;
     }

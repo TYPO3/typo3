@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the TEXT SQL column type
+ *
+ * @internal
  */
 class TextDataType extends AbstractDataType
 {
-    /**
-     * TextDataType constructor.
-     */
     public function __construct(array $options)
     {
         // MySQL TEXT can store 64KB

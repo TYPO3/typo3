@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the TIME SQL column type
+ *
+ * @internal
  */
-class TimeDataType extends AbstractDataType
+final class TimeDataType extends AbstractDataType
 {
-    /**
-     * TimeDataType constructor.
-     */
     public function __construct(int $length)
     {
         $this->length = $length;

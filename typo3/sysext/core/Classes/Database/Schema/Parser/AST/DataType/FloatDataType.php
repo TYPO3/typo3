@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the FLOAT SQL column type
+ *
+ * @internal
  */
 class FloatDataType extends AbstractDataType
 {
-    /**
-     * FloatDataType constructor.
-     */
     public function __construct(array $dataTypeDecimals, array $dataTypeOptions)
     {
         // -1 is used to indicate that no value has been provided

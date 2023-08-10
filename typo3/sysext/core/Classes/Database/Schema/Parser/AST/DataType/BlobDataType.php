@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the BLOB SQL column type
+ *
+ * @internal
  */
 class BlobDataType extends AbstractDataType
 {
-    /**
-     * BlobDataType constructor.
-     */
     public function __construct()
     {
         // MySQL BLOB can store 64KB

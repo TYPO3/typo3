@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the DECIMAL SQL column type
+ *
+ * @internal
  */
 class DecimalDataType extends AbstractDataType
 {
-    /**
-     * DecimalDataType constructor.
-     */
     public function __construct(array $dataTypeDecimals, array $dataTypeOptions)
     {
         $this->precision = $dataTypeDecimals['length'] ?? -1;

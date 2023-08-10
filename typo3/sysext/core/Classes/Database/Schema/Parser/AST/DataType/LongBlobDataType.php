@@ -19,16 +19,14 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the LONGBLOB SQL column type
+ *
+ * @internal
  */
-class LongBlobDataType extends BlobDataType
+final class LongBlobDataType extends BlobDataType
 {
-    /**
-     * LongBlobDataType constructor.
-     */
     public function __construct()
     {
         parent::__construct();
-
         // MySQL LONGBLOB can store 4GB of data, to be 32bit safe only claim 2GB
         $this->length = 2147483647;
     }

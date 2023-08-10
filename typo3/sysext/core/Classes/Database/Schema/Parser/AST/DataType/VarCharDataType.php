@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the VARCHAR SQL column type
+ *
+ * @internal
  */
-class VarCharDataType extends AbstractDataType
+final class VarCharDataType extends AbstractDataType
 {
-    /**
-     * VarCharDataType constructor.
-     */
     public function __construct(int $length, array $options)
     {
         $this->length = $length;

@@ -19,16 +19,14 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the MEDIUMBLOB SQL column type
+ *
+ * @internal
  */
-class MediumBlobDataType extends BlobDataType
+final class MediumBlobDataType extends BlobDataType
 {
-    /**
-     * MediumBlobDataType constructor.
-     */
     public function __construct()
     {
         parent::__construct();
-
         // MySQL MEDIUMBLOB can store 16MB
         $this->length = 16777215;
     }

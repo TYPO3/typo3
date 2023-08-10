@@ -19,17 +19,15 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the INT SQL column type
+ *
+ * @internal
  */
 class IntegerDataType extends AbstractDataType
 {
-    /**
-     * IntegerDataType constructor.
-     */
     public function __construct(int $length, array $options)
     {
         $this->length = $length;
         $this->options = $options;
-
         if (array_key_exists('unsigned', $options) && $options['unsigned']) {
             $this->setUnsigned(true);
         }

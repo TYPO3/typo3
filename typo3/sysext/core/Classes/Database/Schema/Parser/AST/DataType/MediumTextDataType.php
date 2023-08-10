@@ -19,16 +19,14 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the MEDIUMTEXT SQL column type
+ *
+ * @internal
  */
-class MediumTextDataType extends TextDataType
+final class MediumTextDataType extends TextDataType
 {
-    /**
-     * MediumTextDataType constructor.
-     */
     public function __construct(array $options)
     {
         parent::__construct($options);
-
         // MySQL MEDIUMTEXT can store 16MB
         $this->length = 16777215;
     }

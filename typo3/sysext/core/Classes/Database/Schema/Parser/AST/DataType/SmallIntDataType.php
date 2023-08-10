@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the SMALLINT SQL column type
+ *
+ * @internal
  */
-class SmallIntDataType extends IntegerDataType
+final class SmallIntDataType extends IntegerDataType
 {
 }

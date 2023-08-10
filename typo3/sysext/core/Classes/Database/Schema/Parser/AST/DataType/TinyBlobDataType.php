@@ -19,16 +19,14 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the TINYBLOB SQL column type
+ *
+ * @internal
  */
-class TinyBlobDataType extends BlobDataType
+final class TinyBlobDataType extends BlobDataType
 {
-    /**
-     * TinyBlobDataType constructor.
-     */
     public function __construct()
     {
         parent::__construct();
-
         // MySQL TINYBLOB can store 255 bytes
         $this->length = 255;
     }

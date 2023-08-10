@@ -19,16 +19,14 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the TINYTEXT SQL column type
+ *
+ * @internal
  */
-class TinyTextDataType extends TextDataType
+final class TinyTextDataType extends TextDataType
 {
-    /**
-     * TinyTextDataType constructor.
-     */
     public function __construct(array $options)
     {
         parent::__construct($options);
-
         // MySQL TINYTEXT can store 255 characters
         $this->length = 255;
     }

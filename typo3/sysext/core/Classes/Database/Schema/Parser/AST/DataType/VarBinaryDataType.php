@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the VARBINARY SQL column type
+ *
+ * @internal
  */
-class VarBinaryDataType extends AbstractDataType
+final class VarBinaryDataType extends AbstractDataType
 {
-    /**
-     * VarBinaryDataType constructor.
-     */
     public function __construct(int $length)
     {
         $this->length = $length;

@@ -19,12 +19,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 
 /**
  * Node representing the BIT SQL column type
+ *
+ * @internal
  */
-class BitDataType extends AbstractDataType
+final class BitDataType extends AbstractDataType
 {
-    /**
-     * BitDataType constructor.
-     */
     public function __construct(int $length)
     {
         $this->length = $length;

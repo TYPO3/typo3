@@ -20,66 +20,32 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 /**
  * Base class for all data types that contains properties
  * common to all data types.
+ *
+ * @internal
  */
 abstract class AbstractDataType
 {
-    /**
-     * Used by most field types for length/precision information
-     *
-     * @var int
-     */
-    protected $length = 0;
-
-    /**
-     * Used for floating point type columns
-     * -1 is used to indicate that no value has been set.
-     *
-     * @var int
-     */
-    protected $precision = -1;
-
-    /**
-     * Used for floating point type columns
-     * -1 is used to indicate that no value has been set.
-     *
-     * @var int
-     */
-    protected $scale = -1;
-
-    /**
-     * Differentiate between CHAR/VARCHAR and BINARY/VARBINARY
-     *
-     * @var bool
-     */
-    protected $fixed = false;
-
-    /**
-     * Unsigned flag for numeric columns
-     *
-     * @var bool
-     */
-    protected $unsigned = false;
-
-    /**
-     * Extra options for a column that control specific features/flags
-     *
-     * @var array
-     */
-    protected $options = [];
-
-    /**
-     * Options for ENUM/SET data types
-     *
-     * @var array
-     */
-    protected $values;
+    /** Used by most field types for length/precision information */
+    protected int $length = 0;
+    /** Used for floating point type columns. -1 is used to indicate no value has been set. */
+    protected int $precision = -1;
+    /** Used for floating point type columns. -1 is used to indicate that no value has been set. */
+    protected int $scale = -1;
+    /** Differentiate between CHAR/VARCHAR and BINARY/VARBINARY */
+    protected bool $fixed = false;
+    /** Unsigned flag for numeric columns */
+    protected bool $unsigned = false;
+    /** Extra options for a column that control specific features/flags */
+    protected array $options = [];
+    /** Options for ENUM/SET data types */
+    protected array $values = [];
 
     public function getLength(): int
     {
         return $this->length;
     }
 
-    public function setLength(int $length)
+    public function setLength(int $length): void
     {
         $this->length = $length;
     }
@@ -89,7 +55,7 @@ abstract class AbstractDataType
         return $this->precision;
     }
 
-    public function setPrecision(int $precision)
+    public function setPrecision(int $precision): void
     {
         $this->precision = $precision;
     }
@@ -99,7 +65,7 @@ abstract class AbstractDataType
         return $this->scale;
     }
 
-    public function setScale(int $scale)
+    public function setScale(int $scale): void
     {
         $this->scale = $scale;
     }
@@ -109,7 +75,7 @@ abstract class AbstractDataType
         return $this->fixed;
     }
 
-    public function setFixed(bool $fixed)
+    public function setFixed(bool $fixed): void
     {
         $this->fixed = $fixed;
     }
@@ -119,7 +85,7 @@ abstract class AbstractDataType
         return $this->options;
     }
 
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         $this->options = $options;
     }
@@ -129,7 +95,7 @@ abstract class AbstractDataType
         return $this->unsigned;
     }
 
-    public function setUnsigned(bool $unsigned)
+    public function setUnsigned(bool $unsigned): void
     {
         $this->unsigned = $unsigned;
     }
@@ -139,7 +105,7 @@ abstract class AbstractDataType
         return $this->values;
     }
 
-    public function setValues(array $values)
+    public function setValues(array $values): void
     {
         $this->values = $values;
     }
