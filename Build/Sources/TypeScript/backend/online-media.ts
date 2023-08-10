@@ -19,7 +19,8 @@ import { KeyTypesEnum } from './enum/key-types';
 import NProgress from 'nprogress';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import SecurityUtility from '@typo3/core/security-utility';
-import Modal from './modal';
+import Modal, { ModalElement } from './modal';
+import Notification from './notification';
 import Severity from './severity';
 
 interface Response {
@@ -46,11 +47,7 @@ class OnlineMedia {
     });
   }
 
-  /**
-   * @param {JQuery} $trigger
-   * @param {string} url
-   */
-  private addOnlineMedia($trigger: JQuery, url: string): void {
+  private addOnlineMedia($trigger: JQuery, modalElement: ModalElement, url: string): void {
     const target = $trigger.data('target-folder');
     const allowed = $trigger.data('online-media-allowed');
     const irreObjectUid = $trigger.data('file-irre-object');
@@ -70,21 +67,9 @@ class OnlineMedia {
           uid: data.file,
         };
         MessageUtility.send(message);
+        modalElement.hideModal();
       } else {
-        const modal = Modal.confirm(
-          'ERROR',
-          data.error,
-          Severity.error,
-          [{
-            text: TYPO3.lang['button.ok'] || 'OK',
-            btnClass: 'btn-' + Severity.getCssClass(Severity.error),
-            name: 'ok',
-            active: true,
-          }],
-        );
-        modal.addEventListener('confirm.button.ok', (): void => {
-          modal.hideModal();
-        });
+        Notification.error(top.TYPO3.lang['online_media.error.new_media.failed'], data.error);
       }
       NProgress.done();
     });
@@ -123,8 +108,7 @@ class OnlineMedia {
         trigger: (): void => {
           const url = $(modal).find('input.online-media-url').val();
           if (url) {
-            modal.hideModal();
-            this.addOnlineMedia($currentTarget, url);
+            this.addOnlineMedia($currentTarget, modal, url);
           }
         },
       }],
