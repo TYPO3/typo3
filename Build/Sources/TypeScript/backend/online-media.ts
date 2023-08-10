@@ -12,15 +12,15 @@
  */
 
 import DocumentService from '@typo3/core/document-service';
-import $ from 'jquery';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { KeyTypesEnum } from './enum/key-types';
 import NProgress from 'nprogress';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import SecurityUtility from '@typo3/core/security-utility';
-import Modal from './modal';
+import Modal, { ModalElement, Types } from './modal';
+import Notification from './notification';
 import Severity from './severity';
+import RegularEvent from '@typo3/core/event/regular-event';
+import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 
 interface Response {
   file?: number;
@@ -32,28 +32,25 @@ interface Response {
  * Javascript for show the online media dialog
  */
 class OnlineMedia {
-  private readonly securityUtility: SecurityUtility;
   constructor() {
-    this.securityUtility = new SecurityUtility();
-    DocumentService.ready().then((): void => {
+    DocumentService.ready().then(async (): Promise<void> => {
+      // Since the web component is used in a modal and therefore in outer frames, we have to import the module in the
+      // top level scope. Not doing so causes issues in at least Firefox.
+      await topLevelModuleImport('@typo3/backend/form-engine/element/online-media-form-element.js');
       this.registerEvents();
     });
   }
 
   private registerEvents(): void {
-    $(document).on('click', '.t3js-online-media-add-btn', (e: JQueryEventObject): void => {
-      this.triggerModal($(e.currentTarget));
-    });
+    new RegularEvent('click', (e: Event, target: HTMLButtonElement): void => {
+      this.triggerModal(target);
+    }).delegateTo(document, '.t3js-online-media-add-btn');
   }
 
-  /**
-   * @param {JQuery} $trigger
-   * @param {string} url
-   */
-  private addOnlineMedia($trigger: JQuery, url: string): void {
-    const target = $trigger.data('target-folder');
-    const allowed = $trigger.data('online-media-allowed');
-    const irreObjectUid = $trigger.data('file-irre-object');
+  private addOnlineMedia(trigger: HTMLButtonElement, modalElement: ModalElement, url: string): void {
+    const target = trigger.dataset.targetFolder;
+    const allowed = trigger.dataset.onlineMediaAllowed;
+    const irreObjectUid = trigger.dataset.fileIrreObject;
 
     NProgress.start();
     new AjaxRequest(TYPO3.settings.ajaxUrls.online_media_create).post({
@@ -70,73 +67,42 @@ class OnlineMedia {
           uid: data.file,
         };
         MessageUtility.send(message);
+        modalElement.hideModal();
       } else {
-        const modal = Modal.confirm(
-          'ERROR',
-          data.error,
-          Severity.error,
-          [{
-            text: TYPO3.lang['button.ok'] || 'OK',
-            btnClass: 'btn-' + Severity.getCssClass(Severity.error),
-            name: 'ok',
-            active: true,
-          }],
-        );
-        modal.addEventListener('confirm.button.ok', (): void => {
-          modal.hideModal();
-        });
+        Notification.error(top.TYPO3.lang['online_media.error.new_media.failed'], data.error);
       }
       NProgress.done();
     });
   }
 
-  /**
-   * @param {JQuery} $currentTarget
-   */
-  private triggerModal($currentTarget: JQuery): void {
-    const btnSubmit = $currentTarget.data('btn-submit') || 'Add';
-    const placeholder = $currentTarget.data('placeholder') || 'Paste media url here...';
-    const allowedExtMarkup = $.map($currentTarget.data('online-media-allowed').split(','), (ext: string): string => {
-      return '<span class="badge badge-success">' + this.securityUtility.encodeHtml(ext.toUpperCase(), false) + '</span>';
-    });
-    const allowedHelpText = $currentTarget.data('online-media-allowed-help-text') || 'Allow to embed from sources:';
+  private triggerModal(trigger: HTMLButtonElement): void {
+    const btnSubmit = trigger.dataset.btnSubmit || 'Add';
+    const placeholder = trigger.dataset.placeholder || 'Paste media url here...';
+    const allowedHelpText = trigger.dataset.onlineMediaAllowedHelpText || 'Allow to embed from sources:';
 
-    const $markup = $('<div>')
-      .attr('class', 'form-control-wrap')
-      .append([
-        $('<input>')
-          .attr('type', 'text')
-          .attr('class', 'form-control online-media-url')
-          .attr('placeholder', placeholder),
-        $('<div>')
-          .attr('class', 'form-text')
-          .html(this.securityUtility.encodeHtml(allowedHelpText, false) + '<br>' + allowedExtMarkup.join(' ')),
-      ]);
-    const modal = Modal.show(
-      $currentTarget.attr('title'),
-      $markup,
-      Severity.notice,
-      [{
+    const onlineMediaForm = document.createElement('typo3-backend-formengine-online-media-form');
+    onlineMediaForm.placeholder = placeholder;
+    onlineMediaForm.setAttribute('help-text', allowedHelpText);
+    onlineMediaForm.setAttribute('extensions', trigger.dataset.onlineMediaAllowed);
+
+    Modal.advanced({
+      type: Types.default,
+      title: trigger.title,
+      content: onlineMediaForm,
+      severity: Severity.notice,
+      callback: (modalElement: ModalElement): void => {
+        modalElement.querySelector('typo3-backend-formengine-online-media-form').addEventListener('typo3:formengine:online-media-added', (e: CustomEvent): void => {
+          this.addOnlineMedia(trigger, modalElement, e.detail['online-media-url'])
+        });
+      },
+      buttons: [{
         text: btnSubmit,
         btnClass: 'btn btn-primary',
         name: 'ok',
         trigger: (): void => {
-          const url = $(modal).find('input.online-media-url').val();
-          if (url) {
-            modal.hideModal();
-            this.addOnlineMedia($currentTarget, url);
-          }
+          onlineMediaForm.querySelector('form').requestSubmit();
         },
       }],
-    );
-
-    modal.addEventListener('typo3-modal-shown', (e: Event): void => {
-      // focus the input field
-      $(e.currentTarget).find('input.online-media-url').first().focus().on('keydown', (kdEvt: JQueryEventObject): void => {
-        if (kdEvt.keyCode === KeyTypesEnum.ENTER) {
-          $(modal).find('button[name="ok"]').trigger('click');
-        }
-      });
     });
   }
 }
