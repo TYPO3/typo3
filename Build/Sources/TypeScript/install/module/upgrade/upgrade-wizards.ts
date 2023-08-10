@@ -12,7 +12,6 @@
  */
 
 import 'bootstrap';
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Notification from '@typo3/backend/notification';
@@ -23,7 +22,8 @@ import { InfoBox } from '../../renderable/info-box';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
-import { ProgressBar } from '../../renderable/progress-bar';
+import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 type UpgradeWizardsBlockingDatabaseAddsResponse = {
   success: boolean;
@@ -92,161 +92,162 @@ class UpgradeWizards extends AbstractInteractableModule {
     this.securityUtility = new SecurityUtility();
   }
 
-  private static removeLoadingMessage($container: JQuery): void {
-    $container.find('typo3-install-progress-bar').remove();
+  private static removeLoadingMessage(container: HTMLElement): void {
+    container.querySelector('typo3-install-progress-bar').remove();
   }
 
-  private static renderProgressBar(title: string): ProgressBar {
-    const progressBar = document.createElement('typo3-install-progress-bar');
-    progressBar.label = title;
-    return progressBar;
-  }
-
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
 
     this.getData().then((): void => {
       this.doneUpgrades();
     });
 
     // Mark a done wizard undone
-    currentModal.on('click', this.selectorWizardsDoneRowMarkUndone, (e: JQueryEventObject): void => {
-      this.markUndone((<HTMLElement>e.target).dataset.identifier);
-    });
+    new RegularEvent('click', (event: Event, target: HTMLElement): void => {
+      this.markUndone(target.dataset.identifier);
+    }).delegateTo(currentModal, this.selectorWizardsDoneRowMarkUndone);
 
     // Execute "fix default mysql connection db charset" blocking wizard
-    currentModal.on('click', this.selectorWizardsBlockingCharsetFix, (): void => {
+    new RegularEvent('click', (): void => {
       this.blockingUpgradesDatabaseCharsetFix();
-    });
+    }).delegateTo(currentModal, this.selectorWizardsBlockingCharsetFix);
 
     // Execute "add required fields + tables" blocking wizard
-    currentModal.on('click', this.selectorWizardsBlockingAddsExecute, (): void => {
+    new RegularEvent('click', (): void => {
       this.blockingUpgradesDatabaseAddsExecute();
-    });
+    }).delegateTo(currentModal, this.selectorWizardsBlockingAddsExecute);
 
     // Get user input of a single upgrade wizard
-    currentModal.on('click', this.selectorWizardsListRowExecute, (e: JQueryEventObject): void => {
-      this.wizardInput((<HTMLElement>e.target).dataset.identifier, (<HTMLElement>e.target).dataset.title);
-    });
+    new RegularEvent('click', (event: Event, target: HTMLElement): void => {
+      this.wizardInput(target.dataset.identifier, target.dataset.title);
+    }).delegateTo(currentModal, this.selectorWizardsListRowExecute);
 
     // Execute one upgrade wizard
-    currentModal.on('click', this.selectorWizardsInputPerform, (e: JQueryEventObject): void => {
-      this.wizardExecute((<HTMLElement>e.target).dataset.identifier, (<HTMLElement>e.target).dataset.title);
-    });
+    new RegularEvent('click', (event: Event, target: HTMLElement): void => {
+      this.wizardExecute(target.dataset.identifier, target.dataset.title);
+    }).delegateTo(currentModal, this.selectorWizardsInputPerform);
 
     // Abort upgrade wizard
-    currentModal.on('click', this.selectorWizardsInputAbort, (): void => {
-      this.findInModal(this.selectorOutputWizardsContainer).empty();
+    new RegularEvent('click', (): void => {
+      this.findInModal(this.selectorOutputWizardsContainer).innerHTML = '';
       this.wizardsList();
-    });
+    }).delegateTo(currentModal, this.selectorWizardsInputAbort);
   }
 
   private getData(): Promise<void> {
     const modalContent = this.getModalBody();
-    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
     return (new AjaxRequest(Router.getUrl('upgradeWizardsGetData')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
-            modalContent.empty().append(data.html);
+            modalContent.innerHTML = data.html;
             this.blockingUpgradesDatabaseCharsetTest();
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error, $outputContainer);
+          Router.handleAjaxError(error, outputContainer);
         }
       );
   }
 
   private blockingUpgradesDatabaseCharsetTest(): void {
     const modalContent = this.getModalBody();
-    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
-    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Checking database charset...'));
+    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+
+    this.renderProgressBar(outputContainer, {
+      label: 'Checking database charset...'
+    });
     (new AjaxRequest(Router.getUrl('upgradeWizardsBlockingDatabaseCharsetTest')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          UpgradeWizards.removeLoadingMessage($outputContainer);
+          UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (data.needsUpdate === true) {
-              modalContent.find(this.selectorOutputWizardsContainer)
-                .append(modalContent.find(this.selectorWizardsBlockingCharsetTemplate)).clone();
+              modalContent.querySelector(this.selectorOutputWizardsContainer)
+                .appendChild(modalContent.querySelector(this.selectorWizardsBlockingCharsetTemplate)).cloneNode(true);
             } else {
               this.blockingUpgradesDatabaseAdds();
             }
           }
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error, $outputContainer);
+          Router.handleAjaxError(error, outputContainer);
         }
       );
   }
 
   private blockingUpgradesDatabaseCharsetFix(): void {
-    const $outputContainer = $(this.selectorOutputWizardsContainer);
-    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Setting database charset to UTF-8...'));
+    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    this.renderProgressBar(outputContainer, {
+      label: 'Setting database charset to UTF-8...'
+    });
     (new AjaxRequest(Router.getUrl('upgradeWizardsBlockingDatabaseCharsetFix')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          UpgradeWizards.removeLoadingMessage($outputContainer);
+          UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (Array.isArray(data.status) && data.status.length > 0) {
               data.status.forEach((element: MessageInterface): void => {
-                $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
+                outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
           } else {
-            UpgradeWizards.removeLoadingMessage($outputContainer);
-            $outputContainer.append(FlashMessage.create(Severity.error, 'Something went wrong'));
+            UpgradeWizards.removeLoadingMessage(outputContainer);
+            outputContainer.append(FlashMessage.create(Severity.error, 'Something went wrong'));
           }
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error, $outputContainer);
+          Router.handleAjaxError(error, outputContainer);
         }
       );
   }
 
   private blockingUpgradesDatabaseAdds(): void {
     const modalContent = this.getModalBody();
-    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
-    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Check for missing mandatory database tables and fields...'));
+    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    this.renderProgressBar(outputContainer, {
+      label: 'Check for missing mandatory database tables and fields...'
+    });
     (new AjaxRequest(Router.getUrl('upgradeWizardsBlockingDatabaseAdds')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data: UpgradeWizardsBlockingDatabaseAddsResponse = await response.resolve();
-          UpgradeWizards.removeLoadingMessage($outputContainer);
+          UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (data.needsUpdate === true) {
-              const adds = modalContent.find(this.selectorWizardsBlockingAddsTemplate).clone();
+              const adds = modalContent.querySelector(this.selectorWizardsBlockingAddsTemplate).cloneNode(true) as HTMLElement;
               if (typeof (data.adds.tables) === 'object') {
                 data.adds.tables.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table);
-                  adds.find(this.selectorWizardsBlockingAddsRows).append(title, '<br>');
+                  adds.querySelector(this.selectorWizardsBlockingAddsRows).append(title, '<br>');
                 });
               }
               if (typeof (data.adds.columns) === 'object') {
                 data.adds.columns.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table)
                     + ', Field: ' + this.securityUtility.encodeHtml(element.field);
-                  adds.find(this.selectorWizardsBlockingAddsRows).append(title, '<br>');
+                  adds.querySelector(this.selectorWizardsBlockingAddsRows).append(title, '<br>');
                 });
               }
               if (typeof (data.adds.indexes) === 'object') {
                 data.adds.indexes.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table)
                     + ', Index: ' + this.securityUtility.encodeHtml(element.index);
-                  adds.find(this.selectorWizardsBlockingAddsRows).append(title, '<br>');
+                  adds.querySelector(this.selectorWizardsBlockingAddsRows).append(title, '<br>');
                 });
               }
-              modalContent.find(this.selectorOutputWizardsContainer).append(adds);
+              modalContent.querySelector(this.selectorOutputWizardsContainer).appendChild(adds);
             } else {
               this.wizardsList();
             }
@@ -255,63 +256,77 @@ class UpgradeWizards extends AbstractInteractableModule {
           }
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error, $outputContainer);
+          Router.handleAjaxError(error, outputContainer);
         }
       );
   }
 
   private blockingUpgradesDatabaseAddsExecute(): void {
-    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
-    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Adding database tables and fields...'));
+    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    this.renderProgressBar(outputContainer, {
+      label: 'Adding database tables and fields...'
+    });
     (new AjaxRequest(Router.getUrl('upgradeWizardsBlockingDatabaseExecute')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          UpgradeWizards.removeLoadingMessage($outputContainer);
+          UpgradeWizards.removeLoadingMessage(outputContainer);
           if (Array.isArray(data.status) && data.status.length > 0) {
             data.status.forEach((element: MessageInterface): void => {
-              $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
+              outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
           if (data.success === true) {
             this.wizardsList();
           } else if (!Array.isArray(data.status) || data.status.length === 0) {
-            $outputContainer.append(FlashMessage.create(Severity.error, 'Something went wrong'));
+            outputContainer.append(FlashMessage.create(Severity.error, 'Something went wrong'));
           } else {
-            const $toolbar = $('<div class="btn-toolbar mt-3 mb-4"></div>');
-            const $retryButton = $('<button class="btn btn-default">Retry database migration</button>');
-            const $proceedButton = $('<button class="btn btn-danger">Proceed despite of errors</button>');
-            $retryButton.click((): void => {
+            const toolbar = document.createElement('div');
+            toolbar.classList.add('btn-toolbar', 'mt-3', 'mb-4');
+
+            const retryButton = document.createElement('button');
+            retryButton.classList.add('btn', 'btn-default');
+            retryButton.innerText = 'Retry database migration';
+
+            const proceedButton = document.createElement('button');
+            proceedButton.classList.add('btn', 'btn-danger');
+            proceedButton.innerText = 'Proceed despite of errors';
+
+            new RegularEvent('click', (): void => {
               this.blockingUpgradesDatabaseAddsExecute();
-            });
-            $proceedButton.click((): void => {
-              $toolbar.remove();
+            }).bindTo(retryButton);
+
+            new RegularEvent('click', (): void => {
+              toolbar.remove();
               this.wizardsList();
-            });
-            $toolbar.append($retryButton);
-            $toolbar.append($proceedButton);
-            $outputContainer.append($toolbar);
+            }).bindTo(proceedButton);
+
+            toolbar.appendChild(retryButton);
+            toolbar.appendChild(proceedButton);
+            outputContainer.appendChild(toolbar);
           }
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error, $outputContainer);
+          Router.handleAjaxError(error, outputContainer);
         }
       );
   }
 
   private wizardsList(): void {
     const modalContent = this.getModalBody();
-    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
-    $outputContainer.append(UpgradeWizards.renderProgressBar('Loading upgrade wizards...'));
+    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    this.renderProgressBar(outputContainer, {
+      label: 'Loading upgrade wizards...'
+    });
     (new AjaxRequest(Router.getUrl('upgradeWizardsList')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          UpgradeWizards.removeLoadingMessage($outputContainer);
-          const list = modalContent.find(this.selectorWizardsListTemplate).clone();
-          list.removeClass('t3js-upgradeWizards-list-template');
+          UpgradeWizards.removeLoadingMessage(outputContainer);
+          const list = modalContent.querySelector(this.selectorWizardsListTemplate).cloneNode(true) as HTMLElement;
+          list.classList.remove('t3js-upgradeWizards-list-template');
           if (data.success === true) {
             let numberOfWizardsTodo = 0;
             let numberOfWizards = 0;
@@ -319,53 +334,52 @@ class UpgradeWizards extends AbstractInteractableModule {
               numberOfWizards = data.wizards.length;
               data.wizards.forEach((element: UpgradeWizard): void => {
                 if (element.shouldRenderWizard === true) {
-                  const aRow = modalContent.find(this.selectorWizardsListRowTemplate).clone();
+                  const aRow = modalContent.querySelector(this.selectorWizardsListRowTemplate).cloneNode(true) as HTMLElement;
                   numberOfWizardsTodo = numberOfWizardsTodo + 1;
-                  aRow.removeClass('t3js-upgradeWizards-list-row-template');
-                  aRow.find(this.selectorWizardsListRowTitle).empty().text(element.title);
-                  aRow.find(this.selectorWizardsListRowExplanation).empty().text(element.explanation);
-                  aRow.find(this.selectorWizardsListRowExecute).attr('data-identifier', element.identifier).attr('data-title', element.title);
-                  list.find(this.selectorWizardsListRows).append(aRow);
+                  aRow.classList.remove('t3js-upgradeWizards-list-row-template');
+                  aRow.querySelector<HTMLElement>(this.selectorWizardsListRowTitle).innerText = element.title;
+                  aRow.querySelector<HTMLElement>(this.selectorWizardsListRowExplanation).innerText = element.explanation;
+                  aRow.querySelector<HTMLElement>(this.selectorWizardsListRowExecute).setAttribute('data-identifier', element.identifier);
+                  aRow.querySelector<HTMLElement>(this.selectorWizardsListRowExecute).setAttribute('data-title', element.title);
+                  list.querySelector<HTMLElement>(this.selectorWizardsListRows).append(aRow);
                 }
               });
-              list.find(this.selectorWizardsListRows + ' hr:last').remove();
             }
             let percent: number = 100;
-            const $progressBar = list.find('.progress-bar');
+            const progressBar = list.querySelector<HTMLElement>('.progress-bar');
             if (numberOfWizardsTodo > 0) {
               percent = Math.round((numberOfWizards - numberOfWizardsTodo) / data.wizards.length * 100);
             } else {
-              $progressBar
-                .removeClass('progress-bar-info')
-                .addClass('progress-bar-success');
+              progressBar.classList.remove('progress-bar-info');
+              progressBar.classList.add('progress-bar-success');
             }
-            $progressBar
-              .removeClass('progress-bar-striped')
-              .css('width', percent + '%')
-              .attr('aria-valuenow', percent)
-              .find('span')
-              .text(percent + '%');
-            modalContent.find(this.selectorOutputWizardsContainer).append(list);
-            this.findInModal(this.selectorWizardsDoneRowMarkUndone).prop('disabled', false);
+            progressBar.classList.remove('progress-bar-striped');
+            progressBar.style.width = percent + '%';
+            progressBar.setAttribute('aria-valuenow', String(percent));
+            progressBar.querySelector('span').innerText = percent + '%';
+            modalContent.querySelector(this.selectorOutputWizardsContainer).appendChild(list);
+            (this.findInModal(this.selectorWizardsDoneRowMarkUndone) as HTMLInputElement).disabled = false;
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error, $outputContainer);
+          Router.handleAjaxError(error, outputContainer);
         }
       );
   }
 
   private wizardInput(identifier: string, title: string): void {
-    const executeToken = this.getModuleContent().data('upgrade-wizards-input-token');
+    const executeToken = this.getModuleContent().dataset.upgradeWizardsInputToken;
     const modalContent = this.getModalBody();
-    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
-    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Loading "' + title + '"...'));
+    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    this.renderProgressBar(outputContainer, {
+      label: 'Loading "' + title + '"...'
+    });
 
     modalContent.animate(
       {
-        scrollTop: modalContent.scrollTop() - Math.abs(modalContent.find('.t3js-upgrade-status-section').position().top),
+        scrollTop: modalContent.scrollTop - Math.abs(modalContent.querySelector('.t3js-upgrade-status-section').getBoundingClientRect().top),
       },
       250,
     );
@@ -381,128 +395,134 @@ class UpgradeWizards extends AbstractInteractableModule {
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          $outputContainer.empty();
-          const input = modalContent.find(this.selectorWizardsInputTemplate).clone();
-          input.removeClass('t3js-upgradeWizards-input');
+          outputContainer.innerHTML = '';
+          const input = modalContent.querySelector(this.selectorWizardsInputTemplate).cloneNode(true) as HTMLElement;
+          input.classList.remove('t3js-upgradeWizards-input');
           if (data.success === true) {
             if (Array.isArray(data.status)) {
               data.status.forEach((element: MessageInterface): void => {
-                $outputContainer.append(FlashMessage.create(element.severity, element.title, element.message));
+                outputContainer.append(FlashMessage.create(element.severity, element.title, element.message));
               });
             }
             if (data.userInput.wizardHtml.length > 0) {
-              input.find(this.selectorWizardsInputHtml).html(data.userInput.wizardHtml);
+              input.querySelector<HTMLElement>(this.selectorWizardsInputHtml).innerHTML = data.userInput.wizardHtml;
             }
-            input.find(this.selectorWizardsInputTitle).text(data.userInput.title);
-            input.find(this.selectorWizardsInputDescription).html(this.securityUtility.stripHtml(data.userInput.description).replace(/\n/g, '<br>'));
-            input.find(this.selectorWizardsInputPerform)
-              .attr('data-identifier', data.userInput.identifier)
-              .attr('data-title', data.userInput.title);
+            input.querySelector<HTMLElement>(this.selectorWizardsInputTitle).innerText = data.userInput.title;
+            input.querySelector<HTMLElement>(this.selectorWizardsInputDescription).innerHTML = this.securityUtility.stripHtml(data.userInput.description).replace(/\n/g, '<br>');
+            const selectorWizardsInputPerform = input.querySelector<HTMLElement>(this.selectorWizardsInputPerform);
+            selectorWizardsInputPerform.setAttribute('data-identifier', data.userInput.identifier);
+            selectorWizardsInputPerform.setAttribute('data-title', data.userInput.title);
           }
-          modalContent.find(this.selectorOutputWizardsContainer).append(input);
+          modalContent.querySelector(this.selectorOutputWizardsContainer).appendChild(input);
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error, $outputContainer);
+          Router.handleAjaxError(error, outputContainer);
         }
       );
   }
 
   private wizardExecute(identifier: string, title: string): void {
-    const executeToken = this.getModuleContent().data('upgrade-wizards-execute-token');
+    const executeToken = this.getModuleContent().dataset.upgradeWizardsExecuteToken;
     const modalContent = this.getModalBody();
     const postData: Record<string, string> = {
       'install[action]': 'upgradeWizardsExecute',
       'install[token]': executeToken,
       'install[identifier]': identifier,
     };
-    for (const element of this.findInModal(this.selectorOutputWizardsContainer + ' form').serializeArray()) {
-      postData[element.name] = element.value;
+    const formData = new FormData(this.findInModal(this.selectorOutputWizardsContainer + ' form') as HTMLFormElement);
+    for (const [name, value] of formData) {
+      postData[name] = value.toString();
     }
-    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
-    // modalContent.find(this.selectorOutputWizardsContainer).empty();
-    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Executing "' + title + '"...'));
-    this.findInModal(this.selectorWizardsDoneRowMarkUndone).prop('disabled', true);
+    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    this.renderProgressBar(outputContainer, {
+      label: 'Executing "' + title + '"...'
+    });
+    (this.findInModal(this.selectorWizardsDoneRowMarkUndone) as HTMLInputElement).disabled = true;
     (new AjaxRequest(Router.getUrl()))
       .post(postData)
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          $outputContainer.empty();
+          outputContainer.innerHTML = '';
           if (data.success === true) {
             if (Array.isArray(data.status)) {
               data.status.forEach((element: MessageInterface): void => {
-                $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
+                outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
             this.wizardsList();
-            modalContent.find(this.selectorOutputDoneContainer).empty();
+            modalContent.querySelector(this.selectorOutputDoneContainer).innerHTML = '';
             this.doneUpgrades();
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error, $outputContainer);
+          Router.handleAjaxError(error, outputContainer);
         }
       );
   }
 
   private doneUpgrades(): void {
     const modalContent = this.getModalBody();
-    const $outputContainer = modalContent.find(this.selectorOutputDoneContainer);
-    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Loading executed upgrade wizards...'));
+    const outputContainer = modalContent.querySelector<HTMLElement>(this.selectorOutputDoneContainer);
+    this.renderProgressBar(outputContainer, {
+      label: 'Loading executed upgrade wizards...'
+    });
     (new AjaxRequest(Router.getUrl('upgradeWizardsDoneUpgrades')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          UpgradeWizards.removeLoadingMessage($outputContainer);
+          UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (Array.isArray(data.status) && data.status.length > 0) {
               data.status.forEach((element: MessageInterface): void => {
-                $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
+                outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
-            const body = modalContent.find(this.selectorWizardsDoneBodyTemplate).clone();
-            const $wizardsDoneContainer = body.find(this.selectorWizardsDoneRows);
+            const body = modalContent.querySelector(this.selectorWizardsDoneBodyTemplate).cloneNode(true) as HTMLElement;
+            const wizardsDoneContainer = body.querySelector(this.selectorWizardsDoneRows);
             let hasBodyContent: boolean = false;
             if (Array.isArray(data.wizardsDone) && data.wizardsDone.length > 0) {
               data.wizardsDone.forEach((element: UpgradeWizardDone): void => {
                 hasBodyContent = true;
-                const aRow = modalContent.find(this.selectorWizardsDoneRowTemplate).clone();
-                aRow.find(this.selectorWizardsDoneRowMarkUndone).attr('data-identifier', element.identifier);
-                aRow.find(this.selectorWizardsDoneRowTitle).text(element.title);
-                $wizardsDoneContainer.append(aRow);
+                const aRow = modalContent.querySelector(this.selectorWizardsDoneRowTemplate).cloneNode(true) as HTMLElement;
+                aRow.querySelector(this.selectorWizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
+                aRow.querySelector<HTMLElement>(this.selectorWizardsDoneRowTitle).innerText = element.title;
+                wizardsDoneContainer.appendChild(aRow);
               });
             }
             if (Array.isArray(data.rowUpdatersDone) && data.rowUpdatersDone.length > 0) {
               data.rowUpdatersDone.forEach((element: UpgradeWizardDone): void => {
                 hasBodyContent = true;
-                const aRow = modalContent.find(this.selectorWizardsDoneRowTemplate).clone();
-                aRow.find(this.selectorWizardsDoneRowMarkUndone).attr('data-identifier', element.identifier);
-                aRow.find(this.selectorWizardsDoneRowTitle).text(element.title);
-                $wizardsDoneContainer.append(aRow);
+                const aRow = modalContent.querySelector(this.selectorWizardsDoneRowTemplate).cloneNode(true) as HTMLElement;
+                aRow.querySelector(this.selectorWizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
+                aRow.querySelector<HTMLElement>(this.selectorWizardsDoneRowTitle).innerText = element.title;
+                wizardsDoneContainer.appendChild(aRow);
               });
             }
             if (hasBodyContent) {
-              modalContent.find(this.selectorOutputDoneContainer).append(body);
-              this.findInModal(this.selectorWizardsDoneRowMarkUndone).prop('disabled', true);
+              modalContent.querySelector(this.selectorOutputDoneContainer).appendChild(body);
+              (this.findInModal(this.selectorWizardsDoneRowMarkUndone) as HTMLInputElement).disabled = true;
             }
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error, $outputContainer);
+          Router.handleAjaxError(error, outputContainer);
         }
       );
   }
 
   private markUndone(identifier: string): void {
-    const executeToken = this.getModuleContent().data('upgrade-wizards-mark-undone-token');
+    const executeToken = this.getModuleContent().dataset.upgradeWizardsMarkUndoneToken;
     const modalContent = this.getModalBody();
-    const $outputContainer = this.findInModal(this.selectorOutputDoneContainer);
-    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Marking upgrade wizard as undone...'));
+    const outputContainer = this.findInModal(this.selectorOutputDoneContainer);
+    this.renderProgressBar(outputContainer, {
+      label: 'Marking upgrade wizard as undone...'
+    });
     (new AjaxRequest(Router.getUrl()))
       .post({
         install: {
@@ -514,8 +534,8 @@ class UpgradeWizards extends AbstractInteractableModule {
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          $outputContainer.empty();
-          modalContent.find(this.selectorOutputDoneContainer).empty();
+          outputContainer.innerHTML = '';
+          modalContent.querySelector(this.selectorOutputDoneContainer).innerHTML = '';
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
               Notification.success(element.title, element.message);
@@ -527,7 +547,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           }
         },
         (error: AjaxResponse): void => {
-          Router.handleAjaxError(error, $outputContainer);
+          Router.handleAjaxError(error, outputContainer);
         }
       );
   }

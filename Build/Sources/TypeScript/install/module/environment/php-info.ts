@@ -16,13 +16,14 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
+import type { ModalElement } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/install/module/php-info
  */
 class PhpInfo extends AbstractInteractableModule {
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     this.getData();
   }
 
@@ -34,7 +35,7 @@ class PhpInfo extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
-            modalContent.empty().append(data.html);
+            modalContent.innerHTML = data.html;
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }

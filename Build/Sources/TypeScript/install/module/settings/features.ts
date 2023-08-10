@@ -18,6 +18,8 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/install/module/features
@@ -25,14 +27,14 @@ import MessageInterface from '@typo3/install/message-interface';
 class Features extends AbstractInteractableModule {
   private selectorSaveTrigger: string = '.t3js-features-save';
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     this.getContent();
 
-    currentModal.on('click', this.selectorSaveTrigger, (e: JQueryEventObject): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event): void => {
+      event.preventDefault();
       this.save();
-    });
+    }).delegateTo(currentModal, this.selectorSaveTrigger);
   }
 
   private getContent(): void {
@@ -43,7 +45,7 @@ class Features extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
-            modalContent.empty().append(data.html);
+            modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
@@ -59,10 +61,11 @@ class Features extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const modalContent = this.getModalBody();
-    const executeToken = this.getModuleContent().data('features-save-token');
+    const executeToken = this.getModuleContent().dataset.featuresSaveToken;
     const postData: Record<string, string> = {};
-    for (const element of this.findInModal('form').serializeArray()) {
-      postData[element.name] = element.value;
+    const formData = new FormData(this.findInModal('form'));
+    for (const [name, value] of formData) {
+      postData[name] = value.toString();
     }
     postData['install[action]'] = 'featuresSave';
     postData['install[token]'] = executeToken;

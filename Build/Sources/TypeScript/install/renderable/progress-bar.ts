@@ -20,8 +20,11 @@ import { html, LitElement, TemplateResult } from 'lit';
  */
 @customElement('typo3-install-progress-bar')
 export class ProgressBar extends LitElement {
-  @property({ type: String }) label: string = 'Loading...';
-  @property({ type: String }) progress: string = '100';
+  @property({ type: String })
+  public label: string = 'Loading...';
+
+  @property({ type: String })
+  public progress: string = '100';
 
   protected createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly

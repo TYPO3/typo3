@@ -17,11 +17,11 @@ import Modal from '@typo3/backend/modal';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { FlashMessage } from '../../renderable/flash-message';
 import { InfoBox } from '../../renderable/info-box';
-import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/install/module/tca-migrations-check
@@ -30,24 +30,23 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
   private selectorCheckTrigger: string = '.t3js-tcaMigrationsCheck-check';
   private selectorOutputContainer: string = '.t3js-tcaMigrationsCheck-output';
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     this.check();
 
-    new RegularEvent('click', (event: Event) => {
+    new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.check();
-    }).delegateTo(currentModal.get(0), this.selectorCheckTrigger);
+    }).delegateTo(currentModal, this.selectorCheckTrigger);
   }
 
   private check(): void {
     this.setModalButtonsState(false);
     const outputContainer: HTMLElement = document.querySelector(this.selectorOutputContainer);
     if (outputContainer !== null) {
-      const progressBar = document.createElement('typo3-install-progress-bar');
-      outputContainer.append(progressBar);
+      this.renderProgressBar(outputContainer, {}, 'append');
     }
-    const modalContent: HTMLElement = this.getModalBody().get(0);
+    const modalContent: HTMLElement = this.getModalBody();
     (new AjaxRequest(Router.getUrl('tcaMigrationsCheck')))
       .get({ cache: 'no-cache' })
       .then(

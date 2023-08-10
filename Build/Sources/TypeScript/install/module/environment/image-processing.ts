@@ -22,6 +22,7 @@ import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/install/module/image-processing
@@ -34,18 +35,18 @@ class ImageProcessing extends AbstractInteractableModule {
   private selectorCommandText: string = '.t3js-imageProcessing-command-text';
   private selectorTwinImages: string = '.t3js-imageProcessing-images';
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     this.getData();
 
-    new RegularEvent('click', (event: Event) => {
+    new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.runTests();
-    }).delegateTo(currentModal.get(0), this.selectorExecuteTrigger);
+    }).delegateTo(currentModal, this.selectorExecuteTrigger);
   }
 
   private getData(): void {
-    const modalContent: HTMLElement = this.getModalBody().get(0);
+    const modalContent: HTMLElement = this.getModalBody();
     (new AjaxRequest(Router.getUrl('imageProcessingGetData')))
       .get({ cache: 'no-cache' })
       .then(
@@ -66,14 +67,13 @@ class ImageProcessing extends AbstractInteractableModule {
   }
 
   private runTests(): void {
-    const modalContent: HTMLElement = this.getModalBody().get(0);
+    const modalContent: HTMLElement = this.getModalBody();
     this.setModalButtonsState(false);
 
-    const twinImageTemplate = this.findInModal(this.selectorTwinImageTemplate).get(0);
+    const twinImageTemplate = this.findInModal(this.selectorTwinImageTemplate);
     const promises: Array<Promise<void>> = [];
     modalContent.querySelectorAll(this.selectorTestContainer).forEach((container: HTMLElement): void => {
-      container.innerHTML = '';
-      container.append(InfoBox.create(Severity.loading, 'Loading...'));
+      container.replaceChildren(InfoBox.create(Severity.loading, 'Loading...'));
       const request = (new AjaxRequest(Router.getUrl(container.dataset.test)))
         .get({ cache: 'no-cache' })
         .then(
@@ -121,7 +121,7 @@ class ImageProcessing extends AbstractInteractableModule {
     });
 
     Promise.all(promises).then((): void => {
-      const triggerButton: HTMLElement = this.findInModal(this.selectorExecuteTrigger).get(0);
+      const triggerButton: HTMLElement = this.findInModal(this.selectorExecuteTrigger);
       if (triggerButton !== null) {
         triggerButton.classList.remove('disabled');
         triggerButton.removeAttribute('disabled');

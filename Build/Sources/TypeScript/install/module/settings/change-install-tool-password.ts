@@ -19,6 +19,8 @@ import PasswordStrength from '../password-strength';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/install/module/change-install-tool-password
@@ -26,17 +28,14 @@ import MessageInterface from '@typo3/install/message-interface';
 class ChangeInstallToolPassword extends AbstractInteractableModule {
   private selectorChangeButton: string = '.t3js-changeInstallToolPassword-change';
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     this.getData();
 
-    currentModal.on('click', this.selectorChangeButton, (e: JQueryEventObject): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event): void => {
+      event.preventDefault();
       this.change();
-    });
-    currentModal.on('click', '.t3-install-form-password-strength', (): void => {
-      PasswordStrength.initialize('.t3-install-form-password-strength');
-    });
+    }).delegateTo(currentModal, this.selectorChangeButton);
   }
 
   private getData(): void {
@@ -47,7 +46,9 @@ class ChangeInstallToolPassword extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
-            modalContent.empty().append(data.html);
+            modalContent.innerHTML = data.html;
+
+            PasswordStrength.initialize(modalContent.querySelector('.t3-install-form-password-strength'));
             Modal.setButtons(data.buttons);
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
@@ -63,13 +64,13 @@ class ChangeInstallToolPassword extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const modalContent = this.getModalBody();
-    const executeToken = this.getModuleContent().data('install-tool-token');
+    const executeToken = this.getModuleContent().dataset.installToolToken;
     (new AjaxRequest(Router.getUrl())).post({
       install: {
         action: 'changeInstallToolPassword',
         token: executeToken,
-        password: this.findInModal('.t3js-changeInstallToolPassword-password').val(),
-        passwordCheck: this.findInModal('.t3js-changeInstallToolPassword-password-check').val(),
+        password: (this.findInModal('.t3js-changeInstallToolPassword-password') as HTMLInputElement).value,
+        passwordCheck: (this.findInModal('.t3js-changeInstallToolPassword-password-check') as HTMLInputElement).value,
       },
     }).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
@@ -83,7 +84,8 @@ class ChangeInstallToolPassword extends AbstractInteractableModule {
     }, (error: AjaxResponse): void => {
       Router.handleAjaxError(error, modalContent);
     }).finally((): void => {
-      this.findInModal('.t3js-changeInstallToolPassword-password,.t3js-changeInstallToolPassword-password-check').val('');
+      (this.findInModal('.t3js-changeInstallToolPassword-password') as HTMLInputElement).value = '';
+      (this.findInModal('.t3js-changeInstallToolPassword-password-check') as HTMLInputElement).value = '';
       this.setModalButtonsState(true);
     });
   }

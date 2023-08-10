@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import { html } from 'lit';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
@@ -21,9 +20,9 @@ import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import { InfoBox } from './renderable/info-box';
 import './renderable/progress-bar';
 import Severity from './renderable/severity';
-import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import '@typo3/backend/element/spinner-element';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 class Router {
   private rootSelector: string = '.t3js-body';
@@ -52,35 +51,36 @@ class Router {
 
     this.registerInstallToolRoutes();
 
-    $(document).on('click', '.t3js-login-lockInstallTool', (e: JQueryEventObject): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event): void => {
+      event.preventDefault();
       this.logout();
-    });
-    $(document).on('click', '.t3js-login-login', (e: JQueryEventObject): void => {
-      e.preventDefault();
+    }).delegateTo(document, '.t3js-login-lockInstallTool');
+
+    new RegularEvent('click', (event: Event): void => {
+      event.preventDefault();
       this.login();
-    });
-    $(document).on('keydown', '#t3-install-form-password', (e: JQueryEventObject): void => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        $('.t3js-login-login').trigger('click');
+    }).delegateTo(document, '.t3js-login-login');
+
+    new RegularEvent('keydown', (event: KeyboardEvent): void => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        this.login();
       }
-    });
+    }).delegateTo(document, '#t3-install-form-password');
 
-    $(document).on('click', '.card .btn', (e: JQueryEventObject): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event, target: HTMLElement): void => {
+      event.preventDefault();
 
-      const $me = $(e.currentTarget);
-      const importModule = $me.data('import');
-      const inlineState = $me.data('inline');
+      const importModule = target.dataset.import;
+      const inlineState = target.dataset.inline;
       const isInline = typeof inlineState !== 'undefined' && parseInt(inlineState, 10) === 1;
       if (isInline) {
         import(importModule).then(({ default: aModule }: {default: AbstractInlineModule}): void => {
-          aModule.initialize($me);
+          aModule.initialize(target);
         });
       } else {
-        const modalTitle = $me.closest('.card').find('.card-title').html();
-        const modalSize = $me.data('modalSize') || Modal.sizes.large;
+        const modalTitle = target.closest('.card').querySelector('.card-title').innerHTML;
+        const modalSize = target.dataset.modalSize as any || Modal.sizes.large;
         Modal.advanced({
           type: Modal.types.default,
           title: modalTitle,
@@ -90,20 +90,12 @@ class Router {
           staticBackdrop: true,
           callback: (currentModal: ModalElement): void => {
             import(importModule).then(({ default: aModule }: {default: AbstractInteractableModule}): void => {
-              const isInIframe = window.location !== window.parent.location;
-              // @todo: Rework AbstractInteractableModule to avoid JQuery usage and pass ModalElement
-              if (isInIframe) {
-                topLevelModuleImport('jquery').then(({ default: topLevelJQuery }: {default: JQueryStatic}): void => {
-                  aModule.initialize(topLevelJQuery(currentModal));
-                });
-              } else {
-                aModule.initialize($(currentModal));
-              }
+              aModule.initialize(currentModal);
             });
           },
         });
       }
-    });
+    }).delegateTo(document, '.card .btn');
 
     if (this.context === 'backend') {
       this.executeSilentConfigurationUpdate();
@@ -226,12 +218,12 @@ class Router {
       );
   }
 
-  public async handleAjaxError(error: AjaxResponse, outputContainer?: HTMLElement|JQuery): Promise<void> {
+  public async handleAjaxError(error: AjaxResponse, outputContainer?: HTMLElement): Promise<void> {
     if (error.response.status === 403) {
-      // Install tool session expired - depending on context render error message or login
+      // Install Tool session expired - depending on context render error message or login
       if (this.context === 'backend') {
         this.rootContainer.replaceChildren(
-          InfoBox.create(Severity.error, 'The install tool session expired. Please reload the backend and try again.')
+          InfoBox.create(Severity.error, 'The Install Tool session expired. Please reload the backend and try again.')
         );
       } else {
         this.checkEnableInstallToolFile();
@@ -244,7 +236,7 @@ class Router {
         + '<h4 class="callout-title">Something went wrong</h4>'
         + '<div class="callout-body">'
         + '<p>Please use <b><a href="' + url + '">Check for broken'
-        + ' extensions</a></b> to see if a loaded extension breaks this part of the install tool'
+        + ' extensions</a></b> to see if a loaded extension breaks this part of the Install Tool'
         + ' and unload it.</p>'
         + '<p>The box below may additionally reveal further details on what went wrong depending on your debug settings.'
         + ' It may help to temporarily switch to debug mode using <b>Settings > Configuration Presets > Debug settings.</b></p>'
@@ -276,12 +268,7 @@ class Router {
       ;
 
       if (typeof outputContainer !== 'undefined') {
-        // Write to given output container. This is typically a modal if given
-        if (outputContainer instanceof HTMLElement) {
-          outputContainer.innerHTML = message;
-        } else {
-          outputContainer.empty().html(message);
-        }
+        outputContainer.innerHTML = message;
       } else {
         // Else write to main frame
         this.rootContainer.innerHTML = message;
@@ -358,16 +345,16 @@ class Router {
   }
 
   public login(): void {
-    const $outputContainer: JQuery = $('.t3js-login-output');
+    const outputContainer: HTMLElement = document.querySelector('.t3js-login-output');
     const progressBar = document.createElement('typo3-install-progress-bar');
 
-    $outputContainer.empty().append(progressBar);
+    outputContainer.replaceChildren(progressBar);
     (new AjaxRequest(this.getUrl()))
       .post({
         install: {
           action: 'login',
-          token: $('[data-login-token]').data('login-token'),
-          password: $('.t3-install-form-input-text').val(),
+          token: (document.querySelector('[data-login-token]') as HTMLFormElement).dataset.loginToken,
+          password: (document.querySelector('.t3-install-form-input-text') as HTMLInputElement).value,
         },
       })
       .then(
@@ -377,7 +364,7 @@ class Router {
             this.executeSilentConfigurationUpdate();
           } else {
             data.status.forEach((element: MessageInterface): void => {
-              $outputContainer.empty().append(InfoBox.create(element.severity, element.title, element.message));
+              outputContainer.replaceChildren(InfoBox.create(element.severity, element.title, element.message));
             });
           }
         },
@@ -425,7 +412,7 @@ class Router {
     if(!localStorage.getItem('typo3-install-modulesCollapsed')) {
       localStorage.setItem('typo3-install-modulesCollapsed', 'false');
     }
-    this.toggleMenu(localStorage.getItem('typo3-install-modulesCollapsed') === 'true' ? true : false);
+    this.toggleMenu(localStorage.getItem('typo3-install-modulesCollapsed') === 'true');
     document.querySelector(this.scaffoldMenuToggleSelector).addEventListener('click', (event: MouseEvent) => {
       event.preventDefault();
       this.toggleMenu();
@@ -435,7 +422,7 @@ class Router {
       this.toggleMenu(true);
     });
     document.querySelectorAll('[data-installroute-controller]').forEach((element: Element) => {
-      element.addEventListener('click', () => {
+      element.addEventListener('click', (): void => {
         if (window.innerWidth < 768) {
           localStorage.setItem('typo3-install-modulesCollapsed', 'true');
         }

@@ -18,9 +18,10 @@ import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { InfoBox } from '../../renderable/info-box';
-import '../../renderable/progress-bar';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/install/module/create-admin
@@ -29,17 +30,19 @@ class MailTest extends AbstractInteractableModule {
   private selectorOutputContainer: string = '.t3js-mailTest-output';
   private selectorMailTestButton: string = '.t3js-mailTest-execute';
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     this.getData();
-    currentModal.on('click', this.selectorMailTestButton, (e: JQueryEventObject): void => {
-      e.preventDefault();
+
+    new RegularEvent('click', (event: Event): void => {
+      event.preventDefault();
       this.send();
-    });
-    currentModal.on('submit', 'form', (e: JQueryEventObject): void => {
-      e.preventDefault();
+    }).delegateTo(currentModal, this.selectorMailTestButton);
+
+    new RegularEvent('submit', (event: Event): void => {
+      event.preventDefault();
       this.send();
-    });
+    }).delegateTo(currentModal, 'form');
   }
 
   private getData(): void {
@@ -50,11 +53,11 @@ class MailTest extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
-            modalContent.empty().append(data.html);
-            const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
+            modalContent.innerHTML = data.html;
+            const outputContainer: HTMLElement = this.findInModal(this.selectorOutputContainer);
             if (data.messages && Array.isArray(data.messages)) {
               data.messages.forEach((element: MessageInterface): void => {
-                $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
+                outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
             if (data.sendPossible) {
@@ -74,24 +77,23 @@ class MailTest extends AbstractInteractableModule {
   private send(): void {
     this.setModalButtonsState(false);
 
-    const executeToken: string = this.getModuleContent().data('mail-test-token');
-    const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
-    const progressBar = document.createElement('typo3-install-progress-bar');
-
-    $outputContainer.empty().append(progressBar);
+    const executeToken: string = this.getModuleContent().dataset.mailTestToken;
+    const outputContainer: HTMLElement = this.findInModal(this.selectorOutputContainer);
+    this.renderProgressBar(outputContainer);
     (new AjaxRequest(Router.getUrl())).post({
       install: {
         action: 'mailTest',
         token: executeToken,
-        email: this.findInModal('.t3js-mailTest-email').val(),
+        email: (this.findInModal('.t3js-mailTest-email') as HTMLInputElement).value,
       },
     }).then(
       async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
-        $outputContainer.empty();
+        outputContainer.innerHTML = '';
         if (Array.isArray(data.status)) {
           data.status.forEach((element: MessageInterface): void => {
-            $outputContainer.empty().append(InfoBox.create(element.severity, element.title, element.message));
+            outputContainer.innerHTML = '';
+            outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
           });
         } else {
           Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');

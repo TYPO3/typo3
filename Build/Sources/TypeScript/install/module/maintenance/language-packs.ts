@@ -12,17 +12,26 @@
  */
 
 import 'bootstrap';
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import SecurityUtility from '@typo3/core/security-utility';
 import { FlashMessage } from '../../renderable/flash-message';
 import { InfoBox } from '../../renderable/info-box';
-import '../../renderable/progress-bar';
+import '../../renderable/language-packs';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import type { ModalElement } from '@typo3/backend/modal';
+import type { ProgressBar } from '../../renderable/progress-bar';
+
+import type {
+  ActivateLanguageEvent,
+  DeactivateLanguageEvent,
+  DownloadPacksEvent,
+  LanguagePacksGetDataResponse
+} from '../../renderable/language-packs';
+
 
 /**
  * Module: @typo3/install/module/language-packs
@@ -30,14 +39,6 @@ import MessageInterface from '@typo3/install/message-interface';
 class LanguagePacks extends AbstractInteractableModule {
   private selectorOutputContainer: string = '.t3js-languagePacks-output';
   private selectorContentContainer: string = '.t3js-languagePacks-mainContent';
-  private selectorActivateLanguage: string = '.t3js-languagePacks-activateLanguage';
-  private selectorActivateLanguageIcon: string = '#t3js-languagePacks-activate-icon';
-  private selectorAddLanguageToggle: string = '.t3js-languagePacks-addLanguage-toggle';
-  private selectorLanguageInactive: string = '.t3js-languagePacks-inactive';
-  private selectorDeactivateLanguage: string = '.t3js-languagePacks-deactivateLanguage';
-  private selectorDeactivateLanguageIcon: string = '#t3js-languagePacks-deactivate-icon';
-  private selectorUpdate: string = '.t3js-languagePacks-update';
-  private selectorLanguageUpdateIcon: string = '#t3js-languagePacks-languageUpdate-icon';
   private selectorNotifications: string = '.t3js-languagePacks-notifications';
 
   private activeLanguages: string[] = [];
@@ -58,34 +59,14 @@ class LanguagePacks extends AbstractInteractableModule {
     return count !== 1 && additionalCount !== 1 ? word + suffix : word;
   }
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
+    const isInIframe = window.location !== window.parent.location;
+    if (isInIframe) {
+      topLevelModuleImport('@typo3/install/renderable/language-packs.js');
+    }
 
-    // Get configuration list on modal open
     this.getData();
-
-    currentModal.on('click', this.selectorAddLanguageToggle, (): void => {
-      currentModal.find(this.selectorContentContainer + ' ' + this.selectorLanguageInactive).toggle();
-    });
-
-    currentModal.on('click', this.selectorActivateLanguage, (e: JQueryEventObject): void => {
-      const iso = $(e.target).closest(this.selectorActivateLanguage).data('iso');
-      e.preventDefault();
-      this.activateLanguage(iso);
-    });
-
-    currentModal.on('click', this.selectorDeactivateLanguage, (e: JQueryEventObject): void => {
-      const iso = $(e.target).closest(this.selectorDeactivateLanguage).data('iso');
-      e.preventDefault();
-      this.deactivateLanguage(iso);
-    });
-
-    currentModal.on('click', this.selectorUpdate, (e: JQueryEventObject): void => {
-      const iso = $(e.target).closest(this.selectorUpdate).data('iso');
-      const extension = $(e.target).closest(this.selectorUpdate).data('extension');
-      e.preventDefault();
-      this.updatePacks(iso, extension);
-    });
   }
 
   private getData(): void {
@@ -94,15 +75,41 @@ class LanguagePacks extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
-          if (data.success === true) {
+          const data: { success: boolean, html: string } & LanguagePacksGetDataResponse = await response.resolve();
+          const { success, html, ...state } = data;
+          if (success === true) {
             this.activeLanguages = data.activeLanguages;
             this.activeExtensions = data.activeExtensions;
-            modalContent.empty().append(data.html);
-            const contentContainer: JQuery = modalContent.parent().find(this.selectorContentContainer);
-            contentContainer.empty();
-            contentContainer.append(this.languageMatrixHtml(data));
-            contentContainer.append(this.extensionMatrixHtml(data));
+            modalContent.innerHTML = html;
+            const contentContainer: HTMLElement = modalContent.parentElement.querySelector(this.selectorContentContainer);
+            contentContainer.innerHTML = '';
+            const configurationIsWritable = this.getModuleContent().dataset.configurationIsWritable;
+
+            const documentRef = window.location !== window.parent.location ? parent.document : document;
+
+            const languageMatrix = documentRef.createElement('typo3-install-language-matrix');
+            languageMatrix.data = state;
+            languageMatrix.configurationIsWritable = Boolean(configurationIsWritable);
+            languageMatrix.addEventListener('activate-language', (e: CustomEvent<ActivateLanguageEvent>) => {
+              this.activateLanguage(e.detail.iso);
+            });
+            languageMatrix.addEventListener('deactivate-language', (e: CustomEvent<DeactivateLanguageEvent>) => {
+              this.deactivateLanguage(e.detail.iso);
+            });
+            languageMatrix.addEventListener('download-packs', (e: CustomEvent<DownloadPacksEvent>) => {
+              this.updatePacks(e.detail?.iso || undefined, undefined);
+            });
+
+            const extensionMatrix = documentRef.createElement('typo3-install-extension-matrix');
+            extensionMatrix.data = state;
+            extensionMatrix.addEventListener('download-packs', (e: CustomEvent<DownloadPacksEvent>) => {
+              this.updatePacks(
+                e.detail?.iso || undefined,
+                e.detail?.extension || undefined
+              );
+            });
+
+            contentContainer.append(languageMatrix, extensionMatrix);
           } else {
             this.addNotification(InfoBox.create(Severity.error, 'Something went wrong'));
           }
@@ -117,23 +124,21 @@ class LanguagePacks extends AbstractInteractableModule {
 
   private activateLanguage(iso: string): void {
     const modalContent = this.getModalBody();
-    const $outputContainer = this.findInModal(this.selectorOutputContainer);
-    const progressBar = document.createElement('typo3-install-progress-bar');
-    $outputContainer.empty().append(progressBar);
-
-    this.getNotificationBox().empty();
+    const outputContainer = this.findInModal(this.selectorOutputContainer);
+    this.renderProgressBar(outputContainer);
+    this.getNotificationBox().innerHTML = '';
     (new AjaxRequest(Router.getUrl()))
       .post({
         install: {
           action: 'languagePacksActivateLanguage',
-          token: this.getModuleContent().data('language-packs-activate-language-token'),
+          token: this.getModuleContent().dataset.languagePacksActivateLanguageToken,
           iso: iso,
         },
       })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          $outputContainer.empty();
+          outputContainer.innerHTML = '';
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
               this.addNotification(InfoBox.create(element.severity, element.title, element.message));
@@ -151,22 +156,21 @@ class LanguagePacks extends AbstractInteractableModule {
 
   private deactivateLanguage(iso: string): void {
     const modalContent = this.getModalBody();
-    const $outputContainer = this.findInModal(this.selectorOutputContainer);
-    const progressBar = document.createElement('typo3-install-progress-bar');
-    $outputContainer.empty().append(progressBar);
-    this.getNotificationBox().empty();
+    const outputContainer = this.findInModal(this.selectorOutputContainer);
+    this.renderProgressBar(outputContainer);
+    this.getNotificationBox().innerHTML = '';
     (new AjaxRequest(Router.getUrl()))
       .post({
         install: {
           action: 'languagePacksDeactivateLanguage',
-          token: this.getModuleContent().data('language-packs-deactivate-language-token'),
+          token: this.getModuleContent().dataset.languagePacksDeactivateLanguageToken,
           iso: iso,
         },
       })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          $outputContainer.empty();
+          outputContainer.innerHTML = '';
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
               this.addNotification(InfoBox.create(element.severity, element.title, element.message));
@@ -182,9 +186,9 @@ class LanguagePacks extends AbstractInteractableModule {
       );
   }
 
-  private updatePacks(iso: string, extension: string): void {
-    const $outputContainer = this.findInModal(this.selectorOutputContainer);
-    const $contentContainer = this.findInModal(this.selectorContentContainer);
+  private updatePacks(iso: string | undefined, extension: string | undefined): void {
+    const outputContainer = this.findInModal(this.selectorOutputContainer);
+    const contentContainer = this.findInModal(this.selectorContentContainer);
     const isos = iso === undefined ? this.activeLanguages : [iso];
     let updateIsoTimes = true;
     let extensions = this.activeExtensions;
@@ -202,34 +206,25 @@ class LanguagePacks extends AbstractInteractableModule {
       skipped: 0,
     };
 
-    $outputContainer.empty().append(
-      $('<div>', { 'class': 'progress' }).append(
-        $('<div>', {
-          'class': 'progress-bar progress-bar-info',
-          'role': 'progressbar',
-          'aria-valuenow': 0,
-          'aria-valuemin': 0,
-          'aria-valuemax': 100,
-          'style': 'width: 0;',
-        }).append(
-          $(
-            '<span>',
-            { 'class': 'text-nowrap' }).text('0 of ' + this.packsUpdateDetails.toHandle + ' language ' +
-            LanguagePacks.pluralize(this.packsUpdateDetails.toHandle) + ' updated'
-          ),
-        ),
-      ));
-    $contentContainer.empty();
+    const progressBar = this.renderProgressBar(
+      outputContainer,
+      this.packsUpdateDetails.toHandle === 1 ? undefined : {
+        progress: '0',
+        label: '0 of ' + this.packsUpdateDetails.toHandle + ' language ' +
+          LanguagePacks.pluralize(this.packsUpdateDetails.toHandle) + ' updated'
+      }
+    );
+    contentContainer.innerHTML = '';
 
     isos.forEach((isoCode: string): void => {
       extensions.forEach((extensionKey: string): void => {
-        this.getNotificationBox().empty();
+        this.getNotificationBox().innerHTML = '';
 
         (new AjaxRequest(Router.getUrl()))
           .post({
             install: {
               action: 'languagePacksUpdatePack',
-              token: this.getModuleContent().data('language-packs-update-pack-token'),
+              token: this.getModuleContent().dataset.languagePacksUpdatePackToken,
               iso: isoCode,
               extension: extensionKey,
             },
@@ -248,26 +243,25 @@ class LanguagePacks extends AbstractInteractableModule {
                 } else {
                   this.packsUpdateDetails.failed++;
                 }
-                this.packUpdateDone(updateIsoTimes, isos);
+                this.packUpdateDone(updateIsoTimes, isos, progressBar);
               } else {
                 this.packsUpdateDetails.handled++;
                 this.packsUpdateDetails.failed++;
-                this.packUpdateDone(updateIsoTimes, isos);
+                this.packUpdateDone(updateIsoTimes, isos, progressBar);
               }
             },
             (): void => {
               this.packsUpdateDetails.handled++;
               this.packsUpdateDetails.failed++;
-              this.packUpdateDone(updateIsoTimes, isos);
+              this.packUpdateDone(updateIsoTimes, isos, progressBar);
             }
           );
       });
     });
   }
 
-  private packUpdateDone(updateIsoTimes: boolean, isos: string[]): void {
+  private packUpdateDone(updateIsoTimes: boolean, isos: string[], progressBar: ProgressBar): void {
     const modalContent = this.getModalBody();
-    const $outputContainer = this.findInModal(this.selectorOutputContainer);
     if (this.packsUpdateDetails.handled === this.packsUpdateDetails.toHandle) {
       // All done - create summary, update 'last update' of iso list, render main view
       this.addNotification(InfoBox.create(
@@ -283,7 +277,7 @@ class LanguagePacks extends AbstractInteractableModule {
           .post({
             install: {
               action: 'languagePacksUpdateIsoTimes',
-              token: this.getModuleContent().data('language-packs-update-iso-times-token'),
+              token: this.getModuleContent().dataset.languagePacksUpdateIsoTimesToken,
               isos: isos,
             },
           })
@@ -306,230 +300,13 @@ class LanguagePacks extends AbstractInteractableModule {
     } else {
       // Update progress bar
       const percent = (this.packsUpdateDetails.handled / this.packsUpdateDetails.toHandle) * 100;
-      $outputContainer.find('.progress-bar')
-        .css('width', percent + '%')
-        .attr('aria-valuenow', percent)
-        .find('span')
-        .text(
-          this.packsUpdateDetails.handled + ' of ' + this.packsUpdateDetails.toHandle + ' language ' +
-          LanguagePacks.pluralize(this.packsUpdateDetails.handled, 'pack', 's', this.packsUpdateDetails.toHandle) + ' updated'
-        );
+      progressBar.progress = String(percent);
+      progressBar.label = this.packsUpdateDetails.handled + ' of ' + this.packsUpdateDetails.toHandle + ' language ' +
+        LanguagePacks.pluralize(this.packsUpdateDetails.handled, 'pack', 's', this.packsUpdateDetails.toHandle) + ' updated';
     }
   }
 
-  private languageMatrixHtml(data: any): string {
-    const activateIcon = this.findInModal(this.selectorActivateLanguageIcon).html();
-    const deactivateIcon = this.findInModal(this.selectorDeactivateLanguageIcon).html();
-    const updateIcon = this.findInModal(this.selectorLanguageUpdateIcon).html();
-    // @todo: change to === 'true' once jQuery is not used anymore
-    const configurationIsWritable = this.getModuleContent().data('configuration-is-writable');
-    const $markupContainer = $('<div>');
-
-    const $tbody = $('<tbody>');
-    data.languages.forEach((language: any): void => {
-      const availableMatrixActions = [];
-      const active = language.active;
-      const $tr = $('<tr>');
-      if (active) {
-        if (configurationIsWritable) {
-          availableMatrixActions.push($('<a>', {
-            'class': 'btn btn-default t3js-languagePacks-deactivateLanguage',
-            'data-iso': language.iso,
-            'title': 'Deactivate',
-          }).append(deactivateIcon));
-        }
-        availableMatrixActions.push($('<a>', {
-          'class': 'btn btn-default t3js-languagePacks-update',
-          'data-iso': language.iso,
-          'title': 'Download language packs',
-        }).append(updateIcon));
-
-        $tbody.append(
-          $tr.append(
-            $('<td>').text(' ' + language.name).prepend(
-              $('<div />', { class: 'btn-group' }).append(
-                availableMatrixActions
-              ),
-            ),
-          ),
-        );
-      } else {
-        if (configurationIsWritable) {
-          availableMatrixActions.push($('<a>', {
-            'class': 'btn btn-default t3js-languagePacks-activateLanguage',
-            'data-iso': language.iso,
-            'title': 'Activate',
-          }).append(activateIcon));
-        }
-        $tbody.append(
-          $tr.addClass('t3-languagePacks-inactive t3js-languagePacks-inactive').css({ 'display': 'none' }).append(
-            $('<td>').text(' ' + language.name).prepend(
-              $('<div />', { class: 'btn-group' }).append(
-                availableMatrixActions
-              ),
-            ),
-          ),
-        );
-      }
-
-      $tr.append(
-        $('<td>').text(language.iso),
-        $('<td>').text(language.dependencies.join(', ')),
-        $('<td>').text(language.lastUpdate === null ? '' : language.lastUpdate),
-      );
-      $tbody.append($tr);
-    });
-    const globalActions = [];
-    if (configurationIsWritable) {
-      globalActions.push($('<button>', {
-        'class': 'btn btn-default t3js-languagePacks-addLanguage-toggle',
-        'type': 'button'
-      }).append(
-        $('<span>').append(activateIcon),
-        ' Add language',
-      ));
-    }
-    globalActions.push($('<button>', {
-      'class': 'btn btn-default disabled update-all t3js-languagePacks-update',
-      'type': 'button',
-      'disabled': 'disabled'
-    }).append(
-      $('<span>').append(updateIcon),
-      ' Update all',
-    ));
-    $markupContainer.append(
-      $('<h3>').text('Active languages'),
-      $('<table>', { 'class': 'table table-striped table-bordered' }).append(
-        $('<thead>').append(
-          $('<tr>').append(
-            $('<th>').append(
-              $('<div />', { class: 'btn-group' }).append(
-                globalActions
-              ),
-            ),
-            $('<th>').text('Locale'),
-            $('<th>').text('Dependencies'),
-            $('<th>').text('Last update'),
-          ),
-        ),
-        $tbody,
-      ),
-    );
-
-    if (Array.isArray(this.activeLanguages) && this.activeLanguages.length) {
-      $markupContainer.find('.update-all').removeClass('disabled').removeAttr('disabled');
-    }
-    return $markupContainer.html();
-  }
-
-  private extensionMatrixHtml(data: any): any {
-    const securityUtility = new SecurityUtility();
-    const updateIcon: string = this.findInModal(this.selectorLanguageUpdateIcon).html();
-    let tooltip: string = '';
-    let extensionTitle: JQuery;
-    let rowCount: number = 0;
-    const $markupContainer: JQuery = $('<div>');
-
-    const $headerRow: JQuery = $('<tr>');
-    $headerRow.append(
-      $('<th>').text('Extension'),
-      $('<th>').text('Key'),
-    );
-    data.activeLanguages.forEach((language: string): void => {
-      $headerRow.append(
-        $('<th>').append(
-          $('<a>', {
-            'class': 'btn btn-default t3js-languagePacks-update',
-            'data-iso': language,
-            'title': 'Download and update all language packs',
-          }).append(
-            $('<span>').append(updateIcon),
-            ' ' + language,
-          ),
-        ),
-      );
-    });
-
-    const $tbody = $('<tbody>');
-    data.extensions.forEach((extension: any): void => {
-      rowCount++;
-      if (typeof extension.icon !== 'undefined') {
-        extensionTitle = $('<span>').append(
-          $('<img>', {
-            'style': 'max-height: 16px; max-width: 16px;',
-            'src': extension.icon,
-            'alt': extension.title,
-          }),
-          $('<span>').text(' ' + extension.title),
-        );
-      } else {
-        extensionTitle = $('<span>').text(extension.title);
-      }
-      const $tr = $('<tr>');
-      $tr.append(
-        $('<td>').html(extensionTitle.html()),
-        $('<td>').text(extension.key),
-      );
-
-      data.activeLanguages.forEach((language: string): void => {
-        let packFoundForLanguage: boolean = false;
-        extension.packs.forEach((pack: any): void => {
-          if (pack.iso !== language) {
-            return;
-          }
-          packFoundForLanguage = true;
-          const $column = $('<td>');
-          $tr.append($column);
-          if (pack.exists !== true) {
-            if (pack.lastUpdate !== null) {
-              tooltip = 'No language pack available for ' + pack.iso + ' when tried at ' + pack.lastUpdate + '. Click to re-try.';
-            } else {
-              tooltip = 'Language pack not downloaded. Click to download';
-            }
-          } else {
-            if (pack.lastUpdate === null) {
-              tooltip = 'Downloaded. Click to renew';
-            } else {
-              tooltip = 'Language pack downloaded at ' + pack.lastUpdate + '. Click to renew';
-            }
-          }
-          $column.append(
-            $('<a>', {
-              'class': 'btn btn-default t3js-languagePacks-update',
-              'data-extension': extension.key,
-              'data-iso': pack.iso,
-              'title': securityUtility.encodeHtml(tooltip),
-            }).append(updateIcon),
-          );
-        });
-        // Render empty colum to avoid disturbed table build up if pack was not found for language.
-        if (!packFoundForLanguage) {
-          const $column = $('<td>');
-          $tr.append($column).append('&nbsp;');
-        }
-      });
-      $tbody.append($tr);
-
-    });
-
-    $markupContainer.append(
-      $('<h3>').text('Translation status'),
-      $('<table>', { 'class': 'table table-striped table-bordered' }).append(
-        $('<thead>').append($headerRow),
-        $tbody,
-      ),
-    );
-    if (rowCount === 0) {
-      return InfoBox.create(
-        Severity.ok,
-        'Language packs have been found for every installed extension.',
-        'To download the latest changes, use the refresh button in the list above.'
-      );
-    }
-    return $markupContainer.html();
-  }
-
-  private getNotificationBox(): JQuery {
+  private getNotificationBox(): HTMLElement {
     return this.findInModal(this.selectorNotifications);
   }
 
@@ -538,9 +315,9 @@ class LanguagePacks extends AbstractInteractableModule {
   }
 
   private renderNotifications(): void {
-    const $notificationBox: JQuery = this.getNotificationBox();
+    const $notificationBox = this.getNotificationBox();
     for (const notification of this.notifications) {
-      $notificationBox.append(notification);
+      $notificationBox.appendChild(notification);
     }
     this.notifications = [];
   }

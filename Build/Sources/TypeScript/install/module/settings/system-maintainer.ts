@@ -12,7 +12,6 @@
  */
 
 import 'bootstrap';
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
@@ -21,6 +20,9 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
+import $ from 'jquery';
+import type { ModalElement } from '@typo3/backend/modal';
 
 type SystemMaintainerListResponse = {
   success: boolean;
@@ -45,8 +47,8 @@ class SystemMaintainer extends AbstractInteractableModule {
   private selectorChosenContainer: string = '.t3js-systemMaintainer-chosen';
   private selectorChosenField: string = '.t3js-systemMaintainer-chosen-select';
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     const isInIframe = window.location !== window.parent.location;
     if (isInIframe) {
       topLevelModuleImport('@typo3/install/chosen.jquery.min.js').then((): void => {
@@ -58,12 +60,13 @@ class SystemMaintainer extends AbstractInteractableModule {
       });
     }
 
-    currentModal.on('click', this.selectorWriteTrigger, (e: JQueryEventObject): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event): void => {
+      event.preventDefault();
       this.write();
-    });
+    }).delegateTo(currentModal, this.selectorWriteTrigger);
   }
 
+  // @todo: find replacement for chosen
   private getList(): void {
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('systemMaintainerGetList')))
@@ -72,7 +75,7 @@ class SystemMaintainer extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data: SystemMaintainerListResponse = await response.resolve();
           if (data.success === true) {
-            modalContent.html(data.html);
+            modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
             if (Array.isArray(data.users)) {
               data.users.forEach((element): void => {
@@ -80,13 +83,16 @@ class SystemMaintainer extends AbstractInteractableModule {
                 if (element.disable) {
                   name = '[DISABLED] ' + name;
                 }
-                const $option = $('<option>', { 'value': element.uid }).text(name);
+                const option = document.createElement('option');
+                option.value = String(element.uid);
+                option.innerText = name;
                 if (element.isSystemMaintainer) {
-                  $option.attr('selected', 'selected');
+                  option.setAttribute('selected', 'selected');
                 }
-                modalContent.find(this.selectorChosenField).append($option);
+                modalContent.querySelector(this.selectorChosenField).append(option);
               });
             }
+
             const config: { [key: string]: Record<string, string> } = {
               '.t3js-systemMaintainer-chosen-select': {
                 width: '100%',
@@ -94,13 +100,22 @@ class SystemMaintainer extends AbstractInteractableModule {
               },
             };
 
-            for (const selector in config) {
-              if (selector in config) {
-                modalContent.find(selector).chosen(config[selector]);
+            const configureChosen = ($: JQueryStatic): void => {
+              for (const selector in config) {
+                if (selector in config) {
+                  $(selector).chosen(config[selector]);
+                }
               }
+              modalContent.querySelector<HTMLElement>(this.selectorChosenContainer).style.display = 'block';
+              modalContent.querySelector(this.selectorChosenField).dispatchEvent(new CustomEvent('chosen:updated'));
+            };
+
+            const isInIframe = window.location !== window.parent.location;
+            if (isInIframe) {
+              topLevelModuleImport('jquery').then(({ default: $ }) => configureChosen($));
+            } else {
+              configureChosen($);
             }
-            modalContent.find(this.selectorChosenContainer).show();
-            modalContent.find(this.selectorChosenField).trigger('chosen:updated');
           }
         },
         (error: AjaxResponse): void => {
@@ -113,8 +128,8 @@ class SystemMaintainer extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const modalContent = this.getModalBody();
-    const executeToken = this.getModuleContent().data('system-maintainer-write-token');
-    const selectedUsers = this.findInModal(this.selectorChosenField).val();
+    const executeToken = this.getModuleContent().dataset.systemMaintainerWriteToken;
+    const selectedUsers: Array<string | number> = $(this.findInModal(this.selectorChosenField) as HTMLInputElement).val();
     (new AjaxRequest(Router.getUrl())).post({
       install: {
         users: selectedUsers,

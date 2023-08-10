@@ -12,7 +12,7 @@
  */
 
 import 'bootstrap';
-import $ from 'jquery';
+import { Collapse } from 'bootstrap';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '../../renderable/clearable';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
@@ -21,6 +21,8 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/install/module/local-configuration
@@ -32,67 +34,70 @@ class LocalConfiguration extends AbstractInteractableModule {
   private selectorWriteTrigger: string = '.t3js-localConfiguration-write';
   private selectorSearchTrigger: string = '.t3js-localConfiguration-search';
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     this.getContent();
 
     // Write out new settings
-    currentModal.on('click', this.selectorWriteTrigger, (): void => {
+    new RegularEvent('click', (event: Event): void => {
+      event.preventDefault();
       this.write();
-    });
+    }).delegateTo(currentModal, this.selectorWriteTrigger);
 
     // Expand / collapse "Toggle all" button
-    currentModal.on('click', this.selectorToggleAllTrigger, (): void => {
+    new RegularEvent('click', (): void => {
       const modalContent = this.getModalBody();
-      const panels = modalContent.find('.panel-collapse');
-      const action = (panels.eq(0).hasClass('show')) ? 'hide' : 'show';
-      panels.collapse(action);
-    });
-
-    // Make jquerys "contains" work case-insensitive
-    $.expr[':'].contains = $.expr.createPseudo((arg: string): ((elem: JQuery) => boolean) => {
-      return (elem: JQuery): boolean => {
-        return $(elem).text().toUpperCase().includes(arg.toUpperCase());
-      };
-    });
+      const panels = modalContent.querySelectorAll<HTMLElement>('.panel-collapse');
+      panels.forEach((panel: HTMLElement) => {
+        const action = panels[0].classList.contains('show') ? 'hide' : 'show';
+        Collapse.getOrCreateInstance(panel)[action]();
+      });
+    }).delegateTo(currentModal, this.selectorToggleAllTrigger);
 
     // Focus search field on certain user interactions
-    currentModal.on('keydown', (e: JQueryEventObject): void => {
-      const $searchInput = currentModal.find(this.selectorSearchTrigger);
-      if (e.ctrlKey || e.metaKey) {
+    new RegularEvent('keydown', (event: KeyboardEvent) => {
+      const searchInput = currentModal.querySelector<HTMLInputElement>(this.selectorSearchTrigger);
+      if (event.ctrlKey || event.metaKey) {
         // Focus search field on ctrl-f
-        if (String.fromCharCode(e.which).toLowerCase() === 'f') {
-          e.preventDefault();
-          $searchInput.trigger('focus');
+        if (event.code === 'KeyF') {
+          event.preventDefault();
+          searchInput.focus();
         }
-      } else if (e.keyCode === 27) {
+      } else if (event.code === 'Escape') {
         // Clear search on ESC key
-        e.preventDefault();
-        $searchInput.val('').trigger('focus');
+        event.preventDefault();
+        searchInput.value = '';
+        searchInput.focus();
       }
-    });
+    }).bindTo(currentModal);
 
     // Perform expand collapse on search matches
-    currentModal.on('keyup', this.selectorSearchTrigger, (e: JQueryEventObject): void => {
-      const typedQuery = $(e.target).val();
+    new RegularEvent('input', (event: Event, target: HTMLInputElement): void => {
+      const typedQuery = target.value;
       this.search(typedQuery);
-    });
-    currentModal.on('change', this.selectorSearchTrigger, (e: JQueryEventObject): void => {
-      const typedQuery = $(e.target).val();
+    }).delegateTo(currentModal, this.selectorSearchTrigger);
+
+    new RegularEvent('change', (event: Event, target: HTMLInputElement): void => {
+      const typedQuery = target.value;
       this.search(typedQuery);
-    });
+    }).delegateTo(currentModal, this.selectorSearchTrigger);
   }
 
   private search(typedQuery: string): void {
-    this.currentModal.find(this.selectorItem).each((index: number, element: Element): void => {
-      const $item = $(element);
-      if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
-        $item.removeClass('hidden').addClass('searchhit');
+    this.currentModal.querySelectorAll(this.selectorItem).forEach((element: HTMLElement): void => {
+      if (element.textContent.toLowerCase().trim().includes(typedQuery.toLowerCase())) {
+        element.classList.remove('hidden');
+        element.classList.add('searchhit');
       } else {
-        $item.removeClass('searchhit').addClass('hidden');
+        element.classList.remove('searchhit');
+        element.classList.add('hidden');
       }
     });
-    this.currentModal.find('.searchhit').parent().parent().parent().collapse('show');
+
+    this.currentModal.querySelectorAll('.searchhit').forEach((resultElement: HTMLElement) => {
+      const collapseElement = resultElement.closest('.panel-collapse');
+      Collapse.getOrCreateInstance(collapseElement).show();
+    });
   }
 
   private getContent(): void {
@@ -103,9 +108,9 @@ class LocalConfiguration extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
-            modalContent.html(data.html);
+            modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
-            this.searchInput = <HTMLInputElement>modalContent.find((this.selectorSearchTrigger)).get(0);
+            this.searchInput = modalContent.querySelector<HTMLInputElement>((this.selectorSearchTrigger));
             this.searchInput.clearable();
           }
         },
@@ -118,19 +123,18 @@ class LocalConfiguration extends AbstractInteractableModule {
   private write(): void {
     this.setModalButtonsState(false);
 
-    const modalContent: JQuery = this.getModalBody();
-    const executeToken: JQuery = this.getModuleContent().data('local-configuration-write-token');
+    const modalContent = this.getModalBody();
+    const executeToken = this.getModuleContent().dataset.localConfigurationWriteToken;
     const configurationValues: Record<string, string> = {};
-    this.findInModal('.t3js-localConfiguration-pathValue').each((i: number, element: HTMLInputElement): void => {
-      const $element: JQuery = $(element);
-      if ($element.attr('type') === 'checkbox') {
+    this.currentModal.querySelectorAll('.t3js-localConfiguration-pathValue').forEach((element: HTMLInputElement): void => {
+      if (element.type === 'checkbox') {
         if (element.checked) {
-          configurationValues[$element.data('path')] = '1';
+          configurationValues[element.dataset.path] = '1';
         } else {
-          configurationValues[$element.data('path')] = '0';
+          configurationValues[element.dataset.path] = '0';
         }
       } else {
-        configurationValues[$element.data('path')] = $element.val();
+        configurationValues[element.dataset.path] = element.value;
       }
     });
     (new AjaxRequest(Router.getUrl())).post({

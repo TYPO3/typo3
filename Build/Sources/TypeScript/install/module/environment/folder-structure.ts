@@ -12,16 +12,16 @@
  */
 
 import 'bootstrap';
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { InfoBox } from '../../renderable/info-box';
-import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
+import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/install/module/folder-structure
@@ -36,66 +36,61 @@ class FolderStructure extends AbstractInteractableModule {
   private selectorOkList: string = '.t3js-folderStructure-ok-list';
   private selectorPermissionContainer: string = '.t3js-folderStructure-permissions';
 
-  private static removeLoadingMessage($container: JQuery): void {
-    $container.find('typo3-install-progress-bar').remove();
+  private static removeLoadingMessage(container: HTMLElement): void {
+    container.querySelector('typo3-install-progress-bar').remove();
   }
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
 
     // Get status on initialize to have the badge and content ready
     this.getStatus();
 
-    currentModal.on('click', this.selectorErrorFixTrigger, (e: JQueryEventObject): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event): void => {
+      event.preventDefault();
       this.fix();
-    });
+    }).delegateTo(currentModal, this.selectorErrorFixTrigger);
   }
 
   private getStatus(): void {
     const modalContent = this.getModalBody();
-    const $errorBadge = $(this.selectorGridderBadge);
-    $errorBadge.text('').hide();
 
-    const progressBar = document.createElement('typo3-install-progress-bar');
-    modalContent.find(this.selectorOutputContainer).empty().append(progressBar);
+    this.renderProgressBar(modalContent.querySelector(this.selectorOutputContainer));
     (new AjaxRequest(Router.getUrl('folderStructureGetStatus')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          modalContent.empty().append(data.html);
+          modalContent.innerHTML = data.html;
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.errorStatus)) {
-            let errorCount = 0;
             if (data.errorStatus.length > 0) {
-              modalContent.find(this.selectorErrorContainer).show();
-              modalContent.find(this.selectorErrorList).empty();
+              modalContent.querySelector<HTMLElement>(this.selectorErrorContainer).style.display = 'block';
+              modalContent.querySelector(this.selectorErrorList).innerHTML = '';
               data.errorStatus.forEach(((aElement: any): void => {
-                errorCount++;
-                $errorBadge.text(errorCount).show();
-                modalContent.find(this.selectorErrorList).append(InfoBox.create(aElement.severity, aElement.title, aElement.message));
+                modalContent.querySelector(this.selectorErrorList).appendChild(InfoBox.create(aElement.severity, aElement.title, aElement.message));
               }));
             } else {
-              modalContent.find(this.selectorErrorContainer).hide();
+              modalContent.querySelector<HTMLElement>(this.selectorErrorContainer).style.display = 'none';
             }
           }
           if (data.success === true && Array.isArray(data.okStatus)) {
             if (data.okStatus.length > 0) {
-              modalContent.find(this.selectorOkContainer).show();
-              modalContent.find(this.selectorOkList).empty();
+              modalContent.querySelector<HTMLElement>(this.selectorOkContainer).style.display = 'block';
+              modalContent.querySelector(this.selectorOkList).innerHTML = '';
               data.okStatus.forEach(((aElement: any): void => {
-                modalContent.find(this.selectorOkList).append(InfoBox.create(aElement.severity, aElement.title, aElement.message));
+                modalContent.querySelector(this.selectorOkList).appendChild(InfoBox.create(aElement.severity, aElement.title, aElement.message));
               }));
             } else {
-              modalContent.find(this.selectorOkContainer).hide();
+              modalContent.querySelector<HTMLElement>(this.selectorOkContainer).style.display = 'none';
             }
           }
           let element = data.folderStructureFilePermissionStatus;
-          modalContent.find(this.selectorPermissionContainer).empty().append(InfoBox.create(element.severity, element.title, element.message));
+          const selectorPermissionContainer = modalContent.querySelector(this.selectorPermissionContainer);
+          selectorPermissionContainer.replaceChildren(InfoBox.create(element.severity, element.title, element.message));
 
           element = data.folderStructureDirectoryPermissionStatus;
-          modalContent.find(this.selectorPermissionContainer).append(InfoBox.create(element.severity, element.title, element.message));
+          selectorPermissionContainer.appendChild(InfoBox.create(element.severity, element.title, element.message));
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
@@ -106,23 +101,22 @@ class FolderStructure extends AbstractInteractableModule {
   private fix(): void {
     this.setModalButtonsState(false);
 
-    const modalContent: JQuery = this.getModalBody();
-    const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
-    const progressBar = document.createElement('typo3-install-progress-bar');
-    $outputContainer.empty().append(progressBar);
+    const modalContent = this.getModalBody();
+    const outputContainer = this.findInModal(this.selectorOutputContainer);
+    this.renderProgressBar(outputContainer);
     (new AjaxRequest(Router.getUrl('folderStructureFix')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          FolderStructure.removeLoadingMessage($outputContainer);
+          FolderStructure.removeLoadingMessage(outputContainer);
           if (data.success === true && Array.isArray(data.fixedStatus)) {
             if (data.fixedStatus.length > 0) {
               data.fixedStatus.forEach((element: any): void => {
-                $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
+                outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             } else {
-              $outputContainer.append(InfoBox.create(Severity.warning, 'Nothing fixed'));
+              outputContainer.append(InfoBox.create(Severity.warning, 'Nothing fixed'));
             }
             this.getStatus();
           } else {

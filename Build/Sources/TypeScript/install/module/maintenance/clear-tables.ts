@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
@@ -19,6 +18,8 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/install/module/clear-tables
@@ -33,44 +34,44 @@ class ClearTables extends AbstractInteractableModule {
   private selectorStatRows: string = '.t3js-clearTables-stat-rows';
   private selectorStatName: string = '.t3js-clearTables-stat-name';
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     this.getStats();
 
-    currentModal.on('click', this.selectorStatsTrigger, (e: JQueryEventObject): void => {
-      e.preventDefault();
-      $(this.selectorOutputContainer).empty();
+    new RegularEvent('click', (event: Event): void => {
+      event.preventDefault();
+      currentModal.querySelector(this.selectorOutputContainer).innerHTML = '';
       this.getStats();
-    });
+    }).delegateTo(currentModal, this.selectorStatsTrigger);
 
-    currentModal.on('click', this.selectorClearTrigger, (e: JQueryEventObject): void => {
-      const table = $(e.target).closest(this.selectorClearTrigger).data('table');
-      e.preventDefault();
+    new RegularEvent('click', (event: Event, trigger: HTMLElement): void => {
+      const table = trigger.closest<HTMLElement>(this.selectorClearTrigger).dataset.table;
+      event.preventDefault();
       this.clear(table);
-    });
+    }).delegateTo(currentModal, this.selectorClearTrigger);
   }
 
   private getStats(): void {
     this.setModalButtonsState(false);
 
-    const modalContent: JQuery = this.getModalBody();
+    const modalContent: HTMLElement = this.getModalBody();
     (new AjaxRequest(Router.getUrl('clearTablesStats')))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
-            modalContent.empty().append(data.html);
+            modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
             if (Array.isArray(data.stats) && data.stats.length > 0) {
               data.stats.forEach((element: any): void => {
                 if (element.rowCount > 0) {
-                  const aStat = modalContent.find(this.selectorStatTemplate).clone();
-                  aStat.find(this.selectorStatDescription).text(element.description);
-                  aStat.find(this.selectorStatName).text(element.name);
-                  aStat.find(this.selectorStatRows).text(element.rowCount);
-                  aStat.find(this.selectorClearTrigger).attr('data-table', element.name);
-                  modalContent.find(this.selectorStatContainer).append(aStat.html());
+                  const aStat = modalContent.querySelector<HTMLElement>(this.selectorStatTemplate).cloneNode(true) as HTMLElement;
+                  aStat.querySelector<HTMLElement>(this.selectorStatDescription).innerText = element.description;
+                  aStat.querySelector<HTMLElement>(this.selectorStatName).innerText = element.name;
+                  aStat.querySelector<HTMLElement>(this.selectorStatRows).innerText = element.rowCount;
+                  aStat.querySelector<HTMLElement>(this.selectorClearTrigger).setAttribute('data-table', element.name);
+                  modalContent.querySelector(this.selectorStatContainer).append(aStat);
                 }
               });
             }
@@ -86,7 +87,7 @@ class ClearTables extends AbstractInteractableModule {
 
   private clear(table: string): void {
     const modalContent = this.getModalBody();
-    const executeToken = this.getModuleContent().data('clear-tables-clear-token');
+    const executeToken = this.getModuleContent().dataset.clearTablesClearToken;
     (new AjaxRequest(Router.getUrl()))
       .post({
         install: {

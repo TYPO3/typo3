@@ -19,6 +19,8 @@ import PasswordStrength from '../password-strength';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/install/module/create-admin
@@ -26,18 +28,14 @@ import MessageInterface from '@typo3/install/message-interface';
 class CreateAdmin extends AbstractInteractableModule {
   private selectorAdminCreateButton: string = '.t3js-createAdmin-create';
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     this.getData();
 
-    currentModal.on('click', this.selectorAdminCreateButton, (e: JQueryEventObject): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event): void => {
+      event.preventDefault();
       this.create();
-    });
-
-    currentModal.on('click', '.t3-install-form-password-strength', (): void => {
-      PasswordStrength.initialize('.t3-install-form-password-strength');
-    });
+    }).delegateTo(currentModal, this.selectorAdminCreateButton);
   }
 
   private getData(): void {
@@ -48,7 +46,9 @@ class CreateAdmin extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
-            modalContent.empty().append(data.html);
+            modalContent.innerHTML = data.html;
+
+            PasswordStrength.initialize(modalContent.querySelector('.t3-install-form-password-strength'));
             Modal.setButtons(data.buttons);
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
@@ -64,20 +64,22 @@ class CreateAdmin extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const modalContent = this.getModalBody();
-    const executeToken = this.getModuleContent().data('create-admin-token');
+    const executeToken = this.getModuleContent().dataset.createAdminToken;
     const payload = {
       install: {
         action: 'createAdmin',
         token: executeToken,
-        userName: this.findInModal('.t3js-createAdmin-user').val(),
-        userPassword: this.findInModal('.t3js-createAdmin-password').val(),
-        userPasswordCheck: this.findInModal('.t3js-createAdmin-password-check').val(),
-        userEmail: this.findInModal('.t3js-createAdmin-email').val(),
-        realName: this.findInModal('.t3js-createAdmin-realname').val(),
-        userSystemMaintainer: (this.findInModal('.t3js-createAdmin-system-maintainer').is(':checked')) ? 1 : 0,
+        userName: (this.findInModal('.t3js-createAdmin-user') as HTMLInputElement).value,
+        userPassword: (this.findInModal('.t3js-createAdmin-password') as HTMLInputElement).value,
+        userPasswordCheck: (this.findInModal('.t3js-createAdmin-password-check') as HTMLInputElement).value,
+        userEmail: (this.findInModal('.t3js-createAdmin-email') as HTMLInputElement).value,
+        realName: (this.findInModal('.t3js-createAdmin-realname') as HTMLInputElement).value,
+        userSystemMaintainer: (this.findInModal('.t3js-createAdmin-system-maintainer') as HTMLInputElement).checked ? 1 : 0,
       },
     };
-    this.getModuleContent().find(':input').prop('disabled', true);
+    this.getModuleContent().querySelectorAll('input').forEach((input: HTMLInputElement): void => {
+      input.disabled = true;
+    });
 
     (new AjaxRequest(Router.getUrl())).post(payload).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
@@ -86,11 +88,11 @@ class CreateAdmin extends AbstractInteractableModule {
           Notification.showMessage(element.title, element.message, element.severity);
         });
         if (data.userCreated) {
-          this.findInModal('.t3js-createAdmin-user').val('');
-          this.findInModal('.t3js-createAdmin-password').val('');
-          this.findInModal('.t3js-createAdmin-password-check').val('');
-          this.findInModal('.t3js-createAdmin-email').val('');
-          this.findInModal('.t3js-createAdmin-system-maintainer').prop('checked', false);
+          (this.findInModal('.t3js-createAdmin-user') as HTMLInputElement).value = '';
+          (this.findInModal('.t3js-createAdmin-password') as HTMLInputElement).value = '';
+          (this.findInModal('.t3js-createAdmin-password-check') as HTMLInputElement).value = '';
+          (this.findInModal('.t3js-createAdmin-email') as HTMLInputElement).value = '';
+          (this.findInModal('.t3js-createAdmin-system-maintainer') as HTMLInputElement).checked = false;
         }
       } else {
         Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
@@ -100,7 +102,9 @@ class CreateAdmin extends AbstractInteractableModule {
     }).finally((): void => {
       this.setModalButtonsState(true);
 
-      this.getModuleContent().find(':input').prop('disabled', false);
+      this.getModuleContent().querySelectorAll('input').forEach((input: HTMLInputElement): void => {
+        input.disabled = false;
+      });
     });
   }
 }

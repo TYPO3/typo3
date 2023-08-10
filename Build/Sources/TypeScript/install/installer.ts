@@ -80,9 +80,6 @@ class Installer {
         $toggleIcon.replaceWith('<typo3-backend-icon identifier="actions-lock" size="small"></typo3-backend-icon>');
       }
     });
-    $(document).on('keyup', '.t3-install-form-password-strength', (): void => {
-      PasswordStrength.initialize('.t3-install-form-password-strength');
-    });
 
     // Database connect db driver selection
     $(document).on('change', '#t3js-connect-database-driver', (e: JQueryEventObject): void => {
@@ -291,6 +288,7 @@ class Installer {
         if (data.success === true) {
           $outputContainer.empty().html(data.html);
           $('#t3js-connect-database-driver').trigger('change');
+          PasswordStrength.initialize(document.querySelector('.t3-install-form-password-strength'));
         }
       });
   }
@@ -420,6 +418,7 @@ class Installer {
         const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().html(data.html);
+          PasswordStrength.initialize(document.querySelector('.t3-install-form-password-strength'));
         }
       });
   }

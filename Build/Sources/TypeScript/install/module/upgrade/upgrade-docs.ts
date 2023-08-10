@@ -22,6 +22,9 @@ import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-im
 import Router from '../../router';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import '@typo3/backend/element/icon-element';
+import RegularEvent from '@typo3/core/event/regular-event';
+import { Collapse } from 'bootstrap';
+import type { ModalElement } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/install/module/upgrade-docs
@@ -33,11 +36,11 @@ class UpgradeDocs extends AbstractInteractableModule {
   private selectorChangeLogsForVersion: string = '.t3js-changelog-list';
   private selectorUpgradeDoc: string = '.t3js-upgrade-doc';
 
-  private chosenField: JQuery;
-  private fulltextSearchField: JQuery;
+  private chosenField: HTMLInputElement;
+  private fulltextSearchField: HTMLInputElement;
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     const isInIframe = (window.location !== window.parent.location);
     if (isInIframe) {
       topLevelModuleImport('@typo3/install/chosen.jquery.min.js').then((): void => {
@@ -50,19 +53,13 @@ class UpgradeDocs extends AbstractInteractableModule {
     }
 
     // Mark a file as read
-    currentModal.on('click', '.t3js-upgradeDocs-markRead', (e: JQueryEventObject): void => {
-      this.markRead(e.target);
-    });
-    currentModal.on('click', '.t3js-upgradeDocs-unmarkRead', (e: JQueryEventObject): void => {
-      this.unmarkRead(e.target);
-    });
+    new RegularEvent('click', (event: Event, target: HTMLElement): void => {
+      this.markRead(target);
+    }).delegateTo(currentModal, '.t3js-upgradeDocs-markRead');
 
-    // Make jquerys "contains" work case-insensitive
-    $.expr[':'].contains = $.expr.createPseudo((arg: string): ((elem: JQuery) => boolean) => {
-      return (elem: JQuery): boolean => {
-        return $(elem).text().toUpperCase().includes(arg.toUpperCase());
-      };
-    });
+    new RegularEvent('click', (event: Event, target: HTMLElement): void => {
+      this.unmarkRead(target);
+    }).delegateTo(currentModal, '.t3js-upgradeDocs-unmarkRead');
   }
 
   private getContent(): void {
@@ -74,7 +71,7 @@ class UpgradeDocs extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
-            modalContent.empty().append(data.html);
+            modalContent.innerHTML = data.html;
 
             this.initializeFullTextSearch();
             this.initializeChosenSelector();
@@ -90,7 +87,7 @@ class UpgradeDocs extends AbstractInteractableModule {
   private loadChangelogs(): void {
     const promises: Array<Promise<void>> = [];
     const modalContent = this.getModalBody();
-    this.findInModal(this.selectorChangeLogsForVersionContainer).each((index: number, el: HTMLElement): void => {
+    this.currentModal.querySelectorAll<HTMLElement>(this.selectorChangeLogsForVersionContainer).forEach((el: HTMLElement): void => {
       const request = (new AjaxRequest(Router.getUrl('upgradeDocsGetChangelogForVersion')))
         .withQueryArguments({
           install: {
@@ -102,13 +99,13 @@ class UpgradeDocs extends AbstractInteractableModule {
           async (response: AjaxResponse): Promise<void> => {
             const data = await response.resolve();
             if (data.success === true) {
-              const $panelGroup = $(el);
-              const $container = $panelGroup.find(this.selectorChangeLogsForVersion);
-              $container.html(data.html);
-              this.moveNotRelevantDocuments($container);
+              const panelGroup = el;
+              const container = panelGroup.querySelector(this.selectorChangeLogsForVersion);
+              container.innerHTML = data.html;
+              this.moveNotRelevantDocuments(container);
 
               // Remove loading spinner form panel
-              $panelGroup.find('.t3js-panel-loading').remove();
+              panelGroup.querySelector('.t3js-panel-loading').remove();
             } else {
               Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
             }
@@ -122,14 +119,14 @@ class UpgradeDocs extends AbstractInteractableModule {
     });
 
     Promise.all(promises).then((): void => {
-      this.fulltextSearchField.prop('disabled', false);
+      this.fulltextSearchField.disabled = false;
       this.appendItemsToChosenSelector();
     });
   }
 
   private initializeFullTextSearch(): void {
-    this.fulltextSearchField = this.findInModal(this.selectorFulltextSearch);
-    const searchInput = <HTMLInputElement>this.fulltextSearchField.get(0);
+    this.fulltextSearchField = this.findInModal(this.selectorFulltextSearch) as HTMLInputElement;
+    const searchInput = <HTMLInputElement>this.fulltextSearchField;
     searchInput.clearable({
       onClear: (): void => {
         this.combinedFilterSearch();
@@ -143,7 +140,7 @@ class UpgradeDocs extends AbstractInteractableModule {
   }
 
   private initializeChosenSelector(): void {
-    this.chosenField = this.getModalBody().find(this.selectorChosenField);
+    this.chosenField = this.getModalBody().querySelector(this.selectorChosenField);
 
     const config: { [key: string]: { [key: string]: string|number|boolean } } = {
       '.chosen-select': { width: '100%', placeholder_text_multiple: 'tags' },
@@ -152,14 +149,24 @@ class UpgradeDocs extends AbstractInteractableModule {
       '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
       '.chosen-select-width': { width: '100%' },
     };
-    for (const selector in config) {
-      if (selector in config) {
-        this.findInModal(selector).chosen(config[selector]);
+
+    const configureChosen = ($: JQueryStatic): void => {
+      for (const selector in config) {
+        if (selector in config) {
+          $(this.findInModal(selector)).chosen(config[selector]);
+        }
       }
+      $(this.chosenField).on('change', (): void => {
+        this.combinedFilterSearch();
+      });
+    };
+
+    const isInIframe = window.location !== window.parent.location;
+    if (isInIframe) {
+      topLevelModuleImport('jquery').then(({ default: $ }) => configureChosen($));
+    } else {
+      configureChosen($);
     }
-    this.chosenField.on('change', (): void => {
-      this.combinedFilterSearch();
-    });
   }
 
   /**
@@ -173,8 +180,8 @@ class UpgradeDocs extends AbstractInteractableModule {
    */
   private appendItemsToChosenSelector(): void {
     let tagString = '';
-    $(this.findInModal(this.selectorUpgradeDoc)).each((index: number, element: Element): void => {
-      tagString += $(element).data('item-tags') + ',';
+    this.currentModal.querySelectorAll(this.selectorUpgradeDoc).forEach((element: HTMLElement): void => {
+      tagString += element.dataset.itemTags + ',';
     });
     const tagSet = new Set(tagString.slice(0, -1).split(','));
     const uniqueTags = [...tagSet.values()].reduce((tagList: string[], tag: string): string[] => {
@@ -189,69 +196,84 @@ class UpgradeDocs extends AbstractInteractableModule {
       return a.toLowerCase().localeCompare(b.toLowerCase());
     });
 
-    this.chosenField.prop('disabled', false);
+    this.chosenField.disabled = false;
     for (const tag of uniqueTags) {
-      this.chosenField.append($('<option>').text(tag));
+      const option = document.createElement('option');
+      option.innerText = tag;
+      this.chosenField.appendChild(option);
     }
-    this.chosenField.trigger('chosen:updated');
+    this.chosenField.dispatchEvent(new CustomEvent('chosen:updated'));
   }
 
   private combinedFilterSearch(): void {
     const modalContent = this.getModalBody();
-    const $items = modalContent.find(this.selectorUpgradeDoc);
-    if (this.chosenField.val().length < 1 && this.fulltextSearchField.val().length < 1) {
-      const $expandedPanels = this.currentModal.find('.panel-version .panel-collapse.show');
-      $expandedPanels.one('hidden.bs.collapse', (): void => {
-        if (this.currentModal.find('.panel-version .panel-collapse.collapsing').length === 0) {
-          // Bootstrap doesn't offer promises to check whether all panels are collapsed, so we need a helper to do
-          // something similar
-          $items.removeClass('searchhit filterhit');
-        }
+    const items = modalContent.querySelectorAll(this.selectorUpgradeDoc);
+    if ($(this.chosenField).val().length < 1 && this.fulltextSearchField.value.length < 1) {
+      const expandedPanels = this.currentModal.querySelectorAll('.panel-version .panel-collapse.show');
+      expandedPanels.forEach((panel: HTMLElement) => {
+        new RegularEvent('hidden.bs.collapse', (): void => {
+          if (this.currentModal.querySelectorAll('.panel-version .panel-collapse.collapsing').length === 0) {
+            // Bootstrap doesn't offer promises to check whether all panels are collapsed, so we need a helper to do
+            // something similar
+            items.forEach((item: HTMLElement) => {
+              item.classList.remove('searchhit', 'filterhit');
+            })
+          }
+        }, { once: true }).bindTo(panel);
+
+        Collapse.getOrCreateInstance(panel).hide();
       });
-      $expandedPanels.collapse('hide');
       return;
     }
 
-    $items.removeClass('searchhit filterhit');
+    items.forEach((item: HTMLElement) => {
+      item.classList.remove('searchhit', 'filterhit');
+    });
 
     // apply tags
-    if (this.chosenField.val().length > 0) {
-      $items
-        .addClass('hidden')
-        .removeClass('filterhit');
+    if ($(this.chosenField).val().length > 0) {
+      items.forEach((item: HTMLElement) => {
+        item.classList.add('hidden');
+        item.classList.remove('filterhit');
+      });
 
-      const tagSelection = this.chosenField.val().map((tag: string) => '[data-item-tags*="' + tag + '"]').join('');
-      modalContent.find(tagSelection)
-        .removeClass('hidden')
-        .addClass('searchhit filterhit');
+      const tagSelection = $(this.chosenField).val().map((tag: string) => '[data-item-tags*="' + tag + '"]').join('');
+      modalContent.querySelectorAll(tagSelection).forEach((result: HTMLElement) => {
+        result.classList.remove('hidden');
+        result.classList.add('searchhit', 'filterhit');
+      })
     } else {
-      $items
-        .addClass('filterhit')
-        .removeClass('hidden');
+      items.forEach((item: HTMLElement) => {
+        item.classList.add('filterhit');
+        item.classList.remove('hidden');
+      });
     }
     // apply fulltext search
-    const typedQuery = this.fulltextSearchField.val();
-    modalContent.find('.filterhit').each((index: number, element: Element): void => {
-      const $item = $(element);
-      if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
-        $item.removeClass('hidden').addClass('searchhit');
+    const typedQuery = this.fulltextSearchField.value;
+    modalContent.querySelectorAll('.filterhit').forEach((element: Element): void => {
+      if (element.textContent.toLowerCase().trim().includes(typedQuery.toLowerCase())) {
+        element.classList.remove('hidden');
+        element.classList.add('searchhit');
       } else {
-        $item.removeClass('searchhit').addClass('hidden');
+        element.classList.remove('searchhit');
+        element.classList.add('hidden');
       }
     });
 
-    modalContent.find('.searchhit').closest('.panel-collapse').each((index: number, item: Element): void => {
-      // This is a workaround to improve the browser performance as the panels are not expanded at once
+    modalContent.querySelectorAll('.searchhit').forEach((hitElement: HTMLElement) => {
+      const panelElement = hitElement.closest('.panel-collapse');
+
       window.setTimeout((): void => {
-        $(item).collapse('show');
+        Collapse.getOrCreateInstance(panelElement).show();
       }, 20);
     });
 
     // Check for empty panels
-    modalContent.find('.panel-version').each((index: number, element: Element): void => {
-      const $element: JQuery = $(element);
-      if ($element.find('.searchhit, .filterhit').length < 1) {
-        $element.find(' > .panel-collapse').collapse('hide');
+    modalContent.querySelectorAll('.panel-version').forEach((element: Element): void => {
+      if (element.querySelectorAll('.searchhit, .filterhit').length < 1) {
+        const panelElement = element.querySelector(':scope > .panel-collapse');
+
+        Collapse.getOrCreateInstance(panelElement).hide();
       }
     });
   }
@@ -259,22 +281,25 @@ class UpgradeDocs extends AbstractInteractableModule {
   /**
    * Moves all documents that are either read or not affected
    */
-  private moveNotRelevantDocuments($container: JQuery): void {
-    $container.find('[data-item-state="read"]').appendTo(this.findInModal('.panel-body-read'));
-    $container.find('[data-item-state="notAffected"]').appendTo(this.findInModal('.panel-body-not-affected'));
+  private moveNotRelevantDocuments(container: Element): void {
+    this.findInModal('.panel-body-read').append(container.querySelector('[data-item-state="read"]'));
+    this.findInModal('.panel-body-not-affected').append(container.querySelector('[data-item-state="notAffected"]'));
   }
 
   private markRead(element: Element): void {
     const modalContent = this.getModalBody();
-    const executeToken = this.getModuleContent().data('upgrade-docs-mark-read-token');
-    const $button = $(element).closest('button');
-    $button.toggleClass('t3js-upgradeDocs-unmarkRead t3js-upgradeDocs-markRead');
-    $button.find('typo3-backend-icon,.t3js-icon').replaceWith('<typo3-backend-icon identifier="actions-ban" size="small"></typo3-backend-icon>');
-    $button.closest('.panel').appendTo(this.findInModal('.panel-body-read'));
+    const executeToken = this.getModuleContent().dataset.upgradeDocsMarkReadToken;
+    const button = element.closest('button');
+    button.classList.toggle('t3js-upgradeDocs-unmarkRead');
+    button.classList.toggle('t3js-upgradeDocs-markRead');
+    button.querySelectorAll<HTMLElement>('typo3-backend-icon,.t3js-icon').forEach((iconElement) => {
+      iconElement.outerHTML = '<typo3-backend-icon identifier="actions-ban" size="small"></typo3-backend-icon>';
+    });
+    this.findInModal('.panel-body-read').append(button.closest('.panel'));
     (new AjaxRequest(Router.getUrl()))
       .post({
         install: {
-          ignoreFile: $button.data('filepath'),
+          ignoreFile: button.dataset.filepath,
           token: executeToken,
           action: 'upgradeDocsMarkRead',
         },
@@ -286,16 +311,19 @@ class UpgradeDocs extends AbstractInteractableModule {
 
   private unmarkRead(element: Element): void {
     const modalContent = this.getModalBody();
-    const executeToken = this.getModuleContent().data('upgrade-docs-unmark-read-token');
-    const $button = $(element).closest('button');
-    const version = $button.closest('.panel').data('item-version');
-    $button.toggleClass('t3js-upgradeDocs-markRead t3js-upgradeDocs-unmarkRead');
-    $button.find('typo3-backend-icon,.t3js-icon').replaceWith('<typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>');
-    $button.closest('.panel').appendTo(this.findInModal('*[data-group-version="' + version + '"] .panel-body'));
+    const executeToken = this.getModuleContent().dataset.upgradeDocsUnmarkReadToken;
+    const button = element.closest('button');
+    const version = button.closest<HTMLElement>('.panel').dataset.itemVersion;
+    button.classList.toggle('t3js-upgradeDocs-markRead');
+    button.classList.toggle('t3js-upgradeDocs-unmarkRead');
+    button.querySelectorAll<HTMLElement>('typo3-backend-icon,.t3js-icon').forEach((iconElement) => {
+      iconElement.outerHTML = '<typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>';
+    });
+    this.findInModal('*[data-group-version="' + version + '"] .panel-body').append(button.closest('.panel'));
     (new AjaxRequest(Router.getUrl()))
       .post({
         install: {
-          ignoreFile: $button.data('filepath'),
+          ignoreFile: button.dataset.filepath,
           token: executeToken,
           action: 'upgradeDocsUnmarkRead',
         },

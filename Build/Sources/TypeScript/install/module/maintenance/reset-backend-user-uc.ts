@@ -22,7 +22,7 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/reset-backend-user-uc
  */
 class ResetBackendUserUc extends AbstractInlineModule {
-  public initialize($trigger: JQuery): void {
+  public initialize($trigger: HTMLButtonElement): void {
     this.setButtonState($trigger, false);
 
     (new AjaxRequest(Router.getUrl('resetBackendUserUc')))
@@ -42,7 +42,7 @@ class ResetBackendUserUc extends AbstractInlineModule {
         },
         (): void => {
           // In case the reset action fails (typically 500 from server), do not kill the entire
-          // install tool, instead show a notification that something went wrong.
+          // Install Tool, instead show a notification that something went wrong.
           Notification.error(
             'Reset preferences of all backend users failed',
             'Resetting preferences of all backend users failed for an unknown reason. Please check your server\'s logs for further investigation.'

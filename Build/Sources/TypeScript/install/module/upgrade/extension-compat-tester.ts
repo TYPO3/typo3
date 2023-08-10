@@ -12,17 +12,17 @@
  */
 
 import 'bootstrap';
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { InfoBox } from '../../renderable/info-box';
-import '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 interface BrokenExtension {
   name: string;
@@ -37,27 +37,27 @@ class ExtensionCompatTester extends AbstractInteractableModule {
   private selectorUninstallTrigger: string = '.t3js-extensionCompatTester-uninstall';
   private selectorOutputContainer: string = '.t3js-extensionCompatTester-output';
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     this.getLoadedExtensionList();
 
-    currentModal.on('click', this.selectorCheckTrigger, (): void => {
-      this.findInModal(this.selectorUninstallTrigger).addClass('hidden');
-      this.findInModal(this.selectorOutputContainer).empty();
+    new RegularEvent('click', (): void => {
+      this.findInModal(this.selectorUninstallTrigger)?.classList?.add('hidden');
+      this.findInModal(this.selectorOutputContainer).innerHTML = '';
       this.getLoadedExtensionList();
-    });
-    currentModal.on('click', this.selectorUninstallTrigger, (e: JQueryEventObject): void => {
-      this.uninstallExtension($(e.target).data('extension'));
-    });
+    }).delegateTo(currentModal, this.selectorCheckTrigger);
+
+    new RegularEvent('click', (event: Event, target: HTMLElement): void => {
+      this.uninstallExtension(target.dataset.extension);
+    }).delegateTo(currentModal, this.selectorUninstallTrigger);
   }
 
   private getLoadedExtensionList(): void {
     this.setModalButtonsState(false);
     const modalContent = this.getModalBody();
-    const $outputContainer = this.findInModal(this.selectorOutputContainer);
-    if ($outputContainer.length) {
-      const progressBar = document.createElement('typo3-install-progress-bar');
-      $outputContainer.append(progressBar);
+    const outputContainer = this.findInModal(this.selectorOutputContainer);
+    if (outputContainer) {
+      this.renderProgressBar(outputContainer, {}, 'append');
     }
 
     (new AjaxRequest(Router.getUrl('extensionCompatTesterLoadedExtensionList')))
@@ -65,25 +65,24 @@ class ExtensionCompatTester extends AbstractInteractableModule {
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          modalContent.empty().append(data.html);
+          modalContent.innerHTML = data.html;
           Modal.setButtons(data.buttons);
-          const $innerOutputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
-          const progressBar = document.createElement('typo3-install-progress-bar');
-          $innerOutputContainer.append(progressBar);
+          const innerOutputContainer = this.findInModal(this.selectorOutputContainer);
+          this.renderProgressBar(innerOutputContainer, {}, 'append');
 
           if (data.success === true) {
             this.loadExtLocalconf().then((): void => {
-              $innerOutputContainer.append(InfoBox.create(Severity.ok, 'ext_localconf.php of all loaded extensions successfully loaded'));
+              innerOutputContainer.append(InfoBox.create(Severity.ok, 'ext_localconf.php of all loaded extensions successfully loaded'));
               this.loadExtTables().then((): void => {
-                $innerOutputContainer.append(InfoBox.create(Severity.ok, 'ext_tables.php of all loaded extensions successfully loaded'));
+                innerOutputContainer.append(InfoBox.create(Severity.ok, 'ext_tables.php of all loaded extensions successfully loaded'));
               }, async (error: AjaxResponse): Promise<void> => {
-                this.renderFailureMessages('ext_tables.php', (await error.response.json()).brokenExtensions, $innerOutputContainer);
+                this.renderFailureMessages('ext_tables.php', (await error.response.json()).brokenExtensions, innerOutputContainer);
               }).finally((): void => {
                 this.unlockModal();
               });
             }, async (error: AjaxResponse): Promise<void> => {
-              this.renderFailureMessages('ext_localconf.php', (await error.response.json()).brokenExtensions, $innerOutputContainer);
-              $innerOutputContainer.append(InfoBox.create(Severity.notice, 'Skipped scanning ext_tables.php files due to previous errors'));
+              this.renderFailureMessages('ext_localconf.php', (await error.response.json()).brokenExtensions, innerOutputContainer);
+              innerOutputContainer.append(InfoBox.create(Severity.notice, 'Skipped scanning ext_tables.php files due to previous errors'));
               this.unlockModal();
             });
           } else {
@@ -97,19 +96,22 @@ class ExtensionCompatTester extends AbstractInteractableModule {
   }
 
   private unlockModal(): void {
-    this.findInModal(this.selectorOutputContainer).find('typo3-install-progress-bar').remove();
-    this.findInModal(this.selectorCheckTrigger).removeClass('disabled').prop('disabled', false);
+    this.findInModal(this.selectorOutputContainer).querySelector('typo3-install-progress-bar').remove();
+    const checkTrigger = this.findInModal(this.selectorCheckTrigger) as HTMLInputElement;
+    checkTrigger.classList.remove('disabled');
+    checkTrigger.disabled = false;
   }
 
-  private renderFailureMessages(scope: string, brokenExtensions: Array<BrokenExtension>, $outputContainer: JQuery): void {
+  private renderFailureMessages(scope: string, brokenExtensions: Array<BrokenExtension>, outputContainer: HTMLElement): void {
     for (const extension of brokenExtensions) {
       let uninstallAction;
       if (!extension.isProtected) {
-        uninstallAction = $('<button />', { 'class': 'btn btn-danger t3js-extensionCompatTester-uninstall' })
-          .attr('data-extension', extension.name)
-          .text('Uninstall extension "' + extension.name + '"');
+        uninstallAction = document.createElement('button');
+        uninstallAction.classList.add('btn', 'btn-danger', 't3js-extensionCompatTester-uninstall');
+        uninstallAction.dataset.extension = extension.name;
+        uninstallAction.innerText = 'Uninstall extension "' + extension.name + '"';
       }
-      $outputContainer.append(
+      outputContainer.append(
         InfoBox.create(
           Severity.error,
           'Loading ' + scope + ' of extension "' + extension.name + '" failed',
@@ -123,7 +125,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
   }
 
   private loadExtLocalconf(): Promise<AjaxResponse> {
-    const executeToken = this.getModuleContent().data('extension-compat-tester-load-ext_localconf-token');
+    const executeToken = this.getModuleContent().dataset.extensionCompatTesterLoadExt_localconfToken;
     return new AjaxRequest(Router.getUrl()).post({
       'install': {
         'action': 'extensionCompatTesterLoadExtLocalconf',
@@ -133,7 +135,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
   }
 
   private loadExtTables(): Promise<AjaxResponse> {
-    const executeToken = this.getModuleContent().data('extension-compat-tester-load-ext_tables-token');
+    const executeToken = this.getModuleContent().dataset.extensionCompatTesterLoadExt_tablesToken;
     return new AjaxRequest(Router.getUrl()).post({
       'install': {
         'action': 'extensionCompatTesterLoadExtTables',
@@ -148,11 +150,10 @@ class ExtensionCompatTester extends AbstractInteractableModule {
    * @param extension string of extension(s) - may be comma separated
    */
   private uninstallExtension(extension: string): void {
-    const executeToken = this.getModuleContent().data('extension-compat-tester-uninstall-extension-token');
+    const executeToken = this.getModuleContent().dataset.extensionCompatTesterUninstallExtensionToken;
     const modalContent = this.getModalBody();
-    const $outputContainer = $(this.selectorOutputContainer);
-    const progressBar = document.createElement('typo3-install-progress-bar');
-    $outputContainer.append(progressBar);
+    const outputContainer = this.findInModal(this.selectorOutputContainer);
+    this.renderProgressBar(outputContainer, {}, 'append');
     (new AjaxRequest(Router.getUrl()))
       .post({
         install: {
@@ -167,10 +168,10 @@ class ExtensionCompatTester extends AbstractInteractableModule {
           if (data.success) {
             if (Array.isArray(data.status)) {
               data.status.forEach((element: MessageInterface): void => {
-                modalContent.find(this.selectorOutputContainer).empty().append(InfoBox.create(element.severity, element.title, element.message));
+                modalContent.querySelector(this.selectorOutputContainer).replaceChildren(InfoBox.create(element.severity, element.title, element.message));
               });
             }
-            this.findInModal(this.selectorUninstallTrigger).addClass('hidden');
+            this.findInModal(this.selectorUninstallTrigger).classList.add('hidden');
             this.getLoadedExtensionList();
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');

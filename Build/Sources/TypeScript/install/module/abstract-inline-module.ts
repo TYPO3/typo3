@@ -12,9 +12,9 @@
  */
 
 export abstract class AbstractInlineModule {
-  protected setButtonState(button: JQuery, interactable: boolean): void {
-    button.toggleClass('disabled', !interactable).prop('disabled', !interactable);
+  protected setButtonState(button: HTMLButtonElement, interactable: boolean): void {
+    button.disabled = !interactable;
   }
 
-  abstract initialize($trigger: JQuery): void;
+  abstract initialize(trigger: HTMLElement): void;
 }

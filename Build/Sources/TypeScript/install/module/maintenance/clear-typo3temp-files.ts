@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
@@ -19,6 +18,8 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/install/module/clear-typo3temp-files
@@ -32,21 +33,22 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
   private selectorStatNumberOfFiles: string = '.t3js-clearTypo3temp-stat-numberOfFiles';
   private selectorStatDirectory: string = '.t3js-clearTypo3temp-stat-directory';
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
     this.getStats();
 
-    currentModal.on('click', this.selectorStatsTrigger, (e: JQueryEventObject): void => {
-      e.preventDefault();
-      $(this.selectorOutputContainer).empty();
+    new RegularEvent('click', (event: Event): void => {
+      event.preventDefault();
+      currentModal.querySelector(this.selectorOutputContainer).innerHTML = '';
       this.getStats();
-    });
-    currentModal.on('click', this.selectorDeleteTrigger, (e: JQueryEventObject): void => {
-      const folder = $(e.currentTarget).data('folder');
-      const storageUid = $(e.currentTarget).data('storage-uid');
-      e.preventDefault();
+    }).delegateTo(currentModal, this.selectorStatsTrigger);
+
+    new RegularEvent('click', (event: Event, trigger: HTMLElement): void => {
+      event.preventDefault();
+      const folder = trigger.dataset.folder;
+      const storageUid = trigger.dataset.storageUid !== undefined ? parseInt(trigger.dataset.storageUid, 10) : undefined;
       this.delete(folder, storageUid);
-    });
+    }).delegateTo(currentModal, this.selectorDeleteTrigger);
   }
 
   private getStats(): void {
@@ -59,17 +61,19 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
-            modalContent.empty().append(data.html);
+            modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
             if (Array.isArray(data.stats) && data.stats.length > 0) {
               data.stats.forEach((element: any): void => {
                 if (element.numberOfFiles > 0) {
-                  const aStat = modalContent.find(this.selectorStatTemplate).clone();
-                  aStat.find(this.selectorStatNumberOfFiles).text(element.numberOfFiles);
-                  aStat.find(this.selectorStatDirectory).text(element.directory);
-                  aStat.find(this.selectorDeleteTrigger).attr('data-folder', element.directory);
-                  aStat.find(this.selectorDeleteTrigger).attr('data-storage-uid', element.storageUid);
-                  modalContent.find(this.selectorStatContainer).append(aStat.html());
+                  const aStat = modalContent.querySelector(this.selectorStatTemplate).cloneNode(true) as HTMLElement;
+                  aStat.querySelector<HTMLElement>(this.selectorStatNumberOfFiles).innerText = (element.numberOfFiles);
+                  aStat.querySelector<HTMLElement>(this.selectorStatDirectory).innerText = (element.directory);
+                  aStat.querySelector<HTMLElement>(this.selectorDeleteTrigger).setAttribute('data-folder', element.directory);
+                  if (element.storageUid !== undefined) {
+                    aStat.querySelector<HTMLElement>(this.selectorDeleteTrigger).setAttribute('data-storage-uid', element.storageUid);
+                  }
+                  modalContent.querySelector(this.selectorStatContainer).append(aStat);
                 }
               });
             }
@@ -83,9 +87,9 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
       );
   }
 
-  private delete(folder: string, storageUid: number): void {
+  private delete(folder: string, storageUid: number|undefined): void {
     const modalContent = this.getModalBody();
-    const executeToken = this.getModuleContent().data('clear-typo3temp-delete-token');
+    const executeToken = this.getModuleContent().dataset.clearTypo3tempDeleteToken;
     (new AjaxRequest(Router.getUrl()))
       .post({
         install: {

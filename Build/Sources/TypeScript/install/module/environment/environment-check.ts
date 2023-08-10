@@ -19,9 +19,9 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import MessageInterface from '../../message-interface';
 import { InfoBox } from '../../renderable/info-box';
-import '../../renderable/progress-bar';
 import Router from '../../router';
 import RegularEvent from '@typo3/core/event/regular-event';
+import type { ModalElement } from '@typo3/backend/modal';
 
 interface EnvironmentCheckResponse {
   success: boolean,
@@ -44,21 +44,21 @@ class EnvironmentCheck extends AbstractInteractableModule {
   private selectorExecuteTrigger: string = '.t3js-environmentCheck-execute';
   private selectorOutputContainer: string = '.t3js-environmentCheck-output';
 
-  public initialize(currentModal: JQuery): void {
-    this.currentModal = currentModal;
+  public initialize(currentModal: ModalElement): void {
+    super.initialize(currentModal);
 
     // Get status on initialize to have the badge and content ready
     this.runTests();
 
-    new RegularEvent('click', (event: Event) => {
+    new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.runTests();
-    }).delegateTo(currentModal.get(0), this.selectorExecuteTrigger);
+    }).delegateTo(currentModal, this.selectorExecuteTrigger);
   }
 
   private runTests(): void {
     this.setModalButtonsState(false);
-    const modalContent: HTMLElement = this.getModalBody().get(0);
+    const modalContent: HTMLElement = this.getModalBody();
     const errorBadge: HTMLElement = document.querySelector(this.selectorGridderBadge);
     if (errorBadge !== null) {
       errorBadge.innerHTML = '';
@@ -66,9 +66,7 @@ class EnvironmentCheck extends AbstractInteractableModule {
     }
     const outputContainer: HTMLElement = modalContent.querySelector(this.selectorOutputContainer);
     if (outputContainer !== null) {
-      const progressBar = document.createElement('typo3-install-progress-bar');
-      outputContainer.innerHTML = '';
-      outputContainer.append(progressBar);
+      this.renderProgressBar(outputContainer);
     }
     (new AjaxRequest(Router.getUrl('environmentCheckGetStatus')))
       .get({ cache: 'no-cache' })

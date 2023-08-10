@@ -22,8 +22,8 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/cache
  */
 class Cache extends AbstractInlineModule {
-  public initialize($trigger: JQuery): void {
-    this.setButtonState($trigger, false);
+  public initialize(trigger: HTMLButtonElement): void {
+    this.setButtonState(trigger, false);
 
     (new AjaxRequest(Router.getUrl('cacheClearAll', 'maintenance')))
       .get({ cache: 'no-cache' })
@@ -42,7 +42,7 @@ class Cache extends AbstractInlineModule {
         },
         (): void => {
           // In case the clear cache action fails (typically 500 from server), do not kill the entire
-          // install tool, instead show a notification that something went wrong.
+          // Install Tool, instead show a notification that something went wrong.
           Notification.error(
             'Clearing caches failed',
             'Clearing caches went wrong on the server side. Check the system for broken extensions or missing database tables and try again.',
@@ -50,7 +50,7 @@ class Cache extends AbstractInlineModule {
         },
       )
       .finally((): void => {
-        this.setButtonState($trigger, true);
+        this.setButtonState(trigger, true);
       });
   }
 }
