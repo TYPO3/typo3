@@ -44,6 +44,7 @@ class FileHandlingUtility implements LoggerAwareInterface
         private readonly PackageManager $packageManager,
         private readonly EmConfUtility $emConfUtility,
         private readonly OpcodeCacheService $opcodeCacheService,
+        private readonly ZipService $zipService,
         LanguageServiceFactory $languageServiceFactory,
     ) {
         $this->languageService = $languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
@@ -122,13 +123,12 @@ class FileHandlingUtility implements LoggerAwareInterface
      * @param string $pathType path type (Local, Global, System)
      * @throws ExtensionManagerException
      */
-    public function unzipExtensionFromFile(string $file, string $fileName, string $pathType = 'Local')
+    public function unzipExtensionFromFile(string $file, string $fileName, string $pathType = 'Local'): void
     {
         $extensionDir = $this->makeAndClearExtensionDir($fileName, $pathType);
         try {
-            $zipService = GeneralUtility::makeInstance(ZipService::class);
-            if ($zipService->verify($file)) {
-                $zipService->extract($file, $extensionDir);
+            if ($this->zipService->verify($file)) {
+                $this->zipService->extract($file, $extensionDir);
             }
         } catch (ExtractException $e) {
             $this->logger->error('Extracting the extension archive failed', ['exception' => $e]);

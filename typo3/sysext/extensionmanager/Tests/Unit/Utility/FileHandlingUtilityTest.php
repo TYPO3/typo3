@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -103,7 +104,13 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $subject = $this->getAccessibleMock(
             FileHandlingUtility::class,
             ['removeDirectory', 'addDirectory'],
-            [$this->createMock(PackageManager::class), $this->createMock(EmConfUtility::class), $this->createMock(OpcodeCacheService::class), $languageServiceFactoryMock]
+            [
+                $this->createMock(PackageManager::class),
+                $this->createMock(EmConfUtility::class),
+                $this->createMock(OpcodeCacheService::class),
+                $this->createMock(ZipService::class),
+                $languageServiceFactoryMock,
+            ]
         );
         $subject->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
     }
@@ -144,6 +151,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
             $this->createMock(PackageManager::class),
             $this->createMock(EmConfUtility::class),
             $this->createMock(OpcodeCacheService::class),
+            $this->createMock(ZipService::class),
             $this->createMock(LanguageServiceFactory::class)
         );
         $subject->removeDirectory($absoluteSymlinkPath);
@@ -165,6 +173,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
             $this->createMock(PackageManager::class),
             $this->createMock(EmConfUtility::class),
             $this->createMock(OpcodeCacheService::class),
+            $this->createMock(ZipService::class),
             $this->createMock(LanguageServiceFactory::class)
         );
         $subject->removeDirectory($absoluteSymlinkPath);
@@ -381,7 +390,13 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $subject = $this->getAccessibleMock(
             FileHandlingUtility::class,
             ['makeAndClearExtensionDir'],
-            [$this->createMock(PackageManager::class), new EmConfUtility(), $this->createMock(OpcodeCacheService::class), $this->createMock(LanguageServiceFactory::class)]
+            [
+                $this->createMock(PackageManager::class),
+                new EmConfUtility(),
+                $this->createMock(OpcodeCacheService::class),
+                $this->createMock(ZipService::class),
+                $this->createMock(LanguageServiceFactory::class),
+            ]
         );
         $subject->_call('writeEmConfToFile', $extKey, $emConfData, $rootPath);
         self::assertFileExists($rootPath . 'ext_emconf.php');

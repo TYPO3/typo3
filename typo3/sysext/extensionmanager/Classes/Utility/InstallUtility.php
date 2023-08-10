@@ -28,16 +28,17 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent;
 use TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent;
+use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionDatabaseContentHasBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionFilesHaveBeenImportedEvent;
@@ -52,9 +53,11 @@ use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
  *
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
-class InstallUtility implements SingletonInterface, LoggerAwareInterface
+class InstallUtility implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+
+    private LanguageService $languageService;
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
@@ -64,27 +67,33 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         private readonly CacheManager $cacheManager,
         private readonly Registry $registry,
         private readonly BootService $bootService,
+        private readonly OpcodeCacheService $opcodeCacheService,
+        private readonly SqlReader $sqlReader,
+        private readonly SchemaMigrator $schemaMigrator,
+        private readonly ExtensionConfiguration $extensionConfiguration,
+        LanguageServiceFactory $languageServiceFactory,
     ) {
+        $this->languageService = $languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
     }
 
     /**
      * Helper function to install an extension and processes db updates.
-     *
-     * @param string ...$extensionKeys
-     * @throws ExtensionManagerException
      */
-    public function install(...$extensionKeys)
+    public function install(string ...$extensionKeys): void
     {
         foreach ($extensionKeys as $extensionKey) {
-            $this->loadExtension($extensionKey);
-            $extension = $this->enrichExtensionWithDetails($extensionKey, false);
-            $this->saveDefaultConfiguration($extensionKey);
+            $this->packageManager->activatePackage($extensionKey);
+            $this->extensionConfiguration->synchronizeExtConfTemplateWithLocalConfiguration($extensionKey);
         }
         $this->cacheManager->flushCaches();
-        // Load a new container as reloadCaches will load ext_localconf
+        // Load a new container as we are reloading ext_localconf.php files
         $container = $this->bootService->getContainer(false);
         $backup = $this->bootService->makeCurrent($container);
-        $this->reloadCaches();
+        // Reload cache files and Typo3LoadedExtensions
+        $this->opcodeCacheService->clearAllActive();
+        ExtensionManagementUtility::loadExtLocalconf(false);
+        Bootstrap::loadBaseTca(false);
+        Bootstrap::loadExtTables(false);
         $this->updateDatabase();
         foreach ($extensionKeys as $extensionKey) {
             $this->processExtensionSetup($extensionKey);
@@ -104,73 +113,65 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * Helper function to uninstall an extension
+     * Helper function to uninstall an extension.
      *
-     * @param string $extensionKey
      * @throws ExtensionManagerException
      */
-    public function uninstall($extensionKey)
+    public function uninstall(string $extensionKey): void
     {
-        $dependentExtensions = $this->findInstalledExtensionsThatDependOnExtension((string)$extensionKey);
+        $dependentExtensions = $this->findInstalledExtensionsThatDependOnExtension($extensionKey);
         if (!empty($dependentExtensions)) {
             throw new ExtensionManagerException(
-                LocalizationUtility::translate(
-                    'extensionList.uninstall.dependencyError',
-                    'extensionmanager',
-                    [$extensionKey, implode(',', $dependentExtensions)]
-                ) ?? '',
+                sprintf(
+                    $this->languageService->sL(
+                        'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.uninstall.dependencyError'
+                    ),
+                    $extensionKey,
+                    implode(', ', $dependentExtensions)
+                ),
                 1342554622
             );
         }
-        $this->unloadExtension($extensionKey);
+        $this->packageManager->deactivatePackage($extensionKey);
+        $this->eventDispatcher->dispatch(new AfterPackageDeactivationEvent($extensionKey, 'typo3-cms-extension', $this));
+        $this->cacheManager->flushCachesInGroup('system');
     }
 
     /**
-     * Reset and reload the available extensions
+     * Reset and reload the available extensions.
      */
-    public function reloadAvailableExtensions()
+    public function reloadAvailableExtensions(): void
     {
         $this->listUtility->reloadAvailableExtensions();
     }
 
     /**
-     * Checks if an extension is available in the system
-     *
-     * @param string $extensionKey
-     * @return bool
+     * Checks if an extension is available in the system.
      */
-    public function isAvailable($extensionKey)
+    public function isAvailable(string $extensionKey): bool
     {
         return $this->packageManager->isPackageAvailable($extensionKey);
     }
 
     /**
-     * Reloads the package information, if the package is already registered
+     * Reloads the package information, if the package is already registered.
      *
-     * @param string $extensionKey
-     * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException if the package isn't available
-     * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException if an invalid package key was passed
-     * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException if an invalid package path was passed
-     * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackageManifestException if no extension configuration file could be found
+     * @throws InvalidPackageStateException if the package isn't available
      */
-    public function reloadPackageInformation($extensionKey)
+    public function reloadPackageInformation(string $extensionKey): void
     {
         if ($this->packageManager->isPackageAvailable($extensionKey)) {
-            $this->reloadOpcache();
+            $this->opcodeCacheService->clearAllActive();
             $this->packageManager->reloadPackageInformation($extensionKey);
         }
     }
 
     /**
-     * Fetch additional information for an extension key
+     * Fetch additional information for an extension key.
      *
-     * @param string $extensionKey
-     * @param bool $loadTerInformation
-     * @return array
      * @throws ExtensionManagerException
-     * @internal
      */
-    public function enrichExtensionWithDetails($extensionKey, $loadTerInformation = true)
+    public function enrichExtensionWithDetails(string $extensionKey, bool $loadTerInformation = true): array
     {
         $extension = $this->getExtensionArray($extensionKey);
         if (!$loadTerInformation) {
@@ -178,80 +179,44 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         } else {
             $availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation([$extensionKey => $extension]);
         }
-
         if (!isset($availableAndInstalledExtensions[$extensionKey])) {
             throw new ExtensionManagerException(
                 'Please check your uploaded extension "' . $extensionKey . '". The configuration file "ext_emconf.php" seems to be invalid.',
                 1391432222
             );
         }
-
         return $availableAndInstalledExtensions[$extensionKey];
-    }
-
-    /**
-     * Reload Cache files and Typo3LoadedExtensions
-     */
-    public function reloadCaches()
-    {
-        $this->reloadOpcache();
-        ExtensionManagementUtility::loadExtLocalconf(false);
-        Bootstrap::loadBaseTca(false);
-        Bootstrap::loadExtTables(false);
     }
 
     /**
      * Executes all safe database statements.
      * Tables and fields are created and altered. Nothing gets deleted or renamed here.
-     * @internal
      */
-    public function updateDatabase()
+    public function updateDatabase(): void
     {
-        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
-        $schemaMigrator = GeneralUtility::makeInstance(SchemaMigrator::class);
         $sqlStatements = [];
-        $sqlStatements[] = $sqlReader->getTablesDefinitionString();
-        $sqlStatements = $sqlReader->getCreateTableStatementArray(implode(LF . LF, array_filter($sqlStatements)));
-        $updateStatements = $schemaMigrator->getUpdateSuggestions($sqlStatements);
-
+        $sqlStatements[] = $this->sqlReader->getTablesDefinitionString();
+        $sqlStatements = $this->sqlReader->getCreateTableStatementArray(implode(LF . LF, array_filter($sqlStatements)));
+        $updateStatements = $this->schemaMigrator->getUpdateSuggestions($sqlStatements);
         $updateStatements = array_merge_recursive(...array_values($updateStatements));
         $selectedStatements = [];
         foreach (['add', 'change', 'create_table', 'change_table'] as $action) {
             if (empty($updateStatements[$action])) {
                 continue;
             }
-
             $statements = array_combine(array_keys($updateStatements[$action]), array_fill(0, count($updateStatements[$action]), true));
             $selectedStatements = array_merge(
                 $selectedStatements,
                 $statements
             );
         }
-
-        $schemaMigrator->migrate($sqlStatements, $selectedStatements);
+        $this->schemaMigrator->migrate($sqlStatements, $selectedStatements);
     }
 
     /**
-     * Import static SQL data (normally used for ext_tables_static+adt.sql)
-     *
-     * @param string $rawDefinitions
+     * Removing an extension deletes the directory.
      */
-    public function importStaticSql($rawDefinitions)
-    {
-        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
-        $statements = $sqlReader->getStatementArray($rawDefinitions);
-
-        $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
-        $schemaMigrationService->importStaticData($statements, true);
-    }
-
-    /**
-     * Remove an extension (delete the directory)
-     *
-     * @param string $extension
-     * @throws ExtensionManagerException
-     */
-    public function removeExtension($extension)
+    public function removeExtension(string $extension): void
     {
         $absolutePath = $this->enrichExtensionWithDetails($extension)['packagePath'];
         if ($this->isValidExtensionPath($absolutePath)) {
@@ -269,7 +234,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
 
     /**
      * Find installed extensions which depend on the given extension.
-     * This is used at extension uninstall to stop the process if an installed
+     * Used by extension uninstall to stop the process if an installed
      * extension depends on the extension to be uninstalled.
      */
     protected function findInstalledExtensionsThatDependOnExtension(string $extensionKey): array
@@ -290,33 +255,9 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * Wrapper function for loading extensions
-     *
-     * @param string $extensionKey
-     */
-    protected function loadExtension($extensionKey)
-    {
-        $this->packageManager->activatePackage($extensionKey);
-    }
-
-    /**
-     * Wrapper function for unloading extensions
-     *
-     * @param string $extensionKey
-     */
-    protected function unloadExtension($extensionKey)
-    {
-        $this->packageManager->deactivatePackage($extensionKey);
-        $this->eventDispatcher->dispatch(new AfterPackageDeactivationEvent($extensionKey, 'typo3-cms-extension', $this));
-        $this->cacheManager->flushCachesInGroup('system');
-    }
-
-    /**
-     * @param string $extensionKey
-     * @return array
      * @throws ExtensionManagerException
      */
-    protected function getExtensionArray($extensionKey)
+    protected function getExtensionArray(string $extensionKey): array
     {
         $availableExtensions = $this->listUtility->getAvailableExtensions();
         if (isset($availableExtensions[$extensionKey])) {
@@ -326,32 +267,10 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * Reloads PHP opcache
+     * Uses the export import extension to import a T3D or XML file to PID 0.
+     * Execution state is saved in Registry, so it only happens once.
      */
-    protected function reloadOpcache()
-    {
-        GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
-    }
-
-    /**
-     * Save default configuration of an extension
-     *
-     * @param string $extensionKey
-     */
-    protected function saveDefaultConfiguration($extensionKey)
-    {
-        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
-        $extensionConfiguration->synchronizeExtConfTemplateWithLocalConfiguration($extensionKey);
-    }
-
-    /**
-     * Uses the export import extension to import a T3D or XML file to PID 0
-     * Execution state is saved in the this->registry, so it only happens once
-     *
-     * @param string $extensionKey
-     * @param string $packagePath
-     */
-    protected function importT3DFile($extensionKey, $packagePath): ?Import
+    protected function importT3DFile(string $extensionKey, string $packagePath): ?Import
     {
         $extensionSiteRelPath = PathUtility::stripPathSitePrefix($packagePath);
         $registryKeysToCheck = [
@@ -360,7 +279,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         ];
         foreach ($registryKeysToCheck as $registryKeyToCheck) {
             if ($this->registry->get('extensionDataImport', $registryKeyToCheck)) {
-                // Data was imported before => early return
+                // Data was imported before -> early return
                 return null;
             }
         }
@@ -376,6 +295,8 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             $importFileToUse = $possibleImportFile;
         }
         if ($importFileToUse !== null) {
+            // @todo: Not using service injection here since ext:impexp may not be loaded?
+            //        Needs more investigation. This dependency is unfortunate in general.
             $importExportUtility = GeneralUtility::makeInstance(ImportExportUtility::class);
             try {
                 $importResult = $importExportUtility->importT3DFile($importFileToUse, 0);
@@ -390,12 +311,10 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * Imports a static tables SQL File (ext_tables_static+adt)
-     * Execution state is saved in the this->registry, so it only happens once
-     *
-     * @param string $packagePath
+     * Import a static tables SQL File "ext_tables_static+adt.sql".
+     * Execution state is saved in Registry, so it only happens once when file is unchanged.
      */
-    protected function importStaticSqlFile(string $extensionKey, $packagePath)
+    protected function importStaticSqlFile(string $extensionKey, string $packagePath): void
     {
         $extTablesStaticSqlFile = $packagePath . 'ext_tables_static+adt.sql';
         $extTablesStaticSqlRelFile = PathUtility::stripPathSitePrefix($extTablesStaticSqlFile);
@@ -404,7 +323,8 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             if (file_exists($extTablesStaticSqlFile)) {
                 $extTablesStaticSqlContent = (string)file_get_contents($extTablesStaticSqlFile);
                 $shortFileHash = md5($extTablesStaticSqlContent);
-                $this->importStaticSql($extTablesStaticSqlContent);
+                $statements = $this->sqlReader->getStatementArray($extTablesStaticSqlContent);
+                $this->schemaMigrator->importStaticData($statements, true);
             }
             $this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, $shortFileHash);
             $this->eventDispatcher->dispatch(new AfterExtensionStaticDatabaseContentHasBeenImportedEvent($extensionKey, $extTablesStaticSqlFile, $this));
@@ -413,12 +333,11 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
 
     /**
      * Imports files from Initialisation/Files to fileadmin
-     * via lowlevel copy directory method
+     * as low level copy directory method.
      *
-     * @param string $packagePath absolute path to extension dir
-     * @param string $extensionKey
+     * @param string $packagePath Absolute path to extension dir
      */
-    protected function importInitialFiles($packagePath, $extensionKey)
+    protected function importInitialFiles(string $packagePath, string $extensionKey): void
     {
         $importFolder = $packagePath . 'Initialisation/Files';
         $importRelFolder = PathUtility::stripPathSitePrefix($importFolder);
@@ -437,22 +356,18 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         }
     }
 
-    /**
-     * @param Import|null $import
-     */
     protected function importSiteConfiguration(string $extensionKey, string $packagePath, Import $import = null): void
     {
         $importAbsFolder = $packagePath . 'Initialisation/Site';
         $destinationFolder = Environment::getConfigPath() . '/sites';
-
         if (!is_dir($importAbsFolder)) {
             return;
         }
-
         $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
         $existingSites = $siteConfiguration->resolveAllExistingSites(false);
-
         GeneralUtility::mkdir($destinationFolder);
+        // @todo: Get rid of symfony finder here: We should use low level tools
+        //        here to locate such files.
         $finder = GeneralUtility::makeInstance(Finder::class);
         $finder->directories()->in($importAbsFolder);
         if ($finder->hasResults()) {
@@ -473,13 +388,11 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
                 }
             }
         }
-
         $newSites = array_diff_key($siteConfiguration->resolveAllExistingSites(false), $existingSites);
         $importedPages = [];
         if ($import instanceof Import) {
             $importedPages = $import->getImportMapId()['pages'] ?? null;
         }
-
         $newSiteIdentifierList = [];
         foreach ($newSites as $newSite) {
             $exportedPageId = $newSite->getRootPageId();
@@ -513,9 +426,9 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * Is the given path a valid path for extension installation
      *
-     * @param string $path the absolute (!) path in question
+     * @param string $path Absolute (!) path in question
      */
-    protected function isValidExtensionPath($path): bool
+    protected function isValidExtensionPath(string $path): bool
     {
         $allowedPaths = Extension::returnInstallPaths();
         foreach ($allowedPaths as $allowedPath) {
