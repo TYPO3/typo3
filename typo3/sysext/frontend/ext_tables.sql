@@ -49,7 +49,6 @@ CREATE TABLE fe_users (
 	address varchar(255) DEFAULT '' NOT NULL,
 	telephone varchar(30) DEFAULT '' NOT NULL,
 	fax varchar(30) DEFAULT '' NOT NULL,
-	email varchar(255) DEFAULT '' NOT NULL,
 	uc blob,
 	title varchar(40) DEFAULT '' NOT NULL,
 	zip varchar(10) DEFAULT '' NOT NULL,

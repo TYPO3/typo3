@@ -135,7 +135,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ]
         );
         $expectedPrimaryKey = new Index('primary', ['uid'], true, true);
-        self::assertEquals($expectedUidColumn, $result[0]->getColumn('uid'));
+        self::assertSame($expectedUidColumn->toArray(), $result[0]->getColumn('uid')->toArray());
         self::assertEquals($expectedPrimaryKey, $result[0]->getPrimaryKey());
     }
 
@@ -155,7 +155,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedPidColumn, $result[0]->getColumn('pid'));
+        self::assertSame($expectedPidColumn->toArray(), $result[0]->getColumn('pid')->toArray());
     }
 
     /**
@@ -176,7 +176,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('updatedon'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('updatedon')->toArray());
     }
 
     /**
@@ -197,7 +197,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('createdon'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('createdon')->toArray());
     }
 
     /**
@@ -218,7 +218,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('deleted'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('deleted')->toArray());
     }
 
     /**
@@ -241,7 +241,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('disabled'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('disabled')->toArray());
     }
 
     /**
@@ -264,7 +264,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('starttime'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('starttime')->toArray());
     }
 
     /**
@@ -287,7 +287,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('endtime'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('endtime')->toArray());
     }
 
     /**
@@ -310,7 +310,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 255,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('fe_group'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('fe_group')->toArray());
     }
 
     /**
@@ -326,12 +326,12 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             '`sorting`',
             Type::getType('integer'),
             [
-                'default' => '0',
+                'default' => 0,
                 'notnull' => true,
                 'unsigned' => false,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('sorting'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('sorting')->toArray());
     }
 
     /**
@@ -407,7 +407,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('sys_language_uid'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('sys_language_uid')->toArray());
     }
 
     /**
@@ -429,7 +429,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('l10n_parent'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('l10n_parent')->toArray());
     }
 
     /**
@@ -462,7 +462,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 65535,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('rowDescription'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('rowDescription')->toArray());
     }
 
     /**
@@ -483,7 +483,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('editlock'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('editlock')->toArray());
     }
 
     /**
@@ -505,7 +505,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('l10n_source'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('l10n_source')->toArray());
     }
 
     /**
@@ -539,7 +539,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 65535,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('l10n_state'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('l10n_state')->toArray());
     }
 
     /**
@@ -586,7 +586,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('t3_origuid'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('t3_origuid')->toArray());
     }
 
     /**
@@ -606,7 +606,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('l18n_diffsource'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('l18n_diffsource')->toArray());
     }
 
     /**
@@ -627,7 +627,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_oid'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('t3ver_oid')->toArray());
     }
 
     /**
@@ -648,7 +648,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_wsid'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('t3ver_wsid')->toArray());
     }
 
     /**
@@ -669,7 +669,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_state'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('t3ver_state')->toArray());
     }
 
     /**
@@ -690,7 +690,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_stage'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('t3ver_stage')->toArray());
     }
 
     /**
@@ -951,12 +951,12 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             '`slug`',
             Type::getType('string'),
             [
-                'default' => 0,
+                'default' => null,
                 'notnull' => false,
                 'length' => 2048,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('slug'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('slug')->toArray());
     }
 
     /**
@@ -980,6 +980,55 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('file'));
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('file')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsEmail(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['email'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'email',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`email`',
+            Type::getType('string'),
+            [
+                'length' => 255,
+                'default' => '',
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('email')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsNullableEmail(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['email'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'email',
+                'nullable' => true,
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`email`',
+            Type::getType('string'),
+            [
+                'length' => 255,
+                'default' => null,
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('email')->toArray());
     }
 }

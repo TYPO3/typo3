@@ -516,7 +516,6 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-
                 $tables[$tablePosition]->addColumn(
                     $this->quote($fieldName),
                     'string',
@@ -534,7 +533,6 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-
                 $tables[$tablePosition]->addColumn(
                     $this->quote($fieldName),
                     'json',
@@ -551,7 +549,6 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-
                 $tables[$tablePosition]->addColumn(
                     $this->quote($fieldName),
                     'string',
@@ -570,7 +567,6 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-
                 $tables[$tablePosition]->addColumn(
                     $this->quote($fieldName),
                     'integer',
@@ -578,6 +574,25 @@ class DefaultTcaSchema
                         'default' => 0,
                         'notnull' => true,
                         'unsigned' => true,
+                    ]
+                );
+            }
+
+            // Add file fields for all tables, defining email columns (TCA type=email)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'email'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                $isNullable = (bool)($fieldConfig['config']['nullable'] ?? false);
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    'string',
+                    [
+                        'length' => 255,
+                        'default' => ($isNullable ? null : ''),
+                        'notnull' => !$isNullable,
                     ]
                 );
             }

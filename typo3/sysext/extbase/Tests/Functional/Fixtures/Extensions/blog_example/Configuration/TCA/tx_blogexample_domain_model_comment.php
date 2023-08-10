@@ -48,11 +48,9 @@ return [
         'email' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_comment.email',
             'config' => [
-                'type' => 'input',
+                'type' => 'email',
                 'size' => 20,
                 'required' => true,
-                'eval' => 'trim',
-                'max' => 256,
             ],
         ],
         'content' => [
