@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Renderable;
 
-use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
+use TYPO3\CMS\Form\Tests\Unit\Domain\Renderable\Fixtures\TestingRenderable;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractRenderableTest extends UnitTestCase
@@ -27,12 +27,12 @@ final class AbstractRenderableTest extends UnitTestCase
      */
     public function setRenderingOptionSetStringValueIfKeyDoesNotExists(): void
     {
-        $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
+        $renderable = new TestingRenderable();
 
         $expected = ['foo' => 'bar'];
-        $abstractRenderableMock->setRenderingOption('foo', 'bar');
+        $renderable->setRenderingOption('foo', 'bar');
 
-        self::assertSame($expected, $abstractRenderableMock->getRenderingOptions());
+        self::assertSame($expected, $renderable->getRenderingOptions());
     }
 
     /**
@@ -40,12 +40,12 @@ final class AbstractRenderableTest extends UnitTestCase
      */
     public function setRenderingOptionSetArrayValueIfKeyDoesNotExists(): void
     {
-        $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
+        $renderable = new TestingRenderable();
 
         $expected = ['foo-1' => ['bar' => 'foo-2']];
-        $abstractRenderableMock->setRenderingOption('foo-1', ['bar' => 'foo-2']);
+        $renderable->setRenderingOption('foo-1', ['bar' => 'foo-2']);
 
-        self::assertSame($expected, $abstractRenderableMock->getRenderingOptions());
+        self::assertSame($expected, $renderable->getRenderingOptions());
     }
 
     /**
@@ -53,14 +53,14 @@ final class AbstractRenderableTest extends UnitTestCase
      */
     public function setRenderingOptionUnsetIfValueIsNull(): void
     {
-        $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
+        $renderable = new TestingRenderable();
 
         $expected = ['foo-1' => ['bar-1' => 'foo-2']];
-        $abstractRenderableMock->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
-        $abstractRenderableMock->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);
-        $abstractRenderableMock->setRenderingOption('foo-2', null);
+        $renderable->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
+        $renderable->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);
+        $renderable->setRenderingOption('foo-2', null);
 
-        self::assertSame($expected, $abstractRenderableMock->getRenderingOptions());
+        self::assertSame($expected, $renderable->getRenderingOptions());
     }
 
     /**
@@ -68,7 +68,7 @@ final class AbstractRenderableTest extends UnitTestCase
      */
     public function setRenderingOptionUnsetIfValueIsArrayWithSomeNullVales(): void
     {
-        $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
+        $renderable = new TestingRenderable();
 
         $expected = [
             'foo-1' => [
@@ -78,11 +78,11 @@ final class AbstractRenderableTest extends UnitTestCase
                 'bar-2' => 'foo-3',
             ],
         ];
-        $abstractRenderableMock->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
-        $abstractRenderableMock->setRenderingOption('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
-        $abstractRenderableMock->setRenderingOption('foo-2', ['bar-3' => null]);
+        $renderable->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
+        $renderable->setRenderingOption('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
+        $renderable->setRenderingOption('foo-2', ['bar-3' => null]);
 
-        self::assertSame($expected, $abstractRenderableMock->getRenderingOptions());
+        self::assertSame($expected, $renderable->getRenderingOptions());
     }
 
     /**
@@ -90,7 +90,7 @@ final class AbstractRenderableTest extends UnitTestCase
      */
     public function setRenderingOptionAddValueIfValueIsArray(): void
     {
-        $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
+        $renderable = new TestingRenderable();
 
         $expected = [
             'foo-1' => [
@@ -101,10 +101,10 @@ final class AbstractRenderableTest extends UnitTestCase
                 'bar-3' => 'foo-4',
             ],
         ];
-        $abstractRenderableMock->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
-        $abstractRenderableMock->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);
-        $abstractRenderableMock->setRenderingOption('foo-2', ['bar-3' => 'foo-4']);
+        $renderable->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
+        $renderable->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);
+        $renderable->setRenderingOption('foo-2', ['bar-3' => 'foo-4']);
 
-        self::assertSame($expected, $abstractRenderableMock->getRenderingOptions());
+        self::assertSame($expected, $renderable->getRenderingOptions());
     }
 }
