@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
-use TYPO3\CMS\Form\Domain\Model\FormElements\AbstractFormElement;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
+use TYPO3\CMS\Form\Tests\Unit\Domain\FormElements\Fixtures\TestingFormElement;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractFormElementTest extends UnitTestCase
@@ -31,7 +31,7 @@ final class AbstractFormElementTest extends UnitTestCase
      */
     public function newInstanceHasNoProperties(): void
     {
-        $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
+        $subject = new TestingFormElement();
         self::assertNotNull($subject);
         self::assertCount(0, $subject->getProperties());
     }
@@ -41,7 +41,7 @@ final class AbstractFormElementTest extends UnitTestCase
      */
     public function setSimpleProperties(): void
     {
-        $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
+        $subject = new TestingFormElement();
 
         $subject->setProperty('foo', 'bar');
         $subject->setProperty('buz', 'qax');
@@ -59,7 +59,7 @@ final class AbstractFormElementTest extends UnitTestCase
      */
     public function overrideProperties(): void
     {
-        $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
+        $subject = new TestingFormElement();
 
         $subject->setProperty('foo', 'bar');
         $subject->setProperty('foo', 'buz');
@@ -75,7 +75,7 @@ final class AbstractFormElementTest extends UnitTestCase
      */
     public function setArrayProperties(): void
     {
-        $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
+        $subject = new TestingFormElement();
 
         $subject->setProperty('foo', ['bar' => 'baz', 'bla' => 'blubb']);
         $properties = $subject->getProperties();
@@ -95,7 +95,7 @@ final class AbstractFormElementTest extends UnitTestCase
      */
     public function setPropertyUnsetIfValueIsNull(): void
     {
-        $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
+        $subject = new TestingFormElement();
 
         $expected = ['foo-1' => ['bar-1' => 'foo-2']];
         $subject->setProperty('foo-1', ['bar-1' => 'foo-2']);
@@ -110,7 +110,7 @@ final class AbstractFormElementTest extends UnitTestCase
      */
     public function setPropertyUnsetIfValueIsArrayWithSomeNullVales(): void
     {
-        $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
+        $subject = new TestingFormElement();
 
         $expected = [
             'foo-1' => [
@@ -144,16 +144,9 @@ final class AbstractFormElementTest extends UnitTestCase
      */
     public function constructMustNotThrowExceptionWhenIdentifierIsNonEmptyString(): void
     {
-        $mock = $this->getMockForAbstractClass(
-            AbstractFormElement::class,
-            ['is_in', 'a_type'],
-            '',
-            true,
-            true,
-            true,
-            []
-        );
-        self::assertInstanceOf(AbstractFormElement::class, $mock);
+        $formElement = new TestingFormElement();
+
+        self::assertInstanceOf(TestingFormElement::class, $formElement);
     }
 
     /**
@@ -161,39 +154,22 @@ final class AbstractFormElementTest extends UnitTestCase
      */
     public function initializeFormElementExpectedCallInitializeFormObjectHooks(): void
     {
-        $abstractFormElementMock = $this->getMockForAbstractClass(
-            AbstractFormElement::class,
-            [],
-            '',
-            false,
-            false,
-            true,
-            []
-        );
-        $secondMock = $this->getMockForAbstractClass(
-            AbstractFormElement::class,
-            [],
-            '',
-            false,
-            false,
-            true,
-            [
-                'initializeFormElement',
-            ]
-        );
+        $formElement = new TestingFormElement();
+        $secondFormElementMock = $this->createMock(TestingFormElement::class);
 
-        $secondMock->
+        $secondFormElementMock->
         expects(self::once())
             ->method('initializeFormElement')
-            ->with($abstractFormElementMock);
+            ->with($formElement);
 
-        GeneralUtility::addInstance(\get_class($secondMock), $secondMock);
+        $secondFormElementMockClassName = \get_class($secondFormElementMock);
+        GeneralUtility::addInstance($secondFormElementMockClassName, $secondFormElementMock);
 
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'] = [
-            \get_class($secondMock),
+            $secondFormElementMockClassName,
         ];
 
-        $abstractFormElementMock->initializeFormElement();
+        $formElement->initializeFormElement();
     }
 
     /**
@@ -201,51 +177,25 @@ final class AbstractFormElementTest extends UnitTestCase
      */
     public function getUniqueIdentifierExpectedUnique(): void
     {
-        $abstractFormElementMock1 = $this->getMockForAbstractClass(
-            AbstractFormElement::class,
-            [],
-            '',
-            false,
-            false,
-            true,
-            [
-                'getRootForm',
-            ]
-        );
-
-        $abstractFormElementMock2 = $this->getMockForAbstractClass(
-            AbstractFormElement::class,
-            [],
-            '',
-            false,
-            false,
-            true,
-            [
-                'getRootForm',
-            ]
-        );
-
         $formDefinition1 = $this->createMock(FormDefinition::class);
         $formDefinition1
             ->method('getIdentifier')
             ->willReturn('c');
 
-        $abstractFormElementMock1
-            ->method('getRootForm')
-            ->willReturn($formDefinition1);
+        $formElement1 = new TestingFormElement();
+        $formElement1->setParentRenderable($formDefinition1);
 
         $formDefinition2 = $this->createMock(FormDefinition::class);
         $formDefinition2
             ->method('getIdentifier')
             ->willReturn('d');
 
-        $abstractFormElementMock2
-            ->method('getRootForm')
-            ->willReturn($formDefinition2);
+        $formElement2 = new TestingFormElement();
+        $formElement2->setParentRenderable($formDefinition2);
 
         self::assertNotSame(
-            $abstractFormElementMock1->getUniqueIdentifier(),
-            $abstractFormElementMock2->getUniqueIdentifier()
+            $formElement1->getUniqueIdentifier(),
+            $formElement2->getUniqueIdentifier()
         );
     }
 
@@ -255,25 +205,15 @@ final class AbstractFormElementTest extends UnitTestCase
     public function setDefaultValueSetStringValueIfKeyDoesNotExists(): void
     {
         $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
-        $abstractFormElementMock = $this->getMockForAbstractClass(
-            AbstractFormElement::class,
-            ['is_in', 'a_type'],
-            '',
-            true,
-            true,
-            true,
-            ['getRootForm']
-        );
-        $abstractFormElementMock
-            ->method('getRootForm')
-            ->willReturn($formDefinitionMock);
+        $formElement = new TestingFormElement();
+        $formElement->setParentRenderable($formDefinitionMock);
 
         $input = 'foo';
         $expected = 'foo';
 
-        $abstractFormElementMock->setDefaultValue($input);
+        $formElement->setDefaultValue($input);
 
-        self::assertSame($expected, $abstractFormElementMock->getDefaultValue());
+        self::assertSame($expected, $formElement->getDefaultValue());
     }
 
     /**
@@ -282,25 +222,15 @@ final class AbstractFormElementTest extends UnitTestCase
     public function setDefaultValueSetArrayValueIfKeyDoesNotExists(): void
     {
         $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
-        $abstractFormElementMock = $this->getMockForAbstractClass(
-            AbstractFormElement::class,
-            ['is_in', 'a_type'],
-            '',
-            true,
-            true,
-            true,
-            ['getRootForm']
-        );
-        $abstractFormElementMock
-            ->method('getRootForm')
-            ->willReturn($formDefinitionMock);
+        $formElement = new TestingFormElement();
+        $formElement->setParentRenderable($formDefinitionMock);
 
         $input = ['foo' => 'bar'];
         $expected = ['foo' => 'bar'];
 
-        $abstractFormElementMock->setDefaultValue($input);
+        $formElement->setDefaultValue($input);
 
-        self::assertSame($expected, $abstractFormElementMock->getDefaultValue());
+        self::assertSame($expected, $formElement->getDefaultValue());
     }
 
     /**
@@ -309,18 +239,8 @@ final class AbstractFormElementTest extends UnitTestCase
     public function setDefaultValueUnsetIfValueIsArrayWithSomeNullVales(): void
     {
         $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
-        $abstractFormElementMock = $this->getMockForAbstractClass(
-            AbstractFormElement::class,
-            ['is_in', 'a_type'],
-            '',
-            true,
-            true,
-            true,
-            ['getRootForm']
-        );
-        $abstractFormElementMock
-            ->method('getRootForm')
-            ->willReturn($formDefinitionMock);
+        $formElement = new TestingFormElement();
+        $formElement->setParentRenderable($formDefinitionMock);
 
         $input1 = [
             'foo-1' => [
@@ -347,10 +267,10 @@ final class AbstractFormElementTest extends UnitTestCase
             ],
         ];
 
-        $abstractFormElementMock->setDefaultValue($input1);
-        $abstractFormElementMock->setDefaultValue($input2);
+        $formElement->setDefaultValue($input1);
+        $formElement->setDefaultValue($input2);
 
-        self::assertSame($expected, $abstractFormElementMock->getDefaultValue());
+        self::assertSame($expected, $formElement->getDefaultValue());
     }
 
     /**
@@ -359,18 +279,8 @@ final class AbstractFormElementTest extends UnitTestCase
     public function setDefaultValueAddValueIfValueIsArray(): void
     {
         $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
-        $abstractFormElementMock = $this->getMockForAbstractClass(
-            AbstractFormElement::class,
-            ['is_in', 'a_type'],
-            '',
-            true,
-            true,
-            true,
-            ['getRootForm']
-        );
-        $abstractFormElementMock
-            ->method('getRootForm')
-            ->willReturn($formDefinitionMock);
+        $formElement = new TestingFormElement();
+        $formElement->setParentRenderable($formDefinitionMock);
 
         $input1 = [
             'foo-1' => [
@@ -397,9 +307,9 @@ final class AbstractFormElementTest extends UnitTestCase
             ],
         ];
 
-        $abstractFormElementMock->setDefaultValue($input1);
-        $abstractFormElementMock->setDefaultValue($input2);
+        $formElement->setDefaultValue($input1);
+        $formElement->setDefaultValue($input2);
 
-        self::assertSame($expected, $abstractFormElementMock->getDefaultValue());
+        self::assertSame($expected, $formElement->getDefaultValue());
     }
 }

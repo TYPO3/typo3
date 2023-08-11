@@ -22,10 +22,11 @@ use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotValidException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
-use TYPO3\CMS\Form\Domain\Model\FormElements\AbstractFormElement;
 use TYPO3\CMS\Form\Domain\Model\FormElements\AbstractSection;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Section;
 use TYPO3\CMS\Form\Domain\Model\FormElements\UnknownFormElement;
+use TYPO3\CMS\Form\Tests\Unit\Domain\FormElements\Fixtures\TestingFormElement;
+use TYPO3\CMS\Form\Tests\Unit\Domain\FormElements\Fixtures\TestingSection;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractSectionTest extends UnitTestCase
@@ -107,25 +108,10 @@ final class AbstractSectionTest extends UnitTestCase
         $rootForm
             ->method('getTypeDefinitions')
             ->willReturn([]);
-
-        $mockAbstractSection = $this->getMockForAbstractClass(
-            AbstractSection::class,
-            [],
-            '',
-            false,
-            false,
-            true,
-            [
-                'getRootForm',
-            ]
-        );
-
-        $mockAbstractSection
-            ->method('getRootForm')
-            ->willReturn($rootForm);
+        $section = new TestingSection($rootForm);
 
         GeneralUtility::addInstance(UnknownFormElement::class, new UnknownFormElement('foo', 'bar'));
-        $result = $mockAbstractSection->createElement('foo', 'bar');
+        $result = $section->createElement('foo', 'bar');
 
         self::assertInstanceOf(UnknownFormElement::class, $result);
         self::assertSame('foo', $result->getIdentifier());
@@ -147,27 +133,12 @@ final class AbstractSectionTest extends UnitTestCase
         $rootForm
             ->method('getTypeDefinitions')
             ->willReturn(['foobar' => []]);
-
-        $mockAbstractSection = $this->getMockForAbstractClass(
-            AbstractSection::class,
-            [],
-            '',
-            false,
-            false,
-            true,
-            [
-                'getRootForm',
-            ]
-        );
-
-        $mockAbstractSection
-            ->method('getRootForm')
-            ->willReturn($rootForm);
+        $section = new TestingSection($rootForm);
 
         $this->expectException(TypeDefinitionNotFoundException::class);
         $this->expectExceptionCode(1325689855);
 
-        $mockAbstractSection->createElement('id', 'foobar');
+        $section->createElement('id', 'foobar');
     }
 
     /**
@@ -176,18 +147,6 @@ final class AbstractSectionTest extends UnitTestCase
     public function createElementThrowsExceptionIfTypeDefinitionNotInstanceOfFormElementInterface(): void
     {
         $this->resetSingletonInstances = true;
-        $mockAbstractSection = $this->getMockForAbstractClass(
-            AbstractSection::class,
-            [],
-            '',
-            false,
-            false,
-            true,
-            [
-                'getRootForm',
-            ]
-        );
-
         $rootForm = $this->getMockBuilder(FormDefinition::class)
             ->onlyMethods(['getRenderingOptions', 'getTypeDefinitions'])
             ->disableOriginalConstructor()
@@ -204,16 +163,13 @@ final class AbstractSectionTest extends UnitTestCase
                     ],
                 ]
             );
-
-        $mockAbstractSection
-            ->method('getRootForm')
-            ->willReturn($rootForm);
+        $section = new TestingSection($rootForm);
 
         GeneralUtility::addInstance(self::class, $this);
 
         $this->expectException(TypeDefinitionNotValidException::class);
         $this->expectExceptionCode(1327318156);
-        $mockAbstractSection->createElement('id', 'foobar');
+        $section->createElement('id', 'foobar');
     }
 
     /**
@@ -221,15 +177,7 @@ final class AbstractSectionTest extends UnitTestCase
      */
     public function createElementExpectedToAddAndInitializeElement(): void
     {
-        $implementationMock = $this->getMockForAbstractClass(
-            AbstractFormElement::class,
-            [],
-            '',
-            false,
-            false,
-            true,
-            ['setOptions', 'initializeFormElement']
-        );
+        $implementationMock = $this->createPartialMock(TestingFormElement::class, ['setOptions', 'initializeFormElement']);
 
         $typeDefinition = [
             'foo' => 'bar',
@@ -249,18 +197,6 @@ final class AbstractSectionTest extends UnitTestCase
             ->method('setOptions')
             ->with($typeDefinitionWithoutImplementationClassName);
 
-        $mockAbstractSection = $this->getMockForAbstractClass(
-            AbstractSection::class,
-            [],
-            '',
-            false,
-            false,
-            true,
-            [
-                'getRootForm',
-            ]
-        );
-
         $rootForm = $this->getMockBuilder(FormDefinition::class)
             ->onlyMethods(['getRenderingOptions', 'getTypeDefinitions'])
             ->disableOriginalConstructor()
@@ -271,13 +207,10 @@ final class AbstractSectionTest extends UnitTestCase
         $rootForm
             ->method('getTypeDefinitions')
             ->willReturn(['foobar' => $typeDefinition]);
-
-        $mockAbstractSection
-            ->method('getRootForm')
-            ->willReturn($rootForm);
+        $section = new TestingSection($rootForm);
 
         GeneralUtility::addInstance(get_class($implementationMock), $implementationMock);
 
-        $mockAbstractSection->createElement('id', 'foobar');
+        $section->createElement('id', 'foobar');
     }
 }
