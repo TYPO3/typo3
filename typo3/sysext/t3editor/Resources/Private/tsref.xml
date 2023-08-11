@@ -730,7 +730,7 @@ NOTE: Only tables allowed are "pages" or tables prefixed with one of these: "tt_
         <property name="tags" type="stdWrap">
             <description><![CDATA[boolean/stdWrap
             Can hold a comma-separated list of tags. These tags will be attached to the entry within cache_hash
-            cache (but not to cache_pages cache) and can be used to purge the cached content.
+            cache and can be used to purge the cached content.
 ]]></description>
             <default><![CDATA[
 ]]></default>
