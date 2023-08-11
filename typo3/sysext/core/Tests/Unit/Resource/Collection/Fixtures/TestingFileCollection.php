@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Collection\Fixtures;
 use TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection;
 
 /**
- * Testing subclass of `AbstractFileCollection`.
+ * Testing subclass of the abstract class.
  */
 final class TestingFileCollection extends AbstractFileCollection
 {

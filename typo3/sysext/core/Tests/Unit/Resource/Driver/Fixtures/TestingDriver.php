@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures;
 use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 
 /**
- * Testing subclass of `AbstractDriver`.
+ * Testing subclass of the abstract class.
  */
 final class TestingDriver extends AbstractDriver
 {
