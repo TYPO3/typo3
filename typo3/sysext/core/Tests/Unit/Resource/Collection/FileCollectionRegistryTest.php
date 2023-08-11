@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Collection;
 
 use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
-use TYPO3\CMS\Core\Resource\Collection\StaticFileCollection;
+use TYPO3\CMS\Core\Tests\Unit\Resource\Collection\Fixtures\OtherTestingFileCollection;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Collection\Fixtures\TestingFileCollection;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -70,7 +70,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         $this->expectExceptionCode(1391295643);
         $subject = new FileCollectionRegistry();
         $className = TestingFileCollection::class;
-        $className2 = get_class($this->getMockForAbstractClass(StaticFileCollection::class));
+        $className2 = OtherTestingFileCollection::class;
         $subject->registerFileCollectionClass($className, 'foobar');
         $subject->registerFileCollectionClass($className2, 'foobar');
     }
@@ -81,7 +81,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
     public function registerFileCollectionClassOverridesExistingRegisteredFileCollectionClass(): void
     {
         $className = TestingFileCollection::class;
-        $className2 = get_class($this->getMockForAbstractClass(StaticFileCollection::class));
+        $className2 = OtherTestingFileCollection::class;
         $subject = new FileCollectionRegistry();
         $subject->registerFileCollectionClass($className, 'foobar');
         $subject->registerFileCollectionClass($className2, 'foobar', true);
