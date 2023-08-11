@@ -217,7 +217,8 @@ class DataMapItem
                 $this->type = static::TYPE_PARENT;
             } elseif (
                 // implicit: having source value different to parent value, it's a 2nd or higher level translation
-                $this->source !== null
+                $this->source !== 0
+                && $this->source !== null
                 && $this->source !== $this->parent
             ) {
                 $this->type = static::TYPE_GRAND_CHILD;
