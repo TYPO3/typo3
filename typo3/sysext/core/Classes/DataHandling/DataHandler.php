@@ -3746,6 +3746,7 @@ class DataHandler implements LoggerAwareInterface
             if (isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])) {
                 $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $theNewSQLID;
             }
+            // This value is evaluated in DataMapItem->getType() so it is very important
             if (isset($GLOBALS['TCA'][$table]['ctrl']['translationSource'])) {
                 $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['translationSource']] = 0;
             }

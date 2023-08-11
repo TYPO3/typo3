@@ -773,6 +773,18 @@ final class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
+    public function localizeAndModifyTranslationAndCopyPageWithLanguageSynchronization(): void
+    {
+        parent::localizePageWithLanguageSynchronization();
+        // Set localized page "l10n_state" "author" field to "custom", then copy default language page, which will copy localized page as well.
+        $this->actionService->modifyRecord(self::TABLE_Page, $this->recordIds['localizedPageId'], ['author' => 'Custom Author', 'l10n_state' => ['author' => 'custom']]);
+        parent::copyPage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNModifyNCopyPageWSynchronization.csv');
+    }
+
+    /**
+     * @test
+     */
     public function localizePageAndContentsAndDeletePageLocalization(): void
     {
         // Create localized page and localize content elements first
