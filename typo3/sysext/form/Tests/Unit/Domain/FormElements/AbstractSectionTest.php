@@ -175,7 +175,6 @@ final class AbstractSectionTest extends UnitTestCase
      */
     public function createElementThrowsExceptionIfTypeDefinitionNotInstanceOfFormElementInterface(): void
     {
-        $this->resetSingletonInstances = true;
         $mockAbstractSection = $this->getMockForAbstractClass(
             AbstractSection::class,
             [],

@@ -32,6 +32,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class PropertyTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     /**
      * @test
      */
@@ -171,7 +173,6 @@ final class PropertyTest extends UnitTestCase
      */
     public function classSchemaDetectsValidateAnnotationsModelProperties(): void
     {
-        $this->resetSingletonInstances = true;
         $property = (new ClassSchema(DummyModel::class))
             ->getProperty('propertyWithValidateAnnotations');
 
@@ -219,7 +220,6 @@ final class PropertyTest extends UnitTestCase
      */
     public function classSchemaDetectsValidateAttributeModelProperties(): void
     {
-        $this->resetSingletonInstances = true;
         $property = (new ClassSchema(DummyModel::class))
             ->getProperty('propertyWithValidateAttributes');
 
@@ -268,7 +268,6 @@ final class PropertyTest extends UnitTestCase
      */
     public function classSchemaDetectsValidateAttributeOnPromotedModelProperties(): void
     {
-        $this->resetSingletonInstances = true;
         $property = (new ClassSchema(DummyModel::class))
             ->getProperty('dummyPromotedProperty');
 

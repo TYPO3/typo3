@@ -28,6 +28,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RendererRegistryTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     /**
      * Initialize a RendererRegistry and mock createRendererInstance()
      */
@@ -202,7 +204,6 @@ final class RendererRegistryTest extends UnitTestCase
      */
     public function getRendererReturnsCorrectInstance2(): void
     {
-        $this->resetSingletonInstances = true;
         $rendererRegistry = new RendererRegistry();
         $rendererRegistry->registerRendererClass(AudioTagRenderer::class);
         $rendererRegistry->registerRendererClass(VideoTagRenderer::class);

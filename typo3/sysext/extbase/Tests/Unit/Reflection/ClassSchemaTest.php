@@ -31,6 +31,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ClassSchemaTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     /**
      * @test
      */
@@ -107,7 +109,6 @@ final class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForParamWithoutTypeHint(): void
     {
-        $this->resetSingletonInstances = true;
         $this->expectException(InvalidTypeHintException::class);
         $this->expectExceptionMessage('Missing type information for parameter "$fooParam" in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParamTypeHint->methodWithValidateAnnotationsAction(): Use a type hint.');
         $this->expectExceptionCode(1515075192);
@@ -120,7 +121,6 @@ final class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForMissingParam(): void
     {
-        $this->resetSingletonInstances = true;
         $this->expectException(InvalidValidationConfigurationException::class);
         $this->expectExceptionMessage('Invalid validate annotation in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParam->methodWithValidateAnnotationsAction(): The following validators have been defined for missing param "$fooParam": NotEmpty, StringLength');
         $this->expectExceptionCode(1515073585);
@@ -132,7 +132,6 @@ final class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAttributesForParamWithoutTypeHint(): void
     {
-        $this->resetSingletonInstances = true;
         $this->expectException(InvalidTypeHintException::class);
         $this->expectExceptionMessage('Missing type information for parameter "$fooParam" in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParamTypeHint->methodWithValidateAttributesAction(): Use a type hint.');
         $this->expectExceptionCode(1515075192);
@@ -145,7 +144,6 @@ final class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAttributesForMissingParam(): void
     {
-        $this->resetSingletonInstances = true;
         $this->expectException(InvalidValidationConfigurationException::class);
         $this->expectExceptionMessage('Invalid validate annotation in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParam->methodWithValidateAttributesAction(): The following validators have been defined for missing param "$fooParam": NotEmpty, StringLength');
         $this->expectExceptionCode(1515073585);

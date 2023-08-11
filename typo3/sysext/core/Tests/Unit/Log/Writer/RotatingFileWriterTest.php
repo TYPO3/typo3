@@ -31,11 +31,11 @@ final class RotatingFileWriterTest extends UnitTestCase
     protected string $logFileDirectory = 'Log';
     protected string $logFileName = 'test.log';
     protected string $testRoot;
+    protected bool $resetSingletonInstances = true;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->resetSingletonInstances = true;
         $this->testRoot = Environment::getVarPath() . '/tests/';
         GeneralUtility::mkdir_deep($this->testRoot . $this->logFileDirectory);
         $this->testFilesToDelete[] = $this->testRoot;

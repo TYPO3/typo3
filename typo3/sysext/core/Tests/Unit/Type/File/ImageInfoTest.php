@@ -27,6 +27,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ImageInfoTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     /**
      * @test
      */
@@ -42,8 +44,6 @@ final class ImageInfoTest extends UnitTestCase
      */
     public function doesNotBreakOnFileWithInvalidEnding(): void
     {
-        $this->resetSingletonInstances = true;
-
         $testFile = __DIR__ . '/../Fixture/html_file_with_pdf_ending.pdf';
 
         $exceptionIsLogged = function (array $context) {
@@ -99,8 +99,6 @@ final class ImageInfoTest extends UnitTestCase
      */
     public function doesNotBreakOnImageInfoWithInvalidSvg(string $svg, int $width, int $height): void
     {
-        $this->resetSingletonInstances = true;
-
         $testDirectory = Environment::getVarPath() . '/ImageTest';
         $this->testFilesToDelete[] = $testDirectory;
         $testFile = $testDirectory . '/test.svg';

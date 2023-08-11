@@ -33,6 +33,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class MethodParameterTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     /**
      * @test
      */
@@ -106,7 +108,6 @@ final class MethodParameterTest extends UnitTestCase
      */
     public function classSchemaDetectsValidateAnnotationsOfControllerActions(): void
     {
-        $this->resetSingletonInstances = true;
         $classSchema = new ClassSchema(DummyController::class);
         self::assertSame(
             [
@@ -153,7 +154,6 @@ final class MethodParameterTest extends UnitTestCase
      */
     public function classSchemaDetectsValidateAttributesOfControllerActions(): void
     {
-        $this->resetSingletonInstances = true;
         $classSchema = new ClassSchema(DummyController::class);
         self::assertSame(
             [
