@@ -23,6 +23,7 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\SmallIntType;
 use Doctrine\DBAL\Types\TextType;
+use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
@@ -42,8 +43,8 @@ final class TableBuilderTest extends UnitTestCase
         $sqlReader = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
         $statements = $sqlReader->getCreateTableStatementArray($sqlFile);
 
-        $parser = new Parser($statements[0]);
-        $this->table = $parser->parse()[0];
+        $parser = new Parser(new Lexer());
+        $this->table = $parser->parse($statements[0])[0];
     }
 
     /**

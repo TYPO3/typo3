@@ -17,18 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema\Exception;
 
-/**
- * Class StatementException
- */
 class StatementException extends \Exception
 {
+    /**
+     * @internal
+     */
     public static function sqlError(string $sql): StatementException
     {
         return new self($sql, 1471504820);
     }
 
     /**
-     * @param \Exception|null $previous
+     * @internal
      */
     public static function syntaxError(string $message, \Exception $previous = null): StatementException
     {
@@ -36,10 +36,10 @@ class StatementException extends \Exception
     }
 
     /**
-     * @param \Exception|null $previous
+     * @internal
      */
-    public static function semanticalError(string $message, \Exception $previous = null): StatementException
+    public static function semanticError(string $message, \Exception $previous = null): StatementException
     {
-        return new self('[Semantical Error] ' . $message, 1471504822, $previous);
+        return new self('[Semantic Error] ' . $message, 1471504822, $previous);
     }
 }

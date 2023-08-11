@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier;
+use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -555,9 +556,9 @@ final class IndexDefinitionTest extends UnitTestCase
      */
     private function createSubject(string $statement): AbstractCreateDefinitionItem
     {
-        $parser = new Parser($statement);
+        $parser = new Parser(new Lexer());
         /** @var CreateTableStatement $createTableStatement */
-        $createTableStatement = $parser->getAST();
+        $createTableStatement = $parser->getAST($statement);
         return $createTableStatement->createDefinition->items[1];
     }
 }

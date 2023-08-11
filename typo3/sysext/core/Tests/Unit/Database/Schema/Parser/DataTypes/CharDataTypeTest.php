@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\DataTypes;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\CharDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\VarCharDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCase;
 
@@ -72,6 +73,6 @@ final class CharDataTypeTest extends AbstractDataTypeBaseTestCase
         $this->expectException(StatementException::class);
         $this->expectExceptionCode(1471504822);
         $this->expectExceptionMessage('The current data type requires a field length definition');
-        (new Parser('CREATE TABLE `aTable`(`aField` VARCHAR);'))->parse();
+        (new Parser(new Lexer()))->parse('CREATE TABLE `aTable`(`aField` VARCHAR);');
     }
 }

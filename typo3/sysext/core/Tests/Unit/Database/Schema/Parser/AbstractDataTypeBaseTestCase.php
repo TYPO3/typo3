@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
+use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,24 +31,17 @@ abstract class AbstractDataTypeBaseTestCase extends UnitTestCase
     /**
      * Insert datatype to test into this create table statement
      */
-    public const CREATE_TABLE_STATEMENT = 'CREATE TABLE `aTable`(`aField` %s);';
-
-    /**
-     * Wrap a column definition into a "create" table statement for testing
-     */
-    protected function createTableStatement(string $columnDefinition): string
-    {
-        return sprintf(static::CREATE_TABLE_STATEMENT, $columnDefinition);
-    }
+    protected const CREATE_TABLE_STATEMENT = 'CREATE TABLE `aTable`(`aField` %s);';
 
     /**
      * Parse the CREATE TABLE statement and return the reference definition
      */
     protected function createSubject(string $statement): CreateColumnDefinitionItem
     {
-        $parser = new Parser($this->createTableStatement($statement));
+        $statement = sprintf(static::CREATE_TABLE_STATEMENT, $statement);
+        $parser = new Parser(new Lexer());
         /** @var CreateTableStatement $createTableStatement */
-        $createTableStatement = $parser->getAST();
+        $createTableStatement = $parser->getAST($statement);
         /** @var CreateColumnDefinitionItem $item */
         $item = $createTableStatement->createDefinition->items[0];
         return $item;

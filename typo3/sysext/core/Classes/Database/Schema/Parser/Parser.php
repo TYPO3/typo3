@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema\Parser;
 
 use Doctrine\Common\Lexer\Token;
+use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateDefinitionItem;
@@ -67,42 +68,60 @@ use TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition;
 /**
  * An LL(*) recursive-descent parser for MySQL CREATE TABLE statements.
  * Parses a CREATE TABLE statement, reports any errors in it, and generates an AST.
- * @todo mark as internal/final
+ *
+ * @internal
  */
-class Parser
+final class Parser
 {
-    protected Lexer $lexer;
-    protected string $statement = '';
+    /** @var string Always reset by getAST(). Used in error exceptions. */
+    private string $statement;
 
-    /**
-     * Creates a new statement parser object.
-     *
-     * @param string $statement The statement to parse.
-     */
-    public function __construct(string $statement)
-    {
-        $this->statement = $statement;
-        $this->lexer = new Lexer($statement);
+    public function __construct(
+        private readonly Lexer $lexer,
+    ) {
     }
 
     /**
-     * Gets the lexer used by the parser.
-     * @todo unused. drop after recheck.
+     * Parses a statement string.
+     *
+     * @return list<Table>
+     * @throws SchemaException
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     * @throws StatementException
      */
-    public function getLexer(): Lexer
+    public function parse(string $statement): array
     {
-        return $this->lexer;
+        $ast = $this->getAST($statement);
+        if (!$ast instanceof CreateTableStatement) {
+            return [];
+        }
+        $tableBuilder = new TableBuilder();
+        $table = $tableBuilder->create($ast);
+        return [$table];
     }
 
     /**
      * Parses and builds AST for the given Query.
+     * Only public for testing, the core API method is parse().
      *
      * @throws StatementException
      */
-    public function getAST(): AbstractCreateStatement
+    public function getAST(string $statement): AbstractCreateStatement
     {
         // Parse & build AST
-        return $this->queryLanguage();
+        $this->statement = $statement;
+        $this->lexer->setInput($statement);
+        $this->lexer->moveNext();
+        if (($this->lexer->lookahead?->type ?? null) !== Lexer::T_CREATE) {
+            $this->syntaxError('CREATE');
+        }
+        $createStatement = $this->createStatement();
+        // Check for end of string
+        if ($this->lexer->lookahead !== null) {
+            $this->syntaxError('end of string');
+        }
+        return $createStatement;
     }
 
     /**
@@ -112,25 +131,21 @@ class Parser
      * error.
      *
      * @param int $token The token type.
-     *
      * @throws StatementException If the tokens don't match.
      */
-    public function match(int $token)
+    private function match(int $token): void
     {
         $lookaheadType = $this->lexer->lookahead->type;
-
         // Short-circuit on first condition, usually types match
         if ($lookaheadType !== $token) {
             // If parameter is not identifier (1-99) must be exact match
             if ($token < Lexer::T_IDENTIFIER) {
                 $this->syntaxError((string)$this->lexer->getLiteral($token));
             }
-
             // If parameter is keyword (200+) must be exact match
             if ($token > Lexer::T_IDENTIFIER) {
                 $this->syntaxError((string)$this->lexer->getLiteral($token));
             }
-
             // If parameter is MATCH then FULL, PARTIAL or SIMPLE must follow
             if ($token === Lexer::T_MATCH
                 && $lookaheadType !== Lexer::T_FULL
@@ -139,56 +154,11 @@ class Parser
             ) {
                 $this->syntaxError((string)$this->lexer->getLiteral($token));
             }
-
             if ($token === Lexer::T_ON && $lookaheadType !== Lexer::T_DELETE && $lookaheadType !== Lexer::T_UPDATE) {
                 $this->syntaxError((string)$this->lexer->getLiteral($token));
             }
         }
-
         $this->lexer->moveNext();
-    }
-
-    /**
-     * Frees this parser, enabling it to be reused.
-     *
-     * @param bool $deep Whether to clean peek and reset errors.
-     * @param int $position Position to reset.
-     */
-    public function free(bool $deep = false, int $position = 0): void
-    {
-        // WARNING! Use this method with care. It resets the scanner!
-        $this->lexer->resetPosition($position);
-
-        // Deep = true cleans peek and also any previously defined errors
-        if ($deep) {
-            $this->lexer->resetPeek();
-        }
-
-        $this->lexer->token = null;
-        $this->lexer->lookahead = null;
-    }
-
-    /**
-     * Parses a statement string.
-     *
-     * @return Table[]
-     * @throws \Doctrine\DBAL\Schema\SchemaException
-     * @throws \RuntimeException
-     * @throws \InvalidArgumentException
-     * @throws StatementException
-     */
-    public function parse(): array
-    {
-        $ast = $this->getAST();
-
-        if (!$ast instanceof CreateTableStatement) {
-            return [];
-        }
-
-        $tableBuilder = new TableBuilder();
-        $table = $tableBuilder->create($ast);
-
-        return [$table];
     }
 
     /**
@@ -196,11 +166,9 @@ class Parser
      *
      * @param string $expected Expected string.
      * @param Token|null $token Got token.
-     *
-     *
      * @throws StatementException
      */
-    public function syntaxError(string $expected = '', ?Token $token = null): void
+    private function syntaxError(string $expected = '', ?Token $token = null): void
     {
         if ($token === null) {
             $token = $this->lexer->lookahead;
@@ -215,19 +183,14 @@ class Parser
     }
 
     /**
-     * Generates a new semantical error.
+     * Generates a new semantic error.
      *
      * @param string $message Optional message.
-     * @param Token|null $token Optional token.
-     *
-     *
      * @throws StatementException
      */
-    public function semanticalError(string $message = '', ?Token $token = null): void
+    private function semanticError(string $message = ''): void
     {
-        if ($token === null) {
-            $token = $this->lexer->lookahead ?? [];
-        }
+        $token = $this->lexer->lookahead ?? [];
         $tokenPos = $token->position;
 
         // Minimum exposed chars ahead of token
@@ -245,64 +208,7 @@ class Parser
         // Building informative message
         $message = 'line 0, col ' . $tokenPos . " near '" . $tokenStr . "': Error: " . $message;
 
-        throw StatementException::semanticalError($message, StatementException::sqlError($this->statement));
-    }
-
-    /**
-     * Peeks beyond the matched closing parenthesis and returns the first token after that one.
-     *
-     * @param bool $resetPeek Reset peek after finding the closing parenthesis.
-     *
-     * @return Token
-     */
-    protected function peekBeyondClosingParenthesis(bool $resetPeek = true): Token
-    {
-        $token = $this->lexer->peek();
-        $numUnmatched = 1;
-
-        while ($numUnmatched > 0 && $token !== null) {
-            switch ($token->type) {
-                case Lexer::T_OPEN_PARENTHESIS:
-                    ++$numUnmatched;
-                    break;
-                case Lexer::T_CLOSE_PARENTHESIS:
-                    --$numUnmatched;
-                    break;
-                default:
-                    // Do nothing
-            }
-
-            $token = $this->lexer->peek();
-        }
-
-        if ($resetPeek) {
-            $this->lexer->resetPeek();
-        }
-
-        return $token;
-    }
-
-    /**
-     * queryLanguage ::= CreateTableStatement
-     *
-     * @throws StatementException
-     */
-    public function queryLanguage(): AbstractCreateStatement
-    {
-        $this->lexer->moveNext();
-
-        if (($this->lexer->lookahead?->type ?? null) !== Lexer::T_CREATE) {
-            $this->syntaxError('CREATE');
-        }
-
-        $statement = $this->createStatement();
-
-        // Check for end of string
-        if ($this->lexer->lookahead !== null) {
-            $this->syntaxError('end of string');
-        }
-
-        return $statement;
+        throw StatementException::semanticError($message, StatementException::sqlError($this->statement));
     }
 
     /**
@@ -311,24 +217,14 @@ class Parser
      *
      * @throws StatementException
      */
-    public function createStatement(): AbstractCreateStatement
+    private function createStatement(): AbstractCreateStatement
     {
-        $statement = null;
         $this->match(Lexer::T_CREATE);
-
-        switch ($this->lexer->lookahead->type) {
-            case Lexer::T_TEMPORARY:
-                // Intentional fall-through
-            case Lexer::T_TABLE:
-                $statement = $this->createTableStatement();
-                break;
-            default:
-                $this->syntaxError('TEMPORARY or TABLE');
-                break;
-        }
-
+        $statement = match ($this->lexer->lookahead->type) {
+            Lexer::T_TEMPORARY, Lexer::T_TABLE => $this->createTableStatement(),
+            default => $this->syntaxError('TEMPORARY or TABLE'),
+        };
         $this->match(Lexer::T_SEMICOLON);
-
         return $statement;
     }
 
@@ -337,10 +233,9 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function createTableStatement(): CreateTableStatement
+    private function createTableStatement(): CreateTableStatement
     {
         $createTableStatement = new CreateTableStatement($this->createTableClause(), $this->createDefinition());
-
         if (!$this->lexer->isNextToken(Lexer::T_SEMICOLON)) {
             $createTableStatement->tableOptions = $this->tableOptions();
         }
@@ -352,7 +247,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function createTableClause(): CreateTableClause
+    private function createTableClause(): CreateTableClause
     {
         $isTemporary = false;
         // Check for TEMPORARY
@@ -391,7 +286,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function createDefinition(): CreateDefinition
+    private function createDefinition(): CreateDefinition
     {
         $createDefinitions = [];
 
@@ -430,9 +325,8 @@ class Parser
      * Parse the definition of a single column or index
      *
      * @throws StatementException
-     * @see createDefinition()
      */
-    protected function createDefinitionItem(): AbstractCreateDefinitionItem
+    private function createDefinitionItem(): AbstractCreateDefinitionItem
     {
         $definitionItem = null;
 
@@ -454,10 +348,10 @@ class Parser
                 $definitionItem = $this->createForeignKeyDefinitionItem();
                 break;
             case Lexer::T_CONSTRAINT:
-                $this->semanticalError('CONSTRAINT [symbol] index definition part not supported');
+                $this->semanticError('CONSTRAINT [symbol] index definition part not supported');
                 break;
             case Lexer::T_CHECK:
-                $this->semanticalError('CHECK (expr) create definition not supported');
+                $this->semanticError('CHECK (expr) create definition not supported');
                 break;
             default:
                 $definitionItem = $this->createColumnDefinitionItem();
@@ -471,7 +365,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function createIndexDefinitionItem(): CreateIndexDefinitionItem
+    private function createIndexDefinitionItem(): CreateIndexDefinitionItem
     {
         $indexName = null;
         $isPrimary = false;
@@ -562,7 +456,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function createForeignKeyDefinitionItem(): CreateForeignKeyDefinitionItem
+    private function createForeignKeyDefinitionItem(): CreateForeignKeyDefinitionItem
     {
         $this->match(Lexer::T_FOREIGN);
         $this->match(Lexer::T_KEY);
@@ -581,13 +475,11 @@ class Parser
 
         $this->match(Lexer::T_CLOSE_PARENTHESIS);
 
-        $foreignKeyDefinition = new CreateForeignKeyDefinitionItem(
+        return new CreateForeignKeyDefinitionItem(
             $indexName,
             $indexColumns,
             $this->referenceDefinition()
         );
-
-        return $foreignKeyDefinition;
     }
 
     /**
@@ -596,13 +488,12 @@ class Parser
      *
      * @throws StatementException
      */
-    public function indexName(): Identifier
+    private function indexName(): Identifier
     {
         $indexName = new Identifier('');
         if (!$this->lexer->isNextTokenAny([Lexer::T_USING, Lexer::T_OPEN_PARENTHESIS])) {
             $indexName = $this->schemaObjectName();
         }
-
         return $indexName;
     }
 
@@ -611,7 +502,7 @@ class Parser
      *
      * @throws StatementException
      */
-    public function indexType(): string
+    private function indexType(): string
     {
         $indexType = '';
         if (!$this->lexer->isNextToken(Lexer::T_USING)) {
@@ -644,7 +535,7 @@ class Parser
      *
      * @throws StatementException
      */
-    public function indexOptions(): array
+    private function indexOptions(): array
     {
         $options = [];
 
@@ -692,7 +583,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function createColumnDefinitionItem(): CreateColumnDefinitionItem
+    private function createColumnDefinitionItem(): CreateColumnDefinitionItem
     {
         $columnName = $this->schemaObjectName();
         $dataType = $this->columnDataType();
@@ -817,7 +708,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function columnDataType(): AbstractDataType
+    private function columnDataType(): AbstractDataType
     {
         $dataType = null;
 
@@ -1009,36 +900,20 @@ class Parser
     /**
      * DefaultValue::= DEFAULT default_value
      *
-     * @return mixed
      * @throws StatementException
      */
-    protected function columnDefaultValue(): mixed
+    private function columnDefaultValue(): string|int|float|null
     {
         $this->match(Lexer::T_DEFAULT);
-        $value = null;
-
-        switch ($this->lexer->lookahead->type) {
-            case Lexer::T_INTEGER:
-                $value = (int)$this->lexer->lookahead->value;
-                break;
-            case Lexer::T_FLOAT:
-                $value = (float)$this->lexer->lookahead->value;
-                break;
-            case Lexer::T_STRING:
-                $value = (string)$this->lexer->lookahead->value;
-                break;
-            case Lexer::T_CURRENT_TIMESTAMP:
-                $value = 'CURRENT_TIMESTAMP';
-                break;
-            case Lexer::T_NULL:
-                $value = null;
-                break;
-            default:
-                $this->syntaxError('String, Integer, Float, NULL or CURRENT_TIMESTAMP');
-        }
-
+        $value = match ($this->lexer->lookahead->type) {
+            Lexer::T_INTEGER => (int)$this->lexer->lookahead->value,
+            Lexer::T_FLOAT => (float)$this->lexer->lookahead->value,
+            Lexer::T_STRING => (string)$this->lexer->lookahead->value,
+            Lexer::T_CURRENT_TIMESTAMP => 'CURRENT_TIMESTAMP',
+            Lexer::T_NULL => null,
+            default => $this->syntaxError('String, Integer, Float, NULL or CURRENT_TIMESTAMP'),
+        };
         $this->lexer->moveNext();
-
         return $value;
     }
 
@@ -1047,12 +922,12 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function dataTypeLength(bool $required = false): int
+    private function dataTypeLength(bool $required = false): int
     {
         $length = 0;
         if (!$this->lexer->isNextToken(Lexer::T_OPEN_PARENTHESIS)) {
             if ($required) {
-                $this->semanticalError('The current data type requires a field length definition.');
+                $this->semanticError('The current data type requires a field length definition.');
             }
             return $length;
         }
@@ -1093,11 +968,11 @@ class Parser
     }
 
     /**
-     * Parse common options for numeric datatypes
+     * Parse common options for numeric data types
      *
      * @throws StatementException
      */
-    protected function numericDataTypeOptions(): array
+    private function numericDataTypeOptions(): array
     {
         $options = ['unsigned' => false, 'zerofill' => false];
 
@@ -1128,25 +1003,24 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function fractionalSecondsPart(): int
+    private function fractionalSecondsPart(): int
     {
         $fractionalSecondsPart = $this->dataTypeLength();
         if ($fractionalSecondsPart < 0) {
-            $this->semanticalError('the fractional seconds part for TIME, DATETIME or TIMESTAMP columns must >= 0');
+            $this->semanticError('the fractional seconds part for TIME, DATETIME or TIMESTAMP columns must >= 0');
         }
         if ($fractionalSecondsPart > 6) {
-            $this->semanticalError('the fractional seconds part for TIME, DATETIME or TIMESTAMP columns must <= 6');
+            $this->semanticError('the fractional seconds part for TIME, DATETIME or TIMESTAMP columns must <= 6');
         }
-
         return $fractionalSecondsPart;
     }
 
     /**
-     * Parse common options for numeric datatypes
+     * Parse common options for numeric data types
      *
      * @throws StatementException
      */
-    protected function characterDataTypeOptions(): array
+    private function characterDataTypeOptions(): array
     {
         $options = ['binary' => false, 'charset' => null, 'collation' => null];
 
@@ -1184,7 +1058,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function enumerationDataTypeOptions(): array
+    private function enumerationDataTypeOptions(): array
     {
         $options = ['charset' => null, 'collation' => null];
 
@@ -1218,7 +1092,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function valueList(): array
+    private function valueList(): array
     {
         $this->match(Lexer::T_OPEN_PARENTHESIS);
 
@@ -1240,7 +1114,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function valueListItem(): string
+    private function valueListItem(): string
     {
         $this->match(Lexer::T_STRING);
 
@@ -1255,7 +1129,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function referenceDefinition(): ReferenceDefinition
+    private function referenceDefinition(): ReferenceDefinition
     {
         $this->match(Lexer::T_REFERENCES);
         $tableName = $this->schemaObjectName();
@@ -1303,7 +1177,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function indexColumnName(): IndexColumnName
+    private function indexColumnName(): IndexColumnName
     {
         $columnName = $this->schemaObjectName();
         $length = $this->dataTypeLength();
@@ -1325,7 +1199,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function referenceOption(): string
+    private function referenceOption(): string
     {
         $action = null;
 
@@ -1386,7 +1260,7 @@ class Parser
      *
      * @throws StatementException
      */
-    protected function tableOptions(): array
+    private function tableOptions(): array
     {
         $options = [];
 
@@ -1540,32 +1414,26 @@ class Parser
     /**
      * Return the value of an option, skipping the optional equal sign.
      *
-     * @return mixed
      * @throws StatementException
      */
-    protected function tableOptionValue(): mixed
+    private function tableOptionValue(): mixed
     {
         // Skip the optional equals sign
         if ($this->lexer->isNextToken(Lexer::T_EQUALS)) {
             $this->match(Lexer::T_EQUALS);
         }
         $this->lexer->moveNext();
-
         return $this->lexer->token->value;
     }
 
     /**
      * Certain objects within MySQL, including database, table, index, column, alias, view, stored procedure,
      * partition, tablespace, and other object names are known as identifiers.
-     *
-     * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier
-     * @throws StatementException
      */
-    protected function schemaObjectName(): Identifier
+    private function schemaObjectName(): Identifier
     {
         $schemaObjectName = $this->lexer->lookahead->value;
         $this->lexer->moveNext();
-
         return new Identifier((string)$schemaObjectName);
     }
 }

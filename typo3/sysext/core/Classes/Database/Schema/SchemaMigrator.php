@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException;
+use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -240,12 +241,13 @@ class SchemaMigrator
     {
         $tables = [];
         foreach ($statements as $statement) {
-            $createTableParser = GeneralUtility::makeInstance(Parser::class, $statement);
+            // @todo: Use DI when SchemaMigrator can be injected itself in ext:install and testing-framework.
+            $createTableParser = GeneralUtility::makeInstance(Parser::class, new Lexer());
 
             // We need to keep multiple table definitions at this point so
             // that Extensions can modify existing tables.
             try {
-                $tables[] = $createTableParser->parse();
+                $tables[] = $createTableParser->parse($statement);
             } catch (StatementException $statementException) {
                 // Enrich the error message with the full invalid statement
                 throw new StatementException(

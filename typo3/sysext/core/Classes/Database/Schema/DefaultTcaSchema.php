@@ -621,7 +621,7 @@ class DefaultTcaSchema
                 try {
                     // If the mm table is defined, work with it. Else add at and.
                     $tablePosition = $this->getTableFirstPosition($tables, $mmTableName);
-                } catch (DefaultTcaSchemaTablePositionException $e) {
+                } catch (DefaultTcaSchemaTablePositionException) {
                     $tablePosition = array_key_last($tables) + 1;
                     $tables[$tablePosition] = GeneralUtility::makeInstance(
                         Table::class,
@@ -806,10 +806,10 @@ class DefaultTcaSchema
      * fields in an own CREATE TABLE statement.
      *
      * @todo It would be better if the incoming $tables structure would be cleaned
-     * @todo to contain a table only once before this class is entered.
+     *       to contain a table only once before this class is entered.
      *
      * @param Table[] $tables
-     * @throws \RuntimeException
+     * @throws DefaultTcaSchemaTablePositionException
      */
     protected function getTableFirstPosition(array $tables, string $tableName): int
     {

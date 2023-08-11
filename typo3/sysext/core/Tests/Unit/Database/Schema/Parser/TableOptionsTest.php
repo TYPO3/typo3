@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
+use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -158,7 +159,7 @@ final class TableOptionsTest extends UnitTestCase
      */
     protected function createSubject(string $statement): AbstractCreateStatement
     {
-        $parser = new Parser($statement);
-        return $parser->getAST();
+        $parser = new Parser(new Lexer());
+        return $parser->getAST($statement);
     }
 }

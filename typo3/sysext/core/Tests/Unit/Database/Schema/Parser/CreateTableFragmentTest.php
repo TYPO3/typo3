@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
+use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -84,7 +85,7 @@ final class CreateTableFragmentTest extends UnitTestCase
      */
     public function canParseCreateTableFragment(string $statement, string $tableName, bool $isTemporary): void
     {
-        $ast = (new Parser($statement))->getAST();
+        $ast = (new Parser(new Lexer()))->getAST($statement);
         self::assertInstanceOf(CreateTableStatement::class, $ast);
         self::assertSame($tableName, $ast->tableName->schemaObjectName);
         self::assertSame($isTemporary, $ast->isTemporary);
@@ -95,7 +96,7 @@ final class CreateTableFragmentTest extends UnitTestCase
      */
     public function canParseCreateTableStatementWithoutColumns(): void
     {
-        $ast = (new Parser('CREATE TABLE aTable ();'))->getAST();
+        $ast = (new Parser(new Lexer()))->getAST('CREATE TABLE aTable ();');
         self::assertInstanceOf(CreateTableStatement::class, $ast);
         self::assertSame('aTable', $ast->tableName->schemaObjectName);
         self::assertSame([], $ast->createDefinition->items);

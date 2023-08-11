@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\DataTypes;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BinaryDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\VarBinaryDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCase;
 
@@ -59,7 +60,6 @@ final class BinaryDataTypeTest extends AbstractDataTypeBaseTestCase
     public function canParseDataType(string $columnDefinition, string $className, int $length): void
     {
         $subject = $this->createSubject($columnDefinition);
-
         self::assertInstanceOf($className, $subject->dataType);
         self::assertSame($length, $subject->dataType->getLength());
     }
@@ -72,6 +72,6 @@ final class BinaryDataTypeTest extends AbstractDataTypeBaseTestCase
         $this->expectException(StatementException::class);
         $this->expectExceptionCode(1471504822);
         $this->expectExceptionMessage('The current data type requires a field length definition');
-        (new Parser('CREATE TABLE `aTable`(`aField` VARBINARY);'))->parse();
+        (new Parser(new Lexer()))->parse('CREATE TABLE `aTable`(`aField` VARBINARY);');
     }
 }

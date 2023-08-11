@@ -155,16 +155,6 @@ class Lexer extends AbstractLexer
     public const T_PRECISION = 370;
 
     /**
-     * Creates a new statement scanner object.
-     *
-     * @param string $input A statement string.
-     */
-    public function __construct($input)
-    {
-        $this->setInput($input);
-    }
-
-    /**
      * Lexical catchable patterns.
      */
     protected function getCatchablePatterns(): array
