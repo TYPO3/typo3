@@ -754,7 +754,10 @@ export default (function() {
       if (input === undefined || input === null) {
         return;
       }
-      const currentState = (el.querySelector('input[type="radio"]:checked') as HTMLInputElement).value;
+      const currentState = (el.querySelector('input[type="radio"]:checked') as HTMLInputElement)?.value;
+      if (currentState === undefined) {
+        console.warn('The localization state of the field ' + input.dataset.formengineInputName + ' cannot be determined. This smells like a DataHandler bug.');
+      }
       if (currentState === 'parent' || currentState === 'source') {
         input.disabled = true;
       }
