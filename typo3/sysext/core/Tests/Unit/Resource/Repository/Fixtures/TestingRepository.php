@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository\Fixtures;
 use TYPO3\CMS\Core\Resource\AbstractRepository;
 
 /**
- * Testing subclass of `AbstractRepository`.
+ * Testing subclass of the abstract class.
  */
 final class TestingRepository extends AbstractRepository
 {

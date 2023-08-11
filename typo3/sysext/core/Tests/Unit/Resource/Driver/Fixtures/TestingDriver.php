@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Resource\Capabilities;
 use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 
 /**
- * Testing subclass of `AbstractDriver`.
+ * Testing subclass of the abstract class.
  */
 final class TestingDriver extends AbstractDriver
 {

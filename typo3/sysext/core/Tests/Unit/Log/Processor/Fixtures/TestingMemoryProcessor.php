@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor;
 
 /**
- * Testing subclass of `AbstractMemoryProcessor`.
+ * Testing subclass of the abstract class.
  */
 final class TestingMemoryProcessor extends AbstractMemoryProcessor
 {
