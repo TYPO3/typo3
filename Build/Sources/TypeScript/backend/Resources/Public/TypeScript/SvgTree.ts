@@ -1328,7 +1328,7 @@ export class SvgTree extends LitElement {
   /**
    * If the svg-tree component is embedded in an iframe, and if the iframe src get changed by navigating to another url,
    * pending AjaxRequest will get cancelled by the browser, without letting us the opportunity to properly handle
-   * the thrown error. As a workaround, we register an unload event on the iframe's window,
+   * the thrown error. As a workaround, we register a pagehide event on the iframe's window,
    * and turn on the muteErrorNotifications flag.
    */
   private registerUnloadHandler(): void {
@@ -1338,7 +1338,7 @@ export class SvgTree extends LitElement {
         return
       }
       window.addEventListener(
-        'unload',
+        'pagehide',
         () => this.muteErrorNotifications = true,
         { once: true }
       );

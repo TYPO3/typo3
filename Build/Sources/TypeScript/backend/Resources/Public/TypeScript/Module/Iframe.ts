@@ -71,9 +71,9 @@ export class IframeModuleElement extends LitElement {
     }
   }
 
-  private registerUnloadHandler(iframe: HTMLIFrameElement): void {
+  private registerPagehideHandler(iframe: HTMLIFrameElement): void {
     try {
-      iframe.contentWindow.addEventListener('unload', (e: Event) => this._unload(e, iframe), { once: true});
+      iframe.contentWindow.addEventListener('pagehide', (e: Event) => this._pagehide(e, iframe), { once: true });
     } catch (e) {
       console.error('Failed to access contentWindow of module iframe – using a foreign origin?');
       throw e;
@@ -96,17 +96,17 @@ export class IframeModuleElement extends LitElement {
   private _loaded({target}: Event) {
     const iframe = <HTMLIFrameElement> target;
 
-    // The event handler for the "unload" event needs to be attached
+    // The event handler for the "pagehide" event needs to be attached
     // after every iframe load (for the current iframes's contentWindow).
-    this.registerUnloadHandler(iframe);
+    this.registerPagehideHandler(iframe);
 
     const state = this.retrieveModuleStateFromIFrame(iframe);
     this.dispatch('typo3-iframe-loaded', state);
   }
 
-  private _unload(e: Event, iframe: HTMLIFrameElement) {
+  private _pagehide(e: Event, iframe: HTMLIFrameElement) {
     // Asynchronous execution needed because the URL changes immediately after
-    // the `unload` event is dispatched, but has not been changed right now.
+    // the `pagehide` event is dispatched, but has not been changed right now.
     new Promise((resolve) => window.setTimeout(resolve, 0)).then(() => {
       if (iframe.contentWindow !== null) {
         this.dispatch('typo3-iframe-load', { url: iframe.contentWindow.location.href, title: null });
