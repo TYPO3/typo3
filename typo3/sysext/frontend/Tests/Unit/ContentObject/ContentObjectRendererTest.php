@@ -2750,21 +2750,36 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getFromCache(string|bool $expect, array $conf, string $cacheKey, int $times, ?string $cached): void
     {
+        $tags = [StringUtility::getUniqueId('tags')];
+
         $subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
-            ['calculateCacheKey']
+            [
+                'calculateCacheKey',
+                'getTypoScriptFrontendController',
+            ]
         );
         $subject
             ->expects(self::once())
             ->method('calculateCacheKey')
             ->with($conf)
             ->willReturn($cacheKey);
+        $typoScriptFrontendController = $this->createMock(TypoScriptFrontendController::class);
+        $typoScriptFrontendController
+            ->expects(self::exactly($times))
+            ->method('addCacheTags')
+            ->with($tags)
+            ->willReturn(null);
+        $subject
+            ->expects(self::exactly($times + 1))
+            ->method('getTypoScriptFrontendController')
+            ->willReturn($typoScriptFrontendController);
         $cacheFrontend = $this->createMock(CacheFrontendInterface::class);
         $cacheFrontend
             ->expects(self::exactly($times))
             ->method('get')
             ->with($cacheKey)
-            ->willReturn($cached);
+            ->willReturn(['content' => $cached, 'cacheTags' => $tags]);
         $cacheManager = $this->createMock(CacheManager::class);
         $cacheManager
             ->method('getCache')
@@ -3750,6 +3765,7 @@ final class ContentObjectRendererTest extends UnitTestCase
                 'calculateCacheKey',
                 'calculateCacheTags',
                 'calculateCacheLifetime',
+                'getTypoScriptFrontendController',
             ]
         );
         $subject
@@ -3767,11 +3783,21 @@ final class ContentObjectRendererTest extends UnitTestCase
             ->method('calculateCacheLifetime')
             ->with($confCache)
             ->willReturn($lifetime);
+        $typoScriptFrontendController = $this->createMock(TypoScriptFrontendController::class);
+        $typoScriptFrontendController
+            ->expects(self::exactly($times))
+            ->method('addCacheTags')
+            ->with($tags)
+            ->willReturn(null);
+        $subject
+            ->expects(self::exactly($times))
+            ->method('getTypoScriptFrontendController')
+            ->willReturn($typoScriptFrontendController);
         $cacheFrontend = $this->createMock(CacheFrontendInterface::class);
         $cacheFrontend
             ->expects(self::exactly($times))
             ->method('set')
-            ->with($key, $content, $tags, $lifetime)
+            ->with($key, ['content' => $content, 'cacheTags' => $tags], $tags, $lifetime)
             ->willReturn(null);
         $cacheManager = $this->createMock(CacheManager::class);
         $cacheManager

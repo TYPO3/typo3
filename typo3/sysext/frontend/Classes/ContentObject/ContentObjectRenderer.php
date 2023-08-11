@@ -726,7 +726,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
                 $tags = $this->calculateCacheTags($cacheConfiguration);
                 $lifetime = $this->calculateCacheLifetime($cacheConfiguration);
-                $cacheFrontend->set($key, $content, $tags, $lifetime);
+                $cachedData = [
+                    'content' => $content,
+                    'cacheTags' => $tags,
+                ];
+                $cacheFrontend->set($key, $cachedData, $tags, $lifetime);
+                $this->getTypoScriptFrontendController()->addCacheTags($tags);
             }
         }
 
@@ -2501,7 +2506,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
             GeneralUtility::callUserFunction($_funcRef, $params, $ref);
         }
-        $cacheFrontend->set($key, $content, $tags, $lifetime);
+        $cachedData = [
+            'content' => $content,
+            'cacheTags' => $tags,
+        ];
+        $cacheFrontend->set($key, $cachedData, $tags, $lifetime);
+        $this->getTypoScriptFrontendController()->addCacheTags($tags);
         return $content;
     }
 
@@ -5756,17 +5766,26 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function getFromCache(array $configuration)
     {
-        $content = false;
-
         if ($this->getTypoScriptFrontendController()->no_cache) {
-            return $content;
+            return false;
         }
         $cacheKey = $this->calculateCacheKey($configuration);
-        if (!empty($cacheKey)) {
-            $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
-            $content = $cacheFrontend->get($cacheKey);
+        if (empty($cacheKey)) {
+            return false;
         }
-        return $content;
+
+        $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
+        $cachedData = $cacheFrontend->get($cacheKey);
+        if ($cachedData === false) {
+            return false;
+        }
+        if (is_string($cachedData)) {
+            // Legacy (from a previous patch release) cache data found.
+            // Handle gracefully as content without associated cache tags.
+            return $cachedData;
+        }
+        $this->getTypoScriptFrontendController()->addCacheTags($cachedData['cacheTags'] ?? []);
+        return $cachedData['content'] ?? false;
     }
 
     /**
