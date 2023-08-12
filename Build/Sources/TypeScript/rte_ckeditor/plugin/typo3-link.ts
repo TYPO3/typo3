@@ -123,6 +123,10 @@ export class Typo3LinkCommand extends Core.Command {
         }
         for (const range of rangesToUpdate) {
           writer.setAttribute('linkHref', href, range);
+          // apply link attributes (linkAttr)
+          for (const [attribute, value] of Object.entries(linkAttr.attrs)) {
+            writer.setAttribute(attribute, value, range);
+          }
         }
       }
     });
