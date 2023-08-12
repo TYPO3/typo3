@@ -31,6 +31,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DatabaseUpgradeWizardsService
 {
+    public function __construct(
+        private readonly SchemaMigrator $schemaMigrator,
+    ) {
+    }
+
     /**
      * Get a list of tables, single columns and indexes to add.
      *
@@ -44,10 +49,7 @@ class DatabaseUpgradeWizardsService
     {
         $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
         $databaseDefinitions = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
-
-        $schemaMigrator = GeneralUtility::makeInstance(SchemaMigrator::class);
-        $databaseDifferences = $schemaMigrator->getSchemaDiffs($databaseDefinitions);
-
+        $databaseDifferences = $this->schemaMigrator->getSchemaDiffs($databaseDefinitions);
         $adds = [];
         foreach ($databaseDifferences as $schemaDiff) {
             foreach ($schemaDiff->newTables as $newTable) {
@@ -95,8 +97,7 @@ class DatabaseUpgradeWizardsService
     {
         $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
         $databaseDefinitions = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
-        $schemaMigrator = GeneralUtility::makeInstance(SchemaMigrator::class);
-        return $schemaMigrator->install($databaseDefinitions, true);
+        return $this->schemaMigrator->install($databaseDefinitions, true);
     }
 
     /**

@@ -62,6 +62,7 @@ class SetupDatabaseService
         private readonly ConfigurationManager $configurationManager,
         private readonly PermissionsCheck $databasePermissionsCheck,
         private readonly Registry $registry,
+        private readonly SchemaMigrator $schemaMigrator,
     ) {
     }
 
@@ -518,15 +519,14 @@ class SetupDatabaseService
 
         $sqlReader = $container->get(SqlReader::class);
         $sqlCode = $sqlReader->getTablesDefinitionString(true);
-        $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
         $createTableStatements = $sqlReader->getCreateTableStatementArray($sqlCode);
-        $results = $schemaMigrationService->install($createTableStatements);
+        $results = $this->schemaMigrator->install($createTableStatements);
 
         // Only keep statements with error messages
         $results = array_filter($results);
         if (count($results) === 0) {
             $insertStatements = $sqlReader->getInsertStatementArray($sqlCode);
-            $results = $schemaMigrationService->importStaticData($insertStatements);
+            $results = $this->schemaMigrator->importStaticData($insertStatements);
         }
         foreach ($results as $statement => &$message) {
             if ($message === '') {

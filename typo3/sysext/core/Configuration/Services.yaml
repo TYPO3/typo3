@@ -57,9 +57,6 @@ services:
   TYPO3\CMS\Core\Http\MiddlewareDispatcher:
     autoconfigure: false
 
-  TYPO3\CMS\Core\Database\Schema\SchemaMigrator:
-    public: true
-
   TYPO3\CMS\Core\Database\Schema\SqlReader:
     public: true
 

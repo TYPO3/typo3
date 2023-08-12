@@ -28,9 +28,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException;
-use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Helper methods to handle SQL files and transform them into individual statements
@@ -40,6 +38,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SchemaMigrator
 {
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly Parser $parser,
+        private readonly DefaultTcaSchema $defaultTcaSchema,
+    ) {
+    }
+
     /**
      * Compare current and expected schema definitions and provide updates suggestions in the form
      * of SQL statements.
@@ -56,22 +61,17 @@ class SchemaMigrator
      */
     public function getUpdateSuggestions(array $statements, bool $remove = false): array
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $tables = $this->parseCreateTableStatements($statements);
-
         $updateSuggestions = [];
-
-        foreach ($connectionPool->getConnectionNames() as $connectionName) {
-            $this->adoptDoctrineAutoincrementDetectionForSqlite($tables, $connectionPool->getConnectionByName($connectionName));
+        foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
+            $this->adoptDoctrineAutoincrementDetectionForSqlite($tables, $this->connectionPool->getConnectionByName($connectionName));
             $connectionMigrator = ConnectionMigrator::create(
                 $connectionName,
                 $tables
             );
-
             $updateSuggestions[$connectionName] =
                 $connectionMigrator->getUpdateSuggestions($remove);
         }
-
         return $updateSuggestions;
     }
 
@@ -89,12 +89,11 @@ class SchemaMigrator
      */
     public function getSchemaDiffs(array $statements): array
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $tables = $this->parseCreateTableStatements($statements);
 
         $schemaDiffs = [];
 
-        foreach ($connectionPool->getConnectionNames() as $connectionName) {
+        foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
             $connectionMigrator = ConnectionMigrator::create(
                 $connectionName,
                 $tables
@@ -121,7 +120,6 @@ class SchemaMigrator
     public function migrate(array $statements, array $selectedStatements): array
     {
         $result = [];
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $updateSuggestionsPerConnection = array_replace_recursive(
             $this->getUpdateSuggestions($statements),
             $this->getUpdateSuggestions($statements, true)
@@ -135,7 +133,7 @@ class SchemaMigrator
                 continue;
             }
 
-            $connection = $connectionPool->getConnectionByName($connectionName);
+            $connection = $this->connectionPool->getConnectionByName($connectionName);
             foreach ($statementsToExecute as $hash => $statement) {
                 try {
                     $connection->executeStatement($statement);
@@ -166,11 +164,10 @@ class SchemaMigrator
      */
     public function install(array $statements, bool $createOnly = false): array
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $tables = $this->parseCreateTableStatements($statements);
         $result = [];
 
-        foreach ($connectionPool->getConnectionNames() as $connectionName) {
+        foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
             $connectionMigrator = ConnectionMigrator::create(
                 $connectionName,
                 $tables
@@ -190,7 +187,6 @@ class SchemaMigrator
     public function importStaticData(array $statements, bool $truncate = false): array
     {
         $result = [];
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $insertStatements = [];
 
         foreach ($statements as $statement) {
@@ -200,14 +196,14 @@ class SchemaMigrator
                 [, $tableName, $sqlFragment] = $matches;
                 $insertStatements[$tableName][] = sprintf(
                     'INSERT INTO %s %s',
-                    $connectionPool->getConnectionForTable($tableName)->quoteIdentifier($tableName),
+                    $this->connectionPool->getConnectionForTable($tableName)->quoteIdentifier($tableName),
                     rtrim($sqlFragment, ';')
                 );
             }
         }
 
         foreach ($insertStatements as $tableName => $perTableStatements) {
-            $connection = $connectionPool->getConnectionForTable($tableName);
+            $connection = $this->connectionPool->getConnectionForTable($tableName);
 
             if ($truncate) {
                 $connection->truncate($tableName);
@@ -241,13 +237,10 @@ class SchemaMigrator
     {
         $tables = [];
         foreach ($statements as $statement) {
-            // @todo: Use DI when SchemaMigrator can be injected itself in ext:install and testing-framework.
-            $createTableParser = GeneralUtility::makeInstance(Parser::class, new Lexer());
-
             // We need to keep multiple table definitions at this point so
             // that Extensions can modify existing tables.
             try {
-                $tables[] = $createTableParser->parse($statement);
+                $tables[] = $this->parser->parse($statement);
             } catch (StatementException $statementException) {
                 // Enrich the error message with the full invalid statement
                 throw new StatementException(
@@ -262,8 +255,7 @@ class SchemaMigrator
         $tables = array_merge(...$tables);
 
         // Add default TCA fields
-        $defaultTcaSchema = GeneralUtility::makeInstance(DefaultTcaSchema::class);
-        $tables = $defaultTcaSchema->enrich($tables);
+        $tables = $this->defaultTcaSchema->enrich($tables);
         // Ensure the default TCA fields are ordered
         foreach ($tables as $k => $table) {
             $prioritizedColumnNames = $this->getPrioritizedFieldNames($table->getName());

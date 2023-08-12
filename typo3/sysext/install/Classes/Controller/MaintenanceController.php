@@ -61,7 +61,8 @@ class MaintenanceController extends AbstractController
         private readonly PasswordHashFactory $passwordHashFactory,
         private readonly Locales $locales,
         private readonly LanguageServiceFactory $languageServiceFactory,
-        private readonly FormProtectionFactory $formProtectionFactory
+        private readonly FormProtectionFactory $formProtectionFactory,
+        private readonly SchemaMigrator $schemaMigrator,
     ) {
         $GLOBALS['LANG'] = $this->languageServiceFactory->create('en');
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
@@ -228,8 +229,7 @@ class MaintenanceController extends AbstractController
         try {
             $sqlReader = $container->get(SqlReader::class);
             $sqlStatements = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
-            $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
-            $addCreateChange = $schemaMigrationService->getUpdateSuggestions($sqlStatements);
+            $addCreateChange = $this->schemaMigrator->getUpdateSuggestions($sqlStatements);
 
             // Aggregate the per-connection statements into one flat array
             $addCreateChange = array_merge_recursive(...array_values($addCreateChange));
@@ -284,7 +284,7 @@ class MaintenanceController extends AbstractController
             }
 
             // Difference from current to expected
-            $dropRename = $schemaMigrationService->getUpdateSuggestions($sqlStatements, true);
+            $dropRename = $this->schemaMigrator->getUpdateSuggestions($sqlStatements, true);
 
             // Aggregate the per-connection statements into one flat array
             $dropRename = array_merge_recursive(...array_values($dropRename));
@@ -387,9 +387,8 @@ class MaintenanceController extends AbstractController
         } else {
             $sqlReader = $container->get(SqlReader::class);
             $sqlStatements = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
-            $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
             $statementHashesToPerform = array_flip($selectedHashes);
-            $results = $schemaMigrationService->migrate($sqlStatements, $statementHashesToPerform);
+            $results = $this->schemaMigrator->migrate($sqlStatements, $statementHashesToPerform);
             // Create error flash messages if any
             foreach ($results as $errorMessage) {
                 $messageQueue->enqueue(new FlashMessage(

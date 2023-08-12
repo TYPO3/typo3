@@ -27,16 +27,11 @@ use TYPO3\CMS\Install\Service\DatabaseUpgradeWizardsService;
  */
 class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterface
 {
-    protected DatabaseUpgradeWizardsService $databaseUpgradeWizardsService;
+    protected OutputInterface $output;
 
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
-
-    public function __construct()
-    {
-        $this->databaseUpgradeWizardsService = new DatabaseUpgradeWizardsService();
+    public function __construct(
+        private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService,
+    ) {
     }
 
     public function getTitle(): string

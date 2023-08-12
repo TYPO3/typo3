@@ -24,6 +24,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 use TYPO3\CMS\Core\Adapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema;
+use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
@@ -64,6 +66,8 @@ class ServiceProvider extends AbstractServiceProvider
             Context\Context::class => [ static::class, 'getContext' ],
             Core\BootService::class => [ static::class, 'getBootService' ],
             Crypto\PasswordHashing\PasswordHashFactory::class => [ static::class, 'getPasswordHashFactory' ],
+            Database\Schema\SchemaMigrator::class => [ static::class, 'getSchemaMigrator' ],
+            Database\Schema\Parser\Parser::class => [ static::class, 'getSchemaParser' ],
             EventDispatcher\EventDispatcher::class => [ static::class, 'getEventDispatcher' ],
             EventDispatcher\ListenerProvider::class => [ static::class, 'getEventListenerProvider' ],
             FormProtection\FormProtectionFactory::class => [ static::class, 'getFormProtectionFactory' ],
@@ -278,6 +282,22 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getPasswordHashFactory(ContainerInterface $container): Crypto\PasswordHashing\PasswordHashFactory
     {
         return new Crypto\PasswordHashing\PasswordHashFactory();
+    }
+
+    public static function getSchemaMigrator(ContainerInterface $container): Database\Schema\SchemaMigrator
+    {
+        return self::new($container, Database\Schema\SchemaMigrator::class, [
+            $container->get(Database\ConnectionPool::class),
+            $container->get(Database\Schema\Parser\Parser::class),
+            new DefaultTcaSchema(),
+        ]);
+    }
+
+    public static function getSchemaParser(ContainerInterface $container): Database\Schema\Parser\Parser
+    {
+        return self::new($container, Database\Schema\Parser\Parser::class, [
+            new Lexer(),
+        ]);
     }
 
     public static function getIconFactory(ContainerInterface $container): Imaging\IconFactory
