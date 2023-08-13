@@ -21,6 +21,7 @@ use Doctrine\DBAL\Exception\TableNotFoundException;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\QueryRestrictions\EditableRestriction;
 
@@ -250,6 +251,11 @@ class BrokenLinkRepository
         foreach (array_chunk($pageIds, (int)floor($maxChunk / 2)) as $pageIdsChunk) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable(self::TABLE);
+
+            // remove hidden restriction here because we join with pages and checkhidden=1 might be set
+            // we already correctly check for hidden / extendToSubpages when checking the links
+            $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+
             if (!$GLOBALS['BE_USER']->isAdmin()) {
                 $queryBuilder->getRestrictions()
                     ->add(GeneralUtility::makeInstance(EditableRestriction::class, $searchFields, $queryBuilder));
