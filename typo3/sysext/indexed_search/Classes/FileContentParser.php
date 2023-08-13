@@ -477,7 +477,7 @@ class FileContentParser
                     CommandUtility::exec($cmd, $res);
                     $pdfInfo = $this->splitPdfInfo($res);
                     unset($res);
-                    if ((int)$pdfInfo['pages']) {
+                    if ((int)($pdfInfo['pages'] ?? 0)) {
                         [$low, $high] = explode('-', $cPKey);
                         // Get pdf content:
                         $tempFileName = GeneralUtility::tempnam('Typo3_indexer');
