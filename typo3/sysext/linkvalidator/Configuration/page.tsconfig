@@ -7,7 +7,9 @@ mod.linkvalidator {
   }
 
   # specify link types to be crawled
-  linktypes = db,file,external
+  #   !!! external link types are currently not checked by default, see "Known problems" in documentation
+  #   https://docs.typo3.org/c/typo3/cms-linkvalidator/main/en-us/KnownProblems/Index.html
+  linktypes = db,file
 
   linktypesConfig {
     external {

@@ -125,11 +125,14 @@ linktypes
          This list may be extended by other extensions providing a
          :ref:`custom linktype implementation <linktype-implementation>`.
 
+         .. versionchanged:: 13.0
+             The default was changed to exclude "external" link type.
+
          ..  warning::
              External links can lead to some :ref:`known issues<usagePitfallsExternalLinks>`.
 
    Default
-         db,file,external
+         db,file
 
 
 

@@ -29,7 +29,12 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 
 /**
- * This class provides Check External Links plugin implementation
+ * This class provides external links checking
+ * !!! There are some known issues with external link checking:
+ * - "false positives": Link targets considered broken which are not broken
+ * - no rate limiting when checking links on external sites (e.g. crawl delay)
+ * - no caching of results (except for a runtime cache during link checking which will be invalid on next run)
+ * see "Known Problems" in the linkvalidator documentation
  */
 class ExternalLinktype extends AbstractLinktype
 {
