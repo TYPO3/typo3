@@ -34,22 +34,26 @@ class PagesRepository
     protected const TABLE = 'pages';
 
     /**
-     * Check if rootline contains a hidden page
+     * Check if rootline contains a hidden page (including current page)
      *
      * @param array $pageInfo Array with uid, title, hidden, extendToSubpages from pages table
+     * @param int $recursionLevel starts with 0 on current page and gets incremented with each recursion (when moving up the rootline)
      * @return bool TRUE if rootline contains a hidden page, FALSE if not
      */
-    public function doesRootLineContainHiddenPages(array $pageInfo): bool
+    public function doesRootLineContainHiddenPages(array $pageInfo, int $recursionLevel = 0): bool
     {
         $pid = (int)($pageInfo['pid'] ?? 0);
-        if ($pid === 0) {
-            return false;
-        }
-        $isHidden = (bool)($pageInfo['hidden']);
-        $extendToSubpages = (bool)($pageInfo['extendToSubpages']);
+        $isHidden = (bool)($pageInfo['hidden'] ?? false);
+        $extendToSubpages = (bool)($pageInfo['extendToSubpages'] ?? false);
 
-        if ($extendToSubpages === true && $isHidden === true) {
+        // is current page hidden ($recursionLevel=0) or is page in rootline hidden and $extendToSubpages=true
+        if ($isHidden === true && ($extendToSubpages === true || $recursionLevel === 0)) {
             return true;
+        }
+
+        if ($pid === 0) {
+            // has no (further) parent pages and no hidden pages detected
+            return false;
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -69,7 +73,7 @@ class PagesRepository
             ->fetchAssociative();
 
         if ($row !== false) {
-            return $this->doesRootLineContainHiddenPages($row);
+            return $this->doesRootLineContainHiddenPages($row, ++$recursionLevel);
         }
         return false;
     }
