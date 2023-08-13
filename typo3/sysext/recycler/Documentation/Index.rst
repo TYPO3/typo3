@@ -1,30 +1,30 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 ==============
 TYPO3 Recycler
 ==============
 
 :Extension key:
-   recycler
+    recycler
 
 :Package name:
-   typo3/cms-recycler
+    typo3/cms-recycler
 
 :Version:
-   |release|
+    |release|
 
 :Language:
-   en
+    en
 
 :Author:
-   TYPO3 contributors
+    TYPO3 contributors
 
 :License:
-   This document is published under the
-   `Open Content License <https://www.openhub.net/licenses/opl>`__.
+    This document is published under the
+    `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
-   |today|
+    |today|
 
 ----
 
@@ -40,17 +40,18 @@ overview of deleted records before taking further action.
 
 **Table of Contents:**
 
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
+..  toctree::
+    :maxdepth: 2
+    :titlesonly:
 
-   Introduction/Index
-   Configuration/Index
+    Introduction/Index
+    Installation/Index
+    Editor/Index
+    Configuration/Index
 
-.. Meta Menu
+..  Meta Menu
 
-.. toctree::
-   :hidden:
+..  toctree::
+    :hidden:
 
-   Sitemap
-   genindex
+    Sitemap
