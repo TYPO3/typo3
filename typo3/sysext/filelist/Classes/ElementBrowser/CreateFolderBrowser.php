@@ -49,6 +49,7 @@ class CreateFolderBrowser extends AbstractResourceBrowser
 
     public function render(): string
     {
+        $this->initSelectedFolder();
         $contentHtml = '';
 
         if ($this->selectedFolder !== null) {
