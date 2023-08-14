@@ -486,7 +486,7 @@ class InlineRecordContainer extends AbstractContainer
         // "Info": (All records)
         // @todo: hardcoded sys_file!
         if ($rec['table_local'] === 'sys_file') {
-            $uid = $rec['uid_local'][0]['uid'];
+            $uid = $rec['uid_local'][0]['uid'] ?? 0;
             $table = '_FILE';
         } else {
             $uid = $rec['uid'];
@@ -495,7 +495,7 @@ class InlineRecordContainer extends AbstractContainer
         if ($enabledControls['info']) {
             if ($isNewItem) {
                 $cells['info'] = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
-            } else {
+            } elseif ($uid > 0) {
                 $cells['info'] = '
 				<button type="button" class="btn btn-default" data-action="infowindow" data-info-table="' . htmlspecialchars($table) . '" data-info-uid="' . htmlspecialchars($uid) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo')) . '">
 					' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '
@@ -545,6 +545,7 @@ class InlineRecordContainer extends AbstractContainer
             }
             // "Edit" link:
             if (($rec['table_local'] === 'sys_file')
+                && ($uid > 0)
                 && !$isNewItem
                 && ($languageField = ($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? false))
                 && $backendUser->check('tables_modify', 'sys_file_metadata')
