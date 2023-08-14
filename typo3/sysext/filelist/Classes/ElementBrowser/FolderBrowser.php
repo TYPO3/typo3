@@ -55,6 +55,7 @@ class FolderBrowser extends AbstractResourceBrowser
      */
     public function render()
     {
+        $this->initSelectedFolder();
         $contentHtml = '';
 
         if ($this->selectedFolder instanceof Folder) {

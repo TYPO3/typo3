@@ -95,8 +95,6 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
         $this->filelist = GeneralUtility::makeInstance(FileList::class, $this->getRequest());
         $this->filelist->viewMode = ViewMode::tryFrom($this->viewMode) ?? ViewMode::TILES;
         $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && $this->displayThumbs;
-
-        $this->initSelectedFolder();
     }
 
     protected function initSelectedFolder(): void
