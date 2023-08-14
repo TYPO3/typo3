@@ -14,7 +14,7 @@
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ClientStorage from './storage/client';
 import { Sizes, States, MarkupIdentifiers } from './enum/icon-types';
-import { css, CSSResult, unsafeCSS } from 'lit';
+import { css, CSSResult } from 'lit';
 import { DedupeAsyncTask } from '@typo3/core/cache/dedupe-async-task'
 
 export class IconStyles {
@@ -22,29 +22,46 @@ export class IconStyles {
     return [
       css`
         :host {
-          --icon-color-primary: currentColor;
-          --icon-size-small: 16px;
-          --icon-size-medium: 32px;
-          --icon-size-large: 48px;
-          --icon-size-mega: 64px;
-          --icon-unify-modifier: 0.86;
-          --icon-opacity-disabled: 0.5
-
-          display: inline-block;
-        }
-
-        .icon-wrapper {
-          display: flex;
+          display: inline-flex;
           align-items: center;
           justify-content: center;
+          height: var(--icon-size, 1em);
+          width: var(--icon-size, 1em)
+          line-height: var(--icon-size, 1em);
+          vertical-align: -22%
+        }
+
+        :host([size=default]),
+        :host([raw]) .icon-size-default {
+          --icon-size: 1em;
+        }
+
+        :host([size=small]),
+        :host([raw]) .icon-size-small {
+          --icon-size: var(--icon-size-small, 16px)
+        }
+
+        :host([size=medium]),
+        :host([raw]) .icon-size-medium {
+          --icon-size: var(--icon-size-medium, 32px)
+        }
+
+        :host([size=large]),
+        :host([raw]) .icon-size-large {
+          --icon-size: var(--icon-size-large, 48px)
+        }
+
+        :host([size=mega]),
+        :host([raw]) .icon-size-mega {
+          --icon-size: var(--icon-size-mega, 64px)
         }
 
         .icon {
           position: relative;
-          display: inline-flex;
+          display: flex;
           overflow: hidden;
           white-space: nowrap;
-          color: var(--icon-color-primary);
+          color: var(--icon-color-primary, currentColor);
           height: var(--icon-size, 1em);
           width: var(--icon-size, 1em);
           line-height: var(--icon-size, 1em);
@@ -96,35 +113,20 @@ export class IconStyles {
         }
 
         .icon-state-disabled .icon-markup {
-          opacity: var(--icon-opacity-disabled)
+          opacity: var(--icon-opacity-disabled, 0.5)
         }
-      `,
-      IconStyles.getStyleSizeVariant(Sizes.small),
-      IconStyles.getStyleSizeVariant(Sizes.default),
-      IconStyles.getStyleSizeVariant(Sizes.medium),
-      IconStyles.getStyleSizeVariant(Sizes.large),
-      IconStyles.getStyleSizeVariant(Sizes.mega),
-    ];
-  }
 
-  public static getStyleSizeVariant(variant: string): CSSResult {
-    const variantResult = unsafeCSS(variant);
-    return css`
-      :host([size=${variantResult}]) .icon-size-${variantResult},
-      :host([raw]) .icon-size-${variantResult} {
-        --icon-size: var(--icon-size-${variantResult})
-      }
-      :host([size=${variantResult}]) .icon-size-${variantResult} .icon-unify,
-      :host([raw]) .icon-size-${variantResult} .icon-unify {
-        line-height: var(--icon-size);
-        font-size: calc(var(--icon-size) * var(--icon-unify-modifier))
-      }
-      :host([size=${variantResult}]) .icon-size-${variantResult} .icon-overlay .icon-unify,
-      :host([raw]) .icon-size-${variantResult} .icon-overlay .icon-unify {
-        line-height: calc(var(--icon-size) / 1.6);
-        font-size: calc((var(--icon-size) / 1.6) * var(--icon-unify-modifier))
-      }
-    `;
+        .icon-unify {
+          line-height: var(--icon-size, 1em);
+          font-size: calc(var(--icon-size, 1em) * var(--icon-unify-modifier, .86))
+        }
+
+        .icon-overlay .icon-unify {
+          line-height: calc(var(--icon-size, 1em) / 1.6);
+          font-size: calc((var(--icon-size, 1em) / 1.6) * var(--icon-unify-modifier, .86))
+        }
+      `
+    ];
   }
 }
 

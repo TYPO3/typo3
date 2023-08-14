@@ -10,31 +10,48 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import ClientStorage from"@typo3/backend/storage/client.js";import{Sizes,States,MarkupIdentifiers}from"@typo3/backend/enum/icon-types.js";import{css,unsafeCSS}from"lit";import{DedupeAsyncTask}from"@typo3/core/cache/dedupe-async-task.js";export class IconStyles{static getStyles(){return[css`
+import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import ClientStorage from"@typo3/backend/storage/client.js";import{Sizes,States,MarkupIdentifiers}from"@typo3/backend/enum/icon-types.js";import{css}from"lit";import{DedupeAsyncTask}from"@typo3/core/cache/dedupe-async-task.js";export class IconStyles{static getStyles(){return[css`
         :host {
-          --icon-color-primary: currentColor;
-          --icon-size-small: 16px;
-          --icon-size-medium: 32px;
-          --icon-size-large: 48px;
-          --icon-size-mega: 64px;
-          --icon-unify-modifier: 0.86;
-          --icon-opacity-disabled: 0.5
-
-          display: inline-block;
-        }
-
-        .icon-wrapper {
-          display: flex;
+          display: inline-flex;
           align-items: center;
           justify-content: center;
+          height: var(--icon-size, 1em);
+          width: var(--icon-size, 1em)
+          line-height: var(--icon-size, 1em);
+          vertical-align: -22%
+        }
+
+        :host([size=default]),
+        :host([raw]) .icon-size-default {
+          --icon-size: 1em;
+        }
+
+        :host([size=small]),
+        :host([raw]) .icon-size-small {
+          --icon-size: var(--icon-size-small, 16px)
+        }
+
+        :host([size=medium]),
+        :host([raw]) .icon-size-medium {
+          --icon-size: var(--icon-size-medium, 32px)
+        }
+
+        :host([size=large]),
+        :host([raw]) .icon-size-large {
+          --icon-size: var(--icon-size-large, 48px)
+        }
+
+        :host([size=mega]),
+        :host([raw]) .icon-size-mega {
+          --icon-size: var(--icon-size-mega, 64px)
         }
 
         .icon {
           position: relative;
-          display: inline-flex;
+          display: flex;
           overflow: hidden;
           white-space: nowrap;
-          color: var(--icon-color-primary);
+          color: var(--icon-color-primary, currentColor);
           height: var(--icon-size, 1em);
           width: var(--icon-size, 1em);
           line-height: var(--icon-size, 1em);
@@ -86,21 +103,16 @@ import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import ClientStorage f
         }
 
         .icon-state-disabled .icon-markup {
-          opacity: var(--icon-opacity-disabled)
+          opacity: var(--icon-opacity-disabled, 0.5)
         }
-      `,IconStyles.getStyleSizeVariant(Sizes.small),IconStyles.getStyleSizeVariant(Sizes.default),IconStyles.getStyleSizeVariant(Sizes.medium),IconStyles.getStyleSizeVariant(Sizes.large),IconStyles.getStyleSizeVariant(Sizes.mega)]}static getStyleSizeVariant(e){const i=unsafeCSS(e);return css`
-      :host([size=${i}]) .icon-size-${i},
-      :host([raw]) .icon-size-${i} {
-        --icon-size: var(--icon-size-${i})
-      }
-      :host([size=${i}]) .icon-size-${i} .icon-unify,
-      :host([raw]) .icon-size-${i} .icon-unify {
-        line-height: var(--icon-size);
-        font-size: calc(var(--icon-size) * var(--icon-unify-modifier))
-      }
-      :host([size=${i}]) .icon-size-${i} .icon-overlay .icon-unify,
-      :host([raw]) .icon-size-${i} .icon-overlay .icon-unify {
-        line-height: calc(var(--icon-size) / 1.6);
-        font-size: calc((var(--icon-size) / 1.6) * var(--icon-unify-modifier))
-      }
-    `}}class Icons{constructor(){this.sizes=Sizes,this.states=States,this.markupIdentifiers=MarkupIdentifiers,this.promiseCache=new DedupeAsyncTask}getIcon(e,i,t,n,s,o){const c=[e,i=i||Sizes.default,t,n=n||States.default,s=s||MarkupIdentifiers.default],r=c.join("_");return this.getIconRegistryCache().then((e=>(ClientStorage.isset("icon_registry_cache_identifier")&&ClientStorage.get("icon_registry_cache_identifier")===e||(ClientStorage.unsetByPrefix("icon_"),ClientStorage.set("icon_registry_cache_identifier",e)),this.fetchFromLocal(r).then(null,(()=>this.fetchFromRemote(c,r,o))))))}getIconRegistryCache(){return this.promiseCache.get("icon_registry_cache_identifier",(async e=>{const i=await new AjaxRequest(TYPO3.settings.ajaxUrls.icons_cache).get({signal:e});return await i.resolve()}))}fetchFromRemote(e,i,t){return this.promiseCache.get(i,(async t=>{const n=await new AjaxRequest(TYPO3.settings.ajaxUrls.icons).withQueryArguments({icon:JSON.stringify(e)}).get({signal:t}),s=await n.resolve();return!n.response.redirected&&s.startsWith("<span")&&s.includes("t3js-icon")&&s.includes('<span class="icon-markup">')&&ClientStorage.set("icon_"+i,s),s}),t)}fetchFromLocal(e){return ClientStorage.isset("icon_"+e)?Promise.resolve(ClientStorage.get("icon_"+e)):Promise.reject()}}let iconsObject;iconsObject||(iconsObject=new Icons,"undefined"!=typeof TYPO3&&(TYPO3.Icons=iconsObject));export default iconsObject;
+
+        .icon-unify {
+          line-height: var(--icon-size, 1em);
+          font-size: calc(var(--icon-size, 1em) * var(--icon-unify-modifier, .86))
+        }
+
+        .icon-overlay .icon-unify {
+          line-height: calc(var(--icon-size, 1em) / 1.6);
+          font-size: calc((var(--icon-size, 1em) / 1.6) * var(--icon-unify-modifier, .86))
+        }
+      `]}}class Icons{constructor(){this.sizes=Sizes,this.states=States,this.markupIdentifiers=MarkupIdentifiers,this.promiseCache=new DedupeAsyncTask}getIcon(e,i,t,s,n,o){const r=[e,i=i||Sizes.default,t,s=s||States.default,n=n||MarkupIdentifiers.default],a=r.join("_");return this.getIconRegistryCache().then((e=>(ClientStorage.isset("icon_registry_cache_identifier")&&ClientStorage.get("icon_registry_cache_identifier")===e||(ClientStorage.unsetByPrefix("icon_"),ClientStorage.set("icon_registry_cache_identifier",e)),this.fetchFromLocal(a).then(null,(()=>this.fetchFromRemote(r,a,o))))))}getIconRegistryCache(){return this.promiseCache.get("icon_registry_cache_identifier",(async e=>{const i=await new AjaxRequest(TYPO3.settings.ajaxUrls.icons_cache).get({signal:e});return await i.resolve()}))}fetchFromRemote(e,i,t){return this.promiseCache.get(i,(async t=>{const s=await new AjaxRequest(TYPO3.settings.ajaxUrls.icons).withQueryArguments({icon:JSON.stringify(e)}).get({signal:t}),n=await s.resolve();return!s.response.redirected&&n.startsWith("<span")&&n.includes("t3js-icon")&&n.includes('<span class="icon-markup">')&&ClientStorage.set("icon_"+i,n),n}),t)}fetchFromLocal(e){return ClientStorage.isset("icon_"+e)?Promise.resolve(ClientStorage.get("icon_"+e)):Promise.reject()}}let iconsObject;iconsObject||(iconsObject=new Icons,"undefined"!=typeof TYPO3&&(TYPO3.Icons=iconsObject));export default iconsObject;
