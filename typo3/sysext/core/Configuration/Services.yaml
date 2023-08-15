@@ -103,9 +103,6 @@ services:
         defaultProviderAllowed: false
         after: 'totp'
 
-  TYPO3\CMS\Core\Core\ClassLoadingInformation:
-    public: false
-
   TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider:
     shared: false
     public: true
