@@ -94,17 +94,17 @@ export class CspReports extends LitElement {
   @state() selectedReport: SummarizedCspReport | null = null;
   @state() suggestions: MutationSuggestion[] = [];
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
-    // Avoid shadow DOM for Bootstrap CSS to be applied
-    return this;
-  }
-
   connectedCallback() {
     super.connectedCallback();
     this.fetchReports();
   }
 
-  public render(): TemplateResult {
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    // Avoid shadow DOM for Bootstrap CSS to be applied
+    return this;
+  }
+
+  protected render(): TemplateResult {
     return html`
       ${styleTag`
         .infolist-container {

@@ -133,7 +133,30 @@ export class DraggableResizableElement extends LitElement {
     setTimeout(() => this.reverting = false, 500);
   }
 
-  public render(): TemplateResult {
+  public connectedCallback() {
+    super.connectedCallback();
+    if (!(this.container instanceof HTMLElement)) {
+      this.container = this.parentElement;
+    }
+    this.pointerEventNames.pointerDown.forEach((name: string): void =>
+      this.documentRef.addEventListener(name, this.handleStart.bind(this), true));
+    this.pointerEventNames.pointerMove.forEach((name: string): void =>
+      this.documentRef.addEventListener(name, this.handleUpdate.bind(this), true));
+    this.pointerEventNames.pointerUp.forEach((name: string): void =>
+      this.documentRef.addEventListener(name, this.handleFinish.bind(this), true));
+  }
+
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+    this.pointerEventNames.pointerDown.forEach((name: string): void =>
+      this.documentRef.removeEventListener(name, this.handleStart.bind(this), true));
+    this.pointerEventNames.pointerMove.forEach((name: string): void =>
+      this.documentRef.removeEventListener(name, this.handleUpdate.bind(this), true));
+    this.pointerEventNames.pointerUp.forEach((name: string): void =>
+      this.documentRef.removeEventListener(name, this.handleFinish.bind(this), true));
+  }
+
+  protected render(): TemplateResult {
     return html`
       ${styleTag([`
         :host, typo3-backend-draggable-resizable {
@@ -159,29 +182,6 @@ export class DraggableResizableElement extends LitElement {
         <div class="ui-resizable-handle ui-resizable-nw" data-resize="nw"></div>
       </div>
     `;
-  }
-
-  public connectedCallback() {
-    super.connectedCallback();
-    if (!(this.container instanceof HTMLElement)) {
-      this.container = this.parentElement;
-    }
-    this.pointerEventNames.pointerDown.forEach((name: string): void =>
-      this.documentRef.addEventListener(name, this.handleStart.bind(this), true));
-    this.pointerEventNames.pointerMove.forEach((name: string): void =>
-      this.documentRef.addEventListener(name, this.handleUpdate.bind(this), true));
-    this.pointerEventNames.pointerUp.forEach((name: string): void =>
-      this.documentRef.addEventListener(name, this.handleFinish.bind(this), true));
-  }
-
-  public disconnectedCallback() {
-    super.disconnectedCallback();
-    this.pointerEventNames.pointerDown.forEach((name: string): void =>
-      this.documentRef.removeEventListener(name, this.handleStart.bind(this), true));
-    this.pointerEventNames.pointerMove.forEach((name: string): void =>
-      this.documentRef.removeEventListener(name, this.handleUpdate.bind(this), true));
-    this.pointerEventNames.pointerUp.forEach((name: string): void =>
-      this.documentRef.removeEventListener(name, this.handleFinish.bind(this), true));
   }
 
   protected update(changedProperties: PropertyValues) {

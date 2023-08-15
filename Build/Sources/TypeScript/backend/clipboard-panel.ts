@@ -77,13 +77,13 @@ export class ClipboardPanel extends LitElement {
     `;
   }
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     // const renderRoot = this.attachShadow({mode: 'open'});
     return this;
   }
 
-  public render(): TemplateResult {
+  protected render(): TemplateResult {
     return html`
       ${until(this.renderPanel(), ClipboardPanel.renderLoader())}
     `;

@@ -38,12 +38,12 @@ export class SudoMode extends LitElement {
   @state() errorMessage: string = null;
   @query('#password') passwordElement: HTMLInputElement;
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  public render(): TemplateResult {
+  protected render(): TemplateResult {
     return html`
       ${styleTag`
         :host { display: block; }

@@ -23,7 +23,7 @@ export const componentName = 'typo3-backend-live-search-result-item-action-conta
 export class ActionContainer extends LitElement {
   @property({ type: Object, attribute: false }) resultItem: ResultItemInterface|null = null;
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }

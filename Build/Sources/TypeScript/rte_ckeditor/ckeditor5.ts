@@ -58,23 +58,6 @@ export class CKEditor5Element extends LitElement {
     super();
   }
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
-    // const renderRoot = this.attachShadow({mode: 'open'});
-    return this;
-  }
-
-  public render(): TemplateResult {
-    return html`
-      <textarea
-        id="${this.formEngine.id}"
-        name="${this.formEngine.name}"
-        class="form-control"
-        rows="18"
-        data-formengine-validation-rules="${this.formEngine.validationRules}"
-        >${this.formEngine.value}</textarea>
-    `;
-  }
-
   firstUpdated(): void
   {
     if (!(this.target instanceof HTMLElement)) {
@@ -149,6 +132,23 @@ export class CKEditor5Element extends LitElement {
             }
           });
       });
+  }
+
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    // const renderRoot = this.attachShadow({mode: 'open'});
+    return this;
+  }
+
+  protected render(): TemplateResult {
+    return html`
+      <textarea
+        id="${this.formEngine.id}"
+        name="${this.formEngine.name}"
+        class="form-control"
+        rows="18"
+        data-formengine-validation-rules="${this.formEngine.validationRules}"
+        >${this.formEngine.value}</textarea>
+    `;
   }
 
   private applyEditableElementStyles(editor: Core.Editor): void {

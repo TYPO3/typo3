@@ -36,12 +36,12 @@ export class FlashMessage extends LitElement {
     return message;
   }
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  public render(): TemplateResult {
+  protected render(): TemplateResult {
     let content: TemplateResult | symbol = nothing;
     if (this.content) {
       content = html`<p class="messageText">${this.content}</p>`;

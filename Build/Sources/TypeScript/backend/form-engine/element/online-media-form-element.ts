@@ -23,12 +23,12 @@ export class OnlineMediaFormElement extends LitElement {
   @property({ type: String, attribute: 'help-text' }) allowedExtensionsHelpText: string;
   @property({ type: String, attribute: 'extensions' }) allowedExtensions: string;
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  public render(): TemplateResult {
+  protected render(): TemplateResult {
     return html`
       <form @submit="${ this.dispatchSubmitEvent }">
         <div class="form-control-wrap">

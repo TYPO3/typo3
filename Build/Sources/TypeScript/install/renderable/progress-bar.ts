@@ -23,12 +23,12 @@ export class ProgressBar extends LitElement {
   @property({ type: String }) label: string = 'Loading...';
   @property({ type: String }) progress: string = '100';
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  public render(): TemplateResult {
+  protected render(): TemplateResult {
     return html`
       <div class="progress progress-bar-${Severity.getCssClass(Severity.loading)}">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="${this.progress}" aria-valuemin="0" aria-valuemax="100" style="width: ${this.progress}%">

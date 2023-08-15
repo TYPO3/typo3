@@ -33,7 +33,7 @@ export class ResultContainer extends LitElement {
     super.disconnectedCallback();
   }
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }

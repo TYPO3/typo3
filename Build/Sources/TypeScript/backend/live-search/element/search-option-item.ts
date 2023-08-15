@@ -31,7 +31,7 @@ export class SearchOptionItem extends LitElement {
     super.connectedCallback();
   }
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
