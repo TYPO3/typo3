@@ -36,6 +36,7 @@ nbproject
 #
 # Ignore build stuff
 /.ddev/*
+/Build/.auth
 /Build/.cache
 /Build/phpunit/FunctionalTests-Job-*
 /Build/bower_components/*

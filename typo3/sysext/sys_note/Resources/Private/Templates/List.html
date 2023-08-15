@@ -12,6 +12,7 @@
                         <button
                             type="button"
                             class="btn btn-link p-0 note-icon"
+                            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
                             data-contextmenu-trigger="click"
                             data-contextmenu-table="sys_note"
                             data-contextmenu-uid="{note.uid}"
@@ -39,7 +40,7 @@
                         <span class="note-actions">
                             <span class="btn-group">
                                 <f:if condition="{note.canBeEdited}">
-                                    <be:link.editRecord uid="{note.uid}" table="sys_note" class="btn btn-default btn-sm" returnUrl="{returnUrl}">
+                                    <be:link.editRecord uid="{note.uid}" table="sys_note" title="{f:translate(key: 'LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:edit_note')}" class="btn btn-default btn-sm" returnUrl="{returnUrl}">
                                         <core:icon identifier="actions-open" />
                                     </be:link.editRecord>
                                 </f:if>
@@ -50,6 +51,7 @@
                                         <button
                                             type="submit"
                                             class="btn btn-default btn-sm t3js-modal-trigger"
+                                            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
                                             data-severity="warning"
                                             data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
                                             data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"

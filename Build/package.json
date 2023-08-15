@@ -12,8 +12,10 @@
     "npm": ">=10.0.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.9.1",
     "@ckeditor/ckeditor5-dev-utils": "^40.2.1",
     "@open-wc/testing": "^4.0.0",
+    "@playwright/test": "^1.45.3",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.5",
@@ -85,6 +87,10 @@
     "update": "./node_modules/.bin/grunt update",
     "lint": "./node_modules/.bin/grunt lint",
     "test": "wtr",
+    "playwright:install": "playwright install",
+    "playwright:open": "playwright test --ui",
+    "playwright:run": "playwright test",
+    "playwright:codegen": "playwright codegen --ignore-https-errors",
     "watch:build": "grunt watch",
     "watch:test": "wtr --watch"
   },
