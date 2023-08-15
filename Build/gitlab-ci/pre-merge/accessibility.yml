@@ -1,0 +1,15 @@
+accessibility playwright composer sqlite 8.3 pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - main
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/playwright-composer/var/log
+      - typo3temp/var/tests/playwright-reports
+  script:
+    - Build/Scripts/runTests.sh -s accessibility -p 8.3 -d sqlite

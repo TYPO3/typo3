@@ -15,6 +15,9 @@
 			<trans-unit id="date" resname="date">
 				<source>Date</source>
 			</trans-unit>
+			<trans-unit id="edit_note" resname="edit_note">
+				<source>Edit note record</source>
+			</trans-unit>
 			<trans-unit id="personal" resname="personal">
 				<source>Personal</source>
 			</trans-unit>

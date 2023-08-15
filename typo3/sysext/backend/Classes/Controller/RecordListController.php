@@ -503,7 +503,8 @@ class RecordListController
         }
         // If any languages are left, make selector:
         if (!empty($availableTranslations)) {
-            $output = '<option value="">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:new_language')) . '</option>';
+            $label = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:new_language'));
+            $output = '<option value="">' . $label . '</option>';
             foreach ($availableTranslations as $languageUid => $languageTitle) {
                 // Build localize command URL to DataHandler (tce_db)
                 // which redirects to FormEngine (record_edit)
@@ -523,7 +524,7 @@ class RecordListController
             return ''
                 . '<div class="form-row">'
                     . '<div class="form-group">'
-                        . '<select class="form-select" name="createNewLanguage" data-global-event="change" data-action-navigate="$value">'
+                        . '<select class="form-select" name="createNewLanguage" aria-label="' . $label . '" data-global-event="change" data-action-navigate="$value">'
                         . $output
                         . '</select>'
                     . '</div>'
