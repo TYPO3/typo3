@@ -47,7 +47,7 @@ export class IconElement extends LitElement {
    */
   @property({ type: String }) raw?: string = null;
 
-  public render(): TemplateResult | symbol {
+  protected render(): TemplateResult | symbol {
     if (this.raw) {
       return html`${unsafeHTML(this.raw)}`;
     }

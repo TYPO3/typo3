@@ -22,7 +22,7 @@ export default class PageProviderResultItem extends LitElement {
   @property({ type: String, attribute: false }) typeLabel: string;
   @property({ type: Object, attribute: false }) extraData: { [key: string]: any };
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }

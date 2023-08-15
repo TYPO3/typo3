@@ -28,30 +28,6 @@ export class IframeModuleElement extends LitElement {
 
   @query('iframe', true) iframe: HTMLIFrameElement;
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
-    // Disable shadow root as <iframe> needs to be accessible
-    // via top.list_frame for legacy-code and backwards compatibility.
-    return this;
-  }
-
-  public render(): TemplateResult | symbol {
-    if (!this.endpoint) {
-      return nothing;
-    }
-
-    return html`
-      <iframe
-        src="${this.endpoint}"
-        name="list_frame"
-        id="typo3-contentIframe"
-        class="scaffold-content-module-iframe t3js-scaffold-content-module-iframe"
-        title="${lll('iframe.listFrame')}"
-        scrolling="no"
-        @load="${this._loaded}"
-      ></iframe>
-    `;
-  }
-
   public attributeChangedCallback(name: string, old: string, value: string) {
     super.attributeChangedCallback(name, old, value);
 
@@ -67,6 +43,30 @@ export class IframeModuleElement extends LitElement {
     if (this.endpoint) {
       this.dispatch('typo3-iframe-load', { url: this.endpoint, title: null });
     }
+  }
+
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    // Disable shadow root as <iframe> needs to be accessible
+    // via top.list_frame for legacy-code and backwards compatibility.
+    return this;
+  }
+
+  protected render(): TemplateResult | symbol {
+    if (!this.endpoint) {
+      return nothing;
+    }
+
+    return html`
+      <iframe
+        src="${this.endpoint}"
+        name="list_frame"
+        id="typo3-contentIframe"
+        class="scaffold-content-module-iframe t3js-scaffold-content-module-iframe"
+        title="${lll('iframe.listFrame')}"
+        scrolling="no"
+        @load="${this._loaded}"
+      ></iframe>
+    `;
   }
 
   private registerPagehideHandler(iframe: HTMLIFrameElement): void {

@@ -34,7 +34,7 @@ export class SpinnerElement extends LitElement {
   @property({ type: String }) size: Sizes = Sizes.default;
   @property({ type: String }) variant: Variant = Variant.dark;
 
-  public render(): TemplateResult {
+  protected render(): TemplateResult {
     return html`
       ${styleTag(IconStyles.getStyles())}
       ${styleTag`

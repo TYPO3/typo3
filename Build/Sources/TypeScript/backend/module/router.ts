@@ -120,7 +120,7 @@ export class ModuleRouter extends LitElement {
     });
   }
 
-  public render(): TemplateResult {
+  protected render(): TemplateResult {
     const moduleData = ModuleUtility.getFromName(this.module);
     const jsModule = moduleData.component || IFRAME_COMPONENT;
 

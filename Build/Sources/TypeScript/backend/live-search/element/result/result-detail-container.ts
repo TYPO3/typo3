@@ -22,7 +22,7 @@ export const componentName = 'typo3-backend-live-search-result-item-detail-conta
 export class ResultDetailContainer extends LitElement {
   @property({ type: Object, attribute: false }) resultItem: ResultItemInterface|null = null;
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
