@@ -193,7 +193,7 @@ export default class Filelist {
     }
     // update ModuleStateStorage to the current folder identifier
     const id = encodeURIComponent(mainElement.dataset.filelistCurrentIdentifier);
-    ModuleStateStorage.update('file', id, true, undefined);
+    ModuleStateStorage.update('media', id, true, undefined);
     // emit event for currently shown folder so the folder tree gets updated
     Filelist.emitTreeUpdateRequest(
       mainElement.dataset.filelistCurrentIdentifier

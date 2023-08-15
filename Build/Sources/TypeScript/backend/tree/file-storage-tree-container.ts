@@ -204,7 +204,7 @@ export class FileStorageTreeNavigationComponent extends LitElement {
     }
 
     // remember the selected folder in the global state
-    ModuleStateStorage.update('file', node.identifier, true);
+    ModuleStateStorage.update('media', node.identifier, true);
 
     if (evt.detail.propagate === false) {
       return;
