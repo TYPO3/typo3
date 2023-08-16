@@ -24,7 +24,6 @@
     "@types/d3-selection": "^3.0.4",
     "@types/jasmine": "^4.3.0",
     "@types/jquery": "2.0.47",
-    "@types/jqueryui": "^1.12.13",
     "@types/luxon": "^3.1.0",
     "@types/nprogress": "^0.2.0",
     "@types/requirejs": "^2.1.32",
@@ -62,7 +61,6 @@
     "karma-rollup-preprocessor": "^7.0.8",
     "lintspaces-cli": "^0.8.0",
     "mime-db": "^1.46.0",
-    "patch-package": "^6.5.1",
     "pofile": "^1.1.4",
     "postcss-banner": "^4.0.1",
     "postcss-clean": "^1.2.2",
@@ -85,8 +83,7 @@
     "build-js": "./node_modules/.bin/grunt scripts",
     "build-flags": "./node_modules/.bin/grunt flags-build",
     "update": "./node_modules/.bin/grunt update",
-    "lint": "./node_modules/.bin/grunt lint",
-    "postinstall": "patch-package"
+    "lint": "./node_modules/.bin/grunt lint"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": "^38.1.0",
