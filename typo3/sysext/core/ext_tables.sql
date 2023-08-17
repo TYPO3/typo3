@@ -374,7 +374,9 @@ CREATE TABLE sys_log (
 	KEY user_auth (type,action,tstamp),
 	KEY request (request_id),
 	KEY combined_1 (tstamp, type, userid),
-	KEY errorcount (tstamp,error)
+	KEY errorcount (tstamp,error),
+	KEY channel (channel),
+	KEY level (level)
 ) ENGINE=InnoDB;
 
 #
