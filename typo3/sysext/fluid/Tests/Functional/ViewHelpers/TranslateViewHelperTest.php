@@ -19,8 +19,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -30,7 +29,9 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class TranslateViewHelperTest extends FunctionalTestCase
 {
-    protected array $coreExtensionsToLoad = ['indexed_search'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/test_translate',
+    ];
 
     /**
      * @test
@@ -72,7 +73,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
     {
         return [
             'fallback to default attribute for not existing label' => [
-                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:iDoNotExist" default="myDefault" />',
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:iDoNotExist" default="myDefault" />',
                 'myDefault',
             ],
             'fallback to default attribute for static label' => [
@@ -80,7 +81,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
                 'myDefault',
             ],
             'fallback to child for not existing label' => [
-                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:iDoNotExist">myDefault</f:translate>',
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:iDoNotExist">myDefault</f:translate>',
                 'myDefault',
             ],
             'fallback to child for static label' => [
@@ -88,48 +89,64 @@ final class TranslateViewHelperTest extends FunctionalTestCase
                 'myDefault',
             ],
             'id and underscored extensionName given' => [
-                '<f:translate id="form.legend" extensionName="indexed_search" />',
+                '<f:translate id="form.legend" extensionName="test_translate" />',
                 'Search form',
             ],
             'key and underscored extensionName given' => [
-                '<f:translate key="form.legend" extensionName="indexed_search" />',
+                '<f:translate key="form.legend" extensionName="test_translate" />',
                 'Search form',
             ],
             'id and CamelCased extensionName given' => [
-                '<f:translate id="form.legend" extensionName="IndexedSearch" />',
+                '<f:translate id="form.legend" extensionName="TestTranslate" />',
                 'Search form',
             ],
             'key and CamelCased extensionName given' => [
-                '<f:translate key="form.legend" extensionName="IndexedSearch" />',
+                '<f:translate key="form.legend" extensionName="TestTranslate" />',
                 'Search form',
             ],
             'valid id and extensionName with default value given' => [
-                '<f:translate id="form.legend" extensionName="IndexedSearch" default="myDefault" />',
+                '<f:translate id="form.legend" extensionName="TestTranslate" default="myDefault" />',
                 'Search form',
             ],
             'invalid id and extensionName given with default value given' => [
-                '<f:translate key="invalid" extensionName="IndexedSearch" default="myDefault" />',
+                '<f:translate key="invalid" extensionName="TestTranslate" default="myDefault" />',
                 'myDefault',
             ],
             'full LLL syntax for not existing label' => [
-                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:iDoNotExist" />',
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:iDoNotExist" />',
                 '',
             ],
             'full LLL syntax for existing label' => [
-                '<f:translate key="LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:form.legend" />',
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:form.legend" />',
                 'Search form',
             ],
             'full LLL syntax for existing label with arguments without given arguments' => [
-                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:shortcut.title" />',
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:shortcut.title" />',
                 '%s%s on page &quot;%s&quot; [%d]',
             ],
             'full LLL syntax for existing label with arguments with given arguments' => [
-                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:shortcut.title" arguments="{0: \"a\", 1: \"b\", 2: \"c\", 3: 13}"/>',
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:shortcut.title" arguments="{0: \"a\", 1: \"b\", 2: \"c\", 3: 13}"/>',
                 'ab on page &quot;c&quot; [13]',
             ],
             'empty string on invalid extension' => [
                 '<f:translate key="LLL:EXT:i_am_invalid/Resources/Private/Language/locallang.xlf:dummy" />',
                 '',
+            ],
+            'languageKey fallback to default when key is not localized to de' => [
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:not.localized.to.de" languageKey="de" />',
+                'EN label',
+            ],
+            'languageKey de when key is localized to de' => [
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.de" languageKey="de" />',
+                'DE label',
+            ],
+            'languageKey de when key is not localized to de_at' => [
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.de" languageKey="de_at" />',
+                'DE label',
+            ],
+            'languageKey de_at when key is localized to de_at' => [
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.de_at" languageKey="de_at" />',
+                'DE_AT label',
             ],
         ];
     }
@@ -142,10 +159,51 @@ final class TranslateViewHelperTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         self::assertSame($expected, (new TemplateView($context))->render());
+    }
+
+    /**
+     * @test
+     */
+    public function renderInNonExtbaseContextHandlesLocaleObjectAsLanguageKey(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.de" languageKey="{myLocale}" />');
+        $templateView = new TemplateView($context);
+        $templateView->assign('myLocale', (new Locales())->createLocale('de'));
+        self::assertSame('DE label', $templateView->render());
+    }
+
+    /**
+     * @test
+     */
+    public function renderInNonExtbaseContextHandlesLocaleObjectAsLanguageKeyWithFallback(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.de" languageKey="{myLocale}" />');
+        $templateView = new TemplateView($context);
+        $templateView->assign('myLocale', (new Locales())->createLocale('de_at'));
+        self::assertSame('DE label', $templateView->render());
+    }
+
+    /**
+     * @test
+     */
+    public function renderInNonExtbaseContextHandlesLocaleObjectAsLanguageKeyWithoutFallback(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.de_at" languageKey="{myLocale}" />');
+        $templateView = new TemplateView($context);
+        $templateView->assign('myLocale', (new Locales())->createLocale('de_at'));
+        self::assertSame('DE_AT label', $templateView->render());
     }
 
     public static function renderReturnsStringInExtbaseContextDataProvider(): array
@@ -180,24 +238,44 @@ final class TranslateViewHelperTest extends FunctionalTestCase
                 'ab on page &quot;c&quot; [13]',
             ],
             'id and extensionName given' => [
-                '<f:translate key="validator.string.notvalid" extensionName="extbase" />',
+                '<f:translate key="validator.string.notvalid" extensionName="test_translate" />',
                 'A valid string is expected.',
             ],
             'key and extensionName given' => [
-                '<f:translate key="validator.string.notvalid" extensionName="extbase" />',
+                '<f:translate key="validator.string.notvalid" extensionName="test_translate" />',
                 'A valid string is expected.',
             ],
             'full LLL syntax for not existing label' => [
-                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:iDoNotExist" />',
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:iDoNotExist" />',
                 '',
             ],
             'full LLL syntax for existing label' => [
-                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.header" />',
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:login.header" />',
                 'Login',
             ],
             'empty string on invalid extension' => [
                 '<f:translate key="LLL:EXT:i_am_invalid/Resources/Private/Language/locallang.xlf:dummy" />',
                 '',
+            ],
+            'languageKey fallback to default when key is not localized to de' => [
+                '<f:translate key="not.localized.to.de" languageKey="de" />',
+                'EN label',
+            ],
+            'languageKey de when key is localized to de' => [
+                '<f:translate key="localized.to.de" languageKey="de" />',
+                'DE label',
+            ],
+            /*
+             * @todo: Data set below fails, but it works with the non-extbase version above.
+             *        Maybe fallback chains are not properly set up in extbase LocalizationUtility?
+            'languageKey de when key is not localized to de_at' => [
+                '<f:translate key="localized.to.de" languageKey="de_at" />',
+                'DE label',
+            ],
+            */
+            'languageKey de_at when key is localized to de_at' => [
+                '<f:translate key="localized.to.de_at" languageKey="de_at" />',
+                'DE_AT label',
             ],
         ];
     }
@@ -211,13 +289,69 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $extbaseRequestParameters = new ExtbaseRequestParameters();
-        $extbaseRequestParameters->setControllerExtensionName('backend');
+        $extbaseRequestParameters->setControllerExtensionName('test_translate');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
         $extbaseRequest = (new Request($serverRequest));
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $context->setRequest($extbaseRequest);
         self::assertSame($expected, (new TemplateView($context))->render());
+    }
+
+    /**
+     * @test
+     */
+    public function renderInExtbaseContextHandlesLocaleObjectAsLanguageKey(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $extbaseRequestParameters = new ExtbaseRequestParameters();
+        $extbaseRequestParameters->setControllerExtensionName('test_translate');
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $extbaseRequest = (new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:translate key="localized.to.de" languageKey="{myLocale}" />');
+        $context->setRequest($extbaseRequest);
+        $templateView = new TemplateView($context);
+        $templateView->assign('myLocale', (new Locales())->createLocale('de'));
+        self::assertSame('DE label', $templateView->render());
+    }
+
+    /**
+     * @todo: Test not active, same reason as commented data set above.
+     */
+    public function renderInExtbaseContextHandlesLocaleObjectAsLanguageKeyWithFallback(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $extbaseRequestParameters = new ExtbaseRequestParameters();
+        $extbaseRequestParameters->setControllerExtensionName('test_translate');
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $extbaseRequest = (new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:translate key="localized.to.de" languageKey="{myLocale}" />');
+        $context->setRequest($extbaseRequest);
+        $templateView = new TemplateView($context);
+        $templateView->assign('myLocale', (new Locales())->createLocale('de_at'));
+        self::assertSame('DE label', $templateView->render());
+    }
+
+    /**
+     * @test
+     */
+    public function renderInExtbaseContextHandlesLocaleObjectAsLanguageKeyWithoutFallback(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $extbaseRequestParameters = new ExtbaseRequestParameters();
+        $extbaseRequestParameters->setControllerExtensionName('test_translate');
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $extbaseRequest = (new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:translate key="localized.to.de_at" languageKey="{myLocale}" />');
+        $context->setRequest($extbaseRequest);
+        $templateView = new TemplateView($context);
+        $templateView->assign('myLocale', (new Locales())->createLocale('de_at'));
+        self::assertSame('DE_AT label', $templateView->render());
     }
 }
