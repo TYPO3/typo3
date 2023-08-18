@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface as ExtbaseRequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -122,7 +123,7 @@ final class TranslateViewHelper extends AbstractViewHelper
         $this->registerArgument('default', 'string', 'If the given locallang key could not be found, this value is used. If this argument is not set, child nodes will be used to render the default');
         $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
         $this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
-        $this->registerArgument('languageKey', 'string', 'Language key ("da" for example) or "default" to use. If empty, use current language. Ignored in non-extbase context.');
+        $this->registerArgument('languageKey', 'string', 'Language key ("da" for example) or "default" to use. If empty, use current language.');
     }
 
     /**
@@ -175,7 +176,7 @@ final class TranslateViewHelper extends AbstractViewHelper
                     );
                 }
             }
-            $value = self::getLanguageService($request)->sL($id);
+            $value = self::getLanguageService($request, $arguments['languageKey'])->sL($id);
             if (empty($value) || (!str_starts_with($id, 'LLL:EXT:') && $value === $id)) {
                 // In case $value is empty (LLL: could not be resolved) or $value
                 // is the same as $id and is no "LLL:", fall back to the default.
@@ -196,7 +197,7 @@ final class TranslateViewHelper extends AbstractViewHelper
             // Not this triggers TypoScript parsing via extbase ConfigurationManager
             // and should be avoided in backend context!
             $value = LocalizationUtility::translate($id, $extensionName, $translateArguments, $arguments['languageKey']);
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException) {
             // @todo: Switch to more specific Exceptions here - for instance those thrown when a package was not found, see #95957
             $value = null;
         }
@@ -209,9 +210,12 @@ final class TranslateViewHelper extends AbstractViewHelper
         return $value;
     }
 
-    protected static function getLanguageService(ServerRequestInterface $request = null): LanguageService
+    protected static function getLanguageService(ServerRequestInterface $request = null, string|Locale $languageKey = null): LanguageService
     {
         $languageServiceFactory = GeneralUtility::makeInstance(LanguageServiceFactory::class);
+        if ($languageKey) {
+            return $languageServiceFactory->create($languageKey);
+        }
         if ($request !== null && ApplicationType::fromRequest($request)->isFrontend()) {
             return $languageServiceFactory->createFromSiteLanguage($request->getAttribute('language')
                 ?? $request->getAttribute('site')->getDefaultLanguage());
