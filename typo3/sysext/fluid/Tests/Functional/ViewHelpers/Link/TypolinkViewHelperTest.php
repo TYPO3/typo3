@@ -17,7 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -42,6 +46,23 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
             ],
         ],
     ];
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $request = new ServerRequest('http://localhost/');
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = $request->withAttribute('routing', new PageArguments(1, '0', []));
+        $request = $request->withAttribute('site', new Site(
+            'site',
+            1,
+            [
+                'base' => 'http://localhost/',
+                'languages' => [],
+            ]
+        ));
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+    }
 
     public static function renderDataProvider(): array
     {

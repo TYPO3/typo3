@@ -27,6 +27,10 @@ class ExternalUrlLinkBuilder extends AbstractTypolinkBuilder
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         $url = $linkDetails['url'] ?? '';
+        // issue https://forge.typo3.org/issues/101083 forces absolute path URLs
+        // like `/path/some-file.png` to be handled as external URL, and that's
+        // why the URL is forced to contain a fully qualified domain name as well
+        $url = $this->forceAbsoluteUrl($url, $conf);
         $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, $url);
         return (new LinkResult(LinkService::TYPE_URL, (string)$url))
             ->withLinkConfiguration($conf)
