@@ -39,7 +39,7 @@ Custom TYPO3 extensions calling static methods in
 :php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation::method`
 except for the method :php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation::compare`
 
-The following method has changed first argument to an :php:`int´
+The following method has changed first argument to an :php:`int`
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->jsConfirmation()`
 
 Migration
