@@ -71,8 +71,8 @@ It's possible to use TSconfig options, such as
 implemented for this type. For such special cases, please continue using TCA
 type :php:`select`.
 
-The Override matrix - specifying the options which can be overridden in TSconfig
-- is extended for the new type. Following options can be overridden:
+The Override matrix - specifying the options which can be overridden in
+TSconfig - is extended for the new type. Following options can be overridden:
 
 * :php:`size`
 * :php:`maxitems`

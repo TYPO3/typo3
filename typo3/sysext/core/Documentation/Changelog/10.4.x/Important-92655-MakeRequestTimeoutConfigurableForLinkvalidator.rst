@@ -61,8 +61,8 @@ Depending on the library used and the tool, you can usually set:
 * read timeout
 * general timeout
 
-Libraries and utilities often have these options separately, including
-- for example - the curl command line tool or Guzzle.
+Libraries and utilities often have these options separately, including - for
+example - the curl command line tool or Guzzle.
 
 TYPO3 uses Guzzle under the hood.
 

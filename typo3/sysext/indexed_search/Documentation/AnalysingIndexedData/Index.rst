@@ -184,8 +184,8 @@ As you see the main board page showing the list of messages/threads
 ("Sourcream and Oni...") is indexed without any values for the
 parameter tt\_board\_uid (static_page_arguments). Then it has
 also been indexed one time for each display of a message. In a search
-result any of these five rows may appear as an independent result row
-- after all they are to be regarded as a single page with unique
+result any of these five rows may appear as an independent result row - after
+all they are to be regarded as a single page with unique
 content, despite sharing the same page-id!
 
 Another interesting thing is that while the main page has inherited
