@@ -20,9 +20,9 @@ default. However, it is still allowed to resolve a particular page by, for
 example, "example.org" - as long as the page ID `123` is in the scope of the
 site configured for the base URL "example.org".
 
-The new feature flag `security.frontend.allowInsecureSiteResolutionByQueryParameters`
-- which is disabled per default - can be used to reactivate the previous
-behavior:
+The new feature flag
+`security.frontend.allowInsecureSiteResolutionByQueryParameters` - which is
+disabled per default - can be used to reactivate the previous behavior:
 
 ..  code-block:: php
 
