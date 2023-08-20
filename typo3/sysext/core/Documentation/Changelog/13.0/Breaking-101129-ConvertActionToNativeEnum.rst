@@ -33,6 +33,7 @@ Third-party extensions using the following class constants:
 - :php:`\TYPO3\CMS\Scheduler\Task\Enumeration\Action::LIST`
 
 Class instantiation:
+
 - :php:`new Action('a-string')`
 
 
