@@ -903,7 +903,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                     new StringType(),
                     [
                         'default' => '',
-                        'length' => 255,
+                        'length' => 64,
                     ]
                 ),
                 new Column(
@@ -911,7 +911,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                     new StringType(),
                     [
                         'default' => '',
-                        'length' => 255,
+                        'length' => 64,
                     ]
                 ),
             ],
