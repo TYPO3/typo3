@@ -115,7 +115,7 @@
 				<source>Checking database character set failed, got key "%1$s" instead of "character_set_database"</source>
 			</trans-unit>
 			<trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported" resname="status_MysqlDatabaseCharacterSet_Unsupported">
-				<source>Your default database uses character set "%1$s", but only "utf8" or "utf8mb4" is supported with TYPO3.</source>
+				<source>Your default database uses character set "%1$s", but only "utf8", "utf8mb3" or "utf8mb4" is supported with TYPO3.</source>
 			</trans-unit>
 			<trans-unit id="status_MysqlDatabaseCharacterSet_Ok" resname="status_MysqlDatabaseCharacterSet_Ok">
 				<source>Your default database uses utf-8. All good.</source>

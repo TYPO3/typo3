@@ -74,6 +74,7 @@ class MySql extends AbstractPlatform
      */
     protected $databaseCharsetToCheck = [
         'utf8',
+        'utf8mb3',
         'utf8mb4',
     ];
 
@@ -83,6 +84,7 @@ class MySql extends AbstractPlatform
      */
     protected $databaseServerCharsetToCheck = [
         'utf8',
+        'utf8mb3',
         'utf8mb4',
     ];
 

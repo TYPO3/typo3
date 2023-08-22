@@ -128,7 +128,7 @@ class DatabaseUpgradeWizardsService
                 ->setMaxResults(1)
                 ->executeQuery()
                 ->fetchOne();
-            // check if database charset is utf-8, also allows utf8mb4
+            // check if database charset is utf-8, also allows utf8mb3 and utf8mb4
             $charsetOk = str_starts_with($charset, 'utf8');
         }
         return $charsetOk;
