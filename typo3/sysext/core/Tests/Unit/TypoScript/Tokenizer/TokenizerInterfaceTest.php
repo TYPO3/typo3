@@ -191,6 +191,18 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
                 new LineStream(),
             ],
+            'one identifier with @-sign recognized as identifier' => [
+                'foo@bar',
+                (new LineStream())
+                    ->append(
+                        (new InvalidLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo@bar', 0, 0))
+                            )
+                    ),
+                new LineStream(),
+            ],
             'one identifier, hash comment' => [
                 'foo # a comment',
                 (new LineStream())
@@ -438,6 +450,41 @@ final class TokenizerInterfaceTest extends UnitTestCase
                             ->setIdentifierTokenStream(
                                 (new IdentifierTokenStream())
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo:bar'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'fooValue'))
+                            )
+                    ),
+            ],
+            'identifier is email address, assignment, value' => [
+                'foo@example\.com = fooValue',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo@example.com', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 16))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 0, 17))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 18))
+                                    ->append(new Token(TokenType::T_VALUE, 'fooValue', 0, 19)),
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo@example.com', 0, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'fooValue', 0, 19))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo@example.com'))
                             )
                             ->setValueTokenStream(
                                 (new TokenStream())
