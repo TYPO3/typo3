@@ -247,7 +247,7 @@ class ConfigurationStatus implements StatusProviderInterface
 
         $severity = ReportStatus::OK;
         $statusValue = $this->getLanguageService()->getLL('status_ok');
-        // also allow utf8mb4
+        // also allow utf8mb3 and utf8mb4
         if (strpos($defaultDatabaseCharset, 'utf8') !== 0) {
             // If the default character set is e.g. latin1, BUT all tables in the system are UTF-8,
             // we assume that TYPO3 has the correct charset for adding tables, and everything is fine
