@@ -27,7 +27,7 @@ class TelephoneLinkHandler implements LinkHandlingInterface
      */
     public function asString(array $parameters): string
     {
-        $telephoneNumber = preg_replace('/(?:[^\d\+]+)/', '', $parameters['telephone']);
+        $telephoneNumber = preg_replace('/(?:[^\d\+,;]+)/', '', $parameters['telephone']);
 
         return 'tel:' . $telephoneNumber;
     }
