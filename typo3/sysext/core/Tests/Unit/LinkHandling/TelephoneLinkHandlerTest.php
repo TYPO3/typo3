@@ -69,6 +69,15 @@ class TelephoneLinkHandlerTest extends UnitTestCase
                 ],
                 'tel:+43123455678',
             ],
+            'telephone number with comma and semicolon' => [
+                [
+                    'telephone' => 'tel:+43 123 45 56 78,; 1234',
+                ],
+                [
+                    'telephone' => '+43 123 45 56 78,; 1234',
+                ],
+                'tel:+43123455678,;1234',
+            ],
         ];
     }
 
