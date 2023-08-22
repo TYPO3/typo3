@@ -695,8 +695,7 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * Checks if a file operation (= action) is allowed on a
-     * File/Folder/Storage (= subject).
+     * Checks if a file operation (= action) is allowed on a File/Folder/Storage (= subject).
      *
      * This method, by design, does not throw exceptions or do logging.
      * Besides the usage from other methods in this class, it is also used by
@@ -958,6 +957,11 @@ class ResourceStorage implements ResourceStorageInterface
         if (!$file instanceof ProcessedFile) {
             // Check if user is allowed to delete the file and $file is writable
             if (!$this->checkFileActionPermission('delete', $file)) {
+                // Do not throw exception, if file is just missing.
+                // That way we make sure event "FileDeletionAspect" is still being called to remove the remaining records.
+                if ($file instanceof File && $file->isMissing()) {
+                    return;
+                }
                 throw new InsufficientFileWritePermissionsException('You are not allowed to delete the file "' . $file->getIdentifier() . '"', 1319550425);
             }
             // Check if the user has write permissions to folders
