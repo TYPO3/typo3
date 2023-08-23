@@ -562,8 +562,8 @@ class MaintenanceController extends AbstractController
                 }
 
                 $messages->enqueue(new FlashMessage(
-                    'Administrator created',
-                    'An administrator with username "' . $username . '" has been created successfully.'
+                    'An administrator with username "' . $username . '" has been created successfully.',
+                    'Administrator created'
                 ));
             }
         }
