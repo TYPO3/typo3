@@ -79,7 +79,7 @@ class ImageMagick6Preset extends AbstractImagePreset
 
             $binaryPath = $path . $executable;
             if (!file_exists($binaryPath) || !is_executable($binaryPath)) {
-                break;
+                continue;
             }
 
             $command = escapeshellarg($binaryPath) . ' -version';
