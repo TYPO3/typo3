@@ -108,6 +108,10 @@ class UuidElement extends AbstractFormElement
             $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/copy-to-clipboard.js');
         }
 
+        $fieldControlResult = $this->renderFieldControl();
+        $fieldControlHtml = $fieldControlResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
+
         $html = [];
         $html[] = $this->renderLabel($fieldId);
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
@@ -117,6 +121,15 @@ class UuidElement extends AbstractFormElement
         $html[] =             '<div class="form-wizards-element">';
         $html[] =                 $uuidElement;
         $html[] =             '</div>';
+
+        if (!empty($fieldControlHtml)) {
+            $html[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
+            $html[] =          '<div class="btn-group">';
+            $html[] =              $fieldControlHtml;
+            $html[] =          '</div>';
+            $html[] =      '</div>';
+        }
+
         $html[] =         '</div>';
         $html[] =     '</div>';
         $html[] = '</div>';
