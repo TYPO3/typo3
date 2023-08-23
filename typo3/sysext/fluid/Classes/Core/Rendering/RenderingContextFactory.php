@@ -49,18 +49,11 @@ use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessorInterface;
  */
 final class RenderingContextFactory
 {
-    private ContainerInterface $container;
-    private CacheManager $cacheManager;
-    private ViewHelperResolverFactoryInterface $viewHelperResolverFactory;
-
     public function __construct(
-        ContainerInterface $container,
-        CacheManager $cacheManager,
-        ViewHelperResolverFactoryInterface $viewHelperResolverFactory
+        private readonly ContainerInterface $container,
+        private readonly CacheManager $cacheManager,
+        private readonly ViewHelperResolverFactoryInterface $viewHelperResolverFactory,
     ) {
-        $this->container = $container;
-        $this->cacheManager = $cacheManager;
-        $this->viewHelperResolverFactory = $viewHelperResolverFactory;
     }
 
     public function create(array $templatePathsArray = []): RenderingContext
