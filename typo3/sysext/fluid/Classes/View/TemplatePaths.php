@@ -100,7 +100,11 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
 
         foreach ($paths as $name => $defaultPaths) {
             if (!empty($configuredPaths[$name])) {
-                $paths[$name] = array_merge($defaultPaths, ArrayUtility::sortArrayWithIntegerKeys((array)$configuredPaths[$name]));
+                $configured = ArrayUtility::sortArrayWithIntegerKeys((array)$configuredPaths[$name]);
+                // calculate implicit default paths which have not been explicitly configured
+                $implicitDefaultPaths = array_diff($defaultPaths, $configured);
+                // prepend implicit default paths (which have not been found in configured paths), as fallbacks
+                $paths[$name] = array_merge($implicitDefaultPaths, $configured);
             }
         }
 
