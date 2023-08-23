@@ -57,12 +57,10 @@ class ImageCropScaleMaskTask extends AbstractTask
     {
         if (!empty($this->configuration['fileExtension'])) {
             $targetFileExtension = $this->configuration['fileExtension'];
-        } elseif (in_array($this->getSourceFile()->getExtension(), ['jpg', 'jpeg', 'png', 'gif'], true)) {
+        } elseif (in_array($this->getSourceFile()->getExtension(), ['jpg', 'jpeg', 'png', 'gif', 'svg'], true)) {
             $targetFileExtension = $this->getSourceFile()->getExtension();
         } elseif ($this->getSourceFile()->getExtension() === 'webp' && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? '', 'webp')) {
             $targetFileExtension = $this->getSourceFile()->getExtension();
-        } elseif (empty($this->configuration['crop']) && $this->getSourceFile()->getExtension() === 'svg') {
-            $targetFileExtension = 'svg';
         } else {
             // Thumbnails from non-processable files will be converted to 'png'
             $targetFileExtension = 'png';

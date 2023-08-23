@@ -91,12 +91,10 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
     }
 
     /**
-     * Check if the to be processed target file already exists
-     * if exist take info from that file and mark task as done
-     *
-     * @return bool
+     * Check if the target file that is to be processed already exists.
+     * If it exists, use the metadata from that file and mark task as done.
      */
-    protected function checkForExistingTargetFile(TaskInterface $task)
+    protected function checkForExistingTargetFile(TaskInterface $task): bool
     {
         // the storage of the processed file, not of the original file!
         $storage = $task->getTargetFile()->getStorage();

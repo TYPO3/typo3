@@ -1,0 +1,175 @@
+page = PAGE
+page {
+  # SECTION1: Specific files, forced crop
+  20 = IMAGE
+  20 {
+    file = {$localImage1}
+    file.crop = 10,10,500,500
+  }
+
+  30 = IMAGE
+  30 {
+    file = {$localImage2}
+    file.crop = 10,10,500,500
+  }
+
+  40 = IMAGE
+  40 {
+    file = {$localImage3}
+    file.crop = 10,10,500,500
+  }
+
+  50 = IMAGE
+  50 {
+    file = {$localImage4}
+    file.crop = 10,10,500,500
+  }
+
+  # SECTION2: Specific files, forced crop, force pixel image
+  120 = IMAGE
+  120 {
+    file = {$localImage1}
+    file.crop = 10,10,500,500
+    file.ext = png
+  }
+
+  130 = IMAGE
+  130 {
+    file = {$localImage2}
+    file.crop = 10,10,500,500
+    file.ext = png
+  }
+
+  140 = IMAGE
+  140 {
+    file = {$localImage3}
+    file.crop = 10,10,500,500
+    file.ext = png
+  }
+
+  150 = IMAGE
+  150 {
+    file = {$localImage4}
+    file.crop = 10,10,500,500
+    file.ext = png
+  }
+
+
+  # SECTION3: FAL Items, sys_file_reference crop
+  220 = IMAGE
+  220 {
+    file = {$localImage1Uid}
+    file.treatIdAsReference = true
+  }
+
+  230 = IMAGE
+  230 {
+    file = {$localImage2Uid}
+    file.treatIdAsReference = true
+  }
+
+  240 = IMAGE
+  240 {
+    file = {$localImage3Uid}
+    file.treatIdAsReference = true
+  }
+
+  250 = IMAGE
+  250 {
+    file = {$localImage4Uid}
+    file.treatIdAsReference = true
+  }
+
+  # SECTION4: FAL Items, sys_file_reference crop, force pixel image
+  320 = IMAGE
+  320 {
+    file = {$localImage1Uid}
+    file.ext = png
+    file.treatIdAsReference = true
+  }
+
+  330 = IMAGE
+  330 {
+    file = {$localImage2Uid}
+    file.ext = png
+    file.treatIdAsReference = true
+
+  }
+
+  340 = IMAGE
+  340 {
+    file = {$localImage3Uid}
+    file.ext = png
+    file.treatIdAsReference = true
+  }
+
+  350 = IMAGE
+  350 {
+    file = {$localImage4Uid}
+    file.ext = png
+    file.treatIdAsReference = true
+  }
+
+  # SECTION5: FAL Items, override crop
+  420 = IMAGE
+  420 {
+    file = {$localImage1UidUncrop}
+    file.crop = 10,10,500,500
+    file.treatIdAsReference = true
+  }
+
+  430 = IMAGE
+  430 {
+    file = {$localImage2UidUncrop}
+    file.crop = 10,10,500,500
+    file.treatIdAsReference = true
+  }
+
+  440 = IMAGE
+  440 {
+    file = {$localImage3UidUncrop}
+    file.crop = 10,10,500,500
+    file.treatIdAsReference = true
+  }
+
+  450 = IMAGE
+  450 {
+    file = {$localImage4UidUncrop}
+    file.crop = 10,10,500,500
+    file.treatIdAsReference = true
+  }
+
+  # SECTION6: FAL Items, override crop, force pixel image
+  520 = IMAGE
+  520 {
+    file = {$localImage1UidUncrop}
+    file.crop = 10,10,500,500
+    file.ext = png
+    file.treatIdAsReference = true
+  }
+
+  530 = IMAGE
+  530 {
+    file = {$localImage2UidUncrop}
+    file.crop = 10,10,500,500
+    file.ext = png
+    file.treatIdAsReference = true
+  }
+
+  540 = IMAGE
+  540 {
+    file = {$localImage3UidUncrop}
+    file.crop = 10,10,500,500
+    file.ext = png
+    file.treatIdAsReference = true
+  }
+
+  550 = IMAGE
+  550 {
+    file = {$localImage4UidUncrop}
+    file.crop = 10,10,500,500
+    file.ext = png
+    file.treatIdAsReference = true
+  }
+
+}

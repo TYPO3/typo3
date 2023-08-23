@@ -283,6 +283,7 @@ return [
                     'className' => \TYPO3\CMS\Core\Resource\Processing\SvgImageProcessor::class,
                     'before' => [
                         'LocalImageProcessor',
+                        'DeferredBackendImageProcessor',
                     ],
                 ],
                 'DeferredBackendImageProcessor' => [
