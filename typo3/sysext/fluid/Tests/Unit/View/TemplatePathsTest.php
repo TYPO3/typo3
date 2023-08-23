@@ -266,4 +266,52 @@ class TemplatePathsTest extends UnitTestCase
             ],
         ], $result);
     }
+
+    /**
+     * @test
+     */
+    public function getContextSpecificViewConfigurationRespectsTypoScriptConfiguredPaths(): void
+    {
+        $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
+            'plugin.' => [
+                'tx_test.' => [
+                    'view.' => [
+                        'templateRootPaths.' => [
+                            '0' => 'base/Templates/',
+                            '10' => 'test/Templates/',
+                        ],
+                        'partialRootPaths.' => [
+                            '0' => 'base/Partials/',
+                            '10' => 'test/Partials/',
+                        ],
+                        'layoutRootPaths.' => [
+                            '0' => 'base/Layouts/',
+                            '10' => 'test/Layouts/',
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'isBackendMode', 'isFrontendMode']);
+        $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
+        $subject->expects(self::once())->method('getConfigurationManager')->willReturn($configurationManager);
+        $subject->expects(self::once())->method('isBackendMode')->willReturn(false);
+        $subject->expects(self::once())->method('isFrontendMode')->willReturn(true);
+        $result = $subject->_call('getContextSpecificViewConfiguration', 'test');
+        self::assertSame([
+            'templateRootPaths' => [
+                'base/Templates/',
+                'test/Templates/',
+            ],
+            'partialRootPaths' => [
+                'base/Partials/',
+                'test/Partials/',
+            ],
+            'layoutRootPaths' => [
+                'base/Layouts/',
+                'test/Layouts/',
+            ],
+        ], $result);
+    }
 }
