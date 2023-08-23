@@ -22,21 +22,20 @@ use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Renders a widget where a password can be generated, typically used with type=password
+ * Renders a widget to generate a random string in JavaScript.
  *
- * @internal Only to be used by TYPO3. Might change in the future.
+ * This is typically used in combination with TCA type=password as password
+ * generator, but can be potentially used with other field input types as well.
+ *
+ * @internal This is still a bit experimental and may change, for instance to
+ *           be combined with passwordPolicies.
  */
 class PasswordGenerator extends AbstractNode
 {
     public function render(): array
     {
-        $parameterArray = $this->data['parameterArray'];
-        if (($parameterArray['fieldConf']['config']['type'] ?? '') !== 'password') {
-            return [];
-        }
-
         $options = $this->data['renderData']['fieldControlOptions'];
-        $itemName = (string)$parameterArray['itemFormElName'];
+        $itemName = (string)$this->data['parameterArray']['itemFormElName'];
         $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
 
         // Handle options and fallback
