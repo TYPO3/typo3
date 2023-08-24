@@ -91,7 +91,7 @@ return [
                'eval' => 'int',
                'default' => 0,
                'range' => [
-                   'upper' => mktime(0, 0, 0, 1, 1, 2038),
+                   'upper' => mktime(0, 0, 0, 1, 1, 2106),
                ],
                'behaviour' => [
                    'allowLanguageSynchronization' => true,

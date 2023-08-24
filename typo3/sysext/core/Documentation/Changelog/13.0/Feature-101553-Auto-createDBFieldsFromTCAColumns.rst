@@ -11,7 +11,7 @@ See :issue:`101553`
 Description
 ===========
 
-The TYPO3 v13 core strives to auto-create database columns derived from
+The TYPO3 v13 Core strives to auto-create database columns derived from
 :php:`TCA` :php:`columns` definitions without explicitly declaring them in
 :file:`ext_tables.sql`.
 
@@ -68,5 +68,7 @@ Columns are auto-created for these :php:`TCA` :php:`columns` types:
 * :php:`type = 'link'` - new with core v13
 * :php:`type = 'inline'` - new with core v13
 
+See :ref:`Breaking: DateTime column definitions <breaking-99937-1691166389>`
+for a change in the :sql:`datetime` column definition calculation.
 
 .. index:: TCA, ext:core, NotScanned

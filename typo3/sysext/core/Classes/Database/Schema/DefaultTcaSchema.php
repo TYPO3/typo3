@@ -113,6 +113,7 @@ class DefaultTcaSchema
             }
 
             // tstamp column
+            // not converted to bigint because already unsigned and date before 1970 not needed
             if (!empty($tableDefinition['ctrl']['tstamp'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['tstamp'])
             ) {
@@ -173,6 +174,7 @@ class DefaultTcaSchema
             }
 
             // starttime column
+            // not converted to bigint because already unsigned and date before 1970 not needed
             if (!empty($tableDefinition['ctrl']['enablecolumns']['starttime'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['enablecolumns']['starttime'])
             ) {
@@ -188,6 +190,7 @@ class DefaultTcaSchema
             }
 
             // endtime column
+            // not converted to bigint because already unsigned and date before 1970 not needed
             if (!empty($tableDefinition['ctrl']['enablecolumns']['endtime'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['enablecolumns']['endtime'])
             ) {
@@ -507,9 +510,24 @@ class DefaultTcaSchema
                         ]
                     );
                 } else {
+                    // int unsigned:            from 1970 to 2106.
+                    // int signed:              from 1901 to 2038.
+                    // bigint unsigned/signed:  from whenever to whenever
+                    //
+                    // Anything like crdate,tstamp,starttime,endtime is good with
+                    //  "int unsigned" and can survive the 2038 apocalypse (until 2106).
+                    //
+                    // However, anything that has birthdates or dates
+                    // from the past (sys_file_metadata.content_creation_date) was saved
+                    // as a SIGNED INT. It allowed birthdays of people older than 1970,
+                    // but with the downside that it ends in 2038.
+                    //
+                    // This is now changed to utilize BIGINT everywhere, even when smaller
+                    // date ranges are requested. To reduce complexity, we specifically
+                    // do not evaluate "range.upper/lower" fields and use a unified type here.
                     $tables[$tablePosition]->addColumn(
                         $this->quote($fieldName),
-                        Types::INTEGER,
+                        Types::BIGINT,
                         [
                             'default' => 0,
                             'notnull' => !($fieldConfig['config']['nullable'] ?? false),

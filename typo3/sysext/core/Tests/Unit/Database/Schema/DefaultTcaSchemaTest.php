@@ -714,6 +714,157 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
+    public function enrichAddsLifeTimerangeDatefield(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['aBigDateField'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'date',
+                'range' => [
+                    'lower' => mktime(0, 0, 0, 10, 28, 1979),
+                    'upper' => mktime(0, 0, 0, 1, 1, 2051),
+                ],
+            ],
+        ];
+
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`aBigDateField`',
+            Type::getType('bigint'),
+            [
+                'default' => 0,
+                'notnull' => true,
+                'unsigned' => false,
+            ]
+        );
+        self::assertEquals($expectedColumn, $result[0]->getColumn('aBigDateField'));
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsShortLifeTimerangeDatefield(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['aSmallDateField'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'date',
+                'range' => [
+                    'lower' => mktime(0, 0, 0, 10, 28, 1979),
+                    'upper' => mktime(0, 0, 0, 1, 1, 2037),
+                ],
+            ],
+        ];
+
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`aSmallDateField`',
+            Type::getType('bigint'),
+            [
+                'default' => 0,
+                'notnull' => true,
+                'unsigned' => false,
+            ]
+        );
+        self::assertEquals($expectedColumn, $result[0]->getColumn('aSmallDateField'));
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsDefaultTimerangeDatefield(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['aDefaultDateField'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'date',
+            ],
+        ];
+
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`aDefaultDateField`',
+            Type::getType('bigint'),
+            [
+                'default' => 0,
+                'notnull' => true,
+                'unsigned' => false,
+            ]
+        );
+        self::assertEquals($expectedColumn, $result[0]->getColumn('aDefaultDateField'));
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsLargeFutureTimerangeDatefield(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['aBigDateField'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'date',
+                'range' => [
+                    'lower' => mktime(0, 0, 0, 10, 28, 1979),
+                    'upper' => mktime(0, 0, 0, 1, 1, 2111),
+                ],
+            ],
+        ];
+
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`aBigDateField`',
+            Type::getType('bigint'),
+            [
+                'default' => 0,
+                'notnull' => true,
+                'unsigned' => false,
+            ]
+        );
+        self::assertEquals($expectedColumn, $result[0]->getColumn('aBigDateField'));
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsLargePastTimerangeDatefield(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['aSmallDateField'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'date',
+                'range' => [
+                    'lower' => mktime(0, 0, 0, 10, 28, 1888),
+                    'upper' => mktime(0, 0, 0, 1, 1, 2111),
+                ],
+            ],
+        ];
+
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`aSmallDateField`',
+            Type::getType('bigint'),
+            [
+                'default' => 0,
+                'notnull' => true,
+                'unsigned' => false,
+            ]
+        );
+        self::assertEquals($expectedColumn, $result[0]->getColumn('aSmallDateField'));
+    }
+
+    /**
+     * @test
+     */
     public function enrichAddsT3verOidIndex(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [

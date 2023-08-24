@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\IntegerType;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -61,7 +62,8 @@ final class TypeDatetimeFormatTimesec extends AbstractFieldGenerator implements 
             ->getSchemaInformation()
             ->introspectTable($data['tableName']);
         if ($tableSchemaInformation->hasColumn($data['fieldName'])
-            && $tableSchemaInformation->getColumn($data['fieldName'])->getType() instanceof IntegerType
+            && ($tableSchemaInformation->getColumn($data['fieldName'])->getType() instanceof IntegerType ||
+                $tableSchemaInformation->getColumn($data['fieldName'])->getType() instanceof BigIntType)
         ) {
             return $value;
         }
