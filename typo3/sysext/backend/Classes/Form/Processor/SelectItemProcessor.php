@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Form\Processor;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -54,6 +55,7 @@ final class SelectItemProcessor
      */
     public function groupAndSortItems(array $allItems, array $definedGroups, array $sortOrders): array
     {
+        $allItems = $this->transformArrayToSelectItems($allItems);
         $groupedItems = [];
         // Append defined groups at first, as their order is prioritized
         $itemGroups = ['none' => ''];
@@ -63,21 +65,21 @@ final class SelectItemProcessor
         $currentGroup = 'none';
         // Extract --div-- into itemGroups
         foreach ($allItems as $item) {
-            if ($item['value'] === '--div--') {
+            if ($item->isDivider()) {
                 // A divider is added as a group (existing groups will get their label overridden)
-                if (isset($item['group'])) {
-                    $currentGroup = $item['group'];
-                    $itemGroups[$currentGroup] = $item['label'];
+                if ($item->hasGroup()) {
+                    $currentGroup = $item->getGroup();
+                    $itemGroups[$currentGroup] = $item->getLabel();
                 } else {
                     $currentGroup = 'none';
                 }
                 continue;
             }
             // Put the given item in the currentGroup if no group has been given already
-            if (!isset($item['group'])) {
-                $item['group'] = $currentGroup;
+            if (!$item->hasGroup()) {
+                $item = $item->withGroup($currentGroup);
             }
-            $groupIdOfItem = !empty($item['group']) ? $item['group'] : 'none';
+            $groupIdOfItem = $item->hasGroup() ? $item->getGroup() : 'none';
             // It is still possible to have items that have an "unassigned" group, so they are moved to the "none" group
             if (!isset($itemGroups[$groupIdOfItem])) {
                 $itemGroups[$groupIdOfItem] = '';
@@ -94,7 +96,7 @@ final class SelectItemProcessor
             if (!empty($sortOrders)) {
                 $allItems = $this->sortItems($allItems, $sortOrders);
             }
-            return $allItems;
+            return $this->transformSelectItemsToArray($allItems);
         }
 
         // $groupedItems contains all items per group
@@ -120,15 +122,39 @@ final class SelectItemProcessor
             }
             $finalItems = array_merge($finalItems, $itemsInGroup);
         }
-        return $finalItems;
+        return $this->transformSelectItemsToArray($finalItems);
+    }
+
+    /**
+     * @return SelectItem[]
+     */
+    public function transformArrayToSelectItems(array $items, string $type = 'select'): array
+    {
+        return array_map(static function (array|SelectItem $item) use ($type): SelectItem {
+            if ($item instanceof SelectItem) {
+                return $item;
+            }
+            return SelectItem::fromTcaItemArray($item, $type);
+        }, $items);
+    }
+
+    public function transformSelectItemsToArray(array $items): array
+    {
+        return array_map(static function (array|SelectItem $item): array {
+            if (!$item instanceof SelectItem) {
+                return $item;
+            }
+            return $item->toArray();
+        }, $items);
     }
 
     /**
      * Sort given items by label or value or a custom user function built like
      * "MyVendor\MyExtension\TcaSorter->sortItems" or a callable.
      *
+     * @param SelectItem[] $items
      * @param array $sortOrders should be something like like [label => desc]
-     * @return array the sorted items
+     * @return SelectItem[] the sorted items
      */
     protected function sortItems(array $items, array $sortOrders): array
     {
@@ -138,11 +164,11 @@ final class SelectItemProcessor
                     $direction = strtolower($direction);
                     @usort(
                         $items,
-                        static function ($item1, $item2) use ($direction) {
+                        static function (SelectItem $item1, SelectItem $item2) use ($direction) {
                             if ($direction === 'desc') {
-                                return (strcasecmp($item1['label'], $item2['label']) <= 0) ? 1 : 0;
+                                return (strcasecmp($item1->getLabel(), $item2->getLabel()) <= 0) ? 1 : 0;
                             }
-                            return strcasecmp($item1['label'], $item2['label']);
+                            return strcasecmp($item1->getLabel(), $item2->getLabel());
                         }
                     );
                     break;
@@ -150,11 +176,11 @@ final class SelectItemProcessor
                     $direction = strtolower($direction);
                     @usort(
                         $items,
-                        static function ($item1, $item2) use ($direction) {
+                        static function (SelectItem $item1, SelectItem $item2) use ($direction) {
                             if ($direction === 'desc') {
-                                return (strcasecmp((string)$item1['value'], (string)$item2['value']) <= 0) ? 1 : 0;
+                                return (strcasecmp((string)$item1->getValue(), (string)$item2->getValue()) <= 0) ? 1 : 0;
                             }
-                            return strcasecmp((string)$item1['value'], (string)$item2['value']);
+                            return strcasecmp((string)$item1->getValue(), (string)$item2->getValue());
                         }
                     );
                     break;

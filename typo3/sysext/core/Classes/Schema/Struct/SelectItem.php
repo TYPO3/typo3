@@ -95,9 +95,23 @@ final class SelectItem implements \ArrayAccess
         return $this->label;
     }
 
+    public function withLabel(string $label): SelectItem
+    {
+        $clone = clone $this;
+        $clone->label = $label;
+        return $clone;
+    }
+
     public function getValue(): int|string|null
     {
         return $this->value;
+    }
+
+    public function withValue(int|string|null $value): SelectItem
+    {
+        $clone = clone $this;
+        $clone->value = $value;
+        return $clone;
     }
 
     public function getIcon(): ?string
@@ -110,6 +124,13 @@ final class SelectItem implements \ArrayAccess
         return $this->icon !== null;
     }
 
+    public function withIcon(?string $icon): SelectItem
+    {
+        $clone = clone $this;
+        $clone->icon = $icon;
+        return $clone;
+    }
+
     public function getGroup(): ?string
     {
         return $this->group;
@@ -120,6 +141,13 @@ final class SelectItem implements \ArrayAccess
         return $this->group !== null;
     }
 
+    public function withGroup(?string $group): SelectItem
+    {
+        $clone = clone $this;
+        $clone->group = $group;
+        return $clone;
+    }
+
     public function getDescription(): string|array|null
     {
         return $this->description;
@@ -128,6 +156,13 @@ final class SelectItem implements \ArrayAccess
     public function hasDescription(): bool
     {
         return $this->description !== null;
+    }
+
+    public function withDescription(string|array|null $description): SelectItem
+    {
+        $clone = clone $this;
+        $clone->description = $description;
+        return $clone;
     }
 
     public function invertStateDisplay(): bool
