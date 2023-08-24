@@ -3552,7 +3552,7 @@ class DataHandler implements LoggerAwareInterface
                                 } else {
                                     $this->copyRecord($table, (int)$id, $target, true, [], '', 0, $ignoreLocalization);
                                 }
-                                $procId = $this->copyMappingArray[$table][$id];
+                                $procId = $this->copyMappingArray[$table][$id] ?? null;
                                 break;
                             case 'localize':
                                 $this->useTransOrigPointerField = true;
@@ -3573,7 +3573,7 @@ class DataHandler implements LoggerAwareInterface
                                 break;
                         }
                         $this->useTransOrigPointerField = $backupUseTransOrigPointerField;
-                        if (is_array($pasteUpdate)) {
+                        if (is_array($pasteUpdate) && $procId > 0) {
                             $pasteDatamap[$table][$procId] = $pasteUpdate;
                         }
                     }
@@ -3782,7 +3782,7 @@ class DataHandler implements LoggerAwareInterface
                 $CPtable = $this->int_pageTreeInfo([], $uid, (int)$this->copyTree, $theNewRootID);
                 // Now copying the subpages:
                 foreach ($CPtable as $thePageUid => $thePagePid) {
-                    $newPid = $this->copyMappingArray['pages'][$thePagePid];
+                    $newPid = $this->copyMappingArray['pages'][$thePagePid] ?? null;
                     if (isset($newPid)) {
                         $this->copySpecificPage($thePageUid, $newPid, $copyTablesAlongWithPage);
                     } else {
@@ -6744,7 +6744,7 @@ class DataHandler implements LoggerAwareInterface
                     $thePidToUpdate = $theUidToUpdate;
                 } elseif (isset($this->registerDBPids[$table][$uid])) {
                     $thePidToUpdate = $this->registerDBPids[$table][$uid];
-                    $thePidToUpdate = $this->copyMappingArray_merged['pages'][$thePidToUpdate];
+                    $thePidToUpdate = $this->copyMappingArray_merged['pages'][$thePidToUpdate] ?? null;
                 }
 
                 // Update child records if change to pid is required
@@ -6803,7 +6803,7 @@ class DataHandler implements LoggerAwareInterface
             $thePidToUpdate = $theUidToUpdate;
         } elseif (isset($this->registerDBPids[$table][$uid])) {
             $thePidToUpdate = $this->registerDBPids[$table][$uid];
-            $thePidToUpdate = $this->copyMappingArray_merged['pages'][$thePidToUpdate];
+            $thePidToUpdate = $this->copyMappingArray_merged['pages'][$thePidToUpdate] ?? null;
         }
 
         if ($thePidToUpdate && $updatePidForRecords !== []) {
