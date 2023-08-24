@@ -1085,7 +1085,8 @@ class DataMapProcessor
                     $ancestorIdMap[$ancestorId]
                 );
                 if (!empty($possibleChainedIds)) {
-                    $ancestorId = $possibleChainedIds[0];
+                    // use the first found id from `$possibleChainedIds`
+                    $ancestorId = reset($possibleChainedIds);
                     $dependentIdMap[$ancestorId] = $dependentId;
                 }
             }

@@ -741,7 +741,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
-			message: "#^Offset string does not exist on array\\{\\}\\.$#"
+			message: "#^Offset string on array\\{\\} on left side of \\?\\? does not exist\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
