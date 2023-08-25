@@ -893,8 +893,12 @@ export function renderCollectionElementSelectionEditor(
 
   getHelper().getTemplatePropertyDomElement('label', editorHtml).text(editorConfiguration.label);
   const selectElement = getHelper().getTemplatePropertyDomElement('selectOptions', editorHtml);
+  const hasAlreadySelectedCollectionElements = (
+    !getUtility().isUndefinedOrNull(alreadySelectedCollectionElements) &&
+    alreadySelectedCollectionElements.length > 0
+  );
 
-  if (!getUtility().isUndefinedOrNull(alreadySelectedCollectionElements)) {
+  if (hasAlreadySelectedCollectionElements) {
     for (let i = 0, len = alreadySelectedCollectionElements.length; i < len; ++i) {
       getPublisherSubscriber().publish('view/inspector/collectionElement/existing/selected', [
         alreadySelectedCollectionElements[i].identifier,
@@ -926,8 +930,17 @@ export function renderCollectionElementSelectionEditor(
   }
 
   if (removeSelectElement) {
-    selectElement.off().empty().remove();
+    getHelper().getTemplatePropertyDomElement('select-group', editorHtml).off().empty().remove();
+    const labelNoSelect = getHelper().getTemplatePropertyDomElement('label-no-select', editorHtml);
+    if (hasAlreadySelectedCollectionElements) {
+      labelNoSelect.text(editorConfiguration.label);
+    } else {
+      labelNoSelect.remove();
+    }
+    return;
   }
+
+  getHelper().getTemplatePropertyDomElement('label-no-select', editorHtml).remove();
 
   selectElement.on('change', function(this: HTMLSelectElement) {
     if ($(this).val() !== '') {
