@@ -119,6 +119,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     protected function setProcessingConfiguration(array $processingConfiguration): void
     {
         $this->procOptions = $processingConfiguration;
+        $this->getKeepTags_cache = [];
+
         if (isset($this->procOptions['allowedClasses.'])) {
             $this->allowedClasses = (array)$this->procOptions['allowedClasses.'];
         } else {
