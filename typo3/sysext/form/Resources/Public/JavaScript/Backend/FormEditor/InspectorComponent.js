@@ -1009,7 +1009,7 @@ define(['jquery',
      */
     function renderCollectionElementSelectionEditor(collectionName, editorConfiguration, editorHtml) {
       var alreadySelectedCollectionElements, selectElement, collectionContainer,
-        removeSelectElement;
+        removeSelectElement, hasAlreadySelectedCollectionElements;
       assert(
         getUtility().isNonEmptyString(collectionName),
         'Invalid configuration "collectionName"',
@@ -1049,7 +1049,12 @@ define(['jquery',
       getHelper().getTemplatePropertyDomElement('label', editorHtml).text(editorConfiguration['label']);
       selectElement = getHelper().getTemplatePropertyDomElement('selectOptions', editorHtml);
 
-      if (!getUtility().isUndefinedOrNull(alreadySelectedCollectionElements)) {
+      hasAlreadySelectedCollectionElements = (
+        !getUtility().isUndefinedOrNull(alreadySelectedCollectionElements) &&
+        alreadySelectedCollectionElements.length > 0
+      );
+
+      if (hasAlreadySelectedCollectionElements) {
         for (var i = 0, len = alreadySelectedCollectionElements.length; i < len; ++i) {
           getPublisherSubscriber().publish('view/inspector/collectionElement/existing/selected', [
             alreadySelectedCollectionElements[i]['identifier'],
@@ -1081,8 +1086,17 @@ define(['jquery',
       }
 
       if (removeSelectElement) {
-        selectElement.off().empty().remove();
+        getHelper().getTemplatePropertyDomElement('select-group', editorHtml).off().empty().remove();
+        var labelNoSelect = getHelper().getTemplatePropertyDomElement('label-no-select', editorHtml);
+        if (hasAlreadySelectedCollectionElements) {
+          labelNoSelect.text(editorConfiguration.label);
+        } else {
+          labelNoSelect.remove();
+        }
+        return;
       }
+
+      getHelper().getTemplatePropertyDomElement('label-no-select', editorHtml).remove();
 
       selectElement.on('change', function() {
         if ($(this).val() !== '') {
