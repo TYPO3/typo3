@@ -827,7 +827,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
         $dispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
 
-        $event = new BeforeUserLogoutEvent($this);
+        $event = new BeforeUserLogoutEvent($this, $this->userSession);
         $event = $dispatcher->dispatch($event);
 
         if ($event->shouldLogout()) {

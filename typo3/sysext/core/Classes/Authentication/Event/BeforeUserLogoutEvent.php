@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Authentication\Event;
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Session\UserSession;
 
 /**
  * Event fired before a user is going to be actively logged out.
@@ -29,7 +30,8 @@ final class BeforeUserLogoutEvent
     private bool $shouldLogout = true;
 
     public function __construct(
-        private readonly AbstractUserAuthentication $user
+        private readonly AbstractUserAuthentication $user,
+        private readonly ?UserSession $userSession
     ) {
     }
 
@@ -51,5 +53,10 @@ final class BeforeUserLogoutEvent
     public function shouldLogout(): bool
     {
         return $this->shouldLogout;
+    }
+
+    public function getUserSession(): ?UserSession
+    {
+        return $this->userSession;
     }
 }
