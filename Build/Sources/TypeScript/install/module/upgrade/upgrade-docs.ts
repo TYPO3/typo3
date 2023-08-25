@@ -12,7 +12,6 @@
  */
 
 import 'bootstrap';
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '../../renderable/clearable';
 import { AbstractInteractableModule } from '../abstract-interactable-module';
@@ -25,29 +24,30 @@ import '@typo3/backend/element/icon-element';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { Collapse } from 'bootstrap';
 import type { ModalElement } from '@typo3/backend/modal';
+import type { SelectPure } from 'select-pure/lib/components';
 
 /**
  * Module: @typo3/install/module/upgrade-docs
  */
 class UpgradeDocs extends AbstractInteractableModule {
   private readonly selectorFulltextSearch: string = '.t3js-upgradeDocs-fulltext-search';
-  private readonly selectorChosenField: string = '.t3js-upgradeDocs-chosen-select';
+  private readonly selectorSelectPureField: string = '.t3js-upgradeDocs-select-pure';
   private readonly selectorChangeLogsForVersionContainer: string = '.t3js-version-changes';
   private readonly selectorChangeLogsForVersion: string = '.t3js-changelog-list';
   private readonly selectorUpgradeDoc: string = '.t3js-upgrade-doc';
 
-  private chosenField: HTMLInputElement;
+  private selectPureField: SelectPure;
   private fulltextSearchField: HTMLInputElement;
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     const isInIframe = (window.location !== window.parent.location);
     if (isInIframe) {
-      topLevelModuleImport('@typo3/install/chosen.jquery.min.js').then((): void => {
+      topLevelModuleImport('select-pure').then((): void => {
         this.getContent();
       });
     } else {
-      import('@typo3/install/chosen.jquery.min').then((): void => {
+      import('select-pure').then((): void => {
         this.getContent();
       });
     }
@@ -74,7 +74,7 @@ class UpgradeDocs extends AbstractInteractableModule {
             modalContent.innerHTML = data.html;
 
             this.initializeFullTextSearch();
-            this.initializeChosenSelector();
+            this.initializeSelectPure();
             this.loadChangelogs();
           }
         },
@@ -120,7 +120,7 @@ class UpgradeDocs extends AbstractInteractableModule {
 
     Promise.all(promises).then((): void => {
       this.fulltextSearchField.disabled = false;
-      this.appendItemsToChosenSelector();
+      this.appendItemsToSelectPure();
     });
   }
 
@@ -139,38 +139,16 @@ class UpgradeDocs extends AbstractInteractableModule {
     }).bindTo(searchInput);
   }
 
-  private initializeChosenSelector(): void {
-    this.chosenField = this.getModalBody().querySelector(this.selectorChosenField);
-
-    const config: { [key: string]: { [key: string]: string|number|boolean } } = {
-      '.chosen-select': { width: '100%', placeholder_text_multiple: 'tags' },
-      '.chosen-select-deselect': { allow_single_deselect: true },
-      '.chosen-select-no-single': { disable_search_threshold: 10 },
-      '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
-      '.chosen-select-width': { width: '100%' },
-    };
-
-    const configureChosen = ($: JQueryStatic): void => {
-      for (const selector in config) {
-        if (selector in config) {
-          $(this.findInModal(selector)).chosen(config[selector]);
-        }
-      }
-      $(this.chosenField).on('change', (): void => {
-        this.combinedFilterSearch();
-      });
-    };
-
-    const isInIframe = window.location !== window.parent.location;
-    if (isInIframe) {
-      topLevelModuleImport('jquery').then(({ default: $ }) => configureChosen($));
-    } else {
-      configureChosen($);
-    }
+  private initializeSelectPure(): void {
+    this.selectPureField = this.getModalBody().querySelector(this.selectorSelectPureField);
+    this.selectPureField.addEventListener('change', () => {
+      this.combinedFilterSearch();
+      this.selectPureField.close();
+    });
   }
 
   /**
-   * Appends tags to the chosen selector in multiple steps:
+   * Appends tags to the <select-pure> element in multiple steps:
    *
    * 1. create a flat CSV of tags
    * 2. create a Set() with those tags, automatically filtering duplicates
@@ -178,7 +156,7 @@ class UpgradeDocs extends AbstractInteractableModule {
    *    the first item of a set of dupes
    * 4. sort tags
    */
-  private appendItemsToChosenSelector(): void {
+  private appendItemsToSelectPure(): void {
     let tagString = '';
     this.currentModal.querySelectorAll(this.selectorUpgradeDoc).forEach((element: HTMLElement): void => {
       tagString += element.dataset.itemTags + ',';
@@ -196,19 +174,19 @@ class UpgradeDocs extends AbstractInteractableModule {
       return a.toLowerCase().localeCompare(b.toLowerCase());
     });
 
-    this.chosenField.disabled = false;
+    this.selectPureField.enable();
     for (const tag of uniqueTags) {
-      const option = document.createElement('option');
-      option.innerText = tag;
-      this.chosenField.appendChild(option);
+      const option = this.selectPureField.ownerDocument.createElement('option-pure');
+      option.textContent = tag;
+      option.setAttribute('value', tag);
+      this.selectPureField.appendChild(option);
     }
-    this.chosenField.dispatchEvent(new CustomEvent('chosen:updated'));
   }
 
   private combinedFilterSearch(): void {
     const modalContent = this.getModalBody();
     const items = modalContent.querySelectorAll(this.selectorUpgradeDoc);
-    if ($(this.chosenField).val().length < 1 && this.fulltextSearchField.value.length < 1) {
+    if (this.selectPureField.values.length < 1 && this.fulltextSearchField.value.length < 1) {
       const expandedPanels = this.currentModal.querySelectorAll('.panel-version .panel-collapse.show');
       expandedPanels.forEach((panel: HTMLElement) => {
         new RegularEvent('hidden.bs.collapse', (): void => {
@@ -231,13 +209,13 @@ class UpgradeDocs extends AbstractInteractableModule {
     });
 
     // apply tags
-    if ($(this.chosenField).val().length > 0) {
+    if (this.selectPureField.values.length > 0) {
       items.forEach((item: HTMLElement) => {
         item.classList.add('hidden');
         item.classList.remove('filterhit');
       });
 
-      const tagSelection = $(this.chosenField).val().map((tag: string) => '[data-item-tags*="' + tag + '"]').join('');
+      const tagSelection = this.selectPureField.values.map((tag: string) => '[data-item-tags*="' + tag + '"]').join('');
       modalContent.querySelectorAll(tagSelection).forEach((result: HTMLElement) => {
         result.classList.remove('hidden');
         result.classList.add('searchhit', 'filterhit');

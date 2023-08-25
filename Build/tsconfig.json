@@ -94,7 +94,6 @@
         "outDir": "./JavaScript/",
         "types": [
             "TYPO3",
-            "chosen-js",
             "d3-dispatch",
             "d3-drag",
             "d3-selection",

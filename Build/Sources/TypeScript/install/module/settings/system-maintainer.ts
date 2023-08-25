@@ -21,8 +21,8 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
-import $ from 'jquery';
 import type { ModalElement } from '@typo3/backend/modal';
+import type { SelectPure } from 'select-pure/lib/components';
 
 type SystemMaintainerListResponse = {
   success: boolean;
@@ -44,18 +44,17 @@ type SystemMaintainerListResponse = {
  */
 class SystemMaintainer extends AbstractInteractableModule {
   private readonly selectorWriteTrigger: string = '.t3js-systemMaintainer-write';
-  private readonly selectorChosenContainer: string = '.t3js-systemMaintainer-chosen';
-  private readonly selectorChosenField: string = '.t3js-systemMaintainer-chosen-select';
+  private readonly selectorSelectPureField: string = '.t3js-systemMaintainer-select-pure';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     const isInIframe = window.location !== window.parent.location;
     if (isInIframe) {
-      topLevelModuleImport('@typo3/install/chosen.jquery.min.js').then((): void => {
+      topLevelModuleImport('select-pure').then((): void => {
         this.getList();
       });
     } else {
-      import('@typo3/install/chosen.jquery.min').then((): void => {
+      import('select-pure').then((): void => {
         this.getList();
       });
     }
@@ -66,7 +65,6 @@ class SystemMaintainer extends AbstractInteractableModule {
     }).delegateTo(currentModal, this.selectorWriteTrigger);
   }
 
-  // @todo: find replacement for chosen
   private getList(): void {
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('systemMaintainerGetList')))
@@ -77,45 +75,6 @@ class SystemMaintainer extends AbstractInteractableModule {
           if (data.success === true) {
             modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
-            if (Array.isArray(data.users)) {
-              data.users.forEach((element): void => {
-                let name = element.username;
-                if (element.disable) {
-                  name = '[DISABLED] ' + name;
-                }
-                const option = document.createElement('option');
-                option.value = String(element.uid);
-                option.innerText = name;
-                if (element.isSystemMaintainer) {
-                  option.setAttribute('selected', 'selected');
-                }
-                modalContent.querySelector(this.selectorChosenField).append(option);
-              });
-            }
-
-            const config: { [key: string]: Record<string, string> } = {
-              '.t3js-systemMaintainer-chosen-select': {
-                width: '100%',
-                placeholder_text_multiple: 'users',
-              },
-            };
-
-            const configureChosen = ($: JQueryStatic): void => {
-              for (const selector in config) {
-                if (selector in config) {
-                  $(selector).chosen(config[selector]);
-                }
-              }
-              modalContent.querySelector<HTMLElement>(this.selectorChosenContainer).style.display = 'block';
-              modalContent.querySelector(this.selectorChosenField).dispatchEvent(new CustomEvent('chosen:updated'));
-            };
-
-            const isInIframe = window.location !== window.parent.location;
-            if (isInIframe) {
-              topLevelModuleImport('jquery').then(({ default: $ }) => configureChosen($));
-            } else {
-              configureChosen($);
-            }
           }
         },
         (error: AjaxResponse): void => {
@@ -129,7 +88,7 @@ class SystemMaintainer extends AbstractInteractableModule {
 
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().dataset.systemMaintainerWriteToken;
-    const selectedUsers: Array<string | number> = $(this.findInModal(this.selectorChosenField) as HTMLInputElement).val();
+    const selectedUsers: string[] = (this.findInModal(this.selectorSelectPureField) as SelectPure).values;
     (new AjaxRequest(Router.getUrl())).post({
       install: {
         users: selectedUsers,

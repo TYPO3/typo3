@@ -584,6 +584,41 @@ module.exports = function (grunt) {
           ]
         }
       },
+      'select-pure': {
+        options: {
+          preserveModules: false,
+          plugins: () => [
+            {
+              name: 'terser',
+              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
+            },
+            {
+              name: 'externals',
+              resolveId: (source, importer) => {
+                if (source === 'autobind-decorator') {
+                  return { id: 'node_modules/autobind-decorator/lib/esm/index.js' }
+                }
+                if (source === 'lit' || source.startsWith('lit/')) {
+                  return { id: source, external: true }
+                }
+                if (source.startsWith('lit-html/')) {
+                  return { id: source.replace('lit-html/', 'lit/'), external: true }
+                }
+                if (source.startsWith('.') && importer) {
+                  const path = require('path');
+                  return require.resolve(path.resolve(path.dirname(importer), source))
+                }
+                return null;
+              }
+            }
+          ]
+        },
+        files: {
+          '<%= paths.backend %>Public/JavaScript/Contrib/select-pure.js': [
+            'node_modules/select-pure/lib/index.js'
+          ]
+        }
+      },
       'chart.js': {
         options: {
           preserveModules: false,
@@ -686,23 +721,6 @@ module.exports = function (grunt) {
           'taboverride.js': 'taboverride/build/output/taboverride.js',
         }
       },
-      install: {
-        options: {
-          destPrefix: '<%= paths.install %>Public/JavaScript',
-          copyOptions: {
-            process: (source, srcpath) => {
-              if (srcpath === 'node_modules/chosen-js/chosen.jquery.js') {
-                source = 'import jQuery from \'jquery\';\n' + source;
-              }
-
-              return source;
-            }
-          }
-        },
-        files: {
-          'chosen.jquery.min.js': 'chosen-js/chosen.jquery.js',
-        }
-      },
       all: {
         options: {
           destPrefix: '<%= paths.core %>Public/JavaScript/Contrib'
@@ -729,8 +747,7 @@ module.exports = function (grunt) {
           '<%= paths.core %>Public/JavaScript/Contrib/luxon.js': ['<%= paths.core %>Public/JavaScript/Contrib/luxon.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': ['<%= paths.core %>Public/JavaScript/Contrib/nprogress.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/sortablejs.js': ['<%= paths.core %>Public/JavaScript/Contrib/sortablejs.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/taboverride.js': ['<%= paths.core %>Public/JavaScript/Contrib/taboverride.js'],
-          '<%= paths.install %>Public/JavaScript/chosen.jquery.min.js': ['<%= paths.install %>Public/JavaScript/chosen.jquery.min.js']
+          '<%= paths.core %>Public/JavaScript/Contrib/taboverride.js': ['<%= paths.core %>Public/JavaScript/Contrib/taboverride.js']
         }
       },
       t3editor: {
@@ -780,7 +797,7 @@ module.exports = function (grunt) {
       }
     },
     concurrent: {
-      npmcopy: ['npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:install', 'npmcopy:dashboardToEs6', 'npmcopy:all'],
+      npmcopy: ['npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:dashboardToEs6', 'npmcopy:all'],
       lint: ['eslint', 'stylelint', 'exec:lintspaces'],
       compile_assets: ['scripts', 'css'],
       compile_flags: ['flags-build'],

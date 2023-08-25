@@ -95,11 +95,11 @@ final class SettingsCest extends AbstractCest
         $I->amGoingTo('add a system maintainer to the list');
         $I->click($button);
         $modalDialog->canSeeDialog();
-        $I->click('.chosen-search-input', ModalDialog::$openedModalSelector);
+        $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " select-pure').shadowRoot.querySelector('.label').click()");
 
         // Select first user in list - "admin"
         $I->amGoingTo('select first user in list');
-        $I->click('.active-result[data-option-array-index="0"]', '.chosen-results');
+        $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " select-pure').querySelector('option-pure').shadowRoot.querySelector('.option').click()");
         $I->click($modalSave, ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForText('Updated system maintainers', 5, self::$alertContainerSelector);
         $this->closeModalAndHideFlashMessage($I);
@@ -108,9 +108,9 @@ final class SettingsCest extends AbstractCest
         $I->click($button);
         $modalDialog->canSeeDialog();
         // Wait for current list of maintainers to appear
-        $I->waitForElementVisible('.search-choice-close', 5);
-        $I->click('.search-choice-close', ModalDialog::$openedModalSelector);
-        $I->waitForElementNotVisible('.search-choice', 5);
+        $I->waitForElement('option-pure[selected]', 5);
+        $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " select-pure').shadowRoot.querySelector('.multi-selected .cross').click()");
+        $I->waitForElement('option-pure:not([selected])', 5);
         $I->click($modalSave, ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForText('Cleared system maintainer list', 5, self::$alertContainerSelector);
         $this->closeModalAndHideFlashMessage($I);

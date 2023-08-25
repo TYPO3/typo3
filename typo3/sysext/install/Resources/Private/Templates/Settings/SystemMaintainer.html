@@ -18,17 +18,19 @@
 
 <div class="t3js-module-content" data-system-maintainer-write-token="{systemMaintainerWriteToken}">
     <div class="form-group">
-        <div class="input-group flex-nowrap t3js-systemMaintainer-chosen" style="display:none">
+        <div class="input-group flex-nowrap">
             <span class="input-group-addon">System Maintainer:</span>
-            <select
-                class="chosen-select t3js-systemMaintainer-chosen-select"
-                data-placeholder="none"
-                style="width:100%;"
+            <select-pure
                 multiple
-                tabindex=""
+                default-label="Select system maintainers"
                 {f:if(condition: '!{isWritable}', then: 'disabled')}
-            >
-            </select>
+                class="t3js-systemMaintainer-select-pure">
+                <f:for each="{users}" as="user">
+                    <option-pure value="{user.uid}" {f:if(condition: user.isSystemMaintainer, then: 'selected')}>
+                        {f:if(condition: user.disale, then: '[DISALED] ')} {user.username}
+                    </option-pure>
+                </f:for>
+            </select-pure>
         </div>
     </div>
 

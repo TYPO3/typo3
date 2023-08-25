@@ -152,15 +152,6 @@ class SettingsController extends AbstractController
      */
     public function systemMaintainerGetListAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeView($request);
-        $formProtection = $this->formProtectionFactory->createFromRequest($request);
-        $isWritable = $this->configurationManager->canWriteConfiguration();
-        $view->assignMultiple([
-            'isWritable' => $isWritable,
-            'systemMaintainerWriteToken' => $formProtection->generateToken('installTool', 'systemMaintainerWrite'),
-            'systemMaintainerIsDevelopmentContext' => Environment::getContext()->isDevelopment(),
-        ]);
-
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         // We have to respect the enable fields here by our own because no TCA is loaded
@@ -189,6 +180,15 @@ class SettingsController extends AbstractController
                 ((int)$user['endtime'] !== 0 && $user['endtime'] < $currentTime);
             $user['isSystemMaintainer'] = in_array((int)$user['uid'], $systemMaintainerList, true);
         }
+        $view = $this->initializeView($request);
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
+        $isWritable = $this->configurationManager->canWriteConfiguration();
+        $view->assignMultiple([
+            'isWritable' => $isWritable,
+            'users' => $users,
+            'systemMaintainerWriteToken' => $formProtection->generateToken('installTool', 'systemMaintainerWrite'),
+            'systemMaintainerIsDevelopmentContext' => Environment::getContext()->isDevelopment(),
+        ]);
         $buttons = [];
         if ($isWritable) {
             $buttons[] = [
@@ -196,6 +196,7 @@ class SettingsController extends AbstractController
                 'text' => 'Save system maintainer list',
             ];
         }
+
         return new JsonResponse([
             'success' => true,
             'users' => $users,
