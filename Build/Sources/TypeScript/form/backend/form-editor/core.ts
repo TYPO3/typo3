@@ -842,7 +842,9 @@ export class Model<D extends object, T extends ModelData<D>> {
       propertyToRemove = parentPropertyPath.pop();
       parentPropertyPath = parentPropertyPath.join('.');
       parentPropertyData = this.get(parentPropertyPath);
-      delete parentPropertyData[propertyToRemove];
+      if (typeof parentPropertyData !== 'undefined') {
+        delete parentPropertyData[propertyToRemove];
+      }
     } else {
       assert(false, 'remove toplevel properties is not supported', 1489319753);
     }
