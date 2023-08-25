@@ -886,7 +886,9 @@ define(['jquery'], function($) {
             propertyToRemove = parentPropertyPath.pop();
             parentPropertyPath = parentPropertyPath.join('.');
             parentPropertyData = get(parentPropertyPath);
-            delete parentPropertyData[propertyToRemove];
+            if (typeof parentPropertyData !== 'undefined') {
+              delete parentPropertyData[propertyToRemove];
+            }
           } else {
             assert(false, 'remove toplevel properties is not supported', 1489319753);
           }
