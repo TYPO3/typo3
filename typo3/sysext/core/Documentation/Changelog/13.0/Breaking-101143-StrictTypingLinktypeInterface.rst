@@ -30,10 +30,12 @@ Migration
 Ensure that classes that implement :php:`\TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface`
 have the following signatures:
 
-:php:`public function checkLink(string $url, array $softRefEntry, LinkAnalyzer $reference): bool;`
-:php:`public function fetchType(array $value, string $type, string $key): string;`
-:php:`public function getErrorParams(): array;`
-:php:`public function getBrokenUrl(array $row): string;`
-:php:`public function getErrorMessage(array $errorParams): string;`
+.. code-block:: php
+
+    public function checkLink(string $url, array $softRefEntry, LinkAnalyzer $reference): bool;
+    public function fetchType(array $value, string $type, string $key): string;
+    public function getErrorParams(): array;
+    public function getBrokenUrl(array $row): string;
+    public function getErrorMessage(array $errorParams): string;
 
 .. index:: Backend, NotScanned, ext:linkvalidator

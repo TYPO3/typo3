@@ -80,6 +80,8 @@ The :php:`renderLabel()` is a helper method to generate a :html:`label` tag with
 
 If there is no such field, a :html:`legend` tag should be used:
 
+.. code-block:: php
+
     $resultArray = $this->initializeResultArray();
     // Next line is only needed for extensions that need to keep TYPO3 v12 compatibility
     $resultArray['labelHasBeenHandled'] = true;

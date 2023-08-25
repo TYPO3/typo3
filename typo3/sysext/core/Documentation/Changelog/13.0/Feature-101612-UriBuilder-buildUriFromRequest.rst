@@ -21,8 +21,8 @@ Impact
 This is typically useful when linking to the current route or module in the TYPO3 Backend for
 extension authors to avoid internals with any PSR-7 Request Attribute.
 
-Usage within a PHP module controller in the TYPO3 Backend Context
+Usage within a PHP module controller in the TYPO3 Backend Context:
 
-: :php:`$this->uriBuilder->buildUriFromRequest($request, ['id' => $id]);`
+:php:`$this->uriBuilder->buildUriFromRequest($request, ['id' => $id]);`
 
 .. index:: Backend, PHP-API, ext:backend

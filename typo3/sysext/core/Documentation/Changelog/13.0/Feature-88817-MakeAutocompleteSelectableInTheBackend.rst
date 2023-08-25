@@ -2,9 +2,9 @@
 
 .. _feature-88817:
 
-=============================================================
-Feature: #88817 - Make autocomplete selectable in the backend
-=============================================================
+==================================================================
+Feature: #88817 - Make autocomplete selectable in EXT:form backend
+==================================================================
 
 See :issue:`88817`
 
@@ -12,12 +12,11 @@ Description
 ===========
 
 Autocomplete options can already be added to input
-fields in form via editing the YAML. This is
-however hard or impossible to do for editors.
+fields in `EXT:form` via editing the YAML. This was
+hard or impossible to do for editors.
 
-Where ever applicable the autocomplete tag has to
-be set on form inputs to be accessibility
-compliant, however.
+The autocomplete tag has to be set on form inputs
+to be accessibility compliant, where applicable.
 
 The parameter can have arbitrary content according
 to the HTML standard. However, assistive
@@ -34,7 +33,7 @@ Impact
 Editors can now select the autocomplete input purpose when editing forms.
 
 In installations that extended the form YAML configuration with keys that
-are used in this change, the autocomplete field might be overriden and
+are used in this change, the autocomplete field might be overridden and
 not be displayed in the editor by default.
 
 .. index:: Backend, YAML, ext:form

@@ -26,8 +26,8 @@ The timestamp is queried in the report generation and an additional
 "info" status is displayed if the timestamp indicates that the
 check was run more than 24 hours ago or never run at all:
 
-"List of conflicting redirects may not be up to date!
-Regularly run the console command redirects:checkintegrity."
+    List of conflicting redirects may not be up to date!
+    Regularly run the console command redirects:checkintegrity.
 
 This can be deactivated in the extension configuration and the time (24 hours)
 can be changed as well.
@@ -36,7 +36,7 @@ Impact
 ======
 
 *   An additional informational message will appear in the system report, if
-    checkintegrity was not run within the last 24 hours
+    `checkintegrity` was not run within the last 24 hours
 *   This can be configured in the extension configuration of EXT:redirects
 *   If extensions provide other means to check redirects, they should write the
     entries to the registry as well as the timestamp (see CheckIntegrityCommand):

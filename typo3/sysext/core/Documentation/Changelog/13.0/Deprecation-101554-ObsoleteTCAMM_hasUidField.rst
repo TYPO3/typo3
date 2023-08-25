@@ -21,7 +21,7 @@ database analyzer.
 Impact
 ======
 
-The TCA configuration option php:`MM_hasUidField` is obsolete and can be removed.
+The TCA configuration option :php:`MM_hasUidField` is obsolete and can be removed.
 
 The :php:`TcaMigration` performed during TCA warmup will automatically remove the
 option and creates according log entries if needed.

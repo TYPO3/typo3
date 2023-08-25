@@ -56,7 +56,7 @@ Affected installations
 ======================
 
 Installations that implement custom drivers and therefore directly implement
-:php:` \TYPO3\CMS\Core\Resource\Driver\DriverInterface` or extend
+:php:`\TYPO3\CMS\Core\Resource\Driver\DriverInterface` or extend
 :php:`\TYPO3\CMS\Core\Resource\Driver\AbstractDriver`.
 
 Also, installations that use the removed constants of
@@ -81,9 +81,9 @@ The following removed constants
 
 can be replaced with public constants of the new :php:`Capabilities` class:
 
-- :php`\TYPO3\CMS\Core\Resource\Capabilities::CAPABILITY_BROWSABLE`
-- :php`\TYPO3\CMS\Core\Resource\Capabilities::CAPABILITY_PUBLIC`
-- :php`\TYPO3\CMS\Core\Resource\Capabilities::CAPABILITY_WRITABLE`
-- :php`\TYPO3\CMS\Core\Resource\Capabilities::CAPABILITY_HIERARCHICAL_IDENTIFIERS`
+- :php:`\TYPO3\CMS\Core\Resource\Capabilities::CAPABILITY_BROWSABLE`
+- :php:`\TYPO3\CMS\Core\Resource\Capabilities::CAPABILITY_PUBLIC`
+- :php:`\TYPO3\CMS\Core\Resource\Capabilities::CAPABILITY_WRITABLE`
+- :php:`\TYPO3\CMS\Core\Resource\Capabilities::CAPABILITY_HIERARCHICAL_IDENTIFIERS`
 
 .. index:: FAL, PHP-API, NotScanned, ext:core

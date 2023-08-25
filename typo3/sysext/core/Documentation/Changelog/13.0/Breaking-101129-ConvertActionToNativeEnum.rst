@@ -40,7 +40,7 @@ Class instantiation:
 Migration
 =========
 
-Include enum :php:`SchedulerManagementAction` from namespace :php:`\TYPO3\CMS\Scheduler\`
+Include enum :php:`SchedulerManagementAction` from namespace :php:`\TYPO3\CMS\Scheduler`
 as a replacement for :php:`Action`
 
 Use the new syntax

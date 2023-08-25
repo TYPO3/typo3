@@ -28,6 +28,10 @@ Migration
 =========
 
 Ensure that the class constructor is called properly, according to the changed signature:
-:php:`__construct(string $message = '', int $code = 0, ?\Throwable $previous = null, string $linkText = '')`
+
+.. code-block:: php
+
+    __construct(string $message = '', int $code = 0, ?\Throwable $previous = null, string $linkText = '')
+
 
 .. index:: Backend, NotScanned, ext:fluid, ext:frontend, ext:redirects

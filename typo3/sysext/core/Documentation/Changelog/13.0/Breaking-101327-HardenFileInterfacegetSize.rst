@@ -24,10 +24,10 @@ Impact
 ======
 
 Code, that calls  :php:`\TYPO3\CMS\Core\Resource\AbstractFile::getSize()` through derivatives like
-:php:`\TYPO3\CMS\Core\Resource\File::getSize()`might be adjusted to not respect`null` any more.
+:php:`\TYPO3\CMS\Core\Resource\File::getSize()` might be adjusted to not respect `null` any more.
 
 Implementations (classes) that implement :php:`\TYPO3\CMS\Core\Resource\FileInterface`, have to
-adjust the return type of method `getSize()` to match the contract.
+adjust the return type of method :php:`getSize()` to match the contract.
 
 
 Affected installations

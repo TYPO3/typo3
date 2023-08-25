@@ -33,7 +33,7 @@ The core classes, implementing :php:`\TYPO3\CMS\Core\Resource\DriverInterface` a
 
 Concerning removed method :php:`\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::sanitizeFileName()`:
 
-Said method didn't sanitize at all, it didn't respect the given :php:`$charset`param and simply
+Said method didn't sanitize at all, it didn't respect the given :php:`$charset` param and simply
 returned the input string. Abstract classes MAY fulfill the interface contract but if they do so,
 they MUST do it right. There is no benefit in fulfilling it just signature wise, it MUST fulfill
 it functional wise and in this case it didn't. That's why :php:`LocalDriver`
