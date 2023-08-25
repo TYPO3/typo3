@@ -754,4 +754,25 @@ final class RteHtmlParserTest extends UnitTestCase
         self::assertEquals('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '</figure>', $subject->transformTextForRichTextEditor('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '</figure>', $this->procOptions));
         self::assertEquals('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '<figcaption>My Logo</figcaption></figure>', $subject->transformTextForRichTextEditor('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '<figcaption>My Logo</figcaption></figure>', $this->procOptions));
     }
+
+    /**
+     * @test
+     */
+    public function resetsAllowTagsWhenProcessingConfigurationChanges(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
+        $input = '<remove>Foo</remove><keep>Bar</keep>';
+        $transformed = 'Foo<keep>Bar</keep>';
+        $result = $subject->transformTextForPersistence($input, [
+            'mode' => 'default',
+            'allowTags' => 'keep',
+        ]);
+        self::assertEquals($transformed, $result);
+        $result = $subject->transformTextForPersistence($input, [
+            'mode' => 'default',
+            'allowTags' => 'keep,remove',
+        ]);
+        self::assertEquals($input, $result);
+    }
 }
