@@ -463,7 +463,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     ];
                 }
                 // For "flex" fieldtypes we need to traverse the structure looking for db references of course!
-                if ($conf['type'] === 'flex') {
+                if ($conf['type'] === 'flex' && is_string($value) && $value !== '') {
                     // Get current value array:
                     // NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up
                     // the note in the JavaDoc documentation for the function FlexFormTools->getDataStructureIdentifier()
