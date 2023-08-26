@@ -25,28 +25,21 @@ use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
  */
 final class ModifyRecordListTableActionsEvent
 {
-    private array $actions;
-    private string $table;
-
-    /**
-     * @var int[]
-     */
-    private array $recordIds;
-
-    private DatabaseRecordList $recordList;
-
     /**
      * The label, which will be displayed in case
      * no action is available for current the user.
      */
     private string $noActionLabel = '';
 
-    public function __construct(array $actions, string $table, array $recordIds, DatabaseRecordList $recordList)
-    {
-        $this->actions = $actions;
-        $this->table = $table;
-        $this->recordIds = $recordIds;
-        $this->recordList = $recordList;
+    /**
+     * @param array<int> $recordIds
+     */
+    public function __construct(
+        private array $actions,
+        private readonly string $table,
+        private readonly array $recordIds,
+        private readonly DatabaseRecordList $recordList
+    ) {
     }
 
     /**
