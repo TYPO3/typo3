@@ -51,7 +51,7 @@ export class CollapseStatePersister {
   private searchField: HTMLInputElement|null = null;
   private searchForm: HTMLFormElement|null = null;
 
-  private stateCache: Map<string, PersistStateObject>;
+  private readonly stateCache: Map<string, PersistStateObject>;
 
   public constructor() {
     this.stateCache = new Map();

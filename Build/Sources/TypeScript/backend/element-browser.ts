@@ -45,11 +45,11 @@ class ElementBrowser {
   private fieldReference: string = '';
   private targetDoc: Window;
   private elRef: Element;
-  private rte: RTESettings = {
+  private readonly rte: RTESettings = {
     parameters: '',
     configuration: '',
   };
-  private irre: InlineSettings = {
+  private readonly irre: InlineSettings = {
     objectId: '',
   };
 

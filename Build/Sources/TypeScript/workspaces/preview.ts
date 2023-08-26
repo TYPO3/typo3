@@ -40,7 +40,7 @@ enum Identifiers {
  */
 class Preview extends Workspaces {
   private currentSlidePosition: number = 100;
-  private elements: { [key: string]: JQuery } = {};
+  private readonly elements: { [key: string]: JQuery } = {};
 
   constructor() {
     super();
@@ -114,7 +114,7 @@ class Preview extends Workspaces {
    *
    * @param {Event} e
    */
-  private updateSlidePosition = (e: Event): void => {
+  private readonly updateSlidePosition = (e: Event): void => {
     this.currentSlidePosition = parseInt((e.target as HTMLInputElement).value, 10);
     this.resizeViews();
   };
@@ -138,7 +138,7 @@ class Preview extends Workspaces {
   /**
    * Renders the discard window
    */
-  private renderDiscardWindow = (): void => {
+  private readonly renderDiscardWindow = (): void => {
     const modal = Modal.confirm(
       TYPO3.lang['window.discardAll.title'],
       TYPO3.lang['window.discardAll.message'],
@@ -178,7 +178,7 @@ class Preview extends Workspaces {
   /**
    * Renders the "send page to stage" window
    */
-  private renderSendPageToStageWindow = (e: JQueryEventObject): void => {
+  private readonly renderSendPageToStageWindow = (e: JQueryEventObject): void => {
     const me = (<HTMLElement>e.currentTarget);
     const direction = me.dataset.direction;
     let actionName;
@@ -222,7 +222,7 @@ class Preview extends Workspaces {
    *
    * @param {Event} e
    */
-  private changePreviewMode = (e: JQueryEventObject): void => {
+  private readonly changePreviewMode = (e: JQueryEventObject): void => {
     e.preventDefault();
 
     const $trigger = $(e.currentTarget);

@@ -26,9 +26,9 @@ import type { ModalElement } from '@typo3/backend/modal';
  * Module: @typo3/install/module/presets
  */
 class Presets extends AbstractInteractableModule {
-  private selectorActivateTrigger: string = '.t3js-presets-activate';
-  private selectorImageExecutable: string = '.t3js-presets-image-executable';
-  private selectorImageExecutableTrigger: string = '.t3js-presets-image-executable-trigger';
+  private readonly selectorActivateTrigger: string = '.t3js-presets-activate';
+  private readonly selectorImageExecutable: string = '.t3js-presets-image-executable';
+  private readonly selectorImageExecutableTrigger: string = '.t3js-presets-image-executable-trigger';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

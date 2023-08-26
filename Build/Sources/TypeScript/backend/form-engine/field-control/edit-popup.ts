@@ -36,14 +36,14 @@ class EditPopup {
     });
   }
 
-  private registerChangeHandler = (): void => {
+  private readonly registerChangeHandler = (): void => {
     this.controlElement.classList.toggle('disabled', this.assignedFormField.options.selectedIndex === -1);
   };
 
   /**
    * @param {Event} e
    */
-  private registerClickHandler = (e: Event): void => {
+  private readonly registerClickHandler = (e: Event): void => {
     e.preventDefault();
 
     const values: Array<string> = [];

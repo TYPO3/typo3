@@ -65,8 +65,8 @@ type History = {
  * workspace preview. Contains all JavaScript of the main BE module.
  */
 class Backend extends Workspaces {
-  private elements: { [key: string]: JQuery } = {};
-  private settings: { [key: string]: string | number } = {
+  private readonly elements: { [key: string]: JQuery } = {};
+  private readonly settings: { [key: string]: string | number } = {
     dir: 'ASC',
     id: TYPO3.settings.Workspaces.id,
     depth: 1,
@@ -77,14 +77,14 @@ class Backend extends Workspaces {
     start: 0,
     filterTxt: '',
   };
-  private paging: Record<string, number> = {
+  private readonly paging: Record<string, number> = {
     currentPage: 1,
     totalPages: 1,
     totalItems: 0,
   };
   private latestPath: string = '';
   private markedRecordsForMassAction: string[] = [];
-  private indentationPadding: number = 26;
+  private readonly indentationPadding: number = 26;
 
   constructor() {
     super();
@@ -500,7 +500,7 @@ class Backend extends Workspaces {
     });
   }
 
-  private handleCheckboxStateChanged = (e: Event): void => {
+  private readonly handleCheckboxStateChanged = (e: Event): void => {
     const $checkbox = $(e.target);
     const $tr = $checkbox.parents('tr');
     const checked = $checkbox.prop('checked');
@@ -799,7 +799,7 @@ class Backend extends Workspaces {
    *
    * @param {Event} e
    */
-  private viewChanges = (e: JQueryEventObject): void => {
+  private readonly viewChanges = (e: JQueryEventObject): void => {
     e.preventDefault();
 
     const $tr = $(e.currentTarget).closest('tr');
@@ -972,7 +972,7 @@ class Backend extends Workspaces {
    *
    * @param {Event} e
    */
-  private confirmDeleteRecordFromWorkspace = (e: JQueryEventObject): void => {
+  private readonly confirmDeleteRecordFromWorkspace = (e: JQueryEventObject): void => {
     const $tr = $(e.target).closest('tr');
     const modal = Modal.confirm(
       TYPO3.lang['window.discard.title'],
@@ -1014,7 +1014,7 @@ class Backend extends Workspaces {
   /**
    * Runs a mass action
    */
-  private runSelectionAction = (e: JQueryEventObject): void => {
+  private readonly runSelectionAction = (e: JQueryEventObject): void => {
     const selectedAction = $(e.currentTarget).val();
     const integrityCheckRequired = selectedAction !== 'discard';
 
@@ -1055,7 +1055,7 @@ class Backend extends Workspaces {
   /**
    * Adds a slide to the wizard concerning an integrity check warning.
    */
-  private addIntegrityCheckWarningToWizard = (): void => {
+  private readonly addIntegrityCheckWarningToWizard = (): void => {
     Wizard.addSlide(
       'integrity-warning',
       'Warning',
@@ -1103,7 +1103,7 @@ class Backend extends Workspaces {
   /**
    * Runs a mass action
    */
-  private runMassAction = (e: JQueryEventObject): void => {
+  private readonly runMassAction = (e: JQueryEventObject): void => {
     const selectedAction = $(e.currentTarget).val();
     const integrityCheckRequired = selectedAction !== 'discard';
 
@@ -1198,7 +1198,7 @@ class Backend extends Workspaces {
    *
    * @param {Event} e
    */
-  private sendToSpecificStageAction = (e: JQueryEventObject): void => {
+  private readonly sendToSpecificStageAction = (e: JQueryEventObject): void => {
     const affectedRecords: Array<{ [key: string]: number | string }> = [];
     const stage = $(e.currentTarget).val();
     for (let i = 0; i < this.markedRecordsForMassAction.length; ++i) {
@@ -1262,7 +1262,7 @@ class Backend extends Workspaces {
   /**
    * Fetches and renders available preview links
    */
-  private generatePreviewLinks = (): void => {
+  private readonly generatePreviewLinks = (): void => {
     this.sendRemoteRequest(
       this.generateRemoteActionsPayload('generateWorkspacePreviewLinksForAllLanguages', [
         this.settings.id,

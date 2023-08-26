@@ -26,7 +26,7 @@ import type { ModalElement } from '@typo3/backend/modal';
  * Module: @typo3/install/module/create-admin
  */
 class CreateAdmin extends AbstractInteractableModule {
-  private selectorAdminCreateButton: string = '.t3js-createAdmin-create';
+  private readonly selectorAdminCreateButton: string = '.t3js-createAdmin-create';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

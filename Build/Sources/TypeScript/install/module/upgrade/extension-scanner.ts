@@ -50,11 +50,11 @@ interface RestFile {
 }
 
 class ExtensionScanner extends AbstractInteractableModule {
-  private listOfAffectedRestFileHashes: string[] = [];
-  private selectorExtensionContainer: string = '.t3js-extensionScanner-extension';
-  private selectorNumberOfFiles: string = '.t3js-extensionScanner-number-of-files';
-  private selectorScanSingleTrigger: string = '.t3js-extensionScanner-scan-single';
-  private selectorExtensionScanButton: string = '.t3js-extensionScanner-scan-all';
+  private readonly listOfAffectedRestFileHashes: string[] = [];
+  private readonly selectorExtensionContainer: string = '.t3js-extensionScanner-extension';
+  private readonly selectorNumberOfFiles: string = '.t3js-extensionScanner-number-of-files';
+  private readonly selectorScanSingleTrigger: string = '.t3js-extensionScanner-scan-single';
+  private readonly selectorExtensionScanButton: string = '.t3js-extensionScanner-scan-all';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

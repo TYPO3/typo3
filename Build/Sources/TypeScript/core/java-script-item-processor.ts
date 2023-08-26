@@ -138,7 +138,7 @@ function mergeRecursive(target: { [key: string]: any }, source: { [key: string]:
 }
 
 export class JavaScriptItemProcessor {
-  private invokableNames: string[] = ['globalAssignment', 'javaScriptModuleInstruction'];
+  private readonly invokableNames: string[] = ['globalAssignment', 'javaScriptModuleInstruction'];
 
   /**
    * Processes multiple items and delegates to handlers

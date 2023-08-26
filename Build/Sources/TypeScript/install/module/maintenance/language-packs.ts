@@ -37,9 +37,9 @@ import type {
  * Module: @typo3/install/module/language-packs
  */
 class LanguagePacks extends AbstractInteractableModule {
-  private selectorOutputContainer: string = '.t3js-languagePacks-output';
-  private selectorContentContainer: string = '.t3js-languagePacks-mainContent';
-  private selectorNotifications: string = '.t3js-languagePacks-notifications';
+  private readonly selectorOutputContainer: string = '.t3js-languagePacks-output';
+  private readonly selectorContentContainer: string = '.t3js-languagePacks-mainContent';
+  private readonly selectorNotifications: string = '.t3js-languagePacks-notifications';
 
   private activeLanguages: string[] = [];
   private activeExtensions: string[] = [];

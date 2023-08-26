@@ -30,7 +30,7 @@ class ListModule {
   /**
    * @param {Event} e
    */
-  private registerClickHandler = (e: Event): void => {
+  private readonly registerClickHandler = (e: Event): void => {
     e.preventDefault();
 
     FormEngine.preventFollowLinkIfNotSaved(this.controlElement.getAttribute('href'));

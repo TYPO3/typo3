@@ -20,8 +20,8 @@ import RegularEvent from '@typo3/core/event/regular-event';
  * This module handle the QueryGenerator forms.
  */
 class QueryGenerator {
-  private form: HTMLFormElement = null;
-  private limitField: HTMLInputElement = null;
+  private readonly form: HTMLFormElement = null;
+  private readonly limitField: HTMLInputElement = null;
 
   constructor() {
     this.form = document.querySelector('form[name="queryform"]');

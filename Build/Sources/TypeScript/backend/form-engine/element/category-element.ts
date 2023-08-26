@@ -108,7 +108,7 @@ class CategoryElement extends HTMLElement{
     });
   }
 
-  private selectNode = (evt: CustomEvent) => {
+  private readonly selectNode = (evt: CustomEvent) => {
     const node = evt.detail.node as TreeNode;
     this.updateAncestorsIndeterminateState(node);
     // check all nodes again, to ensure correct display of indeterminate state
@@ -122,7 +122,7 @@ class CategoryElement extends HTMLElement{
    * It's done once after loading data.
    * Later indeterminate state is updated just for the subset of nodes
    */
-  private loadDataAfter = (evt: CustomEvent) => {
+  private readonly loadDataAfter = (evt: CustomEvent) => {
     this.tree.nodes = evt.detail.nodes.map((node: TreeNode) => {
       node.indeterminate = false;
       return node;
@@ -133,7 +133,7 @@ class CategoryElement extends HTMLElement{
   /**
    * Sets a comma-separated list of selected nodes identifiers to configured input
    */
-  private saveCheckboxes = (): void => {
+  private readonly saveCheckboxes = (): void => {
     this.recordField.value = this.tree.getSelectedNodes().map((node: TreeNode): string => node.identifier).join(',');
   };
 

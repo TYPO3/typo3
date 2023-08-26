@@ -139,7 +139,7 @@ export class FileStorageBrowser extends LitElement {
     `;
   }
 
-  private selectActiveNode = (evt: CustomEvent): void => {
+  private readonly selectActiveNode = (evt: CustomEvent): void => {
     // Activate the current node
     const nodes = evt.detail.nodes as Array<TreeNode>;
     evt.detail.nodes = nodes.map((node: TreeNode) => {
@@ -150,7 +150,7 @@ export class FileStorageBrowser extends LitElement {
     });
   };
 
-  private toggleExpandState = (evt: CustomEvent): void => {
+  private readonly toggleExpandState = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (node) {
       Persistent.set('BackendComponents.States.FileStorageTree.stateHash.' + node.stateIdentifier, (node.expanded ? '1' : '0'));
@@ -160,7 +160,7 @@ export class FileStorageBrowser extends LitElement {
   /**
    * If a page is clicked, the content area needs to be updated
    */
-  private loadFolderDetails = (evt: CustomEvent): void => {
+  private readonly loadFolderDetails = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (!node.checked) {
       return;

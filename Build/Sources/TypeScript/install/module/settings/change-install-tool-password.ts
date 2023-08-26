@@ -26,7 +26,7 @@ import type { ModalElement } from '@typo3/backend/modal';
  * Module: @typo3/install/module/change-install-tool-password
  */
 class ChangeInstallToolPassword extends AbstractInteractableModule {
-  private selectorChangeButton: string = '.t3js-changeInstallToolPassword-change';
+  private readonly selectorChangeButton: string = '.t3js-changeInstallToolPassword-change';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

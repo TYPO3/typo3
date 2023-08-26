@@ -27,8 +27,8 @@ import type { ModalElement } from '@typo3/backend/modal';
  * Module: @typo3/install/module/tca-ext-tables-check
  */
 class TcaExtTablesCheck extends AbstractInteractableModule {
-  private selectorCheckTrigger: string = '.t3js-tcaExtTablesCheck-check';
-  private selectorOutputContainer: string = '.t3js-tcaExtTablesCheck-output';
+  private readonly selectorCheckTrigger: string = '.t3js-tcaExtTablesCheck-check';
+  private readonly selectorOutputContainer: string = '.t3js-tcaExtTablesCheck-output';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

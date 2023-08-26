@@ -98,7 +98,7 @@ export class SelectTreeElement {
     return TYPO3.settings.ajaxUrls.record_tree_data + '&' + new URLSearchParams(params);
   }
 
-  private selectNode = (evt: CustomEvent) => {
+  private readonly selectNode = (evt: CustomEvent) => {
     const node = evt.detail.node as TreeNode;
     this.updateAncestorsIndeterminateState(node);
     // check all nodes again, to ensure correct display of indeterminate state
@@ -112,7 +112,7 @@ export class SelectTreeElement {
    * It's done once after loading data.
    * Later indeterminate state is updated just for the subset of nodes
    */
-  private loadDataAfter = (evt: CustomEvent) => {
+  private readonly loadDataAfter = (evt: CustomEvent) => {
     this.tree.nodes = evt.detail.nodes.map((node: TreeNode) => {
       node.indeterminate = false;
       return node;
@@ -123,7 +123,7 @@ export class SelectTreeElement {
   /**
    * Sets a comma-separated list of selected nodes identifiers to configured input
    */
-  private saveCheckboxes = (): void => {
+  private readonly saveCheckboxes = (): void => {
     if (typeof this.recordField === 'undefined') {
       return;
     }

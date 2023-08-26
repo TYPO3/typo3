@@ -25,7 +25,7 @@ import type { ModalElement } from '@typo3/backend/modal';
  * Module: @typo3/install/module/features
  */
 class Features extends AbstractInteractableModule {
-  private selectorSaveTrigger: string = '.t3js-features-save';
+  private readonly selectorSaveTrigger: string = '.t3js-features-save';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

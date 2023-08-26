@@ -33,7 +33,7 @@ class PageLinkHandler {
     }).delegateTo(document, 'input.t3js-pageLink');
   }
 
-  private linkPageByTextfield = (): void => {
+  private readonly linkPageByTextfield = (): void => {
     const textField = document.getElementById('luid') as HTMLInputElement;
     let value = textField.value;
     if (!value) {

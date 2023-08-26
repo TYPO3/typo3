@@ -112,7 +112,7 @@ class UserPassLogin {
     }
   };
 
-  private togglePasswordRevealer = (event: Event): void => {
+  private readonly togglePasswordRevealer = (event: Event): void => {
     const passwordField: HTMLInputElement = (event.target as HTMLInputElement);
     const togglePassword: HTMLButtonElement = document.querySelector(this.options.togglePassword);
     togglePassword.classList.toggle('hidden', passwordField.value === '');

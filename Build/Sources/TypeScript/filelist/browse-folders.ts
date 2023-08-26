@@ -64,7 +64,7 @@ class BrowseFolders {
     );
   }
 
-  private importSelection = (event: CustomEvent): void => {
+  private readonly importSelection = (event: CustomEvent): void => {
     event.preventDefault();
     const items: NodeListOf<HTMLInputElement> = (event.detail as ActionEventDetails).checkboxes;
     if (!items.length) {

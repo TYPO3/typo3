@@ -25,12 +25,12 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 class Router {
-  private rootSelector: string = '.t3js-body';
-  private contentSelector: string = '.t3js-module-body';
+  private readonly rootSelector: string = '.t3js-body';
+  private readonly contentSelector: string = '.t3js-module-body';
 
-  private scaffoldSelector: string = '.t3js-scaffold';
-  private scaffoldContentOverlaySelector: string = '.t3js-scaffold-content-overlay';
-  private scaffoldMenuToggleSelector: string = '.t3js-topbar-button-modulemenu';
+  private readonly scaffoldSelector: string = '.t3js-scaffold';
+  private readonly scaffoldContentOverlaySelector: string = '.t3js-scaffold-content-overlay';
+  private readonly scaffoldMenuToggleSelector: string = '.t3js-topbar-button-modulemenu';
 
   private rootContainer: HTMLElement;
   private controller: string;

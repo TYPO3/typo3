@@ -99,7 +99,7 @@ class ShortcutMenu {
     });
   }
 
-  private initializeEvents = (): void => {
+  private readonly initializeEvents = (): void => {
     const containerSelector = document.querySelector(Identifiers.containerSelector);
     new RegularEvent('click', (evt: Event, target: HTMLElement): void => {
       evt.preventDefault();

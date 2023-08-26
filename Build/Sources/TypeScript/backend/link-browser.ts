@@ -46,7 +46,7 @@ export interface LinkBrowserParameters {
  */
 class LinkBrowser {
   public parameters: LinkBrowserParameters;
-  private linkAttributeFields: LinkAttributes;
+  private readonly linkAttributeFields: LinkAttributes;
 
   constructor() {
     this.parameters = JSON.parse(document.body.dataset.linkbrowserParameters || '{}');

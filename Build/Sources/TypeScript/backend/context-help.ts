@@ -22,9 +22,9 @@ import RegularEvent from '@typo3/core/event/regular-event';
  * @exports @typo3/backend/context-help
  */
 class ContextHelp {
-  private trigger: string = 'click';
-  private placement: string = 'auto';
-  private selector: string = '.help-link';
+  private readonly trigger: string = 'click';
+  private readonly placement: string = 'auto';
+  private readonly selector: string = '.help-link';
 
   constructor() {
     this.initialize();

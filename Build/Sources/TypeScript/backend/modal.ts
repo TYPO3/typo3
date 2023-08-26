@@ -286,9 +286,9 @@ class Modal {
 
   // @todo: currentModal could be a getter method for the last element in this.instances
   public currentModal: ModalElement = null;
-  private instances: Array<ModalElement> = [];
+  private readonly instances: Array<ModalElement> = [];
 
-  private defaultConfiguration: Configuration = {
+  private readonly defaultConfiguration: Configuration = {
     type: Types.default,
     title: 'Information',
     content: 'No content provided, please check your <code>Modal</code> configuration.',

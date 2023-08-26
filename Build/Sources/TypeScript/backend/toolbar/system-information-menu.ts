@@ -92,7 +92,7 @@ class SystemInformationMenu {
     element.classList.toggle('hidden', !(data.count > 0));
   }
 
-  private updateMenu = (): void => {
+  private readonly updateMenu = (): void => {
     const toolbarItemIcon = document.querySelector(SystemInformationSelector.icon);
     const currentIcon = toolbarItemIcon.cloneNode(true);
 

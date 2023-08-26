@@ -25,14 +25,14 @@ import MessageInterface from '@typo3/install/message-interface';
  * Walk through the installation process of TYPO3
  */
 class Installer {
-  private selectorBody: string = '.t3js-body';
-  private selectorModuleContent: string = '.t3js-module-content';
-  private selectorMainContent: string = '.t3js-installer-content';
-  private selectorProgressBar: string = '.t3js-installer-progress';
-  private selectorProgressBarSteps: string = '.t3js-installer-progress-steps';
-  private selectorDatabaseConnectOutput: string = '.t3js-installer-databaseConnect-output';
-  private selectorDatabaseSelectOutput: string = '.t3js-installer-databaseSelect-output';
-  private selectorDatabaseDataOutput: string = '.t3js-installer-databaseData-output';
+  private readonly selectorBody: string = '.t3js-body';
+  private readonly selectorModuleContent: string = '.t3js-module-content';
+  private readonly selectorMainContent: string = '.t3js-installer-content';
+  private readonly selectorProgressBar: string = '.t3js-installer-progress';
+  private readonly selectorProgressBarSteps: string = '.t3js-installer-progress-steps';
+  private readonly selectorDatabaseConnectOutput: string = '.t3js-installer-databaseConnect-output';
+  private readonly selectorDatabaseSelectOutput: string = '.t3js-installer-databaseSelect-output';
+  private readonly selectorDatabaseDataOutput: string = '.t3js-installer-databaseData-output';
 
   constructor() {
     this.initializeEvents();

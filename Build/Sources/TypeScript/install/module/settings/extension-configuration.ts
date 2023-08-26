@@ -33,8 +33,8 @@ import type { ModalElement } from '@typo3/backend/modal';
  * Module: @typo3/install/module/extension-configuration
  */
 class ExtensionConfiguration extends AbstractInteractableModule {
-  private selectorFormListener: string = '.t3js-extensionConfiguration-form';
-  private selectorSearchInput: string = '.t3js-extensionConfiguration-search';
+  private readonly selectorFormListener: string = '.t3js-extensionConfiguration-form';
+  private readonly selectorSearchInput: string = '.t3js-extensionConfiguration-search';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

@@ -27,12 +27,12 @@ import type { ModalElement } from '@typo3/backend/modal';
  * Module: @typo3/install/module/database-analyzer
  */
 class DatabaseAnalyzer extends AbstractInteractableModule {
-  private selectorAnalyzeTrigger: string = '.t3js-databaseAnalyzer-analyze';
-  private selectorExecuteTrigger: string = '.t3js-databaseAnalyzer-execute';
-  private selectorOutputContainer: string = '.t3js-databaseAnalyzer-output';
-  private selectorSuggestionBlock: string = '.t3js-databaseAnalyzer-suggestion-block';
-  private selectorSuggestionList: string = '.t3js-databaseAnalyzer-suggestion-list';
-  private selectorSuggestionLineTemplate: string = '.t3js-databaseAnalyzer-suggestion-line-template';
+  private readonly selectorAnalyzeTrigger: string = '.t3js-databaseAnalyzer-analyze';
+  private readonly selectorExecuteTrigger: string = '.t3js-databaseAnalyzer-execute';
+  private readonly selectorOutputContainer: string = '.t3js-databaseAnalyzer-output';
+  private readonly selectorSuggestionBlock: string = '.t3js-databaseAnalyzer-suggestion-block';
+  private readonly selectorSuggestionList: string = '.t3js-databaseAnalyzer-suggestion-list';
+  private readonly selectorSuggestionLineTemplate: string = '.t3js-databaseAnalyzer-suggestion-line-template';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

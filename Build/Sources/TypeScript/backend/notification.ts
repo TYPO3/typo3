@@ -30,7 +30,7 @@ interface Action {
  * Notification API for the TYPO3 backend
  */
 class Notification {
-  private static duration: number = 5;
+  private static readonly duration: number = 5;
   private static messageContainer: HTMLElement = null;
 
   /**

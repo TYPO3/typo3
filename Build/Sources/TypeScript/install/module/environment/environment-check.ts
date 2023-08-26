@@ -40,9 +40,9 @@ interface EnvironmentCheckResponse {
  * Module: @typo3/install/environment-check
  */
 class EnvironmentCheck extends AbstractInteractableModule {
-  private selectorGridderBadge: string = '.t3js-environmentCheck-badge';
-  private selectorExecuteTrigger: string = '.t3js-environmentCheck-execute';
-  private selectorOutputContainer: string = '.t3js-environmentCheck-output';
+  private readonly selectorGridderBadge: string = '.t3js-environmentCheck-badge';
+  private readonly selectorExecuteTrigger: string = '.t3js-environmentCheck-execute';
+  private readonly selectorOutputContainer: string = '.t3js-environmentCheck-output';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

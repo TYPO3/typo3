@@ -61,31 +61,31 @@ type UpgradeWizardDone = {
  * Module: @typo3/install/module/upgrade-wizards
  */
 class UpgradeWizards extends AbstractInteractableModule {
-  private selectorOutputWizardsContainer: string = '.t3js-upgradeWizards-wizards-output';
-  private selectorOutputDoneContainer: string = '.t3js-upgradeWizards-done-output';
-  private selectorWizardsBlockingAddsTemplate: string = '.t3js-upgradeWizards-blocking-adds-template';
-  private selectorWizardsBlockingAddsRows: string = '.t3js-upgradeWizards-blocking-adds-rows';
-  private selectorWizardsBlockingAddsExecute: string = '.t3js-upgradeWizards-blocking-adds-execute';
-  private selectorWizardsBlockingCharsetTemplate: string = '.t3js-upgradeWizards-blocking-charset-template';
-  private selectorWizardsBlockingCharsetFix: string = '.t3js-upgradeWizards-blocking-charset-fix';
-  private selectorWizardsDoneBodyTemplate: string = '.t3js-upgradeWizards-done-body-template';
-  private selectorWizardsDoneRows: string = '.t3js-upgradeWizards-done-rows';
-  private selectorWizardsDoneRowTemplate: string = '.t3js-upgradeWizards-done-row-template table tr';
-  private selectorWizardsDoneRowMarkUndone: string = '.t3js-upgradeWizards-done-markUndone';
-  private selectorWizardsDoneRowTitle: string = '.t3js-upgradeWizards-done-title';
-  private selectorWizardsListTemplate: string = '.t3js-upgradeWizards-list-template';
-  private selectorWizardsListRows: string = '.t3js-upgradeWizards-list-rows';
-  private selectorWizardsListRowTemplate: string = '.t3js-upgradeWizards-list-row-template';
-  private selectorWizardsListRowTitle: string = '.t3js-upgradeWizards-list-row-title';
-  private selectorWizardsListRowExplanation: string = '.t3js-upgradeWizards-list-row-explanation';
-  private selectorWizardsListRowExecute: string = '.t3js-upgradeWizards-list-row-execute';
-  private selectorWizardsInputTemplate: string = '.t3js-upgradeWizards-input';
-  private selectorWizardsInputTitle: string = '.t3js-upgradeWizards-input-title';
-  private selectorWizardsInputDescription: string = '.t3js-upgradeWizards-input-description';
-  private selectorWizardsInputHtml: string = '.t3js-upgradeWizards-input-html';
-  private selectorWizardsInputPerform: string = '.t3js-upgradeWizards-input-perform';
-  private selectorWizardsInputAbort: string = '.t3js-upgradeWizards-input-abort';
-  private securityUtility: SecurityUtility;
+  private readonly selectorOutputWizardsContainer: string = '.t3js-upgradeWizards-wizards-output';
+  private readonly selectorOutputDoneContainer: string = '.t3js-upgradeWizards-done-output';
+  private readonly selectorWizardsBlockingAddsTemplate: string = '.t3js-upgradeWizards-blocking-adds-template';
+  private readonly selectorWizardsBlockingAddsRows: string = '.t3js-upgradeWizards-blocking-adds-rows';
+  private readonly selectorWizardsBlockingAddsExecute: string = '.t3js-upgradeWizards-blocking-adds-execute';
+  private readonly selectorWizardsBlockingCharsetTemplate: string = '.t3js-upgradeWizards-blocking-charset-template';
+  private readonly selectorWizardsBlockingCharsetFix: string = '.t3js-upgradeWizards-blocking-charset-fix';
+  private readonly selectorWizardsDoneBodyTemplate: string = '.t3js-upgradeWizards-done-body-template';
+  private readonly selectorWizardsDoneRows: string = '.t3js-upgradeWizards-done-rows';
+  private readonly selectorWizardsDoneRowTemplate: string = '.t3js-upgradeWizards-done-row-template table tr';
+  private readonly selectorWizardsDoneRowMarkUndone: string = '.t3js-upgradeWizards-done-markUndone';
+  private readonly selectorWizardsDoneRowTitle: string = '.t3js-upgradeWizards-done-title';
+  private readonly selectorWizardsListTemplate: string = '.t3js-upgradeWizards-list-template';
+  private readonly selectorWizardsListRows: string = '.t3js-upgradeWizards-list-rows';
+  private readonly selectorWizardsListRowTemplate: string = '.t3js-upgradeWizards-list-row-template';
+  private readonly selectorWizardsListRowTitle: string = '.t3js-upgradeWizards-list-row-title';
+  private readonly selectorWizardsListRowExplanation: string = '.t3js-upgradeWizards-list-row-explanation';
+  private readonly selectorWizardsListRowExecute: string = '.t3js-upgradeWizards-list-row-execute';
+  private readonly selectorWizardsInputTemplate: string = '.t3js-upgradeWizards-input';
+  private readonly selectorWizardsInputTitle: string = '.t3js-upgradeWizards-input-title';
+  private readonly selectorWizardsInputDescription: string = '.t3js-upgradeWizards-input-description';
+  private readonly selectorWizardsInputHtml: string = '.t3js-upgradeWizards-input-html';
+  private readonly selectorWizardsInputPerform: string = '.t3js-upgradeWizards-input-perform';
+  private readonly selectorWizardsInputAbort: string = '.t3js-upgradeWizards-input-abort';
+  private readonly securityUtility: SecurityUtility;
 
   constructor() {
     super();

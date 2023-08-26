@@ -27,8 +27,8 @@ import type { ModalElement } from '@typo3/backend/modal';
  * Module: @typo3/install/module/create-admin
  */
 class MailTest extends AbstractInteractableModule {
-  private selectorOutputContainer: string = '.t3js-mailTest-output';
-  private selectorMailTestButton: string = '.t3js-mailTest-execute';
+  private readonly selectorOutputContainer: string = '.t3js-mailTest-output';
+  private readonly selectorMailTestButton: string = '.t3js-mailTest-execute';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

@@ -31,7 +31,7 @@ interface PasswordRules {
  * Handles the "Generate Password" field control
  */
 class PasswordGenerator {
-  private securityUtility: SecurityUtility = null;
+  private readonly securityUtility: SecurityUtility = null;
   private controlElement: HTMLAnchorElement = null;
   private humanReadableField: HTMLInputElement = null;
   private hiddenField: HTMLInputElement = null;

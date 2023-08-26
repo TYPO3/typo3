@@ -29,10 +29,10 @@ import type { ModalElement } from '@typo3/backend/modal';
  */
 class LocalConfiguration extends AbstractInteractableModule {
   private searchInput: HTMLInputElement;
-  private selectorItem: string = '.t3js-localConfiguration-item';
-  private selectorToggleAllTrigger: string = '.t3js-localConfiguration-toggleAll';
-  private selectorWriteTrigger: string = '.t3js-localConfiguration-write';
-  private selectorSearchTrigger: string = '.t3js-localConfiguration-search';
+  private readonly selectorItem: string = '.t3js-localConfiguration-item';
+  private readonly selectorToggleAllTrigger: string = '.t3js-localConfiguration-toggleAll';
+  private readonly selectorWriteTrigger: string = '.t3js-localConfiguration-write';
+  private readonly selectorSearchTrigger: string = '.t3js-localConfiguration-search';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

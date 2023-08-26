@@ -43,7 +43,7 @@ type SummaryRecord = {
 };
 
 class Localization {
-  private triggerButton: string = '.t3js-localize';
+  private readonly triggerButton: string = '.t3js-localize';
   private localizationMode: string = null;
   private sourceLanguage: number = null;
   private records: Array<any> = [];

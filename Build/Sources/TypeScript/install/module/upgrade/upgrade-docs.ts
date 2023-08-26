@@ -30,11 +30,11 @@ import type { ModalElement } from '@typo3/backend/modal';
  * Module: @typo3/install/module/upgrade-docs
  */
 class UpgradeDocs extends AbstractInteractableModule {
-  private selectorFulltextSearch: string = '.t3js-upgradeDocs-fulltext-search';
-  private selectorChosenField: string = '.t3js-upgradeDocs-chosen-select';
-  private selectorChangeLogsForVersionContainer: string = '.t3js-version-changes';
-  private selectorChangeLogsForVersion: string = '.t3js-changelog-list';
-  private selectorUpgradeDoc: string = '.t3js-upgrade-doc';
+  private readonly selectorFulltextSearch: string = '.t3js-upgradeDocs-fulltext-search';
+  private readonly selectorChosenField: string = '.t3js-upgradeDocs-chosen-select';
+  private readonly selectorChangeLogsForVersionContainer: string = '.t3js-version-changes';
+  private readonly selectorChangeLogsForVersion: string = '.t3js-changelog-list';
+  private readonly selectorUpgradeDoc: string = '.t3js-upgrade-doc';
 
   private chosenField: HTMLInputElement;
   private fulltextSearchField: HTMLInputElement;

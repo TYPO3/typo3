@@ -33,9 +33,9 @@ interface BrokenExtension {
  * Module: @typo3/install/module/extension-compat-tester
  */
 class ExtensionCompatTester extends AbstractInteractableModule {
-  private selectorCheckTrigger: string = '.t3js-extensionCompatTester-check';
-  private selectorUninstallTrigger: string = '.t3js-extensionCompatTester-uninstall';
-  private selectorOutputContainer: string = '.t3js-extensionCompatTester-output';
+  private readonly selectorCheckTrigger: string = '.t3js-extensionCompatTester-check';
+  private readonly selectorUninstallTrigger: string = '.t3js-extensionCompatTester-uninstall';
+  private readonly selectorOutputContainer: string = '.t3js-extensionCompatTester-output';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

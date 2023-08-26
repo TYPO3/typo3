@@ -68,7 +68,7 @@ class Repository {
     }).delegateTo(document, '.downloadFromTer form.download button[type=submit]');
   }
 
-  private getDependencies = async(response: AjaxResponse): Promise<void> => {
+  private readonly getDependencies = async(response: AjaxResponse): Promise<void> => {
     const data = await response.resolve();
 
     NProgress.done();

@@ -31,7 +31,7 @@ class ResetSelection {
   /**
    * @param {Event} e
    */
-  private registerClickHandler = (e: Event): void => {
+  private readonly registerClickHandler = (e: Event): void => {
     e.preventDefault();
 
     const itemName: string = this.controlElement.dataset.itemName;

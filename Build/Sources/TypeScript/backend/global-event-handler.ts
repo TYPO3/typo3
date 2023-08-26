@@ -47,7 +47,7 @@ type HTMLFormChildElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaE
  * </form>
  */
 class GlobalEventHandler {
-  private options = {
+  private readonly options = {
     onChangeSelector: '[data-global-event="change"]',
     onClickSelector: '[data-global-event="click"]',
     onSubmitSelector: 'form[data-global-event="submit"]',

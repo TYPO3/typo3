@@ -30,7 +30,7 @@ import { GenericKeyValue, InputTransformer } from './input-transformer';
  * // `$value = json_decode((string)ServerRequest::getBody(), true)['item']['first']`
  */
 class AjaxRequest {
-  private static defaultOptions: RequestInit = {
+  private static readonly defaultOptions: RequestInit = {
     credentials: 'same-origin'
   };
 

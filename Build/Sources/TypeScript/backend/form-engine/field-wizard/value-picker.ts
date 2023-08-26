@@ -45,7 +45,7 @@ export class ValuePicker extends HTMLElement {
     }
   }
 
-  private onChange = () => {
+  private readonly onChange = () => {
     this.setValue();
     this.valuePicker.selectedIndex = 0;
     this.valuePicker.blur();

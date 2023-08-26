@@ -33,7 +33,7 @@ interface CurrentState {
  * @exports @typo3/backend/storage/module-state-storage
  */
 export class ModuleStateStorage {
-  private static prefix = 't3-module-state-';
+  private static readonly prefix = 't3-module-state-';
 
   public static update(module: string, identifier: string|number, selected: boolean, mount?: string|number)
   {

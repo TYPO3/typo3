@@ -38,7 +38,7 @@ class ClearCacheMenu {
    * Registers listeners for the icons inside the dropdown to trigger
    * the clear cache call
    */
-  private initializeEvents = (): void => {
+  private readonly initializeEvents = (): void => {
     const toolbarItemContainer = document.querySelector(Identifiers.containerSelector);
 
     new RegularEvent('click', (e: Event, menuItem: HTMLAnchorElement): void => {

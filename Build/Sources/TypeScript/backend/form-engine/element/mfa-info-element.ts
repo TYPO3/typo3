@@ -43,7 +43,7 @@ enum Selectors {
 }
 
 class MfaInfoElement {
-  private options: FieldOptions = null;
+  private readonly options: FieldOptions = null;
   private fullElement: HTMLElement = null;
   private deactivteProviderButtons: NodeListOf<HTMLButtonElement> = null;
   private deactivteMfaButton: HTMLButtonElement = null;

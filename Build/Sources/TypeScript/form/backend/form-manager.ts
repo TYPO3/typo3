@@ -56,7 +56,7 @@ export function assert(test: boolean|(() => boolean), message: string, messageCo
 export class FormManager {
   private isRunning: boolean = false;
   private configuration: FormManagerConfiguration;
-  private viewModel: ViewModel;
+  private readonly viewModel: ViewModel;
 
   public constructor(
     configuration: FormManagerConfiguration,

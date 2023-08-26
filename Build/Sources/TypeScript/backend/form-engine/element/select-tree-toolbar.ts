@@ -20,7 +20,7 @@ import { TreeNode } from '../../tree/tree-node';
 @customElement('typo3-backend-form-selecttree-toolbar')
 export class SelectTreeToolbar extends LitElement {
   public tree: SelectTree;
-  private settings = {
+  private readonly settings = {
     collapseAllBtn: 'collapse-all-btn',
     expandAllBtn: 'expand-all-btn',
     searchInput: 'search-input',

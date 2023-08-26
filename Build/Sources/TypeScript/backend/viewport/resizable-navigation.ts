@@ -74,7 +74,7 @@ export class ResizableNavigation extends LitElement {
     `;
   }
 
-  private toggleNavigation = (event: MouseEvent | TouchEvent) => {
+  private readonly toggleNavigation = (event: MouseEvent | TouchEvent) => {
     if (event instanceof MouseEvent && event.button === 2) {
       return;
     }
@@ -82,7 +82,7 @@ export class ResizableNavigation extends LitElement {
     this.parentContainer.classList.toggle('scaffold-content-navigation-expanded');
   };
 
-  private fallbackNavigationSizeIfNeeded = (event: UIEvent) => {
+  private readonly fallbackNavigationSizeIfNeeded = (event: UIEvent) => {
     const window = <Window>event.currentTarget;
     if (this.getNavigationWidth() === 0) {
       return;
@@ -92,20 +92,20 @@ export class ResizableNavigation extends LitElement {
     }
   };
 
-  private handleMouseMove = (event: MouseEvent) => {
+  private readonly handleMouseMove = (event: MouseEvent) => {
     this.resizeNavigation(<number>event.clientX);
   };
 
-  private handleTouchMove = (event: TouchEvent) => {
+  private readonly handleTouchMove = (event: TouchEvent) => {
     this.resizeNavigation(<number>event.changedTouches[0].clientX);
   };
 
-  private resizeNavigation = (position: number) => {
+  private readonly resizeNavigation = (position: number) => {
     const width = Math.round(position) - Math.round(this.getNavigationPosition().left);
     this.setNavigationWidth(width);
   };
 
-  private startResizeNavigation = (event: MouseEvent | TouchEvent) => {
+  private readonly startResizeNavigation = (event: MouseEvent | TouchEvent) => {
     if (event instanceof MouseEvent && event.button === 2) {
       return;
     }
@@ -117,7 +117,7 @@ export class ResizableNavigation extends LitElement {
     document.addEventListener('touchend', this.stopResizeNavigation, false);
   };
 
-  private stopResizeNavigation = () => {
+  private readonly stopResizeNavigation = () => {
     this.resizing = false;
     document.removeEventListener('mousemove', this.handleMouseMove, false);
     document.removeEventListener('mouseup', this.stopResizeNavigation, false);

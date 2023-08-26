@@ -36,7 +36,7 @@ class Paste {
   private readonly itemOnClipboardUid: number = 0;
   private readonly itemOnClipboardTitle: string = '';
   private readonly copyMode: string = '';
-  private elementIdentifier: string = '.t3js-page-ce';
+  private readonly elementIdentifier: string = '.t3js-page-ce';
   private pasteAfterLinkTemplate: string = '';
   private pasteIntoLinkTemplate: string = '';
 

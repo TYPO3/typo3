@@ -279,7 +279,7 @@ export default class Filelist {
     }
   }
 
-  private downloadFilesAndFolders = (event: CustomEvent): void => {
+  private readonly downloadFilesAndFolders = (event: CustomEvent): void => {
     event.preventDefault();
     const target: HTMLElement = event.target as HTMLElement;
     const eventDetails: ActionEventDetails = (event.detail as ActionEventDetails);
