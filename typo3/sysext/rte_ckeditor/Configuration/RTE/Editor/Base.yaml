@@ -7,3 +7,8 @@ editor:
       - 'EXT:rte_ckeditor/Resources/Public/Css/contents.css'
     height: 300
     width: 'auto'
+    ui:
+      poweredBy:
+        position: 'inside'
+        side: 'right'
+        label: ''

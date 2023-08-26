@@ -18,6 +18,7 @@ interface CKEditor5Config {
   readOnly?: boolean;
   language?: any;
   table?: any;
+  ui?: any;
 
   wordCount?: any;
   typo3link?: any;
@@ -111,6 +112,9 @@ export class CKEditor5Element extends LitElement {
         }
         if (this.options.alignment) {
           config.alignment = this.options.alignment;
+        }
+        if (this.options.ui) {
+          config.ui = this.options.ui;
         }
 
         CKEditor5
