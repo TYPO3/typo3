@@ -24,16 +24,6 @@ use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
  */
 final class ModifyRecordListHeaderColumnsEvent
 {
-    private array $columns;
-    private string $table;
-
-    /**
-     * @var int[]
-     */
-    private array $recordIds;
-
-    private DatabaseRecordList $recordList;
-
     /**
      * Additional header attributes for the table header row
      *
@@ -41,12 +31,15 @@ final class ModifyRecordListHeaderColumnsEvent
      */
     private array $headerAttributes = [];
 
-    public function __construct(array $columns, string $table, array $recordIds, DatabaseRecordList $recordList)
-    {
-        $this->columns = $columns;
-        $this->table = $table;
-        $this->recordIds = $recordIds;
-        $this->recordList = $recordList;
+    /**
+     * @param array<int> $recordIds
+     */
+    public function __construct(
+        private array $columns,
+        private readonly string $table,
+        private readonly array $recordIds,
+        private readonly DatabaseRecordList $recordList
+    ) {
     }
 
     /**
@@ -59,9 +52,6 @@ final class ModifyRecordListHeaderColumnsEvent
      * to be adjusted as well. This method only adds the column to the data array.
      * Therefore, this method should mainly be used to edit existing columns, e.g.
      * change their label.
-     *
-     * @param string $column
-     * @param string $columnName
      */
     public function setColumn(string $column, string $columnName = ''): void
     {
