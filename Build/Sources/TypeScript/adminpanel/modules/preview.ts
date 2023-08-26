@@ -30,7 +30,7 @@ namespace TYPO3 {
       this.timeField.addEventListener('change', this.updateDateField);
     }
 
-    private toggleDisplay = (): void => {
+    private readonly toggleDisplay = (): void => {
       const toggleVal = this.toggleField.checked;
       const groupElement = <HTMLDivElement>document.getElementById('typo3-adminPanel-preview_simulateDate');
       if (toggleVal) {
@@ -46,7 +46,7 @@ namespace TYPO3 {
       }
     };
 
-    private updateDateField = (): void => {
+    private readonly updateDateField = (): void => {
       let dateVal = this.dateField.value;
       let timeVal = this.timeField.value;
       if (!dateVal && timeVal) {

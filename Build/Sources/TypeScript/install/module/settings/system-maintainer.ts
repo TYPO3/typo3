@@ -41,9 +41,9 @@ type SystemMaintainerListResponse = {
  * Module: @typo3/install/module/system-maintainer
  */
 class SystemMaintainer extends AbstractInteractableModule {
-  private selectorWriteTrigger: string = '.t3js-systemMaintainer-write';
-  private selectorChosenContainer: string = '.t3js-systemMaintainer-chosen';
-  private selectorChosenField: string = '.t3js-systemMaintainer-chosen-select';
+  private readonly selectorWriteTrigger: string = '.t3js-systemMaintainer-write';
+  private readonly selectorChosenContainer: string = '.t3js-systemMaintainer-chosen';
+  private readonly selectorChosenField: string = '.t3js-systemMaintainer-chosen-select';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;

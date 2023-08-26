@@ -39,7 +39,7 @@ interface RequestTokenResponseData {
  * @exports @typo3/backend/login-refresh
  */
 class LoginRefresh {
-  private options: any = {
+  private readonly options: any = {
     modalConfig: {
       backdrop: 'static',
     },

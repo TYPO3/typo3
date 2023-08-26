@@ -738,7 +738,7 @@ function extendModel<D extends object, T extends ModelData<D>>(
 
 export class Model<D extends object, T extends ModelData<D>> {
 
-  private objectData: T = <T>{};
+  private readonly objectData: T = <T>{};
 
   private publisherTopics: {[key: string]: string[]} = {};
 
@@ -1872,7 +1872,7 @@ export class DataBackend {
 export class ApplicationStateStack {
   private stackSize: number = 10;
   private stackPointer: number = 0;
-  private stack: ApplicationState[] = [];
+  private readonly stack: ApplicationState[] = [];
 
   /**
    * @publish core/applicationState/add

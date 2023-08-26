@@ -264,7 +264,7 @@ class SiteLanguageContainer extends HTMLElement {
     }).delegateTo(this.container, Selectors.deleteRecordButtonSelector);
   }
 
-  private handlePostMessage = (e: MessageEvent): void => {
+  private readonly handlePostMessage = (e: MessageEvent): void => {
     if (!MessageUtility.verifyOrigin(e.origin)) {
       throw 'Denied message sent by ' + e.origin;
     }

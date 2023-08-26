@@ -30,10 +30,10 @@ export enum FileListDragDropEvent {
 type Coordinates = { left: number, top: number };
 
 class FileListDragDrop {
-  private dragPreviewId: string = 'dragpreview';
-  private rootDocument: Document;
+  private readonly dragPreviewId: string = 'dragpreview';
+  private readonly rootDocument: Document;
   private currentAnimationRequestId: number | null = null;
-  private previewSize: number = 32;
+  private readonly previewSize: number = 32;
 
   constructor() {
     this.rootDocument = top.document;

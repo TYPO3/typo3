@@ -184,7 +184,7 @@ class FilesControlContainer extends HTMLElement {
     }).delegateTo(this.container, Selectors.controlSectionSelector + ' [data-action="sort"]');
   }
 
-  private handlePostMessage = (e: MessageEvent): void => {
+  private readonly handlePostMessage = (e: MessageEvent): void => {
     if (!MessageUtility.verifyOrigin(e.origin)) {
       throw 'Denied message sent by ' + e.origin;
     }

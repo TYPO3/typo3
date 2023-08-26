@@ -210,7 +210,7 @@ export class PageBrowser extends LitElement {
     `;
   }
 
-  private selectActivePageInTree = (evt: CustomEvent): void => {
+  private readonly selectActivePageInTree = (evt: CustomEvent): void => {
     // Activate the current node
     const nodes = evt.detail.nodes as Array<TreeNode>;
     evt.detail.nodes = nodes.map((node: TreeNode) => {
@@ -221,7 +221,7 @@ export class PageBrowser extends LitElement {
     });
   };
 
-  private toggleExpandState = (evt: CustomEvent): void => {
+  private readonly toggleExpandState = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (node) {
       Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, (node.expanded ? '1' : '0'));
@@ -230,7 +230,7 @@ export class PageBrowser extends LitElement {
   /**
    * If a page is clicked, the content area needs to be updated
    */
-  private loadRecordsOfPage = (evt: CustomEvent): void => {
+  private readonly loadRecordsOfPage = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (!node.checked) {
       return;
@@ -245,7 +245,7 @@ export class PageBrowser extends LitElement {
   };
 
 
-  private setMountPoint = (e: CustomEvent): void => {
+  private readonly setMountPoint = (e: CustomEvent): void => {
     this.setTemporaryMountPoint(e.detail.pageId as number);
   };
 

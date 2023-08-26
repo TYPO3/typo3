@@ -24,14 +24,14 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/clear-tables
  */
 class ClearTables extends AbstractInteractableModule {
-  private selectorClearTrigger: string = '.t3js-clearTables-clear';
-  private selectorStatsTrigger: string = '.t3js-clearTables-stats';
-  private selectorOutputContainer: string = '.t3js-clearTables-output';
-  private selectorStatContainer: string = '.t3js-clearTables-stat-container';
-  private selectorStatTemplate: string = '.t3js-clearTables-stat-template';
-  private selectorStatDescription: string = '.t3js-clearTables-stat-description';
-  private selectorStatRows: string = '.t3js-clearTables-stat-rows';
-  private selectorStatName: string = '.t3js-clearTables-stat-name';
+  private readonly selectorClearTrigger: string = '.t3js-clearTables-clear';
+  private readonly selectorStatsTrigger: string = '.t3js-clearTables-stats';
+  private readonly selectorOutputContainer: string = '.t3js-clearTables-output';
+  private readonly selectorStatContainer: string = '.t3js-clearTables-stat-container';
+  private readonly selectorStatTemplate: string = '.t3js-clearTables-stat-template';
+  private readonly selectorStatDescription: string = '.t3js-clearTables-stat-description';
+  private readonly selectorStatRows: string = '.t3js-clearTables-stat-rows';
+  private readonly selectorStatName: string = '.t3js-clearTables-stat-name';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;

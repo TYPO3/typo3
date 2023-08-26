@@ -66,8 +66,8 @@ export interface DragDropHandler {
  */
 export class DragDrop {
   protected tree: SvgTree;
-  private timeout: any = {};
-  private minimalDistance: number = 10;
+  private readonly timeout: any = {};
+  private readonly minimalDistance: number = 10;
 
   constructor(svgTree: SvgTree) {
     this.tree = svgTree;

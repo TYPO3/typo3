@@ -27,12 +27,12 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/image-processing
  */
 class ImageProcessing extends AbstractInteractableModule {
-  private selectorExecuteTrigger: string = '.t3js-imageProcessing-execute';
-  private selectorTestContainer: string = '.t3js-imageProcessing-twinContainer';
-  private selectorTwinImageTemplate: string = '.t3js-imageProcessing-twinImage-template';
-  private selectorCommandContainer: string = '.t3js-imageProcessing-command';
-  private selectorCommandText: string = '.t3js-imageProcessing-command-text';
-  private selectorTwinImages: string = '.t3js-imageProcessing-images';
+  private readonly selectorExecuteTrigger: string = '.t3js-imageProcessing-execute';
+  private readonly selectorTestContainer: string = '.t3js-imageProcessing-twinContainer';
+  private readonly selectorTwinImageTemplate: string = '.t3js-imageProcessing-twinImage-template';
+  private readonly selectorCommandContainer: string = '.t3js-imageProcessing-command';
+  private readonly selectorCommandText: string = '.t3js-imageProcessing-command-text';
+  private readonly selectorTwinImages: string = '.t3js-imageProcessing-images';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;

@@ -23,7 +23,7 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/features
  */
 class Features extends AbstractInteractableModule {
-  private selectorSaveTrigger: string = '.t3js-features-save';
+  private readonly selectorSaveTrigger: string = '.t3js-features-save';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;

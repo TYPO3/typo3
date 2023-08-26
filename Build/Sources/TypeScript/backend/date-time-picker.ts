@@ -26,7 +26,7 @@ interface FlatpickrInputElement extends HTMLInputElement {
  * and EXT:belog and EXT:scheduler
  */
 class DateTimePicker {
-  private format: string = (typeof opener?.top?.TYPO3 !== 'undefined' ? opener.top : top).TYPO3.settings.DateTimePicker.DateFormat;
+  private readonly format: string = (typeof opener?.top?.TYPO3 !== 'undefined' ? opener.top : top).TYPO3.settings.DateTimePicker.DateFormat;
 
   /**
    * Format a given date for the hidden FormEngine field

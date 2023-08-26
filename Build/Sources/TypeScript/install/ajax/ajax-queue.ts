@@ -30,7 +30,7 @@ interface Payload {
 class AjaxQueue {
   private requests: Array<AjaxRequest> = [];
   private requestCount: number = 0;
-  private threshold: number = 5;
+  private readonly threshold: number = 5;
   private queue: Array<Payload> = [];
 
   public add(payload: Payload): void {

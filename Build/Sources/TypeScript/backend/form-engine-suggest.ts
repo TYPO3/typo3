@@ -103,7 +103,7 @@ class FormEngineSuggest {
     new RegularEvent('keydown', this.handleKeyDown).bindTo(this.element);
   }
 
-  private handleKeyDown = (e: KeyboardEvent): void => {
+  private readonly handleKeyDown = (e: KeyboardEvent): void => {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
 

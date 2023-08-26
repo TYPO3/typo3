@@ -151,7 +151,7 @@ export abstract class AbstractSortableSelectItems {
   /**
    * @param {HTMLSelectElement} fieldElement
    */
-  private registerKeyboardEventHandler = (fieldElement: HTMLSelectElement): void => {
+  private readonly registerKeyboardEventHandler = (fieldElement: HTMLSelectElement): void => {
     const relatedFieldName = fieldElement.dataset.formengineInputName;
     const relatedField = FormEngine.getFieldElement(relatedFieldName).get(0) as HTMLSelectElement;
     const relatedAvailableValuesField = FormEngine.getFieldElement(relatedFieldName,'_avail').get(0) as HTMLSelectElement;

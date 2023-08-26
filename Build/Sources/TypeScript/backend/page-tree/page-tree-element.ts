@@ -336,15 +336,15 @@ export class PageTreeNavigationComponent extends LitElement {
     `;
   }
 
-  private refresh = (): void => {
+  private readonly refresh = (): void => {
     this.tree.refreshOrFilterTree();
   };
 
-  private setMountPoint = (e: CustomEvent): void => {
+  private readonly setMountPoint = (e: CustomEvent): void => {
     this.setTemporaryMountPoint(e.detail.pageId as number);
   };
 
-  private selectFirstNode = (): void => {
+  private readonly selectFirstNode = (): void => {
     this.tree.selectFirstNode();
   };
 
@@ -390,14 +390,14 @@ export class PageTreeNavigationComponent extends LitElement {
       });
   }
 
-  private toggleExpandState = (evt: CustomEvent): void => {
+  private readonly toggleExpandState = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (node) {
       Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, (node.expanded ? '1' : '0'));
     }
   };
 
-  private loadContent = (evt: CustomEvent): void => {
+  private readonly loadContent = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (!node?.checked) {
       return;
@@ -416,7 +416,7 @@ export class PageTreeNavigationComponent extends LitElement {
     top.TYPO3.Backend.ContentContainer.setUrl(contentUrl + 'id=' + node.identifier);
   };
 
-  private showContextMenu = (evt: CustomEvent): void => {
+  private readonly showContextMenu = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (!node) {
       return;
@@ -435,7 +435,7 @@ export class PageTreeNavigationComponent extends LitElement {
    * Event listener called for each loaded node,
    * here used to mark node remembered in ModuleState as selected
    */
-  private selectActiveNode = (evt: CustomEvent): void => {
+  private readonly selectActiveNode = (evt: CustomEvent): void => {
     const selectedNodeIdentifier = ModuleStateStorage.current('web').selection;
     const nodes = evt.detail.nodes as Array<TreeNode>;
     evt.detail.nodes = nodes.map((node: TreeNode) => {
@@ -701,8 +701,8 @@ class ToolbarDragHandler implements DragDropHandler {
   private readonly id: string = '';
   private readonly name: string = '';
   private readonly icon: string = '';
-  private dragDrop: PageTreeDragDrop;
-  private tree: EditablePageTree;
+  private readonly dragDrop: PageTreeDragDrop;
+  private readonly tree: EditablePageTree;
 
   constructor(item: any, tree: EditablePageTree, dragDrop: PageTreeDragDrop) {
     this.id = item.nodeType;
@@ -888,8 +888,8 @@ class PageTreeNodeDragHandler implements DragDropHandler {
    * @type {Selection}
    */
   private dropZoneDelete: null | TreeWrapperSelection<SVGGElement>;
-  private tree: any;
-  private dragDrop: PageTreeDragDrop;
+  private readonly tree: any;
+  private readonly dragDrop: PageTreeDragDrop;
   private nodeIsOverDelete: boolean = false;
 
   constructor(tree: any, dragDrop: PageTreeDragDrop) {

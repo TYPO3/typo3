@@ -24,7 +24,7 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/create-admin
  */
 class CreateAdmin extends AbstractInteractableModule {
-  private selectorAdminCreateButton: string = '.t3js-createAdmin-create';
+  private readonly selectorAdminCreateButton: string = '.t3js-createAdmin-create';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;

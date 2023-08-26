@@ -28,17 +28,17 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/language-packs
  */
 class LanguagePacks extends AbstractInteractableModule {
-  private selectorOutputContainer: string = '.t3js-languagePacks-output';
-  private selectorContentContainer: string = '.t3js-languagePacks-mainContent';
-  private selectorActivateLanguage: string = '.t3js-languagePacks-activateLanguage';
-  private selectorActivateLanguageIcon: string = '#t3js-languagePacks-activate-icon';
-  private selectorAddLanguageToggle: string = '.t3js-languagePacks-addLanguage-toggle';
-  private selectorLanguageInactive: string = '.t3js-languagePacks-inactive';
-  private selectorDeactivateLanguage: string = '.t3js-languagePacks-deactivateLanguage';
-  private selectorDeactivateLanguageIcon: string = '#t3js-languagePacks-deactivate-icon';
-  private selectorUpdate: string = '.t3js-languagePacks-update';
-  private selectorLanguageUpdateIcon: string = '#t3js-languagePacks-languageUpdate-icon';
-  private selectorNotifications: string = '.t3js-languagePacks-notifications';
+  private readonly selectorOutputContainer: string = '.t3js-languagePacks-output';
+  private readonly selectorContentContainer: string = '.t3js-languagePacks-mainContent';
+  private readonly selectorActivateLanguage: string = '.t3js-languagePacks-activateLanguage';
+  private readonly selectorActivateLanguageIcon: string = '#t3js-languagePacks-activate-icon';
+  private readonly selectorAddLanguageToggle: string = '.t3js-languagePacks-addLanguage-toggle';
+  private readonly selectorLanguageInactive: string = '.t3js-languagePacks-inactive';
+  private readonly selectorDeactivateLanguage: string = '.t3js-languagePacks-deactivateLanguage';
+  private readonly selectorDeactivateLanguageIcon: string = '#t3js-languagePacks-deactivate-icon';
+  private readonly selectorUpdate: string = '.t3js-languagePacks-update';
+  private readonly selectorLanguageUpdateIcon: string = '#t3js-languagePacks-languageUpdate-icon';
+  private readonly selectorNotifications: string = '.t3js-languagePacks-notifications';
 
   private activeLanguages: string[] = [];
   private activeExtensions: string[] = [];

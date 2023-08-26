@@ -64,7 +64,7 @@ enum ProposalModes {
  *  - for existing records, we also check for conflicts, and check if we have subpages, or if we want to add a redirect (todo)
  */
 class SlugElement {
-  private options: FieldOptions = null;
+  private readonly options: FieldOptions = null;
   private fullElement: HTMLElement = null;
   private manuallyChanged: boolean = false;
   private readOnlyField: HTMLInputElement = null;

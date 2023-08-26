@@ -39,7 +39,7 @@ export class ValueSlider extends HTMLElement {
     }
   }
 
-  private handleRangeChange = (e: Event): void => {
+  private readonly handleRangeChange = (e: Event): void => {
     const target = e.target as HTMLInputElement;
     this.updateValue(target);
     this.updateTooltipValue(target);

@@ -18,7 +18,7 @@ import Severity from './severity';
  * Module: @typo3/install/module/info-box
  */
 class InfoBox {
-  private template: JQuery = $(
+  private readonly template: JQuery = $(
     '<div class="t3js-infobox callout callout-sm">' +
       '<h4 class="callout-title"></h4>' +
       '<div class="callout-body"></div>' +

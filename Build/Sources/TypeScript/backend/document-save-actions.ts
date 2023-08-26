@@ -19,7 +19,7 @@ type PreSubmitCallback = (e: JQueryEventObject) => void;
 
 class DocumentSaveActions {
   private static instance: DocumentSaveActions = null;
-  private preSubmitCallbacks: PreSubmitCallback[] = [];
+  private readonly preSubmitCallbacks: PreSubmitCallback[] = [];
 
   private constructor() {
     DocumentService.ready().then((): void => {

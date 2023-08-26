@@ -29,8 +29,8 @@ import RegularEvent from '@typo3/core/event/regular-event';
  * Module: @typo3/install/module/extension-configuration
  */
 class ExtensionConfiguration extends AbstractInteractableModule {
-  private selectorFormListener: string = '.t3js-extensionConfiguration-form';
-  private selectorSearchInput: string = '.t3js-extensionConfiguration-search';
+  private readonly selectorFormListener: string = '.t3js-extensionConfiguration-form';
+  private readonly selectorSearchInput: string = '.t3js-extensionConfiguration-search';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;

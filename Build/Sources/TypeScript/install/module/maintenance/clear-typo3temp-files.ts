@@ -24,13 +24,13 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/clear-typo3temp-files
  */
 class ClearTypo3tempFiles extends AbstractInteractableModule {
-  private selectorDeleteTrigger: string = '.t3js-clearTypo3temp-delete';
-  private selectorOutputContainer: string = '.t3js-clearTypo3temp-output';
-  private selectorStatContainer: string = '.t3js-clearTypo3temp-stat-container';
-  private selectorStatsTrigger: string = '.t3js-clearTypo3temp-stats';
-  private selectorStatTemplate: string = '.t3js-clearTypo3temp-stat-template';
-  private selectorStatNumberOfFiles: string = '.t3js-clearTypo3temp-stat-numberOfFiles';
-  private selectorStatDirectory: string = '.t3js-clearTypo3temp-stat-directory';
+  private readonly selectorDeleteTrigger: string = '.t3js-clearTypo3temp-delete';
+  private readonly selectorOutputContainer: string = '.t3js-clearTypo3temp-output';
+  private readonly selectorStatContainer: string = '.t3js-clearTypo3temp-stat-container';
+  private readonly selectorStatsTrigger: string = '.t3js-clearTypo3temp-stats';
+  private readonly selectorStatTemplate: string = '.t3js-clearTypo3temp-stat-template';
+  private readonly selectorStatNumberOfFiles: string = '.t3js-clearTypo3temp-stat-numberOfFiles';
+  private readonly selectorStatDirectory: string = '.t3js-clearTypo3temp-stat-directory';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;

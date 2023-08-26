@@ -67,17 +67,17 @@ class ImageManipulation {
   private activeCropVariantTrigger: HTMLElement;
   private cropInfo: HTMLElement;
   private imageOriginalSizeFactor: number;
-  private cropImageSelector: string = '#t3js-crop-image';
-  private coverAreaSelector: string = '.t3js-cropper-cover-area';
-  private cropInfoSelector: string = '.t3js-cropper-info-crop';
-  private focusAreaSelector: string = '#t3js-cropper-focus-area';
+  private readonly cropImageSelector: string = '#t3js-crop-image';
+  private readonly coverAreaSelector: string = '.t3js-cropper-cover-area';
+  private readonly cropInfoSelector: string = '.t3js-cropper-info-crop';
+  private readonly focusAreaSelector: string = '#t3js-cropper-focus-area';
   private focusAreaEl: DraggableResizableElement;
   // Initialize an empty object to prevent undefined cropBox error on modal load.
   private cropBox: HTMLElement;
   private cropper: Cropper;
   private currentCropVariant: CropVariant;
   private data: any;
-  private defaultFocusArea: Area = {
+  private readonly defaultFocusArea: Area = {
     height: 1 / 3,
     width: 1 / 3,
     x: 0,
@@ -379,7 +379,7 @@ class ImageManipulation {
   /**
    * @desc Internal cropper handler. Called when the cropper has been instantiated
    */
-  private cropBuiltHandler = (): void => {
+  private readonly cropBuiltHandler = (): void => {
     this.initialized = true;
 
     const imageData: Cropper.ImageData = this.cropper.getImageData();
@@ -437,7 +437,7 @@ class ImageManipulation {
   /**
    * @desc Internal cropper handler. Called when the cropping area is moving
    */
-  private cropMoveHandler = (e: CropperEvent): void => {
+  private readonly cropMoveHandler = (e: CropperEvent): void => {
     if (!this.initialized) {
       return;
     }

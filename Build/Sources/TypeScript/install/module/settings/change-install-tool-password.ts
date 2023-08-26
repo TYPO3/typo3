@@ -24,7 +24,7 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/change-install-tool-password
  */
 class ChangeInstallToolPassword extends AbstractInteractableModule {
-  private selectorChangeButton: string = '.t3js-changeInstallToolPassword-change';
+  private readonly selectorChangeButton: string = '.t3js-changeInstallToolPassword-change';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;

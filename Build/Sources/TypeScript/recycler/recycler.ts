@@ -217,7 +217,7 @@ class Recycler {
   /**
    * Handles the clicks on checkboxes in the records table
    */
-  private handleCheckboxStateChanged = (e: Event): void => {
+  private readonly handleCheckboxStateChanged = (e: Event): void => {
     const $checkbox = $(e.target);
     const $tr = $checkbox.parents('tr');
     const table = $tr.data('table');
@@ -315,7 +315,7 @@ class Recycler {
     }).finally(() => NProgress.done());
   }
 
-  private deleteRecord = (e: Event): void => {
+  private readonly deleteRecord = (e: Event): void => {
     if (TYPO3.settings.Recycler.deleteDisable) {
       return;
     }
@@ -360,7 +360,7 @@ class Recycler {
     });
   };
 
-  private undoRecord = (e: Event): void => {
+  private readonly undoRecord = (e: Event): void => {
     const $tr = $(e.target).parents('tr');
     const isMassUndo = $tr.parent().prop('tagName') !== 'TBODY'; // undoRecord() was invoked by the mass delete button
 

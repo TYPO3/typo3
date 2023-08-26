@@ -31,7 +31,7 @@ class LinkPopup {
   /**
    * @param {Event} e
    */
-  private handleControlClick = (e: Event): void => {
+  private readonly handleControlClick = (e: Event): void => {
     e.preventDefault();
 
     const itemName = this.controlElement.dataset.itemName;

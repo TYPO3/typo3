@@ -213,7 +213,7 @@ class Recordlist {
     window.location.href = editUrl;
   };
 
-  private disableButton = (event: JQueryEventObject): void => {
+  private readonly disableButton = (event: JQueryEventObject): void => {
     const $me = $(event.currentTarget);
 
     $me.prop('disable', true).addClass('disabled');
@@ -236,7 +236,7 @@ class Recordlist {
     }
   }
 
-  private deleteRow = (payload: DataHandlerEventPayload): void => {
+  private readonly deleteRow = (payload: DataHandlerEventPayload): void => {
     const $tableElement = $(`table[data-table="${payload.table}"]`);
     const $rowElement = $tableElement.find(`tr[data-uid="${payload.uid}"]`);
     const $panel = $tableElement.closest('.panel');
@@ -289,7 +289,7 @@ class Recordlist {
     });
   }
 
-  private registerPaginationEvents = (): void => {
+  private readonly registerPaginationEvents = (): void => {
     document.querySelectorAll('.t3js-recordlist-paging').forEach((trigger: HTMLInputElement) => {
       trigger.addEventListener('keyup', (e: KeyboardEvent) => {
         e.preventDefault();

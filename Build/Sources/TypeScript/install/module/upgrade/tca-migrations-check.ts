@@ -27,8 +27,8 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/tca-migrations-check
  */
 class TcaMigrationsCheck extends AbstractInteractableModule {
-  private selectorCheckTrigger: string = '.t3js-tcaMigrationsCheck-check';
-  private selectorOutputContainer: string = '.t3js-tcaMigrationsCheck-output';
+  private readonly selectorCheckTrigger: string = '.t3js-tcaMigrationsCheck-check';
+  private readonly selectorOutputContainer: string = '.t3js-tcaMigrationsCheck-output';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;

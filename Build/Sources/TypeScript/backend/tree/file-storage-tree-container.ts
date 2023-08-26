@@ -62,7 +62,7 @@ export class EditableFileStorageTree extends FileStorageTree {
     return super.nodesUpdate.call(this, nodes).call(this.initializeDragForNode());
   }
 
-  private handleDragOver = (e: DragEvent): void => {
+  private readonly handleDragOver = (e: DragEvent): void => {
     const target = e.target as SVGElement;
     const node = this.getNodeFromElement(target);
     if (node) {
@@ -77,7 +77,7 @@ export class EditableFileStorageTree extends FileStorageTree {
     e.preventDefault();
   };
 
-  private handleDrop = (event: DragEvent): void => {
+  private readonly handleDrop = (event: DragEvent): void => {
     const target = event.target as Element;
     const element = target.closest('[data-state-id]') as SVGElement;
     const node = this.getNodeFromElement(element);
@@ -170,11 +170,11 @@ export class FileStorageTreeNavigationComponent extends LitElement {
     this.tree.addEventListener('typo3:svg-tree:nodes-prepared', this.selectActiveNode);
   }
 
-  private refresh = (): void => {
+  private readonly refresh = (): void => {
     this.tree.refreshOrFilterTree();
   };
 
-  private selectFirstNode = (): void => {
+  private readonly selectFirstNode = (): void => {
     const node = this.tree.nodes[0];
     if (node) {
       this.tree.selectNode(node, true);
@@ -182,7 +182,7 @@ export class FileStorageTreeNavigationComponent extends LitElement {
   };
 
   // event listener updating current tree state, this can be removed in TYPO3 v12
-  private treeUpdateRequested = (evt: CustomEvent): void => {
+  private readonly treeUpdateRequested = (evt: CustomEvent): void => {
     const identifier = encodeURIComponent(evt.detail.payload.identifier);
     const nodeToSelect = this.tree.nodes.filter((node: TreeNode) => { return node.identifier === identifier; })[0];
     if (nodeToSelect && this.tree.getSelectedNodes().filter((selectedNode: TreeNode) => { return selectedNode.identifier === nodeToSelect.identifier; }).length === 0) {
@@ -190,14 +190,14 @@ export class FileStorageTreeNavigationComponent extends LitElement {
     }
   };
 
-  private toggleExpandState = (evt: CustomEvent): void => {
+  private readonly toggleExpandState = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (node) {
       Persistent.set('BackendComponents.States.FileStorageTree.stateHash.' + node.stateIdentifier, (node.expanded ? '1' : '0'));
     }
   };
 
-  private loadContent = (evt: CustomEvent): void => {
+  private readonly loadContent = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (!node?.checked) {
       return;
@@ -217,7 +217,7 @@ export class FileStorageTreeNavigationComponent extends LitElement {
     top.TYPO3.Backend.ContentContainer.setUrl(contentUrl + 'id=' + node.identifier);
   };
 
-  private showContextMenu = (evt: CustomEvent): void => {
+  private readonly showContextMenu = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (!node) {
       return;
@@ -236,7 +236,7 @@ export class FileStorageTreeNavigationComponent extends LitElement {
    * Event listener called for each loaded node,
    * here used to mark node remembered in ModuleStateStorage as selected
    */
-  private selectActiveNode = (evt: CustomEvent): void => {
+  private readonly selectActiveNode = (evt: CustomEvent): void => {
     const selectedNodeIdentifier = ModuleStateStorage.current('file').selection;
     const nodes = evt.detail.nodes as Array<TreeNode>;
     evt.detail.nodes = nodes.map((node: TreeNode) => {
@@ -396,8 +396,8 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
   public dragStarted: boolean = false;
   public startPageX: number = 0;
   public startPageY: number = 0;
-  private tree: FileStorageTree;
-  private actionHandler: FileStorageTreeActions;
+  private readonly tree: FileStorageTree;
+  private readonly actionHandler: FileStorageTreeActions;
 
   constructor(tree: FileStorageTree, actionHandler: FileStorageTreeActions) {
     this.tree = tree;

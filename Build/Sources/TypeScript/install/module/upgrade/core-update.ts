@@ -32,7 +32,7 @@ interface ActionQueue {
 }
 
 class CoreUpdate extends AbstractInteractableModule {
-  private actionQueue: ActionQueue = {
+  private readonly actionQueue: ActionQueue = {
     coreUpdateIsUpdateAvailable: {
       loadingMessage: 'Checking for possible regular or security update',
       finishMessage: undefined,
@@ -70,8 +70,8 @@ class CoreUpdate extends AbstractInteractableModule {
     },
   };
 
-  private selectorOutput: string = '.t3js-coreUpdate-output';
-  private updateButton: string = '.t3js-coreUpdate-button';
+  private readonly selectorOutput: string = '.t3js-coreUpdate-output';
+  private readonly updateButton: string = '.t3js-coreUpdate-button';
 
   /**
    * Clone of a DOM object acts as button template

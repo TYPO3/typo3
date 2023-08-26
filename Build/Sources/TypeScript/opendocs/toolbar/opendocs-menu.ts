@@ -111,7 +111,7 @@ class OpendocsMenu {
   /**
    * closes the menu (e.g. when clicked on an item)
    */
-  private toggleMenu = (): void => {
+  private readonly toggleMenu = (): void => {
     $('.scaffold').removeClass('scaffold-toolbar-expanded');
     $(Selectors.containerSelector).toggleClass('open');
   };

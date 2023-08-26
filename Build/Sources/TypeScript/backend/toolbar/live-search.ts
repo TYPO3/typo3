@@ -203,7 +203,7 @@ class LiveSearch {
     return composedSearchOptions;
   }
 
-  private search = async (formData: FormData): Promise<void> => {
+  private readonly search = async (formData: FormData): Promise<void> => {
     const query = formData.get('query').toString();
 
     if (query === '') {

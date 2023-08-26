@@ -25,9 +25,9 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/presets
  */
 class Presets extends AbstractInteractableModule {
-  private selectorActivateTrigger: string = '.t3js-presets-activate';
-  private selectorImageExecutable: string = '.t3js-presets-image-executable';
-  private selectorImageExecutableTrigger: string = '.t3js-presets-image-executable-trigger';
+  private readonly selectorActivateTrigger: string = '.t3js-presets-activate';
+  private readonly selectorImageExecutable: string = '.t3js-presets-image-executable';
+  private readonly selectorImageExecutableTrigger: string = '.t3js-presets-image-executable-trigger';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;

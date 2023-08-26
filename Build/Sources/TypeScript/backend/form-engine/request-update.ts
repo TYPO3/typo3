@@ -46,7 +46,7 @@ export class RequestUpdate extends LitElement {
     }
   }
 
-  private requestFormEngineUpdate = (): void => {
+  private readonly requestFormEngineUpdate = (): void => {
     const askForUpdate = this.mode === UpdateMode.ask;
     FormEngine.requestFormEngineUpdate(askForUpdate);
   };

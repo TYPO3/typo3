@@ -35,7 +35,7 @@ class InsertClipboard {
   /**
    * @param {Event} e
    */
-  private registerClickHandler = (e: Event): void => {
+  private readonly registerClickHandler = (e: Event): void => {
     e.preventDefault();
 
     const assignedElement: string = this.controlElement.dataset.element;

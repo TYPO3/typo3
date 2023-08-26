@@ -27,14 +27,14 @@ import Router from '../../router';
  * Module: @typo3/install/module/folder-structure
  */
 class FolderStructure extends AbstractInteractableModule {
-  private selectorGridderBadge: string = '.t3js-folderStructure-badge';
-  private selectorOutputContainer: string = '.t3js-folderStructure-output';
-  private selectorErrorContainer: string = '.t3js-folderStructure-errors';
-  private selectorErrorList: string = '.t3js-folderStructure-errors-list';
-  private selectorErrorFixTrigger: string = '.t3js-folderStructure-errors-fix';
-  private selectorOkContainer: string = '.t3js-folderStructure-ok';
-  private selectorOkList: string = '.t3js-folderStructure-ok-list';
-  private selectorPermissionContainer: string = '.t3js-folderStructure-permissions';
+  private readonly selectorGridderBadge: string = '.t3js-folderStructure-badge';
+  private readonly selectorOutputContainer: string = '.t3js-folderStructure-output';
+  private readonly selectorErrorContainer: string = '.t3js-folderStructure-errors';
+  private readonly selectorErrorList: string = '.t3js-folderStructure-errors-list';
+  private readonly selectorErrorFixTrigger: string = '.t3js-folderStructure-errors-fix';
+  private readonly selectorOkContainer: string = '.t3js-folderStructure-ok';
+  private readonly selectorOkList: string = '.t3js-folderStructure-ok-list';
+  private readonly selectorPermissionContainer: string = '.t3js-folderStructure-permissions';
 
   private static removeLoadingMessage($container: JQuery): void {
     $container.find('.alert-loading').remove();

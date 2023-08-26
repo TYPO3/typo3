@@ -23,7 +23,7 @@ enum Selectors {
  * Select field filter functions, see TCA option "multiSelectFilterItems"
  */
 class SelectBoxFilter {
-  private selectElement: HTMLSelectElement = null;
+  private readonly selectElement: HTMLSelectElement = null;
   private filterText: string = '';
   private availableOptions: NodeListOf<HTMLOptionElement> = null;
 

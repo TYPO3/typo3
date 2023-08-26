@@ -27,8 +27,8 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/tca-ext-tables-check
  */
 class TcaExtTablesCheck extends AbstractInteractableModule {
-  private selectorCheckTrigger: string = '.t3js-tcaExtTablesCheck-check';
-  private selectorOutputContainer: string = '.t3js-tcaExtTablesCheck-output';
+  private readonly selectorCheckTrigger: string = '.t3js-tcaExtTablesCheck-check';
+  private readonly selectorOutputContainer: string = '.t3js-tcaExtTablesCheck-output';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;

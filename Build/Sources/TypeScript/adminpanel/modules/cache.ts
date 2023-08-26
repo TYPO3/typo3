@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-namespace
 namespace TYPO3 {
   export class Cache {
-    private buttons: NodeList;
+    private readonly buttons: NodeList;
 
     constructor() {
       this.buttons = document.querySelectorAll('[data-typo3-role="clearCacheButton"]');

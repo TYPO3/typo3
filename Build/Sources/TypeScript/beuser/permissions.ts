@@ -20,12 +20,12 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
  * Javascript functions regarding the permissions module
  */
 class Permissions {
-  private options: any = {
+  private readonly options: any = {
     containerSelector: '#typo3-permissionList',
     editControllerSelector: '#PermissionControllerEdit',
   };
 
-  private ajaxUrl: string = TYPO3.settings.ajaxUrls.user_access_permissions;
+  private readonly ajaxUrl: string = TYPO3.settings.ajaxUrls.user_access_permissions;
 
   constructor() {
     this.initializeCheckboxGroups();

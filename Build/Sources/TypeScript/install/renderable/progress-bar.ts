@@ -18,7 +18,7 @@ import Severity from './severity';
  * Module: @typo3/install/module/progress-bar
  */
 class ProgressBar {
-  private template: JQuery = $(
+  private readonly template: JQuery = $(
     '<div class="progress">' +
       '<div class="t3js-progressbar progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" ' +
         'aria-valuemin="0" aria-valuemax="100" style="width: 100%"> <span></span>' +

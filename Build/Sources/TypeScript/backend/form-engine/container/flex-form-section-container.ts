@@ -97,7 +97,7 @@ class FlexFormSectionContainer {
     });
   }
 
-  private updateSorting = (e: Sortable.SortableEvent): void => {
+  private readonly updateSorting = (e: Sortable.SortableEvent): void => {
     const actionFields: NodeListOf<HTMLInputElement> = this.container.querySelectorAll(Selectors.actionFieldSelector);
     actionFields.forEach((element: HTMLInputElement, key: number): void => {
       element.value = key.toString();

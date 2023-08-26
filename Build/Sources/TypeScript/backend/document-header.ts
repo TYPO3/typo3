@@ -22,7 +22,7 @@ class DocumentHeader {
   private documentHeader: HTMLElement = null;
 
   private direction: string = 'down';
-  private reactionRange: number = 300;
+  private readonly reactionRange: number = 300;
   private lastPosition: number = 0;
   private currentPosition: number = 0;
   private changedPosition: number = 0;
@@ -52,7 +52,7 @@ class DocumentHeader {
    *
    * @param {Event} e
    */
-  private scroll = (e: Event): void => {
+  private readonly scroll = (e: Event): void => {
     this.currentPosition = (e.target as HTMLElement).scrollTop;
     if (this.currentPosition > this.lastPosition) {
       if (this.direction !== 'down') {

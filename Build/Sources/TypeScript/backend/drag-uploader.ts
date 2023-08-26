@@ -99,12 +99,12 @@ class DragUploaderPlugin {
 
   private percentagePerFile: number = 1;
 
-  private $body: JQuery;
+  private readonly $body: JQuery;
   private readonly $element: JQuery;
   private readonly $dropzone: JQuery;
   private readonly $dropzoneMask: JQuery;
   private readonly fileInput: HTMLInputElement;
-  private browserCapabilities: { fileReader: boolean; DnD: boolean; Progress: boolean };
+  private readonly browserCapabilities: { fileReader: boolean; DnD: boolean; Progress: boolean };
   private readonly dropZoneInsertBefore: boolean;
   private queueLength: number;
   private readonly defaultAction: Action;
@@ -555,12 +555,12 @@ class FileQueueItem {
   private readonly file: File;
   private readonly override: Action;
   private readonly $selector: JQuery;
-  private $iconCol: JQuery;
-  private $fileName: JQuery;
-  private $progressBar: JQuery;
-  private $progressPercentage: JQuery;
-  private $progressMessage: JQuery;
-  private dragUploader: DragUploaderPlugin;
+  private readonly $iconCol: JQuery;
+  private readonly $fileName: JQuery;
+  private readonly $progressBar: JQuery;
+  private readonly $progressPercentage: JQuery;
+  private readonly $progressMessage: JQuery;
+  private readonly dragUploader: DragUploaderPlugin;
 
   constructor(dragUploader: DragUploaderPlugin, file: File, override: Action) {
     this.dragUploader = dragUploader;
@@ -831,7 +831,7 @@ class FileQueueItem {
 }
 
 class DragUploader {
-  private static options: DragUploaderOptions;
+  private static readonly options: DragUploaderOptions;
   public fileListColumnCount: number;
   public filesExtensionsAllowed: string;
   public fileDenyPattern: string;

@@ -21,7 +21,7 @@ enum Identifier {
 }
 
 class SelectCheckBoxElement {
-  private checkBoxId: string = '';
+  private readonly checkBoxId: string = '';
   private table: HTMLTableElement = null;
   private checkedBoxes: NodeListOf<HTMLInputElement> = null;
 

@@ -49,7 +49,7 @@ interface MenuItems {
 class ContextMenu {
   private mousePos: MousePosition = { X: null, Y: null };
   private record: ActiveRecord = { uid: null, table: null };
-  private eventSources: Element[] = [];
+  private readonly eventSources: Element[] = [];
 
   constructor() {
     document.addEventListener('click', (event: PointerEvent) => {
@@ -503,7 +503,7 @@ class ContextMenu {
    * actual position of the mouse
    * in the context menu object
    */
-  private storeMousePositionEvent = (event: MouseEvent): void => {
+  private readonly storeMousePositionEvent = (event: MouseEvent): void => {
     this.mousePos = { X: event.pageX, Y: event.pageY };
   };
 

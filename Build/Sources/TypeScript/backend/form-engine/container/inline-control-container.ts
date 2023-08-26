@@ -98,7 +98,7 @@ class InlineControlContainer {
   private appearance: Appearance = null;
   private requestQueue: RequestQueue = {};
   private progressQueue: ProgressQueue = {};
-  private noTitleString: string = (TYPO3.lang ? TYPO3.lang['FormEngine.noRecordTitle'] : '[No title]');
+  private readonly noTitleString: string = (TYPO3.lang ? TYPO3.lang['FormEngine.noRecordTitle'] : '[No title]');
 
   /**
    * @param {string} elementId
@@ -331,7 +331,7 @@ class InlineControlContainer {
   /**
    * @param {MessageEvent} e
    */
-  private handlePostMessage = (e: MessageEvent): void => {
+  private readonly handlePostMessage = (e: MessageEvent): void => {
     if (!MessageUtility.verifyOrigin(e.origin)) {
       throw 'Denied message sent by ' + e.origin;
     }
