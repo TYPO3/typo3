@@ -71,14 +71,12 @@ class Installer {
       evt.preventDefault();
       const $element = $(evt.currentTarget);
       const $toggleTarget = $($element.data('toggleTarget'));
-      const $toggleIcon = $element.find($element.data('toggleIcon'));
-      const isPassword = $toggleTarget.attr('type') === 'password';
-      if (isPassword) {
-        $toggleIcon.replaceWith('<typo3-backend-icon identifier="actions-eye" size="small"></typo3-backend-icon>');
+      if ($element.attr('data-toggle-state') === 'invisible') {
+        $element.attr('data-toggle-state', 'visible');
         $toggleTarget.attr('type', 'text');
       } else {
+        $element.attr('data-toggle-state', 'invisible');
         $toggleTarget.attr('type', 'password');
-        $toggleIcon.replaceWith('<typo3-backend-icon identifier="actions-lock" size="small"></typo3-backend-icon>');
       }
     });
     $(document).on('keyup', '.t3-install-form-password-strength', (): void => {

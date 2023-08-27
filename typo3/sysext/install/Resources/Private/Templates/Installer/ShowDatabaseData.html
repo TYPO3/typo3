@@ -41,9 +41,12 @@
                         <f:comment><!-- @todo: Add API for input group addons in floating forms--></f:comment>
                         <button type="button"
                                 class="t3-install-form-password-toggle btn btn-link"
-                                data-toggle-target="#password" data-toggle-icon=".icon"
+                                data-toggle-target="#password" data-toggle-state="invisible"
                                 style="position: absolute; bottom: .35em; right: 0; outline: none; box-shadow: none"
-                                aria-label="Toggle password visibility"><core:icon identifier="actions-lock" size="small" /></button>
+                                aria-label="Toggle password visibility">
+                            <core:icon identifier="actions-lock" size="small" />
+                            <core:icon identifier="actions-eye" size="small" />
+                        </button>
                         <label for="password" class="form-label">Password</label>
                     </div>
                 </div>

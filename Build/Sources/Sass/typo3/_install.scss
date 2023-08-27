@@ -104,3 +104,17 @@
         margin-bottom: 15px;
     }
 }
+
+.t3-install-form-password-toggle {
+    &[data-toggle-state="invisible"] {
+        .icon-actions-eye {
+            display: none;
+        }
+    }
+
+    &[data-toggle-state="visible"] {
+        .icon-actions-lock {
+            display: none;
+        }
+    }
+}
