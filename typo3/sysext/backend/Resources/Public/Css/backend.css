@@ -4089,6 +4089,8 @@ span.dragIcon{display:inline-block;height:16px}
 .typo3-install-content-spacer{margin-top:2em}
 .typo3-install-content-spacer-small{margin-top:1em}
 .extensionConfiguration-form .tab-content{margin-bottom:15px}
+.t3-install-form-password-toggle[data-toggle-state=invisible] .icon-actions-eye{display:none}
+.t3-install-form-password-toggle[data-toggle-state=visible] .icon-actions-lock{display:none}
 .media-new-content-element-wizard .media-left input{margin-left:2px}
 .history-block{border-left:5px solid #a9a9a9;border-bottom:1px dotted #a9a9a9}
 .belog-filter-form .input-group{max-width:190px}
