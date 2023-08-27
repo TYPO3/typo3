@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use Psr\Http\Message\StreamInterface;
 use TYPO3\CMS\Core\Http\Request;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\Uri;
@@ -125,6 +126,26 @@ final class RequestTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717271);
+        new Request(null, 'GET', $body);
+    }
+
+    public static function validRequestBodyDataProvider(): array
+    {
+        return [
+            'stringResourceIdentifier' => ['php://input'],
+            'streamResource' => [fopen('php://memory', 'r')],
+            'streamInterface' => [new Stream(fopen('php://memory', 'r'))],
+            'null' => [null],
+        ];
+    }
+
+    /**
+     * @param resource|StreamInterface|string|null $body
+     * @dataProvider validRequestBodyDataProvider
+     * @test
+     */
+    public function constructorDoesNotRaiseExceptionForValidBody($body): void
+    {
         new Request(null, 'GET', $body);
     }
 
