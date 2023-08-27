@@ -96,7 +96,7 @@ class Request extends Message implements RequestInterface
             $this->body = $body;
         } else {
             $this->body = match (get_debug_type($body)) {
-                'string', 'resource' => new Stream($body),
+                'string', 'resource (stream)' => new Stream($body),
                 'null' => null,
                 default => throw new \InvalidArgumentException('Body must be a string stream resource identifier, a stream resource, or a StreamInterface instance', 1436717271),
             };
