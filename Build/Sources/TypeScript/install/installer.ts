@@ -12,7 +12,7 @@
  */
 
 import DocumentService from '@typo3/core/document-service';
-import $ from 'jquery';
+import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import PasswordStrength from './module/password-strength';
@@ -42,51 +42,50 @@ class Installer {
   }
 
   private initializeEvents(): void {
-    $(document).on('click', '.t3js-installer-environmentFolders-retry', (e: JQueryEventObject): void => {
+    new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
       this.showEnvironmentAndFolders();
-    });
-    $(document).on('click', '.t3js-installer-environmentFolders-execute', (e: JQueryEventObject): void => {
+    }).delegateTo(document, '.t3js-installer-environmentFolders-retry');
+    new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
       this.executeEnvironmentAndFolders();
-    });
-    $(document).on('click', '.t3js-installer-databaseConnect-execute', (e: JQueryEventObject): void => {
+    }).delegateTo(document, '.t3js-installer-environmentFolders-execute');
+    new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
       this.executeDatabaseConnect();
-    });
-    $(document).on('click', '.t3js-installer-databaseSelect-execute', (e: JQueryEventObject): void => {
+    }).delegateTo(document, '.t3js-installer-databaseConnect-execute');
+    new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
       this.executeDatabaseSelect();
-    });
-    $(document).on('click', '.t3js-installer-databaseData-execute', (e: JQueryEventObject): void => {
+    }).delegateTo(document, '.t3js-installer-databaseSelect-execute');
+    new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
       this.executeDatabaseData();
-    });
-    $(document).on('click', '.t3js-installer-defaultConfiguration-execute', (e: JQueryEventObject): void => {
+    }).delegateTo(document, '.t3js-installer-databaseData-execute');
+    new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
       this.executeDefaultConfiguration();
-    });
-    $(document).on('click', '.t3-install-form-password-toggle', (evt: JQueryEventObject): void => {
+    }).delegateTo(document, '.t3js-installer-defaultConfiguration-execute');
+    new RegularEvent('click', (evt: Event, element: HTMLElement): void => {
       evt.preventDefault();
-      const $element = $(evt.currentTarget);
-      const $toggleTarget = $($element.data('toggleTarget'));
-      if ($element.attr('data-toggle-state') === 'invisible') {
-        $element.attr('data-toggle-state', 'visible');
-        $toggleTarget.attr('type', 'text');
+      const toggleTarget = document.querySelector(element.dataset.toggleTarget);
+      if (element.dataset.toggleState === 'invisible') {
+        element.dataset.toggleState = 'visible';
+        toggleTarget.setAttribute('type', 'text');
       } else {
-        $element.attr('data-toggle-state', 'invisible');
-        $toggleTarget.attr('type', 'password');
+        element.dataset.toggleState = 'invisible';
+        toggleTarget.setAttribute('type', 'password');
       }
-    });
+    }).delegateTo(document, '.t3-install-form-password-toggle');
 
     // Database connect db driver selection
-    $(document).on('change', '#t3js-connect-database-driver', (e: JQueryEventObject): void => {
-      const driver: string = $(e.currentTarget).val();
-      $('.t3-install-driver-data').hide();
-      $('.t3-install-driver-data input').attr('disabled', 'disabled');
-      $('#' + driver + ' input').attr('disabled', null);
-      $('#' + driver).show();
-    });
+    new RegularEvent('change', (e: Event, target: HTMLSelectElement): void => {
+      const driver: string = target.value;
+      document.querySelectorAll('.t3-install-driver-data').forEach(el => el.setAttribute('hidden', ''));
+      document.querySelectorAll('.t3-install-driver-data input').forEach(el => el.setAttribute('disabled', 'disabled'));
+      document.querySelectorAll('#' + driver + ' input').forEach(el => el.removeAttribute('disabled'));
+      document.querySelector('#' + driver)?.removeAttribute('hidden');
+    }).delegateTo(document, '#t3js-connect-database-driver');
   }
 
   private initialize(): void {
@@ -104,18 +103,21 @@ class Installer {
   }
 
   private setProgress(done: number): void {
-    const $progressBar: JQuery = $(this.selectorProgressBar);
-    const $progressBarSteps: JQuery = $(this.selectorProgressBarSteps);
+    const progressBar = document.querySelector(this.selectorProgressBar);
+    if (progressBar === null) {
+      return;
+    }
+    const progressBarSteps = document.querySelector(this.selectorProgressBarSteps);
     let percent: number = 0;
     if (done !== 0) {
       percent = (done / 5) * 100;
-      $progressBar.find('.progress-bar').empty().text(percent + '%');
-      $progressBarSteps.find('.progress-steps').text(done + ' of 5');
+      progressBar.querySelector('.progress-bar').textContent = percent + '%';
+      progressBarSteps.querySelector('.progress-steps').textContent = done + ' of 5';
     }
-    $progressBar
-      .find('.progress-bar')
-      .css('width', percent + '%')
-      .attr('aria-valuenow', percent);
+
+    const bar = progressBar.querySelector('.progress-bar') as HTMLElement;
+    bar.style.width = percent + '%';
+    bar.setAttribute('aria-valuenow', percent.toString());
   }
 
   private getMainLayout(): void {
@@ -123,7 +125,7 @@ class Installer {
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
-        $(this.selectorBody).empty().append(data.html);
+        document.querySelector(this.selectorBody).innerHTML = data.html;
         this.checkInstallerAvailable();
       });
   }
@@ -140,13 +142,13 @@ class Installer {
   }
 
   private showInstallerNotAvailable(): void {
-    const $outputContainer: JQuery = $(this.selectorMainContent);
+    const outputContainer = document.querySelector(this.selectorMainContent);
     (new AjaxRequest(this.getUrl('showInstallerNotAvailable')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
-          $outputContainer.empty().append(data.html);
+          outputContainer.innerHTML = data.html;
         }
       });
   }
@@ -166,38 +168,40 @@ class Installer {
   }
 
   private showEnvironmentAndFolders(): void {
-    const $outputContainer: JQuery = $(this.selectorMainContent);
+    const outputContainer = document.querySelector(this.selectorMainContent);
     (new AjaxRequest(this.getUrl('showEnvironmentAndFolders')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
-          $outputContainer.empty().html(data.html);
-          const $detailContainer: JQuery = $('.t3js-installer-environment-details');
+          outputContainer.innerHTML = data.html;
+          const detailContainer = document.querySelector('.t3js-installer-environment-details');
           let hasMessage: boolean = false;
           if (Array.isArray(data.environmentStatusErrors)) {
             data.environmentStatusErrors.forEach((element: any): void => {
               hasMessage = true;
-              $detailContainer.append(InfoBox.create(element.severity, element.title, element.message));
+              detailContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
           if (Array.isArray(data.environmentStatusWarnings)) {
             data.environmentStatusWarnings.forEach((element: any): void => {
               hasMessage = true;
-              $detailContainer.append(InfoBox.create(element.severity, element.title, element.message));
+              detailContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
           if (Array.isArray(data.structureErrors)) {
             data.structureErrors.forEach((element: any): void => {
               hasMessage = true;
-              $detailContainer.append(InfoBox.create(element.severity, element.title, element.message));
+              detailContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
           if (hasMessage) {
-            $detailContainer.show();
-            $('.t3js-installer-environmentFolders-bad').show();
+            detailContainer.removeAttribute('hidden');
+            document.querySelectorAll('.t3js-installer-environmentFolders-bad')
+              .forEach(el => el.removeAttribute('hidden'));
           } else {
-            $('.t3js-installer-environmentFolders-good').show();
+            document.querySelectorAll('.t3js-installer-environmentFolders-good')
+              .forEach(el => el.removeAttribute('hidden'));
           }
         }
       });
@@ -278,27 +282,27 @@ class Installer {
   }
 
   private showDatabaseConnect(): void {
-    const $outputContainer: JQuery = $(this.selectorMainContent);
+    const outputContainer = document.querySelector(this.selectorMainContent);
     (new AjaxRequest(this.getUrl('showDatabaseConnect')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
-          $outputContainer.empty().html(data.html);
-          $('#t3js-connect-database-driver').trigger('change');
+          outputContainer.innerHTML = data.html;
+          document.querySelector('#t3js-connect-database-driver').dispatchEvent(new Event('change', { bubbles: true }));
           PasswordStrength.initialize(document.querySelector('.t3-install-form-password-strength'));
         }
       });
   }
 
   private executeDatabaseConnect(): void {
-    const $outputContainer: JQuery = $(this.selectorDatabaseConnectOutput);
+    const outputContainer = document.querySelector(this.selectorDatabaseConnectOutput);
     const postData: Record<string, string> = {
       'install[action]': 'executeDatabaseConnect',
-      'install[token]': $(this.selectorModuleContent).data('installer-database-connect-execute-token'),
+      'install[token]': (document.querySelector(this.selectorModuleContent) as HTMLElement).dataset.installerDatabaseConnectExecuteToken,
     };
-    for (const element of $(this.selectorBody + ' form').serializeArray()) {
-      postData[element.name] = element.value;
+    for (const [name, value] of new FormData(document.querySelector(this.selectorBody + ' form'))) {
+      postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
       .post(postData)
@@ -308,9 +312,9 @@ class Installer {
           this.checkDatabaseSelect();
         } else {
           if (Array.isArray(data.status)) {
-            $outputContainer.empty();
+            outputContainer.replaceChildren();
             data.status.forEach((element: MessageInterface): void => {
-              $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
+              outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
         }
@@ -332,25 +336,25 @@ class Installer {
   }
 
   private showDatabaseSelect(): void {
-    const $outputContainer: JQuery = $(this.selectorMainContent);
+    const outputContainer = document.querySelector(this.selectorMainContent);
     (new AjaxRequest(this.getUrl('showDatabaseSelect')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
-          $outputContainer.empty().html(data.html);
+          outputContainer.innerHTML = data.html;
         }
       });
   }
 
   private executeDatabaseSelect(): void {
-    const $outputContainer: JQuery = $(this.selectorDatabaseSelectOutput);
+    const outputContainer = document.querySelector(this.selectorDatabaseSelectOutput);
     const postData: { [id: string]: string } = {
       'install[action]': 'executeDatabaseSelect',
-      'install[token]': $(this.selectorModuleContent).data('installer-database-select-execute-token'),
+      'install[token]': (document.querySelector(this.selectorModuleContent) as HTMLElement).dataset.installerDatabaseSelectExecuteToken,
     };
-    for (const element of $(this.selectorBody + ' form').serializeArray()) {
-      postData[element.name] = element.value;
+    for (const [name, value] of new FormData(document.querySelector(this.selectorBody + ' form'))) {
+      postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
       .post(postData)
@@ -361,7 +365,7 @@ class Installer {
         } else {
           if (Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
-              $outputContainer.empty().append(InfoBox.create(element.severity, element.title, element.message));
+              outputContainer.replaceChildren(InfoBox.create(element.severity, element.title, element.message));
             });
           }
         }
@@ -369,13 +373,13 @@ class Installer {
   }
 
   private checkDatabaseRequirements(): void {
-    const $outputContainer: JQuery = $(this.selectorDatabaseSelectOutput);
+    const outputContainer = document.querySelector(this.selectorDatabaseSelectOutput);
     const postData: Record<string, string> = {
       'install[action]': 'checkDatabaseRequirements',
-      'install[token]': $(this.selectorModuleContent).data('installer-database-check-requirements-execute-token'),
+      'install[token]': (document.querySelector(this.selectorModuleContent) as HTMLElement).dataset.installerDatabaseCheckRequirementsExecuteToken,
     };
-    for (const element of $(this.selectorBody + ' form').serializeArray()) {
-      postData[element.name] = element.value;
+    for (const [name, value] of new FormData(document.querySelector(this.selectorBody + ' form'))) {
+      postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
       .post(postData)
@@ -385,9 +389,9 @@ class Installer {
           this.checkDatabaseData();
         } else {
           if (Array.isArray(data.status)) {
-            $outputContainer.empty();
+            outputContainer.replaceChildren();
             data.status.forEach((element: MessageInterface): void => {
-              $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
+              outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
         }
@@ -409,29 +413,29 @@ class Installer {
   }
 
   private showDatabaseData(): void {
-    const $outputContainer: JQuery = $(this.selectorMainContent);
+    const outputContainer = document.querySelector(this.selectorMainContent);
     (new AjaxRequest(this.getUrl('showDatabaseData')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
-          $outputContainer.empty().html(data.html);
+          outputContainer.innerHTML = data.html;
           PasswordStrength.initialize(document.querySelector('.t3-install-form-password-strength'));
         }
       });
   }
 
   private executeDatabaseData(): void {
-    const $outputContainer: JQuery = $(this.selectorDatabaseDataOutput);
+    const outputContainer = document.querySelector(this.selectorDatabaseDataOutput);
     const postData: Record<string, string> = {
       'install[action]': 'executeDatabaseData',
-      'install[token]': $(this.selectorModuleContent).data('installer-database-data-execute-token'),
+      'install[token]': (document.querySelector(this.selectorModuleContent) as HTMLElement).dataset.installerDatabaseDataExecuteToken,
     };
-    for (const element of $(this.selectorBody + ' form').serializeArray()) {
-      postData[element.name] = element.value;
+    for (const [name, value] of new FormData(document.querySelector(this.selectorBody + ' form'))) {
+      postData[name] = value.toString();
     }
     const progressBar = document.createElement('typo3-install-progress-bar');
-    $outputContainer.empty().append(progressBar);
+    outputContainer.replaceChildren(progressBar);
     (new AjaxRequest(this.getUrl()))
       .post(postData)
       .then(async (response: AjaxResponse): Promise<void> => {
@@ -440,9 +444,9 @@ class Installer {
           this.showDefaultConfiguration();
         } else {
           if (Array.isArray(data.status)) {
-            $outputContainer.empty();
+            outputContainer.replaceChildren();
             data.status.forEach((element: MessageInterface): void => {
-              $outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
+              outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
             });
           }
         }
@@ -450,14 +454,14 @@ class Installer {
   }
 
   private showDefaultConfiguration(): void {
-    const $outputContainer: JQuery = $(this.selectorMainContent);
+    const outputContainer = document.querySelector(this.selectorMainContent);
     this.setProgress(5);
     (new AjaxRequest(this.getUrl('showDefaultConfiguration')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
-          $outputContainer.empty().html(data.html);
+          outputContainer.innerHTML = data.html;
         }
       });
   }
@@ -465,10 +469,10 @@ class Installer {
   private executeDefaultConfiguration(): void {
     const postData: Record<string, string> = {
       'install[action]': 'executeDefaultConfiguration',
-      'install[token]': $(this.selectorModuleContent).data('installer-default-configuration-execute-token'),
+      'install[token]': (document.querySelector(this.selectorModuleContent) as HTMLElement).dataset.installerDefaultConfigurationExecuteToken,
     };
-    for (const element of $(this.selectorBody + ' form').serializeArray()) {
-      postData[element.name] = element.value;
+    for (const [name, value] of new FormData(document.querySelector(this.selectorBody + ' form'))) {
+      postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
       .post(postData)

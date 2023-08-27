@@ -80,7 +80,7 @@
                             </div>
 
                             <f:if condition="{hasMysqliManualConfiguration}">
-                                <div id="mysqliManualConfiguration" class="t3-install-driver-data">
+                                <div id="mysqliManualConfiguration" class="t3-install-driver-data" hidden>
                                     <input type="hidden" value="mysqli" name="install[values][driver]"/>
                                     <div class="row justify-content-center">
                                         <div class="col-md-6 mb-3">
@@ -152,7 +152,7 @@
                             </f:if>
 
                             <f:if condition="{hasMysqliSocketManualConfiguration}">
-                                <div id="mysqliSocketManualConfiguration" class="t3-install-driver-data">
+                                <div id="mysqliSocketManualConfiguration" class="t3-install-driver-data" hidden>
                                     <input type="hidden" value="mysqli" name="install[values][driver]"/>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
@@ -210,7 +210,7 @@
                             </f:if>
 
                             <f:if condition="{hasPdoMysqlManualConfiguration}">
-                                <div id="pdoMysqlManualConfiguration" class="t3-install-driver-data">
+                                <div id="pdoMysqlManualConfiguration" class="t3-install-driver-data" hidden>
                                     <input type="hidden" value="pdo_mysql" name="install[values][driver]"/>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
@@ -282,7 +282,7 @@
                             </f:if>
 
                             <f:if condition="{hasPdoMysqlSocketManualConfiguration}">
-                                <div id="pdoMysqlSocketManualConfiguration" class="t3-install-driver-data">
+                                <div id="pdoMysqlSocketManualConfiguration" class="t3-install-driver-data" hidden>
                                     <input type="hidden" value="pdo_mysql" name="install[values][driver]"/>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
@@ -340,7 +340,7 @@
                             </f:if>
 
                             <f:if condition="{hasPostgresManualConfiguration}">
-                                <div id="postgresManualConfiguration" class="t3-install-driver-data">
+                                <div id="postgresManualConfiguration" class="t3-install-driver-data" hidden>
                                     <input type="hidden" value="pdo_pgsql" name="install[values][driver]"/>
                                     <div class="row">
                                         <div class="col-md-12 mb-3">
@@ -429,13 +429,13 @@
                             </f:if>
 
                             <f:if condition="{hasSqliteManualConfiguration}">
-                                <div id="sqliteManualConfiguration" class="t3-install-driver-data">
+                                <div id="sqliteManualConfiguration" class="t3-install-driver-data" hidden>
                                     <input type="hidden" value="pdo_sqlite" name="install[values][driver]"/>
                                 </div>
                             </f:if>
 
                             <f:if condition="{hasConfigurationFromEnvironment}">
-                                <div id="configurationFromEnvironment" class="t3-install-driver-data">
+                                <div id="configurationFromEnvironment" class="t3-install-driver-data" hidden>
                                 </div>
                             </f:if>
 
