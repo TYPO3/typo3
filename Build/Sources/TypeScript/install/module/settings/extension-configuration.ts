@@ -22,6 +22,8 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import MessageInterface from '@typo3/install/message-interface';
+import DebounceEvent from '@typo3/core/event/debounce-event';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 /**
  * Module: @typo3/install/module/extension-configuration
@@ -51,28 +53,32 @@ class ExtensionConfiguration extends AbstractInteractableModule {
     });
 
     // Perform expand collapse on search matches
-    currentModal.on('keyup', this.selectorSearchInput, (e: JQueryEventObject): void => {
-      const typedQuery = $(e.target).val();
-      const $searchInput = currentModal.find(this.selectorSearchInput);
-      currentModal.find('.search-item').each((index: number, element: Element): void => {
-        const $item = $(element);
-        if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
-          $item.removeClass('hidden').addClass('searchhit');
-        } else {
-          $item.removeClass('searchhit').addClass('hidden');
-        }
-      });
-      currentModal.find('.searchhit').collapse('show');
-      // Make search field clearable
-      const searchInput = <HTMLInputElement>$searchInput.get(0);
-      searchInput.clearable();
-      searchInput.focus();
-    });
+    new DebounceEvent('input', (event: Event, target: HTMLInputElement): void => {
+      const typedQuery = target.value;
+      this.search(typedQuery);
+    }, 100).delegateTo(currentModal.get(0), this.selectorSearchInput);
+
+    new RegularEvent('change', (event: Event, target: HTMLInputElement): void => {
+      const typedQuery = target.value;
+      this.search(typedQuery);
+    }).delegateTo(currentModal.get(0), this.selectorSearchInput);
 
     currentModal.on('submit', this.selectorFormListener, (e: JQueryEventObject): void => {
       e.preventDefault();
       this.write($(e.currentTarget));
     });
+  }
+
+  private search(typedQuery: string): void {
+    this.currentModal.find('.search-item').each((index: number, element: Element): void => {
+      const $item = $(element);
+      if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
+        $item.removeClass('hidden').addClass('searchhit');
+      } else {
+        $item.removeClass('searchhit').addClass('hidden');
+      }
+    });
+    this.currentModal.find('.searchhit').collapse('show');
   }
 
   private getContent(): void {
@@ -84,6 +90,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
           const data = await response.resolve();
           if (data.success === true) {
             modalContent.html(data.html);
+            (modalContent.get(0).querySelector(this.selectorSearchInput) as HTMLInputElement).clearable();
             this.initializeWrap();
             this.initializeColorPicker();
           }
