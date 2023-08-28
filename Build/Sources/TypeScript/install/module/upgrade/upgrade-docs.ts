@@ -205,7 +205,7 @@ class UpgradeDocs extends AbstractInteractableModule {
         if (this.currentModal.find('.panel-version .panel-collapse.collapsing').length === 0) {
           // Bootstrap doesn't offer promises to check whether all panels are collapsed, so we need a helper to do
           // something similar
-          $items.removeClass('searchhit filterhit');
+          $items.removeClass('hidden', 'searchhit filterhit');
         }
       });
       $expandedPanels.collapse('hide');
