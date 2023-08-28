@@ -3,9 +3,8 @@
 page {
 	20 = COA
 	20 {
-		10 = USER
+		10 = EXTBASEPLUGIN
 		10 {
-			userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
 			extensionName = TestIrreForeignfield
 			pluginName = Test
 		}
