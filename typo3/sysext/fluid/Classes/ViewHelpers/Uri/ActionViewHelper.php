@@ -53,6 +53,7 @@ final class ActionViewHelper extends AbstractViewHelper
         $this->registerArgument('pageUid', 'int', 'Target page. See TypoLink destination');
         $this->registerArgument('pageType', 'int', 'Type of the target page. See typolink.parameter', false, 0);
         $this->registerArgument('noCache', 'bool', 'Set this to disable caching for the target page. You should not need this.', false);
+        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false);
         $this->registerArgument('section', 'string', 'The anchor to be added to the URI', false, '');
         $this->registerArgument('format', 'string', 'The requested format, e.g. ".html', false, '');
         $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.', false, false);
@@ -76,6 +77,7 @@ final class ActionViewHelper extends AbstractViewHelper
         $pageUid = (int)($arguments['pageUid'] ?? 0);
         $pageType = (int)($arguments['pageType'] ?? 0);
         $noCache = (bool)($arguments['noCache'] ?? false);
+        $language = $arguments['language'] ?? null;
         /** @var string|null $section */
         $section = $arguments['section'] ?? null;
         /** @var string|null $format */
@@ -99,6 +101,7 @@ final class ActionViewHelper extends AbstractViewHelper
         /** @var array|null $arguments */
         $arguments = $arguments['arguments'] ?? [];
 
+        /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->reset()->setRequest($request);
 
@@ -132,6 +135,8 @@ final class ActionViewHelper extends AbstractViewHelper
         if ($linkAccessRestrictedPages === true) {
             $uriBuilder->setLinkAccessRestrictedPages(true);
         }
+
+        $uriBuilder->setLanguage($language);
 
         return $uriBuilder->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
     }

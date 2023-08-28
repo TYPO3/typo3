@@ -62,6 +62,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('pageUid', 'int', 'Target page. See TypoLink destination');
         $this->registerArgument('pageType', 'int', 'Type of the target page. See typolink.parameter');
         $this->registerArgument('noCache', 'bool', 'Set this to disable caching for the target page. You should not need this.');
+        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false);
         $this->registerArgument('section', 'string', 'The anchor to be added to the URI');
         $this->registerArgument('format', 'string', 'The requested format, e.g. ".html');
         $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.');
@@ -91,6 +92,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
         $pageUid = (int)$this->arguments['pageUid'] ?: null;
         $pageType = (int)($this->arguments['pageType'] ?? 0);
         $noCache = (bool)($this->arguments['noCache'] ?? false);
+        $language = $this->arguments['language'] ?? null;
         $section = (string)$this->arguments['section'];
         $format = (string)$this->arguments['format'];
         $linkAccessRestrictedPages = (bool)($this->arguments['linkAccessRestrictedPages'] ?? false);
@@ -106,6 +108,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
             ->setRequest($request)
             ->setTargetPageType($pageType)
             ->setNoCache($noCache)
+            ->setLanguage($language)
             ->setSection($section)
             ->setFormat($format)
             ->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
