@@ -18,9 +18,8 @@ page = PAGE
 page {
 	10 = COA
 	10 {
-		10 = USER
+		10 = EXTBASEPLUGIN
 		10 {
-			userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
 			extensionName = BlogExample
 			pluginName = Blogs
 		}
