@@ -434,7 +434,7 @@ class FormEditorController extends AbstractBackendController
     }
 
     /**
-     * Render the "text/x-formeditor-template" templates.
+     * Render the form editor templates.
      */
     protected function renderFormEditorTemplates(array $formEditorDefinitions): string
     {
