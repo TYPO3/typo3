@@ -275,15 +275,15 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             }
         }
 
-        foreach ($this->retrieveYamlFilesFromExtensionFolders() as $fullPath => $fileName) {
-            $form = $this->loadMetaData($fullPath);
+        foreach ($this->retrieveYamlFilesFromExtensionFolders() as $file) {
+            $form = $this->loadMetaData($file);
 
             if ($this->looksLikeAFormDefinition($form)) {
-                if ($this->hasValidFileExtension($fileName)) {
+                if ($this->hasValidFileExtension($file)) {
                     $forms[] = [
                         'identifier' => $form['identifier'],
                         'name' => $form['label'] ?? $form['identifier'],
-                        'persistenceIdentifier' => $fullPath,
+                        'persistenceIdentifier' => $file,
                         'readOnly' => $this->formSettings['persistenceManager']['allowSaveToExtensionPaths'] ? false : true,
                         'removable' => $this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths'] ? true : false,
                         'location' => 'extension',
@@ -373,7 +373,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * Retrieves yaml files from extension folders for further processing.
      * At this time it's not determined yet, whether these files contain form data.
      *
-     * @return array<string, string>
+     * @return string[]
      * @internal
      */
     public function retrieveYamlFilesFromExtensionFolders(): array
@@ -385,7 +385,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 if ($fileInfo->getExtension() !== 'yaml') {
                     continue;
                 }
-                $filesFromExtensionFolders[$relativePath . $fileInfo->getFilename()] = $fileInfo->getFilename();
+                $filesFromExtensionFolders[] = $relativePath . $fileInfo->getFilename();
             }
         }
 
