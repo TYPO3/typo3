@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
@@ -66,19 +65,15 @@ class LocalizationUtility
             }
             $languageFilePath = static::getLanguageFilePath($extensionName);
         }
-        if ($languageKey === null) {
-            $languageKey = static::getLanguageKey();
-        }
-        if ($languageKey instanceof Locale) {
-            $languageKey = (string)$languageKey;
-        }
-        $languageService = static::initializeLocalization($languageFilePath, $languageKey, $extensionName);
+        $locale = self::getLocale($languageKey);
+        $languageService = static::initializeLocalization($languageFilePath, $locale, $extensionName);
         $resolvedLabel = $languageService->sL('LLL:' . $languageFilePath . ':' . $key);
         $value = $resolvedLabel !== '' ? $resolvedLabel : null;
 
         // Check if a value was explicitly set to "" via TypoScript, if so, we need to ensure that this is "" and not null
         if ($extensionName) {
             $overrideLabels = static::loadTypoScriptLabels($extensionName);
+            $languageKey = $locale->getName();
             // @todo: probably cannot handle "de-DE" and "de" fallbacks
             if ($value === null && isset($overrideLabels[$languageKey])) {
                 $value = '';
@@ -98,9 +93,9 @@ class LocalizationUtility
      * Loads local-language values by looking for a "locallang.xlf" file in the plugin resources directory and if found includes it.
      * Locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.xlf" file.
      */
-    protected static function initializeLocalization(string $languageFilePath, string $languageKey, ?string $extensionName): LanguageService
+    protected static function initializeLocalization(string $languageFilePath, Locale $locale, ?string $extensionName): LanguageService
     {
-        $languageService = self::buildLanguageService($languageKey, $languageFilePath);
+        $languageService = self::buildLanguageService($locale, $languageFilePath);
         if (!empty($extensionName)) {
             $overrideLabels = static::loadTypoScriptLabels($extensionName);
             if ($overrideLabels !== []) {
@@ -110,13 +105,11 @@ class LocalizationUtility
         return $languageService;
     }
 
-    protected static function buildLanguageService(string $languageKey, string $languageFilePath): LanguageService
+    protected static function buildLanguageService(Locale $locale, string $languageFilePath): LanguageService
     {
-        $languageKeyHash = sha1(json_encode(array_merge([$languageKey], [$languageFilePath])));
+        $languageKeyHash = sha1(json_encode(array_merge([(string)$locale], $locale->getDependencies(), [$languageFilePath])));
         $cache = self::getRuntimeCache();
         if (!$cache->get($languageKeyHash)) {
-            // Using the Locales factory, as it handles dependencies (e.g. "de-AT" falls back to "de")
-            $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($languageKey);
             $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($locale);
             $languageService->includeLLFile($languageFilePath);
             $cache->set($languageKeyHash, $languageService);
@@ -133,24 +126,19 @@ class LocalizationUtility
     }
 
     /**
-     * Resolves the currently active language key.
+     * Resolves the currently active locale.
+     * Using the Locales factory, as it handles dependencies (e.g. "de-AT" falls back to "de").
      */
-    protected static function getLanguageKey(): string
+    protected static function getLocale(Locale|string|null $localeOrLanguageKey): Locale
     {
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
-        ) {
-            // Frontend application
-            $siteLanguage = self::getCurrentSiteLanguage();
-
-            // Get values from site language
-            if ($siteLanguage !== null) {
-                return $siteLanguage->getTypo3Language();
-            }
-        } elseif (!empty($GLOBALS['BE_USER']->user['lang'])) {
-            return $GLOBALS['BE_USER']->user['lang'];
+        if ($localeOrLanguageKey instanceof Locale) {
+            return $localeOrLanguageKey;
         }
-        return 'default';
+        $localeFactory = GeneralUtility::makeInstance(Locales::class);
+        if (is_string($localeOrLanguageKey)) {
+            return $localeFactory->createLocale($localeOrLanguageKey);
+        }
+        return $localeFactory->createLocaleFromRequest($GLOBALS['TYPO3_REQUEST'] ?? null);
     }
 
     /**
@@ -160,6 +148,11 @@ class LocalizationUtility
      */
     protected static function loadTypoScriptLabels(string $extensionName): array
     {
+        // Only allow overrides in Frontend Context
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if (!$request instanceof ServerRequestInterface || !ApplicationType::fromRequest($request)->isFrontend()) {
+            return [];
+        }
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         $frameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName);
         if (!is_array($frameworkConfiguration['_LOCAL_LANG'] ?? false)) {
@@ -214,18 +207,6 @@ class LocalizationUtility
             }
         }
         return $result;
-    }
-
-    /**
-     * Returns the currently configured "site language" if a site is configured (= resolved)
-     * in the current request.
-     */
-    protected static function getCurrentSiteLanguage(): ?SiteLanguage
-    {
-        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-            return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
-        }
-        return null;
     }
 
     protected static function getRuntimeCache(): FrontendInterface

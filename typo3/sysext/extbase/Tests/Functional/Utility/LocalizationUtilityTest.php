@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Utility;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -143,6 +145,9 @@ final class LocalizationUtilityTest extends FunctionalTestCase
      */
     public function loadTypoScriptLabels(): void
     {
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
         $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManagerInterfaceMock
@@ -180,6 +185,9 @@ final class LocalizationUtilityTest extends FunctionalTestCase
      */
     public function clearLabelWithTypoScript(): void
     {
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
         $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManagerInterfaceMock
@@ -215,6 +223,9 @@ final class LocalizationUtilityTest extends FunctionalTestCase
      */
     public function translateWillReturnLabelsFromTsEvenIfNoXlfFileExists(): void
     {
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $typoScriptLocalLang = [
             '_LOCAL_LANG' => [
                 'da' => [
@@ -232,7 +243,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             ->willReturn($typoScriptLocalLang);
         GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
 
-        $result = LocalizationUtility::translate('key1', 'core', languageKey: 'da');
+        $result = LocalizationUtility::translate('key1', 'core', [], 'da');
 
         self::assertSame('I am a new key and there is no xlf file', $result);
     }

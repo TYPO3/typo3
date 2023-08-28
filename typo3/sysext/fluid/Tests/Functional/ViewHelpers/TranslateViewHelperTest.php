@@ -18,19 +18,29 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class TranslateViewHelperTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DE' => ['id' => 1, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF8'],
+    ];
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/test_translate',
     ];
@@ -417,5 +427,67 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         $templateView = new TemplateView($context);
         $templateView->assign('myLocale', (new Locales())->createLocale('de_at'));
         self::assertSame('DE_AT label', $templateView->render());
+    }
+
+    /**
+     * @test
+     */
+    public function renderInExtbaseFrontendContextHandlesLabelOverrideWithTypoScriptInDefaultLanguage(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+        );
+        (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
+            'pid' => 1,
+            'root' => 1,
+            'clear' => 1,
+            'config' => <<<EOT
+page = PAGE
+page.10 = EXTBASEPLUGIN
+page.10 {
+    extensionName = TestTranslate
+    pluginName = Test
+}
+plugin.tx_testtranslate_test._LOCAL_LANG.default.localized\.to\.de = TypoScript default label
+EOT
+        ]);
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(2));
+        self::assertStringContainsString('TypoScript default label', (string)$response->getBody());
+
+    }
+
+    /**
+     * @test
+     */
+    public function renderInExtbaseFrontendContextHandlesLabelOverrideWithTypoScriptInLocalizedPage(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['EN']),
+            ]
+        );
+        (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
+            'pid' => 1,
+            'root' => 1,
+            'clear' => 1,
+            'config' => <<<EOT
+page = PAGE
+page.10 = EXTBASEPLUGIN
+page.10 {
+    extensionName = TestTranslate
+    pluginName = Test
+}
+plugin.tx_testtranslate_test._LOCAL_LANG.de-DE.localized\.to\.de = TypoScript de label
+EOT
+        ]);
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(2)->withLanguageId(1));
+        self::assertStringContainsString('TypoScript de label', (string)$response->getBody());
+
     }
 }

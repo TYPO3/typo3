@@ -51,10 +51,7 @@ class LanguageServiceFactory
 
     public function createFromUserPreferences(?AbstractUserAuthentication $user): LanguageService
     {
-        if ($user && ($user->user['lang'] ?? false)) {
-            return $this->create($this->locales->createLocale($user->user['lang']));
-        }
-        return $this->create('en');
+        return $this->create($this->locales->createLocaleFromUserPreferences($user));
     }
 
     public function createFromSiteLanguage(SiteLanguage $language): LanguageService
