@@ -105,6 +105,18 @@ class Locale implements \Stringable
         $this->dependencies = array_map(fn($dep) => $this->normalize($dep), $dependencies);
     }
 
+    /**
+     * @internal not part of TYPO3 public API
+     */
+    public function setDependencies(array $dependencies, bool $raw = false): void
+    {
+        if ($raw) {
+            $this->dependencies = $dependencies;
+        } else {
+            $this->dependencies = array_map(fn($dep) => $this->normalize($dep), $dependencies);
+        }
+    }
+
     public function getName(): string
     {
         return $this->locale;

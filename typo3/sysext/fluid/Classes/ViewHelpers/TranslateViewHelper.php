@@ -18,10 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface as ExtbaseRequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -123,7 +121,7 @@ final class TranslateViewHelper extends AbstractViewHelper
         $this->registerArgument('default', 'string', 'If the given locallang key could not be found, this value is used. If this argument is not set, child nodes will be used to render the default');
         $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
         $this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
-        $this->registerArgument('languageKey', 'string', 'Language key ("da" for example) or "default" to use. If empty, use current language.');
+        $this->registerArgument('languageKey', 'string', 'Language key ("da" for example) or "default" to use. Also a Locale object is possible. If empty, use current locale from the request.');
         // @deprecated will be removed in TYPO3 v13.0. Deprecation is triggered in LocalizationUtility
         $this->registerArgument('alternativeLanguageKeys', 'array', 'Alternative language keys if no translation does exist. Ignored in non-extbase context. Deprecated, will be removed in TYPO3 v13.0');
     }
@@ -157,71 +155,58 @@ final class TranslateViewHelper extends AbstractViewHelper
             $request = $renderingContext->getRequest();
         }
 
-        if (!$request instanceof ExtbaseRequestInterface) {
-            // Straight resolving via core LanguageService in non-extbase context
-            if (!str_starts_with($id, 'LLL:EXT:')) {
-                // Resolve "short key" without LLL:EXT: syntax given, if an extension name is given.
-                // @todo: We could consider to deprecate this case. It is mostly implemented for a more
-                //        smooth transition when (backend) controllers no longer feed an extbase request.
-                if (!empty($extensionName)) {
-                    $id = 'LLL:EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Private/Language/locallang.xlf:' . $id;
-                } elseif (empty($default)) {
-                    // Throw exception in case neither an extension key nor a default value
-                    // are given, since the "short key" shouldn't be considered as a label.
-                    throw new \RuntimeException(
-                        'ViewHelper f:translate in non-extbase context needs attribute "extensionName" to resolve'
-                        . ' key="' . $id . '" without path. Either set attribute "extensionName" together with the short'
-                        . ' key "yourKey" to result in a lookup "LLL:EXT:your_extension/Resources/Private/Language/locallang.xlf:yourKey",'
-                        . ' or (better) use a full LLL reference like key="LLL:EXT:your_extension/Resources/Private/Language/yourFile.xlf:yourKey".'
-                        . ' Alternatively, you can also define a default value.',
-                        1639828178
-                    );
-                }
+        if (empty($extensionName)) {
+            if ($request instanceof ExtbaseRequestInterface) {
+                $extensionName = $request->getControllerExtensionName();
+            } elseif (str_starts_with($id, 'LLL:EXT:')) {
+                $extensionName = substr($id, 8, strpos($id, '/', 8) - 8);
+            } elseif ($default) {
+                return self::handleDefaultValue($default, $translateArguments);
+            } else {
+                // Throw exception in case neither an extension key nor a extbase request
+                // are given, since the "short key" shouldn't be considered as a label.
+                throw new \RuntimeException(
+                    'ViewHelper f:translate in non-extbase context needs attribute "extensionName" to resolve'
+                    . ' key="' . $id . '" without path. Either set attribute "extensionName" together with the short'
+                    . ' key "yourKey" to result in a lookup "LLL:EXT:your_extension/Resources/Private/Language/locallang.xlf:yourKey",'
+                    . ' or (better) use a full LLL reference like key="LLL:EXT:your_extension/Resources/Private/Language/yourFile.xlf:yourKey".'
+                    . ' Alternatively, you can also define a default value.',
+                    1639828178
+                );
             }
-            $value = self::getLanguageService($request, $arguments['languageKey'])->sL($id);
-            if (empty($value) || (!str_starts_with($id, 'LLL:EXT:') && $value === $id)) {
-                // In case $value is empty (LLL: could not be resolved) or $value
-                // is the same as $id and is no "LLL:", fall back to the default.
-                $value = $default;
-            }
-            if (!empty($translateArguments)) {
-                $value = vsprintf($value, $translateArguments);
-            }
-            return $value;
         }
-
-        /** @var ExtbaseRequestInterface $request */
-        $extensionName = $extensionName ?? $request->getControllerExtensionName();
         try {
-            // Trigger full extbase magic: "<f:translate key="key1" />" will look up
-            // "LLL:EXT:current_extension/Resources/Private/Language/locallang.xlf:key1" AND
-            // overloads from _LOCAL_LANG extbase TypoScript settings if specified.
-            // Not this triggers TypoScript parsing via extbase ConfigurationManager
-            // and should be avoided in backend context!
-            $value = LocalizationUtility::translate($id, $extensionName, $translateArguments, $arguments['languageKey'], $arguments['alternativeLanguageKeys'] ?? null);
+            $locale = self::getUsedLocale($arguments['languageKey'], $request);
+            $value = LocalizationUtility::translate($id, $extensionName, $translateArguments, $locale, $arguments['alternativeLanguageKeys'] ?? null);
         } catch (\InvalidArgumentException) {
             // @todo: Switch to more specific Exceptions here - for instance those thrown when a package was not found, see #95957
             $value = null;
         }
         if ($value === null) {
-            $value = $default;
-            if (!empty($translateArguments)) {
-                $value = vsprintf($value, $translateArguments);
-            }
+            return self::handleDefaultValue($default, $translateArguments);
         }
         return $value;
     }
 
-    protected static function getLanguageService(ServerRequestInterface $request = null, string|Locale $languageKey = null): LanguageService
+    /**
+     * Ensure that a string is returned, if the underlying logic returns null, or cannot handle a translation
+     */
+    protected static function handleDefaultValue(string $default, ?array $translateArguments): string
     {
-        $languageServiceFactory = GeneralUtility::makeInstance(LanguageServiceFactory::class);
-        if ($languageKey) {
-            return $languageServiceFactory->create($languageKey);
+        if (!empty($translateArguments)) {
+            return vsprintf($default, $translateArguments);
         }
-        if ($request !== null && ApplicationType::fromRequest($request)->isFrontend()) {
-            return $languageServiceFactory->createFromSiteLanguage($request->getAttribute('language')
-                ?? $request->getAttribute('site')->getDefaultLanguage());
+        return $default;
+    }
+
+    protected static function getUsedLocale(Locale|string|null $languageKey, ?ServerRequestInterface $request): Locale|string|null
+    {
+        if ($languageKey !== null && $languageKey !== '') {
+            return $languageKey;
         }
-        return $languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
+        if ($request) {
+            return GeneralUtility::makeInstance(Locales::class)->createLocaleFromRequest($request);
+        }
+        return null;
     }
 }

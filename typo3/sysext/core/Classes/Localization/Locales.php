@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Localization;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -400,5 +403,26 @@ class Locales implements SingletonInterface
             return false;
         }
         return true;
+    }
+
+    public function createLocaleFromRequest(?ServerRequestInterface $request): Locale
+    {
+        $languageServiceFactory = GeneralUtility::makeInstance(LanguageServiceFactory::class);
+        if ($request !== null && ApplicationType::fromRequest($request)->isFrontend()) {
+            // @todo: the string conversion is needed for the time being, as long as SiteLanguage does not contain
+            // the full locale with all fallbacks, then getTypo3Language() also needs to be removed.
+            $localeString = (string)($request->getAttribute('language')?->getTypo3Language()
+                ?? $request->getAttribute('site')->getDefaultLanguage()->getTypo3Language());
+            return $this->createLocale($localeString);
+        }
+        return $languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null)->getLocale();
+    }
+
+    public function createLocaleFromUserPreferences(?AbstractUserAuthentication $user): Locale
+    {
+        if ($user && ($user->user['lang'] ?? false)) {
+            return $this->createLocale($user->user['lang']);
+        }
+        return $this->createLocale('en');
     }
 }
