@@ -25,6 +25,7 @@ import Wizard from '@typo3/backend/wizard';
 import SecurityUtility from '@typo3/core/security-utility';
 import windowManager from '@typo3/backend/window-manager';
 import RegularEvent from '@typo3/core/event/regular-event';
+import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 
 enum Identifiers {
   searchForm = '#workspace-settings-form',
@@ -88,6 +89,8 @@ class Backend extends Workspaces {
 
   constructor() {
     super();
+
+    topLevelModuleImport('@typo3/workspaces/renderable/send-to-stage-form.js');
 
     DocumentService.ready().then((): void => {
       this.getElements();

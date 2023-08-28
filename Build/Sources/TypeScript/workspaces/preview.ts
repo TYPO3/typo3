@@ -19,6 +19,7 @@ import Modal from '@typo3/backend/modal';
 import Utility from '@typo3/backend/utility';
 import Workspaces from './workspaces';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
+import '@typo3/workspaces/renderable/send-to-stage-form';
 
 enum Identifiers {
   topbar = '#typo3-topbar',
