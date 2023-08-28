@@ -100,16 +100,18 @@
             "d3-selection",
             "jasmine",
             "jquery",
+            "jquery-custom",
             "bootstrap",
             "nprogress",
-            "sortablejs"
+            "sortablejs",
+            "tablesort"
         ],
         "typeRoots": [
             "node_modules/@types",
             "types"
         ]
     },
-    "exclude": [
-        "composer/"
+    "include": [
+        "Sources/TypeScript/**/*.ts"
     ]
 }
