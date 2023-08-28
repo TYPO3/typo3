@@ -216,7 +216,7 @@ class UpgradeDocs extends AbstractInteractableModule {
             // Bootstrap doesn't offer promises to check whether all panels are collapsed, so we need a helper to do
             // something similar
             items.forEach((item: HTMLElement) => {
-              item.classList.remove('searchhit', 'filterhit');
+              item.classList.remove('hidden', 'searchhit', 'filterhit');
             })
           }
         }, { once: true }).bindTo(panel);
