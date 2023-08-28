@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\FunctionalDeprecated\Utility;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -28,26 +29,6 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     protected ConfigurationManagerInterface&MockObject $configurationManagerInterfaceMock;
 
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/label_test'];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
-        $this->configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $property = $reflectionClass->getProperty('configurationManager');
-        $property->setValue($this->configurationManagerInterfaceMock);
-    }
-
-    /**
-     * Reset static properties
-     */
-    protected function tearDown(): void
-    {
-        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
-        $property = $reflectionClass->getProperty('configurationManager');
-        $property->setValue(null);
-        parent::tearDown();
-    }
 
     public static function translateDataProvider(): array
     {
@@ -75,10 +56,12 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         array $arguments = null
     ): void {
         // No TypoScript overrides
-        $this->configurationManagerInterfaceMock
+        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceMock
             ->method('getConfiguration')
             ->with('Framework', 'label_test', null)
             ->willReturn([]);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->user = ['lang' => $languageKey];
@@ -97,10 +80,12 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         array $arguments = null
     ): void {
         // No TypoScript overrides
-        $this->configurationManagerInterfaceMock
+        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceMock
             ->method('getConfiguration')
             ->with('Framework', 'label_test', null)
             ->willReturn([]);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
 
         self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments, $languageKey, $altLanguageKeys));
     }

@@ -37,11 +37,6 @@ class LocalizationUtility
     protected static string $locallangPath = 'Resources/Private/Language/';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected static $configurationManager;
-
-    /**
      * Returns the localized label of the LOCAL_LANG key, $key.
      *
      * @param string $key The key from the LOCAL_LANG array for which to return the value.
@@ -177,7 +172,7 @@ class LocalizationUtility
      */
     protected static function loadTypoScriptLabels(string $extensionName): array
     {
-        $configurationManager = static::getConfigurationManager();
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         $frameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName);
         if (!is_array($frameworkConfiguration['_LOCAL_LANG'] ?? false)) {
             return [];
@@ -231,18 +226,6 @@ class LocalizationUtility
             }
         }
         return $result;
-    }
-
-    /**
-     * Returns instance of the configuration manager
-     */
-    protected static function getConfigurationManager(): ConfigurationManagerInterface
-    {
-        if (static::$configurationManager !== null) {
-            return static::$configurationManager;
-        }
-        static::$configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        return static::$configurationManager;
     }
 
     /**

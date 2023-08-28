@@ -17,37 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Utility;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class LocalizationUtilityTest extends FunctionalTestCase
 {
-    protected ConfigurationManagerInterface&MockObject $configurationManagerInterfaceMock;
-
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/label_test'];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
-        $this->configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $property = $reflectionClass->getProperty('configurationManager');
-        $property->setValue(null, $this->configurationManagerInterfaceMock);
-    }
-
-    /**
-     * Reset static properties
-     */
-    protected function tearDown(): void
-    {
-        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
-        $property = $reflectionClass->getProperty('configurationManager');
-        $property->setValue(null, null);
-        parent::tearDown();
-    }
 
     /**
      * @test
@@ -122,18 +100,15 @@ final class LocalizationUtilityTest extends FunctionalTestCase
      * @dataProvider translateDataProvider
      * @test
      */
-    public function translateTestWithBackendUserLanguage(
-        string $key,
-        string $languageKey,
-        string $expected,
-        array $altLanguageKeys = [],
-        array $arguments = null
-    ): void {
+    public function translateTestWithBackendUserLanguage(string $key, string $languageKey, string $expected, array $altLanguageKeys = [], array $arguments = null): void
+    {
         // No TypoScript overrides
-        $this->configurationManagerInterfaceMock
+        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceMock
             ->method('getConfiguration')
             ->with('Framework', 'label_test', null)
             ->willReturn([]);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->user = ['lang' => $languageKey];
@@ -152,10 +127,12 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         array $arguments = null
     ): void {
         // No TypoScript overrides
-        $this->configurationManagerInterfaceMock
+        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceMock
             ->method('getConfiguration')
             ->with('Framework', 'label_test', null)
             ->willReturn([]);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
 
         self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments, $languageKey, $altLanguageKeys));
     }
@@ -168,7 +145,8 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     public function loadTypoScriptLabels(): void
     {
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $this->configurationManagerInterfaceMock
+        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceMock
             ->expects(self::atLeastOnce())
             ->method('getConfiguration')
             ->with($configurationType, 'label_test', null)
@@ -188,6 +166,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
                     ],
                 ],
             ]);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
 
         self::assertSame('key1 value from TS core', LocalizationUtility::translate('key1', 'label_test', languageKey: 'da'));
         // Label from XLF file, no override
@@ -203,7 +182,8 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     public function clearLabelWithTypoScript(): void
     {
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $this->configurationManagerInterfaceMock
+        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceMock
             ->expects(self::atLeastOnce())
             ->method('getConfiguration')
             ->with($configurationType, 'label_test', null)
@@ -214,6 +194,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
                     ],
                 ],
             ]);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
 
         $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da');
 
@@ -244,11 +225,13 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         ];
 
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $this->configurationManagerInterfaceMock
+        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceMock
             ->expects(self::atLeastOnce())
             ->method('getConfiguration')
             ->with($configurationType, 'core', null)
             ->willReturn($typoScriptLocalLang);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
 
         $result = LocalizationUtility::translate('key1', 'core', languageKey: 'da');
 
