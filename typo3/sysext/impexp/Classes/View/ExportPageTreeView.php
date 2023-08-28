@@ -186,7 +186,7 @@ class ExportPageTreeView extends AbstractTreeView
 
         $this->stored = [];
         foreach ($pageTreeState as $identifier => $isExpanded) {
-            list($bank, $pageId) = explode('_', $identifier);
+            [$bank, $pageId] = explode('_', $identifier);
             $this->stored[$bank][$pageId] = $isExpanded;
         }
     }

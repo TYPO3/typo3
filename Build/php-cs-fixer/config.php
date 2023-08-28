@@ -59,6 +59,7 @@ return (new \PhpCsFixer\Config())
         'function_to_constant' => ['functions' => ['get_called_class', 'get_class', 'get_class_this', 'php_sapi_name', 'phpversion', 'pi']],
         'function_typehint_space' => true,
         'global_namespace_import' => ['import_classes' => false, 'import_constants' => false, 'import_functions' => false],
+        'list_syntax' => ['syntax' => 'short'],
         'modernize_strpos' => true,
         'modernize_types_casting' => true,
         'native_function_casing' => true,
