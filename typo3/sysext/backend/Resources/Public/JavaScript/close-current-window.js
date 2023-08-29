@@ -10,21 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/**
- * @internal Use in TYPO3 core only, API can change at any time!
- */
-(function() {
-  "use strict";
-
-  if (!document.currentScript) {
-    return false;
-  }
-
-  const scriptElement = document.currentScript;
-  switch (scriptElement.dataset.action) {
-    case 'window.close':
-      window.close();
-      break;
-    default:
-  }
-})();
+"use strict";self.close(),window.opener.location.reload();

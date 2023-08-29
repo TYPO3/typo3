@@ -18,16 +18,19 @@
  *
  * Scope: frontend
  */
-if ('undefined' !== typeof $) {
-  $(function() {
-    $('input[data-t3-form-datepicker]').each(function () {
-      $(this).datepicker({
-        dateFormat: $(this).data('format')
-      }).on('keydown', function(e) {
+interface JQuery { // eslint-disable-line @typescript-eslint/no-unused-vars
+  datepicker(optionsOrInstruction: object | string, value?: string): JQuery;
+}
+if (typeof $ !== 'undefined') { // eslint-disable-line no-restricted-globals
+  $(function(jQuery: JQueryStatic) { // eslint-disable-line no-restricted-globals
+    jQuery('input[data-t3-form-datepicker]').each(function (this: HTMLInputElement) {
+      jQuery(this).datepicker({
+        dateFormat: jQuery(this).data('format')
+      }).on('keydown', function(this: HTMLInputElement, e: JQueryEventObject) {
         // By using "backspace" or "delete", you can clear the datepicker again.
-        if(e.keyCode === 8 || e.keyCode === 46) {
+        if (e.keyCode === 8 || e.keyCode === 46) {
           e.preventDefault();
-          $(this).datepicker('setDate', '');
+          jQuery(this).datepicker('setDate', '');
         }
       });
     });
