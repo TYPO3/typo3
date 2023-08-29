@@ -48,9 +48,9 @@ export interface JavaScriptItem {
  */
 let useShim = false;
 
-const moduleImporter = (moduleName: string): Promise<any> => {
+const moduleImporter = (moduleName: string): Promise<unknown> => {
   if (useShim) {
-    return (window as any).importShim(moduleName);
+    return window.importShim(moduleName);
   } else {
     return import(moduleName).catch(() => {
       // Consider that importmaps are not supported and use shim from now on

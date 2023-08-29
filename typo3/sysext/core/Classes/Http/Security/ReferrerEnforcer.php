@@ -82,7 +82,7 @@ class ReferrerEnforcer
                 $query !== '' ? $query . '&' . $refreshParameter : $refreshParameter
             );
             $scriptUri = $this->resolveAbsoluteWebPath(
-                'EXT:core/Resources/Public/JavaScript/ReferrerRefresh.js'
+                'EXT:core/Resources/Public/JavaScript/referrer-refresh.js'
             );
             $attributes = ['src' => $scriptUri];
             if ($nonce instanceof ConsumableString) {

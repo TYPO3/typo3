@@ -76,6 +76,7 @@ interface Window {
   require: (moduleName: string) => void;
   list_frame: Window;
   CKEditorInspector: any;
+  importShim(moduleName: string): Promise<unknown>;
 }
 
 /**

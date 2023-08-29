@@ -1,93 +1,13 @@
-(function() {
-  /**
-   * Decoding helper function
-   *
-   * @param {number} charCode
-   * @param {number} start
-   * @param {number} end
-   * @param {number} offset
-   * @return {string}
-   */
-  function decryptCharcode(charCode, start, end, offset) {
-    charCode = charCode + offset;
-    if (offset > 0 && charCode > end) {
-      charCode = start + (charCode - end - 1);
-    } else if (offset < 0 && charCode < start) {
-      charCode = end - (start - charCode - 1);
-    }
-    return String.fromCharCode(charCode);
-  }
-  /**
-   * Decodes string
-   *
-   * @param {string} value
-   * @param {number} offset
-   * @return {string}
-   */
-  function decryptString(value, offset) {
-    var result = '';
-    for (var i=0; i < value.length; i++) {
-      var charCode = value.charCodeAt(i);
-      if (charCode >= 0x2B && charCode <= 0x3A) {
-        result += decryptCharcode(charCode,0x2B,0x3A,offset);	/* 0-9 . , - + / : */
-      } else if (charCode >= 0x40 && charCode <= 0x5A) {
-        result += decryptCharcode(charCode,0x40,0x5A,offset);	/* A-Z @ */
-      } else if (charCode >= 0x61 && charCode <= 0x7A) {
-        result += decryptCharcode(charCode,0x61,0x7A,offset);	/* a-z */
-      } else {
-        result += value.charAt(i);
-      }
-    }
-    return result;
-  }
-
-  /**
-   * Opens URL in new window.
-   *
-   * @param {string} url
-   * @param {string|null} target
-   * @param {string|null} features
-   * @return {Window}
-   */
-  function windowOpen(url, target, features) {
-    var windowRef = window.open(url, target, features);
-    if (windowRef) {
-      windowRef.focus();
-    }
-    return windowRef;
-  }
-
-  /**
-   * Delegates event handling to elements
-   *
-   * @param {string} event
-   * @param {string} selector
-   * @param {function} callback
-   */
-  function delegateEvent(event, selector, callback) {
-    document.addEventListener(event, function(evt) {
-      for (var targetElement = evt.target; targetElement && targetElement !== document; targetElement = targetElement.parentNode) {
-        if (targetElement.matches(selector)) {
-          callback.call(targetElement, evt, targetElement);
-        }
-      }
-    });
-  }
-
-  delegateEvent('click', 'a[data-mailto-token][data-mailto-vector]', function(evt, evtTarget) {
-    evt.preventDefault();
-    var dataset = evtTarget.dataset;
-    var value = dataset.mailtoToken;
-    var offset = parseInt(dataset.mailtoVector, 10) * -1;
-    document.location.href = decryptString(value, offset);
-  });
-
-  delegateEvent('click', 'a[data-window-url]', function(evt, evtTarget) {
-    evt.preventDefault();
-    var dataset = evtTarget.dataset;
-    var url = dataset.windowUrl;
-    var target = dataset.windowTarget || null;
-    var features = dataset.windowFeatures || null;
-    windowOpen(url, target, features);
-  });
-})();
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+"use strict";!function(){function t(t,n,e,o){return t+=o,o>0&&t>e?t=n+(t-e-1):o<0&&t<n&&(t=e-(n-t-1)),String.fromCharCode(t)}function n(t,n,e){document.addEventListener(t,(function(t){for(let o=t.target;o;o=o.parentNode!==document?o.parentNode:null)if("matches"in o){const a=o;a.matches(n)&&e(t,a)}}))}n("click","a[data-mailto-token][data-mailto-vector]",(function(n,e){n.preventDefault();const o=e.dataset,a=o.mailtoToken,c=-1*parseInt(o.mailtoVector,10);document.location.href=function(n,e){let o="";for(let a=0;a<n.length;a++){const c=n.charCodeAt(a);o+=c>=43&&c<=58?t(c,43,58,e):c>=64&&c<=90?t(c,64,90,e):c>=97&&c<=122?t(c,97,122,e):n.charAt(a)}return o}(a,c)})),n("click","a[data-window-url]",(function(t,n){t.preventDefault();const e=n.dataset;!function(t,n,e){const o=window.open(t,n,e);o&&o.focus()}(e.windowUrl,e.windowTarget||null,e.windowFeatures||null)}))}();

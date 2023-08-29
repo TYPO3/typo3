@@ -45,6 +45,9 @@
             "@typo3/form/*": [
                 "form/*"
             ],
+            "@typo3/frontend/*": [
+                "frontend/*"
+            ],
             "@typo3/impexp/*": [
                 "impexp/*"
             ],
