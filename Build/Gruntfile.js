@@ -452,6 +452,10 @@ module.exports = function (grunt) {
             dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/@lezer/lr.js'
           },
           {
+            src: '<%= paths.node_modules %>@lezer/common/dist/index.js',
+            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/@lezer/common.js'
+          },
+          {
             src: '<%= paths.node_modules %>crelt/index.es.js',
             dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/crelt.js'
           },
@@ -681,7 +685,6 @@ module.exports = function (grunt) {
           'jquery.js': 'jquery/dist/jquery.js',
           'jquery/minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
           'nprogress.js': 'nprogress/nprogress.js',
-          'sortablejs.js': 'sortablejs/dist/sortable.umd.js',
           'tablesort.js': 'tablesort/dist/tablesort.min.js',
           'tablesort.dotsep.js': 'tablesort/dist/sorts/tablesort.dotsep.min.js',
           'tablesort.number.js': 'tablesort/dist/sorts/tablesort.number.min.js',
@@ -803,6 +806,7 @@ module.exports = function (grunt) {
           'es-module-shims.js': 'es-module-shims/dist/es-module-shims.js',
           'luxon.js': 'luxon/build/es6/luxon.js',
           '../../../../../backend/Resources/Public/Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
+          'sortablejs.js': 'sortablejs/modular/sortable.complete.esm.js',
         }
       }
     },
@@ -822,6 +826,7 @@ module.exports = function (grunt) {
           '<%= paths.core %>Public/JavaScript/Contrib/luxon.js': ['<%= paths.core %>Public/JavaScript/Contrib/luxon.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/require.js': ['<%= paths.core %>Public/JavaScript/Contrib/require.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': ['<%= paths.core %>Public/JavaScript/Contrib/nprogress.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/sortablejs.js': ['<%= paths.core %>Public/JavaScript/Contrib/sortablejs.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/taboverride.js': ['<%= paths.core %>Public/JavaScript/Contrib/taboverride.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/data.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/data.js'],
@@ -903,7 +908,7 @@ module.exports = function (grunt) {
       }
     },
     concurrent: {
-      npmcopy: ['npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:jqueryUi', 'npmcopy:install', 'npmcopy:all'],
+      npmcopy: ['npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:jqueryUi', 'npmcopy:install', 'npmcopy:dashboardToEs6', 'npmcopy:all'],
       lint: ['eslint', 'stylelint', 'exec:lintspaces'],
       compile_assets: ['scripts', 'css'],
       compile_flags: ['flags-build'],
