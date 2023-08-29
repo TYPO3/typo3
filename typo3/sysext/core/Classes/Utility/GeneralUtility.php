@@ -21,6 +21,7 @@ use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\EmailValidation;
 use Egulias\EmailValidator\Validation\MultipleValidationWithAnd;
 use Egulias\EmailValidator\Validation\RFCValidation;
+use Egulias\EmailValidator\Warning\CFWSNearAt;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -734,6 +735,7 @@ class GeneralUtility
         if (!str_contains($email, '@')) {
             return false;
         }
+
         $validators = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['validators'] ?? [RFCValidation::class] as $className) {
             $validator = new $className();
@@ -741,7 +743,24 @@ class GeneralUtility
                 $validators[] = $validator;
             }
         }
-        return (new EmailValidator())->isValid($email, new MultipleValidationWithAnd($validators, MultipleValidationWithAnd::STOP_ON_ERROR));
+
+        $emailValidator = new EmailValidator();
+        $isValid = $emailValidator->isValid($email, new MultipleValidationWithAnd($validators, MultipleValidationWithAnd::STOP_ON_ERROR));
+
+        // Currently, the RFCValidation doesn't recognise "email @example.com"
+        // as an invalid email for historic reasons - catch it here
+        // see https://github.com/egulias/EmailValidator/issues/374
+        if ($isValid) {
+            // If email is valid, check if we have CFWSNearAt warning and
+            // treat it as an invalid email, i.e "email @example.com"
+            foreach ($emailValidator->getWarnings() as $warning) {
+                if ($warning instanceof CFWSNearAt) {
+                    return false;
+                }
+            }
+        }
+
+        return $isValid;
     }
 
     /**

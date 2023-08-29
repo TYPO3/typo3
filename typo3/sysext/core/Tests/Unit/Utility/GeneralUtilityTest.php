@@ -546,6 +546,14 @@ final class GeneralUtilityTest extends UnitTestCase
             'top level domain only' => ['test@localhost'],
             'umlauts in local part' => ['äöüfoo@bar.com'],
             'quoted @ char' => ['"Abc@def"@example.com'],
+            'space between the quotes' => ['" "@example.com'],
+            'quoted double dot' => ['"john..doe"@example.com'],
+            'bangified host route used for uucp mailers' => ['mailhost!username@example.com'],
+            '% escaped mail route to user@example.com via example.com' => ['user%example.com@example.com'],
+            'local-part ending with non-alphanumeric character from the list of allowed printable characters' => ['user-@example.com'],
+            'ipv4 addresses are allowed instead of domains when in square brackets, but strongly discouraged' => ['postmaster@[123.123.123.123]'],
+            'ipv6 uses a different syntax' => ['postmaster@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334]'],
+            'spaces in local quoted' => ['"yes spaces are fine"@example.com'],
         ];
     }
 
@@ -592,6 +600,18 @@ final class GeneralUtilityTest extends UnitTestCase
             'trailing tab' => ['test@example.com' . "\t"],
             'prohibited input characters' => ['“mailto:test@example.com”'],
             'escaped @ char' => ['abc\@def@example.com'], // known bug, see https://github.com/egulias/EmailValidator/issues/181
+            'no @ character' => ['Abc.example.com'],
+            'only one @ is allowed outside quotation marks' => ['A@b@c@example.com'],
+            'quoted strings must be dot separated or the only element making up the local-part' => ['just"not"right@example.com'],
+            'local-part is longer than 64 characters' => ['1234567890123456789012345678901234567890123456789012345678901234+x@example.com '],
+            'icon characters' => ['QA[icon]CHOCOLATE[icon]@example.com'],
+            'space in middle of local' => ['te at@example.com'],
+            'leading space(s)' => ['    teat@example.com'],
+            'space after @' => ['test@ example.com'],
+            'space in domain' => ['test@ex ample.com'],
+            'space before @' => ['test @example.com'],
+            'unbalanced quotes' => ['unbalanced-quotes"@example.com'],
+            'unbalanced quotes with leading spaces' => ['  unbalanced-quotes"@example.com'],
         ];
     }
 
