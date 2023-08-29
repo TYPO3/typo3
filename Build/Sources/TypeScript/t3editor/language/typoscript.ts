@@ -1,7 +1,8 @@
+import DocumentService from '@typo3/core/document-service';
 import { StreamLanguage, LanguageSupport } from '@codemirror/language';
 import { CompletionContext, CompletionResult } from '@codemirror/autocomplete';
 import { typoScriptStreamParser } from '@typo3/t3editor/stream-parser/typoscript';
-import TsCodeCompletion from '@typo3/t3editor/autocomplete/ts-code-completion';
+import { TsCodeCompletion } from '@typo3/t3editor/autocomplete/ts-code-completion';
 import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNodeRef } from '@lezer/common';
 
@@ -12,7 +13,7 @@ interface Token {
   end: number;
 }
 
-interface CodeMirror5CompatibleCompletionState {
+export interface CodeMirror5CompatibleCompletionState {
   lineTokens: Token[][];
   currentLineNumber: number;
   currentLine: string;
@@ -41,7 +42,13 @@ export function typoscript() {
   return new LanguageSupport(language, [completion]);
 }
 
-export function complete (context: CompletionContext): Promise<CompletionResult | null> | CompletionResult | null {
+const tsCodeCompletionInitializer = (async (): Promise<TsCodeCompletion> => {
+  await DocumentService.ready();
+  const effectivePid = parseInt((document.querySelector('input[name="effectivePid"]') as HTMLInputElement)?.value, 10);
+  return new TsCodeCompletion(effectivePid);
+})();
+
+export async function complete(context: CompletionContext): Promise<CompletionResult | null> {
   if (!context.explicit) {
     return null;
   }
@@ -70,7 +77,8 @@ export function complete (context: CompletionContext): Promise<CompletionResult 
   }
   cm5state.token = tokenMetadata;
 
-  const keywords = TsCodeCompletion.refreshCodeCompletion(cm5state);
+  const tsCodeCompletion = await tsCodeCompletionInitializer;
+  const keywords = tsCodeCompletion.refreshCodeCompletion(cm5state);
 
   if ((token.name === 'string' || token.name === 'comment') && tokenIsSubStringOfKeywords(tokenValue, keywords)) {
     return null;
@@ -83,8 +91,6 @@ export function complete (context: CompletionContext): Promise<CompletionResult 
       return { label: result, type: 'keyword' };
     })
   };
-
-  return null;
 }
 
 function parseCodeMirror5CompatibleCompletionState(context: CompletionContext): CodeMirror5CompatibleCompletionState {

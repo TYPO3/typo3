@@ -92,7 +92,6 @@ declare module '@typo3/dashboard/contrib/chartjs';
 declare module '@typo3/backend/contrib/mark';
 
 declare module '@typo3/t3editor/stream-parser/typoscript';
-declare module '@typo3/t3editor/autocomplete/ts-code-completion';
 
 interface Taboverride {
   set(elems: HTMLElement|HTMLElement[], enable?: boolean): Taboverride
