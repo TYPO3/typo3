@@ -452,6 +452,10 @@ module.exports = function (grunt) {
             dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/@lezer/lr.js'
           },
           {
+            src: '<%= paths.node_modules %>@lezer/common/dist/index.js',
+            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/@lezer/common.js'
+          },
+          {
             src: '<%= paths.node_modules %>crelt/index.es.js',
             dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/crelt.js'
           },
@@ -676,7 +680,6 @@ module.exports = function (grunt) {
           'interact.js': 'interactjs/dist/interact.min.js',
           'jquery.js': 'jquery/dist/jquery.js',
           'nprogress.js': 'nprogress/nprogress.js',
-          'sortablejs.js': 'sortablejs/dist/sortable.umd.js',
           'tablesort.js': 'tablesort/dist/tablesort.min.js',
           'tablesort.dotsep.js': 'tablesort/dist/sorts/tablesort.dotsep.min.js',
           'tablesort.number.js': 'tablesort/dist/sorts/tablesort.number.min.js',
@@ -708,6 +711,7 @@ module.exports = function (grunt) {
           'autosize.js': 'autosize/dist/autosize.esm.js',
           'cropperjs.js': 'cropperjs/dist/cropper.esm.js',
           'luxon.js': 'luxon/build/es6/luxon.js',
+          'sortablejs.js': 'sortablejs/modular/sortable.complete.esm.js',
         }
       }
     },
@@ -724,6 +728,7 @@ module.exports = function (grunt) {
           '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/luxon.js': ['<%= paths.core %>Public/JavaScript/Contrib/luxon.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': ['<%= paths.core %>Public/JavaScript/Contrib/nprogress.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/sortablejs.js': ['<%= paths.core %>Public/JavaScript/Contrib/sortablejs.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/taboverride.js': ['<%= paths.core %>Public/JavaScript/Contrib/taboverride.js'],
           '<%= paths.install %>Public/JavaScript/chosen.jquery.min.js': ['<%= paths.install %>Public/JavaScript/chosen.jquery.min.js']
         }
@@ -775,7 +780,7 @@ module.exports = function (grunt) {
       }
     },
     concurrent: {
-      npmcopy: ['npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:install', 'npmcopy:all'],
+      npmcopy: ['npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:install', 'npmcopy:dashboardToEs6', 'npmcopy:all'],
       lint: ['eslint', 'stylelint', 'exec:lintspaces'],
       compile_assets: ['scripts', 'css'],
       compile_flags: ['flags-build'],
