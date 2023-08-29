@@ -24,17 +24,19 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  executeTrigger = '.t3js-imageProcessing-execute',
+  testContainer = '.t3js-imageProcessing-twinContainer',
+  twinImageTemplate = '.t3js-imageProcessing-twinImage-template',
+  commandContainer = '.t3js-imageProcessing-command',
+  commandText = '.t3js-imageProcessing-command-text',
+  twinImages = '.t3js-imageProcessing-images'
+}
+
 /**
  * Module: @typo3/install/module/image-processing
  */
 class ImageProcessing extends AbstractInteractableModule {
-  private readonly selectorExecuteTrigger: string = '.t3js-imageProcessing-execute';
-  private readonly selectorTestContainer: string = '.t3js-imageProcessing-twinContainer';
-  private readonly selectorTwinImageTemplate: string = '.t3js-imageProcessing-twinImage-template';
-  private readonly selectorCommandContainer: string = '.t3js-imageProcessing-command';
-  private readonly selectorCommandText: string = '.t3js-imageProcessing-command-text';
-  private readonly selectorTwinImages: string = '.t3js-imageProcessing-images';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getData();
@@ -42,7 +44,7 @@ class ImageProcessing extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.runTests();
-    }).delegateTo(currentModal, this.selectorExecuteTrigger);
+    }).delegateTo(currentModal, Identifiers.executeTrigger);
   }
 
   private getData(): void {
@@ -70,9 +72,9 @@ class ImageProcessing extends AbstractInteractableModule {
     const modalContent: HTMLElement = this.getModalBody();
     this.setModalButtonsState(false);
 
-    const twinImageTemplate = this.findInModal(this.selectorTwinImageTemplate);
+    const twinImageTemplate = this.findInModal(Identifiers.twinImageTemplate);
     const promises: Array<Promise<void>> = [];
-    modalContent.querySelectorAll(this.selectorTestContainer).forEach((container: HTMLElement): void => {
+    modalContent.querySelectorAll(Identifiers.testContainer).forEach((container: HTMLElement): void => {
       container.replaceChildren(InfoBox.create(Severity.loading, 'Loading...'));
       const request = (new AjaxRequest(Router.getUrl(container.dataset.test)))
         .get({ cache: 'no-cache' })
@@ -91,10 +93,10 @@ class ImageProcessing extends AbstractInteractableModule {
               if (data.fileExists === true) {
                 aTwin.querySelector('img.reference')?.setAttribute('src', data.referenceFile);
                 aTwin.querySelector('img.result')?.setAttribute('src', data.outputFile);
-                aTwin.querySelectorAll(this.selectorTwinImages).forEach((image: HTMLElement) => image.hidden = false);
+                aTwin.querySelectorAll(Identifiers.twinImages).forEach((image: HTMLElement) => image.hidden = false);
               }
               if (Array.isArray(data.command) && data.command.length > 0) {
-                const commandContainer: HTMLElement = aTwin.querySelector(this.selectorCommandContainer);
+                const commandContainer: HTMLElement = aTwin.querySelector(Identifiers.commandContainer);
                 if (commandContainer !== null) {
                   commandContainer.hidden = false;
                 }
@@ -105,7 +107,7 @@ class ImageProcessing extends AbstractInteractableModule {
                     commandText.push('<strong>Result:</strong>\n' + aElement[2]);
                   }
                 });
-                const commandTextElement: HTMLElement = aTwin.querySelector(this.selectorCommandText);
+                const commandTextElement: HTMLElement = aTwin.querySelector(Identifiers.commandText);
                 if (commandTextElement !== null) {
                   commandTextElement.innerHTML = commandText.join('\n');
                 }
@@ -121,7 +123,7 @@ class ImageProcessing extends AbstractInteractableModule {
     });
 
     Promise.all(promises).then((): void => {
-      const triggerButton: HTMLElement = this.findInModal(this.selectorExecuteTrigger);
+      const triggerButton: HTMLElement = this.findInModal(Identifiers.executeTrigger);
       if (triggerButton !== null) {
         triggerButton.classList.remove('disabled');
         triggerButton.removeAttribute('disabled');

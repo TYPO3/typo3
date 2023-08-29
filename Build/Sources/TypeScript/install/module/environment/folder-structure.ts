@@ -23,19 +23,20 @@ import Router from '../../router';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  outputContainer = '.t3js-folderStructure-output',
+  errorContainer = '.t3js-folderStructure-errors',
+  errorList = '.t3js-folderStructure-errors-list',
+  errorFixTrigger = '.t3js-folderStructure-errors-fix',
+  okContainer = '.t3js-folderStructure-ok',
+  okList = '.t3js-folderStructure-ok-list',
+  permissionContainer = '.t3js-folderStructure-permissions'
+}
+
 /**
  * Module: @typo3/install/module/folder-structure
  */
 class FolderStructure extends AbstractInteractableModule {
-  private readonly selectorGridderBadge: string = '.t3js-folderStructure-badge';
-  private readonly selectorOutputContainer: string = '.t3js-folderStructure-output';
-  private readonly selectorErrorContainer: string = '.t3js-folderStructure-errors';
-  private readonly selectorErrorList: string = '.t3js-folderStructure-errors-list';
-  private readonly selectorErrorFixTrigger: string = '.t3js-folderStructure-errors-fix';
-  private readonly selectorOkContainer: string = '.t3js-folderStructure-ok';
-  private readonly selectorOkList: string = '.t3js-folderStructure-ok-list';
-  private readonly selectorPermissionContainer: string = '.t3js-folderStructure-permissions';
-
   private static removeLoadingMessage(container: HTMLElement): void {
     container.querySelector('typo3-install-progress-bar').remove();
   }
@@ -49,13 +50,13 @@ class FolderStructure extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.fix();
-    }).delegateTo(currentModal, this.selectorErrorFixTrigger);
+    }).delegateTo(currentModal, Identifiers.errorFixTrigger);
   }
 
   private getStatus(): void {
     const modalContent = this.getModalBody();
 
-    this.renderProgressBar(modalContent.querySelector(this.selectorOutputContainer));
+    this.renderProgressBar(modalContent.querySelector(Identifiers.outputContainer));
     (new AjaxRequest(Router.getUrl('folderStructureGetStatus')))
       .get({ cache: 'no-cache' })
       .then(
@@ -65,28 +66,28 @@ class FolderStructure extends AbstractInteractableModule {
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.errorStatus)) {
             if (data.errorStatus.length > 0) {
-              modalContent.querySelector<HTMLElement>(this.selectorErrorContainer).style.display = 'block';
-              modalContent.querySelector(this.selectorErrorList).innerHTML = '';
+              modalContent.querySelector<HTMLElement>(Identifiers.errorContainer).style.display = 'block';
+              modalContent.querySelector(Identifiers.errorList).innerHTML = '';
               data.errorStatus.forEach(((aElement: any): void => {
-                modalContent.querySelector(this.selectorErrorList).appendChild(InfoBox.create(aElement.severity, aElement.title, aElement.message));
+                modalContent.querySelector(Identifiers.errorList).appendChild(InfoBox.create(aElement.severity, aElement.title, aElement.message));
               }));
             } else {
-              modalContent.querySelector<HTMLElement>(this.selectorErrorContainer).style.display = 'none';
+              modalContent.querySelector<HTMLElement>(Identifiers.errorContainer).style.display = 'none';
             }
           }
           if (data.success === true && Array.isArray(data.okStatus)) {
             if (data.okStatus.length > 0) {
-              modalContent.querySelector<HTMLElement>(this.selectorOkContainer).style.display = 'block';
-              modalContent.querySelector(this.selectorOkList).innerHTML = '';
+              modalContent.querySelector<HTMLElement>(Identifiers.okContainer).style.display = 'block';
+              modalContent.querySelector(Identifiers.okList).innerHTML = '';
               data.okStatus.forEach(((aElement: any): void => {
-                modalContent.querySelector(this.selectorOkList).appendChild(InfoBox.create(aElement.severity, aElement.title, aElement.message));
+                modalContent.querySelector(Identifiers.okList).appendChild(InfoBox.create(aElement.severity, aElement.title, aElement.message));
               }));
             } else {
-              modalContent.querySelector<HTMLElement>(this.selectorOkContainer).style.display = 'none';
+              modalContent.querySelector<HTMLElement>(Identifiers.okContainer).style.display = 'none';
             }
           }
           let element = data.folderStructureFilePermissionStatus;
-          const selectorPermissionContainer = modalContent.querySelector(this.selectorPermissionContainer);
+          const selectorPermissionContainer = modalContent.querySelector(Identifiers.permissionContainer);
           selectorPermissionContainer.replaceChildren(InfoBox.create(element.severity, element.title, element.message));
 
           element = data.folderStructureDirectoryPermissionStatus;
@@ -102,7 +103,7 @@ class FolderStructure extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(this.selectorOutputContainer);
+    const outputContainer = this.findInModal(Identifiers.outputContainer);
     this.renderProgressBar(outputContainer);
     (new AjaxRequest(Router.getUrl('folderStructureFix')))
       .get({ cache: 'no-cache' })

@@ -22,12 +22,20 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  adminCreateButton = '.t3js-createAdmin-create',
+  adminUserInput = '.t3js-createAdmin-user',
+  adminRealNameInput = '.t3js-createAdmin-realname',
+  adminPasswordInput = '.t3js-createAdmin-password',
+  adminPasswordCheckInput = '.t3js-createAdmin-password-check',
+  adminEmailInput = '.t3js-createAdmin-email',
+  adminSysMaintainterInput = '.t3js-createAdmin-system-maintainer'
+}
+
 /**
  * Module: @typo3/install/module/create-admin
  */
 class CreateAdmin extends AbstractInteractableModule {
-  private readonly selectorAdminCreateButton: string = '.t3js-createAdmin-create';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getData();
@@ -35,7 +43,7 @@ class CreateAdmin extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.create();
-    }).delegateTo(currentModal, this.selectorAdminCreateButton);
+    }).delegateTo(currentModal, Identifiers.adminCreateButton);
   }
 
   private getData(): void {
@@ -69,12 +77,12 @@ class CreateAdmin extends AbstractInteractableModule {
       install: {
         action: 'createAdmin',
         token: executeToken,
-        userName: (this.findInModal('.t3js-createAdmin-user') as HTMLInputElement).value,
-        userPassword: (this.findInModal('.t3js-createAdmin-password') as HTMLInputElement).value,
-        userPasswordCheck: (this.findInModal('.t3js-createAdmin-password-check') as HTMLInputElement).value,
-        userEmail: (this.findInModal('.t3js-createAdmin-email') as HTMLInputElement).value,
-        realName: (this.findInModal('.t3js-createAdmin-realname') as HTMLInputElement).value,
-        userSystemMaintainer: (this.findInModal('.t3js-createAdmin-system-maintainer') as HTMLInputElement).checked ? 1 : 0,
+        userName: (this.findInModal(Identifiers.adminUserInput) as HTMLInputElement).value,
+        userPassword: (this.findInModal(Identifiers.adminPasswordInput) as HTMLInputElement).value,
+        userPasswordCheck: (this.findInModal(Identifiers.adminPasswordCheckInput) as HTMLInputElement).value,
+        userEmail: (this.findInModal(Identifiers.adminEmailInput) as HTMLInputElement).value,
+        realName: (this.findInModal(Identifiers.adminRealNameInput) as HTMLInputElement).value,
+        userSystemMaintainer: (this.findInModal(Identifiers.adminSysMaintainterInput) as HTMLInputElement).checked ? 1 : 0,
       },
     };
     this.getModuleContent().querySelectorAll('input').forEach((input: HTMLInputElement): void => {
@@ -88,11 +96,11 @@ class CreateAdmin extends AbstractInteractableModule {
           Notification.showMessage(element.title, element.message, element.severity);
         });
         if (data.userCreated) {
-          (this.findInModal('.t3js-createAdmin-user') as HTMLInputElement).value = '';
-          (this.findInModal('.t3js-createAdmin-password') as HTMLInputElement).value = '';
-          (this.findInModal('.t3js-createAdmin-password-check') as HTMLInputElement).value = '';
-          (this.findInModal('.t3js-createAdmin-email') as HTMLInputElement).value = '';
-          (this.findInModal('.t3js-createAdmin-system-maintainer') as HTMLInputElement).checked = false;
+          (this.findInModal(Identifiers.adminUserInput) as HTMLInputElement).value = '';
+          (this.findInModal(Identifiers.adminPasswordInput) as HTMLInputElement).value = '';
+          (this.findInModal(Identifiers.adminPasswordCheckInput) as HTMLInputElement).value = '';
+          (this.findInModal(Identifiers.adminEmailInput) as HTMLInputElement).value = '';
+          (this.findInModal(Identifiers.adminSysMaintainterInput) as HTMLInputElement).checked = false;
         }
       } else {
         Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');

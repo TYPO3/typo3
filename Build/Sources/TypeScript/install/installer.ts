@@ -21,19 +21,21 @@ import './renderable/progress-bar';
 import '@typo3/backend/element/icon-element';
 import MessageInterface from '@typo3/install/message-interface';
 
+enum Identifiers {
+  body = '.t3js-body',
+  moduleContent = '.t3js-module-content',
+  mainContent = '.t3js-installer-content',
+  progressBar = '.t3js-installer-progress',
+  progressBarSteps = '.t3js-installer-progress-steps',
+  databaseConnectOutput = '.t3js-installer-databaseConnect-output',
+  databaseSelectOutput = '.t3js-installer-databaseSelect-output',
+  databaseDataOutput = '.t3js-installer-databaseData-output'
+}
+
 /**
  * Walk through the installation process of TYPO3
  */
 class Installer {
-  private readonly selectorBody: string = '.t3js-body';
-  private readonly selectorModuleContent: string = '.t3js-module-content';
-  private readonly selectorMainContent: string = '.t3js-installer-content';
-  private readonly selectorProgressBar: string = '.t3js-installer-progress';
-  private readonly selectorProgressBarSteps: string = '.t3js-installer-progress-steps';
-  private readonly selectorDatabaseConnectOutput: string = '.t3js-installer-databaseConnect-output';
-  private readonly selectorDatabaseSelectOutput: string = '.t3js-installer-databaseSelect-output';
-  private readonly selectorDatabaseDataOutput: string = '.t3js-installer-databaseData-output';
-
   constructor() {
     this.initializeEvents();
     DocumentService.ready().then((): void => {
@@ -103,11 +105,11 @@ class Installer {
   }
 
   private setProgress(done: number): void {
-    const progressBar = document.querySelector(this.selectorProgressBar);
+    const progressBar = document.querySelector(Identifiers.progressBar);
     if (progressBar === null) {
       return;
     }
-    const progressBarSteps = document.querySelector(this.selectorProgressBarSteps);
+    const progressBarSteps = document.querySelector(Identifiers.progressBarSteps);
     let percent: number = 0;
     if (done !== 0) {
       percent = (done / 5) * 100;
@@ -125,7 +127,7 @@ class Installer {
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
-        document.querySelector(this.selectorBody).innerHTML = data.html;
+        document.querySelector(Identifiers.body).innerHTML = data.html;
         this.checkInstallerAvailable();
       });
   }
@@ -142,7 +144,7 @@ class Installer {
   }
 
   private showInstallerNotAvailable(): void {
-    const outputContainer = document.querySelector(this.selectorMainContent);
+    const outputContainer = document.querySelector(Identifiers.mainContent);
     (new AjaxRequest(this.getUrl('showInstallerNotAvailable')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
@@ -168,7 +170,7 @@ class Installer {
   }
 
   private showEnvironmentAndFolders(): void {
-    const outputContainer = document.querySelector(this.selectorMainContent);
+    const outputContainer = document.querySelector(Identifiers.mainContent);
     (new AjaxRequest(this.getUrl('showEnvironmentAndFolders')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
@@ -282,7 +284,7 @@ class Installer {
   }
 
   private showDatabaseConnect(): void {
-    const outputContainer = document.querySelector(this.selectorMainContent);
+    const outputContainer = document.querySelector(Identifiers.mainContent);
     (new AjaxRequest(this.getUrl('showDatabaseConnect')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
@@ -296,12 +298,12 @@ class Installer {
   }
 
   private executeDatabaseConnect(): void {
-    const outputContainer = document.querySelector(this.selectorDatabaseConnectOutput);
+    const outputContainer = document.querySelector(Identifiers.databaseConnectOutput);
     const postData: Record<string, string> = {
       'install[action]': 'executeDatabaseConnect',
-      'install[token]': (document.querySelector(this.selectorModuleContent) as HTMLElement).dataset.installerDatabaseConnectExecuteToken,
+      'install[token]': (document.querySelector(Identifiers.moduleContent) as HTMLElement).dataset.installerDatabaseConnectExecuteToken,
     };
-    for (const [name, value] of new FormData(document.querySelector(this.selectorBody + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
@@ -336,7 +338,7 @@ class Installer {
   }
 
   private showDatabaseSelect(): void {
-    const outputContainer = document.querySelector(this.selectorMainContent);
+    const outputContainer = document.querySelector(Identifiers.mainContent);
     (new AjaxRequest(this.getUrl('showDatabaseSelect')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
@@ -348,12 +350,12 @@ class Installer {
   }
 
   private executeDatabaseSelect(): void {
-    const outputContainer = document.querySelector(this.selectorDatabaseSelectOutput);
+    const outputContainer = document.querySelector(Identifiers.databaseSelectOutput);
     const postData: { [id: string]: string } = {
       'install[action]': 'executeDatabaseSelect',
-      'install[token]': (document.querySelector(this.selectorModuleContent) as HTMLElement).dataset.installerDatabaseSelectExecuteToken,
+      'install[token]': (document.querySelector(Identifiers.moduleContent) as HTMLElement).dataset.installerDatabaseSelectExecuteToken,
     };
-    for (const [name, value] of new FormData(document.querySelector(this.selectorBody + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
@@ -373,12 +375,12 @@ class Installer {
   }
 
   private checkDatabaseRequirements(): void {
-    const outputContainer = document.querySelector(this.selectorDatabaseSelectOutput);
+    const outputContainer = document.querySelector(Identifiers.databaseSelectOutput);
     const postData: Record<string, string> = {
       'install[action]': 'checkDatabaseRequirements',
-      'install[token]': (document.querySelector(this.selectorModuleContent) as HTMLElement).dataset.installerDatabaseCheckRequirementsExecuteToken,
+      'install[token]': (document.querySelector(Identifiers.moduleContent) as HTMLElement).dataset.installerDatabaseCheckRequirementsExecuteToken,
     };
-    for (const [name, value] of new FormData(document.querySelector(this.selectorBody + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
@@ -413,7 +415,7 @@ class Installer {
   }
 
   private showDatabaseData(): void {
-    const outputContainer = document.querySelector(this.selectorMainContent);
+    const outputContainer = document.querySelector(Identifiers.mainContent);
     (new AjaxRequest(this.getUrl('showDatabaseData')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
@@ -426,12 +428,12 @@ class Installer {
   }
 
   private executeDatabaseData(): void {
-    const outputContainer = document.querySelector(this.selectorDatabaseDataOutput);
+    const outputContainer = document.querySelector(Identifiers.databaseDataOutput);
     const postData: Record<string, string> = {
       'install[action]': 'executeDatabaseData',
-      'install[token]': (document.querySelector(this.selectorModuleContent) as HTMLElement).dataset.installerDatabaseDataExecuteToken,
+      'install[token]': (document.querySelector(Identifiers.moduleContent) as HTMLElement).dataset.installerDatabaseDataExecuteToken,
     };
-    for (const [name, value] of new FormData(document.querySelector(this.selectorBody + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
     }
     const progressBar = document.createElement('typo3-install-progress-bar');
@@ -454,7 +456,7 @@ class Installer {
   }
 
   private showDefaultConfiguration(): void {
-    const outputContainer = document.querySelector(this.selectorMainContent);
+    const outputContainer = document.querySelector(Identifiers.mainContent);
     this.setProgress(5);
     (new AjaxRequest(this.getUrl('showDefaultConfiguration')))
       .get({ cache: 'no-cache' })
@@ -469,9 +471,9 @@ class Installer {
   private executeDefaultConfiguration(): void {
     const postData: Record<string, string> = {
       'install[action]': 'executeDefaultConfiguration',
-      'install[token]': (document.querySelector(this.selectorModuleContent) as HTMLElement).dataset.installerDefaultConfigurationExecuteToken,
+      'install[token]': (document.querySelector(Identifiers.moduleContent) as HTMLElement).dataset.installerDefaultConfigurationExecuteToken,
     };
-    for (const [name, value] of new FormData(document.querySelector(this.selectorBody + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))

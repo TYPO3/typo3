@@ -21,12 +21,14 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  saveTrigger = '.t3js-features-save'
+}
+
 /**
  * Module: @typo3/install/module/features
  */
 class Features extends AbstractInteractableModule {
-  private readonly selectorSaveTrigger: string = '.t3js-features-save';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getContent();
@@ -34,7 +36,7 @@ class Features extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.save();
-    }).delegateTo(currentModal, this.selectorSaveTrigger);
+    }).delegateTo(currentModal, Identifiers.saveTrigger);
   }
 
   private getContent(): void {

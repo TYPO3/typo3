@@ -16,6 +16,12 @@ import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-im
 import type { ProgressBar } from '../renderable/progress-bar';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  modalBody = '.t3js-modal-body',
+  modalContent = '.t3js-module-content',
+  modalFooter = '.t3js-modal-footer'
+}
+
 type IfEquals<X, Y, A, B> =
   (<T>() => T extends X ? 1 : 2) extends
   (<T>() => T extends Y ? 1 : 2) ? A : B;
@@ -26,24 +32,21 @@ type WritablePart<T> = Pick<T, WritableKeysOf<T>>;
 
 export abstract class AbstractInteractableModule {
   protected currentModal: ModalElement;
-  private readonly selectorModalBody: string = '.t3js-modal-body';
-  private readonly selectorModalContent: string = '.t3js-module-content';
-  private readonly selectorModalFooter: string = '.t3js-modal-footer';
 
   public initialize(currentModal: ModalElement): void {
     this.currentModal = currentModal;
   }
 
   protected getModalBody(): HTMLElement {
-    return this.findInModal(this.selectorModalBody);
+    return this.findInModal(Identifiers.modalBody);
   }
 
   protected getModuleContent(): HTMLElement {
-    return this.findInModal(this.selectorModalContent);
+    return this.findInModal(Identifiers.modalContent);
   }
 
   protected getModalFooter(): HTMLElement {
-    return this.findInModal(this.selectorModalFooter);
+    return this.findInModal(Identifiers.modalFooter);
   }
 
   protected findInModal<K extends keyof HTMLElementTagNameMap>(selector: K): HTMLElementTagNameMap[K] | null;

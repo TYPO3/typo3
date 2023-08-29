@@ -25,6 +25,33 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  outputWizardsContainer = '.t3js-upgradeWizards-wizards-output',
+  outputDoneContainer = '.t3js-upgradeWizards-done-output',
+  wizardsBlockingAddsTemplate = '.t3js-upgradeWizards-blocking-adds-template',
+  wizardsBlockingAddsRows = '.t3js-upgradeWizards-blocking-adds-rows',
+  wizardsBlockingAddsExecute = '.t3js-upgradeWizards-blocking-adds-execute',
+  wizardsBlockingCharsetTemplate = '.t3js-upgradeWizards-blocking-charset-template',
+  wizardsBlockingCharsetFix = '.t3js-upgradeWizards-blocking-charset-fix',
+  wizardsDoneBodyTemplate = '.t3js-upgradeWizards-done-body-template',
+  wizardsDoneRows = '.t3js-upgradeWizards-done-rows',
+  wizardsDoneRowTemplate = '.t3js-upgradeWizards-done-row-template table tr',
+  wizardsDoneRowMarkUndone = '.t3js-upgradeWizards-done-markUndone',
+  wizardsDoneRowTitle = '.t3js-upgradeWizards-done-title',
+  wizardsListTemplate = '.t3js-upgradeWizards-list-template',
+  wizardsListRows = '.t3js-upgradeWizards-list-rows',
+  wizardsListRowTemplate = '.t3js-upgradeWizards-list-row-template',
+  wizardsListRowTitle = '.t3js-upgradeWizards-list-row-title',
+  wizardsListRowExplanation = '.t3js-upgradeWizards-list-row-explanation',
+  wizardsListRowExecute = '.t3js-upgradeWizards-list-row-execute',
+  wizardsInputTemplate = '.t3js-upgradeWizards-input',
+  wizardsInputTitle = '.t3js-upgradeWizards-input-title',
+  wizardsInputDescription = '.t3js-upgradeWizards-input-description',
+  wizardsInputHtml = '.t3js-upgradeWizards-input-html',
+  wizardsInputPerform = '.t3js-upgradeWizards-input-perform',
+  wizardsInputAbort = '.t3js-upgradeWizards-input-abort'
+}
+
 type UpgradeWizardsBlockingDatabaseAddsResponse = {
   success: boolean;
   needsUpdate: boolean;
@@ -61,30 +88,6 @@ type UpgradeWizardDone = {
  * Module: @typo3/install/module/upgrade-wizards
  */
 class UpgradeWizards extends AbstractInteractableModule {
-  private readonly selectorOutputWizardsContainer: string = '.t3js-upgradeWizards-wizards-output';
-  private readonly selectorOutputDoneContainer: string = '.t3js-upgradeWizards-done-output';
-  private readonly selectorWizardsBlockingAddsTemplate: string = '.t3js-upgradeWizards-blocking-adds-template';
-  private readonly selectorWizardsBlockingAddsRows: string = '.t3js-upgradeWizards-blocking-adds-rows';
-  private readonly selectorWizardsBlockingAddsExecute: string = '.t3js-upgradeWizards-blocking-adds-execute';
-  private readonly selectorWizardsBlockingCharsetTemplate: string = '.t3js-upgradeWizards-blocking-charset-template';
-  private readonly selectorWizardsBlockingCharsetFix: string = '.t3js-upgradeWizards-blocking-charset-fix';
-  private readonly selectorWizardsDoneBodyTemplate: string = '.t3js-upgradeWizards-done-body-template';
-  private readonly selectorWizardsDoneRows: string = '.t3js-upgradeWizards-done-rows';
-  private readonly selectorWizardsDoneRowTemplate: string = '.t3js-upgradeWizards-done-row-template table tr';
-  private readonly selectorWizardsDoneRowMarkUndone: string = '.t3js-upgradeWizards-done-markUndone';
-  private readonly selectorWizardsDoneRowTitle: string = '.t3js-upgradeWizards-done-title';
-  private readonly selectorWizardsListTemplate: string = '.t3js-upgradeWizards-list-template';
-  private readonly selectorWizardsListRows: string = '.t3js-upgradeWizards-list-rows';
-  private readonly selectorWizardsListRowTemplate: string = '.t3js-upgradeWizards-list-row-template';
-  private readonly selectorWizardsListRowTitle: string = '.t3js-upgradeWizards-list-row-title';
-  private readonly selectorWizardsListRowExplanation: string = '.t3js-upgradeWizards-list-row-explanation';
-  private readonly selectorWizardsListRowExecute: string = '.t3js-upgradeWizards-list-row-execute';
-  private readonly selectorWizardsInputTemplate: string = '.t3js-upgradeWizards-input';
-  private readonly selectorWizardsInputTitle: string = '.t3js-upgradeWizards-input-title';
-  private readonly selectorWizardsInputDescription: string = '.t3js-upgradeWizards-input-description';
-  private readonly selectorWizardsInputHtml: string = '.t3js-upgradeWizards-input-html';
-  private readonly selectorWizardsInputPerform: string = '.t3js-upgradeWizards-input-perform';
-  private readonly selectorWizardsInputAbort: string = '.t3js-upgradeWizards-input-abort';
   private readonly securityUtility: SecurityUtility;
 
   constructor() {
@@ -106,38 +109,38 @@ class UpgradeWizards extends AbstractInteractableModule {
     // Mark a done wizard undone
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
       this.markUndone(target.dataset.identifier);
-    }).delegateTo(currentModal, this.selectorWizardsDoneRowMarkUndone);
+    }).delegateTo(currentModal, Identifiers.wizardsDoneRowMarkUndone);
 
     // Execute "fix default mysql connection db charset" blocking wizard
     new RegularEvent('click', (): void => {
       this.blockingUpgradesDatabaseCharsetFix();
-    }).delegateTo(currentModal, this.selectorWizardsBlockingCharsetFix);
+    }).delegateTo(currentModal, Identifiers.wizardsBlockingCharsetFix);
 
     // Execute "add required fields + tables" blocking wizard
     new RegularEvent('click', (): void => {
       this.blockingUpgradesDatabaseAddsExecute();
-    }).delegateTo(currentModal, this.selectorWizardsBlockingAddsExecute);
+    }).delegateTo(currentModal, Identifiers.wizardsBlockingAddsExecute);
 
     // Get user input of a single upgrade wizard
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
       this.wizardInput(target.dataset.identifier, target.dataset.title);
-    }).delegateTo(currentModal, this.selectorWizardsListRowExecute);
+    }).delegateTo(currentModal, Identifiers.wizardsListRowExecute);
 
     // Execute one upgrade wizard
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
       this.wizardExecute(target.dataset.identifier, target.dataset.title);
-    }).delegateTo(currentModal, this.selectorWizardsInputPerform);
+    }).delegateTo(currentModal, Identifiers.wizardsInputPerform);
 
     // Abort upgrade wizard
     new RegularEvent('click', (): void => {
-      this.findInModal(this.selectorOutputWizardsContainer).innerHTML = '';
+      this.findInModal(Identifiers.outputWizardsContainer).innerHTML = '';
       this.wizardsList();
-    }).delegateTo(currentModal, this.selectorWizardsInputAbort);
+    }).delegateTo(currentModal, Identifiers.wizardsInputAbort);
   }
 
   private getData(): Promise<void> {
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
     return (new AjaxRequest(Router.getUrl('upgradeWizardsGetData')))
       .get({ cache: 'no-cache' })
       .then(
@@ -158,7 +161,7 @@ class UpgradeWizards extends AbstractInteractableModule {
 
   private blockingUpgradesDatabaseCharsetTest(): void {
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
 
     this.renderProgressBar(outputContainer, {
       label: 'Checking database charset...'
@@ -171,8 +174,8 @@ class UpgradeWizards extends AbstractInteractableModule {
           UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (data.needsUpdate === true) {
-              modalContent.querySelector(this.selectorOutputWizardsContainer)
-                .appendChild(modalContent.querySelector(this.selectorWizardsBlockingCharsetTemplate)).cloneNode(true);
+              modalContent.querySelector(Identifiers.outputWizardsContainer)
+                .appendChild(modalContent.querySelector(Identifiers.wizardsBlockingCharsetTemplate)).cloneNode(true);
             } else {
               this.blockingUpgradesDatabaseAdds();
             }
@@ -185,7 +188,7 @@ class UpgradeWizards extends AbstractInteractableModule {
   }
 
   private blockingUpgradesDatabaseCharsetFix(): void {
-    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
     this.renderProgressBar(outputContainer, {
       label: 'Setting database charset to UTF-8...'
     });
@@ -214,7 +217,7 @@ class UpgradeWizards extends AbstractInteractableModule {
 
   private blockingUpgradesDatabaseAdds(): void {
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
     this.renderProgressBar(outputContainer, {
       label: 'Check for missing mandatory database tables and fields...'
     });
@@ -226,28 +229,28 @@ class UpgradeWizards extends AbstractInteractableModule {
           UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (data.needsUpdate === true) {
-              const adds = modalContent.querySelector(this.selectorWizardsBlockingAddsTemplate).cloneNode(true) as HTMLElement;
+              const adds = modalContent.querySelector(Identifiers.wizardsBlockingAddsTemplate).cloneNode(true) as HTMLElement;
               if (typeof (data.adds.tables) === 'object') {
                 data.adds.tables.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table);
-                  adds.querySelector(this.selectorWizardsBlockingAddsRows).append(title, '<br>');
+                  adds.querySelector(Identifiers.wizardsBlockingAddsRows).append(title, '<br>');
                 });
               }
               if (typeof (data.adds.columns) === 'object') {
                 data.adds.columns.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table)
                     + ', Field: ' + this.securityUtility.encodeHtml(element.field);
-                  adds.querySelector(this.selectorWizardsBlockingAddsRows).append(title, '<br>');
+                  adds.querySelector(Identifiers.wizardsBlockingAddsRows).append(title, '<br>');
                 });
               }
               if (typeof (data.adds.indexes) === 'object') {
                 data.adds.indexes.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table)
                     + ', Index: ' + this.securityUtility.encodeHtml(element.index);
-                  adds.querySelector(this.selectorWizardsBlockingAddsRows).append(title, '<br>');
+                  adds.querySelector(Identifiers.wizardsBlockingAddsRows).append(title, '<br>');
                 });
               }
-              modalContent.querySelector(this.selectorOutputWizardsContainer).appendChild(adds);
+              modalContent.querySelector(Identifiers.outputWizardsContainer).appendChild(adds);
             } else {
               this.wizardsList();
             }
@@ -262,7 +265,7 @@ class UpgradeWizards extends AbstractInteractableModule {
   }
 
   private blockingUpgradesDatabaseAddsExecute(): void {
-    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
     this.renderProgressBar(outputContainer, {
       label: 'Adding database tables and fields...'
     });
@@ -315,7 +318,7 @@ class UpgradeWizards extends AbstractInteractableModule {
 
   private wizardsList(): void {
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
     this.renderProgressBar(outputContainer, {
       label: 'Loading upgrade wizards...'
     });
@@ -325,7 +328,7 @@ class UpgradeWizards extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           UpgradeWizards.removeLoadingMessage(outputContainer);
-          const list = modalContent.querySelector(this.selectorWizardsListTemplate).cloneNode(true) as HTMLElement;
+          const list = modalContent.querySelector(Identifiers.wizardsListTemplate).cloneNode(true) as HTMLElement;
           list.classList.remove('t3js-upgradeWizards-list-template');
           if (data.success === true) {
             let numberOfWizardsTodo = 0;
@@ -334,14 +337,14 @@ class UpgradeWizards extends AbstractInteractableModule {
               numberOfWizards = data.wizards.length;
               data.wizards.forEach((element: UpgradeWizard): void => {
                 if (element.shouldRenderWizard === true) {
-                  const aRow = modalContent.querySelector(this.selectorWizardsListRowTemplate).cloneNode(true) as HTMLElement;
+                  const aRow = modalContent.querySelector(Identifiers.wizardsListRowTemplate).cloneNode(true) as HTMLElement;
                   numberOfWizardsTodo = numberOfWizardsTodo + 1;
                   aRow.classList.remove('t3js-upgradeWizards-list-row-template');
-                  aRow.querySelector<HTMLElement>(this.selectorWizardsListRowTitle).innerText = element.title;
-                  aRow.querySelector<HTMLElement>(this.selectorWizardsListRowExplanation).innerText = element.explanation;
-                  aRow.querySelector<HTMLElement>(this.selectorWizardsListRowExecute).setAttribute('data-identifier', element.identifier);
-                  aRow.querySelector<HTMLElement>(this.selectorWizardsListRowExecute).setAttribute('data-title', element.title);
-                  list.querySelector<HTMLElement>(this.selectorWizardsListRows).append(aRow);
+                  aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowTitle).innerText = element.title;
+                  aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowExplanation).innerText = element.explanation;
+                  aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowExecute).setAttribute('data-identifier', element.identifier);
+                  aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowExecute).setAttribute('data-title', element.title);
+                  list.querySelector<HTMLElement>(Identifiers.wizardsListRows).append(aRow);
                 }
               });
             }
@@ -357,8 +360,8 @@ class UpgradeWizards extends AbstractInteractableModule {
             progressBar.style.width = percent + '%';
             progressBar.setAttribute('aria-valuenow', String(percent));
             progressBar.querySelector('span').innerText = percent + '%';
-            modalContent.querySelector(this.selectorOutputWizardsContainer).appendChild(list);
-            (this.findInModal(this.selectorWizardsDoneRowMarkUndone) as HTMLInputElement).disabled = false;
+            modalContent.querySelector(Identifiers.outputWizardsContainer).appendChild(list);
+            (this.findInModal(Identifiers.wizardsDoneRowMarkUndone) as HTMLInputElement).disabled = false;
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
@@ -372,7 +375,7 @@ class UpgradeWizards extends AbstractInteractableModule {
   private wizardInput(identifier: string, title: string): void {
     const executeToken = this.getModuleContent().dataset.upgradeWizardsInputToken;
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
     this.renderProgressBar(outputContainer, {
       label: 'Loading "' + title + '"...'
     });
@@ -396,7 +399,7 @@ class UpgradeWizards extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           outputContainer.innerHTML = '';
-          const input = modalContent.querySelector(this.selectorWizardsInputTemplate).cloneNode(true) as HTMLElement;
+          const input = modalContent.querySelector(Identifiers.wizardsInputTemplate).cloneNode(true) as HTMLElement;
           input.classList.remove('t3js-upgradeWizards-input');
           if (data.success === true) {
             if (Array.isArray(data.status)) {
@@ -405,15 +408,15 @@ class UpgradeWizards extends AbstractInteractableModule {
               });
             }
             if (data.userInput.wizardHtml.length > 0) {
-              input.querySelector<HTMLElement>(this.selectorWizardsInputHtml).innerHTML = data.userInput.wizardHtml;
+              input.querySelector<HTMLElement>(Identifiers.wizardsInputHtml).innerHTML = data.userInput.wizardHtml;
             }
-            input.querySelector<HTMLElement>(this.selectorWizardsInputTitle).innerText = data.userInput.title;
-            input.querySelector<HTMLElement>(this.selectorWizardsInputDescription).innerHTML = this.securityUtility.stripHtml(data.userInput.description).replace(/\n/g, '<br>');
-            const selectorWizardsInputPerform = input.querySelector<HTMLElement>(this.selectorWizardsInputPerform);
+            input.querySelector<HTMLElement>(Identifiers.wizardsInputTitle).innerText = data.userInput.title;
+            input.querySelector<HTMLElement>(Identifiers.wizardsInputDescription).innerHTML = this.securityUtility.stripHtml(data.userInput.description).replace(/\n/g, '<br>');
+            const selectorWizardsInputPerform = input.querySelector<HTMLElement>(Identifiers.wizardsInputPerform);
             selectorWizardsInputPerform.setAttribute('data-identifier', data.userInput.identifier);
             selectorWizardsInputPerform.setAttribute('data-title', data.userInput.title);
           }
-          modalContent.querySelector(this.selectorOutputWizardsContainer).appendChild(input);
+          modalContent.querySelector(Identifiers.outputWizardsContainer).appendChild(input);
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, outputContainer);
@@ -429,15 +432,15 @@ class UpgradeWizards extends AbstractInteractableModule {
       'install[token]': executeToken,
       'install[identifier]': identifier,
     };
-    const formData = new FormData(this.findInModal(this.selectorOutputWizardsContainer + ' form') as HTMLFormElement);
+    const formData = new FormData(this.findInModal(Identifiers.outputWizardsContainer + ' form') as HTMLFormElement);
     for (const [name, value] of formData) {
       postData[name] = value.toString();
     }
-    const outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
     this.renderProgressBar(outputContainer, {
       label: 'Executing "' + title + '"...'
     });
-    (this.findInModal(this.selectorWizardsDoneRowMarkUndone) as HTMLInputElement).disabled = true;
+    (this.findInModal(Identifiers.wizardsDoneRowMarkUndone) as HTMLInputElement).disabled = true;
     (new AjaxRequest(Router.getUrl()))
       .post(postData)
       .then(
@@ -451,7 +454,7 @@ class UpgradeWizards extends AbstractInteractableModule {
               });
             }
             this.wizardsList();
-            modalContent.querySelector(this.selectorOutputDoneContainer).innerHTML = '';
+            modalContent.querySelector(Identifiers.outputDoneContainer).innerHTML = '';
             this.doneUpgrades();
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
@@ -465,7 +468,7 @@ class UpgradeWizards extends AbstractInteractableModule {
 
   private doneUpgrades(): void {
     const modalContent = this.getModalBody();
-    const outputContainer = modalContent.querySelector<HTMLElement>(this.selectorOutputDoneContainer);
+    const outputContainer = modalContent.querySelector<HTMLElement>(Identifiers.outputDoneContainer);
     this.renderProgressBar(outputContainer, {
       label: 'Loading executed upgrade wizards...'
     });
@@ -481,30 +484,30 @@ class UpgradeWizards extends AbstractInteractableModule {
                 outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
-            const body = modalContent.querySelector(this.selectorWizardsDoneBodyTemplate).cloneNode(true) as HTMLElement;
-            const wizardsDoneContainer = body.querySelector(this.selectorWizardsDoneRows);
+            const body = modalContent.querySelector(Identifiers.wizardsDoneBodyTemplate).cloneNode(true) as HTMLElement;
+            const wizardsDoneContainer = body.querySelector(Identifiers.wizardsDoneRows);
             let hasBodyContent: boolean = false;
             if (Array.isArray(data.wizardsDone) && data.wizardsDone.length > 0) {
               data.wizardsDone.forEach((element: UpgradeWizardDone): void => {
                 hasBodyContent = true;
-                const aRow = modalContent.querySelector(this.selectorWizardsDoneRowTemplate).cloneNode(true) as HTMLElement;
-                aRow.querySelector(this.selectorWizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
-                aRow.querySelector<HTMLElement>(this.selectorWizardsDoneRowTitle).innerText = element.title;
+                const aRow = modalContent.querySelector(Identifiers.wizardsDoneRowTemplate).cloneNode(true) as HTMLElement;
+                aRow.querySelector(Identifiers.wizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
+                aRow.querySelector<HTMLElement>(Identifiers.wizardsDoneRowTitle).innerText = element.title;
                 wizardsDoneContainer.appendChild(aRow);
               });
             }
             if (Array.isArray(data.rowUpdatersDone) && data.rowUpdatersDone.length > 0) {
               data.rowUpdatersDone.forEach((element: UpgradeWizardDone): void => {
                 hasBodyContent = true;
-                const aRow = modalContent.querySelector(this.selectorWizardsDoneRowTemplate).cloneNode(true) as HTMLElement;
-                aRow.querySelector(this.selectorWizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
-                aRow.querySelector<HTMLElement>(this.selectorWizardsDoneRowTitle).innerText = element.title;
+                const aRow = modalContent.querySelector(Identifiers.wizardsDoneRowTemplate).cloneNode(true) as HTMLElement;
+                aRow.querySelector(Identifiers.wizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
+                aRow.querySelector<HTMLElement>(Identifiers.wizardsDoneRowTitle).innerText = element.title;
                 wizardsDoneContainer.appendChild(aRow);
               });
             }
             if (hasBodyContent) {
-              modalContent.querySelector(this.selectorOutputDoneContainer).appendChild(body);
-              (this.findInModal(this.selectorWizardsDoneRowMarkUndone) as HTMLInputElement).disabled = true;
+              modalContent.querySelector(Identifiers.outputDoneContainer).appendChild(body);
+              (this.findInModal(Identifiers.wizardsDoneRowMarkUndone) as HTMLInputElement).disabled = true;
             }
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
@@ -519,7 +522,7 @@ class UpgradeWizards extends AbstractInteractableModule {
   private markUndone(identifier: string): void {
     const executeToken = this.getModuleContent().dataset.upgradeWizardsMarkUndoneToken;
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(this.selectorOutputDoneContainer);
+    const outputContainer = this.findInModal(Identifiers.outputDoneContainer);
     this.renderProgressBar(outputContainer, {
       label: 'Marking upgrade wizard as undone...'
     });
@@ -535,7 +538,7 @@ class UpgradeWizards extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           outputContainer.innerHTML = '';
-          modalContent.querySelector(this.selectorOutputDoneContainer).innerHTML = '';
+          modalContent.querySelector(Identifiers.outputDoneContainer).innerHTML = '';
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
               Notification.success(element.title, element.message);

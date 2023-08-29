@@ -28,21 +28,22 @@ import { Collapse } from 'bootstrap';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  formListener = '.t3js-extensionConfiguration-form',
+  searchInput = '.t3js-extensionConfiguration-search'
+}
 
 /**
  * Module: @typo3/install/module/extension-configuration
  */
 class ExtensionConfiguration extends AbstractInteractableModule {
-  private readonly selectorFormListener: string = '.t3js-extensionConfiguration-form';
-  private readonly selectorSearchInput: string = '.t3js-extensionConfiguration-search';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getContent();
 
     // Focus search field on certain user interactions
     new RegularEvent('keydown', (event: KeyboardEvent) => {
-      const searchInput = currentModal.querySelector<HTMLInputElement>(this.selectorSearchInput);
+      const searchInput = currentModal.querySelector<HTMLInputElement>(Identifiers.searchInput);
       if (event.ctrlKey || event.metaKey) {
         // Focus search field on ctrl-f
         if (event.code === 'KeyF') {
@@ -61,17 +62,17 @@ class ExtensionConfiguration extends AbstractInteractableModule {
     new DebounceEvent('input', (event: Event, target: HTMLInputElement): void => {
       const typedQuery = target.value;
       this.search(typedQuery);
-    }, 100).delegateTo(currentModal, this.selectorSearchInput);
+    }, 100).delegateTo(currentModal, Identifiers.searchInput);
 
     new RegularEvent('change', (event: Event, target: HTMLInputElement): void => {
       const typedQuery = target.value;
       this.search(typedQuery);
-    }).delegateTo(currentModal, this.selectorSearchInput);
+    }).delegateTo(currentModal, Identifiers.searchInput);
 
     new RegularEvent('submit', (event: Event, target: HTMLFormElement): void => {
       event.preventDefault();
       this.write(target);
-    }).delegateTo(currentModal, this.selectorFormListener);
+    }).delegateTo(currentModal, Identifiers.formListener);
   }
 
   private search(typedQuery: string): void {
@@ -98,7 +99,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
           const data = await response.resolve();
           if (data.success === true) {
             modalContent.innerHTML = data.html;
-            (modalContent.querySelector(this.selectorSearchInput) as HTMLInputElement).clearable();
+            (modalContent.querySelector(Identifiers.searchInput) as HTMLInputElement).clearable();
             this.initializeWrap();
             this.initializeColorPicker();
           }

@@ -21,34 +21,36 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  clearTrigger = '.t3js-clearTables-clear',
+  statsTrigger = '.t3js-clearTables-stats',
+  outputContainer = '.t3js-clearTables-output',
+  statContainer = '.t3js-clearTables-stat-container',
+  statTemplate = '.t3js-clearTables-stat-template',
+  statDescription = '.t3js-clearTables-stat-description',
+  statRows = '.t3js-clearTables-stat-rows',
+  statName = '.t3js-clearTables-stat-name'
+}
+
 /**
  * Module: @typo3/install/module/clear-tables
  */
 class ClearTables extends AbstractInteractableModule {
-  private readonly selectorClearTrigger: string = '.t3js-clearTables-clear';
-  private readonly selectorStatsTrigger: string = '.t3js-clearTables-stats';
-  private readonly selectorOutputContainer: string = '.t3js-clearTables-output';
-  private readonly selectorStatContainer: string = '.t3js-clearTables-stat-container';
-  private readonly selectorStatTemplate: string = '.t3js-clearTables-stat-template';
-  private readonly selectorStatDescription: string = '.t3js-clearTables-stat-description';
-  private readonly selectorStatRows: string = '.t3js-clearTables-stat-rows';
-  private readonly selectorStatName: string = '.t3js-clearTables-stat-name';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getStats();
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
-      currentModal.querySelector(this.selectorOutputContainer).innerHTML = '';
+      currentModal.querySelector(Identifiers.outputContainer).innerHTML = '';
       this.getStats();
-    }).delegateTo(currentModal, this.selectorStatsTrigger);
+    }).delegateTo(currentModal, Identifiers.statsTrigger);
 
     new RegularEvent('click', (event: Event, trigger: HTMLElement): void => {
-      const table = trigger.closest<HTMLElement>(this.selectorClearTrigger).dataset.table;
+      const table = trigger.closest<HTMLElement>(Identifiers.clearTrigger).dataset.table;
       event.preventDefault();
       this.clear(table);
-    }).delegateTo(currentModal, this.selectorClearTrigger);
+    }).delegateTo(currentModal, Identifiers.clearTrigger);
   }
 
   private getStats(): void {
@@ -66,12 +68,12 @@ class ClearTables extends AbstractInteractableModule {
             if (Array.isArray(data.stats) && data.stats.length > 0) {
               data.stats.forEach((element: any): void => {
                 if (element.rowCount > 0) {
-                  const aStat = modalContent.querySelector<HTMLElement>(this.selectorStatTemplate).cloneNode(true) as HTMLElement;
-                  aStat.querySelector<HTMLElement>(this.selectorStatDescription).innerText = element.description;
-                  aStat.querySelector<HTMLElement>(this.selectorStatName).innerText = element.name;
-                  aStat.querySelector<HTMLElement>(this.selectorStatRows).innerText = element.rowCount;
-                  aStat.querySelector<HTMLElement>(this.selectorClearTrigger).setAttribute('data-table', element.name);
-                  modalContent.querySelector(this.selectorStatContainer).append(aStat);
+                  const aStat = modalContent.querySelector<HTMLElement>(Identifiers.statTemplate).cloneNode(true) as HTMLElement;
+                  aStat.querySelector<HTMLElement>(Identifiers.statDescription).innerText = element.description;
+                  aStat.querySelector<HTMLElement>(Identifiers.statName).innerText = element.name;
+                  aStat.querySelector<HTMLElement>(Identifiers.statRows).innerText = element.rowCount;
+                  aStat.querySelector<HTMLElement>(Identifiers.clearTrigger).setAttribute('data-table', element.name);
+                  modalContent.querySelector(Identifiers.statContainer).append(aStat);
                 }
               });
             }

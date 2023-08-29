@@ -24,6 +24,12 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  checkTrigger = '.t3js-extensionCompatTester-check',
+  uninstallTrigger = '.t3js-extensionCompatTester-uninstall',
+  outputContainer = '.t3js-extensionCompatTester-output'
+}
+
 interface BrokenExtension {
   name: string;
   isProtected: boolean;
@@ -33,29 +39,25 @@ interface BrokenExtension {
  * Module: @typo3/install/module/extension-compat-tester
  */
 class ExtensionCompatTester extends AbstractInteractableModule {
-  private readonly selectorCheckTrigger: string = '.t3js-extensionCompatTester-check';
-  private readonly selectorUninstallTrigger: string = '.t3js-extensionCompatTester-uninstall';
-  private readonly selectorOutputContainer: string = '.t3js-extensionCompatTester-output';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getLoadedExtensionList();
 
     new RegularEvent('click', (): void => {
-      this.findInModal(this.selectorUninstallTrigger)?.classList?.add('hidden');
-      this.findInModal(this.selectorOutputContainer).innerHTML = '';
+      this.findInModal(Identifiers.uninstallTrigger)?.classList?.add('hidden');
+      this.findInModal(Identifiers.outputContainer).innerHTML = '';
       this.getLoadedExtensionList();
-    }).delegateTo(currentModal, this.selectorCheckTrigger);
+    }).delegateTo(currentModal, Identifiers.checkTrigger);
 
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
       this.uninstallExtension(target.dataset.extension);
-    }).delegateTo(currentModal, this.selectorUninstallTrigger);
+    }).delegateTo(currentModal, Identifiers.uninstallTrigger);
   }
 
   private getLoadedExtensionList(): void {
     this.setModalButtonsState(false);
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(this.selectorOutputContainer);
+    const outputContainer = this.findInModal(Identifiers.outputContainer);
     if (outputContainer) {
       this.renderProgressBar(outputContainer, {}, 'append');
     }
@@ -67,7 +69,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
           const data = await response.resolve();
           modalContent.innerHTML = data.html;
           Modal.setButtons(data.buttons);
-          const innerOutputContainer = this.findInModal(this.selectorOutputContainer);
+          const innerOutputContainer = this.findInModal(Identifiers.outputContainer);
           this.renderProgressBar(innerOutputContainer, {}, 'append');
 
           if (data.success === true) {
@@ -96,8 +98,8 @@ class ExtensionCompatTester extends AbstractInteractableModule {
   }
 
   private unlockModal(): void {
-    this.findInModal(this.selectorOutputContainer).querySelector('typo3-install-progress-bar').remove();
-    const checkTrigger = this.findInModal(this.selectorCheckTrigger) as HTMLInputElement;
+    this.findInModal(Identifiers.outputContainer).querySelector('typo3-install-progress-bar').remove();
+    const checkTrigger = this.findInModal(Identifiers.checkTrigger) as HTMLInputElement;
     checkTrigger.classList.remove('disabled');
     checkTrigger.disabled = false;
   }
@@ -152,7 +154,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
   private uninstallExtension(extension: string): void {
     const executeToken = this.getModuleContent().dataset.extensionCompatTesterUninstallExtensionToken;
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(this.selectorOutputContainer);
+    const outputContainer = this.findInModal(Identifiers.outputContainer);
     this.renderProgressBar(outputContainer, {}, 'append');
     (new AjaxRequest(Router.getUrl()))
       .post({
@@ -168,10 +170,10 @@ class ExtensionCompatTester extends AbstractInteractableModule {
           if (data.success) {
             if (Array.isArray(data.status)) {
               data.status.forEach((element: MessageInterface): void => {
-                modalContent.querySelector(this.selectorOutputContainer).replaceChildren(InfoBox.create(element.severity, element.title, element.message));
+                modalContent.querySelector(Identifiers.outputContainer).replaceChildren(InfoBox.create(element.severity, element.title, element.message));
               });
             }
-            this.findInModal(this.selectorUninstallTrigger).classList.add('hidden');
+            this.findInModal(Identifiers.uninstallTrigger).classList.add('hidden');
             this.getLoadedExtensionList();
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');

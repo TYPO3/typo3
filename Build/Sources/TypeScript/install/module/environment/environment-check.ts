@@ -23,6 +23,11 @@ import Router from '../../router';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  executeTrigger = '.t3js-environmentCheck-execute',
+  outputContainer = '.t3js-environmentCheck-output'
+}
+
 interface EnvironmentCheckResponse {
   success: boolean,
   status: {
@@ -40,10 +45,6 @@ interface EnvironmentCheckResponse {
  * Module: @typo3/install/environment-check
  */
 class EnvironmentCheck extends AbstractInteractableModule {
-  private readonly selectorGridderBadge: string = '.t3js-environmentCheck-badge';
-  private readonly selectorExecuteTrigger: string = '.t3js-environmentCheck-execute';
-  private readonly selectorOutputContainer: string = '.t3js-environmentCheck-output';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
 
@@ -53,18 +54,13 @@ class EnvironmentCheck extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.runTests();
-    }).delegateTo(currentModal, this.selectorExecuteTrigger);
+    }).delegateTo(currentModal, Identifiers.executeTrigger);
   }
 
   private runTests(): void {
     this.setModalButtonsState(false);
     const modalContent: HTMLElement = this.getModalBody();
-    const errorBadge: HTMLElement = document.querySelector(this.selectorGridderBadge);
-    if (errorBadge !== null) {
-      errorBadge.innerHTML = '';
-      errorBadge.hidden = true;
-    }
-    const outputContainer: HTMLElement = modalContent.querySelector(this.selectorOutputContainer);
+    const outputContainer: HTMLElement = modalContent.querySelector(Identifiers.outputContainer);
     if (outputContainer !== null) {
       this.renderProgressBar(outputContainer);
     }
@@ -75,31 +71,10 @@ class EnvironmentCheck extends AbstractInteractableModule {
           const data: EnvironmentCheckResponse = await response.resolve();
           modalContent.innerHTML = data.html;
           Modal.setButtons(data.buttons);
-          let warningCount = 0;
-          let errorCount = 0;
           if (data.success === true && typeof (data.status) === 'object') {
             for (const messages of Object.values(data.status)) {
               for (const status of messages) {
-                if (status.severity === 1) {
-                  warningCount++;
-                }
-                if (status.severity === 2) {
-                  errorCount++;
-                }
-                modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.create(status.severity, status.title, status.message));
-              }
-            }
-            if (errorBadge !== null) {
-              if (errorCount > 0) {
-                errorBadge.classList.remove('badge-warning');
-                errorBadge.classList.add('badge-danger');
-                errorBadge.innerText = errorCount.toString();
-                errorBadge.hidden = false;
-              } else if (warningCount > 0) {
-                errorBadge.classList.remove('badge-error');
-                errorBadge.classList.add('badge-warning');
-                errorBadge.innerText = warningCount.toString();
-                errorBadge.hidden = false;
+                modalContent.querySelector(Identifiers.outputContainer).append(InfoBox.create(status.severity, status.title, status.message));
               }
             }
           } else {

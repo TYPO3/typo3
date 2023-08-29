@@ -24,15 +24,18 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  item = '.t3js-localConfiguration-item',
+  toggleAllTrigger = '.t3js-localConfiguration-toggleAll',
+  writeTrigger = '.t3js-localConfiguration-write',
+  searchTrigger = '.t3js-localConfiguration-search'
+}
+
 /**
  * Module: @typo3/install/module/local-configuration
  */
 class LocalConfiguration extends AbstractInteractableModule {
   private searchInput: HTMLInputElement;
-  private readonly selectorItem: string = '.t3js-localConfiguration-item';
-  private readonly selectorToggleAllTrigger: string = '.t3js-localConfiguration-toggleAll';
-  private readonly selectorWriteTrigger: string = '.t3js-localConfiguration-write';
-  private readonly selectorSearchTrigger: string = '.t3js-localConfiguration-search';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
@@ -42,7 +45,7 @@ class LocalConfiguration extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.write();
-    }).delegateTo(currentModal, this.selectorWriteTrigger);
+    }).delegateTo(currentModal, Identifiers.writeTrigger);
 
     // Expand / collapse "Toggle all" button
     new RegularEvent('click', (): void => {
@@ -52,11 +55,11 @@ class LocalConfiguration extends AbstractInteractableModule {
         const action = panels[0].classList.contains('show') ? 'hide' : 'show';
         Collapse.getOrCreateInstance(panel)[action]();
       });
-    }).delegateTo(currentModal, this.selectorToggleAllTrigger);
+    }).delegateTo(currentModal, Identifiers.toggleAllTrigger);
 
     // Focus search field on certain user interactions
     new RegularEvent('keydown', (event: KeyboardEvent) => {
-      const searchInput = currentModal.querySelector<HTMLInputElement>(this.selectorSearchTrigger);
+      const searchInput = currentModal.querySelector<HTMLInputElement>(Identifiers.searchTrigger);
       if (event.ctrlKey || event.metaKey) {
         // Focus search field on ctrl-f
         if (event.code === 'KeyF') {
@@ -75,16 +78,16 @@ class LocalConfiguration extends AbstractInteractableModule {
     new RegularEvent('input', (event: Event, target: HTMLInputElement): void => {
       const typedQuery = target.value;
       this.search(typedQuery);
-    }).delegateTo(currentModal, this.selectorSearchTrigger);
+    }).delegateTo(currentModal, Identifiers.searchTrigger);
 
     new RegularEvent('change', (event: Event, target: HTMLInputElement): void => {
       const typedQuery = target.value;
       this.search(typedQuery);
-    }).delegateTo(currentModal, this.selectorSearchTrigger);
+    }).delegateTo(currentModal, Identifiers.searchTrigger);
   }
 
   private search(typedQuery: string): void {
-    this.currentModal.querySelectorAll(this.selectorItem).forEach((element: HTMLElement): void => {
+    this.currentModal.querySelectorAll(Identifiers.item).forEach((element: HTMLElement): void => {
       if (element.textContent.toLowerCase().trim().includes(typedQuery.toLowerCase())) {
         element.classList.remove('hidden');
         element.classList.add('searchhit');
@@ -110,7 +113,7 @@ class LocalConfiguration extends AbstractInteractableModule {
           if (data.success === true) {
             modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
-            this.searchInput = modalContent.querySelector<HTMLInputElement>((this.selectorSearchTrigger));
+            this.searchInput = modalContent.querySelector<HTMLInputElement>((Identifiers.searchTrigger));
             this.searchInput.clearable();
           }
         },

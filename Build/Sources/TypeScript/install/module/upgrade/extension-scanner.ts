@@ -22,6 +22,13 @@ import Router from '../../router';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  extensionContainer = '.t3js-extensionScanner-extension',
+  numberOfFiles = '.t3js-extensionScanner-number-of-files',
+  scanSingleTrigger = '.t3js-extensionScanner-scan-single',
+  extensionScanButton = '.t3js-extensionScanner-scan-all'
+}
+
 interface FileData {
   success: boolean;
   matches: Array<Match>;
@@ -51,10 +58,6 @@ interface RestFile {
 
 class ExtensionScanner extends AbstractInteractableModule {
   private readonly listOfAffectedRestFileHashes: string[] = [];
-  private readonly selectorExtensionContainer: string = '.t3js-extensionScanner-extension';
-  private readonly selectorNumberOfFiles: string = '.t3js-extensionScanner-number-of-files';
-  private readonly selectorScanSingleTrigger: string = '.t3js-extensionScanner-scan-single';
-  private readonly selectorExtensionScanButton: string = '.t3js-extensionScanner-scan-all';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
@@ -67,17 +70,17 @@ class ExtensionScanner extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
       // Scan a single extension by clicking "Rescan"
       event.preventDefault();
-      const extension = target.closest<HTMLElement>(this.selectorExtensionContainer).dataset.extension;
+      const extension = target.closest<HTMLElement>(Identifiers.extensionContainer).dataset.extension;
       this.scanSingleExtension(extension);
-    }).delegateTo(currentModal, this.selectorScanSingleTrigger);
+    }).delegateTo(currentModal, Identifiers.scanSingleTrigger);
 
     new RegularEvent('click', (event: Event): void => {
       // Scan all button
       event.preventDefault();
       this.setModalButtonsState(false);
-      const extensions = currentModal.querySelectorAll<HTMLElement>(this.selectorExtensionContainer);
+      const extensions = currentModal.querySelectorAll<HTMLElement>(Identifiers.extensionContainer);
       this.scanAll(extensions);
-    }).delegateTo(currentModal, this.selectorExtensionScanButton);
+    }).delegateTo(currentModal, Identifiers.extensionScanButton);
   }
 
   private getData(): void {
@@ -100,7 +103,7 @@ class ExtensionScanner extends AbstractInteractableModule {
   }
 
   private setupEventListeners(): void {
-    this.currentModal.querySelectorAll(this.selectorExtensionContainer).forEach((extensionContainer: HTMLElement) => {
+    this.currentModal.querySelectorAll(Identifiers.extensionContainer).forEach((extensionContainer: HTMLElement) => {
       new RegularEvent('show.bs.collapse', (event: Event): void => {
         // Scan a single extension by opening the panel
         const target = event.currentTarget as HTMLElement;
@@ -115,7 +118,7 @@ class ExtensionScanner extends AbstractInteractableModule {
   }
 
   private getExtensionSelector(extension: string): string {
-    return this.selectorExtensionContainer + '-' + extension;
+    return Identifiers.extensionContainer + '-' + extension;
   }
 
   private scanAll(extensions: NodeListOf<HTMLElement>): void {
@@ -139,7 +142,7 @@ class ExtensionScanner extends AbstractInteractableModule {
 
   private setStatusMessageForScan(extension: string, doneFiles: number, numberOfFiles: number): void {
     const extensionContainer = this.findInModal(this.getExtensionSelector(extension));
-    const numberOfFilesElement = extensionContainer.querySelector<HTMLElement>(this.selectorNumberOfFiles);
+    const numberOfFilesElement = extensionContainer.querySelector<HTMLElement>(Identifiers.numberOfFiles);
     numberOfFilesElement.innerText = 'Checked ' + doneFiles + ' of ' + numberOfFiles + ' files';
   }
 
@@ -153,12 +156,12 @@ class ExtensionScanner extends AbstractInteractableModule {
   }
 
   private setProgressForAll(): void {
-    const numberOfExtensions: number = this.currentModal.querySelectorAll(this.selectorExtensionContainer).length;
-    const numberOfSuccess: number = this.currentModal.querySelectorAll(this.selectorExtensionContainer
+    const numberOfExtensions: number = this.currentModal.querySelectorAll(Identifiers.extensionContainer).length;
+    const numberOfSuccess: number = this.currentModal.querySelectorAll(Identifiers.extensionContainer
       + '.t3js-extensionscan-finished.panel-success').length;
-    const numberOfWarning: number = this.currentModal.querySelectorAll(this.selectorExtensionContainer
+    const numberOfWarning: number = this.currentModal.querySelectorAll(Identifiers.extensionContainer
       + '.t3js-extensionscan-finished.panel-warning').length;
-    const numberOfError: number = this.currentModal.querySelectorAll(this.selectorExtensionContainer
+    const numberOfError: number = this.currentModal.querySelectorAll(Identifiers.extensionContainer
       + '.t3js-extensionscan-finished.panel-danger').length;
     const numberOfScannedExtensions: number = numberOfSuccess + numberOfWarning + numberOfError;
     const percent: number = (numberOfScannedExtensions / numberOfExtensions) * 100;
@@ -169,7 +172,7 @@ class ExtensionScanner extends AbstractInteractableModule {
     extensionProgress.querySelector('span').innerText = numberOfScannedExtensions + ' of ' + numberOfExtensions + ' scanned';
 
     if (numberOfScannedExtensions === numberOfExtensions) {
-      const scanButton = this.findInModal(this.selectorExtensionScanButton) as HTMLButtonElement;
+      const scanButton = this.findInModal(Identifiers.extensionScanButton) as HTMLButtonElement;
       scanButton.classList.remove('disabled');
       scanButton.disabled = false;
       Notification.success('Scan finished', 'All extensions have been scanned.');

@@ -23,13 +23,15 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  checkTrigger = '.t3js-tcaExtTablesCheck-check',
+  outputContainer = '.t3js-tcaExtTablesCheck-output'
+}
+
 /**
  * Module: @typo3/install/module/tca-ext-tables-check
  */
 class TcaExtTablesCheck extends AbstractInteractableModule {
-  private readonly selectorCheckTrigger: string = '.t3js-tcaExtTablesCheck-check';
-  private readonly selectorOutputContainer: string = '.t3js-tcaExtTablesCheck-output';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.check();
@@ -37,13 +39,13 @@ class TcaExtTablesCheck extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.check();
-    }).delegateTo(currentModal, this.selectorCheckTrigger);
+    }).delegateTo(currentModal, Identifiers.checkTrigger);
   }
 
   private check(): void {
     this.setModalButtonsState(false);
 
-    const outputContainer: HTMLElement = document.querySelector(this.selectorOutputContainer);
+    const outputContainer: HTMLElement = document.querySelector(Identifiers.outputContainer);
     if (outputContainer !== null) {
       this.renderProgressBar(outputContainer, {}, 'append');
     }
@@ -57,17 +59,17 @@ class TcaExtTablesCheck extends AbstractInteractableModule {
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
-              modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.create(
+              modalContent.querySelector(Identifiers.outputContainer).append(InfoBox.create(
                 Severity.warning,
                 'Following extensions change TCA in ext_tables.php',
                 'Check ext_tables.php files, look for ExtensionManagementUtility calls and $GLOBALS[\'TCA\'] modifications'
               ));
 
               data.status.forEach((element: MessageInterface): void => {
-                modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.create(element.severity, element.title, element.message));
+                modalContent.querySelector(Identifiers.outputContainer).append(InfoBox.create(element.severity, element.title, element.message));
               });
             } else {
-              modalContent.querySelector(this.selectorOutputContainer).append(InfoBox.create(Severity.ok, 'No TCA changes in ext_tables.php files. Good job!'));
+              modalContent.querySelector(Identifiers.outputContainer).append(InfoBox.create(Severity.ok, 'No TCA changes in ext_tables.php files. Good job!'));
             }
           } else {
             Notification.error('Something went wrong', 'Please use the module "Check for broken extensions" to find a possible extension causing this issue.');

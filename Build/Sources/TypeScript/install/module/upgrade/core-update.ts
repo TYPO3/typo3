@@ -23,6 +23,11 @@ import Router from '../../router';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  output = '.t3js-coreUpdate-output',
+  updateButton = '.t3js-coreUpdate-button'
+}
+
 interface ActionItem {
   loadingMessage: string;
   finishMessage: string;
@@ -72,9 +77,6 @@ class CoreUpdate extends AbstractInteractableModule {
     },
   };
 
-  private readonly selectorOutput: string = '.t3js-coreUpdate-output';
-  private readonly updateButton: string = '.t3js-coreUpdate-button';
-
   /**
    * Clone of a DOM object acts as button template
    */
@@ -86,7 +88,7 @@ class CoreUpdate extends AbstractInteractableModule {
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getData().then((): void => {
-      this.buttonTemplate = this.findInModal(this.updateButton)?.cloneNode(true) as HTMLElement;
+      this.buttonTemplate = this.findInModal(Identifiers.updateButton)?.cloneNode(true) as HTMLElement;
     });
 
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
@@ -98,7 +100,7 @@ class CoreUpdate extends AbstractInteractableModule {
       }
 
       const action = target.dataset.action;
-      this.findInModal(this.selectorOutput).innerHTML = '';
+      this.findInModal(Identifiers.output).innerHTML = '';
       switch (action) {
         case 'updateDevelopment':
           this.update('development');
@@ -209,7 +211,7 @@ class CoreUpdate extends AbstractInteractableModule {
    * Remove an enabled loading message
    */
   private removeLoadingMessage(): void {
-    this.findInModal(this.selectorOutput).querySelector('typo3-install-progress-bar').remove();
+    this.findInModal(Identifiers.output).querySelector('typo3-install-progress-bar').remove();
   }
 
   /**
@@ -236,14 +238,14 @@ class CoreUpdate extends AbstractInteractableModule {
     if (button.title) {
       domButton.innerText = button.title;
     }
-    this.findInModal(this.updateButton).replaceWith(domButton);
+    this.findInModal(Identifiers.updateButton).replaceWith(domButton);
   }
 
   /**
    * Show a status message
    */
   private addMessage(severity: number, title: string, message?: string): void {
-    this.findInModal(this.selectorOutput).append(FlashMessage.create(severity, title, message));
+    this.findInModal(Identifiers.output).append(FlashMessage.create(severity, title, message));
   }
 }
 

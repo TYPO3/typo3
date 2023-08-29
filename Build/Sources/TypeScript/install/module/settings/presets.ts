@@ -22,14 +22,16 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  activateTrigger = '.t3js-presets-activate',
+  imageExecutable = '.t3js-presets-image-executable',
+  imageExecutableTrigger = '.t3js-presets-image-executable-trigger'
+}
+
 /**
  * Module: @typo3/install/module/presets
  */
 class Presets extends AbstractInteractableModule {
-  private readonly selectorActivateTrigger: string = '.t3js-presets-activate';
-  private readonly selectorImageExecutable: string = '.t3js-presets-image-executable';
-  private readonly selectorImageExecutableTrigger: string = '.t3js-presets-image-executable-trigger';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getContent();
@@ -38,13 +40,13 @@ class Presets extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.getCustomImagePathContent();
-    }).delegateTo(currentModal, this.selectorImageExecutableTrigger);
+    }).delegateTo(currentModal, Identifiers.imageExecutableTrigger);
 
     // Write out selected preset
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.activate();
-    }).delegateTo(currentModal, this.selectorActivateTrigger);
+    }).delegateTo(currentModal, Identifiers.activateTrigger);
 
     // Automatically select the custom preset if a value in one of its input fields is changed
 
@@ -85,7 +87,7 @@ class Presets extends AbstractInteractableModule {
           action: 'presetsGetContent',
           values: {
             Image: {
-              additionalSearchPath: (this.findInModal(this.selectorImageExecutable) as HTMLInputElement).value,
+              additionalSearchPath: (this.findInModal(Identifiers.imageExecutable) as HTMLInputElement).value,
             },
           },
         },

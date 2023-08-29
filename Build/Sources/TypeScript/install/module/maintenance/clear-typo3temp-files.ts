@@ -21,34 +21,36 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  deleteTrigger = '.t3js-clearTypo3temp-delete',
+  outputContainer = '.t3js-clearTypo3temp-output',
+  statContainer = '.t3js-clearTypo3temp-stat-container',
+  statsTrigger = '.t3js-clearTypo3temp-stats',
+  statTemplate = '.t3js-clearTypo3temp-stat-template',
+  statNumberOfFiles = '.t3js-clearTypo3temp-stat-numberOfFiles',
+  statDirectory = '.t3js-clearTypo3temp-stat-directory'
+}
+
 /**
  * Module: @typo3/install/module/clear-typo3temp-files
  */
 class ClearTypo3tempFiles extends AbstractInteractableModule {
-  private readonly selectorDeleteTrigger: string = '.t3js-clearTypo3temp-delete';
-  private readonly selectorOutputContainer: string = '.t3js-clearTypo3temp-output';
-  private readonly selectorStatContainer: string = '.t3js-clearTypo3temp-stat-container';
-  private readonly selectorStatsTrigger: string = '.t3js-clearTypo3temp-stats';
-  private readonly selectorStatTemplate: string = '.t3js-clearTypo3temp-stat-template';
-  private readonly selectorStatNumberOfFiles: string = '.t3js-clearTypo3temp-stat-numberOfFiles';
-  private readonly selectorStatDirectory: string = '.t3js-clearTypo3temp-stat-directory';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getStats();
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
-      currentModal.querySelector(this.selectorOutputContainer).innerHTML = '';
+      currentModal.querySelector(Identifiers.outputContainer).innerHTML = '';
       this.getStats();
-    }).delegateTo(currentModal, this.selectorStatsTrigger);
+    }).delegateTo(currentModal, Identifiers.statsTrigger);
 
     new RegularEvent('click', (event: Event, trigger: HTMLElement): void => {
       event.preventDefault();
       const folder = trigger.dataset.folder;
       const storageUid = trigger.dataset.storageUid !== undefined ? parseInt(trigger.dataset.storageUid, 10) : undefined;
       this.delete(folder, storageUid);
-    }).delegateTo(currentModal, this.selectorDeleteTrigger);
+    }).delegateTo(currentModal, Identifiers.deleteTrigger);
   }
 
   private getStats(): void {
@@ -66,14 +68,14 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
             if (Array.isArray(data.stats) && data.stats.length > 0) {
               data.stats.forEach((element: any): void => {
                 if (element.numberOfFiles > 0) {
-                  const aStat = modalContent.querySelector(this.selectorStatTemplate).cloneNode(true) as HTMLElement;
-                  aStat.querySelector<HTMLElement>(this.selectorStatNumberOfFiles).innerText = (element.numberOfFiles);
-                  aStat.querySelector<HTMLElement>(this.selectorStatDirectory).innerText = (element.directory);
-                  aStat.querySelector<HTMLElement>(this.selectorDeleteTrigger).setAttribute('data-folder', element.directory);
+                  const aStat = modalContent.querySelector(Identifiers.statTemplate).cloneNode(true) as HTMLElement;
+                  aStat.querySelector<HTMLElement>(Identifiers.statNumberOfFiles).innerText = (element.numberOfFiles);
+                  aStat.querySelector<HTMLElement>(Identifiers.statDirectory).innerText = (element.directory);
+                  aStat.querySelector<HTMLElement>(Identifiers.deleteTrigger).setAttribute('data-folder', element.directory);
                   if (element.storageUid !== undefined) {
-                    aStat.querySelector<HTMLElement>(this.selectorDeleteTrigger).setAttribute('data-storage-uid', element.storageUid);
+                    aStat.querySelector<HTMLElement>(Identifiers.deleteTrigger).setAttribute('data-storage-uid', element.storageUid);
                   }
-                  modalContent.querySelector(this.selectorStatContainer).append(aStat);
+                  modalContent.querySelector(Identifiers.statContainer).append(aStat);
                 }
               });
             }

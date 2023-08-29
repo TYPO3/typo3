@@ -26,16 +26,18 @@ import { Collapse } from 'bootstrap';
 import type { ModalElement } from '@typo3/backend/modal';
 import type { SelectPure } from 'select-pure/lib/components';
 
+enum Identifiers {
+  fulltextSearch = '.t3js-upgradeDocs-fulltext-search',
+  changeLogsForVersionContainer = '.t3js-version-changes',
+  changeLogsForVersion = '.t3js-changelog-list',
+  selectPureField = '.t3js-upgradeDocs-select-pure',
+  upgradeDoc = '.t3js-upgrade-doc'
+}
+
 /**
  * Module: @typo3/install/module/upgrade-docs
  */
 class UpgradeDocs extends AbstractInteractableModule {
-  private readonly selectorFulltextSearch: string = '.t3js-upgradeDocs-fulltext-search';
-  private readonly selectorSelectPureField: string = '.t3js-upgradeDocs-select-pure';
-  private readonly selectorChangeLogsForVersionContainer: string = '.t3js-version-changes';
-  private readonly selectorChangeLogsForVersion: string = '.t3js-changelog-list';
-  private readonly selectorUpgradeDoc: string = '.t3js-upgrade-doc';
-
   private selectPureField: SelectPure;
   private fulltextSearchField: HTMLInputElement;
 
@@ -87,7 +89,7 @@ class UpgradeDocs extends AbstractInteractableModule {
   private loadChangelogs(): void {
     const promises: Array<Promise<void>> = [];
     const modalContent = this.getModalBody();
-    this.currentModal.querySelectorAll<HTMLElement>(this.selectorChangeLogsForVersionContainer).forEach((el: HTMLElement): void => {
+    this.currentModal.querySelectorAll<HTMLElement>(Identifiers.changeLogsForVersionContainer).forEach((el: HTMLElement): void => {
       const request = (new AjaxRequest(Router.getUrl('upgradeDocsGetChangelogForVersion')))
         .withQueryArguments({
           install: {
@@ -100,7 +102,7 @@ class UpgradeDocs extends AbstractInteractableModule {
             const data = await response.resolve();
             if (data.success === true) {
               const panelGroup = el;
-              const container = panelGroup.querySelector(this.selectorChangeLogsForVersion);
+              const container = panelGroup.querySelector(Identifiers.changeLogsForVersion);
               container.innerHTML = data.html;
               this.moveNotRelevantDocuments(container);
 
@@ -125,7 +127,7 @@ class UpgradeDocs extends AbstractInteractableModule {
   }
 
   private initializeFullTextSearch(): void {
-    this.fulltextSearchField = this.findInModal(this.selectorFulltextSearch) as HTMLInputElement;
+    this.fulltextSearchField = this.findInModal(Identifiers.fulltextSearch) as HTMLInputElement;
     const searchInput = <HTMLInputElement>this.fulltextSearchField;
     searchInput.clearable({
       onClear: (): void => {
@@ -140,7 +142,7 @@ class UpgradeDocs extends AbstractInteractableModule {
   }
 
   private initializeSelectPure(): void {
-    this.selectPureField = this.getModalBody().querySelector(this.selectorSelectPureField);
+    this.selectPureField = this.getModalBody().querySelector(Identifiers.selectPureField);
     this.selectPureField.addEventListener('change', () => {
       this.combinedFilterSearch();
       this.selectPureField.close();
@@ -158,7 +160,7 @@ class UpgradeDocs extends AbstractInteractableModule {
    */
   private appendItemsToSelectPure(): void {
     let tagString = '';
-    this.currentModal.querySelectorAll(this.selectorUpgradeDoc).forEach((element: HTMLElement): void => {
+    this.currentModal.querySelectorAll(Identifiers.upgradeDoc).forEach((element: HTMLElement): void => {
       tagString += element.dataset.itemTags + ',';
     });
     const tagSet = new Set(tagString.slice(0, -1).split(','));
@@ -185,7 +187,7 @@ class UpgradeDocs extends AbstractInteractableModule {
 
   private combinedFilterSearch(): void {
     const modalContent = this.getModalBody();
-    const items = modalContent.querySelectorAll(this.selectorUpgradeDoc);
+    const items = modalContent.querySelectorAll(Identifiers.upgradeDoc);
     if (this.selectPureField.values.length < 1 && this.fulltextSearchField.value.length < 1) {
       const expandedPanels = this.currentModal.querySelectorAll('.panel-version .panel-collapse.show');
       expandedPanels.forEach((panel: HTMLElement) => {

@@ -24,6 +24,11 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 import type { SelectPure } from 'select-pure/lib/components';
 
+enum Identifiers {
+  writeTrigger = '.t3js-systemMaintainer-write',
+  selectPureField = '.t3js-systemMaintainer-select-pure'
+}
+
 type SystemMaintainerListResponse = {
   success: boolean;
   users: {
@@ -43,9 +48,6 @@ type SystemMaintainerListResponse = {
  * Module: @typo3/install/module/system-maintainer
  */
 class SystemMaintainer extends AbstractInteractableModule {
-  private readonly selectorWriteTrigger: string = '.t3js-systemMaintainer-write';
-  private readonly selectorSelectPureField: string = '.t3js-systemMaintainer-select-pure';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     const isInIframe = window.location !== window.parent.location;
@@ -62,7 +64,7 @@ class SystemMaintainer extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.write();
-    }).delegateTo(currentModal, this.selectorWriteTrigger);
+    }).delegateTo(currentModal, Identifiers.writeTrigger);
   }
 
   private getList(): void {
@@ -88,7 +90,7 @@ class SystemMaintainer extends AbstractInteractableModule {
 
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().dataset.systemMaintainerWriteToken;
-    const selectedUsers: string[] = (this.findInModal(this.selectorSelectPureField) as SelectPure).values;
+    const selectedUsers: string[] = (this.findInModal(Identifiers.selectPureField) as SelectPure).values;
     (new AjaxRequest(Router.getUrl())).post({
       install: {
         users: selectedUsers,

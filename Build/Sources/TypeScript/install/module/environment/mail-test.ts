@@ -23,12 +23,15 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  outputContainer = '.t3js-mailTest-output',
+  mailTestButton = '.t3js-mailTest-execute'
+}
+
 /**
  * Module: @typo3/install/module/create-admin
  */
 class MailTest extends AbstractInteractableModule {
-  private readonly selectorOutputContainer: string = '.t3js-mailTest-output';
-  private readonly selectorMailTestButton: string = '.t3js-mailTest-execute';
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
@@ -37,7 +40,7 @@ class MailTest extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.send();
-    }).delegateTo(currentModal, this.selectorMailTestButton);
+    }).delegateTo(currentModal, Identifiers.mailTestButton);
 
     new RegularEvent('submit', (event: Event): void => {
       event.preventDefault();
@@ -54,7 +57,7 @@ class MailTest extends AbstractInteractableModule {
           const data = await response.resolve();
           if (data.success === true) {
             modalContent.innerHTML = data.html;
-            const outputContainer: HTMLElement = this.findInModal(this.selectorOutputContainer);
+            const outputContainer: HTMLElement = this.findInModal(Identifiers.outputContainer);
             if (data.messages && Array.isArray(data.messages)) {
               data.messages.forEach((element: MessageInterface): void => {
                 outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
@@ -78,7 +81,7 @@ class MailTest extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const executeToken: string = this.getModuleContent().dataset.mailTestToken;
-    const outputContainer: HTMLElement = this.findInModal(this.selectorOutputContainer);
+    const outputContainer: HTMLElement = this.findInModal(Identifiers.outputContainer);
     this.renderProgressBar(outputContainer);
     (new AjaxRequest(Router.getUrl())).post({
       install: {

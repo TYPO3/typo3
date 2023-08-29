@@ -22,12 +22,14 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  changeButton = '.t3js-changeInstallToolPassword-change'
+}
+
 /**
  * Module: @typo3/install/module/change-install-tool-password
  */
 class ChangeInstallToolPassword extends AbstractInteractableModule {
-  private readonly selectorChangeButton: string = '.t3js-changeInstallToolPassword-change';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getData();
@@ -35,7 +37,7 @@ class ChangeInstallToolPassword extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.change();
-    }).delegateTo(currentModal, this.selectorChangeButton);
+    }).delegateTo(currentModal, Identifiers.changeButton);
   }
 
   private getData(): void {

@@ -23,17 +23,29 @@ import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
 
+enum Identifiers {
+  analyzeTrigger = '.t3js-databaseAnalyzer-analyze',
+  executeTrigger = '.t3js-databaseAnalyzer-execute',
+  outputContainer = '.t3js-databaseAnalyzer-output',
+  suggestionBlock = '.t3js-databaseAnalyzer-suggestion-block',
+  suggestionBlockCheckbox = '.t3js-databaseAnalyzer-suggestion-block-checkbox',
+  suggestionBlockLegend = '.t3js-databaseAnalyzer-suggestion-block-legend',
+  suggestionBlockLabel = '.t3js-databaseAnalyzer-suggestion-block-label',
+  suggestionList = '.t3js-databaseAnalyzer-suggestion-list',
+  suggestionLineTemplate = '.t3js-databaseAnalyzer-suggestion-line-template',
+  suggestionLineCheckbox = '.t3js-databaseAnalyzer-suggestion-line-checkbox',
+  suggestionLineLabel = '.t3js-databaseAnalyzer-suggestion-line-label',
+  suggestionLineStatement = '.t3js-databaseAnalyzer-suggestion-line-statement',
+  suggestionLineCurrent = '.t3js-databaseAnalyzer-suggestion-line-current',
+  suggestionLineCurrentValue = '.t3js-databaseAnalyzer-suggestion-line-current-value',
+  suggestionLineCount = '.t3js-databaseAnalyzer-suggestion-line-count',
+  suggestionLineCountValue = '.t3js-databaseAnalyzer-suggestion-line-count-value'
+}
+
 /**
  * Module: @typo3/install/module/database-analyzer
  */
 class DatabaseAnalyzer extends AbstractInteractableModule {
-  private readonly selectorAnalyzeTrigger: string = '.t3js-databaseAnalyzer-analyze';
-  private readonly selectorExecuteTrigger: string = '.t3js-databaseAnalyzer-execute';
-  private readonly selectorOutputContainer: string = '.t3js-databaseAnalyzer-output';
-  private readonly selectorSuggestionBlock: string = '.t3js-databaseAnalyzer-suggestion-block';
-  private readonly selectorSuggestionList: string = '.t3js-databaseAnalyzer-suggestion-list';
-  private readonly selectorSuggestionLineTemplate: string = '.t3js-databaseAnalyzer-suggestion-line-template';
-
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getData();
@@ -43,17 +55,17 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
       element.closest('fieldset').querySelectorAll('input[type="checkbox"]').forEach((checkbox: HTMLInputElement): void => {
         checkbox.checked = element.checked;
       });
-    }).delegateTo(currentModal, '.t3js-databaseAnalyzer-suggestion-block-checkbox');
+    }).delegateTo(currentModal, Identifiers.suggestionBlockCheckbox);
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.analyze();
-    }).delegateTo(currentModal, this.selectorAnalyzeTrigger);
+    }).delegateTo(currentModal, Identifiers.analyzeTrigger);
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       this.execute();
-    }).delegateTo(currentModal, this.selectorExecuteTrigger);
+    }).delegateTo(currentModal, Identifiers.executeTrigger);
   }
 
   private getData(): void {
@@ -81,13 +93,13 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const modalContent = this.getModalBody();
-    const outputContainer = modalContent.querySelector<HTMLElement>(this.selectorOutputContainer);
+    const outputContainer = modalContent.querySelector<HTMLElement>(Identifiers.outputContainer);
     const progressBar = this.renderProgressBar(outputContainer, {
       label: 'Analyzing current database schema...'
     });
     new RegularEvent('change', (): void => {
       const hasCheckedCheckboxes = outputContainer.querySelectorAll(':checked').length > 0;
-      this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(this.selectorExecuteTrigger), hasCheckedCheckboxes);
+      this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger), hasCheckedCheckboxes);
     }).delegateTo(outputContainer, 'input[type="checkbox"]');
 
     (new AjaxRequest(Router.getUrl('databaseAnalyzerAnalyze')))
@@ -104,41 +116,41 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
             }
             if (Array.isArray(data.suggestions)) {
               data.suggestions.forEach((element: any): void => {
-                const aBlock = modalContent.querySelector(this.selectorSuggestionBlock).cloneNode(true) as HTMLElement;
-                aBlock.classList.remove(this.selectorSuggestionBlock.substring(1));
+                const aBlock = modalContent.querySelector(Identifiers.suggestionBlock).cloneNode(true) as HTMLElement;
+                aBlock.classList.remove(Identifiers.suggestionBlock.substring(1));
                 const key = element.key;
-                aBlock.querySelector<HTMLElement>('.t3js-databaseAnalyzer-suggestion-block-legend').innerText = element.label;
-                aBlock.querySelector<HTMLElement>('.t3js-databaseAnalyzer-suggestion-block-checkbox').setAttribute('id', 't3-install-' + key + '-checkbox');
+                aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockLegend).innerText = element.label;
+                aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockCheckbox).setAttribute('id', 't3-install-' + key + '-checkbox');
                 if (element.enabled) {
-                  aBlock.querySelector<HTMLElement>('.t3js-databaseAnalyzer-suggestion-block-checkbox').setAttribute('checked', 'checked');
+                  aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockCheckbox).setAttribute('checked', 'checked');
                 }
-                aBlock.querySelector<HTMLElement>('.t3js-databaseAnalyzer-suggestion-block-label').setAttribute('for', 't3-install-' + key + '-checkbox');
+                aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockLabel).setAttribute('for', 't3-install-' + key + '-checkbox');
                 element.children.forEach((line: any): void => {
-                  const aLine = modalContent.querySelector<HTMLElement>(this.selectorSuggestionLineTemplate).children[0].cloneNode(true) as HTMLElement;
+                  const aLine = modalContent.querySelector<HTMLElement>(Identifiers.suggestionLineTemplate).children[0].cloneNode(true) as HTMLElement;
                   const hash = line.hash;
-                  const checkbox = aLine.querySelector<HTMLInputElement>('.t3js-databaseAnalyzer-suggestion-line-checkbox');
+                  const checkbox = aLine.querySelector<HTMLInputElement>(Identifiers.suggestionLineCheckbox);
                   checkbox.setAttribute('id', 't3-install-db-' + hash);
                   checkbox.setAttribute('data-hash', hash);
                   if (element.enabled) {
                     checkbox.setAttribute('checked', 'checked');
                   }
-                  aLine.querySelector('.t3js-databaseAnalyzer-suggestion-line-label').setAttribute('for', 't3-install-db-' + hash);
-                  aLine.querySelector<HTMLElement>('.t3js-databaseAnalyzer-suggestion-line-statement').innerText = line.statement;
+                  aLine.querySelector(Identifiers.suggestionLineLabel).setAttribute('for', 't3-install-db-' + hash);
+                  aLine.querySelector<HTMLElement>(Identifiers.suggestionLineStatement).innerText = line.statement;
                   if (typeof line.current !== 'undefined') {
-                    aLine.querySelector<HTMLElement>('.t3js-databaseAnalyzer-suggestion-line-current-value').innerText = line.current;
-                    aLine.querySelector<HTMLElement>('.t3js-databaseAnalyzer-suggestion-line-current').style.display = 'inline';
+                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCurrentValue).innerText = line.current;
+                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCurrent).style.display = 'inline';
                   }
                   if (typeof line.rowCount !== 'undefined') {
-                    aLine.querySelector<HTMLElement>('.t3js-databaseAnalyzer-suggestion-line-count-value').innerText = line.rowCount;
-                    aLine.querySelector<HTMLElement>('.t3js-databaseAnalyzer-suggestion-line-count').style.display = 'inline';
+                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCountValue).innerText = line.rowCount;
+                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCount).style.display = 'inline';
                   }
-                  aBlock.querySelector<HTMLElement>(this.selectorSuggestionList).append(aLine);
+                  aBlock.querySelector<HTMLElement>(Identifiers.suggestionList).append(aLine);
                 });
                 outputContainer.append(aBlock);
               });
 
-              this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(this.selectorAnalyzeTrigger), true);
-              this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(this.selectorExecuteTrigger), outputContainer.querySelectorAll(':checked').length > 0);
+              this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger), true);
+              this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger), outputContainer.querySelectorAll(':checked').length > 0);
             }
             if (data.suggestions.length === 0 && data.status.length === 0) {
               outputContainer.append(InfoBox.create(Severity.ok, 'Database schema is up to date. Good job!'));
@@ -158,7 +170,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
 
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().dataset.databaseAnalyzerExecuteToken;
-    const outputContainer: HTMLElement = modalContent.querySelector(this.selectorOutputContainer);
+    const outputContainer: HTMLElement = modalContent.querySelector(Identifiers.outputContainer);
 
     const selectedHashes: string[] = [];
     outputContainer.querySelectorAll('.t3js-databaseAnalyzer-suggestion-line input:checked').forEach((element: HTMLElement): void => {
