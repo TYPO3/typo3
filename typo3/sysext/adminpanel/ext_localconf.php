@@ -19,6 +19,7 @@ use TYPO3\CMS\Adminpanel\Modules\InfoModule;
 use TYPO3\CMS\Adminpanel\Modules\PreviewModule;
 use TYPO3\CMS\Adminpanel\Modules\TsDebug\TypoScriptWaterfall;
 use TYPO3\CMS\Adminpanel\Modules\TsDebugModule;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 defined('TYPO3') or die();
 
@@ -77,6 +78,13 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] = [
         ],
     ],
 ];
+
+// BE admin users see all admin panel modules by default, non-admin users need manual User TSconfig.
+ExtensionManagementUtility::addUserTSConfig('
+  [backend.user.isAdmin]
+    admPanel.enable.all = 1
+  [end]
+');
 
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['adminPanel_save']
     = AjaxController::class . '::saveDataAction';

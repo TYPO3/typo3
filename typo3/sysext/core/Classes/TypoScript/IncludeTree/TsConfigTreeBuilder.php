@@ -58,10 +58,6 @@ final class TsConfigTreeBuilder
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] ?? '')) {
             $includeTree->addChild($this->getTreeFromString('userTsConfig-globals', $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig']));
         }
-        if ($backendUser->isAdmin()) {
-            // @todo: Could we maybe solve this differently somehow? Maybe in ext:adminpanel in FE directly?
-            $includeTree->addChild($this->getTreeFromString('userTsConfig-admpanel', 'admPanel.enable.all = 1'));
-        }
         foreach ($backendUser->userGroupsUID as $groupId) {
             // Loop through all groups and add their 'TSconfig' fields
             if (!empty($backendUser->userGroups[$groupId]['TSconfig'] ?? '')) {
