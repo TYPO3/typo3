@@ -115,21 +115,19 @@ class Router {
     }
   }
 
-  public getUrl(action?: string, controller?: string, query?: string): string {
-    let url = location.href;
-    url = url.replace(location.search, '');
-    if (controller === undefined) {
-      controller = this.controller;
-    }
-    url = url + '?install[controller]=' + controller;
-    url = url + '&install[context]=' + this.context;
+  public getUrl(action?: string, controller?: string, additionalQueryParams?: Record<string, string>): string {
+    const url = new URL(location.href, window.origin);
+    url.searchParams.set('install[controller]', controller ?? this.controller);
+    url.searchParams.set('install[context]', this.context);
     if (action !== undefined) {
-      url = url + '&install[action]=' + action;
+      url.searchParams.set('install[action]', action);
     }
-    if (query !== undefined) {
-      url = url + '&' + query;
+    if (additionalQueryParams !== undefined) {
+      for (const [key, value] of Object.entries(additionalQueryParams)) {
+        url.searchParams.set(key, value);
+      }
     }
-    return url;
+    return url.toString();
   }
 
   public executeSilentConfigurationUpdate(): void {
@@ -195,7 +193,7 @@ class Router {
 
   public loadMainLayout(): void {
     this.updateLoadingInfo('Loading main layout');
-    (new AjaxRequest(this.getUrl('mainLayout', 'layout', 'install[module]=' + this.controller)))
+    (new AjaxRequest(this.getUrl('mainLayout', 'layout', { 'install[module]': this.controller })))
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
