@@ -1,7 +1,7 @@
 import DocumentService from '@typo3/core/document-service';
 import { StreamLanguage, LanguageSupport } from '@codemirror/language';
 import { CompletionContext, CompletionResult } from '@codemirror/autocomplete';
-import { typoScriptStreamParser } from '@typo3/t3editor/stream-parser/typoscript';
+import { TypoScriptStreamParserFactory } from '@typo3/t3editor/stream-parser/typoscript';
 import { TsCodeCompletion } from '@typo3/t3editor/autocomplete/ts-code-completion';
 import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNodeRef } from '@lezer/common';
@@ -33,7 +33,10 @@ export interface CodeMirror5CompatibleCompletionState {
  *        based on lezer.codemirror.net at some point.
  */
 export function typoscript() {
-  const language = StreamLanguage.define(typoScriptStreamParser);
+  const language = StreamLanguage.define(
+    new TypoScriptStreamParserFactory().create()
+  );
+
 
   const completion = language.data.of({
     autocomplete: complete
