@@ -56,6 +56,7 @@ class FormEngineSuggest {
     const flexFormFieldName: string = searchField.dataset.flexformfieldname;
     const flexFormContainerName: string = searchField.dataset.flexformcontainername;
     const flexFormContainerFieldName: string = searchField.dataset.flexformcontainerfieldname;
+    const recordTypeValue: string = searchField.dataset.recordtypevalue;
     const minimumCharacters: number = parseInt(searchField.dataset.minchars, 10);
     const url: string = TYPO3.settings.ajaxUrls.record_suggest;
     const params = {
@@ -68,6 +69,7 @@ class FormEngineSuggest {
       flexFormFieldName,
       flexFormContainerName,
       flexFormContainerFieldName,
+      recordTypeValue,
     };
 
     function insertValue(element: HTMLElement): void {
