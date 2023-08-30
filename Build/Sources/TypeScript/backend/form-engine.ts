@@ -1296,25 +1296,12 @@ export default (function() {
    */
   FormEngine.closeDocument = function(): void {
     ((document as any).editform as HTMLFormElement).closeDoc.value = 1;
-
-    FormEngine.dispatchSubmitEvent();
     ((document as any).editform as HTMLFormElement).submit();
   };
 
   FormEngine.saveDocument = function(): void {
     ((document as any).editform as HTMLFormElement).doSave.value = 1;
-
-    FormEngine.dispatchSubmitEvent();
-    ((document as any).editform as HTMLFormElement).submit();
-  };
-
-  /**
-   * Dispatches the "submit" event to the form. This is necessary if .submit() is called directly.
-   */
-  FormEngine.dispatchSubmitEvent = function(): void {
-    const submitEvent = document.createEvent('Event');
-    submitEvent.initEvent('submit', false, true);
-    ((document as any).editform as HTMLFormElement).dispatchEvent(submitEvent);
+    ((document as any).editform as HTMLFormElement).requestSubmit();
   };
 
   /**
