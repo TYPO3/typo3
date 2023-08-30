@@ -81,18 +81,20 @@ class FormEngineSuggest {
         return;
       }
 
+      const uid = parseInt(target.dataset.uid, 10);
       this.currentRequest = new AjaxRequest(TYPO3.settings.ajaxUrls.record_suggest);
       this.currentRequest.post({
         value: target.value,
         tableName: target.dataset.tablename,
         fieldName: target.dataset.fieldname,
-        uid: parseInt(target.dataset.uid, 10),
+        uid: (isNaN(uid) ? null : uid),
         pid: parseInt(target.dataset.pid, 10),
         dataStructureIdentifier: target.dataset.datastructureidentifier,
         flexFormSheetName: target.dataset.flexformsheetname,
         flexFormFieldName: target.dataset.flexformfieldname,
         flexFormContainerName: target.dataset.flexformcontainername,
         flexFormContainerFieldName: target.dataset.flexformcontainerfieldname,
+        recordTypeValue: target.dataset.recordtypevalue,
       }).then(async (response: AjaxResponse): Promise<void> => {
         const resultSet = await response.raw().text();
         this.resultContainer.setAttribute('results', resultSet);
