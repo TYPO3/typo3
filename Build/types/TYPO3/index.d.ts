@@ -92,8 +92,6 @@ declare module '@typo3/install/chosen.jquery.min';
 declare module '@typo3/dashboard/contrib/chartjs';
 declare module '@typo3/backend/contrib/mark';
 
-declare module '@typo3/t3editor/stream-parser/typoscript';
-
 interface Taboverride {
   set(elems: HTMLElement|HTMLElement[], enable?: boolean): Taboverride
 }
