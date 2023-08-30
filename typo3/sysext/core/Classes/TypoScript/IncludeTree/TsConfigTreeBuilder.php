@@ -106,6 +106,7 @@ final class TsConfigTreeBuilder
             $cache?->set('pagestsconfig-packages-strings', 'return unserialize(\'' . addcslashes(serialize($collectedPagesTsConfigArray), '\'\\') . '\');');
         }
 
+        // @deprecated since TYPO3 v13. Remove in v14 along with defaultPageTSconfig and EMU::addPageTSConfig
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] ?? '')) {
             $collectedPagesTsConfigArray['pagesTsConfig-globals-defaultPageTSconfig'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
         }

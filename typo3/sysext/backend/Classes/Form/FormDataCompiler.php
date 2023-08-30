@@ -157,9 +157,9 @@ class FormDataCompiler
             // Full user TSconfig
             'userTsConfig' => [],
             // Full page TSconfig of the page that is edited or of the parent page if a record is added.
-            // This includes any defaultPageTSconfig and is merged with user TSconfig page. section. After type
-            // of handled record was determined, record type specific settings [TCEFORM.][tableName.][field.][types.][type.]
-            // are merged into [TCEFORM.][tableName.][field.]. Array keys still contain the concatenation dots.
+            // After type of handled record has been determined, record type specific settings from
+            // [TCEFORM.][tableName.][field.][types.][type.] are merged into [TCEFORM.][tableName.][field.].
+            // Array keys still contain the concatenation dots.
             'pageTsConfig' => [],
             // List of available system languages. Array key is the system language uid, value array
             // contains details of the record, with iso code resolved. Key is the sys_language_uid uid.

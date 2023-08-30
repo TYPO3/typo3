@@ -15,25 +15,45 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
+namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Tests related to DataHandler setting proper page permissions
  */
-final class PagePermissionTest extends AbstractDataHandlerActionTestCase
+final class PagePermissionTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_defaultpagetsconfig',
     ];
+
+    protected array $configurationToUseInTestInstance = [
+        'BE' => [
+            'defaultPermissions' => [
+                'user' => 'show,editcontent,edit,delete',
+                'group' => 'show,editcontent,new',
+                'everybody' => 'show',
+            ],
+        ],
+    ];
+
+    private BackendUserAuthentication $backendUser;
+    private ActionService $actionService;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefault.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
+        $this->backendUser = $this->setUpBackendUser(1);
+        $this->actionService = new ActionService();
+        Bootstrap::initializeLanguageObject();
     }
 
     /**
@@ -43,12 +63,8 @@ final class PagePermissionTest extends AbstractDataHandlerActionTestCase
     {
         $this->backendUser->user['uid'] = 13;
         $this->backendUser->firstMainGroup = 14;
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'] = [
-            'user' => 'show,editcontent,edit,delete',
-            'group' => 'show,editcontent,new',
-            'everybody' => 'show',
-        ];
-        $record = $this->insertPage();
+        // Defaults from ext:test_defaultpagetsconfig/Configuration/page.tsconfig do not kick in, it's not below page 88
+        $record = $this->insertPage(1);
         self::assertEquals(13, $record['perms_userid']);
         self::assertEquals(14, $record['perms_groupid']);
         self::assertEquals(Permission::PAGE_SHOW + Permission::CONTENT_EDIT + Permission::PAGE_EDIT + Permission::PAGE_DELETE, $record['perms_user']);
@@ -63,18 +79,7 @@ final class PagePermissionTest extends AbstractDataHandlerActionTestCase
     {
         $this->backendUser->user['uid'] = 13;
         $this->backendUser->firstMainGroup = 14;
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'] = [
-            'user' => 'show,editcontent,edit,delete',
-            'group' => 'show,editcontent,new',
-            'everybody' => 'show',
-        ];
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = '
-TCEMAIN.permissions.userid = 12
-TCEMAIN.permissions.groupid = 42
-TCEMAIN.permissions.user = show,edit
-TCEMAIN.permissions.group = show,delete
-TCEMAIN.permissions.everybody = show,delete
-';
+        // Defaults from ext:test_defaultpagetsconfig/Configuration/page.tsconfig kick in here for pages below 88
         $record = $this->insertPage();
         self::assertEquals(12, $record['perms_userid']);
         self::assertEquals(42, $record['perms_groupid']);
@@ -90,18 +95,7 @@ TCEMAIN.permissions.everybody = show,delete
     {
         $this->backendUser->user['uid'] = 13;
         $this->backendUser->firstMainGroup = 14;
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'] = [
-            'user' => 'show,editcontent,edit,delete',
-            'group' => 'show,editcontent,new',
-            'everybody' => 'show',
-        ];
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = '
-TCEMAIN.permissions.userid = 12
-TCEMAIN.permissions.groupid = 42
-TCEMAIN.permissions.user = show,edit
-TCEMAIN.permissions.group = show,delete
-TCEMAIN.permissions.everybody = show,delete
-';
+        // Defaults from ext:test_defaultpagetsconfig/Configuration/page.tsconfig kick in here for pages below 88
         $parent = $this->insertPage(88, [
             'title' => 'Test page',
             'TSconfig' => '
@@ -115,7 +109,8 @@ TCEMAIN.permissions.everybody = copyFromParent
 
         // We change perm settings of recently added page, so we can really check
         // if perm settings are copied from parent page and not using default settings.
-        $this->changePageData(
+        $this->actionService->modifyRecord(
+            'pages',
             (int)$parent['uid'],
             [
                 'perms_userid' => 1,
@@ -126,7 +121,7 @@ TCEMAIN.permissions.everybody = copyFromParent
             ]
         );
 
-        // insert second page which should inherit settings from page 88
+        // Insert second page which should inherit settings from page 88
         $record = $this->insertPage((int)$parent['uid']);
 
         self::assertEquals(1, $record['perms_userid']);
@@ -136,23 +131,11 @@ TCEMAIN.permissions.everybody = copyFromParent
         self::assertEquals(Permission::PAGE_SHOW, $record['perms_everybody']);
     }
 
-    /**
-     * @return array
-     */
-    protected function insertPage(int $pageId = 88, array $fields = ['title' => 'Test page'])
+    private function insertPage(int $pageId = 88, array $fields = ['title' => 'Test page']): array
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('pages', $pageId, $fields);
         $recordUid = $result['pages'][0];
         return BackendUtility::getRecord('pages', $recordUid);
-    }
-
-    protected function changePageData(int $pageId, array $data): void
-    {
-        $this->actionService->modifyRecord(
-            'pages',
-            $pageId,
-            $data
-        );
     }
 }

@@ -36,29 +36,6 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function pageTsConfigLoadsDefaultsFromGlobals(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = 'loadedFromGlobals = loadedFromGlobals';
-        $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create([], new NullSite());
-        self::assertSame('loadedFromGlobals', $pageTsConfig->getPageTsConfigArray()['loadedFromGlobals']);
-    }
-
-    /**
-     * @test
-     */
-    public function pageTsConfigLoadsSingleFileWithOldImportSyntaxFromGlobals(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_pagetsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">';
-        /** @var PageTsConfigFactory $subject */
-        $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create([], new NullSite());
-        self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
-    }
-
-    /**
-     * @test
-     */
     public function pageTsConfigLoadsFromPagesTsconfigTestExtensionConfigurationFile(): void
     {
         $subject = $this->get(PageTsConfigFactory::class);

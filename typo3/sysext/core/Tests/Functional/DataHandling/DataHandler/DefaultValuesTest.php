@@ -18,28 +18,45 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Tests various places to set default values properly for new records
  */
-final class DefaultValuesTest extends AbstractDataHandlerActionTestCase
+final class DefaultValuesTest extends FunctionalTestCase
 {
-    protected const PAGE_DATAHANDLER = 88;
+    use SiteBasedTestTrait;
 
     protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_defaultpagetsconfig',
     ];
+
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
+    ];
+
+    private ActionService $actionService;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
-        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultElements.csv');
-        $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
-        $this->backendUser->workspace = 0;
+        $this->setUpBackendUser(1);
+        $this->actionService = new ActionService();
+        Bootstrap::initializeLanguageObject();
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+                $this->buildLanguageConfiguration('DK', '/dk/'),
+            ]
+        );
     }
 
     /**
@@ -47,30 +64,33 @@ final class DefaultValuesTest extends AbstractDataHandlerActionTestCase
      */
     public function defaultValuesFromTCAForNewRecordsIsRespected(): void
     {
-        $GLOBALS['TCA']['pages']['columns']['keywords']['config']['default'] = 'a few,random,keywords';
-        $map = $this->actionService->createNewRecord('pages', self::PAGE_DATAHANDLER, [
+        $GLOBALS['TCA']['pages']['columns']['subtitle']['config']['default'] = 'tca default subtitle';
+        $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['default'] = 'tca default bodytext';
+
+        // Create page and verify default from TCA is applied
+        $map = $this->actionService->createNewRecord('pages', 88, [
             'title' => 'A new age',
         ]);
         $newPageId = reset($map['pages']);
         $newPageRecord = BackendUtility::getRecord('pages', $newPageId);
-        self::assertEquals($newPageRecord['keywords'], $GLOBALS['TCA']['pages']['columns']['keywords']['config']['default']);
+        self::assertEquals('tca default subtitle', $newPageRecord['subtitle']);
 
-        $GLOBALS['TCA']['tt_content']['columns']['header']['config']['default'] = 'Pre-set header';
+        // Add content element and verify default from TCA is not applied when value is given
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
-            'header' => '',
-            'bodytext' => 'Random bodytext',
+            'bodytext' => '',
+            'title' => 'foo',
         ]);
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
-        // Empty header is used, because it was handed in
-        self::assertEquals('', $newContentRecord['header']);
+        self::assertEquals('', $newContentRecord['bodytext']);
 
+        // Add another content element and verify default from TCA is applied
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
-            'bodytext' => 'Random bodytext',
+            'title' => 'foo',
         ]);
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
-        self::assertEquals($newContentRecord['header'], $GLOBALS['TCA']['tt_content']['columns']['header']['config']['default']);
+        self::assertEquals('tca default bodytext', $newContentRecord['bodytext']);
     }
 
     /**
@@ -78,25 +98,24 @@ final class DefaultValuesTest extends AbstractDataHandlerActionTestCase
      */
     public function defaultValuesFromGlobalTSconfigForNewRecordsIsRespected(): void
     {
-        ExtensionManagementUtility::addPageTSConfig('
-TCAdefaults.pages.keywords = from pagets, with love
-TCAdefaults.tt_content.header = global space');
-        $map = $this->actionService->createNewRecord('pages', self::PAGE_DATAHANDLER, [
+        // TCAdefaults from ext:test_defaultpagetsconfig/Configuration/page.tsconfig kick in here
+        $map = $this->actionService->createNewRecord('pages', 88, [
             'title' => 'A new age',
         ]);
         $newPageId = reset($map['pages']);
         $newPageRecord = BackendUtility::getRecord('pages', $newPageId);
         self::assertEquals('from pagets, with love', $newPageRecord['keywords']);
 
+        // Add content element and verify Page TSconfig TCAdefaults are not applied when value is given
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
             'header' => '',
             'bodytext' => 'Random bodytext',
         ]);
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
-        // Empty header is used, because it was handed in
         self::assertEquals('', $newContentRecord['header']);
 
+        // Add content element and verify Page TSconfig TCAdefaults are applied
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
             'bodytext' => 'Random bodytext',
         ]);
@@ -110,32 +129,32 @@ TCAdefaults.tt_content.header = global space');
      */
     public function defaultValuesFromPageSpecificTSconfigForNewRecordsIsRespected(): void
     {
-        ExtensionManagementUtility::addPageTSConfig('
-TCAdefaults.pages.keywords = from pagets, with love
-TCAdefaults.tt_content.header = global space');
-        $this->actionService->modifyRecord('pages', self::PAGE_DATAHANDLER, [
-            'TSconfig' => '
+        // TCAdefaults from ext:test_defaultpagetsconfig/Configuration/page.tsconfig kick in here,
+        // but are overridden by specific page record TSconfig here.
+        $this->actionService->modifyRecord('pages', 88, [
+            'TSconfig' => chr(10) .
+                'TCAdefaults.pages.keywords = I am specific, not generic' . chr(10) .
+                'TCAdefaults.tt_content.header = local space',
+        ]);
 
-TCAdefaults.pages.keywords = I am specific, not generic
-TCAdefaults.tt_content.header = local space
-
-', ]);
-        $map = $this->actionService->createNewRecord('pages', self::PAGE_DATAHANDLER, [
+        // Add subpage and verify TSconfig from above page kicks in.
+        $map = $this->actionService->createNewRecord('pages', 88, [
             'title' => 'A new age',
         ]);
         $newPageId = reset($map['pages']);
         $newPageRecord = BackendUtility::getRecord('pages', $newPageId);
         self::assertEquals('I am specific, not generic', $newPageRecord['keywords']);
 
+        // Create content element with given header, Page TSconfig TCAdefaults does not kick in.
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
             'header' => '',
             'bodytext' => 'Random bodytext',
         ]);
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
-        // Empty header is used, because it was handed in
         self::assertEquals('', $newContentRecord['header']);
 
+        // Create content element without given header, Page TSconfig TCAdefaults kicks in.
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
             'bodytext' => 'Random bodytext',
         ]);
@@ -152,7 +171,7 @@ TCAdefaults.tt_content.header = local space
         // New content element without bodytext
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['l10n_mode'] = 'exclude';
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['enableRichtext'] = true;
-        $map = $this->actionService->createNewRecord('tt_content', self::PAGE_DATAHANDLER, [
+        $map = $this->actionService->createNewRecord('tt_content', 88, [
             'header' => 'Random header',
             'bodytext' => null,
         ]);

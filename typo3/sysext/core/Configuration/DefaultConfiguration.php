@@ -1350,8 +1350,7 @@ return [
                 }
             }
         ',
-        // String (exclude). Enter lines of default backend user/group TSconfig.
-        'defaultPageTSconfig' => '',
+        'defaultPageTSconfig' => '', // @deprecated since TYPO3 v13.0, will be removed in TYPO3 v14.0. Add to SilentConfigurationUpgradeService.
         // String (exclude).Enter lines of default page TSconfig.
         'defaultPermissions' => [],
         'defaultUC' => [],

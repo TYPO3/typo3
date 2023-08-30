@@ -1571,4 +1571,11 @@ return [
             'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-101799-ExtensionManagementUtilityaddPageTSConfig.rst',
+        ],
+    ],
 ];

@@ -1036,4 +1036,9 @@ return [
             'Feature-101603-PSR-14EventForModifyingRecordOverlayIconIdentifier.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'defaultPageTSconfig\']' => [
+        'restFiles' => [
+            'Deprecation-101799-ExtensionManagementUtilityaddPageTSConfig.rst',
+        ],
+    ],
 ];

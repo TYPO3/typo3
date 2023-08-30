@@ -1,0 +1,12 @@
+// Used in DataHandling/DataHandler/DefaultValuesTest.php
+TCAdefaults.pages.keywords = from pagets, with love
+TCAdefaults.tt_content.header = global space
+
+// Used in DataHandling/DataHandler/PagePermissionTest.php
+[88 in tree.rootLineIds]
+  TCEMAIN.permissions.userid = 12
+  TCEMAIN.permissions.groupid = 42
+  TCEMAIN.permissions.user = show,edit
+  TCEMAIN.permissions.group = show,delete
+  TCEMAIN.permissions.everybody = show,delete
+[end]
