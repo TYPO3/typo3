@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Controller\Remote;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -756,7 +756,7 @@ class ActionHandler
      * Fetch the current label and visible state of the stage buttons.
      * Used when records have been pushed to different stages in the preview module to update the button phalanx.
      */
-    public function updateStageChangeButtons(int $id): string
+    public function updateStageChangeButtons(int $id, ServerRequestInterface $request): string
     {
         // Fetch next and previous stage
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
@@ -768,8 +768,7 @@ class ActionHandler
         );
         [, $nextStage] = $this->stagesService->getNextStageForElementCollection($workspaceItemsArray);
         [, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($workspaceItemsArray);
-        // @todo: It would of course be better if AjaxDispatcher could hand over $request to the method ...
-        $view = $this->backendViewFactory->create(new ServerRequest(), ['typo3/cms-workspaces']);
+        $view = $this->backendViewFactory->create($request, ['typo3/cms-workspaces']);
         $view->assignMultiple([
             'enablePreviousStageButton' => is_array($previousStage) && !empty($previousStage),
             'enableNextStageButton' => is_array($nextStage) && !empty($nextStage),
