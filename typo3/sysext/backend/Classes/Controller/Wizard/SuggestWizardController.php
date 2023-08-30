@@ -54,6 +54,7 @@ class SuggestWizardController
         $flexFormFieldName = $parsedBody['flexFormFieldName'] ?? null;
         $flexFormContainerName = $parsedBody['flexFormContainerName'] ?? null;
         $flexFormContainerFieldName = $parsedBody['flexFormContainerFieldName'] ?? null;
+        $recordType = (string)($parsedBody['recordTypeValue'] ?? '');
 
         // Determine TCA config of field
         if (empty($dataStructureIdentifier)) {
@@ -62,8 +63,13 @@ class SuggestWizardController
             $fieldNameInPageTsConfig = $fieldName;
 
             // With possible columnsOverrides
-            $row = BackendUtility::getRecord($tableName, $uid) ?? [];
-            $recordType = BackendUtility::getTCAtypeValue($tableName, $row);
+            // @todo Validate if we can move this fallback recordType determination, should be do-able in v13?!
+            if ($recordType === '') {
+                $recordType = BackendUtility::getTCAtypeValue(
+                    $tableName,
+                    BackendUtility::getRecord($tableName, $uid) ?? []
+                );
+            }
             $columnsOverridesConfigOfField = $GLOBALS['TCA'][$tableName]['types'][$recordType]['columnsOverrides'][$fieldName]['config'] ?? null;
             if ($columnsOverridesConfigOfField) {
                 ArrayUtility::mergeRecursiveWithOverrule($fieldConfig, $columnsOverridesConfigOfField);

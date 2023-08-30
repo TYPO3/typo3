@@ -120,6 +120,7 @@ class GroupElement extends AbstractFormElement
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
         $elementName = $parameterArray['itemFormElName'];
+        $recordTypeValue = $this->data['recordTypeValue'] ?? null;
 
         $selectedItems = $parameterArray['itemFormElValue'];
         $maxItems = $config['maxitems'];
@@ -273,6 +274,9 @@ class GroupElement extends AbstractFormElement
             $html[] =                   ' data-flexformfieldname="' . htmlspecialchars($flexFormFieldName) . '"';
             $html[] =                   ' data-flexformcontainername="' . htmlspecialchars($flexFormContainerName) . '"';
             $html[] =                   ' data-flexformcontainerfieldname="' . htmlspecialchars($flexFormContainerFieldName) . '"';
+            if ($recordTypeValue !== null && $recordTypeValue !== '') {
+                $html[] =                   ' data-recordtypevalue="' . htmlspecialchars($recordTypeValue) . '"';
+            }
             $html[] =               '/>';
             $html[] =           '</div>';
             $html[] =       '</div>';
