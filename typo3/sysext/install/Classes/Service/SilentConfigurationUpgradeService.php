@@ -182,6 +182,9 @@ class SilentConfigurationUpgradeService
         // #101037
         'BE/languageDebug',
         'BE/lang/debug',
+        // #101793
+        'BE/checkStoredRecords',
+        'BE/checkStoredRecordsLoose',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager)

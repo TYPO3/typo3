@@ -360,12 +360,6 @@ BE:
         compressionLevel:
             type: text
             description: 'Determines output compression of BE output. Makes output smaller but slows down the page generation depending on the compression level. Requires a) zlib in your PHP installation and b) special rewrite rules for .css.gz and .js.gz (please see <code>_.htaccess</code> for an example). Range 1-9, where 1 is least compression and 9 is greatest compression. ''true'' as value will set the compression based on the PHP default settings (usually 5). Suggested and most optimal value is 5.'
-        checkStoredRecords:
-            type: bool
-            description: 'If set, values of the record are validated after saving in DataHandler. Disable only if using a database in strict mode.'
-        checkStoredRecordsLoose:
-            type: bool
-            description: 'If set, make a loose comparison ('''' equals 0) when validating record values after saving in DataHandler.'
         contentSecurityPolicyReportingUrl:
             type: text
             description: 'Content-Security-Policy reporting HTTP endpoint, if empty system default will be used'

@@ -1016,4 +1016,14 @@ return [
             'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->checkStoredRecords' => [
+        'restFiles' => [
+            'Deprecation-101793-DataHandlerCheckStoredRecordsProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->checkStoredRecords_loose' => [
+        'restFiles' => [
+            'Deprecation-101793-DataHandlerCheckStoredRecordsProperties.rst',
+        ],
+    ],
 ];

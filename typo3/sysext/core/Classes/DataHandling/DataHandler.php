@@ -127,19 +127,9 @@ class DataHandler implements LoggerAwareInterface
      */
     public $reverseOrder = false;
 
-    /**
-     * This will read the record after having updated or inserted it. If anything is not properly submitted an error
-     * is written to the log. This feature consumes extra time by selecting records
-     *
-     * @var bool
-     */
+    /** @deprecated Unused. Will be removed with TYPO3 v14. */
     public $checkStoredRecords = true;
-
-    /**
-     * If set, values '' and 0 will equal each other when the stored records are checked.
-     *
-     * @var bool
-     */
+    /** @deprecated Unused. Will be removed with TYPO3 v14. */
     public $checkStoredRecords_loose = true;
 
     /**
@@ -602,8 +592,6 @@ class DataHandler implements LoggerAwareInterface
      */
     public function __construct(ReferenceIndexUpdater $referenceIndexUpdater = null)
     {
-        $this->checkStoredRecords = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['checkStoredRecords'];
-        $this->checkStoredRecords_loose = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['checkStoredRecordsLoose'];
         $this->runtimeCache = $this->getRuntimeCache();
         $this->pagePermissionAssembler = GeneralUtility::makeInstance(PagePermissionAssembler::class, $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions']);
         if ($referenceIndexUpdater === null) {
@@ -7737,12 +7725,8 @@ class DataHandler implements LoggerAwareInterface
                         $historyEntryId = $this->getRecordHistoryStore()->modifyRecord($table, $id, $this->historyRecords[$table . ':' . $id], $this->correlationId);
                     }
                     if ($this->enableLogging) {
-                        if ($this->checkStoredRecords) {
-                            $newRow = $this->checkStoredRecord($table, $id, $fieldArray, SystemLogDatabaseAction::UPDATE) ?? [];
-                        } else {
-                            $newRow = $fieldArray;
-                            $newRow['uid'] = $id;
-                        }
+                        $newRow = $fieldArray;
+                        $newRow['uid'] = $id;
                         // Set log entry:
                         $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
                         $isOfflineVersion = (bool)($newRow['t3ver_oid'] ?? 0);
@@ -7818,13 +7802,8 @@ class DataHandler implements LoggerAwareInterface
                     }
                     $newRow = [];
                     if ($this->enableLogging) {
-                        // Checking the record is properly saved if configured
-                        if ($this->checkStoredRecords) {
-                            $newRow = $this->checkStoredRecord($table, $id, $fieldArray, SystemLogDatabaseAction::INSERT) ?? [];
-                        } else {
-                            $newRow = $fieldArray;
-                            $newRow['uid'] = $id;
-                        }
+                        $newRow = $fieldArray;
+                        $newRow['uid'] = $id;
                     }
                     // Update reference index:
                     $this->updateRefIndex($table, $id);
@@ -7849,85 +7828,6 @@ class DataHandler implements LoggerAwareInterface
                     return $id;
                 }
                 $this->log($table, 0, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: "{reason}" ({table}:{uid})', 12, ['reason' => $insertErrorMessage, 'table' => $table, 'uid' => $id]);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Checking stored record to see if the written values are properly updated.
-     *
-     * @param string $table Record table name
-     * @param int $id Record uid
-     * @param array $fieldArray Array of field=>value pairs to insert/update
-     * @param int $action Action, for logging only.
-     * @return array|null Selected row
-     * @see insertDB()
-     * @see updateDB()
-     * @internal should only be used from within DataHandler
-     */
-    public function checkStoredRecord($table, $id, $fieldArray, $action)
-    {
-        $id = (int)$id;
-        if (is_array($GLOBALS['TCA'][$table]) && $id) {
-            $tcaTableColumns = $GLOBALS['TCA'][$table]['columns'] ?? [];
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()->removeAll();
-
-            $row = $queryBuilder
-                ->select('*')
-                ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)))
-                ->executeQuery()
-                ->fetchAssociative();
-
-            if (!empty($row)) {
-                $row = BackendUtility::convertDatabaseRowValuesToPhp($table, $row);
-                // Traverse array of values that was inserted into the database and compare with the actually stored value:
-                $errors = [];
-                foreach ($fieldArray as $key => $value) {
-                    if (!$this->checkStoredRecords_loose || $value || $row[$key]) {
-                        // @todo Check explicitly for one type is fishy. However needed to avoid array to string
-                        //       conversion errors. Find a better way do handle this.
-                        if (($tcaTableColumns[$key]['config']['type'] ?? '') === 'json') {
-                            // To ensure a proper comparison we need to sort the array structure based on array keys
-                            // in a recursive manner. Otherwise, we would emit an error just because the ordering was
-                            // different. This must be done for value and the value in the row to be safe.
-                            if (is_array($value)) {
-                                ArrayUtility::naturalKeySortRecursive($value);
-                            }
-                            if (is_array($row[$key])) {
-                                ArrayUtility::naturalKeySortRecursive($row[$key]);
-                            }
-                            if ($row[$key] !== $value) {
-                                $errors[] = $key;
-                            }
-                        } elseif (is_float($row[$key])) {
-                            // if the database returns the value as double, compare it as double
-                            if ((float)$value !== (float)$row[$key]) {
-                                $errors[] = $key;
-                            }
-                        } else {
-                            if ((string)$value !== (string)$row[$key]) {
-                                // The is_numeric check catches cases where we want to store a float/double value
-                                // and database returns the field as a string with the least required amount of
-                                // significant digits, i.e. "0.00" being saved and "0" being read back.
-                                if (is_numeric($value) && is_numeric($row[$key])) {
-                                    if ((float)$value === (float)$row[$key]) {
-                                        continue;
-                                    }
-                                }
-                                $errors[] = $key;
-                            }
-                        }
-                    }
-                }
-                // Set log message if there were fields with unmatching values:
-                if (!empty($errors)) {
-                    $this->log($table, $id, $action, 0, SystemLogErrorClassification::USER_ERROR, 'These fields of record {id} in table "{table}" have not been saved correctly: {fields}. The values might have changed due to type casting of the database', -1, ['id' => $id, 'table' => $table, 'fields' => implode(', ', $errors)]);
-                }
-                // Return selected rows:
-                return $row;
             }
         }
         return null;

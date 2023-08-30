@@ -1321,8 +1321,6 @@ return [
         'disable_exec_function' => false,
         'compressionLevel' => 0,
         'installToolPassword' => '',
-        'checkStoredRecords' => true,
-        'checkStoredRecordsLoose' => true,
         'contentSecurityPolicyReportingUrl' => '',
         'defaultUserTSconfig' => 'options.enableBookmarks=1
             options.file_list.enableDisplayThumbnails=selectable
