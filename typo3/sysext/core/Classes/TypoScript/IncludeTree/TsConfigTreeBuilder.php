@@ -38,9 +38,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 final class TsConfigTreeBuilder
 {
-    private TokenizerInterface $tokenizer;
-    private ?PhpFrontend $cache = null;
-
     public function __construct(
         private readonly TreeFromLineStreamBuilder $treeFromTokenStreamBuilder,
         private readonly PackageManager $packageManager,
@@ -53,24 +50,22 @@ final class TsConfigTreeBuilder
         TokenizerInterface $tokenizer,
         ?PhpFrontend $cache = null
     ): RootInclude {
-        $this->tokenizer = $tokenizer;
-        $this->cache = $cache;
         $includeTree = new RootInclude();
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] ?? '')) {
-            $includeTree->addChild($this->getTreeFromString('userTsConfig-globals', $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig']));
+            $includeTree->addChild($this->getTreeFromString('userTsConfig-globals', $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'], $tokenizer, $cache));
         }
         if ($backendUser->isAdmin()) {
             // @todo: Could we maybe solve this differently somehow? Maybe in ext:adminpanel in FE directly?
-            $includeTree->addChild($this->getTreeFromString('userTsConfig-admpanel', 'admPanel.enable.all = 1'));
+            $includeTree->addChild($this->getTreeFromString('userTsConfig-admpanel', 'admPanel.enable.all = 1', $tokenizer, $cache));
         }
         foreach ($backendUser->userGroupsUID as $groupId) {
             // Loop through all groups and add their 'TSconfig' fields
             if (!empty($backendUser->userGroups[$groupId]['TSconfig'] ?? '')) {
-                $includeTree->addChild($this->getTreeFromString('userTsConfig-group-' . $groupId, $backendUser->userGroups[$groupId]['TSconfig']));
+                $includeTree->addChild($this->getTreeFromString('userTsConfig-group-' . $groupId, $backendUser->userGroups[$groupId]['TSconfig'], $tokenizer, $cache));
             }
         }
         if (!empty($backendUser->user['TSconfig'] ?? '')) {
-            $includeTree->addChild($this->getTreeFromString('userTsConfig-user', $backendUser->user['TSconfig']));
+            $includeTree->addChild($this->getTreeFromString('userTsConfig-user', $backendUser->user['TSconfig'], $tokenizer, $cache));
         }
         return $includeTree;
     }
@@ -80,9 +75,6 @@ final class TsConfigTreeBuilder
         TokenizerInterface $tokenizer,
         ?PhpFrontend $cache = null
     ): RootInclude {
-        $this->tokenizer = $tokenizer;
-        $this->cache = $cache;
-
         $collectedPagesTsConfigArray = [];
         $gotPackagesPagesTsConfigFromCache = false;
         if ($cache) {
@@ -155,7 +147,7 @@ final class TsConfigTreeBuilder
 
         $includeTree = new RootInclude();
         foreach ($collectedPagesTsConfigArray as $key => $typoScriptString) {
-            $includeTree->addChild($this->getTreeFromString((string)$key, $typoScriptString));
+            $includeTree->addChild($this->getTreeFromString((string)$key, $typoScriptString, $tokenizer, $cache));
         }
         return $includeTree;
     }
@@ -163,20 +155,22 @@ final class TsConfigTreeBuilder
     private function getTreeFromString(
         string $name,
         string $typoScriptString,
+        TokenizerInterface $tokenizer,
+        ?PhpFrontend $cache = null
     ): TsConfigInclude {
         $lowercaseName = mb_strtolower($name);
         $identifier = $lowercaseName . '-' . hash('xxh3', $typoScriptString);
-        if ($this->cache) {
-            $includeNode = $this->cache->require($identifier);
+        if ($cache) {
+            $includeNode = $cache->require($identifier);
             if ($includeNode instanceof TsConfigInclude) {
                 return $includeNode;
             }
         }
         $includeNode = new TsConfigInclude();
         $includeNode->setName($name);
-        $includeNode->setLineStream($this->tokenizer->tokenize($typoScriptString));
-        $this->treeFromTokenStreamBuilder->buildTree($includeNode, 'tsconfig', $this->tokenizer);
-        $this->cache?->set($identifier, 'return unserialize(\'' . addcslashes(serialize($includeNode), '\'\\') . '\');');
+        $includeNode->setLineStream($tokenizer->tokenize($typoScriptString));
+        $this->treeFromTokenStreamBuilder->buildTree($includeNode, 'tsconfig', $tokenizer);
+        $cache?->set($identifier, 'return unserialize(\'' . addcslashes(serialize($includeNode), '\'\\') . '\');');
         return $includeNode;
     }
 }
