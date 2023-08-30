@@ -9,6 +9,7 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationMode;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceScheme;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
 use TYPO3\CMS\Core\Type\Map;
 
 /**
@@ -36,5 +37,22 @@ return Map::fromEntries([
         new Mutation(MutationMode::Set, Directive::BaseUri, SourceKeyword::none),
         // deny `<object>` and `<embed>` elements
         new Mutation(MutationMode::Set, Directive::ObjectSrc, SourceKeyword::none),
+
+        // Allows to fetch media assets from YouTube and Vimeo and their associated CDNs,
+        // to be embedded in an `<iframe>` of the corresponding info modal in the file list
+        // backend module.
+        new Mutation(
+            MutationMode::Extend,
+            Directive::FrameSrc,
+            new UriValue('*.youtube-nocookie.com'),
+            new UriValue('*.youtube.com'),
+            new UriValue('*.vimeo.com')
+        ),
+        new Mutation(
+            MutationMode::Extend,
+            Directive::ImgSrc,
+            new UriValue('*.ytimg.com'),
+            new UriValue('*.vimeocdn.com')
+        ),
     ),
 ]);

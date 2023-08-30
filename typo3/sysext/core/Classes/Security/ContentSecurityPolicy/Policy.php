@@ -65,6 +65,12 @@ class Policy
                 $self = $self->mutate(...$mutation->mutations);
             } elseif ($mutation->mode === MutationMode::Set) {
                 $self = $self->set($mutation->directive, ...$mutation->sources);
+            } elseif ($mutation->mode === MutationMode::Append) {
+                $self = $self->append($mutation->directive, ...$mutation->sources);
+            } elseif ($mutation->mode === MutationMode::InheritOnce) {
+                $self = $self->inherit($mutation->directive);
+            } elseif ($mutation->mode === MutationMode::InheritAgain) {
+                $self = $self->inherit($mutation->directive, true);
             } elseif ($mutation->mode === MutationMode::Extend) {
                 $self = $self->extend($mutation->directive, ...$mutation->sources);
             } elseif ($mutation->mode === MutationMode::Reduce) {
@@ -85,27 +91,51 @@ class Policy
     }
 
     /**
-     * Extends a specific directive, either by appending sources or by inheriting from an ancestor directive.
+     * Appends to an existing directive, or a new source collection in case it was empty.
      */
-    public function extend(Directive $directive, SourceCollection|SourceInterface ...$sources): self
+    public function append(Directive $directive, SourceCollection|SourceInterface ...$sources): self
     {
         $collection = $this->asMergedSourceCollection(...$sources);
         $collection = $this->purgeNonApplicableSources($directive, $collection);
         if ($collection->isEmpty() && !$directive->isStandAlone()) {
             return $this;
         }
-        foreach ($directive->getAncestors() as $ancestorDirective) {
-            if ($this->has($ancestorDirective)) {
-                $ancestorCollection = $this->directives[$ancestorDirective];
-                break;
-            }
-        }
         $targetCollection = $this->asMergedSourceCollection(...array_filter([
-            $ancestorCollection ?? null,
             $this->directives[$directive] ?? null,
             $collection,
         ]));
         return $this->changeDirectiveSources($directive, $targetCollection);
+    }
+
+    /**
+     * Inherits the current source collection of the closest non-empty ancestor in the chain.
+     *
+     * @param bool $again whether to inherit again and merge with the existing source collection
+     */
+    public function inherit(Directive $directive, bool $again = false): self
+    {
+        $currentSources = $this->directives[$directive] ?? null;
+        if ($again || $currentSources === null) {
+            foreach ($directive->getAncestors() as $ancestorDirective) {
+                if ($this->has($ancestorDirective)) {
+                    $ancestorCollection = $this->directives[$ancestorDirective];
+                    break;
+                }
+            }
+        }
+        $targetCollection = $this->asMergedSourceCollection(...array_filter([
+            $ancestorCollection ?? null,
+            $currentSources,
+        ]));
+        return $this->changeDirectiveSources($directive, $targetCollection);
+    }
+
+    /**
+     * Extends a specific directive, either by appending sources or by inheriting from an ancestor directive.
+     */
+    public function extend(Directive $directive, SourceCollection|SourceInterface ...$sources): self
+    {
+        return $this->inherit($directive)->append($directive, ...$sources);
     }
 
     public function reduce(Directive $directive, SourceCollection|SourceInterface ...$sources): self
