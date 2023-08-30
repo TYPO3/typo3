@@ -20,6 +20,9 @@ namespace TYPO3\CMS\Core\Tests\Functional\Security\ContentSecurityPolicy;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashProxy;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashValue;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Mutation;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationMode;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Policy;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceScheme;
@@ -114,6 +117,57 @@ final class PolicyTest extends FunctionalTestCase
             ->extend(Directive::Sandbox)
             ->extend(Directive::TrustedTypes);
         self::assertSame("default-src 'self'; sandbox; trusted-types", $policy->compile($this->nonce));
+    }
+
+    public static function ancestorInheritanceIsAppliedFromMutationsDataProvider(): \Generator
+    {
+        yield 'script-src in inherited from default-src' => [
+            new MutationCollection(
+                new Mutation(MutationMode::Set, Directive::DefaultSrc, SourceKeyword::self),
+                new Mutation(MutationMode::InheritOnce, Directive::ScriptSrc),
+                new Mutation(MutationMode::Append, Directive::ScriptSrc, SourceKeyword::unsafeInline),
+            ),
+            "default-src 'self'; script-src 'self' 'unsafe-inline'",
+        ];
+        yield 'script-src is inherited just once from default-src' => [
+            new MutationCollection(
+                new Mutation(MutationMode::Set, Directive::DefaultSrc, SourceKeyword::self),
+                new Mutation(MutationMode::InheritOnce, Directive::ScriptSrc),
+                new Mutation(MutationMode::Append, Directive::ScriptSrc, SourceKeyword::unsafeInline),
+                new Mutation(MutationMode::Set, Directive::DefaultSrc, SourceScheme::data),
+                new Mutation(MutationMode::InheritOnce, Directive::ScriptSrc),
+            ),
+            "default-src data:; script-src 'self' 'unsafe-inline'",
+        ];
+        yield 'script-src is inherited just once (via extend) from default-src' => [
+            new MutationCollection(
+                new Mutation(MutationMode::Set, Directive::DefaultSrc, SourceKeyword::self),
+                new Mutation(MutationMode::Extend, Directive::ScriptSrc, SourceKeyword::unsafeInline),
+                new Mutation(MutationMode::Set, Directive::DefaultSrc, SourceScheme::data),
+                new Mutation(MutationMode::Extend, Directive::ScriptSrc, SourceKeyword::unsafeInline),
+            ),
+            "default-src data:; script-src 'self' 'unsafe-inline'",
+        ];
+        yield 'script-src is inherited again from default-src' => [
+            new MutationCollection(
+                new Mutation(MutationMode::Set, Directive::DefaultSrc, SourceKeyword::self),
+                new Mutation(MutationMode::InheritOnce, Directive::ScriptSrc),
+                new Mutation(MutationMode::Append, Directive::ScriptSrc, SourceKeyword::unsafeInline),
+                new Mutation(MutationMode::Set, Directive::DefaultSrc, SourceScheme::data),
+                new Mutation(MutationMode::InheritAgain, Directive::ScriptSrc),
+            ),
+            "default-src data:; script-src data: 'self' 'unsafe-inline'",
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider ancestorInheritanceIsAppliedFromMutationsDataProvider
+     */
+    public function ancestorInheritanceIsAppliedFromMutations(MutationCollection $mutations, string $expectation): void
+    {
+        $policy = (new Policy())->mutate($mutations);
+        self::assertSame($expectation, $policy->compile($this->nonce));
     }
 
     /**

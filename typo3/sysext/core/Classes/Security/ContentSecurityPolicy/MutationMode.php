@@ -22,12 +22,38 @@ namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
  */
 enum MutationMode: string
 {
-    // sets (overrides) a directive completely
+    /**
+     * sets (overrides) a directive completely
+     */
     case Set = 'set';
-    // extends a directive by a given aspect
+
+    /**
+     * just appends to a given directive
+     */
+    case Append = 'append';
+
+    /**
+     * inherits once from the corresponding ancestor chain
+     */
+    case InheritOnce = 'inherit-once';
+
+    /**
+     * inherits again from the corresponding ancestor chain and merges existing sources
+     */
+    case InheritAgain = 'inherit-again';
+
+    /**
+     * shortcut for `InheritOnce` and `Append`
+     */
     case Extend = 'extend';
-    // reduces a directive by a given aspect
+
+    /**
+     * reduces a directive by a given aspect
+     */
     case Reduce = 'reduce';
-    // removes a directive completely
+
+    /**
+     * removes a directive completely
+     */
     case Remove = 'remove';
 }
