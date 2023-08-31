@@ -41,9 +41,7 @@ class Scheduler {
     });
 
     DocumentSaveActions.getInstance().addPreSubmitCallback((): void => {
-      // Move all hidden extra fields out of the form
-      // @todo: perhaps delete them instead?
-      document.querySelector('#extraFieldsHidden').append(...document.querySelectorAll('.extraFields[hidden]'));
+      // no-op to keep the spinner on the "Save" button for now
     });
   }
 
@@ -94,20 +92,25 @@ class Scheduler {
    * This method reacts on changes to the task class
    * It switches on or off the relevant extra fields
    */
-  public actOnChangedTaskClass(taskSelector: HTMLSelectElement): void {
+  private toggleTaskSettingFields(taskSelector: HTMLSelectElement): void {
     let taskClass: string = taskSelector.value;
     taskClass = taskClass.toLowerCase().replace(/\\/g, '-');
 
     // Show only relevant extra fields
-    for (const extraField of document.querySelectorAll('.extraFields') as NodeListOf<HTMLElement>) {
-      extraField.hidden = !extraField.classList.contains('extra_fields_' + taskClass);
+    for (const extraFieldContainer of document.querySelectorAll('.extraFields') as NodeListOf<HTMLElement>) {
+      const extraFieldsAreVisible = extraFieldContainer.classList.contains('extra_fields_' + taskClass);
+      extraFieldContainer.querySelectorAll('input, textarea, select').forEach((extraField: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement): void => {
+        extraField.disabled = !extraFieldsAreVisible;
+      });
+
+      extraFieldContainer.hidden = !extraFieldsAreVisible;
     }
   }
 
   /**
    * This method reacts on field changes of all table field for table garbage collection task
    */
-  public actOnChangeSchedulerTableGarbageCollectionAllTables(checkbox: HTMLInputElement): void {
+  private actOnChangeSchedulerTableGarbageCollectionAllTables(checkbox: HTMLInputElement): void {
     const numberOfDaysField = document.querySelector('#task_tableGarbageCollection_numberOfDays') as HTMLInputElement;
     const taskTableGarbageCollectionTableField = document.querySelector('#task_tableGarbageCollection_table') as HTMLSelectElement;
 
@@ -136,7 +139,7 @@ class Scheduler {
    * This method set the 'number of days' field to the default expire period
    * of the selected table
    */
-  public actOnChangeSchedulerTableGarbageCollectionTable(tableSelector: HTMLSelectElement): void {
+  private actOnChangeSchedulerTableGarbageCollectionTable(tableSelector: HTMLSelectElement): void {
     const numberOfDaysField = document.querySelector('#task_tableGarbageCollection_numberOfDays') as HTMLInputElement;
     const defaultNumberOfDays = Scheduler.resolveDefaultNumberOfDays();
     if (defaultNumberOfDays !== null && defaultNumberOfDays[tableSelector.value] > 0) {
@@ -151,7 +154,7 @@ class Scheduler {
   /**
    * Toggle the relevant form fields by task type
    */
-  public toggleFieldsByTaskType(taskType: string|number): void {
+  private toggleFieldsByTaskType(taskType: string|number): void {
     // Single task option = 1, Recurring task option = 2
     taskType = parseInt(taskType + '', 10);
     const taskIsRecurring = taskType === 2;
@@ -163,9 +166,9 @@ class Scheduler {
   /**
    * Registers listeners
    */
-  public initializeEvents(): void {
+  private initializeEvents(): void {
     new RegularEvent('change', (evt: Event): void => {
-      this.actOnChangedTaskClass(evt.target as HTMLSelectElement);
+      this.toggleTaskSettingFields(evt.target as HTMLSelectElement);
     }).bindTo(document.querySelector('#task_class'));
 
     new RegularEvent('change', (evt: Event): void => {
@@ -222,14 +225,14 @@ class Scheduler {
   /**
    * Initialize default states
    */
-  public initializeDefaultStates(): void {
+  private initializeDefaultStates(): void {
     const taskType = document.querySelector('#task_type') as HTMLSelectElement;
     if (taskType !== null) {
       this.toggleFieldsByTaskType(taskType.value);
     }
     const taskClass = document.querySelector('#task_class') as HTMLSelectElement;
     if (taskClass !== null) {
-      this.actOnChangedTaskClass(taskClass);
+      this.toggleTaskSettingFields(taskClass);
       Scheduler.updateClearableInputs();
       Scheduler.updateElementBrowserTriggers();
     }
