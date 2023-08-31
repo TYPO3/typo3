@@ -571,12 +571,6 @@ module.exports = function (grunt) {
             {
               name: 'externals',
               resolveId: (source) => {
-                if (source === 'jquery') {
-                  return { id: 'jquery', external: true }
-                }
-                if (source === 'bootstrap') {
-                  return { id: 'node_modules/bootstrap/dist/js/bootstrap.esm.js' }
-                }
                 if (source === '@popperjs/core') {
                   return { id: 'node_modules/@popperjs/core/dist/esm/index.js' }
                 }
@@ -587,7 +581,7 @@ module.exports = function (grunt) {
         },
         files: {
           '<%= paths.core %>Public/JavaScript/Contrib/bootstrap.js': [
-            'Sources/JavaScript/core/Resources/Public/JavaScript/Contrib/bootstrap.js'
+            'node_modules/bootstrap/dist/js/bootstrap.esm.js'
           ]
         }
       },
