@@ -38,14 +38,12 @@ final class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferencePa
                     foo = bar
                     @import "EXT:foobar/Configuration/TypoScript/setup2.typoscript"
                     # some comment
-                    <INCLUDE_TYPOSCRIPT: source="FILE:EXT:foobar/Configuration/TypoScript/setup3.typoscript">
                 ',
                 'content' => '
                     @import \'EXT:foobar/Configuration/TypoScript/setup1.typoscript\'
                     foo = bar
                     @import "EXT:foobar/Configuration/TypoScript/setup2.typoscript"
                     # some comment
-                    <INCLUDE_TYPOSCRIPT: source="FILE:EXT:foobar/Configuration/TypoScript/setup3.typoscript">
                 ',
                 'elements' => [
                     2 => [
@@ -53,9 +51,6 @@ final class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferencePa
                     ],
                     5 => [
                         'matchString' => 'EXT:foobar/Configuration/TypoScript/setup2.typoscript',
-                    ],
-                    8 => [
-                        'matchString' => 'EXT:foobar/Configuration/TypoScript/setup3.typoscript',
                     ],
                 ],
                 'hasMatched' => true,

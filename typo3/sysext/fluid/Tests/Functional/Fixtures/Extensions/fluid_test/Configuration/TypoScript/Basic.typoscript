@@ -97,7 +97,18 @@ lib.viewConfig {
     }
 [end]
 
-<INCLUDE_TYPOSCRIPT: source="FILE: ./FluidTemplateContentObject.typoscript" condition="[traverse(request.getQueryParams(), 'mode') == 'fluidTemplate' || traverse(request.getParsedBody(), 'mode') == 'fluidTemplate']">
-<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbasePlugin.typoscript" condition="[traverse(request.getQueryParams(), 'mode') == 'plugin' || traverse(request.getParsedBody(), 'mode') == 'plugin']">
-<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseController.typoscript" condition="[traverse(request.getQueryParams(), 'mode') == 'controller' || traverse(request.getParsedBody(), 'mode') == 'controller']">
-<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseTwoPlugins.typoscript" condition="[traverse(request.getQueryParams(), 'mode') == '2plugins' || traverse(request.getParsedBody(), 'mode') == '2plugins']">
+[traverse(request.getQueryParams(), 'mode') == 'fluidTemplate' || traverse(request.getParsedBody(), 'mode') == 'fluidTemplate']
+    @import './FluidTemplateContentObject.typoscript'
+[end]
+
+[traverse(request.getQueryParams(), 'mode') == 'plugin' || traverse(request.getParsedBody(), 'mode') == 'plugin']
+    @import './ExtbasePlugin.typoscript'
+[end]
+
+[traverse(request.getQueryParams(), 'mode') == 'controller' || traverse(request.getParsedBody(), 'mode') == 'controller']
+    @import './ExtbaseController.typoscript'
+[end]
+
+[traverse(request.getQueryParams(), 'mode') == '2plugins' || traverse(request.getParsedBody(), 'mode') == '2plugins']
+    @import './ExtbaseTwoPlugins.typoscript'
+[end]
