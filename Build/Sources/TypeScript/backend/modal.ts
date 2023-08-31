@@ -83,6 +83,7 @@ export interface Configuration {
   callback: ModalCallbackFunction | null;
   ajaxCallback: ModalCallbackFunction | null;
   staticBackdrop: boolean;
+  hideCloseButton: boolean;
 }
 
 type PartialConfiguration = Partial<Omit<Configuration, 'buttons'> & { buttons: Array<Partial<Button>> }>
@@ -97,6 +98,7 @@ export class ModalElement extends LitElement {
   @property({ type: String, reflect: true }) size: Sizes = Sizes.default;
   @property({ type: Number, reflect: true }) zindex: number = 5000;
   @property({ type: Boolean }) staticBackdrop: boolean = false;
+  @property({ type: Boolean }) hideCloseButton: boolean = false;
   @property({ type: Array }) additionalCssClasses: Array<string> = [];
   @property({ type: Array, attribute: false }) buttons: Array<Button> = [];
 
@@ -164,10 +166,12 @@ export class ModalElement extends LitElement {
               <div class="t3js-modal-content modal-content">
                   <div class="modal-header">
                       <h4 class="t3js-modal-title modal-title">${this.modalTitle}</h4>
-                      <button class="t3js-modal-close close" @click=${() => this.bootstrapModal.hide()}>
-                          <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
-                          <span class="visually-hidden">${TYPO3?.lang?.['button.close'] || 'Close'}</span>
-                      </button>
+                      ${this.hideCloseButton ? nothing : html`
+                          <button class="t3js-modal-close close" @click=${() => this.bootstrapModal.hide()}>
+                              <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
+                              <span class="visually-hidden">${TYPO3?.lang?.['button.close'] || 'Close'}</span>
+                          </button>
+                      `}
                   </div>
                   <div class="t3js-modal-body modal-body">${this.renderModalBody()}</div>
                   ${this.buttons.length === 0 ? nothing : html`
@@ -297,7 +301,8 @@ class Modal {
     additionalCssClasses: [],
     callback: null,
     ajaxCallback: null,
-    staticBackdrop: false
+    staticBackdrop: false,
+    hideCloseButton: false
   };
 
   constructor() {
@@ -467,6 +472,7 @@ class Modal {
       ? configuration.ajaxCallback
       : this.defaultConfiguration.ajaxCallback;
     configuration.staticBackdrop = configuration.staticBackdrop || this.defaultConfiguration.staticBackdrop;
+    configuration.hideCloseButton = configuration.hideCloseButton || this.defaultConfiguration.hideCloseButton;
 
     return this.generate(configuration);
   }
@@ -577,6 +583,7 @@ class Modal {
     currentModal.additionalCssClasses = configuration.additionalCssClasses;
     currentModal.buttons = <Array<Button>>configuration.buttons;
     currentModal.staticBackdrop = configuration.staticBackdrop;
+    currentModal.hideCloseButton = configuration.hideCloseButton;
     if (configuration.callback) {
       currentModal.callback = configuration.callback;
     }
