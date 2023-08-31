@@ -1646,7 +1646,7 @@ class BackendUtility
                 if ($format === 'date') {
                     // Handle native date field
                     if (($theColConf['dbType'] ?? '') === 'date') {
-                        $value = $value === $dateTimeFormats['date']['empty'] ? 0 : (int)strtotime($value);
+                        $value = $value === $dateTimeFormats['date']['empty'] ? 0 : (int)strtotime((string)$value);
                     } else {
                         $value = (int)$value;
                     }
@@ -1686,7 +1686,7 @@ class BackendUtility
                 } elseif ($format === 'datetime') {
                     // Handle native datetime field
                     if (($theColConf['dbType'] ?? '') === 'datetime') {
-                        $value = $value === $dateTimeFormats['datetime']['empty'] ? 0 : (int)strtotime($value);
+                        $value = $value === $dateTimeFormats['datetime']['empty'] ? 0 : (int)strtotime((string)$value);
                     } else {
                         $value = (int)$value;
                     }

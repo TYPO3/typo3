@@ -191,6 +191,105 @@ final class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
+    public function getProcessedValueForDatetimeDbTypeDateNull(): void
+    {
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'columns' => [
+                    'header' => [
+                        'config' => [
+                            'type' => 'datetime',
+                            'dbType' => 'date',
+                            'format' => 'date',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->willReturn('testLabel');
+        $GLOBALS['LANG'] = $languageServiceMock;
+        self::assertSame('', BackendUtility::getProcessedValue('tt_content', 'header', null));
+    }
+
+    /**
+     * @test
+     */
+    public function getProcessedValueForDatetimeDbTypeDatetime(): void
+    {
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'columns' => [
+                    'header' => [
+                        'config' => [
+                            'type' => 'datetime',
+                            'dbType' => 'datetime',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $value = '2022-09-23 00:03:00';
+        $expected = BackendUtility::datetime((int)strtotime($value));
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->willReturn('testLabel');
+        $GLOBALS['LANG'] = $languageServiceMock;
+        self::assertSame($expected, BackendUtility::getProcessedValue('tt_content', 'header', $value));
+    }
+
+    /**
+     * @test
+     */
+    public function getProcessedValueForDatetimeDbTypeDatetimeNull(): void
+    {
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'columns' => [
+                    'header' => [
+                        'config' => [
+                            'type' => 'datetime',
+                            'dbType' => 'datetime',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->willReturn('testLabel');
+        $GLOBALS['LANG'] = $languageServiceMock;
+        self::assertSame('', BackendUtility::getProcessedValue('tt_content', 'header', null));
+    }
+
+    /**
+     * @test
+     */
+    public function getProcessedValueForDatetimeDbTypeDate(): void
+    {
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'columns' => [
+                    'header' => [
+                        'config' => [
+                            'type' => 'datetime',
+                            'format' => 'date',
+                            'dbType' => 'date',
+                            'disableAgeDisplay' => true,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $value = '2022-09-23';
+        $expected = BackendUtility::date((int)strtotime($value));
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->willReturn('testLabel');
+        $GLOBALS['LANG'] = $languageServiceMock;
+        self::assertSame($expected, BackendUtility::getProcessedValue('tt_content', 'header', $value));
+    }
+
+    /**
+     * @test
+     */
     public function getProcessedValueForFlex(): void
     {
         $GLOBALS['TCA'] = [
