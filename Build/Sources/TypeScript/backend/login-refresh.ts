@@ -11,8 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { html, LitElement, TemplateResult } from 'lit';
+import { customElement, state } from 'lit/decorators';
+import Modal, { ModalElement, Styles, Sizes } from '@typo3/backend/modal';
+import { SeverityEnum } from './enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from '@typo3/backend/notification';
 
@@ -39,18 +41,12 @@ interface RequestTokenResponseData {
  * @exports @typo3/backend/login-refresh
  */
 class LoginRefresh {
-  private readonly options: any = {
-    modalConfig: {
-      backdrop: 'static',
-    },
-  };
   private intervalTime: number = 60;
   private intervalId: number = null;
   private backendIsLocked: boolean = false;
-  private isTimingOut: boolean = false;
-  private $timeoutModal: JQuery = null;
-  private $backendLockedModal: JQuery = null;
-  private $loginForm: JQuery = null;
+  private timeoutModal: ModalElement = null;
+  private backendLockedModal: ModalElement = null;
+  private loginForm: ModalElement = null;
   private requestTokenUrl: string = '';
   private loginFramesetUrl: string = '';
   private logoutUrl: string = '';
@@ -62,9 +58,6 @@ class LoginRefresh {
     if (typeof options === 'object') {
       this.applyOptions(options);
     }
-    this.initializeTimeoutModal();
-    this.initializeBackendLockedModal();
-    this.initializeLoginForm();
     this.startTask();
   }
 
@@ -119,46 +112,53 @@ class LoginRefresh {
    * is displayed, too.
    */
   public showTimeoutModal(): void {
-    this.isTimingOut = true;
-    this.$timeoutModal.modal(this.options.modalConfig);
-    this.$timeoutModal.modal('show');
-    this.fillProgressbar(this.$timeoutModal);
+    this.timeoutModal = this.createTimeoutModal();
+    this.timeoutModal.addEventListener('typo3-modal-hidden', () => this.timeoutModal = null);
+    this.timeoutModal.addEventListener('show-login-form', () => {
+      this.timeoutModal.hideModal();
+      this.showLoginForm()
+    });
   }
 
   /**
    * Hides the timeout dialog. If a Web Notification is displayed, close it too.
    */
   public hideTimeoutModal(): void {
-    this.isTimingOut = false;
-    this.$timeoutModal.modal('hide');
+    this.timeoutModal?.hideModal();
   }
 
   /**
    * Shows the "backend locked" dialog.
    */
   public showBackendLockedModal(): void {
-    this.$backendLockedModal.modal(this.options.modalConfig);
-    this.$backendLockedModal.modal('show');
+    if (this.backendLockedModal) {
+      return;
+    }
+    this.backendLockedModal = this.createBackendLockedModal();
+    this.backendLockedModal.addEventListener('typo3-modal-hidden', () => this.backendLockedModal = null);
   }
 
   /**
    * Hides the "backend locked" dialog.
    */
   public hideBackendLockedModal(): void {
-    this.$backendLockedModal.modal('hide');
+    this.backendLockedModal?.hideModal();
   }
 
   /**
    * Shows the login form.
    */
   public showLoginForm(): void {
+    if (this.loginForm) {
+      return;
+    }
     // log off for sure
     new AjaxRequest(TYPO3.settings.ajaxUrls.logout).get().then((): void => {
       if (TYPO3.configuration.showRefreshLoginPopup) {
         this.showLoginPopup();
       } else {
-        this.$loginForm.modal(this.options.modalConfig);
-        this.$loginForm.modal('show');
+        this.loginForm = this.createLoginFormModal();
+        this.loginForm.addEventListener('typo3-modal-hidden', () => this.loginForm = null);
       }
     });
   }
@@ -181,187 +181,166 @@ class LoginRefresh {
    * Hides the login form.
    */
   public hideLoginForm(): void {
-    this.$loginForm.modal('hide');
+    this.loginForm?.hideModal();
   }
 
   /**
    * Generates the modal displayed if the backend is locked.
    */
-  protected initializeBackendLockedModal(): void {
-    this.$backendLockedModal = this.generateModal(MarkupIdentifiers.lockedModal);
-    this.$backendLockedModal.find('.modal-header h4').text(TYPO3.lang['mess.please_wait']);
-    this.$backendLockedModal.find('.modal-body').append(
-      $('<p />').text(TYPO3.lang['mess.be_locked']),
-    );
-    this.$backendLockedModal.find('.modal-footer').remove();
-
-    $('body').append(this.$backendLockedModal);
+  protected createBackendLockedModal(): ModalElement {
+    return Modal.advanced({
+      additionalCssClasses: [ MarkupIdentifiers.lockedModal ],
+      title: TYPO3.lang['mess.please_wait'],
+      severity: SeverityEnum.notice,
+      style: Styles.light,
+      size: Sizes.small,
+      staticBackdrop: true,
+      hideCloseButton: true,
+      content: html`
+        <p>${TYPO3.lang['mess.be_locked']}</p>
+      `
+    });
   }
 
   /**
    * Generates the modal displayed on near session time outs
    */
-  protected initializeTimeoutModal(): void {
-    this.$timeoutModal = this.generateModal(MarkupIdentifiers.loginrefresh);
-    this.$timeoutModal.addClass('modal-severity-notice');
-    this.$timeoutModal.find('.modal-header h4').text(TYPO3.lang['mess.login_about_to_expire_title']);
-    this.$timeoutModal.find('.modal-body').append(
-      $('<p />').text(TYPO3.lang['mess.login_about_to_expire']),
-      $('<div />', { class: 'progress' }).append(
-        $('<div />', {
-          class: 'progress-bar progress-bar-warning progress-bar-striped progress-bar-animated',
-          role: 'progressbar',
-          'aria-valuemin': '0',
-          'aria-valuemax': '100',
-        }).append(
-          $('<span />', { class: 'visually-hidden' }),
-        ),
-      ),
-    );
-    this.$timeoutModal.find('.modal-footer').append(
-      $('<button />', {
-        class: 'btn btn-default',
-        'data-action': 'logout',
-      }).text(TYPO3.lang['mess.refresh_login_logout_button']).on('click', () => {
-        top.location.href = this.logoutUrl;
-      }),
-      $('<button />', {
-        class: 'btn btn-primary t3js-active',
-        'data-action': 'refreshSession',
-      }).text(TYPO3.lang['mess.refresh_login_refresh_button']).on('click', () => {
-        new AjaxRequest(TYPO3.settings.ajaxUrls.login_refresh).get().then(async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
-          this.hideTimeoutModal();
-          if (!data.refresh.success) {
-            this.showLoginForm();
+  protected createTimeoutModal(): ModalElement {
+    const modal = Modal.advanced({
+      additionalCssClasses: [ MarkupIdentifiers.loginrefresh ],
+      title: TYPO3.lang['mess.login_about_to_expire_title'],
+      severity: SeverityEnum.notice,
+      style: Styles.light,
+      size: Sizes.small,
+      staticBackdrop: true,
+      hideCloseButton: true,
+      buttons: [
+        {
+          text: TYPO3.lang['mess.refresh_login_logout_button'],
+          active: false,
+          btnClass: 'btn-default',
+          name: 'logout',
+          trigger: () => top.location.href = this.logoutUrl
+        },
+        {
+          text: TYPO3.lang['mess.refresh_login_refresh_button'],
+          active: true,
+          btnClass: 'btn-primary',
+          name: 'refreshSession',
+          trigger: async (e: Event, modal: ModalElement) => {
+            const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.login_refresh).get();
+            const data = await response.resolve();
+            modal.hideModal();
+            if (!data.refresh.success) {
+              modal.dispatchEvent(new Event('show-login-form'));
+            }
           }
-        });
-      }),
-    );
-    this.registerDefaultModalEvents(this.$timeoutModal);
+        }
+      ],
+      content: html`
+        <p>${TYPO3.lang['mess.login_about_to_expire']}</p>
+        <typo3-login-refresh-progress-bar
+          @progress-bar-overdue=${() => modal.dispatchEvent(new Event('show-login-form'))}
+          ></typo3-login-refresh-progress-bar>
+      `
+    });
 
-    $('body').append(this.$timeoutModal);
+    modal.addEventListener('typo3-modal-hidden', (): void => {
+      this.startTask();
+    });
+
+    modal.addEventListener('typo3-modal-shown', (): void => {
+      this.stopTask();
+    });
+
+    return modal;
   }
 
   /**
    * Generates the login form displayed if the session has timed out.
    */
-  protected initializeLoginForm(): void {
-    if (TYPO3.configuration.showRefreshLoginPopup) {
-      // dialog is not required if "showRefreshLoginPopup" is enabled
-      return;
-    }
-
-    this.$loginForm = this.generateModal(MarkupIdentifiers.loginFormModal);
-    this.$loginForm.addClass('modal-notice');
+  protected createLoginFormModal(): ModalElement {
     const refresh_login_title = String(TYPO3.lang['mess.refresh_login_title']).replace('%s', TYPO3.configuration.username);
-    this.$loginForm.find('.modal-header h4').text(refresh_login_title);
-    this.$loginForm.find('.modal-body').append(
-      $('<p />').text(TYPO3.lang['mess.login_expired']),
-      $('<form />', {
-        id: 'beLoginRefresh',
-        method: 'POST',
-        action: TYPO3.settings.ajaxUrls.login,
-      }).append(
-        $('<div />').append(
-          $('<input />', { type: 'text', name: 'username', class: 'd-none', value: TYPO3.configuration.username }),
-          $('<input />', { type: 'hidden', name: 'userident', id: 't3-loginrefresh-userident' })
-        ),
-        $('<div />', { class: 'form-group' }).append(
-          $('<input />', {
-            type: 'password',
-            name: 'p_field',
-            autofocus: 'autofocus',
-            class: 'form-control',
-            placeholder: TYPO3.lang['mess.refresh_login_password'],
-          }),
-        ),
-      ),
-    );
-    // Added to disable DOM warnings in browser consoles
-    this.$loginForm.find('.modal-body .d-none').attr('autocomplete', 'username');
-    this.$loginForm.find('.modal-body .form-control').attr('autocomplete', 'current-password');
-    this.$loginForm.find('.modal-footer').append(
-      $('<a />', {
-        href: this.logoutUrl,
-        class: 'btn btn-default',
-      }).text(TYPO3.lang['mess.refresh_exit_button']),
-      $('<button />', { type: 'submit', class: 'btn btn-primary', 'data-action': 'refreshSession', form: 'beLoginRefresh' })
-        .text(TYPO3.lang['mess.refresh_login_button'])
-        .on('click', () => {
-          this.$loginForm.find('form').trigger('submit');
-        }),
-    );
-    this.registerDefaultModalEvents(this.$loginForm).on('submit', this.submitForm);
-    $('body').append(this.$loginForm);
-  }
-
-  /**
-   * Generates a modal dialog as template.
-   *
-   * @param {string} identifier
-   * @returns {JQuery}
-   */
-  protected generateModal(identifier: string): JQuery {
-    return $('<div />', {
-      id: identifier,
-      class: 't3js-modal ' + identifier + ' modal modal-type-default modal-severity-notice modal-style-light modal-size-small fade',
-    }).append(
-      $('<div />', { class: 'modal-dialog' }).append(
-        $('<div />', { class: 'modal-content' }).append(
-          $('<div />', { class: 'modal-header' }).append(
-            $('<h4 />', { class: 'modal-title' }),
-          ),
-          $('<div />', { class: 'modal-body' }),
-          $('<div />', { class: 'modal-footer' }),
-        ),
-      ),
-    );
-  }
-
-  /**
-   * Fills the progressbar attached to the given modal.
-   */
-  protected fillProgressbar($activeModal: JQuery): void {
-    if (!this.isTimingOut) {
-      return;
-    }
-
-    const max = 100;
-    let current = 0;
-    const $progressBar = $activeModal.find('.progress-bar');
-    const $srText = $progressBar.children('.visually-hidden');
-
-    const progress = setInterval(() => {
-      const isOverdue = (current >= max);
-      if (!this.isTimingOut || isOverdue) {
-        clearInterval(progress);
-
-        if (isOverdue) {
-          // show login form
-          this.hideTimeoutModal();
-          this.showLoginForm();
+    const modal = Modal.advanced({
+      additionalCssClasses: [ MarkupIdentifiers.loginFormModal ],
+      title: refresh_login_title,
+      severity: SeverityEnum.notice,
+      style: Styles.light,
+      size: Sizes.small,
+      staticBackdrop: true,
+      hideCloseButton: true,
+      buttons: [
+        {
+          text: TYPO3.lang['mess.refresh_exit_button'],
+          active: false,
+          btnClass: 'btn-default',
+          name: 'logout',
+          trigger: () => top.location.href = this.logoutUrl
+        },
+        {
+          text: TYPO3.lang['mess.refresh_login_button'],
+          active: false,
+          btnClass: 'btn-primary',
+          name: 'refreshSession',
+          trigger: async (e: Event, modal: ModalElement) => {
+            modal.querySelector('form').requestSubmit();
+            const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.login_refresh).get();
+            const data = await response.resolve();
+            modal.hideModal();
+            if (!data.refresh.success) {
+              modal.dispatchEvent(new Event('show-login-form'));
+            }
+          }
         }
+      ],
+      content: html`
+        <p>${TYPO3.lang['mess.login_expired']}</p>
+        <form
+            id="beLoginRefresh"
+            method="POST"
+            action=${TYPO3.settings.ajaxUrls.login}
+            @submit=${(e: SubmitEvent) => this.submitForm(e, e.currentTarget as HTMLFormElement)}>
+          <div>
+            <input
+                type="text"
+                name="username"
+                class="d-none"
+                autocomplete="username"
+                .value=${TYPO3.configuration.username}>
+            <input
+                type="hidden"
+                name="userident"
+                id="t3-loginrefresh-userident">
+          </div>
+          <div class="form-group">
+            <input
+                type="password"
+                name="p_field"
+                autofocus
+                class="form-control"
+                autocomplete="current-password"
+                placeholder=${TYPO3.lang['mess.refresh_login_password']}>
+          </div>
+        </form>
+      `
+    });
 
-        // reset current
-        current = 0;
-      } else {
-        current += 1;
-      }
+    modal.addEventListener('typo3-modal-hidden', (): void => {
+      this.startTask();
+    });
 
-      const percentText = (current) + '%';
-      $progressBar.css('width', percentText);
-      $srText.text(percentText);
-    }, 300);
+    modal.addEventListener('typo3-modal-shown', (): void => {
+      this.stopTask();
+    });
+
+    return modal;
   }
 
   /**
    * Creates additional data based on the security level and "submits" the form
    * via an AJAX request.
-   *
-   * @param {JQueryEventObject} event
    */
-  protected submitForm = async (event: JQueryEventObject): Promise<void> => {
+  protected submitForm = async (event: SubmitEvent, form: HTMLFormElement): Promise<void> => {
     event.preventDefault();
 
     const tokenResponse = await new AjaxRequest(this.requestTokenUrl).post({});
@@ -370,59 +349,39 @@ class LoginRefresh {
     if (!tokenData.headerName || !tokenData.requestToken) {
       return;
     }
-    const $form = this.$loginForm.find('form');
-    const $passwordField = $form.find('input[name=p_field]');
-    const $useridentField = $form.find('input[name=userident]');
-    const passwordFieldValue = $passwordField.val();
+    const passwordField = form.querySelector('input[name=p_field]') as HTMLInputElement;
+    const useridentField = form.querySelector('input[name=userident]') as HTMLInputElement;
+    const passwordFieldValue = passwordField.value;
 
-    if (passwordFieldValue === '' && $useridentField.val() === '') {
+    if (passwordFieldValue === '' && useridentField.value === '') {
       Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_emptyPassword']);
-      $passwordField.focus();
+      passwordField.focus();
       return;
     }
 
     if (passwordFieldValue) {
-      $useridentField.val(passwordFieldValue);
-      $passwordField.val('');
+      useridentField.value = passwordFieldValue;
+      passwordField.value = '';
     }
 
-    const postData: Record<string, string> = { login_status: 'login' };
-    for (const field of $form.serializeArray()) {
-      postData[field.name] = field.value;
+    const postData: Record<string, string> = {
+      login_status: 'login'
+    };
+    for (const [name, value] of new FormData(form)) {
+      postData[name] = value.toString();
     }
     const headers = new Headers();
     headers.set(tokenData.headerName, tokenData.requestToken);
 
-    const response = await new AjaxRequest($form.attr('action')).post(postData, { headers });
+    const response = await new AjaxRequest(form.getAttribute('action')).post(postData, { headers });
     const data = await response.resolve();
     if (data.login.success) {
       // User is logged in
       this.hideLoginForm();
     } else {
       Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_failed_message']);
-      $passwordField.focus();
+      passwordField.focus();
     }
-  }
-
-  /**
-   * Registers the (shown|hidden).bs.modal events.
-   * If a modal is shown, the interval check is stopped. If the modal hides,
-   * the interval check starts again.
-   * This method is not invoked for the backend locked modal, because we still
-   * need to check if the backend gets unlocked again.
-   *
-   * @param {JQuery} $modal
-   * @returns {JQuery}
-   */
-  protected registerDefaultModalEvents($modal: JQuery): JQuery {
-    $modal.on('hidden.bs.modal', () => {
-      this.startTask();
-    }).on('shown.bs.modal', () => {
-      this.stopTask();
-      // focus the button which was configured as active button
-      this.$timeoutModal.find('.modal-footer .t3js-active').first().focus();
-    });
-    return $modal;
   }
 
   /**
@@ -434,8 +393,9 @@ class LoginRefresh {
    *
    * and opens a dialog.
    */
-  protected checkActiveSession = (): void => {
-    new AjaxRequest(TYPO3.settings.ajaxUrls.login_timedout).get().then(async (response: AjaxResponse): Promise<void> => {
+  protected checkActiveSession = async (): Promise<void> => {
+    try {
+      const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.login_timedout).get();
       const data = await response.resolve();
       if (data.login.locked) {
         if (!this.backendIsLocked) {
@@ -456,7 +416,10 @@ class LoginRefresh {
             : this.showTimeoutModal();
         }
       }
-    });
+    } catch {
+      this.backendIsLocked = true;
+      this.showBackendLockedModal();
+    }
   };
 
   private applyOptions(options: LoginRefreshOptions): void {
@@ -471,6 +434,59 @@ class LoginRefresh {
     }
     if (options.requestTokenUrl !== undefined) {
       this.requestTokenUrl = options.requestTokenUrl;
+    }
+  }
+}
+
+@customElement('typo3-login-refresh-progress-bar')
+export class ProgressBarElement extends LitElement {
+  @state()
+  protected current = 0;
+
+  private readonly max = 100;
+  private intervalId: number;
+
+  public connectedCallback() {
+    super.connectedCallback();
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+    this.intervalId = setInterval(this.advanceProgressBar, 300);
+  }
+
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+  }
+
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    return this;
+  }
+
+  protected render(): TemplateResult {
+    return html`
+      <div class="progress">
+        <div
+            class="progress-bar progress-bar-warning progress-bar-striped progress-bar-animated"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuenow=${this.current}
+            aria-valuemax="100"
+            style="width: ${this.current}%">
+          <span class="visually-hidden">${this.current}%</span>
+        </div>
+      </div>
+    `
+  }
+
+  private readonly advanceProgressBar = () => {
+    this.current++;
+    const isOverdue = (this.current >= this.max);
+    if (isOverdue) {
+      this.dispatchEvent(new Event('progress-bar-overdue'));
     }
   }
 }
@@ -508,3 +524,9 @@ if (!loginRefreshObject) {
 }
 
 export default loginRefreshObject;
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-login-refresh-progress-bar': ProgressBarElement;
+  }
+}
