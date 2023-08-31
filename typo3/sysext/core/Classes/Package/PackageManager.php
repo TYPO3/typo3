@@ -42,6 +42,11 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * The default TYPO3 Package Manager
+ *
+ * @phpstan-type PackageKey non-empty-string
+ * @phpstan-type PackageName non-empty-string
+ * @phpstan-type PackageConstraints array{dependencies: list<PackageKey>, suggestions: list<PackageKey>}
+ * @phpstan-type StateConfiguration array{packagePath?: non-empty-string}
  */
 class PackageManager implements SingletonInterface
 {
@@ -56,12 +61,12 @@ class PackageManager implements SingletonInterface
     protected $packageCache;
 
     /**
-     * @var array
+     * @var array{local?: non-empty-string, system?: non-empty-string}
      */
     protected $packagesBasePaths = [];
 
     /**
-     * @var array
+     * @var array<PackageName, PackageKey>
      */
     protected $packageAliasMap = [];
 
@@ -73,7 +78,7 @@ class PackageManager implements SingletonInterface
 
     /**
      * Array of available packages, indexed by package key
-     * @var PackageInterface[]
+     * @var array<PackageKey, PackageInterface>
      */
     protected $packages = [];
 
@@ -83,14 +88,15 @@ class PackageManager implements SingletonInterface
     protected $availablePackagesScanned = false;
 
     /**
-     * A map between ComposerName and PackageKey, only available when scanAvailablePackages is run
-     * @var array
+     * A map between ComposerName and PackageKey, only available when scanAvailablePackages is run,
+     * e.g. `['typo3/cms-core' => 'core', 'typo3/cms-backend' => 'backend']`
+     * @var array<PackageName, PackageKey>
      */
     protected $composerNameToPackageKeyMap = [];
 
     /**
      * List of active packages as package key => package object
-     * @var array
+     * @var array<PackageKey, PackageInterface>
      */
     protected $activePackages = [];
 
@@ -101,7 +107,7 @@ class PackageManager implements SingletonInterface
 
     /**
      * Package states configuration as stored in the PackageStates.php file
-     * @var array
+     * @var array{packages?: array<PackageKey, StateConfiguration>, version?: int}
      */
     protected $packageStatesConfiguration = [];
 
@@ -110,10 +116,6 @@ class PackageManager implements SingletonInterface
      */
     protected ?string $packagePathMatchRegex;
 
-    /**
-     * @param string|null $packagesBasePath
-     * @param string|null $packageStatesPathAndFilename
-     */
     public function __construct(DependencyOrderingService $dependencyOrderingService, string $packageStatesPathAndFilename = null, string $packagesBasePath = null)
     {
         $this->packagesBasePath = $packagesBasePath ?? Environment::getPublicPath() . '/';
@@ -354,6 +356,7 @@ class PackageManager implements SingletonInterface
     /**
      * Requires and registers all packages which were defined in packageStatesConfiguration
      *
+     * @param array<PackageKey, StateConfiguration> $packages
      * @param bool $registerOnlyNewPackages
      * @throws Exception\InvalidPackageStateException
      * @throws Exception\PackageStatesFileNotWritableException
@@ -417,7 +420,7 @@ class PackageManager implements SingletonInterface
     /**
      * Unregisters a package from the list of available packages
      *
-     * @param string $packageKey Package Key of the package to be unregistered
+     * @param string|PackageKey $packageKey Package Key of the package to be unregistered
      */
     protected function unregisterPackageByPackageKey($packageKey)
     {
@@ -443,8 +446,8 @@ class PackageManager implements SingletonInterface
     /**
      * Resolves a TYPO3 package key from a composer package name.
      *
-     * @param string $composerName
-     * @return string
+     * @param string|PackageName $composerName
+     * @return string|PackageKey|PackageName
      * @internal
      */
     public function getPackageKeyFromComposerName($composerName)
@@ -462,7 +465,7 @@ class PackageManager implements SingletonInterface
      * Returns a PackageInterface object for the specified package.
      * A package is available, if the package directory contains valid MetaData information.
      *
-     * @param string $packageKey
+     * @param string|PackageKey $packageKey
      * @return PackageInterface The requested package object
      * @throws Exception\UnknownPackageException if the specified package is not known
      */
@@ -478,7 +481,7 @@ class PackageManager implements SingletonInterface
      * Returns TRUE if a package is available (the package's files exist in the packages directory)
      * or FALSE if it's not. If a package is available it doesn't mean necessarily that it's active!
      *
-     * @param string $packageKey The key of the package to check
+     * @param string|PackageKey $packageKey The key of the package to check
      * @return bool TRUE if the package is available, otherwise FALSE
      */
     public function isPackageAvailable($packageKey)
@@ -499,7 +502,7 @@ class PackageManager implements SingletonInterface
     /**
      * Returns TRUE if a package is activated or FALSE if it's not.
      *
-     * @param string $packageKey The key of the package to check
+     * @param string|PackageKey $packageKey The key of the package to check
      * @return bool TRUE if package is active, otherwise FALSE
      */
     public function isPackageActive($packageKey)
@@ -512,7 +515,7 @@ class PackageManager implements SingletonInterface
     /**
      * Deactivates a package and updates the packagestates configuration
      *
-     * @param string $packageKey
+     * @param string|PackageKey $packageKey
      * @throws Exception\PackageStatesFileNotWritableException
      * @throws Exception\ProtectedPackageKeyException
      * @throws Exception\UnknownPackageException
@@ -547,7 +550,7 @@ class PackageManager implements SingletonInterface
     }
 
     /**
-     * @param string $packageKey
+     * @param string|PackageKey $packageKey
      * @internal
      */
     public function activatePackage($packageKey)
@@ -577,7 +580,7 @@ class PackageManager implements SingletonInterface
     /**
      * Removes a package from the file system.
      *
-     * @param string $packageKey
+     * @param string|PackageKey $packageKey
      * @throws Exception
      * @throws Exception\ProtectedPackageKeyException
      * @throws Exception\UnknownPackageException
@@ -613,7 +616,7 @@ class PackageManager implements SingletonInterface
      * A package is active, if it is available and has been activated in the package
      * manager settings.
      *
-     * @return PackageInterface[]
+     * @return array<array-key|PackageKey, PackageInterface>
      */
     public function getActivePackages()
     {
@@ -630,7 +633,7 @@ class PackageManager implements SingletonInterface
     /**
      * Returns TRUE if a package was already registered or FALSE if it's not.
      *
-     * @param string $packageKey
+     * @param string|PackageKey $packageKey
      * @return bool
      */
     protected function isPackageRegistered($packageKey)
@@ -645,7 +648,7 @@ class PackageManager implements SingletonInterface
      * and package configurations arrays holds all packages in the correct
      * initialization order.
      *
-     * @return array
+     * @return array<PackageKey, PackageConstraints>
      */
     protected function sortActivePackagesByDependencies()
     {
@@ -668,8 +671,8 @@ class PackageManager implements SingletonInterface
      * resolved direct or indirect dependencies of each package will put into the package
      * states configuration array.
      *
-     * @param array $packageConfig
-     * @return array
+     * @param array<PackageKey, mixed> $packageConfig
+     * @return array<PackageKey, PackageConstraints>
      */
     protected function resolvePackageDependencies($packageConfig)
     {
@@ -684,8 +687,8 @@ class PackageManager implements SingletonInterface
     /**
      * Returns an array of suggested package keys for the given package.
      *
-     * @param string $packageKey The package key to fetch the suggestions for
-     * @return array|null An array of directly suggested packages
+     * @param string|PackageKey $packageKey The package key to fetch the suggestions for
+     * @return list<PackageKey>|null An array of directly suggested packages
      */
     protected function getSuggestionArrayForPackage($packageKey)
     {
@@ -755,7 +758,7 @@ class PackageManager implements SingletonInterface
     /**
      * Check the conformance of the given package key
      *
-     * @param string $packageKey The package key to validate
+     * @param string|PackageKey $packageKey The package key to validate
      * @return bool If the package key is valid, returns TRUE otherwise FALSE
      */
     public function isPackageKeyValid($packageKey)
@@ -767,7 +770,7 @@ class PackageManager implements SingletonInterface
      * Returns an array of \TYPO3\CMS\Core\Package objects of all available packages.
      * A package is available, if the package directory contains valid meta information.
      *
-     * @return PackageInterface[] Array of PackageInterface
+     * @return array<array-key|PackageKey, PackageInterface> Array of PackageInterface
      */
     public function getAvailablePackages()
     {
@@ -797,7 +800,7 @@ class PackageManager implements SingletonInterface
     /**
      * Reloads a package and its information
      *
-     * @param string $packageKey
+     * @param string|PackageKey $packageKey
      * @throws Exception\InvalidPackageStateException if the package isn't available
      * @internal
      */
@@ -876,7 +879,7 @@ class PackageManager implements SingletonInterface
     /**
      * Fetches information from ext_emconf.php and maps it so it is treated as it would come from composer.json
      *
-     * @param string $packageKey
+     * @param string|PackageKey $packageKey
      * @return \stdClass
      * @throws Exception\InvalidPackageManifestException
      */
@@ -962,9 +965,9 @@ class PackageManager implements SingletonInterface
      * do this recursively, so dependencies of dependent packages will also be
      * in the result.
      *
-     * @param string $packageKey The package key to fetch the dependencies for
+     * @param string|PackageKey $packageKey The package key to fetch the dependencies for
      * @param array $trace An array of already visited package keys, to detect circular dependencies
-     * @return array|null An array of direct or indirect dependent packages
+     * @return list<string>|null An array of direct or indirect dependent packages
      * @throws Exception\InvalidPackageKeyException
      */
     protected function getDependencyArrayForPackage($packageKey, array &$dependentPackageKeys = [], array $trace = [])
@@ -1023,7 +1026,7 @@ class PackageManager implements SingletonInterface
      * The order of paths is crucial for allowing overriding of system extension by local extensions.
      * Pay attention if you change order of the paths here.
      *
-     * @return array
+     * @return array{local?: string, system?: string}
      */
     protected function getPackageBasePaths()
     {
@@ -1046,7 +1049,8 @@ class PackageManager implements SingletonInterface
     }
 
     /**
-     * @return array Returns the packageStatesConfiguration sorted by dependencies
+     * @param array<PackageKey, PackageConstraints> $packageStatesConfiguration
+     * @return list<PackageKey> Returns the packageStatesConfiguration sorted by dependencies
      * @throws \UnexpectedValueException
      */
     protected function sortPackageStatesConfigurationByDependency(array $packageStatesConfiguration)
@@ -1124,9 +1128,9 @@ class PackageManager implements SingletonInterface
      * This ensures that the framework extensions (aka sysext) are
      * always loaded first, before any other external extension.
      *
-     * @param array $packageStateConfiguration
-     * @param array $rootPackageKeys
-     * @return array
+     * @param array<PackageKey, PackageConstraints> $packageStateConfiguration
+     * @param list<PackageKey> $rootPackageKeys
+     * @return array<PackageKey, PackageConstraints>
      */
     protected function addDependencyToFrameworkToAllExtensions(array $packageStateConfiguration, array $rootPackageKeys)
     {
@@ -1154,8 +1158,8 @@ class PackageManager implements SingletonInterface
      * This method also introduces dependencies among the dependencies
      * to ensure the loading order is exactly as specified in the list.
      *
-     * @param array $packageStateConfiguration
-     * @return array
+     * @param array<PackageKey, PackageConstraints> $packageStateConfiguration
+     * @return array<array-key|PackageKey, array<array-key, bool>>
      */
     protected function buildDependencyGraph(array $packageStateConfiguration)
     {
@@ -1168,7 +1172,8 @@ class PackageManager implements SingletonInterface
     }
 
     /**
-     * @return array
+     * @param array<PackageKey, PackageConstraints> $packageStateConfiguration
+     * @return list<PackageKey>
      */
     protected function findFrameworkPackages(array $packageStateConfiguration)
     {
