@@ -34,8 +34,11 @@ class ImportMapFactory implements SingletonInterface
 
     public function create(bool $bustSuffix = true): ImportMap
     {
+        $activePackages = array_values(
+            $this->packageManager->getActivePackages()
+        );
         return new ImportMap(
-            $this->packageManager->getActivePackages(),
+            $activePackages,
             $this->assetsCache,
             $this->cacheIdentifier,
             $this->eventDispatcher,
