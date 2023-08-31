@@ -1,4 +1,4 @@
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_irre_foreignfield/Configuration/TypoScript/setup.typoscript">
+@import './setup.typoscript'
 
 page {
 	20 = COA

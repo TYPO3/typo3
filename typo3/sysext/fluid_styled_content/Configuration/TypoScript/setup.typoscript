@@ -1,32 +1,30 @@
 # Include setup
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/Helper/ContentElement.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/Helper/ParseFunc.typoscript">
-
+@import './Helper/ContentElement.typoscript'
+@import './Helper/ParseFunc.typoscript'
 
 # Typical content elements
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Bullets.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Div.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Header.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Html.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Image.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/List.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Shortcut.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Table.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Text.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Textmedia.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Textpic.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Uploads.typoscript">
-
+@import './ContentElement/Bullets.typoscript'
+@import './ContentElement/Div.typoscript'
+@import './ContentElement/Header.typoscript'
+@import './ContentElement/Html.typoscript'
+@import './ContentElement/Image.typoscript'
+@import './ContentElement/List.typoscript'
+@import './ContentElement/Shortcut.typoscript'
+@import './ContentElement/Table.typoscript'
+@import './ContentElement/Text.typoscript'
+@import './ContentElement/Textmedia.typoscript'
+@import './ContentElement/Textpic.typoscript'
+@import './ContentElement/Uploads.typoscript'
 
 # Menu content elements
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/MenuAbstract.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/MenuCategorizedContent.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/MenuCategorizedPages.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/MenuPages.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/MenuSubpages.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/MenuSection.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/MenuSectionPages.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/MenuRecentlyUpdated.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/MenuRelatedPages.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/MenuSitemap.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/MenuSitemapPages.typoscript">
+@import './ContentElement/MenuAbstract.typoscript'
+@import './ContentElement/MenuCategorizedContent.typoscript'
+@import './ContentElement/MenuCategorizedPages.typoscript'
+@import './ContentElement/MenuPages.typoscript'
+@import './ContentElement/MenuSubpages.typoscript'
+@import './ContentElement/MenuSection.typoscript'
+@import './ContentElement/MenuSectionPages.typoscript'
+@import './ContentElement/MenuRecentlyUpdated.typoscript'
+@import './ContentElement/MenuRelatedPages.typoscript'
+@import './ContentElement/MenuSitemap.typoscript'
+@import './ContentElement/MenuSitemapPages.typoscript'
