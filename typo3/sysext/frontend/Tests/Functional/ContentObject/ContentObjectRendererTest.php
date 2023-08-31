@@ -740,4 +740,27 @@ And another one';
             self::assertSame($expectedParams, $jsonDecodedArray);
         }
     }
+
+    /**
+     * @test
+     */
+    public function getImgResourceRespectsFileReferenceObjectCropData(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/FileReferences.csv');
+        $fileReferenceData = [
+            'uid' => 1,
+            'uid_local' => 1,
+            'crop' => '{"default":{"cropArea":{"x":0,"y":0,"width":0.5,"height":0.5},"selectedRatio":"NaN","focusArea":null}}',
+        ];
+        $fileReference = new FileReference($fileReferenceData);
+
+        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $result = $subject->getImgResource($fileReference, []);
+
+        $expectedWidth = 512;
+        $expectedHeight = 341;
+
+        self::assertEquals($expectedWidth, $result[0]);
+        self::assertEquals($expectedHeight, $result[1]);
+    }
 }

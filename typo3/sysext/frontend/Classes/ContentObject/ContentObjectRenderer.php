@@ -4039,6 +4039,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function getImgResource($file, $fileArray)
     {
         $importedFile = null;
+        $fileReference = null;
         if (empty($file) && empty($fileArray)) {
             return null;
         }
@@ -4059,6 +4060,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($file instanceof File) {
                 $fileObject = $file;
             } elseif ($file instanceof FileReference) {
+                $fileReference = $file;
                 $fileObject = $file->getOriginalFile();
             } else {
                 try {
@@ -4105,7 +4107,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $processingConfiguration['noScale'] = $this->stdWrapValue('noScale', $fileArray ?? []);
                 $processingConfiguration['additionalParameters'] = $this->stdWrapValue('params', $fileArray ?? []);
                 $processingConfiguration['frame'] = (int)$this->stdWrapValue('frame', $fileArray ?? []);
-                if (isset($fileReference)) {
+                if ($fileReference instanceof FileReference) {
                     $processingConfiguration['crop'] = $this->getCropAreaFromFileReference($fileReference, $fileArray);
                 } else {
                     $processingConfiguration['crop'] = $this->getCropAreaFromFromTypoScriptSettings($fileObject, $fileArray);
