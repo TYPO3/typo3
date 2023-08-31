@@ -16,6 +16,7 @@ import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties.js';
 import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation.js';
 import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting';
+import ShowBlocks from '@ckeditor/ckeditor5-show-blocks/src/showblocks';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment'
 import Style from '@ckeditor/ckeditor5-style/src/style';
 import GeneralHtmlSupport from '@ckeditor/ckeditor5-html-support/src/generalhtmlsupport';
@@ -44,6 +45,7 @@ export const CKEditor5Plugins = {
   SpecialCharacters,
   SpecialCharactersEssentials,
   SourceEditing,
+  ShowBlocks,
   Style,
   Subscript,
   Superscript,
