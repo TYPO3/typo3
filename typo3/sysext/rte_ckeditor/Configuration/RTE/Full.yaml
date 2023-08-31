@@ -47,6 +47,7 @@ editor:
         - mergeTableCells
         - '|'
         - sourceEditing
+        - showBlocks
         - horizontalLine
         # line break
         - '-'

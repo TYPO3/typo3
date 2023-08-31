@@ -106,6 +106,7 @@
     "@ckeditor/ckeditor5-paragraph": "^38.1.0",
     "@ckeditor/ckeditor5-paste-from-office": "^38.1.0",
     "@ckeditor/ckeditor5-remove-format": "^38.1.0",
+    "@ckeditor/ckeditor5-show-blocks": "^38.1.0",
     "@ckeditor/ckeditor5-source-editing": "^38.1.0",
     "@ckeditor/ckeditor5-special-characters": "^38.1.0",
     "@ckeditor/ckeditor5-style": "^38.1.0",
