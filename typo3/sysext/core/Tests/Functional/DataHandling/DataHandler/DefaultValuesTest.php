@@ -31,7 +31,7 @@ final class DefaultValuesTest extends FunctionalTestCase
     use SiteBasedTestTrait;
 
     protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_defaultpagetsconfig',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_defaulttsconfig',
     ];
 
     protected const LANGUAGE_PRESETS = [
@@ -98,7 +98,7 @@ final class DefaultValuesTest extends FunctionalTestCase
      */
     public function defaultValuesFromGlobalTSconfigForNewRecordsIsRespected(): void
     {
-        // TCAdefaults from ext:test_defaultpagetsconfig/Configuration/page.tsconfig kick in here
+        // TCAdefaults from ext:test_defaulttsconfig/Configuration/page.tsconfig kick in here
         $map = $this->actionService->createNewRecord('pages', 88, [
             'title' => 'A new age',
         ]);
@@ -129,7 +129,7 @@ final class DefaultValuesTest extends FunctionalTestCase
      */
     public function defaultValuesFromPageSpecificTSconfigForNewRecordsIsRespected(): void
     {
-        // TCAdefaults from ext:test_defaultpagetsconfig/Configuration/page.tsconfig kick in here,
+        // TCAdefaults from ext:test_defaulttsconfig/Configuration/page.tsconfig kick in here,
         // but are overridden by specific page record TSconfig here.
         $this->actionService->modifyRecord('pages', 88, [
             'TSconfig' => chr(10) .

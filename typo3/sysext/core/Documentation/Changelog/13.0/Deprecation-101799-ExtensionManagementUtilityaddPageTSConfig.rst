@@ -50,4 +50,4 @@ available since TYPO3 v12, extensions aiming for v12 and v13 compatibility can
 simply switch over to the new way.
 
 
-.. index:: LocalConfiguration, PHP-API, TSConfig, TypoScript, FullyScanned, ext:core
+.. index:: LocalConfiguration, PHP-API, TSConfig, FullyScanned, ext:core

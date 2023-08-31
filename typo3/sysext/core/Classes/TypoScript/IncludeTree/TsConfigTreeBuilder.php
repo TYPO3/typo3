@@ -50,9 +50,43 @@ final class TsConfigTreeBuilder
         ?PhpFrontend $cache = null
     ): RootInclude {
         $includeTree = new RootInclude();
+
+        $collectedUserTsConfigArray = [];
+        $gotPackagesUserTsConfigFromCache = false;
+        if ($cache) {
+            $collectedUserTsConfigArrayFromCache = $cache->require('usertsconfig-packages-strings');
+            if ($collectedUserTsConfigArrayFromCache) {
+                $gotPackagesUserTsConfigFromCache = true;
+                $collectedUserTsConfigArray = $collectedUserTsConfigArrayFromCache;
+            }
+        }
+        if (!$gotPackagesUserTsConfigFromCache) {
+            foreach ($this->packageManager->getActivePackages() as $package) {
+                $packagePath = $package->getPackagePath();
+                $tsConfigFile = null;
+                if (file_exists($packagePath . 'Configuration/user.tsconfig')) {
+                    $tsConfigFile = $packagePath . 'Configuration/user.tsconfig';
+                } elseif (file_exists($packagePath . 'Configuration/User.tsconfig')) {
+                    $tsConfigFile = $packagePath . 'Configuration/User.tsconfig';
+                }
+                if ($tsConfigFile) {
+                    $typoScriptString = @file_get_contents($tsConfigFile);
+                    if (!empty($typoScriptString)) {
+                        $collectedUserTsConfigArray['userTsConfig-package-' . $package->getPackageKey()] = $typoScriptString;
+                    }
+                }
+            }
+            $cache?->set('usertsconfig-packages-strings', 'return unserialize(\'' . addcslashes(serialize($collectedUserTsConfigArray), '\'\\') . '\');');
+        }
+        foreach ($collectedUserTsConfigArray as $key => $typoScriptString) {
+            $includeTree->addChild($this->getTreeFromString((string)$key, $typoScriptString, $tokenizer, $cache));
+        }
+
+        // @deprecated since TYPO3 v13. Remove in v14 along with defaultUserTSconfig and EMU::addUserTSConfig
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] ?? '')) {
             $includeTree->addChild($this->getTreeFromString('userTsConfig-globals', $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'], $tokenizer, $cache));
         }
+
         foreach ($backendUser->userGroupsUID as $groupId) {
             // Loop through all groups and add their 'TSconfig' fields
             if (!empty($backendUser->userGroups[$groupId]['TSconfig'] ?? '')) {
@@ -62,6 +96,7 @@ final class TsConfigTreeBuilder
         if (!empty($backendUser->user['TSconfig'] ?? '')) {
             $includeTree->addChild($this->getTreeFromString('userTsConfig-user', $backendUser->user['TSconfig'], $tokenizer, $cache));
         }
+
         return $includeTree;
     }
 

@@ -1,0 +1,8 @@
+options.file_list {
+    enableDisplayThumbnails = selectable
+    enableClipBoard = selectable
+    thumbnail {
+        width = 64
+        height = 64
+    }
+}

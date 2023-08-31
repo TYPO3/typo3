@@ -32,28 +32,13 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function userTsConfigLoadsDefaultFromGlobals(): void
+    public function userTsConfigLoadsDefaultFromExtensionConfigurationUserTsconfig(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = 'loadedFromGlobals = loadedFromGlobals';
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
-        $backendUser = $this->setUpBackendUser(1);
+        $backendUser = $this->setUpBackendUser(2);
         $subject = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $subject->create($backendUser);
-        self::assertSame('loadedFromGlobals', $userTsConfig->getUserTsConfigArray()['loadedFromGlobals']);
-    }
-
-    /**
-     * @test
-     */
-    public function userTsConfigLoadsSingleFileWithOldImportSyntaxFromGlobals(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_usertsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">';
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        /** @var UserTsConfigFactory $subject */
-        $subject = $this->get(UserTsConfigFactory::class);
-        $userTsConfig = $subject->create($backendUser);
-        self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $userTsConfig->getUserTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
+        self::assertSame('loadedFromTestExtensionConfigurationUserTsConfig', $userTsConfig->getUserTsConfigArray()['loadedFromTestExtensionConfigurationUserTsConfig']);
     }
 
     /**

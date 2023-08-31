@@ -11,15 +11,6 @@ defined('TYPO3') or die();
 // Register eID provider for showpic
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_cms_showpic'] = ShowImageController::class . '::processRequest';
 
-ExtensionManagementUtility::addUserTSConfig('
-  options.saveDocView = 1
-  options.saveDocNew = 1
-  options.saveDocNew.pages = 0
-  options.saveDocNew.sys_file = 0
-  options.saveDocNew.sys_file_metadata = 0
-  options.disableDelete.sys_file = 1
-');
-
 ExtensionManagementUtility::addTypoScriptSetup(
     '
 # Content selection

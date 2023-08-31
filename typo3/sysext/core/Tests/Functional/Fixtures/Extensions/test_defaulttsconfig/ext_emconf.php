@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'DataHandler Testing test_defaultpagetsconfig',
-    'description' => 'DataHandler Testing test_defaultpagetsconfig',
+    'title' => 'DataHandler Testing test_defaulttsconfig',
+    'description' => 'DataHandler Testing test_defaulttsconfig',
     'category' => 'example',
     'version' => '13.0.0',
     'state' => 'beta',

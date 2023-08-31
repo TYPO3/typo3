@@ -1322,34 +1322,7 @@ return [
         'compressionLevel' => 0,
         'installToolPassword' => '',
         'contentSecurityPolicyReportingUrl' => '',
-        'defaultUserTSconfig' => 'options.enableBookmarks=1
-            options.file_list.enableDisplayThumbnails=selectable
-            options.file_list.enableClipBoard=selectable
-            options.file_list.thumbnail {
-                width = 64
-                height = 64
-            }
-            options.pageTree {
-                doktypesToShowInNewPageDragArea = 1,6,4,7,3,254,199
-            }
-
-            options.contextMenu {
-                table {
-                    pages {
-                        disableItems =
-                        tree.disableItems =
-                    }
-                    sys_file {
-                        disableItems =
-                        tree.disableItems =
-                    }
-                    sys_filemounts {
-                        disableItems =
-                        tree.disableItems =
-                    }
-                }
-            }
-        ',
+        'defaultUserTSconfig' => '', // @deprecated since TYPO3 v13.0, will be removed in TYPO3 v14.0. Add to SilentConfigurationUpgradeService.
         'defaultPageTSconfig' => '', // @deprecated since TYPO3 v13.0, will be removed in TYPO3 v14.0. Add to SilentConfigurationUpgradeService.
         // String (exclude).Enter lines of default page TSconfig.
         'defaultPermissions' => [],

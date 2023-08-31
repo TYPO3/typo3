@@ -44,11 +44,9 @@ final class ShortcutButtonTest extends FunctionalTestCase
      */
     public function buttonIsNotRenderedForUserWithInsufficientPermissions(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = 'options.enableBookmarks=0';
-        $this->importCSVDataSet(__DIR__ . '/../../../../Fixtures/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../../../Fixtures/be_users_no_bookmarks.csv');
         $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
-
         self::assertEmpty(
             (new ShortcutButton())->setRouteIdentifier('web_list')->setDisplayName('Some module anme')->render()
         );

@@ -1,0 +1,8 @@
+options {
+    saveDocView = 1
+    saveDocNew = 1
+    saveDocNew.pages = 0
+    saveDocNew.sys_file = 0
+    saveDocNew.sys_file_metadata = 0
+    disableDelete.sys_file = 1
+}

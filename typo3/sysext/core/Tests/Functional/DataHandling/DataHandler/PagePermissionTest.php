@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class PagePermissionTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_defaultpagetsconfig',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_defaulttsconfig',
     ];
 
     protected array $configurationToUseInTestInstance = [
@@ -63,7 +63,7 @@ final class PagePermissionTest extends FunctionalTestCase
     {
         $this->backendUser->user['uid'] = 13;
         $this->backendUser->firstMainGroup = 14;
-        // Defaults from ext:test_defaultpagetsconfig/Configuration/page.tsconfig do not kick in, it's not below page 88
+        // Defaults from ext:test_defaulttsconfig/Configuration/page.tsconfig do not kick in, it's not below page 88
         $record = $this->insertPage(1);
         self::assertEquals(13, $record['perms_userid']);
         self::assertEquals(14, $record['perms_groupid']);
@@ -79,7 +79,7 @@ final class PagePermissionTest extends FunctionalTestCase
     {
         $this->backendUser->user['uid'] = 13;
         $this->backendUser->firstMainGroup = 14;
-        // Defaults from ext:test_defaultpagetsconfig/Configuration/page.tsconfig kick in here for pages below 88
+        // Defaults from ext:test_defaulttsconfig/Configuration/page.tsconfig kick in here for pages below 88
         $record = $this->insertPage();
         self::assertEquals(12, $record['perms_userid']);
         self::assertEquals(42, $record['perms_groupid']);
@@ -95,7 +95,7 @@ final class PagePermissionTest extends FunctionalTestCase
     {
         $this->backendUser->user['uid'] = 13;
         $this->backendUser->firstMainGroup = 14;
-        // Defaults from ext:test_defaultpagetsconfig/Configuration/page.tsconfig kick in here for pages below 88
+        // Defaults from ext:test_defaulttsconfig/Configuration/page.tsconfig kick in here for pages below 88
         $parent = $this->insertPage(88, [
             'title' => 'Test page',
             'TSconfig' => '

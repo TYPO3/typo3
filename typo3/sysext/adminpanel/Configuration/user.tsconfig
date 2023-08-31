@@ -1,0 +1,4 @@
+// BE admin users see all admin panel modules by default, non-admin users need manual User TSconfig.
+[backend.user.isAdmin]
+    admPanel.enable.all = 1
+[end]

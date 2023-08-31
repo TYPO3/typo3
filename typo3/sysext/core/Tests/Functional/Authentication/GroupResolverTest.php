@@ -39,7 +39,7 @@ final class GroupResolverTest extends FunctionalTestCase
             ],
             'direct group with multiple users' => [
                 [1],
-                [2, 3],
+                [2, 3, 6],
             ],
             'direct group with one users' => [
                 [4],

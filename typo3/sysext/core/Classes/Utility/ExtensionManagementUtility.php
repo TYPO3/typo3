@@ -658,13 +658,15 @@ class ExtensionManagementUtility
 
     /**
      * Adds $content to the default user TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultUserTSconfig']
-     * Prefixed with a [GLOBAL] line
-     * FOR USE IN ext_localconf.php FILE
      *
-     * @param string $content User TSconfig content
+     * @deprecated since TYPO3 v13.0, will be removed in TYPO3 v14.0.
      */
     public static function addUserTSConfig(string $content): void
     {
+        trigger_error(
+            'ExtensionManagementUtility::addUserTSConfig() has been deprecated in TYPO3 v13.0 and will be removed in v14.0. Use Configuration/user.tsconfig files in extensions instead.',
+            E_USER_DEPRECATED
+        );
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= chr(10) . $content;
     }
 

@@ -1041,4 +1041,9 @@ return [
             'Deprecation-101799-ExtensionManagementUtilityaddPageTSConfig.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'defaultUserTSconfig\']' => [
+        'restFiles' => [
+            'Deprecation-101807-ExtensionManagementUtilityaddUserTSConfig.rst',
+        ],
+    ],
 ];

@@ -1578,4 +1578,11 @@ return [
             'Deprecation-101799-ExtensionManagementUtilityaddPageTSConfig.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-101807-ExtensionManagementUtilityaddUserTSConfig.rst',
+        ],
+    ],
 ];
