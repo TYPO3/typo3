@@ -17,43 +17,50 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
+final class LocalizationControllerTest extends FunctionalTestCase
 {
-    protected LocalizationController&MockObject&AccessibleObjectInterface $subject;
-
-    protected BackendUserAuthentication $backendUser;
+    use SiteBasedTestTrait;
 
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * Sets up this test case.
-     */
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
+        'DE' => ['id' => 2, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF-8'],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
-
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-default-language.csv');
-        $this->setUpFrontendRootPage(1);
-        $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
-
-        $this->subject = $this->getAccessibleMock(LocalizationController::class, ['getPageColumns']);
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+                $this->buildLanguageConfiguration('DK', '/dk/'),
+                $this->buildLanguageConfiguration('DE', '/de'),
+            ]
+        );
     }
 
     /**
      * @test
-     * see DataSet/TranslatedFromDefault.csv
      */
     public function recordsGetTranslatedFromDefaultLanguage(): void
     {
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
         $params = [
             'pageId' => 1,
             'srcLanguageId' => 0,
@@ -61,7 +68,8 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'uidList' => [1, 2, 3],
             'action' => LocalizationController::ACTION_LOCALIZE,
         ];
-        $this->subject->_call('process', $params);
+        $subject = $this->getAccessibleMock(LocalizationController::class, null);
+        $subject->_call('process', $params);
         $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/TranslatedFromDefault.csv');
     }
 
@@ -71,7 +79,8 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
     public function recordsGetTranslatedFromDifferentTranslation(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language.csv');
-
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
         $params = [
             'pageId' => 1,
             'srcLanguageId' => 1,
@@ -79,7 +88,8 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'uidList' => [4, 5, 6], // uids of tt_content-danish-language
             'action' => LocalizationController::ACTION_LOCALIZE,
         ];
-        $this->subject->_call('process', $params);
+        $subject = $this->getAccessibleMock(LocalizationController::class, null);
+        $subject->_call('process', $params);
         $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/TranslatedFromTranslation.csv');
     }
 
@@ -88,6 +98,8 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
      */
     public function recordsGetCopiedFromDefaultLanguage(): void
     {
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
         $params = [
             'pageId' => 1,
             'srcLanguageId' => 0,
@@ -95,7 +107,8 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'uidList' => [1, 2, 3],
             'action' => LocalizationController::ACTION_COPY,
         ];
-        $this->subject->_call('process', $params);
+        $subject = $this->getAccessibleMock(LocalizationController::class, null);
+        $subject->_call('process', $params);
         $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/CopiedFromDefault.csv');
     }
 
@@ -105,7 +118,8 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
     public function recordsGetCopiedFromAnotherLanguage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language.csv');
-
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
         $params = [
             'pageId' => 1,
             'srcLanguageId' => 1,
@@ -113,7 +127,8 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'uidList' => [4, 5, 6], // uids of tt_content-danish-language
             'action' => LocalizationController::ACTION_COPY,
         ];
-        $this->subject->_call('process', $params);
+        $subject = $this->getAccessibleMock(LocalizationController::class, null);
+        $subject->_call('process', $params);
         $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/CopiedFromTranslation.csv');
     }
 
@@ -131,6 +146,8 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
      */
     public function copyingNewContentFromLanguageIntoExistingLocalizationHasSameOrdering(): void
     {
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
         $params = [
             'pageId' => 1,
             'srcLanguageId' => 0,
@@ -138,8 +155,8 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'uidList' => [1, 2, 3],
             'action' => LocalizationController::ACTION_COPY,
         ];
-        $this->subject->_call('process', $params);
-
+        $subject = $this->getAccessibleMock(LocalizationController::class, null);
+        $subject->_call('process', $params);
         // Create another content element in default language
         $data = [
             'tt_content' => [
@@ -156,7 +173,6 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
         $dataHandler->process_datamap();
         $dataHandler->process_cmdmap();
         $newContentElementUid = $dataHandler->substNEWwithIDs['NEW123456'];
-
         // Copy the new content element
         $params = [
             'pageId' => 1,
@@ -165,7 +181,7 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'uidList' => [$newContentElementUid],
             'action' => LocalizationController::ACTION_COPY,
         ];
-        $this->subject->_call('process', $params);
+        $subject->_call('process', $params);
         $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/CreatedElementOrdering.csv');
     }
 
@@ -175,7 +191,8 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
     public function defaultLanguageIsFoundAsOriginLanguage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language.csv');
-
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
         // Create another content element in default language
         $data = [
             'tt_content' => [
@@ -191,13 +208,12 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
         $dataHandler->start($data, []);
         $dataHandler->process_datamap();
         $dataHandler->process_cmdmap();
-
         $request = (new ServerRequest())->withQueryParams([
             'pageId'         => 1, // page uid, the records are stored on
             'languageId'     => 1,  // current language id
         ]);
-
-        $usedLanguages = (string)$this->subject->getUsedLanguagesInPage($request)->getBody();
+        $subject = $this->getAccessibleMock(LocalizationController::class, null);
+        $usedLanguages = (string)$subject->getUsedLanguagesInPage($request)->getBody();
         self::assertThat($usedLanguages, self::stringContains('"uid":0'));
     }
     /**
@@ -207,13 +223,14 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-default-language-deleted-element.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language-deleted-source.csv');
-
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
         $request = (new ServerRequest())->withQueryParams([
-            'pageId'         => 2, // page uid, the records are stored on
-            'languageId'     => 1,  // current language id
+            'pageId' => 2, // page uid, the records are stored on
+            'languageId' => 1,  // current language id
         ]);
-
-        $usedLanguages = (string)$this->subject->getUsedLanguagesInPage($request)->getBody();
+        $subject = $this->getAccessibleMock(LocalizationController::class, null);
+        $usedLanguages = (string)$subject->getUsedLanguagesInPage($request)->getBody();
         self::assertThat($usedLanguages, self::stringContains('"uid":0'));
     }
 
@@ -223,9 +240,11 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
     public function recordLocalizeSummaryRespectsWorkspaceEncapsulationForDeletedRecords(): void
     {
         // Delete record 2 within workspace 1
-        $this->backendUser->workspace = 1;
-        $this->actionService->deleteRecord('tt_content', 2);
-
+        $backendUser = $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
+        $backendUser->workspace = 1;
+        $actionService = new ActionService();
+        $actionService->deleteRecord('tt_content', 2);
         $expectedRecords = [
             '0' => [
                 ['uid' => 1],
@@ -234,9 +253,26 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
                 ['uid' => 3],
             ],
         ];
-
-        $localizeSummary = $this->getReducedRecordLocalizeSummary();
-
+        $request = (new ServerRequest())->withQueryParams([
+            'pageId' => 1, // page uid, the records are stored on
+            'destLanguageId' => 1, // destination language uid
+            'languageId' => 0,  // source language uid
+        ]);
+        $subject = $this->getAccessibleMock(LocalizationController::class, ['getPageColumns']);
+        $subject->method('getPageColumns')->willReturn([
+            0 => 'Column 0',
+            1 => 'Column 1',
+        ]);
+        $recordLocalizeSummaryResponse = $subject->getRecordLocalizeSummary($request);
+        // Reduce the fetched record summary to list of uids
+        if ($recordLocalizeSummary = json_decode((string)$recordLocalizeSummaryResponse->getBody(), true)) {
+            foreach ($recordLocalizeSummary['records'] as $colPos => $records) {
+                foreach ($records as $key => $record) {
+                    $recordLocalizeSummary['records'][$colPos][$key] = array_intersect_key($record, ['uid' => '']);
+                }
+            }
+        }
+        $localizeSummary = $recordLocalizeSummary['records'];
         self::assertEquals($expectedRecords, $localizeSummary);
     }
 
@@ -246,9 +282,11 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
     public function recordLocalizeSummaryRespectsWorkspaceEncapsulationForMovedRecords(): void
     {
         // Move record 2 to page 2 within workspace 1
-        $this->backendUser->workspace = 1;
-        $this->actionService->moveRecord('tt_content', 2, 2);
-
+        $backendUser = $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
+        $backendUser->workspace = 1;
+        $actionService = new ActionService();
+        $actionService->moveRecord('tt_content', 2, 2);
         $expectedRecords = [
             '0' => [
                 ['uid' => 1],
@@ -257,30 +295,17 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
                 ['uid' => 3],
             ],
         ];
-
-        $localizeSummary = $this->getReducedRecordLocalizeSummary();
-
-        self::assertEquals($expectedRecords, $localizeSummary);
-    }
-
-    /**
-     * Get record localized summary list reduced to list of uids
-     */
-    protected function getReducedRecordLocalizeSummary(): array
-    {
         $request = (new ServerRequest())->withQueryParams([
-            'pageId'         => 1, // page uid, the records are stored on
+            'pageId' => 1, // page uid, the records are stored on
             'destLanguageId' => 1, // destination language uid
-            'languageId'     => 0,  // source language uid
+            'languageId' => 0,  // source language uid
         ]);
-
-        $this->subject->method('getPageColumns')->willReturn([
+        $subject = $this->getAccessibleMock(LocalizationController::class, ['getPageColumns']);
+        $subject->method('getPageColumns')->willReturn([
             0 => 'Column 0',
             1 => 'Column 1',
         ]);
-
-        $recordLocalizeSummaryResponse = $this->subject->getRecordLocalizeSummary($request);
-
+        $recordLocalizeSummaryResponse = $subject->getRecordLocalizeSummary($request);
         // Reduce the fetched record summary to list of uids
         if ($recordLocalizeSummary = json_decode((string)$recordLocalizeSummaryResponse->getBody(), true)) {
             foreach ($recordLocalizeSummary['records'] as $colPos => $records) {
@@ -289,7 +314,7 @@ final class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
                 }
             }
         }
-
-        return $recordLocalizeSummary['records'];
+        $localizeSummary = $recordLocalizeSummary['records'];
+        self::assertEquals($expectedRecords, $localizeSummary);
     }
 }

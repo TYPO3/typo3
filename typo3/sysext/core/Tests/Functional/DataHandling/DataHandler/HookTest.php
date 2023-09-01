@@ -17,63 +17,114 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler\Fixtures\HookFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Tests triggering hook execution in DataHandler.
  */
-final class HookTest extends AbstractDataHandlerActionTestCase
+final class HookTest extends FunctionalTestCase
 {
-    protected const VALUE_PageId = 89;
-    protected const VALUE_ContentId = 297;
-    protected const TABLE_Content = 'tt_content';
-    protected const TABLE_Hotel = 'tx_testirreforeignfield_hotel';
-    protected const TABLE_Category = 'sys_category';
-    protected const FIELD_ContentHotel = 'tx_testirreforeignfield_hotels';
-    protected const FIELD_Categories = 'categories';
-
-    /**
-     * @var HookFixture
-     */
-    protected $hookFixture;
-
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];
+
+    protected array $configurationToUseInTestInstance = [
+        'SC_OPTIONS' => [
+            't3lib/class.t3lib_tcemain.php' => [
+                'processDatamapClass' => [
+                    __CLASS__ => HookFixture::class,
+                ],
+                'processCmdmapClass' => [
+                    __CLASS__ => HookFixture::class,
+                ],
+            ],
+        ],
+    ];
+
+    private const VALUE_PageId = 89;
+    private const VALUE_ContentId = 297;
+    private const TABLE_Content = 'tt_content';
+    private const TABLE_Hotel = 'tx_testirreforeignfield_hotel';
+    private const TABLE_Category = 'sys_category';
+    private const FIELD_ContentHotel = 'tx_testirreforeignfield_hotels';
+    private const FIELD_Categories = 'categories';
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultElements.csv');
-        $this->backendUser->workspace = 0;
-
-        $this->hookFixture = GeneralUtility::makeInstance(HookFixture::class);
-        $this->hookFixture->purge();
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][__CLASS__] = HookFixture::class;
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][__CLASS__] = HookFixture::class;
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][__CLASS__]);
-        unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][__CLASS__]);
-        unset($this->hookFixture);
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
     }
 
     /**
-     * @test
+     * @param string[] $methodNames
      */
-    public function verifyCleanReferenceIndex(): void
+    private function assertHookInvocationsCount(HookFixture $hookFixture, array $methodNames, int $count): void
     {
-        // The test verifies the imported data set has a clean reference index by the check in tearDown()
-        self::assertTrue(true);
+        $message = 'Unexpected invocations of method "%s"';
+        foreach ($methodNames as $methodName) {
+            $invocations = $hookFixture->findInvocationsByMethodName($methodName);
+            self::assertCount(
+                $count,
+                $invocations,
+                sprintf($message, $methodName)
+            );
+        }
+    }
+
+    /**
+     * @param string[] $methodNames
+     */
+    private function assertHookInvocationsPayload(HookFixture $hookFixture, array $methodNames, array $assertions): void
+    {
+        foreach ($methodNames as $methodName) {
+            $this->assertHookInvocationPayload($hookFixture, $methodName, $assertions);
+        }
+    }
+
+    private function assertHookInvocationPayload(HookFixture $hookFixture, string $methodName, array $assertions): void
+    {
+        $invocations = $hookFixture->findInvocationsByMethodName($methodName);
+        self::assertNotNull($invocations);
+        foreach ($assertions as $assertion) {
+            $indexes = [];
+            foreach ($invocations as $index => $item) {
+                if ($this->equals($assertion, $item)) {
+                    $indexes[] = $index;
+                }
+            }
+            self::assertCount(
+                1,
+                $indexes,
+                sprintf('Unexpected hook payload amount found for method "%s"', $methodName)
+            );
+            $index = $indexes[0];
+            unset($invocations[$index]);
+        }
+    }
+
+    private function equals(array $left, array $right): bool
+    {
+        foreach ($left as $key => $leftValue) {
+            $rightValue = $right[$key] ?? null;
+            if (!is_array($leftValue) && (string)$leftValue !== (string)$rightValue) {
+                return false;
+            }
+            if (is_array($leftValue)) {
+                if (!$this->equals($leftValue, $rightValue)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -81,19 +132,20 @@ final class HookTest extends AbstractDataHandlerActionTestCase
      */
     public function hooksAreExecutedForNewRecords(): void
     {
-        $newTableIds = $this->actionService->createNewRecord(
+        $hookFixture = GeneralUtility::makeInstance(HookFixture::class);
+        $actionService = new ActionService();
+        $actionService->createNewRecord(
             self::TABLE_Content,
             self::VALUE_PageId,
             ['header' => 'Testing #1']
         );
-        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
 
-        $this->assertHookInvocationsCount([
+        $this->assertHookInvocationsCount($hookFixture, [
                 'processDatamap_beforeStart',
                 'processDatamap_afterAllOperations',
         ], 1);
 
-        $this->assertHookInvocationsPayload([
+        $this->assertHookInvocationsPayload($hookFixture, [
             'processDatamap_preProcessFieldArray',
             'processDatamap_postProcessFieldArray',
             'processDatamap_afterDatabaseOperations',
@@ -110,18 +162,20 @@ final class HookTest extends AbstractDataHandlerActionTestCase
      */
     public function hooksAreExecutedForExistingRecords(): void
     {
-        $this->actionService->modifyRecord(
+        $hookFixture = GeneralUtility::makeInstance(HookFixture::class);
+        $actionService = new ActionService();
+        $actionService->modifyRecord(
             self::TABLE_Content,
             self::VALUE_ContentId,
             ['header' => 'Testing #1']
         );
 
-        $this->assertHookInvocationsCount([
+        $this->assertHookInvocationsCount($hookFixture, [
             'processDatamap_beforeStart',
             'processDatamap_afterAllOperations',
         ], 1);
 
-        $this->assertHookInvocationsPayload([
+        $this->assertHookInvocationsPayload($hookFixture, [
             'processDatamap_preProcessFieldArray',
             'processDatamap_postProcessFieldArray',
             'processDatamap_afterDatabaseOperations',
@@ -142,7 +196,9 @@ final class HookTest extends AbstractDataHandlerActionTestCase
         $hotelNewId = StringUtility::getUniqueId('NEW');
         $categoryNewId = StringUtility::getUniqueId('NEW');
 
-        $this->actionService->modifyRecords(
+        $hookFixture = GeneralUtility::makeInstance(HookFixture::class);
+        $actionService = new ActionService();
+        $actionService->modifyRecords(
             self::VALUE_PageId,
             [
                 self::TABLE_Content => [
@@ -162,12 +218,13 @@ final class HookTest extends AbstractDataHandlerActionTestCase
             ]
         );
 
-        $this->assertHookInvocationsCount([
+        $this->assertHookInvocationsCount($hookFixture, [
             'processDatamap_beforeStart',
             'processDatamap_afterAllOperations',
         ], 1);
 
         $this->assertHookInvocationPayload(
+            $hookFixture,
             'processDatamap_preProcessFieldArray',
             [
                 [
@@ -190,6 +247,7 @@ final class HookTest extends AbstractDataHandlerActionTestCase
         );
 
         $this->assertHookInvocationPayload(
+            $hookFixture,
             'processDatamap_postProcessFieldArray',
             [
                 [
@@ -208,6 +266,7 @@ final class HookTest extends AbstractDataHandlerActionTestCase
         );
 
         $this->assertHookInvocationPayload(
+            $hookFixture,
             'processDatamap_afterDatabaseOperations',
             [
                 [
@@ -235,7 +294,9 @@ final class HookTest extends AbstractDataHandlerActionTestCase
      */
     public function hooksAreExecutedForExistingRelations(): void
     {
-        $this->actionService->modifyRecord(
+        $hookFixture = GeneralUtility::makeInstance(HookFixture::class);
+        $actionService = new ActionService();
+        $actionService->modifyRecord(
             self::TABLE_Content,
             self::VALUE_ContentId,
             [
@@ -245,12 +306,13 @@ final class HookTest extends AbstractDataHandlerActionTestCase
             ]
         );
 
-        $this->assertHookInvocationsCount([
+        $this->assertHookInvocationsCount($hookFixture, [
             'processDatamap_beforeStart',
             'processDatamap_afterAllOperations',
         ], 1);
 
         $this->assertHookInvocationPayload(
+            $hookFixture,
             'processDatamap_preProcessFieldArray',
             [
                 [
@@ -264,7 +326,7 @@ final class HookTest extends AbstractDataHandlerActionTestCase
             ]
         );
 
-        $this->assertHookInvocationsPayload([
+        $this->assertHookInvocationsPayload($hookFixture, [
             'processDatamap_postProcessFieldArray',
             'processDatamap_afterDatabaseOperations',
         ], [
@@ -277,79 +339,5 @@ final class HookTest extends AbstractDataHandlerActionTestCase
                 ],
             ],
         ]);
-    }
-
-    /**
-     * @param string[] $methodNames
-     */
-    protected function assertHookInvocationsCount(array $methodNames, int $count): void
-    {
-        $message = 'Unexpected invocations of method "%s"';
-        foreach ($methodNames as $methodName) {
-            $invocations = $this->hookFixture->findInvocationsByMethodName($methodName);
-            self::assertCount(
-                $count,
-                $invocations,
-                sprintf($message, $methodName)
-            );
-        }
-    }
-
-    /**
-     * @param string[] $methodNames
-     */
-    protected function assertHookInvocationsPayload(array $methodNames, array $assertions): void
-    {
-        foreach ($methodNames as $methodName) {
-            $this->assertHookInvocationPayload($methodName, $assertions);
-        }
-    }
-
-    protected function assertHookInvocationPayload(string $methodName, array $assertions): void
-    {
-        $message = 'Unexpected hook payload amount found for method "%s"';
-        $invocations = $this->hookFixture->findInvocationsByMethodName($methodName);
-        self::assertNotNull($invocations);
-
-        foreach ($assertions as $assertion) {
-            $indexes = $this->findAllArrayValuesInHaystack($invocations, $assertion);
-            self::assertCount(
-                1,
-                $indexes,
-                sprintf($message, $methodName)
-            );
-            $index = $indexes[0];
-            unset($invocations[$index]);
-        }
-    }
-
-    /**
-     * @return int[]
-     */
-    protected function findAllArrayValuesInHaystack(array $haystack, array $assertion): array
-    {
-        $found = [];
-        foreach ($haystack as $index => $item) {
-            if ($this->equals($assertion, $item)) {
-                $found[] = $index;
-            }
-        }
-        return $found;
-    }
-
-    protected function equals(array $left, array $right): bool
-    {
-        foreach ($left as $key => $leftValue) {
-            $rightValue = $right[$key] ?? null;
-            if (!is_array($leftValue) && (string)$leftValue !== (string)$rightValue) {
-                return false;
-            }
-            if (is_array($leftValue)) {
-                if (!$this->equals($leftValue, $rightValue)) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }

@@ -19,22 +19,34 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Slug;
 
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class SlugHelperUniqueWithLanguageTest extends AbstractDataHandlerActionTestCase
+final class SlugHelperUniqueWithLanguageTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler_slug',
+    ];
+
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->importCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueWithLanguages.csv');
-        $this->setUpFrontendSite(1);
-        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+            ],
+        );
     }
 
     public static function buildSlugForUniqueRespectsLanguageDataProvider(): array
@@ -107,7 +119,6 @@ final class SlugHelperUniqueWithLanguageTest extends AbstractDataHandlerActionTe
                 'default' => '',
             ]
         );
-
         $state = RecordStateFactory::forName('tx_testdatahandler_slug')->fromArray($recordData);
         $resultSlug = $subject->buildSlugForUniqueInTable($recordData['slug'], $state);
         self::assertSame($expectedSlug, $resultSlug);

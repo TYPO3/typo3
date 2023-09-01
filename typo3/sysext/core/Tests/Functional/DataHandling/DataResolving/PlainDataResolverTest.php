@@ -18,20 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataResolving;
 
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class PlainDataResolverTest extends AbstractDataHandlerActionTestCase
+final class PlainDataResolverTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
-    ];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/DataSet/Pages.csv');
-    }
-
     /**
      * entries:
      *  'key' => [
@@ -127,6 +117,7 @@ final class PlainDataResolverTest extends AbstractDataHandlerActionTestCase
      */
     public function processSortingReturnsExpectedSequenceOfUids(array $input, array $expected, array $sortings): void
     {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/Pages.csv');
         $subject = new PlainDataResolver('pages', [], $sortings);
         self::assertSame($expected, $subject->processSorting($input));
     }

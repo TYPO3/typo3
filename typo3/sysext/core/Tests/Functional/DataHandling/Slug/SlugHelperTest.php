@@ -17,72 +17,43 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Slug;
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Functional test for the SlugHelper
  */
-final class SlugHelperTest extends AbstractDataHandlerActionTestCase
+final class SlugHelperTest extends FunctionalTestCase
 {
-    /**
-     * Default Site Configuration
-     * @var array
-     */
-    protected $siteLanguageConfiguration = [
-        1 => [
-            'title' => 'Dansk',
-            'enabled' => true,
-            'languageId' => 1,
-            'base' => '/dk/',
-            'locale' => 'da_DK.UTF-8',
-            'flag' => 'dk',
-            'fallbackType' => 'fallback',
-            'fallbacks' => '0',
-        ],
-        2 => [
-            'title' => 'Deutsch',
-            'enabled' => true,
-            'languageId' => 2,
-            'base' => '/de/',
-            'locale' => 'de_DE.UTF-8',
-            'flag' => 'de',
-            'fallbackType' => 'fallback',
-            'fallbacks' => '0',
-        ],
-        3 => [
-            'title' => 'Schweizer Deutsch',
-            'enabled' => true,
-            'languageId' => 3,
-            'base' => '/de-ch/',
-            'locale' => 'de_CH.UTF-8',
-            'flag' => 'ch',
-            'fallbackType' => 'fallback',
-            'fallbacks' => '2,0',
-        ],
-    ];
+    use SiteBasedTestTrait;
 
-    protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
+        'DE' => ['id' => 2, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF-8'],
+        'CH' => ['id' => 3, 'title' => 'Schweizer Deutsch', 'locale' => 'de_CH.UTF-8'],
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->importCSVDataSet(__DIR__ . '/DataSet/Pages.csv');
-        $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
-        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
-    }
-
-    /**
-     * @test
-     */
-    public function verifyCleanReferenceIndex(): void
-    {
-        // The test verifies the imported data set has a clean reference index by the check in tearDown()
-        self::assertTrue(true);
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+                $this->buildLanguageConfiguration('DK', '/dk/'),
+                $this->buildLanguageConfiguration('DE', '/de/'),
+                $this->buildLanguageConfiguration('CH', '/de-CH/', ['DE', 'EN']),
+            ],
+        );
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
     }
 
     /**
@@ -152,7 +123,6 @@ final class SlugHelperTest extends AbstractDataHandlerActionTestCase
                 ],
             ]
         );
-
         self::assertEquals(
             $expected,
             $slugHelper->generate(

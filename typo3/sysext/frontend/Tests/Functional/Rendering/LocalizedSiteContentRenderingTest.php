@@ -17,10 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
 
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case checking if localized tt_content is rendered correctly with different language settings
@@ -96,21 +100,17 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  * -> getFallbackChain()
  *    if the page is not available in a specific language, apply other language Ids in the given order until the page translation can be found.
  */
-final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCase
+final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
-
-    public const VALUE_PageId = 89;
-    public const TABLE_Content = 'tt_content';
-    public const TABLE_Pages = 'pages';
-
-    protected array $coreExtensionsToLoad = ['workspaces'];
 
     protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
     ];
 
-    protected const LANGUAGE_PRESETS = [
+    private const VALUE_PageId = 89;
+    private const TABLE_Content = 'tt_content';
+    private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
         'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
         'DE' => ['id' => 2, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF8'],
@@ -120,14 +120,52 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultElements.csv');
-
         $this->setUpFrontendRootPage(1, [
             'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
         ]);
+    }
+
+    /**
+     * Helper function to ease asserting that rest of the data set is not visible
+     */
+    private function getNonVisibleHeaders(array $visibleHeaders): array
+    {
+        $allElements = [
+            'Regular Element #1',
+            'Regular Element #2',
+            'Regular Element #3',
+            'Hidden Element #4',
+            '[Translate to Dansk:] Regular Element #1',
+            '[Translate to Dansk:] Regular Element #3',
+            '[DK] Without default language',
+            '[DK] UnHidden Element #4',
+            '[DE] Without default language',
+            '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
+            '[Translate to Polski:] Regular Element #1',
+            '[PL] Without default language',
+            '[PL] Hidden Regular Element #2',
+        ];
+        return array_diff($allElements, $visibleHeaders);
+    }
+
+    /**
+     * Helper function to ease asserting that rest of the files are not present
+     */
+    private function getNonVisibleFileTitles(array $visibleTitles): array
+    {
+        $allElements = [
+            'T3BOARD',
+            'Kasper',
+            '[Kasper] Image translated to Dansk',
+            '[T3BOARD] Image added in Dansk (without parent)',
+            '[T3BOARD] Image added to DK element without default language',
+            '[T3BOARD] image translated to DE from DK',
+            'Kasper2',
+        ];
+        return array_diff($allElements, $visibleTitles);
     }
 
     /**
@@ -149,7 +187,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
         );
 
         $response = $this->executeFrontendSubRequest(
-            new InternalRequest('https://website.local/en/?id=' . static::VALUE_PageId)
+            new InternalRequest('https://website.local/en/?id=' . self::VALUE_PageId)
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
 
@@ -157,14 +195,14 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
         $visibleHeaders = ['Regular Element #1', 'Regular Element #2', 'Regular Element #3'];
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionHasRecordConstraint()
+            (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$visibleHeaders)
         );
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionDoesNotHaveRecordConstraint()
+            (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -172,20 +210,20 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
 
         //assert FAL relations
         $visibleFiles = ['T3BOARD'];
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+        self::assertThat($responseSections, (new StructureHasRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
 
-        self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
         $visibleFiles = ['Kasper2'];
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+        self::assertThat($responseSections, (new StructureHasRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
 
-        self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
@@ -301,7 +339,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
         );
 
         $response = $this->executeFrontendSubRequest(
-            new InternalRequest('https://website.local/dk/?id=' . static::VALUE_PageId)
+            new InternalRequest('https://website.local/dk/?id=' . self::VALUE_PageId)
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
         $responseSections = $responseStructure->getSections();
@@ -311,14 +349,14 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionHasRecordConstraint()
+            (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$visibleHeaders)
         );
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionDoesNotHaveRecordConstraint()
+            (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -327,11 +365,11 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
         foreach ($visibleRecords as $ttContentUid => $properties) {
             $visibleFileTitles = $properties['image'];
             if (!empty($visibleFileTitles)) {
-                self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+                self::assertThat($responseSections, (new StructureHasRecordConstraint())
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
             }
-            self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+            self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
                 ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                 ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
         }
@@ -633,7 +671,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
         );
 
         $response = $this->executeFrontendSubRequest(
-            new InternalRequest('https://website.local/de/?id=' . static::VALUE_PageId)
+            new InternalRequest('https://website.local/de/?id=' . self::VALUE_PageId)
         );
 
         if ($statusCode === 200) {
@@ -643,14 +681,14 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
 
             self::assertThat(
                 $responseSections,
-                $this->getRequestSectionHasRecordConstraint()
+                (new HasRecordConstraint())
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$visibleHeaders)
             );
             self::assertThat(
                 $responseSections,
-                $this->getRequestSectionDoesNotHaveRecordConstraint()
+                (new DoesNotHaveRecordConstraint())
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -659,11 +697,11 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
             foreach ($visibleRecords as $ttContentUid => $properties) {
                 $visibleFileTitles = $properties['image'];
                 if (!empty($visibleFileTitles)) {
-                    self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+                    self::assertThat($responseSections, (new StructureHasRecordConstraint())
                         ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                         ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
                 }
-                self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+                self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
             }
@@ -800,7 +838,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
         );
 
         $response = $this->executeFrontendSubRequest(
-            new InternalRequest('https://website.local/pl/?id=' . static::VALUE_PageId)
+            new InternalRequest('https://website.local/pl/?id=' . self::VALUE_PageId)
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
         $responseSections = $responseStructure->getSections();
@@ -809,14 +847,14 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionHasRecordConstraint()
+            (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$visibleHeaders)
         );
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionDoesNotHaveRecordConstraint()
+            (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -828,45 +866,5 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
         self::assertEquals($fallbackType, $responseStructure->getScopePath('languageInfo/fallbackType'), 'fallbackType does not match');
         self::assertEquals($fallbackChain, $responseStructure->getScopePath('languageInfo/fallbackChain'), 'fallbackChain does not match');
         self::assertEquals($overlayType, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
-    }
-
-    /**
-     * Helper function to ease asserting that rest of the data set is not visible
-     */
-    protected function getNonVisibleHeaders(array $visibleHeaders): array
-    {
-        $allElements = [
-            'Regular Element #1',
-            'Regular Element #2',
-            'Regular Element #3',
-            'Hidden Element #4',
-            '[Translate to Dansk:] Regular Element #1',
-            '[Translate to Dansk:] Regular Element #3',
-            '[DK] Without default language',
-            '[DK] UnHidden Element #4',
-            '[DE] Without default language',
-            '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
-            '[Translate to Polski:] Regular Element #1',
-            '[PL] Without default language',
-            '[PL] Hidden Regular Element #2',
-        ];
-        return array_diff($allElements, $visibleHeaders);
-    }
-
-    /**
-     * Helper function to ease asserting that rest of the files are not present
-     */
-    protected function getNonVisibleFileTitles(array $visibleTitles): array
-    {
-        $allElements = [
-            'T3BOARD',
-            'Kasper',
-            '[Kasper] Image translated to Dansk',
-            '[T3BOARD] Image added in Dansk (without parent)',
-            '[T3BOARD] Image added to DK element without default language',
-            '[T3BOARD] image translated to DE from DK',
-            'Kasper2',
-        ];
-        return array_diff($allElements, $visibleTitles);
     }
 }

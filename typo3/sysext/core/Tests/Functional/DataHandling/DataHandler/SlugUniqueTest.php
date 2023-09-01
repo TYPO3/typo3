@@ -17,28 +17,39 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Tests related to DataHandler slug unique handling
  */
-final class SlugUniqueTest extends AbstractDataHandlerActionTestCase
+final class SlugUniqueTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
+    use SiteBasedTestTrait;
+
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpFrontendSite(1);
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+            ],
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
+        );
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
     }
 
-    /**
-     * Data provider for differentUniqueEvalSettingsDeDuplicateSlug
-     */
     public static function getEvalSettingDataProvider(): array
     {
         return [
@@ -94,7 +105,6 @@ final class SlugUniqueTest extends AbstractDataHandlerActionTestCase
             []
         );
         $dataHandler->process_datamap();
-
         $this->assertCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueResult.csv');
     }
 
@@ -121,7 +131,6 @@ final class SlugUniqueTest extends AbstractDataHandlerActionTestCase
             []
         );
         $dataHandler->process_datamap();
-
         $this->assertCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueNewRecordResult.csv');
     }
 }

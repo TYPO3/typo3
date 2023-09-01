@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\FlexformIrre;
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class ActionTest extends AbstractDataHandlerActionTestCase
+final class ActionTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
 
@@ -35,27 +37,19 @@ final class ActionTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex(): void
-    {
-        // The test verifies the imported data set has a clean reference index by the check in tearDown()
-        self::assertTrue(true);
-    }
-
-    /**
-     * @test
-     */
     public function newVersionOfFileRelationInFlexformFieldIsCreatedOnSave(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefault.csv');
-        $this->setWorkspaceId(1);
-        $this->actionService->modifyRecords(1, [
-            //'sys_file_reference' => ['uid' => 10, 'hidden' => 0],
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
+        $backendUser->workspace = 1;
+        $actionService = new ActionService();
+        $actionService->modifyRecords(1, [
             'tt_content' => ['uid' => 100, 'header' => 'Content #1 (WS)'],
         ]);
-
         // there should be one relation in the live WS and one in the draft WS pointing to the file field.
-        $queryBuilder = $this->getConnectionPool()
-            ->getQueryBuilderForTable('sys_file_reference');
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_file_reference');
         $queryBuilder->getRestrictions()->removeAll();
         $referenceCount = $queryBuilder
             ->count('uid')
@@ -63,7 +57,6 @@ final class ActionTest extends AbstractDataHandlerActionTestCase
             ->where($queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(20, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchOne();
-
         self::assertEquals(2, $referenceCount);
     }
 }

@@ -19,22 +19,30 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Slug;
 
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
+final class SlugHelperUniqueTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
+    use SiteBasedTestTrait;
+
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->importCSVDataSet(__DIR__ . '/DataSet/PagesForSlugsUnique.csv');
-        $this->setUpFrontendSite(1);
-        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+            ],
+        );
     }
 
     /**
@@ -53,7 +61,6 @@ final class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
                 ],
             ]
         );
-
         $state = RecordStateFactory::forName('pages')->fromArray(['uid' => 'NEW102', 'pid' => 1]);
         $overflowSlug = $subject->buildSlugForUniqueInSite('/unique-slug', $state);
         $parts = explode('-', $overflowSlug);
@@ -106,7 +113,6 @@ final class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
                 ],
             ]
         );
-
         $state = RecordStateFactory::forName('pages')->fromArray(['uid' => 'NEW102', 'pid' => 1]);
         $overflowSlug = $subject->buildSlugForUniqueInTable('/unique-slug', $state);
         $parts = explode('-', $overflowSlug);

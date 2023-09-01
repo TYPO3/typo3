@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
-use TYPO3Tests\BlogExample\Domain\Repository\TtContentRepository;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case documenting an Extbase translation handling of tt_content consistent with Site Handling.
@@ -29,28 +32,20 @@ use TYPO3Tests\BlogExample\Domain\Repository\TtContentRepository;
  * This test has the same scenarios as in the TypoScript version:
  * @see \TYPO3\CMS\Frontend\Tests\Functional\Rendering\LocalizedSiteContentRenderingTest
  */
-final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
+final class TranslatedSiteContentTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
-
-    protected const VALUE_PageId = 89;
-    protected const TABLE_Content = 'tt_content';
-    protected const TABLE_Pages = 'pages';
 
     protected array $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
-
     protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
     ];
 
-    protected TtContentRepository $contentRepository;
-
-    /**
-     * @var array
-     */
-    protected const LANGUAGE_PRESETS = [
+    private const VALUE_PageId = 89;
+    private const TABLE_Content = 'tt_content';
+    private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
         'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
         'DE' => ['id' => 2, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF8'],
@@ -62,17 +57,64 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/LiveDefaultPages.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/LiveDefaultElements.csv');
-        $this->contentRepository = $this->get(TtContentRepository::class);
         $this->setUpFrontendRootPage(1, [
             'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Configuration/TypoScript/setup.typoscript',
             'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/ContentJsonRenderer.typoscript',
         ]);
     }
 
-    protected function tearDown(): void
+    /**
+     * Helper function to ease asserting that rest of the data set is not visible
+     */
+    private function getNonVisibleHeaders(array $visibleHeaders): array
     {
-        unset($this->contentRepository);
-        parent::tearDown();
+        $allElements = [
+            'Regular Element #1',
+            'Regular Element #2',
+            'Regular Element #3',
+            'Hidden Element #4',
+            '[Translate to Dansk:] Regular Element #1',
+            '[Translate to Dansk:] Regular Element #3',
+            '[DK] Without default language',
+            '[DK] UnHidden Element #4',
+            '[DE] Without default language',
+            '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
+            '[Translate to Polski:] Regular Element #1',
+            '[PL] Without default language',
+            '[PL] Hidden Regular Element #2',
+        ];
+        return array_diff($allElements, $visibleHeaders);
+    }
+
+    /**
+     * Helper function to ease asserting that rest of the data set is not visible
+     */
+    private function getNonVisibleFileTitles(array $visibleTitles): array
+    {
+        $allElements = [
+            'T3BOARD',
+            'Kasper',
+            '[Kasper] Image translated to Dansk',
+            '[T3BOARD] Image added in Dansk (without parent)',
+            '[T3BOARD] Image added to DK element without default language',
+            '[T3BOARD] image translated to DE from DK',
+            'Kasper2',
+        ];
+        return array_diff($allElements, $visibleTitles);
+    }
+
+    /**
+     * Helper function to ease asserting that rest of the data set is not visible
+     */
+    private function getNonVisibleCategoryTitles(array $visibleTitles): array
+    {
+        $allElements = [
+            'Category 1',
+            '[Translate to Dansk:] Category 1',
+            'Category 3 - not translated',
+            'Category 4',
+        ];
+        return array_diff($allElements, $visibleTitles);
     }
 
     /**
@@ -100,14 +142,14 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
         $visibleHeaders = ['Regular Element #1', 'Regular Element #2', 'Regular Element #3'];
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionHasRecordConstraint()
+            (new HasRecordConstraint())
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$visibleHeaders)
         );
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionDoesNotHaveRecordConstraint()
+            (new DoesNotHaveRecordConstraint())
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -115,30 +157,30 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
 
         // assert FAL relations
         $visibleFiles = ['T3BOARD'];
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+        self::assertThat($responseSections, (new StructureHasRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
 
-        self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
         $visibleFiles = ['Kasper2'];
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+        self::assertThat($responseSections, (new StructureHasRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
 
-        self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
         // assert Categories
         $visibleCategories = ['Category 1', 'Category 3 - not translated'];
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+        self::assertThat($responseSections, (new StructureHasRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('categories')
             ->setTable('sys_category')->setField('title')->setValues(...$visibleCategories));
 
-        self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+        self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('categories')
             ->setTable('sys_category')->setField('title')->setValues(...$this->getNonVisibleCategoryTitles($visibleCategories)));
     }
@@ -234,14 +276,14 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionHasRecordConstraint()
+            (new HasRecordConstraint())
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$visibleHeaders)
         );
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionDoesNotHaveRecordConstraint()
+            (new DoesNotHaveRecordConstraint())
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -250,21 +292,21 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
         foreach ($visibleRecords as $ttContentUid => $properties) {
             $visibleFileTitles = $properties['image'];
             if (!empty($visibleFileTitles)) {
-                self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+                self::assertThat($responseSections, (new StructureHasRecordConstraint())
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
             }
-            self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+            self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
                 ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                 ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
 
             $visibleCategoryTitles = $properties['categories'] ?? [];
             if (!empty($visibleCategoryTitles)) {
-                self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+                self::assertThat($responseSections, (new StructureHasRecordConstraint())
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('categories')
                     ->setTable('sys_category')->setField('title')->setValues(...$visibleCategoryTitles));
             }
-            self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+            self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
                 ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('categories')
                 ->setTable('sys_category')->setField('title')->setValues(...$this->getNonVisibleCategoryTitles($visibleCategoryTitles)));
         }
@@ -454,14 +496,14 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             $responseSections = $responseStructure->getSection('Extbase:list()');
             self::assertThat(
                 $responseSections,
-                $this->getRequestSectionHasRecordConstraint()
+                (new HasRecordConstraint())
                     ->setTable(self::TABLE_Content)
                     ->setField('header')
                     ->setValues(...$visibleHeaders)
             );
             self::assertThat(
                 $responseSections,
-                $this->getRequestSectionDoesNotHaveRecordConstraint()
+                (new DoesNotHaveRecordConstraint())
                     ->setTable(self::TABLE_Content)
                     ->setField('header')
                     ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -470,11 +512,11 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             foreach ($visibleRecords as $ttContentUid => $properties) {
                 $visibleFileTitles = $properties['image'];
                 if (!empty($visibleFileTitles)) {
-                    self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+                    self::assertThat($responseSections, (new StructureHasRecordConstraint())
                         ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                         ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
                 }
-                self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+                self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
             }
@@ -571,71 +613,17 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionHasRecordConstraint()
+            (new HasRecordConstraint())
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$visibleHeaders)
         );
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionDoesNotHaveRecordConstraint()
+            (new DoesNotHaveRecordConstraint())
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
         );
-    }
-
-    /**
-     * Helper function to ease asserting that rest of the data set is not visible
-     */
-    protected function getNonVisibleHeaders(array $visibleHeaders): array
-    {
-        $allElements = [
-            'Regular Element #1',
-            'Regular Element #2',
-            'Regular Element #3',
-            'Hidden Element #4',
-            '[Translate to Dansk:] Regular Element #1',
-            '[Translate to Dansk:] Regular Element #3',
-            '[DK] Without default language',
-            '[DK] UnHidden Element #4',
-            '[DE] Without default language',
-            '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
-            '[Translate to Polski:] Regular Element #1',
-            '[PL] Without default language',
-            '[PL] Hidden Regular Element #2',
-        ];
-        return array_diff($allElements, $visibleHeaders);
-    }
-
-    /**
-     * Helper function to ease asserting that rest of the data set is not visible
-     */
-    protected function getNonVisibleFileTitles(array $visibleTitles): array
-    {
-        $allElements = [
-            'T3BOARD',
-            'Kasper',
-            '[Kasper] Image translated to Dansk',
-            '[T3BOARD] Image added in Dansk (without parent)',
-            '[T3BOARD] Image added to DK element without default language',
-            '[T3BOARD] image translated to DE from DK',
-            'Kasper2',
-        ];
-        return array_diff($allElements, $visibleTitles);
-    }
-
-    /**
-     * Helper function to ease asserting that rest of the data set is not visible
-     */
-    protected function getNonVisibleCategoryTitles(array $visibleTitles): array
-    {
-        $allElements = [
-            'Category 1',
-            '[Translate to Dansk:] Category 1',
-            'Category 3 - not translated',
-            'Category 4',
-        ];
-        return array_diff($allElements, $visibleTitles);
     }
 }

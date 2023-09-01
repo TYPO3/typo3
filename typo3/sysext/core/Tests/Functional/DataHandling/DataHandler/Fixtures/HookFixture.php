@@ -23,20 +23,9 @@ use TYPO3\CMS\Core\SingletonInterface;
 /**
  * Class for testing execution of DataHandler hook invocations.
  */
-class HookFixture implements SingletonInterface
+final class HookFixture implements SingletonInterface
 {
-    /**
-     * @var array[]
-     */
-    protected $invocations = [];
-
-    /**
-     * Purges the state of this singleton instance
-     */
-    public function purge(): void
-    {
-        $this->invocations = [];
-    }
+    private array $invocations = [];
 
     public function findInvocationsByMethodName(string $methodName): ?array
     {

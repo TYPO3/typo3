@@ -20,19 +20,38 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\History\RecordHistoryRollback;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class TranslationDiffSourceTest extends AbstractDataHandlerActionTestCase
+final class TranslationDiffSourceTest extends FunctionalTestCase
 {
-    protected const PAGE_DATAHANDLER = 88;
+    use SiteBasedTestTrait;
+
+    private const PAGE_DATAHANDLER = 88;
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/TranslationDiffSourceTest.csv');
-        $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
-        $this->backendUser->workspace = 0;
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+                $this->buildLanguageConfiguration('DK', '/dk/'),
+            ],
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
+        );
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
     }
 
     /**
@@ -40,8 +59,8 @@ final class TranslationDiffSourceTest extends AbstractDataHandlerActionTestCase
      */
     public function transOrigDiffSourceFieldWrittenAfterTranslation(): void
     {
-        $map = $this->actionService->localizeRecord('pages', self::PAGE_DATAHANDLER, 1);
-
+        $actionService = new ActionService();
+        $map = $actionService->localizeRecord('pages', self::PAGE_DATAHANDLER, 1);
         $newPageId = $map['pages'][self::PAGE_DATAHANDLER];
         $originalLanguageRecord = BackendUtility::getRecord('pages', self::PAGE_DATAHANDLER);
         $translatedRecord = BackendUtility::getRecord('pages', $newPageId);
@@ -56,9 +75,10 @@ final class TranslationDiffSourceTest extends AbstractDataHandlerActionTestCase
      */
     public function transOrigDiffSourceNotUpdatedAfterUndo(): void
     {
-        $map = $this->actionService->localizeRecord('pages', self::PAGE_DATAHANDLER, 1);
+        $actionService = new ActionService();
+        $map = $actionService->localizeRecord('pages', self::PAGE_DATAHANDLER, 1);
         $newPageId = $map['pages'][self::PAGE_DATAHANDLER];
-        $this->actionService->modifyRecord(
+        $actionService->modifyRecord(
             'pages',
             self::PAGE_DATAHANDLER,
             [

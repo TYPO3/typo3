@@ -17,22 +17,23 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Flexform;
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class ActionTest extends AbstractDataHandlerActionTestCase
+final class ActionTest extends FunctionalTestCase
 {
-    protected const VALUE_ContentId = 100;
-
-    protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
-    ];
+    private const VALUE_ContentId = 100;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultElements.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
     }
 
     /**
@@ -77,7 +78,8 @@ final class ActionTest extends AbstractDataHandlerActionTestCase
     </data>
 </T3FlexForms>';
 
-        $this->actionService->modifyRecords(1, [
+        $actionService = new ActionService();
+        $actionService->modifyRecords(1, [
             'tt_content' => [
                 'uid' => self::VALUE_ContentId,
                 'pi_flexform' => [
@@ -97,8 +99,7 @@ final class ActionTest extends AbstractDataHandlerActionTestCase
             ],
         ]);
 
-        $queryBuilder = $this->getConnectionPool()
-            ->getQueryBuilderForTable('tt_content');
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()->removeAll();
         $flexFormContent = $queryBuilder
             ->select('pi_flexform')
@@ -158,7 +159,8 @@ final class ActionTest extends AbstractDataHandlerActionTestCase
     </data>
 </T3FlexForms>';
 
-        $this->actionService->modifyRecords(1, [
+        $actionService = new ActionService();
+        $actionService->modifyRecords(1, [
             'tt_content' => [
                 'uid' => self::VALUE_ContentId,
                 'pi_flexform' => [
@@ -178,8 +180,7 @@ final class ActionTest extends AbstractDataHandlerActionTestCase
             ],
         ]);
 
-        $queryBuilder = $this->getConnectionPool()
-            ->getQueryBuilderForTable('tt_content');
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()->removeAll();
         $flexFormContent = $queryBuilder
             ->select('pi_flexform')

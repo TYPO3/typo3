@@ -18,12 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Tests related to DataHandler::checkValue()
  */
-final class CheckValueTest extends AbstractDataHandlerActionTestCase
+final class CheckValueTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler',
@@ -33,6 +35,20 @@ final class CheckValueTest extends AbstractDataHandlerActionTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefault.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
+    }
+
+    private function insertRecordWithRadioFieldValue($value): array
+    {
+        // pid 88 comes from ImportDefault
+        $actionService = new ActionService();
+        $result = $actionService->createNewRecord('tt_content', 88, [
+            'tx_testdatahandler_radio' => $value,
+        ]);
+        $recordUid = $result['tt_content'][0];
+        return BackendUtility::getRecord('tt_content', $recordUid);
     }
 
     /**
@@ -41,7 +57,6 @@ final class CheckValueTest extends AbstractDataHandlerActionTestCase
     public function radioButtonValueMustBeDefinedInTcaItems(): void
     {
         $record = $this->insertRecordWithRadioFieldValue('predefined value');
-
         self::assertEquals('predefined value', $record['tx_testdatahandler_radio']);
     }
 
@@ -51,7 +66,6 @@ final class CheckValueTest extends AbstractDataHandlerActionTestCase
     public function radioButtonValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems(): void
     {
         $record = $this->insertRecordWithRadioFieldValue('processed value');
-
         self::assertEquals('processed value', $record['tx_testdatahandler_radio']);
     }
 
@@ -61,20 +75,6 @@ final class CheckValueTest extends AbstractDataHandlerActionTestCase
     public function radioButtonValueIsNotSavedIfNotDefinedInTcaItemsOrProcessingItems(): void
     {
         $record = $this->insertRecordWithRadioFieldValue('some other value');
-
         self::assertEquals('', $record['tx_testdatahandler_radio']);
-    }
-
-    protected function insertRecordWithRadioFieldValue($value): array
-    {
-        // pid 88 comes from ImportDefault
-        $result = $this->actionService->createNewRecord('tt_content', 88, [
-            'tx_testdatahandler_radio' => $value,
-        ]);
-        $recordUid = $result['tt_content'][0];
-
-        $record = BackendUtility::getRecord('tt_content', $recordUid);
-
-        return $record;
     }
 }

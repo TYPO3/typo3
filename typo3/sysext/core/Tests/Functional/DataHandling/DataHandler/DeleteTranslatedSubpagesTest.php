@@ -17,39 +17,29 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Functional test for deleting page with translated subpage
  */
-final class DeleteTranslatedSubpagesTest extends AbstractDataHandlerActionTestCase
+final class DeleteTranslatedSubpagesTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
-    ];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/DataSet/TranslatedSubpages.csv');
-        $this->backendUser->workspace = 0;
-    }
-
     /**
      * @test
      */
     public function deletePageCausesNoErrorsWithTranslatedSubpage(): void
     {
-        $cmd = null;
-        $uid = 1;
-        $cmd['pages'][$uid]['delete'] = 1;
-
+        $this->importCSVDataSet(__DIR__ . '/DataSet/TranslatedSubpages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
+        $cmd['pages'][1]['delete'] = 1;
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmd);
         $dataHandler->process_cmdmap();
-
         self::assertEquals([], $dataHandler->errorLog);
     }
 }

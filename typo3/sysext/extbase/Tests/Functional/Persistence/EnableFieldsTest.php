@@ -17,28 +17,39 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class EnableFieldsTest extends AbstractDataHandlerActionTestCase
+final class EnableFieldsTest extends FunctionalTestCase
 {
-    public const TABLE_Blog = 'tx_blogexample_domain_model_blog';
+    use SiteBasedTestTrait;
 
     protected array $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
+
+    private const TABLE_Blog = 'tx_blogexample_domain_model_blog';
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/EnableFieldsTestImport.csv');
-        $this->setUpFrontendSite(1);
-        $this->setUpFrontendRootPage(
-            1,
-            ['typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/JsonRenderer.typoscript']
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+            ],
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
+        $this->setUpFrontendRootPage(1, ['typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 
     /**
@@ -48,7 +59,7 @@ final class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1'));
     }
 
@@ -59,7 +70,7 @@ final class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(1));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
     }
 
@@ -70,7 +81,7 @@ final class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(2));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
     }
 
@@ -82,13 +93,13 @@ final class EnableFieldsTest extends AbstractDataHandlerActionTestCase
         // first request to fill the query cache
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(1));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
 
         // second request with other frontenduser
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(2));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
     }
 }

@@ -17,49 +17,66 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\MultiSite;
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Functional test for the DataHandler when handling multiple page trees
  */
-final class MultiSiteTest extends AbstractDataHandlerActionTestCase
+final class MultiSiteTest extends FunctionalTestCase
 {
-    protected const VALUE_PageIdWebsite = 1;
-    protected const VALUE_PageIdSecondSite = 50;
+    use SiteBasedTestTrait;
 
-    protected const TABLE_Page = 'pages';
+    private const VALUE_PageIdWebsite = 1;
+    private const VALUE_PageIdSecondSite = 50;
+    private const TABLE_Page = 'pages';
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportDefault.csv');
-
+        $this->importCSVDataSet(__DIR__ . '/../../../Fixtures/be_users_admin.csv');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+            ],
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
+        );
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
-        $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
     }
 
     /**
      * @test
-     * See DataSet/moveRootPageToDifferentPageTree.csv
      */
     public function moveRootPageToDifferentPageTree(): void
     {
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
+
         // Warm up caches for the root line utility to identify side effects
         GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId(self::VALUE_PageIdWebsite);
         GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId(self::VALUE_PageIdSecondSite);
 
         // URL is now "/1" for the second site
-        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdSecondSite, self::VALUE_PageIdWebsite);
+        $actionService = new ActionService();
+        $actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdSecondSite, self::VALUE_PageIdWebsite);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveRootPageToDifferentPageTree.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdSecondSite));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Second Root Page'));
     }
 }
