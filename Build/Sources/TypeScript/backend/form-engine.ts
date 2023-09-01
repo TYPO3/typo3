@@ -23,7 +23,6 @@
 import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
-import Icons from '@typo3/backend/icons';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import * as MessageUtility from '@typo3/backend/utility/message-utility';
 import Severity from '@typo3/backend/severity';
@@ -475,25 +474,15 @@ export default (function() {
 
     FormEngine.formElement.addEventListener('submit', function (e: SubmitEvent) {
       const form = e.target as HTMLFormElement;
-      if (form.closeDoc.value) {
+      if (form.closeDoc?.value !== '0') {
         return;
       }
 
-      const elements = [
-        'button[form]',
-        'button[name^="_save"]',
-        'a[data-name^="_save"]',
-        'button[name="CMD"][value^="save"]',
-        'a[data-name="CMD"][data-value^="save"]',
-      ].join(',');
-
-      const button = document.querySelector(elements) as HTMLInputElement;
-      if (button !== null) {
-        button.disabled = true;
-
-        Icons.getIcon('spinner-circle', Icons.sizes.small).then(function (markup: string) {
-          button.querySelector('.t3js-icon').outerHTML = markup;
-        });
+      if (e.submitter !== null && (e.submitter.tagName === 'A' || e.submitter.hasAttribute('form')) && !e.defaultPrevented) {
+        const saveField = form.doSave as HTMLInputElement|null;
+        if (saveField !== null) {
+          saveField.value = '1';
+        }
       }
     });
 

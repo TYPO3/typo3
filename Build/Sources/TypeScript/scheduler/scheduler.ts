@@ -40,9 +40,7 @@ class Scheduler {
       this.initializeCloseConfirm();
     });
 
-    DocumentSaveActions.getInstance().addPreSubmitCallback((): void => {
-      // no-op to keep the spinner on the "Save" button for now
-    });
+    DocumentSaveActions.registerEvents();
   }
 
   private static updateClearableInputs(): void {
