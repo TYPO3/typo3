@@ -132,7 +132,7 @@ class Localization {
               if (availableLocalizationModes.length === 1) {
                 // In case only one mode is available, select the mode and continue
                 this.localizationMode = availableLocalizationModes[0];
-                Wizard.unlockNextStep().trigger('click');
+                Wizard.unlockNextStep().get(0).click();
               }
             }
           );
@@ -153,7 +153,7 @@ class Localization {
                   if (result.length === 1) {
                     // We only have one result, auto select the record and continue
                     this.sourceLanguage = result[0].uid;
-                    Wizard.unlockNextStep().trigger('click');
+                    Wizard.unlockNextStep().get(0).click();
                     return;
                   }
 

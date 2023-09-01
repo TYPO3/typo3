@@ -13,7 +13,8 @@
 
 import { SeverityEnum } from './enum/severity';
 import $ from 'jquery';
-import Modal from './modal';
+import { Carousel } from 'bootstrap';
+import Modal, { ModalElement } from './modal';
 import Severity from './severity';
 import Icons from './icons';
 
@@ -28,6 +29,7 @@ interface MultiStepWizardSetup {
   settings: MultiStepWizardSettings;
   forceSelection: boolean;
   $carousel: JQuery;
+  carousel: Carousel;
 }
 
 interface Slide {
@@ -54,6 +56,7 @@ class MultiStepWizard {
       settings: {},
       forceSelection: true,
       $carousel: null,
+      carousel: null,
     };
     this.originalSetup = $.extend(true, {}, this.setup);
   }
@@ -154,7 +157,8 @@ class MultiStepWizard {
         name: 'next',
       }],
       additionalCssClasses: ['modal-multi-step-wizard'],
-      callback: (): void => {
+      callback: (modal: ModalElement): void => {
+        this.setup.carousel = new Carousel(modal.querySelector('.carousel'));
         this.addButtonContainer();
         this.addProgressBar();
         this.initializeEvents();
@@ -238,7 +242,7 @@ class MultiStepWizard {
   public triggerStepButton(direction: string): JQuery {
     const $button = this.setup.$carousel.closest('.modal').find('button[name="' + direction + '"]');
     if ($button.length > 0 && $button.prop('disabled') !== true) {
-      $button.trigger('click');
+      $button.get(0).click();
     }
     return $button;
   }
@@ -265,24 +269,25 @@ class MultiStepWizard {
     this.initializeSlidePrevEvent($modal);
 
     // Event fires when the slide transition is invoked
-    this.setup.$carousel.on('slide.bs.carousel', (evt: any): void => {
+    this.setup.$carousel.get(0).addEventListener('slide.bs.carousel', (evt: Event & Carousel.Event): void => {
       if (evt.direction === 'left') {
         this.nextSlideChanges($modal);
       } else {
         this.prevSlideChanges($modal);
       }
     })
-      // Event is fired when the carousel has completed its slide transition
-      .on('slid.bs.carousel', (evt: JQueryEventObject): void => {
-        const currentIndex = this.setup.$carousel.data('currentIndex');
-        const slide = this.setup.slides[currentIndex];
 
-        this.runSlideCallback(slide, $(evt.relatedTarget));
+    // Event is fired when the carousel has completed its slide transition
+    this.setup.$carousel.get(0).addEventListener('slid.bs.carousel', (evt: Event & Carousel.Event): void => {
+      const currentIndex = this.setup.$carousel.data('currentIndex');
+      const slide = this.setup.slides[currentIndex];
 
-        if (this.setup.forceSelection) {
-          this.lockNextStep();
-        }
-      });
+      this.runSlideCallback(slide, $(evt.relatedTarget));
+
+      if (this.setup.forceSelection) {
+        this.lockNextStep();
+      }
+    });
 
     // Custom event, closes the wizard
     const cmp = this.getComponent();
@@ -300,7 +305,7 @@ class MultiStepWizard {
     const $modalFooter = $modal.find('.modal-footer');
     const $nextButton = $modalFooter.find('button[name="next"]');
     $nextButton.off().on('click', (): void => {
-      this.setup.$carousel.carousel('next');
+      this.setup.carousel.next();
     });
   }
 
@@ -308,7 +313,7 @@ class MultiStepWizard {
     const $modalFooter = $modal.find('.modal-footer');
     const $prevButton = $modalFooter.find('button[name="prev"]');
     $prevButton.off().on('click', (): void => {
-      this.setup.$carousel.carousel('prev');
+      this.setup.carousel.prev();
     });
   }
 

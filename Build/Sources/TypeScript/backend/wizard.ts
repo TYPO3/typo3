@@ -13,6 +13,7 @@
 
 import { SeverityEnum } from './enum/severity';
 import $ from 'jquery';
+import { Carousel } from 'bootstrap';
 import { default as Modal, ModalElement } from './modal';
 import Severity from './severity';
 import Icons from './icons';
@@ -28,6 +29,7 @@ interface WizardSetup {
   settings: WizardSettings;
   forceSelection: boolean;
   $carousel: JQuery;
+  carousel: Carousel;
 }
 
 interface Slide {
@@ -52,6 +54,7 @@ class Wizard {
       settings: {},
       forceSelection: true,
       $carousel: null,
+      carousel: null,
     };
     this.originalSetup = $.extend(true, {}, this.setup);
   }
@@ -101,7 +104,7 @@ class Wizard {
     const $slides = this.generateSlides();
     const firstSlide = this.setup.slides[0];
 
-    const modal = Modal.advanced({
+    Modal.advanced({
       title: firstSlide.title,
       content: $slides,
       severity: firstSlide.severity,
@@ -119,7 +122,8 @@ class Wizard {
         btnClass: 'btn-primary',
         name: 'next',
       }],
-      callback: (): void => {
+      callback: (modal: ModalElement): void => {
+        this.setup.carousel = new Carousel(modal.querySelector('.carousel'));
         this.addProgressBar();
         this.initializeEvents(modal);
       }
@@ -170,10 +174,10 @@ class Wizard {
     const $nextButton = $modalFooter.find('button[name="next"]');
 
     $nextButton.on('click', (): void => {
-      this.setup.$carousel.carousel('next');
+      this.setup.carousel.next();
     });
 
-    this.setup.$carousel.on('slide.bs.carousel', (): void => {
+    this.setup.$carousel.get(0).addEventListener('slide.bs.carousel', (): void => {
       const nextSlideNumber = this.setup.$carousel.data('currentSlide') + 1;
       const currentIndex = this.setup.$carousel.data('currentIndex') + 1;
 
@@ -197,7 +201,8 @@ class Wizard {
       $modal
         .removeClass('modal-severity-' + Severity.getCssClass(this.setup.slides[currentIndex - 1].severity))
         .addClass('modal-severity-' + Severity.getCssClass(this.setup.slides[currentIndex].severity));
-    }).on('slid.bs.carousel', (evt: JQueryEventObject): void => {
+    })
+    this.setup.$carousel.get(0).addEventListener('slid.bs.carousel', (evt: Event & Carousel.Event): void => {
       const currentIndex = this.setup.$carousel.data('currentIndex');
       const slide = this.setup.slides[currentIndex];
 
