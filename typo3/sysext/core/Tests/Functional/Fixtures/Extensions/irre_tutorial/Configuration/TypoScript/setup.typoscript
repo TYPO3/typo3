@@ -1,5 +1,0 @@
-plugin.tx_irretutorial {
-	persistence {
-		storagePid.data = page:uid
-	}
-}

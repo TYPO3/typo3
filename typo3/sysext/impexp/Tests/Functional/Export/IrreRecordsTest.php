@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
-final class IrreTutorialRecordsTest extends AbstractImportExportTestCase
+final class IrreRecordsTest extends AbstractImportExportTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
@@ -38,7 +38,7 @@ final class IrreTutorialRecordsTest extends AbstractImportExportTestCase
     {
         $recordTypesIncludeFields = include __DIR__ . '/../Fixtures/IrreRecordsIncludeFields.php';
 
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/irre_tutorial.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/irre_records.csv');
 
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $subject->setPid(1);

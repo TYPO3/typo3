@@ -2556,11 +2556,6 @@ parameters:
 			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
 
 		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Export/ExportPageTreeViewTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$all of method TYPO3\\\\CMS\\\\Impexp\\\\Import\\:\\:loadFile\\(\\) expects bool, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/impexp/Tests/Functional/ImportExportTest.php

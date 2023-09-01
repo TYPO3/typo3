@@ -49,15 +49,16 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
-        // irre tutorial still needed for frontend verification
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
+        // Show copied pages records in frontend request
+        $GLOBALS['TCA']['pages']['ctrl']['hideAtCopy'] = false;
+        // Show copied tt_content records in frontend request
+        $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
         $this->importCSVDataSet(static::SCENARIO_DataSet);
-
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv/Configuration/TypoScript/JsonRenderer.typoscript']);
     }

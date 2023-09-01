@@ -42,15 +42,17 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
 
     protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler',
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
+        // Prepend label for copied sys_category records
+        $GLOBALS['TCA']['sys_category']['ctrl']['prependAtCopy'] = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy';
+        // Show copied tt_content records in frontend request
+        $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
         $this->importCSVDataSet(static::SCENARIO_DataSet);
-
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
