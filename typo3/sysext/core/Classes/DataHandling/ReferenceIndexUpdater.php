@@ -38,7 +38,7 @@ class ReferenceIndexUpdater
      *
      * @var array<int, array<string, array<int, int>>>
      */
-    protected $updateRegistry = [];
+    protected array $updateRegistry = [];
 
     /**
      * [ workspaceId => [ tableName => [
@@ -48,14 +48,14 @@ class ReferenceIndexUpdater
      *
      * @var array<int, array<string, array<int, array<string, string|int>>>>
      */
-    protected $updateRegistryToItem = [];
+    protected array $updateRegistryToItem = [];
 
     /**
      * [ workspaceId => [ tableName => [ uid ] ] ]
      *
      * @var array<int, array<string, array<int, int>>>
      */
-    protected $dropRegistry = [];
+    protected array $dropRegistry = [];
 
     /**
      * Register a workspace/table/uid row for update
