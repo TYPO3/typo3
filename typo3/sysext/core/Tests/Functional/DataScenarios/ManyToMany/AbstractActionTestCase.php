@@ -18,9 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\ManyToMany;
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 
 abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 {
+    use SiteBasedTestTrait;
+
     protected const VALUE_PageId = 89;
     protected const VALUE_PageIdTarget = 90;
     protected const VALUE_ContentIdFirst = 297;
@@ -53,7 +56,15 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         // Prepend label for copied sys_category records
         $GLOBALS['TCA']['sys_category']['ctrl']['prependAtCopy'] = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy';
         $this->importCSVDataSet(static::SCENARIO_DataSet);
-        $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DK', '/dk/', ['EN']),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DK', 'EN']),
+            ]
+        );
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 

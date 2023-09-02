@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Webhooks\Tests\Functional;
 
 use Psr\Http\Message\RequestInterface;
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\SecurityAspect;
@@ -28,6 +27,7 @@ use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\CMS\Core\Security\RequestToken;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -40,7 +40,13 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class WebhookExecutionTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
     protected array $coreExtensionsToLoad = ['webhooks'];
+
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
 
     protected function setUp(): void
     {
@@ -53,27 +59,13 @@ final class WebhookExecutionTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
 
-        $configuration = [
-            'rootPageId' => 1,
-            'base' => '/',
-            'languages' => [
-                0 => [
-                    'title' => 'English',
-                    'enabled' => true,
-                    'languageId' => 0,
-                    'base' => '/',
-                    'locale' => 'en_US.UTF-8',
-                    'navigationTitle' => '',
-                    'flag' => 'us',
-                ],
-            ],
-            'errorHandling' => [],
-            'routes' => [],
-        ];
-        GeneralUtility::mkdir_deep($this->instancePath . '/typo3conf/sites/testing/');
-        $yamlFileContents = Yaml::dump($configuration, 99, 2);
-        $fileName = $this->instancePath . '/typo3conf/sites/testing/config.yaml';
-        GeneralUtility::writeFile($fileName, $yamlFileContents);
+        $this->writeSiteConfiguration(
+            'testing',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
     }
 
     private function registerRequestInspector(callable $inspector): void

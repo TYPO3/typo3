@@ -19,9 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\FAL\WorkspacesDiscard;
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\FAL\AbstractActionWorkspacesTestCase;
 
-/**
- * Functional test for the DataHandler
- */
 final class ActionTest extends AbstractActionWorkspacesTestCase
 {
     /**

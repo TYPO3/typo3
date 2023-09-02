@@ -18,6 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular\WorkspacesPublish;
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular\AbstractActionWorkspacesTestCase;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
@@ -49,7 +52,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1', 'Testing #2'));
     }
 
@@ -65,7 +68,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1', 'Testing #1 (copy 1)'));
     }
 
@@ -81,7 +84,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
@@ -99,7 +102,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
@@ -118,16 +121,16 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)
         );
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSectionsSource, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
-        self::assertThat($responseSectionsSource, $this->getRequestSectionDoesNotHaveRecordConstraint()
+        self::assertThat($responseSectionsSource, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)
         );
         $responseSectionsTarget = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsTarget, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSectionsTarget, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
@@ -142,9 +145,9 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
-        self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
@@ -166,7 +169,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3'));
     }
 
@@ -181,7 +184,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2 (copy 1)'));
     }
 
@@ -197,13 +200,20 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguage.csv');
 
-        // Set up "da" to not have overlays
-        $languageConfiguration = $this->siteLanguageConfiguration;
-        $languageConfiguration[self::VALUE_LanguageId]['fallbackType'] = 'free';
-        $this->setUpFrontendSite(1, $languageConfiguration);
+        // Set up "danish" to not have overlays - "free" mode
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DK', '/dk/', [], 'free'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DK', 'EN']),
+            ]
+        );
+
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3', '[Translate to Dansk:] Regular Element #2'));
     }
 
@@ -219,13 +229,20 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageFromNonDefaultLanguage.csv');
 
-        // Set up "da" to not have overlays
-        $languageConfiguration = $this->siteLanguageConfiguration;
-        $languageConfiguration[self::VALUE_LanguageIdSecond]['fallbackType'] = 'free';
-        $this->setUpFrontendSite(1, $languageConfiguration);
+        // Set up "german" to not have overlays - "free" mode
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DK', '/dk/', ['EN']),
+                $this->buildLanguageConfiguration('DE', '/de/', [], 'free'),
+            ]
+        );
+
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
     }
 
@@ -243,7 +260,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
     }
 
@@ -281,7 +298,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
     }
 
@@ -296,7 +313,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
@@ -314,7 +331,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
@@ -329,11 +346,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSectionsSource, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSectionsTarget = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsTarget, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSectionsTarget, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
@@ -350,7 +367,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
@@ -368,7 +385,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
@@ -389,7 +406,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(0)
         );
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsSource, $this->getRequestSectionDoesNotHaveRecordConstraint()
+        self::assertThat($responseSectionsSource, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3'));
 
         $response = $this->executeFrontendSubRequest(
@@ -397,7 +414,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(0)
         );
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsSource, $this->getRequestSectionDoesNotHaveRecordConstraint()
+        self::assertThat($responseSectionsSource, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3'));
 
         // Check if the target LIVE page DOES contain the moved record
@@ -406,7 +423,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(0)
         );
         $responseSectionsTarget = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsTarget, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSectionsTarget, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3'));
 
         // Also test the translated page in the workspace contains the translated record
@@ -415,7 +432,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSectionsTarget = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsTarget, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSectionsTarget, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3'));
 
         // Also test the translated LIVE page, and make sure the translated record is NOT shown, as it has not been published yet
@@ -424,7 +441,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(0)
         );
         $responseSectionsTarget = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsTarget, $this->getRequestSectionDoesNotHaveRecordConstraint()
+        self::assertThat($responseSectionsTarget, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3'));
     }
 
@@ -443,7 +460,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
     }
 
@@ -462,7 +479,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1 #1'));
     }
 
@@ -477,7 +494,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
     }
 
@@ -538,7 +555,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
     }
 
@@ -558,9 +575,9 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Target'));
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #10'));
     }
 
@@ -575,7 +592,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('[Translate to Dansk:] Relations'));
     }
 
@@ -690,9 +707,9 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
@@ -707,9 +724,9 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
@@ -724,9 +741,9 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
@@ -793,13 +810,13 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSectionsPage = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsPage, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSectionsPage, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
-        self::assertThat($responseSectionsPage, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSectionsPage, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdWebsite));
         $responseSectionsWebsite = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsWebsite, $this->getRequestSectionStructureHasRecordConstraint()
+        self::assertThat($responseSectionsWebsite, (new StructureHasRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageIdWebsite)->setRecordField('__pages')
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Target', 'Relations', 'DataHandlerTest'));
     }
@@ -819,7 +836,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdWebsite));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+        self::assertThat($responseSections, (new StructureHasRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageIdWebsite)->setRecordField('__pages')
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Target', 'Testing #1', 'DataHandlerTest'));
     }
@@ -851,7 +868,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSectionsDraft = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSectionsDraft, (new HasRecordConstraint())
             ->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
@@ -871,7 +888,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Testing #1'));
     }
 

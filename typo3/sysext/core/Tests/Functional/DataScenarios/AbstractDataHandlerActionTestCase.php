@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios;
 
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
@@ -27,10 +25,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
-use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
-use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint;
-use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -42,61 +36,30 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
 {
     use LogDataTrait;
+
     protected const VALUE_BackendUserId = 1;
     protected const VALUE_WorkspaceId = 0;
 
-    /**
-     * If this value is NULL, log entries are not considered.
-     * If it's an integer value, the number of log entries is asserted.
-     *
-     * @var int|null
-     */
-    protected $expectedErrorLogEntries = 0;
-
-    /**
-     * @var array
-     */
-    protected $recordIds = [];
+    /** The number of log entries is asserted. This should usually be 0. */
+    protected int $expectedErrorLogEntries = 0;
+    protected array $recordIds = [];
 
     protected ActionService $actionService;
     protected BackendUserAuthentication $backendUser;
 
-    /**
-     * Default Site Configuration
-     * @var array
-     */
-    protected $siteLanguageConfiguration = [
-        1 => [
-            'title' => 'Dansk',
-            'enabled' => true,
-            'languageId' => 1,
-            'base' => '/dk/',
-            'locale' => 'da_DK.UTF-8',
-            'flag' => 'dk',
-            'fallbackType' => 'fallback',
-            'fallbacks' => '0',
-        ],
-        2 => [
-            'title' => 'Deutsch',
-            'enabled' => true,
-            'languageId' => 2,
-            'base' => '/de/',
-            'locale' => 'de_DE.UTF-8',
-            'flag' => 'de',
-            'fallbackType' => 'fallback',
-            'fallbacks' => '1,0',
-        ],
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
+        'DE' => ['id' => 2, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF-8'],
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users_admin.csv');
         $this->backendUser = $this->setUpBackendUser(self::VALUE_BackendUserId);
         // Note late static binding - Workspace related tests override the constant
         $this->setWorkspaceId(static::VALUE_WorkspaceId);
-
         $this->actionService = new ActionService();
         Bootstrap::initializeLanguageObject();
     }
@@ -107,43 +70,8 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
         $this->assertCleanReferenceIndex();
         unset($this->actionService);
         unset($this->recordIds);
+        unset($this->backendUser);
         parent::tearDown();
-    }
-
-    /**
-     * Create a simple site config for the tests that
-     * call a frontend page.
-     */
-    protected function setUpFrontendSite(int $pageId, array $additionalLanguages = []): void
-    {
-        $languages = [
-            0 => [
-                'title' => 'English',
-                'enabled' => true,
-                'languageId' => 0,
-                'base' => '/',
-                'locale' => 'en_US.UTF-8',
-                'navigationTitle' => '',
-                'flag' => 'us',
-            ],
-        ];
-        $languages = array_merge($languages, $additionalLanguages);
-        $configuration = [
-            'rootPageId' => $pageId,
-            'base' => '/',
-            'languages' => $languages,
-            'errorHandling' => [],
-            'routes' => [],
-        ];
-        GeneralUtility::mkdir_deep($this->instancePath . '/typo3conf/sites/testing/');
-        $yamlFileContents = Yaml::dump($configuration, 99, 2);
-        $fileName = $this->instancePath . '/typo3conf/sites/testing/config.yaml';
-        GeneralUtility::writeFile($fileName, $yamlFileContents);
-        // Ensure that no other site configuration was cached before
-        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
-        if ($cache->has('sites-configuration')) {
-            $cache->remove('sites-configuration');
-        }
     }
 
     protected function setWorkspaceId(int $workspaceId): void
@@ -154,23 +82,10 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
 
     /**
      * Asserts correct number of warning and error log entries.
-     *
-     * @param string[]|null $expectedMessages
      */
-    protected function assertErrorLogEntries(array $expectedMessages = null): void
+    private function assertErrorLogEntries(): void
     {
-        if ($this->expectedErrorLogEntries === null && $expectedMessages === null) {
-            return;
-        }
-
-        if ($expectedMessages !== null) {
-            $expectedErrorLogEntries = count($expectedMessages);
-        } else {
-            $expectedErrorLogEntries = (int)$this->expectedErrorLogEntries;
-        }
-
-        $queryBuilder = $this->getConnectionPool()
-            ->getQueryBuilderForTable('sys_log');
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_log');
         $queryBuilder->getRestrictions()->removeAll();
         $statement = $queryBuilder
             ->select('*')
@@ -182,29 +97,18 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
                 )
             )
             ->executeQuery();
-
         $actualErrorLogEntries = (int)$queryBuilder
             ->count('uid')
             ->executeQuery()
             ->fetchOne();
-
         $entryMessages = array_map(
             function (array $entry) {
                 return $this->formatLogDetails($entry['details'] ?? '', $entry['log_data'] ?? '');
             },
             $statement->fetchAllAssociative()
         );
-
-        if ($expectedMessages !== null) {
-            self::assertEqualsCanonicalizing($expectedMessages, $entryMessages);
-        } elseif ($actualErrorLogEntries === $expectedErrorLogEntries) {
-            self::assertSame($expectedErrorLogEntries, $actualErrorLogEntries);
-        } else {
-            $failureMessage = sprintf(
-                'Expected %d entries in sys_log, but got %d' . LF,
-                $expectedMessages,
-                $actualErrorLogEntries
-            );
+        if ($actualErrorLogEntries !== $this->expectedErrorLogEntries) {
+            $failureMessage = sprintf('Expected %d entries in sys_log, but got %d' . LF, $this->expectedErrorLogEntries, $actualErrorLogEntries);
             $failureMessage .= '* ' . implode(LF . '* ', $entryMessages) . LF;
             self::fail($failureMessage);
         }
@@ -213,32 +117,12 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     /**
      * Similar to log entries, verify DataHandler tests end up with a clean reference index.
      */
-    protected function assertCleanReferenceIndex(): void
+    private function assertCleanReferenceIndex(): void
     {
         $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
         $referenceIndexFixResult = $referenceIndex->updateIndex(true);
         if (count($referenceIndexFixResult['errors']) > 0) {
             self::fail('Reference index not clean. ' . LF . implode(LF, $referenceIndexFixResult['errors']));
         }
-    }
-
-    protected function getRequestSectionHasRecordConstraint(): HasRecordConstraint
-    {
-        return new HasRecordConstraint();
-    }
-
-    protected function getRequestSectionDoesNotHaveRecordConstraint(): DoesNotHaveRecordConstraint
-    {
-        return new DoesNotHaveRecordConstraint();
-    }
-
-    protected function getRequestSectionStructureHasRecordConstraint(): StructureHasRecordConstraint
-    {
-        return new StructureHasRecordConstraint();
-    }
-
-    protected function getRequestSectionStructureDoesNotHaveRecordConstraint(): StructureDoesNotHaveRecordConstraint
-    {
-        return new StructureDoesNotHaveRecordConstraint();
     }
 }

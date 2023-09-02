@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular\WorkspacesDiscard;
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular\AbstractActionWorkspacesTestCase;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
@@ -293,7 +295,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSectionsSource, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3'));
 
         /**
@@ -303,7 +305,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSectionsSource, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3'));
          */
 
@@ -313,7 +315,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSectionsTarget = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsTarget, $this->getRequestSectionDoesNotHaveRecordConstraint()
+        self::assertThat($responseSectionsTarget, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3'));
 
         // Also test the translated page, and make sure the translated record is also discarded
@@ -322,7 +324,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSectionsTarget = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSectionsTarget, $this->getRequestSectionDoesNotHaveRecordConstraint()
+        self::assertThat($responseSectionsTarget, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3'));
     }
 

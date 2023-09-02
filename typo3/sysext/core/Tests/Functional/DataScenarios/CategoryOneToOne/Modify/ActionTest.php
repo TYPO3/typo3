@@ -18,12 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\CategoryOneToOne\Modify;
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\CategoryOneToOne\AbstractActionTestCase;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
-/**
- * Functional test for the DataHandler
- */
 final class ActionTest extends AbstractActionTestCase
 {
     /**
@@ -49,7 +49,7 @@ final class ActionTest extends AbstractActionTestCase
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionStructureHasRecordConstraint()
+            (new StructureHasRecordConstraint())
                 ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Category)
                 ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A.A')
         );
@@ -69,13 +69,13 @@ final class ActionTest extends AbstractActionTestCase
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionHasRecordConstraint()
+            (new HasRecordConstraint())
                 ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B.A')
         );
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionStructureHasRecordConstraint()
+            (new StructureHasRecordConstraint())
                 ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Category)
                 ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B.A')
         );
@@ -95,13 +95,13 @@ final class ActionTest extends AbstractActionTestCase
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionHasRecordConstraint()
+            (new HasRecordConstraint())
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B.A')
         );
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionStructureHasRecordConstraint()
+            (new StructureHasRecordConstraint())
                 ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Category)
                 ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B.A')
         );
@@ -121,7 +121,7 @@ final class ActionTest extends AbstractActionTestCase
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionStructureHasRecordConstraint()
+            (new StructureHasRecordConstraint())
                 ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Category)
                 ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B')
         );
@@ -141,7 +141,7 @@ final class ActionTest extends AbstractActionTestCase
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionHasRecordConstraint()
+            (new HasRecordConstraint())
                  ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1')
         );
     }
@@ -160,7 +160,7 @@ final class ActionTest extends AbstractActionTestCase
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionStructureHasRecordConstraint()
+            (new StructureHasRecordConstraint())
                  ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Category)
                  ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1')
         );
@@ -180,7 +180,7 @@ final class ActionTest extends AbstractActionTestCase
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionStructureHasRecordConstraint()
+            (new StructureHasRecordConstraint())
                 ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Category)
                 ->setTable(self::TABLE_Category)->setField('title')->setValues('Category C')
         );
@@ -200,7 +200,7 @@ final class ActionTest extends AbstractActionTestCase
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionStructureHasRecordConstraint()
+            (new StructureHasRecordConstraint())
                 ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Category)
                 ->setTable(self::TABLE_Category)->setField('title')->setValues('Category C')
         );
@@ -219,7 +219,7 @@ final class ActionTest extends AbstractActionTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionStructureHasRecordConstraint()
+            (new StructureHasRecordConstraint())
                 ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['copiedContentId'])->setRecordField(self::FIELD_Category)
                 ->setTable(self::TABLE_Category)->setField('title')->setValues('Category C')
         );
@@ -239,7 +239,7 @@ final class ActionTest extends AbstractActionTestCase
 
         self::assertThat(
             $responseSections,
-            $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+            (new StructureDoesNotHaveRecordConstraint())
                 ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Category)
                 ->setTable(self::TABLE_Category)->setField('title')->setValues('Category C')
         );

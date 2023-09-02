@@ -17,12 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\Hooks;
 
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -30,13 +29,25 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PagesTsConfigGuardTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportDefault.csv');
         $this->importCSVDataSet(__DIR__ . '/../../../Fixtures/be_groups.csv');
         $this->importCSVDataSet(__DIR__ . '/../../../Fixtures/be_users.csv');
-        $this->addSiteConfiguration(1);
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
         // define page create permissions for backend user group 9 on page 1
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('pages')
@@ -101,38 +112,5 @@ final class PagesTsConfigGuardTest extends FunctionalTestCase
         $dataHandler->start($dataMap, [], $backendUser);
         $dataHandler->process_datamap();
         self::assertEmpty($dataHandler->errorLog);
-    }
-
-    /**
-     * Create a simple site configuration
-     */
-    protected function addSiteConfiguration(int $pageId): void
-    {
-        $configuration = [
-            'rootPageId' => $pageId,
-            'base' => '/',
-            'languages' => [
-                0 => [
-                    'title' => 'English',
-                    'enabled' => true,
-                    'languageId' => 0,
-                    'base' => '/',
-                    'locale' => 'en_US.UTF-8',
-                    'navigationTitle' => '',
-                    'flag' => 'us',
-                ],
-            ],
-            'errorHandling' => [],
-            'routes' => [],
-        ];
-        GeneralUtility::mkdir_deep($this->instancePath . '/typo3conf/sites/testing/');
-        $yamlFileContents = Yaml::dump($configuration, 99, 2);
-        $fileName = $this->instancePath . '/typo3conf/sites/testing/config.yaml';
-        GeneralUtility::writeFile($fileName, $yamlFileContents);
-        // Ensure that no other site configuration was cached before
-        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
-        if ($cache->has('sites-configuration')) {
-            $cache->remove('sites-configuration');
-        }
     }
 }

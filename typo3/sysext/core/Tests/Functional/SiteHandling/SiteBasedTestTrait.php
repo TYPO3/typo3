@@ -125,6 +125,7 @@ trait SiteBasedTestTrait
             'languageId' => $preset['id'],
             'title' => $preset['title'],
             'navigationTitle' => $preset['title'],
+            'websiteTitle' => $preset['websiteTitle'] ?? '',
             'base' => $base,
             'locale' => $preset['locale'],
             'flag' => $preset['iso'] ?? '',

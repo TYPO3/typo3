@@ -18,13 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreForeignField;
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
-/**
- * Functional test for the DataHandler
- */
 abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 {
+    use SiteBasedTestTrait;
+
     protected const VALUE_PageId = 89;
     protected const VALUE_PageIdTarget = 90;
     protected const VALUE_PageIdWebsite = 1;
@@ -58,8 +58,15 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(static::SCENARIO_DataSet);
-
-        $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DK', '/dk/', ['EN']),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DK', 'EN']),
+            ]
+        );
         $this->setUpFrontendRootPage(
             1,
             [

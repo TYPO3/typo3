@@ -21,14 +21,14 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
-/**
- * Functional test for the DataHandler
- */
 abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 {
+    use SiteBasedTestTrait;
+
     protected const VALUE_PageIdParent = 88;
     protected const VALUE_PageId = 89;
     protected const VALUE_PageIdTarget = 90;
@@ -55,7 +55,15 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         // Show copied tt_content records in frontend request
         $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
         $this->importCSVDataSet(static::SCENARIO_DataSet);
-        $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DK', '/dk/', ['EN']),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DK', 'EN']),
+            ]
+        );
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 

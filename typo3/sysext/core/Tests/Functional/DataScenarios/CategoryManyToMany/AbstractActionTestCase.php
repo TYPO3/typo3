@@ -18,12 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\CategoryManyToMany;
 
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 
-/**
- * Functional test for the DataHandler
- */
 abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 {
+    use SiteBasedTestTrait;
+
     protected const VALUE_PageId = 88;
     protected const VALUE_TargetPageId = 89;
     protected const VALUE_CategoryPageId = 0;
@@ -45,8 +45,15 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(static::SCENARIO_DataSet);
-
-        $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DK', '/dk/', ['EN']),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DK', 'EN']),
+            ]
+        );
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 

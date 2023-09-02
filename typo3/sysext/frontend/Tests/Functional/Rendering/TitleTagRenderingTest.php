@@ -17,13 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
 
-use Symfony\Component\Yaml\Yaml;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class TitleTagRenderingTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
     protected array $coreExtensionsToLoad = ['seo'];
 
     protected array $configurationToUseInTestInstance = [
@@ -34,6 +35,10 @@ final class TitleTagRenderingTest extends FunctionalTestCase
         ],
     ];
 
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'websiteTitle' => 'Site EN'],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -42,38 +47,13 @@ final class TitleTagRenderingTest extends FunctionalTestCase
             1,
             ['EXT:frontend/Tests/Functional/Rendering/Fixtures/TitleTagRenderingTest.typoscript']
         );
-        $this->setUpFrontendSite(1);
-    }
-
-    /**
-     * Create a simple site config for the tests that
-     * call a frontend page.
-     */
-    protected function setUpFrontendSite(int $pageId): void
-    {
-        $configuration = [
-            'rootPageId' => $pageId,
-            'base' => '/',
-            'websiteTitle' => '',
-            'languages' => [
-                [
-                    'title' => 'English',
-                    'enabled' => true,
-                    'languageId' => '0',
-                    'base' => '/',
-                    'locale' => 'en_US.UTF-8',
-                    'websiteTitle' => 'Site EN',
-                    'navigationTitle' => '',
-                    'flag' => 'us',
-                ],
-            ],
-            'errorHandling' => [],
-            'routes' => [],
-        ];
-        GeneralUtility::mkdir_deep($this->instancePath . '/typo3conf/sites/testing/');
-        $yamlFileContents = Yaml::dump($configuration, 99, 2);
-        $fileName = $this->instancePath . '/typo3conf/sites/testing/config.yaml';
-        GeneralUtility::writeFile($fileName, $yamlFileContents);
+        $this->writeSiteConfiguration(
+            'testing',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
     }
 
     public static function titleTagDataProvider(): array
