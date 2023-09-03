@@ -1,4 +1,9 @@
 ![tests](https://github.com/TYPO3/styleguide/workflows/tests/badge.svg)
+![tests-ac-mariadb-mysqli](https://github.com/TYPO3/styleguide/actions/workflows/tests-ac-mariadb-mysqli.yml/badge.svg)
+![tests-ac-mariadb-pdo-mysql](https://github.com/TYPO3/styleguide/actions/workflows/tests-ac-mariadb-pdo-mysql.yml/badge.svg)
+![tests-ac-mysql-mysqli](https://github.com/TYPO3/styleguide/actions/workflows/tests-ac-mysql-mysqli.yml/badge.svg)
+![tests-ac-mysql-pdo-mysql](https://github.com/TYPO3/styleguide/actions/workflows/tests-ac-mysql-pdo-mysql.yml/badge.svg)
+![tests-ac-postgres](https://github.com/TYPO3/styleguide/actions/workflows/tests-ac-postgres.yml/badge.svg)
 
 TYPO3 CMS Backend Styleguide
 ============================

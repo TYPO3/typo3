@@ -37,7 +37,7 @@ class ModuleCest
      */
     public function _before(BackendTester $I)
     {
-        $I->useExistingSession('admin');
+        $I->useExistingSession('admin', 1);
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->canSee('Styleguide', self::$topBarModuleSelector);
         $I->click('Styleguide', self::$topBarModuleSelector);
