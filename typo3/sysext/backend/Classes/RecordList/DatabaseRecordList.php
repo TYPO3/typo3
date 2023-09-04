@@ -739,7 +739,7 @@ class DatabaseRecordList
                             BackendUtility::workspaceOL($table, $lRow, $backendUser->workspace, true);
                             if (is_array($lRow) && $backendUser->checkLanguageAccess($lRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
                                 $currentIdList[] = $lRow['uid'];
-                                $rowOutput .= $this->renderListRow($table, $lRow, 16, [], false);
+                                $rowOutput .= $this->renderListRow($table, $lRow, 1, [], false);
                             }
                         }
                     }
@@ -1066,7 +1066,7 @@ class DatabaseRecordList
                     ->setTitle(BackendUtility::getRecordIconAltText($row, $table))
                     ->render();
                 $theData[$fCol] = ''
-                    . ($indent ? '<span style="margin-left: ' . $indent . 'px;"></span>' : '')
+                    . ($indent ? '<span class="indent indent-inline-block" style="--indent-level: ' . $indent . '"></span> ' : '')
                     . (($this->clickMenuEnabled && !$this->isRecordDeletePlaceholder($row)) ? BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']) : $icon);
             } elseif ($fCol === '_PATH_') {
                 $theData[$fCol] = $this->recPath($row['pid']);
