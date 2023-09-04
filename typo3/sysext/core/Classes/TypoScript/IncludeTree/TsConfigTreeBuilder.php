@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\BeforeLoadedPageTsConfigEvent;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\BeforeLoadedUserTsConfigEvent;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\TsConfigInclude;
@@ -62,6 +63,8 @@ final class TsConfigTreeBuilder
             }
         }
         if (!$gotPackagesUserTsConfigFromCache) {
+            $event = $this->eventDispatcher->dispatch(new BeforeLoadedUserTsConfigEvent());
+            $collectedUserTsConfigArray = $event->getTsConfig();
             foreach ($this->packageManager->getActivePackages() as $package) {
                 $packagePath = $package->getPackagePath();
                 $tsConfigFile = null;

@@ -18,13 +18,13 @@ declare(strict_types=1);
 namespace TYPO3Tests\TestTsconfigEvent\EventListener;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\BeforeLoadedPageTsConfigEvent;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\BeforeLoadedUserTsConfigEvent;
 
-#[AsEventListener(identifier: 'typo3tests/test-tsconfig-event/add-global-page-tsconfig')]
-final class AddGlobalPageTsConfig
+#[AsEventListener(identifier: 'typo3tests/test-tsconfig-event/add-global-user-tsconfig')]
+final class AddGlobalUserTsConfig
 {
-    public function __invoke(BeforeLoadedPageTsConfigEvent $event): void
+    public function __invoke(BeforeLoadedUserTsConfigEvent $event): void
     {
-        $event->addTsConfig('number = one');
+        $event->addTsConfig('number = two');
     }
 }
