@@ -332,11 +332,11 @@
       </trans-unit>
       <trans-unit id="CV.name" resname="CV.name" approved="yes">
         <source>Cabo Verde</source>
-        <target>Žaliasis Kyšulys</target>
+        <target>Cabo Verde</target>
       </trans-unit>
       <trans-unit id="CV.official_name" resname="CV.official_name" approved="yes">
         <source>Republic of Cabo Verde</source>
-        <target>Žaliojo Kyšulio Respublika</target>
+        <target>Republic of Cabo Verde</target>
       </trans-unit>
       <trans-unit id="CW.name" resname="CW.name" approved="yes">
         <source>Curaçao</source>
@@ -357,10 +357,6 @@
       <trans-unit id="CY.official_name" resname="CY.official_name" approved="yes">
         <source>Republic of Cyprus</source>
         <target>Kipro Respublika</target>
-      </trans-unit>
-      <trans-unit id="CZ.name" resname="CZ.name" approved="yes">
-        <source>Czechia</source>
-        <target>Čekija</target>
       </trans-unit>
       <trans-unit id="CZ.official_name" resname="CZ.official_name" approved="yes">
         <source>Czech Republic</source>
@@ -556,7 +552,7 @@
       </trans-unit>
       <trans-unit id="GM.official_name" resname="GM.official_name" approved="yes">
         <source>Republic of the Gambia</source>
-        <target>Gambijos Respublika</target>
+        <target>Republic of the Gambia</target>
       </trans-unit>
       <trans-unit id="GN.name" resname="GN.name" approved="yes">
         <source>Guinea</source>
@@ -960,11 +956,11 @@
       </trans-unit>
       <trans-unit id="MK.name" resname="MK.name" approved="yes">
         <source>North Macedonia</source>
-        <target>Šiaurės Makedonija</target>
+        <target>North Macedonia</target>
       </trans-unit>
       <trans-unit id="MK.official_name" resname="MK.official_name" approved="yes">
         <source>Republic of North Macedonia</source>
-        <target>Šiaurės Makedonijos Respublika</target>
+        <target>Republic of North Macedonia</target>
       </trans-unit>
       <trans-unit id="ML.name" resname="ML.name" approved="yes">
         <source>Mali</source>
@@ -1188,7 +1184,7 @@
       </trans-unit>
       <trans-unit id="PG.official_name" resname="PG.official_name" approved="yes">
         <source>Independent State of Papua New Guinea</source>
-        <target>Papua Naujosios Gvinėjos Nepriklausomoji Valstybė</target>
+        <target>Independent State of Papua New Guinea</target>
       </trans-unit>
       <trans-unit id="PH.name" resname="PH.name" approved="yes">
         <source>Philippines</source>
@@ -1392,7 +1388,7 @@
       </trans-unit>
       <trans-unit id="SO.official_name" resname="SO.official_name" approved="yes">
         <source>Federal Republic of Somalia</source>
-        <target>Somalio Federacinė Respublika</target>
+        <target>Federal Republic of Somalia</target>
       </trans-unit>
       <trans-unit id="SR.name" resname="SR.name" approved="yes">
         <source>Suriname</source>
@@ -1438,13 +1434,9 @@
         <source>Syrian Arab Republic</source>
         <target>Sirijos Arabų Respublika</target>
       </trans-unit>
-      <trans-unit id="SZ.name" resname="SZ.name" approved="yes">
-        <source>Eswatini</source>
-        <target>Esvatinis</target>
-      </trans-unit>
       <trans-unit id="SZ.official_name" resname="SZ.official_name" approved="yes">
         <source>Kingdom of Eswatini</source>
-        <target>Esvatinio Karalystė</target>
+        <target>Kingdom of Eswatini</target>
       </trans-unit>
       <trans-unit id="TC.name" resname="TC.name" approved="yes">
         <source>Turks and Caicos Islands</source>
@@ -1480,7 +1472,7 @@
       </trans-unit>
       <trans-unit id="TJ.name" resname="TJ.name" approved="yes">
         <source>Tajikistan</source>
-        <target>Tadžikija</target>
+        <target>Tadžikistanas</target>
       </trans-unit>
       <trans-unit id="TJ.official_name" resname="TJ.official_name" approved="yes">
         <source>Republic of Tajikistan</source>
@@ -1500,7 +1492,7 @@
       </trans-unit>
       <trans-unit id="TM.name" resname="TM.name" approved="yes">
         <source>Turkmenistan</source>
-        <target>Turkmėnija</target>
+        <target>Turkmėnistanas</target>
       </trans-unit>
       <trans-unit id="TN.name" resname="TN.name" approved="yes">
         <source>Tunisia</source>
@@ -1518,13 +1510,9 @@
         <source>Kingdom of Tonga</source>
         <target>Tongos Karalystė</target>
       </trans-unit>
-      <trans-unit id="TR.name" resname="TR.name" approved="yes">
-        <source>Türkiye</source>
-        <target>Turkija</target>
-      </trans-unit>
       <trans-unit id="TR.official_name" resname="TR.official_name" approved="yes">
         <source>Republic of Türkiye</source>
-        <target>Turkijos Respublika</target>
+        <target>Republic of Türkiye</target>
       </trans-unit>
       <trans-unit id="TT.name" resname="TT.name" approved="yes">
         <source>Trinidad and Tobago</source>
@@ -1568,7 +1556,7 @@
       </trans-unit>
       <trans-unit id="UM.name" resname="UM.name" approved="yes">
         <source>United States Minor Outlying Islands</source>
-        <target>Jungtinių Valstijų Mažosios pakraštinės salos</target>
+        <target>Jungtinių Amerikos Valstijų mažosios aplinkinės salos</target>
       </trans-unit>
       <trans-unit id="US.name" resname="US.name" approved="yes">
         <source>United States</source>

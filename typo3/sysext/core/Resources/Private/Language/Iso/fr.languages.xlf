@@ -4,335 +4,335 @@
     <body>
       <trans-unit id="aa" resname="aa" approved="yes">
         <source>Afar</source>
-        <target>Afar</target>
+        <target>afar</target>
       </trans-unit>
       <trans-unit id="ab" resname="ab" approved="yes">
         <source>Abkhazian</source>
-        <target>Abkhaze</target>
+        <target>abkhaze</target>
       </trans-unit>
       <trans-unit id="ace" resname="ace" approved="yes">
         <source>Achinese</source>
-        <target>Aceh</target>
+        <target>aceh</target>
       </trans-unit>
       <trans-unit id="ach" resname="ach" approved="yes">
         <source>Acoli</source>
-        <target>Acoli</target>
+        <target>acoli</target>
       </trans-unit>
       <trans-unit id="ada" resname="ada" approved="yes">
         <source>Adangme</source>
-        <target>Adangme</target>
+        <target>adangme</target>
       </trans-unit>
       <trans-unit id="ady" resname="ady" approved="yes">
         <source>Adyghe; Adygei</source>
-        <target>Adyghé</target>
+        <target>adyghé</target>
       </trans-unit>
       <trans-unit id="ae" resname="ae" approved="yes">
         <source>Avestan</source>
-        <target>Avestique</target>
+        <target>avestique</target>
       </trans-unit>
       <trans-unit id="af" resname="af" approved="yes">
         <source>Afrikaans</source>
-        <target>Afrikaans</target>
+        <target>afrikaans</target>
       </trans-unit>
       <trans-unit id="afa" resname="afa" approved="yes">
         <source>Afro-Asiatic languages</source>
-        <target>Afro-asiatiques, langues</target>
+        <target>afro-asiatiques, langues</target>
       </trans-unit>
       <trans-unit id="afh" resname="afh" approved="yes">
         <source>Afrihili</source>
-        <target>Afrihili</target>
+        <target>afrihili</target>
       </trans-unit>
       <trans-unit id="ain" resname="ain" approved="yes">
         <source>Ainu</source>
-        <target>Aïnou</target>
+        <target>aïnou</target>
       </trans-unit>
       <trans-unit id="ak" resname="ak" approved="yes">
         <source>Akan</source>
-        <target>Akan</target>
+        <target>akan</target>
       </trans-unit>
       <trans-unit id="akk" resname="akk" approved="yes">
         <source>Akkadian</source>
-        <target>Akkadien</target>
+        <target>akkadien</target>
       </trans-unit>
       <trans-unit id="ale" resname="ale" approved="yes">
         <source>Aleut</source>
-        <target>Aléoute</target>
+        <target>aléoute</target>
       </trans-unit>
       <trans-unit id="alg" resname="alg" approved="yes">
         <source>Algonquian languages</source>
-        <target>Algonquines, langues</target>
+        <target>algonquines, langues</target>
       </trans-unit>
       <trans-unit id="alt" resname="alt" approved="yes">
         <source>Southern Altai</source>
-        <target>Altaï méridional</target>
+        <target>altaï méridional</target>
       </trans-unit>
       <trans-unit id="am" resname="am" approved="yes">
         <source>Amharic</source>
-        <target>Amharique</target>
+        <target>amharique</target>
       </trans-unit>
       <trans-unit id="an" resname="an" approved="yes">
         <source>Aragonese</source>
-        <target>Aragonais</target>
+        <target>aragonais</target>
       </trans-unit>
       <trans-unit id="ang" resname="ang" approved="yes">
         <source>English, Old (ca. 450-1100)</source>
-        <target>Anglo-Saxons (environ 450-1100)</target>
+        <target>anglo-saxon (environ 450-1100)</target>
       </trans-unit>
       <trans-unit id="anp" resname="anp" approved="yes">
         <source>Angika</source>
-        <target>Angika</target>
+        <target>angika</target>
       </trans-unit>
       <trans-unit id="apa" resname="apa" approved="yes">
         <source>Apache languages</source>
-        <target>Apaches, langues</target>
+        <target>apaches, langues</target>
       </trans-unit>
       <trans-unit id="ar" resname="ar" approved="yes">
         <source>Arabic</source>
-        <target>Arabe</target>
+        <target>arabe</target>
       </trans-unit>
       <trans-unit id="arc" resname="arc" approved="yes">
         <source>Official Aramaic (700-300 BCE); Imperial Aramaic (700-300 BCE)</source>
-        <target>Araméen d'empire (700-300 avant J.-C.)</target>
+        <target>araméen d'empire (700-300 avant J.-C.)</target>
       </trans-unit>
       <trans-unit id="arn" resname="arn" approved="yes">
         <source>Mapudungun; Mapuche</source>
-        <target>Mapudungun ; Mapuche ; Mapuchedungun</target>
+        <target>mapudungun ; mapuche ; mapuchedungun</target>
       </trans-unit>
       <trans-unit id="arp" resname="arp" approved="yes">
         <source>Arapaho</source>
-        <target>Arapaho</target>
+        <target>arapaho</target>
       </trans-unit>
       <trans-unit id="art" resname="art" approved="yes">
         <source>Artificial languages</source>
-        <target>Artificielles, langues</target>
+        <target>artificielles, langues</target>
       </trans-unit>
       <trans-unit id="arw" resname="arw" approved="yes">
         <source>Arawak</source>
-        <target>Arawak</target>
+        <target>arawak</target>
       </trans-unit>
       <trans-unit id="as" resname="as" approved="yes">
         <source>Assamese</source>
-        <target>Assamais</target>
+        <target>assamais</target>
       </trans-unit>
       <trans-unit id="ast" resname="ast" approved="yes">
         <source>Asturian; Bable; Leonese; Asturleonese</source>
-        <target>Asturien ; Bable ; Léonais ; Asturo-Léonais</target>
+        <target>asturien ; bable ; léonais ; asturo-léonais</target>
       </trans-unit>
       <trans-unit id="ath" resname="ath" approved="yes">
         <source>Athapascan languages</source>
-        <target>Athapascanes, langues</target>
+        <target>athapascanes, langues</target>
       </trans-unit>
       <trans-unit id="aus" resname="aus" approved="yes">
         <source>Australian languages</source>
-        <target>Australiennes, langues</target>
+        <target>australiennes, langues</target>
       </trans-unit>
       <trans-unit id="av" resname="av" approved="yes">
         <source>Avaric</source>
-        <target>Avar</target>
+        <target>avar</target>
       </trans-unit>
       <trans-unit id="awa" resname="awa" approved="yes">
         <source>Awadhi</source>
-        <target>Awadhi</target>
+        <target>awadhi</target>
       </trans-unit>
       <trans-unit id="ay" resname="ay" approved="yes">
         <source>Aymara</source>
-        <target>Aymara</target>
+        <target>aymara</target>
       </trans-unit>
       <trans-unit id="az" resname="az" approved="yes">
         <source>Azerbaijani</source>
-        <target>Azéri</target>
+        <target>azéri</target>
       </trans-unit>
       <trans-unit id="ba" resname="ba" approved="yes">
         <source>Bashkir</source>
-        <target>Bachkir</target>
+        <target>bachkir</target>
       </trans-unit>
       <trans-unit id="bad" resname="bad" approved="yes">
         <source>Banda languages</source>
-        <target>Bandas, langues</target>
+        <target>bandas, langues</target>
       </trans-unit>
       <trans-unit id="bai" resname="bai" approved="yes">
         <source>Bamileke languages</source>
-        <target>Bamiléké, langues</target>
+        <target>bamiléké, langues</target>
       </trans-unit>
       <trans-unit id="bal" resname="bal" approved="yes">
         <source>Baluchi</source>
-        <target>Baloutchi</target>
+        <target>baloutchi</target>
       </trans-unit>
       <trans-unit id="ban" resname="ban" approved="yes">
         <source>Balinese</source>
-        <target>Balinais</target>
+        <target>balinais</target>
       </trans-unit>
       <trans-unit id="bas" resname="bas" approved="yes">
         <source>Basa</source>
-        <target>Basa</target>
+        <target>basa</target>
       </trans-unit>
       <trans-unit id="bat" resname="bat" approved="yes">
         <source>Baltic languages</source>
-        <target>Baltes, langues</target>
+        <target>baltes, langues</target>
       </trans-unit>
       <trans-unit id="be" resname="be" approved="yes">
         <source>Belarusian</source>
-        <target>Biélorusse</target>
+        <target>biélorusse</target>
       </trans-unit>
       <trans-unit id="bej" resname="bej" approved="yes">
         <source>Beja; Bedawiyet</source>
-        <target>Bedja</target>
+        <target>bedja</target>
       </trans-unit>
       <trans-unit id="bem" resname="bem" approved="yes">
         <source>Bemba</source>
-        <target>Bemba</target>
+        <target>bemba</target>
       </trans-unit>
       <trans-unit id="ber" resname="ber" approved="yes">
         <source>Berber languages</source>
-        <target>Berbères, langues</target>
+        <target>berbères, langues</target>
       </trans-unit>
       <trans-unit id="bg" resname="bg" approved="yes">
         <source>Bulgarian</source>
-        <target>Bulgare</target>
+        <target>bulgare</target>
       </trans-unit>
       <trans-unit id="bh" resname="bh" approved="yes">
         <source>Bihari languages</source>
-        <target>Biharis, langues</target>
+        <target>langues biharis</target>
       </trans-unit>
       <trans-unit id="bho" resname="bho" approved="yes">
         <source>Bhojpuri</source>
-        <target>Bhojpuri</target>
+        <target>bhojpuri</target>
       </trans-unit>
       <trans-unit id="bi" resname="bi" approved="yes">
         <source>Bislama</source>
-        <target>Bichelamar</target>
+        <target>bichelamar</target>
       </trans-unit>
       <trans-unit id="bik" resname="bik" approved="yes">
         <source>Bikol</source>
-        <target>Bikol</target>
+        <target>bikol</target>
       </trans-unit>
       <trans-unit id="bin" resname="bin" approved="yes">
         <source>Bini; Edo</source>
-        <target>Bini ; Edo</target>
+        <target>bini ; edo</target>
       </trans-unit>
       <trans-unit id="bla" resname="bla" approved="yes">
         <source>Siksika</source>
-        <target>Siksika</target>
+        <target>siksika</target>
       </trans-unit>
       <trans-unit id="bm" resname="bm" approved="yes">
         <source>Bambara</source>
-        <target>Bambara</target>
+        <target>bambara</target>
       </trans-unit>
       <trans-unit id="bn" resname="bn" approved="yes">
         <source>Bengali</source>
-        <target>Bengali</target>
+        <target>bengali</target>
       </trans-unit>
       <trans-unit id="bnt" resname="bnt" approved="yes">
         <source>Bantu (Other)</source>
-        <target>Bantoue (autre)</target>
+        <target>bantoue (autre)</target>
       </trans-unit>
       <trans-unit id="bo" resname="bo" approved="yes">
         <source>Tibetan</source>
-        <target>Tibétain</target>
+        <target>tibétain</target>
       </trans-unit>
       <trans-unit id="br" resname="br" approved="yes">
         <source>Breton</source>
-        <target>Breton</target>
+        <target>breton</target>
       </trans-unit>
       <trans-unit id="bra" resname="bra" approved="yes">
         <source>Braj</source>
-        <target>Braj</target>
+        <target>braj</target>
       </trans-unit>
       <trans-unit id="bs" resname="bs" approved="yes">
         <source>Bosnian</source>
-        <target>Bosniaque</target>
+        <target>bosniaque</target>
       </trans-unit>
       <trans-unit id="btk" resname="btk" approved="yes">
         <source>Batak languages</source>
-        <target>Batak, langues</target>
+        <target>batak, langues</target>
       </trans-unit>
       <trans-unit id="bua" resname="bua" approved="yes">
         <source>Buriat</source>
-        <target>Bouriate</target>
+        <target>bouriate</target>
       </trans-unit>
       <trans-unit id="bug" resname="bug" approved="yes">
         <source>Buginese</source>
-        <target>Bouguis</target>
+        <target>bouguis</target>
       </trans-unit>
       <trans-unit id="byn" resname="byn" approved="yes">
         <source>Blin; Bilin</source>
-        <target>Blin ; Bilin</target>
+        <target>blin ; bilin</target>
       </trans-unit>
       <trans-unit id="ca" resname="ca" approved="yes">
         <source>Catalan; Valencian</source>
-        <target>Catalan</target>
+        <target>catalan</target>
       </trans-unit>
       <trans-unit id="cad" resname="cad" approved="yes">
         <source>Caddo</source>
-        <target>Caddo</target>
+        <target>caddo</target>
       </trans-unit>
       <trans-unit id="cai" resname="cai" approved="yes">
         <source>Central American Indian languages</source>
-        <target>Indiennes d’Amérique centrale, langues</target>
+        <target>indiennes d’Amérique centrale, langues</target>
       </trans-unit>
       <trans-unit id="car" resname="car" approved="yes">
         <source>Galibi Carib</source>
-        <target>Carib de Galibi</target>
+        <target>carib de Galibi</target>
       </trans-unit>
       <trans-unit id="cau" resname="cau" approved="yes">
         <source>Caucasian languages</source>
-        <target>Caucasiennes, langues</target>
+        <target>caucasiennes, langues</target>
       </trans-unit>
       <trans-unit id="ce" resname="ce" approved="yes">
         <source>Chechen</source>
-        <target>Tchétchène</target>
+        <target>tchétchène</target>
       </trans-unit>
       <trans-unit id="ceb" resname="ceb" approved="yes">
         <source>Cebuano</source>
-        <target>Cebuano</target>
+        <target>cebuano</target>
       </trans-unit>
       <trans-unit id="cel" resname="cel" approved="yes">
         <source>Celtic languages</source>
-        <target>Celtiques, langues</target>
+        <target>celtiques, langues</target>
       </trans-unit>
       <trans-unit id="ch" resname="ch" approved="yes">
         <source>Chamorro</source>
-        <target>Chamorro</target>
+        <target>chamorro</target>
       </trans-unit>
       <trans-unit id="chb" resname="chb" approved="yes">
         <source>Chibcha</source>
-        <target>Chibcha</target>
+        <target>chibcha</target>
       </trans-unit>
       <trans-unit id="chg" resname="chg" approved="yes">
         <source>Chagatai</source>
-        <target>Tchagatay</target>
+        <target>tchagatay</target>
       </trans-unit>
       <trans-unit id="chk" resname="chk" approved="yes">
         <source>Chuukese</source>
-        <target>Chuuk</target>
+        <target>chuuk</target>
       </trans-unit>
       <trans-unit id="chm" resname="chm" approved="yes">
         <source>Mari</source>
-        <target>Mari</target>
+        <target>mari</target>
       </trans-unit>
       <trans-unit id="chn" resname="chn" approved="yes">
         <source>Chinook jargon</source>
-        <target>Chinook, jargon</target>
+        <target>chinook, jargon</target>
       </trans-unit>
       <trans-unit id="cho" resname="cho" approved="yes">
         <source>Choctaw</source>
-        <target>Choctaw</target>
+        <target>choctaw</target>
       </trans-unit>
       <trans-unit id="chp" resname="chp" approved="yes">
         <source>Chipewyan; Dene Suline</source>
-        <target>Chipewyan</target>
+        <target>chipewyan</target>
       </trans-unit>
       <trans-unit id="chr" resname="chr" approved="yes">
         <source>Cherokee</source>
-        <target>Tchérokî</target>
+        <target>tchérokî</target>
       </trans-unit>
       <trans-unit id="chy" resname="chy" approved="yes">
         <source>Cheyenne</source>
-        <target>Cheyenne</target>
+        <target>cheyenne</target>
       </trans-unit>
       <trans-unit id="cmc" resname="cmc" approved="yes">
         <source>Chamic languages</source>
-        <target>Chames, langues</target>
+        <target>chames, langues</target>
       </trans-unit>
       <trans-unit id="cnr" resname="cnr" approved="yes">
         <source>Montenegrin</source>
@@ -340,79 +340,79 @@
       </trans-unit>
       <trans-unit id="co" resname="co" approved="yes">
         <source>Corsican</source>
-        <target>Corse</target>
+        <target>corse</target>
       </trans-unit>
       <trans-unit id="cop" resname="cop" approved="yes">
         <source>Coptic</source>
-        <target>Copte</target>
+        <target>copte</target>
       </trans-unit>
       <trans-unit id="cpe" resname="cpe" approved="yes">
         <source>Creoles and pidgins, English based</source>
-        <target>Créoles et Pidgins basés sur l'Anglais</target>
+        <target>créoles et pidgins basés sur l'anglais</target>
       </trans-unit>
       <trans-unit id="cpf" resname="cpf" approved="yes">
         <source>Creoles and pidgins, French-based</source>
-        <target>Créoles et Pidgins basés sur le Français</target>
+        <target>créoles et pidgins basés sur le français</target>
       </trans-unit>
       <trans-unit id="cpp" resname="cpp" approved="yes">
         <source>Creoles and pidgins, Portuguese-based</source>
-        <target>Créoles et Pidgins basés sur le Portugais</target>
+        <target>créoles et pidgins portugais</target>
       </trans-unit>
       <trans-unit id="cr" resname="cr" approved="yes">
         <source>Cree</source>
-        <target>Cri</target>
+        <target>cri</target>
       </trans-unit>
       <trans-unit id="crh" resname="crh" approved="yes">
         <source>Crimean Tatar; Crimean Turkish</source>
-        <target>Tatar de Crimée</target>
+        <target>tatar de Crimée</target>
       </trans-unit>
       <trans-unit id="crp" resname="crp" approved="yes">
         <source>Creoles and pidgins</source>
-        <target>Créoles et Pidgins</target>
+        <target>créoles et pidgins</target>
       </trans-unit>
       <trans-unit id="cs" resname="cs" approved="yes">
         <source>Czech</source>
-        <target>Tchèque</target>
+        <target>tchèque</target>
       </trans-unit>
       <trans-unit id="csb" resname="csb" approved="yes">
         <source>Kashubian</source>
-        <target>Kachoube</target>
+        <target>kachoube</target>
       </trans-unit>
       <trans-unit id="cu" resname="cu" approved="yes">
         <source>Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic</source>
-        <target>Slavon d'église</target>
+        <target>slavon d'église</target>
       </trans-unit>
       <trans-unit id="cus" resname="cus" approved="yes">
         <source>Cushitic languages</source>
-        <target>Couchitiques, langues</target>
+        <target>couchitiques, langues</target>
       </trans-unit>
       <trans-unit id="cv" resname="cv" approved="yes">
         <source>Chuvash</source>
-        <target>Tchouvache</target>
+        <target>tchouvache</target>
       </trans-unit>
       <trans-unit id="cy" resname="cy" approved="yes">
         <source>Welsh</source>
-        <target>Gallois</target>
+        <target>gallois</target>
       </trans-unit>
       <trans-unit id="da" resname="da" approved="yes">
         <source>Danish</source>
-        <target>Danois</target>
+        <target>danois</target>
       </trans-unit>
       <trans-unit id="dak" resname="dak" approved="yes">
         <source>Dakota</source>
-        <target>Dakota</target>
+        <target>dakota</target>
       </trans-unit>
       <trans-unit id="dar" resname="dar" approved="yes">
         <source>Dargwa</source>
-        <target>Dargwa</target>
+        <target>dargwa</target>
       </trans-unit>
       <trans-unit id="day" resname="day" approved="yes">
         <source>Land Dayak languages</source>
-        <target>Dayak, langues</target>
+        <target>dayak, langues</target>
       </trans-unit>
       <trans-unit id="de" resname="de" approved="yes">
         <source>German</source>
-        <target>Allemand</target>
+        <target>allemand</target>
       </trans-unit>
       <trans-unit id="del" resname="del" approved="yes">
         <source>Delaware</source>
@@ -420,219 +420,219 @@
       </trans-unit>
       <trans-unit id="den" resname="den" approved="yes">
         <source>Slave (Athapascan)</source>
-        <target>Esclave (Athapascanes)</target>
+        <target>esclave (athapascan)</target>
       </trans-unit>
       <trans-unit id="dgr" resname="dgr" approved="yes">
         <source>Dogrib</source>
-        <target>Dogrib</target>
+        <target>dogrib</target>
       </trans-unit>
       <trans-unit id="din" resname="din" approved="yes">
         <source>Dinka</source>
-        <target>Dinka</target>
+        <target>dinka</target>
       </trans-unit>
       <trans-unit id="doi" resname="doi" approved="yes">
         <source>Dogri</source>
-        <target>Dogri</target>
+        <target>dogri</target>
       </trans-unit>
       <trans-unit id="dra" resname="dra" approved="yes">
         <source>Dravidian languages</source>
-        <target>Dravidiennes, langues</target>
+        <target>dravidiennes, langues</target>
       </trans-unit>
       <trans-unit id="dsb" resname="dsb" approved="yes">
         <source>Lower Sorbian</source>
-        <target>Bas-sorabe</target>
+        <target>bas-sorabe</target>
       </trans-unit>
       <trans-unit id="dua" resname="dua" approved="yes">
         <source>Duala</source>
-        <target>Douala</target>
+        <target>douala</target>
       </trans-unit>
       <trans-unit id="dum" resname="dum" approved="yes">
         <source>Dutch, Middle (ca. 1050-1350)</source>
-        <target>Néerlandais moyen (environ 1050-1350)</target>
+        <target>néerlandais moyen (environ 1050-1350)</target>
       </trans-unit>
       <trans-unit id="dv" resname="dv" approved="yes">
         <source>Divehi; Dhivehi; Maldivian</source>
-        <target>Maldivien</target>
+        <target>maldivien</target>
       </trans-unit>
       <trans-unit id="dyu" resname="dyu" approved="yes">
         <source>Dyula</source>
-        <target>Dioula</target>
+        <target>dioula</target>
       </trans-unit>
       <trans-unit id="dz" resname="dz" approved="yes">
         <source>Dzongkha</source>
-        <target>Dzongkha</target>
+        <target>dzongkha</target>
       </trans-unit>
       <trans-unit id="ee" resname="ee" approved="yes">
         <source>Ewe</source>
-        <target>Éwé</target>
+        <target>éwé</target>
       </trans-unit>
       <trans-unit id="efi" resname="efi" approved="yes">
         <source>Efik</source>
-        <target>Efik</target>
+        <target>efik</target>
       </trans-unit>
       <trans-unit id="egy" resname="egy" approved="yes">
         <source>Egyptian (Ancient)</source>
-        <target>Égyptien ancien</target>
+        <target>égyptien ancien</target>
       </trans-unit>
       <trans-unit id="eka" resname="eka" approved="yes">
         <source>Ekajuk</source>
-        <target>Ekajuk</target>
+        <target>ekajuk</target>
       </trans-unit>
       <trans-unit id="el" resname="el" approved="yes">
         <source>Greek, Modern (1453-)</source>
-        <target>Grec moderne (après 1453)</target>
+        <target>grec moderne (après 1453)</target>
       </trans-unit>
       <trans-unit id="elx" resname="elx" approved="yes">
         <source>Elamite</source>
-        <target>Élamite</target>
+        <target>élamite</target>
       </trans-unit>
       <trans-unit id="en" resname="en" approved="yes">
         <source>English</source>
-        <target>Anglais</target>
+        <target>anglais</target>
       </trans-unit>
       <trans-unit id="enm" resname="enm" approved="yes">
         <source>English, Middle (1100-1500)</source>
-        <target>Anglais moyen (1100-1500)</target>
+        <target>anglais moyen (1100-1500)</target>
       </trans-unit>
       <trans-unit id="eo" resname="eo" approved="yes">
         <source>Esperanto</source>
-        <target>Espéranto</target>
+        <target>espéranto</target>
       </trans-unit>
       <trans-unit id="es" resname="es" approved="yes">
         <source>Spanish; Castilian</source>
-        <target>Castillan</target>
+        <target>castillan</target>
       </trans-unit>
       <trans-unit id="et" resname="et" approved="yes">
         <source>Estonian</source>
-        <target>Estonien</target>
+        <target>estonien</target>
       </trans-unit>
       <trans-unit id="eu" resname="eu" approved="yes">
         <source>Basque</source>
-        <target>Basque</target>
+        <target>basque</target>
       </trans-unit>
       <trans-unit id="ewo" resname="ewo" approved="yes">
         <source>Ewondo</source>
-        <target>Éwondo</target>
+        <target>éwondo</target>
       </trans-unit>
       <trans-unit id="fa" resname="fa" approved="yes">
         <source>Persian</source>
-        <target>Persan</target>
+        <target>persan</target>
       </trans-unit>
       <trans-unit id="fan" resname="fan" approved="yes">
         <source>Fang</source>
-        <target>Fang</target>
+        <target>fang</target>
       </trans-unit>
       <trans-unit id="fat" resname="fat" approved="yes">
         <source>Fanti</source>
-        <target>Fanti</target>
+        <target>fanti</target>
       </trans-unit>
       <trans-unit id="ff" resname="ff" approved="yes">
         <source>Fulah</source>
-        <target>Peul</target>
+        <target>peul</target>
       </trans-unit>
       <trans-unit id="fi" resname="fi" approved="yes">
         <source>Finnish</source>
-        <target>Finnois</target>
+        <target>finnois</target>
       </trans-unit>
       <trans-unit id="fil" resname="fil" approved="yes">
         <source>Filipino; Pilipino</source>
-        <target>Filipino ; Pilipino</target>
+        <target>filipino ; pilipino</target>
       </trans-unit>
       <trans-unit id="fiu" resname="fiu" approved="yes">
         <source>Finno-Ugrian languages</source>
-        <target>Finno-ougriennes, langues</target>
+        <target>finno-ougriennes, langues</target>
       </trans-unit>
       <trans-unit id="fj" resname="fj" approved="yes">
         <source>Fijian</source>
-        <target>Fidjien</target>
+        <target>fidjien</target>
       </trans-unit>
       <trans-unit id="fo" resname="fo" approved="yes">
         <source>Faroese</source>
-        <target>Féroïen</target>
+        <target>féroïen</target>
       </trans-unit>
       <trans-unit id="fon" resname="fon" approved="yes">
         <source>Fon</source>
-        <target>Fon</target>
+        <target>fon</target>
       </trans-unit>
       <trans-unit id="fr" resname="fr" approved="yes">
         <source>French</source>
-        <target>Français</target>
+        <target>français</target>
       </trans-unit>
       <trans-unit id="frm" resname="frm" approved="yes">
         <source>French, Middle (ca. 1400-1600)</source>
-        <target>Français moyen (environ 1400-1600)</target>
+        <target>français moyen (environ 1400-1600)</target>
       </trans-unit>
       <trans-unit id="fro" resname="fro" approved="yes">
         <source>French, Old (842-ca. 1400)</source>
-        <target>Ancien Français (842 à environ 1400)</target>
+        <target>ancien français (842 à environ 1400)</target>
       </trans-unit>
       <trans-unit id="frr" resname="frr" approved="yes">
         <source>Northern Frisian</source>
-        <target>Frison septentrional</target>
+        <target>frison septentrional</target>
       </trans-unit>
       <trans-unit id="frs" resname="frs" approved="yes">
         <source>Eastern Frisian</source>
-        <target>Frison oriental</target>
+        <target>frison oriental</target>
       </trans-unit>
       <trans-unit id="fur" resname="fur" approved="yes">
         <source>Friulian</source>
-        <target>Frioulan</target>
+        <target>frioulan</target>
       </trans-unit>
       <trans-unit id="fy" resname="fy" approved="yes">
         <source>Western Frisian</source>
-        <target>Frison occidental</target>
+        <target>frison occidental</target>
       </trans-unit>
       <trans-unit id="ga" resname="ga" approved="yes">
         <source>Irish</source>
-        <target>Irlandais</target>
+        <target>irlandais</target>
       </trans-unit>
       <trans-unit id="gaa" resname="gaa" approved="yes">
         <source>Ga</source>
-        <target>Ga</target>
+        <target>ga</target>
       </trans-unit>
       <trans-unit id="gay" resname="gay" approved="yes">
         <source>Gayo</source>
-        <target>Gayo</target>
+        <target>gayo</target>
       </trans-unit>
       <trans-unit id="gba" resname="gba" approved="yes">
         <source>Gbaya</source>
-        <target>Gbaya</target>
+        <target>gbaya</target>
       </trans-unit>
       <trans-unit id="gd" resname="gd" approved="yes">
         <source>Gaelic; Scottish Gaelic</source>
-        <target>Gaélique ; Gaélique écossais</target>
+        <target>Gaélique ; Gaélique écossais</target>
       </trans-unit>
       <trans-unit id="gem" resname="gem" approved="yes">
         <source>Germanic languages</source>
-        <target>Germaniques, langues</target>
+        <target>germaniques, langues</target>
       </trans-unit>
       <trans-unit id="gez" resname="gez" approved="yes">
         <source>Geez</source>
-        <target>Guèze</target>
+        <target>guèze</target>
       </trans-unit>
       <trans-unit id="gil" resname="gil" approved="yes">
         <source>Gilbertese</source>
-        <target>Gilbertin</target>
+        <target>gilbertin</target>
       </trans-unit>
       <trans-unit id="gl" resname="gl" approved="yes">
         <source>Galician</source>
-        <target>Galicien</target>
+        <target>galicien</target>
       </trans-unit>
       <trans-unit id="gmh" resname="gmh" approved="yes">
         <source>German, Middle High (ca. 1050-1500)</source>
-        <target>Allemand, moyen haut (environ 1050-1500)</target>
+        <target>allemand, moyen haut (environ 1050-1500)</target>
       </trans-unit>
       <trans-unit id="gn" resname="gn" approved="yes">
         <source>Guarani</source>
-        <target>Guarani</target>
+        <target>guarani</target>
       </trans-unit>
       <trans-unit id="goh" resname="goh" approved="yes">
         <source>German, Old High (ca. 750-1050)</source>
-        <target>Allemand, vieux haut (environ 750-1050)</target>
+        <target>allemand, vieux haut (environ 750-1050)</target>
       </trans-unit>
       <trans-unit id="gon" resname="gon" approved="yes">
         <source>Gondi</source>
-        <target>Gondi</target>
+        <target>gondi</target>
       </trans-unit>
       <trans-unit id="gor" resname="gor" approved="yes">
         <source>Gorontalo</source>
@@ -640,15 +640,15 @@
       </trans-unit>
       <trans-unit id="got" resname="got" approved="yes">
         <source>Gothic</source>
-        <target>Gotique</target>
+        <target>gotique</target>
       </trans-unit>
       <trans-unit id="grb" resname="grb" approved="yes">
         <source>Grebo</source>
-        <target>Grebo</target>
+        <target>grebo</target>
       </trans-unit>
       <trans-unit id="grc" resname="grc" approved="yes">
         <source>Greek, Ancient (to 1453)</source>
-        <target>Grec ancien (jusqu'à 1453)</target>
+        <target>grec ancien (jusqu'à 1453)</target>
       </trans-unit>
       <trans-unit id="gsw" resname="gsw" approved="yes">
         <source>Swiss German; Alemannic; Alsatian</source>
@@ -656,543 +656,543 @@
       </trans-unit>
       <trans-unit id="gu" resname="gu" approved="yes">
         <source>Gujarati</source>
-        <target>Goudjarâtî (Gujrâtî)</target>
+        <target>goudjarâtî (gujrâtî)</target>
       </trans-unit>
       <trans-unit id="gv" resname="gv" approved="yes">
         <source>Manx</source>
-        <target>Mannois</target>
+        <target>mannois</target>
       </trans-unit>
       <trans-unit id="gwi" resname="gwi" approved="yes">
         <source>Gwich'in</source>
-        <target>Gwich'in</target>
+        <target>gwich´in</target>
       </trans-unit>
       <trans-unit id="ha" resname="ha" approved="yes">
         <source>Hausa</source>
-        <target>Haoussa</target>
+        <target>haoussa</target>
       </trans-unit>
       <trans-unit id="hai" resname="hai" approved="yes">
         <source>Haida</source>
-        <target>Haida</target>
+        <target>haida</target>
       </trans-unit>
       <trans-unit id="haw" resname="haw" approved="yes">
         <source>Hawaiian</source>
-        <target>Hawaïen</target>
+        <target>hawaïen</target>
       </trans-unit>
       <trans-unit id="he" resname="he" approved="yes">
         <source>Hebrew</source>
-        <target>Hébreu</target>
+        <target>hébreu</target>
       </trans-unit>
       <trans-unit id="hi" resname="hi" approved="yes">
         <source>Hindi</source>
-        <target>Hindi</target>
+        <target>hindi</target>
       </trans-unit>
       <trans-unit id="hil" resname="hil" approved="yes">
         <source>Hiligaynon</source>
-        <target>Hiligaynon</target>
+        <target>hiligaynon</target>
       </trans-unit>
       <trans-unit id="him" resname="him" approved="yes">
         <source>Himachali languages; Western Pahari languages</source>
-        <target>Himachalies, langues ; Paharies occidentales, langues</target>
+        <target>himachalies, langues ; paharies occidentales, langues</target>
       </trans-unit>
       <trans-unit id="hit" resname="hit" approved="yes">
         <source>Hittite</source>
-        <target>Hittite</target>
+        <target>hittite</target>
       </trans-unit>
       <trans-unit id="hmn" resname="hmn" approved="yes">
         <source>Hmong; Mong</source>
-        <target>Hmong</target>
+        <target>hmong</target>
       </trans-unit>
       <trans-unit id="ho" resname="ho" approved="yes">
         <source>Hiri Motu</source>
-        <target>Hiri Motu</target>
+        <target>hiri motu</target>
       </trans-unit>
       <trans-unit id="hr" resname="hr" approved="yes">
         <source>Croatian</source>
-        <target>Croate</target>
+        <target>croate</target>
       </trans-unit>
       <trans-unit id="hsb" resname="hsb" approved="yes">
         <source>Upper Sorbian</source>
-        <target>Haut-sorabe</target>
+        <target>haut-sorabe</target>
       </trans-unit>
       <trans-unit id="ht" resname="ht" approved="yes">
         <source>Haitian; Haitian Creole</source>
-        <target>Haïtien ; Créole Haïtien</target>
+        <target>haïtien ; créole haïtien</target>
       </trans-unit>
       <trans-unit id="hu" resname="hu" approved="yes">
         <source>Hungarian</source>
-        <target>Hongrois</target>
+        <target>hongrois</target>
       </trans-unit>
       <trans-unit id="hup" resname="hup" approved="yes">
         <source>Hupa</source>
-        <target>Hupa</target>
+        <target>hupa</target>
       </trans-unit>
       <trans-unit id="hy" resname="hy" approved="yes">
         <source>Armenian</source>
-        <target>Arménien</target>
+        <target>arménien</target>
       </trans-unit>
       <trans-unit id="hz" resname="hz" approved="yes">
         <source>Herero</source>
-        <target>Herero</target>
+        <target>herero</target>
       </trans-unit>
       <trans-unit id="ia" resname="ia" approved="yes">
         <source>Interlingua (International Auxiliary Language Association)</source>
-        <target>Interlingua (International Auxiliary Language Association)</target>
+        <target>interlingua (association pour une langue auxiliaire internationale)</target>
       </trans-unit>
       <trans-unit id="iba" resname="iba" approved="yes">
         <source>Iban</source>
-        <target>Iban</target>
+        <target>iban</target>
       </trans-unit>
       <trans-unit id="id" resname="id" approved="yes">
         <source>Indonesian</source>
-        <target>Indonésien</target>
+        <target>indonésien</target>
       </trans-unit>
       <trans-unit id="ie" resname="ie" approved="yes">
         <source>Interlingue; Occidental</source>
-        <target>Interlingue</target>
+        <target>interlingue</target>
       </trans-unit>
       <trans-unit id="ig" resname="ig" approved="yes">
         <source>Igbo</source>
-        <target>Igbo</target>
+        <target>igbo</target>
       </trans-unit>
       <trans-unit id="ii" resname="ii" approved="yes">
         <source>Sichuan Yi; Nuosu</source>
-        <target>Yi de Sichuan ; Nuosu</target>
+        <target>yi de Sichuan</target>
       </trans-unit>
       <trans-unit id="ijo" resname="ijo" approved="yes">
         <source>Ijo languages</source>
-        <target>Ijo, langues</target>
+        <target>ijo, langues</target>
       </trans-unit>
       <trans-unit id="ik" resname="ik" approved="yes">
         <source>Inupiaq</source>
-        <target>Inupiaq</target>
+        <target>inupiaq</target>
       </trans-unit>
       <trans-unit id="ilo" resname="ilo" approved="yes">
         <source>Iloko</source>
-        <target>Ilocano</target>
+        <target>ilocano</target>
       </trans-unit>
       <trans-unit id="inc" resname="inc" approved="yes">
         <source>Indic languages</source>
-        <target>Indiques, langues</target>
+        <target>indiques, langues</target>
       </trans-unit>
       <trans-unit id="ine" resname="ine" approved="yes">
         <source>Indo-European languages</source>
-        <target>Indo-européennes, langues</target>
+        <target>indo-européennes, langues</target>
       </trans-unit>
       <trans-unit id="inh" resname="inh" approved="yes">
         <source>Ingush</source>
-        <target>Ingouche</target>
+        <target>ingouche</target>
       </trans-unit>
       <trans-unit id="io" resname="io" approved="yes">
         <source>Ido</source>
-        <target>Ido</target>
+        <target>ido</target>
       </trans-unit>
       <trans-unit id="ira" resname="ira" approved="yes">
         <source>Iranian languages</source>
-        <target>Iraniennes, langues</target>
+        <target>iraniennes, langues</target>
       </trans-unit>
       <trans-unit id="iro" resname="iro" approved="yes">
         <source>Iroquoian languages</source>
-        <target>Iroquoises, langues</target>
+        <target>iroquoises, langues</target>
       </trans-unit>
       <trans-unit id="is" resname="is" approved="yes">
         <source>Icelandic</source>
-        <target>Islandais</target>
+        <target>islandais</target>
       </trans-unit>
       <trans-unit id="it" resname="it" approved="yes">
         <source>Italian</source>
-        <target>Italien</target>
+        <target>italien</target>
       </trans-unit>
       <trans-unit id="iu" resname="iu" approved="yes">
         <source>Inuktitut</source>
-        <target>Inuktitut</target>
+        <target>inuktitut</target>
       </trans-unit>
       <trans-unit id="ja" resname="ja" approved="yes">
         <source>Japanese</source>
-        <target>Japonais</target>
+        <target>japonais</target>
       </trans-unit>
       <trans-unit id="jbo" resname="jbo" approved="yes">
         <source>Lojban</source>
-        <target>Lojban</target>
+        <target>lojban</target>
       </trans-unit>
       <trans-unit id="jpr" resname="jpr" approved="yes">
         <source>Judeo-Persian</source>
-        <target>Judéo-persan</target>
+        <target>judéo-persan</target>
       </trans-unit>
       <trans-unit id="jrb" resname="jrb" approved="yes">
         <source>Judeo-Arabic</source>
-        <target>Judéo-arabe</target>
+        <target>judéo-arabe</target>
       </trans-unit>
       <trans-unit id="jv" resname="jv" approved="yes">
         <source>Javanese</source>
-        <target>Javanais</target>
+        <target>javanais</target>
       </trans-unit>
       <trans-unit id="ka" resname="ka" approved="yes">
         <source>Georgian</source>
-        <target>Géorgien</target>
+        <target>géorgien</target>
       </trans-unit>
       <trans-unit id="kaa" resname="kaa" approved="yes">
         <source>Kara-Kalpak</source>
-        <target>Karakalpak</target>
+        <target>karakalpak</target>
       </trans-unit>
       <trans-unit id="kab" resname="kab" approved="yes">
         <source>Kabyle</source>
-        <target>Kabyle</target>
+        <target>kabyle</target>
       </trans-unit>
       <trans-unit id="kac" resname="kac" approved="yes">
         <source>Kachin; Jingpho</source>
-        <target>Kachin ; Jingpho</target>
+        <target>kachin ; jingpho</target>
       </trans-unit>
       <trans-unit id="kam" resname="kam" approved="yes">
         <source>Kamba</source>
-        <target>Kamba</target>
+        <target>kamba</target>
       </trans-unit>
       <trans-unit id="kar" resname="kar" approved="yes">
         <source>Karen languages</source>
-        <target>Karen, langues</target>
+        <target>karen, langues</target>
       </trans-unit>
       <trans-unit id="kaw" resname="kaw" approved="yes">
         <source>Kawi</source>
-        <target>Kawi</target>
+        <target>kawi</target>
       </trans-unit>
       <trans-unit id="kbd" resname="kbd" approved="yes">
         <source>Kabardian</source>
-        <target>Kabarde</target>
+        <target>kabarde</target>
       </trans-unit>
       <trans-unit id="kg" resname="kg" approved="yes">
         <source>Kongo</source>
-        <target>Kongo</target>
+        <target>kongo</target>
       </trans-unit>
       <trans-unit id="kha" resname="kha" approved="yes">
         <source>Khasi</source>
-        <target>Khasi</target>
+        <target>khasi</target>
       </trans-unit>
       <trans-unit id="khi" resname="khi" approved="yes">
         <source>Khoisan languages</source>
-        <target>Khoïsan, langues</target>
+        <target>khoïsan, langues</target>
       </trans-unit>
       <trans-unit id="kho" resname="kho" approved="yes">
         <source>Khotanese; Sakan</source>
-        <target>Khotanais ; Sakan</target>
+        <target>khotanais ; sakan</target>
       </trans-unit>
       <trans-unit id="ki" resname="ki" approved="yes">
         <source>Kikuyu; Gikuyu</source>
-        <target>Kikuyu</target>
+        <target>kikuyu</target>
       </trans-unit>
       <trans-unit id="kj" resname="kj" approved="yes">
         <source>Kuanyama; Kwanyama</source>
-        <target>Kuanyama</target>
+        <target>kuanyama</target>
       </trans-unit>
       <trans-unit id="kk" resname="kk" approved="yes">
         <source>Kazakh</source>
-        <target>Kazakh</target>
+        <target>kazakh</target>
       </trans-unit>
       <trans-unit id="kl" resname="kl" approved="yes">
         <source>Kalaallisut; Greenlandic</source>
-        <target>Groenlandais</target>
+        <target>groenlandais</target>
       </trans-unit>
       <trans-unit id="km" resname="km" approved="yes">
         <source>Central Khmer</source>
-        <target>Khmer central</target>
+        <target>khmer central</target>
       </trans-unit>
       <trans-unit id="kmb" resname="kmb" approved="yes">
         <source>Kimbundu</source>
-        <target>Kimbundu</target>
+        <target>kimbundu</target>
       </trans-unit>
       <trans-unit id="kn" resname="kn" approved="yes">
         <source>Kannada</source>
-        <target>Kannara (Canara)</target>
+        <target>kannara (canara)</target>
       </trans-unit>
       <trans-unit id="ko" resname="ko" approved="yes">
         <source>Korean</source>
-        <target>Coréen</target>
+        <target>coréen</target>
       </trans-unit>
       <trans-unit id="kok" resname="kok" approved="yes">
         <source>Konkani</source>
-        <target>Konkani</target>
+        <target>konkani</target>
       </trans-unit>
       <trans-unit id="kos" resname="kos" approved="yes">
         <source>Kosraean</source>
-        <target>Kosraéen</target>
+        <target>kosraéen</target>
       </trans-unit>
       <trans-unit id="kpe" resname="kpe" approved="yes">
         <source>Kpelle</source>
-        <target>Kpèllé</target>
+        <target>kpèllé</target>
       </trans-unit>
       <trans-unit id="kr" resname="kr" approved="yes">
         <source>Kanuri</source>
-        <target>Kanouri</target>
+        <target>kanouri</target>
       </trans-unit>
       <trans-unit id="krc" resname="krc" approved="yes">
         <source>Karachay-Balkar</source>
-        <target>Karatchaï balkar</target>
+        <target>karatchaï balkar</target>
       </trans-unit>
       <trans-unit id="krl" resname="krl" approved="yes">
         <source>Karelian</source>
-        <target>Carélien</target>
+        <target>carélien</target>
       </trans-unit>
       <trans-unit id="kro" resname="kro" approved="yes">
         <source>Kru languages</source>
-        <target>Krou, langues</target>
+        <target>krou, langues</target>
       </trans-unit>
       <trans-unit id="kru" resname="kru" approved="yes">
         <source>Kurukh</source>
-        <target>Kurukh</target>
+        <target>kurukh</target>
       </trans-unit>
       <trans-unit id="ks" resname="ks" approved="yes">
         <source>Kashmiri</source>
-        <target>Kashmiri</target>
+        <target>kashmiri</target>
       </trans-unit>
       <trans-unit id="ku" resname="ku" approved="yes">
         <source>Kurdish</source>
-        <target>Kurde</target>
+        <target>kurde</target>
       </trans-unit>
       <trans-unit id="kum" resname="kum" approved="yes">
         <source>Kumyk</source>
-        <target>Koumyk</target>
+        <target>koumyk</target>
       </trans-unit>
       <trans-unit id="kut" resname="kut" approved="yes">
         <source>Kutenai</source>
-        <target>Kutenai</target>
+        <target>kutenai</target>
       </trans-unit>
       <trans-unit id="kv" resname="kv" approved="yes">
         <source>Komi</source>
-        <target>Komi</target>
+        <target>komi</target>
       </trans-unit>
       <trans-unit id="kw" resname="kw" approved="yes">
         <source>Cornish</source>
-        <target>Cornique</target>
+        <target>cornique</target>
       </trans-unit>
       <trans-unit id="ky" resname="ky" approved="yes">
         <source>Kirghiz; Kyrgyz</source>
-        <target>Kirghiz</target>
+        <target>kirghiz</target>
       </trans-unit>
       <trans-unit id="la" resname="la" approved="yes">
         <source>Latin</source>
-        <target>Latin</target>
+        <target>latin</target>
       </trans-unit>
       <trans-unit id="lad" resname="lad" approved="yes">
         <source>Ladino</source>
-        <target>Ladino</target>
+        <target>ladino</target>
       </trans-unit>
       <trans-unit id="lah" resname="lah" approved="yes">
         <source>Lahnda</source>
-        <target>Lahnda</target>
+        <target>lahnda</target>
       </trans-unit>
       <trans-unit id="lam" resname="lam" approved="yes">
         <source>Lamba</source>
-        <target>Lamba</target>
+        <target>lamba</target>
       </trans-unit>
       <trans-unit id="lb" resname="lb" approved="yes">
         <source>Luxembourgish; Letzeburgesch</source>
-        <target>Luxembourgeois</target>
+        <target>luxembourgeois</target>
       </trans-unit>
       <trans-unit id="lez" resname="lez" approved="yes">
         <source>Lezghian</source>
-        <target>Lezghien</target>
+        <target>lezghien</target>
       </trans-unit>
       <trans-unit id="lg" resname="lg" approved="yes">
         <source>Ganda</source>
-        <target>Ganda</target>
+        <target>ganda</target>
       </trans-unit>
       <trans-unit id="li" resname="li" approved="yes">
         <source>Limburgan; Limburger; Limburgish</source>
-        <target>Limbourgeois</target>
+        <target>limbourgeois</target>
       </trans-unit>
       <trans-unit id="ln" resname="ln" approved="yes">
         <source>Lingala</source>
-        <target>Lingala</target>
+        <target>lingala</target>
       </trans-unit>
       <trans-unit id="lo" resname="lo" approved="yes">
         <source>Lao</source>
-        <target>Laotien</target>
+        <target>laotien</target>
       </trans-unit>
       <trans-unit id="lol" resname="lol" approved="yes">
         <source>Mongo</source>
-        <target>Mongo</target>
+        <target>mongo</target>
       </trans-unit>
       <trans-unit id="loz" resname="loz" approved="yes">
         <source>Lozi</source>
-        <target>Lozi</target>
+        <target>lozi</target>
       </trans-unit>
       <trans-unit id="lt" resname="lt" approved="yes">
         <source>Lithuanian</source>
-        <target>Lituanien</target>
+        <target>lituanien</target>
       </trans-unit>
       <trans-unit id="lu" resname="lu" approved="yes">
         <source>Luba-Katanga</source>
-        <target>Luba-katanga</target>
+        <target>luba-katanga</target>
       </trans-unit>
       <trans-unit id="lua" resname="lua" approved="yes">
         <source>Luba-Lulua</source>
-        <target>Luba-lulua</target>
+        <target>luba-lulua</target>
       </trans-unit>
       <trans-unit id="lui" resname="lui" approved="yes">
         <source>Luiseno</source>
-        <target>Luiseno</target>
+        <target>luiseno</target>
       </trans-unit>
       <trans-unit id="lun" resname="lun" approved="yes">
         <source>Lunda</source>
-        <target>Lunda</target>
+        <target>lunda</target>
       </trans-unit>
       <trans-unit id="luo" resname="luo" approved="yes">
         <source>Luo (Kenya and Tanzania)</source>
-        <target>Luo (Kenya et Tanzanie)</target>
+        <target>luo (Kenya et Tanzanie)</target>
       </trans-unit>
       <trans-unit id="lus" resname="lus" approved="yes">
         <source>Lushai</source>
-        <target>Lushai</target>
+        <target>lushai</target>
       </trans-unit>
       <trans-unit id="lv" resname="lv" approved="yes">
         <source>Latvian</source>
-        <target>Letton</target>
+        <target>letton</target>
       </trans-unit>
       <trans-unit id="mad" resname="mad" approved="yes">
         <source>Madurese</source>
-        <target>Madurais</target>
+        <target>madurais</target>
       </trans-unit>
       <trans-unit id="mag" resname="mag" approved="yes">
         <source>Magahi</source>
-        <target>Magahi</target>
+        <target>magahi</target>
       </trans-unit>
       <trans-unit id="mai" resname="mai" approved="yes">
         <source>Maithili</source>
-        <target>Maithili</target>
+        <target>maithili</target>
       </trans-unit>
       <trans-unit id="mak" resname="mak" approved="yes">
         <source>Makasar</source>
-        <target>Makassar</target>
+        <target>makassar</target>
       </trans-unit>
       <trans-unit id="man" resname="man" approved="yes">
         <source>Mandingo</source>
-        <target>Mandingue</target>
+        <target>mandingue</target>
       </trans-unit>
       <trans-unit id="map" resname="map" approved="yes">
         <source>Austronesian languages</source>
-        <target>Austronésiennes, langues</target>
+        <target>austronésiennes, langues</target>
       </trans-unit>
       <trans-unit id="mas" resname="mas" approved="yes">
         <source>Masai</source>
-        <target>Massaï</target>
+        <target>massaï</target>
       </trans-unit>
       <trans-unit id="mdf" resname="mdf" approved="yes">
         <source>Moksha</source>
-        <target>Mokcha</target>
+        <target>mokcha</target>
       </trans-unit>
       <trans-unit id="mdr" resname="mdr" approved="yes">
         <source>Mandar</source>
-        <target>Mandar</target>
+        <target>mandar</target>
       </trans-unit>
       <trans-unit id="men" resname="men" approved="yes">
         <source>Mende</source>
-        <target>Mendé</target>
+        <target>mendé</target>
       </trans-unit>
       <trans-unit id="mg" resname="mg" approved="yes">
         <source>Malagasy</source>
-        <target>Malgache</target>
+        <target>malgache</target>
       </trans-unit>
       <trans-unit id="mga" resname="mga" approved="yes">
         <source>Irish, Middle (900-1200)</source>
-        <target>Irlandais intermédiaire (900-1200)</target>
+        <target>irlandais intermédiaire (900-1200)</target>
       </trans-unit>
       <trans-unit id="mh" resname="mh" approved="yes">
         <source>Marshallese</source>
-        <target>Marshallais</target>
+        <target>marshallais</target>
       </trans-unit>
       <trans-unit id="mi" resname="mi" approved="yes">
         <source>Maori</source>
-        <target>Maori</target>
+        <target>maori</target>
       </trans-unit>
       <trans-unit id="mic" resname="mic" approved="yes">
         <source>Mi'kmaq; Micmac</source>
-        <target>Mi'kmaq ; Micmac</target>
+        <target>mi'kmaq ; micmac</target>
       </trans-unit>
       <trans-unit id="min" resname="min" approved="yes">
         <source>Minangkabau</source>
-        <target>Minangkabau</target>
+        <target>minangkabau</target>
       </trans-unit>
       <trans-unit id="mis" resname="mis" approved="yes">
         <source>Uncoded languages</source>
-        <target>Langues non codées</target>
+        <target>langues non codées</target>
       </trans-unit>
       <trans-unit id="mk" resname="mk" approved="yes">
         <source>Macedonian</source>
-        <target>Macédonien</target>
+        <target>macédonien</target>
       </trans-unit>
       <trans-unit id="mkh" resname="mkh" approved="yes">
         <source>Mon-Khmer languages</source>
-        <target>Môn-khmer, langues</target>
+        <target>môn-khmer, langues</target>
       </trans-unit>
       <trans-unit id="ml" resname="ml" approved="yes">
         <source>Malayalam</source>
-        <target>Malayalam</target>
+        <target>malayalam</target>
       </trans-unit>
       <trans-unit id="mn" resname="mn" approved="yes">
         <source>Mongolian</source>
-        <target>Mongol</target>
+        <target>mongol</target>
       </trans-unit>
       <trans-unit id="mnc" resname="mnc" approved="yes">
         <source>Manchu</source>
-        <target>Mandchou</target>
+        <target>mandchou</target>
       </trans-unit>
       <trans-unit id="mni" resname="mni" approved="yes">
         <source>Manipuri</source>
-        <target>Manipuri</target>
+        <target>manipuri</target>
       </trans-unit>
       <trans-unit id="mno" resname="mno" approved="yes">
         <source>Manobo languages</source>
-        <target>Manobo, langues</target>
+        <target>manobo, langues</target>
       </trans-unit>
       <trans-unit id="moh" resname="moh" approved="yes">
         <source>Mohawk</source>
-        <target>Mohawk</target>
+        <target>mohawk</target>
       </trans-unit>
       <trans-unit id="mos" resname="mos" approved="yes">
         <source>Mossi</source>
-        <target>Moré</target>
+        <target>moré</target>
       </trans-unit>
       <trans-unit id="mr" resname="mr" approved="yes">
         <source>Marathi</source>
-        <target>Marathe</target>
+        <target>marathe</target>
       </trans-unit>
       <trans-unit id="ms" resname="ms" approved="yes">
         <source>Malay</source>
-        <target>Malais</target>
+        <target>malais</target>
       </trans-unit>
       <trans-unit id="mt" resname="mt" approved="yes">
         <source>Maltese</source>
-        <target>Maltais</target>
+        <target>maltais</target>
       </trans-unit>
       <trans-unit id="mul" resname="mul" approved="yes">
         <source>Multiple languages</source>
-        <target>Langues multiples</target>
+        <target>langues multiples</target>
       </trans-unit>
       <trans-unit id="mun" resname="mun" approved="yes">
         <source>Munda languages</source>
-        <target>Mounda, langues</target>
+        <target>mounda, langues</target>
       </trans-unit>
       <trans-unit id="mus" resname="mus" approved="yes">
         <source>Creek</source>
-        <target>Creek</target>
+        <target>creek</target>
       </trans-unit>
       <trans-unit id="mwl" resname="mwl" approved="yes">
         <source>Mirandese</source>
-        <target>Mirandais</target>
+        <target>mirandais</target>
       </trans-unit>
       <trans-unit id="mwr" resname="mwr" approved="yes">
         <source>Marwari</source>
-        <target>Marwarî</target>
+        <target>marwarî</target>
       </trans-unit>
       <trans-unit id="my" resname="my" approved="yes">
         <source>Burmese</source>
-        <target>Birman</target>
+        <target>birman</target>
       </trans-unit>
       <trans-unit id="myn" resname="myn" approved="yes">
         <source>Mayan languages</source>
-        <target>Mayas, langues</target>
+        <target>mayas, langues</target>
       </trans-unit>
       <trans-unit id="myv" resname="myv" approved="yes">
         <source>Erzya</source>
-        <target>Erzya</target>
+        <target>erzya</target>
       </trans-unit>
       <trans-unit id="na" resname="na" approved="yes">
         <source>Nauru</source>
@@ -1200,155 +1200,155 @@
       </trans-unit>
       <trans-unit id="nah" resname="nah" approved="yes">
         <source>Nahuatl languages</source>
-        <target>Nahuatl, langues</target>
+        <target>nahuatl, langues</target>
       </trans-unit>
       <trans-unit id="nai" resname="nai" approved="yes">
         <source>North American Indian languages</source>
-        <target>Indiennes d’Amérique du Nord, langues</target>
+        <target>indiennes d’Amérique du Nord, langues</target>
       </trans-unit>
       <trans-unit id="nap" resname="nap" approved="yes">
         <source>Neapolitan</source>
-        <target>Napolitain</target>
+        <target>napolitain</target>
       </trans-unit>
       <trans-unit id="nb" resname="nb" approved="yes">
         <source>Bokmål, Norwegian; Norwegian Bokmål</source>
-        <target>Norvégien Bokmål</target>
+        <target>norvégien Bokmål</target>
       </trans-unit>
       <trans-unit id="nd" resname="nd" approved="yes">
         <source>Ndebele, North; North Ndebele</source>
-        <target>Ndébélé du Nord</target>
+        <target>ndébélé du Nord</target>
       </trans-unit>
       <trans-unit id="nds" resname="nds" approved="yes">
         <source>Low German; Low Saxon; German, Low; Saxon, Low</source>
-        <target>Bas saxon</target>
+        <target>saxon, bas</target>
       </trans-unit>
       <trans-unit id="ne" resname="ne" approved="yes">
         <source>Nepali</source>
-        <target>Népalais</target>
+        <target>népalais</target>
       </trans-unit>
       <trans-unit id="new" resname="new" approved="yes">
         <source>Nepal Bhasa; Newari</source>
-        <target>Nepâlbhâshâ ; Newari</target>
+        <target>nepâlbhâshâ ; newari</target>
       </trans-unit>
       <trans-unit id="ng" resname="ng" approved="yes">
         <source>Ndonga</source>
-        <target>Ndonga</target>
+        <target>ndonga</target>
       </trans-unit>
       <trans-unit id="nia" resname="nia" approved="yes">
         <source>Nias</source>
-        <target>Nias</target>
+        <target>nias</target>
       </trans-unit>
       <trans-unit id="nic" resname="nic" approved="yes">
         <source>Niger-Kordofanian languages</source>
-        <target>Nigéro-kordofaniennes, langues</target>
+        <target>nigéro-kordofaniennes, langues</target>
       </trans-unit>
       <trans-unit id="niu" resname="niu" approved="yes">
         <source>Niuean</source>
-        <target>Niuéen</target>
+        <target>niuéen</target>
       </trans-unit>
       <trans-unit id="nl" resname="nl" approved="yes">
         <source>Dutch; Flemish</source>
-        <target>Néerlandais</target>
+        <target>néerlandais</target>
       </trans-unit>
       <trans-unit id="nn" resname="nn" approved="yes">
         <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
-        <target>Norvégien Nynorsk</target>
+        <target>norvégien nynorsk</target>
       </trans-unit>
       <trans-unit id="no" resname="no" approved="yes">
         <source>Norwegian</source>
-        <target>Norvégien</target>
+        <target>norvégien</target>
       </trans-unit>
       <trans-unit id="nog" resname="nog" approved="yes">
         <source>Nogai</source>
-        <target>Nogaï</target>
+        <target>nogaï</target>
       </trans-unit>
       <trans-unit id="non" resname="non" approved="yes">
         <source>Norse, Old</source>
-        <target>Vieux norrois</target>
+        <target>vieux norrois</target>
       </trans-unit>
       <trans-unit id="nqo" resname="nqo" approved="yes">
         <source>N'Ko</source>
-        <target>N'Ko</target>
+        <target>n'Ko</target>
       </trans-unit>
       <trans-unit id="nr" resname="nr" approved="yes">
         <source>Ndebele, South; South Ndebele</source>
-        <target>Ndébélé du Sud</target>
+        <target>ndébélé du Sud</target>
       </trans-unit>
       <trans-unit id="nso" resname="nso" approved="yes">
         <source>Pedi; Sepedi; Northern Sotho</source>
-        <target>Pedi ; Sepedi ; Sotho du Nord</target>
+        <target>pedi ; sepedi ; sotho du Nord</target>
       </trans-unit>
       <trans-unit id="nub" resname="nub" approved="yes">
         <source>Nubian languages</source>
-        <target>Nubiennes, langues</target>
+        <target>nubiennes, langues</target>
       </trans-unit>
       <trans-unit id="nv" resname="nv" approved="yes">
         <source>Navajo; Navaho</source>
-        <target>Navaho</target>
+        <target>navaho</target>
       </trans-unit>
       <trans-unit id="nwc" resname="nwc" approved="yes">
         <source>Classical Newari; Old Newari; Classical Nepal Bhasa</source>
-        <target>Newari classique</target>
+        <target>newari classique</target>
       </trans-unit>
       <trans-unit id="ny" resname="ny" approved="yes">
         <source>Chichewa; Chewa; Nyanja</source>
-        <target>Nyanja</target>
+        <target>nyanja</target>
       </trans-unit>
       <trans-unit id="nym" resname="nym" approved="yes">
         <source>Nyamwezi</source>
-        <target>Nyamwezi</target>
+        <target>nyamwezi</target>
       </trans-unit>
       <trans-unit id="nyn" resname="nyn" approved="yes">
         <source>Nyankole</source>
-        <target>Nyankole</target>
+        <target>nyankole</target>
       </trans-unit>
       <trans-unit id="nyo" resname="nyo" approved="yes">
         <source>Nyoro</source>
-        <target>Nyoro</target>
+        <target>nyoro</target>
       </trans-unit>
       <trans-unit id="nzi" resname="nzi" approved="yes">
         <source>Nzima</source>
-        <target>Nzema</target>
+        <target>nzema</target>
       </trans-unit>
       <trans-unit id="oc" resname="oc" approved="yes">
         <source>Occitan (post 1500); Provençal</source>
-        <target>Occitan (après 1500) ; Provençal</target>
+        <target>occitan (après 1500) ; provençal</target>
       </trans-unit>
       <trans-unit id="oj" resname="oj" approved="yes">
         <source>Ojibwa</source>
-        <target>Ojibwa</target>
+        <target>ojibwa</target>
       </trans-unit>
       <trans-unit id="om" resname="om" approved="yes">
         <source>Oromo</source>
-        <target>Oromo</target>
+        <target>oromo</target>
       </trans-unit>
       <trans-unit id="or" resname="or" approved="yes">
         <source>Oriya</source>
-        <target>Oriya</target>
+        <target>oriya</target>
       </trans-unit>
       <trans-unit id="os" resname="os" approved="yes">
         <source>Ossetian; Ossetic</source>
-        <target>Ossète</target>
+        <target>ossète</target>
       </trans-unit>
       <trans-unit id="osa" resname="osa" approved="yes">
         <source>Osage</source>
-        <target>Osage</target>
+        <target>osage</target>
       </trans-unit>
       <trans-unit id="ota" resname="ota" approved="yes">
         <source>Turkish, Ottoman (1500-1928)</source>
-        <target>Turc ottoman (1500-1928)</target>
+        <target>turc ottoman (1500-1928)</target>
       </trans-unit>
       <trans-unit id="oto" resname="oto" approved="yes">
         <source>Otomian languages</source>
-        <target>Otomi, langues</target>
+        <target>otomi, langues</target>
       </trans-unit>
       <trans-unit id="pa" resname="pa" approved="yes">
         <source>Panjabi; Punjabi</source>
-        <target>Pendjabi</target>
+        <target>pendjabi</target>
       </trans-unit>
       <trans-unit id="paa" resname="paa" approved="yes">
         <source>Papuan languages</source>
-        <target>Papoues, langues</target>
+        <target>papoues, langues</target>
       </trans-unit>
       <trans-unit id="pag" resname="pag" approved="yes">
         <source>Pangasinan</source>
@@ -1356,367 +1356,367 @@
       </trans-unit>
       <trans-unit id="pal" resname="pal" approved="yes">
         <source>Pahlavi</source>
-        <target>Pahlavi</target>
+        <target>pahlavi</target>
       </trans-unit>
       <trans-unit id="pam" resname="pam" approved="yes">
         <source>Pampanga; Kapampangan</source>
-        <target>Pampangan</target>
+        <target>pampangan</target>
       </trans-unit>
       <trans-unit id="pap" resname="pap" approved="yes">
         <source>Papiamento</source>
-        <target>Papiamento</target>
+        <target>papiamento</target>
       </trans-unit>
       <trans-unit id="pau" resname="pau" approved="yes">
         <source>Palauan</source>
-        <target>Palau</target>
+        <target>palau</target>
       </trans-unit>
       <trans-unit id="peo" resname="peo" approved="yes">
         <source>Persian, Old (ca. 600-400 B.C.)</source>
-        <target>Vieux perse (environ 600-400 avant J.-C.)</target>
+        <target>vieux perse (environ 600-400 avant J.-C.)</target>
       </trans-unit>
       <trans-unit id="phi" resname="phi" approved="yes">
         <source>Philippine languages</source>
-        <target>Philippines, langues</target>
+        <target>philippines, langues</target>
       </trans-unit>
       <trans-unit id="phn" resname="phn" approved="yes">
         <source>Phoenician</source>
-        <target>Phénicien</target>
+        <target>phénicien</target>
       </trans-unit>
       <trans-unit id="pi" resname="pi" approved="yes">
         <source>Pali</source>
-        <target>Pali</target>
+        <target>pali</target>
       </trans-unit>
       <trans-unit id="pl" resname="pl" approved="yes">
         <source>Polish</source>
-        <target>Polonais</target>
+        <target>polonais</target>
       </trans-unit>
       <trans-unit id="pon" resname="pon" approved="yes">
         <source>Pohnpeian</source>
-        <target>Pohnpei</target>
+        <target>pohnpei</target>
       </trans-unit>
       <trans-unit id="pra" resname="pra" approved="yes">
         <source>Prakrit languages</source>
-        <target>Prâkrits, langues</target>
+        <target>prâkrits, langues</target>
       </trans-unit>
       <trans-unit id="pro" resname="pro" approved="yes">
         <source>Provençal, Old (to 1500)</source>
-        <target>Vieux Occitan (jusqu'à 1500)</target>
+        <target>ancien occitan (jusqu'à 1500)</target>
       </trans-unit>
       <trans-unit id="ps" resname="ps" approved="yes">
         <source>Pushto; Pashto</source>
-        <target>Pachto</target>
+        <target>pachto</target>
       </trans-unit>
       <trans-unit id="pt" resname="pt" approved="yes">
         <source>Portuguese</source>
-        <target>Portugais</target>
+        <target>portugais</target>
       </trans-unit>
       <trans-unit id="qaa-qtz" resname="qaa-qtz" approved="yes">
         <source>Reserved for local use</source>
-        <target>Réservé pour utilisation locale</target>
+        <target>réservé pour utilisation locale</target>
       </trans-unit>
       <trans-unit id="qu" resname="qu" approved="yes">
         <source>Quechua</source>
-        <target>Quechua</target>
+        <target>quechua</target>
       </trans-unit>
       <trans-unit id="raj" resname="raj" approved="yes">
         <source>Rajasthani</source>
-        <target>Rajasthani</target>
+        <target>rajasthani</target>
       </trans-unit>
       <trans-unit id="rap" resname="rap" approved="yes">
         <source>Rapanui</source>
-        <target>Rapanui</target>
+        <target>rapanui</target>
       </trans-unit>
       <trans-unit id="rar" resname="rar" approved="yes">
         <source>Rarotongan; Cook Islands Maori</source>
-        <target>Rarotonga ; Maori des îles Cook</target>
+        <target>rarotonga ; maori des îles Cook</target>
       </trans-unit>
       <trans-unit id="rm" resname="rm" approved="yes">
         <source>Romansh</source>
-        <target>Romanche</target>
+        <target>romanche</target>
       </trans-unit>
       <trans-unit id="rn" resname="rn" approved="yes">
         <source>Rundi</source>
-        <target>Rundi</target>
+        <target>rundi</target>
       </trans-unit>
       <trans-unit id="ro" resname="ro" approved="yes">
         <source>Romanian; Moldavian; Moldovan</source>
-        <target>Roumain ; Moldave</target>
+        <target>roumain ; moldave</target>
       </trans-unit>
       <trans-unit id="roa" resname="roa" approved="yes">
         <source>Romance languages</source>
-        <target>Romanes, langues</target>
+        <target>romanes, langues</target>
       </trans-unit>
       <trans-unit id="rom" resname="rom" approved="yes">
         <source>Romany</source>
-        <target>Romani</target>
+        <target>romani</target>
       </trans-unit>
       <trans-unit id="ru" resname="ru" approved="yes">
         <source>Russian</source>
-        <target>Russe</target>
+        <target>russe</target>
       </trans-unit>
       <trans-unit id="rup" resname="rup" approved="yes">
         <source>Aromanian; Arumanian; Macedo-Romanian</source>
-        <target>Aroumain ; Macédo-Roumain</target>
+        <target>aroumain ; macédo-roumain</target>
       </trans-unit>
       <trans-unit id="rw" resname="rw" approved="yes">
         <source>Kinyarwanda</source>
-        <target>Kinyarwanda</target>
+        <target>kinyarwanda</target>
       </trans-unit>
       <trans-unit id="sa" resname="sa" approved="yes">
         <source>Sanskrit</source>
-        <target>Sanskrit</target>
+        <target>sanskrit</target>
       </trans-unit>
       <trans-unit id="sad" resname="sad" approved="yes">
         <source>Sandawe</source>
-        <target>Sandawe</target>
+        <target>sandawe</target>
       </trans-unit>
       <trans-unit id="sah" resname="sah" approved="yes">
         <source>Yakut</source>
-        <target>Iakoute</target>
+        <target>iakoute</target>
       </trans-unit>
       <trans-unit id="sai" resname="sai" approved="yes">
         <source>South American Indian (Other)</source>
-        <target>Sud-amérindien (autre)</target>
+        <target>sud-amérindien (autre)</target>
       </trans-unit>
       <trans-unit id="sal" resname="sal" approved="yes">
         <source>Salishan languages</source>
-        <target>Salish, langues</target>
+        <target>salish, langues</target>
       </trans-unit>
       <trans-unit id="sam" resname="sam" approved="yes">
         <source>Samaritan Aramaic</source>
-        <target>Araméen samaritain</target>
+        <target>araméen samaritain</target>
       </trans-unit>
       <trans-unit id="sas" resname="sas" approved="yes">
         <source>Sasak</source>
-        <target>Sasak</target>
+        <target>sasak</target>
       </trans-unit>
       <trans-unit id="sat" resname="sat" approved="yes">
         <source>Santali</source>
-        <target>Santali</target>
+        <target>santali</target>
       </trans-unit>
       <trans-unit id="sc" resname="sc" approved="yes">
         <source>Sardinian</source>
-        <target>Sarde</target>
+        <target>sarde</target>
       </trans-unit>
       <trans-unit id="scn" resname="scn" approved="yes">
         <source>Sicilian</source>
-        <target>Sicilien</target>
+        <target>sicilien</target>
       </trans-unit>
       <trans-unit id="sco" resname="sco" approved="yes">
         <source>Scots</source>
-        <target>Écossais</target>
+        <target>écossais</target>
       </trans-unit>
       <trans-unit id="sd" resname="sd" approved="yes">
         <source>Sindhi</source>
-        <target>Sindhi</target>
+        <target>sindhi</target>
       </trans-unit>
       <trans-unit id="se" resname="se" approved="yes">
         <source>Northern Sami</source>
-        <target>Same du Nord</target>
+        <target>same du Nord</target>
       </trans-unit>
       <trans-unit id="sel" resname="sel" approved="yes">
         <source>Selkup</source>
-        <target>Selkoupe</target>
+        <target>selkoupe</target>
       </trans-unit>
       <trans-unit id="sem" resname="sem" approved="yes">
         <source>Semitic languages</source>
-        <target>Sémitiques, langues</target>
+        <target>sémitiques, langues</target>
       </trans-unit>
       <trans-unit id="sg" resname="sg" approved="yes">
         <source>Sango</source>
-        <target>Sango</target>
+        <target>sango</target>
       </trans-unit>
       <trans-unit id="sga" resname="sga" approved="yes">
         <source>Irish, Old (to 900)</source>
-        <target>Vieil Irlandais (jusqu'à 900)</target>
+        <target>vieil irlandais (jusqu'à 900)</target>
       </trans-unit>
       <trans-unit id="sgn" resname="sgn" approved="yes">
         <source>Sign Languages</source>
-        <target>Langues des signes</target>
+        <target>langues des signes</target>
       </trans-unit>
       <trans-unit id="shn" resname="shn" approved="yes">
         <source>Shan</source>
-        <target>Shan</target>
+        <target>shan</target>
       </trans-unit>
       <trans-unit id="si" resname="si" approved="yes">
         <source>Sinhala; Sinhalese</source>
-        <target>Singhalais</target>
+        <target>singhalais</target>
       </trans-unit>
       <trans-unit id="sid" resname="sid" approved="yes">
         <source>Sidamo</source>
-        <target>Sidamo</target>
+        <target>sidamo</target>
       </trans-unit>
       <trans-unit id="sio" resname="sio" approved="yes">
         <source>Siouan languages</source>
-        <target>Sioux, langues</target>
+        <target>sioux, langues</target>
       </trans-unit>
       <trans-unit id="sit" resname="sit" approved="yes">
         <source>Sino-Tibetan languages</source>
-        <target>Sino-tibétaines, langues</target>
+        <target>sino-tibétaines, langues</target>
       </trans-unit>
       <trans-unit id="sk" resname="sk" approved="yes">
         <source>Slovak</source>
-        <target>Slovaque</target>
+        <target>slovaque</target>
       </trans-unit>
       <trans-unit id="sl" resname="sl" approved="yes">
         <source>Slovenian</source>
-        <target>Slovène</target>
+        <target>slovène</target>
       </trans-unit>
       <trans-unit id="sla" resname="sla" approved="yes">
         <source>Slavic languages</source>
-        <target>Slaves, langues</target>
+        <target>slaves, langues</target>
       </trans-unit>
       <trans-unit id="sm" resname="sm" approved="yes">
         <source>Samoan</source>
-        <target>Samoan</target>
+        <target>samoan</target>
       </trans-unit>
       <trans-unit id="sma" resname="sma" approved="yes">
         <source>Southern Sami</source>
-        <target>Same du Sud</target>
+        <target>same du Sud</target>
       </trans-unit>
       <trans-unit id="smi" resname="smi" approved="yes">
         <source>Sami languages</source>
-        <target>Sames, langues</target>
+        <target>sames, langues</target>
       </trans-unit>
       <trans-unit id="smj" resname="smj" approved="yes">
         <source>Lule Sami</source>
-        <target>Same de Lule</target>
+        <target>same de Lule</target>
       </trans-unit>
       <trans-unit id="smn" resname="smn" approved="yes">
         <source>Inari Sami</source>
-        <target>Sami d'Inari</target>
+        <target>sami d'Inari</target>
       </trans-unit>
       <trans-unit id="sms" resname="sms" approved="yes">
         <source>Skolt Sami</source>
-        <target>Same skolt</target>
+        <target>same skolt</target>
       </trans-unit>
       <trans-unit id="sn" resname="sn" approved="yes">
         <source>Shona</source>
-        <target>Shona</target>
+        <target>shona</target>
       </trans-unit>
       <trans-unit id="snk" resname="snk" approved="yes">
         <source>Soninke</source>
-        <target>Soninké</target>
+        <target>soninké</target>
       </trans-unit>
       <trans-unit id="so" resname="so" approved="yes">
         <source>Somali</source>
-        <target>Somali</target>
+        <target>somali</target>
       </trans-unit>
       <trans-unit id="sog" resname="sog" approved="yes">
         <source>Sogdian</source>
-        <target>Sogdien</target>
+        <target>sogdien</target>
       </trans-unit>
       <trans-unit id="son" resname="son" approved="yes">
         <source>Songhai languages</source>
-        <target>Songhai, langues</target>
+        <target>songhai, langues</target>
       </trans-unit>
       <trans-unit id="sq" resname="sq" approved="yes">
         <source>Albanian</source>
-        <target>Albanais</target>
+        <target>albanais</target>
       </trans-unit>
       <trans-unit id="sr" resname="sr" approved="yes">
         <source>Serbian</source>
-        <target>Serbe</target>
+        <target>serbe</target>
       </trans-unit>
       <trans-unit id="srn" resname="srn" approved="yes">
         <source>Sranan Tongo</source>
-        <target>Sranan Tongo</target>
+        <target>sranan Tongo</target>
       </trans-unit>
       <trans-unit id="srr" resname="srr" approved="yes">
         <source>Serer</source>
-        <target>Sérère</target>
+        <target>sérère</target>
       </trans-unit>
       <trans-unit id="ss" resname="ss" approved="yes">
         <source>Swati</source>
-        <target>Swati</target>
+        <target>swati</target>
       </trans-unit>
       <trans-unit id="ssa" resname="ssa" approved="yes">
         <source>Nilo-Saharan languages</source>
-        <target>Nilo-sahariennes, langues</target>
+        <target>nilo-sahariennes, langues</target>
       </trans-unit>
       <trans-unit id="st" resname="st" approved="yes">
         <source>Sotho, Southern</source>
-        <target>Sotho du Sud</target>
+        <target>sotho du Sud</target>
       </trans-unit>
       <trans-unit id="su" resname="su" approved="yes">
         <source>Sundanese</source>
-        <target>Sundanais</target>
+        <target>sundanais</target>
       </trans-unit>
       <trans-unit id="suk" resname="suk" approved="yes">
         <source>Sukuma</source>
-        <target>Sukuma</target>
+        <target>sukuma</target>
       </trans-unit>
       <trans-unit id="sus" resname="sus" approved="yes">
         <source>Susu</source>
-        <target>Sosso</target>
+        <target>sosso</target>
       </trans-unit>
       <trans-unit id="sux" resname="sux" approved="yes">
         <source>Sumerian</source>
-        <target>Sumérien</target>
+        <target>sumérien</target>
       </trans-unit>
       <trans-unit id="sv" resname="sv" approved="yes">
         <source>Swedish</source>
-        <target>Suédois</target>
+        <target>suédois</target>
       </trans-unit>
       <trans-unit id="sw" resname="sw" approved="yes">
         <source>Swahili</source>
-        <target>Swahili</target>
+        <target>swahili</target>
       </trans-unit>
       <trans-unit id="syc" resname="syc" approved="yes">
         <source>Classical Syriac</source>
-        <target>Syriaque classique</target>
+        <target>syriaque classique</target>
       </trans-unit>
       <trans-unit id="syr" resname="syr" approved="yes">
         <source>Syriac</source>
-        <target>Syriaque</target>
+        <target>syriaque</target>
       </trans-unit>
       <trans-unit id="ta" resname="ta" approved="yes">
         <source>Tamil</source>
-        <target>Tamoul</target>
+        <target>tamoul</target>
       </trans-unit>
       <trans-unit id="tai" resname="tai" approved="yes">
         <source>Tai languages</source>
-        <target>Tai, langues</target>
+        <target>tai, langues</target>
       </trans-unit>
       <trans-unit id="te" resname="te" approved="yes">
         <source>Telugu</source>
-        <target>Télougou</target>
+        <target>télougou</target>
       </trans-unit>
       <trans-unit id="tem" resname="tem" approved="yes">
         <source>Timne</source>
-        <target>Timné</target>
+        <target>timné</target>
       </trans-unit>
       <trans-unit id="ter" resname="ter" approved="yes">
         <source>Tereno</source>
-        <target>Tereno</target>
+        <target>tereno</target>
       </trans-unit>
       <trans-unit id="tet" resname="tet" approved="yes">
         <source>Tetum</source>
-        <target>Tetum</target>
+        <target>tetum</target>
       </trans-unit>
       <trans-unit id="tg" resname="tg" approved="yes">
         <source>Tajik</source>
-        <target>Tadjik</target>
+        <target>tadjik</target>
       </trans-unit>
       <trans-unit id="th" resname="th" approved="yes">
         <source>Thai</source>
-        <target>Thaï</target>
+        <target>thaï</target>
       </trans-unit>
       <trans-unit id="ti" resname="ti" approved="yes">
         <source>Tigrinya</source>
-        <target>Tigrigna</target>
+        <target>tigrigna</target>
       </trans-unit>
       <trans-unit id="tig" resname="tig" approved="yes">
         <source>Tigre</source>
-        <target>Tigre</target>
+        <target>tigre</target>
       </trans-unit>
       <trans-unit id="tiv" resname="tiv" approved="yes">
         <source>Tiv</source>
-        <target>Tiv</target>
+        <target>tiv</target>
       </trans-unit>
       <trans-unit id="tk" resname="tk" approved="yes">
         <source>Turkmen</source>
-        <target>Turkmène</target>
+        <target>turkmène</target>
       </trans-unit>
       <trans-unit id="tkl" resname="tkl" approved="yes">
         <source>Tokelau</source>
@@ -1724,63 +1724,63 @@
       </trans-unit>
       <trans-unit id="tl" resname="tl" approved="yes">
         <source>Tagalog</source>
-        <target>Tagalog</target>
+        <target>tagalog</target>
       </trans-unit>
       <trans-unit id="tlh" resname="tlh" approved="yes">
         <source>Klingon; tlhIngan-Hol</source>
-        <target>Klingon</target>
+        <target>klingon</target>
       </trans-unit>
       <trans-unit id="tli" resname="tli" approved="yes">
         <source>Tlingit</source>
-        <target>Tlingit</target>
+        <target>tlingit</target>
       </trans-unit>
       <trans-unit id="tmh" resname="tmh" approved="yes">
         <source>Tamashek</source>
-        <target>Tamacheq</target>
+        <target>tamacheq</target>
       </trans-unit>
       <trans-unit id="tn" resname="tn" approved="yes">
         <source>Tswana</source>
-        <target>Tswana</target>
+        <target>tswana</target>
       </trans-unit>
       <trans-unit id="to" resname="to" approved="yes">
         <source>Tonga (Tonga Islands)</source>
-        <target>Tongien (Îles Tonga)</target>
+        <target>tongien (Îles Tonga)</target>
       </trans-unit>
       <trans-unit id="tog" resname="tog" approved="yes">
         <source>Tonga (Nyasa)</source>
-        <target>Tonga (Nyasa)</target>
+        <target>tonga (Nyasa)</target>
       </trans-unit>
       <trans-unit id="tpi" resname="tpi" approved="yes">
         <source>Tok Pisin</source>
-        <target>Tok pisin</target>
+        <target>tok pisin</target>
       </trans-unit>
       <trans-unit id="tr" resname="tr" approved="yes">
         <source>Turkish</source>
-        <target>Turc</target>
+        <target>turc</target>
       </trans-unit>
       <trans-unit id="ts" resname="ts" approved="yes">
         <source>Tsonga</source>
-        <target>Tsonga</target>
+        <target>tsonga</target>
       </trans-unit>
       <trans-unit id="tsi" resname="tsi" approved="yes">
         <source>Tsimshian</source>
-        <target>Tsimshian</target>
+        <target>tsimshian</target>
       </trans-unit>
       <trans-unit id="tt" resname="tt" approved="yes">
         <source>Tatar</source>
-        <target>Tatar</target>
+        <target>tatar</target>
       </trans-unit>
       <trans-unit id="tum" resname="tum" approved="yes">
         <source>Tumbuka</source>
-        <target>Tumbuka</target>
+        <target>tumbuka</target>
       </trans-unit>
       <trans-unit id="tup" resname="tup" approved="yes">
         <source>Tupi languages</source>
-        <target>Tupi, langues</target>
+        <target>tupi, langues</target>
       </trans-unit>
       <trans-unit id="tut" resname="tut" approved="yes">
         <source>Altaic languages</source>
-        <target>Altaïques, langues</target>
+        <target>altaïques, langues</target>
       </trans-unit>
       <trans-unit id="tvl" resname="tvl" approved="yes">
         <source>Tuvalu</source>
@@ -1788,167 +1788,167 @@
       </trans-unit>
       <trans-unit id="tw" resname="tw" approved="yes">
         <source>Twi</source>
-        <target>Twi</target>
+        <target>twi</target>
       </trans-unit>
       <trans-unit id="ty" resname="ty" approved="yes">
         <source>Tahitian</source>
-        <target>Tahitien</target>
+        <target>tahitien</target>
       </trans-unit>
       <trans-unit id="tyv" resname="tyv" approved="yes">
         <source>Tuvinian</source>
-        <target>Touvain</target>
+        <target>touvain</target>
       </trans-unit>
       <trans-unit id="udm" resname="udm" approved="yes">
         <source>Udmurt</source>
-        <target>Oudmourte</target>
+        <target>oudmourte</target>
       </trans-unit>
       <trans-unit id="ug" resname="ug" approved="yes">
         <source>Uighur; Uyghur</source>
-        <target>Ouïgour</target>
+        <target>ouïgour</target>
       </trans-unit>
       <trans-unit id="uga" resname="uga" approved="yes">
         <source>Ugaritic</source>
-        <target>Ougaritique</target>
+        <target>ougaritique</target>
       </trans-unit>
       <trans-unit id="uk" resname="uk" approved="yes">
         <source>Ukrainian</source>
-        <target>Ukrainien</target>
+        <target>ukrainien</target>
       </trans-unit>
       <trans-unit id="umb" resname="umb" approved="yes">
         <source>Umbundu</source>
-        <target>Umbundu</target>
+        <target>umbundu</target>
       </trans-unit>
       <trans-unit id="und" resname="und" approved="yes">
         <source>Undetermined</source>
-        <target>Indéterminé</target>
+        <target>indéterminé</target>
       </trans-unit>
       <trans-unit id="ur" resname="ur" approved="yes">
         <source>Urdu</source>
-        <target>Ourdou</target>
+        <target>ourdou</target>
       </trans-unit>
       <trans-unit id="uz" resname="uz" approved="yes">
         <source>Uzbek</source>
-        <target>Ouszbek</target>
+        <target>ouszbek</target>
       </trans-unit>
       <trans-unit id="vai" resname="vai" approved="yes">
         <source>Vai</source>
-        <target>Vaï</target>
+        <target>vaï</target>
       </trans-unit>
       <trans-unit id="ve" resname="ve" approved="yes">
         <source>Venda</source>
-        <target>Venda</target>
+        <target>venda</target>
       </trans-unit>
       <trans-unit id="vi" resname="vi" approved="yes">
         <source>Vietnamese</source>
-        <target>Vietnamien</target>
+        <target>vietnamien</target>
       </trans-unit>
       <trans-unit id="vo" resname="vo" approved="yes">
         <source>Volapük</source>
-        <target>Volapük</target>
+        <target>volapük</target>
       </trans-unit>
       <trans-unit id="vot" resname="vot" approved="yes">
         <source>Votic</source>
-        <target>Vote</target>
+        <target>vote</target>
       </trans-unit>
       <trans-unit id="wa" resname="wa" approved="yes">
         <source>Walloon</source>
-        <target>Wallon</target>
+        <target>wallon</target>
       </trans-unit>
       <trans-unit id="wak" resname="wak" approved="yes">
         <source>Wakashan languages</source>
-        <target>Wakashennes, langues</target>
+        <target>wakashennes, langues</target>
       </trans-unit>
       <trans-unit id="wal" resname="wal" approved="yes">
         <source>Walamo</source>
-        <target>Walamo</target>
+        <target>walamo</target>
       </trans-unit>
       <trans-unit id="war" resname="war" approved="yes">
         <source>Waray</source>
-        <target>Waray</target>
+        <target>waray</target>
       </trans-unit>
       <trans-unit id="was" resname="was" approved="yes">
         <source>Washo</source>
-        <target>Washo</target>
+        <target>washo</target>
       </trans-unit>
       <trans-unit id="wen" resname="wen" approved="yes">
         <source>Sorbian languages</source>
-        <target>Sorabes, langues</target>
+        <target>sorabes, langues</target>
       </trans-unit>
       <trans-unit id="wo" resname="wo" approved="yes">
         <source>Wolof</source>
-        <target>Wolof</target>
+        <target>wolof</target>
       </trans-unit>
       <trans-unit id="xal" resname="xal" approved="yes">
         <source>Kalmyk; Oirat</source>
-        <target>Kalmouk ; Oïrat</target>
+        <target>kalmouk ; oïrat</target>
       </trans-unit>
       <trans-unit id="xh" resname="xh" approved="yes">
         <source>Xhosa</source>
-        <target>Xhosa</target>
+        <target>xhosa</target>
       </trans-unit>
       <trans-unit id="yao" resname="yao" approved="yes">
         <source>Yao</source>
-        <target>Yao</target>
+        <target>yao</target>
       </trans-unit>
       <trans-unit id="yap" resname="yap" approved="yes">
         <source>Yapese</source>
-        <target>Yapois</target>
+        <target>yapois</target>
       </trans-unit>
       <trans-unit id="yi" resname="yi" approved="yes">
         <source>Yiddish</source>
-        <target>Yiddish</target>
+        <target>yiddish</target>
       </trans-unit>
       <trans-unit id="yo" resname="yo" approved="yes">
         <source>Yoruba</source>
-        <target>Yoruba</target>
+        <target>yoruba</target>
       </trans-unit>
       <trans-unit id="ypk" resname="ypk" approved="yes">
         <source>Yupik languages</source>
-        <target>Yupik, langues</target>
+        <target>yupik, langues</target>
       </trans-unit>
       <trans-unit id="za" resname="za" approved="yes">
         <source>Zhuang; Chuang</source>
-        <target>Zhuang</target>
+        <target>zhuang</target>
       </trans-unit>
       <trans-unit id="zap" resname="zap" approved="yes">
         <source>Zapotec</source>
-        <target>Zapotèque</target>
+        <target>zapotèque</target>
       </trans-unit>
       <trans-unit id="zbl" resname="zbl" approved="yes">
         <source>Blissymbols; Blissymbolics; Bliss</source>
-        <target>Symboles Bliss</target>
+        <target>symboles Bliss</target>
       </trans-unit>
       <trans-unit id="zen" resname="zen" approved="yes">
         <source>Zenaga</source>
-        <target>Zenaga</target>
+        <target>zenaga</target>
       </trans-unit>
       <trans-unit id="zgh" resname="zgh" approved="yes">
         <source>Standard Moroccan Tamazight</source>
-        <target>Amazighe standard marocain</target>
+        <target>amazighe standard marocain</target>
       </trans-unit>
       <trans-unit id="zh" resname="zh" approved="yes">
         <source>Chinese</source>
-        <target>Chinois</target>
+        <target>chinois</target>
       </trans-unit>
       <trans-unit id="znd" resname="znd" approved="yes">
         <source>Zande languages</source>
-        <target>Zandé, langues</target>
+        <target>zandé, langues</target>
       </trans-unit>
       <trans-unit id="zu" resname="zu" approved="yes">
         <source>Zulu</source>
-        <target>Zoulou</target>
+        <target>zoulou</target>
       </trans-unit>
       <trans-unit id="zun" resname="zun" approved="yes">
         <source>Zuni</source>
-        <target>Zuni</target>
+        <target>zuni</target>
       </trans-unit>
       <trans-unit id="zxx" resname="zxx" approved="yes">
         <source>No linguistic content; Not applicable</source>
-        <target>Pas de contenu linguistique ; Non applicable</target>
+        <target>pas de contenu linguistique ; non applicable</target>
       </trans-unit>
       <trans-unit id="zza" resname="zza" approved="yes">
         <source>Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki</source>
-        <target>Dimili</target>
+        <target>dimili</target>
       </trans-unit>
     </body>
   </file>
