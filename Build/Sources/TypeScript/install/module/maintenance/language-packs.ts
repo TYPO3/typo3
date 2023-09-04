@@ -328,41 +328,49 @@ class LanguagePacks extends AbstractInteractableModule {
     const activateIcon = this.findInModal(this.selectorActivateLanguageIcon).html();
     const deactivateIcon = this.findInModal(this.selectorDeactivateLanguageIcon).html();
     const updateIcon = this.findInModal(this.selectorLanguageUpdateIcon).html();
+    const configurationIsWritable = this.getModuleContent().data('configuration-is-writable');
     const $markupContainer = $('<div>');
 
     const $tbody = $('<tbody>');
     data.languages.forEach((language: any): void => {
+      const availableMatrixActions = [];
       const active = language.active;
+      if (configurationIsWritable) {
+        availableMatrixActions.push($('<a>', {
+          'class': 'btn btn-default t3js-languagePacks-deactivateLanguage',
+          'data-iso': language.iso,
+          'title': 'Deactivate',
+        }).append(deactivateIcon));
+      }
+      availableMatrixActions.push($('<a>', {
+        'class': 'btn btn-default t3js-languagePacks-update',
+        'data-iso': language.iso,
+        'title': 'Download language packs',
+      }).append(updateIcon));
       const $tr = $('<tr>');
       if (active) {
         $tbody.append(
           $tr.append(
             $('<td>').text(' ' + language.name).prepend(
               $('<div />', { class: 'btn-group' }).append(
-                $('<a>', {
-                  'class': 'btn btn-default t3js-languagePacks-deactivateLanguage',
-                  'data-iso': language.iso,
-                  'title': 'Deactivate',
-                }).append(deactivateIcon),
-                $('<a>', {
-                  'class': 'btn btn-default t3js-languagePacks-update',
-                  'data-iso': language.iso,
-                  'title': 'Download language packs',
-                }).append(updateIcon),
+                availableMatrixActions
               ),
             ),
           ),
         );
       } else {
+        if (configurationIsWritable) {
+          availableMatrixActions.push($('<a>', {
+            'class': 'btn btn-default t3js-languagePacks-activateLanguage',
+            'data-iso': language.iso,
+            'title': 'Activate',
+          }).append(activateIcon));
+        }
         $tbody.append(
           $tr.addClass('t3-languagePacks-inactive t3js-languagePacks-inactive').css({ 'display': 'none' }).append(
             $('<td>').text(' ' + language.name).prepend(
               $('<div />', { class: 'btn-group' }).append(
-                $('<a>', {
-                  'class': 'btn btn-default t3js-languagePacks-activateLanguage',
-                  'data-iso': language.iso,
-                  'title': 'Activate',
-                }).append(activateIcon),
+                availableMatrixActions
               ),
             ),
           ),
@@ -376,6 +384,24 @@ class LanguagePacks extends AbstractInteractableModule {
       );
       $tbody.append($tr);
     });
+    const globalActions = [];
+    if (configurationIsWritable) {
+      globalActions.push($('<button>', {
+        'class': 'btn btn-default t3js-languagePacks-addLanguage-toggle',
+        'type': 'button'
+      }).append(
+        $('<span>').append(activateIcon),
+        ' Add language',
+      ));
+    }
+    globalActions.push($('<button>', {
+      'class': 'btn btn-default disabled update-all t3js-languagePacks-update',
+      'type': 'button',
+      'disabled': 'disabled'
+    }).append(
+      $('<span>').append(updateIcon),
+      ' Update all',
+    ));
     $markupContainer.append(
       $('<h3>').text('Active languages'),
       $('<table>', { 'class': 'table table-striped table-bordered' }).append(
@@ -383,17 +409,7 @@ class LanguagePacks extends AbstractInteractableModule {
           $('<tr>').append(
             $('<th>').append(
               $('<div />', { class: 'btn-group' }).append(
-                $('<button>', {
-                  'class': 'btn btn-default t3js-languagePacks-addLanguage-toggle',
-                  'type': 'button'
-                }).append(
-                  $('<span>').append(activateIcon),
-                  ' Add language',
-                ),
-                $('<button>', { 'class': 'btn btn-default disabled update-all t3js-languagePacks-update', 'type': 'button', 'disabled': 'disabled' }).append(
-                  $('<span>').append(updateIcon),
-                  ' Update all',
-                ),
+                globalActions
               ),
             ),
             $('<th>').text('Locale'),

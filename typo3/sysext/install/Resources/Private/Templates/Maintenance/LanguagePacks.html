@@ -12,11 +12,15 @@
     data-language-packs-deactivate-language-token="{languagePacksDeactivateLanguageToken}"
     data-language-packs-update-pack-token="{languagePacksUpdatePackToken}"
     data-language-packs-update-iso-times-token="{languagePacksUpdateIsoTimesToken}"
+    data-configuration-is-writable="{f:if(condition: isWritable, then: 'true', else: 'false')}"
 >
     <p>
         Gives an overview of available languages excluding the default (English) language.
         It allows you to activate and deactivate additional localizations and to update language packs from the official TYPO3 translation server.
     </p>
+
+    <f:render partial="Generic/ConfigurationNotWritable" arguments="{_all}"/>
+
     <div class="t3js-languagePacks-notifications"></div>
     <div class="t3js-languagePacks-output"></div>
     <div class="t3js-languagePacks-mainContent"></div>
