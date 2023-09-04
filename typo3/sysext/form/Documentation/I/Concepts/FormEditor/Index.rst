@@ -99,8 +99,8 @@ displays the form elements in two different modes:
   the frontend ('nearly' since you have to make sure that your frontend CSS
   is also loaded in the backend in order to get the exact preview).
 
-Per default, the frontend templates of EXT:form are based on Twitter
-Bootstrap. Since the backend of TYPO3 CMS also depends on this CSS framework,
+Per default, the frontend templates of EXT:form are based on `Bootstrap`_.
+Since the backend of TYPO3 CMS also depends on this CSS framework,
 the corresponding CSS files are already loaded in the backend context.
 Nevertheless, certain parts of the CSS were overridden and extended in order
 to meet the specific needs of the TYPO3 backend. Thus, the frontend preview
@@ -117,6 +117,8 @@ are always able to create you own Fluid templated and adapt the abstract view
 till it suits your needs.
 
 For more information, read the following chapter: ':ref:`Common abstract view form element templates<apireference-formeditor-stage-commonabstractformelementtemplates>`'.
+
+.. _Bootstrap: https://getbootstrap.com/
 
 
 .. _concepts-formeditor-inspector:
