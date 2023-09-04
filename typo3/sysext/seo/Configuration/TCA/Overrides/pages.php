@@ -146,6 +146,7 @@ $tca = [
         'canonical_link' => [
             'exclude' => true,
             'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.canonical_link',
+            'description' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.canonical_link.description',
             'displayCond' => 'FIELD:no_index:=:0',
             'config' => [
                 'type' => 'link',
