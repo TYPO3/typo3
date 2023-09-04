@@ -38,6 +38,18 @@ interface OnFieldChangeItem {
   data: {[key: string]: string|number|boolean|null}
 }
 
+type FormEngineType = {
+  [functionName: string]: any,
+  consumeTypes: string[],
+  Validation: typeof FormEngineValidation,
+  interactionRequestMap: typeof InteractionRequestMap,
+  formName: string,
+  formElement: HTMLFormElement,
+  openedPopupWindow: Window | null,
+  legacyFieldChangedCb: () => void,
+  browserUrl: string,
+};
+
 type OnChangeFieldHandlerCallback = (data: object, e: Event) => void;
 type PreviewActionCallback = (targetName: string, previewUrl: string, $actionElement: JQuery, modal: ModalElement) => void;
 type NewActionCallback = (targetName: string, $actionElement: JQuery) => void;
@@ -105,7 +117,7 @@ export default (function() {
   // @see \TYPO3\CMS\Backend\Form\Behavior\UpdateBitmaskOnFieldChange
   onFieldChangeHandlers.set('typo3-backend-form-update-bitmask', (data: {position: number, total: number, invert: boolean, elementName: string }, evt: Event) => {
     const targetRef = evt.target; // clicked element
-    const elementRef = ((document as any).editform as HTMLFormElement)[data.elementName]; // (hidden) element holding value
+    const elementRef = FormEngine.formElement[data.elementName]; // (hidden) element holding value
     const active = (targetRef as HTMLInputElement).checked !== data.invert; // `xor` either checked or inverted
     const mask = Math.pow(2, data.position);
     const unmask = Math.pow(2, data.total) - mask - 1;
@@ -116,17 +128,28 @@ export default (function() {
   /**
    * @exports @typo3/backend/form-engine
    */
-  const FormEngine: any = {
+  const FormEngine: FormEngineType = {
     consumeTypes: ['typo3.setUrl', 'typo3.beforeSetUrl', 'typo3.refresh'],
     Validation: FormEngineValidation,
     interactionRequestMap: InteractionRequestMap,
     formName: TYPO3.settings.FormEngine.formName,
+    formElement: undefined,
     openedPopupWindow: null,
     legacyFieldChangedCb: function() {
       !$.isFunction(TYPO3.settings.FormEngine.legacyFieldChangedCb) || TYPO3.settings.FormEngine.legacyFieldChangedCb();
     },
     browserUrl: ''
   };
+
+  Object.defineProperty(
+    FormEngine,
+    'formElement',
+    {
+      get: () => document.forms.namedItem(FormEngine.formName),
+      enumerable: true,
+      configurable: false,
+    }
+  );
 
   /**
    * Opens a popup window with the element browser (browser.php)
@@ -450,8 +473,9 @@ export default (function() {
       FormEngine.processOnFieldChange(items, evt);
     });
 
-    ((document as any).editform as HTMLFormElement).addEventListener('submit', function () {
-      if (((document as any).editform as HTMLFormElement).closeDoc.value) {
+    FormEngine.formElement.addEventListener('submit', function (e: SubmitEvent) {
+      const form = e.target as HTMLFormElement;
+      if (form.closeDoc.value) {
         return;
       }
 
@@ -951,7 +975,7 @@ export default (function() {
     } else {
       $('form[name=' + FormEngine.formName + ']').append($actionElement);
       window.open('', 'newTYPO3frontendWindow');
-      ((document as any).editform as HTMLFormElement).submit();
+      FormEngine.formElement.submit();
     }
   };
 
@@ -1056,7 +1080,7 @@ export default (function() {
       FormEngine.showNewModal(isNew, $actionElement, callback);
     } else {
       $('form[name=' + FormEngine.formName + ']').append($actionElement);
-      ((document as any).editform as HTMLFormElement).submit();
+      FormEngine.formElement.submit();
     }
   };
 
@@ -1072,7 +1096,7 @@ export default (function() {
     switch(modalButtonName) {
       case 'no':
         $form.append($actionElement);
-        ((document as any).editform as HTMLFormElement).submit();
+        FormEngine.formElement.submit();
         break;
       case 'yes':
         $form.append($actionElement);
@@ -1147,7 +1171,7 @@ export default (function() {
       FormEngine.showDuplicateModal(isNew, $actionElement, callback);
     } else {
       $('form[name=' + FormEngine.formName + ']').append($actionElement);
-      ((document as any).editform as HTMLFormElement).submit();
+      FormEngine.formElement.submit();
     }
   };
 
@@ -1163,7 +1187,7 @@ export default (function() {
     switch(modalButtonName) {
       case 'no':
         $form.append($actionElement);
-        ((document as any).editform as HTMLFormElement).submit();
+        FormEngine.formElement.submit();
         break;
       case 'yes':
         $form.append($actionElement);
@@ -1295,17 +1319,17 @@ export default (function() {
    * Close current open document
    */
   FormEngine.closeDocument = function(): void {
-    ((document as any).editform as HTMLFormElement).closeDoc.value = 1;
+    FormEngine.formElement.closeDoc.value = 1;
 
     FormEngine.dispatchSubmitEvent();
-    ((document as any).editform as HTMLFormElement).submit();
+    FormEngine.formElement.submit();
   };
 
   FormEngine.saveDocument = function(): void {
-    ((document as any).editform as HTMLFormElement).doSave.value = 1;
+    FormEngine.formElement.doSave.value = 1;
 
     FormEngine.dispatchSubmitEvent();
-    ((document as any).editform as HTMLFormElement).submit();
+    FormEngine.formElement.submit();
   };
 
   /**
@@ -1314,7 +1338,7 @@ export default (function() {
   FormEngine.dispatchSubmitEvent = function(): void {
     const submitEvent = document.createEvent('Event');
     submitEvent.initEvent('submit', false, true);
-    ((document as any).editform as HTMLFormElement).dispatchEvent(submitEvent);
+    FormEngine.formElement.dispatchEvent(submitEvent);
   };
 
   /**
