@@ -24,7 +24,7 @@ class ColorPicker {
    * Initialize the color picker for the given element
    */
   public initialize(element: HTMLInputElement): void {
-    if (element.parentElement?.classList.contains('t3js-colorpicker-initialized')) {
+    if (element.classList.contains('t3js-colorpicker-initialized')) {
       return;
     }
 
