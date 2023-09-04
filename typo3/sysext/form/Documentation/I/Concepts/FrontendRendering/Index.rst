@@ -13,7 +13,9 @@ Frontend rendering
 Templates
 =========
 
-The Fluid templates of the form framework are based on Twitter Bootstrap.
+The Fluid templates of the form framework are based on `Bootstrap`_.
+
+.. _Bootstrap: https://getbootstrap.com/
 
 
 .. _concepts-frontendrendering-templates-customtemplates:
