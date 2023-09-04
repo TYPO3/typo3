@@ -192,7 +192,7 @@
       </trans-unit>
       <trans-unit id="bh" resname="bh" approved="yes">
         <source>Bihari languages</source>
-        <target>Biharų kalbos</target>
+        <target>Bihari languages</target>
       </trans-unit>
       <trans-unit id="bho" resname="bho" approved="yes">
         <source>Bhojpuri</source>
@@ -221,10 +221,6 @@
       <trans-unit id="bn" resname="bn" approved="yes">
         <source>Bengali</source>
         <target>Bengalų</target>
-      </trans-unit>
-      <trans-unit id="bnt" resname="bnt" approved="yes">
-        <source>Bantu (Other)</source>
-        <target>Bantų (kitos)</target>
       </trans-unit>
       <trans-unit id="bo" resname="bo" approved="yes">
         <source>Tibetan</source>
@@ -334,10 +330,6 @@
         <source>Chamic languages</source>
         <target>Čamikų kalbos</target>
       </trans-unit>
-      <trans-unit id="cnr" resname="cnr" approved="yes">
-        <source>Montenegrin</source>
-        <target>Juodkalniečių</target>
-      </trans-unit>
       <trans-unit id="co" resname="co" approved="yes">
         <source>Corsican</source>
         <target>Korsikiečių</target>
@@ -417,10 +409,6 @@
       <trans-unit id="del" resname="del" approved="yes">
         <source>Delaware</source>
         <target>Delavarų</target>
-      </trans-unit>
-      <trans-unit id="den" resname="den" approved="yes">
-        <source>Slave (Athapascan)</source>
-        <target>Atapaskų</target>
       </trans-unit>
       <trans-unit id="dgr" resname="dgr" approved="yes">
         <source>Dogrib</source>
@@ -690,17 +678,13 @@
         <source>Hiligaynon</source>
         <target>Hiligainon</target>
       </trans-unit>
-      <trans-unit id="him" resname="him" approved="yes">
-        <source>Himachali languages; Western Pahari languages</source>
-        <target>Vakarų paharų kalbos</target>
-      </trans-unit>
       <trans-unit id="hit" resname="hit" approved="yes">
         <source>Hittite</source>
         <target>Hetitų</target>
       </trans-unit>
       <trans-unit id="hmn" resname="hmn" approved="yes">
         <source>Hmong; Mong</source>
-        <target>Hmongų</target>
+        <target>Hmong; Mong</target>
       </trans-unit>
       <trans-unit id="ho" resname="ho" approved="yes">
         <source>Hiri Motu</source>
@@ -753,10 +737,6 @@
       <trans-unit id="ig" resname="ig" approved="yes">
         <source>Igbo</source>
         <target>Igbo</target>
-      </trans-unit>
-      <trans-unit id="ii" resname="ii" approved="yes">
-        <source>Sichuan Yi; Nuosu</source>
-        <target>Nosų</target>
       </trans-unit>
       <trans-unit id="ijo" resname="ijo" approved="yes">
         <source>Ijo languages</source>
@@ -872,7 +852,7 @@
       </trans-unit>
       <trans-unit id="kho" resname="kho" approved="yes">
         <source>Khotanese; Sakan</source>
-        <target>Kotanezų</target>
+        <target>Khotanese; Sakan</target>
       </trans-unit>
       <trans-unit id="ki" resname="ki" approved="yes">
         <source>Kikuyu; Gikuyu</source>
@@ -1033,10 +1013,6 @@
       <trans-unit id="lun" resname="lun" approved="yes">
         <source>Lunda</source>
         <target>Lunda</target>
-      </trans-unit>
-      <trans-unit id="luo" resname="luo" approved="yes">
-        <source>Luo (Kenya and Tanzania)</source>
-        <target>Luo (Kenija ir Tanzanija)</target>
       </trans-unit>
       <trans-unit id="lus" resname="lus" approved="yes">
         <source>Lushai</source>
@@ -1312,7 +1288,7 @@
       </trans-unit>
       <trans-unit id="oc" resname="oc" approved="yes">
         <source>Occitan (post 1500); Provençal</source>
-        <target>Oksitanų (po 1500 m.); Provansaliečių</target>
+        <target>Occitan (post 1500); Provençal</target>
       </trans-unit>
       <trans-unit id="oj" resname="oj" approved="yes">
         <source>Ojibwa</source>
@@ -1400,7 +1376,7 @@
       </trans-unit>
       <trans-unit id="pro" resname="pro" approved="yes">
         <source>Provençal, Old (to 1500)</source>
-        <target>Provansaliečių, senoji (iki 1500 m.)</target>
+        <target>Provençal, Old (to 1500)</target>
       </trans-unit>
       <trans-unit id="ps" resname="ps" approved="yes">
         <source>Pushto; Pashto</source>
@@ -1440,7 +1416,7 @@
       </trans-unit>
       <trans-unit id="ro" resname="ro" approved="yes">
         <source>Romanian; Moldavian; Moldovan</source>
-        <target>Rumunų; Moldavų</target>
+        <target>Romanian; Moldavian; Moldovan</target>
       </trans-unit>
       <trans-unit id="roa" resname="roa" approved="yes">
         <source>Romance languages</source>
@@ -1476,7 +1452,7 @@
       </trans-unit>
       <trans-unit id="sai" resname="sai" approved="yes">
         <source>South American Indian (Other)</source>
-        <target>Pietų Amerikos indėnų (kitos)</target>
+        <target>South American Indian (Other)</target>
       </trans-unit>
       <trans-unit id="sal" resname="sal" approved="yes">
         <source>Salishan languages</source>
@@ -1726,10 +1702,6 @@
         <source>Tagalog</source>
         <target>Tagalų</target>
       </trans-unit>
-      <trans-unit id="tlh" resname="tlh" approved="yes">
-        <source>Klingon; tlhIngan-Hol</source>
-        <target>Klingonų</target>
-      </trans-unit>
       <trans-unit id="tli" resname="tli" approved="yes">
         <source>Tlingit</source>
         <target>Tlingit</target>
@@ -1858,10 +1830,6 @@
         <source>Wakashan languages</source>
         <target>Vakašan kalbos</target>
       </trans-unit>
-      <trans-unit id="wal" resname="wal" approved="yes">
-        <source>Walamo</source>
-        <target>Velaitų</target>
-      </trans-unit>
       <trans-unit id="war" resname="war" approved="yes">
         <source>Waray</source>
         <target>Varai</target>
@@ -1921,10 +1889,6 @@
       <trans-unit id="zen" resname="zen" approved="yes">
         <source>Zenaga</source>
         <target>Zenaga</target>
-      </trans-unit>
-      <trans-unit id="zgh" resname="zgh" approved="yes">
-        <source>Standard Moroccan Tamazight</source>
-        <target>Standartinė Maroko berberų</target>
       </trans-unit>
       <trans-unit id="zh" resname="zh" approved="yes">
         <source>Chinese</source>
