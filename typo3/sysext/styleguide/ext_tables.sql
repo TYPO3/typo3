@@ -126,9 +126,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     number_6 int(11) DEFAULT '0' NOT NULL,
     number_7 int(11) DEFAULT '0' NOT NULL,
 
-    email_1 text,
-    email_2 text,
-
     text_1 text,
     text_2 text,
     text_3 text,
