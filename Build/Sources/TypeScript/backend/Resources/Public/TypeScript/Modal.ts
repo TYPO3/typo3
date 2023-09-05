@@ -96,9 +96,7 @@ class Modal {
                 <div class="modal-header">
                     <h4 class="t3js-modal-title modal-title"></h4>
                     <button class="t3js-modal-close close">
-                        <span aria-hidden="true">
-                            <span class="t3js-modal-icon-placeholder" data-icon="actions-close"></span>
-                        </span>
+                        <span class="t3js-modal-icon-placeholder" data-icon="actions-close"></span>
                         <span class="visually-hidden"></span>
                     </button>
                 </div>
@@ -186,13 +184,14 @@ class Modal {
     if (buttons.length === 0) {
       buttons.push(
         <Button>{
-          text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
+          text: $(this).data('button-close-text') || TYPO3?.lang?.['button.cancel'] || 'Cancel',
+
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
         <Button>{
-          text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
+          text: $(this).data('button-ok-text') || TYPO3?.lang?.['button.ok'] || 'OK',
           btnClass: 'btn-' + Severity.getCssClass(severity),
           name: 'ok',
         },
@@ -396,7 +395,7 @@ class Modal {
         severity,
         buttons: [
           {
-            text: $element.data('button-close-text') || TYPO3.lang['button.close'] || 'Close',
+            text: $element.data('button-close-text') || TYPO3?.lang?.['button.close'] || 'Close',
             active: true,
             btnClass: 'btn-default',
             trigger: (): void => {
@@ -410,7 +409,7 @@ class Modal {
             },
           },
           {
-            text: $element.data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
+            text: $element.data('button-ok-text') || TYPO3?.lang?.['button.ok'] || 'OK',
             btnClass: 'btn-' + Severity.getCssClass(severity),
             trigger: (): void => {
               this.currentModal.trigger('modal-dismiss');
@@ -444,6 +443,7 @@ class Modal {
     currentModal.addClass('modal-size-' + configuration.size);
     currentModal.attr('tabindex', '-1');
     currentModal.find(Identifiers.title).text(configuration.title);
+    currentModal.find(Identifiers.close + ' .visually-hidden').text(TYPO3?.lang?.['button.close'] || 'Close');
     currentModal.find(Identifiers.close).on('click', (): void => {
       currentModal.modal('hide');
     });
