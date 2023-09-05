@@ -165,10 +165,8 @@ export class ModalElement extends LitElement {
                   <div class="modal-header">
                       <h4 class="t3js-modal-title modal-title">${this.modalTitle}</h4>
                       <button class="t3js-modal-close close" @click=${() => this.bootstrapModal.hide()}>
-                          <span aria-hidden="true">
-                              <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
-                          </span>
-                          <span class="visually-hidden"></span>
+                          <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
+                          <span class="visually-hidden">${TYPO3?.lang?.['button.close'] || 'Close'}</span>
                       </button>
                   </div>
                   <div class="t3js-modal-body modal-body">${this.renderModalBody()}</div>
@@ -350,13 +348,13 @@ class Modal {
     if (buttons.length === 0) {
       buttons.push(
         {
-          text: TYPO3.lang['button.cancel'] || 'Cancel',
+          text: TYPO3?.lang?.['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
         {
-          text: TYPO3.lang['button.ok'] || 'OK',
+          text: TYPO3?.lang?.['button.ok'] || 'OK',
           btnClass: 'btn-' + Severity.getCssClass(severity),
           name: 'ok',
         },
@@ -487,7 +485,7 @@ class Modal {
   public initializeMarkupTrigger(theDocument: Document): void {
     const modalTrigger = (evt: Event, triggerElement: HTMLElement): void => {
       evt.preventDefault();
-      const content = triggerElement.dataset.bsContent || triggerElement.dataset.content || TYPO3.lang['message.confirmation'] || 'Are you sure?';
+      const content = triggerElement.dataset.bsContent || triggerElement.dataset.content || TYPO3?.lang?.['message.confirmation'] || 'Are you sure?';
       let severity = SeverityEnum.info;
       if (triggerElement.dataset.severity in SeverityEnum) {
         const severityKey = triggerElement.dataset.severity as keyof typeof SeverityEnum;
@@ -507,7 +505,7 @@ class Modal {
         staticBackdrop: triggerElement.dataset.staticBackdrop !== undefined,
         buttons: [
           {
-            text: triggerElement.dataset.buttonCloseText || TYPO3.lang['button.close'] || 'Close',
+            text: triggerElement.dataset.buttonCloseText || TYPO3?.lang?.['button.close'] || 'Close',
             active: true,
             btnClass: 'btn-default',
             trigger: (e: Event, modal: ModalElement): void => {
@@ -519,7 +517,7 @@ class Modal {
             },
           },
           {
-            text: triggerElement.dataset.buttonOkText || TYPO3.lang['button.ok'] || 'OK',
+            text: triggerElement.dataset.buttonOkText || TYPO3?.lang?.['button.ok'] || 'OK',
             btnClass: 'btn-' + Severity.getCssClass(severity),
             trigger: (e: Event, modal: ModalElement): void => {
               modal.hideModal();
