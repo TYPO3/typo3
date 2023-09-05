@@ -16,7 +16,6 @@
 .alwan[data-theme=dark] {
     --alwan-thumb-bg: #151515;
     --alwan-thumb-bc: #3c4146;
-    --alwan-swatches-bg: #0a0a0a;
 }
 
 .alwan:not(.alwan--open) {
@@ -247,7 +246,7 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    background-color: var(--alwan-swatches-bg, #f5f5f5);
+    background-color: var(--typo3-component-bg);
     padding: 10px 15px 0;
     max-height: 100px;
     overflow-y: auto;

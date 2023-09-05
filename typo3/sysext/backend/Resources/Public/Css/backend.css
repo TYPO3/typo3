@@ -3195,7 +3195,7 @@ select-pure{--select-height:43.2px;--select-width:100%;--border-radius:calc(var(
 }
 :root{--alwan-pattern:url('data:image/svg+xml;utf8, <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 20 20"><path fill="%23d1d3d4" d="M0 0h10v10H0Z"/><path fill="white" d="M0 10h10v10H0Z"/><path fill="%23d1d3d4" d="M10 10h10v10H10Z"/><path fill="white" d="M10 0h10v10H10Z"/></svg>')}
 .alwan{width:100%;max-width:260px;background:var(--typo3-component-bg);border:1px solid var(--typo3-component-border-color)}
-.alwan[data-theme=dark]{--alwan-thumb-bg:#151515;--alwan-thumb-bc:#3c4146;--alwan-swatches-bg:#0a0a0a}
+.alwan[data-theme=dark]{--alwan-thumb-bg:#151515;--alwan-thumb-bc:#3c4146}
 .alwan:not(.alwan--open){visibility:hidden}
 .alwan:not(.alwan--popup,.alwan--open){overflow:hidden;height:0;border:0}
 .alwan--popup{position:fixed;top:0;left:0;z-index:999999;border:0;box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}
@@ -3227,7 +3227,7 @@ select-pure{--select-height:43.2px;--select-width:100%;--border-radius:calc(var(
 .alwan__input::-webkit-inner-spin-button,.alwan__input::-webkit-outer-spin-button{-webkit-appearance:none}
 .alwan__input:focus{outline:0;border-color:var(--typo3-input-focus-border-color)}
 .alwan__input:hover{border-color:var(--typo3-input-focus-border-color)}
-.alwan__swatches{display:flex;justify-content:center;flex-wrap:wrap;background-color:var(--alwan-swatches-bg,#f5f5f5);padding:10px 15px 0;max-height:100px;overflow-y:auto;border-top:1px solid var(--typo3-component-border-color)}
+.alwan__swatches{display:flex;justify-content:center;flex-wrap:wrap;background-color:var(--typo3-component-bg);padding:10px 15px 0;max-height:100px;overflow-y:auto;border-top:1px solid var(--typo3-component-border-color)}
 .alwan__swatch{width:22px;height:22px;margin:0 5px 10px;border-radius:var(--typo3-component-border-radius)}
 .alwan__swatch:hover{transform:scale(1.1)}
 .alwan__button{display:inline-block;background:rgba(0,0,0,0);color:var(--typo3-component-color);border:1px solid transparent;cursor:pointer;padding:8px 4px;transition:background-color .2s ease-in-out;outline:0}

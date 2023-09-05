@@ -13,6 +13,10 @@
 
 import Alwan from 'alwan';
 
+interface ColorPickerSettings {
+  swatches?: string[]
+}
+
 /**
  * Module: @typo3/backend/color-picker
  * contains all logic for the color picker used in FormEngine
@@ -23,7 +27,7 @@ class ColorPicker {
   /**
    * Initialize the color picker for the given element
    */
-  public initialize(element: HTMLInputElement): void {
+  public initialize(element: HTMLInputElement, options: ColorPickerSettings = {}): void {
     if (element.classList.contains('t3js-colorpicker-initialized')) {
       return;
     }
@@ -34,7 +38,7 @@ class ColorPicker {
       opacity: false,
       preset: false,
       color: element.value,
-      swatches: [], // @todo: finally support color swatches in future
+      swatches: options.swatches,
     });
     element.classList.add('t3js-colorpicker-initialized');
 

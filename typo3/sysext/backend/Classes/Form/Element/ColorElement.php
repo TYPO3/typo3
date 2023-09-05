@@ -73,6 +73,7 @@ class ColorElement extends AbstractFormElement
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
         $config = $parameterArray['fieldConf']['config'];
+        $tsConfig = $this->data['pageTsConfig'];
 
         $itemValue = $parameterArray['itemFormElValue'];
         $width = $this->formMaxWidth(
@@ -236,8 +237,29 @@ class ColorElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
+        $configuredPalette =
+            $tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['colorPalette']
+            ?? $tsConfig['TCEFORM.'][$table . '.']['colorPalette']
+            ?? $tsConfig['TCEFORM.']['colorPalette']
+            ?? null;
+        if ($configuredPalette === null) {
+            // No palette defined in TCEFORM, fall back to all colors
+            $colorDefinitions = array_map(static function (array $colorDefinition): string {
+                return $colorDefinition['value'] ?? '';
+            }, array_values($tsConfig['colorPalettes.']['colors.'] ?? []));
+        } else {
+            $colorsInPalette = GeneralUtility::trimExplode(',', $tsConfig['colorPalettes.']['palettes.'][$configuredPalette] ?? '', true);
+            $colorDefinitions = array_map(static function (string $colorIdentifier) use ($tsConfig): string {
+                return $tsConfig['colorPalettes.']['colors.'][$colorIdentifier . '.']['value'] ?? '';
+            }, $colorsInPalette);
+        }
+        $attributes = [
+            'recordFieldId' => $fieldId,
+            'colorPalette' => implode(';', array_unique(array_filter($colorDefinitions))),
+        ];
+
         $resultArray['html'] = $renderedLabel . '
-            <typo3-formengine-element-color recordFieldId="' . htmlspecialchars($fieldId) . '">
+            <typo3-formengine-element-color ' . GeneralUtility::implodeAttributes($attributes, true) . '>
                 <div class="formengine-field-item t3js-formengine-field-item">
                     ' . $fieldInformationHtml . $fullElement . '
                 </div>

@@ -38,8 +38,12 @@ class ColorElement extends HTMLElement {
     }
 
     this.registerEventHandler();
+
+    const swatches = this.hasAttribute('colorPalette') ? this.getAttribute('colorPalette').split(';') : [];
     import('@typo3/backend/color-picker').then(({ default: ColorPicker }): void => {
-      ColorPicker.initialize(this.element);
+      ColorPicker.initialize(this.element, {
+        swatches: swatches
+      });
     });
   }
 
