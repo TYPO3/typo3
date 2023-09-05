@@ -20,3 +20,5 @@ sys_redirect,,,,,,,,,,,
 ,14,0,301,0,0,acme.com,#^/respect-keep-relative-target-([a-zA-Z]{1}[a-zA-Z0-9]+)\?param1=([a-zA-Z]{1}[a-zA-Z0-9]+)$#,/$1/$2,1,1,1
 ,15,0,301,0,0,acme.com,#^/other-relative-target-with-unsafe-capture-group-(.*)#,/offer-$1,1,1,0
 ,16,0,301,0,0,acme.com,#^/other-redirect-with-unsafe-capture-group-(.*)#,https://anotherdomain.com/offer$1,1,1,0
+# * @see https://forge.typo3.org/issues/101739
+,17,0,301,0,0,acme.com,#^/regexp-respect-get-parameter$#,https://anotherdomain.com/regexp-respect-get-parameter,1,1,0
