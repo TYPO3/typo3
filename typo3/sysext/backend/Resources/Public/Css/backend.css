@@ -3838,6 +3838,7 @@ typo3-notification-message .alert{box-shadow:var(--typo3-component-box-shadow);m
 }
 .cropper .ratio-buttons{margin-bottom:10px}
 .cropper .ratio-buttons .btn.btn-default{margin-bottom:5px}
+.cropper .ratio-buttons .btn:not(.active) .icon{display:none}
 .cropper .panel-group{position:relative;margin:-15px}
 .cropper .panel-group [aria-expanded=true]{border-left:2px solid #ff8700;position:relative}
 .cropper .panel-group [aria-expanded=true][data-bs-toggle=collapse]{background-color:#333}

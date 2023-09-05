@@ -78,6 +78,10 @@
             &.btn-default {
                 margin-bottom: 5px;
             }
+
+            &:not(.active) .icon {
+                display: none;
+            }
         }
     }
 
