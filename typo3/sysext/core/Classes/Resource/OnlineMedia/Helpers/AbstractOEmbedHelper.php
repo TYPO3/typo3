@@ -89,12 +89,12 @@ abstract class AbstractOEmbedHelper extends AbstractOnlineMediaHelper
         $oEmbed = $this->getOEmbedData($this->getOnlineMediaId($file));
 
         if (is_array($oEmbed) && $oEmbed !== []) {
-            $metadata['width'] = (int)$oEmbed['width'];
-            $metadata['height'] = (int)$oEmbed['height'];
+            $metadata['width'] = (int)($oEmbed['width'] ?? 0);
+            $metadata['height'] = (int)($oEmbed['height'] ?? 0);
             if (empty($file->getProperty('title'))) {
-                $metadata['title'] = strip_tags($oEmbed['title']);
+                $metadata['title'] = strip_tags($oEmbed['title'] ?? '');
             }
-            $metadata['author'] = $oEmbed['author_name'];
+            $metadata['author'] = $oEmbed['author_name'] ?? '';
         }
 
         return $metadata;
