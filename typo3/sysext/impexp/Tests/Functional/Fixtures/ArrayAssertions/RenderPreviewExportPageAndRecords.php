@@ -23,7 +23,7 @@ return [
       'ref' => 'pages:0',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span title="pages:0" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">
+      'preCode' => '<span title="pages:0" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>
 	</span>
@@ -39,7 +39,7 @@ return [
       'ref' => 'be_users:1',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="be_users:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-user-admin" data-identifier="status-user-admin">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="be_users:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-user-admin" data-identifier="status-user-admin" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/status.svg#status-user-admin" /></svg>
 	</span>
@@ -55,7 +55,7 @@ return [
       'ref' => 'sys_file:4',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file:4" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-text-text" data-identifier="mimetypes-text-text">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file:4" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-text-text" data-identifier="mimetypes-text-text" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-text-text" /></svg>
 	</span>
@@ -71,7 +71,7 @@ return [
       'ref' => 'sys_file:1',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-media-image" /></svg>
 	</span>
@@ -88,7 +88,7 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
@@ -102,7 +102,7 @@ return [
       'ref' => 'sys_file:2',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-media-image" /></svg>
 	</span>
@@ -119,7 +119,7 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
@@ -133,7 +133,7 @@ return [
       'ref' => 'sys_file:3',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file:3" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file:3" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-media-image" /></svg>
 	</span>
@@ -150,7 +150,7 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
@@ -164,7 +164,7 @@ return [
       'ref' => 'sys_file_storage:1',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-sys_file_storage" data-identifier="mimetypes-x-sys_file_storage">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-sys_file_storage" data-identifier="mimetypes-x-sys_file_storage" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-sys_file_storage" /></svg>
 	</span>
@@ -180,7 +180,7 @@ return [
       'ref' => 'pages:1',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="pages:1" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="pages:1" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>
 	</span>
@@ -196,7 +196,7 @@ return [
       'ref' => 'tt_content:1',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="tt_content:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="tt_content:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
 	</span>
@@ -212,7 +212,7 @@ return [
       'ref' => 'SOFTREF',
       'type' => 'softref',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
 	</span>
@@ -241,7 +241,7 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">typo3_image3.jpg</span>',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 4"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 4"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
@@ -256,7 +256,7 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 5"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 5"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
@@ -270,7 +270,7 @@ return [
       'ref' => 'tt_content:2',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="tt_content:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="tt_content:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
 	</span>
@@ -286,7 +286,7 @@ return [
       'ref' => 'SOFTREF',
       'type' => 'softref',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
 	</span>
@@ -313,7 +313,7 @@ return [
       'ref' => 'tt_content:3',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="tt_content:3" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="tt_content:3" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
 	</span>
@@ -329,7 +329,7 @@ return [
       'ref' => 'SOFTREF',
       'type' => 'softref',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
 	</span>
@@ -358,7 +358,7 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">typo3_image5.jpg</span>',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 4"></span><span title="sys_file:3" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 4"></span><span title="sys_file:3" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
@@ -373,7 +373,7 @@ return [
       'type' => 'rel',
       'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 5"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 5"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
@@ -387,7 +387,7 @@ return [
       'ref' => 'pages:2',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="pages:2" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="pages:2" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>
 	</span>
@@ -403,7 +403,7 @@ return [
       'ref' => 'pages:3',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="pages:3" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="pages:3" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>
 	</span>
