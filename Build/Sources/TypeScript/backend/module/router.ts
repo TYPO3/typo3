@@ -158,7 +158,14 @@ export class ModuleRouter extends LitElement {
 
     try {
       const module = await import(moduleName + '.js');
-      // @todo: Check if .componentName exists
+      element = this.querySelector(`*[slot="${moduleName}"]`);
+      if (element !== null) {
+        // The element has been created parallelly during the asynchronous module load; use that instance
+        return element;
+      }
+      if (!('componentName' in module)) {
+        throw new Error(`module ${moduleName} is missing the "componentName" export`);
+      }
       element = document.createElement(module.componentName);
     } catch (e) {
       console.error({ msg: `Error importing ${moduleName} as backend module`, err: e });
