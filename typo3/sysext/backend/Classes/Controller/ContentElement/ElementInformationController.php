@@ -296,27 +296,31 @@ class ElementInformationController
                 $table = 'sys_file_metadata';
                 $metaDataRepository = GeneralUtility::makeInstance(MetaDataRepository::class);
                 /** @var array<string, string> $metaData */
-                $metaData = $metaDataRepository->findByFileUid($this->row['uid']);
-                $allowedFields = $this->getFieldList($request, $table, (int)$metaData['uid']);
+                $metaData = $metaDataRepository->findByFileUid($this->row['uid'] ?? 0);
 
-                foreach ($metaData as $name => $value) {
-                    if (in_array($name, $allowedFields, true)) {
-                        if (!isset($GLOBALS['TCA'][$table]['columns'][$name])) {
-                            continue;
+                // If there is no metadata record, skip it
+                if ($metaData !== []) {
+                    $allowedFields = $this->getFieldList($request, $table, (int)$metaData['uid']);
+
+                    foreach ($metaData as $name => $value) {
+                        if (in_array($name, $allowedFields, true)) {
+                            if (!isset($GLOBALS['TCA'][$table]['columns'][$name])) {
+                                continue;
+                            }
+
+                            $isExcluded = !(!($GLOBALS['TCA'][$table]['columns'][$name]['exclude'] ?? false) || $this->getBackendUser()->check('non_exclude_fields', $table . ':' . $name));
+                            if ($isExcluded) {
+                                continue;
+                            }
+
+                            $label = $lang->sL(BackendUtility::getItemLabel($table, $name));
+                            $label = $label ?: $name;
+
+                            $propertiesForTable['fields'][] = [
+                                'fieldValue' => BackendUtility::getProcessedValue($table, $name, $metaData[$name], 0, false, false, (int)$metaData['uid']),
+                                'fieldLabel' => htmlspecialchars($label),
+                            ];
                         }
-
-                        $isExcluded = !(!($GLOBALS['TCA'][$table]['columns'][$name]['exclude'] ?? false) || $this->getBackendUser()->check('non_exclude_fields', $table . ':' . $name));
-                        if ($isExcluded) {
-                            continue;
-                        }
-
-                        $label = $lang->sL(BackendUtility::getItemLabel($table, $name));
-                        $label = $label ?: $name;
-
-                        $propertiesForTable['fields'][] = [
-                            'fieldValue' => BackendUtility::getProcessedValue($table, $name, $metaData[$name], 0, false, false, (int)$metaData['uid']),
-                            'fieldLabel' => htmlspecialchars($label),
-                        ];
                     }
                 }
             }
