@@ -108,7 +108,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
             $languageId = $languageAspect->getId();
         } elseif ($table === 'tt_content') {
             $languageId = $languageAspect->getContentId();
-        } elseif ($GLOBALS['TCA'][$table]['ctrl']['languageField']) {
+        } elseif ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false) {
             $languageId = $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
         } else {
             $languageId = -1;
@@ -178,7 +178,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
     {
         $types = GeneralUtility::trimExplode(',', strtolower($conf['allow']), true);
         $allow = array_flip($types);
-        if (!$conf['onlyCurrentPid'] || $pid == $GLOBALS['TSFE']->id) {
+        if (!($conf['onlyCurrentPid'] ?? false) || $pid == $GLOBALS['TSFE']->id) {
             // Permissions
             $types = GeneralUtility::trimExplode(',', strtolower($conf['allow']), true);
             $allow = array_flip($types);
