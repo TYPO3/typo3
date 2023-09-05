@@ -1,4 +1,6 @@
-{
+const path = require('path');
+
+module.exports = {
   "root": true,
   "env": {
     "browser": true,
@@ -6,7 +8,7 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": ["./tsconfig.eslint.json"]
+    "project": [path.resolve(__dirname, "./tsconfig.eslint.json")]
   },
   "plugins": [
     "@typescript-eslint",
