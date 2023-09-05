@@ -61,7 +61,7 @@ Allow: /typo3/sysext/frontend/Resources/Public/*
             'config' => [
                 'type' => 'link',
                 'required' => true,
-                'allowedTypes' => ['page', 'url', 'record'],
+                'allowedTypes' => ['page', 'url', 'record', 'file'],
             ],
         ],
     ],
