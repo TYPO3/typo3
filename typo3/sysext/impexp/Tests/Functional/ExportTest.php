@@ -246,7 +246,7 @@ final class ExportTest extends AbstractImportExportTestCase
                     'ref' => 'FILE',
                     'type' => 'file',
                     'msg' => '',
-                    'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="FILE" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-hard" data-identifier="status-reference-hard">
+                    'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="FILE" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-hard" data-identifier="status-reference-hard" aria-hidden="true">
 ' . "\t" . '<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-hard.png" width="16" height="16" alt="" />
 ' . "\t" . '</span>' . "\n\t\n" . '</span>',

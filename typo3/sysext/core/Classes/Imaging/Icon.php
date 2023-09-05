@@ -271,6 +271,7 @@ class Icon
         $attributes['title'] = $this->getTitle();
         $attributes['class'] = implode(' ', $classes);
         $attributes['data-identifier'] = $this->getIdentifier();
+        $attributes['aria-hidden'] = 'true';
 
         $markup = [];
         $markup[] = '<span ' . GeneralUtility::implodeAttributes($attributes, true) . '>';

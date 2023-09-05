@@ -93,7 +93,7 @@ final class IconFactoryTest extends FunctionalTestCase
     public function getIconByIdentifierReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed(): void
     {
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-actions-close" data-identifier="actions-close">',
+            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-actions-close" data-identifier="actions-close" aria-hidden="true">',
             $this->subject->getIcon($this->registeredIconIdentifier)->render()
         );
     }
@@ -105,7 +105,7 @@ final class IconFactoryTest extends FunctionalTestCase
     public function getIconByIdentifierAndSizeReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed($size): void
     {
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-actions-close" data-identifier="actions-close">',
+            '<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-actions-close" data-identifier="actions-close" aria-hidden="true">',
             $this->subject->getIcon($this->registeredIconIdentifier, $size['input'])->render()
         );
     }
@@ -128,7 +128,7 @@ final class IconFactoryTest extends FunctionalTestCase
     public function getIconReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed(): void
     {
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-default-not-found" data-identifier="default-not-found">',
+            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-default-not-found" data-identifier="default-not-found" aria-hidden="true">',
             $this->subject->getIcon($this->notRegisteredIconIdentifier)->render()
         );
     }
@@ -140,7 +140,7 @@ final class IconFactoryTest extends FunctionalTestCase
     public function getIconByIdentifierAndSizeReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed(array $size): void
     {
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-default-not-found" data-identifier="default-not-found">',
+            '<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-default-not-found" data-identifier="default-not-found" aria-hidden="true">',
             $this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'])->render()
         );
     }
@@ -160,7 +160,7 @@ final class IconFactoryTest extends FunctionalTestCase
             ]
         );
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-' . $this->registeredSpinningIconIdentifier . ' icon-spin" data-identifier="spinning-icon">',
+            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-' . $this->registeredSpinningIconIdentifier . ' icon-spin" data-identifier="spinning-icon" aria-hidden="true">',
             $this->subject->getIcon($this->registeredSpinningIconIdentifier)->render()
         );
     }
@@ -198,7 +198,7 @@ final class IconFactoryTest extends FunctionalTestCase
     public function getIconForFileWithNoFileTypeReturnsDefaultFileIcon(): void
     {
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">',
+            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other" aria-hidden="true">',
             $this->subject->getIconForFileExtension('')->render()
         );
     }
@@ -211,7 +211,7 @@ final class IconFactoryTest extends FunctionalTestCase
     public function getIconForFileWithUnknownFileTypeReturnsDefaultFileIcon(): void
     {
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">',
+            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other" aria-hidden="true">',
             $this->subject->getIconForFileExtension('foo')->render()
         );
     }
@@ -224,7 +224,7 @@ final class IconFactoryTest extends FunctionalTestCase
     public function getIconForFileWithFileTypePdfReturnsPdfIcon(): void
     {
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf">',
+            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf" aria-hidden="true">',
             $this->subject->getIconForFileExtension('pdf')->render()
         );
     }
@@ -237,7 +237,7 @@ final class IconFactoryTest extends FunctionalTestCase
     public function getIconForFileWithFileTypePngReturnsPngIcon(): void
     {
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">',
+            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image" aria-hidden="true">',
             $this->subject->getIconForFileExtension('png')->render()
         );
     }
@@ -253,7 +253,7 @@ final class IconFactoryTest extends FunctionalTestCase
         $resourceMock->method('getMimeType')->willReturn('');
 
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf">',
+            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf" aria-hidden="true">',
             $this->subject->getIconForResource($resourceMock)->render()
         );
     }
@@ -270,7 +270,7 @@ final class IconFactoryTest extends FunctionalTestCase
     {
         $fileObject = $this->getTestSubjectFileObject('');
         $result = $this->subject->getIconForResource($fileObject)->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other" aria-hidden="true">', $result);
     }
 
     /**
@@ -282,7 +282,7 @@ final class IconFactoryTest extends FunctionalTestCase
     {
         $fileObject = $this->getTestSubjectFileObject('foo');
         $result = $this->subject->getIconForResource($fileObject)->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other" aria-hidden="true">', $result);
     }
 
     /**
@@ -294,7 +294,7 @@ final class IconFactoryTest extends FunctionalTestCase
     {
         $fileObject = $this->getTestSubjectFileObject('pdf');
         $result = $this->subject->getIconForResource($fileObject)->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf" aria-hidden="true">', $result);
     }
 
     /**
@@ -306,7 +306,7 @@ final class IconFactoryTest extends FunctionalTestCase
     {
         $fileObject = $this->getTestSubjectFileObject('pdf', 'application/pdf');
         $result = $this->subject->getIconForResource($fileObject)->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf" aria-hidden="true">', $result);
     }
 
     /**
@@ -318,7 +318,7 @@ final class IconFactoryTest extends FunctionalTestCase
     {
         $fileObject = $this->getTestSubjectFileObject('custom', 'image/my-custom-extension');
         $result = $this->subject->getIconForResource($fileObject)->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image" aria-hidden="true">', $result);
     }
 
     /**
@@ -330,7 +330,7 @@ final class IconFactoryTest extends FunctionalTestCase
     {
         $fileObject = $this->getTestSubjectFileObject('png', 'image/png');
         $result = $this->subject->getIconForResource($fileObject)->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image" aria-hidden="true">', $result);
     }
 
     /**
@@ -342,7 +342,7 @@ final class IconFactoryTest extends FunctionalTestCase
     {
         $folderObject = $this->getTestSubjectFolderObject('/test');
         $result = $this->subject->getIconForResource($folderObject)->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-filetree-folder-default" data-identifier="apps-filetree-folder-default">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-filetree-folder-default" data-identifier="apps-filetree-folder-default" aria-hidden="true">', $result);
     }
 
     /**
@@ -354,7 +354,7 @@ final class IconFactoryTest extends FunctionalTestCase
     {
         $folderObject = $this->getTestSubjectFolderObject('/test');
         $result = $this->subject->getIconForResource($folderObject, IconSize::MEDIUM, null, ['folder-open' => true])->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-filetree-folder-opened" data-identifier="apps-filetree-folder-opened">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-filetree-folder-opened" data-identifier="apps-filetree-folder-opened" aria-hidden="true">', $result);
     }
 
     /**
@@ -366,7 +366,7 @@ final class IconFactoryTest extends FunctionalTestCase
     {
         $folderObject = $this->getTestSubjectFolderObject('/');
         $result = $this->subject->getIconForResource($folderObject)->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-filetree-root" data-identifier="apps-filetree-root">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-filetree-root" data-identifier="apps-filetree-root" aria-hidden="true">', $result);
     }
 
     /**
@@ -378,7 +378,7 @@ final class IconFactoryTest extends FunctionalTestCase
     {
         $folderObject = $this->getTestSubjectFolderObject('/mount');
         $result = $this->subject->getIconForResource($folderObject, IconSize::MEDIUM, null, ['mount-root' => true])->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-filetree-mount" data-identifier="apps-filetree-mount">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-filetree-mount" data-identifier="apps-filetree-mount" aria-hidden="true">', $result);
     }
 
     //
@@ -394,7 +394,7 @@ final class IconFactoryTest extends FunctionalTestCase
     {
         $GLOBALS['TCA']['']['ctrl'] = [];
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-default-not-found" data-identifier="default-not-found">',
+            '<span class="t3js-icon icon icon-size-medium icon-state-default icon-default-not-found" data-identifier="default-not-found" aria-hidden="true">',
             $this->subject->getIconForRecord('', [])->render()
         );
     }
@@ -417,7 +417,7 @@ final class IconFactoryTest extends FunctionalTestCase
             ],
         ];
         $result = $this->subject->getIconForRecord('tt_content', [])->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">', $result);
     }
 
     /**
@@ -439,7 +439,7 @@ final class IconFactoryTest extends FunctionalTestCase
             ],
         ];
         $result = $this->subject->getIconForRecord('tt_content', $this->mockRecord)->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">', $result);
     }
 
     /**
@@ -463,7 +463,7 @@ final class IconFactoryTest extends FunctionalTestCase
         $mockRecord = $this->mockRecord;
         $mockRecord['CType'] = 'list';
         $result = $this->subject->getIconForRecord('tt_content', $mockRecord)->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-x-content-plugin" data-identifier="mimetypes-x-content-plugin">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-x-content-plugin" data-identifier="mimetypes-x-content-plugin" aria-hidden="true">', $result);
     }
 
     /**
@@ -502,7 +502,7 @@ final class IconFactoryTest extends FunctionalTestCase
         $mockRecord['CType'] = 'list';
         $mockRecord['list_type'] = 'pi_blogexample';
         $result = $this->subject->getIconForRecord('tt_content', $mockRecord)->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-actions-close" data-identifier="actions-close">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-actions-close" data-identifier="actions-close" aria-hidden="true">', $result);
     }
 
     /**
@@ -529,7 +529,7 @@ final class IconFactoryTest extends FunctionalTestCase
         $mockRecord = $this->mockRecord;
         $mockRecord['hidden'] = '1';
         $result = $this->subject->getIconForRecord('tt_content', $mockRecord)->render();
-        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">', $result);
+        self::assertStringContainsString('<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">', $result);
         self::assertStringContainsString('<span class="icon-overlay icon-overlay-hidden">', $result);
     }
 
@@ -544,7 +544,7 @@ final class IconFactoryTest extends FunctionalTestCase
                 'is_siteroot' => '0',
                 'module' => '',
             ],
-            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">',
+            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default" aria-hidden="true">',
         ];
 
         yield 'nav_hide=1' => [
@@ -555,7 +555,7 @@ final class IconFactoryTest extends FunctionalTestCase
                 'module' => '',
                 'content_from_pid' => '0',
             ],
-            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-hideinmenu" data-identifier="apps-pagetree-page-hideinmenu">',
+            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-hideinmenu" data-identifier="apps-pagetree-page-hideinmenu" aria-hidden="true">',
         ];
 
         yield 'is_siteroot=1' => [
@@ -566,7 +566,7 @@ final class IconFactoryTest extends FunctionalTestCase
                 'module' => '',
                 'content_from_pid' => '0',
             ],
-            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-domain" data-identifier="apps-pagetree-page-domain">',
+            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-domain" data-identifier="apps-pagetree-page-domain" aria-hidden="true">',
         ];
 
         yield 'module=fe_users' => [
@@ -577,7 +577,7 @@ final class IconFactoryTest extends FunctionalTestCase
                 'module' => 'fe_users',
                 'content_from_pid' => '0',
             ],
-            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-folder-contains-fe_users" data-identifier="apps-pagetree-folder-contains-fe_users">',
+            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-folder-contains-fe_users" data-identifier="apps-pagetree-folder-contains-fe_users" aria-hidden="true">',
         ];
 
         yield 'content_from_pid=1' => [
@@ -588,7 +588,7 @@ final class IconFactoryTest extends FunctionalTestCase
                 'module' => '',
                 'content_from_pid' => '1',
             ],
-            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-content-from-page" data-identifier="apps-pagetree-page-content-from-page">',
+            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-content-from-page" data-identifier="apps-pagetree-page-content-from-page" aria-hidden="true">',
         ];
 
         yield 'content_from_pid=1, nav_hide=1' => [
@@ -599,7 +599,7 @@ final class IconFactoryTest extends FunctionalTestCase
                 'module' => '',
                 'content_from_pid' => '1',
             ],
-            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-content-from-page-hideinmenu" data-identifier="apps-pagetree-page-content-from-page-hideinmenu">',
+            'expected' => '<span class="t3js-icon icon icon-size-medium icon-state-default icon-apps-pagetree-page-content-from-page-hideinmenu" data-identifier="apps-pagetree-page-content-from-page-hideinmenu" aria-hidden="true">',
         ];
     }
 

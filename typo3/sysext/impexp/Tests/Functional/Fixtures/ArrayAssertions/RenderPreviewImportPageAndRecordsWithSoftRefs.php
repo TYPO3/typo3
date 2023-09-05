@@ -22,7 +22,7 @@ return [
       'ref' => 'pages:1',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span title="pages:1" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">
+      'preCode' => '<span title="pages:1" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>
 	</span>
@@ -37,7 +37,7 @@ return [
       'ref' => 'tt_content:212',
       'type' => 'record',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="tt_content:212" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="tt_content:212" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
 	</span>
@@ -52,7 +52,7 @@ return [
       'ref' => 'SOFTREF',
       'type' => 'softref',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
 	</span>
@@ -78,7 +78,7 @@ return [
       'ref' => 'SOFTREF',
       'type' => 'softref',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
 	</span>
@@ -104,7 +104,7 @@ return [
       'ref' => 'SOFTREF',
       'type' => 'softref',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
 	</span>
@@ -130,7 +130,7 @@ return [
       'ref' => 'SOFTREF',
       'type' => 'softref',
       'msg' => '',
-      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
+      'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
 	</span>
