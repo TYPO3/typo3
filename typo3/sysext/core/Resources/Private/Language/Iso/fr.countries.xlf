@@ -216,7 +216,7 @@
       </trans-unit>
       <trans-unit id="BV.name" resname="BV.name" approved="yes">
         <source>Bouvet Island</source>
-        <target>île Bouvet</target>
+        <target>Île Bouvet</target>
       </trans-unit>
       <trans-unit id="BW.name" resname="BW.name" approved="yes">
         <source>Botswana</source>
@@ -280,7 +280,7 @@
       </trans-unit>
       <trans-unit id="CK.name" resname="CK.name" approved="yes">
         <source>Cook Islands</source>
-        <target>îles Cook</target>
+        <target>Îles Cook</target>
       </trans-unit>
       <trans-unit id="CL.name" resname="CL.name" approved="yes">
         <source>Chile</source>
@@ -444,7 +444,7 @@
       </trans-unit>
       <trans-unit id="ER.official_name" resname="ER.official_name" approved="yes">
         <source>the State of Eritrea</source>
-        <target>l'État d'Érythrée</target>
+        <target>L'État d'Érythrée</target>
       </trans-unit>
       <trans-unit id="ES.name" resname="ES.name" approved="yes">
         <source>Spain</source>
@@ -492,7 +492,7 @@
       </trans-unit>
       <trans-unit id="FO.name" resname="FO.name" approved="yes">
         <source>Faroe Islands</source>
-        <target>îles Féroé</target>
+        <target>Îles Féroé</target>
       </trans-unit>
       <trans-unit id="FR.name" resname="FR.name" approved="yes">
         <source>France</source>
@@ -628,7 +628,7 @@
       </trans-unit>
       <trans-unit id="HM.name" resname="HM.name" approved="yes">
         <source>Heard Island and McDonald Islands</source>
-        <target>îles Heard-et-MacDonald</target>
+        <target>Îles Heard-et-MacDonald</target>
       </trans-unit>
       <trans-unit id="HN.name" resname="HN.name" approved="yes">
         <source>Honduras</source>
@@ -816,7 +816,7 @@
       </trans-unit>
       <trans-unit id="KY.name" resname="KY.name" approved="yes">
         <source>Cayman Islands</source>
-        <target>îles Caïmans</target>
+        <target>Îles Caïmans</target>
       </trans-unit>
       <trans-unit id="KZ.name" resname="KZ.name" approved="yes">
         <source>Kazakhstan</source>
@@ -1092,7 +1092,7 @@
       </trans-unit>
       <trans-unit id="NF.name" resname="NF.name" approved="yes">
         <source>Norfolk Island</source>
-        <target>île Norfolk</target>
+        <target>Île Norfolk</target>
       </trans-unit>
       <trans-unit id="NG.name" resname="NG.name" approved="yes">
         <source>Nigeria</source>
@@ -1232,7 +1232,7 @@
       </trans-unit>
       <trans-unit id="PS.official_name" resname="PS.official_name" approved="yes">
         <source>the State of Palestine</source>
-        <target>l'État de Palestine</target>
+        <target>L'État de Palestine</target>
       </trans-unit>
       <trans-unit id="PT.name" resname="PT.name" approved="yes">
         <source>Portugal</source>
@@ -1448,7 +1448,7 @@
       </trans-unit>
       <trans-unit id="TC.name" resname="TC.name" approved="yes">
         <source>Turks and Caicos Islands</source>
-        <target>îles Turques-et-Caïques</target>
+        <target>Îles Turques-et-Caïques</target>
       </trans-unit>
       <trans-unit id="TD.name" resname="TD.name" approved="yes">
         <source>Chad</source>
@@ -1518,9 +1518,13 @@
         <source>Kingdom of Tonga</source>
         <target>Royaume des Tonga</target>
       </trans-unit>
+      <trans-unit id="TR.name" resname="TR.name" approved="yes">
+        <source>Türkiye</source>
+        <target>Turquie</target>
+      </trans-unit>
       <trans-unit id="TR.official_name" resname="TR.official_name" approved="yes">
         <source>Republic of Türkiye</source>
-        <target>Republic of Türkiye</target>
+        <target>République de Turquie</target>
       </trans-unit>
       <trans-unit id="TT.name" resname="TT.name" approved="yes">
         <source>Trinidad and Tobago</source>

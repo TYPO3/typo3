@@ -10,6 +10,10 @@
         <source>Abkhazian</source>
         <target>აბხაზური</target>
       </trans-unit>
+      <trans-unit id="ady" resname="ady" approved="yes">
+        <source>Adyghe; Adygei</source>
+        <target>ადიღეური</target>
+      </trans-unit>
       <trans-unit id="ae" resname="ae" approved="yes">
         <source>Avestan</source>
         <target>ავესტანი</target>
@@ -37,6 +41,10 @@
       <trans-unit id="an" resname="an" approved="yes">
         <source>Aragonese</source>
         <target>არაგონური</target>
+      </trans-unit>
+      <trans-unit id="ang" resname="ang" approved="yes">
+        <source>English, Old (ca. 450-1100)</source>
+        <target>ინგლუსური, ძველი (დაახლ. 450-1100)</target>
       </trans-unit>
       <trans-unit id="apa" resname="apa" approved="yes">
         <source>Apache languages</source>
@@ -158,6 +166,10 @@
         <source>Chamorro</source>
         <target>ჩამორო</target>
       </trans-unit>
+      <trans-unit id="chm" resname="chm" approved="yes">
+        <source>Mari</source>
+        <target>მარული</target>
+      </trans-unit>
       <trans-unit id="chr" resname="chr" approved="yes">
         <source>Cherokee</source>
         <target>ჩეროკი</target>
@@ -241,6 +253,10 @@
       <trans-unit id="en" resname="en" approved="yes">
         <source>English</source>
         <target>ინგლისური</target>
+      </trans-unit>
+      <trans-unit id="enm" resname="enm" approved="yes">
+        <source>English, Middle (1100-1500)</source>
+        <target>ინგლისური, შუასაუკუნეების (1100-1500)</target>
       </trans-unit>
       <trans-unit id="eo" resname="eo" approved="yes">
         <source>Esperanto</source>
@@ -410,6 +426,10 @@
         <source>Japanese</source>
         <target>იაპონური</target>
       </trans-unit>
+      <trans-unit id="jbo" resname="jbo" approved="yes">
+        <source>Lojban</source>
+        <target>ლოჟბანი</target>
+      </trans-unit>
       <trans-unit id="jv" resname="jv" approved="yes">
         <source>Javanese</source>
         <target>იავური</target>
@@ -425,6 +445,10 @@
       <trans-unit id="kar" resname="kar" approved="yes">
         <source>Karen languages</source>
         <target>კარენის ენები</target>
+      </trans-unit>
+      <trans-unit id="kg" resname="kg" approved="yes">
+        <source>Kongo</source>
+        <target>კონგო</target>
       </trans-unit>
       <trans-unit id="khi" resname="khi" approved="yes">
         <source>Khoisan languages</source>
@@ -598,6 +622,10 @@
         <source>Oriya</source>
         <target>ორია</target>
       </trans-unit>
+      <trans-unit id="osa" resname="osa" approved="yes">
+        <source>Osage</source>
+        <target>ოსეიჯი</target>
+      </trans-unit>
       <trans-unit id="oto" resname="oto" approved="yes">
         <source>Otomian languages</source>
         <target>ოტომიური ენები</target>
@@ -662,6 +690,10 @@
         <source>Sanskrit</source>
         <target>სანსკრიტი</target>
       </trans-unit>
+      <trans-unit id="sah" resname="sah" approved="yes">
+        <source>Yakut</source>
+        <target>იაკუტიური</target>
+      </trans-unit>
       <trans-unit id="sal" resname="sal" approved="yes">
         <source>Salishan languages</source>
         <target>სალიშანის ენები</target>
@@ -673,6 +705,10 @@
       <trans-unit id="sc" resname="sc" approved="yes">
         <source>Sardinian</source>
         <target>სარდინიული</target>
+      </trans-unit>
+      <trans-unit id="scn" resname="scn" approved="yes">
+        <source>Sicilian</source>
+        <target>სიცილიური</target>
       </trans-unit>
       <trans-unit id="sd" resname="sd" approved="yes">
         <source>Sindhi</source>
@@ -841,6 +877,10 @@
       <trans-unit id="ty" resname="ty" approved="yes">
         <source>Tahitian</source>
         <target>ტაიტური</target>
+      </trans-unit>
+      <trans-unit id="udm" resname="udm" approved="yes">
+        <source>Udmurt</source>
+        <target>უდმურტული</target>
       </trans-unit>
       <trans-unit id="uga" resname="uga" approved="yes">
         <source>Ugaritic</source>
