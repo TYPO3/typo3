@@ -332,6 +332,64 @@ class RedirectServiceTest extends FunctionalTestCase
         self::assertEquals($expectedRedirectUri, $response->getHeader('location')[0]);
     }
 
+    /**
+     * @test
+     * @see https://forge.typo3.org/issues/101739
+     */
+    public function regexpWithNoParamRegexpAndRespectingGetParameteresIssuesNotFoundStatusIfParamsAreGivenInUrl(): void
+    {
+        $url = 'https://acme.com/regexp-respect-get-parameter?param1=value1';
+        $expectedStatusCode = 404;
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_regexp.csv');
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1, 'https://acme.com/')
+        );
+        $this->setUpFrontendRootPage(
+            1,
+            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($url),
+            null,
+            false
+        );
+        self::assertSame($expectedStatusCode, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     * @see https://forge.typo3.org/issues/101739
+     */
+    public function regexpWithNoParamRegexpAndRespectingGetParameteresRedirectsIfNoParamsAreGiven(): void
+    {
+        $url = 'https://acme.com/regexp-respect-get-parameter';
+        $expectedStatusCode = 301;
+        $expectedRedirectUid = 17;
+        $expectedRedirectUri = 'https://anotherdomain.com/regexp-respect-get-parameter';
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_regexp.csv');
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1, 'https://acme.com/')
+        );
+        $this->setUpFrontendRootPage(
+            1,
+            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($url),
+            null,
+            false
+        );
+        self::assertSame($expectedStatusCode, $response->getStatusCode());
+        self::assertIsArray($response->getHeader('X-Redirect-By'));
+        self::assertIsArray($response->getHeader('location'));
+        self::assertSame('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
+        self::assertSame($expectedRedirectUri, $response->getHeader('location')[0]);
+    }
+
     public function samePathWithSameDomainT3TargetDataProvider(): array
     {
         return [
