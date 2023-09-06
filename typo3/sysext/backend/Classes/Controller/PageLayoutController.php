@@ -181,6 +181,13 @@ class PageLayoutController
             ],
             'language' => [
                 0 => isset($this->availableLanguages[0]) ? $this->availableLanguages[0]->getTitle() : $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:m_default'),
+                // We need to add -1 (all) here so a possible -1 value will be allowed when calling
+                // moduleData->cleanUp(). Actually, this is only relevant if we are dealing with the
+                // "languages" mode, which however can only be safely determined, after the moduleData
+                // have been cleaned up => chicken and egg problem. We therefore remove the -1 item from
+                // the menu again, as soon as we are able to determine the requested mode.
+                // @todo Replace the whole "mode" handling with some more robust solution
+                -1 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages'),
             ],
         ];
 
@@ -195,17 +202,6 @@ class PageLayoutController
                 if (isset($this->availableLanguages[$languageId])) {
                     $this->MOD_MENU['language'][$languageId] = $this->availableLanguages[$languageId]->getTitle();
                 }
-            }
-
-            // Add special "-1" in case translations of the current page exist
-            if (count($this->MOD_MENU['language']) > 1) {
-                // We need to add -1 (all) here so a possible -1 value will be allowed when calling
-                // moduleData->cleanUp(). Actually, this is only relevant if we are dealing with the
-                // "languages" mode, which however can only be safely determined, after the moduleData
-                // have been cleaned up => chicken and egg problem. We therefore remove the -1 item from
-                // the menu again, as soon as we are able to determine the requested mode.
-                // @todo Replace the whole "mode" handling with some more robust solution
-                $this->MOD_MENU['language'][-1] = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages');
             }
         }
         // Clean up settings
@@ -663,8 +659,8 @@ class PageLayoutController
      */
     protected function makeLanguageSwitchButton(ButtonBar $buttonbar): ?ButtonInterface
     {
-        // Early return if less than 2 languages are available
-        if (count($this->MOD_MENU['language']) < 2) {
+        // Early return if no translation exist
+        if (array_filter($this->MOD_MENU['language'], static fn($language): bool => $language > 0, ARRAY_FILTER_USE_KEY) === []) {
             return null;
         }
 
