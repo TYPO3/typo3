@@ -261,7 +261,7 @@ class DatabaseRecordList
      *
      * @var string[][]
      */
-    public $setFields = [];
+    public array $setFields = [];
 
     /**
      * Paging for the single table view
@@ -2214,6 +2214,7 @@ class DatabaseRecordList
         $this->perms_clause = (string)$permsClause;
 
         $this->possibleTranslations = $this->getPossibleTranslations($this->id);
+        $this->setFields = $this->getBackendUserAuthentication()->getModuleData('list/displayFields') ?? [];
     }
 
     /**
@@ -2292,15 +2293,6 @@ class DatabaseRecordList
             $orderedTableNames = $tableNames;
         }
         return array_keys($orderedTableNames);
-    }
-
-    /**
-     * Fetching the user defined fields to be displayed.
-     * Sets the internal variable $this->setFields.
-     */
-    public function setDispFields(): void
-    {
-        $this->setFields = $this->getBackendUserAuthentication()->getModuleData('list/displayFields');
     }
 
     /**

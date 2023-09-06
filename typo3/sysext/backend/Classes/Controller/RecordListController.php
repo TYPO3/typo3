@@ -169,7 +169,6 @@ class RecordListController
                 $this->deleteRecords($request, $clipboard);
             }
             $dbList->start($this->id, $this->table, $pointer, $this->searchTerm, $search_levels);
-            $dbList->setDispFields();
             $tableListHtml = $dbList->generateList();
         }
 

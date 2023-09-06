@@ -214,7 +214,6 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             $searchLevels
         );
 
-        $dbList->setDispFields();
         $tableList = $dbList->generateList();
 
         $out .= $this->renderSearchBox($request, $dbList, $searchWord, $searchLevels);

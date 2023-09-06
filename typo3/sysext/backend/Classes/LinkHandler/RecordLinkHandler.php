@@ -251,7 +251,6 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         $dbList->displayRecordDownload = false;
         $dbList->tableList = $table;
         $dbList->start($selectedPage, $selectedTable, MathUtility::forceIntegerInRange($pointer, 0, 100000), $searchWord);
-        $dbList->setDispFields();
 
         $html[] = $this->recordSearchBoxComponent
             ->setSearchWord($searchWord)
