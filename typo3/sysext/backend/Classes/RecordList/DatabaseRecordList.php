@@ -130,7 +130,7 @@ class DatabaseRecordList
      *
      * @var string
      */
-    public $hideTranslations = '';
+    public string $hideTranslations = '';
 
     /**
      * Cache for record path
@@ -249,9 +249,9 @@ class DatabaseRecordList
     /**
      * TSconfig which overwrites TCA-Settings
      *
-     * @var mixed[][]
+     * @var string[][]
      */
-    public $tableTSconfigOverTCA = [];
+    public array $tableTSconfigOverTCA = [];
 
     /**
      * Fields to display for the current table
