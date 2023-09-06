@@ -641,7 +641,6 @@ class DatabaseRecordList
             // Render collapse button if in multi table mode
             if (!$this->table) {
                 $title = sprintf(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:collapseExpandTable')), $tableTitle);
-                $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL)->render() . '</span>';
                 $tableActions .= '
                     <button type="button"'
                     . ' class="btn btn-sm btn-default t3js-toggle-recordlist"'
@@ -652,7 +651,7 @@ class DatabaseRecordList
                     . ' data-table="' . htmlspecialchars($tableIdentifier) . '"'
                     . ' data-bs-toggle="collapse"'
                     . ' data-bs-target="#recordlist-' . htmlspecialchars($tableIdentifier) . '">'
-                    . $icon
+                    . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL)->render()
                     . '</button>';
             }
             // Show the select box
