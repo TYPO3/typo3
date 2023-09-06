@@ -28,6 +28,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,7 +57,8 @@ class SetupCommand extends Command
         private readonly SetupDatabaseService $setupDatabaseService,
         private readonly SetupService $setupService,
         private readonly ConfigurationManager $configurationManager,
-        private readonly LateBootService $lateBootService
+        private readonly LateBootService $lateBootService,
+        private readonly FailsafePackageManager $packageManager,
     ) {
         parent::__construct($name);
 
@@ -210,6 +212,8 @@ EOT
         $serverType = $this->getServerType($questionHelper, $input, $output);
         $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
         $folderStructureFactory->getStructure($serverType)->fix();
+        // Ensure existing PackageStates.php for non-composer installation.
+        $this->packageManager->recreatePackageStatesFileIfMissing(true);
 
         try {
             $force = $input->getOption('force');
