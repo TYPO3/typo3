@@ -991,7 +991,7 @@ class FileList
 
         $button = GeneralUtility::makeInstance(GenericButton::class);
         $button->setTag('a');
-        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view'));
+        $button->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view'));
         $button->setHref($resourceView->getPublicUrl());
         $button->setAttributes(['target' => '_blank']);
         $button->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
@@ -1020,7 +1020,7 @@ class FileList
         }
 
         $button = GeneralUtility::makeInstance(GenericButton::class);
-        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename'));
+        $button->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename'));
         $button->setAttributes(['type' => 'button', 'data-filelist-action' => 'rename']);
         $button->setIcon($this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL));
 
@@ -1038,7 +1038,7 @@ class FileList
         }
 
         $button = GeneralUtility::makeInstance(GenericButton::class);
-        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download'));
+        $button->setLabel($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download'));
         $button->setAttributes([
             'type' => 'button',
             'data-filelist-action' => 'download',
@@ -1072,7 +1072,7 @@ class FileList
         }
 
         $button = GeneralUtility::makeInstance(GenericButton::class);
-        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info'));
+        $button->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info'));
         $button->setAttributes([
             'type' => 'button',
             'data-filelist-action' => 'show',
@@ -1107,7 +1107,7 @@ class FileList
 
         $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete');
         $button = GeneralUtility::makeInstance(GenericButton::class);
-        $button->setTitle($title);
+        $button->setLabel($title);
         $button->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL));
         $button->setAttributes([
             'type' => 'button',
