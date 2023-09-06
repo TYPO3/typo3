@@ -140,7 +140,7 @@ class GenericButton implements ButtonInterface
 
     public function isValid(): bool
     {
-        return !empty($this->getLabel())
+        return trim($this->getLabel()) !== ''
             && $this->getType() === self::class
             && $this->getIcon() !== null;
     }
