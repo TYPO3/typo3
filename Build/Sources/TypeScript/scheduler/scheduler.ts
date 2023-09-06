@@ -259,12 +259,12 @@ class Scheduler {
 
   private toggleCollapseIcon(e: Event): void {
     const isCollapsed: boolean = e.type === 'hide.bs.collapse';
-    const collapseIcon: HTMLElement = document.querySelector('.t3js-toggle-table[data-bs-target="#' + (e.target as HTMLElement).id + '"] .collapseIcon');
+    const collapseIcon: HTMLElement = document.querySelector('.t3js-toggle-table[data-bs-target="#' + (e.target as HTMLElement).id + '"] .t3js-icon');
     if (collapseIcon !== null) {
       Icons
         .getIcon((isCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icons.sizes.small)
         .then((icon: string): void => {
-          collapseIcon.innerHTML = icon;
+          collapseIcon.replaceWith(document.createRange().createContextualFragment(icon));
         });
     }
     Scheduler.storeCollapseState((e.target as HTMLElement).dataset.table, isCollapsed);

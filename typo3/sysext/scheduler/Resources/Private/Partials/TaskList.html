@@ -41,9 +41,7 @@
                     data-bs-target="#scheduler-task-group-missing"
                     aria-expanded="{f:if(condition: errorClassesCollapsed, then: 'false', else: 'true')}"
                 >
-                    <span class="collapseIcon">
-                        <core:icon identifier="{f:if(condition: errorClassesCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
-                    </span>
+                    <core:icon identifier="{f:if(condition: errorClassesCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
                 </button>
             </div>
             <div class="panel-collapse collapse {f:if(condition: '!{errorClassesCollapsed}', then: 'show')}" id="scheduler-task-group-missing" data-table="task-group-missing" >
@@ -167,9 +165,7 @@
                                 data-bs-target="#scheduler-task-group-{taskGroupId}"
                                 aria-expanded="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'false', else: 'true')}"
                         >
-                            <span class="collapseIcon">
-                                <core:icon identifier="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
-                            </span>
+                            <core:icon identifier="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
                         </button>
                     </form>
                 </div>

@@ -113,11 +113,11 @@ class Recordlist {
     const table = $me.data('table');
     const $target = $($me.data('bs-target'));
     const isExpanded = $target.data('state') === 'expanded';
-    const $collapseIcon = $me.find('.collapseIcon');
+    const $collapseIcon = $me.find('.t3js-icon');
     const toggleIcon = isExpanded ? this.identifier.icons.expand : this.identifier.icons.collapse;
 
     Icons.getIcon(toggleIcon, Icons.sizes.small).then((icon: string): void => {
-      $collapseIcon.html(icon);
+      $collapseIcon.replaceWith(icon);
     });
 
     // Store collapse state in UC
