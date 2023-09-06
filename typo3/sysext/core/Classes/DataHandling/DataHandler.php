@@ -5024,7 +5024,7 @@ class DataHandler implements LoggerAwareInterface
             $updateFields = [
                 $deleteField => 1,
             ];
-            if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
+            if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) {
                 $updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
             }
             // before deleting this record, check for child records or references
