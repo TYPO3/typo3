@@ -143,8 +143,8 @@ class RecordListController
         $dbList->disableSingleTableView = $this->modTSconfig['disableSingleTableView'] ?? false;
         $dbList->listOnlyInSingleTableMode = $this->modTSconfig['listOnlyInSingleTableView'] ?? false;
         $dbList->hideTables = $this->modTSconfig['hideTables'] ?? '';
-        $dbList->hideTranslations = $this->modTSconfig['hideTranslations'] ?? false;
-        $dbList->tableTSconfigOverTCA = $this->modTSconfig['table.'] ?? false;
+        $dbList->hideTranslations = (string)($this->modTSconfig['hideTranslations'] ?? '');
+        $dbList->tableTSconfigOverTCA = $this->modTSconfig['table.'] ?? [];
         $dbList->allowedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['allowedNewTables'] ?? '', true);
         $dbList->deniedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['deniedNewTables'] ?? '', true);
         $dbList->pageRow = $this->pageInfo;
