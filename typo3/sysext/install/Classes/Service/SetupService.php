@@ -135,7 +135,9 @@ class SetupService
             );
         }
 
-        // @todo: Remove once LocalConfiguration.php support was dropped.
+        // @todo Remove once LocalConfiguration.php support was dropped.
+        // @todo Web installer creates default configuration based on default factory configuration. Recheck if we
+        //       should use this here too instead of an empty array.
         // Ugly hack to write system/settings.php, to avoid fallback to
         // LocalConfiguration.php causing issues because it does not exist!
         @unlink($configurationFileLocation);
