@@ -491,6 +491,11 @@ class Modal {
         const severityKey = triggerElement.dataset.severity as keyof typeof SeverityEnum;
         severity = SeverityEnum[severityKey];
       }
+      let size = Sizes.default;
+      if (triggerElement.dataset.size in Sizes) {
+        const sizeKey = triggerElement.dataset.size as keyof typeof Sizes;
+        size = Sizes[sizeKey];
+      }
       let url = triggerElement.dataset.url || null;
       if (url !== null) {
         const separator = url.includes('?') ? '&' : '?';
@@ -501,6 +506,7 @@ class Modal {
         type: url !== null ? Types.ajax : Types.default,
         title: triggerElement.dataset.title || 'Alert',
         content: url !== null ? url : content,
+        size,
         severity,
         staticBackdrop: triggerElement.dataset.staticBackdrop !== undefined,
         buttons: [
