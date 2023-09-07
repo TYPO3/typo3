@@ -60,6 +60,11 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     private $config;
 
     /**
+     * @var Filesystem $fileSystem
+     */
+    private $fileSystem;
+
+    /**
      * Array of Composer package names (as array key) that are installed by Composer but have no relation to TYPO3 extension API
      * @var array
      */
@@ -88,6 +93,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     {
         $this->event = $event;
         $this->config = Config::load($this->event->getComposer(), $this->event->getIO());
+        $this->fileSystem = new Filesystem();
         $composer = $this->event->getComposer();
         $basePath = $this->config->get('base-dir');
         $this->packagesBasePath = $basePath . '/';
@@ -95,13 +101,13 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
             $packagePath = PathUtility::sanitizeTrailingSeparator($path);
             $package = new Package($this, $extensionKey, $packagePath, true);
             $this->setTitleFromExtEmConf($package);
-            $package->makePathRelative(new Filesystem(), $basePath);
+            $package->makePathRelative($this->fileSystem, $basePath);
             $package->getPackageMetaData()->setVersion($composerPackage->getPrettyVersion());
             $this->registerPackage($package);
         }
         $this->sortPackagesAndConfiguration();
         $cacheIdentifier = md5(serialize($composer->getLocker()->getLockData()) . $this->event->isDevMode());
-        $this->setPackageCache(new ComposerPackageArtifact($composer->getConfig()->get('vendor-dir') . '/typo3', new Filesystem(), $cacheIdentifier));
+        $this->setPackageCache(new ComposerPackageArtifact($composer->getConfig()->get('vendor-dir') . '/typo3', $this->fileSystem, $cacheIdentifier));
         $this->saveToPackageCache();
 
         return true;
@@ -246,10 +252,9 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         if (!str_contains($typo3ExtensionInstallPath, self::LEGACY_EXTENSION_INSTALL_PATH)) {
             return [$rootPackage, $baseDir, $extensionKey];
         }
-        $filesystem = new Filesystem();
-        if (!file_exists($typo3ExtensionInstallPath) && !$filesystem->isSymlinkedDirectory($typo3ExtensionInstallPath)) {
-            $filesystem->ensureDirectoryExists(dirname($typo3ExtensionInstallPath));
-            $filesystem->relativeSymlink($baseDir, $typo3ExtensionInstallPath);
+        if (!file_exists($typo3ExtensionInstallPath) && !$this->fileSystem->isSymlinkedDirectory($typo3ExtensionInstallPath)) {
+            $this->fileSystem->ensureDirectoryExists(dirname($typo3ExtensionInstallPath));
+            $this->fileSystem->relativeSymlink($baseDir, $typo3ExtensionInstallPath);
         }
         if (realpath($baseDir) !== realpath($typo3ExtensionInstallPath)) {
             $this->event->getIO()->warning('The root package is of type "typo3-cms-extension" and has public resources, but could not be linked to "' . self::LEGACY_EXTENSION_INSTALL_PATH . '" directory, because target directory already exits.');
@@ -260,7 +265,6 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
 
     private function publishResources(array $installedTypo3Packages): void
     {
-        $fileSystem = new Filesystem();
         $baseDir = $this->config->get('base-dir');
         foreach ($installedTypo3Packages as [$composerPackage, $path, $extensionKey]) {
             $fileSystemResourcesPath = $path . '/Resources/Public';
@@ -269,12 +273,12 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
             }
             $relativePath = substr($fileSystemResourcesPath, strlen($baseDir));
             [$relativePrefix] = explode('Resources/Public', $relativePath);
-            $publicResourcesPath = $fileSystem->normalizePath($this->config->get('web-dir') . '/_assets/' . md5($relativePrefix));
-            $fileSystem->ensureDirectoryExists(dirname($publicResourcesPath));
-            if (Platform::isWindows() && !$fileSystem->isJunction($publicResourcesPath)) {
-                $fileSystem->junction($fileSystemResourcesPath, $publicResourcesPath);
-            } elseif (!$fileSystem->isSymlinkedDirectory($publicResourcesPath)) {
-                $fileSystem->relativeSymlink($fileSystemResourcesPath, $publicResourcesPath);
+            $publicResourcesPath = $this->fileSystem->normalizePath($this->config->get('web-dir') . '/_assets/' . md5($relativePrefix));
+            $this->fileSystem->ensureDirectoryExists(dirname($publicResourcesPath));
+            if (Platform::isWindows() && !$this->fileSystem->isJunction($publicResourcesPath)) {
+                $this->fileSystem->junction($fileSystemResourcesPath, $publicResourcesPath);
+            } elseif (!$this->fileSystem->isSymlinkedDirectory($publicResourcesPath)) {
+                $this->fileSystem->relativeSymlink($fileSystemResourcesPath, $publicResourcesPath);
             }
         }
     }
