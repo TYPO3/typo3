@@ -97,14 +97,12 @@ class NavigationContainer extends AbstractContainer {
     const parent = this.parent;
     const container = this.container;
     container.querySelectorAll(ScaffoldIdentifierEnum.contentNavigationDataComponent).forEach((el: HTMLElement) => el.style.display = 'none');
-    if (typeof component !== undefined) {
-      parent.classList.add('scaffold-content-navigation-expanded');
-      parent.classList.add('scaffold-content-navigation-available');
-      const selectedElement = container.querySelector('[data-component="' + component + '"]') as HTMLElement;
-      if (selectedElement) {
-        // Re-set to the display setting from CSS
-        selectedElement.style.display = null;
-      }
+    parent.classList.add('scaffold-content-navigation-expanded');
+    parent.classList.add('scaffold-content-navigation-available');
+    const selectedElement = container.querySelector('[data-component="' + component + '"]') as HTMLElement;
+    if (selectedElement) {
+      // Re-set to the display setting from CSS
+      selectedElement.style.display = null;
     }
   }
 
