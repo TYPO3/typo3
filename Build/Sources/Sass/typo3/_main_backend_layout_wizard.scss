@@ -102,6 +102,7 @@
     transform: translate(calc(-50% * var(--typo3-position-modifier)), -50%);
     width: var(--grideditor-action-size);
     height: var(--grideditor-action-size);
+    border: 0;
     border-radius: 2px;
     background-color: var(--grideditor-action-bg);
 

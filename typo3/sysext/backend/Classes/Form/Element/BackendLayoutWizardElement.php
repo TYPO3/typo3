@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
@@ -56,7 +54,6 @@ class BackendLayoutWizardElement extends AbstractFormElement
     protected int $rowCount = 0;
 
     public function __construct(
-        private readonly IconFactory $iconFactory,
         private readonly TypoScriptStringFactory $typoScriptStringFactory,
     ) {}
 
@@ -86,6 +83,8 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
+        $codeMirrorConfig = [];
+
         // Use CodeMirror if available
         if (ExtensionManagementUtility::isLoaded('t3editor')) {
             $codeMirrorConfig = [
@@ -95,21 +94,12 @@ class BackendLayoutWizardElement extends AbstractFormElement
                 'nolazyload' => 'true',
                 'readonly' => 'true',
             ];
-            $editor = '
-                <typo3-t3editor-codemirror class="t3js-grideditor-preview-config grideditor-preview" ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>
-                    <textarea class="t3js-tsconfig-preview-area form-control"></textarea>
-                </typo3-t3editor-codemirror>';
 
             $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/t3editor/element/code-mirror-element.js');
-        } else {
-            $editor = '
-                <label>' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.pageTsConfig')) . '</label>
-                <div class="t3js-grideditor-preview-config grideditor-preview">
-                    <textarea class="t3js-tsconfig-preview-area form-control" rows="25" readonly></textarea>
-                </div>';
         }
 
         $json = (string)json_encode($this->rows, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS);
+        $codeMirrorConfig = (string)json_encode($codeMirrorConfig, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS);
         $html = [];
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
@@ -121,60 +111,14 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $html[] =                   ' name="' . htmlspecialchars($this->data['parameterArray']['itemFormElName']) . '"';
         $html[] =                   ' value="' . htmlspecialchars($this->data['parameterArray']['itemFormElValue']) . '"';
         $html[] =                   '/>';
-        $html[] =               '<div class="grideditor' . ($readOnly ? ' grideditor-readonly' : '') . '">';
-        if (!$readOnly) {
-            $html[] =               '<div class="grideditor-control grideditor-control-top">';
-            $html[] =                   '<div class="btn-group">';
-            $html[] =                       '<a class="btn btn-default btn-sm t3js-grideditor-addrow-top" href="#"';
-            $html[] =                           ' title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:grid_addRow')) . '">';
-            $html[] =                           $this->iconFactory->getIcon('actions-plus', IconSize::SMALL)->render();
-            $html[] =                       '</a>';
-            $html[] =                       '<a class="btn btn-default btn-sm t3js-grideditor-removerow-top" href="#"';
-            $html[] =                           ' title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:grid_removeRow')) . '">';
-            $html[] =                           $this->iconFactory->getIcon('actions-minus', IconSize::SMALL)->render();
-            $html[] =                       '</a>';
-            $html[] =                   '</div>';
-            $html[] =               '</div>';
-        }
-        $html[] =                   '<div class="grideditor-editor">';
-        $html[] =                       '<div';
-        $html[] =                           ' id="editor"';
-        $html[] =                           ' class="t3js-grideditor"';
-        $html[] =                           ' data-data="' . htmlspecialchars($json) . '"';
-        $html[] =                           ' data-rowcount="' . (int)$this->rowCount . '"';
-        $html[] =                           ' data-colcount="' . (int)$this->colCount . '"';
-        $html[] =                           ' data-readonly="' . ($readOnly ? '1' : '0') . '"';
-        $html[] =                           ' data-field="' . htmlspecialchars($this->data['parameterArray']['itemFormElName']) . '"';
-        $html[] =                       '></div>';
-        $html[] =                   '</div>';
-        if (!$readOnly) {
-            $html[] =               '<div class="grideditor-control grideditor-control-right">';
-            $html[] =                   '<div class="btn-group-vertical">';
-            $html[] =                       '<a class="btn btn-default btn-sm t3js-grideditor-addcolumn" href="#"';
-            $html[] =                           ' title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:grid_addColumn')) . '">';
-            $html[] =                           $this->iconFactory->getIcon('actions-plus', IconSize::SMALL)->render();
-            $html[] =                       '</a>';
-            $html[] =                       '<a class="btn btn-default btn-sm t3js-grideditor-removecolumn" href="#"';
-            $html[] =                           ' title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:grid_removeColumn')) . '">';
-            $html[] =                           $this->iconFactory->getIcon('actions-minus', IconSize::SMALL)->render();
-            $html[] =                       '</a>';
-            $html[] =                   '</div>';
-            $html[] =               '</div>';
-            $html[] =               '<div class="grideditor-control grideditor-control-bottom">';
-            $html[] =                   '<div class="btn-group">';
-            $html[] =                       '<a class="btn btn-default btn-sm t3js-grideditor-addrow-bottom" href="#"';
-            $html[] =                           ' title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:grid_addRow')) . '">';
-            $html[] =                           $this->iconFactory->getIcon('actions-plus', IconSize::SMALL)->render();
-            $html[] =                       '</a>';
-            $html[] =                       '<a class="btn btn-default btn-sm t3js-grideditor-removerow-bottom" href="#"';
-            $html[] =                           ' title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:grid_removeRow')) . '">';
-            $html[] =                           $this->iconFactory->getIcon('actions-minus', IconSize::SMALL)->render();
-            $html[] =                       '</a>';
-            $html[] =                   '</div>';
-            $html[] =               '</div>';
-        }
-        $html[] =                   '<div class="grideditor-preview">' . $editor . '</div>';
-        $html[] =                '</div>';
+        $html[] =               '<typo3-backend-grid-editor';
+        $html[] =                   ' data="' . htmlspecialchars($json) . '"';
+        $html[] =                   ' rowCount="' . (int)$this->rowCount . '"';
+        $html[] =                   ' colCount="' . (int)$this->colCount . '"';
+        $html[] =                   ($readOnly ? 'readonly="true"' : '');
+        $html[] =                   ' fieldName="' . htmlspecialchars($this->data['parameterArray']['itemFormElName']) . '"';
+        $html[] =                   ' codeMirrorConfig="' . htmlspecialchars($codeMirrorConfig) . '"';
+        $html[] =               '></typo3-backend-grid-editor>';
         if (!$readOnly && !empty($fieldWizardHtml)) {
             $html[] =           '<div class="form-wizards-items-bottom">' . $fieldWizardHtml . '</div>';
         }
@@ -191,6 +135,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
         )->instance();
         $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_wizards.xlf';
         $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:backend/Resources/Private/Language/locallang.xlf';
+        $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf';
 
         return $resultArray;
     }

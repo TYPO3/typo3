@@ -13,19 +13,14 @@
 
 import { SeverityEnum } from './enum/severity';
 import 'bootstrap';
-import $ from 'jquery';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import SecurityUtility from '@typo3/core/security-utility';
-import Icons from './icons';
-import { selector } from '@typo3/core/literals';
-
-/**
- * GridEditorConfigurationInterface
- */
-interface GridEditorConfigurationInterface {
-  nameLabel: string;
-  columnLabel: string;
-}
+import { customElement, property } from 'lit/decorators';
+import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { classMap } from 'lit/directives/class-map';
+import { StyleInfo, styleMap } from 'lit/directives/style-map';
+import { ref, Ref, createRef } from 'lit/directives/ref';
+import { CodeMirrorElement } from '@typo3/t3editor/element/code-mirror-element';
 
 type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number }
 
@@ -33,53 +28,19 @@ type Cell = { spanned: number, rowspan: number, colspan: number, name: string, c
  * Module: @typo3/backend/grid-editor
  * @exports @typo3/backend/grid-editor
  */
-export class GridEditor {
+@customElement('typo3-backend-grid-editor')
+export class GridEditor extends LitElement {
+  @property({ type: Number }) protected colCount: number = 1;
+  @property({ type: Number }) protected rowCount: number = 1;
+  @property({ type: Boolean }) protected readOnly: boolean = false;
+  @property({ type: String }) protected fieldName: string = '';
+  @property({ type: Array }) protected data: any[] = [];
+  @property({ type: Object }) protected codeMirrorConfig: Record<string, string> = {};
 
-  protected colCount: number = 1;
-  protected rowCount: number = 1;
-  protected readOnly: boolean = false;
-  protected field: JQuery;
-  protected data: any[];
-  protected nameLabel: string = 'name';
-  protected columnLabel: string = 'column label';
-  protected targetElement: JQuery;
+  protected field: HTMLInputElement;
+  protected previewAreaRef: Ref<HTMLTextAreaElement> = createRef();
+  protected codeMirrorRef: Ref<CodeMirrorElement> = createRef();
   protected defaultCell: Cell = { spanned: 0, rowspan: 1, colspan: 1, name: '', colpos: '', column: undefined };
-  protected selectorEditor: string = '.t3js-grideditor';
-  protected selectorAddColumn: string = '.t3js-grideditor-addcolumn';
-  protected selectorRemoveColumn: string = '.t3js-grideditor-removecolumn';
-  protected selectorAddRowTop: string = '.t3js-grideditor-addrow-top';
-  protected selectorRemoveRowTop: string = '.t3js-grideditor-removerow-top';
-  protected selectorAddRowBottom: string = '.t3js-grideditor-addrow-bottom';
-  protected selectorRemoveRowBottom: string = '.t3js-grideditor-removerow-bottom';
-  protected selectorLinkEditor: string = '.t3js-grideditor-link-editor';
-  protected selectorLinkExpandRight: string = '.t3js-grideditor-link-expand-right';
-  protected selectorLinkShrinkLeft: string = '.t3js-grideditor-link-shrink-left';
-  protected selectorLinkExpandDown: string = '.t3js-grideditor-link-expand-down';
-  protected selectorLinkShrinkUp: string = '.t3js-grideditor-link-shrink-up';
-  protected selectorConfigPreview: string = '.t3js-grideditor-preview-config';
-  protected selectorPreviewArea: string = '.t3js-tsconfig-preview-area';
-  protected selectorCodeMirror: string = '.t3js-grideditor-preview-config .CodeMirror';
-
-  /**
-   *
-   * @param {GridEditorConfigurationInterface} config
-   */
-  constructor(config: GridEditorConfigurationInterface = null) {
-    const $element = $(this.selectorEditor);
-    this.colCount = $element.data('colcount');
-    this.rowCount = $element.data('rowcount');
-    this.readOnly = $element.data('readonly');
-    this.field = $(selector`input[name="${$element.data('field')}"]`);
-    this.data = $element.data('data');
-    this.nameLabel = config !== null ? config.nameLabel : 'Name';
-    this.columnLabel = config !== null ? config.columnLabel : 'Column';
-    this.targetElement = $(this.selectorEditor);
-
-    this.initializeEvents();
-    this.addVisibilityObserver($element.get(0));
-    this.drawTable();
-    this.writeConfig(this.export2LayoutRecord());
-  }
 
   /**
    * Remove all markup
@@ -92,25 +53,211 @@ export class GridEditor {
     return securityUtility.stripHtml(input);
   }
 
-  /**
-   *
-   */
-  protected initializeEvents(): void {
-    if (this.readOnly) {
-      // Do not initialize events in case this is a readonly field
-      return;
+  public connectedCallback(): void {
+    this.field = document.querySelector('input[name="' + this.fieldName + '"]');
+
+    this.addVisibilityObserver(this);
+    super.connectedCallback();
+  }
+
+  protected firstUpdated(): void {
+    this.writeConfig(this.export2LayoutRecord());
+  }
+
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
+    return this;
+  }
+
+  protected render(): TemplateResult {
+    return html`
+      <div class=${classMap({ 'grideditor': true, 'grideditor-readonly': this.readOnly })}>
+        ${!this.readOnly ? this.renderControls('top', false) : nothing}
+        <div class="grideditor-editor">
+          <div class="t3js-grideditor">
+            ${this.renderEditorGrid()}
+          </div>
+        </div>
+        ${!this.readOnly ? this.renderControls('right', true) : nothing}
+        ${!this.readOnly ? this.renderControls('bottom', false) : nothing}
+        <div class="grideditor-preview">
+          ${this.renderPreview()}
+        </div>
+      </div>
+    `;
+  }
+
+  protected renderControls(position: string, vertical: boolean): TemplateResult {
+    const addHandlerMapping: Record<string, (e: Event) => void> = {
+      top: this.addRowTopHandler,
+      right: this.addColumnHandler,
+      bottom: this.addRowBottomHandler
     }
-    $(document).on('click', this.selectorAddColumn, this.addColumnHandler);
-    $(document).on('click', this.selectorRemoveColumn, this.removeColumnHandler);
-    $(document).on('click', this.selectorAddRowTop, this.addRowTopHandler);
-    $(document).on('click', this.selectorAddRowBottom, this.addRowBottomHandler);
-    $(document).on('click', this.selectorRemoveRowTop, this.removeRowTopHandler);
-    $(document).on('click', this.selectorRemoveRowBottom, this.removeRowBottomHandler);
-    $(document).on('click', this.selectorLinkEditor, this.linkEditorHandler);
-    $(document).on('click', this.selectorLinkExpandRight, this.linkExpandRightHandler);
-    $(document).on('click', this.selectorLinkShrinkLeft, this.linkShrinkLeftHandler);
-    $(document).on('click', this.selectorLinkExpandDown, this.linkExpandDownHandler);
-    $(document).on('click', this.selectorLinkShrinkUp, this.linkShrinkUpHandler);
+
+    const addLocaleMapping: Record<string, string> = {
+      top: TYPO3.lang.grid_addRow,
+      right: TYPO3.lang.grid_addColumn,
+      bottom: TYPO3.lang.grid_addRow
+    }
+
+    const removeHandlerMapping: Record<string, (e: Event) => void> = {
+      top: this.removeRowTopHandler,
+      right: this.removeColumnHandler,
+      bottom: this.removeRowBottomHandler
+    }
+
+    const removeLocaleMapping: Record<string, string> = {
+      top: TYPO3.lang.grid_removeRow,
+      right: TYPO3.lang.grid_removeColumn,
+      bottom: TYPO3.lang.grid_removeRow
+    }
+
+    return html`
+      <div class="grideditor-control grideditor-control-${position}">
+        <div class=${classMap({ 'btn-group': !vertical, 'btn-group-vertical': vertical })}>
+          <button @click=${addHandlerMapping[position]} class="btn btn-default btn-sm" title=${addLocaleMapping[position]}>
+            <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
+          </button>
+          <button @click=${removeHandlerMapping[position]} class="btn btn-default btn-sm" title=${removeLocaleMapping[position]}>
+            <typo3-backend-icon identifier="actions-minus" size="small"></typo3-backend-icon>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  protected renderEditorGrid(): TemplateResult {
+    const cells: TemplateResult[] = [];
+
+    for (let row = 0; row < this.rowCount; row++) {
+      const rowData = this.data[row];
+      if (rowData.length === 0) {
+        continue;
+      }
+
+      for (let col = 0; col < this.colCount; col++) {
+        const cell = this.data[row][col];
+        if (cell.spanned === 1) {
+          continue;
+        }
+
+        cells.push(this.renderGridCell(row, col, cell));
+      }
+    }
+
+    return html`
+      <div class="grideditor-editor-grid">
+        ${cells}
+      </div>
+    `;
+  }
+
+  protected renderGridCell(row: number, col: number, cell: Cell): TemplateResult {
+    const styleMapping: StyleInfo = {
+      '--grideditor-cell-col': col + 1,
+      '--grideditor-cell-colspan': cell.colspan,
+      '--grideditor-cell-row': row + 1,
+      '--grideditor-cell-rowspan': cell.rowspan
+    }
+
+    return html`
+      <div class="grideditor-cell" style=${styleMap(styleMapping)}>
+        <div class="grideditor-cell-actions">
+        ${!this.readOnly ?
+    html`
+            <button
+              @click=${this.linkEditorHandler}
+              class="t3js-grideditor-link-editor grideditor-action grideditor-action-edit"
+              data-row=${row}
+              data-col=${col}
+              title=${TYPO3.lang.grid_editCell}>
+              <typo3-backend-icon identifier="actions-open" size="small"></typo3-backend-icon>
+            </button>
+            ${this.cellCanSpanRight(col, row) ?
+    html`
+                <button
+                  @click=${this.linkExpandRightHandler}
+                  class="t3js-grideditor-link-expand-right grideditor-action grideditor-action-expand-right"
+                  data-row=${row}
+                  data-col=${col}
+                  title=${TYPO3.lang.grid_editCell}>
+                  <typo3-backend-icon identifier="actions-caret-right" size="small"></typo3-backend-icon>
+                </button>
+              `
+    : nothing}
+            ${this.cellCanShrinkLeft(col, row) ?
+    html`
+                <button
+                  @click=${this.linkShrinkLeftHandler}
+                  class="t3js-grideditor-link-shrink-left grideditor-action grideditor-action-shrink-left"
+                  data-row=${row}
+                  data-col=${col}
+                  title=${TYPO3.lang.grid_editCell}>
+                  <typo3-backend-icon identifier="actions-caret-left" size="small"></typo3-backend-icon>
+                </button>
+              `
+    : nothing}
+            ${this.cellCanSpanDown(col, row) ?
+    html`
+                <button
+                  @click=${this.linkExpandDownHandler}
+                  class="t3js-grideditor-link-expand-down grideditor-action grideditor-action-expand-down"
+                  data-row=${row}
+                  data-col=${col}
+                  title=${TYPO3.lang.grid_editCell}>
+                  <typo3-backend-icon identifier="actions-caret-down" size="small"></typo3-backend-icon>
+                </button>
+              `
+    : nothing}
+            ${this.cellCanShrinkUp(col, row) ?
+    html`
+                <button
+                  @click=${this.linkShrinkUpHandler}
+                  class="t3js-grideditor-link-shrink-up grideditor-action grideditor-action-shrink-up"
+                  data-row=${row}
+                  data-col=${col}
+                  title=${TYPO3.lang.grid_editCell}>
+                  <typo3-backend-icon identifier="actions-caret-up" size="small"></typo3-backend-icon>
+                </button>
+              `
+    : nothing}
+          `
+    : nothing}
+        </div>
+
+        <div class="grideditor-cell-info">
+          <strong>${TYPO3.lang.grid_name}:</strong>
+          ${cell.name ? GridEditor.stripMarkup(cell.name) : TYPO3.lang.grid_notSet}
+          <br/>
+          <strong>${TYPO3.lang.grid_column}:</strong>
+          ${typeof cell.column === 'undefined' || isNaN(cell.column) ? TYPO3.lang.grid_notSet : cell.column}
+        </div>
+      </div>
+    `;
+  }
+
+  protected renderPreview(): TemplateResult {
+    if (Object.keys(this.codeMirrorConfig).length === 0) {
+      return html`
+        <label>${TYPO3.lang['buttons.pageTsConfig']}</label>
+        <div class="t3js-grideditor-preview-config grideditor-preview">
+            <textarea class="t3js-tsconfig-preview-area form-control" rows="25" readonly ${ref(this.previewAreaRef)}></textarea>
+        </div>
+      `;
+    }
+
+    return html`
+      <typo3-t3editor-codemirror
+        class="t3js-grideditor-preview-config grideditor-preview"
+        label=${this.codeMirrorConfig.label}
+        panel=${this.codeMirrorConfig.panel}
+        mode=${this.codeMirrorConfig.mode}
+        nolazyload=true
+        readonly=true
+        ${ref(this.codeMirrorRef)}>
+        <textarea class="t3js-tsconfig-preview-area form-control" ${ref(this.previewAreaRef)}></textarea>
+      </typo3-t3editor-codemirror>
+    `;
   }
 
   /**
@@ -133,7 +280,7 @@ export class GridEditor {
         modal.userData.col,
         modal.userData.row,
       );
-      this.drawTable();
+      this.requestUpdate();
       this.writeConfig(this.export2LayoutRecord());
       modal.hideModal();
     }
@@ -146,7 +293,7 @@ export class GridEditor {
   protected addColumnHandler = (e: Event) => {
     e.preventDefault();
     this.addColumn();
-    this.drawTable();
+    this.requestUpdate();
     this.writeConfig(this.export2LayoutRecord());
   };
 
@@ -157,7 +304,7 @@ export class GridEditor {
   protected removeColumnHandler = (e: Event) => {
     e.preventDefault();
     this.removeColumn();
-    this.drawTable();
+    this.requestUpdate();
     this.writeConfig(this.export2LayoutRecord());
   };
 
@@ -168,7 +315,7 @@ export class GridEditor {
   protected addRowTopHandler = (e: Event) => {
     e.preventDefault();
     this.addRowTop();
-    this.drawTable();
+    this.requestUpdate();
     this.writeConfig(this.export2LayoutRecord());
   };
 
@@ -179,7 +326,7 @@ export class GridEditor {
   protected addRowBottomHandler = (e: Event) => {
     e.preventDefault();
     this.addRowBottom();
-    this.drawTable();
+    this.requestUpdate();
     this.writeConfig(this.export2LayoutRecord());
   };
 
@@ -190,7 +337,7 @@ export class GridEditor {
   protected removeRowTopHandler = (e: Event) => {
     e.preventDefault();
     this.removeRowTop();
-    this.drawTable();
+    this.requestUpdate();
     this.writeConfig(this.export2LayoutRecord());
   };
 
@@ -201,7 +348,7 @@ export class GridEditor {
   protected removeRowBottomHandler = (e: Event) => {
     e.preventDefault();
     this.removeRowBottom();
-    this.drawTable();
+    this.requestUpdate();
     this.writeConfig(this.export2LayoutRecord());
   };
 
@@ -211,8 +358,8 @@ export class GridEditor {
    */
   protected linkEditorHandler = (e: Event) => {
     e.preventDefault();
-    const $element = $(e.currentTarget);
-    this.showOptions($element.data('col'), $element.data('row'));
+    const element = e.currentTarget as HTMLElement;
+    this.showOptions(Number(element.dataset.col), Number(element.dataset.row));
   };
 
   /**
@@ -221,9 +368,9 @@ export class GridEditor {
    */
   protected linkExpandRightHandler = (e: Event) => {
     e.preventDefault();
-    const $element = $(e.currentTarget);
-    this.addColspan($element.data('col'), $element.data('row'));
-    this.drawTable();
+    const element = e.currentTarget as HTMLElement;
+    this.addColspan(Number(element.dataset.col), Number(element.dataset.row));
+    this.requestUpdate();
     this.writeConfig(this.export2LayoutRecord());
   };
 
@@ -233,9 +380,9 @@ export class GridEditor {
    */
   protected linkShrinkLeftHandler = (e: Event) => {
     e.preventDefault();
-    const $element = $(e.currentTarget);
-    this.removeColspan($element.data('col'), $element.data('row'));
-    this.drawTable();
+    const element = e.currentTarget as HTMLElement;
+    this.removeColspan(Number(element.dataset.col), Number(element.dataset.row));
+    this.requestUpdate();
     this.writeConfig(this.export2LayoutRecord());
   };
 
@@ -245,9 +392,9 @@ export class GridEditor {
    */
   protected linkExpandDownHandler = (e: Event) => {
     e.preventDefault();
-    const $element = $(e.currentTarget);
-    this.addRowspan($element.data('col'), $element.data('row'));
-    this.drawTable();
+    const element = e.currentTarget as HTMLElement;
+    this.addRowspan(Number(element.dataset.col), Number(element.dataset.row));
+    this.requestUpdate();
     this.writeConfig(this.export2LayoutRecord());
   };
 
@@ -257,9 +404,9 @@ export class GridEditor {
    */
   protected linkShrinkUpHandler = (e: Event) => {
     e.preventDefault();
-    const $element = $(e.currentTarget);
-    this.removeRowspan($element.data('col'), $element.data('row'));
-    this.drawTable();
+    const element = e.currentTarget as HTMLElement;
+    this.removeRowspan(Number(element.dataset.col), Number(element.dataset.row));
+    this.requestUpdate();
     this.writeConfig(this.export2LayoutRecord());
   };
 
@@ -268,7 +415,7 @@ export class GridEditor {
    * @returns {Object}
    */
   protected getNewCell(): Cell {
-    return $.extend({}, this.defaultCell);
+    return structuredClone(this.defaultCell);
   }
 
   /**
@@ -277,7 +424,7 @@ export class GridEditor {
    * @param data
    */
   protected writeConfig(data: string): void {
-    this.field.val(data);
+    this.field.value = data;
     const configLines = data.split('\n');
     let config = '';
     for (const line of configLines) {
@@ -296,14 +443,19 @@ export class GridEditor {
       '  }\n' +
       '}\n';
 
-    $(this.selectorConfigPreview).find(this.selectorPreviewArea).empty().append(
-      content
-    );
+    this.previewAreaRef.value!.value = content;
 
     // Update CodeMirror content if instantiated
-    const codemirror: any = document.querySelector(this.selectorCodeMirror);
-    if (codemirror) {
-      codemirror.CodeMirror.setValue(content);
+    // TODO: Find a nicer way to update CodeMirror state
+    const codemirror: any = this.codeMirrorRef.value!;
+    if (codemirror && codemirror.editorView) {
+      codemirror.editorView.dispatch({
+        changes: {
+          from: 0,
+          to: codemirror.editorView.viewState.state.doc.length,
+          insert: content
+        }
+      });
     }
   }
 
@@ -470,111 +622,6 @@ export class GridEditor {
   }
 
   /**
-   * Draws the grid as table into a given container.
-   * It also adds all needed links and bindings to the cells to make it editable.
-   */
-  protected drawTable(): void {
-    const $editorgrid = $('<div class="grideditor-editor-grid">');
-
-    for (let row = 0; row < this.rowCount; row++) {
-      const rowData = this.data[row];
-      if (rowData.length === 0) {
-        continue;
-      }
-
-      for (let col = 0; col < this.colCount; col++) {
-        const cell = this.data[row][col];
-        if (cell.spanned === 1) {
-          continue;
-        }
-        const $cell = $('<div class="grideditor-cell">');
-        $cell.css('--grideditor-cell-col', col + 1);
-        $cell.css('--grideditor-cell-colspan', cell.colspan);
-        $cell.css('--grideditor-cell-row', row + 1);
-        $cell.css('--grideditor-cell-rowspan', cell.rowspan);
-
-        if (!this.readOnly) {
-          // Add cell container and actions in case this isn't a readonly field
-          const $container = $('<div class="grideditor-cell-actions">');
-          $cell.append($container);
-          const $anchor = $('<a href="#" data-col="' + col + '" data-row="' + row + '">');
-
-          Icons.getIcon('actions-open', Icons.sizes.small).then((icon: string): void => {
-            $container.append(
-              $anchor
-                .clone()
-                .attr('class', 't3js-grideditor-link-editor grideditor-action grideditor-action-edit')
-                .attr('title', TYPO3.lang.grid_editCell)
-                .append(icon)
-            );
-          });
-
-          if (this.cellCanSpanRight(col, row)) {
-            Icons.getIcon('actions-caret-right', Icons.sizes.small).then((icon: string): void => {
-              $container.append(
-                $anchor
-                  .clone()
-                  .attr('class', 't3js-grideditor-link-expand-right grideditor-action grideditor-action-expand-right')
-                  .attr('title', TYPO3.lang.grid_editCell)
-                  .append(icon)
-              );
-            });
-          }
-          if (this.cellCanShrinkLeft(col, row)) {
-            Icons.getIcon('actions-caret-left', Icons.sizes.small).then((icon: string): void => {
-              $container.append(
-                $anchor
-                  .clone()
-                  .attr('class', 't3js-grideditor-link-shrink-left grideditor-action grideditor-action-shrink-left')
-                  .attr('title', TYPO3.lang.grid_editCell)
-                  .append(icon)
-              );
-            });
-          }
-          if (this.cellCanSpanDown(col, row)) {
-            Icons.getIcon('actions-caret-down', Icons.sizes.small).then((icon: string): void => {
-              $container.append(
-                $anchor
-                  .clone()
-                  .attr('class', 't3js-grideditor-link-expand-down grideditor-action grideditor-action-expand-down')
-                  .attr('title', TYPO3.lang.grid_editCell)
-                  .append(icon)
-              );
-            });
-          }
-          if (this.cellCanShrinkUp(col, row)) {
-            Icons.getIcon('actions-caret-up', Icons.sizes.small).then((icon: string): void => {
-              $container.append(
-                $anchor
-                  .clone()
-                  .attr('class', 't3js-grideditor-link-shrink-up grideditor-action grideditor-action-shrink-up')
-                  .attr('title', TYPO3.lang.grid_editCell)
-                  .append(icon)
-              );
-            });
-          }
-        }
-
-        $cell.append(
-          $('<div class="grideditor-cell-info">')
-            .html(
-              '<strong>' + TYPO3.lang.grid_name + ':</strong> '
-              + (cell.name ? GridEditor.stripMarkup(cell.name) : TYPO3.lang.grid_notSet)
-              + '<br>'
-              + '<strong>' + TYPO3.lang.grid_column + ':</strong> '
-              + (typeof cell.column === 'undefined' || isNaN(cell.column)
-                ? TYPO3.lang.grid_notSet
-                : parseInt(cell.column, 10)
-              ),
-            ),
-        );
-        $editorgrid.append($cell);
-      }
-    }
-    $(this.targetElement).empty().append($editorgrid);
-  }
-
-  /**
    * Sets the name of a certain grid element.
    *
    * @param {String} newName
@@ -634,53 +681,47 @@ export class GridEditor {
       colPos = '';
     }
 
-    const $markup = $('<div>');
-    const $formGroup = $('<div class="form-group">');
-    const $label = $('<label>');
-    const $input = $('<input>');
+    const markup = document.createElement('div');
+    const formGroup = document.createElement('div');
+    formGroup.classList.add('form-group');
+    const label = document.createElement('label');
+    const input = document.createElement('input');
 
-    $markup.append([
-      $formGroup
-        .clone()
-        .append([
-          $label
-            .clone()
-            .text(TYPO3.lang.grid_nameHelp)
-          ,
-          $input
-            .clone()
-            .attr('type', 'text')
-            .attr('class', 't3js-grideditor-field-name form-control')
-            .attr('name', 'name')
-            .val(GridEditor.stripMarkup(cell.name) || ''),
-        ]),
-      $formGroup
-        .clone()
-        .append([
-          $label
-            .clone()
-            .text(TYPO3.lang.grid_columnHelp)
-          ,
-          $input
-            .clone()
-            .attr('type', 'text')
-            .attr('class', 't3js-grideditor-field-colpos form-control')
-            .attr('name', 'column')
-            .val(colPos),
-        ]),
-    ]);
+    const nameFormGroup = formGroup.cloneNode(true) as HTMLElement;
+    const nameLabel = label.cloneNode(true) as HTMLElement;
+    nameLabel.innerText = TYPO3.lang.grid_nameHelp;
+    const nameInput = input.cloneNode(true) as HTMLInputElement;
+    nameInput.type = 'text';
+    nameInput.classList.add('t3js-grideditor-field-name', 'form-control');
+    nameInput.name = 'name';
+    nameInput.value = GridEditor.stripMarkup(cell.name) || '';
 
-    const modal = Modal.show(TYPO3.lang.grid_windowTitle, $markup, SeverityEnum.notice, [
+    nameFormGroup.append(nameLabel, nameInput);
+
+    const columnFormGroup = formGroup.cloneNode(true) as HTMLElement;
+    const columnLabel = label.cloneNode(true) as HTMLElement;
+    columnLabel.innerText = TYPO3.lang.grid_columnHelp;
+    const columnInput = input.cloneNode(true) as HTMLInputElement;
+    columnInput.type = 'text';
+    columnInput.classList.add('t3js-grideditor-field-colpos', 'form-control');
+    columnInput.name = 'column';
+    columnInput.value = colPos.toString();
+
+    columnFormGroup.append(columnLabel, columnInput);
+
+    markup.append(nameFormGroup, columnFormGroup);
+
+    const modal = Modal.show(TYPO3.lang.grid_windowTitle, markup, SeverityEnum.notice, [
       {
         active: true,
         btnClass: 'btn-default',
         name: 'cancel',
-        text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
+        text: TYPO3.lang['button.cancel'] || 'Cancel',
       },
       {
         btnClass: 'btn-primary',
         name: 'ok',
-        text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
+        text: TYPO3.lang['button.ok'] || 'OK',
       },
     ]);
     modal.userData.col = col;
@@ -942,9 +983,9 @@ export class GridEditor {
     }
     new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
-        const codemirror: any = document.querySelector(this.selectorCodeMirror);
+        const codemirror: any = this.codeMirrorRef.value!;
         if (entry.intersectionRatio > 0 && codemirror) {
-          codemirror.CodeMirror.refresh();
+          codemirror.requestUpdate();
         }
       });
     }).observe(gridEditor);
