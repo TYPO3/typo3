@@ -31,7 +31,7 @@ class DefaultFactory
      *
      * @return StructureFacadeInterface
      */
-    public function getStructure(WebserverType $webserverType)
+    public function getStructure(WebserverType $webserverType = WebserverType::Other)
     {
         $rootNode = new RootNode($this->getDefaultStructureDefinition($webserverType), null);
         return new StructureFacade($rootNode);
