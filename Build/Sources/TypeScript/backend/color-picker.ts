@@ -12,6 +12,7 @@
  */
 
 import Alwan from 'alwan';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 interface ColorPickerSettings {
   swatches?: string[]
@@ -42,22 +43,18 @@ class ColorPicker {
     });
     element.classList.add('t3js-colorpicker-initialized');
 
-    const hiddenElement: HTMLInputElement = element.closest('.t3js-formengine-field-item')?.querySelector('input[type="hidden"]');
-    if (!hiddenElement) {
-      // Early return in case we do not deal with the usual visibile+hidden field combination
-      return;
-    }
-
-    // When hidden field is changed (e.g. through a value picker), trigger "paste" on the element
-    hiddenElement.addEventListener('change', (e: Event): void => {
-      alwan.setColor((e.target as HTMLInputElement).value);
-    });
-
     // On element change, set the formatted value from alwan
     alwan.on('color', (e: Alwan.alwanEvent): void => {
       element.value = e.hex;
-      hiddenElement.value = e.hex;
       element.dispatchEvent(new Event('blur'));
+    });
+
+    // input: react on user input
+    // change: react on indirect changes, e.g. a value picker
+    ['input', 'change'].forEach((eventName: string): void => {
+      new RegularEvent(eventName, (e: Event): void => {
+        alwan.setColor((e.target as HTMLInputElement).value);
+      }).bindTo(element);
     });
   }
 }
