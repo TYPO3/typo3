@@ -339,7 +339,8 @@ class PasswordRecoveryController extends ActionController
                 return (new ForwardResponse('showChangePassword'))
                     ->withControllerName('PasswordRecovery')
                     ->withExtensionName('felogin')
-                    ->withArguments(['hash' => $hash]);
+                    ->withArguments(['hash' => $hash])
+                    ->withArgumentsValidationResult($requestResult);
             }
         } else {
             // No user found
@@ -353,7 +354,8 @@ class PasswordRecoveryController extends ActionController
             return (new ForwardResponse('showChangePassword'))
                 ->withControllerName('PasswordRecovery')
                 ->withExtensionName('felogin')
-                ->withArguments(['hash' => $hash]);
+                ->withArguments(['hash' => $hash])
+                ->withArgumentsValidationResult($requestResult);
         }
 
         return $hashedPassword;
