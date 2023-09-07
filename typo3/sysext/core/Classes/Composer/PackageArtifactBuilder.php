@@ -275,11 +275,31 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
             [$relativePrefix] = explode('Resources/Public', $relativePath);
             $publicResourcesPath = $this->fileSystem->normalizePath($this->config->get('web-dir') . '/_assets/' . md5($relativePrefix));
             $this->fileSystem->ensureDirectoryExists(dirname($publicResourcesPath));
-            if (Platform::isWindows() && !$this->fileSystem->isJunction($publicResourcesPath)) {
-                $this->fileSystem->junction($fileSystemResourcesPath, $publicResourcesPath);
-            } elseif (!$this->fileSystem->isSymlinkedDirectory($publicResourcesPath)) {
-                $this->fileSystem->relativeSymlink($fileSystemResourcesPath, $publicResourcesPath);
+            if (Platform::isWindows()) {
+                $this->ensureJunctionExists($fileSystemResourcesPath, $publicResourcesPath);
+            } else {
+                $this->ensureSymlinkExists($fileSystemResourcesPath, $publicResourcesPath);
             }
+        }
+    }
+
+    private function ensureJunctionExists(string $target, string $junction): void
+    {
+        if (!$this->fileSystem->isJunction($junction)) {
+            // Cleanup a possible symlink that might have been installed by ourselves prior to #98434
+            // Note: Unprivileged deletion of symlinks is allowed, even if they were created by a
+            // privileged user
+            if (is_link($junction)) {
+                $this->fileSystem->unlink($junction);
+            }
+            $this->fileSystem->junction($target, $junction);
+        }
+    }
+
+    private function ensureSymlinkExists(string $target, string $link): void
+    {
+        if (!$this->fileSystem->isSymlinkedDirectory($link)) {
+            $this->fileSystem->relativeSymlink($target, $link);
         }
     }
 }
