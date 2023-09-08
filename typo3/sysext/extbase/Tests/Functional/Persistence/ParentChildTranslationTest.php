@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\ParentChildTranslation\Domain\Repository\MainRepository;
 
-use function PHPUnit\Framework\assertCount;
-
 final class ParentChildTranslationTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/parent_child_translation'];
@@ -42,7 +40,7 @@ final class ParentChildTranslationTest extends FunctionalTestCase
         $query = $this->get(MainRepository::class)->createQuery();
         $results = $query->execute();
 
-        assertCount(2, $results);
+        self::assertCount(2, $results);
 
         $children = [];
         foreach ($results as $main) {
@@ -74,7 +72,7 @@ final class ParentChildTranslationTest extends FunctionalTestCase
 
         $results = $query->execute();
 
-        assertCount(2, $results);
+        self::assertCount(2, $results);
 
         $children = [];
         foreach ($results as $main) {
