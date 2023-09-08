@@ -1991,31 +1991,42 @@ class DatabaseRecordList
      * It will automatically detect if sorting should be ascending or descending depending on $this->sortRev.
      * Also some fields will not be possible to sort (including if single-table-view is disabled).
      *
-     * @param string $code The string to link (text)
+     * @param string $label The string to link (text)
      * @param string $field The fieldname represented by the title ($code)
      * @param string $table Table name
      * @return string Linked $code variable
      */
-    public function addSortLink($code, $field, $table)
+    public function addSortLink($label, $field, $table): string
     {
         // Certain circumstances just return string right away (no links):
         if ($this->disableSingleTableView
             || in_array($field, ['_SELECTOR', '_CONTROL_', '_LOCALIZATION_', '_REF_'], true)
         ) {
-            return $code;
+            return $label;
         }
+
         // If "_PATH_" (showing record path) is selected, force sorting by pid field (will at least group the records!)
         if ($field === '_PATH_') {
             $field = 'pid';
         }
-        //	 Create the sort link:
-        $sortUrl = $this->listURL('', $table, 'sortField,sortRev,table,pointer')
+
+        // Create the sort link:
+        $url = $this->listURL('', $table, 'sortField,sortRev,table,pointer')
             . '&sortField=' . $field . '&sortRev=' . ($this->sortRev || $this->sortField != $field ? 0 : 1);
-        $sortArrow = $this->sortField === $field
-            ? $this->iconFactory->getIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc'), IconSize::SMALL)->render()
-            : '';
+        $icon = $this->sortField === $field
+            ? $this->iconFactory->getIcon('actions-sort-amount-' . ($this->sortRev ? 'down' : 'up'), IconSize::SMALL)->render()
+            : $this->iconFactory->getIcon('actions-sort-amount', IconSize::SMALL)->render();
+
         // Return linked field:
-        return '<a href="' . htmlspecialchars($sortUrl) . '">' . $code . $sortArrow . '</a>';
+        $attributes = [
+            'class' => 'table-sorting-button ' . ($this->sortField === $field ? 'table-sorting-button-active' : ''),
+            'href' => $url,
+        ];
+
+        return '<a ' . GeneralUtility::implodeAttributes($attributes, true) . '>
+            <span class="table-sorting-label">' . $label . '</span>
+            <span class="table-sorting-icon">' . $icon . '</span>
+            </a>';
     }
 
     /**

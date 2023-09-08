@@ -14,6 +14,7 @@
 
     // Light
     --typo3-light-color: #{$body-color};
+    --typo3-light-primary-color: #{$primary};
     --typo3-light-secondary-color: #{tint-color($body-color, 40%)};
     --typo3-light-bg: #{$white};
     --typo3-light-border-color: #{$gray-300};
@@ -34,6 +35,7 @@
 
     // Dark
     --typo3-dark-color: #{$white};
+    --typo3-dark-primary-color: #{tint-color($primary, 40%)};
     --typo3-dark-secondary-color: #{shade-color($white, 40%)};
     --typo3-dark-bg: #{$gray-900};
     --typo3-dark-border-color: #{$gray-800};
@@ -54,6 +56,7 @@
 
     // Component
     --typo3-component-color: var(--typo3-light-color);
+    --typo3-component-primary-color: var(--typo3-light-primary-color);
     --typo3-component-secondary-color: var(--typo3-light-secondary-color);
     --typo3-component-bg: var(--typo3-light-bg);
     --typo3-component-link-color: var(--typo3-light-link-color);
@@ -118,6 +121,7 @@
 
 @mixin lightmode {
     --typo3-component-color: var(--typo3-light-color);
+    --typo3-component-primary-color: var(--typo3-light-primary-color);
     --typo3-component-secondary-color: var(--typo3-light-secondary-color);
     --typo3-component-bg: var(--typo3-light-bg);
     --typo3-component-border-color: var(--typo3-light-border-color);
@@ -139,6 +143,7 @@
 
 @mixin darkmode {
     --typo3-component-color: var(--typo3-dark-color);
+    --typo3-component-primary-color: var(--typo3-dark-primary-color);
     --typo3-component-secondary-color: var(--typo3-dark-secondary-color);
     --typo3-component-bg: var(--typo3-dark-bg);
     --typo3-component-border-color: var(--typo3-dark-border-color);
