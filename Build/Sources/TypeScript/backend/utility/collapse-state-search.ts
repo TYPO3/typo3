@@ -17,6 +17,7 @@ import DocumentService from '@typo3/core/document-service';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Mark from '@typo3/backend/contrib/mark';
+import DomHelper from '@typo3/backend/utility/dom-helper';
 
 /**
  * Utility class to perform client side search on ul/li trees. This is used in various
@@ -116,7 +117,7 @@ class CollapseStateSearch {
         matchingCollapsibleIds.add(collapsibleIdentifier.substring(1));
       }
 
-      const parentElements = this.parents(match, '.collapse');
+      const parentElements = DomHelper.parents(match, '.collapse');
       for (const parentEl of parentElements) {
         matchingCollapsibleIds.add(parentEl.id);
       }
@@ -176,17 +177,6 @@ class CollapseStateSearch {
     return Array.from(treeContainer.querySelectorAll('.treelist-constant-substitution')).filter((el: Element): boolean => {
       return el.textContent.toLowerCase().includes(term);
     });
-  }
-
-  private parents(el: Element, selector: string) {
-    const parents = [];
-    let closest;
-    while ((closest = el.parentElement.closest(selector)) !== null) {
-      el = closest;
-      parents.push(closest);
-    }
-
-    return parents;
   }
 }
 
