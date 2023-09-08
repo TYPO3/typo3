@@ -277,3 +277,28 @@ td.selected {
         width: auto;
     }
 }
+
+/**
+ * Sorting
+ */
+.table-sorting-button {
+    padding: 0;
+    border: 0;
+    font-weight: inherit;
+    font-size: inherit;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: .25em;
+}
+
+.table-sorting-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--typo3-light-secondary-color);
+
+    .table-sorting-button-active & {
+        color: var(--typo3-light-primary-color);
+    }
+}

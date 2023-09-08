@@ -449,14 +449,24 @@ class FileList
         if ($this->sort === $field) {
             // Check reverse sorting
             $params['reverse'] = ($this->sortRev ? '0' : '1');
-            $sortArrow = $this->iconFactory->getIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc'), Icon::SIZE_SMALL)->render();
         } else {
             $params['reverse'] = 0;
-            $sortArrow = '';
         }
-        $href = $this->createModuleUri($params);
 
-        return '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($label) . ' ' . $sortArrow . '</a>';
+        $icon = $this->sort === $field
+            ? $this->iconFactory->getIcon('actions-sort-amount-' . ($this->sortRev ? 'down' : 'up'), Icon::SIZE_SMALL)->render()
+            : $this->iconFactory->getIcon('actions-sort-amount', Icon::SIZE_SMALL)->render();
+
+        $attributes = [
+            'class' => 'table-sorting-button ' . ($this->sort === $field ? 'table-sorting-button-active' : ''),
+            'href' => $this->createModuleUri($params),
+        ];
+
+        return '<a ' . GeneralUtility::implodeAttributes($attributes, true) . '>
+            <span class="table-sorting-label">' . htmlspecialchars($label) . '</span>
+            <span class="table-sorting-icon">' . $icon . '</span>
+            </a>';
+
     }
 
     /**

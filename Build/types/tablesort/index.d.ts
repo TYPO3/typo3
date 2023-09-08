@@ -1,18 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface Tablesort {
-}
-
-type TablesortOptions = {
+export type TablesortOptions = {
   descending: boolean;
   sortAttribute: string;
 };
 
-declare const Tablesort: {
-  new(table: Element, options?: {[key: string]: TablesortOptions}): Tablesort;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  extend(name: string, pattern: Function, sort: Function): void;
-}
+export default class Tablesort {
+  protected table: HTMLTableElement;
+  protected thead: boolean;
+  protected options: TablesortOptions;
+  protected current: HTMLTableCellElement;
 
-declare module 'tablesort' {
-  export default Tablesort;
+  constructor(table: HTMLElement, options?: {[key: string]: TablesortOptions});
+  protected sortTable(table: HTMLTableCellElement): void;
 }
