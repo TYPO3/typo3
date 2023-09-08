@@ -149,7 +149,7 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
   describe('tests for formatValue', () => {
     using(formatValueDataProvider, function(testCase: FormatValueData) {
       it(testCase.description, () => {
-        FormEngineValidation.initialize();
+        FormEngineValidation.initialize(document.createElement('form'));
         const result = FormEngineValidation.formatValue(testCase.type, testCase.value, testCase.config);
         expect(result).to.equal(testCase.result);
       });

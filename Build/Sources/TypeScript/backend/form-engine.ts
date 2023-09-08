@@ -74,13 +74,13 @@ export default (function() {
   onFieldChangeHandlers.set('typo3-backend-form-update-value', (data: {elementName: string}) => {
     const valueField = document.querySelector('[name="' + CSS.escape(data.elementName) + '"]');
     const humanReadableField = document.querySelector('[data-formengine-input-name="' + CSS.escape(data.elementName) + '"]');
-    FormEngineValidation.updateInputField(data.elementName);
+    FormEngine.Validation.updateInputField(data.elementName);
     if (valueField !== null) {
-      FormEngineValidation.markFieldAsChanged(valueField as HTMLInputElement);
-      FormEngineValidation.validateField(valueField as HTMLInputElement);
+      FormEngine.Validation.markFieldAsChanged(valueField as HTMLInputElement);
+      FormEngine.Validation.validateField(valueField as HTMLInputElement);
     }
     if (humanReadableField !== null && humanReadableField !== valueField) {
-      FormEngineValidation.validateField(humanReadableField as HTMLTextAreaElement);
+      FormEngine.Validation.validateField(humanReadableField as HTMLTextAreaElement);
     }
   });
   // @see \TYPO3\CMS\Backend\Form\Behavior\ReloadOnFieldChange
@@ -248,7 +248,7 @@ export default (function() {
           $fieldEl.empty();
           reenableOptions = true;
         } else if ($fieldEl.find('option').length == 1) {
-          // there is an old value and it was exclusive => it has to be removed
+          // there is an old value, and it was exclusive => it has to be removed
           m = new RegExp('(^|,)' + $fieldEl.find('option').prop('value') + '($|,)');
           if (exclusiveValues.match(m)) {
             $fieldEl.empty();
@@ -304,7 +304,7 @@ export default (function() {
 
         // execute the phpcode from $FormEngine->TBE_EDITOR_fieldChanged_func
         FormEngine.legacyFieldChangedCb();
-        FormEngineValidation.markFieldAsChanged(originalFieldEl);
+        FormEngine.Validation.markFieldAsChanged(originalFieldEl);
         FormEngine.Validation.validateField($fieldEl);
         FormEngine.Validation.validateField($availableFieldEl);
       }
@@ -451,7 +451,7 @@ export default (function() {
       $(e.currentTarget).closest('.t3js-formengine-field-item').toggleClass('disabled');
     }).on('change', '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]', (e: JQueryEventObject) => {
       FormEngine.toggleCheckboxField($(e.currentTarget));
-      FormEngineValidation.markFieldAsChanged($(e.currentTarget));
+      FormEngine.Validation.markFieldAsChanged(e.currentTarget);
     }).on('change', () => {
       $('.module-docheader-bar .btn').removeClass('disabled').prop('disabled', false);
     }).on('click', '.t3js-element-browser', function(e: Event) {
@@ -588,7 +588,6 @@ export default (function() {
   /**
    * Get the properties required for proper rendering of the character counter
    *
-   * @param {Object} $field
    * @returns {{remainingCharacters: number, labelClass: string}}
    */
   FormEngine.getCharacterCounterProperties = function($field: JQuery): {remainingCharacters: number, labelClass: string} {
@@ -598,14 +597,11 @@ export default (function() {
       numberOfLineBreaks = (fieldText.match(/\n/g) || []).length, // count line breaks
       remainingCharacters = maxlength - currentFieldLength - numberOfLineBreaks,
       threshold = 15; // hard limit of remaining characters when the label class changes
-    let labelClass = '';
-
+    let labelClass = 'badge-info';
     if (remainingCharacters < threshold) {
       labelClass = 'badge-danger';
     } else if (remainingCharacters < threshold * 2) {
       labelClass = 'badge-warning';
-    } else {
-      labelClass = 'badge-info';
     }
 
     return {
@@ -1329,7 +1325,7 @@ export default (function() {
 
     DocumentService.ready().then((): void => {
       FormEngine.initializeEvents();
-      FormEngine.Validation.initialize();
+      FormEngine.Validation.initialize(FormEngine.formElement);
       FormEngine.reinitialize();
       $('#t3js-ui-block').remove();
     });

@@ -80,9 +80,9 @@ class FormEngineReview {
   public initialize(): void {
     DocumentService.ready().then((): void => {
       this.attachButtonToModuleHeader();
-    });
-    document.addEventListener('t3-formengine-postfieldvalidation', (): void => {
-      this.checkForReviewableField();
+      FormEngine.formElement.addEventListener('t3-formengine-postfieldvalidation', (): void => {
+        this.checkForReviewableField();
+      });
     });
   }
 

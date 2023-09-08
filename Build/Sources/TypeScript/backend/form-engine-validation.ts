@@ -23,7 +23,10 @@ import DocumentSaveActions from '@typo3/backend/document-save-actions';
 import Modal from '@typo3/backend/modal';
 import Severity from '@typo3/backend/severity';
 import Utility from './utility';
+import RegularEvent from '@typo3/core/event/regular-event';
+import DomHelper from '@typo3/backend/utility/dom-helper';
 
+type FormEngineFieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement;
 type CustomEvaluationCallback = (value: string) => string;
 
 export default (function() {
@@ -47,27 +50,27 @@ export default (function() {
     passwordDummy: '********'
   };
 
-  /**
-   * @type {Map<string, Function>}
-   */
-  const customEvaluations = new Map();
+  let formEngineFormElement: HTMLFormElement;
+
+  const customEvaluations: Map<string, CustomEvaluationCallback> = new Map();
 
   /**
    * Initialize validation for the first time
    */
-  FormEngineValidation.initialize = function(): void {
-    $(document).find('.' + FormEngineValidation.errorClass).removeClass(FormEngineValidation.errorClass);
+  FormEngineValidation.initialize = function(formElement: HTMLFormElement): void {
+    formEngineFormElement = formElement;
+    formEngineFormElement.querySelectorAll('.' + FormEngineValidation.errorClass).forEach((e: HTMLElement) => e.classList.remove(FormEngineValidation.errorClass));
 
     // Initialize input fields
-    FormEngineValidation.initializeInputFields().promise().done(function() {
-      // Bind to field changes
-      $(document).on('change', FormEngineValidation.rulesSelector, (event: JQueryEventObject) => {
-        FormEngineValidation.validateField(event.currentTarget);
-        FormEngineValidation.markFieldAsChanged(event.currentTarget);
-      });
+    FormEngineValidation.initializeInputFields();
 
-      FormEngineValidation.registerSubmitCallback();
-    });
+    // Bind to field changes
+    new RegularEvent('change', (e: Event, target: FormEngineFieldElement): void => {
+      FormEngineValidation.validateField(target);
+      FormEngineValidation.markFieldAsChanged(target);
+    }).delegateTo(formEngineFormElement, FormEngineValidation.rulesSelector);
+
+    FormEngineValidation.registerSubmitCallback();
 
     const today = new Date();
     FormEngineValidation.lastYear = FormEngineValidation.getYear(today);
@@ -78,19 +81,16 @@ export default (function() {
 
   /**
    * Initialize all input fields
-   *
-   * @returns {Object}
    */
-  FormEngineValidation.initializeInputFields = function(): JQuery {
-    return $(document).find(FormEngineValidation.inputSelector).each(function(index: number, field: HTMLElement) {
-      const config = $(field).data('formengine-input-params');
+  FormEngineValidation.initializeInputFields = function(): void {
+    formEngineFormElement.querySelectorAll(FormEngineValidation.inputSelector).forEach((visibleField: FormEngineFieldElement): void => {
+      const config = JSON.parse(visibleField.dataset.formengineInputParams);
       const fieldName = config.field;
-      const $field = $('[name="' + fieldName + '"]');
+      const actualValueField = formEngineFormElement.querySelector('[name="' + fieldName + '"]') as HTMLInputElement;
 
       // ignore fields which already have been initialized
-      if ($field.data('main-field') === undefined) {
-        $field.data('main-field', fieldName);
-        $field.data('config', config);
+      if (!('formengineInputInitialized' in visibleField.dataset)) {
+        actualValueField.dataset.config = visibleField.dataset.formengineInputParams;
         FormEngineValidation.initializeInputField(fieldName);
       }
     });
@@ -98,43 +98,32 @@ export default (function() {
 
   /**
    * Initialize field by name
-   *
-   * @param {String} fieldName
    */
   FormEngineValidation.initializeInputField = function(fieldName: string): void {
-    const $field = $('[name="' + fieldName + '"]');
-    const $humanReadableField = $('[data-formengine-input-name="' + fieldName + '"]');
-    let $mainField = $('[name="' + $field.data('main-field') + '"]');
-    if ($mainField.length === 0) {
-      $mainField = $field;
-    }
+    const field = formEngineFormElement.querySelector('[name="' + fieldName + '"]') as HTMLInputElement;
+    const humanReadableField = formEngineFormElement.querySelector('[data-formengine-input-name="' + fieldName + '"]') as FormEngineFieldElement;
 
-    const config = $mainField.data('config');
-    if (typeof config !== 'undefined') {
+    if (field.dataset.config !== undefined) {
+      const config = JSON.parse(field.dataset.config);
       const evalList = Utility.trimExplode(',', config.evalList);
-      let value = $field.val();
+      let value = field.value;
 
       for (let i = 0; i < evalList.length; i++) {
         value = FormEngineValidation.formatValue(evalList[i], value, config);
       }
       if (value.length) {
-        $humanReadableField.val(value);
+        humanReadableField.value = value;
       }
     }
-    $humanReadableField.data('main-field', fieldName);
-    $humanReadableField.data('config', config);
-    $humanReadableField.on('change', function() {
-      FormEngineValidation.updateInputField($humanReadableField.attr('data-formengine-input-name'));
-    });
+
+    new RegularEvent('change', (): void => {
+      FormEngineValidation.updateInputField(humanReadableField.dataset.formengineInputName);
+    }).bindTo(humanReadableField);
 
     // add the attribute so that acceptance tests can know when the field initialization has completed
-    $humanReadableField.attr('data-formengine-input-initialized', 'true');
+    humanReadableField.dataset.formengineInputInitialized = 'true';
   };
 
-  /**
-   * @param {string} name
-   * @param {Function} handler
-   */
   FormEngineValidation.registerCustomEvaluation = function(name: string, handler: CustomEvaluationCallback): void {
     if (!customEvaluations.has(name)) {
       customEvaluations.set(name, handler);
@@ -209,21 +198,15 @@ export default (function() {
 
   /**
    * Update input field after change
-   *
-   * @param {String} fieldName
    */
   FormEngineValidation.updateInputField = function(fieldName: string): void {
-    const $field = $('[name="' + fieldName + '"]');
-    let $mainField = $('[name="' + $field.data('main-field') + '"]');
-    if ($mainField.length === 0) {
-      $mainField = $field;
-    }
-    const $humanReadableField = $('[data-formengine-input-name="' + $mainField.attr('name') + '"]');
+    const field = formEngineFormElement.querySelector('[name="' + fieldName + '"]') as HTMLInputElement;
+    const humanReadableField = formEngineFormElement.querySelector('[data-formengine-input-name="' + fieldName + '"]') as FormEngineFieldElement;
 
-    const config = $mainField.data('config');
-    if (typeof config !== 'undefined') {
+    if (field.dataset.config !== undefined) {
+      const config = JSON.parse(field.dataset.config);
       const evalList = Utility.trimExplode(',', config.evalList);
-      let newValue = $humanReadableField.val();
+      let newValue = humanReadableField.value;
 
       for (let i = 0; i < evalList.length; i++) {
         newValue = FormEngineValidation.processValue(evalList[i], newValue, config);
@@ -234,25 +217,31 @@ export default (function() {
         formattedValue = FormEngineValidation.formatValue(evalList[i], formattedValue, config);
       }
 
-      $mainField.val(newValue);
-      // After updating the value of the main field, dispatch a "change" event to inform e.g. the "RequestUpdate"
-      // component, which always listens to the main field instead of the "human readable field", about it.
-      $mainField.get(0).dispatchEvent(new Event('change'));
-      $humanReadableField.val(formattedValue);
+      // Only update fields if value actually changed
+      if (field.value !== newValue) {
+        field.value = newValue;
+        // After updating the value of the main field, dispatch a "change" event to inform e.g. the "RequestUpdate"
+        // component, which always listens to the main field instead of the "human readable field", about it.
+        field.dispatchEvent(new Event('change'));
+        humanReadableField.value = formattedValue;
+      }
     }
   };
 
   /**
    * Run validation for field
-   *
-   * @param {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|jQuery} field
-   * @param {String} [value=$field.val()]
-   * @returns {String}
    */
-  FormEngineValidation.validateField = function(_field: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|JQuery, value?: string): string {
-
-    const field = <HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>(_field instanceof $ ? (<JQuery>_field).get(0) : _field);
-
+  FormEngineValidation.validateField = function(field: FormEngineFieldElement|JQuery, value?: string): string {
+    if (field instanceof $) {
+      // @deprecated
+      console.warn('Passing a jQuery element to FormEngineValidation.validateField() is deprecated and will be removed in TYPO3 v14.');
+      console.trace();
+      field = <FormEngineFieldElement>(field as JQuery).get(0);
+    }
+    if (!(field instanceof HTMLElement)) {
+      // Can be removed altogether with jQuery support in TYPO3 v14
+      return value;
+    }
     value = value || field.value || '';
 
     if (typeof field.dataset.formengineValidationRules === 'undefined') {
@@ -264,7 +253,7 @@ export default (function() {
     let selected = 0;
     // keep the original value, validateField should not alter it
     const returnValue: string = value;
-    let $relatedField: JQuery;
+    let relatedField: FormEngineFieldElement;
     let minItems: number;
     let maxItems: number;
 
@@ -287,32 +276,32 @@ export default (function() {
         case 'range':
           if (value !== '') {
             if (rule.minItems || rule.maxItems) {
-              $relatedField = $(document).find('[name="' + field.dataset.relatedfieldname + '"]');
-              if ($relatedField.length) {
-                selected = Utility.trimExplode(',', $relatedField.val()).length;
+              relatedField = formEngineFormElement.querySelector('[name="' + field.dataset.relatedfieldname + '"]') as FormEngineFieldElement;
+              if (relatedField !== null) {
+                selected = Utility.trimExplode(',', relatedField.value).length;
               } else {
                 selected = parseInt(field.value, 10);
               }
-              if (typeof rule.minItems !== 'undefined') {
+              if (rule.minItems !== undefined) {
                 minItems = rule.minItems * 1;
                 if (!isNaN(minItems) && selected < minItems) {
                   markParent = true;
                 }
               }
-              if (typeof rule.maxItems !== 'undefined') {
+              if (rule.maxItems !== undefined) {
                 maxItems = rule.maxItems * 1;
                 if (!isNaN(maxItems) && selected > maxItems) {
                   markParent = true;
                 }
               }
             }
-            if (typeof rule.lower !== 'undefined') {
+            if (rule.lower !== undefined) {
               const minValue = rule.lower * 1;
               if (!isNaN(minValue) && parseInt(value, 10) < minValue) {
                 markParent = true;
               }
             }
-            if (typeof rule.upper !== 'undefined') {
+            if (rule.upper !== undefined) {
               const maxValue = rule.upper * 1;
               if (!isNaN(maxValue) && parseInt(value, 10) > maxValue) {
                 markParent = true;
@@ -323,22 +312,22 @@ export default (function() {
         case 'select':
         case 'category':
           if (rule.minItems || rule.maxItems) {
-            $relatedField = $(document).find('[name="' + field.dataset.relatedfieldname + '"]');
-            if ($relatedField.length) {
-              selected = Utility.trimExplode(',', $relatedField.val()).length;
+            relatedField = formEngineFormElement.querySelector('[name="' + field.dataset.relatedfieldname + '"]') as FormEngineFieldElement;
+            if (relatedField !== null) {
+              selected = Utility.trimExplode(',', relatedField.value).length;
             } else if (field instanceof HTMLSelectElement) {
               selected = field.querySelectorAll('option:checked').length;
             } else {
               selected = field.querySelectorAll('input[value]:checked').length;
             }
 
-            if (typeof rule.minItems !== 'undefined') {
+            if (rule.minItems !== undefined) {
               minItems = rule.minItems * 1;
               if (!isNaN(minItems) && selected < minItems) {
                 markParent = true;
               }
             }
-            if (typeof rule.maxItems !== 'undefined') {
+            if (rule.maxItems !== undefined) {
               maxItems = rule.maxItems * 1;
               if (!isNaN(maxItems) && selected > maxItems) {
                 markParent = true;
@@ -350,13 +339,13 @@ export default (function() {
         case 'folder':
           if (rule.minItems || rule.maxItems) {
             selected = Utility.trimExplode(',', field.value).length;
-            if (typeof rule.minItems !== 'undefined') {
+            if (rule.minItems !== undefined) {
               minItems = rule.minItems * 1;
               if (!isNaN(minItems) && selected < minItems) {
                 markParent = true;
               }
             }
-            if (typeof rule.maxItems !== 'undefined') {
+            if (rule.maxItems !== undefined) {
               maxItems = rule.maxItems * 1;
               if (!isNaN(maxItems) && selected > maxItems) {
                 markParent = true;
@@ -367,13 +356,13 @@ export default (function() {
         case 'inline':
           if (rule.minItems || rule.maxItems) {
             selected = Utility.trimExplode(',', field.value).length;
-            if (typeof rule.minItems !== 'undefined') {
+            if (rule.minItems !== undefined) {
               minItems = rule.minItems * 1;
               if (!isNaN(minItems) && selected < minItems) {
                 markParent = true;
               }
             }
-            if (typeof rule.maxItems !== 'undefined') {
+            if (rule.maxItems !== undefined) {
               maxItems = rule.maxItems * 1;
               if (!isNaN(maxItems) && selected > maxItems) {
                 markParent = true;
@@ -403,20 +392,14 @@ export default (function() {
       validationMarker.classList.toggle(FormEngineValidation.errorClass, !isValid);
     }
 
-    FormEngineValidation.markParentTab($(field), isValid);
-
-    document.dispatchEvent(new CustomEvent('t3-formengine-postfieldvalidation'));
+    FormEngineValidation.markParentTab(field, isValid);
+    formEngineFormElement.dispatchEvent(new CustomEvent('t3-formengine-postfieldvalidation', { cancelable: false, bubbles: true }));
 
     return returnValue;
   };
 
   /**
    * Process a value by given command and config
-   *
-   * @param {String} command
-   * @param {String} value
-   * @param {Array} config
-   * @returns {String}
    */
   FormEngineValidation.processValue = function(command: string, value: string, config: {is_in: string}): string {
     let newString = '';
@@ -526,7 +509,7 @@ export default (function() {
       default:
         if (customEvaluations.has(command)) {
           returnValue = customEvaluations.get(command).call(null, value);
-        } else if (typeof TBE_EDITOR === 'object' && typeof TBE_EDITOR.customEvalFunctions !== 'undefined' && typeof TBE_EDITOR.customEvalFunctions[command] === 'function') {
+        } else if (typeof TBE_EDITOR === 'object' && TBE_EDITOR.customEvalFunctions !== undefined && typeof TBE_EDITOR.customEvalFunctions[command] === 'function') {
           returnValue = TBE_EDITOR.customEvalFunctions[command](value);
         }
     }
@@ -538,19 +521,17 @@ export default (function() {
    */
   FormEngineValidation.validate = function(section?: Element): void {
     if (typeof section === 'undefined' || section instanceof Document) {
-      $(document).find(FormEngineValidation.markerSelector + ', .t3js-tabmenu-item')
-        .removeClass(FormEngineValidation.errorClass)
-        .removeClass('has-validation-error');
+      formEngineFormElement.querySelectorAll(FormEngineValidation.markerSelector + ', .t3js-tabmenu-item').forEach((tabMenuItem: HTMLElement): void => {
+        tabMenuItem.classList.remove(FormEngineValidation.errorClass, 'has-validation-error')
+      });
     }
 
     const sectionElement = section || document;
-    for (const field of sectionElement.querySelectorAll(FormEngineValidation.rulesSelector)) {
-      const $field = $(field);
-
-      if (!$field.closest('.t3js-flex-section-deleted, .t3js-inline-record-deleted, .t3js-file-reference-deleted').length) {
+    for (const field of sectionElement.querySelectorAll<FormEngineFieldElement>(FormEngineValidation.rulesSelector)) {
+      if (field.closest('.t3js-flex-section-deleted, .t3js-inline-record-deleted, .t3js-file-reference-deleted') === null) {
         let modified = false;
-        const currentValue = $field.val();
-        const newValue = FormEngineValidation.validateField($field, currentValue);
+        const currentValue = field.value;
+        const newValue = FormEngineValidation.validateField(field, currentValue);
         if (Array.isArray(newValue) && Array.isArray(currentValue)) {
           // handling for multi-selects
           if (newValue.length !== currentValue.length) {
@@ -567,7 +548,7 @@ export default (function() {
           modified = true;
         }
         if (modified) {
-          $field.val(newValue);
+          field.value = newValue;
         }
       }
     }
@@ -575,14 +556,16 @@ export default (function() {
 
   /**
    * Helper function to mark a field as changed.
-   *
-   * @param {HTMLInputElement|HTMLTextAreaElement|jQuery} field
    */
-  FormEngineValidation.markFieldAsChanged = function(field: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|JQuery): void {
+  FormEngineValidation.markFieldAsChanged = function(field: FormEngineFieldElement|JQuery): void {
     if (field instanceof $) {
-      field = <HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>(field as JQuery).get(0);
+      // @deprecated
+      console.warn('Passing a jQuery element to FormEngineValidation.markFieldAsChanged() is deprecated and will be removed in TYPO3 v14.');
+      console.trace();
+      field = <FormEngineFieldElement>(field as JQuery).get(0);
     }
     if (!(field instanceof HTMLElement)) {
+      // Can be removed altogether with jQuery support in TYPO3 v14
       return;
     }
     const paletteField = field.closest('.t3js-formengine-palette-field');
@@ -593,9 +576,6 @@ export default (function() {
 
   /**
    * Parse value to integer
-   *
-   * @param {(Number|String)} value
-   * @returns {Number}
    */
   FormEngineValidation.parseInt = function(value: number|string|boolean): number {
     const theVal = '' + value;
@@ -613,10 +593,6 @@ export default (function() {
 
   /**
    * Parse value to double
-   *
-   * @param {String} value
-   * @param {Number} precision
-   * @returns {String}
    */
   FormEngineValidation.parseDouble = function(value: number|string|boolean, precision: number = 2): string {
     let theVal = '' + value;
@@ -640,9 +616,6 @@ export default (function() {
 
   /**
    * Parse datetime value
-   *
-   * @param {String} value
-   * @returns {*}
    */
   FormEngineValidation.parseDateTime = function(value: string): number {
     const index = value.indexOf(' ');
@@ -658,9 +631,6 @@ export default (function() {
 
   /**
    * Parse date value
-   *
-   * @param {String} value
-   * @returns {*}
    */
   FormEngineValidation.parseDate = function(value: string): number {
     FormEngineValidation.lastDate = DateTime.fromFormat(value, 'dd-MM-yyyy', { zone: 'utc' }).toUnixInteger();
@@ -670,10 +640,6 @@ export default (function() {
 
   /**
    * Parse time value
-   *
-   * @param {String} value
-   * @param {String} type
-   * @returns {*}
    */
   FormEngineValidation.parseTime = function(value: string, type: string): number {
     const format = type === 'timesec' ? 'HH:mm:ss' : 'HH:mm';
@@ -690,9 +656,6 @@ export default (function() {
 
   /**
    * Parse year value
-   *
-   * @param {String} value
-   * @returns {*}
    */
   FormEngineValidation.parseYear = function(value: string): number {
     let year = parseInt(value, 10);
@@ -706,9 +669,6 @@ export default (function() {
 
   /**
    * Get year from date object
-   *
-   * @param {Date} timeObj
-   * @returns {?number}
    */
   FormEngineValidation.getYear = function(timeObj: Date|null): number|null {
     if (timeObj === null) {
@@ -719,21 +679,12 @@ export default (function() {
 
   /**
    * Get date as timestamp from Date object
-   *
-   * @param {Date} timeObj
-   * @returns {Number}
    */
   FormEngineValidation.getDate = function(timeObj: Date): number {
     const theTime = new Date(FormEngineValidation.getYear(timeObj), timeObj.getUTCMonth(), timeObj.getUTCDate());
     return FormEngineValidation.getTimestamp(theTime);
   };
 
-  /**
-   *
-   * @param {String} foreign
-   * @param {String} value
-   * @returns {Object}
-   */
   FormEngineValidation.pol = function(foreign: string, value: string): object {
     // @todo deprecate
     // eslint-disable-next-line no-eval
@@ -742,9 +693,6 @@ export default (function() {
 
   /**
    * Parse date string or object and return unix timestamp
-   *
-   * @param {(String|Date)} timeObj
-   * @returns {Number}
    */
   FormEngineValidation.getTimestamp = function(timeObj: string|Date): number {
     return Date.parse(timeObj instanceof Date ? timeObj.toISOString() : timeObj) / 1000;
@@ -752,51 +700,35 @@ export default (function() {
 
   /**
    * Seconds since midnight
-   *
-   * @param timeObj
-   * @returns {*}
    */
   FormEngineValidation.getTime = function(timeObj: Date): number {
     return timeObj.getUTCHours() * 60 * 60 + timeObj.getUTCMinutes() * 60 + FormEngineValidation.getSecs(timeObj);
   };
 
-  /**
-   *
-   * @param timeObj
-   * @returns {Number}
-   */
   FormEngineValidation.getSecs = function(timeObj: Date): number {
     return timeObj.getUTCSeconds();
   };
 
-  /**
-   *
-   * @param timeObj
-   * @returns {Number}
-   */
   FormEngineValidation.getTimeSecs = function(timeObj: Date): number {
     return timeObj.getHours() * 60 * 60 + timeObj.getMinutes() * 60 + timeObj.getSeconds();
   };
 
   /**
    * Find tab by field and mark it as has-validation-error
-   *
-   * @param {Object} $element
-   * @param {Boolean} isValid
    */
-  FormEngineValidation.markParentTab = function($element: JQuery, isValid: boolean): void {
-    const $panes = $element.parents('.tab-pane');
-    $panes.each(function(index: number, pane: HTMLElement) {
-      const $pane = $(pane);
+  FormEngineValidation.markParentTab = function(element: FormEngineFieldElement, isValid: boolean): void {
+    const panes = DomHelper.parents(element, '.tab-pane');
+    panes.forEach((pane: HTMLElement): void => {
       if (isValid) {
         // If incoming element is valid, check for errors in the same sheet
-        isValid = $pane.find('.has-error').length === 0;
+        isValid = pane.querySelector('.has-error') === null;
       }
-      const id = $pane.attr('id');
-      $(document)
-        .find('a[href="#' + id + '"]')
+
+      const id = pane.id;
+      formEngineFormElement
+        .querySelector('a[href="#' + id + '"]')
         .closest('.t3js-tabmenu-item')
-        .toggleClass('has-validation-error', !isValid);
+        .classList.toggle('has-validation-error', !isValid);
     });
   };
 
