@@ -1,1 +1,1 @@
-import '@ckeditor/ckeditor5-inspector/build/inspector';
+export { default as CKEditorInspector } from '@ckeditor/ckeditor5-inspector';

@@ -72,7 +72,7 @@ interface Appearance {
   useSortable?: boolean;
 }
 
-interface UniqueDefinition {
+export interface UniqueDefinition {
   elTable: string;
   field: string;
   max: number;

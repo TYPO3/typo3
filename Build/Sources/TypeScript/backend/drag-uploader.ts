@@ -35,6 +35,16 @@ enum Action {
   USE_EXISTING = 'useExisting',
 }
 
+declare global {
+  interface JQuery {
+    dragUploader(options?: DragUploaderOptions | string): JQuery;
+  }
+}
+
+interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
+  originalEvent: T;
+}
+
 /**
  * Properties of a file as returned from the AJAX action; essential, this is a serialized instance of
  * \TYPO3\CMS\Core\Resource\File plus some extra properties (see FileController::flattenResultDataValue())

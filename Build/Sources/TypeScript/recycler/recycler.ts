@@ -527,11 +527,11 @@ class Recycler {
       );
 
     if (this.paging.currentPage === 1) {
-      $controlFirstPage.disablePagingAction();
+      $controlFirstPage.addClass('disabled').find('button').prop('disabled', true);
     }
 
     if (this.paging.currentPage === this.paging.totalPages) {
-      $controlLastPage.disablePagingAction();
+      $controlLastPage.addClass('disabled').find('button').prop('disabled', true);
     }
 
     for (let i = 1; i <= this.paging.totalPages; i++) {
@@ -548,12 +548,5 @@ class Recycler {
     this.elements.$paginator.empty().append($ul);
   }
 }
-
-/**
- * Changes the markup of a pagination action being disabled
- */
-$.fn.disablePagingAction = function(): void {
-  $(this).addClass('disabled').find('button').prop('disabled', true);
-};
 
 export default new Recycler();

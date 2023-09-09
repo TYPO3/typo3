@@ -175,10 +175,6 @@ class RichTextElement extends AbstractFormElement
         $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/rte-ckeditor/ckeditor5.js');
 
-        if ($ckeditorConfiguration['options']['debug'] ?? false) {
-            $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/ckeditor5-inspector.js');
-        }
-
         $uiLanguage = $ckeditorConfiguration['options']['language']['ui'];
         if ($this->translationExists($uiLanguage)) {
             $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/ckeditor5/translations/' . $uiLanguage . '.js');

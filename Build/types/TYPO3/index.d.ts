@@ -1,5 +1,3 @@
-/* tslint:disable:max-classes-per-file */
-
 /**
  * Currently a mixture between namespace and global object
  * Add types as you use them
@@ -7,7 +5,7 @@
 declare namespace TYPO3 {
   export let Backend: typeof import('@typo3/backend/viewport').default;
   export let ExtensionManager: typeof import('@typo3/extensionmanager/main').default;
-  export let FORMEDITOR_APP: any; // @todo migrate to typescript, then use: import('@typo3/form/backend/form-editor').FormEditor;
+  export let FORMEDITOR_APP: import('@typo3/form/backend/form-editor').FormEditor;
   export let FORMMANAGER_APP: import('@typo3/form/backend/form-manager').FormManager;
   export let FormEngine: typeof import('@typo3/backend/form-engine').default;
   export let Icons: typeof import('@typo3/backend/icons').default;
@@ -26,9 +24,77 @@ declare namespace TYPO3 {
   export let WindowManager: typeof import('@typo3/backend/window-manager').default;
   export let Wizard: typeof import('@typo3/backend/wizard').default;
   export let WorkspacesMenu: typeof import('@typo3/workspaces/toolbar/workspaces-menu').default;
-  export let settings: any;
-  export const lang: { [key: string]: string };
-  export const configuration: any;
+  export const lang: {
+    [key: string]: string
+  };
+  export const configuration: {
+    showRefreshLoginPopup: boolean,
+    username: string,
+  };
+  export namespace settings {
+    export const ajaxUrls: {
+      [key: string]: string
+    };
+    export const cssUrls: {
+      [key: string]: string
+    };
+    export namespace Clipboard {
+      export const moduleUrl: string;
+    }
+    export namespace FileCommit {
+      export const moduleUrl: string;
+    }
+    export namespace FormEditor {
+      export const typo3WinBrowserUrl: string;
+    }
+    export namespace FormEngine {
+      export const moduleUrl: string;
+      export const formName: string;
+      export const legacyFieldChangedCb: () => void;
+    }
+    export namespace FormEngineInline {
+      export const config: {
+        [key: string]: {
+          min: number,
+          max: number,
+          sortable: boolean,
+          top: {
+            table: string,
+            uid: number,
+          }
+          context: import('@typo3/backend/form-engine/inline-relation/ajax-dispatcher').Context,
+        }
+      }
+      export const unique: {
+        // todo: Resolve typing (possibly being real) issues in @typo3/backend/form-engine/container/inline-control-container
+        // and use `import('@typo3/backend/form-engine/container/inline-control-container').UniqueDefinition`
+        [key: string]: any,
+      }
+    }
+    export namespace WebLayout {
+      export const moduleUrl: string;
+    }
+    export namespace RecordCommit {
+      export const moduleUrl: string;
+    }
+    export namespace RecordHistory {
+      export const moduleUrl: string;
+    }
+    export namespace Recycler {
+      export const deleteDisable: boolean;
+      export const depthSelection: number;
+      export const pagingSize: string;
+      export const startUid: number;
+      export const tableSelection: string;
+    }
+    export namespace ShowItem {
+      export const moduleUrl: string;
+    }
+    export namespace Workspaces {
+      export const id: string;
+      export const token: string;
+    }
+  }
   export namespace CMS {
     export namespace Backend {
       // @todo transform to proper interface, once FormEngine.js is migrated to TypeScript
@@ -44,53 +110,18 @@ declare namespace TBE_EDITOR {
   export const customEvalFunctions: { [key: string]: (value: string) => string };
 }
 
-declare module '@typo3/ckeditor5-bundle' {
-  import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor.js';
-  export class CKEditor5 extends ClassicEditor {
-    // using `any` due to type-hell
-    static builtinPlugins: any[];
-  }
-
-  export * as UI from '@ckeditor/ckeditor5-ui';
-  export * as Core from '@ckeditor/ckeditor5-core';
-  export * as Engine from '@ckeditor/ckeditor5-engine';
-  export * as Utils from '@ckeditor/ckeditor5-utils';
-
-  export * as Clipboard from '@ckeditor/ckeditor5-clipboard';
-  export * as Essentials from '@ckeditor/ckeditor5-essentials';
-  export * as Link from '@ckeditor/ckeditor5-link';
-  export * as LinkUtils from '@ckeditor/ckeditor5-link/src/utils';
-  export * as Typing from '@ckeditor/ckeditor5-typing'
-  export * as Widget from '@ckeditor/ckeditor5-widget';
-
-  // single or prefixed exports
-  export { default as LinkActionsView } from '@ckeditor/ckeditor5-link/src/ui/linkactionsview';
-  export { default as WordCount } from '@ckeditor/ckeditor5-word-count/src/wordcount';
-}
-
 // type definition for global namespace object
 interface Window {
   TYPO3: Partial<typeof TYPO3>;
   list_frame: Window;
-  CKEditorInspector: any;
 }
 
 /**
- * Needed type declarations for provided libs
+ * Declare modules for dependencies without TypeScript declarations
+ * @todo: Use chart.js and flatpickr declaration via their vanilla package name
  */
-declare module 'muuri';
-declare module 'codemirror';
 declare module 'flatpickr/flatpickr.min';
 declare module 'flatpickr/locales';
 declare module 'flatpickr/plugins/shortcut-buttons.min';
-declare module '@typo3/backend/legacy-tree';
 declare module '@typo3/dashboard/contrib/chartjs';
 declare module '@typo3/backend/contrib/mark';
-
-interface Taboverride {
-  set(elems: HTMLElement|HTMLElement[], enable?: boolean): Taboverride
-}
-declare module 'taboverride' {
-  const _exported: Taboverride;
-  export default _exported;
-}
