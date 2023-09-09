@@ -137,7 +137,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Form field with password
      * @var string
-     * @internal.
+     * @internal
      */
     protected $formfield_uident = '';
 
@@ -349,7 +349,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Determine whether a non-session cookie needs to be set (lifetime>0)
      *
      * @return bool
-     * @internal.
+     * @internal
      */
     protected function isRefreshTimeBasedCookie()
     {
