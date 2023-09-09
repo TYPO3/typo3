@@ -596,6 +596,24 @@ class DefaultTcaSchema
                     ]
                 );
             }
+
+            // Add file fields for all tables, defining check columns (TCA type=check)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'check'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    'smallint',
+                    [
+                        'default' => 0,
+                        'notnull' => true,
+                        'unsigned' => true,
+                    ]
+                );
+            }
         }
 
         return $tables;

@@ -6,8 +6,6 @@ CREATE TABLE tt_content (
 		tx_testdatahandler_select_dynamic text,
 		tx_testdatahandler_group text,
 		tx_testdatahandler_radio text,
-		tx_testdatahandler_checkbox text,
-		tx_testdatahandler_checkbox_with_eval text,
 		tx_testdatahandler_input_minvalue text,
 		tx_testdatahandler_input_minvalue_zero text,
 		tx_testdatahandler_text_minvalue text,

@@ -131,7 +131,6 @@ CREATE TABLE index_config (
   timer_frequency int(11) DEFAULT '0' NOT NULL,
   url_deny text,
   recordsbatch int(11) DEFAULT '0' NOT NULL,
-  records_indexonchange tinyint(4) DEFAULT '0' NOT NULL
 );
 
 

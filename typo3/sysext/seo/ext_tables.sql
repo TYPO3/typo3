@@ -3,8 +3,6 @@
 #
 CREATE TABLE pages (
 	seo_title varchar(255) DEFAULT '' NOT NULL,
-	no_index tinyint(4) DEFAULT '0' NOT NULL,
-	no_follow tinyint(4) DEFAULT '0' NOT NULL,
 	og_title varchar(255) DEFAULT '' NOT NULL,
 	og_description text,
 	twitter_title varchar(255) DEFAULT '' NOT NULL,

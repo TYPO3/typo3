@@ -18,7 +18,6 @@ CREATE TABLE be_groups (
 	file_permissions text,
 	TSconfig text,
 	subgroup text,
-	workspace_perms tinyint(3) DEFAULT '1' NOT NULL
 );
 
 #
@@ -40,18 +39,15 @@ CREATE TABLE be_sessions (
 CREATE TABLE be_users (
 	username varchar(50) DEFAULT '' NOT NULL,
 	password varchar(255) DEFAULT '' NOT NULL,
-	admin tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	usergroup text,
 	lang varchar(10) DEFAULT 'default' NOT NULL,
 	db_mountpoints text,
-	options tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	realName varchar(80) DEFAULT '' NOT NULL,
 	userMods text,
 	allowed_languages varchar(255) DEFAULT '' NOT NULL,
 	uc mediumblob,
 	file_mountpoints text,
 	file_permissions text,
-	workspace_perms tinyint(3) DEFAULT '1' NOT NULL,
 	TSconfig text,
 	workspace_id int(11) DEFAULT '0' NOT NULL,
 	mfa mediumblob,
@@ -70,8 +66,6 @@ CREATE TABLE pages (
 	title varchar(255) DEFAULT '' NOT NULL,
 	doktype int(11) unsigned DEFAULT '0' NOT NULL,
 	TSconfig text,
-	is_siteroot tinyint(4) DEFAULT '0' NOT NULL,
-	php_tree_stop tinyint(4) DEFAULT '0' NOT NULL,
 	url varchar(255) DEFAULT '' NOT NULL,
 	shortcut int(10) unsigned DEFAULT '0' NOT NULL,
 	shortcut_mode int(10) unsigned DEFAULT '0' NOT NULL,
@@ -82,18 +76,14 @@ CREATE TABLE pages (
 	cache_timeout int(10) unsigned DEFAULT '0' NOT NULL,
 	cache_tags varchar(255) DEFAULT '' NOT NULL,
 	description text,
-	no_search tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	SYS_LASTCHANGED int(10) unsigned DEFAULT '0' NOT NULL,
 	abstract text,
 	module varchar(255) DEFAULT '' NOT NULL,
-	extendToSubpages tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	author varchar(255) DEFAULT '' NOT NULL,
 	nav_title varchar(255) DEFAULT '' NOT NULL,
-	nav_hide tinyint(4) DEFAULT '0' NOT NULL,
 	content_from_pid int(10) unsigned DEFAULT '0' NOT NULL,
 	mount_pid int(10) unsigned DEFAULT '0' NOT NULL,
 	mount_pid_ol tinyint(4) DEFAULT '0' NOT NULL,
-	l18n_cfg tinyint(4) DEFAULT '0' NOT NULL,
 	backend_layout varchar(64) DEFAULT '' NOT NULL,
 	backend_layout_next_level varchar(64) DEFAULT '' NOT NULL,
 	tsconfig_includes text,
@@ -146,7 +136,6 @@ CREATE TABLE sys_news (
 CREATE TABLE sys_filemounts (
 	title varchar(255) DEFAULT '' NOT NULL,
 	identifier varchar(255) DEFAULT '' NOT NULL,
-	read_only tinyint(1) unsigned DEFAULT '0' NOT NULL
 );
 
 
@@ -157,12 +146,7 @@ CREATE TABLE sys_file_storage (
 	name varchar(255) DEFAULT '' NOT NULL,
 	driver tinytext,
 	configuration text,
-	is_default tinyint(4) DEFAULT '0' NOT NULL,
-	is_browsable tinyint(4) DEFAULT '0' NOT NULL,
 	is_public tinyint(4) DEFAULT '0' NOT NULL,
-	is_writable tinyint(4) DEFAULT '0' NOT NULL,
-	is_online tinyint(4) DEFAULT '1' NOT NULL,
-	auto_extract_metadata tinyint(4) DEFAULT '1' NOT NULL,
 	processingfolder tinytext
 );
 
@@ -173,7 +157,6 @@ CREATE TABLE sys_file (
 	last_indexed int(11) DEFAULT '0' NOT NULL,
 
 	# management information
-	missing tinyint(4) DEFAULT '0' NOT NULL,
 	storage int(11) DEFAULT '0' NOT NULL,
 	type varchar(10) DEFAULT '' NOT NULL,
 	metadata int(11) DEFAULT '0' NOT NULL,
@@ -260,7 +243,6 @@ CREATE TABLE sys_file_reference (
 	alternative text,
 	link varchar(1024) DEFAULT '' NOT NULL,
 	crop varchar(4000) DEFAULT '' NOT NULL,
-	autoplay tinyint(4) DEFAULT '0' NOT NULL,
 
 	KEY tablenames_fieldname (tablenames(32),fieldname(12)),
 	KEY deleted (deleted),
@@ -279,7 +261,6 @@ CREATE TABLE sys_file_collection (
 
 	# for type=folder:
 	folder_identifier varchar(255) DEFAULT '' NOT NULL,
-	recursive tinyint(4) DEFAULT '0' NOT NULL,
 );
 
 #

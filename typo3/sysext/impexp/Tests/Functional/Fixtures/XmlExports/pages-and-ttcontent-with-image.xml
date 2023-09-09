@@ -359,9 +359,9 @@
 		&lt;/sheet&gt;
 	&lt;/data&gt;
 &lt;/T3FlexForms&gt;</field>
-				<field index="is_default">0</field>
-				<field index="is_browsable">1</field>
 				<field index="is_public">1</field>
+				<field index="is_browsable">1</field>
+				<field index="is_default">0</field>
 				<field index="is_writable">1</field>
 				<field index="is_online">1</field>
 			</fieldlist>

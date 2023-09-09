@@ -55,5 +55,7 @@ Columns are auto-created for these :php:`TCA` :php:`columns` types:
 * :php:`type = 'uuid'` - core v12 already
 * :php:`type = 'file'` - new with core v13
 * :php:`type = 'email'` - new with core v13
+* :php:`type = 'check'`- new with core v13
+
 
 .. index:: TCA, ext:core, NotScanned

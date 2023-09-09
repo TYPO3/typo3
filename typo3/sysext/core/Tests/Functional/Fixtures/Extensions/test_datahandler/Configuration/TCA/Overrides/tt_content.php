@@ -85,7 +85,7 @@ defined('TYPO3') or die();
                     ['label' => 'predefined label'],
                 ],
                 'itemsProcFunc' => \TYPO3Tests\TestDatahandler\Tca\CheckboxElementItems::class . '->getItems',
-                'default' => '',
+                'default' => 0,
             ],
         ],
         'tx_testdatahandler_checkbox_with_eval' => [

@@ -1031,4 +1031,28 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('email')->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function enrichAddsCheck(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['check'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'check',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`check`',
+            Type::getType('smallint'),
+            [
+                'default' => 0,
+                'notnull' => true,
+                'unsigned' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('check')->toArray());
+    }
 }
