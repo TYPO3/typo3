@@ -66,7 +66,7 @@ final class ConsoleCommandPassTest extends UnitTestCase
                 'serviceProvider' => CommandRegistryServiceProvider::class,
             ],
             'package1' => [
-                'path' =>__DIR__ . '/Fixtures/Package1/',
+                'path' => __DIR__ . '/Fixtures/Package1/',
             ],
         ]);
 

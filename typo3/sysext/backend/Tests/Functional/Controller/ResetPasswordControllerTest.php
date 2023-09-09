@@ -148,7 +148,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
      */
     public function initiatePasswordResetValidatesGivenEmailAddress(): void
     {
-        $request = $this->request->withParsedBody(['email' =>'email..email@example.com']);
+        $request = $this->request->withParsedBody(['email' => 'email..email@example.com']);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         self::assertStringContainsString(
             'The entered email address is invalid. Please try again.',

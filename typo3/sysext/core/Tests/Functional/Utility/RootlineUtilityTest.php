@@ -125,7 +125,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 'uid' => 1330,
                 't3ver_oid' => 0,
                 't3ver_wsid' => 0,
-                't3ver_state' =>0,
+                't3ver_state' => 0,
                 'title' => 'EN: Board Games',
             ],
             1 => [

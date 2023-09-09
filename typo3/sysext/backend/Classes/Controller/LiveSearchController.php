@@ -58,7 +58,7 @@ class LiveSearchController
                 'currentPage' => $pagination->getPaginator()->getCurrentPageNumber(),
                 'firstPage' => $pagination->getFirstPageNumber(),
                 'lastPage' => $pagination->getLastPageNumber(),
-                'allPageNumbers'=> $pagination->getAllPageNumbers(),
+                'allPageNumbers' => $pagination->getAllPageNumbers(),
                 'previousPageNumber' => $pagination->getPreviousPageNumber(),
                 'nextPageNumber' => $pagination->getNextPageNumber(),
                 'hasMorePages' => $pagination->getHasMorePages(),

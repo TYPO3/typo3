@@ -627,7 +627,7 @@ final class GeneralUtilityTest extends UnitTestCase
             'emptyValuesAreRemoved' => [
                 '0,1,, 0, 2,,0',
                 true,
-                [0=>0, 1=>1, 3=>0, 4=>2, 6=>0], // note does not renumber keys!
+                [0 => 0, 1 => 1, 3 => 0, 4 => 2, 6 => 0], // note does not renumber keys!
             ],
         ];
     }

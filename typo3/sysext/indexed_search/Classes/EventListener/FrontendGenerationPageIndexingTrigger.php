@@ -96,7 +96,7 @@ class FrontendGenerationPageIndexingTrigger
             // Page id
             'id' => $tsfe->id,
             // Page type
-            'type'=> $pageArguments->getPageType(),
+            'type' => $pageArguments->getPageType(),
             // site language id of the language of the indexing.
             'sys_language_uid' => $languageAspect->getId(),
             // MP variable, if any (Mount Points)

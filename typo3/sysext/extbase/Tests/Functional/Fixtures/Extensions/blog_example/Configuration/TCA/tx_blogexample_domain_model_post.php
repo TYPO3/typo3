@@ -39,7 +39,7 @@ return [
             ],
         ],
         'categories' => [
-            'config'=> [
+            'config' => [
                 'type' => 'category',
             ],
         ],

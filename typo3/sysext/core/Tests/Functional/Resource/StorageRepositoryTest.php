@@ -157,7 +157,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $processingFolder = $subject->getProcessingFolder($file);
         self::assertInstanceOf(Folder::class, $processingFolder);
         self::assertNotEquals($rootProcessingFolder, $processingFolder);
-        for ($i = ResourceStorage::PROCESSING_FOLDER_LEVELS; $i>0; $i--) {
+        for ($i = ResourceStorage::PROCESSING_FOLDER_LEVELS; $i > 0; $i--) {
             $processingFolder = $processingFolder->getParentFolder();
         }
         self::assertEquals($rootProcessingFolder, $processingFolder);

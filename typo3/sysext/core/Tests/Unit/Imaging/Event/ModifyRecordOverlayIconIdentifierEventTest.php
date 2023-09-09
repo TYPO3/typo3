@@ -40,8 +40,8 @@ final class ModifyRecordOverlayIconIdentifierEventTest extends UnitTestCase
 
         self::assertEquals('', $event->getOverlayIconIdentifier());
         self::assertEquals('pages', $event->getTable());
-        self::assertEquals(['uid'=>2004], $event->getRow());
-        self::assertEquals(['hidden'=>true], $event->getStatus());
+        self::assertEquals(['uid' => 2004], $event->getRow());
+        self::assertEquals(['hidden' => true], $event->getStatus());
 
         $event->setOverlayIconIdentifier('icon-identifier');
         self::assertEquals('icon-identifier', $event->getOverlayIconIdentifier());

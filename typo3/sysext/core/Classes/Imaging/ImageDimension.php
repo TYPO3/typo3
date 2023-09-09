@@ -72,7 +72,7 @@ class ImageDimension
                 (int)$processedFile->getOriginalFile()->getProperty('height')
             );
         }
-        if ($imageDimension->width <=0 || $imageDimension->height <=0) {
+        if ($imageDimension->width <= 0 || $imageDimension->height <= 0) {
             throw new \BadMethodCallException('Width and height of the image must be greater than zero', 1597310560);
         }
         $result = GeneralUtility::makeInstance(GraphicalFunctions::class)->getImageScale(

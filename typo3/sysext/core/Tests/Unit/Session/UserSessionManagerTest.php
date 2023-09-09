@@ -77,7 +77,7 @@ final class UserSessionManagerTest extends UnitTestCase
             60,
             new IpLocker(0, 0)
         );
-        $expiredSession = UserSession::createFromRecord('random-string', ['ses_tstamp' => time()-500]);
+        $expiredSession = UserSession::createFromRecord('random-string', ['ses_tstamp' => time() - 500]);
         self::assertTrue($subject->hasExpired($expiredSession));
         $newSession = UserSession::createFromRecord('random-string', ['ses_tstamp' => time()]);
         self::assertFalse($subject->hasExpired($newSession));
@@ -167,7 +167,7 @@ final class UserSessionManagerTest extends UnitTestCase
             60,
             new IpLocker(0, 0)
         );
-        $session = UserSession::createFromRecord('random-string', ['ses_tstamp' => time()-500]);
+        $session = UserSession::createFromRecord('random-string', ['ses_tstamp' => time() - 500]);
         $session = $subject->updateSession($session);
         self::assertSame(7654321, $session->getLastUpdated());
     }
@@ -190,7 +190,7 @@ final class UserSessionManagerTest extends UnitTestCase
             60,
             new IpLocker(0, 0)
         );
-        $session = UserSession::createFromRecord('random-string', ['ses_tstamp' => time()-500]);
+        $session = UserSession::createFromRecord('random-string', ['ses_tstamp' => time() - 500]);
         $session = $subject->fixateAnonymousSession($session);
         self::assertSame(IpLocker::DISABLED_LOCK_VALUE, $session->getIpLock());
         self::assertNull($session->getUserId());

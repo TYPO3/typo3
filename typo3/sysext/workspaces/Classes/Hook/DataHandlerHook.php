@@ -711,7 +711,7 @@ class DataHandlerHook
             // Register swapped ids for later remapping:
             $this->remappedIds[$table][$id] = $swapWith;
             $this->remappedIds[$table][$swapWith] = $id;
-            if (VersionState::tryFrom($t3ver_state['swapVersion']?? 0) === VersionState::DELETE_PLACEHOLDER) {
+            if (VersionState::tryFrom($t3ver_state['swapVersion'] ?? 0) === VersionState::DELETE_PLACEHOLDER) {
                 // We're publishing a delete placeholder t3ver_state = 2. This means the live record should
                 // be set to deleted. We're currently in some workspace and deal with a live record here. Thus,
                 // we temporarily set backend user workspace to 0 so all operations happen as in live.

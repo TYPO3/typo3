@@ -174,13 +174,13 @@ final class TotpTest extends UnitTestCase
     public function generateEncodedSecretTest(): void
     {
         // Check 100 times WITHOUT additional auth factors
-        for ($i=0; $i<100; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             // Assert correct length and secret only contains allowed alphabet
             self::assertMatchesRegularExpression('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]{32}$/', Totp::generateEncodedSecret());
         }
 
         // Check 100 times WITH additional auth factors
-        for ($i=0; $i<100; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $authFactors = ['uid' => 5, 'username' => 'non.admin'];
             // Assert correct length and secret only contains allowed alphabet
             self::assertMatchesRegularExpression('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]{32}$/', Totp::generateEncodedSecret($authFactors));

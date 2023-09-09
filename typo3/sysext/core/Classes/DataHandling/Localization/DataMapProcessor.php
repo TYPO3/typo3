@@ -1028,7 +1028,7 @@ class DataMapProcessor
             // implicit: use origin pointer if table cannot be translated
             if (!$isTranslatable) {
                 $ancestorId = (int)$dependentElement[$fieldNames['origin']];
-            // only consider element if it reflects the desired language
+                // only consider element if it reflects the desired language
             } elseif ((int)$dependentElement[$fieldNames['language']] === $desiredLanguage) {
                 $ancestorId = $this->resolveAncestorId($fieldNames, $dependentElement);
             } else {

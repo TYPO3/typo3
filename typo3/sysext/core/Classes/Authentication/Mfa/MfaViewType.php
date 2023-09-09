@@ -23,6 +23,6 @@ namespace TYPO3\CMS\Core\Authentication\Mfa;
 enum MfaViewType: string
 {
     case SETUP = 'setup';
-    case EDIT ='edit';
-    case AUTH ='auth';
+    case EDIT = 'edit';
+    case AUTH = 'auth';
 }

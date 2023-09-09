@@ -193,7 +193,7 @@ final class UsersCest extends AbstractCest
         }
 
         $I->waitForElementVisible($this->inModuleHeader . ' [name=BackendUserModuleMenu]');
-        $I->selectOption($this->inModuleHeader . ' [name=BackendUserModuleMenu]', ['text'=>'Backend user groups']);
+        $I->selectOption($this->inModuleHeader . ' [name=BackendUserModuleMenu]', ['text' => 'Backend user groups']);
         $I->waitForText('Backend user groups');
         $I->click('//table/tbody/tr[descendant::a[@data-contextmenu-uid="' . $userGroupId . '"]]/td[2]/a');
         $I->waitForElementVisible('#EditDocumentController');
@@ -224,7 +224,7 @@ final class UsersCest extends AbstractCest
         }
 
         $I->waitForElementVisible($this->inModuleHeader . ' [name=BackendUserModuleMenu]');
-        $I->selectOption($this->inModuleHeader . ' [name=BackendUserModuleMenu]', ['text'=>'Backend users']);
+        $I->selectOption($this->inModuleHeader . ' [name=BackendUserModuleMenu]', ['text' => 'Backend users']);
         $I->waitForElement('#typo3-backend-user-list');
         $I->click('//table[@id="typo3-backend-user-list"]/tbody/tr[descendant::a[@data-contextmenu-uid="' . $userId . '"]]//a[@title="Edit"]');
         $I->waitForElement('#EditDocumentController');

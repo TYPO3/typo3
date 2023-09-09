@@ -1315,7 +1315,7 @@ class DatabaseRecordList
                 'currentUrl' => $this->listURL('', $table, 'pointer'),
                 'currentPage' => $currentPage,
                 'totalPages' => $totalPages,
-                'firstElement' => ((($currentPage -1) * $itemsPerPage) + 1),
+                'firstElement' => ((($currentPage - 1) * $itemsPerPage) + 1),
                 'lastElement' => $lastElementNumber,
                 'colspan' => $paginationColumns,
             ])
@@ -1505,7 +1505,7 @@ class DatabaseRecordList
                         $params = [
                             'edit' => [
                                 $table => [
-                                    (0-(($row['_MOVE_PLH'] ?? 0) ? $row['_MOVE_PLH_uid'] : $row['uid'])) => 'new',
+                                    (0 - (($row['_MOVE_PLH'] ?? 0) ? $row['_MOVE_PLH_uid'] : $row['uid'])) => 'new',
                                 ],
                             ],
                             'returnUrl' => $this->listURL(),

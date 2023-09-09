@@ -454,7 +454,7 @@ class GridDataService implements LoggerAwareInterface
         if ($a[$this->sort] == $b[$this->sort]) {
             $sortingResult = 0;
         } elseif ($this->sortDir === 'ASC') {
-            $sortingResult= $a[$this->sort] < $b[$this->sort] ? -1 : 1;
+            $sortingResult = $a[$this->sort] < $b[$this->sort] ? -1 : 1;
         } elseif ($this->sortDir === 'DESC') {
             $sortingResult = $a[$this->sort] > $b[$this->sort] ? -1 : 1;
         } else {

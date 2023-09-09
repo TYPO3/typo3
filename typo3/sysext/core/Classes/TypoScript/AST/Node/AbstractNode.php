@@ -127,7 +127,7 @@ abstract class AbstractNode implements NodeInterface
 
     public function sortChildren(): void
     {
-        ksort($this->children, SORT_FLAG_CASE |SORT_STRING);
+        ksort($this->children, SORT_FLAG_CASE | SORT_STRING);
     }
 
     public function setValue(?string $value): void

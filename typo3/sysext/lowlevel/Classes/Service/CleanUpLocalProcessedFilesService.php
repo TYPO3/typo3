@@ -152,7 +152,7 @@ class CleanUpLocalProcessedFilesService
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator(
                 $basePath . $folder->getIdentifier(),
-                \FilesystemIterator::UNIX_PATHS|\FilesystemIterator::SKIP_DOTS|\FilesystemIterator::FOLLOW_SYMLINKS|\FilesystemIterator::CURRENT_AS_FILEINFO
+                \FilesystemIterator::UNIX_PATHS | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS | \FilesystemIterator::CURRENT_AS_FILEINFO
             ),
             \RecursiveIteratorIterator::SELF_FIRST,
             \RecursiveIteratorIterator::CATCH_GET_CHILD
