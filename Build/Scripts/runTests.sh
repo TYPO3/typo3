@@ -930,12 +930,12 @@ case ${TEST_SUITE} in
         ${CONTAINER_BIN} volume ls -q -f driver=local -f dangling=true | awk '$0 ~ /^[0-9a-f]{64}$/ { print }' | xargs -I {} ${CONTAINER_BIN} volume rm {}
         echo ""
         # pull typo3/core-testing-*:latest versions of those ones that exist locally
-        echo "> pull ${TYPO3_IMAGE_PREFIX}core-testing-*:latest versions of those ones that exist locally"
-        ${CONTAINER_BIN} images ${TYPO3_IMAGE_PREFIX}core-testing-*:latest --format "{{.Repository}}:latest" | xargs -I {} ${CONTAINER_BIN} pull {}
+        echo "> pull ${TYPO3_IMAGE_PREFIX}typo3/core-testing-*:latest versions of those ones that exist locally"
+        ${CONTAINER_BIN} images ${TYPO3_IMAGE_PREFIX}typo3/core-testing-*:latest --format "{{.Repository}}:latest" | xargs -I {} ${CONTAINER_BIN} pull {}
         echo ""
         # remove "dangling" typo3/core-testing-* images (those tagged as <none>)
-        echo "> remove \"dangling\" ${TYPO3_IMAGE_PREFIX}core-testing-* images (those tagged as <none>)"
-        ${CONTAINER_BIN} images ${TYPO3_IMAGE_PREFIX}core-testing-* --filter "dangling=true" --format "{{.ID}}" | xargs -I {} ${CONTAINER_BIN} rmi {}
+        echo "> remove \"dangling\" ${TYPO3_IMAGE_PREFIX}typo3/core-testing-* images (those tagged as <none>)"
+        ${CONTAINER_BIN} images ${TYPO3_IMAGE_PREFIX}typo3/core-testing-* --filter "dangling=true" --format "{{.ID}}" | xargs -I {} ${CONTAINER_BIN} rmi -f {}
         echo ""
         ;;
     *)
