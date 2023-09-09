@@ -1,3 +1,0 @@
-interface JQuery {
-  disablePagingAction(): void;
-}

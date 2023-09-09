@@ -17,7 +17,7 @@ import { JavaScriptItemProcessor } from '@typo3/core/java-script-item-processor'
 import Notification from '../../notification';
 import Utility from '../../utility';
 
-interface Context {
+export interface Context {
   config: object;
   hmac: string;
 }
@@ -115,7 +115,7 @@ export class AjaxDispatcher {
     }
 
     if (typeof json.inlineData === 'object') {
-      TYPO3.settings.FormEngineInline = Utility.mergeDeep(TYPO3.settings.FormEngineInline, json.inlineData);
+      TYPO3.settings.FormEngineInline = Utility.mergeDeep(TYPO3.settings.FormEngineInline, json.inlineData) as typeof TYPO3.settings.FormEngineInline;
     }
 
     if (json.scriptItems instanceof Array && json.scriptItems.length > 0) {

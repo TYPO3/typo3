@@ -230,7 +230,7 @@ export default (function() {
       // If multiple values are not allowed, clear anything that is in the control already
       if (!isMultiple) {
         for (const el of fieldEl.querySelectorAll('option') as NodeListOf<HTMLOptionElement>) {
-          const $option = $availableFieldEl.find('option[value="' + $.escapeSelector($(el).attr('value')) + '"]');
+          const $option = $availableFieldEl.find('option[value="' + CSS.escape($(el).attr('value')) + '"]');
           if ($option.length) {
             $option.removeClass('hidden').prop('disabled', false);
             FormEngine.enableOptGroup($option.get(0));

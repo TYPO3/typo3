@@ -11,7 +11,7 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import Muuri from 'muuri';
+import Muuri, { GridOptions, Item } from 'muuri';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
@@ -24,7 +24,7 @@ class Grid {
   }
 
   public initialize(): void {
-    const options = {
+    const options: GridOptions = {
       dragEnabled: true,
       dragSortHeuristics: {
         sortInterval: 50,
@@ -35,9 +35,8 @@ class Grid {
       layoutEasing: 'ease',
       dragPlaceholder: {
         enabled: true,
-        duration: 400,
-        createElement: (item: any): void => {
-          return item.getElement().cloneNode(true);
+        createElement: (item: Item): HTMLElement => {
+          return item.getElement().cloneNode(true) as HTMLElement;
         }
       },
       dragSortPredicate: {
@@ -45,8 +44,10 @@ class Grid {
         threshold: 30
       },
       dragHandle: '.js-dashboard-move-widget',
-      dragReleaseDuration: 400,
-      dragReleaseEasing: 'ease',
+      dragRelease: {
+        duration: 400,
+        easing: 'ease',
+      },
       layout: {
         fillGaps: false,
         rounding: false,

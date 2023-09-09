@@ -57,6 +57,7 @@ export default [
       resolve({
         extensions: ['.js']
       }),
+      commonjs(),
     ]
   },
   ...buildConfigForTranslations()

@@ -1,8 +1,8 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators';
-import type { PluginInterface } from '@ckeditor/ckeditor5-core/src/plugin';
 import { CKEditor5, Core, WordCount } from '@typo3/ckeditor5-bundle';
 import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
+import type { Editor, PluginConstructor } from '@ckeditor/ckeditor5-core';
 
 interface CKEditor5Config {
   // in TYPO3 always `items` property is used, skipping `string[]`
@@ -26,7 +26,7 @@ interface CKEditor5Config {
 }
 
 interface PluginModule {
-  default?: PluginInterface;
+  default?: PluginConstructor<Editor>;
 }
 
 interface FormEngineConfig {
@@ -36,7 +36,7 @@ interface FormEngineConfig {
   validationRules?: any;
 }
 
-type Typo3Plugin = PluginInterface & {overrides?: Typo3Plugin[]};
+type Typo3Plugin = PluginConstructor<Editor> & {overrides?: PluginConstructor<Editor>[]};
 
 /**
  * Module: @typo3/rte_ckeditor/ckeditor5
@@ -132,7 +132,7 @@ export class CKEditor5Element extends LitElement {
             });
 
             if (this.options.debug) {
-              window.CKEditorInspector.attach(editor, { isCollapsed: true });
+              import('@typo3/ckeditor5-inspector').then(({ CKEditorInspector }) => CKEditorInspector.attach(editor, { isCollapsed: true }));
             }
           });
       });

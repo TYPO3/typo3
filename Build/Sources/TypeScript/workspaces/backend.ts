@@ -773,11 +773,11 @@ class Backend extends Workspaces {
       );
 
     if (this.paging.currentPage === 1) {
-      $controlFirstPage.disablePagingAction();
+      $controlFirstPage.addClass('disabled').find('button').prop('disabled', true);
     }
 
     if (this.paging.currentPage === this.paging.totalPages) {
-      $controlLastPage.disablePagingAction();
+      $controlLastPage.addClass('disabled').find('button').prop('disabled', true);
     }
 
     for (let i = 1; i <= this.paging.totalPages; i++) {
@@ -1345,12 +1345,5 @@ class Backend extends Workspaces {
     document.dispatchEvent(new CustomEvent('multiRecordSelection:actions:hide'));
   }
 }
-
-/**
- * Changes the markup of a pagination action being disabled
- */
-$.fn.disablePagingAction = function(): void {
-  $(this).addClass('disabled').find('button').prop('disabled', true);
-};
 
 export default new Backend();

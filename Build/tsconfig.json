@@ -98,17 +98,9 @@
         "types": [
             "TYPO3",
             "chosen-js",
-            "d3-dispatch",
-            "d3-drag",
-            "d3-selection",
-            "jasmine",
-            "jquery",
-            "jquery-custom",
-            "bootstrap",
-            "nprogress",
             "requirejs",
-            "sortablejs",
-            "tablesort"
+            "ckeditor5-bundle",
+            "jasmine"
         ],
         "typeRoots": [
             "node_modules/@types",
