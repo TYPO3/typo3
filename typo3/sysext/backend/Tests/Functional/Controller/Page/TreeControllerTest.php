@@ -327,7 +327,7 @@ final class TreeControllerTest extends FunctionalTestCase
             [
                 'uid' => 0,
                 'title' => 'New TYPO3 site',
-                '_children' =>[
+                '_children' => [
                     [
                         'uid' => 1000,
                         'title' => 'ACME Inc',
@@ -434,7 +434,7 @@ final class TreeControllerTest extends FunctionalTestCase
             [
                 'uid' => 0,
                 'title' => 'New TYPO3 site',
-                '_children' =>[
+                '_children' => [
                     [
                         'uid' => 1210,
                         'title' => 'EN: Frontend Editing',
@@ -468,7 +468,7 @@ final class TreeControllerTest extends FunctionalTestCase
             [
                 'uid' => 0,
                 'title' => 'New TYPO3 site',
-                '_children' =>[
+                '_children' => [
                     [
                         'uid' => 1000,
                         'title' => 'ACME Inc',
@@ -652,7 +652,7 @@ final class TreeControllerTest extends FunctionalTestCase
             [
                 'uid' => 0,
                 'title' => 'New TYPO3 site',
-                '_children' =>[
+                '_children' => [
                     [
                         'uid' => 1000,
                         'title' => 'ACME Inc',

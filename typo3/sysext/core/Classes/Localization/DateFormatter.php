@@ -153,7 +153,7 @@ class DateFormatter
             },
             '%j' => function (\DateTimeInterface $timestamp, string $_): string {
                 // Day number in year, 001 to 366
-                return sprintf('%03d', (int)($timestamp->format('z'))+1);
+                return sprintf('%03d', (int)($timestamp->format('z')) + 1);
             },
             '%u' => 'N',
             '%w' => 'w',

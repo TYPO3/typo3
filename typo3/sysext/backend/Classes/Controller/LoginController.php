@@ -393,7 +393,7 @@ class LoginController
         if ($this->loginRefresh) {
             $formProtection->setSessionTokenFromRegistry();
             $formProtection->persistSessionToken();
-        // triggering `TYPO3/CMS/Backend/LoginRefresh` module happens in `TYPO3/CMS/Backend/Login`
+            // triggering `TYPO3/CMS/Backend/LoginRefresh` module happens in `TYPO3/CMS/Backend/Login`
         } else {
             $formProtection->storeSessionTokenInRegistry();
             $this->redirectToUrl();

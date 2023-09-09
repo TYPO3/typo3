@@ -25,6 +25,6 @@ use TYPO3\CMS\Core\Type\Enumeration;
 class MfaViewType extends Enumeration
 {
     public const SETUP = 'setup';
-    public const EDIT ='edit';
-    public const AUTH ='auth';
+    public const EDIT = 'edit';
+    public const AUTH = 'auth';
 }

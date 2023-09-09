@@ -134,7 +134,7 @@ class ReactionRepository
         return new ReactionInstruction($row);
     }
 
-    protected function getQueryBuilder(bool $addDefaultOrderByClause=true): QueryBuilder
+    protected function getQueryBuilder(bool $addDefaultOrderByClause = true): QueryBuilder
     {
         // @todo ConnectionPool could be injected
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

@@ -1322,7 +1322,7 @@ class RelationHandler
             }
 
             $purgedItemIds = [];
-            $callable =[$this, $purgeCallback];
+            $callable = [$this, $purgeCallback];
             if (is_callable($callable)) {
                 $purgedItemIds = $callable($itemTableName, $itemIds);
             }

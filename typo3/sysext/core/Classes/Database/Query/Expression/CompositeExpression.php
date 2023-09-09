@@ -125,7 +125,7 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
      * @param self|string|null $part
      * @param self|string|null ...$parts
      */
-    public static function and($part=null, ...$parts): self
+    public static function and($part = null, ...$parts): self
     {
         $mergedParts = array_merge([$part], $parts);
         array_filter($mergedParts, static fn ($value) => !is_null($value));
@@ -136,7 +136,7 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
      * @param self|string|null $part
      * @param self|string|null ...$parts
      */
-    public static function or($part=null, ...$parts): self
+    public static function or($part = null, ...$parts): self
     {
         $mergedParts = array_merge([$part], $parts);
         array_filter($mergedParts, static fn ($value) => !is_null($value));
@@ -149,7 +149,7 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
      * @param self|string|null $part
      * @param self|string|null ...$parts
      */
-    public function with($part=null, ...$parts): self
+    public function with($part = null, ...$parts): self
     {
         $mergedParts = array_merge([$part], $parts);
         $that = clone $this;

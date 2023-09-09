@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Backend\Attribute;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Controller
 {
-    public const TAG_NAME='backend.controller';
+    public const TAG_NAME = 'backend.controller';
 
     public function __construct()
     {

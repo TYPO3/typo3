@@ -280,7 +280,7 @@ class InlineStackProcessor
                     $parts[] = implode('][', $levelData['flexform']);
                 }
                 $name = '[' . implode('][', $parts) . ']';
-            // Use in object id attributes:
+                // Use in object id attributes:
             } else {
                 $name = implode('-', $parts);
 

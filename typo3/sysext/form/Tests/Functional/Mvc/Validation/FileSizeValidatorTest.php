@@ -72,7 +72,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
         $validator = new FileSizeValidator();
         $validator->setOptions($options);
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
-        $file = new File(['identifier' => '/foo', 'name'=> 'bar.txt', 'size' => '1'], $mockedStorage);
+        $file = new File(['identifier' => '/foo', 'name' => 'bar.txt', 'size' => '1'], $mockedStorage);
         self::assertTrue($validator->validate($file)->hasErrors());
     }
 

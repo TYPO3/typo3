@@ -70,7 +70,7 @@ return [
                 'placeholder' => 'en-US',
                 'valuePicker' => [
                     'mode' => '',
-                    'items' =>\TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::getAllSystemLocales(),
+                    'items' => \TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::getAllSystemLocales(),
                 ],
             ],
         ],

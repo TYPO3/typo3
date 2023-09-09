@@ -4235,7 +4235,7 @@ class DataHandler implements LoggerAwareInterface
             } else {
                 if (!MathUtility::canBeInterpretedAsInteger($realDestPid)) {
                     $newId = $this->copyRecord($v['table'], $v['id'], -(int)($v['id']));
-                // If the destination page id is a NEW string, keep it on the same page
+                    // If the destination page id is a NEW string, keep it on the same page
                 } elseif ($this->BE_USER->workspace > 0 && BackendUtility::isTableWorkspaceEnabled($v['table'])) {
                     // A filled $workspaceOptions indicated that this call
                     // has it's origin in previous versionizeRecord() processing
@@ -4249,7 +4249,7 @@ class DataHandler implements LoggerAwareInterface
                             $workspaceOptions['label'] ?? 'Auto-created for WS #' . $this->BE_USER->workspace,
                             $workspaceOptions['delete'] ?? false
                         );
-                    // Otherwise just use plain copyRecord() to create placeholders etc.
+                        // Otherwise just use plain copyRecord() to create placeholders etc.
                     } else {
                         // If a record has been copied already during this request,
                         // prevent superfluous duplication and use the existing copy
@@ -8528,15 +8528,15 @@ class DataHandler implements LoggerAwareInterface
                 default:
                     $result = (string)$submittedValue === (string)$storedValue;
             }
-        // Null values are allowed, but currently there's a real (not NULL) value.
-        // Thus, ensure no NULL value was submitted and fallback to the regular behaviour.
+            // Null values are allowed, but currently there's a real (not NULL) value.
+            // Thus, ensure no NULL value was submitted and fallback to the regular behaviour.
         } elseif ($storedValue !== null) {
             $result = (
                 $submittedValue !== null
                 && $this->isSubmittedValueEqualToStoredValue($submittedValue, $storedValue, $storedType, false)
             );
-        // Null values are allowed, and currently there's a NULL value.
-        // Thus, check whether a NULL value was submitted.
+            // Null values are allowed, and currently there's a NULL value.
+            // Thus, check whether a NULL value was submitted.
         } else {
             $result = ($submittedValue === null);
         }

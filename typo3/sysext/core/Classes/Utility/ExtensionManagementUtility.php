@@ -543,7 +543,7 @@ class ExtensionManagementUtility
         $fileFieldTCAConfig = [
             'type' => 'file',
             'allowed' => $allowedFileExtensions,
-            'disallowed'=> $disallowedFileExtensions,
+            'disallowed' => $disallowedFileExtensions,
         ];
         ArrayUtility::mergeRecursiveWithOverrule($fileFieldTCAConfig, $customSettingOverride);
         return $fileFieldTCAConfig;

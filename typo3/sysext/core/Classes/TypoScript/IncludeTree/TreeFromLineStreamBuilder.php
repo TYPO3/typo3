@@ -366,7 +366,7 @@ final class TreeFromLineStreamBuilder
     private function processIncludeTyposcript(IncludeInterface $node, Token $includeTyposcriptValueToken, LineInterface $importKeywordOldLine): void
     {
         $fullString = $includeTyposcriptValueToken->getValue();
-        $potentialSourceArray = preg_split('#.*(source="[^"]*").*|>#', $fullString, -1, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
+        $potentialSourceArray = preg_split('#.*(source="[^"]*").*|>#', $fullString, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         $source = '';
         foreach ($potentialSourceArray as $candidate) {
             $candidate = trim($candidate);
@@ -380,7 +380,7 @@ final class TreeFromLineStreamBuilder
             // No 'source="..."'
             return;
         }
-        $potentialConditionArray = preg_split('#.*(condition="(?:\\\\\\\\|\\\\"|[^\"])*").*|>#', $fullString, 2, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
+        $potentialConditionArray = preg_split('#.*(condition="(?:\\\\\\\\|\\\\"|[^\"])*").*|>#', $fullString, 2, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         $condition = '';
         foreach ($potentialConditionArray as $candidate) {
             $candidate = trim($candidate);
@@ -394,7 +394,7 @@ final class TreeFromLineStreamBuilder
                 break;
             }
         }
-        $potentialExtensionsArray = preg_split('#.*(extensions*="[^"]*").*|>#', $fullString, 2, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
+        $potentialExtensionsArray = preg_split('#.*(extensions*="[^"]*").*|>#', $fullString, 2, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         $extensions = [];
         foreach ($potentialExtensionsArray as $candidate) {
             $candidate = trim($candidate);

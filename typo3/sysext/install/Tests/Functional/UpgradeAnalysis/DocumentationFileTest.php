@@ -133,8 +133,8 @@ final class DocumentationFileTest extends FunctionalTestCase
     {
         $currentVersion = (int)explode('.', VersionNumberUtility::getNumericTypo3Version())[0];
         $expected = [
-            0 => $currentVersion-2 . '.0',
-            1 => $currentVersion-1 . '.0',
+            0 => $currentVersion - 2 . '.0',
+            1 => $currentVersion - 1 . '.0',
             2 => $currentVersion . '.0',
         ];
         $subject = new DocumentationFile(Environment::getPublicPath() . '/Changelog');

@@ -229,7 +229,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
                 1,
                 [
                     'addFile' => 0,
-                    'recursivedeleteFolder' =>0,
+                    'recursivedeleteFolder' => 0,
                 ],
                 [
                     'addFile' => 0,
@@ -254,7 +254,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
                 0,
                 [
                     'addFile' => 0,
-                    'recursivedeleteFolder' =>0,
+                    'recursivedeleteFolder' => 0,
                 ],
                 [
                     'addFile' => false,
