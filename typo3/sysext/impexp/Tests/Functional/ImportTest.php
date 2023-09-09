@@ -87,13 +87,13 @@ class ImportTest extends AbstractImportExportTestCase
         $importMock->setPid(0);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml');
         $previewData = $importMock->renderPreview();
-//        file_put_contents(
-//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecords.php',
-//            str_replace(
-//                ['array (', '),', ');'],
-//                ['[', '],', '];'],
-//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-//        );
+        //        file_put_contents(
+        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecords.php',
+        //            str_replace(
+        //                ['array (', '),', ');'],
+        //                ['[', '],', '];'],
+        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+        //        );
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
@@ -110,13 +110,13 @@ class ImportTest extends AbstractImportExportTestCase
         $importMock->importData();
         $importMock->setUpdate(true);
         $previewData = $importMock->renderPreview();
-//        file_put_contents(
-//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsByUpdate.php',
-//            str_replace(
-//                ['array (', '),', ');'],
-//                ['[', '],', '];'],
-//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-//        );
+        //        file_put_contents(
+        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsByUpdate.php',
+        //            str_replace(
+        //                ['array (', '),', ');'],
+        //                ['[', '],', '];'],
+        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+        //        );
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
@@ -134,13 +134,13 @@ class ImportTest extends AbstractImportExportTestCase
         $importMock->setShowDiff(true);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-two-images.xml');
         $previewData = $importMock->renderPreview();
-//        file_put_contents(
-//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsWithDiff.php',
-//            str_replace(
-//                ['array (', '),', ');'],
-//                ['[', '],', '];'],
-//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-//        );
+        //        file_put_contents(
+        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsWithDiff.php',
+        //            str_replace(
+        //                ['array (', '),', ');'],
+        //                ['[', '],', '];'],
+        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+        //        );
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
@@ -159,13 +159,13 @@ class ImportTest extends AbstractImportExportTestCase
         $importMock->setUpdate(true);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-two-images.xml');
         $previewData = $importMock->renderPreview();
-//        file_put_contents(
-//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsByUpdateWithDiff.php',
-//            str_replace(
-//                ['array (', '),', ');'],
-//                ['[', '],', '];'],
-//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-//        );
+        //        file_put_contents(
+        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsByUpdateWithDiff.php',
+        //            str_replace(
+        //                ['array (', '),', ');'],
+        //                ['[', '],', '];'],
+        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+        //        );
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
@@ -180,13 +180,13 @@ class ImportTest extends AbstractImportExportTestCase
         $importMock->setPid(0);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-softrefs.xml');
         $previewData = $importMock->renderPreview();
-//        file_put_contents(
-//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsWithSoftRefs.php',
-//            str_replace(
-//                ['array (', '),', ');'],
-//                ['[', '],', '];'],
-//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-//        );
+        //        file_put_contents(
+        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsWithSoftRefs.php',
+        //            str_replace(
+        //                ['array (', '),', ');'],
+        //                ['[', '],', '];'],
+        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+        //        );
         self::assertEquals($renderPreviewImport, $previewData);
     }
 

@@ -142,7 +142,7 @@ return [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target',
             'config' => [
                 'type' => 'input',
-                'eval' =>'required',
+                'eval' => 'required',
                 'renderType' => 'inputLink',
                 'softref' => 'typolink',
                 'fieldControl' => [

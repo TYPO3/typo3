@@ -66,7 +66,7 @@ return [
                 'placeholder' => 'en_US.UTF-8',
                 'valuePicker' => [
                     'mode' => '',
-                    'items' =>\TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::getAllSystemLocales(),
+                    'items' => \TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::getAllSystemLocales(),
                 ],
             ],
         ],

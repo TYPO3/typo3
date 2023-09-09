@@ -144,13 +144,13 @@ class ExportTest extends AbstractImportExportTestCase
         $this->exportMock->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
         $this->exportMock->process();
         $previewData = $this->exportMock->renderPreview();
-//        file_put_contents(
-//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportPageAndRecords.php',
-//            str_replace(
-//                ['array (', '),', ');'],
-//                ['[', '],', '];'],
-//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-//        );
+        //        file_put_contents(
+        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportPageAndRecords.php',
+        //            str_replace(
+        //                ['array (', '),', ');'],
+        //                ['[', '],', '];'],
+        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+        //        );
         self::assertEquals($renderPreviewExport, $previewData);
     }
 
@@ -171,13 +171,13 @@ class ExportTest extends AbstractImportExportTestCase
         $this->exportMock->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
         $this->exportMock->process();
         $previewData = $this->exportMock->renderPreview();
-//        file_put_contents(
-//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportPageAndRecordsWithSoftRefs.php',
-//            str_replace(
-//                ['array (', '),', ');'],
-//                ['[', '],', '];'],
-//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-//        );
+        //        file_put_contents(
+        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportPageAndRecordsWithSoftRefs.php',
+        //            str_replace(
+        //                ['array (', '),', ');'],
+        //                ['[', '],', '];'],
+        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+        //        );
         self::assertEquals($renderPreviewExport, $previewData);
     }
 
@@ -197,13 +197,13 @@ class ExportTest extends AbstractImportExportTestCase
         $this->exportMock->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
         $this->exportMock->process();
         $previewData = $this->exportMock->renderPreview();
-//        file_put_contents(
-//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportTable.php',
-//            str_replace(
-//                ['array (', '),', ');'],
-//                ['[', '],', '];'],
-//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-//        );
+        //        file_put_contents(
+        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportTable.php',
+        //            str_replace(
+        //                ['array (', '),', ');'],
+        //                ['[', '],', '];'],
+        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+        //        );
         self::assertEquals($renderPreviewExport, $previewData);
     }
 
@@ -223,13 +223,13 @@ class ExportTest extends AbstractImportExportTestCase
         $this->exportMock->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
         $this->exportMock->process();
         $previewData = $this->exportMock->renderPreview();
-//        file_put_contents(
-//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportRecords.php',
-//            str_replace(
-//                ['array (', '),', ');'],
-//                ['[', '],', '];'],
-//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-//        );
+        //        file_put_contents(
+        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportRecords.php',
+        //            str_replace(
+        //                ['array (', '),', ');'],
+        //                ['[', '],', '];'],
+        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+        //        );
         self::assertEquals($renderPreviewExport, $previewData);
     }
 

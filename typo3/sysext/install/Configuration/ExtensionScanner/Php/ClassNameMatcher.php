@@ -1100,7 +1100,7 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
-    'TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode'=> [
+    'TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode' => [
         'restFiles' => [
             'Deprecation-87277-FluidClassAliases.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',

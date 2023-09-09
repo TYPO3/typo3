@@ -40,7 +40,7 @@ class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
             'ctrl' => [
                 'languageField' => 'sys_language_uid',
                 'transOrigPointerField' => 'l10n_parent',
-                'transOrigDiffSourceField' =>'l10n_diffsource',
+                'transOrigDiffSourceField' => 'l10n_diffsource',
             ],
         ];
         self::assertTrue((new L18nDiffsourceToJsonMigration())->hasPotentialUpdateForTable('testTable'));
@@ -53,7 +53,7 @@ class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
     {
         $GLOBALS['TCA']['testTable'] = [
             'ctrl' => [
-                'transOrigDiffSourceField' =>'l10n_diffsource',
+                'transOrigDiffSourceField' => 'l10n_diffsource',
             ],
         ];
         $row = [];
@@ -117,7 +117,7 @@ class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
     {
         $GLOBALS['TCA']['testTable'] = [
             'ctrl' => [
-                'transOrigDiffSourceField' =>'l10n_diffsource',
+                'transOrigDiffSourceField' => 'l10n_diffsource',
             ],
         ];
         $row = ['l10n_diffsource' => $input];

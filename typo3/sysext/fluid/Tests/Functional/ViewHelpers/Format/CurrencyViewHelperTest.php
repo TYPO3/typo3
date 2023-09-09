@@ -42,7 +42,7 @@ class CurrencyViewHelperTest extends FunctionalTestCase
                 '<f:format.currency currencySign="foo" prependCurrency="true" decimalSeparator="," thousandsSeparator=".">123</f:format.currency>',
                 'foo 123,00',
             ],
-            'respects currency separator' =>[
+            'respects currency separator' => [
                 '<f:format.currency currencySign="foo" separateCurrency="false" prependCurrency="true" decimalSeparator="," thousandsSeparator=".">123</f:format.currency>',
                 'foo123,00',
             ],

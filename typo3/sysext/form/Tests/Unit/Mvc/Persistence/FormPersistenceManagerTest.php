@@ -43,7 +43,7 @@ class FormPersistenceManagerTest extends UnitTestCase
 
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
-        $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
+        $runtimeCache = $this->getMockBuilder(VariableFrontend::class)
             ->onlyMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -68,7 +68,7 @@ class FormPersistenceManagerTest extends UnitTestCase
 
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
-        $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
+        $runtimeCache = $this->getMockBuilder(VariableFrontend::class)
             ->onlyMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -133,7 +133,7 @@ class FormPersistenceManagerTest extends UnitTestCase
 
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
-        $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
+        $runtimeCache = $this->getMockBuilder(VariableFrontend::class)
             ->onlyMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -221,7 +221,7 @@ class FormPersistenceManagerTest extends UnitTestCase
 
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['exists'], [], '', false);
 
-        $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
+        $runtimeCache = $this->getMockBuilder(VariableFrontend::class)
             ->onlyMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -289,7 +289,7 @@ class FormPersistenceManagerTest extends UnitTestCase
     {
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
-        $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
+        $runtimeCache = $this->getMockBuilder(VariableFrontend::class)
             ->onlyMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();

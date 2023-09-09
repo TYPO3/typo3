@@ -1446,7 +1446,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 'label' => 'icon',
                 'selicon_field' => 'icon',
             ],
-            'columns' =>[
+            'columns' => [
                 'icon' => [],
             ],
         ];

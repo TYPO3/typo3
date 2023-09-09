@@ -77,7 +77,7 @@ class FileSizeValidatorTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $file = new File(['identifier' => '/foo', 'name'=> 'bar.txt', 'size' => '1'], $mockedStorage);
+        $file = new File(['identifier' => '/foo', 'name' => 'bar.txt', 'size' => '1'], $mockedStorage);
         self::assertTrue($validator->validate($file)->hasErrors());
     }
 

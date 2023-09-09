@@ -1294,7 +1294,7 @@ class BackendUtilityTest extends UnitTestCase
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['TCA']['myTable'] = [
-            'ctrl'=> [
+            'ctrl' => [
                 'tstamp' => 'updatedon',
                 // Won't be added due to defined in "columns"
                 'crdate' => 'createdon',

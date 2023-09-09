@@ -86,13 +86,13 @@ class DocumentationFileTest extends UnitTestCase
                 '2.0' => [
                     'Important-98574-Issue.rst' => implode("\n", $content_98574),
                 ],
-                $currentVersion-3 . '.0' => [
+                $currentVersion - 3 . '.0' => [
                     'Important-98574-Issue.rst' => implode("\n", $content_98574),
                 ],
-                $currentVersion-2 . '.0' => [
+                $currentVersion - 2 . '.0' => [
                     'Important-98574-Issue.rst' => implode("\n", $content_98574),
                 ],
-                $currentVersion-1 . '.0' => [
+                $currentVersion - 1 . '.0' => [
                     'Important-98574-Issue.rst' => implode("\n", $content_98574),
                 ],
                 $currentVersion . '.0' => [
@@ -153,8 +153,8 @@ class DocumentationFileTest extends UnitTestCase
     {
         $currentVersion = (int)explode('.', VersionNumberUtility::getNumericTypo3Version())[0];
         $expected = [
-            $currentVersion-2 . '.0' => [],
-            $currentVersion-1 . '.0' => [],
+            $currentVersion - 2 . '.0' => [],
+            $currentVersion - 1 . '.0' => [],
             $currentVersion . '.0' => [],
             'master' => [],
         ];

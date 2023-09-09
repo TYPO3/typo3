@@ -70,7 +70,7 @@ class CountTest extends FunctionalTestCase
     {
         $query = $this->postRepository->createQuery();
 
-        $query->setLimit($this->numberOfRecordsInFixture+1);
+        $query->setLimit($this->numberOfRecordsInFixture + 1);
         $query->setOffset(6);
 
         self::assertSame($this->numberOfRecordsInFixture - 6, $query->count());
@@ -83,7 +83,7 @@ class CountTest extends FunctionalTestCase
     {
         $query = $this->postRepository->createQuery();
 
-        $query->setLimit($this->numberOfRecordsInFixture+1);
+        $query->setLimit($this->numberOfRecordsInFixture + 1);
         $query->setOffset($this->numberOfRecordsInFixture + 5);
 
         self::assertSame(0, $query->count());

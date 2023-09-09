@@ -201,7 +201,7 @@ class EditFileController
                 throw new \Exception('Files with that extension are not editable. Allowed extensions are: ' . $extList, 1476050135);
             }
 
-            $fullIdentifier= $this->fileObject->getCombinedIdentifier();
+            $fullIdentifier = $this->fileObject->getCombinedIdentifier();
             $returnUrl = (string)$this->uriBuilder->buildUriFromRoute('file_edit', ['target' => $fullIdentifier]);
 
             // Making the formfields

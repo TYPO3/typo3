@@ -73,7 +73,7 @@ class RedirectRepository
 
         $constraints = [];
         if ($demand->hasSourceHosts()) {
-            $constraints[] =$queryBuilder->expr()->in(
+            $constraints[] = $queryBuilder->expr()->in(
                 'source_host',
                 $queryBuilder->createNamedParameter($demand->getSourceHosts(), Connection::PARAM_STR_ARRAY)
             );

@@ -263,7 +263,7 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
         }
         return [
             $serviceName . '_decorated_' . $counter,
-            $counter === 1 ? $serviceName : $serviceName . '_decorated_' . ($counter-1),
+            $counter === 1 ? $serviceName : $serviceName . '_decorated_' . ($counter - 1),
         ];
     }
 }
