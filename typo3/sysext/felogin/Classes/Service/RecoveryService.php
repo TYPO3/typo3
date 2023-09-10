@@ -23,7 +23,7 @@ use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -40,11 +40,11 @@ class RecoveryService
     public function __construct(
         protected readonly MailerInterface $mailer,
         protected EventDispatcherInterface $eventDispatcher,
-        ConfigurationManager $configurationManager,
+        ConfigurationManagerInterface $configurationManager,
         protected RecoveryConfiguration $recoveryConfiguration,
         protected UriBuilder $uriBuilder
     ) {
-        $this->settings = $configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS);
+        $this->settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
     }
 
     /**
