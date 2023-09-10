@@ -4084,13 +4084,13 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param int $uid Record uid
      * @param string $field Field name being processed
-     * @param string $value Input value to be processed.
+     * @param string|null $value Input value to be processed.
      * @param array $row Record array
      * @param array $conf TCA field configuration
      * @param int $realDestPid Real page id (pid) the record is copied to
      * @param int $language Language ID used in the duplicated record
      * @param array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
-     * @return array|string
+     * @return array|string|null
      * @internal
      * @see copyRecord()
      */
@@ -4115,12 +4115,12 @@ class DataHandler implements LoggerAwareInterface
                 $row
             );
             $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
-            $currentValueArray = GeneralUtility::xml2array($value);
+            $currentValue = is_string($value) ? GeneralUtility::xml2array($value) : null;
             // Traversing the XML structure, processing files:
-            if (is_array($currentValueArray)) {
-                $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], $dataStructureArray, [$table, $uid, $field, $realDestPid], 'copyRecord_flexFormCallBack', $workspaceOptions);
+            if (is_array($currentValue)) {
+                $currentValue['data'] = $this->checkValue_flex_procInData($currentValue['data'], [], $dataStructureArray, [$table, $uid, $field, $realDestPid], 'copyRecord_flexFormCallBack', $workspaceOptions);
                 // Setting value as an array! -> which means the input will be processed according to the 'flex' type when the new copy is created.
-                $value = $currentValueArray;
+                $value = $currentValue;
             }
         }
         return $value;
