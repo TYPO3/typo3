@@ -184,8 +184,6 @@ CREATE TABLE tx_styleguide_elements_group (
 
 CREATE TABLE tx_styleguide_elements_folder
 (
-    folder_1 text,
-    folder_2 text,
     flex_1 text
 );
 
@@ -724,7 +722,6 @@ CREATE TABLE tx_styleguide_l10nreadonly (
     group text,
     group_mm text,
     group_file text,
-    folder text,
     image_manipulation text,
     language int(11) DEFAULT '0' NOT NULL,
     text text,

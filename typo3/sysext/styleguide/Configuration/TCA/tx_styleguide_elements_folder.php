@@ -90,6 +90,15 @@ return [
                 'hideMoveIcons' => true,
             ],
         ],
+        'folder_3' => [
+            'label' => 'folder_3 maxitems=1',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'folder',
+                'maxitems' => 1,
+                'size' => 1,
+            ],
+        ],
 
         'flex_1' => [
             'label' => 'flex_1',
@@ -158,7 +167,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;type=folder,
-                    folder_1, folder_2,
+                    folder_1, folder_2, folder_3,
                 --div--;in flex,
                     flex_1,
                 --div--;meta,
