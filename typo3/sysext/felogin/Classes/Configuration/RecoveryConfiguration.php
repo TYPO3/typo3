@@ -22,7 +22,7 @@ use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\Random;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 
@@ -42,11 +42,11 @@ class RecoveryConfiguration implements LoggerAwareInterface
 
     public function __construct(
         protected Context $context,
-        ConfigurationManager $configurationManager,
+        ConfigurationManagerInterface $configurationManager,
         Random $random,
         HashService $hashService
     ) {
-        $this->settings = $configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS);
+        $this->settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
         $this->forgotHash = $this->getLifeTimeTimestamp() . '|' . $this->generateHash($random, $hashService);
         $this->resolveFromTypoScript();
     }
