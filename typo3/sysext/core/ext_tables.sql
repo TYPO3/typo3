@@ -135,7 +135,6 @@ CREATE TABLE sys_news (
 #
 CREATE TABLE sys_filemounts (
 	title varchar(255) DEFAULT '' NOT NULL,
-	identifier varchar(255) DEFAULT '' NOT NULL,
 );
 
 
@@ -258,9 +257,6 @@ CREATE TABLE sys_file_reference (
 CREATE TABLE sys_file_collection (
 	title tinytext,
 	type varchar(30) DEFAULT 'static' NOT NULL,
-
-	# for type=folder:
-	folder_identifier varchar(255) DEFAULT '' NOT NULL,
 );
 
 #

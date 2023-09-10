@@ -1055,4 +1055,49 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('check')->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function enrichAddsFolder(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['folder'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'folder',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`folder`',
+            Type::getType('text'),
+            [
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('folder')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsFolderWithMaxItemsOfOne(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['folderMax'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'folder',
+                'maxitems' => 1,
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`folderMax`',
+            Type::getType('text'),
+            [
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('folderMax')->toArray());
+    }
 }

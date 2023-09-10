@@ -578,6 +578,22 @@ class DefaultTcaSchema
                 );
             }
 
+            // Add file fields for all tables, defining file columns (TCA type=folder)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'folder'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    'text',
+                    [
+                        'notnull' => false,
+                    ]
+                );
+            }
+
             // Add file fields for all tables, defining email columns (TCA type=email)
             foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
                 if ((string)($fieldConfig['config']['type'] ?? '') !== 'email'
