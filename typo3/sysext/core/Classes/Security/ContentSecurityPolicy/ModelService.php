@@ -61,8 +61,8 @@ class ModelService
     public function buildMutationFromArray(array $array): Mutation
     {
         return new Mutation(
-            MutationMode::tryFrom($array['mode'] ?? ''),
-            Directive::tryFrom($array['directive'] ?? ''),
+            MutationMode::from($array['mode'] ?? ''),
+            Directive::from($array['directive'] ?? ''),
             ...$this->buildSourcesFromItems(...($array['sources'] ?? []))
         );
     }
