@@ -26,6 +26,8 @@ use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent;
 use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListTableActionsEvent;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
+use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -637,27 +639,13 @@ class DatabaseRecordList
         $tableHeader = $theData[$titleCol];
         if (!$onlyShowRecordsInSingleTableMode) {
             // Add the "new record" button
-            $tableActions .= $this->createNewRecordButton($table);
-            // Render collapse button if in multi table mode
-            if (!$this->table) {
-                $title = sprintf(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:collapseExpandTable')), $tableTitle);
-                $tableActions .= '
-                    <button type="button"'
-                    . ' class="btn btn-sm btn-default t3js-toggle-recordlist"'
-                    . ' title="' . $title . '"'
-                    . ' aria-label="' . $title . '"'
-                    . ' aria-expanded="' . ($tableCollapsed ? 'false' : 'true') . '"'
-                    . ' data-recordlist-action="toggle"'
-                    . ' data-table="' . htmlspecialchars($tableIdentifier) . '"'
-                    . ' data-bs-toggle="collapse"'
-                    . ' data-bs-target="#recordlist-' . htmlspecialchars($tableIdentifier) . '">'
-                    . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL)->render()
-                    . '</button>';
-            }
+            $tableActions .= $this->createActionButtonNewRecord($table) ?? '';
             // Show the select box
-            $tableActions .= $this->columnSelector($table);
+            $tableActions .= $this->createActionButtonColumnSelector($table) ?? '';
             // Create the Download button
-            $tableActions .= $this->createDownloadButtonForTable($table, $totalItems);
+            $tableActions .= $this->createActionButtonDownload($table, $totalItems) ?? '';
+            // Render collapse button if in multi table mode
+            $tableActions .= $this->createActionButtonCollapse($table) ?? '';
         }
         $currentIdList = [];
         // Render table rows only if in multi table view or if in single table view
@@ -837,29 +825,31 @@ class DatabaseRecordList
     /**
      * If new records can be created on this page, create a button
      */
-    protected function createNewRecordButton(string $table): string
+    protected function createActionButtonNewRecord(string $table): ?ButtonInterface
     {
         if (!$this->isEditable($table)) {
-            return '';
+            return null;
         }
         if (!$this->showNewRecLink($table)) {
-            return '';
+            return null;
         }
         $permsAdditional = ($table === 'pages' ? Permission::PAGE_NEW : Permission::CONTENT_EDIT);
         if (!$this->calcPerms->isGranted($permsAdditional)) {
-            return '';
+            return null;
         }
 
+        $tag = 'a';
         $iconIdentifier = 'actions-plus';
-        $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:new');
+        $label = sprintf(
+            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordOfType'),
+            $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title'])
+        );
         $attributes = [
-            'title' => $title,
-            'aria-label' => $title,
-            'class' => 'btn btn-sm btn-default',
             'data-recordlist-action' => 'new',
         ];
 
         if ($table === 'tt_content') {
+            $tag = 'typo3-backend-new-content-element-wizard-button';
             $attributes['url'] = (string)$this->uriBuilder->buildUriFromRoute(
                 'new_content_element_wizard',
                 [
@@ -867,14 +857,7 @@ class DatabaseRecordList
                     'returnUrl' => $this->listURL(),
                 ]
             );
-            return '
-                <typo3-backend-new-content-element-wizard-button ' . GeneralUtility::implodeAttributes($attributes, true) . '">
-                    ' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '
-                    ' . htmlspecialchars($title) . '
-                </typo3-backend-new-content-element-wizard-button>';
-        }
-
-        if ($table === 'pages') {
+        } elseif ($table === 'pages') {
             $iconIdentifier = 'actions-page-new';
             $attributes['data-new'] = 'page';
             $attributes['href'] = (string)$this->uriBuilder->buildUriFromRoute(
@@ -895,21 +878,24 @@ class DatabaseRecordList
             );
         }
 
-        return '
-            <a ' . GeneralUtility::implodeAttributes($attributes, true) . '>
-                ' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '
-                ' . htmlspecialchars($title) . '
-            </a>';
+        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button->setTag($tag);
+        $button->setLabel($label);
+        $button->setShowLabelText(true);
+        $button->setIcon($this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL));
+        $button->setAttributes($attributes);
+
+        return $button;
     }
 
-    protected function createDownloadButtonForTable(string $table, int $totalItems): string
+    protected function createActionButtonDownload(string $table, int $totalItems): ?ButtonInterface
     {
         // Do not render the download button for page translations or in case it is disabled
         if (!$this->displayRecordDownload
             || ($this->modTSconfig['noExportRecordsLinks'] ?? false)
             || $this->showOnlyTranslatedRecords
         ) {
-            return '';
+            return null;
         }
 
         $downloadButtonLabel = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_download.xlf:download');
@@ -925,18 +911,100 @@ class DatabaseRecordList
             $totalItems
         );
 
-        return '
-            <typo3-recordlist-record-download-button
-                class="btn btn-sm btn-default"
-                url="' . htmlspecialchars($downloadSettingsUrl) . '"
-                subject="' . htmlspecialchars($downloadSettingsTitle) . '"
-                ok="' . htmlspecialchars($downloadButtonTitle) . '"
-                close="' . htmlspecialchars($downloadCancelTitle) . '"
-                data-recordlist-action="download"
-            >
-                ' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL) . '
-                ' . htmlspecialchars($downloadButtonLabel) . '
-            </typo3-recordlist-record-download-button>';
+        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button->setTag('typo3-recordlist-record-download-button');
+        $button->setLabel($downloadButtonLabel);
+        $button->setShowLabelText(true);
+        $button->setIcon($this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL));
+        $button->setAttributes([
+            'url' => $downloadSettingsUrl,
+            'subject' => $downloadSettingsTitle,
+            'ok' => $downloadButtonTitle,
+            'close' => $downloadCancelTitle,
+            'data-recordlist-action' => 'download',
+        ]);
+
+        return $button;
+    }
+
+    /**
+     * Creates a button, which triggers a modal for the column selection
+     */
+    protected function createActionButtonColumnSelector(string $table): ?ButtonInterface
+    {
+        if ($this->displayColumnSelector === false) {
+            // Early return in case column selector is disabled
+            return null;
+        }
+
+        $shouldRenderSelector = true;
+        // See if it is disabled in general
+        if (isset($this->modTSconfig['displayColumnSelector'])) {
+            $shouldRenderSelector = (bool)$this->modTSconfig['displayColumnSelector'];
+        }
+        // Table override was explicitly set to false
+        if (isset($this->modTSconfig['table.'][$table . '.']['displayColumnSelector'])) {
+            $shouldRenderSelector = (bool)$this->modTSconfig['table.'][$table . '.']['displayColumnSelector'];
+        }
+        // Do not render button if column selector is disabled
+        if ($shouldRenderSelector === false) {
+            return null;
+        }
+
+        $lang = $this->getLanguageService();
+        $tableIdentifier = $table . (($table === 'pages' && $this->showOnlyTranslatedRecords) ? '_translated' : '');
+        $columnSelectorUrl = (string)$this->uriBuilder->buildUriFromRoute(
+            'ajax_show_columns_selector',
+            ['id' => $this->id, 'table' => $table]
+        );
+        $columnSelectorTitle = sprintf(
+            $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
+            $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') ?: $table,
+        );
+
+        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button->setTag('typo3-backend-column-selector-button');
+        $button->setLabel($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumns'));
+        $button->setShowLabelText(true);
+        $button->setIcon($this->iconFactory->getIcon('actions-options', Icon::SIZE_SMALL));
+        $button->setAttributes([
+            'data-url' => $columnSelectorUrl,
+            'data-target' => $this->listURL() . '#t3-table-' . $tableIdentifier,
+            'data-title' => $columnSelectorTitle,
+            'data-button-ok' => $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView'),
+            'data-button-close' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
+            'data-error-message' => $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error'),
+            'data-recordlist-action' => 'columns',
+        ]);
+
+        return $button;
+    }
+
+    protected function createActionButtonCollapse(string $table): ?ButtonInterface
+    {
+        if ($this->table !== '') {
+            return null;
+        }
+
+        $tableIdentifier = $table . (($table === 'pages' && $this->showOnlyTranslatedRecords) ? '_translated' : '');
+        $tableCollapsed = (bool)($this->moduleData?->get('collapsedTables')[$tableIdentifier] ?? false);
+
+        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button->setLabel(sprintf(
+            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:collapseExpandTable'),
+            $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title'])
+        ));
+        $button->setClasses('t3js-toggle-recordlist');
+        $button->setIcon($this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL));
+        $button->setAttributes([
+            'aria-expanded' => ($tableCollapsed ? 'false' : 'true'),
+            'data-table' => $tableIdentifier,
+            'data-recordlist-action' => 'toggle',
+            'data-bs-toggle' => 'collapse',
+            'data-bs-target' => '#recordlist-' . $tableIdentifier,
+        ]);
+
+        return $button;
     }
 
     /**
@@ -1934,60 +2002,6 @@ class DatabaseRecordList
             }
         }
         return $out;
-    }
-
-    /**
-     * Creates a button, which triggers a modal for the column selection
-     *
-     * @param string $table Table name
-     * @return string HTML content with the button
-     */
-    protected function columnSelector(string $table): string
-    {
-        if ($this->displayColumnSelector === false) {
-            // Early return in case column selector is disabled
-            return '';
-        }
-
-        $shouldRenderSelector = true;
-        // See if it is disabled in general
-        if (isset($this->modTSconfig['displayColumnSelector'])) {
-            $shouldRenderSelector = (bool)$this->modTSconfig['displayColumnSelector'];
-        }
-        // Table override was explicitly set to false
-        if (isset($this->modTSconfig['table.'][$table . '.']['displayColumnSelector'])) {
-            $shouldRenderSelector = (bool)$this->modTSconfig['table.'][$table . '.']['displayColumnSelector'];
-        }
-        // Do not render button if column selector is disabled
-        if ($shouldRenderSelector === false) {
-            return '';
-        }
-
-        $lang = $this->getLanguageService();
-        $tableIdentifier = $table . (($table === 'pages' && $this->showOnlyTranslatedRecords) ? '_translated' : '');
-        $columnSelectorUrl = $this->uriBuilder->buildUriFromRoute(
-            'ajax_show_columns_selector',
-            ['id' => $this->id, 'table' => $table]
-        );
-        $columnSelectorTitle = sprintf(
-            $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
-            $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') ?: $table,
-        );
-
-        return '
-            <typo3-backend-column-selector-button
-                class="btn btn-sm btn-default"
-                data-url="' . htmlspecialchars($columnSelectorUrl) . '"
-                data-target="' . htmlspecialchars($this->listURL() . '#t3-table-' . $tableIdentifier) . '"
-                data-title="' . htmlspecialchars($columnSelectorTitle) . '"
-                data-button-ok="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView')) . '"
-                data-button-close="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"
-                data-error-message="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error')) . '"
-                data-recordlist-action="columns"
-            >'
-                . $this->iconFactory->getIcon('actions-options', Icon::SIZE_SMALL) . ' '
-                . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumns')) .
-            '</typo3-backend-column-selector-button>';
     }
 
     /*********************************
