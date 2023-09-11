@@ -1650,7 +1650,13 @@ abstract class AbstractMenuContentObject
             $conf['section'] = $page['sectionIndex_uid'];
         }
         $conf['page'] = new Page($page);
-        return $this->parent_cObj->createLink('|', $conf);
+
+        $backupData = $this->parent_cObj->data;
+        $this->parent_cObj->data = $page;
+        $link = $this->parent_cObj->createLink('|', $conf);
+        $this->parent_cObj->data = $backupData;
+
+        return $link;
     }
 
     /**
