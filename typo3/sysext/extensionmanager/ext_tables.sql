@@ -12,6 +12,7 @@ CREATE TABLE tx_extensionmanager_domain_model_extension (
   title varchar(150) NOT NULL default '',
   description mediumtext,
   state int(4) NOT NULL default '0',
+  review_state int(4) NOT NULL default '0',
   category int(4) NOT NULL default '0',
   serialized_dependencies mediumtext,
   author_name varchar(255) NOT NULL default '',

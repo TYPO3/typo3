@@ -108,8 +108,7 @@ return [
         'review_state' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf:tx_extensionmanager_domain_model_extension.reviewstate',
             'config' => [
-                'type' => 'check',
-                'size' => 1,
+                'type' => 'number',
             ],
         ],
         'md5hash' => [
