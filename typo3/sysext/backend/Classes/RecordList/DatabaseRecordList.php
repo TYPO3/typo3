@@ -1535,29 +1535,43 @@ class DatabaseRecordList
                 if (!$permsEdit || $isDeletePlaceHolder || $this->isRecordCurrentBackendUser($table, $row)) {
                     $hideAction = $this->spaceIcon;
                 } else {
-                    $hideTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide' . ($table === 'pages' ? 'Page' : '')));
-                    $unhideTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide' . ($table === 'pages' ? 'Page' : '')));
+                    $visibleTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide' . ($table === 'pages' ? 'Page' : ''));
+                    $visibleIcon = 'actions-edit-hide';
+                    $visibleValue = '0';
+                    $hiddenTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide' . ($table === 'pages' ? 'Page' : ''));
+                    $hiddenIcon = 'actions-edit-unhide';
+                    $hiddenValue = '1';
                     if ($row[$hiddenField] ?? false) {
-                        $params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=0';
-                        $hideAction = '<button type="button"'
-                                        . ' class="btn btn-default t3js-record-hide"'
-                                        . ' data-state="hidden"'
-                                        . ' data-params="' . htmlspecialchars($params) . '"'
-                                        . ' data-toggle-title="' . $hideTitle . '"'
-                                        . ' title="' . $unhideTitle . '">'
-                                        . $this->iconFactory->getIcon('actions-edit-unhide', IconSize::SMALL)->render()
-                                        . '</button>';
+                        $titleLabel = $hiddenTitle;
+                        $iconIdentifier = $hiddenIcon;
+                        $status = 'hidden';
                     } else {
-                        $params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=1';
-                        $hideAction = '<button type="button"'
-                                        . ' class="btn btn-default t3js-record-hide"'
-                                        . ' data-state="visible"'
-                                        . ' data-params="' . htmlspecialchars($params) . '"'
-                                        . ' data-toggle-title="' . $unhideTitle . '"'
-                                        . ' title="' . $hideTitle . '">'
-                                        . $this->iconFactory->getIcon('actions-edit-hide', IconSize::SMALL)->render()
-                                        . '</button>';
+                        $titleLabel = $visibleTitle;
+                        $iconIdentifier = $visibleIcon;
+                        $status = 'visible';
                     }
+                    $attributesString = GeneralUtility::implodeAttributes(
+                        [
+                            'class' => 'btn btn-default',
+                            'type' => 'button',
+                            'title' => $titleLabel,
+                            'data-datahandler-action' => 'visibility',
+                            'data-datahandler-table' => $table,
+                            'data-datahandler-uid' => $rowUid,
+                            'data-datahandler-field' => $hiddenField,
+                            'data-datahandler-status' => $status,
+                            'data-datahandler-visible-label' => $visibleTitle,
+                            'data-datahandler-visible-value' => $visibleValue,
+                            'data-datahandler-visible-icon' => $visibleIcon,
+                            'data-datahandler-hidden-label' => $hiddenTitle,
+                            'data-datahandler-hidden-value' => $hiddenValue,
+                            'data-datahandler-hidden-icon' => $hiddenIcon,
+                        ],
+                        true
+                    );
+                    $hideAction = '<button ' . $attributesString . '>'
+                        . $this->iconFactory->getIcon($iconIdentifier, IconSize::SMALL)
+                        . '</button>';
                 }
                 $this->addActionToCellGroup($cells, $hideAction, 'hide');
             }

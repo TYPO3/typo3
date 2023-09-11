@@ -24,7 +24,7 @@ import Notification from './notification';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 enum Identifiers {
-  hide = '.t3js-record-hide',
+  hide = 'button[data-datahandler-action="visibility"]',
   delete = '.t3js-record-delete',
   icon = '.t3js-icon',
 }
@@ -106,23 +106,9 @@ class AjaxDataHandler {
   // @todo: Many extensions rely on this behavior but it's misplaced in AjaxDataHandler. Move into recordlist.ts and deprecate in v11.
   private initialize(): void {
     // HIDE/UNHIDE: click events for all action icons to hide/unhide
-    new RegularEvent('click', (e: Event, anchorElement: HTMLElement): void => {
+    new RegularEvent('click', (e: Event, element: HTMLButtonElement): void => {
       e.preventDefault();
-
-      const iconElement = anchorElement.querySelector(Identifiers.icon);
-      const rowElement = anchorElement.closest('tr[data-uid]');
-      const params = anchorElement.dataset.params;
-
-      // add a spinner
-      this._showSpinnerIcon(iconElement);
-
-      // make the AJAX call to toggle the visibility
-      this.process(params).then((result: ResponseInterface): void => {
-        if (!result.hasErrors) {
-          // adjust overlay icon
-          this.toggleRow(rowElement);
-        }
-      });
+      this.handleVisibilityToggle(element);
     }).delegateTo(document, Identifiers.hide);
 
     // DELETE: click events for all action icons to delete
@@ -153,55 +139,80 @@ class AjaxDataHandler {
     }).delegateTo(document, Identifiers.delete);
   }
 
-  /**
-   * Toggle row visibility after record has been changed
-   */
-  private toggleRow(rowElement: Element): void {
-    const anchorElement = rowElement.querySelector(Identifiers.hide) as HTMLElement;
-    const table = (anchorElement.closest('table[data-table]') as HTMLTableElement).dataset.table;
-    const params = anchorElement.dataset.params;
-    let nextParams;
-    let nextState;
-    let iconName;
+  private handleVisibilityToggle(element: HTMLButtonElement): void
+  {
+    const rowElement = element.closest('tr[data-uid]');
 
-    if (anchorElement.dataset.state === 'hidden') {
-      nextState = 'visible';
-      nextParams = params.replace('=0', '=1');
-      iconName = 'actions-edit-hide';
-    } else {
-      nextState = 'hidden';
-      nextParams = params.replace('=1', '=0');
-      iconName = 'actions-edit-unhide';
-    }
-    anchorElement.dataset.state = nextState;
-    anchorElement.dataset.params = nextParams;
+    // Show spinner
+    const iconElement = element.querySelector(Identifiers.icon);
+    this._showSpinnerIcon(iconElement);
 
-    const iconElement = anchorElement.querySelector(Identifiers.icon);
-    Icons.getIcon(iconName, Icons.sizes.small).then((icon: string): void => {
-      iconElement.replaceWith(document.createRange().createContextualFragment(icon));
+    // Get Settings from element
+    const settings = {
+      table: element.dataset.datahandlerTable,
+      uid: element.dataset.datahandlerUid,
+      field: element.dataset.datahandlerField,
+      visible: (element.dataset.datahandlerStatus === 'visible')
+    };
+
+    const params = {
+      data: {
+        [settings.table]: {
+          [settings.uid]: {
+            [settings.field]: settings.visible
+              ? element.dataset.datahandlerHiddenValue
+              : element.dataset.datahandlerVisibleValue
+          }
+        }
+      }
+    };
+
+    // Submit Data
+    this.process(params).then((result: ResponseInterface): void => {
+      if (!result.hasErrors) {
+        // Inverse current state
+        settings.visible = !(settings.visible);
+        element.setAttribute('data-datahandler-status', settings.visible ? 'visible' : 'hidden');
+
+        const elementLabel = settings.visible
+          ? element.dataset.datahandlerVisibleLabel
+          : element.dataset.datahandlerHiddenLabel;
+        element.setAttribute('title', elementLabel);
+
+        const elementIconIdentifier = settings.visible
+          ? element.dataset.datahandlerVisibleIcon
+          : element.dataset.datahandlerHiddenIcon;
+        const iconElement = element.querySelector(Identifiers.icon);
+        Icons.getIcon(elementIconIdentifier, Icons.sizes.small).then((icon: string): void => {
+          iconElement.replaceWith(document.createRange().createContextualFragment(icon));
+        });
+
+        // Set overlay for the record icon
+        const recordIcon = rowElement.querySelector('.col-icon ' + Identifiers.icon);
+        if (settings.visible) {
+          recordIcon.querySelector('.icon-overlay').remove();
+        } else {
+
+          Icons.getIcon('miscellaneous-placeholder', Icons.sizes.small, 'overlay-hidden').then((icon: string): void => {
+            const iconFragment = document.createRange().createContextualFragment(icon);
+            recordIcon.append(iconFragment.querySelector('.icon-overlay'));
+          });
+        }
+
+        // Animate row
+        const animationEvent = new RegularEvent('animationend', (): void => {
+          rowElement.classList.remove('record-pulse');
+          animationEvent.release();
+        });
+        animationEvent.bindTo(rowElement);
+        rowElement.classList.add('record-pulse');
+
+        // Refresh Pagetree
+        if (settings.table === 'pages') {
+          AjaxDataHandler.refreshPageTree();
+        }
+      }
     });
-
-    // Set overlay for the record icon
-    const recordIcon = rowElement.querySelector('.col-icon ' + Identifiers.icon);
-    if (nextState === 'hidden') {
-      Icons.getIcon('miscellaneous-placeholder', Icons.sizes.small, 'overlay-hidden').then((icon: string): void => {
-        const iconFragment = document.createRange().createContextualFragment(icon);
-        recordIcon.append(iconFragment.querySelector('.icon-overlay'));
-      });
-    } else {
-      recordIcon.querySelector('.icon-overlay').remove();
-    }
-
-    const animationEvent = new RegularEvent('animationend', (): void => {
-      rowElement.classList.remove('record-pulse');
-      animationEvent.release();
-    });
-    animationEvent.bindTo(rowElement);
-    rowElement.classList.add('record-pulse');
-
-    if (table === 'pages') {
-      AjaxDataHandler.refreshPageTree();
-    }
   }
 
   /**
