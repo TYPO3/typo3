@@ -115,4 +115,49 @@ final class ModelServiceTest extends FunctionalTestCase
         $property = $object->getProperty('urls');
         self::assertSame($url, $property->getValue($source)[0] ?? null);
     }
+
+    public static function buildMutationFromArrayThrowsValueErrorDataProvider(): \Generator
+    {
+        yield 'undefined mutation mode' => [
+            [
+                'directive' => 'script-src',
+                'sources' => ['https:'],
+            ],
+            '"" is not a valid backing value for enum',
+        ];
+        yield 'invalid mutation mode' => [
+            [
+                'mode' => 'invalid',
+                'directive' => 'script-src',
+                'sources' => ['https:'],
+            ],
+            '"invalid" is not a valid backing value for enum',
+        ];
+        yield 'undefined directive' => [
+            [
+                'mode' => 'extend',
+                'sources' => ['https:'],
+            ],
+            '"" is not a valid backing value for enum',
+        ];
+        yield "source 'unsafe-inline' used as directive" => [
+            [
+                'mode' => 'extend',
+                'directive' => "'unsafe-inline'",
+                'sources' => ['https:'],
+            ],
+            '"\'unsafe-inline\'" is not a valid backing value for enum',
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider buildMutationFromArrayThrowsValueErrorDataProvider
+     */
+    public function buildMutationFromArrayThrowsValueError(array $array, string $expectedErrorMessage): void
+    {
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage($expectedErrorMessage);
+        $this->subject->buildMutationFromArray($array);
+    }
 }
