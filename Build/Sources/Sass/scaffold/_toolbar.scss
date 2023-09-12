@@ -24,25 +24,21 @@ $toolbar-navigation-search-hover-bg: $toolbar-dropdown-link-hover-bg;
 $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
 
 .toolbar {
+    display: flex;
     padding: 0;
     background-color: $scaffold-topbar-bg;
-
-    &:after {
-        clear: both;
-        display: table;
-        content: '';
-    }
 }
 
 .toolbar-list {
+    display: flex;
     list-style: none;
     padding: 0;
     margin: 0;
+    gap: .5rem;
+    flex-wrap: wrap;
 
-    &:after {
-        clear: both;
-        display: table;
-        content: '';
+    @include media-breakpoint-up('lg') {
+        gap: 1px;
     }
 }
 
@@ -50,20 +46,18 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
 .toolbar-item {
     position: relative;
     display: block;
-    float: left;
     width: 100%;
 
     @media (min-width: 600px) {
-        width: 50%;
+        width: calc(50% - (.5rem / 2));
     }
 
     @media (min-width: 750px) {
-        width: 33.33%;
+        width: calc(33.33% - (1rem / 3));
     }
 
     @include media-breakpoint-up('lg') {
         width: auto;
-        margin-left: 1px;
     }
 }
 
@@ -93,7 +87,7 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
 
 // Toolbar Item
 .toolbar-item-avatar {
-    margin-right: 2px;
+    margin-inline-end: 2px;
     display: inline-block;
     vertical-align: middle;
 }
@@ -107,6 +101,11 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     top: 14px;
     right: 11px;
     --bs-badge-border-radius: .65rem;
+
+    [dir="rtl"] & {
+        right: auto;
+        left: 11px;
+    }
 }
 
 // Toolbar Item Link
@@ -123,10 +122,15 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     padding: $toolbar-item-padding-vertical $toolbar-item-padding-horizontal;
     height: $toolbar-height;
     line-height: $toolbar-height - ($toolbar-item-padding-vertical * 2);
+    outline: none;
 
     &:hover,
     &:focus {
         text-decoration: none;
+    }
+
+    &:focus-visible {
+        box-shadow: inset 0 0 0 1px #000, inset 0 0 0 2px #fff;
     }
 
     &.show {
@@ -153,5 +157,10 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
         top: auto;
         bottom: 4px;
         right: 4px;
+
+        [dir="rtl"] & {
+            right: auto;
+            left: 4px;
+        }
     }
 }
