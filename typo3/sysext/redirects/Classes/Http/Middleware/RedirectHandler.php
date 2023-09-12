@@ -68,7 +68,11 @@ class RedirectHandler implements MiddlewareInterface
             $url = $this->redirectService->getTargetUrl($matchedRedirect, $request);
             if ($url instanceof UriInterface) {
                 if ($this->redirectUriWillRedirectToCurrentUri($request, $url)) {
-                    if ($url->getFragment()) {
+                    if ($this->isEmptyRedirectUri($url)) {
+                        // Empty uri leads to a redirect loop in Firefox, whereas Chrome would stop it but not displaying anything.
+                        // @see https://forge.typo3.org/issues/100791
+                        $this->logger->error('Empty redirect points to itself! Aborting.', ['record' => $matchedRedirect, 'uri' => (string)$url]);
+                    } elseif ($url->getFragment()) {
                         // Enrich error message for unsharp check with target url fragment.
                         $this->logger->error('Redirect ' . $url->getPath() . ' eventually points to itself! Target with fragment can not be checked and we take the safe check to avoid redirect loops. Aborting.', ['record' => $matchedRedirect, 'uri' => (string)$url]);
                     } else {
@@ -101,6 +105,9 @@ class RedirectHandler implements MiddlewareInterface
      */
     protected function redirectUriWillRedirectToCurrentUri(ServerRequestInterface $request, UriInterface $redirectUri): bool
     {
+        if ($this->isEmptyRedirectUri($redirectUri)) {
+            return true;
+        }
         $requestUri = $request->getUri();
         $redirectIsAbsolute = $redirectUri->getHost() && $redirectUri->getScheme();
         $requestUri = $this->sanitizeUriForComparison($requestUri, !$redirectIsAbsolute);
@@ -160,5 +167,14 @@ class RedirectHandler implements MiddlewareInterface
         }
 
         return $uri;
+    }
+
+    /**
+     * Empty uri leads to a redirect loop in Firefox, whereas Chrome would stop it but not displaying anything.
+     * @see https://forge.typo3.org/issues/100791
+     */
+    private function isEmptyRedirectUri(UriInterface $uri): bool
+    {
+        return (string)$uri === '';
     }
 }
