@@ -79,11 +79,13 @@ class Indexer implements LoggerAwareInterface
         }
 
         $fileProperties = $this->gatherFileInformationArray($identifier);
-        $record = $this->getFileIndexRepository()->addRaw($fileProperties);
+        $fileIndexRepository = $this->getFileIndexRepository();
 
+        $record = $fileIndexRepository->addRaw($fileProperties);
         $fileObject = $this->getResourceFactory()->getFileObject($record['uid'], $record);
-        $metaData = $this->extractRequiredMetaData($fileObject);
+        $fileIndexRepository->updateIndexingTime($fileObject->getUid());
 
+        $metaData = $this->extractRequiredMetaData($fileObject);
         if ($this->storage->autoExtractMetadataEnabled()) {
             $metaData = array_merge($metaData, $this->getExtractorService()->extractMetaData($fileObject));
         }
@@ -103,13 +105,16 @@ class Indexer implements LoggerAwareInterface
         $updatedInformation = $this->gatherFileInformationArray($fileObject->getIdentifier());
         $fileObject->updateProperties($updatedInformation);
 
-        $this->getFileIndexRepository()->update($fileObject);
-        $metaData = $this->extractRequiredMetaData($fileObject);
+        $fileIndexRepository = $this->getFileIndexRepository();
+        $fileIndexRepository->update($fileObject);
+        $fileIndexRepository->updateIndexingTime($fileObject->getUid());
 
+        $metaData = $this->extractRequiredMetaData($fileObject);
         if ($this->storage->autoExtractMetadataEnabled()) {
             $metaData = array_merge($metaData, $this->getExtractorService()->extractMetaData($fileObject));
         }
         $fileObject->getMetaData()->add($metaData)->save();
+
         return $fileObject;
     }
 
