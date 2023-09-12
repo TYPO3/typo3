@@ -48,10 +48,15 @@ $toolbar-item-padding-horizontal: 15px;
     background-color: $topbar-button-bg;
     height: $topbar-height;
     width: $topbar-button-width;
+    outline: 0;
 
     &:focus,
     &:hover {
         background-color: $topbar-button-hover-bg;
+    }
+
+    &:focus-visible {
+        box-shadow: inset 0 0 0 1px #000, inset 0 0 0 2px #fff;
     }
 
     &[disabled],
@@ -76,6 +81,23 @@ $toolbar-item-padding-horizontal: 15px;
 
     &.topbar-button-search {
         right: 0;
+    }
+
+    [dir="rtl"] & {
+        &.topbar-button-modulemenu {
+            right: 0;
+            left: auto;
+        }
+
+        &.topbar-button-toolbar {
+            right: auto;
+            left: $topbar-button-width;
+        }
+
+        &.topbar-button-search {
+            right: auto;
+            left: 0;
+        }
     }
 }
 
@@ -107,10 +129,10 @@ $toolbar-item-padding-horizontal: 15px;
 // Header
 //
 .topbar-header {
-    padding-left: $topbar-button-width;
+    padding-inline-start: $topbar-button-width;
 
     @include media-breakpoint-down('lg') {
-        padding-right: ($topbar-button-width) !important;
+        padding-inline-end: ($topbar-button-width) !important;
     }
 }
 
@@ -120,9 +142,21 @@ $toolbar-item-padding-horizontal: 15px;
     max-width: 100%;
     height: $topbar-height;
     line-height: $topbar-height;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-inline-start: 1em;
+    padding-inline-end: 1em;
     white-space: nowrap;
+
+    a {
+        display: inline-block;
+        outline: 0;
+        padding-inline-start: .5rem;
+        padding-inline-end: .5rem;
+        margin-inline-start: -.5rem;
+
+        &:focus-visible {
+            box-shadow: inset 0 0 0 1px #000, inset 0 0 0 2px #fff;
+        }
+    }
 
     &:before,
     &:after {
@@ -143,6 +177,19 @@ $toolbar-item-padding-horizontal: 15px;
         right: 1em;
         background: linear-gradient(to right, transparentize($topbar-bg, 1) 0%, transparentize($topbar-bg, 0) 100%);
     }
+
+    [dir="rtl"] & {
+        &:before {
+            right: auto;
+            left: 0;
+        }
+
+        &:after {
+            right: auto;
+            left: 1em;
+            background: linear-gradient(to left, transparentize($topbar-bg, 1) 0%, transparentize($topbar-bg, 0) 100%);
+        }
+    }
 }
 
 .typo3-in-workspace {
@@ -162,7 +209,7 @@ $toolbar-item-padding-horizontal: 15px;
 .topbar-header-site-logo {
     height: $topbar-height;
     display: none;
-    padding-right: .5em;
+    padding-inline-end: .5em;
 
     img {
         max-width: 180px;

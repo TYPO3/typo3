@@ -147,9 +147,6 @@ body {
         }
 
         @include media-breakpoint-down('lg') {
-            .toolbar-item {
-                padding: 4px;
-            }
             min-height: calc(100vh - #{$scaffold-topbar-height});
             padding: 8px;
             flex: 1 0 100%;

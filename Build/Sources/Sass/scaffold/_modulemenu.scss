@@ -38,7 +38,7 @@
     border: none;
     border-radius: 3px;
     background-color: transparent;
-    text-align: left;
+    text-align: start;
 
     &:not(:disabled):focus,
     &:not(:disabled):hover {
@@ -191,7 +191,8 @@ button[aria-expanded="true"]:not(:disabled) {
 
     .modulemenu-name {
         position: static;
-        margin: 0 0 0 1em;
+        margin: 0;
+        margin-inline-start: 1em;
         width: auto;
         height: auto;
     }
