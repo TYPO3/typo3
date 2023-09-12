@@ -34,6 +34,7 @@ final class CliCommandTest extends AbstractCommandTestCase
             ['command' => 'cleanup:flexforms', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'cleanup:deletedrecords', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'cleanup:orphanrecords', 'args' => [], 'expectedExitCode' => 0],
+            ['command' => 'cleanup:missingfiles', 'args' => ['-n'], 'expectedExitCode' => 0],
             ['command' => 'syslog:list', 'args' => [], 'expectedExitCode' => 0],
         ];
     }

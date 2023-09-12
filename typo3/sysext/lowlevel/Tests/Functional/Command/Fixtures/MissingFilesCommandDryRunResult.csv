@@ -1,0 +1,26 @@
+"sys_file"
+,"uid","identifier","missing"
+,1,"/existing.png",0
+,2,"/missing-referenced.png",1
+,3,"/missing-softref.png",1
+,4,"/missing-unreferenced.png",1
+,5,"/not-yet-flagged.png",0
+"sys_file_metadata"
+,"uid","file","title"
+,1,1,"Existing"
+,2,2,"Missing but referenced"
+,3,3,"Missing but soft referenced"
+,4,4,"Missing and unreferenced"
+,5,5,"Not yet flagged"
+"sys_file_processedfile"
+,"uid","original","identifier"
+,1,2,"/_processed_/2/missing-referenced_abc.png"
+,2,4,"/_processed_/4/missing-unreferenced_def.png"
+"sys_category_record_mm"
+,"uid_local","uid_foreign","tablenames"
+,1,2,"sys_file_metadata"
+,1,4,"sys_file_metadata"
+"sys_file_reference"
+,"uid","deleted","uid_local"
+,1,0,2
+,2,1,4

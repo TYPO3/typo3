@@ -1,0 +1,33 @@
+"sys_file"
+,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size","missing"
+,1,0,1,2,"/existing.png","8eadf0ec28a01901c17b26da2886525f3d353d2a","42099b4af021e53fd8fd4e056c2568d7c2e3ffa8","png","image/png","existing.png","8cf6c65fa79d3b4d7858c620e0e25a112b0e8a89",1780,0
+,2,0,1,2,"/missing-referenced.png","9173a3a0bfc5e373b6a836cce2634647477fe85c","42099b4af021e53fd8fd4e056c2568d7c2e3ffa8","png","image/png","missing-referenced.png","2057d0067690bf7380f4f13d515144480a491fc0",1000,1
+,3,0,1,2,"/missing-softref.png","edcc71f51b5c99c5c681a6798c6bb758bce6fbd9","42099b4af021e53fd8fd4e056c2568d7c2e3ffa8","png","image/png","missing-softref.png","a6394a6a907081ba380f404345938fa7f4790a1a",1000,1
+,4,0,1,2,"/missing-unreferenced.png","f960c76eaab1830d4117c91e4d75c4e78cb65f24","42099b4af021e53fd8fd4e056c2568d7c2e3ffa8","png","image/png","missing-unreferenced.png","1782bae75fccbd3bf94ca453366f393758613bdd",1000,1
+,5,0,1,2,"/not-yet-flagged.png","8a560238059a9cb1fbc1a54eb1554a255c97e2c2","42099b4af021e53fd8fd4e056c2568d7c2e3ffa8","png","image/png","not-yet-flagged.png","3288909f4bb9a1b20fb3dac84e684fc392e479f3",1000,0
+"sys_file_metadata"
+,"uid","pid","file","title"
+,1,0,1,"Existing"
+,2,0,2,"Missing but referenced"
+,3,0,3,"Missing but soft referenced"
+,4,0,4,"Missing and unreferenced"
+,5,0,5,"Not yet flagged"
+"tt_content"
+,"uid","pid","CType","bodytext"
+,1,1,"textmedia",
+,2,1,"text","<p><a href=""t3://file?uid=3"">Missing but soft referenced</a></p>"
+"sys_file_reference"
+,"uid","pid","deleted","uid_local","uid_foreign","tablenames","fieldname"
+,1,1,0,2,1,"tt_content","assets"
+,2,1,1,4,2,"tt_content","assets"
+"sys_file_processedfile"
+,"uid","storage","original","identifier","name","configuration","task_type","checksum"
+,1,1,2,"/_processed_/2/missing-referenced_abc.png","missing-referenced_abc.png","a:0:{}","Image.CropScaleMask","abc"
+,2,1,4,"/_processed_/4/missing-unreferenced_def.png","missing-unreferenced_def.png","a:0:{}","Image.CropScaleMask","def"
+"sys_category"
+,"uid","pid","title"
+,1,0,"Category"
+"sys_category_record_mm"
+,"uid_local","uid_foreign","tablenames","fieldname"
+,1,2,"sys_file_metadata","categories"
+,1,4,"sys_file_metadata","categories"
