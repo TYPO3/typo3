@@ -745,6 +745,7 @@ export class SvgTree extends LitElement {
         <typo3-backend-icon identifier="spinner-circle" size="small"></typo3-backend-icon>
       </div>
       <svg version="1.1"
+           direction="ltr"
            width="100%"
            @mouseover=${() => this.isOverSvg = true}
            @mouseout=${() => this.isOverSvg = false}

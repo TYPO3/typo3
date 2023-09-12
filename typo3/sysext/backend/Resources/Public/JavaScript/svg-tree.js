@@ -15,6 +15,7 @@ var __decorate=function(e,t,s,i){var o,n=arguments.length,r=n<3?t:null===i?i=Obj
         <typo3-backend-icon identifier="spinner-circle" size="small"></typo3-backend-icon>
       </div>
       <svg version="1.1"
+           direction="ltr"
            width="100%"
            @mouseover=${()=>this.isOverSvg=!0}
            @mouseout=${()=>this.isOverSvg=!1}
