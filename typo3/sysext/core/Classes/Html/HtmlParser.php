@@ -541,7 +541,7 @@ class HtmlParser
                                                         $tagAttrib[0][$attr] = $params['list'][0];
                                                     }
                                                 } else {
-                                                    if (!in_array($this->caseShift($tagAttrib[0][$attr] ?? '', $params['casesensitiveComp'] ?? false), (array)$this->caseShift($params['list'], $params['casesensitiveComp'], $tagName))) {
+                                                    if (!in_array($this->caseShift($tagAttrib[0][$attr] ?? '', $params['casesensitiveComp'] ?? false), (array)$this->caseShift($params['list'], $params['casesensitiveComp'] ?? false, $tagName))) {
                                                         $tagAttrib[0][$attr] = $params['list'][0];
                                                     }
                                                 }
