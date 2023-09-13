@@ -21,16 +21,10 @@ CREATE TABLE sys_preview (
 #
 CREATE TABLE sys_workspace (
 	title varchar(30) DEFAULT '' NOT NULL,
-	adminusers varchar(4000) DEFAULT '' NOT NULL,
-	members varchar(4000) DEFAULT '' NOT NULL,
-	db_mountpoints text,
 	file_mountpoints text,
 	previewlink_lifetime int(11) DEFAULT '0' NOT NULL,
 	custom_stages int(11) DEFAULT '0' NOT NULL,
 	stagechg_notification tinyint(3) DEFAULT '0' NOT NULL,
-	edit_notification_defaults varchar(255) DEFAULT '' NOT NULL,
-	publish_notification_defaults varchar(255) DEFAULT '' NOT NULL,
-	execute_notification_defaults varchar(255) DEFAULT '' NOT NULL,
 );
 
 
@@ -39,9 +33,7 @@ CREATE TABLE sys_workspace (
 #
 CREATE TABLE sys_workspace_stage (
 	title varchar(30) DEFAULT '' NOT NULL,
-	responsible_persons varchar(255) DEFAULT '' NOT NULL,
 	default_mailcomment text,
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable varchar(255) DEFAULT '' NOT NULL,
-	notification_defaults varchar(255) DEFAULT '' NOT NULL,
 );

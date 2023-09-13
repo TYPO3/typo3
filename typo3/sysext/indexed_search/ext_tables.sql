@@ -120,17 +120,18 @@ CREATE TABLE index_config (
   type varchar(30) DEFAULT '' NOT NULL,
   depth int(11) unsigned DEFAULT '0' NOT NULL,
   table2index varchar(255) DEFAULT '' NOT NULL,
-  alternative_source_pid int(11) unsigned DEFAULT '0' NOT NULL,
   get_params varchar(255) DEFAULT '' NOT NULL,
   fieldlist varchar(255) DEFAULT '' NOT NULL,
   externalUrl varchar(255) DEFAULT '' NOT NULL,
-  indexcfgs text,
   filepath varchar(255) DEFAULT '' NOT NULL,
   extensions varchar(255) DEFAULT '' NOT NULL,
 
   timer_frequency int(11) DEFAULT '0' NOT NULL,
   url_deny text,
   recordsbatch int(11) DEFAULT '0' NOT NULL,
+
+  # group fields, but rely on the integer format, so default format (text) gets overridden here
+  alternative_source_pid int(11) unsigned DEFAULT '0' NOT NULL,
 );
 
 

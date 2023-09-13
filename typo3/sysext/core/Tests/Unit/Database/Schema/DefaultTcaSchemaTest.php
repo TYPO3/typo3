@@ -1123,4 +1123,51 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('language')->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function enrichAddsGroup(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['group'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'group',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`group`',
+            Type::getType('text'),
+            [
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('group')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsGroupWithMM(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['groupWithMM'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'group',
+                'MM' => 'aTable',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`groupWithMM`',
+            Type::getType('integer'),
+            [
+                'default' => 0,
+                'notnull' => true,
+                'unsigned' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('groupWithMM')->toArray());
+    }
 }

@@ -665,6 +665,34 @@ class DefaultTcaSchema
                     ]
                 );
             }
+
+            // Add fields for all tables, defining group columns (TCA type=group)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'group'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                if (isset($fieldConfig['config']['MM'])) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        'integer',
+                        [
+                        'default' => 0,
+                        'notnull' => true,
+                        'unsigned' => true,
+                    ]
+                    );
+                } else {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        'text',
+                        [
+                            'notnull' => false,
+                        ]
+                    );
+                }
+            }
         }
 
         return $tables;

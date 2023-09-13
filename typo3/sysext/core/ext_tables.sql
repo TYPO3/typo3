@@ -7,7 +7,6 @@ CREATE TABLE be_groups (
 	explicit_allowdeny text,
 	allowed_languages varchar(255) DEFAULT '' NOT NULL,
 	custom_options text,
-	db_mountpoints text,
 	pagetypes_select text,
 	tables_select text,
 	tables_modify text,
@@ -41,7 +40,6 @@ CREATE TABLE be_users (
 	password varchar(255) DEFAULT '' NOT NULL,
 	usergroup text,
 	lang varchar(10) DEFAULT 'default' NOT NULL,
-	db_mountpoints text,
 	realName varchar(80) DEFAULT '' NOT NULL,
 	userMods text,
 	allowed_languages varchar(255) DEFAULT '' NOT NULL,
@@ -67,7 +65,6 @@ CREATE TABLE pages (
 	doktype int(11) unsigned DEFAULT '0' NOT NULL,
 	TSconfig text,
 	url varchar(255) DEFAULT '' NOT NULL,
-	shortcut int(10) unsigned DEFAULT '0' NOT NULL,
 	shortcut_mode int(10) unsigned DEFAULT '0' NOT NULL,
 	subtitle varchar(255) DEFAULT '' NOT NULL,
 	layout int(11) unsigned DEFAULT '0' NOT NULL,
@@ -81,8 +78,12 @@ CREATE TABLE pages (
 	module varchar(255) DEFAULT '' NOT NULL,
 	author varchar(255) DEFAULT '' NOT NULL,
 	nav_title varchar(255) DEFAULT '' NOT NULL,
+
+	# group fields, but rely on the integer format, so default format (text) gets overridden here
+	shortcut int(10) unsigned DEFAULT '0' NOT NULL,
 	content_from_pid int(10) unsigned DEFAULT '0' NOT NULL,
 	mount_pid int(10) unsigned DEFAULT '0' NOT NULL,
+
 	mount_pid_ol tinyint(4) DEFAULT '0' NOT NULL,
 	backend_layout varchar(64) DEFAULT '' NOT NULL,
 	backend_layout_next_level varchar(64) DEFAULT '' NOT NULL,
@@ -230,11 +231,13 @@ CREATE TABLE sys_file_processedfile (
 #
 CREATE TABLE sys_file_reference (
 	# Reference fields (basically same as MM table)
-	uid_local int(11) DEFAULT '0' NOT NULL,
 	uid_foreign int(11) DEFAULT '0' NOT NULL,
 	tablenames varchar(64) DEFAULT '' NOT NULL,
 	fieldname varchar(64) DEFAULT '' NOT NULL,
 	sorting_foreign int(11) DEFAULT '0' NOT NULL,
+
+	# group fields, but rely on the integer format, so default format (text) gets overridden here
+	uid_local int(11) DEFAULT '0' NOT NULL,
 
 	# Local usage overlay fields
 	title tinytext,
@@ -358,6 +361,8 @@ CREATE TABLE sys_log (
 #
 CREATE TABLE sys_category (
 	title tinytext NOT NULL,
+
+	# group fields, but rely on the integer format, so default format (text) gets overridden here
 	items int(11) DEFAULT '0' NOT NULL,
 
 	KEY category_parent (parent),

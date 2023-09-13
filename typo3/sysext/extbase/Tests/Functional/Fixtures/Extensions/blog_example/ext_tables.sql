@@ -18,7 +18,6 @@ CREATE TABLE tx_blogexample_domain_model_post (
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	author int(11) DEFAULT '0' NOT NULL,
-	second_author int(11) DEFAULT '0' NOT NULL,
 	reviewer int(11) DEFAULT '0' NOT NULL,
 	content text NOT NULL,
 	tags int(11) unsigned DEFAULT '0' NOT NULL,
@@ -55,7 +54,6 @@ CREATE TABLE tx_blogexample_domain_model_person (
 #
 CREATE TABLE tx_blogexample_domain_model_tag (
 	name varchar(255) DEFAULT '' NOT NULL,
-	items int(11) unsigned DEFAULT '0' NOT NULL
 );
 
 #
