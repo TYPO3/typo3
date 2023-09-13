@@ -14,7 +14,7 @@
         <tbody>
         <f:for each="{groupsWithoutTasks}" as="group" key="taskGroupId">
             <tr class="{f:if(condition:'{group.disabled}', then: 'disabled')}">
-                <td class="align-top">
+                <td class="col-title col-responsive">
                     <typo3-scheduler-editable-group-name
                         groupName="{group.groupName}"
                         groupId="{group.uid}"
@@ -26,12 +26,12 @@
                         <span class="badge badge-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.isDisabled" /></span>
                     </f:if>
                 </td>
-                <td class="align-top col-control nowrap">
+                <td class="col-control nowrap">
                     <form name="tx_scheduler_form_group" id="tx_scheduler_form_group" method="post">
                         <input name="action[group][uid]" type="hidden" value="{group.uid}">
                         <div class="btn-group" role="group">
                             <a href="{be:moduleLink(route: 'scheduler_manage', arguments: {action: 'add', groupId: group.uid}, currentUrlParameterName: 'redirect')}"
-                                class="btn btn-default"
+                                class="btn btn-sm btn-default"
                                 title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')}"
                             >
                                 <core:icon identifier="actions-plus" />
@@ -45,7 +45,7 @@
                                         type="submit"
                                         name="action[group][hidden]"
                                         value="0"
-                                        class="btn btn-default"
+                                        class="btn btn-sm btn-default"
                                         title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable')}"
                                     >
                                         <core:icon identifier="actions-edit-unhide"/>
@@ -56,7 +56,7 @@
                                         type="submit"
                                         name="action[group][hidden]"
                                         value="1"
-                                        class="btn btn-default"
+                                        class="btn btn-sm btn-default"
                                         title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disable')}"
                                     >
                                         <core:icon identifier="actions-edit-hide"/>
@@ -65,7 +65,7 @@
                             </f:if>
                             <button
                                 type="submit"
-                                class="btn btn-default t3js-modal-trigger"
+                                class="btn btn-sm btn-default t3js-modal-trigger"
                                 data-target-form="tx_scheduler_form_group_remove_{group.uid}"
                                 data-severity="warning"
                                 data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"

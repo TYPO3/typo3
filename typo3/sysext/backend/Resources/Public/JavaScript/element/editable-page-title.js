@@ -10,21 +10,49 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(t,e,i,o){var a,r=arguments.length,n=r<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(t,e,i,o);else for(var d=t.length-1;d>=0;d--)(a=t[d])&&(n=(r<3?a(n):r>3?a(e,i,n):a(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};import{lll}from"@typo3/core/lit-helper.js";import{html,css,LitElement,nothing}from"lit";import{customElement,property,state}from"lit/decorators.js";import"@typo3/backend/element/icon-element.js";import AjaxDataHandler from"@typo3/backend/ajax-data-handler.js";let EditablePageTitle=class extends LitElement{constructor(){super(...arguments),this.pageTitle="",this.pageId=0,this.localizedPageId=0,this.editable=!1,this._isEditing=!1,this._isSubmitting=!1}async startEditing(){this.isEditable()&&(this._isEditing=!0,await this.updateComplete,this.shadowRoot.querySelector("input")?.focus())}render(){if(""===this.pageTitle)return nothing;if(!this.isEditable())return html`<div class="wrapper"><h1>${this.pageTitle}</h1></div>`;let t;return t=this._isEditing?this.composeEditForm():html`
+var __decorate=function(e,t,i,a){var o,n=arguments.length,r=n<3?t:null===a?a=Object.getOwnPropertyDescriptor(t,i):a;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)r=Reflect.decorate(e,t,i,a);else for(var l=e.length-1;l>=0;l--)(o=e[l])&&(r=(n<3?o(r):n>3?o(t,i,r):o(t,i))||r);return n>3&&r&&Object.defineProperty(t,i,r),r};import{html,css,LitElement,nothing}from"lit";import{customElement,property,state}from"lit/decorators.js";import"@typo3/backend/element/icon-element.js";import AjaxDataHandler from"@typo3/backend/ajax-data-handler.js";let EditablePageTitle=class extends LitElement{constructor(){super(...arguments),this.pageTitle="",this.pageId=0,this.localizedPageId=0,this.editable=!1,this._isEditing=!1,this._isSubmitting=!1,this.labels={input:TYPO3?.lang?.["editablePageTitle.input.field.label"]||"Field",edit:TYPO3?.lang?.["editablePageTitle.button.edit.label"]||"Edit",save:TYPO3?.lang?.["editablePageTitle.button.save.label"]||"Save",cancel:TYPO3?.lang?.["editablePageTitle.button.cancel.label"]||"Cancel"}}async startEditing(){this.isEditable()&&(this._isEditing=!0,await this.updateComplete,this.shadowRoot.querySelector("input")?.focus())}render(){if(""===this.pageTitle)return nothing;if(!this.isEditable())return html`<div class="wrapper"><h1>${this.pageTitle}</h1></div>`;let e;return e=this._isEditing?this.composeEditForm():html`
         <div class="wrapper">
           <h1 @dblclick="${()=>{this.startEditing()}}">${this.pageTitle}</h1>
           ${this.composeEditButton()}
-        </div>`,t}isEditable(){return this.editable&&this.pageId>0}endEditing(){this.isEditable()&&(this._isEditing=!1)}updatePageTitle(t){t.preventDefault();const e=new FormData(t.target),i=Object.fromEntries(e).newPageTitle.toString();if(this.pageTitle===i)return void this.endEditing();this._isSubmitting=!0;let o=this.pageId;this.localizedPageId>0&&(o=this.localizedPageId);const a={data:{pages:{[o]:{title:i}}}};AjaxDataHandler.process(a).then((()=>{this.pageTitle=i,top.document.dispatchEvent(new CustomEvent("typo3:pagetree:refresh"))})).finally((()=>{this.endEditing(),this._isSubmitting=!1}))}composeEditButton(){return html`
-      <button data-action="edit" type="button" aria-label="${lll("editPageTitle")}" @click="${()=>{this.startEditing()}}">
+        </div>`,e}isEditable(){return this.editable&&this.pageId>0}endEditing(){this.isEditable()&&(this._isEditing=!1)}updatePageTitle(e){e.preventDefault();const t=new FormData(e.target),i=Object.fromEntries(t).newPageTitle.toString();if(this.pageTitle===i)return void this.endEditing();this._isSubmitting=!0;let a=this.pageId;this.localizedPageId>0&&(a=this.localizedPageId);const o={data:{pages:{[a]:{title:i}}}};AjaxDataHandler.process(o).then((()=>{this.pageTitle=i,top.document.dispatchEvent(new CustomEvent("typo3:pagetree:refresh"))})).finally((()=>{this.endEditing(),this._isSubmitting=!1}))}composeEditButton(){return html`
+      <button
+        data-action="edit"
+        type="button"
+        title="${this.labels.edit}"
+        @click="${()=>{this.startEditing()}}"
+      >
         <typo3-backend-icon identifier="actions-open" size="small"></typo3-backend-icon>
+        <span class="screen-reader">${this.labels.edit}</span>
       </button>`}composeEditForm(){return html`
       <form class="wrapper" @submit="${this.updatePageTitle}">
-        <input autocomplete="off" required name="newPageTitle" ?disabled="${this._isSubmitting}" value="${this.pageTitle}" @keydown="${t=>{"Escape"===t.key&&this.endEditing()}}">
-        <button data-action="save" type="submit" ?disabled="${this._isSubmitting}">
+        <label class="screen-reader" for="input">${this.labels.input}</label>
+        <input
+          autocomplete="off"
+          id="input"
+          name="newPageTitle"
+          required
+          value="${this.pageTitle}"
+          ?disabled="${this._isSubmitting}"
+          @keydown="${e=>{"Escape"===e.key&&this.endEditing()}}"
+        >
+        <button
+          data-action="save"
+          type="submit"
+          title="${this.labels.save}"
+          ?disabled="${this._isSubmitting}"
+        >
           <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
+          <span class="screen-reader">${this.labels.save}</span>
         </button>
-        <button data-action="close" type="button" ?disabled="${this._isSubmitting}" @click="${()=>{this.endEditing()}}">
+        <button
+          data-action="close"
+          type="button"
+          title="${this.labels.cancel}"
+          ?disabled="${this._isSubmitting}"
+          @click="${()=>{this.endEditing()}}"
+        >
           <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
+          <span class="screen-reader">${this.labels.cancel}</span>
         </button>
       </form>`}};EditablePageTitle.styles=css`
     :host {
@@ -78,14 +106,15 @@ var __decorate=function(t,e,i,o){var a,r=arguments.length,n=r<3?e:null===o?o=Obj
     }
 
     div.wrapper {
-      padding-right: 1.5em;
+      padding-inline-end: 1.5em;
     }
 
     form.wrapper {
-      padding-right: 2.5em;
+      padding-inline-end: 2.5em;
     }
 
     button {
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -119,14 +148,26 @@ var __decorate=function(t,e,i,o){var a,r=arguments.length,n=r<3?e:null===o?o=Obj
     }
 
     button[data-action="edit"] {
-      right: 0;
+      inset-inline-end: 0;
     }
 
     button[data-action="save"] {
-      right: calc(1em + 2px);
+      inset-inline-end: calc(1em + 2px);
     }
 
     button[data-action="close"] {
-      right: 0;
+      inset-inline-end: 0;
+    }
+
+    .screen-reader {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0
     }
     `,__decorate([property({type:String})],EditablePageTitle.prototype,"pageTitle",void 0),__decorate([property({type:Number})],EditablePageTitle.prototype,"pageId",void 0),__decorate([property({type:Number})],EditablePageTitle.prototype,"localizedPageId",void 0),__decorate([property({type:Boolean})],EditablePageTitle.prototype,"editable",void 0),__decorate([state()],EditablePageTitle.prototype,"_isEditing",void 0),__decorate([state()],EditablePageTitle.prototype,"_isSubmitting",void 0),EditablePageTitle=__decorate([customElement("typo3-backend-editable-page-title")],EditablePageTitle);export{EditablePageTitle};

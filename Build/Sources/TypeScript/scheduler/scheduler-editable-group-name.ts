@@ -11,10 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { lll } from '@typo3/core/lit-helper';
 import { html, css, LitElement, TemplateResult, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
-import '../backend/element/icon-element';
+import '@typo3/backend/element/icon-element';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import ResponseInterface from '@typo3/backend/ajax-data-handler/response-interface';
@@ -24,12 +23,25 @@ import Notification from '@typo3/backend/notification';
 export class EditableGroupName extends LitElement {
   static styles = css`
     :host {
-      display: inline-block;
+      display: block;
       --border-color: #bebebe;
       --hover-bg: #cacaca;
       --hover-border-color: #bebebe;
       --focus-bg: #cacaca;
       --focus-border-color: #bebebe;
+    }
+
+    .label {
+      display: block;
+      font-weight: inherit;
+      font-size: inherit;
+      font-family: inherit;
+      line-height: inherit;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      padding: calc(1px + .16rem)  0;
+      margin: 0;
     }
 
     input {
@@ -39,11 +51,12 @@ export class EditableGroupName extends LitElement {
       font-size: inherit;
       font-family: inherit;
       line-height: inherit;
-      padding: 0;
+      padding: .16rem 0;
       border: 0;
       border-top: 1px solid transparent;
       border-bottom: 1px dashed var(--border-color);
       margin: 0;
+      width: 100%;
     }
 
     input:hover {
@@ -59,30 +72,40 @@ export class EditableGroupName extends LitElement {
       margin: -1px 0;
     }
 
+    div.wrapper {
+      padding-inline-end: 2.5em;
+    }
+
+    form.wrapper {
+      padding-inline-end: 5em;
+    }
+
     button {
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: inherit;
       line-height: inherit;
       border: 0;
-      padding: 10px;
-      height: 1em;
-      width: 1em;
+      padding: 0;
+      height: 100%;
+      width: 2em;
+      position: absolute;
       top: 0;
       border-radius: 2px;
       overflow: hidden;
       outline: none;
       border: 1px solid transparent;
       background: transparent;
-      opacity: 1;
+      opacity: .3;
       transition: all .2s ease-in-out;
     }
 
     button:hover {
+      opacity: 1;
       background: var(--hover-bg);
       border-color: var(--hover-border-color);
-      cursor: pointer;
     }
 
     button:focus {
@@ -92,15 +115,27 @@ export class EditableGroupName extends LitElement {
     }
 
     button[data-action="edit"] {
-      right: 0;
+      inset-inline-end: 0;
     }
 
     button[data-action="save"] {
-      right: calc(1em + 10px);
+      inset-inline-end: calc(2em + 2px);
     }
 
     button[data-action="close"] {
-      right: 0;
+      inset-inline-end: 0;
+    }
+
+    .screen-reader {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0
     }
     `;
   @property({ type: String }) groupName: string = '';
@@ -109,13 +144,11 @@ export class EditableGroupName extends LitElement {
   @state() _isEditing: boolean = false;
   @state() _isSubmitting: boolean = false;
 
-  private static updateInputSize(target: EventTarget): void {
-    const input = target as HTMLInputElement;
-    if (input.value.length < 10) {
-      input.size = 10;
-    } else {
-      input.size = input.value.length + 2;
-    }
+  protected labels: Record<string, string> = {
+    input: TYPO3?.lang?.['editableGroupName.input.field.label'] || 'Field',
+    edit: TYPO3?.lang?.['editableGroupName.button.edit.label'] || 'Edit',
+    save: TYPO3?.lang?.['editableGroupName.button.save.label'] || 'Save',
+    cancel: TYPO3?.lang?.['editableGroupName.button.cancel.label'] || 'Cancel',
   }
 
   async startEditing(): Promise<void> {
@@ -133,7 +166,7 @@ export class EditableGroupName extends LitElement {
 
     if (!this.isEditable()) {
       return html`
-        <div class="wrapper">${this.groupName}</div>`;
+        <div class="wrapper"><div class="label">${this.groupName}</div></div>`;
     }
 
     let content;
@@ -141,7 +174,7 @@ export class EditableGroupName extends LitElement {
     if (!this._isEditing) {
       content = html`
         <div class="wrapper">
-          <span @dblclick="${(): void => { this.startEditing(); }}">${this.groupName}</span>
+          <div class="label" @dblclick="${(): void => { this.startEditing(); }}">${this.groupName}</div>
           ${this.composeEditButton()}
         </div>`;
     } else {
@@ -199,20 +232,48 @@ export class EditableGroupName extends LitElement {
 
   private composeEditButton(): TemplateResult {
     return html`
-      <button data-action="edit" type="button" aria-label="${lll('editGroupName')}" @click="${(): void => { this.startEditing(); }}">
+      <button
+        data-action="edit"
+        type="button"
+        title="${this.labels.edit}"
+        @click="${(): void => { this.startEditing(); }}"
+      >
         <typo3-backend-icon identifier="actions-open" size="small"></typo3-backend-icon>
+        <span class="screen-reader">${this.labels.edit}</span>
       </button>`;
   }
 
   private composeEditForm(): TemplateResult {
     return html`
       <form class="wrapper" @submit="${ this.updateGroupName }">
-        <input autocomplete="off" name="newGroupName" required size="${this.groupName.length + 2}" ?disabled="${this._isSubmitting}" value="${this.groupName}" @keydown="${(e: KeyboardEvent): void => { EditableGroupName.updateInputSize(e.target); if (e.key === 'Escape') { this.endEditing(); } }}">
-        <button data-action="save" type="submit" ?disabled="${this._isSubmitting}">
+        <label class="screen-reader" for="input">${this.labels.input}</label>
+        <input
+          autocomplete="off"
+          id="input"
+          name="newGroupName"
+          required
+          value="${this.groupName}"
+          ?disabled="${this._isSubmitting}"
+          @keydown="${(e: KeyboardEvent): void => { if (e.key === 'Escape') { this.endEditing(); } }}"
+        >
+        <button
+          data-action="save"
+          type="submit"
+          title="${this.labels.save}"
+          ?disabled="${this._isSubmitting}"
+        >
           <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
+          <span class="screen-reader">${this.labels.save}</span>
         </button>
-        <button data-action="close" type="button" ?disabled="${this._isSubmitting}" @click="${(): void => { this.endEditing(); }}">
+        <button
+          data-action="close"
+          type="button"
+          title="${this.labels.cancel}"
+          ?disabled="${this._isSubmitting}"
+          @click="${(): void => { this.endEditing(); }}"
+        >
           <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
+          <span class="screen-reader">${this.labels.cancel}</span>
         </button>
       </form>`;
   }

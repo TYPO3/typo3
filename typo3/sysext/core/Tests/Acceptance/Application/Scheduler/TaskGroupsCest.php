@@ -62,7 +62,7 @@ final class TaskGroupsCest
         $I->click('//div[contains(@class, "panel-heading")][contains(., "' . $this->groupName . '")]/*//button[contains(@title, "Disable")]');
 
         $I->amGoingTo('see group disabled');
-        $I->seeElement('//div[contains(@class, "panel-heading")][contains(., "' . $this->groupName . '")]/*[contains(@class, "badge-secondary")]');
+        $I->seeElement('//div[contains(@class, "panel-heading")][contains(., "' . $this->groupName . '")]/*/*[contains(@class, "badge-secondary")]');
 
         $I->amGoingTo('see task disabled by group');
         $I->seeElement('//div[contains(@class, "panel-heading")][contains(., "' . $this->groupName . '")]/following::div//*[contains(@class, "badge-secondary")]');
