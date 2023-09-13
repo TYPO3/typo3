@@ -1,29 +1,26 @@
-import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor.js';
-import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote.js';
-import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials.js';
-import FindAndReplace from '@ckeditor/ckeditor5-find-and-replace/src/findandreplace';
-import Heading from '@ckeditor/ckeditor5-heading/src/heading.js';
-import Indent from '@ckeditor/ckeditor5-indent/src/indent.js';
-import Link from '@ckeditor/ckeditor5-link/src/link.js';
-import DocumentList from '@ckeditor/ckeditor5-list/src/documentlist.js';
-import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph.js';
-import PastePlainText from '@ckeditor/ckeditor5-clipboard/src/pasteplaintext.js';
-import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice.js';
-import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat.js';
-import Table from '@ckeditor/ckeditor5-table/src/table.js';
-import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar.js';
-import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties.js';
-import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
-import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation.js';
-import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting';
-import ShowBlocks from '@ckeditor/ckeditor5-show-blocks/src/showblocks';
-import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment'
-import Style from '@ckeditor/ckeditor5-style/src/style';
-import GeneralHtmlSupport from '@ckeditor/ckeditor5-html-support/src/generalhtmlsupport';
-import { Bold, Italic, Subscript, Superscript, Strikethrough, Underline } from '@ckeditor/ckeditor5-basic-styles/src';
-import { SpecialCharacters, SpecialCharactersEssentials } from '@ckeditor/ckeditor5-special-characters/src';
-import { HorizontalLine } from '@ckeditor/ckeditor5-horizontal-line/src';
-import { WordCount } from '@ckeditor/ckeditor5-word-count/src';
+import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
+import { BlockQuote } from '@ckeditor/ckeditor5-block-quote';
+import { Essentials } from '@ckeditor/ckeditor5-essentials';
+import { FindAndReplace } from '@ckeditor/ckeditor5-find-and-replace';
+import { Heading } from '@ckeditor/ckeditor5-heading';
+import { Indent } from '@ckeditor/ckeditor5-indent';
+import { Link } from '@ckeditor/ckeditor5-link';
+import { DocumentList } from '@ckeditor/ckeditor5-list';
+import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
+import { PastePlainText } from '@ckeditor/ckeditor5-clipboard';
+import { PasteFromOffice } from '@ckeditor/ckeditor5-paste-from-office';
+import { RemoveFormat } from '@ckeditor/ckeditor5-remove-format';
+import { Table, TableToolbar, TableProperties, TableCellProperties } from '@ckeditor/ckeditor5-table';
+import { TextTransformation } from '@ckeditor/ckeditor5-typing';
+import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
+import { ShowBlocks } from '@ckeditor/ckeditor5-show-blocks';
+import { Alignment } from '@ckeditor/ckeditor5-alignment'
+import { Style } from '@ckeditor/ckeditor5-style';
+import { GeneralHtmlSupport } from '@ckeditor/ckeditor5-html-support';
+import { Bold, Italic, Subscript, Superscript, Strikethrough, Underline } from '@ckeditor/ckeditor5-basic-styles';
+import { SpecialCharacters, SpecialCharactersEssentials } from '@ckeditor/ckeditor5-special-characters';
+import { HorizontalLine } from '@ckeditor/ckeditor5-horizontal-line';
+import { WordCount } from '@ckeditor/ckeditor5-word-count';
 
 export const CKEditor5Plugins = {
   Alignment,
@@ -59,22 +56,23 @@ export const CKEditor5Plugins = {
   WordCount,
 };
 
-export class CKEditor5 extends ClassicEditor {}
-CKEditor5.builtinPlugins = Object.values(CKEditor5Plugins);
+export class CKEditor5 extends ClassicEditor {
+  static builtinPlugins = Object.values(CKEditor5Plugins);
+}
 
-export * as Core from '@ckeditor/ckeditor5-core/src/index.js';
-export * as UI from '@ckeditor/ckeditor5-ui/src/index.js';
-export * as Engine from '@ckeditor/ckeditor5-engine/src/index.js';
-export * as Utils from '@ckeditor/ckeditor5-utils/src/index';
+export * as Core from '@ckeditor/ckeditor5-core';
+export * as UI from '@ckeditor/ckeditor5-ui';
+export * as Engine from '@ckeditor/ckeditor5-engine';
+export * as Utils from '@ckeditor/ckeditor5-utils';
 
-export * as Clipboard from '@ckeditor/ckeditor5-clipboard/src/index.js';
-export * as Essentials from '@ckeditor/ckeditor5-essentials/src/index.js';
-export * as Link from '@ckeditor/ckeditor5-link/src/index.js';
+export * as Clipboard from '@ckeditor/ckeditor5-clipboard';
+export * as Essentials from '@ckeditor/ckeditor5-essentials';
+export * as Link from '@ckeditor/ckeditor5-link';
 export * as LinkUtils from '@ckeditor/ckeditor5-link/src/utils.js';
 
-export * as Typing from '@ckeditor/ckeditor5-typing/src/index.js'
-export * as Widget from '@ckeditor/ckeditor5-widget/src/index.js';
+export * as Typing from '@ckeditor/ckeditor5-typing'
+export * as Widget from '@ckeditor/ckeditor5-widget';
 
 // single or prefixed exports
 export { default as LinkActionsView } from '@ckeditor/ckeditor5-link/src/ui/linkactionsview';
-export { default as WordCount } from '@ckeditor/ckeditor5-word-count/src/wordcount.js';
+export { WordCount } from '@ckeditor/ckeditor5-word-count';
