@@ -104,70 +104,76 @@
     <f:section name="table">
         <div class="{f:if(condition: '{taskGroup.groupUid} == 0', then: 't3js-scheduler-sorting-disabled')} panel panel-default scheduler-group-panel" data-multi-record-selection-identifier="task-group-{taskGroup.groupUid}">
             <div class="panel-heading multi-record-selection-panel {f:if(condition: '{taskGroup.groupUid} == 0', else: 'scheduler-group-dragitem t3js-group-draggable-item')}" data-task-group-id="{taskGroup.groupUid}">
-                <f:if condition="!{taskGroup.groupName}">
-                    <f:then>
-                        <span>{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup')}</span>
-                    </f:then>
-                    <f:else>
-                        <typo3-scheduler-editable-group-name
-                            groupName="{taskGroup.groupName}"
-                            groupId="{taskGroup.groupUid}"
-                            editable="true"
-                        >
-                            {taskGroup.groupName}
-                        </typo3-scheduler-editable-group-name>
-                        <f:if condition="{taskGroup.groupHidden}">
+                <div class="panel-heading-row">
+                    <f:if condition="{taskGroup.groupHidden}">
+                        <div class="panel-heading-badge">
                             <span class="badge badge-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.isDisabled" /></span>
+                        </div>
+                    </f:if>
+                    <div class="panel-heading-title">
+                        <f:if condition="!{taskGroup.groupName}">
+                            <f:then>
+                                <span>{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup')}</span>
+                            </f:then>
+                            <f:else>
+                                <typo3-scheduler-editable-group-name
+                                    groupName="{taskGroup.groupName}"
+                                    groupId="{taskGroup.groupUid}"
+                                    editable="true"
+                                >
+                                    {taskGroup.groupName}
+                                </typo3-scheduler-editable-group-name>
+                            </f:else>
                         </f:if>
-                    </f:else>
-                </f:if>
-                <div class="float-end">
-                    <form name="tx_scheduler_form_group_toggle_hidden" id="tx_scheduler_form_group_toggle_hidden" method="post">
-                        <input name="action[group][uid]" type="hidden" value="{taskGroup.groupUid}">
-                        <a
-                            href="{be:moduleLink(route: 'scheduler_manage', arguments: {action: 'add', groupId: taskGroupId}, currentUrlParameterName: 'redirect')}"
-                            class="btn btn-default btn-sm me-2"
-                        >
-                            <core:icon identifier="actions-plus" />
-                            <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add" />
-                        </a>
-                        <f:if condition="{taskGroupId}">
-                            <f:if condition="{taskGroup.groupHidden}">
-                                <f:then>
-                                    <button
-                                        type="submit"
-                                        name="action[group][hidden]"
-                                        value="0"
-                                        class="btn btn-default btn-sm me-2"
-                                        title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable')}"
-                                    >
-                                        <core:icon identifier="actions-edit-unhide"/>
-                                        <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.enable" />
-                                    </button>
-                                </f:then>
-                                <f:else>
-                                    <button
-                                        type="submit"
-                                        name="action[group][hidden]"
-                                        value="1"
-                                        class="btn btn-default btn-sm me-2"
-                                        title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disable')}"
-                                    >
-                                        <core:icon identifier="actions-edit-hide"/>
-                                        <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.disable" />
-                                    </button>
-                                </f:else>
+                    </div>
+                    <div class="panel-heading-actions">
+                        <form name="tx_scheduler_form_group_toggle_hidden" id="tx_scheduler_form_group_toggle_hidden" method="post">
+                            <input name="action[group][uid]" type="hidden" value="{taskGroup.groupUid}">
+                            <a
+                                href="{be:moduleLink(route: 'scheduler_manage', arguments: {action: 'add', groupId: taskGroupId}, currentUrlParameterName: 'redirect')}"
+                                class="btn btn-default btn-sm"
+                            >
+                                <core:icon identifier="actions-plus" />
+                                <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add" />
+                            </a>
+                            <f:if condition="{taskGroupId}">
+                                <f:if condition="{taskGroup.groupHidden}">
+                                    <f:then>
+                                        <button
+                                            type="submit"
+                                            name="action[group][hidden]"
+                                            value="0"
+                                            class="btn btn-default btn-sm"
+                                            title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable')}"
+                                        >
+                                            <core:icon identifier="actions-edit-unhide"/>
+                                            <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.enable" />
+                                        </button>
+                                    </f:then>
+                                    <f:else>
+                                        <button
+                                            type="submit"
+                                            name="action[group][hidden]"
+                                            value="1"
+                                            class="btn btn-default btn-sm"
+                                            title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disable')}"
+                                        >
+                                            <core:icon identifier="actions-edit-hide"/>
+                                            <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.disable" />
+                                        </button>
+                                    </f:else>
+                                </f:if>
                             </f:if>
-                        </f:if>
-                        <button type="button"
-                                class="btn btn-default btn-sm t3js-toggle-table"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#scheduler-task-group-{taskGroupId}"
-                                aria-expanded="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'false', else: 'true')}"
-                        >
-                            <core:icon identifier="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
-                        </button>
-                    </form>
+                            <button type="button"
+                                    class="btn btn-default btn-sm t3js-toggle-table"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#scheduler-task-group-{taskGroupId}"
+                                    aria-expanded="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'false', else: 'true')}"
+                            >
+                                <core:icon identifier="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
+                            </button>
+                        </form>
+                    </div>
                 </div>
                 <f:render partial="MultiRecordSelectionActions" />
             </div>

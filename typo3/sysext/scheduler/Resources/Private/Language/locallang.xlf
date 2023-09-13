@@ -571,6 +571,12 @@
 			<trans-unit id="scheduler.form.palettes.timing" resname="scheduler.form.palettes.timing">
 				<source>Timing</source>
 			</trans-unit>
+			<trans-unit id="editableGroupName.input.field.label" resname="editableGroupName.input.field.label">
+				<source>Enter a group name</source>
+			</trans-unit>
+			<trans-unit id="editableGroupName.button.edit.label" resname="editableGroupName.button.edit.label">
+				<source>Edit group name</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

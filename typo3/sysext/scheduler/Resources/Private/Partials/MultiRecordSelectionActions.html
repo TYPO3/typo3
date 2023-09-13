@@ -4,18 +4,16 @@
     data-namespace-typo3-fluid="true"
 >
 
-<div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions hidden">
-    <div class="col">
+<div class="panel-heading-row t3js-multi-record-selection-actions hidden">
+    <div class="panel-heading-title">
         <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
     </div>
-    <div class="col">
+    <div class="panel-heading-actions">
         <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="go_cron" data-multi-record-selection-action-config='{"idField": "taskId"}'>
             <span title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.cronjobSelected')}">
                 <core:icon identifier="actions-clock" /> <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.cronjobSelected" />
             </span>
         </button>
-    </div>
-    <div class="col">
         <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="go" data-multi-record-selection-action-config='{"idField": "taskId"}'>
             <span title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.executeSelected')}">
                 <core:icon identifier="actions-play" /> <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.executeSelected" />

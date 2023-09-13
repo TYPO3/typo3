@@ -11,10 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { lll } from '@typo3/core/lit-helper';
 import { html, css, LitElement, TemplateResult, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
-import './icon-element';
+import '@typo3/backend/element/icon-element';
 import AjaxDataHandler from '../ajax-data-handler';
 
 @customElement('typo3-backend-editable-page-title')
@@ -71,14 +70,15 @@ export class EditablePageTitle extends LitElement {
     }
 
     div.wrapper {
-      padding-right: 1.5em;
+      padding-inline-end: 1.5em;
     }
 
     form.wrapper {
-      padding-right: 2.5em;
+      padding-inline-end: 2.5em;
     }
 
     button {
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -112,15 +112,27 @@ export class EditablePageTitle extends LitElement {
     }
 
     button[data-action="edit"] {
-      right: 0;
+      inset-inline-end: 0;
     }
 
     button[data-action="save"] {
-      right: calc(1em + 2px);
+      inset-inline-end: calc(1em + 2px);
     }
 
     button[data-action="close"] {
-      right: 0;
+      inset-inline-end: 0;
+    }
+
+    .screen-reader {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0
     }
     `;
   @property({ type: String }) pageTitle: string = '';
@@ -129,6 +141,13 @@ export class EditablePageTitle extends LitElement {
   @property({ type: Boolean }) editable: boolean = false;
   @state() _isEditing: boolean = false;
   @state() _isSubmitting: boolean = false;
+
+  protected labels: Record<string, string> = {
+    input: TYPO3?.lang?.['editablePageTitle.input.field.label'] || 'Field',
+    edit: TYPO3?.lang?.['editablePageTitle.button.edit.label'] || 'Edit',
+    save: TYPO3?.lang?.['editablePageTitle.button.save.label'] || 'Save',
+    cancel: TYPO3?.lang?.['editablePageTitle.button.cancel.label'] || 'Cancel',
+  }
 
   async startEditing(): Promise<void> {
     if (this.isEditable()) {
@@ -212,20 +231,48 @@ export class EditablePageTitle extends LitElement {
 
   private composeEditButton(): TemplateResult {
     return html`
-      <button data-action="edit" type="button" aria-label="${lll('editPageTitle')}" @click="${(): void => { this.startEditing(); }}">
+      <button
+        data-action="edit"
+        type="button"
+        title="${this.labels.edit}"
+        @click="${(): void => { this.startEditing(); }}"
+      >
         <typo3-backend-icon identifier="actions-open" size="small"></typo3-backend-icon>
+        <span class="screen-reader">${this.labels.edit}</span>
       </button>`;
   }
 
   private composeEditForm(): TemplateResult {
     return html`
       <form class="wrapper" @submit="${ this.updatePageTitle }">
-        <input autocomplete="off" required name="newPageTitle" ?disabled="${this._isSubmitting}" value="${this.pageTitle}" @keydown="${(e: KeyboardEvent): void => { if (e.key === 'Escape') { this.endEditing(); } }}">
-        <button data-action="save" type="submit" ?disabled="${this._isSubmitting}">
+        <label class="screen-reader" for="input">${this.labels.input}</label>
+        <input
+          autocomplete="off"
+          id="input"
+          name="newPageTitle"
+          required
+          value="${this.pageTitle}"
+          ?disabled="${this._isSubmitting}"
+          @keydown="${(e: KeyboardEvent): void => { if (e.key === 'Escape') { this.endEditing(); } }}"
+        >
+        <button
+          data-action="save"
+          type="submit"
+          title="${this.labels.save}"
+          ?disabled="${this._isSubmitting}"
+        >
           <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
+          <span class="screen-reader">${this.labels.save}</span>
         </button>
-        <button data-action="close" type="button" ?disabled="${this._isSubmitting}" @click="${(): void => { this.endEditing(); }}">
+        <button
+          data-action="close"
+          type="button"
+          title="${this.labels.cancel}"
+          ?disabled="${this._isSubmitting}"
+          @click="${(): void => { this.endEditing(); }}"
+        >
           <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
+          <span class="screen-reader">${this.labels.cancel}</span>
         </button>
       </form>`;
   }

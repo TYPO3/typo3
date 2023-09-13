@@ -203,6 +203,29 @@ $panel-heading-bg-scale: -85%;
         text-decoration: none;
         color: inherit;
     }
+
+    &-row {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        max-width: 100%;
+        gap: var(--panel-header-padding-y) var(--panel-header-padding-x);
+    }
+
+    &-title {
+        font-weight: bold;
+        flex-grow: 1;
+        width: 250px;
+        max-width: 100%;
+    }
+
+    &-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: .25rem;
+    }
 }
 
 //

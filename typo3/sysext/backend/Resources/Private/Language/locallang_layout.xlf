@@ -135,6 +135,9 @@
 			<trans-unit id="editPageTitle" resname="editPageTitle">
 				<source>Edit the page title</source>
 			</trans-unit>
+			<trans-unit id="editPageTitle.input.field.label" resname="editPageTitle.input.field.label">
+				<source>Enter a page title</source>
+			</trans-unit>
 			<trans-unit id="editPageLanguageOverlayProperties" resname="editPageLanguageOverlayProperties">
 				<source>Edit page language overlay properties</source>
 			</trans-unit>
