@@ -23,6 +23,17 @@ const selectorConverter = {
   }
 };
 
+enum ReadingModeDirection {
+  ltr = 'ltr',
+  rtl = 'rtl',
+}
+
+class ReadingMode {
+  public static get(): ReadingModeDirection {
+    return document.querySelector('html').dir === 'rtl' ? ReadingModeDirection.rtl : ReadingModeDirection.ltr;
+  }
+}
+
 @customElement('typo3-backend-navigation-switcher')
 export class ResizableNavigation extends LitElement {
   @property({ type: Number, attribute: 'minimum-width' }) minimumWidth: number = 250;
@@ -101,7 +112,13 @@ export class ResizableNavigation extends LitElement {
   };
 
   private readonly resizeNavigation = (position: number) => {
-    const width = Math.round(position) - Math.round(this.getNavigationPosition().left);
+    let width : number = 0;
+    if (ReadingMode.get() === ReadingModeDirection.ltr) {
+      width = Math.round(position) - Math.round(this.getNavigationPosition().left);
+    } else {
+      width = Math.round(this.getNavigationPosition().right) - Math.round(position);
+    }
+
     this.setNavigationWidth(width);
   };
 
