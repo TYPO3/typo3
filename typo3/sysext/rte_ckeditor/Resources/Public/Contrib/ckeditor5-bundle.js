@@ -10935,8 +10935,8 @@ function styleInject(css, { insertAt } = {}) {
   } else {
     style.appendChild(document.createTextNode(css));
   }
-}var css_248z$_ = ".ck-hidden{display:none!important}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{box-sizing:border-box;height:auto;position:static;width:auto}:root{--ck-z-default:1;--ck-z-modal:calc(var(--ck-z-default) + 999)}.ck-transitions-disabled,.ck-transitions-disabled *{transition:none!important}:root{--ck-powered-by-line-height:10px;--ck-powered-by-padding-vertical:2px;--ck-powered-by-padding-horizontal:4px;--ck-powered-by-text-color:#4f4f4f;--ck-powered-by-border-radius:var(--ck-border-radius);--ck-powered-by-background:#fff;--ck-powered-by-border-color:var(--ck-color-focus-border)}.ck.ck-balloon-panel.ck-powered-by-balloon{--ck-border-radius:var(--ck-powered-by-border-radius);background:var(--ck-powered-by-background);box-shadow:none;min-height:unset;z-index:calc(var(--ck-z-modal) - 1)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by{line-height:var(--ck-powered-by-line-height)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by a{align-items:center;cursor:pointer;display:flex;filter:grayscale(80%);line-height:var(--ck-powered-by-line-height);opacity:.66;padding:var(--ck-powered-by-padding-vertical) var(--ck-powered-by-padding-horizontal)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-powered-by__label{color:var(--ck-powered-by-text-color);cursor:pointer;font-size:7.5px;font-weight:700;letter-spacing:-.2px;line-height:normal;margin-right:4px;padding-left:2px;text-transform:uppercase}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-icon{cursor:pointer;display:block}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by:hover a{filter:grayscale(0);opacity:1}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_inside]{border-color:transparent}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_border]{border:var(--ck-focus-ring);border-color:var(--ck-powered-by-border-color)}:root{--ck-color-base-foreground:#fafafa;--ck-color-base-background:#fff;--ck-color-base-border:#ccced1;--ck-color-base-action:#53a336;--ck-color-base-focus:#6cb5f9;--ck-color-base-text:#333;--ck-color-base-active:#2977ff;--ck-color-base-active-focus:#0d65ff;--ck-color-base-error:#db3700;--ck-color-focus-border-coordinates:218,81.8%,56.9%;--ck-color-focus-border:hsl(var(--ck-color-focus-border-coordinates));--ck-color-focus-outer-shadow:#cae1fc;--ck-color-focus-disabled-shadow:rgba(119,186,248,.3);--ck-color-focus-error-shadow:rgba(255,64,31,.3);--ck-color-text:var(--ck-color-base-text);--ck-color-shadow-drop:rgba(0,0,0,.15);--ck-color-shadow-drop-active:rgba(0,0,0,.2);--ck-color-shadow-inner:rgba(0,0,0,.1);--ck-color-button-default-background:transparent;--ck-color-button-default-hover-background:#f0f0f0;--ck-color-button-default-active-background:#f0f0f0;--ck-color-button-default-disabled-background:transparent;--ck-color-button-on-background:#f0f7ff;--ck-color-button-on-hover-background:#dbecff;--ck-color-button-on-active-background:#dbecff;--ck-color-button-on-disabled-background:#f0f2f4;--ck-color-button-on-color:#2977ff;--ck-color-button-action-background:var(--ck-color-base-action);--ck-color-button-action-hover-background:#4d9d30;--ck-color-button-action-active-background:#4d9d30;--ck-color-button-action-disabled-background:#7ec365;--ck-color-button-action-text:var(--ck-color-base-background);--ck-color-button-save:#008a00;--ck-color-button-cancel:#db3700;--ck-color-switch-button-off-background:#939393;--ck-color-switch-button-off-hover-background:#7d7d7d;--ck-color-switch-button-on-background:var(--ck-color-button-action-background);--ck-color-switch-button-on-hover-background:#4d9d30;--ck-color-switch-button-inner-background:var(--ck-color-base-background);--ck-color-switch-button-inner-shadow:rgba(0,0,0,.1);--ck-color-dropdown-panel-background:var(--ck-color-base-background);--ck-color-dropdown-panel-border:var(--ck-color-base-border);--ck-color-input-background:var(--ck-color-base-background);--ck-color-input-border:var(--ck-color-base-border);--ck-color-input-error-border:var(--ck-color-base-error);--ck-color-input-text:var(--ck-color-base-text);--ck-color-input-disabled-background:#f2f2f2;--ck-color-input-disabled-border:var(--ck-color-base-border);--ck-color-input-disabled-text:#757575;--ck-color-list-background:var(--ck-color-base-background);--ck-color-list-button-hover-background:var(--ck-color-button-default-hover-background);--ck-color-list-button-on-background:var(--ck-color-button-on-color);--ck-color-list-button-on-background-focus:var(--ck-color-button-on-color);--ck-color-list-button-on-text:var(--ck-color-base-background);--ck-color-panel-background:var(--ck-color-base-background);--ck-color-panel-border:var(--ck-color-base-border);--ck-color-toolbar-background:var(--ck-color-base-background);--ck-color-toolbar-border:var(--ck-color-base-border);--ck-color-tooltip-background:var(--ck-color-base-text);--ck-color-tooltip-text:var(--ck-color-base-background);--ck-color-engine-placeholder-text:#707070;--ck-color-upload-bar-background:#6cb5f9;--ck-color-link-default:#0000f0;--ck-color-link-selected-background:rgba(31,176,255,.1);--ck-color-link-fake-selection:rgba(31,176,255,.3);--ck-color-highlight-background:#ff0;--ck-disabled-opacity:.5;--ck-focus-outer-shadow-geometry:0 0 0 3px;--ck-focus-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-outer-shadow);--ck-focus-disabled-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-disabled-shadow);--ck-focus-error-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-error-shadow);--ck-focus-ring:1px solid var(--ck-color-focus-border);--ck-font-size-base:13px;--ck-line-height-base:1.84615;--ck-font-face:Helvetica,Arial,Tahoma,Verdana,Sans-Serif;--ck-font-size-tiny:0.7em;--ck-font-size-small:0.75em;--ck-font-size-normal:1em;--ck-font-size-big:1.4em;--ck-font-size-large:1.8em;--ck-ui-component-min-height:2.3em}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{word-wrap:break-word;background:transparent;border:0;margin:0;padding:0;text-decoration:none;transition:none;vertical-align:middle}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset_all{border-collapse:collapse;color:var(--ck-color-text);cursor:auto;float:none;font:normal normal normal var(--ck-font-size-base)/var(--ck-line-height-base) var(--ck-font-face);text-align:left;white-space:nowrap}.ck-reset_all .ck-rtl :not(.ck-reset_all-excluded *){text-align:right}.ck-reset_all iframe:not(.ck-reset_all-excluded *){vertical-align:inherit}.ck-reset_all textarea:not(.ck-reset_all-excluded *){white-space:pre-wrap}.ck-reset_all input[type=password]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text]:not(.ck-reset_all-excluded *),.ck-reset_all textarea:not(.ck-reset_all-excluded *){cursor:text}.ck-reset_all input[type=password][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all textarea[disabled]:not(.ck-reset_all-excluded *){cursor:default}.ck-reset_all fieldset:not(.ck-reset_all-excluded *){border:2px groove #dfdee3;padding:10px}.ck-reset_all button:not(.ck-reset_all-excluded *)::-moz-focus-inner{border:0;padding:0}.ck[dir=rtl],.ck[dir=rtl] .ck{text-align:right}:root{--ck-border-radius:2px;--ck-inner-shadow:2px 2px 3px var(--ck-color-shadow-inner) inset;--ck-drop-shadow:0 1px 2px 1px var(--ck-color-shadow-drop);--ck-drop-shadow-active:0 3px 6px 1px var(--ck-color-shadow-drop-active);--ck-spacing-unit:0.6em;--ck-spacing-large:calc(var(--ck-spacing-unit)*1.5);--ck-spacing-standard:var(--ck-spacing-unit);--ck-spacing-medium:calc(var(--ck-spacing-unit)*0.8);--ck-spacing-small:calc(var(--ck-spacing-unit)*0.5);--ck-spacing-tiny:calc(var(--ck-spacing-unit)*0.3);--ck-spacing-extra-tiny:calc(var(--ck-spacing-unit)*0.16)}";
-styleInject(css_248z$_);/**
+}var css_248z$14 = ".ck-hidden{display:none!important}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{box-sizing:border-box;height:auto;position:static;width:auto}:root{--ck-z-default:1;--ck-z-modal:calc(var(--ck-z-default) + 999)}.ck-transitions-disabled,.ck-transitions-disabled *{transition:none!important}:root{--ck-powered-by-line-height:10px;--ck-powered-by-padding-vertical:2px;--ck-powered-by-padding-horizontal:4px;--ck-powered-by-text-color:#4f4f4f;--ck-powered-by-border-radius:var(--ck-border-radius);--ck-powered-by-background:#fff;--ck-powered-by-border-color:var(--ck-color-focus-border)}.ck.ck-balloon-panel.ck-powered-by-balloon{--ck-border-radius:var(--ck-powered-by-border-radius);background:var(--ck-powered-by-background);box-shadow:none;min-height:unset;z-index:calc(var(--ck-z-modal) - 1)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by{line-height:var(--ck-powered-by-line-height)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by a{align-items:center;cursor:pointer;display:flex;filter:grayscale(80%);line-height:var(--ck-powered-by-line-height);opacity:.66;padding:var(--ck-powered-by-padding-vertical) var(--ck-powered-by-padding-horizontal)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-powered-by__label{color:var(--ck-powered-by-text-color);cursor:pointer;font-size:7.5px;font-weight:700;letter-spacing:-.2px;line-height:normal;margin-right:4px;padding-left:2px;text-transform:uppercase}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-icon{cursor:pointer;display:block}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by:hover a{filter:grayscale(0);opacity:1}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_inside]{border-color:transparent}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_border]{border:var(--ck-focus-ring);border-color:var(--ck-powered-by-border-color)}:root{--ck-color-base-foreground:#fafafa;--ck-color-base-background:#fff;--ck-color-base-border:#ccced1;--ck-color-base-action:#53a336;--ck-color-base-focus:#6cb5f9;--ck-color-base-text:#333;--ck-color-base-active:#2977ff;--ck-color-base-active-focus:#0d65ff;--ck-color-base-error:#db3700;--ck-color-focus-border-coordinates:218,81.8%,56.9%;--ck-color-focus-border:hsl(var(--ck-color-focus-border-coordinates));--ck-color-focus-outer-shadow:#cae1fc;--ck-color-focus-disabled-shadow:rgba(119,186,248,.3);--ck-color-focus-error-shadow:rgba(255,64,31,.3);--ck-color-text:var(--ck-color-base-text);--ck-color-shadow-drop:rgba(0,0,0,.15);--ck-color-shadow-drop-active:rgba(0,0,0,.2);--ck-color-shadow-inner:rgba(0,0,0,.1);--ck-color-button-default-background:transparent;--ck-color-button-default-hover-background:#f0f0f0;--ck-color-button-default-active-background:#f0f0f0;--ck-color-button-default-disabled-background:transparent;--ck-color-button-on-background:#f0f7ff;--ck-color-button-on-hover-background:#dbecff;--ck-color-button-on-active-background:#dbecff;--ck-color-button-on-disabled-background:#f0f2f4;--ck-color-button-on-color:#2977ff;--ck-color-button-action-background:var(--ck-color-base-action);--ck-color-button-action-hover-background:#4d9d30;--ck-color-button-action-active-background:#4d9d30;--ck-color-button-action-disabled-background:#7ec365;--ck-color-button-action-text:var(--ck-color-base-background);--ck-color-button-save:#008a00;--ck-color-button-cancel:#db3700;--ck-color-switch-button-off-background:#939393;--ck-color-switch-button-off-hover-background:#7d7d7d;--ck-color-switch-button-on-background:var(--ck-color-button-action-background);--ck-color-switch-button-on-hover-background:#4d9d30;--ck-color-switch-button-inner-background:var(--ck-color-base-background);--ck-color-switch-button-inner-shadow:rgba(0,0,0,.1);--ck-color-dropdown-panel-background:var(--ck-color-base-background);--ck-color-dropdown-panel-border:var(--ck-color-base-border);--ck-color-input-background:var(--ck-color-base-background);--ck-color-input-border:var(--ck-color-base-border);--ck-color-input-error-border:var(--ck-color-base-error);--ck-color-input-text:var(--ck-color-base-text);--ck-color-input-disabled-background:#f2f2f2;--ck-color-input-disabled-border:var(--ck-color-base-border);--ck-color-input-disabled-text:#757575;--ck-color-list-background:var(--ck-color-base-background);--ck-color-list-button-hover-background:var(--ck-color-button-default-hover-background);--ck-color-list-button-on-background:var(--ck-color-button-on-color);--ck-color-list-button-on-background-focus:var(--ck-color-button-on-color);--ck-color-list-button-on-text:var(--ck-color-base-background);--ck-color-panel-background:var(--ck-color-base-background);--ck-color-panel-border:var(--ck-color-base-border);--ck-color-toolbar-background:var(--ck-color-base-background);--ck-color-toolbar-border:var(--ck-color-base-border);--ck-color-tooltip-background:var(--ck-color-base-text);--ck-color-tooltip-text:var(--ck-color-base-background);--ck-color-engine-placeholder-text:#707070;--ck-color-upload-bar-background:#6cb5f9;--ck-color-link-default:#0000f0;--ck-color-link-selected-background:rgba(31,176,255,.1);--ck-color-link-fake-selection:rgba(31,176,255,.3);--ck-color-highlight-background:#ff0;--ck-disabled-opacity:.5;--ck-focus-outer-shadow-geometry:0 0 0 3px;--ck-focus-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-outer-shadow);--ck-focus-disabled-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-disabled-shadow);--ck-focus-error-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-error-shadow);--ck-focus-ring:1px solid var(--ck-color-focus-border);--ck-font-size-base:13px;--ck-line-height-base:1.84615;--ck-font-face:Helvetica,Arial,Tahoma,Verdana,Sans-Serif;--ck-font-size-tiny:0.7em;--ck-font-size-small:0.75em;--ck-font-size-normal:1em;--ck-font-size-big:1.4em;--ck-font-size-large:1.8em;--ck-ui-component-min-height:2.3em}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{word-wrap:break-word;background:transparent;border:0;margin:0;padding:0;text-decoration:none;transition:none;vertical-align:middle}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset_all{border-collapse:collapse;color:var(--ck-color-text);cursor:auto;float:none;font:normal normal normal var(--ck-font-size-base)/var(--ck-line-height-base) var(--ck-font-face);text-align:left;white-space:nowrap}.ck-reset_all .ck-rtl :not(.ck-reset_all-excluded *){text-align:right}.ck-reset_all iframe:not(.ck-reset_all-excluded *){vertical-align:inherit}.ck-reset_all textarea:not(.ck-reset_all-excluded *){white-space:pre-wrap}.ck-reset_all input[type=password]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text]:not(.ck-reset_all-excluded *),.ck-reset_all textarea:not(.ck-reset_all-excluded *){cursor:text}.ck-reset_all input[type=password][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all textarea[disabled]:not(.ck-reset_all-excluded *){cursor:default}.ck-reset_all fieldset:not(.ck-reset_all-excluded *){border:2px groove #dfdee3;padding:10px}.ck-reset_all button:not(.ck-reset_all-excluded *)::-moz-focus-inner{border:0;padding:0}.ck[dir=rtl],.ck[dir=rtl] .ck{text-align:right}:root{--ck-border-radius:2px;--ck-inner-shadow:2px 2px 3px var(--ck-color-shadow-inner) inset;--ck-drop-shadow:0 1px 2px 1px var(--ck-color-shadow-drop);--ck-drop-shadow-active:0 3px 6px 1px var(--ck-color-shadow-drop-active);--ck-spacing-unit:0.6em;--ck-spacing-large:calc(var(--ck-spacing-unit)*1.5);--ck-spacing-standard:var(--ck-spacing-unit);--ck-spacing-medium:calc(var(--ck-spacing-unit)*0.8);--ck-spacing-small:calc(var(--ck-spacing-unit)*0.5);--ck-spacing-tiny:calc(var(--ck-spacing-unit)*0.3);--ck-spacing-extra-tiny:calc(var(--ck-spacing-unit)*0.16)}";
+styleInject(css_248z$14);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -12684,8 +12684,8 @@ class BodyCollection extends ViewCollection {
             wrapper.remove();
         }
     }
-}var css_248z$Z = ".ck.ck-icon{vertical-align:middle}:root{--ck-icon-size:calc(var(--ck-line-height-base)*var(--ck-font-size-normal))}.ck.ck-icon{font-size:.8333350694em;height:var(--ck-icon-size);width:var(--ck-icon-size);will-change:transform}.ck.ck-icon,.ck.ck-icon *{cursor:inherit}.ck.ck-icon.ck-icon_inherit-color,.ck.ck-icon.ck-icon_inherit-color *{color:inherit}.ck.ck-icon.ck-icon_inherit-color :not([fill]){fill:currentColor}";
-styleInject(css_248z$Z);/**
+}var css_248z$13 = ".ck.ck-icon{vertical-align:middle}:root{--ck-icon-size:calc(var(--ck-line-height-base)*var(--ck-font-size-normal))}.ck.ck-icon{font-size:.8333350694em;height:var(--ck-icon-size);width:var(--ck-icon-size);will-change:transform}.ck.ck-icon,.ck.ck-icon *{cursor:inherit}.ck.ck-icon.ck-icon_inherit-color,.ck.ck-icon.ck-icon_inherit-color *{color:inherit}.ck.ck-icon.ck-icon_inherit-color :not([fill]){fill:currentColor}";
+styleInject(css_248z$13);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -12790,8 +12790,8 @@ IconView.presentationalAttributeNames = [
     'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke-width',
     'text-anchor', 'text-decoration', 'text-overflow', 'text-rendering', 'transform', 'unicode-bidi', 'vector-effect',
     'visibility', 'white-space', 'word-spacing', 'writing-mode'
-];var css_248z$Y = ".ck.ck-button,a.ck.ck-button{align-items:center;display:inline-flex;justify-content:left;position:relative;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-button .ck-button__label,a.ck.ck-button .ck-button__label{display:none}.ck.ck-button.ck-button_with-text .ck-button__label,a.ck.ck-button.ck-button_with-text .ck-button__label{display:inline-block}.ck.ck-button:not(.ck-button_with-text),a.ck.ck-button:not(.ck-button_with-text){justify-content:center}.ck.ck-button,a.ck.ck-button{background:var(--ck-color-button-default-background)}.ck.ck-button:not(.ck-disabled):hover,a.ck.ck-button:not(.ck-disabled):hover{background:var(--ck-color-button-default-hover-background)}.ck.ck-button:not(.ck-disabled):active,a.ck.ck-button:not(.ck-disabled):active{background:var(--ck-color-button-default-active-background)}.ck.ck-button.ck-disabled,a.ck.ck-button.ck-disabled{background:var(--ck-color-button-default-disabled-background)}.ck.ck-button,a.ck.ck-button{border-radius:0}.ck-rounded-corners .ck.ck-button,.ck-rounded-corners a.ck.ck-button,.ck.ck-button.ck-rounded-corners,a.ck.ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-button,a.ck.ck-button{-webkit-appearance:none;border:1px solid transparent;cursor:default;font-size:inherit;line-height:1;min-height:var(--ck-ui-component-min-height);min-width:var(--ck-ui-component-min-height);padding:var(--ck-spacing-tiny);text-align:center;transition:box-shadow .2s ease-in-out,border .2s ease-in-out;vertical-align:middle;white-space:nowrap}.ck.ck-button:active,.ck.ck-button:focus,a.ck.ck-button:active,a.ck.ck-button:focus{border:var(--ck-focus-ring);box-shadow:var(--ck-focus-outer-shadow),0 0;outline:none}.ck.ck-button .ck-button__icon use,.ck.ck-button .ck-button__icon use *,a.ck.ck-button .ck-button__icon use,a.ck.ck-button .ck-button__icon use *{color:inherit}.ck.ck-button .ck-button__label,a.ck.ck-button .ck-button__label{color:inherit;cursor:inherit;font-size:inherit;font-weight:inherit;vertical-align:middle}[dir=ltr] .ck.ck-button .ck-button__label,[dir=ltr] a.ck.ck-button .ck-button__label{text-align:left}[dir=rtl] .ck.ck-button .ck-button__label,[dir=rtl] a.ck.ck-button .ck-button__label{text-align:right}.ck.ck-button .ck-button__keystroke,a.ck.ck-button .ck-button__keystroke{color:inherit}[dir=ltr] .ck.ck-button .ck-button__keystroke,[dir=ltr] a.ck.ck-button .ck-button__keystroke{margin-left:var(--ck-spacing-large)}[dir=rtl] .ck.ck-button .ck-button__keystroke,[dir=rtl] a.ck.ck-button .ck-button__keystroke{margin-right:var(--ck-spacing-large)}.ck.ck-button .ck-button__keystroke,a.ck.ck-button .ck-button__keystroke{font-weight:700;opacity:.7}.ck.ck-button.ck-disabled:active,.ck.ck-button.ck-disabled:focus,a.ck.ck-button.ck-disabled:active,a.ck.ck-button.ck-disabled:focus{box-shadow:var(--ck-focus-disabled-outer-shadow),0 0}.ck.ck-button.ck-disabled .ck-button__icon,.ck.ck-button.ck-disabled .ck-button__label,a.ck.ck-button.ck-disabled .ck-button__icon,a.ck.ck-button.ck-disabled .ck-button__label{opacity:var(--ck-disabled-opacity)}.ck.ck-button.ck-disabled .ck-button__keystroke,a.ck.ck-button.ck-disabled .ck-button__keystroke{opacity:.3}.ck.ck-button.ck-button_with-text,a.ck.ck-button.ck-button_with-text{padding:var(--ck-spacing-tiny) var(--ck-spacing-standard)}[dir=ltr] .ck.ck-button.ck-button_with-text .ck-button__icon,[dir=ltr] a.ck.ck-button.ck-button_with-text .ck-button__icon{margin-left:calc(var(--ck-spacing-small)*-1);margin-right:var(--ck-spacing-small)}[dir=rtl] .ck.ck-button.ck-button_with-text .ck-button__icon,[dir=rtl] a.ck.ck-button.ck-button_with-text .ck-button__icon{margin-left:var(--ck-spacing-small);margin-right:calc(var(--ck-spacing-small)*-1)}.ck.ck-button.ck-button_with-keystroke .ck-button__label,a.ck.ck-button.ck-button_with-keystroke .ck-button__label{flex-grow:1}.ck.ck-button.ck-on,a.ck.ck-button.ck-on{background:var(--ck-color-button-on-background)}.ck.ck-button.ck-on:not(.ck-disabled):hover,a.ck.ck-button.ck-on:not(.ck-disabled):hover{background:var(--ck-color-button-on-hover-background)}.ck.ck-button.ck-on:not(.ck-disabled):active,a.ck.ck-button.ck-on:not(.ck-disabled):active{background:var(--ck-color-button-on-active-background)}.ck.ck-button.ck-on.ck-disabled,a.ck.ck-button.ck-on.ck-disabled{background:var(--ck-color-button-on-disabled-background)}.ck.ck-button.ck-on,a.ck.ck-button.ck-on{color:var(--ck-color-button-on-color)}.ck.ck-button.ck-button-save,a.ck.ck-button.ck-button-save{color:var(--ck-color-button-save)}.ck.ck-button.ck-button-cancel,a.ck.ck-button.ck-button-cancel{color:var(--ck-color-button-cancel)}.ck.ck-button-action,a.ck.ck-button-action{background:var(--ck-color-button-action-background)}.ck.ck-button-action:not(.ck-disabled):hover,a.ck.ck-button-action:not(.ck-disabled):hover{background:var(--ck-color-button-action-hover-background)}.ck.ck-button-action:not(.ck-disabled):active,a.ck.ck-button-action:not(.ck-disabled):active{background:var(--ck-color-button-action-active-background)}.ck.ck-button-action.ck-disabled,a.ck.ck-button-action.ck-disabled{background:var(--ck-color-button-action-disabled-background)}.ck.ck-button-action,a.ck.ck-button-action{color:var(--ck-color-button-action-text)}.ck.ck-button-bold,a.ck.ck-button-bold{font-weight:700}";
-styleInject(css_248z$Y);/**
+];var css_248z$12 = ".ck.ck-button,a.ck.ck-button{align-items:center;display:inline-flex;justify-content:left;position:relative;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-button .ck-button__label,a.ck.ck-button .ck-button__label{display:none}.ck.ck-button.ck-button_with-text .ck-button__label,a.ck.ck-button.ck-button_with-text .ck-button__label{display:inline-block}.ck.ck-button:not(.ck-button_with-text),a.ck.ck-button:not(.ck-button_with-text){justify-content:center}.ck.ck-button,a.ck.ck-button{background:var(--ck-color-button-default-background)}.ck.ck-button:not(.ck-disabled):hover,a.ck.ck-button:not(.ck-disabled):hover{background:var(--ck-color-button-default-hover-background)}.ck.ck-button:not(.ck-disabled):active,a.ck.ck-button:not(.ck-disabled):active{background:var(--ck-color-button-default-active-background)}.ck.ck-button.ck-disabled,a.ck.ck-button.ck-disabled{background:var(--ck-color-button-default-disabled-background)}.ck.ck-button,a.ck.ck-button{border-radius:0}.ck-rounded-corners .ck.ck-button,.ck-rounded-corners a.ck.ck-button,.ck.ck-button.ck-rounded-corners,a.ck.ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-button,a.ck.ck-button{-webkit-appearance:none;border:1px solid transparent;cursor:default;font-size:inherit;line-height:1;min-height:var(--ck-ui-component-min-height);min-width:var(--ck-ui-component-min-height);padding:var(--ck-spacing-tiny);text-align:center;transition:box-shadow .2s ease-in-out,border .2s ease-in-out;vertical-align:middle;white-space:nowrap}.ck.ck-button:active,.ck.ck-button:focus,a.ck.ck-button:active,a.ck.ck-button:focus{border:var(--ck-focus-ring);box-shadow:var(--ck-focus-outer-shadow),0 0;outline:none}.ck.ck-button .ck-button__icon use,.ck.ck-button .ck-button__icon use *,a.ck.ck-button .ck-button__icon use,a.ck.ck-button .ck-button__icon use *{color:inherit}.ck.ck-button .ck-button__label,a.ck.ck-button .ck-button__label{color:inherit;cursor:inherit;font-size:inherit;font-weight:inherit;vertical-align:middle}[dir=ltr] .ck.ck-button .ck-button__label,[dir=ltr] a.ck.ck-button .ck-button__label{text-align:left}[dir=rtl] .ck.ck-button .ck-button__label,[dir=rtl] a.ck.ck-button .ck-button__label{text-align:right}.ck.ck-button .ck-button__keystroke,a.ck.ck-button .ck-button__keystroke{color:inherit}[dir=ltr] .ck.ck-button .ck-button__keystroke,[dir=ltr] a.ck.ck-button .ck-button__keystroke{margin-left:var(--ck-spacing-large)}[dir=rtl] .ck.ck-button .ck-button__keystroke,[dir=rtl] a.ck.ck-button .ck-button__keystroke{margin-right:var(--ck-spacing-large)}.ck.ck-button .ck-button__keystroke,a.ck.ck-button .ck-button__keystroke{font-weight:700;opacity:.7}.ck.ck-button.ck-disabled:active,.ck.ck-button.ck-disabled:focus,a.ck.ck-button.ck-disabled:active,a.ck.ck-button.ck-disabled:focus{box-shadow:var(--ck-focus-disabled-outer-shadow),0 0}.ck.ck-button.ck-disabled .ck-button__icon,.ck.ck-button.ck-disabled .ck-button__label,a.ck.ck-button.ck-disabled .ck-button__icon,a.ck.ck-button.ck-disabled .ck-button__label{opacity:var(--ck-disabled-opacity)}.ck.ck-button.ck-disabled .ck-button__keystroke,a.ck.ck-button.ck-disabled .ck-button__keystroke{opacity:.3}.ck.ck-button.ck-button_with-text,a.ck.ck-button.ck-button_with-text{padding:var(--ck-spacing-tiny) var(--ck-spacing-standard)}[dir=ltr] .ck.ck-button.ck-button_with-text .ck-button__icon,[dir=ltr] a.ck.ck-button.ck-button_with-text .ck-button__icon{margin-left:calc(var(--ck-spacing-small)*-1);margin-right:var(--ck-spacing-small)}[dir=rtl] .ck.ck-button.ck-button_with-text .ck-button__icon,[dir=rtl] a.ck.ck-button.ck-button_with-text .ck-button__icon{margin-left:var(--ck-spacing-small);margin-right:calc(var(--ck-spacing-small)*-1)}.ck.ck-button.ck-button_with-keystroke .ck-button__label,a.ck.ck-button.ck-button_with-keystroke .ck-button__label{flex-grow:1}.ck.ck-button.ck-on,a.ck.ck-button.ck-on{background:var(--ck-color-button-on-background)}.ck.ck-button.ck-on:not(.ck-disabled):hover,a.ck.ck-button.ck-on:not(.ck-disabled):hover{background:var(--ck-color-button-on-hover-background)}.ck.ck-button.ck-on:not(.ck-disabled):active,a.ck.ck-button.ck-on:not(.ck-disabled):active{background:var(--ck-color-button-on-active-background)}.ck.ck-button.ck-on.ck-disabled,a.ck.ck-button.ck-on.ck-disabled{background:var(--ck-color-button-on-disabled-background)}.ck.ck-button.ck-on,a.ck.ck-button.ck-on{color:var(--ck-color-button-on-color)}.ck.ck-button.ck-button-save,a.ck.ck-button.ck-button-save{color:var(--ck-color-button-save)}.ck.ck-button.ck-button-cancel,a.ck.ck-button.ck-button-cancel{color:var(--ck-color-button-cancel)}.ck.ck-button-action,a.ck.ck-button-action{background:var(--ck-color-button-action-background)}.ck.ck-button-action:not(.ck-disabled):hover,a.ck.ck-button-action:not(.ck-disabled):hover{background:var(--ck-color-button-action-hover-background)}.ck.ck-button-action:not(.ck-disabled):active,a.ck.ck-button-action:not(.ck-disabled):active{background:var(--ck-color-button-action-active-background)}.ck.ck-button-action.ck-disabled,a.ck.ck-button-action.ck-disabled{background:var(--ck-color-button-action-disabled-background)}.ck.ck-button-action,a.ck.ck-button-action{color:var(--ck-color-button-action-text)}.ck.ck-button-bold,a.ck.ck-button-bold{font-weight:700}";
+styleInject(css_248z$12);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -13014,8 +13014,8 @@ class ButtonView extends View$1 {
         }
         return '';
     }
-}var css_248z$X = ".ck.ck-button.ck-switchbutton .ck-button__toggle,.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{display:block}:root{--ck-switch-button-toggle-width:2.6153846154em;--ck-switch-button-toggle-inner-size:calc(1.07692em + 1px);--ck-switch-button-translation:calc(var(--ck-switch-button-toggle-width) - var(--ck-switch-button-toggle-inner-size) - 2px);--ck-switch-button-inner-hover-shadow:0 0 0 5px var(--ck-color-switch-button-inner-shadow)}.ck.ck-button.ck-switchbutton,.ck.ck-button.ck-switchbutton.ck-on:active,.ck.ck-button.ck-switchbutton.ck-on:focus,.ck.ck-button.ck-switchbutton.ck-on:hover,.ck.ck-button.ck-switchbutton:active,.ck.ck-button.ck-switchbutton:focus,.ck.ck-button.ck-switchbutton:hover{background:transparent;color:inherit}[dir=ltr] .ck.ck-button.ck-switchbutton .ck-button__label{margin-right:calc(var(--ck-spacing-large)*2)}[dir=rtl] .ck.ck-button.ck-switchbutton .ck-button__label{margin-left:calc(var(--ck-spacing-large)*2)}.ck.ck-button.ck-switchbutton .ck-button__toggle{border-radius:0}.ck-rounded-corners .ck.ck-button.ck-switchbutton .ck-button__toggle,.ck.ck-button.ck-switchbutton .ck-button__toggle.ck-rounded-corners{border-radius:var(--ck-border-radius)}[dir=ltr] .ck.ck-button.ck-switchbutton .ck-button__toggle{margin-left:auto}[dir=rtl] .ck.ck-button.ck-switchbutton .ck-button__toggle{margin-right:auto}.ck.ck-button.ck-switchbutton .ck-button__toggle{background:var(--ck-color-switch-button-off-background);border:1px solid transparent;transition:background .4s ease,box-shadow .2s ease-in-out,outline .2s ease-in-out;width:var(--ck-switch-button-toggle-width)}.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{border-radius:0}.ck-rounded-corners .ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner,.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner.ck-rounded-corners{border-radius:var(--ck-border-radius);border-radius:calc(var(--ck-border-radius)*.5)}.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{background:var(--ck-color-switch-button-inner-background);height:var(--ck-switch-button-toggle-inner-size);transition:all .3s ease;width:var(--ck-switch-button-toggle-inner-size)}.ck.ck-button.ck-switchbutton .ck-button__toggle:hover{background:var(--ck-color-switch-button-off-hover-background)}.ck.ck-button.ck-switchbutton .ck-button__toggle:hover .ck-button__toggle__inner{box-shadow:var(--ck-switch-button-inner-hover-shadow)}.ck.ck-button.ck-switchbutton.ck-disabled .ck-button__toggle{opacity:var(--ck-disabled-opacity)}.ck.ck-button.ck-switchbutton:focus{border-color:transparent;box-shadow:none;outline:none}.ck.ck-button.ck-switchbutton:focus .ck-button__toggle{box-shadow:0 0 0 1px var(--ck-color-base-background),0 0 0 5px var(--ck-color-focus-outer-shadow);outline:var(--ck-focus-ring);outline-offset:1px}.ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle{background:var(--ck-color-switch-button-on-background)}.ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle:hover{background:var(--ck-color-switch-button-on-hover-background)}[dir=ltr] .ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle .ck-button__toggle__inner{transform:translateX(var( --ck-switch-button-translation ))}[dir=rtl] .ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle .ck-button__toggle__inner{transform:translateX(calc(var( --ck-switch-button-translation )*-1))}";
-styleInject(css_248z$X);/**
+}var css_248z$11 = ".ck.ck-button.ck-switchbutton .ck-button__toggle,.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{display:block}:root{--ck-switch-button-toggle-width:2.6153846154em;--ck-switch-button-toggle-inner-size:calc(1.07692em + 1px);--ck-switch-button-translation:calc(var(--ck-switch-button-toggle-width) - var(--ck-switch-button-toggle-inner-size) - 2px);--ck-switch-button-inner-hover-shadow:0 0 0 5px var(--ck-color-switch-button-inner-shadow)}.ck.ck-button.ck-switchbutton,.ck.ck-button.ck-switchbutton.ck-on:active,.ck.ck-button.ck-switchbutton.ck-on:focus,.ck.ck-button.ck-switchbutton.ck-on:hover,.ck.ck-button.ck-switchbutton:active,.ck.ck-button.ck-switchbutton:focus,.ck.ck-button.ck-switchbutton:hover{background:transparent;color:inherit}[dir=ltr] .ck.ck-button.ck-switchbutton .ck-button__label{margin-right:calc(var(--ck-spacing-large)*2)}[dir=rtl] .ck.ck-button.ck-switchbutton .ck-button__label{margin-left:calc(var(--ck-spacing-large)*2)}.ck.ck-button.ck-switchbutton .ck-button__toggle{border-radius:0}.ck-rounded-corners .ck.ck-button.ck-switchbutton .ck-button__toggle,.ck.ck-button.ck-switchbutton .ck-button__toggle.ck-rounded-corners{border-radius:var(--ck-border-radius)}[dir=ltr] .ck.ck-button.ck-switchbutton .ck-button__toggle{margin-left:auto}[dir=rtl] .ck.ck-button.ck-switchbutton .ck-button__toggle{margin-right:auto}.ck.ck-button.ck-switchbutton .ck-button__toggle{background:var(--ck-color-switch-button-off-background);border:1px solid transparent;transition:background .4s ease,box-shadow .2s ease-in-out,outline .2s ease-in-out;width:var(--ck-switch-button-toggle-width)}.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{border-radius:0}.ck-rounded-corners .ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner,.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner.ck-rounded-corners{border-radius:var(--ck-border-radius);border-radius:calc(var(--ck-border-radius)*.5)}.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{background:var(--ck-color-switch-button-inner-background);height:var(--ck-switch-button-toggle-inner-size);transition:all .3s ease;width:var(--ck-switch-button-toggle-inner-size)}.ck.ck-button.ck-switchbutton .ck-button__toggle:hover{background:var(--ck-color-switch-button-off-hover-background)}.ck.ck-button.ck-switchbutton .ck-button__toggle:hover .ck-button__toggle__inner{box-shadow:var(--ck-switch-button-inner-hover-shadow)}.ck.ck-button.ck-switchbutton.ck-disabled .ck-button__toggle{opacity:var(--ck-disabled-opacity)}.ck.ck-button.ck-switchbutton:focus{border-color:transparent;box-shadow:none;outline:none}.ck.ck-button.ck-switchbutton:focus .ck-button__toggle{box-shadow:0 0 0 1px var(--ck-color-base-background),0 0 0 5px var(--ck-color-focus-outer-shadow);outline:var(--ck-focus-ring);outline-offset:1px}.ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle{background:var(--ck-color-switch-button-on-background)}.ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle:hover{background:var(--ck-color-switch-button-on-hover-background)}[dir=ltr] .ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle .ck-button__toggle__inner{transform:translateX(var( --ck-switch-button-translation ))}[dir=rtl] .ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle .ck-button__toggle__inner{transform:translateX(calc(var( --ck-switch-button-translation )*-1))}";
+styleInject(css_248z$11);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -13201,8 +13201,8 @@ class ColorTileView extends ButtonView {
         super.render();
         this.iconView.fillColor = 'hsl(0, 0%, 100%)';
     }
-}var css_248z$W = ".ck.ck-color-grid{display:grid}:root{--ck-color-grid-tile-size:24px;--ck-color-color-grid-check-icon:#166fd4}.ck.ck-color-grid{grid-gap:5px;padding:8px}.ck.ck-color-grid__tile{border:0;height:var(--ck-color-grid-tile-size);min-height:var(--ck-color-grid-tile-size);min-width:var(--ck-color-grid-tile-size);padding:0;transition:box-shadow .2s ease;width:var(--ck-color-grid-tile-size)}.ck.ck-color-grid__tile.ck-disabled{cursor:unset;transition:unset}.ck.ck-color-grid__tile.ck-color-table__color-tile_bordered{box-shadow:0 0 0 1px var(--ck-color-base-border)}.ck.ck-color-grid__tile .ck.ck-icon{color:var(--ck-color-color-grid-check-icon);display:none}.ck.ck-color-grid__tile.ck-on{box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-base-text)}.ck.ck-color-grid__tile.ck-on .ck.ck-icon{display:block}.ck.ck-color-grid__tile.ck-on,.ck.ck-color-grid__tile:focus:not(.ck-disabled),.ck.ck-color-grid__tile:hover:not(.ck-disabled){border:0}.ck.ck-color-grid__tile:focus:not(.ck-disabled),.ck.ck-color-grid__tile:hover:not(.ck-disabled){box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-focus-border)}.ck.ck-color-grid__label{padding:0 var(--ck-spacing-standard)}";
-styleInject(css_248z$W);/**
+}var css_248z$10 = ".ck.ck-color-grid{display:grid}:root{--ck-color-grid-tile-size:24px;--ck-color-color-grid-check-icon:#166fd4}.ck.ck-color-grid{grid-gap:5px;padding:8px}.ck.ck-color-grid__tile{border:0;height:var(--ck-color-grid-tile-size);min-height:var(--ck-color-grid-tile-size);min-width:var(--ck-color-grid-tile-size);padding:0;transition:box-shadow .2s ease;width:var(--ck-color-grid-tile-size)}.ck.ck-color-grid__tile.ck-disabled{cursor:unset;transition:unset}.ck.ck-color-grid__tile.ck-color-table__color-tile_bordered{box-shadow:0 0 0 1px var(--ck-color-base-border)}.ck.ck-color-grid__tile .ck.ck-icon{color:var(--ck-color-color-grid-check-icon);display:none}.ck.ck-color-grid__tile.ck-on{box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-base-text)}.ck.ck-color-grid__tile.ck-on .ck.ck-icon{display:block}.ck.ck-color-grid__tile.ck-on,.ck.ck-color-grid__tile:focus:not(.ck-disabled),.ck.ck-color-grid__tile:hover:not(.ck-disabled){border:0}.ck.ck-color-grid__tile:focus:not(.ck-disabled),.ck.ck-color-grid__tile:hover:not(.ck-disabled){box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-focus-border)}.ck.ck-color-grid__label{padding:0 var(--ck-spacing-standard)}";
+styleInject(css_248z$10);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -14740,8 +14740,8 @@ function parseColorString(colorString) {
 }
 function canConvertParsedColor(parsedColor) {
     return Object.keys(convert$1).includes(parsedColor.space);
-}var css_248z$V = ".ck.ck-label{display:block}.ck.ck-voice-label{display:none}.ck.ck-label{font-weight:700}";
-styleInject(css_248z$V);/**
+}var css_248z$$ = ".ck.ck-label{display:block}.ck.ck-voice-label{display:none}.ck.ck-label{font-weight:700}";
+styleInject(css_248z$$);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -14775,8 +14775,8 @@ class LabelView extends View$1 {
             ]
         });
     }
-}var css_248z$U = ".ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper{display:flex;position:relative}.ck.ck-labeled-field-view .ck.ck-label{display:block;position:absolute}:root{--ck-labeled-field-view-transition:.1s cubic-bezier(0,0,0.24,0.95);--ck-labeled-field-empty-unfocused-max-width:100% - 2 * var(--ck-spacing-medium);--ck-labeled-field-label-default-position-x:var(--ck-spacing-medium);--ck-labeled-field-label-default-position-y:calc(var(--ck-font-size-base)*0.6);--ck-color-labeled-field-label-background:var(--ck-color-base-background)}.ck.ck-labeled-field-view{border-radius:0}.ck-rounded-corners .ck.ck-labeled-field-view,.ck.ck-labeled-field-view.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper{width:100%}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{top:0}[dir=ltr] .ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{left:0}[dir=rtl] .ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{right:0}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{background:var(--ck-color-labeled-field-label-background);font-weight:400;line-height:normal;max-width:100%;overflow:hidden;padding:0 calc(var(--ck-font-size-tiny)*.5);pointer-events:none;text-overflow:ellipsis;transform:translate(var(--ck-spacing-medium),-6px) scale(.75);transform-origin:0 0;transition:transform var(--ck-labeled-field-view-transition),padding var(--ck-labeled-field-view-transition),background var(--ck-labeled-field-view-transition)}.ck.ck-labeled-field-view.ck-error .ck-input:not([readonly])+.ck.ck-label,.ck.ck-labeled-field-view.ck-error>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{color:var(--ck-color-base-error)}.ck.ck-labeled-field-view .ck-labeled-field-view__status{font-size:var(--ck-font-size-small);margin-top:var(--ck-spacing-small);white-space:normal}.ck.ck-labeled-field-view .ck-labeled-field-view__status.ck-labeled-field-view__status_error{color:var(--ck-color-base-error)}.ck.ck-labeled-field-view.ck-disabled>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{color:var(--ck-color-input-disabled-text)}[dir=ltr] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,[dir=ltr] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{transform:translate(var(--ck-labeled-field-label-default-position-x),var(--ck-labeled-field-label-default-position-y)) scale(1)}[dir=rtl] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,[dir=rtl] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{transform:translate(calc(var(--ck-labeled-field-label-default-position-x)*-1),var(--ck-labeled-field-label-default-position-y)) scale(1)}.ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{background:transparent;max-width:calc(var(--ck-labeled-field-empty-unfocused-max-width));padding:0}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown>.ck.ck-button{background:transparent}.ck.ck-labeled-field-view.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown>.ck-button>.ck-button__label{opacity:0}.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown+.ck-label{max-width:calc(var(--ck-labeled-field-empty-unfocused-max-width) - var(--ck-dropdown-arrow-size) - var(--ck-spacing-standard))}";
-styleInject(css_248z$U);/**
+}var css_248z$_ = ".ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper{display:flex;position:relative}.ck.ck-labeled-field-view .ck.ck-label{display:block;position:absolute}:root{--ck-labeled-field-view-transition:.1s cubic-bezier(0,0,0.24,0.95);--ck-labeled-field-empty-unfocused-max-width:100% - 2 * var(--ck-spacing-medium);--ck-labeled-field-label-default-position-x:var(--ck-spacing-medium);--ck-labeled-field-label-default-position-y:calc(var(--ck-font-size-base)*0.6);--ck-color-labeled-field-label-background:var(--ck-color-base-background)}.ck.ck-labeled-field-view{border-radius:0}.ck-rounded-corners .ck.ck-labeled-field-view,.ck.ck-labeled-field-view.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper{width:100%}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{top:0}[dir=ltr] .ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{left:0}[dir=rtl] .ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{right:0}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{background:var(--ck-color-labeled-field-label-background);font-weight:400;line-height:normal;max-width:100%;overflow:hidden;padding:0 calc(var(--ck-font-size-tiny)*.5);pointer-events:none;text-overflow:ellipsis;transform:translate(var(--ck-spacing-medium),-6px) scale(.75);transform-origin:0 0;transition:transform var(--ck-labeled-field-view-transition),padding var(--ck-labeled-field-view-transition),background var(--ck-labeled-field-view-transition)}.ck.ck-labeled-field-view.ck-error .ck-input:not([readonly])+.ck.ck-label,.ck.ck-labeled-field-view.ck-error>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{color:var(--ck-color-base-error)}.ck.ck-labeled-field-view .ck-labeled-field-view__status{font-size:var(--ck-font-size-small);margin-top:var(--ck-spacing-small);white-space:normal}.ck.ck-labeled-field-view .ck-labeled-field-view__status.ck-labeled-field-view__status_error{color:var(--ck-color-base-error)}.ck.ck-labeled-field-view.ck-disabled>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{color:var(--ck-color-input-disabled-text)}[dir=ltr] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,[dir=ltr] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{transform:translate(var(--ck-labeled-field-label-default-position-x),var(--ck-labeled-field-label-default-position-y)) scale(1)}[dir=rtl] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,[dir=rtl] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{transform:translate(calc(var(--ck-labeled-field-label-default-position-x)*-1),var(--ck-labeled-field-label-default-position-y)) scale(1)}.ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{background:transparent;max-width:calc(var(--ck-labeled-field-empty-unfocused-max-width));padding:0}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown>.ck.ck-button{background:transparent}.ck.ck-labeled-field-view.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown>.ck-button>.ck-button__label{opacity:0}.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown+.ck-label{max-width:calc(var(--ck-labeled-field-empty-unfocused-max-width) - var(--ck-dropdown-arrow-size) - var(--ck-spacing-standard))}";
+styleInject(css_248z$_);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -14925,8 +14925,8 @@ class LabeledFieldView extends View$1 {
     focus() {
         this.fieldView.focus();
     }
-}var css_248z$T = ":root{--ck-input-width:18em;--ck-input-text-width:var(--ck-input-width)}.ck.ck-input{border-radius:0}.ck-rounded-corners .ck.ck-input,.ck.ck-input.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-input{background:var(--ck-color-input-background);border:1px solid var(--ck-color-input-border);min-height:var(--ck-ui-component-min-height);min-width:var(--ck-input-width);padding:var(--ck-spacing-extra-tiny) var(--ck-spacing-medium);transition:box-shadow .1s ease-in-out,border .1s ease-in-out}.ck.ck-input:focus{border:var(--ck-focus-ring);box-shadow:var(--ck-focus-outer-shadow),0 0;outline:none}.ck.ck-input[readonly]{background:var(--ck-color-input-disabled-background);border:1px solid var(--ck-color-input-disabled-border);color:var(--ck-color-input-disabled-text)}.ck.ck-input[readonly]:focus{box-shadow:var(--ck-focus-disabled-outer-shadow),0 0}.ck.ck-input.ck-error{animation:ck-input-shake .3s ease both;border-color:var(--ck-color-input-error-border)}.ck.ck-input.ck-error:focus{box-shadow:var(--ck-focus-error-outer-shadow),0 0}@keyframes ck-input-shake{20%{transform:translateX(-2px)}40%{transform:translateX(2px)}60%{transform:translateX(-1px)}80%{transform:translateX(1px)}}";
-styleInject(css_248z$T);/**
+}var css_248z$Z = ":root{--ck-input-width:18em;--ck-input-text-width:var(--ck-input-width)}.ck.ck-input{border-radius:0}.ck-rounded-corners .ck.ck-input,.ck.ck-input.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-input{background:var(--ck-color-input-background);border:1px solid var(--ck-color-input-border);min-height:var(--ck-ui-component-min-height);min-width:var(--ck-input-width);padding:var(--ck-spacing-extra-tiny) var(--ck-spacing-medium);transition:box-shadow .1s ease-in-out,border .1s ease-in-out}.ck.ck-input:focus{border:var(--ck-focus-ring);box-shadow:var(--ck-focus-outer-shadow),0 0;outline:none}.ck.ck-input[readonly]{background:var(--ck-color-input-disabled-background);border:1px solid var(--ck-color-input-disabled-border);color:var(--ck-color-input-disabled-text)}.ck.ck-input[readonly]:focus{box-shadow:var(--ck-focus-disabled-outer-shadow),0 0}.ck.ck-input.ck-error{animation:ck-input-shake .3s ease both;border-color:var(--ck-color-input-error-border)}.ck.ck-input.ck-error:focus{box-shadow:var(--ck-focus-error-outer-shadow),0 0}@keyframes ck-input-shake{20%{transform:translateX(-2px)}40%{transform:translateX(2px)}60%{transform:translateX(-1px)}80%{transform:translateX(1px)}}";
+styleInject(css_248z$Z);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -15172,8 +15172,8 @@ class DropdownPanelView extends View$1 {
             }
         }
     }
-}var css_248z$S = ":root{--ck-dropdown-max-width:75vw}.ck.ck-dropdown{display:inline-block;position:relative}.ck.ck-dropdown .ck-dropdown__arrow{pointer-events:none;z-index:var(--ck-z-default)}.ck.ck-dropdown .ck-button.ck-dropdown__button{width:100%}.ck.ck-dropdown .ck-dropdown__panel{display:none;max-width:var(--ck-dropdown-max-width);position:absolute;z-index:var(--ck-z-modal)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel-visible{display:inline-block}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_n,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nmw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nw{bottom:100%}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw{bottom:auto;top:100%}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se{left:0}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw{right:0}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_n,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s{left:50%;transform:translateX(-50%)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nmw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw{left:75%;transform:translateX(-75%)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme{left:25%;transform:translateX(-25%)}.ck.ck-toolbar .ck-dropdown__panel{z-index:calc(var(--ck-z-modal) + 1)}:root{--ck-dropdown-arrow-size:calc(var(--ck-icon-size)*0.5)}.ck.ck-dropdown{font-size:inherit}.ck.ck-dropdown .ck-dropdown__arrow{width:var(--ck-dropdown-arrow-size)}[dir=ltr] .ck.ck-dropdown .ck-dropdown__arrow{margin-left:var(--ck-spacing-standard);right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-dropdown .ck-dropdown__arrow{left:var(--ck-spacing-standard);margin-right:var(--ck-spacing-small)}.ck.ck-dropdown.ck-disabled .ck-dropdown__arrow{opacity:var(--ck-disabled-opacity)}[dir=ltr] .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text){padding-left:var(--ck-spacing-small)}[dir=rtl] .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text){padding-right:var(--ck-spacing-small)}.ck.ck-dropdown .ck-button.ck-dropdown__button .ck-button__label{overflow:hidden;text-overflow:ellipsis;width:7em}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-disabled .ck-button__label{opacity:var(--ck-disabled-opacity)}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on{border-bottom-left-radius:0;border-bottom-right-radius:0}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-dropdown__button_label-width_auto .ck-button__label{width:auto}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-off:active,.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on:active{box-shadow:none}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-off:active:focus,.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on:active:focus{box-shadow:var(--ck-focus-outer-shadow),0 0}.ck.ck-dropdown__panel{border-radius:0}.ck-rounded-corners .ck.ck-dropdown__panel,.ck.ck-dropdown__panel.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-dropdown__panel{background:var(--ck-color-dropdown-panel-background);border:1px solid var(--ck-color-dropdown-panel-border);bottom:0;box-shadow:var(--ck-drop-shadow),0 0;min-width:100%}.ck.ck-dropdown__panel.ck-dropdown__panel_se{border-top-left-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_sw{border-top-right-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_ne{border-bottom-left-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_nw{border-bottom-right-radius:0}";
-styleInject(css_248z$S);/**
+}var css_248z$Y = ":root{--ck-dropdown-max-width:75vw}.ck.ck-dropdown{display:inline-block;position:relative}.ck.ck-dropdown .ck-dropdown__arrow{pointer-events:none;z-index:var(--ck-z-default)}.ck.ck-dropdown .ck-button.ck-dropdown__button{width:100%}.ck.ck-dropdown .ck-dropdown__panel{display:none;max-width:var(--ck-dropdown-max-width);position:absolute;z-index:var(--ck-z-modal)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel-visible{display:inline-block}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_n,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nmw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nw{bottom:100%}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw{bottom:auto;top:100%}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se{left:0}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw{right:0}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_n,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s{left:50%;transform:translateX(-50%)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nmw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw{left:75%;transform:translateX(-75%)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme{left:25%;transform:translateX(-25%)}.ck.ck-toolbar .ck-dropdown__panel{z-index:calc(var(--ck-z-modal) + 1)}:root{--ck-dropdown-arrow-size:calc(var(--ck-icon-size)*0.5)}.ck.ck-dropdown{font-size:inherit}.ck.ck-dropdown .ck-dropdown__arrow{width:var(--ck-dropdown-arrow-size)}[dir=ltr] .ck.ck-dropdown .ck-dropdown__arrow{margin-left:var(--ck-spacing-standard);right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-dropdown .ck-dropdown__arrow{left:var(--ck-spacing-standard);margin-right:var(--ck-spacing-small)}.ck.ck-dropdown.ck-disabled .ck-dropdown__arrow{opacity:var(--ck-disabled-opacity)}[dir=ltr] .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text){padding-left:var(--ck-spacing-small)}[dir=rtl] .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text){padding-right:var(--ck-spacing-small)}.ck.ck-dropdown .ck-button.ck-dropdown__button .ck-button__label{overflow:hidden;text-overflow:ellipsis;width:7em}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-disabled .ck-button__label{opacity:var(--ck-disabled-opacity)}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on{border-bottom-left-radius:0;border-bottom-right-radius:0}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-dropdown__button_label-width_auto .ck-button__label{width:auto}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-off:active,.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on:active{box-shadow:none}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-off:active:focus,.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on:active:focus{box-shadow:var(--ck-focus-outer-shadow),0 0}.ck.ck-dropdown__panel{border-radius:0}.ck-rounded-corners .ck.ck-dropdown__panel,.ck.ck-dropdown__panel.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-dropdown__panel{background:var(--ck-color-dropdown-panel-background);border:1px solid var(--ck-color-dropdown-panel-border);bottom:0;box-shadow:var(--ck-drop-shadow),0 0;min-width:100%}.ck.ck-dropdown__panel.ck-dropdown__panel_se{border-top-left-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_sw{border-top-right-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_ne{border-bottom-left-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_nw{border-bottom-right-radius:0}";
+styleInject(css_248z$Y);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -17024,8 +17024,8 @@ class ContextPlugin extends ObservableMixin() {
     static get isContextPlugin() {
         return true;
     }
-}var css_248z$R = ".ck .ck-placeholder,.ck.ck-placeholder{position:relative}.ck .ck-placeholder:before,.ck.ck-placeholder:before{content:attr(data-placeholder);left:0;pointer-events:none;position:absolute;right:0}.ck.ck-read-only .ck-placeholder:before{display:none}.ck.ck-reset_all .ck-placeholder{position:relative}.ck .ck-placeholder:before,.ck.ck-placeholder:before{color:var(--ck-color-engine-placeholder-text);cursor:text}";
-styleInject(css_248z$R);/**
+}var css_248z$X = ".ck .ck-placeholder,.ck.ck-placeholder{position:relative}.ck .ck-placeholder:before,.ck.ck-placeholder:before{content:attr(data-placeholder);left:0;pointer-events:none;position:absolute;right:0}.ck.ck-read-only .ck-placeholder:before{display:none}.ck.ck-reset_all .ck-placeholder{position:relative}.ck .ck-placeholder:before,.ck.ck-placeholder:before{color:var(--ck-color-engine-placeholder-text);cursor:text}";
+styleInject(css_248z$X);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -24591,8 +24591,8 @@ function jumpOverInlineFiller(evt, data) {
             }
         }
     }
-}var css_248z$Q = ".ck.ck-editor__editable span[data-ck-unsafe-element]{display:none}";
-styleInject(css_248z$Q);/**
+}var css_248z$W = ".ck.ck-editor__editable span[data-ck-unsafe-element]{display:none}";
+styleInject(css_248z$W);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -53763,8 +53763,8 @@ const icons$1 = {
     pilcrow: pilcrow$1,
     quote,
     threeVerticalDots: threeVerticalDots$1
-};var index$6=/*#__PURE__*/Object.freeze({__proto__:null,icons:icons$1,Plugin:Plugin,Command:Command,MultiCommand:MultiCommand,Context:Context,ContextPlugin:ContextPlugin,Editor:Editor,attachToForm:attachToForm,DataApiMixin:DataApiMixin,ElementApiMixin:ElementApiMixin,secureSourceElement:secureSourceElement,PendingActions:PendingActions});var css_248z$P = ".ck.ck-toolbar{align-items:center;display:flex;flex-flow:row nowrap;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-toolbar>.ck-toolbar__items{align-items:center;display:flex;flex-flow:row wrap;flex-grow:1}.ck.ck-toolbar .ck.ck-toolbar__separator{display:inline-block}.ck.ck-toolbar .ck.ck-toolbar__separator:first-child,.ck.ck-toolbar .ck.ck-toolbar__separator:last-child{display:none}.ck.ck-toolbar .ck-toolbar__line-break{flex-basis:100%}.ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items{flex-wrap:nowrap}.ck.ck-toolbar.ck-toolbar_vertical>.ck-toolbar__items{flex-direction:column}.ck.ck-toolbar.ck-toolbar_floating>.ck-toolbar__items{flex-wrap:nowrap}.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown>.ck-dropdown__button .ck-dropdown__arrow{display:none}.ck.ck-toolbar{border-radius:0}.ck-rounded-corners .ck.ck-toolbar,.ck.ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-toolbar{background:var(--ck-color-toolbar-background);border:1px solid var(--ck-color-toolbar-border);padding:0 var(--ck-spacing-small)}.ck.ck-toolbar .ck.ck-toolbar__separator{align-self:stretch;background:var(--ck-color-toolbar-border);margin-bottom:var(--ck-spacing-small);margin-top:var(--ck-spacing-small);min-width:1px;width:1px}.ck.ck-toolbar .ck-toolbar__line-break{height:0}.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break){margin-right:var(--ck-spacing-small)}.ck.ck-toolbar>.ck-toolbar__items:empty+.ck.ck-toolbar__separator{display:none}.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break),.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown{margin-bottom:var(--ck-spacing-small);margin-top:var(--ck-spacing-small)}.ck.ck-toolbar.ck-toolbar_vertical{padding:0}.ck.ck-toolbar.ck-toolbar_vertical>.ck-toolbar__items>.ck{border-radius:0;margin:0;width:100%}.ck.ck-toolbar.ck-toolbar_compact{padding:0}.ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>*{margin:0}.ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>:not(:first-child):not(:last-child){border-radius:0}.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown>.ck.ck-button.ck-dropdown__button{padding-left:var(--ck-spacing-tiny)}.ck.ck-toolbar .ck-toolbar__nested-toolbar-dropdown>.ck-dropdown__panel{min-width:auto}.ck.ck-toolbar .ck-toolbar__nested-toolbar-dropdown>.ck-button>.ck-button__label{max-width:7em;width:auto}.ck.ck-toolbar:focus{outline:none}.ck-toolbar-container .ck.ck-toolbar{border:0}.ck.ck-toolbar[dir=rtl]>.ck-toolbar__items>.ck,[dir=rtl] .ck.ck-toolbar>.ck-toolbar__items>.ck{margin-right:0}.ck.ck-toolbar[dir=rtl]:not(.ck-toolbar_compact)>.ck-toolbar__items>.ck,[dir=rtl] .ck.ck-toolbar:not(.ck-toolbar_compact)>.ck-toolbar__items>.ck{margin-left:var(--ck-spacing-small)}.ck.ck-toolbar[dir=rtl]>.ck-toolbar__items>.ck:last-child,[dir=rtl] .ck.ck-toolbar>.ck-toolbar__items>.ck:last-child{margin-left:0}.ck.ck-toolbar.ck-toolbar_compact[dir=rtl]>.ck-toolbar__items>.ck:first-child,[dir=rtl] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:first-child{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-toolbar.ck-toolbar_compact[dir=rtl]>.ck-toolbar__items>.ck:last-child,[dir=rtl] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:last-child{border-bottom-right-radius:0;border-top-right-radius:0}.ck.ck-toolbar.ck-toolbar_grouping[dir=rtl]>.ck-toolbar__items:not(:empty):not(:only-child),.ck.ck-toolbar[dir=rtl]>.ck.ck-toolbar__separator,[dir=rtl] .ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items:not(:empty):not(:only-child),[dir=rtl] .ck.ck-toolbar>.ck.ck-toolbar__separator{margin-left:var(--ck-spacing-small)}.ck.ck-toolbar[dir=ltr]>.ck-toolbar__items>.ck:last-child,[dir=ltr] .ck.ck-toolbar>.ck-toolbar__items>.ck:last-child{margin-right:0}.ck.ck-toolbar.ck-toolbar_compact[dir=ltr]>.ck-toolbar__items>.ck:first-child,[dir=ltr] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:first-child{border-bottom-right-radius:0;border-top-right-radius:0}.ck.ck-toolbar.ck-toolbar_compact[dir=ltr]>.ck-toolbar__items>.ck:last-child,[dir=ltr] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:last-child{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-toolbar.ck-toolbar_grouping[dir=ltr]>.ck-toolbar__items:not(:empty):not(:only-child),.ck.ck-toolbar[dir=ltr]>.ck.ck-toolbar__separator,[dir=ltr] .ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items:not(:empty):not(:only-child),[dir=ltr] .ck.ck-toolbar>.ck.ck-toolbar__separator{margin-right:var(--ck-spacing-small)}";
-styleInject(css_248z$P);/**
+};var index$6=/*#__PURE__*/Object.freeze({__proto__:null,icons:icons$1,Plugin:Plugin,Command:Command,MultiCommand:MultiCommand,Context:Context,ContextPlugin:ContextPlugin,Editor:Editor,attachToForm:attachToForm,DataApiMixin:DataApiMixin,ElementApiMixin:ElementApiMixin,secureSourceElement:secureSourceElement,PendingActions:PendingActions});var css_248z$V = ".ck.ck-toolbar{align-items:center;display:flex;flex-flow:row nowrap;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-toolbar>.ck-toolbar__items{align-items:center;display:flex;flex-flow:row wrap;flex-grow:1}.ck.ck-toolbar .ck.ck-toolbar__separator{display:inline-block}.ck.ck-toolbar .ck.ck-toolbar__separator:first-child,.ck.ck-toolbar .ck.ck-toolbar__separator:last-child{display:none}.ck.ck-toolbar .ck-toolbar__line-break{flex-basis:100%}.ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items{flex-wrap:nowrap}.ck.ck-toolbar.ck-toolbar_vertical>.ck-toolbar__items{flex-direction:column}.ck.ck-toolbar.ck-toolbar_floating>.ck-toolbar__items{flex-wrap:nowrap}.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown>.ck-dropdown__button .ck-dropdown__arrow{display:none}.ck.ck-toolbar{border-radius:0}.ck-rounded-corners .ck.ck-toolbar,.ck.ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-toolbar{background:var(--ck-color-toolbar-background);border:1px solid var(--ck-color-toolbar-border);padding:0 var(--ck-spacing-small)}.ck.ck-toolbar .ck.ck-toolbar__separator{align-self:stretch;background:var(--ck-color-toolbar-border);margin-bottom:var(--ck-spacing-small);margin-top:var(--ck-spacing-small);min-width:1px;width:1px}.ck.ck-toolbar .ck-toolbar__line-break{height:0}.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break){margin-right:var(--ck-spacing-small)}.ck.ck-toolbar>.ck-toolbar__items:empty+.ck.ck-toolbar__separator{display:none}.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break),.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown{margin-bottom:var(--ck-spacing-small);margin-top:var(--ck-spacing-small)}.ck.ck-toolbar.ck-toolbar_vertical{padding:0}.ck.ck-toolbar.ck-toolbar_vertical>.ck-toolbar__items>.ck{border-radius:0;margin:0;width:100%}.ck.ck-toolbar.ck-toolbar_compact{padding:0}.ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>*{margin:0}.ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>:not(:first-child):not(:last-child){border-radius:0}.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown>.ck.ck-button.ck-dropdown__button{padding-left:var(--ck-spacing-tiny)}.ck.ck-toolbar .ck-toolbar__nested-toolbar-dropdown>.ck-dropdown__panel{min-width:auto}.ck.ck-toolbar .ck-toolbar__nested-toolbar-dropdown>.ck-button>.ck-button__label{max-width:7em;width:auto}.ck.ck-toolbar:focus{outline:none}.ck-toolbar-container .ck.ck-toolbar{border:0}.ck.ck-toolbar[dir=rtl]>.ck-toolbar__items>.ck,[dir=rtl] .ck.ck-toolbar>.ck-toolbar__items>.ck{margin-right:0}.ck.ck-toolbar[dir=rtl]:not(.ck-toolbar_compact)>.ck-toolbar__items>.ck,[dir=rtl] .ck.ck-toolbar:not(.ck-toolbar_compact)>.ck-toolbar__items>.ck{margin-left:var(--ck-spacing-small)}.ck.ck-toolbar[dir=rtl]>.ck-toolbar__items>.ck:last-child,[dir=rtl] .ck.ck-toolbar>.ck-toolbar__items>.ck:last-child{margin-left:0}.ck.ck-toolbar.ck-toolbar_compact[dir=rtl]>.ck-toolbar__items>.ck:first-child,[dir=rtl] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:first-child{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-toolbar.ck-toolbar_compact[dir=rtl]>.ck-toolbar__items>.ck:last-child,[dir=rtl] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:last-child{border-bottom-right-radius:0;border-top-right-radius:0}.ck.ck-toolbar.ck-toolbar_grouping[dir=rtl]>.ck-toolbar__items:not(:empty):not(:only-child),.ck.ck-toolbar[dir=rtl]>.ck.ck-toolbar__separator,[dir=rtl] .ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items:not(:empty):not(:only-child),[dir=rtl] .ck.ck-toolbar>.ck.ck-toolbar__separator{margin-left:var(--ck-spacing-small)}.ck.ck-toolbar[dir=ltr]>.ck-toolbar__items>.ck:last-child,[dir=ltr] .ck.ck-toolbar>.ck-toolbar__items>.ck:last-child{margin-right:0}.ck.ck-toolbar.ck-toolbar_compact[dir=ltr]>.ck-toolbar__items>.ck:first-child,[dir=ltr] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:first-child{border-bottom-right-radius:0;border-top-right-radius:0}.ck.ck-toolbar.ck-toolbar_compact[dir=ltr]>.ck-toolbar__items>.ck:last-child,[dir=ltr] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:last-child{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-toolbar.ck-toolbar_grouping[dir=ltr]>.ck-toolbar__items:not(:empty):not(:only-child),.ck.ck-toolbar[dir=ltr]>.ck.ck-toolbar__separator,[dir=ltr] .ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items:not(:empty):not(:only-child),[dir=ltr] .ck.ck-toolbar>.ck.ck-toolbar__separator{margin-right:var(--ck-spacing-small)}";
+styleInject(css_248z$V);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -54466,8 +54466,8 @@ class DynamicGrouping {
             this.viewFocusables.add(this.groupedItemsDropdown);
         }
     }
-}var css_248z$O = ".ck.ck-list{display:flex;flex-direction:column;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-list .ck-list__item,.ck.ck-list .ck-list__separator{display:block}.ck.ck-list .ck-list__item>:focus{position:relative;z-index:var(--ck-z-default)}.ck.ck-list{border-radius:0}.ck-rounded-corners .ck.ck-list,.ck.ck-list.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-list{background:var(--ck-color-list-background);list-style-type:none}.ck.ck-list__item{cursor:default;min-width:12em}.ck.ck-list__item .ck-button{border-radius:0;min-height:unset;padding:calc(var(--ck-line-height-base)*.2*var(--ck-font-size-base)) calc(var(--ck-line-height-base)*.4*var(--ck-font-size-base));text-align:left;width:100%}.ck.ck-list__item .ck-button .ck-button__label{line-height:calc(var(--ck-line-height-base)*1.2*var(--ck-font-size-base))}.ck.ck-list__item .ck-button:active{box-shadow:none}.ck.ck-list__item .ck-button.ck-on{background:var(--ck-color-list-button-on-background);color:var(--ck-color-list-button-on-text)}.ck.ck-list__item .ck-button.ck-on:active{box-shadow:none}.ck.ck-list__item .ck-button.ck-on:hover:not(.ck-disabled){background:var(--ck-color-list-button-on-background-focus)}.ck.ck-list__item .ck-button.ck-on:focus:not(.ck-switchbutton):not(.ck-disabled){border-color:var(--ck-color-base-background)}.ck.ck-list__item .ck-button:hover:not(.ck-disabled){background:var(--ck-color-list-button-hover-background)}.ck.ck-list__item .ck-switchbutton.ck-on{background:var(--ck-color-list-background);color:inherit}.ck.ck-list__item .ck-switchbutton.ck-on:hover:not(.ck-disabled){background:var(--ck-color-list-button-hover-background);color:inherit}.ck.ck-list__separator{background:var(--ck-color-base-border);height:1px;width:100%}";
-styleInject(css_248z$O);/**
+}var css_248z$U = ".ck.ck-list{display:flex;flex-direction:column;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-list .ck-list__item,.ck.ck-list .ck-list__separator{display:block}.ck.ck-list .ck-list__item>:focus{position:relative;z-index:var(--ck-z-default)}.ck.ck-list{border-radius:0}.ck-rounded-corners .ck.ck-list,.ck.ck-list.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-list{background:var(--ck-color-list-background);list-style-type:none}.ck.ck-list__item{cursor:default;min-width:12em}.ck.ck-list__item .ck-button{border-radius:0;min-height:unset;padding:calc(var(--ck-line-height-base)*.2*var(--ck-font-size-base)) calc(var(--ck-line-height-base)*.4*var(--ck-font-size-base));text-align:left;width:100%}.ck.ck-list__item .ck-button .ck-button__label{line-height:calc(var(--ck-line-height-base)*1.2*var(--ck-font-size-base))}.ck.ck-list__item .ck-button:active{box-shadow:none}.ck.ck-list__item .ck-button.ck-on{background:var(--ck-color-list-button-on-background);color:var(--ck-color-list-button-on-text)}.ck.ck-list__item .ck-button.ck-on:active{box-shadow:none}.ck.ck-list__item .ck-button.ck-on:hover:not(.ck-disabled){background:var(--ck-color-list-button-on-background-focus)}.ck.ck-list__item .ck-button.ck-on:focus:not(.ck-switchbutton):not(.ck-disabled){border-color:var(--ck-color-base-background)}.ck.ck-list__item .ck-button:hover:not(.ck-disabled){background:var(--ck-color-list-button-hover-background)}.ck.ck-list__item .ck-switchbutton.ck-on{background:var(--ck-color-list-background);color:inherit}.ck.ck-list__item .ck-switchbutton.ck-on:hover:not(.ck-disabled){background:var(--ck-color-list-button-hover-background);color:inherit}.ck.ck-list__separator{background:var(--ck-color-base-border);height:1px;width:100%}";
+styleInject(css_248z$U);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -54607,8 +54607,8 @@ class ListSeparatorView extends View$1 {
             }
         });
     }
-}var css_248z$N = ".ck.ck-splitbutton{font-size:inherit}.ck.ck-splitbutton .ck-splitbutton__action:focus{z-index:calc(var(--ck-z-default) + 1)}:root{--ck-color-split-button-hover-background:#ebebeb;--ck-color-split-button-hover-border:#b3b3b3}[dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,[dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__action{border-bottom-right-radius:unset;border-top-right-radius:unset}[dir=rtl] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,[dir=rtl] .ck.ck-splitbutton:hover>.ck-splitbutton__action{border-bottom-left-radius:unset;border-top-left-radius:unset}.ck.ck-splitbutton>.ck-splitbutton__arrow{min-width:unset}[dir=ltr] .ck.ck-splitbutton>.ck-splitbutton__arrow{border-bottom-left-radius:unset;border-top-left-radius:unset}[dir=rtl] .ck.ck-splitbutton>.ck-splitbutton__arrow{border-bottom-right-radius:unset;border-top-right-radius:unset}.ck.ck-splitbutton>.ck-splitbutton__arrow svg{width:var(--ck-dropdown-arrow-size)}.ck.ck-splitbutton>.ck-splitbutton__arrow:not(:focus){border-bottom-width:0;border-top-width:0}.ck.ck-splitbutton.ck-splitbutton_open>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover),.ck.ck-splitbutton:hover>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover){background:var(--ck-color-split-button-hover-background)}.ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,.ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{background-color:var(--ck-color-split-button-hover-border);content:\"\";height:100%;position:absolute;width:1px}.ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:focus:after,.ck.ck-splitbutton:hover>.ck-splitbutton__arrow:focus:after{--ck-color-split-button-hover-border:var(--ck-color-focus-border)}[dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,[dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{left:-1px}[dir=rtl] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,[dir=rtl] .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{right:-1px}.ck.ck-splitbutton.ck-splitbutton_open{border-radius:0}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners>.ck-splitbutton__action{border-bottom-left-radius:0}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners>.ck-splitbutton__arrow{border-bottom-right-radius:0}";
-styleInject(css_248z$N);/**
+}var css_248z$T = ".ck.ck-splitbutton{font-size:inherit}.ck.ck-splitbutton .ck-splitbutton__action:focus{z-index:calc(var(--ck-z-default) + 1)}:root{--ck-color-split-button-hover-background:#ebebeb;--ck-color-split-button-hover-border:#b3b3b3}[dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,[dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__action{border-bottom-right-radius:unset;border-top-right-radius:unset}[dir=rtl] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,[dir=rtl] .ck.ck-splitbutton:hover>.ck-splitbutton__action{border-bottom-left-radius:unset;border-top-left-radius:unset}.ck.ck-splitbutton>.ck-splitbutton__arrow{min-width:unset}[dir=ltr] .ck.ck-splitbutton>.ck-splitbutton__arrow{border-bottom-left-radius:unset;border-top-left-radius:unset}[dir=rtl] .ck.ck-splitbutton>.ck-splitbutton__arrow{border-bottom-right-radius:unset;border-top-right-radius:unset}.ck.ck-splitbutton>.ck-splitbutton__arrow svg{width:var(--ck-dropdown-arrow-size)}.ck.ck-splitbutton>.ck-splitbutton__arrow:not(:focus){border-bottom-width:0;border-top-width:0}.ck.ck-splitbutton.ck-splitbutton_open>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover),.ck.ck-splitbutton:hover>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover){background:var(--ck-color-split-button-hover-background)}.ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,.ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{background-color:var(--ck-color-split-button-hover-border);content:\"\";height:100%;position:absolute;width:1px}.ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:focus:after,.ck.ck-splitbutton:hover>.ck-splitbutton__arrow:focus:after{--ck-color-split-button-hover-border:var(--ck-color-focus-border)}[dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,[dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{left:-1px}[dir=rtl] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,[dir=rtl] .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{right:-1px}.ck.ck-splitbutton.ck-splitbutton_open{border-radius:0}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners>.ck-splitbutton__action{border-bottom-left-radius:0}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners>.ck-splitbutton__arrow{border-bottom-right-radius:0}";
+styleInject(css_248z$T);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -54751,9 +54751,9 @@ class SplitButtonView extends View$1 {
         arrowView.delegate('execute').to(this, 'open');
         return arrowView;
     }
-}var css_248z$M = ":root{--ck-toolbar-dropdown-max-width:60vw}.ck.ck-toolbar-dropdown>.ck-dropdown__panel{max-width:var(--ck-toolbar-dropdown-max-width);width:max-content}.ck.ck-toolbar-dropdown>.ck-dropdown__panel .ck-button:focus{z-index:calc(var(--ck-z-default) + 1)}.ck.ck-toolbar-dropdown .ck-toolbar{border:0}";
-styleInject(css_248z$M);var css_248z$L = ".ck.ck-dropdown .ck-dropdown__panel .ck-list{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list,.ck.ck-dropdown .ck-dropdown__panel .ck-list.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0}.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button,.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius);border-bottom-left-radius:0;border-bottom-right-radius:0;border-top-left-radius:0}.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button,.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}";
-styleInject(css_248z$L);/**
+}var css_248z$S = ":root{--ck-toolbar-dropdown-max-width:60vw}.ck.ck-toolbar-dropdown>.ck-dropdown__panel{max-width:var(--ck-toolbar-dropdown-max-width);width:max-content}.ck.ck-toolbar-dropdown>.ck-dropdown__panel .ck-button:focus{z-index:calc(var(--ck-z-default) + 1)}.ck.ck-toolbar-dropdown .ck-toolbar{border:0}";
+styleInject(css_248z$S);var css_248z$R = ".ck.ck-dropdown .ck-dropdown__panel .ck-list{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list,.ck.ck-dropdown .ck-dropdown__panel .ck-list.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0}.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button,.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius);border-bottom-left-radius:0;border-bottom-right-radius:0;border-top-left-radius:0}.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button,.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}";
+styleInject(css_248z$R);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -55649,8 +55649,8 @@ class HexBase extends ColorPicker {
  */
 class HexColorPicker extends HexBase {
 }
-customElements.define('hex-color-picker', HexColorPicker);var css_248z$K = ".color-picker-hex-input{width:max-content}.color-picker-hex-input .ck.ck-input{min-width:unset}.ck.ck-color-picker__row{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}.ck.ck-color-picker__row .ck-color-picker__hash-view{padding-right:var(--ck-spacing-medium);padding-top:var(--ck-spacing-tiny)}";
-styleInject(css_248z$K);/**
+customElements.define('hex-color-picker', HexColorPicker);var css_248z$Q = ".color-picker-hex-input{width:max-content}.color-picker-hex-input .ck.ck-input{min-width:unset}.ck.ck-color-picker__row{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}.ck.ck-color-picker__row .ck-color-picker__hash-view{padding-right:var(--ck-spacing-medium);padding-top:var(--ck-spacing-tiny)}";
+styleInject(css_248z$Q);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -55990,8 +55990,8 @@ class ComponentFactory {
  */
 function getNormalized(name) {
     return String(name).toLowerCase();
-}var css_248z$J = ":root{--ck-balloon-panel-arrow-z-index:calc(var(--ck-z-default) - 3)}.ck.ck-balloon-panel{display:none;position:absolute;z-index:var(--ck-z-modal)}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:after,.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:before{content:\"\";position:absolute}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:before{z-index:var(--ck-balloon-panel-arrow-z-index)}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:after{z-index:calc(var(--ck-balloon-panel-arrow-z-index) + 1)}.ck.ck-balloon-panel[class*=arrow_n]:before{z-index:var(--ck-balloon-panel-arrow-z-index)}.ck.ck-balloon-panel[class*=arrow_n]:after{z-index:calc(var(--ck-balloon-panel-arrow-z-index) + 1)}.ck.ck-balloon-panel[class*=arrow_s]:before{z-index:var(--ck-balloon-panel-arrow-z-index)}.ck.ck-balloon-panel[class*=arrow_s]:after{z-index:calc(var(--ck-balloon-panel-arrow-z-index) + 1)}.ck.ck-balloon-panel.ck-balloon-panel_visible{display:block}:root{--ck-balloon-border-width:1px;--ck-balloon-arrow-offset:2px;--ck-balloon-arrow-height:10px;--ck-balloon-arrow-half-width:8px;--ck-balloon-arrow-drop-shadow:0 2px 2px var(--ck-color-shadow-drop)}.ck.ck-balloon-panel{border-radius:0}.ck-rounded-corners .ck.ck-balloon-panel,.ck.ck-balloon-panel.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-balloon-panel{background:var(--ck-color-panel-background);border:var(--ck-balloon-border-width) solid var(--ck-color-panel-border);box-shadow:var(--ck-drop-shadow),0 0;min-height:15px}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:after,.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:before{border-style:solid;height:0;width:0}.ck.ck-balloon-panel[class*=arrow_n]:after,.ck.ck-balloon-panel[class*=arrow_n]:before{border-width:0 var(--ck-balloon-arrow-half-width) var(--ck-balloon-arrow-height) var(--ck-balloon-arrow-half-width)}.ck.ck-balloon-panel[class*=arrow_n]:before{border-color:transparent transparent var(--ck-color-panel-border) transparent;margin-top:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_n]:after{border-color:transparent transparent var(--ck-color-panel-background) transparent;margin-top:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel[class*=arrow_s]:after,.ck.ck-balloon-panel[class*=arrow_s]:before{border-width:var(--ck-balloon-arrow-height) var(--ck-balloon-arrow-half-width) 0 var(--ck-balloon-arrow-half-width)}.ck.ck-balloon-panel[class*=arrow_s]:before{border-color:var(--ck-color-panel-border) transparent transparent;filter:drop-shadow(var(--ck-balloon-arrow-drop-shadow));margin-bottom:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_s]:after{border-color:var(--ck-color-panel-background) transparent transparent transparent;margin-bottom:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel[class*=arrow_e]:after,.ck.ck-balloon-panel[class*=arrow_e]:before{border-width:var(--ck-balloon-arrow-half-width) 0 var(--ck-balloon-arrow-half-width) var(--ck-balloon-arrow-height)}.ck.ck-balloon-panel[class*=arrow_e]:before{border-color:transparent transparent transparent var(--ck-color-panel-border);margin-right:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_e]:after{border-color:transparent transparent transparent var(--ck-color-panel-background);margin-right:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel[class*=arrow_w]:after,.ck.ck-balloon-panel[class*=arrow_w]:before{border-width:var(--ck-balloon-arrow-half-width) var(--ck-balloon-arrow-height) var(--ck-balloon-arrow-half-width) 0}.ck.ck-balloon-panel[class*=arrow_w]:before{border-color:transparent var(--ck-color-panel-border) transparent transparent;margin-left:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_w]:after{border-color:transparent var(--ck-color-panel-background) transparent transparent;margin-left:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel.ck-balloon-panel_arrow_n:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_n:before{left:50%;margin-left:calc(var(--ck-balloon-arrow-half-width)*-1);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_nw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_nw:before{left:calc(var(--ck-balloon-arrow-half-width)*2);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_ne:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_ne:before{right:calc(var(--ck-balloon-arrow-half-width)*2);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_s:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_s:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);left:50%;margin-left:calc(var(--ck-balloon-arrow-half-width)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_sw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_sw:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);left:calc(var(--ck-balloon-arrow-half-width)*2)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_se:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_se:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);right:calc(var(--ck-balloon-arrow-half-width)*2)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_sme:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_sme:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);margin-right:calc(var(--ck-balloon-arrow-half-width)*2);right:25%}.ck.ck-balloon-panel.ck-balloon-panel_arrow_smw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_smw:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);left:25%;margin-left:calc(var(--ck-balloon-arrow-half-width)*2)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_nme:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_nme:before{margin-right:calc(var(--ck-balloon-arrow-half-width)*2);right:25%;top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_nmw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_nmw:before{left:25%;margin-left:calc(var(--ck-balloon-arrow-half-width)*2);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_e:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_e:before{margin-top:calc(var(--ck-balloon-arrow-half-width)*-1);right:calc(var(--ck-balloon-arrow-height)*-1);top:50%}.ck.ck-balloon-panel.ck-balloon-panel_arrow_w:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_w:before{left:calc(var(--ck-balloon-arrow-height)*-1);margin-top:calc(var(--ck-balloon-arrow-half-width)*-1);top:50%}";
-styleInject(css_248z$J);/**
+}var css_248z$P = ":root{--ck-balloon-panel-arrow-z-index:calc(var(--ck-z-default) - 3)}.ck.ck-balloon-panel{display:none;position:absolute;z-index:var(--ck-z-modal)}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:after,.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:before{content:\"\";position:absolute}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:before{z-index:var(--ck-balloon-panel-arrow-z-index)}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:after{z-index:calc(var(--ck-balloon-panel-arrow-z-index) + 1)}.ck.ck-balloon-panel[class*=arrow_n]:before{z-index:var(--ck-balloon-panel-arrow-z-index)}.ck.ck-balloon-panel[class*=arrow_n]:after{z-index:calc(var(--ck-balloon-panel-arrow-z-index) + 1)}.ck.ck-balloon-panel[class*=arrow_s]:before{z-index:var(--ck-balloon-panel-arrow-z-index)}.ck.ck-balloon-panel[class*=arrow_s]:after{z-index:calc(var(--ck-balloon-panel-arrow-z-index) + 1)}.ck.ck-balloon-panel.ck-balloon-panel_visible{display:block}:root{--ck-balloon-border-width:1px;--ck-balloon-arrow-offset:2px;--ck-balloon-arrow-height:10px;--ck-balloon-arrow-half-width:8px;--ck-balloon-arrow-drop-shadow:0 2px 2px var(--ck-color-shadow-drop)}.ck.ck-balloon-panel{border-radius:0}.ck-rounded-corners .ck.ck-balloon-panel,.ck.ck-balloon-panel.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-balloon-panel{background:var(--ck-color-panel-background);border:var(--ck-balloon-border-width) solid var(--ck-color-panel-border);box-shadow:var(--ck-drop-shadow),0 0;min-height:15px}.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:after,.ck.ck-balloon-panel.ck-balloon-panel_with-arrow:before{border-style:solid;height:0;width:0}.ck.ck-balloon-panel[class*=arrow_n]:after,.ck.ck-balloon-panel[class*=arrow_n]:before{border-width:0 var(--ck-balloon-arrow-half-width) var(--ck-balloon-arrow-height) var(--ck-balloon-arrow-half-width)}.ck.ck-balloon-panel[class*=arrow_n]:before{border-color:transparent transparent var(--ck-color-panel-border) transparent;margin-top:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_n]:after{border-color:transparent transparent var(--ck-color-panel-background) transparent;margin-top:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel[class*=arrow_s]:after,.ck.ck-balloon-panel[class*=arrow_s]:before{border-width:var(--ck-balloon-arrow-height) var(--ck-balloon-arrow-half-width) 0 var(--ck-balloon-arrow-half-width)}.ck.ck-balloon-panel[class*=arrow_s]:before{border-color:var(--ck-color-panel-border) transparent transparent;filter:drop-shadow(var(--ck-balloon-arrow-drop-shadow));margin-bottom:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_s]:after{border-color:var(--ck-color-panel-background) transparent transparent transparent;margin-bottom:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel[class*=arrow_e]:after,.ck.ck-balloon-panel[class*=arrow_e]:before{border-width:var(--ck-balloon-arrow-half-width) 0 var(--ck-balloon-arrow-half-width) var(--ck-balloon-arrow-height)}.ck.ck-balloon-panel[class*=arrow_e]:before{border-color:transparent transparent transparent var(--ck-color-panel-border);margin-right:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_e]:after{border-color:transparent transparent transparent var(--ck-color-panel-background);margin-right:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel[class*=arrow_w]:after,.ck.ck-balloon-panel[class*=arrow_w]:before{border-width:var(--ck-balloon-arrow-half-width) var(--ck-balloon-arrow-height) var(--ck-balloon-arrow-half-width) 0}.ck.ck-balloon-panel[class*=arrow_w]:before{border-color:transparent var(--ck-color-panel-border) transparent transparent;margin-left:calc(var(--ck-balloon-border-width)*-1)}.ck.ck-balloon-panel[class*=arrow_w]:after{border-color:transparent var(--ck-color-panel-background) transparent transparent;margin-left:calc(var(--ck-balloon-arrow-offset) - var(--ck-balloon-border-width))}.ck.ck-balloon-panel.ck-balloon-panel_arrow_n:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_n:before{left:50%;margin-left:calc(var(--ck-balloon-arrow-half-width)*-1);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_nw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_nw:before{left:calc(var(--ck-balloon-arrow-half-width)*2);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_ne:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_ne:before{right:calc(var(--ck-balloon-arrow-half-width)*2);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_s:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_s:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);left:50%;margin-left:calc(var(--ck-balloon-arrow-half-width)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_sw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_sw:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);left:calc(var(--ck-balloon-arrow-half-width)*2)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_se:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_se:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);right:calc(var(--ck-balloon-arrow-half-width)*2)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_sme:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_sme:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);margin-right:calc(var(--ck-balloon-arrow-half-width)*2);right:25%}.ck.ck-balloon-panel.ck-balloon-panel_arrow_smw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_smw:before{bottom:calc(var(--ck-balloon-arrow-height)*-1);left:25%;margin-left:calc(var(--ck-balloon-arrow-half-width)*2)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_nme:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_nme:before{margin-right:calc(var(--ck-balloon-arrow-half-width)*2);right:25%;top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_nmw:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_nmw:before{left:25%;margin-left:calc(var(--ck-balloon-arrow-half-width)*2);top:calc(var(--ck-balloon-arrow-height)*-1)}.ck.ck-balloon-panel.ck-balloon-panel_arrow_e:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_e:before{margin-top:calc(var(--ck-balloon-arrow-half-width)*-1);right:calc(var(--ck-balloon-arrow-height)*-1);top:50%}.ck.ck-balloon-panel.ck-balloon-panel_arrow_w:after,.ck.ck-balloon-panel.ck-balloon-panel_arrow_w:before{left:calc(var(--ck-balloon-arrow-height)*-1);margin-top:calc(var(--ck-balloon-arrow-half-width)*-1);top:50%}";
+styleInject(css_248z$P);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -56971,8 +56971,8 @@ function generatePositions(options = {}) {
     function getSouthTop(targetRect) {
         return targetRect.bottom + heightOffset;
     }
-}var css_248z$I = ".ck.ck-balloon-panel.ck-tooltip{--ck-balloon-border-width:0px;--ck-balloon-arrow-offset:0px;--ck-balloon-arrow-half-width:4px;--ck-balloon-arrow-height:4px;--ck-color-panel-background:var(--ck-color-tooltip-background);padding:0 var(--ck-spacing-medium);pointer-events:none;z-index:calc(var(--ck-z-modal) + 100)}.ck.ck-balloon-panel.ck-tooltip .ck-tooltip__text{color:var(--ck-color-tooltip-text);font-size:.9em;line-height:1.5}.ck.ck-balloon-panel.ck-tooltip{box-shadow:none}.ck.ck-balloon-panel.ck-tooltip:before{display:none}";
-styleInject(css_248z$I);/**
+}var css_248z$O = ".ck.ck-balloon-panel.ck-tooltip{--ck-balloon-border-width:0px;--ck-balloon-arrow-offset:0px;--ck-balloon-arrow-half-width:4px;--ck-balloon-arrow-height:4px;--ck-color-panel-background:var(--ck-color-tooltip-background);padding:0 var(--ck-spacing-medium);pointer-events:none;z-index:calc(var(--ck-z-modal) + 100)}.ck.ck-balloon-panel.ck-tooltip .ck-tooltip__text{color:var(--ck-color-tooltip-text);font-size:.9em;line-height:1.5}.ck.ck-balloon-panel.ck-tooltip{box-shadow:none}.ck.ck-balloon-panel.ck-tooltip:before{display:none}";
+styleInject(css_248z$O);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -58005,8 +58005,8 @@ function getToolbarDefinitionWeight(toolbarDef) {
         weight--;
     }
     return weight;
-}var css_248z$H = ":root{--ck-color-editable-blur-selection:#d9d9d9}.ck.ck-editor__editable:not(.ck-editor__nested-editable){border-radius:0}.ck-rounded-corners .ck.ck-editor__editable:not(.ck-editor__nested-editable),.ck.ck-editor__editable.ck-rounded-corners:not(.ck-editor__nested-editable){border-radius:var(--ck-border-radius)}.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable){border:var(--ck-focus-ring);box-shadow:var(--ck-inner-shadow),0 0;outline:none}.ck.ck-editor__editable_inline{border:1px solid transparent;overflow:auto;padding:0 var(--ck-spacing-standard)}.ck.ck-editor__editable_inline[dir=ltr]{text-align:left}.ck.ck-editor__editable_inline[dir=rtl]{text-align:right}.ck.ck-editor__editable_inline>:first-child{margin-top:var(--ck-spacing-large)}.ck.ck-editor__editable_inline>:last-child{margin-bottom:var(--ck-spacing-large)}.ck.ck-editor__editable_inline.ck-blurred ::selection{background:var(--ck-color-editable-blur-selection)}.ck.ck-balloon-panel.ck-toolbar-container[class*=arrow_n]:after{border-bottom-color:var(--ck-color-base-foreground)}.ck.ck-balloon-panel.ck-toolbar-container[class*=arrow_s]:after{border-top-color:var(--ck-color-base-foreground)}";
-styleInject(css_248z$H);/**
+}var css_248z$N = ":root{--ck-color-editable-blur-selection:#d9d9d9}.ck.ck-editor__editable:not(.ck-editor__nested-editable){border-radius:0}.ck-rounded-corners .ck.ck-editor__editable:not(.ck-editor__nested-editable),.ck.ck-editor__editable.ck-rounded-corners:not(.ck-editor__nested-editable){border-radius:var(--ck-border-radius)}.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable){border:var(--ck-focus-ring);box-shadow:var(--ck-inner-shadow),0 0;outline:none}.ck.ck-editor__editable_inline{border:1px solid transparent;overflow:auto;padding:0 var(--ck-spacing-standard)}.ck.ck-editor__editable_inline[dir=ltr]{text-align:left}.ck.ck-editor__editable_inline[dir=rtl]{text-align:right}.ck.ck-editor__editable_inline>:first-child{margin-top:var(--ck-spacing-large)}.ck.ck-editor__editable_inline>:last-child{margin-bottom:var(--ck-spacing-large)}.ck.ck-editor__editable_inline.ck-blurred ::selection{background:var(--ck-color-editable-blur-selection)}.ck.ck-balloon-panel.ck-toolbar-container[class*=arrow_n]:after{border-bottom-color:var(--ck-color-base-foreground)}.ck.ck-balloon-panel.ck-toolbar-container[class*=arrow_s]:after{border-top-color:var(--ck-color-base-foreground)}";
+styleInject(css_248z$N);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -58262,8 +58262,8 @@ class InlineEditableUIView extends EditableUIView {
             writer.setAttribute('aria-label', this._generateLabel(this), viewRoot);
         });
     }
-}var css_248z$G = ".ck.ck-form__header{align-items:center;display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}:root{--ck-form-header-height:38px}.ck.ck-form__header{border-bottom:1px solid var(--ck-color-base-border);height:var(--ck-form-header-height);line-height:var(--ck-form-header-height);padding:var(--ck-spacing-small) var(--ck-spacing-large)}.ck.ck-form__header .ck-form__header__label{font-weight:700}";
-styleInject(css_248z$G);/**
+}var css_248z$M = ".ck.ck-form__header{align-items:center;display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}:root{--ck-form-header-height:38px}.ck.ck-form__header{border-bottom:1px solid var(--ck-color-base-border);height:var(--ck-form-header-height);line-height:var(--ck-form-header-height);padding:var(--ck-spacing-small) var(--ck-spacing-large)}.ck.ck-form__header .ck-form__header__label{font-weight:700}";
+styleInject(css_248z$M);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -58586,9 +58586,9 @@ class Model extends ObservableMixin() {
     }
 }var previousArrow = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M11.463 5.187a.888.888 0 1 1 1.254 1.255L9.16 10l3.557 3.557a.888.888 0 1 1-1.254 1.255L7.26 10.61a.888.888 0 0 1 .16-1.382l4.043-4.042z\"/></svg>";
 var nextIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8.537 14.813a.888.888 0 1 1-1.254-1.255L10.84 10 7.283 6.442a.888.888 0 1 1 1.254-1.255L12.74 9.39a.888.888 0 0 1-.16 1.382l-4.043 4.042z\"/></svg>";
-var css_248z$F = ".ck .ck-balloon-rotator__navigation{align-items:center;display:flex;justify-content:center}.ck .ck-balloon-rotator__content .ck-toolbar{justify-content:center}.ck .ck-balloon-rotator__navigation{background:var(--ck-color-toolbar-background);border-bottom:1px solid var(--ck-color-toolbar-border);padding:0 var(--ck-spacing-small)}.ck .ck-balloon-rotator__navigation>*{margin-bottom:var(--ck-spacing-small);margin-right:var(--ck-spacing-small);margin-top:var(--ck-spacing-small)}.ck .ck-balloon-rotator__navigation .ck-balloon-rotator__counter{margin-left:var(--ck-spacing-small);margin-right:var(--ck-spacing-standard)}.ck .ck-balloon-rotator__content .ck.ck-annotation-wrapper{box-shadow:none}";
-styleInject(css_248z$F);var css_248z$E = ".ck .ck-fake-panel{position:absolute;z-index:calc(var(--ck-z-modal) - 1)}.ck .ck-fake-panel div{position:absolute}.ck .ck-fake-panel div:first-child{z-index:2}.ck .ck-fake-panel div:nth-child(2){z-index:1}:root{--ck-balloon-fake-panel-offset-horizontal:6px;--ck-balloon-fake-panel-offset-vertical:6px}.ck .ck-fake-panel div{background:var(--ck-color-panel-background);border:1px solid var(--ck-color-panel-border);border-radius:var(--ck-border-radius);box-shadow:var(--ck-drop-shadow),0 0;height:100%;min-height:15px;width:100%}.ck .ck-fake-panel div:first-child{margin-left:var(--ck-balloon-fake-panel-offset-horizontal);margin-top:var(--ck-balloon-fake-panel-offset-vertical)}.ck .ck-fake-panel div:nth-child(2){margin-left:calc(var(--ck-balloon-fake-panel-offset-horizontal)*2);margin-top:calc(var(--ck-balloon-fake-panel-offset-vertical)*2)}.ck .ck-fake-panel div:nth-child(3){margin-left:calc(var(--ck-balloon-fake-panel-offset-horizontal)*3);margin-top:calc(var(--ck-balloon-fake-panel-offset-vertical)*3)}.ck .ck-balloon-panel_arrow_s+.ck-fake-panel,.ck .ck-balloon-panel_arrow_se+.ck-fake-panel,.ck .ck-balloon-panel_arrow_sw+.ck-fake-panel{--ck-balloon-fake-panel-offset-vertical:-6px}";
-styleInject(css_248z$E);/**
+var css_248z$L = ".ck .ck-balloon-rotator__navigation{align-items:center;display:flex;justify-content:center}.ck .ck-balloon-rotator__content .ck-toolbar{justify-content:center}.ck .ck-balloon-rotator__navigation{background:var(--ck-color-toolbar-background);border-bottom:1px solid var(--ck-color-toolbar-border);padding:0 var(--ck-spacing-small)}.ck .ck-balloon-rotator__navigation>*{margin-bottom:var(--ck-spacing-small);margin-right:var(--ck-spacing-small);margin-top:var(--ck-spacing-small)}.ck .ck-balloon-rotator__navigation .ck-balloon-rotator__counter{margin-left:var(--ck-spacing-small);margin-right:var(--ck-spacing-standard)}.ck .ck-balloon-rotator__content .ck.ck-annotation-wrapper{box-shadow:none}";
+styleInject(css_248z$L);var css_248z$K = ".ck .ck-fake-panel{position:absolute;z-index:calc(var(--ck-z-modal) - 1)}.ck .ck-fake-panel div{position:absolute}.ck .ck-fake-panel div:first-child{z-index:2}.ck .ck-fake-panel div:nth-child(2){z-index:1}:root{--ck-balloon-fake-panel-offset-horizontal:6px;--ck-balloon-fake-panel-offset-vertical:6px}.ck .ck-fake-panel div{background:var(--ck-color-panel-background);border:1px solid var(--ck-color-panel-border);border-radius:var(--ck-border-radius);box-shadow:var(--ck-drop-shadow),0 0;height:100%;min-height:15px;width:100%}.ck .ck-fake-panel div:first-child{margin-left:var(--ck-balloon-fake-panel-offset-horizontal);margin-top:var(--ck-balloon-fake-panel-offset-vertical)}.ck .ck-fake-panel div:nth-child(2){margin-left:calc(var(--ck-balloon-fake-panel-offset-horizontal)*2);margin-top:calc(var(--ck-balloon-fake-panel-offset-vertical)*2)}.ck .ck-fake-panel div:nth-child(3){margin-left:calc(var(--ck-balloon-fake-panel-offset-horizontal)*3);margin-top:calc(var(--ck-balloon-fake-panel-offset-vertical)*3)}.ck .ck-balloon-panel_arrow_s+.ck-fake-panel,.ck .ck-balloon-panel_arrow_se+.ck-fake-panel,.ck .ck-balloon-panel_arrow_sw+.ck-fake-panel{--ck-balloon-fake-panel-offset-vertical:-6px}";
+styleInject(css_248z$K);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -59147,8 +59147,8 @@ class FakePanelsView extends View$1 {
             Object.assign(this, { top, left, width, height });
         }
     }
-}var css_248z$D = ".ck.ck-sticky-panel .ck-sticky-panel__content_sticky{position:fixed;top:0;z-index:var(--ck-z-modal)}.ck.ck-sticky-panel .ck-sticky-panel__content_sticky_bottom-limit{position:absolute;top:auto}.ck.ck-sticky-panel .ck-sticky-panel__content_sticky{border-top-left-radius:0;border-top-right-radius:0;border-width:0 1px 1px;box-shadow:var(--ck-drop-shadow),0 0}";
-styleInject(css_248z$D);/**
+}var css_248z$J = ".ck.ck-sticky-panel .ck-sticky-panel__content_sticky{position:fixed;top:0;z-index:var(--ck-z-modal)}.ck.ck-sticky-panel .ck-sticky-panel__content_sticky_bottom-limit{position:absolute;top:auto}.ck.ck-sticky-panel .ck-sticky-panel__content_sticky{border-top-left-radius:0;border-top-right-radius:0;border-width:0 1px 1px;box-shadow:var(--ck-drop-shadow),0 0}";
+styleInject(css_248z$J);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -59568,8 +59568,8 @@ function selectionContainsOnlyMultipleSelectables(selection, schema) {
         const element = range.getContainedElement();
         return element && schema.isSelectable(element);
     });
-}var css_248z$C = ".ck.ck-block-toolbar-button{position:absolute;z-index:var(--ck-z-default)}:root{--ck-color-block-toolbar-button:var(--ck-color-text);--ck-block-toolbar-button-size:var(--ck-font-size-normal)}.ck.ck-block-toolbar-button{color:var(--ck-color-block-toolbar-button);font-size:var(--ck-block-toolbar-size)}";
-styleInject(css_248z$C);/**
+}var css_248z$I = ".ck.ck-block-toolbar-button{position:absolute;z-index:var(--ck-z-default)}:root{--ck-color-block-toolbar-button:var(--ck-color-text);--ck-block-toolbar-button-size:var(--ck-font-size-normal)}.ck.ck-block-toolbar-button{color:var(--ck-color-block-toolbar-button);font-size:var(--ck-block-toolbar-size)}";
+styleInject(css_248z$I);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -60136,8 +60136,8 @@ class ClassicEditorUI extends EditorUI {
             }, 20);
         }
     }
-}var css_248z$B = ".ck.ck-editor{position:relative}.ck.ck-editor .ck-editor__top .ck-sticky-panel .ck-toolbar{z-index:var(--ck-z-modal)}.ck.ck-editor__top .ck-sticky-panel .ck-toolbar{border-radius:0}.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,.ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius);border-bottom-left-radius:0;border-bottom-right-radius:0}.ck.ck-editor__top .ck-sticky-panel .ck-toolbar{border-bottom-width:0}.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar{border-bottom-width:1px;border-radius:0}.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar,.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius);border-radius:0}.ck.ck-editor__main>.ck-editor__editable{background:var(--ck-color-base-background);border-radius:0}.ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable,.ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){border-color:var(--ck-color-base-border)}";
-styleInject(css_248z$B);/**
+}var css_248z$H = ".ck.ck-editor{position:relative}.ck.ck-editor .ck-editor__top .ck-sticky-panel .ck-toolbar{z-index:var(--ck-z-modal)}.ck.ck-editor__top .ck-sticky-panel .ck-toolbar{border-radius:0}.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,.ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius);border-bottom-left-radius:0;border-bottom-right-radius:0}.ck.ck-editor__top .ck-sticky-panel .ck-toolbar{border-bottom-width:0}.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar{border-bottom-width:1px;border-radius:0}.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar,.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius);border-radius:0}.ck.ck-editor__main>.ck-editor__editable{background:var(--ck-color-base-background);border-radius:0}.ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable,.ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){border-color:var(--ck-color-base-border)}";
+styleInject(css_248z$H);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -63796,8 +63796,8 @@ class BlockQuoteEditing extends Plugin {
             }
         }, { context: 'blockquote' });
     }
-}var css_248z$A = ".ck-content blockquote{border-left:5px solid #ccc;font-style:italic;margin-left:0;margin-right:0;overflow:hidden;padding-left:1.5em;padding-right:1.5em}.ck-content[dir=rtl] blockquote{border-left:0;border-right:5px solid #ccc}";
-styleInject(css_248z$A);/**
+}var css_248z$G = ".ck-content blockquote{border-left:5px solid #ccc;font-style:italic;margin-left:0;margin-right:0;overflow:hidden;padding-left:1.5em;padding-right:1.5em}.ck-content[dir=rtl] blockquote{border-left:0;border-right:5px solid #ccc}";
+styleInject(css_248z$G);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -64812,8 +64812,8 @@ function getClosestWidgetViewElement(domElement, domConverter) {
 function getTypeAroundFakeCaretPosition(selection) {
     return selection.getAttribute(TYPE_AROUND_SELECTION_ATTRIBUTE);
 }var returnIcon = "<svg viewBox=\"0 0 10 8\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M9.055.263v3.972h-6.77M1 4.216l2-2.038m-2 2 2 2.038\"/></svg>";
-var css_248z$z = ".ck .ck-widget .ck-widget__type-around__button{display:block;overflow:hidden;position:absolute;z-index:var(--ck-z-default)}.ck .ck-widget .ck-widget__type-around__button svg{left:50%;position:absolute;top:50%;z-index:calc(var(--ck-z-default) + 2)}.ck .ck-widget .ck-widget__type-around__button.ck-widget__type-around__button_before{left:min(10%,30px);top:calc(var(--ck-widget-outline-thickness)*-.5);transform:translateY(-50%)}.ck .ck-widget .ck-widget__type-around__button.ck-widget__type-around__button_after{bottom:calc(var(--ck-widget-outline-thickness)*-.5);right:min(10%,30px);transform:translateY(50%)}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:after,.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__button:hover:after{content:\"\";display:block;left:1px;position:absolute;top:1px;z-index:calc(var(--ck-z-default) + 1)}.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__fake-caret{display:none;left:0;position:absolute;right:0}.ck .ck-widget:hover>.ck-widget__type-around>.ck-widget__type-around__fake-caret{left:calc(var(--ck-widget-outline-thickness)*-1);right:calc(var(--ck-widget-outline-thickness)*-1)}.ck .ck-widget.ck-widget_type-around_show-fake-caret_before>.ck-widget__type-around>.ck-widget__type-around__fake-caret{display:block;top:calc(var(--ck-widget-outline-thickness)*-1 - 1px)}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after>.ck-widget__type-around>.ck-widget__type-around__fake-caret{bottom:calc(var(--ck-widget-outline-thickness)*-1 - 1px);display:block}.ck.ck-editor__editable.ck-read-only .ck-widget__type-around,.ck.ck-editor__editable.ck-restricted-editing_mode_restricted .ck-widget__type-around,.ck.ck-editor__editable.ck-widget__type-around_disabled .ck-widget__type-around{display:none}:root{--ck-widget-type-around-button-size:20px;--ck-color-widget-type-around-button-active:var(--ck-color-focus-border);--ck-color-widget-type-around-button-hover:var(--ck-color-widget-hover-border);--ck-color-widget-type-around-button-blurred-editable:var(--ck-color-widget-blurred-border);--ck-color-widget-type-around-button-radar-start-alpha:0;--ck-color-widget-type-around-button-radar-end-alpha:.3;--ck-color-widget-type-around-button-icon:var(--ck-color-base-background)}.ck .ck-widget .ck-widget__type-around__button{background:var(--ck-color-widget-type-around-button);border-radius:100px;height:var(--ck-widget-type-around-button-size);opacity:0;pointer-events:none;transition:opacity var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),background var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve);width:var(--ck-widget-type-around-button-size)}.ck .ck-widget .ck-widget__type-around__button svg{height:8px;margin-top:1px;transform:translate(-50%,-50%);transition:transform .5s ease;width:10px}.ck .ck-widget .ck-widget__type-around__button svg *{stroke-dasharray:10;stroke-dashoffset:0;fill:none;stroke:var(--ck-color-widget-type-around-button-icon);stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:round}.ck .ck-widget .ck-widget__type-around__button svg line{stroke-dasharray:7}.ck .ck-widget .ck-widget__type-around__button:hover{animation:ck-widget-type-around-button-sonar 1s ease infinite}.ck .ck-widget .ck-widget__type-around__button:hover svg polyline{animation:ck-widget-type-around-arrow-dash 2s linear}.ck .ck-widget .ck-widget__type-around__button:hover svg line{animation:ck-widget-type-around-arrow-tip-dash 2s linear}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button,.ck .ck-widget:hover>.ck-widget__type-around>.ck-widget__type-around__button{opacity:1;pointer-events:auto}.ck .ck-widget:not(.ck-widget_selected)>.ck-widget__type-around>.ck-widget__type-around__button{background:var(--ck-color-widget-type-around-button-hover)}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button,.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__button:hover{background:var(--ck-color-widget-type-around-button-active)}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:after,.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__button:hover:after{background:linear-gradient(135deg,hsla(0,0%,100%,0),hsla(0,0%,100%,.3));border-radius:100px;height:calc(var(--ck-widget-type-around-button-size) - 2px);width:calc(var(--ck-widget-type-around-button-size) - 2px)}.ck .ck-widget.ck-widget_with-selection-handle>.ck-widget__type-around>.ck-widget__type-around__button_before{margin-left:20px}.ck .ck-widget .ck-widget__type-around__fake-caret{animation:ck-widget-type-around-fake-caret-pulse 1s linear infinite normal forwards;background:var(--ck-color-base-text);height:1px;outline:1px solid hsla(0,0%,100%,.5);pointer-events:none}.ck .ck-widget.ck-widget_selected.ck-widget_type-around_show-fake-caret_after,.ck .ck-widget.ck-widget_selected.ck-widget_type-around_show-fake-caret_before{outline-color:transparent}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_selected:hover,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_selected:hover{outline-color:var(--ck-color-widget-hover-border)}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after>.ck-widget__type-around>.ck-widget__type-around__button,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before>.ck-widget__type-around>.ck-widget__type-around__button{opacity:0;pointer-events:none}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_selected.ck-widget_with-resizer>.ck-widget__resizer,.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_selected.ck-widget_with-resizer>.ck-widget__resizer,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle{opacity:0}.ck[dir=rtl] .ck-widget.ck-widget_with-selection-handle .ck-widget__type-around>.ck-widget__type-around__button_before{margin-left:0;margin-right:20px}.ck-editor__nested-editable.ck-editor__editable_selected .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button,.ck-editor__nested-editable.ck-editor__editable_selected .ck-widget:hover>.ck-widget__type-around>.ck-widget__type-around__button{opacity:0;pointer-events:none}.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:not(:hover){background:var(--ck-color-widget-type-around-button-blurred-editable)}.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:not(:hover) svg *{stroke:#999}@keyframes ck-widget-type-around-arrow-dash{0%{stroke-dashoffset:10}20%,to{stroke-dashoffset:0}}@keyframes ck-widget-type-around-arrow-tip-dash{0%,20%{stroke-dashoffset:7}40%,to{stroke-dashoffset:0}}@keyframes ck-widget-type-around-button-sonar{0%{box-shadow:0 0 0 0 hsla(var(--ck-color-focus-border-coordinates),var(--ck-color-widget-type-around-button-radar-start-alpha))}50%{box-shadow:0 0 0 5px hsla(var(--ck-color-focus-border-coordinates),var(--ck-color-widget-type-around-button-radar-end-alpha))}to{box-shadow:0 0 0 5px hsla(var(--ck-color-focus-border-coordinates),var(--ck-color-widget-type-around-button-radar-start-alpha))}}@keyframes ck-widget-type-around-fake-caret-pulse{0%{opacity:1}49%{opacity:1}50%{opacity:0}99%{opacity:0}to{opacity:1}}";
-styleInject(css_248z$z);/**
+var css_248z$F = ".ck .ck-widget .ck-widget__type-around__button{display:block;overflow:hidden;position:absolute;z-index:var(--ck-z-default)}.ck .ck-widget .ck-widget__type-around__button svg{left:50%;position:absolute;top:50%;z-index:calc(var(--ck-z-default) + 2)}.ck .ck-widget .ck-widget__type-around__button.ck-widget__type-around__button_before{left:min(10%,30px);top:calc(var(--ck-widget-outline-thickness)*-.5);transform:translateY(-50%)}.ck .ck-widget .ck-widget__type-around__button.ck-widget__type-around__button_after{bottom:calc(var(--ck-widget-outline-thickness)*-.5);right:min(10%,30px);transform:translateY(50%)}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:after,.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__button:hover:after{content:\"\";display:block;left:1px;position:absolute;top:1px;z-index:calc(var(--ck-z-default) + 1)}.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__fake-caret{display:none;left:0;position:absolute;right:0}.ck .ck-widget:hover>.ck-widget__type-around>.ck-widget__type-around__fake-caret{left:calc(var(--ck-widget-outline-thickness)*-1);right:calc(var(--ck-widget-outline-thickness)*-1)}.ck .ck-widget.ck-widget_type-around_show-fake-caret_before>.ck-widget__type-around>.ck-widget__type-around__fake-caret{display:block;top:calc(var(--ck-widget-outline-thickness)*-1 - 1px)}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after>.ck-widget__type-around>.ck-widget__type-around__fake-caret{bottom:calc(var(--ck-widget-outline-thickness)*-1 - 1px);display:block}.ck.ck-editor__editable.ck-read-only .ck-widget__type-around,.ck.ck-editor__editable.ck-restricted-editing_mode_restricted .ck-widget__type-around,.ck.ck-editor__editable.ck-widget__type-around_disabled .ck-widget__type-around{display:none}:root{--ck-widget-type-around-button-size:20px;--ck-color-widget-type-around-button-active:var(--ck-color-focus-border);--ck-color-widget-type-around-button-hover:var(--ck-color-widget-hover-border);--ck-color-widget-type-around-button-blurred-editable:var(--ck-color-widget-blurred-border);--ck-color-widget-type-around-button-radar-start-alpha:0;--ck-color-widget-type-around-button-radar-end-alpha:.3;--ck-color-widget-type-around-button-icon:var(--ck-color-base-background)}.ck .ck-widget .ck-widget__type-around__button{background:var(--ck-color-widget-type-around-button);border-radius:100px;height:var(--ck-widget-type-around-button-size);opacity:0;pointer-events:none;transition:opacity var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),background var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve);width:var(--ck-widget-type-around-button-size)}.ck .ck-widget .ck-widget__type-around__button svg{height:8px;margin-top:1px;transform:translate(-50%,-50%);transition:transform .5s ease;width:10px}.ck .ck-widget .ck-widget__type-around__button svg *{stroke-dasharray:10;stroke-dashoffset:0;fill:none;stroke:var(--ck-color-widget-type-around-button-icon);stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:round}.ck .ck-widget .ck-widget__type-around__button svg line{stroke-dasharray:7}.ck .ck-widget .ck-widget__type-around__button:hover{animation:ck-widget-type-around-button-sonar 1s ease infinite}.ck .ck-widget .ck-widget__type-around__button:hover svg polyline{animation:ck-widget-type-around-arrow-dash 2s linear}.ck .ck-widget .ck-widget__type-around__button:hover svg line{animation:ck-widget-type-around-arrow-tip-dash 2s linear}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button,.ck .ck-widget:hover>.ck-widget__type-around>.ck-widget__type-around__button{opacity:1;pointer-events:auto}.ck .ck-widget:not(.ck-widget_selected)>.ck-widget__type-around>.ck-widget__type-around__button{background:var(--ck-color-widget-type-around-button-hover)}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button,.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__button:hover{background:var(--ck-color-widget-type-around-button-active)}.ck .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:after,.ck .ck-widget>.ck-widget__type-around>.ck-widget__type-around__button:hover:after{background:linear-gradient(135deg,hsla(0,0%,100%,0),hsla(0,0%,100%,.3));border-radius:100px;height:calc(var(--ck-widget-type-around-button-size) - 2px);width:calc(var(--ck-widget-type-around-button-size) - 2px)}.ck .ck-widget.ck-widget_with-selection-handle>.ck-widget__type-around>.ck-widget__type-around__button_before{margin-left:20px}.ck .ck-widget .ck-widget__type-around__fake-caret{animation:ck-widget-type-around-fake-caret-pulse 1s linear infinite normal forwards;background:var(--ck-color-base-text);height:1px;outline:1px solid hsla(0,0%,100%,.5);pointer-events:none}.ck .ck-widget.ck-widget_selected.ck-widget_type-around_show-fake-caret_after,.ck .ck-widget.ck-widget_selected.ck-widget_type-around_show-fake-caret_before{outline-color:transparent}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_selected:hover,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_selected:hover{outline-color:var(--ck-color-widget-hover-border)}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after>.ck-widget__type-around>.ck-widget__type-around__button,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before>.ck-widget__type-around>.ck-widget__type-around__button{opacity:0;pointer-events:none}.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_selected.ck-widget_with-resizer>.ck-widget__resizer,.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_type-around_show-fake-caret_after.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_selected.ck-widget_with-resizer>.ck-widget__resizer,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_type-around_show-fake-caret_before.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle{opacity:0}.ck[dir=rtl] .ck-widget.ck-widget_with-selection-handle .ck-widget__type-around>.ck-widget__type-around__button_before{margin-left:0;margin-right:20px}.ck-editor__nested-editable.ck-editor__editable_selected .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button,.ck-editor__nested-editable.ck-editor__editable_selected .ck-widget:hover>.ck-widget__type-around>.ck-widget__type-around__button{opacity:0;pointer-events:none}.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:not(:hover){background:var(--ck-color-widget-type-around-button-blurred-editable)}.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected>.ck-widget__type-around>.ck-widget__type-around__button:not(:hover) svg *{stroke:#999}@keyframes ck-widget-type-around-arrow-dash{0%{stroke-dashoffset:10}20%,to{stroke-dashoffset:0}}@keyframes ck-widget-type-around-arrow-tip-dash{0%,20%{stroke-dashoffset:7}40%,to{stroke-dashoffset:0}}@keyframes ck-widget-type-around-button-sonar{0%{box-shadow:0 0 0 0 hsla(var(--ck-color-focus-border-coordinates),var(--ck-color-widget-type-around-button-radar-start-alpha))}50%{box-shadow:0 0 0 5px hsla(var(--ck-color-focus-border-coordinates),var(--ck-color-widget-type-around-button-radar-end-alpha))}to{box-shadow:0 0 0 5px hsla(var(--ck-color-focus-border-coordinates),var(--ck-color-widget-type-around-button-radar-start-alpha))}}@keyframes ck-widget-type-around-fake-caret-pulse{0%{opacity:1}49%{opacity:1}50%{opacity:0}99%{opacity:0}to{opacity:1}}";
+styleInject(css_248z$F);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -65763,8 +65763,8 @@ function isSingleLineRange(editing, modelRange, isForward) {
 }
 function selectionWillShrink(selection, isForward) {
     return !selection.isCollapsed && selection.isBackward == isForward;
-}var css_248z$y = ":root{--ck-color-resizer:var(--ck-color-focus-border);--ck-color-resizer-tooltip-background:#262626;--ck-color-resizer-tooltip-text:#f2f2f2;--ck-resizer-border-radius:var(--ck-border-radius);--ck-resizer-tooltip-offset:10px;--ck-resizer-tooltip-height:calc(var(--ck-spacing-small)*2 + 10px)}.ck .ck-widget,.ck .ck-widget.ck-widget_with-selection-handle{position:relative}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{position:absolute}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon{display:block}.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle{visibility:visible}.ck .ck-size-view{background:var(--ck-color-resizer-tooltip-background);border:1px solid var(--ck-color-resizer-tooltip-text);border-radius:var(--ck-resizer-border-radius);color:var(--ck-color-resizer-tooltip-text);display:block;font-size:var(--ck-font-size-tiny);height:var(--ck-resizer-tooltip-height);line-height:var(--ck-resizer-tooltip-height);padding:0 var(--ck-spacing-small)}.ck .ck-size-view.ck-orientation-above-center,.ck .ck-size-view.ck-orientation-bottom-left,.ck .ck-size-view.ck-orientation-bottom-right,.ck .ck-size-view.ck-orientation-top-left,.ck .ck-size-view.ck-orientation-top-right{position:absolute}.ck .ck-size-view.ck-orientation-top-left{left:var(--ck-resizer-tooltip-offset);top:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-top-right{right:var(--ck-resizer-tooltip-offset);top:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-bottom-right{bottom:var(--ck-resizer-tooltip-offset);right:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-bottom-left{bottom:var(--ck-resizer-tooltip-offset);left:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-above-center{left:50%;top:calc(var(--ck-resizer-tooltip-height)*-1);transform:translate(-50%)}:root{--ck-widget-outline-thickness:3px;--ck-widget-handler-icon-size:16px;--ck-widget-handler-animation-duration:200ms;--ck-widget-handler-animation-curve:ease;--ck-color-widget-blurred-border:#dedede;--ck-color-widget-hover-border:#ffc83d;--ck-color-widget-editable-focus-background:var(--ck-color-base-background);--ck-color-widget-drag-handler-icon-color:var(--ck-color-base-background)}.ck .ck-widget{outline-color:transparent;outline-style:solid;outline-width:var(--ck-widget-outline-thickness);transition:outline-color var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve)}.ck .ck-widget.ck-widget_selected,.ck .ck-widget.ck-widget_selected:hover{outline:var(--ck-widget-outline-thickness) solid var(--ck-color-focus-border)}.ck .ck-widget:hover{outline-color:var(--ck-color-widget-hover-border)}.ck .ck-editor__nested-editable{border:1px solid transparent}.ck .ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck .ck-editor__nested-editable:focus{background-color:var(--ck-color-widget-editable-focus-background);border:var(--ck-focus-ring);box-shadow:var(--ck-inner-shadow),0 0;outline:none}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{background-color:transparent;border-radius:var(--ck-border-radius) var(--ck-border-radius) 0 0;box-sizing:border-box;left:calc(0px - var(--ck-widget-outline-thickness));opacity:0;padding:4px;top:0;transform:translateY(-100%);transition:background-color var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),visibility var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),opacity var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve)}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon{color:var(--ck-color-widget-drag-handler-icon-color);height:var(--ck-widget-handler-icon-size);width:var(--ck-widget-handler-icon-size)}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator{opacity:0;transition:opacity .3s var(--ck-widget-handler-animation-curve)}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle:hover .ck-icon .ck-icon__selected-indicator{opacity:1}.ck .ck-widget.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle{background-color:var(--ck-color-widget-hover-border);opacity:1}.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle{background-color:var(--ck-color-focus-border);opacity:1}.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator,.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator{opacity:1}.ck[dir=rtl] .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{left:auto;right:calc(0px - var(--ck-widget-outline-thickness))}.ck.ck-editor__editable.ck-read-only .ck-widget{transition:none}.ck.ck-editor__editable.ck-read-only .ck-widget:not(.ck-widget_selected){--ck-widget-outline-thickness:0px}.ck.ck-editor__editable.ck-read-only .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle,.ck.ck-editor__editable.ck-read-only .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle:hover{background:var(--ck-color-widget-blurred-border)}.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover{outline-color:var(--ck-color-widget-blurred-border)}.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle:hover,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle>.ck-widget__selection-handle,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle>.ck-widget__selection-handle:hover{background:var(--ck-color-widget-blurred-border)}.ck.ck-editor__editable blockquote>.ck-widget.ck-widget_with-selection-handle:first-child,.ck.ck-editor__editable>.ck-widget.ck-widget_with-selection-handle:first-child{margin-top:calc(1em + var(--ck-widget-handler-icon-size))}";
-styleInject(css_248z$y);/**
+}var css_248z$E = ":root{--ck-color-resizer:var(--ck-color-focus-border);--ck-color-resizer-tooltip-background:#262626;--ck-color-resizer-tooltip-text:#f2f2f2;--ck-resizer-border-radius:var(--ck-border-radius);--ck-resizer-tooltip-offset:10px;--ck-resizer-tooltip-height:calc(var(--ck-spacing-small)*2 + 10px)}.ck .ck-widget,.ck .ck-widget.ck-widget_with-selection-handle{position:relative}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{position:absolute}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon{display:block}.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle{visibility:visible}.ck .ck-size-view{background:var(--ck-color-resizer-tooltip-background);border:1px solid var(--ck-color-resizer-tooltip-text);border-radius:var(--ck-resizer-border-radius);color:var(--ck-color-resizer-tooltip-text);display:block;font-size:var(--ck-font-size-tiny);height:var(--ck-resizer-tooltip-height);line-height:var(--ck-resizer-tooltip-height);padding:0 var(--ck-spacing-small)}.ck .ck-size-view.ck-orientation-above-center,.ck .ck-size-view.ck-orientation-bottom-left,.ck .ck-size-view.ck-orientation-bottom-right,.ck .ck-size-view.ck-orientation-top-left,.ck .ck-size-view.ck-orientation-top-right{position:absolute}.ck .ck-size-view.ck-orientation-top-left{left:var(--ck-resizer-tooltip-offset);top:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-top-right{right:var(--ck-resizer-tooltip-offset);top:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-bottom-right{bottom:var(--ck-resizer-tooltip-offset);right:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-bottom-left{bottom:var(--ck-resizer-tooltip-offset);left:var(--ck-resizer-tooltip-offset)}.ck .ck-size-view.ck-orientation-above-center{left:50%;top:calc(var(--ck-resizer-tooltip-height)*-1);transform:translate(-50%)}:root{--ck-widget-outline-thickness:3px;--ck-widget-handler-icon-size:16px;--ck-widget-handler-animation-duration:200ms;--ck-widget-handler-animation-curve:ease;--ck-color-widget-blurred-border:#dedede;--ck-color-widget-hover-border:#ffc83d;--ck-color-widget-editable-focus-background:var(--ck-color-base-background);--ck-color-widget-drag-handler-icon-color:var(--ck-color-base-background)}.ck .ck-widget{outline-color:transparent;outline-style:solid;outline-width:var(--ck-widget-outline-thickness);transition:outline-color var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve)}.ck .ck-widget.ck-widget_selected,.ck .ck-widget.ck-widget_selected:hover{outline:var(--ck-widget-outline-thickness) solid var(--ck-color-focus-border)}.ck .ck-widget:hover{outline-color:var(--ck-color-widget-hover-border)}.ck .ck-editor__nested-editable{border:1px solid transparent}.ck .ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck .ck-editor__nested-editable:focus{background-color:var(--ck-color-widget-editable-focus-background);border:var(--ck-focus-ring);box-shadow:var(--ck-inner-shadow),0 0;outline:none}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{background-color:transparent;border-radius:var(--ck-border-radius) var(--ck-border-radius) 0 0;box-sizing:border-box;left:calc(0px - var(--ck-widget-outline-thickness));opacity:0;padding:4px;top:0;transform:translateY(-100%);transition:background-color var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),visibility var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),opacity var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve)}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon{color:var(--ck-color-widget-drag-handler-icon-color);height:var(--ck-widget-handler-icon-size);width:var(--ck-widget-handler-icon-size)}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator{opacity:0;transition:opacity .3s var(--ck-widget-handler-animation-curve)}.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle:hover .ck-icon .ck-icon__selected-indicator{opacity:1}.ck .ck-widget.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle{background-color:var(--ck-color-widget-hover-border);opacity:1}.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle,.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle{background-color:var(--ck-color-focus-border);opacity:1}.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected:hover>.ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator,.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected>.ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator{opacity:1}.ck[dir=rtl] .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{left:auto;right:calc(0px - var(--ck-widget-outline-thickness))}.ck.ck-editor__editable.ck-read-only .ck-widget{transition:none}.ck.ck-editor__editable.ck-read-only .ck-widget:not(.ck-widget_selected){--ck-widget-outline-thickness:0px}.ck.ck-editor__editable.ck-read-only .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle,.ck.ck-editor__editable.ck-read-only .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle:hover{background:var(--ck-color-widget-blurred-border)}.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover{outline-color:var(--ck-color-widget-blurred-border)}.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle:hover>.ck-widget__selection-handle:hover,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle>.ck-widget__selection-handle,.ck.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected.ck-widget_with-selection-handle>.ck-widget__selection-handle:hover{background:var(--ck-color-widget-blurred-border)}.ck.ck-editor__editable blockquote>.ck-widget.ck-widget_with-selection-handle:first-child,.ck.ck-editor__editable>.ck-widget.ck-widget_with-selection-handle:first-child{margin-top:calc(1em + var(--ck-widget-handler-icon-size))}";
+styleInject(css_248z$E);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -66959,8 +66959,8 @@ function extractCoordinates(event) {
 }
 function existsInDom(element) {
     return element && element.ownerDocument && element.ownerDocument.contains(element);
-}var css_248z$x = ".ck .ck-widget_with-resizer{position:relative}.ck .ck-widget__resizer{display:none;left:0;pointer-events:none;position:absolute;top:0}.ck-focused .ck-widget_with-resizer.ck-widget_selected>.ck-widget__resizer{display:block}.ck .ck-widget__resizer__handle{pointer-events:all;position:absolute}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-right,.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-left{cursor:nwse-resize}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-left,.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-right{cursor:nesw-resize}:root{--ck-resizer-size:10px;--ck-resizer-offset:calc(var(--ck-resizer-size)/-2 - 2px);--ck-resizer-border-width:1px}.ck .ck-widget__resizer{outline:1px solid var(--ck-color-resizer)}.ck .ck-widget__resizer__handle{background:var(--ck-color-focus-border);border:var(--ck-resizer-border-width) solid #fff;border-radius:var(--ck-resizer-border-radius);height:var(--ck-resizer-size);width:var(--ck-resizer-size)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-left{left:var(--ck-resizer-offset);top:var(--ck-resizer-offset)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-right{right:var(--ck-resizer-offset);top:var(--ck-resizer-offset)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-right{bottom:var(--ck-resizer-offset);right:var(--ck-resizer-offset)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-left{bottom:var(--ck-resizer-offset);left:var(--ck-resizer-offset)}";
-styleInject(css_248z$x);/**
+}var css_248z$D = ".ck .ck-widget_with-resizer{position:relative}.ck .ck-widget__resizer{display:none;left:0;pointer-events:none;position:absolute;top:0}.ck-focused .ck-widget_with-resizer.ck-widget_selected>.ck-widget__resizer{display:block}.ck .ck-widget__resizer__handle{pointer-events:all;position:absolute}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-right,.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-left{cursor:nwse-resize}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-left,.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-right{cursor:nesw-resize}:root{--ck-resizer-size:10px;--ck-resizer-offset:calc(var(--ck-resizer-size)/-2 - 2px);--ck-resizer-border-width:1px}.ck .ck-widget__resizer{outline:1px solid var(--ck-color-resizer)}.ck .ck-widget__resizer__handle{background:var(--ck-color-focus-border);border:var(--ck-resizer-border-width) solid #fff;border-radius:var(--ck-resizer-border-radius);height:var(--ck-resizer-size);width:var(--ck-resizer-size)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-left{left:var(--ck-resizer-offset);top:var(--ck-resizer-offset)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-top-right{right:var(--ck-resizer-offset);top:var(--ck-resizer-offset)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-right{bottom:var(--ck-resizer-offset);right:var(--ck-resizer-offset)}.ck .ck-widget__resizer__handle.ck-widget__resizer__handle-bottom-left{bottom:var(--ck-resizer-offset);left:var(--ck-resizer-offset)}";
+styleInject(css_248z$D);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -67141,8 +67141,8 @@ class WidgetResize extends Plugin {
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */var index$3=/*#__PURE__*/Object.freeze({__proto__:null,Widget:Widget,WidgetToolbarRepository:WidgetToolbarRepository,WidgetResize:WidgetResize,WidgetTypeAround:WidgetTypeAround,WIDGET_CLASS_NAME:WIDGET_CLASS_NAME,WIDGET_SELECTED_CLASS_NAME:WIDGET_SELECTED_CLASS_NAME,isWidget:isWidget,toWidget:toWidget,setHighlightHandling:setHighlightHandling,setLabel:setLabel,getLabel:getLabel,toWidgetEditable:toWidgetEditable,findOptimalInsertionRange:findOptimalInsertionRange,viewToModelPositionOutsideModelElement:viewToModelPositionOutsideModelElement});var css_248z$w = ".ck.ck-editor__editable .ck.ck-clipboard-drop-target-position{display:inline;pointer-events:none;position:relative}.ck.ck-editor__editable .ck.ck-clipboard-drop-target-position span{position:absolute;width:0}.ck.ck-editor__editable .ck-widget:-webkit-drag>.ck-widget__selection-handle,.ck.ck-editor__editable .ck-widget:-webkit-drag>.ck-widget__type-around{display:none}.ck.ck-clipboard-drop-target-line{pointer-events:none;position:absolute}:root{--ck-clipboard-drop-target-dot-width:12px;--ck-clipboard-drop-target-dot-height:8px;--ck-clipboard-drop-target-color:var(--ck-color-focus-border)}.ck.ck-editor__editable .ck.ck-clipboard-drop-target-position span{background:var(--ck-clipboard-drop-target-color);border:1px solid var(--ck-clipboard-drop-target-color);bottom:calc(var(--ck-clipboard-drop-target-dot-height)*-.5);margin-left:-1px;top:calc(var(--ck-clipboard-drop-target-dot-height)*-.5)}.ck.ck-editor__editable .ck.ck-clipboard-drop-target-position span:after{border-color:var(--ck-clipboard-drop-target-color) transparent transparent transparent;border-style:solid;border-width:calc(var(--ck-clipboard-drop-target-dot-height)) calc(var(--ck-clipboard-drop-target-dot-width)*.5) 0 calc(var(--ck-clipboard-drop-target-dot-width)*.5);content:\"\";display:block;height:0;left:50%;position:absolute;top:calc(var(--ck-clipboard-drop-target-dot-height)*-.5);transform:translateX(-50%);width:0}.ck.ck-editor__editable .ck-widget.ck-clipboard-drop-target-range{outline:var(--ck-widget-outline-thickness) solid var(--ck-clipboard-drop-target-color)!important}.ck.ck-editor__editable .ck-widget:-webkit-drag{zoom:.6;outline:none!important}.ck.ck-clipboard-drop-target-line{background:var(--ck-clipboard-drop-target-color);border:1px solid var(--ck-clipboard-drop-target-color);height:0;margin-top:-1px}";
-styleInject(css_248z$w);/**
+ */var index$3=/*#__PURE__*/Object.freeze({__proto__:null,Widget:Widget,WidgetToolbarRepository:WidgetToolbarRepository,WidgetResize:WidgetResize,WidgetTypeAround:WidgetTypeAround,WIDGET_CLASS_NAME:WIDGET_CLASS_NAME,WIDGET_SELECTED_CLASS_NAME:WIDGET_SELECTED_CLASS_NAME,isWidget:isWidget,toWidget:toWidget,setHighlightHandling:setHighlightHandling,setLabel:setLabel,getLabel:getLabel,toWidgetEditable:toWidgetEditable,findOptimalInsertionRange:findOptimalInsertionRange,viewToModelPositionOutsideModelElement:viewToModelPositionOutsideModelElement});var css_248z$C = ".ck.ck-editor__editable .ck.ck-clipboard-drop-target-position{display:inline;pointer-events:none;position:relative}.ck.ck-editor__editable .ck.ck-clipboard-drop-target-position span{position:absolute;width:0}.ck.ck-editor__editable .ck-widget:-webkit-drag>.ck-widget__selection-handle,.ck.ck-editor__editable .ck-widget:-webkit-drag>.ck-widget__type-around{display:none}.ck.ck-clipboard-drop-target-line{pointer-events:none;position:absolute}:root{--ck-clipboard-drop-target-dot-width:12px;--ck-clipboard-drop-target-dot-height:8px;--ck-clipboard-drop-target-color:var(--ck-color-focus-border)}.ck.ck-editor__editable .ck.ck-clipboard-drop-target-position span{background:var(--ck-clipboard-drop-target-color);border:1px solid var(--ck-clipboard-drop-target-color);bottom:calc(var(--ck-clipboard-drop-target-dot-height)*-.5);margin-left:-1px;top:calc(var(--ck-clipboard-drop-target-dot-height)*-.5)}.ck.ck-editor__editable .ck.ck-clipboard-drop-target-position span:after{border-color:var(--ck-clipboard-drop-target-color) transparent transparent transparent;border-style:solid;border-width:calc(var(--ck-clipboard-drop-target-dot-height)) calc(var(--ck-clipboard-drop-target-dot-width)*.5) 0 calc(var(--ck-clipboard-drop-target-dot-width)*.5);content:\"\";display:block;height:0;left:50%;position:absolute;top:calc(var(--ck-clipboard-drop-target-dot-height)*-.5);transform:translateX(-50%);width:0}.ck.ck-editor__editable .ck-widget.ck-clipboard-drop-target-range{outline:var(--ck-widget-outline-thickness) solid var(--ck-clipboard-drop-target-color)!important}.ck.ck-editor__editable .ck-widget:-webkit-drag{zoom:.6;outline:none!important}.ck.ck-clipboard-drop-target-line{background:var(--ck-clipboard-drop-target-color);border:1px solid var(--ck-clipboard-drop-target-color);height:0;margin-top:-1px}";
+styleInject(css_248z$C);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -69589,9 +69589,12 @@ class Essentials extends Plugin {
     static get pluginName() {
         return 'Essentials';
     }
-}var css_248z$v = ".ck-vertical-form .ck-button:after{bottom:-1px;content:\"\";position:absolute;right:-1px;top:-1px;width:0;z-index:1}.ck-vertical-form .ck-button:focus:after{display:none}@media screen and (max-width:600px){.ck.ck-responsive-form .ck-button:after{bottom:-1px;content:\"\";position:absolute;right:-1px;top:-1px;width:0;z-index:1}.ck.ck-responsive-form .ck-button:focus:after{display:none}}.ck-vertical-form>.ck-button:nth-last-child(2):after{border-right:1px solid var(--ck-color-base-border)}.ck.ck-responsive-form{padding:var(--ck-spacing-large)}.ck.ck-responsive-form:focus{outline:none}[dir=ltr] .ck.ck-responsive-form>:not(:first-child),[dir=rtl] .ck.ck-responsive-form>:not(:last-child){margin-left:var(--ck-spacing-standard)}@media screen and (max-width:600px){.ck.ck-responsive-form{padding:0;width:calc(var(--ck-input-width)*.8)}.ck.ck-responsive-form .ck-labeled-field-view{margin:var(--ck-spacing-large) var(--ck-spacing-large) 0}.ck.ck-responsive-form .ck-labeled-field-view .ck-input-text{min-width:0;width:100%}.ck.ck-responsive-form .ck-labeled-field-view .ck-labeled-field-view__error{white-space:normal}.ck.ck-responsive-form>.ck-button:nth-last-child(2):after{border-right:1px solid var(--ck-color-base-border)}.ck.ck-responsive-form>.ck-button:last-child,.ck.ck-responsive-form>.ck-button:nth-last-child(2){border-radius:0;margin-top:var(--ck-spacing-large);padding:var(--ck-spacing-standard)}.ck.ck-responsive-form>.ck-button:last-child:not(:focus),.ck.ck-responsive-form>.ck-button:nth-last-child(2):not(:focus){border-top:1px solid var(--ck-color-base-border)}[dir=ltr] .ck.ck-responsive-form>.ck-button:last-child,[dir=ltr] .ck.ck-responsive-form>.ck-button:nth-last-child(2),[dir=rtl] .ck.ck-responsive-form>.ck-button:last-child,[dir=rtl] .ck.ck-responsive-form>.ck-button:nth-last-child(2){margin-left:0}[dir=rtl] .ck.ck-responsive-form>.ck-button:last-child:last-of-type,[dir=rtl] .ck.ck-responsive-form>.ck-button:nth-last-child(2):last-of-type{border-right:1px solid var(--ck-color-base-border)}}";
-styleInject(css_248z$v);var css_248z$u = ".ck.ck-find-and-replace-form{max-width:100%}.ck.ck-find-and-replace-form fieldset{display:flex}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{position:absolute}.ck.ck-find-and-replace-form{width:400px}.ck.ck-find-and-replace-form:focus{outline:none}.ck.ck-find-and-replace-form fieldset{align-content:stretch;align-items:center;border:0;flex-direction:row;flex-wrap:nowrap;margin:0;padding:var(--ck-spacing-large)}.ck.ck-find-and-replace-form fieldset>.ck-button{flex:0 0 auto}[dir=ltr] .ck.ck-find-and-replace-form fieldset>*+*{margin-left:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-find-and-replace-form fieldset>*+*{margin-right:var(--ck-spacing-standard)}.ck.ck-find-and-replace-form fieldset .ck-labeled-field-view{flex:1 1 auto}.ck.ck-find-and-replace-form fieldset .ck-labeled-field-view .ck-input{min-width:50px;width:100%}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find{align-items:flex-start}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-find{font-weight:700}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-find .ck-button__label{padding-left:var(--ck-spacing-large);padding-right:var(--ck-spacing-large)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-prev>.ck-icon{transform:rotate(90deg)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-next>.ck-icon{transform:rotate(-90deg)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{top:50%;transform:translateY(-50%)}[dir=ltr] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{left:var(--ck-spacing-standard)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{color:var(--ck-color-base-border)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace{flex-wrap:wrap;justify-content:flex-end;margin-top:calc(var(--ck-spacing-large)*-1)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-labeled-field-view{margin-bottom:var(--ck-spacing-large)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-options-dropdown{margin-left:0;margin-right:auto}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-labeled-field-view,.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-labeled-field-view .ck-input{width:100%}@media screen and (max-width:600px){.ck.ck-find-and-replace-form{width:300px}.ck.ck-find-and-replace-form fieldset{flex-wrap:wrap}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-labeled-field-view{flex:1 0 auto;margin-bottom:var(--ck-spacing-standard);width:100%}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button{text-align:center}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type{flex:1 1 auto}[dir=ltr] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type{margin-left:0}[dir=rtl] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type{margin-right:0}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type .ck-button__label{text-align:center;width:100%}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>:not(.ck-labeled-field-view){flex:1 1 auto}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-dropdown:not(.ck-labeled-field-view){flex-grow:0}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-button:not(.ck-labeled-field-view)>.ck-button__label{text-align:center;width:100%}}";
-styleInject(css_248z$u);/**
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */var index$1=/*#__PURE__*/Object.freeze({__proto__:null,Essentials:Essentials});var css_248z$B = ".ck-vertical-form .ck-button:after{bottom:-1px;content:\"\";position:absolute;right:-1px;top:-1px;width:0;z-index:1}.ck-vertical-form .ck-button:focus:after{display:none}@media screen and (max-width:600px){.ck.ck-responsive-form .ck-button:after{bottom:-1px;content:\"\";position:absolute;right:-1px;top:-1px;width:0;z-index:1}.ck.ck-responsive-form .ck-button:focus:after{display:none}}.ck-vertical-form>.ck-button:nth-last-child(2):after{border-right:1px solid var(--ck-color-base-border)}.ck.ck-responsive-form{padding:var(--ck-spacing-large)}.ck.ck-responsive-form:focus{outline:none}[dir=ltr] .ck.ck-responsive-form>:not(:first-child),[dir=rtl] .ck.ck-responsive-form>:not(:last-child){margin-left:var(--ck-spacing-standard)}@media screen and (max-width:600px){.ck.ck-responsive-form{padding:0;width:calc(var(--ck-input-width)*.8)}.ck.ck-responsive-form .ck-labeled-field-view{margin:var(--ck-spacing-large) var(--ck-spacing-large) 0}.ck.ck-responsive-form .ck-labeled-field-view .ck-input-text{min-width:0;width:100%}.ck.ck-responsive-form .ck-labeled-field-view .ck-labeled-field-view__error{white-space:normal}.ck.ck-responsive-form>.ck-button:nth-last-child(2):after{border-right:1px solid var(--ck-color-base-border)}.ck.ck-responsive-form>.ck-button:last-child,.ck.ck-responsive-form>.ck-button:nth-last-child(2){border-radius:0;margin-top:var(--ck-spacing-large);padding:var(--ck-spacing-standard)}.ck.ck-responsive-form>.ck-button:last-child:not(:focus),.ck.ck-responsive-form>.ck-button:nth-last-child(2):not(:focus){border-top:1px solid var(--ck-color-base-border)}[dir=ltr] .ck.ck-responsive-form>.ck-button:last-child,[dir=ltr] .ck.ck-responsive-form>.ck-button:nth-last-child(2),[dir=rtl] .ck.ck-responsive-form>.ck-button:last-child,[dir=rtl] .ck.ck-responsive-form>.ck-button:nth-last-child(2){margin-left:0}[dir=rtl] .ck.ck-responsive-form>.ck-button:last-child:last-of-type,[dir=rtl] .ck.ck-responsive-form>.ck-button:nth-last-child(2):last-of-type{border-right:1px solid var(--ck-color-base-border)}}";
+styleInject(css_248z$B);var css_248z$A = ".ck.ck-find-and-replace-form{max-width:100%}.ck.ck-find-and-replace-form fieldset{display:flex}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{position:absolute}.ck.ck-find-and-replace-form{width:400px}.ck.ck-find-and-replace-form:focus{outline:none}.ck.ck-find-and-replace-form fieldset{align-content:stretch;align-items:center;border:0;flex-direction:row;flex-wrap:nowrap;margin:0;padding:var(--ck-spacing-large)}.ck.ck-find-and-replace-form fieldset>.ck-button{flex:0 0 auto}[dir=ltr] .ck.ck-find-and-replace-form fieldset>*+*{margin-left:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-find-and-replace-form fieldset>*+*{margin-right:var(--ck-spacing-standard)}.ck.ck-find-and-replace-form fieldset .ck-labeled-field-view{flex:1 1 auto}.ck.ck-find-and-replace-form fieldset .ck-labeled-field-view .ck-input{min-width:50px;width:100%}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find{align-items:flex-start}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-find{font-weight:700}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-find .ck-button__label{padding-left:var(--ck-spacing-large);padding-right:var(--ck-spacing-large)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-prev>.ck-icon{transform:rotate(90deg)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button-next>.ck-icon{transform:rotate(-90deg)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{top:50%;transform:translateY(-50%)}[dir=ltr] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{left:var(--ck-spacing-standard)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter{color:var(--ck-color-base-border)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace{flex-wrap:wrap;justify-content:flex-end;margin-top:calc(var(--ck-spacing-large)*-1)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-labeled-field-view{margin-bottom:var(--ck-spacing-large)}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-options-dropdown{margin-left:0;margin-right:auto}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-labeled-field-view,.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-labeled-field-view .ck-input{width:100%}@media screen and (max-width:600px){.ck.ck-find-and-replace-form{width:300px}.ck.ck-find-and-replace-form fieldset{flex-wrap:wrap}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-labeled-field-view{flex:1 0 auto;margin-bottom:var(--ck-spacing-standard);width:100%}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button{text-align:center}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type{flex:1 1 auto}[dir=ltr] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type{margin-left:0}[dir=rtl] .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type{margin-right:0}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find>.ck-button:first-of-type .ck-button__label{text-align:center;width:100%}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>:not(.ck-labeled-field-view){flex:1 1 auto}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-dropdown:not(.ck-labeled-field-view){flex-grow:0}.ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__replace>.ck-button:not(.ck-labeled-field-view)>.ck-button__label{text-align:center;width:100%}}";
+styleInject(css_248z$A);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -70586,8 +70589,8 @@ function regexpMatchToFindResult(matchResult) {
         start: startOffset,
         end: startOffset + matchResult[lastGroupIndex].length
     };
-}var css_248z$t = ".ck-find-result{background:var(--ck-color-highlight-background);color:var(--ck-color-text)}.ck-find-result_selected{background:#ff9633}";
-styleInject(css_248z$t);/**
+}var css_248z$z = ".ck-find-result{background:var(--ck-color-highlight-background);color:var(--ck-color-text)}.ck-find-result_selected{background:#ff9633}";
+styleInject(css_248z$z);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -71254,8 +71257,8 @@ function getLocalizedOptions(editor) {
         }
         return option;
     });
-}var css_248z$s = ".ck.ck-heading_heading1{font-size:20px}.ck.ck-heading_heading2{font-size:17px}.ck.ck-heading_heading3{font-size:14px}.ck[class*=ck-heading_heading]{font-weight:700}.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__button .ck-button__label{width:8em}.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__panel .ck-list__item{min-width:18em}";
-styleInject(css_248z$s);/**
+}var css_248z$y = ".ck.ck-heading_heading1{font-size:20px}.ck.ck-heading_heading2{font-size:17px}.ck.ck-heading_heading3{font-size:14px}.ck[class*=ck-heading_heading]{font-weight:700}.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__button .ck-button__label{width:8em}.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__panel .ck-list__item{min-width:18em}";
+styleInject(css_248z$y);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -72137,8 +72140,8 @@ class ManualDecorator extends ObservableMixin() {
             styles: this.styles
         };
     }
-}var css_248z$r = ".ck .ck-link_selected{background:var(--ck-color-link-selected-background)}.ck .ck-link_selected span.image-inline{outline:var(--ck-widget-outline-thickness) solid var(--ck-color-link-selected-background)}.ck .ck-fake-link-selection{background:var(--ck-color-link-fake-selection)}.ck .ck-fake-link-selection_collapsed{border-right:1px solid var(--ck-color-base-text);height:100%;margin-right:-1px;outline:1px solid hsla(0,0%,100%,.5)}";
-styleInject(css_248z$r);/**
+}var css_248z$x = ".ck .ck-link_selected{background:var(--ck-color-link-selected-background)}.ck .ck-link_selected span.image-inline{outline:var(--ck-widget-outline-thickness) solid var(--ck-color-link-selected-background)}.ck .ck-fake-link-selection{background:var(--ck-color-link-fake-selection)}.ck .ck-fake-link-selection_collapsed{border-right:1px solid var(--ck-color-base-text);height:100%;margin-right:-1px;outline:1px solid hsla(0,0%,100%,.5)}";
+styleInject(css_248z$x);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -72671,8 +72674,8 @@ function isTyping(editor) {
 function getLinkAttributesAllowedOnText(schema) {
     const textAttributes = schema.getDefinition('$text').allowAttributes;
     return textAttributes.filter(attribute => attribute.startsWith('link'));
-}var css_248z$q = ".ck.ck-link-form{display:flex}.ck.ck-link-form .ck-label{display:none}@media screen and (max-width:600px){.ck.ck-link-form{flex-wrap:wrap}.ck.ck-link-form .ck-labeled-field-view{flex-basis:100%}.ck.ck-link-form .ck-button{flex-basis:50%}}.ck.ck-link-form_layout-vertical{display:block}.ck.ck-link-form_layout-vertical .ck-button.ck-button-cancel,.ck.ck-link-form_layout-vertical .ck-button.ck-button-save{margin-top:var(--ck-spacing-medium)}.ck.ck-link-form_layout-vertical{min-width:var(--ck-input-width);padding:0}.ck.ck-link-form_layout-vertical .ck-labeled-field-view{margin:var(--ck-spacing-large) var(--ck-spacing-large) var(--ck-spacing-small)}.ck.ck-link-form_layout-vertical .ck-labeled-field-view .ck-input-text{min-width:0;width:100%}.ck.ck-link-form_layout-vertical>.ck-button{border-radius:0;margin:0;padding:var(--ck-spacing-standard);width:50%}.ck.ck-link-form_layout-vertical>.ck-button:not(:focus){border-top:1px solid var(--ck-color-base-border)}[dir=ltr] .ck.ck-link-form_layout-vertical>.ck-button,[dir=rtl] .ck.ck-link-form_layout-vertical>.ck-button{margin-left:0}[dir=rtl] .ck.ck-link-form_layout-vertical>.ck-button:last-of-type{border-right:1px solid var(--ck-color-base-border)}.ck.ck-link-form_layout-vertical .ck.ck-list{margin:var(--ck-spacing-standard) var(--ck-spacing-large)}.ck.ck-link-form_layout-vertical .ck.ck-list .ck-button.ck-switchbutton{padding:0;width:100%}.ck.ck-link-form_layout-vertical .ck.ck-list .ck-button.ck-switchbutton:hover{background:none}";
-styleInject(css_248z$q);/**
+}var css_248z$w = ".ck.ck-link-form{display:flex}.ck.ck-link-form .ck-label{display:none}@media screen and (max-width:600px){.ck.ck-link-form{flex-wrap:wrap}.ck.ck-link-form .ck-labeled-field-view{flex-basis:100%}.ck.ck-link-form .ck-button{flex-basis:50%}}.ck.ck-link-form_layout-vertical{display:block}.ck.ck-link-form_layout-vertical .ck-button.ck-button-cancel,.ck.ck-link-form_layout-vertical .ck-button.ck-button-save{margin-top:var(--ck-spacing-medium)}.ck.ck-link-form_layout-vertical{min-width:var(--ck-input-width);padding:0}.ck.ck-link-form_layout-vertical .ck-labeled-field-view{margin:var(--ck-spacing-large) var(--ck-spacing-large) var(--ck-spacing-small)}.ck.ck-link-form_layout-vertical .ck-labeled-field-view .ck-input-text{min-width:0;width:100%}.ck.ck-link-form_layout-vertical>.ck-button{border-radius:0;margin:0;padding:var(--ck-spacing-standard);width:50%}.ck.ck-link-form_layout-vertical>.ck-button:not(:focus){border-top:1px solid var(--ck-color-base-border)}[dir=ltr] .ck.ck-link-form_layout-vertical>.ck-button,[dir=rtl] .ck.ck-link-form_layout-vertical>.ck-button{margin-left:0}[dir=rtl] .ck.ck-link-form_layout-vertical>.ck-button:last-of-type{border-right:1px solid var(--ck-color-base-border)}.ck.ck-link-form_layout-vertical .ck.ck-list{margin:var(--ck-spacing-standard) var(--ck-spacing-large)}.ck.ck-link-form_layout-vertical .ck.ck-list .ck-button.ck-switchbutton{padding:0;width:100%}.ck.ck-link-form_layout-vertical .ck.ck-list .ck-button.ck-switchbutton:hover{background:none}";
+styleInject(css_248z$w);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -72893,8 +72896,8 @@ class LinkFormView extends View$1 {
         children.add(this.cancelButtonView);
         return children;
     }
-}var css_248z$p = ".ck.ck-link-actions{display:flex;flex-direction:row;flex-wrap:nowrap}.ck.ck-link-actions .ck-link-actions__preview{display:inline-block}.ck.ck-link-actions .ck-link-actions__preview .ck-button__label{overflow:hidden}@media screen and (max-width:600px){.ck.ck-link-actions{flex-wrap:wrap}.ck.ck-link-actions .ck-link-actions__preview{flex-basis:100%}.ck.ck-link-actions .ck-button:not(.ck-link-actions__preview){flex-basis:50%}}.ck.ck-link-actions .ck-button.ck-link-actions__preview{padding-left:0;padding-right:0}.ck.ck-link-actions .ck-button.ck-link-actions__preview .ck-button__label{color:var(--ck-color-link-default);cursor:pointer;max-width:var(--ck-input-width);min-width:3em;padding:0 var(--ck-spacing-medium);text-align:center;text-overflow:ellipsis}.ck.ck-link-actions .ck-button.ck-link-actions__preview .ck-button__label:hover{text-decoration:underline}.ck.ck-link-actions .ck-button.ck-link-actions__preview,.ck.ck-link-actions .ck-button.ck-link-actions__preview:active,.ck.ck-link-actions .ck-button.ck-link-actions__preview:focus,.ck.ck-link-actions .ck-button.ck-link-actions__preview:hover{background:none}.ck.ck-link-actions .ck-button.ck-link-actions__preview:active{box-shadow:none}.ck.ck-link-actions .ck-button.ck-link-actions__preview:focus .ck-button__label{text-decoration:underline}[dir=ltr] .ck.ck-link-actions .ck-button:not(:first-child),[dir=rtl] .ck.ck-link-actions .ck-button:not(:last-child){margin-left:var(--ck-spacing-standard)}@media screen and (max-width:600px){.ck.ck-link-actions .ck-button.ck-link-actions__preview{margin:var(--ck-spacing-standard) var(--ck-spacing-standard) 0}.ck.ck-link-actions .ck-button.ck-link-actions__preview .ck-button__label{max-width:100%;min-width:0}[dir=ltr] .ck.ck-link-actions .ck-button:not(.ck-link-actions__preview),[dir=rtl] .ck.ck-link-actions .ck-button:not(.ck-link-actions__preview){margin-left:0}}";
-styleInject(css_248z$p);var unlinkIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m11.077 15 .991-1.416a.75.75 0 1 1 1.229.86l-1.148 1.64a.748.748 0 0 1-.217.206 5.251 5.251 0 0 1-8.503-5.955.741.741 0 0 1 .12-.274l1.147-1.639a.75.75 0 1 1 1.228.86L4.933 10.7l.006.003a3.75 3.75 0 0 0 6.132 4.294l.006.004zm5.494-5.335a.748.748 0 0 1-.12.274l-1.147 1.639a.75.75 0 1 1-1.228-.86l.86-1.23a3.75 3.75 0 0 0-6.144-4.301l-.86 1.229a.75.75 0 0 1-1.229-.86l1.148-1.64a.748.748 0 0 1 .217-.206 5.251 5.251 0 0 1 8.503 5.955zm-4.563-2.532a.75.75 0 0 1 .184 1.045l-3.155 4.505a.75.75 0 1 1-1.229-.86l3.155-4.506a.75.75 0 0 1 1.045-.184zm4.919 10.562-1.414 1.414a.75.75 0 1 1-1.06-1.06l1.414-1.415-1.415-1.414a.75.75 0 0 1 1.061-1.06l1.414 1.414 1.414-1.415a.75.75 0 0 1 1.061 1.061l-1.414 1.414 1.414 1.415a.75.75 0 0 1-1.06 1.06l-1.415-1.414z\"/></svg>";
+}var css_248z$v = ".ck.ck-link-actions{display:flex;flex-direction:row;flex-wrap:nowrap}.ck.ck-link-actions .ck-link-actions__preview{display:inline-block}.ck.ck-link-actions .ck-link-actions__preview .ck-button__label{overflow:hidden}@media screen and (max-width:600px){.ck.ck-link-actions{flex-wrap:wrap}.ck.ck-link-actions .ck-link-actions__preview{flex-basis:100%}.ck.ck-link-actions .ck-button:not(.ck-link-actions__preview){flex-basis:50%}}.ck.ck-link-actions .ck-button.ck-link-actions__preview{padding-left:0;padding-right:0}.ck.ck-link-actions .ck-button.ck-link-actions__preview .ck-button__label{color:var(--ck-color-link-default);cursor:pointer;max-width:var(--ck-input-width);min-width:3em;padding:0 var(--ck-spacing-medium);text-align:center;text-overflow:ellipsis}.ck.ck-link-actions .ck-button.ck-link-actions__preview .ck-button__label:hover{text-decoration:underline}.ck.ck-link-actions .ck-button.ck-link-actions__preview,.ck.ck-link-actions .ck-button.ck-link-actions__preview:active,.ck.ck-link-actions .ck-button.ck-link-actions__preview:focus,.ck.ck-link-actions .ck-button.ck-link-actions__preview:hover{background:none}.ck.ck-link-actions .ck-button.ck-link-actions__preview:active{box-shadow:none}.ck.ck-link-actions .ck-button.ck-link-actions__preview:focus .ck-button__label{text-decoration:underline}[dir=ltr] .ck.ck-link-actions .ck-button:not(:first-child),[dir=rtl] .ck.ck-link-actions .ck-button:not(:last-child){margin-left:var(--ck-spacing-standard)}@media screen and (max-width:600px){.ck.ck-link-actions .ck-button.ck-link-actions__preview{margin:var(--ck-spacing-standard) var(--ck-spacing-standard) 0}.ck.ck-link-actions .ck-button.ck-link-actions__preview .ck-button__label{max-width:100%;min-width:0}[dir=ltr] .ck.ck-link-actions .ck-button:not(.ck-link-actions__preview),[dir=rtl] .ck.ck-link-actions .ck-button:not(.ck-link-actions__preview){margin-left:0}}";
+styleInject(css_248z$v);var unlinkIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m11.077 15 .991-1.416a.75.75 0 1 1 1.229.86l-1.148 1.64a.748.748 0 0 1-.217.206 5.251 5.251 0 0 1-8.503-5.955.741.741 0 0 1 .12-.274l1.147-1.639a.75.75 0 1 1 1.228.86L4.933 10.7l.006.003a3.75 3.75 0 0 0 6.132 4.294l.006.004zm5.494-5.335a.748.748 0 0 1-.12.274l-1.147 1.639a.75.75 0 1 1-1.228-.86l.86-1.23a3.75 3.75 0 0 0-6.144-4.301l-.86 1.229a.75.75 0 0 1-1.229-.86l1.148-1.64a.748.748 0 0 1 .217-.206 5.251 5.251 0 0 1 8.503 5.955zm-4.563-2.532a.75.75 0 0 1 .184 1.045l-3.155 4.505a.75.75 0 1 1-1.229-.86l3.155-4.506a.75.75 0 0 1 1.045-.184zm4.919 10.562-1.414 1.414a.75.75 0 1 1-1.06-1.06l1.414-1.415-1.415-1.414a.75.75 0 0 1 1.061-1.06l1.414 1.414 1.414-1.415a.75.75 0 0 1 1.061 1.061l-1.414 1.414 1.414 1.415a.75.75 0 0 1-1.06 1.06l-1.415-1.414z\"/></svg>";
 /**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -73841,6 +73844,356 @@ class Link extends Plugin {
         return 'Link';
     }
 }/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The link image engine feature.
+ *
+ * It accepts the `linkHref="url"` attribute in the model for the {@link module:image/image~Image `<imageBlock>`} element
+ * which allows linking images.
+ */
+class LinkImageEditing extends Plugin {
+    /**
+     * @inheritDoc
+     */
+    static get requires() {
+        return ['ImageEditing', 'ImageUtils', LinkEditing];
+    }
+    /**
+     * @inheritDoc
+     */
+    static get pluginName() {
+        return 'LinkImageEditing';
+    }
+    /**
+     * @inheritDoc
+     */
+    init() {
+        const editor = this.editor;
+        const schema = editor.model.schema;
+        if (editor.plugins.has('ImageBlockEditing')) {
+            schema.extend('imageBlock', { allowAttributes: ['linkHref'] });
+        }
+        editor.conversion.for('upcast').add(upcastLink(editor));
+        editor.conversion.for('downcast').add(downcastImageLink(editor));
+        // Definitions for decorators are provided by the `link` command and the `LinkEditing` plugin.
+        this._enableAutomaticDecorators();
+        this._enableManualDecorators();
+    }
+    /**
+     * Processes {@link module:link/linkconfig~LinkDecoratorAutomaticDefinition automatic decorators} definitions and
+     * attaches proper converters that will work when linking an image.`
+     */
+    _enableAutomaticDecorators() {
+        const editor = this.editor;
+        const command = editor.commands.get('link');
+        const automaticDecorators = command.automaticDecorators;
+        if (automaticDecorators.length) {
+            editor.conversion.for('downcast').add(automaticDecorators.getDispatcherForLinkedImage());
+        }
+    }
+    /**
+     * Processes transformed {@link module:link/utils/manualdecorator~ManualDecorator} instances and attaches proper converters
+     * that will work when linking an image.
+     */
+    _enableManualDecorators() {
+        const editor = this.editor;
+        const command = editor.commands.get('link');
+        for (const decorator of command.manualDecorators) {
+            if (editor.plugins.has('ImageBlockEditing')) {
+                editor.model.schema.extend('imageBlock', { allowAttributes: decorator.id });
+            }
+            if (editor.plugins.has('ImageInlineEditing')) {
+                editor.model.schema.extend('imageInline', { allowAttributes: decorator.id });
+            }
+            editor.conversion.for('downcast').add(downcastImageLinkManualDecorator(decorator));
+            editor.conversion.for('upcast').add(upcastImageLinkManualDecorator(editor, decorator));
+        }
+    }
+}
+/**
+ * Returns a converter for linked block images that consumes the "href" attribute
+ * if a link contains an image.
+ *
+ * @param editor The editor instance.
+ */
+function upcastLink(editor) {
+    const isImageInlinePluginLoaded = editor.plugins.has('ImageInlineEditing');
+    const imageUtils = editor.plugins.get('ImageUtils');
+    return dispatcher => {
+        dispatcher.on('element:a', (evt, data, conversionApi) => {
+            const viewLink = data.viewItem;
+            const imageInLink = imageUtils.findViewImgElement(viewLink);
+            if (!imageInLink) {
+                return;
+            }
+            const blockImageView = imageInLink.findAncestor(element => imageUtils.isBlockImageView(element));
+            // There are four possible cases to consider here
+            //
+            // 1. A "root > ... > figure.image > a > img" structure.
+            // 2. A "root > ... > figure.image > a > picture > img" structure.
+            // 3. A "root > ... > block > a > img" structure.
+            // 4. A "root > ... > block > a > picture > img" structure.
+            //
+            // but the last 2 cases should only be considered by this converter when the inline image plugin
+            // is NOT loaded in the editor (because otherwise, that would be a plain, linked inline image).
+            if (isImageInlinePluginLoaded && !blockImageView) {
+                return;
+            }
+            // There's an image inside an <a> element - we consume it so it won't be picked up by the Link plugin.
+            const consumableAttributes = { attributes: ['href'] };
+            // Consume the `href` attribute so the default one will not convert it to $text attribute.
+            if (!conversionApi.consumable.consume(viewLink, consumableAttributes)) {
+                // Might be consumed by something else - i.e. other converter with priority=highest - a standard check.
+                return;
+            }
+            const linkHref = viewLink.getAttribute('href');
+            // Missing the 'href' attribute.
+            if (!linkHref) {
+                return;
+            }
+            // A full definition of the image feature.
+            // figure > a > img: parent of the view link element is an image element (figure).
+            let modelElement = data.modelCursor.parent;
+            if (!modelElement.is('element', 'imageBlock')) {
+                // a > img: parent of the view link is not the image (figure) element. We need to convert it manually.
+                const conversionResult = conversionApi.convertItem(imageInLink, data.modelCursor);
+                // Set image range as conversion result.
+                data.modelRange = conversionResult.modelRange;
+                // Continue conversion where image conversion ends.
+                data.modelCursor = conversionResult.modelCursor;
+                modelElement = data.modelCursor.nodeBefore;
+            }
+            if (modelElement && modelElement.is('element', 'imageBlock')) {
+                // Set the linkHref attribute from link element on model image element.
+                conversionApi.writer.setAttribute('linkHref', linkHref, modelElement);
+            }
+        }, { priority: 'high' });
+        // Using the same priority that `upcastImageLinkManualDecorator()` converter guarantees
+        // that manual decorators will decorate the proper element.
+    };
+}
+/**
+ * Creates a converter that adds `<a>` to linked block image view elements.
+ */
+function downcastImageLink(editor) {
+    const imageUtils = editor.plugins.get('ImageUtils');
+    return dispatcher => {
+        dispatcher.on('attribute:linkHref:imageBlock', (evt, data, conversionApi) => {
+            if (!conversionApi.consumable.consume(data.item, evt.name)) {
+                return;
+            }
+            // The image will be already converted - so it will be present in the view.
+            const viewFigure = conversionApi.mapper.toViewElement(data.item);
+            const writer = conversionApi.writer;
+            // But we need to check whether the link element exists.
+            const linkInImage = Array.from(viewFigure.getChildren())
+                .find((child) => child.is('element', 'a'));
+            const viewImage = imageUtils.findViewImgElement(viewFigure);
+            // <picture>...<img/></picture> or <img/>
+            const viewImgOrPicture = viewImage.parent.is('element', 'picture') ? viewImage.parent : viewImage;
+            // If so, update the attribute if it's defined or remove the entire link if the attribute is empty.
+            if (linkInImage) {
+                if (data.attributeNewValue) {
+                    writer.setAttribute('href', data.attributeNewValue, linkInImage);
+                }
+                else {
+                    writer.move(writer.createRangeOn(viewImgOrPicture), writer.createPositionAt(viewFigure, 0));
+                    writer.remove(linkInImage);
+                }
+            }
+            else {
+                // But if it does not exist. Let's wrap already converted image by newly created link element.
+                // 1. Create an empty link element.
+                const linkElement = writer.createContainerElement('a', { href: data.attributeNewValue });
+                // 2. Insert link inside the associated image.
+                writer.insert(writer.createPositionAt(viewFigure, 0), linkElement);
+                // 3. Move the image to the link.
+                writer.move(writer.createRangeOn(viewImgOrPicture), writer.createPositionAt(linkElement, 0));
+            }
+        }, { priority: 'high' });
+    };
+}
+/**
+ * Returns a converter that decorates the `<a>` element when the image is the link label.
+ */
+function downcastImageLinkManualDecorator(decorator) {
+    return dispatcher => {
+        dispatcher.on(`attribute:${decorator.id}:imageBlock`, (evt, data, conversionApi) => {
+            const viewFigure = conversionApi.mapper.toViewElement(data.item);
+            const linkInImage = Array.from(viewFigure.getChildren())
+                .find((child) => child.is('element', 'a'));
+            // The <a> element was removed by the time this converter is executed.
+            // It may happen when the base `linkHref` and decorator attributes are removed
+            // at the same time (see #8401).
+            if (!linkInImage) {
+                return;
+            }
+            for (const [key, val] of toMap(decorator.attributes)) {
+                conversionApi.writer.setAttribute(key, val, linkInImage);
+            }
+            if (decorator.classes) {
+                conversionApi.writer.addClass(decorator.classes, linkInImage);
+            }
+            for (const key in decorator.styles) {
+                conversionApi.writer.setStyle(key, decorator.styles[key], linkInImage);
+            }
+        });
+    };
+}
+/**
+ * Returns a converter that checks whether manual decorators should be applied to the link.
+ */
+function upcastImageLinkManualDecorator(editor, decorator) {
+    const isImageInlinePluginLoaded = editor.plugins.has('ImageInlineEditing');
+    const imageUtils = editor.plugins.get('ImageUtils');
+    return dispatcher => {
+        dispatcher.on('element:a', (evt, data, conversionApi) => {
+            const viewLink = data.viewItem;
+            const imageInLink = imageUtils.findViewImgElement(viewLink);
+            // We need to check whether an image is inside a link because the converter handles
+            // only manual decorators for linked images. See #7975.
+            if (!imageInLink) {
+                return;
+            }
+            const blockImageView = imageInLink.findAncestor(element => imageUtils.isBlockImageView(element));
+            if (isImageInlinePluginLoaded && !blockImageView) {
+                return;
+            }
+            const matcher = new Matcher(decorator._createPattern());
+            const result = matcher.match(viewLink);
+            // The link element does not have required attributes or/and proper values.
+            if (!result) {
+                return;
+            }
+            // Check whether we can consume those attributes.
+            if (!conversionApi.consumable.consume(viewLink, result.match)) {
+                return;
+            }
+            // At this stage we can assume that we have the `<imageBlock>` element.
+            // `nodeBefore` comes after conversion: `<a><img></a>`.
+            // `parent` comes with full image definition: `<figure><a><img></a></figure>.
+            // See the body of the `upcastLink()` function.
+            const modelElement = data.modelCursor.nodeBefore || data.modelCursor.parent;
+            conversionApi.writer.setAttribute(decorator.id, true, modelElement);
+        }, { priority: 'high' });
+        // Using the same priority that `upcastLink()` converter guarantees that the linked image was properly converted.
+    };
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The link image UI plugin.
+ *
+ * This plugin provides the `'linkImage'` button that can be displayed in the {@link module:image/imagetoolbar~ImageToolbar}.
+ * It can be used to wrap images in links.
+ */
+class LinkImageUI extends Plugin {
+    /**
+     * @inheritDoc
+     */
+    static get requires() {
+        return [LinkEditing, LinkUI, 'ImageBlockEditing'];
+    }
+    /**
+     * @inheritDoc
+     */
+    static get pluginName() {
+        return 'LinkImageUI';
+    }
+    /**
+     * @inheritDoc
+     */
+    init() {
+        const editor = this.editor;
+        const viewDocument = editor.editing.view.document;
+        this.listenTo(viewDocument, 'click', (evt, data) => {
+            if (this._isSelectedLinkedImage(editor.model.document.selection)) {
+                // Prevent browser navigation when clicking a linked image.
+                data.preventDefault();
+                // Block the `LinkUI` plugin when an image was clicked.
+                // In such a case, we'd like to display the image toolbar.
+                evt.stop();
+            }
+        }, { priority: 'high' });
+        this._createToolbarLinkImageButton();
+    }
+    /**
+     * Creates a `LinkImageUI` button view.
+     *
+     * Clicking this button shows a {@link module:link/linkui~LinkUI#_balloon} attached to the selection.
+     * When an image is already linked, the view shows {@link module:link/linkui~LinkUI#actionsView} or
+     * {@link module:link/linkui~LinkUI#formView} if it is not.
+     */
+    _createToolbarLinkImageButton() {
+        const editor = this.editor;
+        const t = editor.t;
+        editor.ui.componentFactory.add('linkImage', locale => {
+            const button = new ButtonView(locale);
+            const plugin = editor.plugins.get('LinkUI');
+            const linkCommand = editor.commands.get('link');
+            button.set({
+                isEnabled: true,
+                label: t('Link image'),
+                icon: linkIcon,
+                keystroke: LINK_KEYSTROKE,
+                tooltip: true,
+                isToggleable: true
+            });
+            // Bind button to the command.
+            button.bind('isEnabled').to(linkCommand, 'isEnabled');
+            button.bind('isOn').to(linkCommand, 'value', value => !!value);
+            // Show the actionsView or formView (both from LinkUI) on button click depending on whether the image is linked already.
+            this.listenTo(button, 'execute', () => {
+                if (this._isSelectedLinkedImage(editor.model.document.selection)) {
+                    plugin._addActionsView();
+                }
+                else {
+                    plugin._showUI(true);
+                }
+            });
+            return button;
+        });
+    }
+    /**
+     * Returns true if a linked image (either block or inline) is the only selected element
+     * in the model document.
+     */
+    _isSelectedLinkedImage(selection) {
+        const selectedModelElement = selection.getSelectedElement();
+        const imageUtils = this.editor.plugins.get('ImageUtils');
+        return imageUtils.isImage(selectedModelElement) && selectedModelElement.hasAttribute('linkHref');
+    }
+}var css_248z$u = ".ck.ck-editor__editable a span.image-inline:after,.ck.ck-editor__editable figure.image>a:after{display:block;position:absolute}:root{--ck-link-image-indicator-icon-size:20;--ck-link-image-indicator-icon-is-visible:clamp(0px,100% - 50px,1px)}.ck.ck-editor__editable a span.image-inline:after,.ck.ck-editor__editable figure.image>a:after{background-color:rgba(0,0,0,.4);background-image:url(\"data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAgMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbD0iI2ZmZiIgZD0ibTExLjA3NyAxNSAuOTkxLTEuNDE2YS43NS43NSAwIDEgMSAxLjIyOS44NmwtMS4xNDggMS42NGEuNzQ4Ljc0OCAwIDAgMS0uMjE3LjIwNiA1LjI1MSA1LjI1MSAwIDAgMS04LjUwMy01Ljk1NS43NDEuNzQxIDAgMCAxIC4xMi0uMjc0bDEuMTQ3LTEuNjM5YS43NS43NSAwIDEgMSAxLjIyOC44Nkw0LjkzMyAxMC43bC4wMDYuMDAzYTMuNzUgMy43NSAwIDAgMCA2LjEzMiA0LjI5NGwuMDA2LjAwNHptNS40OTQtNS4zMzVhLjc0OC43NDggMCAwIDEtLjEyLjI3NGwtMS4xNDcgMS42MzlhLjc1Ljc1IDAgMSAxLTEuMjI4LS44NmwuODYtMS4yM2EzLjc1IDMuNzUgMCAwIDAtNi4xNDQtNC4zMDFsLS44NiAxLjIyOWEuNzUuNzUgMCAwIDEtMS4yMjktLjg2bDEuMTQ4LTEuNjRhLjc0OC43NDggMCAwIDEgLjIxNy0uMjA2IDUuMjUxIDUuMjUxIDAgMCAxIDguNTAzIDUuOTU1em0tNC41NjMtMi41MzJhLjc1Ljc1IDAgMCAxIC4xODQgMS4wNDVsLTMuMTU1IDQuNTA1YS43NS43NSAwIDEgMS0xLjIyOS0uODZsMy4xNTUtNC41MDZhLjc1Ljc1IDAgMCAxIDEuMDQ1LS4xODR6Ii8+PC9zdmc+\");background-position:50%;background-repeat:no-repeat;background-size:14px;border-radius:100%;content:\"\";height:calc(var(--ck-link-image-indicator-icon-is-visible)*var(--ck-link-image-indicator-icon-size));overflow:hidden;right:min(var(--ck-spacing-medium),6%);top:min(var(--ck-spacing-medium),6%);width:calc(var(--ck-link-image-indicator-icon-is-visible)*var(--ck-link-image-indicator-icon-size))}";
+styleInject(css_248z$u);/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The `LinkImage` plugin.
+ *
+ * This is a "glue" plugin that loads the {@link module:link/linkimageediting~LinkImageEditing link image editing feature}
+ * and {@link module:link/linkimageui~LinkImageUI link image UI feature}.
+ */
+class LinkImage extends Plugin {
+    /**
+     * @inheritDoc
+     */
+    static get requires() {
+        return [LinkImageEditing, LinkImageUI];
+    }
+    /**
+     * @inheritDoc
+     */
+    static get pluginName() {
+        return 'LinkImage';
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */var index=/*#__PURE__*/Object.freeze({__proto__:null,Link:Link,LinkEditing:LinkEditing,LinkUI:LinkUI,LinkImage:LinkImage,LinkImageEditing:LinkImageEditing,LinkImageUI:LinkImageUI,AutoLink:AutoLink,LinkCommand:LinkCommand,UnlinkCommand:UnlinkCommand});/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -75549,9 +75902,9 @@ function shouldUseBogusParagraph(item, attributeNames, blocks = getAllListItemBl
         }
     }
     return blocks.length < 2;
-}var css_248z$o = ".ck-editor__editable .ck-list-bogus-paragraph{display:block}";
-styleInject(css_248z$o);var css_248z$n = ".ck-content ol{list-style-type:decimal}.ck-content ol ol{list-style-type:lower-latin}.ck-content ol ol ol{list-style-type:lower-roman}.ck-content ol ol ol ol{list-style-type:upper-latin}.ck-content ol ol ol ol ol{list-style-type:upper-roman}.ck-content ul{list-style-type:disc}.ck-content ul ul{list-style-type:circle}.ck-content ul ul ul,.ck-content ul ul ul ul{list-style-type:square}";
-styleInject(css_248z$n);/**
+}var css_248z$t = ".ck-editor__editable .ck-list-bogus-paragraph{display:block}";
+styleInject(css_248z$t);var css_248z$s = ".ck-content ol{list-style-type:decimal}.ck-content ol ol{list-style-type:lower-latin}.ck-content ol ol ol{list-style-type:lower-roman}.ck-content ol ol ol ol{list-style-type:upper-latin}.ck-content ol ol ol ol ol{list-style-type:upper-roman}.ck-content ul{list-style-type:disc}.ck-content ul ul{list-style-type:circle}.ck-content ul ul ul,.ck-content ul ul ul ul{list-style-type:square}";
+styleInject(css_248z$s);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -76178,6 +76531,32 @@ class DocumentList extends Plugin {
         return 'DocumentList';
     }
 }/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+const LIST_STYLE_TYPES = [
+    { listStyle: 'disc', typeAttribute: 'disc', listType: 'bulleted' },
+    { listStyle: 'circle', typeAttribute: 'circle', listType: 'bulleted' },
+    { listStyle: 'square', typeAttribute: 'square', listType: 'bulleted' },
+    { listStyle: 'decimal', typeAttribute: '1', listType: 'numbered' },
+    { listStyle: 'decimal-leading-zero', typeAttribute: null, listType: 'numbered' },
+    { listStyle: 'lower-roman', typeAttribute: 'i', listType: 'numbered' },
+    { listStyle: 'upper-roman', typeAttribute: 'I', listType: 'numbered' },
+    { listStyle: 'lower-alpha', typeAttribute: 'a', listType: 'numbered' },
+    { listStyle: 'upper-alpha', typeAttribute: 'A', listType: 'numbered' },
+    { listStyle: 'lower-latin', typeAttribute: 'a', listType: 'numbered' },
+    { listStyle: 'upper-latin', typeAttribute: 'A', listType: 'numbered' }
+];
+for (const { listStyle, typeAttribute, listType } of LIST_STYLE_TYPES) {
+}var css_248z$r = ".ck.ck-collapsible.ck-collapsible_collapsed>.ck-collapsible__children{display:none}:root{--ck-collapsible-arrow-size:calc(var(--ck-icon-size)*0.5)}.ck.ck-collapsible>.ck.ck-button{border-radius:0;color:inherit;font-weight:700;padding:var(--ck-spacing-medium) var(--ck-spacing-large);width:100%}.ck.ck-collapsible>.ck.ck-button:focus{background:transparent}.ck.ck-collapsible>.ck.ck-button:active,.ck.ck-collapsible>.ck.ck-button:hover:not(:focus),.ck.ck-collapsible>.ck.ck-button:not(:focus){background:transparent;border-color:transparent;box-shadow:none}.ck.ck-collapsible>.ck.ck-button>.ck-icon{margin-right:var(--ck-spacing-medium);width:var(--ck-collapsible-arrow-size)}.ck.ck-collapsible>.ck-collapsible__children{padding:0 var(--ck-spacing-large) var(--ck-spacing-large)}.ck.ck-collapsible.ck-collapsible_collapsed>.ck.ck-button .ck-icon{transform:rotate(-90deg)}";
+styleInject(css_248z$r);var css_248z$q = ".ck.ck-list-properties.ck-list-properties_without-styles{padding:var(--ck-spacing-large)}.ck.ck-list-properties.ck-list-properties_without-styles>*{min-width:14em}.ck.ck-list-properties.ck-list-properties_without-styles>*+*{margin-top:var(--ck-spacing-standard)}.ck.ck-list-properties.ck-list-properties_with-numbered-properties>.ck-list-styles-list{grid-template-columns:repeat(4,auto)}.ck.ck-list-properties.ck-list-properties_with-numbered-properties>.ck-collapsible{border-top:1px solid var(--ck-color-base-border)}.ck.ck-list-properties.ck-list-properties_with-numbered-properties>.ck-collapsible>.ck-collapsible__children>*{width:100%}.ck.ck-list-properties.ck-list-properties_with-numbered-properties>.ck-collapsible>.ck-collapsible__children>*+*{margin-top:var(--ck-spacing-standard)}.ck.ck-list-properties .ck.ck-numbered-list-properties__start-index .ck-input{min-width:auto;width:100%}.ck.ck-list-properties .ck.ck-numbered-list-properties__reversed-order{background:transparent;margin-bottom:calc(var(--ck-spacing-tiny)*-1);padding-left:0;padding-right:0}.ck.ck-list-properties .ck.ck-numbered-list-properties__reversed-order:active,.ck.ck-list-properties .ck.ck-numbered-list-properties__reversed-order:hover{background:none;border-color:transparent;box-shadow:none}";
+styleInject(css_248z$q);var css_248z$p = ".ck.ck-list-styles-list{display:grid}:root{--ck-list-style-button-size:44px}.ck.ck-list-styles-list{column-gap:var(--ck-spacing-medium);grid-template-columns:repeat(3,auto);padding:var(--ck-spacing-large);row-gap:var(--ck-spacing-medium)}.ck.ck-list-styles-list .ck-button{box-sizing:content-box;margin:0;padding:0}.ck.ck-list-styles-list .ck-button,.ck.ck-list-styles-list .ck-button .ck-icon{height:var(--ck-list-style-button-size);width:var(--ck-list-style-button-size)}";
+styleInject(css_248z$p);/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+parseKeystroke('Ctrl+Enter');var css_248z$o = ":root{--ck-todo-list-checkmark-size:16px}.ck-content .todo-list{list-style:none}.ck-content .todo-list li{margin-bottom:5px}.ck-content .todo-list li .todo-list{margin-top:5px}.ck-content .todo-list .todo-list__label>input{-webkit-appearance:none;border:0;display:inline-block;height:var(--ck-todo-list-checkmark-size);left:-25px;margin-left:0;margin-right:-15px;position:relative;right:0;vertical-align:middle;width:var(--ck-todo-list-checkmark-size)}.ck-content .todo-list .todo-list__label>input:before{border:1px solid #333;border-radius:2px;box-sizing:border-box;content:\"\";display:block;height:100%;position:absolute;transition:box-shadow .25s ease-in-out,background .25s ease-in-out,border .25s ease-in-out;width:100%}.ck-content .todo-list .todo-list__label>input:after{border-color:transparent;border-style:solid;border-width:0 calc(var(--ck-todo-list-checkmark-size)/8) calc(var(--ck-todo-list-checkmark-size)/8) 0;box-sizing:content-box;content:\"\";display:block;height:calc(var(--ck-todo-list-checkmark-size)/2.6);left:calc(var(--ck-todo-list-checkmark-size)/3);pointer-events:none;position:absolute;top:calc(var(--ck-todo-list-checkmark-size)/5.3);transform:rotate(45deg);width:calc(var(--ck-todo-list-checkmark-size)/5.3)}.ck-content .todo-list .todo-list__label>input[checked]:before{background:#26ab33;border-color:#26ab33}.ck-content .todo-list .todo-list__label>input[checked]:after{border-color:#fff}.ck-content .todo-list .todo-list__label .todo-list__label__description{vertical-align:middle}[dir=rtl] .todo-list .todo-list__label>input{left:0;margin-left:-15px;margin-right:0;right:-25px}.ck-editor__editable .todo-list .todo-list__label>input{cursor:pointer}.ck-editor__editable .todo-list .todo-list__label>input:hover:before{box-shadow:0 0 0 5px rgba(0,0,0,.1)}";
+styleInject(css_248z$o);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -81306,8 +81685,8 @@ function shouldRefresh(child, mapper) {
         return false;
     }
     return isSingleParagraphWithoutAttributes(child) !== viewElement.is('element', 'span');
-}var css_248z$m = ":root{--ck-color-table-focused-cell-background:rgba(158,201,250,.3)}.ck-widget.table td.ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck-widget.table td.ck-editor__nested-editable:focus,.ck-widget.table th.ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck-widget.table th.ck-editor__nested-editable:focus{background:var(--ck-color-table-focused-cell-background);border-style:none;outline:1px solid var(--ck-color-focus-border);outline-offset:-1px}";
-styleInject(css_248z$m);/**
+}var css_248z$n = ":root{--ck-color-table-focused-cell-background:rgba(158,201,250,.3)}.ck-widget.table td.ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck-widget.table td.ck-editor__nested-editable:focus,.ck-widget.table th.ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck-widget.table th.ck-editor__nested-editable:focus{background:var(--ck-color-table-focused-cell-background);border-style:none;outline:1px solid var(--ck-color-focus-border);outline-offset:-1px}";
+styleInject(css_248z$n);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -81473,8 +81852,8 @@ function upcastCellSpan(type) {
         }
         return span;
     };
-}var css_248z$l = ".ck .ck-insert-table-dropdown__grid{display:flex;flex-direction:row;flex-wrap:wrap}:root{--ck-insert-table-dropdown-padding:10px;--ck-insert-table-dropdown-box-height:11px;--ck-insert-table-dropdown-box-width:12px;--ck-insert-table-dropdown-box-margin:1px}.ck .ck-insert-table-dropdown__grid{padding:var(--ck-insert-table-dropdown-padding) var(--ck-insert-table-dropdown-padding) 0;width:calc(var(--ck-insert-table-dropdown-box-width)*10 + var(--ck-insert-table-dropdown-box-margin)*20 + var(--ck-insert-table-dropdown-padding)*2)}.ck .ck-insert-table-dropdown__label,.ck[dir=rtl] .ck-insert-table-dropdown__label{text-align:center}.ck .ck-insert-table-dropdown-grid-box{border:1px solid var(--ck-color-base-border);border-radius:1px;margin:var(--ck-insert-table-dropdown-box-margin);min-height:var(--ck-insert-table-dropdown-box-height);min-width:var(--ck-insert-table-dropdown-box-width);outline:none;transition:none}.ck .ck-insert-table-dropdown-grid-box:focus{box-shadow:none}.ck .ck-insert-table-dropdown-grid-box.ck-on{background:var(--ck-color-focus-outer-shadow);border-color:var(--ck-color-focus-border)}";
-styleInject(css_248z$l);/**
+}var css_248z$m = ".ck .ck-insert-table-dropdown__grid{display:flex;flex-direction:row;flex-wrap:wrap}:root{--ck-insert-table-dropdown-padding:10px;--ck-insert-table-dropdown-box-height:11px;--ck-insert-table-dropdown-box-width:12px;--ck-insert-table-dropdown-box-margin:1px}.ck .ck-insert-table-dropdown__grid{padding:var(--ck-insert-table-dropdown-padding) var(--ck-insert-table-dropdown-padding) 0;width:calc(var(--ck-insert-table-dropdown-box-width)*10 + var(--ck-insert-table-dropdown-box-margin)*20 + var(--ck-insert-table-dropdown-padding)*2)}.ck .ck-insert-table-dropdown__label,.ck[dir=rtl] .ck-insert-table-dropdown__label{text-align:center}.ck .ck-insert-table-dropdown-grid-box{border:1px solid var(--ck-color-base-border);border-radius:1px;margin:var(--ck-insert-table-dropdown-box-margin);min-height:var(--ck-insert-table-dropdown-box-height);min-width:var(--ck-insert-table-dropdown-box-width);outline:none;transition:none}.ck .ck-insert-table-dropdown-grid-box:focus{box-shadow:none}.ck .ck-insert-table-dropdown-grid-box.ck-on{background:var(--ck-color-focus-outer-shadow);border-color:var(--ck-color-focus-border)}";
+styleInject(css_248z$m);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -81937,8 +82316,8 @@ function addListOption(option, editor, commands, itemDefinitions) {
         });
     }
     itemDefinitions.add(option);
-}var css_248z$k = ":root{--ck-table-selected-cell-background:rgba(158,207,250,.3)}.ck.ck-editor__editable .table table td.ck-editor__editable_selected,.ck.ck-editor__editable .table table th.ck-editor__editable_selected{box-shadow:unset;caret-color:transparent;outline:unset;position:relative}.ck.ck-editor__editable .table table td.ck-editor__editable_selected:after,.ck.ck-editor__editable .table table th.ck-editor__editable_selected:after{background-color:var(--ck-table-selected-cell-background);bottom:0;content:\"\";left:0;pointer-events:none;position:absolute;right:0;top:0}.ck.ck-editor__editable .table table td.ck-editor__editable_selected ::selection,.ck.ck-editor__editable .table table td.ck-editor__editable_selected:focus,.ck.ck-editor__editable .table table th.ck-editor__editable_selected ::selection,.ck.ck-editor__editable .table table th.ck-editor__editable_selected:focus{background-color:transparent}.ck.ck-editor__editable .table table td.ck-editor__editable_selected .ck-widget,.ck.ck-editor__editable .table table th.ck-editor__editable_selected .ck-widget{outline:unset}.ck.ck-editor__editable .table table td.ck-editor__editable_selected .ck-widget>.ck-widget__selection-handle,.ck.ck-editor__editable .table table th.ck-editor__editable_selected .ck-widget>.ck-widget__selection-handle{display:none}";
-styleInject(css_248z$k);/**
+}var css_248z$l = ":root{--ck-table-selected-cell-background:rgba(158,207,250,.3)}.ck.ck-editor__editable .table table td.ck-editor__editable_selected,.ck.ck-editor__editable .table table th.ck-editor__editable_selected{box-shadow:unset;caret-color:transparent;outline:unset;position:relative}.ck.ck-editor__editable .table table td.ck-editor__editable_selected:after,.ck.ck-editor__editable .table table th.ck-editor__editable_selected:after{background-color:var(--ck-table-selected-cell-background);bottom:0;content:\"\";left:0;pointer-events:none;position:absolute;right:0;top:0}.ck.ck-editor__editable .table table td.ck-editor__editable_selected ::selection,.ck.ck-editor__editable .table table td.ck-editor__editable_selected:focus,.ck.ck-editor__editable .table table th.ck-editor__editable_selected ::selection,.ck.ck-editor__editable .table table th.ck-editor__editable_selected:focus{background-color:transparent}.ck.ck-editor__editable .table table td.ck-editor__editable_selected .ck-widget,.ck.ck-editor__editable .table table th.ck-editor__editable_selected .ck-widget{outline:unset}.ck.ck-editor__editable .table table td.ck-editor__editable_selected .ck-widget>.ck-widget__selection-handle,.ck.ck-editor__editable .table table th.ck-editor__editable_selected .ck-widget>.ck-widget__selection-handle{display:none}";
+styleInject(css_248z$l);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -83133,8 +83512,8 @@ class TableMouse extends Plugin {
 }
 function haveSameTableParent(cellA, cellB) {
     return cellA.parent.parent == cellB.parent.parent;
-}var css_248z$j = ".ck-content .table{display:table;margin:.9em auto}.ck-content .table table{border:1px double #b3b3b3;border-collapse:collapse;border-spacing:0;height:100%;width:100%}.ck-content .table table td,.ck-content .table table th{border:1px solid #bfbfbf;min-width:2em;padding:.4em}.ck-content .table table th{background:rgba(0,0,0,.05);font-weight:700}.ck-content[dir=rtl] .table th{text-align:right}.ck-content[dir=ltr] .table th{text-align:left}.ck-editor__editable .ck-table-bogus-paragraph{display:inline-block;width:100%}";
-styleInject(css_248z$j);/**
+}var css_248z$k = ".ck-content .table{display:table;margin:.9em auto}.ck-content .table table{border:1px double #b3b3b3;border-collapse:collapse;border-spacing:0;height:100%;width:100%}.ck-content .table table td,.ck-content .table table th{border:1px solid #bfbfbf;min-width:2em;padding:.4em}.ck-content .table table th{background:rgba(0,0,0,.05);font-weight:700}.ck-content[dir=rtl] .table th{text-align:right}.ck-content[dir=ltr] .table th{text-align:left}.ck-editor__editable .ck-table-bogus-paragraph{display:inline-block;width:100%}";
+styleInject(css_248z$k);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -83251,655 +83630,8 @@ class TableToolbar extends Plugin {
             });
         }
     }
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * The table cell attribute command.
- *
- * This command is a base command for other table property commands.
- */
-class TablePropertyCommand extends Command {
-    /**
-     * Creates a new `TablePropertyCommand` instance.
-     *
-     * @param editor An editor in which this command will be used.
-     * @param attributeName Table cell attribute name.
-     * @param defaultValue The default value of the attribute.
-     */
-    constructor(editor, attributeName, defaultValue) {
-        super(editor);
-        this.attributeName = attributeName;
-        this._defaultValue = defaultValue;
-    }
-    /**
-     * @inheritDoc
-     */
-    refresh() {
-        const editor = this.editor;
-        const selection = editor.model.document.selection;
-        const table = selection.getFirstPosition().findAncestor('table');
-        this.isEnabled = !!table;
-        this.value = this._getValue(table);
-    }
-    /**
-     * Executes the command.
-     *
-     * @fires execute
-     * @param options.value If set, the command will set the attribute on the selected table.
-     * If not set, the command will remove the attribute from the selected table.
-     * @param options.batch Pass the model batch instance to the command to aggregate changes,
-     * for example, to allow a single undo step for multiple executions.
-     */
-    execute(options = {}) {
-        const model = this.editor.model;
-        const selection = model.document.selection;
-        const { value, batch } = options;
-        const table = selection.getFirstPosition().findAncestor('table');
-        const valueToSet = this._getValueToSet(value);
-        model.enqueueChange(batch, writer => {
-            if (valueToSet) {
-                writer.setAttribute(this.attributeName, valueToSet, table);
-            }
-            else {
-                writer.removeAttribute(this.attributeName, table);
-            }
-        });
-    }
-    /**
-     * Returns the attribute value for a table.
-     */
-    _getValue(table) {
-        if (!table) {
-            return;
-        }
-        const value = table.getAttribute(this.attributeName);
-        if (value === this._defaultValue) {
-            return;
-        }
-        return value;
-    }
-    /**
-     * Returns the proper model value. It can be used to add a default unit to numeric values.
-     */
-    _getValueToSet(value) {
-        if (value === this._defaultValue) {
-            return;
-        }
-        return value;
-    }
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * The table background color command.
- *
- * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
- * the `'tableBackgroundColor'` editor command.
- *
- * To change the background color of the selected table, execute the command:
- *
- * ```ts
- * editor.execute( 'tableBackgroundColor', {
- *   value: '#f00'
- * } );
- * ```
- */
-class TableBackgroundColorCommand extends TablePropertyCommand {
-    /**
-     * Creates a new `TableBackgroundColorCommand` instance.
-     *
-     * @param editor An editor in which this command will be used.
-     * @param defaultValue The default value of the attribute.
-     */
-    constructor(editor, defaultValue) {
-        super(editor, 'tableBackgroundColor', defaultValue);
-    }
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * Returns a string if all four values of box sides are equal.
- *
- * If a string is passed, it is treated as a single value (pass-through).
- *
- * ```ts
- * // Returns 'foo':
- * getSingleValue( { top: 'foo', right: 'foo', bottom: 'foo', left: 'foo' } );
- * getSingleValue( 'foo' );
- *
- * // Returns undefined:
- * getSingleValue( { top: 'foo', right: 'foo', bottom: 'bar', left: 'foo' } );
- * getSingleValue( { top: 'foo', right: 'foo' } );
- * ```
- */
-function getSingleValue(objectOrString) {
-    if (!objectOrString || !isObject$1(objectOrString)) {
-        return objectOrString;
-    }
-    const { top, right, bottom, left } = objectOrString;
-    if (top == right && right == bottom && bottom == left) {
-        return top;
-    }
-}
-/**
- * Adds a unit to a value if the value is a number or a string representing a number.
- *
- * **Note**: It does nothing to non-numeric values.
- *
- * ```ts
- * getSingleValue( 25, 'px' ); // '25px'
- * getSingleValue( 25, 'em' ); // '25em'
- * getSingleValue( '25em', 'px' ); // '25em'
- * getSingleValue( 'foo', 'px' ); // 'foo'
- * ```
- *
- * @param defaultUnit A default unit added to a numeric value.
- */
-function addDefaultUnitToNumericValue(value, defaultUnit) {
-    const numericValue = parseFloat(value);
-    if (Number.isNaN(numericValue)) {
-        return value;
-    }
-    if (String(numericValue) !== String(value)) {
-        return value;
-    }
-    return `${numericValue}${defaultUnit}`;
-}
-/**
- * Returns the normalized configuration.
- *
- * @param options.includeAlignmentProperty Whether the "alignment" property should be added.
- * @param options.includePaddingProperty Whether the "padding" property should be added.
- * @param options.includeVerticalAlignmentProperty Whether the "verticalAlignment" property should be added.
- * @param options.includeHorizontalAlignmentProperty Whether the "horizontalAlignment" property should be added.
- * @param options.isRightToLeftContent Whether the content is right-to-left.
- */
-function getNormalizedDefaultProperties(config, options = {}) {
-    const normalizedConfig = {
-        borderStyle: 'none',
-        borderWidth: '',
-        borderColor: '',
-        backgroundColor: '',
-        width: '',
-        height: '',
-        ...config
-    };
-    if (options.includeAlignmentProperty && !normalizedConfig.alignment) {
-        normalizedConfig.alignment = 'center';
-    }
-    if (options.includePaddingProperty && !normalizedConfig.padding) {
-        normalizedConfig.padding = '';
-    }
-    if (options.includeVerticalAlignmentProperty && !normalizedConfig.verticalAlignment) {
-        normalizedConfig.verticalAlignment = 'middle';
-    }
-    if (options.includeHorizontalAlignmentProperty && !normalizedConfig.horizontalAlignment) {
-        normalizedConfig.horizontalAlignment = options.isRightToLeftContent ? 'right' : 'left';
-    }
-    return normalizedConfig;
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * The table border color command.
- *
- * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
- * the `'tableBorderColor'` editor command.
- *
- * To change the border color of the selected table, execute the command:
- *
- * ```ts
- * editor.execute( 'tableBorderColor', {
- *   value: '#f00'
- * } );
- * ```
- */
-class TableBorderColorCommand extends TablePropertyCommand {
-    /**
-     * Creates a new `TableBorderColorCommand` instance.
-     *
-     * @param editor An editor in which this command will be used.
-     * @param defaultValue The default value of the attribute.
-     */
-    constructor(editor, defaultValue) {
-        super(editor, 'tableBorderColor', defaultValue);
-    }
-    /**
-     * @inheritDoc
-     */
-    _getValue(table) {
-        if (!table) {
-            return;
-        }
-        const value = getSingleValue(table.getAttribute(this.attributeName));
-        if (value === this._defaultValue) {
-            return;
-        }
-        return value;
-    }
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * The table style border command.
- *
- * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
- * the `'tableBorderStyle'` editor command.
- *
- * To change the border style of the selected table, execute the command:
- *
- * ```ts
- * editor.execute( 'tableBorderStyle', {
- *   value: 'dashed'
- * } );
- * ```
- */
-class TableBorderStyleCommand extends TablePropertyCommand {
-    /**
-     * Creates a new `TableBorderStyleCommand` instance.
-     *
-     * @param editor An editor in which this command will be used.
-     * @param defaultValue The default value of the attribute.
-     */
-    constructor(editor, defaultValue) {
-        super(editor, 'tableBorderStyle', defaultValue);
-    }
-    /**
-     * @inheritDoc
-     */
-    _getValue(table) {
-        if (!table) {
-            return;
-        }
-        const value = getSingleValue(table.getAttribute(this.attributeName));
-        if (value === this._defaultValue) {
-            return;
-        }
-        return value;
-    }
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * The table width border command.
- *
- * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
- * the `'tableBorderWidth'` editor command.
- *
- * To change the border width of the selected table, execute the command:
- *
- * ```ts
- * editor.execute( 'tableBorderWidth', {
- *   value: '5px'
- * } );
- * ```
- *
- * **Note**: This command adds the default `'px'` unit to numeric values. Executing:
- *
- * ```ts
- * editor.execute( 'tableBorderWidth', {
- *   value: '5'
- * } );
- * ```
- *
- * will set the `borderWidth` attribute to `'5px'` in the model.
- */
-class TableBorderWidthCommand extends TablePropertyCommand {
-    /**
-     * Creates a new `TableBorderWidthCommand` instance.
-     *
-     * @param editor An editor in which this command will be used.
-     * @param defaultValue The default value of the attribute.
-     */
-    constructor(editor, defaultValue) {
-        super(editor, 'tableBorderWidth', defaultValue);
-    }
-    /**
-     * @inheritDoc
-     */
-    _getValue(table) {
-        if (!table) {
-            return;
-        }
-        const value = getSingleValue(table.getAttribute(this.attributeName));
-        if (value === this._defaultValue) {
-            return;
-        }
-        return value;
-    }
-    /**
-     * @inheritDoc
-     */
-    _getValueToSet(value) {
-        const newValue = addDefaultUnitToNumericValue(value, 'px');
-        if (newValue === this._defaultValue) {
-            return;
-        }
-        return newValue;
-    }
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * The table width command.
- *
- * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
- * the `'tableWidth'` editor command.
- *
- * To change the width of the selected table, execute the command:
- *
- * ```ts
- * editor.execute( 'tableWidth', {
- *   value: '400px'
- * } );
- * ```
- *
- * **Note**: This command adds the default `'px'` unit to numeric values. Executing:
- *
- * ```ts
- * editor.execute( 'tableWidth', {
- *   value: '50'
- * } );
- * ```
- *
- * will set the `width` attribute to `'50px'` in the model.
- */
-class TableWidthCommand extends TablePropertyCommand {
-    /**
-     * Creates a new `TableWidthCommand` instance.
-     *
-     * @param editor An editor in which this command will be used.
-     * @param defaultValue The default value of the attribute.
-     */
-    constructor(editor, defaultValue) {
-        super(editor, 'tableWidth', defaultValue);
-    }
-    /**
-     * @inheritDoc
-     */
-    _getValueToSet(value) {
-        value = addDefaultUnitToNumericValue(value, 'px');
-        if (value === this._defaultValue) {
-            return;
-        }
-        return value;
-    }
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * The table height command.
- *
- * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
- * the `'tableHeight'` editor command.
- *
- * To change the height of the selected table, execute the command:
- *
- * ```ts
- * editor.execute( 'tableHeight', {
- *   value: '500px'
- * } );
- * ```
- *
- * **Note**: This command adds the default `'px'` unit to numeric values. Executing:
- *
- * ```ts
- * editor.execute( 'tableHeight', {
- *   value: '50'
- * } );
- * ```
- *
- * will set the `height` attribute to `'50px'` in the model.
- */
-class TableHeightCommand extends TablePropertyCommand {
-    /**
-     * Creates a new `TableHeightCommand` instance.
-     *
-     * @param editor An editor in which this command will be used.
-     * @param defaultValue The default value of the attribute.
-     */
-    constructor(editor, defaultValue) {
-        super(editor, 'tableHeight', defaultValue);
-    }
-    /**
-     * @inheritDoc
-     */
-    _getValueToSet(value) {
-        value = addDefaultUnitToNumericValue(value, 'px');
-        if (value === this._defaultValue) {
-            return;
-        }
-        return value;
-    }
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * The table alignment command.
- *
- * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
- * the `'tableAlignment'` editor command.
- *
- * To change the alignment of the selected table, execute the command:
- *
- * ```ts
- * editor.execute( 'tableAlignment', {
- *   value: 'right'
- * } );
- * ```
- */
-class TableAlignmentCommand extends TablePropertyCommand {
-    /**
-     * Creates a new `TableAlignmentCommand` instance.
-     *
-     * @param editor An editor in which this command will be used.
-     * @param defaultValue The default value for the "alignment" attribute.
-     */
-    constructor(editor, defaultValue) {
-        super(editor, 'tableAlignment', defaultValue);
-    }
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-const ALIGN_VALUES_REG_EXP$1 = /^(left|center|right)$/;
-const FLOAT_VALUES_REG_EXP = /^(left|none|right)$/;
-/**
- * The table properties editing feature.
- *
- * Introduces table's model attributes and their conversion:
- *
- * - border: `tableBorderStyle`, `tableBorderColor` and `tableBorderWidth`
- * - background color: `tableBackgroundColor`
- * - horizontal alignment: `tableAlignment`
- * - width & height: `tableWidth` & `tableHeight`
- *
- * It also registers commands used to manipulate the above attributes:
- *
- * - border: `'tableBorderStyle'`, `'tableBorderColor'` and `'tableBorderWidth'` commands
- * - background color: `'tableBackgroundColor'`
- * - horizontal alignment: `'tableAlignment'`
- * - width & height: `'tableWidth'` & `'tableHeight'`
- */
-class TablePropertiesEditing extends Plugin {
-    /**
-     * @inheritDoc
-     */
-    static get pluginName() {
-        return 'TablePropertiesEditing';
-    }
-    /**
-     * @inheritDoc
-     */
-    static get requires() {
-        return [TableEditing];
-    }
-    /**
-     * @inheritDoc
-     */
-    init() {
-        const editor = this.editor;
-        const schema = editor.model.schema;
-        const conversion = editor.conversion;
-        editor.config.define('table.tableProperties.defaultProperties', {});
-        const defaultTableProperties = getNormalizedDefaultProperties(editor.config.get('table.tableProperties.defaultProperties'), {
-            includeAlignmentProperty: true
-        });
-        editor.data.addStyleProcessorRules(addBorderRules);
-        enableBorderProperties$1(schema, conversion, {
-            color: defaultTableProperties.borderColor,
-            style: defaultTableProperties.borderStyle,
-            width: defaultTableProperties.borderWidth
-        });
-        editor.commands.add('tableBorderColor', new TableBorderColorCommand(editor, defaultTableProperties.borderColor));
-        editor.commands.add('tableBorderStyle', new TableBorderStyleCommand(editor, defaultTableProperties.borderStyle));
-        editor.commands.add('tableBorderWidth', new TableBorderWidthCommand(editor, defaultTableProperties.borderWidth));
-        enableAlignmentProperty(schema, conversion, defaultTableProperties.alignment);
-        editor.commands.add('tableAlignment', new TableAlignmentCommand(editor, defaultTableProperties.alignment));
-        enableTableToFigureProperty(schema, conversion, {
-            modelAttribute: 'tableWidth',
-            styleName: 'width',
-            defaultValue: defaultTableProperties.width
-        });
-        editor.commands.add('tableWidth', new TableWidthCommand(editor, defaultTableProperties.width));
-        enableTableToFigureProperty(schema, conversion, {
-            modelAttribute: 'tableHeight',
-            styleName: 'height',
-            defaultValue: defaultTableProperties.height
-        });
-        editor.commands.add('tableHeight', new TableHeightCommand(editor, defaultTableProperties.height));
-        editor.data.addStyleProcessorRules(addBackgroundRules);
-        enableProperty(schema, conversion, {
-            modelAttribute: 'tableBackgroundColor',
-            styleName: 'background-color',
-            defaultValue: defaultTableProperties.backgroundColor
-        });
-        editor.commands.add('tableBackgroundColor', new TableBackgroundColorCommand(editor, defaultTableProperties.backgroundColor));
-    }
-}
-/**
- * Enables `tableBorderStyle'`, `tableBorderColor'` and `tableBorderWidth'` attributes for table.
- *
- * @param defaultBorder The default border values.
- * @param defaultBorder.color The default `tableBorderColor` value.
- * @param defaultBorder.style The default `tableBorderStyle` value.
- * @param defaultBorder.width The default `tableBorderWidth` value.
- */
-function enableBorderProperties$1(schema, conversion, defaultBorder) {
-    const modelAttributes = {
-        width: 'tableBorderWidth',
-        color: 'tableBorderColor',
-        style: 'tableBorderStyle'
-    };
-    schema.extend('table', {
-        allowAttributes: Object.values(modelAttributes)
-    });
-    upcastBorderStyles(conversion, 'table', modelAttributes, defaultBorder);
-    downcastTableAttribute(conversion, { modelAttribute: modelAttributes.color, styleName: 'border-color' });
-    downcastTableAttribute(conversion, { modelAttribute: modelAttributes.style, styleName: 'border-style' });
-    downcastTableAttribute(conversion, { modelAttribute: modelAttributes.width, styleName: 'border-width' });
-}
-/**
- * Enables the `'alignment'` attribute for table.
- *
- * @param defaultValue The default alignment value.
- */
-function enableAlignmentProperty(schema, conversion, defaultValue) {
-    schema.extend('table', {
-        allowAttributes: ['tableAlignment']
-    });
-    conversion.for('downcast')
-        .attributeToAttribute({
-        model: {
-            name: 'table',
-            key: 'tableAlignment'
-        },
-        view: alignment => ({
-            key: 'style',
-            value: {
-                // Model: `alignment:center` => CSS: `float:none`.
-                float: alignment === 'center' ? 'none' : alignment
-            }
-        }),
-        converterPriority: 'high'
-    });
-    conversion.for('upcast')
-        // Support for the `float:*;` CSS definition for the table alignment.
-        .attributeToAttribute({
-        view: {
-            name: /^(table|figure)$/,
-            styles: {
-                float: FLOAT_VALUES_REG_EXP
-            }
-        },
-        model: {
-            key: 'tableAlignment',
-            value: (viewElement) => {
-                let align = viewElement.getStyle('float');
-                // CSS: `float:none` => Model: `alignment:center`.
-                if (align === 'none') {
-                    align = 'center';
-                }
-                return align === defaultValue ? null : align;
-            }
-        }
-    })
-        // Support for the `align` attribute as the backward compatibility while pasting from other sources.
-        .attributeToAttribute({
-        view: {
-            attributes: {
-                align: ALIGN_VALUES_REG_EXP$1
-            }
-        },
-        model: {
-            name: 'table',
-            key: 'tableAlignment',
-            value: (viewElement) => {
-                const align = viewElement.getAttribute('align');
-                return align === defaultValue ? null : align;
-            }
-        }
-    });
-}
-/**
- * Enables conversion for an attribute for simple view-model mappings.
- *
- * @param options.defaultValue The default value for the specified `modelAttribute`.
- */
-function enableProperty(schema, conversion, options) {
-    const { modelAttribute } = options;
-    schema.extend('table', {
-        allowAttributes: [modelAttribute]
-    });
-    upcastStyleToAttribute(conversion, { viewElement: 'table', ...options });
-    downcastTableAttribute(conversion, options);
-}
-/**
- * Enables conversion for an attribute for simple view (figure) to model (table) mappings.
- */
-function enableTableToFigureProperty(schema, conversion, options) {
-    const { modelAttribute } = options;
-    schema.extend('table', {
-        allowAttributes: [modelAttribute]
-    });
-    upcastStyleToAttribute(conversion, {
-        viewElement: /^(table|figure)$/,
-        shouldUpcast: (element) => !(element.name == 'table' && element.parent.name == 'figure'),
-        ...options
-    });
-    downcastAttributeToStyle(conversion, { modelElement: 'table', ...options });
-}var css_248z$i = ".ck.ck-input-color{display:flex;flex-direction:row-reverse;width:100%}.ck.ck-input-color>input.ck.ck-input-text{flex-grow:1;min-width:auto}.ck.ck-input-color>div.ck.ck-dropdown{min-width:auto}.ck.ck-input-color>div.ck.ck-dropdown>.ck-input-color__button .ck-dropdown__arrow{display:none}.ck.ck-input-color .ck.ck-input-color__button{display:flex}.ck.ck-input-color .ck.ck-input-color__button .ck.ck-input-color__button__preview{overflow:hidden;position:relative}.ck.ck-input-color .ck.ck-input-color__button .ck.ck-input-color__button__preview>.ck.ck-input-color__button__preview__no-color-indicator{display:block;position:absolute}[dir=ltr] .ck.ck-input-color>.ck.ck-input-text{border-bottom-right-radius:0;border-top-right-radius:0}[dir=rtl] .ck.ck-input-color>.ck.ck-input-text{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-input-color>.ck.ck-input-text:focus{z-index:0}.ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button{padding:0}[dir=ltr] .ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button{border-bottom-left-radius:0;border-top-left-radius:0}[dir=ltr] .ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button:not(:focus){border-left:1px solid transparent}[dir=rtl] .ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button{border-bottom-right-radius:0;border-top-right-radius:0}[dir=rtl] .ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button:not(:focus){border-right:1px solid transparent}.ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button.ck-disabled{background:var(--ck-color-input-disabled-background)}.ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button>.ck.ck-input-color__button__preview{border-radius:0}.ck-rounded-corners .ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button>.ck.ck-input-color__button__preview,.ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button>.ck.ck-input-color__button__preview.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button>.ck.ck-input-color__button__preview{border:1px solid var(--ck-color-input-border);height:20px;width:20px}.ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button>.ck.ck-input-color__button__preview>.ck.ck-input-color__button__preview__no-color-indicator{background:red;border-radius:2px;height:150%;left:50%;top:-30%;transform:rotate(45deg);transform-origin:50%;width:8%}.ck.ck-input-color .ck.ck-input-color__remove-color{border-bottom-left-radius:0;border-bottom-right-radius:0;padding:calc(var(--ck-spacing-standard)/2) var(--ck-spacing-standard);width:100%}.ck.ck-input-color .ck.ck-input-color__remove-color:not(:focus){border-bottom:1px solid var(--ck-color-input-border)}[dir=ltr] .ck.ck-input-color .ck.ck-input-color__remove-color{border-top-right-radius:0}[dir=rtl] .ck.ck-input-color .ck.ck-input-color__remove-color{border-top-left-radius:0}.ck.ck-input-color .ck.ck-input-color__remove-color .ck.ck-icon{margin-right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-input-color .ck.ck-input-color__remove-color .ck.ck-icon{margin-left:var(--ck-spacing-standard);margin-right:0}";
-styleInject(css_248z$i);/**
+}var css_248z$j = ".ck.ck-input-color{display:flex;flex-direction:row-reverse;width:100%}.ck.ck-input-color>input.ck.ck-input-text{flex-grow:1;min-width:auto}.ck.ck-input-color>div.ck.ck-dropdown{min-width:auto}.ck.ck-input-color>div.ck.ck-dropdown>.ck-input-color__button .ck-dropdown__arrow{display:none}.ck.ck-input-color .ck.ck-input-color__button{display:flex}.ck.ck-input-color .ck.ck-input-color__button .ck.ck-input-color__button__preview{overflow:hidden;position:relative}.ck.ck-input-color .ck.ck-input-color__button .ck.ck-input-color__button__preview>.ck.ck-input-color__button__preview__no-color-indicator{display:block;position:absolute}[dir=ltr] .ck.ck-input-color>.ck.ck-input-text{border-bottom-right-radius:0;border-top-right-radius:0}[dir=rtl] .ck.ck-input-color>.ck.ck-input-text{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-input-color>.ck.ck-input-text:focus{z-index:0}.ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button{padding:0}[dir=ltr] .ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button{border-bottom-left-radius:0;border-top-left-radius:0}[dir=ltr] .ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button:not(:focus){border-left:1px solid transparent}[dir=rtl] .ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button{border-bottom-right-radius:0;border-top-right-radius:0}[dir=rtl] .ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button:not(:focus){border-right:1px solid transparent}.ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button.ck-disabled{background:var(--ck-color-input-disabled-background)}.ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button>.ck.ck-input-color__button__preview{border-radius:0}.ck-rounded-corners .ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button>.ck.ck-input-color__button__preview,.ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button>.ck.ck-input-color__button__preview.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button>.ck.ck-input-color__button__preview{border:1px solid var(--ck-color-input-border);height:20px;width:20px}.ck.ck-input-color>.ck.ck-dropdown>.ck.ck-button.ck-input-color__button>.ck.ck-input-color__button__preview>.ck.ck-input-color__button__preview__no-color-indicator{background:red;border-radius:2px;height:150%;left:50%;top:-30%;transform:rotate(45deg);transform-origin:50%;width:8%}.ck.ck-input-color .ck.ck-input-color__remove-color{border-bottom-left-radius:0;border-bottom-right-radius:0;padding:calc(var(--ck-spacing-standard)/2) var(--ck-spacing-standard);width:100%}.ck.ck-input-color .ck.ck-input-color__remove-color:not(:focus){border-bottom:1px solid var(--ck-color-input-border)}[dir=ltr] .ck.ck-input-color .ck.ck-input-color__remove-color{border-top-right-radius:0}[dir=rtl] .ck.ck-input-color .ck.ck-input-color__remove-color{border-top-left-radius:0}.ck.ck-input-color .ck.ck-input-color__remove-color .ck.ck-icon{margin-right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-input-color .ck.ck-input-color__remove-color .ck.ck-icon{margin-left:var(--ck-spacing-standard);margin-right:0}";
+styleInject(css_248z$j);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -84491,8 +84223,8 @@ function colorConfigToColorGridDefinitions(colorConfig) {
             hasBorder: item.hasBorder
         }
     }));
-}var css_248z$h = ".ck.ck-form__row{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}.ck.ck-form__row>:not(.ck-label){flex-grow:1}.ck.ck-form__row.ck-table-form__action-row .ck-button-cancel,.ck.ck-form__row.ck-table-form__action-row .ck-button-save{justify-content:center}.ck.ck-form__row{padding:var(--ck-spacing-standard) var(--ck-spacing-large) 0}[dir=ltr] .ck.ck-form__row>:not(.ck-label)+*{margin-left:var(--ck-spacing-large)}[dir=rtl] .ck.ck-form__row>:not(.ck-label)+*{margin-right:var(--ck-spacing-large)}.ck.ck-form__row>.ck-label{min-width:100%;width:100%}.ck.ck-form__row.ck-table-form__action-row{margin-top:var(--ck-spacing-large)}.ck.ck-form__row.ck-table-form__action-row .ck-button .ck-button__label{color:var(--ck-color-text)}";
-styleInject(css_248z$h);/**
+}var css_248z$i = ".ck.ck-form__row{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}.ck.ck-form__row>:not(.ck-label){flex-grow:1}.ck.ck-form__row.ck-table-form__action-row .ck-button-cancel,.ck.ck-form__row.ck-table-form__action-row .ck-button-save{justify-content:center}.ck.ck-form__row{padding:var(--ck-spacing-standard) var(--ck-spacing-large) 0}[dir=ltr] .ck.ck-form__row>:not(.ck-label)+*{margin-left:var(--ck-spacing-large)}[dir=rtl] .ck.ck-form__row>:not(.ck-label)+*{margin-right:var(--ck-spacing-large)}.ck.ck-form__row>.ck-label{min-width:100%;width:100%}.ck.ck-form__row.ck-table-form__action-row{margin-top:var(--ck-spacing-large)}.ck.ck-form__row.ck-table-form__action-row .ck-button .ck-button__label{color:var(--ck-color-text)}";
+styleInject(css_248z$i);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -84543,891 +84275,14 @@ class FormRowView extends View$1 {
             children: this.children
         });
     }
-}var css_248z$g = ".ck.ck-form{padding:0 0 var(--ck-spacing-large)}.ck.ck-form:focus{outline:none}.ck.ck-form .ck.ck-input-text{min-width:100%;width:0}.ck.ck-form .ck.ck-dropdown{min-width:100%}.ck.ck-form .ck.ck-dropdown .ck-dropdown__button:not(:focus){border:1px solid var(--ck-color-base-border)}.ck.ck-form .ck.ck-dropdown .ck-dropdown__button .ck-button__label{width:100%}";
-styleInject(css_248z$g);var css_248z$f = ".ck.ck-table-form .ck-form__row.ck-table-form__background-row,.ck.ck-table-form .ck-form__row.ck-table-form__border-row{flex-wrap:wrap}.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row{align-items:center;flex-wrap:wrap}.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row .ck-labeled-field-view{align-items:center;display:flex;flex-direction:column-reverse}.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row .ck-labeled-field-view .ck.ck-dropdown,.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row .ck-table-form__dimension-operator{flex-grow:0}.ck.ck-table-form .ck.ck-labeled-field-view{position:relative}.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status{bottom:calc(var(--ck-table-properties-error-arrow-size)*-1);left:50%;position:absolute;transform:translate(-50%,100%);z-index:1}.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status:after{content:\"\";left:50%;position:absolute;top:calc(var(--ck-table-properties-error-arrow-size)*-1);transform:translateX(-50%)}:root{--ck-table-properties-error-arrow-size:6px;--ck-table-properties-min-error-width:150px}.ck.ck-table-form .ck-form__row.ck-table-form__border-row .ck-labeled-field-view>.ck-label{font-size:var(--ck-font-size-tiny);text-align:center}.ck.ck-table-form .ck-form__row.ck-table-form__border-row .ck-table-form__border-style,.ck.ck-table-form .ck-form__row.ck-table-form__border-row .ck-table-form__border-width{max-width:80px;min-width:80px;width:80px}.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row{padding:0}.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row .ck-table-form__dimensions-row__height,.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row .ck-table-form__dimensions-row__width{margin:0}.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row .ck-table-form__dimension-operator{align-self:flex-end;display:inline-block;height:var(--ck-ui-component-min-height);line-height:var(--ck-ui-component-min-height);margin:0 var(--ck-spacing-small)}.ck.ck-table-form .ck.ck-labeled-field-view{padding-top:var(--ck-spacing-standard)}.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status{border-radius:0}.ck-rounded-corners .ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status,.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status{background:var(--ck-color-base-error);color:var(--ck-color-base-background);min-width:var(--ck-table-properties-min-error-width);padding:var(--ck-spacing-small) var(--ck-spacing-medium);text-align:center}.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status:after{border-color:transparent transparent var(--ck-color-base-error) transparent;border-style:solid;border-width:0 var(--ck-table-properties-error-arrow-size) var(--ck-table-properties-error-arrow-size) var(--ck-table-properties-error-arrow-size)}.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status{animation:ck-table-form-labeled-view-status-appear .15s ease both}.ck.ck-table-form .ck.ck-labeled-field-view .ck-input.ck-error:not(:focus)+.ck.ck-labeled-field-view__status{display:none}@keyframes ck-table-form-labeled-view-status-appear{0%{opacity:0}to{opacity:1}}";
-styleInject(css_248z$f);var css_248z$e = ".ck.ck-table-properties-form .ck-form__row.ck-table-properties-form__alignment-row{align-content:baseline;flex-basis:0;flex-wrap:wrap}.ck.ck-table-properties-form .ck-form__row.ck-table-properties-form__alignment-row .ck.ck-toolbar .ck-toolbar__items{flex-wrap:nowrap}.ck.ck-table-properties-form{width:320px}.ck.ck-table-properties-form .ck-form__row.ck-table-properties-form__alignment-row{align-self:flex-end;padding:0}.ck.ck-table-properties-form .ck-form__row.ck-table-properties-form__alignment-row .ck.ck-toolbar{background:none;margin-top:var(--ck-spacing-standard)}.ck.ck-table-properties-form .ck-form__row.ck-table-properties-form__alignment-row .ck.ck-toolbar .ck-toolbar__items>*{width:40px}";
-styleInject(css_248z$e);/**
+}var css_248z$h = ".ck.ck-form{padding:0 0 var(--ck-spacing-large)}.ck.ck-form:focus{outline:none}.ck.ck-form .ck.ck-input-text{min-width:100%;width:0}.ck.ck-form .ck.ck-dropdown{min-width:100%}.ck.ck-form .ck.ck-dropdown .ck-dropdown__button:not(:focus){border:1px solid var(--ck-color-base-border)}.ck.ck-form .ck.ck-dropdown .ck-dropdown__button .ck-button__label{width:100%}";
+styleInject(css_248z$h);var css_248z$g = ".ck.ck-table-form .ck-form__row.ck-table-form__background-row,.ck.ck-table-form .ck-form__row.ck-table-form__border-row{flex-wrap:wrap}.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row{align-items:center;flex-wrap:wrap}.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row .ck-labeled-field-view{align-items:center;display:flex;flex-direction:column-reverse}.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row .ck-labeled-field-view .ck.ck-dropdown,.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row .ck-table-form__dimension-operator{flex-grow:0}.ck.ck-table-form .ck.ck-labeled-field-view{position:relative}.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status{bottom:calc(var(--ck-table-properties-error-arrow-size)*-1);left:50%;position:absolute;transform:translate(-50%,100%);z-index:1}.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status:after{content:\"\";left:50%;position:absolute;top:calc(var(--ck-table-properties-error-arrow-size)*-1);transform:translateX(-50%)}:root{--ck-table-properties-error-arrow-size:6px;--ck-table-properties-min-error-width:150px}.ck.ck-table-form .ck-form__row.ck-table-form__border-row .ck-labeled-field-view>.ck-label{font-size:var(--ck-font-size-tiny);text-align:center}.ck.ck-table-form .ck-form__row.ck-table-form__border-row .ck-table-form__border-style,.ck.ck-table-form .ck-form__row.ck-table-form__border-row .ck-table-form__border-width{max-width:80px;min-width:80px;width:80px}.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row{padding:0}.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row .ck-table-form__dimensions-row__height,.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row .ck-table-form__dimensions-row__width{margin:0}.ck.ck-table-form .ck-form__row.ck-table-form__dimensions-row .ck-table-form__dimension-operator{align-self:flex-end;display:inline-block;height:var(--ck-ui-component-min-height);line-height:var(--ck-ui-component-min-height);margin:0 var(--ck-spacing-small)}.ck.ck-table-form .ck.ck-labeled-field-view{padding-top:var(--ck-spacing-standard)}.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status{border-radius:0}.ck-rounded-corners .ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status,.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status{background:var(--ck-color-base-error);color:var(--ck-color-base-background);min-width:var(--ck-table-properties-min-error-width);padding:var(--ck-spacing-small) var(--ck-spacing-medium);text-align:center}.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status:after{border-color:transparent transparent var(--ck-color-base-error) transparent;border-style:solid;border-width:0 var(--ck-table-properties-error-arrow-size) var(--ck-table-properties-error-arrow-size) var(--ck-table-properties-error-arrow-size)}.ck.ck-table-form .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status{animation:ck-table-form-labeled-view-status-appear .15s ease both}.ck.ck-table-form .ck.ck-labeled-field-view .ck-input.ck-error:not(:focus)+.ck.ck-labeled-field-view__status{display:none}@keyframes ck-table-form-labeled-view-status-appear{0%{opacity:0}to{opacity:1}}";
+styleInject(css_248z$g);var css_248z$f = ".ck.ck-table-cell-properties-form .ck-form__row.ck-table-cell-properties-form__alignment-row{flex-wrap:wrap}.ck.ck-table-cell-properties-form .ck-form__row.ck-table-cell-properties-form__alignment-row .ck.ck-toolbar:first-of-type{flex-grow:0.57}.ck.ck-table-cell-properties-form .ck-form__row.ck-table-cell-properties-form__alignment-row .ck.ck-toolbar:last-of-type{flex-grow:0.43}.ck.ck-table-cell-properties-form .ck-form__row.ck-table-cell-properties-form__alignment-row .ck.ck-toolbar .ck-button{flex-grow:1}.ck.ck-table-cell-properties-form{width:320px}.ck.ck-table-cell-properties-form .ck-form__row.ck-table-cell-properties-form__padding-row{align-self:flex-end;padding:0;width:25%}.ck.ck-table-cell-properties-form .ck-form__row.ck-table-cell-properties-form__alignment-row .ck.ck-toolbar{background:none;margin-top:var(--ck-spacing-standard)}";
+styleInject(css_248z$f);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 const ALIGNMENT_ICONS$1 = {
-    left: icons$1.objectLeft,
-    center: icons$1.objectCenter,
-    right: icons$1.objectRight
-};
-/**
- * The class representing a table properties form, allowing users to customize
- * certain style aspects of a table, for instance, border, background color, alignment, etc..
- */
-class TablePropertiesView extends View$1 {
-    /**
-     * @param locale The {@link module:core/editor/editor~Editor#locale} instance.
-     * @param options Additional configuration of the view.
-     */
-    constructor(locale, options) {
-        super(locale);
-        this.set({
-            borderStyle: '',
-            borderWidth: '',
-            borderColor: '',
-            backgroundColor: '',
-            width: '',
-            height: '',
-            alignment: ''
-        });
-        this.options = options;
-        const { borderStyleDropdown, borderWidthInput, borderColorInput, borderRowLabel } = this._createBorderFields();
-        const { backgroundRowLabel, backgroundInput } = this._createBackgroundFields();
-        const { widthInput, operatorLabel, heightInput, dimensionsLabel } = this._createDimensionFields();
-        const { alignmentToolbar, alignmentLabel } = this._createAlignmentFields();
-        this.focusTracker = new FocusTracker();
-        this.keystrokes = new KeystrokeHandler();
-        this.children = this.createCollection();
-        this.borderStyleDropdown = borderStyleDropdown;
-        this.borderWidthInput = borderWidthInput;
-        this.borderColorInput = borderColorInput;
-        this.backgroundInput = backgroundInput;
-        this.widthInput = widthInput;
-        this.heightInput = heightInput;
-        this.alignmentToolbar = alignmentToolbar;
-        // Defer creating to make sure other fields are present and the Save button can
-        // bind its #isEnabled to their error messages so there's no way to save unless all
-        // fields are valid.
-        const { saveButtonView, cancelButtonView } = this._createActionButtons();
-        this.saveButtonView = saveButtonView;
-        this.cancelButtonView = cancelButtonView;
-        this._focusables = new ViewCollection();
-        this._focusCycler = new FocusCycler({
-            focusables: this._focusables,
-            focusTracker: this.focusTracker,
-            keystrokeHandler: this.keystrokes,
-            actions: {
-                // Navigate form fields backwards using the Shift + Tab keystroke.
-                focusPrevious: 'shift + tab',
-                // Navigate form fields forwards using the Tab key.
-                focusNext: 'tab'
-            }
-        });
-        // Form header.
-        this.children.add(new FormHeaderView(locale, {
-            label: this.t('Table properties')
-        }));
-        // Border row.
-        this.children.add(new FormRowView(locale, {
-            labelView: borderRowLabel,
-            children: [
-                borderRowLabel,
-                borderStyleDropdown,
-                borderColorInput,
-                borderWidthInput
-            ],
-            class: 'ck-table-form__border-row'
-        }));
-        // Background row.
-        this.children.add(new FormRowView(locale, {
-            labelView: backgroundRowLabel,
-            children: [
-                backgroundRowLabel,
-                backgroundInput
-            ],
-            class: 'ck-table-form__background-row'
-        }));
-        this.children.add(new FormRowView(locale, {
-            children: [
-                // Dimensions row.
-                new FormRowView(locale, {
-                    labelView: dimensionsLabel,
-                    children: [
-                        dimensionsLabel,
-                        widthInput,
-                        operatorLabel,
-                        heightInput
-                    ],
-                    class: 'ck-table-form__dimensions-row'
-                }),
-                // Alignment row.
-                new FormRowView(locale, {
-                    labelView: alignmentLabel,
-                    children: [
-                        alignmentLabel,
-                        alignmentToolbar
-                    ],
-                    class: 'ck-table-properties-form__alignment-row'
-                })
-            ]
-        }));
-        // Action row.
-        this.children.add(new FormRowView(locale, {
-            children: [
-                this.saveButtonView,
-                this.cancelButtonView
-            ],
-            class: 'ck-table-form__action-row'
-        }));
-        this.setTemplate({
-            tag: 'form',
-            attributes: {
-                class: [
-                    'ck',
-                    'ck-form',
-                    'ck-table-form',
-                    'ck-table-properties-form'
-                ],
-                // https://github.com/ckeditor/ckeditor5-link/issues/90
-                tabindex: '-1'
-            },
-            children: this.children
-        });
-    }
-    /**
-     * @inheritDoc
-     */
-    render() {
-        super.render();
-        // Enable the "submit" event for this view. It can be triggered by the #saveButtonView
-        // which is of the "submit" DOM "type".
-        submitHandler({
-            view: this
-        });
-        [
-            this.borderStyleDropdown,
-            this.borderColorInput,
-            this.borderColorInput.fieldView.dropdownView.buttonView,
-            this.borderWidthInput,
-            this.backgroundInput,
-            this.backgroundInput.fieldView.dropdownView.buttonView,
-            this.widthInput,
-            this.heightInput,
-            this.alignmentToolbar,
-            this.saveButtonView,
-            this.cancelButtonView
-        ].forEach(view => {
-            // Register the view as focusable.
-            this._focusables.add(view);
-            // Register the view in the focus tracker.
-            this.focusTracker.add(view.element);
-        });
-        // Mainly for closing using "Esc" and navigation using "Tab".
-        this.keystrokes.listenTo(this.element);
-    }
-    /**
-     * @inheritDoc
-     */
-    destroy() {
-        super.destroy();
-        this.focusTracker.destroy();
-        this.keystrokes.destroy();
-    }
-    /**
-     * Focuses the fist focusable field in the form.
-     */
-    focus() {
-        this._focusCycler.focusFirst();
-    }
-    /**
-     * Creates the following form fields:
-     *
-     * * {@link #borderStyleDropdown},
-     * * {@link #borderWidthInput},
-     * * {@link #borderColorInput}.
-     */
-    _createBorderFields() {
-        const defaultTableProperties = this.options.defaultTableProperties;
-        const defaultBorder = {
-            style: defaultTableProperties.borderStyle,
-            width: defaultTableProperties.borderWidth,
-            color: defaultTableProperties.borderColor
-        };
-        const colorInputCreator = getLabeledColorInputCreator({
-            colorConfig: this.options.borderColors,
-            columns: 5,
-            defaultColorValue: defaultBorder.color
-        });
-        const locale = this.locale;
-        const t = this.t;
-        const accessibleLabel = t('Style');
-        // -- Group label ---------------------------------------------
-        const borderRowLabel = new LabelView(locale);
-        borderRowLabel.text = t('Border');
-        // -- Style ---------------------------------------------------
-        const styleLabels = getBorderStyleLabels(t);
-        const borderStyleDropdown = new LabeledFieldView(locale, createLabeledDropdown);
-        borderStyleDropdown.set({
-            label: accessibleLabel,
-            class: 'ck-table-form__border-style'
-        });
-        borderStyleDropdown.fieldView.buttonView.set({
-            ariaLabel: accessibleLabel,
-            ariaLabelledBy: undefined,
-            isOn: false,
-            withText: true,
-            tooltip: accessibleLabel
-        });
-        borderStyleDropdown.fieldView.buttonView.bind('label').to(this, 'borderStyle', value => {
-            return styleLabels[value ? value : 'none'];
-        });
-        borderStyleDropdown.fieldView.on('execute', evt => {
-            this.borderStyle = evt.source._borderStyleValue;
-        });
-        borderStyleDropdown.bind('isEmpty').to(this, 'borderStyle', value => !value);
-        addListToDropdown(borderStyleDropdown.fieldView, getBorderStyleDefinitions(this, defaultBorder.style), {
-            role: 'menu',
-            ariaLabel: accessibleLabel
-        });
-        // -- Width ---------------------------------------------------
-        const borderWidthInput = new LabeledFieldView(locale, createLabeledInputText);
-        borderWidthInput.set({
-            label: t('Width'),
-            class: 'ck-table-form__border-width'
-        });
-        borderWidthInput.fieldView.bind('value').to(this, 'borderWidth');
-        borderWidthInput.bind('isEnabled').to(this, 'borderStyle', isBorderStyleSet$1);
-        borderWidthInput.fieldView.on('input', () => {
-            this.borderWidth = borderWidthInput.fieldView.element.value;
-        });
-        // -- Color ---------------------------------------------------
-        const borderColorInput = new LabeledFieldView(locale, colorInputCreator);
-        borderColorInput.set({
-            label: t('Color'),
-            class: 'ck-table-form__border-color'
-        });
-        borderColorInput.fieldView.bind('value').to(this, 'borderColor');
-        borderColorInput.bind('isEnabled').to(this, 'borderStyle', isBorderStyleSet$1);
-        borderColorInput.fieldView.on('input', () => {
-            this.borderColor = borderColorInput.fieldView.value;
-        });
-        // Reset the border color and width fields depending on the `border-style` value.
-        this.on('change:borderStyle', (evt, name, newValue, oldValue) => {
-            // When removing the border (`border-style:none`), clear the remaining `border-*` properties.
-            // See: https://github.com/ckeditor/ckeditor5/issues/6227.
-            if (!isBorderStyleSet$1(newValue)) {
-                this.borderColor = '';
-                this.borderWidth = '';
-            }
-            // When setting the `border-style` from `none`, set the default `border-color` and `border-width` properties.
-            if (!isBorderStyleSet$1(oldValue)) {
-                this.borderColor = defaultBorder.color;
-                this.borderWidth = defaultBorder.width;
-            }
-        });
-        return {
-            borderRowLabel,
-            borderStyleDropdown,
-            borderColorInput,
-            borderWidthInput
-        };
-    }
-    /**
-     * Creates the following form fields:
-     *
-     * * {@link #backgroundInput}.
-     */
-    _createBackgroundFields() {
-        const locale = this.locale;
-        const t = this.t;
-        // -- Group label ---------------------------------------------
-        const backgroundRowLabel = new LabelView(locale);
-        backgroundRowLabel.text = t('Background');
-        // -- Background color input -----------------------------------
-        const backgroundInputCreator = getLabeledColorInputCreator({
-            colorConfig: this.options.backgroundColors,
-            columns: 5,
-            defaultColorValue: this.options.defaultTableProperties.backgroundColor
-        });
-        const backgroundInput = new LabeledFieldView(locale, backgroundInputCreator);
-        backgroundInput.set({
-            label: t('Color'),
-            class: 'ck-table-properties-form__background'
-        });
-        backgroundInput.fieldView.bind('value').to(this, 'backgroundColor');
-        backgroundInput.fieldView.on('input', () => {
-            this.backgroundColor = backgroundInput.fieldView.value;
-        });
-        return {
-            backgroundRowLabel,
-            backgroundInput
-        };
-    }
-    /**
-     * Creates the following form fields:
-     *
-     * * {@link #widthInput},
-     * * {@link #heightInput}.
-     */
-    _createDimensionFields() {
-        const locale = this.locale;
-        const t = this.t;
-        // -- Label ---------------------------------------------------
-        const dimensionsLabel = new LabelView(locale);
-        dimensionsLabel.text = t('Dimensions');
-        // -- Width ---------------------------------------------------
-        const widthInput = new LabeledFieldView(locale, createLabeledInputText);
-        widthInput.set({
-            label: t('Width'),
-            class: 'ck-table-form__dimensions-row__width'
-        });
-        widthInput.fieldView.bind('value').to(this, 'width');
-        widthInput.fieldView.on('input', () => {
-            this.width = widthInput.fieldView.element.value;
-        });
-        // -- Operator ---------------------------------------------------
-        const operatorLabel = new View$1(locale);
-        operatorLabel.setTemplate({
-            tag: 'span',
-            attributes: {
-                class: [
-                    'ck-table-form__dimension-operator'
-                ]
-            },
-            children: [
-                { text: '×' }
-            ]
-        });
-        // -- Height ---------------------------------------------------
-        const heightInput = new LabeledFieldView(locale, createLabeledInputText);
-        heightInput.set({
-            label: t('Height'),
-            class: 'ck-table-form__dimensions-row__height'
-        });
-        heightInput.fieldView.bind('value').to(this, 'height');
-        heightInput.fieldView.on('input', () => {
-            this.height = heightInput.fieldView.element.value;
-        });
-        return {
-            dimensionsLabel,
-            widthInput,
-            operatorLabel,
-            heightInput
-        };
-    }
-    /**
-     * Creates the following form fields:
-     *
-     * * {@link #alignmentToolbar}.
-     */
-    _createAlignmentFields() {
-        const locale = this.locale;
-        const t = this.t;
-        // -- Label ---------------------------------------------------
-        const alignmentLabel = new LabelView(locale);
-        alignmentLabel.text = t('Alignment');
-        // -- Toolbar ---------------------------------------------------
-        const alignmentToolbar = new ToolbarView(locale);
-        alignmentToolbar.set({
-            isCompact: true,
-            ariaLabel: t('Table alignment toolbar')
-        });
-        fillToolbar({
-            view: this,
-            icons: ALIGNMENT_ICONS$1,
-            toolbar: alignmentToolbar,
-            labels: this._alignmentLabels,
-            propertyName: 'alignment',
-            defaultValue: this.options.defaultTableProperties.alignment
-        });
-        return {
-            alignmentLabel,
-            alignmentToolbar
-        };
-    }
-    /**
-     * Creates the following form controls:
-     *
-     * * {@link #saveButtonView},
-     * * {@link #cancelButtonView}.
-     */
-    _createActionButtons() {
-        const locale = this.locale;
-        const t = this.t;
-        const saveButtonView = new ButtonView(locale);
-        const cancelButtonView = new ButtonView(locale);
-        const fieldsThatShouldValidateToSave = [
-            this.borderWidthInput,
-            this.borderColorInput,
-            this.backgroundInput,
-            this.widthInput,
-            this.heightInput
-        ];
-        saveButtonView.set({
-            label: t('Save'),
-            icon: icons$1.check,
-            class: 'ck-button-save',
-            type: 'submit',
-            withText: true
-        });
-        saveButtonView.bind('isEnabled').toMany(fieldsThatShouldValidateToSave, 'errorText', (...errorTexts) => {
-            return errorTexts.every(errorText => !errorText);
-        });
-        cancelButtonView.set({
-            label: t('Cancel'),
-            icon: icons$1.cancel,
-            class: 'ck-button-cancel',
-            withText: true
-        });
-        cancelButtonView.delegate('execute').to(this, 'cancel');
-        return {
-            saveButtonView, cancelButtonView
-        };
-    }
-    /**
-     * Provides localized labels for {@link #alignmentToolbar} buttons.
-     */
-    get _alignmentLabels() {
-        const locale = this.locale;
-        const t = this.t;
-        const left = t('Align table to the left');
-        const center = t('Center table');
-        const right = t('Align table to the right');
-        // Returns object with a proper order of labels.
-        if (locale.uiLanguageDirection === 'rtl') {
-            return { right, center, left };
-        }
-        else {
-            return { left, center, right };
-        }
-    }
-}
-function isBorderStyleSet$1(value) {
-    return value !== 'none';
-}var tableProperties = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8 2v5h4V2h1v5h5v1h-5v4h.021l-.172.351-1.916.28-.151.027c-.287.063-.54.182-.755.341L8 13v5H7v-5H2v-1h5V8H2V7h5V2h1zm4 6H8v4h4V8z\" opacity=\".6\"/><path d=\"m15.5 11.5 1.323 2.68 2.957.43-2.14 2.085.505 2.946L15.5 18.25l-2.645 1.39.505-2.945-2.14-2.086 2.957-.43L15.5 11.5zM17 1a2 2 0 0 1 2 2v9.475l-.85-.124-.857-1.736a2.048 2.048 0 0 0-.292-.44L17 3H3v14h7.808l.402.392L10.935 19H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h14z\"/></svg>";
-/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-const DEFAULT_BALLOON_POSITIONS = BalloonPanelView.defaultPositions;
-const BALLOON_POSITIONS = [
-    DEFAULT_BALLOON_POSITIONS.northArrowSouth,
-    DEFAULT_BALLOON_POSITIONS.northArrowSouthWest,
-    DEFAULT_BALLOON_POSITIONS.northArrowSouthEast,
-    DEFAULT_BALLOON_POSITIONS.southArrowNorth,
-    DEFAULT_BALLOON_POSITIONS.southArrowNorthWest,
-    DEFAULT_BALLOON_POSITIONS.southArrowNorthEast,
-    DEFAULT_BALLOON_POSITIONS.viewportStickyNorth
-];
-/**
- * A helper utility that positions the
- * {@link module:ui/panel/balloon/contextualballoon~ContextualBalloon contextual balloon} instance
- * with respect to the table in the editor content, if one is selected.
- *
- * @param editor The editor instance.
- * @param target Either "cell" or "table". Determines the target the balloon will be attached to.
- */
-function repositionContextualBalloon(editor, target) {
-    const balloon = editor.plugins.get('ContextualBalloon');
-    if (getTableWidgetAncestor(editor.editing.view.document.selection)) {
-        let position;
-        if (target === 'cell') {
-            position = getBalloonCellPositionData(editor);
-        }
-        else {
-            position = getBalloonTablePositionData(editor);
-        }
-        balloon.updatePosition(position);
-    }
-}
-/**
- * Returns the positioning options that control the geometry of the
- * {@link module:ui/panel/balloon/contextualballoon~ContextualBalloon contextual balloon} with respect
- * to the selected table in the editor content.
- *
- * @param editor The editor instance.
- */
-function getBalloonTablePositionData(editor) {
-    const firstPosition = editor.model.document.selection.getFirstPosition();
-    const modelTable = firstPosition.findAncestor('table');
-    const viewTable = editor.editing.mapper.toViewElement(modelTable);
-    return {
-        target: editor.editing.view.domConverter.mapViewToDom(viewTable),
-        positions: BALLOON_POSITIONS
-    };
-}
-/**
- * Returns the positioning options that control the geometry of the
- * {@link module:ui/panel/balloon/contextualballoon~ContextualBalloon contextual balloon} with respect
- * to the selected table cell in the editor content.
- *
- * @param editor The editor instance.
- */
-function getBalloonCellPositionData(editor) {
-    const mapper = editor.editing.mapper;
-    const domConverter = editor.editing.view.domConverter;
-    const selection = editor.model.document.selection;
-    if (selection.rangeCount > 1) {
-        return {
-            target: () => createBoundingRect(selection.getRanges(), editor),
-            positions: BALLOON_POSITIONS
-        };
-    }
-    const modelTableCell = getTableCellAtPosition(selection.getFirstPosition());
-    const viewTableCell = mapper.toViewElement(modelTableCell);
-    return {
-        target: domConverter.mapViewToDom(viewTableCell),
-        positions: BALLOON_POSITIONS
-    };
-}
-/**
- * Returns the first selected table cell from a multi-cell or in-cell selection.
- *
- * @param position Document position.
- */
-function getTableCellAtPosition(position) {
-    const isTableCellSelected = position.nodeAfter && position.nodeAfter.is('element', 'tableCell');
-    return isTableCellSelected ? position.nodeAfter : position.findAncestor('tableCell');
-}
-/**
- * Returns bounding rectangle for given model ranges.
- *
- * @param ranges Model ranges that the bounding rect should be returned for.
- * @param editor The editor instance.
- */
-function createBoundingRect(ranges, editor) {
-    const mapper = editor.editing.mapper;
-    const domConverter = editor.editing.view.domConverter;
-    const rects = Array.from(ranges).map(range => {
-        const modelTableCell = getTableCellAtPosition(range.start);
-        const viewTableCell = mapper.toViewElement(modelTableCell);
-        return new Rect(domConverter.mapViewToDom(viewTableCell));
-    });
-    return Rect.getBoundingRect(rects);
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-const ERROR_TEXT_TIMEOUT$1 = 500;
-// Map of view properties and related commands.
-const propertyToCommandMap$1 = {
-    borderStyle: 'tableBorderStyle',
-    borderColor: 'tableBorderColor',
-    borderWidth: 'tableBorderWidth',
-    backgroundColor: 'tableBackgroundColor',
-    width: 'tableWidth',
-    height: 'tableHeight',
-    alignment: 'tableAlignment'
-};
-/**
- * The table properties UI plugin. It introduces the `'tableProperties'` button
- * that opens a form allowing to specify visual styling of an entire table.
- *
- * It uses the {@link module:ui/panel/balloon/contextualballoon~ContextualBalloon contextual balloon plugin}.
- */
-class TablePropertiesUI extends Plugin {
-    /**
-     * @inheritDoc
-     */
-    static get requires() {
-        return [ContextualBalloon];
-    }
-    /**
-     * @inheritDoc
-     */
-    static get pluginName() {
-        return 'TablePropertiesUI';
-    }
-    /**
-     * @inheritDoc
-     */
-    constructor(editor) {
-        super(editor);
-        /**
-         * The properties form view displayed inside the balloon.
-         */
-        this.view = null;
-        editor.config.define('table.tableProperties', {
-            borderColors: defaultColors,
-            backgroundColors: defaultColors
-        });
-    }
-    /**
-     * @inheritDoc
-     */
-    init() {
-        const editor = this.editor;
-        const t = editor.t;
-        this._defaultTableProperties = getNormalizedDefaultProperties(editor.config.get('table.tableProperties.defaultProperties'), {
-            includeAlignmentProperty: true
-        });
-        this._balloon = editor.plugins.get(ContextualBalloon);
-        editor.ui.componentFactory.add('tableProperties', locale => {
-            const view = new ButtonView(locale);
-            view.set({
-                label: t('Table properties'),
-                icon: tableProperties,
-                tooltip: true
-            });
-            this.listenTo(view, 'execute', () => this._showView());
-            const commands = Object.values(propertyToCommandMap$1)
-                .map(commandName => editor.commands.get(commandName));
-            view.bind('isEnabled').toMany(commands, 'isEnabled', (...areEnabled) => (areEnabled.some(isCommandEnabled => isCommandEnabled)));
-            return view;
-        });
-    }
-    /**
-     * @inheritDoc
-     */
-    destroy() {
-        super.destroy();
-        // Destroy created UI components as they are not automatically destroyed.
-        // See https://github.com/ckeditor/ckeditor5/issues/1341.
-        if (this.view) {
-            this.view.destroy();
-        }
-    }
-    /**
-     * Creates the {@link module:table/tableproperties/ui/tablepropertiesview~TablePropertiesView} instance.
-     *
-     * @returns The table properties form view instance.
-     */
-    _createPropertiesView() {
-        const editor = this.editor;
-        const config = editor.config.get('table.tableProperties');
-        const borderColorsConfig = normalizeColorOptions(config.borderColors);
-        const localizedBorderColors = getLocalizedColorOptions(editor.locale, borderColorsConfig);
-        const backgroundColorsConfig = normalizeColorOptions(config.backgroundColors);
-        const localizedBackgroundColors = getLocalizedColorOptions(editor.locale, backgroundColorsConfig);
-        const view = new TablePropertiesView(editor.locale, {
-            borderColors: localizedBorderColors,
-            backgroundColors: localizedBackgroundColors,
-            defaultTableProperties: this._defaultTableProperties
-        });
-        const t = editor.t;
-        // Render the view so its #element is available for the clickOutsideHandler.
-        view.render();
-        this.listenTo(view, 'submit', () => {
-            this._hideView();
-        });
-        this.listenTo(view, 'cancel', () => {
-            // https://github.com/ckeditor/ckeditor5/issues/6180
-            if (this._undoStepBatch.operations.length) {
-                editor.execute('undo', this._undoStepBatch);
-            }
-            this._hideView();
-        });
-        // Close the balloon on Esc key press.
-        view.keystrokes.set('Esc', (data, cancel) => {
-            this._hideView();
-            cancel();
-        });
-        // Close on click outside of balloon panel element.
-        clickOutsideHandler({
-            emitter: view,
-            activator: () => this._isViewInBalloon,
-            contextElements: [this._balloon.view.element],
-            callback: () => this._hideView()
-        });
-        const colorErrorText = getLocalizedColorErrorText(t);
-        const lengthErrorText = getLocalizedLengthErrorText(t);
-        // Create the "UI -> editor data" binding.
-        // These listeners update the editor data (via table commands) when any observable
-        // property of the view has changed. They also validate the value and display errors in the UI
-        // when necessary. This makes the view live, which means the changes are
-        // visible in the editing as soon as the user types or changes fields' values.
-        view.on('change:borderStyle', this._getPropertyChangeCallback('tableBorderStyle'));
-        view.on('change:borderColor', this._getValidatedPropertyChangeCallback({
-            viewField: view.borderColorInput,
-            commandName: 'tableBorderColor',
-            errorText: colorErrorText,
-            validator: colorFieldValidator
-        }));
-        view.on('change:borderWidth', this._getValidatedPropertyChangeCallback({
-            viewField: view.borderWidthInput,
-            commandName: 'tableBorderWidth',
-            errorText: lengthErrorText,
-            validator: lineWidthFieldValidator
-        }));
-        view.on('change:backgroundColor', this._getValidatedPropertyChangeCallback({
-            viewField: view.backgroundInput,
-            commandName: 'tableBackgroundColor',
-            errorText: colorErrorText,
-            validator: colorFieldValidator
-        }));
-        view.on('change:width', this._getValidatedPropertyChangeCallback({
-            viewField: view.widthInput,
-            commandName: 'tableWidth',
-            errorText: lengthErrorText,
-            validator: lengthFieldValidator
-        }));
-        view.on('change:height', this._getValidatedPropertyChangeCallback({
-            viewField: view.heightInput,
-            commandName: 'tableHeight',
-            errorText: lengthErrorText,
-            validator: lengthFieldValidator
-        }));
-        view.on('change:alignment', this._getPropertyChangeCallback('tableAlignment'));
-        return view;
-    }
-    /**
-     * In this method the "editor data -> UI" binding is happening.
-     *
-     * When executed, this method obtains selected table property values from various table commands
-     * and passes them to the {@link #view}.
-     *
-     * This way, the UI stays up–to–date with the editor data.
-     */
-    _fillViewFormFromCommandValues() {
-        const commands = this.editor.commands;
-        const borderStyleCommand = commands.get('tableBorderStyle');
-        Object.entries(propertyToCommandMap$1)
-            .map(([property, commandName]) => {
-            const propertyKey = property;
-            const defaultValue = this._defaultTableProperties[propertyKey] || '';
-            return [propertyKey, (commands.get(commandName).value || defaultValue)];
-        })
-            .forEach(([property, value]) => {
-            // Do not set the `border-color` and `border-width` fields if `border-style:none`.
-            if ((property === 'borderColor' || property === 'borderWidth') && borderStyleCommand.value === 'none') {
-                return;
-            }
-            this.view.set(property, value);
-        });
-        this._isReady = true;
-    }
-    /**
-     * Shows the {@link #view} in the {@link #_balloon}.
-     *
-     * **Note**: Each time a view is shown, the new {@link #_undoStepBatch} is created that contains
-     * all changes made to the document when the view is visible, allowing a single undo step
-     * for all of them.
-     */
-    _showView() {
-        const editor = this.editor;
-        if (!this.view) {
-            this.view = this._createPropertiesView();
-        }
-        this.listenTo(editor.ui, 'update', () => {
-            this._updateView();
-        });
-        // Update the view with the model values.
-        this._fillViewFormFromCommandValues();
-        this._balloon.add({
-            view: this.view,
-            position: getBalloonTablePositionData(editor)
-        });
-        // Create a new batch. Clicking "Cancel" will undo this batch.
-        this._undoStepBatch = editor.model.createBatch();
-        // Basic a11y.
-        this.view.focus();
-    }
-    /**
-     * Removes the {@link #view} from the {@link #_balloon}.
-     */
-    _hideView() {
-        const editor = this.editor;
-        this.stopListening(editor.ui, 'update');
-        this._isReady = false;
-        // Blur any input element before removing it from DOM to prevent issues in some browsers.
-        // See https://github.com/ckeditor/ckeditor5/issues/1501.
-        this.view.saveButtonView.focus();
-        this._balloon.remove(this.view);
-        // Make sure the focus is not lost in the process by putting it directly
-        // into the editing view.
-        this.editor.editing.view.focus();
-    }
-    /**
-     * Repositions the {@link #_balloon} or hides the {@link #view} if a table is no longer selected.
-     */
-    _updateView() {
-        const editor = this.editor;
-        const viewDocument = editor.editing.view.document;
-        if (!getTableWidgetAncestor(viewDocument.selection)) {
-            this._hideView();
-        }
-        else if (this._isViewVisible) {
-            repositionContextualBalloon(editor, 'table');
-        }
-    }
-    /**
-     * Returns `true` when the {@link #view} is the visible in the {@link #_balloon}.
-     */
-    get _isViewVisible() {
-        return !!this.view && this._balloon.visibleView === this.view;
-    }
-    /**
-     * Returns `true` when the {@link #view} is in the {@link #_balloon}.
-     */
-    get _isViewInBalloon() {
-        return !!this.view && this._balloon.hasView(this.view);
-    }
-    /**
-     * Creates a callback that when executed upon {@link #view view's} property change
-     * executes a related editor command with the new property value.
-     *
-     * If new value will be set to the default value, the command will not be executed.
-     *
-     * @param commandName The command that will be executed.
-     */
-    _getPropertyChangeCallback(commandName) {
-        return (evt, propertyName, newValue) => {
-            // Do not execute the command on initial call (opening the table properties view).
-            if (!this._isReady) {
-                return;
-            }
-            this.editor.execute(commandName, {
-                value: newValue,
-                batch: this._undoStepBatch
-            });
-        };
-    }
-    /**
-     * Creates a callback that when executed upon {@link #view view's} property change:
-     * * executes a related editor command with the new property value if the value is valid,
-     * * or sets the error text next to the invalid field, if the value did not pass the validation.
-     */
-    _getValidatedPropertyChangeCallback(options) {
-        const { commandName, viewField, validator, errorText } = options;
-        const setErrorTextDebounced = debounce(() => {
-            viewField.errorText = errorText;
-        }, ERROR_TEXT_TIMEOUT$1);
-        return (evt, propertyName, newValue) => {
-            setErrorTextDebounced.cancel();
-            // Do not execute the command on initial call (opening the table properties view).
-            if (!this._isReady) {
-                return;
-            }
-            if (validator(newValue)) {
-                this.editor.execute(commandName, {
-                    value: newValue,
-                    batch: this._undoStepBatch
-                });
-                viewField.errorText = null;
-            }
-            else {
-                setErrorTextDebounced();
-            }
-        };
-    }
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * The table properties feature. Enables support for setting properties of tables (size, border, background, etc.).
- *
- * Read more in the {@glink features/tables/tables-styling Table and cell styling tools} section.
- * See also the {@link module:table/tablecellproperties~TableCellProperties} plugin.
- *
- * This is a "glue" plugin that loads the
- * {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing table properties editing feature} and
- * the {@link module:table/tableproperties/tablepropertiesui~TablePropertiesUI table properties UI feature}.
- */
-class TableProperties extends Plugin {
-    /**
-     * @inheritDoc
-     */
-    static get pluginName() {
-        return 'TableProperties';
-    }
-    /**
-     * @inheritDoc
-     */
-    static get requires() {
-        return [TablePropertiesEditing, TablePropertiesUI];
-    }
-}var css_248z$d = ".ck.ck-table-cell-properties-form .ck-form__row.ck-table-cell-properties-form__alignment-row{flex-wrap:wrap}.ck.ck-table-cell-properties-form .ck-form__row.ck-table-cell-properties-form__alignment-row .ck.ck-toolbar:first-of-type{flex-grow:0.57}.ck.ck-table-cell-properties-form .ck-form__row.ck-table-cell-properties-form__alignment-row .ck.ck-toolbar:last-of-type{flex-grow:0.43}.ck.ck-table-cell-properties-form .ck-form__row.ck-table-cell-properties-form__alignment-row .ck.ck-toolbar .ck-button{flex-grow:1}.ck.ck-table-cell-properties-form{width:320px}.ck.ck-table-cell-properties-form .ck-form__row.ck-table-cell-properties-form__padding-row{align-self:flex-end;padding:0;width:25%}.ck.ck-table-cell-properties-form .ck-form__row.ck-table-cell-properties-form__alignment-row .ck.ck-toolbar{background:none;margin-top:var(--ck-spacing-standard)}";
-styleInject(css_248z$d);/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-const ALIGNMENT_ICONS = {
     left: icons$1.alignLeft,
     center: icons$1.alignCenter,
     right: icons$1.alignRight,
@@ -85682,7 +84537,7 @@ class TableCellPropertiesView extends View$1 {
             class: 'ck-table-form__border-width'
         });
         borderWidthInput.fieldView.bind('value').to(this, 'borderWidth');
-        borderWidthInput.bind('isEnabled').to(this, 'borderStyle', isBorderStyleSet);
+        borderWidthInput.bind('isEnabled').to(this, 'borderStyle', isBorderStyleSet$1);
         borderWidthInput.fieldView.on('input', () => {
             this.borderWidth = borderWidthInput.fieldView.element.value;
         });
@@ -85693,7 +84548,7 @@ class TableCellPropertiesView extends View$1 {
             class: 'ck-table-form__border-color'
         });
         borderColorInput.fieldView.bind('value').to(this, 'borderColor');
-        borderColorInput.bind('isEnabled').to(this, 'borderStyle', isBorderStyleSet);
+        borderColorInput.bind('isEnabled').to(this, 'borderStyle', isBorderStyleSet$1);
         borderColorInput.fieldView.on('input', () => {
             this.borderColor = borderColorInput.fieldView.value;
         });
@@ -85701,12 +84556,12 @@ class TableCellPropertiesView extends View$1 {
         this.on('change:borderStyle', (evt, name, newValue, oldValue) => {
             // When removing the border (`border-style:none`), clear the remaining `border-*` properties.
             // See: https://github.com/ckeditor/ckeditor5/issues/6227.
-            if (!isBorderStyleSet(newValue)) {
+            if (!isBorderStyleSet$1(newValue)) {
                 this.borderColor = '';
                 this.borderWidth = '';
             }
             // When setting the `border-style` from `none`, set the default `border-color` and `border-width` properties.
-            if (!isBorderStyleSet(oldValue)) {
+            if (!isBorderStyleSet$1(oldValue)) {
                 this.borderColor = defaultBorder.color;
                 this.borderWidth = defaultBorder.width;
             }
@@ -85840,7 +84695,7 @@ class TableCellPropertiesView extends View$1 {
         });
         fillToolbar({
             view: this,
-            icons: ALIGNMENT_ICONS,
+            icons: ALIGNMENT_ICONS$1,
             toolbar: horizontalAlignmentToolbar,
             labels: this._horizontalAlignmentLabels,
             propertyName: 'horizontalAlignment',
@@ -85866,7 +84721,7 @@ class TableCellPropertiesView extends View$1 {
         });
         fillToolbar({
             view: this,
-            icons: ALIGNMENT_ICONS,
+            icons: ALIGNMENT_ICONS$1,
             toolbar: verticalAlignmentToolbar,
             labels: this._verticalAlignmentLabels,
             propertyName: 'verticalAlignment',
@@ -85946,16 +84801,199 @@ class TableCellPropertiesView extends View$1 {
         };
     }
 }
-function isBorderStyleSet(value) {
+function isBorderStyleSet$1(value) {
     return value !== 'none';
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+const DEFAULT_BALLOON_POSITIONS = BalloonPanelView.defaultPositions;
+const BALLOON_POSITIONS = [
+    DEFAULT_BALLOON_POSITIONS.northArrowSouth,
+    DEFAULT_BALLOON_POSITIONS.northArrowSouthWest,
+    DEFAULT_BALLOON_POSITIONS.northArrowSouthEast,
+    DEFAULT_BALLOON_POSITIONS.southArrowNorth,
+    DEFAULT_BALLOON_POSITIONS.southArrowNorthWest,
+    DEFAULT_BALLOON_POSITIONS.southArrowNorthEast,
+    DEFAULT_BALLOON_POSITIONS.viewportStickyNorth
+];
+/**
+ * A helper utility that positions the
+ * {@link module:ui/panel/balloon/contextualballoon~ContextualBalloon contextual balloon} instance
+ * with respect to the table in the editor content, if one is selected.
+ *
+ * @param editor The editor instance.
+ * @param target Either "cell" or "table". Determines the target the balloon will be attached to.
+ */
+function repositionContextualBalloon(editor, target) {
+    const balloon = editor.plugins.get('ContextualBalloon');
+    if (getTableWidgetAncestor(editor.editing.view.document.selection)) {
+        let position;
+        if (target === 'cell') {
+            position = getBalloonCellPositionData(editor);
+        }
+        else {
+            position = getBalloonTablePositionData(editor);
+        }
+        balloon.updatePosition(position);
+    }
+}
+/**
+ * Returns the positioning options that control the geometry of the
+ * {@link module:ui/panel/balloon/contextualballoon~ContextualBalloon contextual balloon} with respect
+ * to the selected table in the editor content.
+ *
+ * @param editor The editor instance.
+ */
+function getBalloonTablePositionData(editor) {
+    const firstPosition = editor.model.document.selection.getFirstPosition();
+    const modelTable = firstPosition.findAncestor('table');
+    const viewTable = editor.editing.mapper.toViewElement(modelTable);
+    return {
+        target: editor.editing.view.domConverter.mapViewToDom(viewTable),
+        positions: BALLOON_POSITIONS
+    };
+}
+/**
+ * Returns the positioning options that control the geometry of the
+ * {@link module:ui/panel/balloon/contextualballoon~ContextualBalloon contextual balloon} with respect
+ * to the selected table cell in the editor content.
+ *
+ * @param editor The editor instance.
+ */
+function getBalloonCellPositionData(editor) {
+    const mapper = editor.editing.mapper;
+    const domConverter = editor.editing.view.domConverter;
+    const selection = editor.model.document.selection;
+    if (selection.rangeCount > 1) {
+        return {
+            target: () => createBoundingRect(selection.getRanges(), editor),
+            positions: BALLOON_POSITIONS
+        };
+    }
+    const modelTableCell = getTableCellAtPosition(selection.getFirstPosition());
+    const viewTableCell = mapper.toViewElement(modelTableCell);
+    return {
+        target: domConverter.mapViewToDom(viewTableCell),
+        positions: BALLOON_POSITIONS
+    };
+}
+/**
+ * Returns the first selected table cell from a multi-cell or in-cell selection.
+ *
+ * @param position Document position.
+ */
+function getTableCellAtPosition(position) {
+    const isTableCellSelected = position.nodeAfter && position.nodeAfter.is('element', 'tableCell');
+    return isTableCellSelected ? position.nodeAfter : position.findAncestor('tableCell');
+}
+/**
+ * Returns bounding rectangle for given model ranges.
+ *
+ * @param ranges Model ranges that the bounding rect should be returned for.
+ * @param editor The editor instance.
+ */
+function createBoundingRect(ranges, editor) {
+    const mapper = editor.editing.mapper;
+    const domConverter = editor.editing.view.domConverter;
+    const rects = Array.from(ranges).map(range => {
+        const modelTableCell = getTableCellAtPosition(range.start);
+        const viewTableCell = mapper.toViewElement(modelTableCell);
+        return new Rect(domConverter.mapViewToDom(viewTableCell));
+    });
+    return Rect.getBoundingRect(rects);
 }var tableCellProperties = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m11.105 18-.17 1H2.5A1.5 1.5 0 0 1 1 17.5v-15A1.5 1.5 0 0 1 2.5 1h15A1.5 1.5 0 0 1 19 2.5v9.975l-.85-.124-.15-.302V8h-5v4h.021l-.172.351-1.916.28-.151.027c-.287.063-.54.182-.755.341L8 13v5h3.105zM2 12h5V8H2v4zm10-4H8v4h4V8zM2 2v5h5V2H2zm0 16h5v-5H2v5zM13 7h5V2h-5v5zM8 2v5h4V2H8z\" opacity=\".6\"/><path d=\"m15.5 11.5 1.323 2.68 2.957.43-2.14 2.085.505 2.946L15.5 18.25l-2.645 1.39.505-2.945-2.14-2.086 2.957-.43L15.5 11.5zM13 6a1 1 0 0 1 1 1v3.172a2.047 2.047 0 0 0-.293.443l-.858 1.736-1.916.28-.151.027A1.976 1.976 0 0 0 9.315 14H7a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6zm-1 2H8v4h4V8z\"/></svg>";
 /**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
-const ERROR_TEXT_TIMEOUT = 500;
+/**
+ * Returns a string if all four values of box sides are equal.
+ *
+ * If a string is passed, it is treated as a single value (pass-through).
+ *
+ * ```ts
+ * // Returns 'foo':
+ * getSingleValue( { top: 'foo', right: 'foo', bottom: 'foo', left: 'foo' } );
+ * getSingleValue( 'foo' );
+ *
+ * // Returns undefined:
+ * getSingleValue( { top: 'foo', right: 'foo', bottom: 'bar', left: 'foo' } );
+ * getSingleValue( { top: 'foo', right: 'foo' } );
+ * ```
+ */
+function getSingleValue(objectOrString) {
+    if (!objectOrString || !isObject$1(objectOrString)) {
+        return objectOrString;
+    }
+    const { top, right, bottom, left } = objectOrString;
+    if (top == right && right == bottom && bottom == left) {
+        return top;
+    }
+}
+/**
+ * Adds a unit to a value if the value is a number or a string representing a number.
+ *
+ * **Note**: It does nothing to non-numeric values.
+ *
+ * ```ts
+ * getSingleValue( 25, 'px' ); // '25px'
+ * getSingleValue( 25, 'em' ); // '25em'
+ * getSingleValue( '25em', 'px' ); // '25em'
+ * getSingleValue( 'foo', 'px' ); // 'foo'
+ * ```
+ *
+ * @param defaultUnit A default unit added to a numeric value.
+ */
+function addDefaultUnitToNumericValue(value, defaultUnit) {
+    const numericValue = parseFloat(value);
+    if (Number.isNaN(numericValue)) {
+        return value;
+    }
+    if (String(numericValue) !== String(value)) {
+        return value;
+    }
+    return `${numericValue}${defaultUnit}`;
+}
+/**
+ * Returns the normalized configuration.
+ *
+ * @param options.includeAlignmentProperty Whether the "alignment" property should be added.
+ * @param options.includePaddingProperty Whether the "padding" property should be added.
+ * @param options.includeVerticalAlignmentProperty Whether the "verticalAlignment" property should be added.
+ * @param options.includeHorizontalAlignmentProperty Whether the "horizontalAlignment" property should be added.
+ * @param options.isRightToLeftContent Whether the content is right-to-left.
+ */
+function getNormalizedDefaultProperties(config, options = {}) {
+    const normalizedConfig = {
+        borderStyle: 'none',
+        borderWidth: '',
+        borderColor: '',
+        backgroundColor: '',
+        width: '',
+        height: '',
+        ...config
+    };
+    if (options.includeAlignmentProperty && !normalizedConfig.alignment) {
+        normalizedConfig.alignment = 'center';
+    }
+    if (options.includePaddingProperty && !normalizedConfig.padding) {
+        normalizedConfig.padding = '';
+    }
+    if (options.includeVerticalAlignmentProperty && !normalizedConfig.verticalAlignment) {
+        normalizedConfig.verticalAlignment = 'middle';
+    }
+    if (options.includeHorizontalAlignmentProperty && !normalizedConfig.horizontalAlignment) {
+        normalizedConfig.horizontalAlignment = options.isRightToLeftContent ? 'right' : 'left';
+    }
+    return normalizedConfig;
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+const ERROR_TEXT_TIMEOUT$1 = 500;
 // Map of view properties and related commands.
-const propertyToCommandMap = {
+const propertyToCommandMap$1 = {
     borderStyle: 'tableCellBorderStyle',
     borderColor: 'tableCellBorderColor',
     borderWidth: 'tableCellBorderWidth',
@@ -86018,7 +85056,7 @@ class TableCellPropertiesUI extends Plugin {
                 tooltip: true
             });
             this.listenTo(view, 'execute', () => this._showView());
-            const commands = Object.values(propertyToCommandMap)
+            const commands = Object.values(propertyToCommandMap$1)
                 .map(commandName => editor.commands.get(commandName));
             view.bind('isEnabled').toMany(commands, 'isEnabled', (...areEnabled) => (areEnabled.some(isCommandEnabled => isCommandEnabled)));
             return view;
@@ -86136,7 +85174,7 @@ class TableCellPropertiesUI extends Plugin {
     _fillViewFormFromCommandValues() {
         const commands = this.editor.commands;
         const borderStyleCommand = commands.get('tableCellBorderStyle');
-        Object.entries(propertyToCommandMap)
+        Object.entries(propertyToCommandMap$1)
             .map(([property, commandName]) => {
             const defaultValue = this._defaultTableCellProperties[property] || '';
             return [
@@ -86245,7 +85283,7 @@ class TableCellPropertiesUI extends Plugin {
         const { commandName, viewField, validator, errorText } = options;
         const setErrorTextDebounced = debounce(() => {
             viewField.errorText = errorText;
-        }, ERROR_TEXT_TIMEOUT);
+        }, ERROR_TEXT_TIMEOUT$1);
         return (evt, propertyName, newValue) => {
             setErrorTextDebounced.cancel();
             // Do not execute the command on initial call (opening the table properties view).
@@ -86784,7 +85822,7 @@ class TableCellBorderWidthCommand extends TableCellPropertyCommand {
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 const VALIGN_VALUES_REG_EXP = /^(top|middle|bottom)$/;
-const ALIGN_VALUES_REG_EXP = /^(left|center|right|justify)$/;
+const ALIGN_VALUES_REG_EXP$1 = /^(left|center|right|justify)$/;
 /**
  * The table cell properties editing feature.
  *
@@ -86832,7 +85870,7 @@ class TableCellPropertiesEditing extends Plugin {
             isRightToLeftContent: editor.locale.contentLanguageDirection === 'rtl'
         });
         editor.data.addStyleProcessorRules(addBorderRules);
-        enableBorderProperties(schema, conversion, {
+        enableBorderProperties$1(schema, conversion, {
             color: defaultTableCellProperties.borderColor,
             style: defaultTableCellProperties.borderStyle,
             width: defaultTableCellProperties.borderWidth
@@ -86875,7 +85913,7 @@ class TableCellPropertiesEditing extends Plugin {
  * @param defaultBorder.style The default `tableCellBorderStyle` value.
  * @param defaultBorder.width The default `tableCellBorderWidth` value.
  */
-function enableBorderProperties(schema, conversion, defaultBorder) {
+function enableBorderProperties$1(schema, conversion, defaultBorder) {
     const modelAttributes = {
         width: 'tableCellBorderWidth',
         color: 'tableCellBorderColor',
@@ -86918,7 +85956,7 @@ function enableHorizontalAlignmentProperty(schema, conversion, defaultValue) {
         view: {
             name: /^(td|th)$/,
             styles: {
-                'text-align': ALIGN_VALUES_REG_EXP
+                'text-align': ALIGN_VALUES_REG_EXP$1
             }
         },
         model: {
@@ -86934,7 +85972,7 @@ function enableHorizontalAlignmentProperty(schema, conversion, defaultValue) {
         view: {
             name: /^(td|th)$/,
             attributes: {
-                align: ALIGN_VALUES_REG_EXP
+                align: ALIGN_VALUES_REG_EXP$1
             }
         },
         model: {
@@ -87029,6 +86067,1349 @@ class TableCellProperties extends Plugin {
         return [TableCellPropertiesEditing, TableCellPropertiesUI];
     }
 }/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The table cell attribute command.
+ *
+ * This command is a base command for other table property commands.
+ */
+class TablePropertyCommand extends Command {
+    /**
+     * Creates a new `TablePropertyCommand` instance.
+     *
+     * @param editor An editor in which this command will be used.
+     * @param attributeName Table cell attribute name.
+     * @param defaultValue The default value of the attribute.
+     */
+    constructor(editor, attributeName, defaultValue) {
+        super(editor);
+        this.attributeName = attributeName;
+        this._defaultValue = defaultValue;
+    }
+    /**
+     * @inheritDoc
+     */
+    refresh() {
+        const editor = this.editor;
+        const selection = editor.model.document.selection;
+        const table = selection.getFirstPosition().findAncestor('table');
+        this.isEnabled = !!table;
+        this.value = this._getValue(table);
+    }
+    /**
+     * Executes the command.
+     *
+     * @fires execute
+     * @param options.value If set, the command will set the attribute on the selected table.
+     * If not set, the command will remove the attribute from the selected table.
+     * @param options.batch Pass the model batch instance to the command to aggregate changes,
+     * for example, to allow a single undo step for multiple executions.
+     */
+    execute(options = {}) {
+        const model = this.editor.model;
+        const selection = model.document.selection;
+        const { value, batch } = options;
+        const table = selection.getFirstPosition().findAncestor('table');
+        const valueToSet = this._getValueToSet(value);
+        model.enqueueChange(batch, writer => {
+            if (valueToSet) {
+                writer.setAttribute(this.attributeName, valueToSet, table);
+            }
+            else {
+                writer.removeAttribute(this.attributeName, table);
+            }
+        });
+    }
+    /**
+     * Returns the attribute value for a table.
+     */
+    _getValue(table) {
+        if (!table) {
+            return;
+        }
+        const value = table.getAttribute(this.attributeName);
+        if (value === this._defaultValue) {
+            return;
+        }
+        return value;
+    }
+    /**
+     * Returns the proper model value. It can be used to add a default unit to numeric values.
+     */
+    _getValueToSet(value) {
+        if (value === this._defaultValue) {
+            return;
+        }
+        return value;
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The table background color command.
+ *
+ * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
+ * the `'tableBackgroundColor'` editor command.
+ *
+ * To change the background color of the selected table, execute the command:
+ *
+ * ```ts
+ * editor.execute( 'tableBackgroundColor', {
+ *   value: '#f00'
+ * } );
+ * ```
+ */
+class TableBackgroundColorCommand extends TablePropertyCommand {
+    /**
+     * Creates a new `TableBackgroundColorCommand` instance.
+     *
+     * @param editor An editor in which this command will be used.
+     * @param defaultValue The default value of the attribute.
+     */
+    constructor(editor, defaultValue) {
+        super(editor, 'tableBackgroundColor', defaultValue);
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The table border color command.
+ *
+ * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
+ * the `'tableBorderColor'` editor command.
+ *
+ * To change the border color of the selected table, execute the command:
+ *
+ * ```ts
+ * editor.execute( 'tableBorderColor', {
+ *   value: '#f00'
+ * } );
+ * ```
+ */
+class TableBorderColorCommand extends TablePropertyCommand {
+    /**
+     * Creates a new `TableBorderColorCommand` instance.
+     *
+     * @param editor An editor in which this command will be used.
+     * @param defaultValue The default value of the attribute.
+     */
+    constructor(editor, defaultValue) {
+        super(editor, 'tableBorderColor', defaultValue);
+    }
+    /**
+     * @inheritDoc
+     */
+    _getValue(table) {
+        if (!table) {
+            return;
+        }
+        const value = getSingleValue(table.getAttribute(this.attributeName));
+        if (value === this._defaultValue) {
+            return;
+        }
+        return value;
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The table style border command.
+ *
+ * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
+ * the `'tableBorderStyle'` editor command.
+ *
+ * To change the border style of the selected table, execute the command:
+ *
+ * ```ts
+ * editor.execute( 'tableBorderStyle', {
+ *   value: 'dashed'
+ * } );
+ * ```
+ */
+class TableBorderStyleCommand extends TablePropertyCommand {
+    /**
+     * Creates a new `TableBorderStyleCommand` instance.
+     *
+     * @param editor An editor in which this command will be used.
+     * @param defaultValue The default value of the attribute.
+     */
+    constructor(editor, defaultValue) {
+        super(editor, 'tableBorderStyle', defaultValue);
+    }
+    /**
+     * @inheritDoc
+     */
+    _getValue(table) {
+        if (!table) {
+            return;
+        }
+        const value = getSingleValue(table.getAttribute(this.attributeName));
+        if (value === this._defaultValue) {
+            return;
+        }
+        return value;
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The table width border command.
+ *
+ * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
+ * the `'tableBorderWidth'` editor command.
+ *
+ * To change the border width of the selected table, execute the command:
+ *
+ * ```ts
+ * editor.execute( 'tableBorderWidth', {
+ *   value: '5px'
+ * } );
+ * ```
+ *
+ * **Note**: This command adds the default `'px'` unit to numeric values. Executing:
+ *
+ * ```ts
+ * editor.execute( 'tableBorderWidth', {
+ *   value: '5'
+ * } );
+ * ```
+ *
+ * will set the `borderWidth` attribute to `'5px'` in the model.
+ */
+class TableBorderWidthCommand extends TablePropertyCommand {
+    /**
+     * Creates a new `TableBorderWidthCommand` instance.
+     *
+     * @param editor An editor in which this command will be used.
+     * @param defaultValue The default value of the attribute.
+     */
+    constructor(editor, defaultValue) {
+        super(editor, 'tableBorderWidth', defaultValue);
+    }
+    /**
+     * @inheritDoc
+     */
+    _getValue(table) {
+        if (!table) {
+            return;
+        }
+        const value = getSingleValue(table.getAttribute(this.attributeName));
+        if (value === this._defaultValue) {
+            return;
+        }
+        return value;
+    }
+    /**
+     * @inheritDoc
+     */
+    _getValueToSet(value) {
+        const newValue = addDefaultUnitToNumericValue(value, 'px');
+        if (newValue === this._defaultValue) {
+            return;
+        }
+        return newValue;
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The table width command.
+ *
+ * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
+ * the `'tableWidth'` editor command.
+ *
+ * To change the width of the selected table, execute the command:
+ *
+ * ```ts
+ * editor.execute( 'tableWidth', {
+ *   value: '400px'
+ * } );
+ * ```
+ *
+ * **Note**: This command adds the default `'px'` unit to numeric values. Executing:
+ *
+ * ```ts
+ * editor.execute( 'tableWidth', {
+ *   value: '50'
+ * } );
+ * ```
+ *
+ * will set the `width` attribute to `'50px'` in the model.
+ */
+class TableWidthCommand extends TablePropertyCommand {
+    /**
+     * Creates a new `TableWidthCommand` instance.
+     *
+     * @param editor An editor in which this command will be used.
+     * @param defaultValue The default value of the attribute.
+     */
+    constructor(editor, defaultValue) {
+        super(editor, 'tableWidth', defaultValue);
+    }
+    /**
+     * @inheritDoc
+     */
+    _getValueToSet(value) {
+        value = addDefaultUnitToNumericValue(value, 'px');
+        if (value === this._defaultValue) {
+            return;
+        }
+        return value;
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The table height command.
+ *
+ * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
+ * the `'tableHeight'` editor command.
+ *
+ * To change the height of the selected table, execute the command:
+ *
+ * ```ts
+ * editor.execute( 'tableHeight', {
+ *   value: '500px'
+ * } );
+ * ```
+ *
+ * **Note**: This command adds the default `'px'` unit to numeric values. Executing:
+ *
+ * ```ts
+ * editor.execute( 'tableHeight', {
+ *   value: '50'
+ * } );
+ * ```
+ *
+ * will set the `height` attribute to `'50px'` in the model.
+ */
+class TableHeightCommand extends TablePropertyCommand {
+    /**
+     * Creates a new `TableHeightCommand` instance.
+     *
+     * @param editor An editor in which this command will be used.
+     * @param defaultValue The default value of the attribute.
+     */
+    constructor(editor, defaultValue) {
+        super(editor, 'tableHeight', defaultValue);
+    }
+    /**
+     * @inheritDoc
+     */
+    _getValueToSet(value) {
+        value = addDefaultUnitToNumericValue(value, 'px');
+        if (value === this._defaultValue) {
+            return;
+        }
+        return value;
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The table alignment command.
+ *
+ * The command is registered by the {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing} as
+ * the `'tableAlignment'` editor command.
+ *
+ * To change the alignment of the selected table, execute the command:
+ *
+ * ```ts
+ * editor.execute( 'tableAlignment', {
+ *   value: 'right'
+ * } );
+ * ```
+ */
+class TableAlignmentCommand extends TablePropertyCommand {
+    /**
+     * Creates a new `TableAlignmentCommand` instance.
+     *
+     * @param editor An editor in which this command will be used.
+     * @param defaultValue The default value for the "alignment" attribute.
+     */
+    constructor(editor, defaultValue) {
+        super(editor, 'tableAlignment', defaultValue);
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+const ALIGN_VALUES_REG_EXP = /^(left|center|right)$/;
+const FLOAT_VALUES_REG_EXP = /^(left|none|right)$/;
+/**
+ * The table properties editing feature.
+ *
+ * Introduces table's model attributes and their conversion:
+ *
+ * - border: `tableBorderStyle`, `tableBorderColor` and `tableBorderWidth`
+ * - background color: `tableBackgroundColor`
+ * - horizontal alignment: `tableAlignment`
+ * - width & height: `tableWidth` & `tableHeight`
+ *
+ * It also registers commands used to manipulate the above attributes:
+ *
+ * - border: `'tableBorderStyle'`, `'tableBorderColor'` and `'tableBorderWidth'` commands
+ * - background color: `'tableBackgroundColor'`
+ * - horizontal alignment: `'tableAlignment'`
+ * - width & height: `'tableWidth'` & `'tableHeight'`
+ */
+class TablePropertiesEditing extends Plugin {
+    /**
+     * @inheritDoc
+     */
+    static get pluginName() {
+        return 'TablePropertiesEditing';
+    }
+    /**
+     * @inheritDoc
+     */
+    static get requires() {
+        return [TableEditing];
+    }
+    /**
+     * @inheritDoc
+     */
+    init() {
+        const editor = this.editor;
+        const schema = editor.model.schema;
+        const conversion = editor.conversion;
+        editor.config.define('table.tableProperties.defaultProperties', {});
+        const defaultTableProperties = getNormalizedDefaultProperties(editor.config.get('table.tableProperties.defaultProperties'), {
+            includeAlignmentProperty: true
+        });
+        editor.data.addStyleProcessorRules(addBorderRules);
+        enableBorderProperties(schema, conversion, {
+            color: defaultTableProperties.borderColor,
+            style: defaultTableProperties.borderStyle,
+            width: defaultTableProperties.borderWidth
+        });
+        editor.commands.add('tableBorderColor', new TableBorderColorCommand(editor, defaultTableProperties.borderColor));
+        editor.commands.add('tableBorderStyle', new TableBorderStyleCommand(editor, defaultTableProperties.borderStyle));
+        editor.commands.add('tableBorderWidth', new TableBorderWidthCommand(editor, defaultTableProperties.borderWidth));
+        enableAlignmentProperty(schema, conversion, defaultTableProperties.alignment);
+        editor.commands.add('tableAlignment', new TableAlignmentCommand(editor, defaultTableProperties.alignment));
+        enableTableToFigureProperty(schema, conversion, {
+            modelAttribute: 'tableWidth',
+            styleName: 'width',
+            defaultValue: defaultTableProperties.width
+        });
+        editor.commands.add('tableWidth', new TableWidthCommand(editor, defaultTableProperties.width));
+        enableTableToFigureProperty(schema, conversion, {
+            modelAttribute: 'tableHeight',
+            styleName: 'height',
+            defaultValue: defaultTableProperties.height
+        });
+        editor.commands.add('tableHeight', new TableHeightCommand(editor, defaultTableProperties.height));
+        editor.data.addStyleProcessorRules(addBackgroundRules);
+        enableProperty(schema, conversion, {
+            modelAttribute: 'tableBackgroundColor',
+            styleName: 'background-color',
+            defaultValue: defaultTableProperties.backgroundColor
+        });
+        editor.commands.add('tableBackgroundColor', new TableBackgroundColorCommand(editor, defaultTableProperties.backgroundColor));
+    }
+}
+/**
+ * Enables `tableBorderStyle'`, `tableBorderColor'` and `tableBorderWidth'` attributes for table.
+ *
+ * @param defaultBorder The default border values.
+ * @param defaultBorder.color The default `tableBorderColor` value.
+ * @param defaultBorder.style The default `tableBorderStyle` value.
+ * @param defaultBorder.width The default `tableBorderWidth` value.
+ */
+function enableBorderProperties(schema, conversion, defaultBorder) {
+    const modelAttributes = {
+        width: 'tableBorderWidth',
+        color: 'tableBorderColor',
+        style: 'tableBorderStyle'
+    };
+    schema.extend('table', {
+        allowAttributes: Object.values(modelAttributes)
+    });
+    upcastBorderStyles(conversion, 'table', modelAttributes, defaultBorder);
+    downcastTableAttribute(conversion, { modelAttribute: modelAttributes.color, styleName: 'border-color' });
+    downcastTableAttribute(conversion, { modelAttribute: modelAttributes.style, styleName: 'border-style' });
+    downcastTableAttribute(conversion, { modelAttribute: modelAttributes.width, styleName: 'border-width' });
+}
+/**
+ * Enables the `'alignment'` attribute for table.
+ *
+ * @param defaultValue The default alignment value.
+ */
+function enableAlignmentProperty(schema, conversion, defaultValue) {
+    schema.extend('table', {
+        allowAttributes: ['tableAlignment']
+    });
+    conversion.for('downcast')
+        .attributeToAttribute({
+        model: {
+            name: 'table',
+            key: 'tableAlignment'
+        },
+        view: alignment => ({
+            key: 'style',
+            value: {
+                // Model: `alignment:center` => CSS: `float:none`.
+                float: alignment === 'center' ? 'none' : alignment
+            }
+        }),
+        converterPriority: 'high'
+    });
+    conversion.for('upcast')
+        // Support for the `float:*;` CSS definition for the table alignment.
+        .attributeToAttribute({
+        view: {
+            name: /^(table|figure)$/,
+            styles: {
+                float: FLOAT_VALUES_REG_EXP
+            }
+        },
+        model: {
+            key: 'tableAlignment',
+            value: (viewElement) => {
+                let align = viewElement.getStyle('float');
+                // CSS: `float:none` => Model: `alignment:center`.
+                if (align === 'none') {
+                    align = 'center';
+                }
+                return align === defaultValue ? null : align;
+            }
+        }
+    })
+        // Support for the `align` attribute as the backward compatibility while pasting from other sources.
+        .attributeToAttribute({
+        view: {
+            attributes: {
+                align: ALIGN_VALUES_REG_EXP
+            }
+        },
+        model: {
+            name: 'table',
+            key: 'tableAlignment',
+            value: (viewElement) => {
+                const align = viewElement.getAttribute('align');
+                return align === defaultValue ? null : align;
+            }
+        }
+    });
+}
+/**
+ * Enables conversion for an attribute for simple view-model mappings.
+ *
+ * @param options.defaultValue The default value for the specified `modelAttribute`.
+ */
+function enableProperty(schema, conversion, options) {
+    const { modelAttribute } = options;
+    schema.extend('table', {
+        allowAttributes: [modelAttribute]
+    });
+    upcastStyleToAttribute(conversion, { viewElement: 'table', ...options });
+    downcastTableAttribute(conversion, options);
+}
+/**
+ * Enables conversion for an attribute for simple view (figure) to model (table) mappings.
+ */
+function enableTableToFigureProperty(schema, conversion, options) {
+    const { modelAttribute } = options;
+    schema.extend('table', {
+        allowAttributes: [modelAttribute]
+    });
+    upcastStyleToAttribute(conversion, {
+        viewElement: /^(table|figure)$/,
+        shouldUpcast: (element) => !(element.name == 'table' && element.parent.name == 'figure'),
+        ...options
+    });
+    downcastAttributeToStyle(conversion, { modelElement: 'table', ...options });
+}var css_248z$e = ".ck.ck-table-properties-form .ck-form__row.ck-table-properties-form__alignment-row{align-content:baseline;flex-basis:0;flex-wrap:wrap}.ck.ck-table-properties-form .ck-form__row.ck-table-properties-form__alignment-row .ck.ck-toolbar .ck-toolbar__items{flex-wrap:nowrap}.ck.ck-table-properties-form{width:320px}.ck.ck-table-properties-form .ck-form__row.ck-table-properties-form__alignment-row{align-self:flex-end;padding:0}.ck.ck-table-properties-form .ck-form__row.ck-table-properties-form__alignment-row .ck.ck-toolbar{background:none;margin-top:var(--ck-spacing-standard)}.ck.ck-table-properties-form .ck-form__row.ck-table-properties-form__alignment-row .ck.ck-toolbar .ck-toolbar__items>*{width:40px}";
+styleInject(css_248z$e);/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+const ALIGNMENT_ICONS = {
+    left: icons$1.objectLeft,
+    center: icons$1.objectCenter,
+    right: icons$1.objectRight
+};
+/**
+ * The class representing a table properties form, allowing users to customize
+ * certain style aspects of a table, for instance, border, background color, alignment, etc..
+ */
+class TablePropertiesView extends View$1 {
+    /**
+     * @param locale The {@link module:core/editor/editor~Editor#locale} instance.
+     * @param options Additional configuration of the view.
+     */
+    constructor(locale, options) {
+        super(locale);
+        this.set({
+            borderStyle: '',
+            borderWidth: '',
+            borderColor: '',
+            backgroundColor: '',
+            width: '',
+            height: '',
+            alignment: ''
+        });
+        this.options = options;
+        const { borderStyleDropdown, borderWidthInput, borderColorInput, borderRowLabel } = this._createBorderFields();
+        const { backgroundRowLabel, backgroundInput } = this._createBackgroundFields();
+        const { widthInput, operatorLabel, heightInput, dimensionsLabel } = this._createDimensionFields();
+        const { alignmentToolbar, alignmentLabel } = this._createAlignmentFields();
+        this.focusTracker = new FocusTracker();
+        this.keystrokes = new KeystrokeHandler();
+        this.children = this.createCollection();
+        this.borderStyleDropdown = borderStyleDropdown;
+        this.borderWidthInput = borderWidthInput;
+        this.borderColorInput = borderColorInput;
+        this.backgroundInput = backgroundInput;
+        this.widthInput = widthInput;
+        this.heightInput = heightInput;
+        this.alignmentToolbar = alignmentToolbar;
+        // Defer creating to make sure other fields are present and the Save button can
+        // bind its #isEnabled to their error messages so there's no way to save unless all
+        // fields are valid.
+        const { saveButtonView, cancelButtonView } = this._createActionButtons();
+        this.saveButtonView = saveButtonView;
+        this.cancelButtonView = cancelButtonView;
+        this._focusables = new ViewCollection();
+        this._focusCycler = new FocusCycler({
+            focusables: this._focusables,
+            focusTracker: this.focusTracker,
+            keystrokeHandler: this.keystrokes,
+            actions: {
+                // Navigate form fields backwards using the Shift + Tab keystroke.
+                focusPrevious: 'shift + tab',
+                // Navigate form fields forwards using the Tab key.
+                focusNext: 'tab'
+            }
+        });
+        // Form header.
+        this.children.add(new FormHeaderView(locale, {
+            label: this.t('Table properties')
+        }));
+        // Border row.
+        this.children.add(new FormRowView(locale, {
+            labelView: borderRowLabel,
+            children: [
+                borderRowLabel,
+                borderStyleDropdown,
+                borderColorInput,
+                borderWidthInput
+            ],
+            class: 'ck-table-form__border-row'
+        }));
+        // Background row.
+        this.children.add(new FormRowView(locale, {
+            labelView: backgroundRowLabel,
+            children: [
+                backgroundRowLabel,
+                backgroundInput
+            ],
+            class: 'ck-table-form__background-row'
+        }));
+        this.children.add(new FormRowView(locale, {
+            children: [
+                // Dimensions row.
+                new FormRowView(locale, {
+                    labelView: dimensionsLabel,
+                    children: [
+                        dimensionsLabel,
+                        widthInput,
+                        operatorLabel,
+                        heightInput
+                    ],
+                    class: 'ck-table-form__dimensions-row'
+                }),
+                // Alignment row.
+                new FormRowView(locale, {
+                    labelView: alignmentLabel,
+                    children: [
+                        alignmentLabel,
+                        alignmentToolbar
+                    ],
+                    class: 'ck-table-properties-form__alignment-row'
+                })
+            ]
+        }));
+        // Action row.
+        this.children.add(new FormRowView(locale, {
+            children: [
+                this.saveButtonView,
+                this.cancelButtonView
+            ],
+            class: 'ck-table-form__action-row'
+        }));
+        this.setTemplate({
+            tag: 'form',
+            attributes: {
+                class: [
+                    'ck',
+                    'ck-form',
+                    'ck-table-form',
+                    'ck-table-properties-form'
+                ],
+                // https://github.com/ckeditor/ckeditor5-link/issues/90
+                tabindex: '-1'
+            },
+            children: this.children
+        });
+    }
+    /**
+     * @inheritDoc
+     */
+    render() {
+        super.render();
+        // Enable the "submit" event for this view. It can be triggered by the #saveButtonView
+        // which is of the "submit" DOM "type".
+        submitHandler({
+            view: this
+        });
+        [
+            this.borderStyleDropdown,
+            this.borderColorInput,
+            this.borderColorInput.fieldView.dropdownView.buttonView,
+            this.borderWidthInput,
+            this.backgroundInput,
+            this.backgroundInput.fieldView.dropdownView.buttonView,
+            this.widthInput,
+            this.heightInput,
+            this.alignmentToolbar,
+            this.saveButtonView,
+            this.cancelButtonView
+        ].forEach(view => {
+            // Register the view as focusable.
+            this._focusables.add(view);
+            // Register the view in the focus tracker.
+            this.focusTracker.add(view.element);
+        });
+        // Mainly for closing using "Esc" and navigation using "Tab".
+        this.keystrokes.listenTo(this.element);
+    }
+    /**
+     * @inheritDoc
+     */
+    destroy() {
+        super.destroy();
+        this.focusTracker.destroy();
+        this.keystrokes.destroy();
+    }
+    /**
+     * Focuses the fist focusable field in the form.
+     */
+    focus() {
+        this._focusCycler.focusFirst();
+    }
+    /**
+     * Creates the following form fields:
+     *
+     * * {@link #borderStyleDropdown},
+     * * {@link #borderWidthInput},
+     * * {@link #borderColorInput}.
+     */
+    _createBorderFields() {
+        const defaultTableProperties = this.options.defaultTableProperties;
+        const defaultBorder = {
+            style: defaultTableProperties.borderStyle,
+            width: defaultTableProperties.borderWidth,
+            color: defaultTableProperties.borderColor
+        };
+        const colorInputCreator = getLabeledColorInputCreator({
+            colorConfig: this.options.borderColors,
+            columns: 5,
+            defaultColorValue: defaultBorder.color
+        });
+        const locale = this.locale;
+        const t = this.t;
+        const accessibleLabel = t('Style');
+        // -- Group label ---------------------------------------------
+        const borderRowLabel = new LabelView(locale);
+        borderRowLabel.text = t('Border');
+        // -- Style ---------------------------------------------------
+        const styleLabels = getBorderStyleLabels(t);
+        const borderStyleDropdown = new LabeledFieldView(locale, createLabeledDropdown);
+        borderStyleDropdown.set({
+            label: accessibleLabel,
+            class: 'ck-table-form__border-style'
+        });
+        borderStyleDropdown.fieldView.buttonView.set({
+            ariaLabel: accessibleLabel,
+            ariaLabelledBy: undefined,
+            isOn: false,
+            withText: true,
+            tooltip: accessibleLabel
+        });
+        borderStyleDropdown.fieldView.buttonView.bind('label').to(this, 'borderStyle', value => {
+            return styleLabels[value ? value : 'none'];
+        });
+        borderStyleDropdown.fieldView.on('execute', evt => {
+            this.borderStyle = evt.source._borderStyleValue;
+        });
+        borderStyleDropdown.bind('isEmpty').to(this, 'borderStyle', value => !value);
+        addListToDropdown(borderStyleDropdown.fieldView, getBorderStyleDefinitions(this, defaultBorder.style), {
+            role: 'menu',
+            ariaLabel: accessibleLabel
+        });
+        // -- Width ---------------------------------------------------
+        const borderWidthInput = new LabeledFieldView(locale, createLabeledInputText);
+        borderWidthInput.set({
+            label: t('Width'),
+            class: 'ck-table-form__border-width'
+        });
+        borderWidthInput.fieldView.bind('value').to(this, 'borderWidth');
+        borderWidthInput.bind('isEnabled').to(this, 'borderStyle', isBorderStyleSet);
+        borderWidthInput.fieldView.on('input', () => {
+            this.borderWidth = borderWidthInput.fieldView.element.value;
+        });
+        // -- Color ---------------------------------------------------
+        const borderColorInput = new LabeledFieldView(locale, colorInputCreator);
+        borderColorInput.set({
+            label: t('Color'),
+            class: 'ck-table-form__border-color'
+        });
+        borderColorInput.fieldView.bind('value').to(this, 'borderColor');
+        borderColorInput.bind('isEnabled').to(this, 'borderStyle', isBorderStyleSet);
+        borderColorInput.fieldView.on('input', () => {
+            this.borderColor = borderColorInput.fieldView.value;
+        });
+        // Reset the border color and width fields depending on the `border-style` value.
+        this.on('change:borderStyle', (evt, name, newValue, oldValue) => {
+            // When removing the border (`border-style:none`), clear the remaining `border-*` properties.
+            // See: https://github.com/ckeditor/ckeditor5/issues/6227.
+            if (!isBorderStyleSet(newValue)) {
+                this.borderColor = '';
+                this.borderWidth = '';
+            }
+            // When setting the `border-style` from `none`, set the default `border-color` and `border-width` properties.
+            if (!isBorderStyleSet(oldValue)) {
+                this.borderColor = defaultBorder.color;
+                this.borderWidth = defaultBorder.width;
+            }
+        });
+        return {
+            borderRowLabel,
+            borderStyleDropdown,
+            borderColorInput,
+            borderWidthInput
+        };
+    }
+    /**
+     * Creates the following form fields:
+     *
+     * * {@link #backgroundInput}.
+     */
+    _createBackgroundFields() {
+        const locale = this.locale;
+        const t = this.t;
+        // -- Group label ---------------------------------------------
+        const backgroundRowLabel = new LabelView(locale);
+        backgroundRowLabel.text = t('Background');
+        // -- Background color input -----------------------------------
+        const backgroundInputCreator = getLabeledColorInputCreator({
+            colorConfig: this.options.backgroundColors,
+            columns: 5,
+            defaultColorValue: this.options.defaultTableProperties.backgroundColor
+        });
+        const backgroundInput = new LabeledFieldView(locale, backgroundInputCreator);
+        backgroundInput.set({
+            label: t('Color'),
+            class: 'ck-table-properties-form__background'
+        });
+        backgroundInput.fieldView.bind('value').to(this, 'backgroundColor');
+        backgroundInput.fieldView.on('input', () => {
+            this.backgroundColor = backgroundInput.fieldView.value;
+        });
+        return {
+            backgroundRowLabel,
+            backgroundInput
+        };
+    }
+    /**
+     * Creates the following form fields:
+     *
+     * * {@link #widthInput},
+     * * {@link #heightInput}.
+     */
+    _createDimensionFields() {
+        const locale = this.locale;
+        const t = this.t;
+        // -- Label ---------------------------------------------------
+        const dimensionsLabel = new LabelView(locale);
+        dimensionsLabel.text = t('Dimensions');
+        // -- Width ---------------------------------------------------
+        const widthInput = new LabeledFieldView(locale, createLabeledInputText);
+        widthInput.set({
+            label: t('Width'),
+            class: 'ck-table-form__dimensions-row__width'
+        });
+        widthInput.fieldView.bind('value').to(this, 'width');
+        widthInput.fieldView.on('input', () => {
+            this.width = widthInput.fieldView.element.value;
+        });
+        // -- Operator ---------------------------------------------------
+        const operatorLabel = new View$1(locale);
+        operatorLabel.setTemplate({
+            tag: 'span',
+            attributes: {
+                class: [
+                    'ck-table-form__dimension-operator'
+                ]
+            },
+            children: [
+                { text: '×' }
+            ]
+        });
+        // -- Height ---------------------------------------------------
+        const heightInput = new LabeledFieldView(locale, createLabeledInputText);
+        heightInput.set({
+            label: t('Height'),
+            class: 'ck-table-form__dimensions-row__height'
+        });
+        heightInput.fieldView.bind('value').to(this, 'height');
+        heightInput.fieldView.on('input', () => {
+            this.height = heightInput.fieldView.element.value;
+        });
+        return {
+            dimensionsLabel,
+            widthInput,
+            operatorLabel,
+            heightInput
+        };
+    }
+    /**
+     * Creates the following form fields:
+     *
+     * * {@link #alignmentToolbar}.
+     */
+    _createAlignmentFields() {
+        const locale = this.locale;
+        const t = this.t;
+        // -- Label ---------------------------------------------------
+        const alignmentLabel = new LabelView(locale);
+        alignmentLabel.text = t('Alignment');
+        // -- Toolbar ---------------------------------------------------
+        const alignmentToolbar = new ToolbarView(locale);
+        alignmentToolbar.set({
+            isCompact: true,
+            ariaLabel: t('Table alignment toolbar')
+        });
+        fillToolbar({
+            view: this,
+            icons: ALIGNMENT_ICONS,
+            toolbar: alignmentToolbar,
+            labels: this._alignmentLabels,
+            propertyName: 'alignment',
+            defaultValue: this.options.defaultTableProperties.alignment
+        });
+        return {
+            alignmentLabel,
+            alignmentToolbar
+        };
+    }
+    /**
+     * Creates the following form controls:
+     *
+     * * {@link #saveButtonView},
+     * * {@link #cancelButtonView}.
+     */
+    _createActionButtons() {
+        const locale = this.locale;
+        const t = this.t;
+        const saveButtonView = new ButtonView(locale);
+        const cancelButtonView = new ButtonView(locale);
+        const fieldsThatShouldValidateToSave = [
+            this.borderWidthInput,
+            this.borderColorInput,
+            this.backgroundInput,
+            this.widthInput,
+            this.heightInput
+        ];
+        saveButtonView.set({
+            label: t('Save'),
+            icon: icons$1.check,
+            class: 'ck-button-save',
+            type: 'submit',
+            withText: true
+        });
+        saveButtonView.bind('isEnabled').toMany(fieldsThatShouldValidateToSave, 'errorText', (...errorTexts) => {
+            return errorTexts.every(errorText => !errorText);
+        });
+        cancelButtonView.set({
+            label: t('Cancel'),
+            icon: icons$1.cancel,
+            class: 'ck-button-cancel',
+            withText: true
+        });
+        cancelButtonView.delegate('execute').to(this, 'cancel');
+        return {
+            saveButtonView, cancelButtonView
+        };
+    }
+    /**
+     * Provides localized labels for {@link #alignmentToolbar} buttons.
+     */
+    get _alignmentLabels() {
+        const locale = this.locale;
+        const t = this.t;
+        const left = t('Align table to the left');
+        const center = t('Center table');
+        const right = t('Align table to the right');
+        // Returns object with a proper order of labels.
+        if (locale.uiLanguageDirection === 'rtl') {
+            return { right, center, left };
+        }
+        else {
+            return { left, center, right };
+        }
+    }
+}
+function isBorderStyleSet(value) {
+    return value !== 'none';
+}var tableProperties = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8 2v5h4V2h1v5h5v1h-5v4h.021l-.172.351-1.916.28-.151.027c-.287.063-.54.182-.755.341L8 13v5H7v-5H2v-1h5V8H2V7h5V2h1zm4 6H8v4h4V8z\" opacity=\".6\"/><path d=\"m15.5 11.5 1.323 2.68 2.957.43-2.14 2.085.505 2.946L15.5 18.25l-2.645 1.39.505-2.945-2.14-2.086 2.957-.43L15.5 11.5zM17 1a2 2 0 0 1 2 2v9.475l-.85-.124-.857-1.736a2.048 2.048 0 0 0-.292-.44L17 3H3v14h7.808l.402.392L10.935 19H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h14z\"/></svg>";
+/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+const ERROR_TEXT_TIMEOUT = 500;
+// Map of view properties and related commands.
+const propertyToCommandMap = {
+    borderStyle: 'tableBorderStyle',
+    borderColor: 'tableBorderColor',
+    borderWidth: 'tableBorderWidth',
+    backgroundColor: 'tableBackgroundColor',
+    width: 'tableWidth',
+    height: 'tableHeight',
+    alignment: 'tableAlignment'
+};
+/**
+ * The table properties UI plugin. It introduces the `'tableProperties'` button
+ * that opens a form allowing to specify visual styling of an entire table.
+ *
+ * It uses the {@link module:ui/panel/balloon/contextualballoon~ContextualBalloon contextual balloon plugin}.
+ */
+class TablePropertiesUI extends Plugin {
+    /**
+     * @inheritDoc
+     */
+    static get requires() {
+        return [ContextualBalloon];
+    }
+    /**
+     * @inheritDoc
+     */
+    static get pluginName() {
+        return 'TablePropertiesUI';
+    }
+    /**
+     * @inheritDoc
+     */
+    constructor(editor) {
+        super(editor);
+        /**
+         * The properties form view displayed inside the balloon.
+         */
+        this.view = null;
+        editor.config.define('table.tableProperties', {
+            borderColors: defaultColors,
+            backgroundColors: defaultColors
+        });
+    }
+    /**
+     * @inheritDoc
+     */
+    init() {
+        const editor = this.editor;
+        const t = editor.t;
+        this._defaultTableProperties = getNormalizedDefaultProperties(editor.config.get('table.tableProperties.defaultProperties'), {
+            includeAlignmentProperty: true
+        });
+        this._balloon = editor.plugins.get(ContextualBalloon);
+        editor.ui.componentFactory.add('tableProperties', locale => {
+            const view = new ButtonView(locale);
+            view.set({
+                label: t('Table properties'),
+                icon: tableProperties,
+                tooltip: true
+            });
+            this.listenTo(view, 'execute', () => this._showView());
+            const commands = Object.values(propertyToCommandMap)
+                .map(commandName => editor.commands.get(commandName));
+            view.bind('isEnabled').toMany(commands, 'isEnabled', (...areEnabled) => (areEnabled.some(isCommandEnabled => isCommandEnabled)));
+            return view;
+        });
+    }
+    /**
+     * @inheritDoc
+     */
+    destroy() {
+        super.destroy();
+        // Destroy created UI components as they are not automatically destroyed.
+        // See https://github.com/ckeditor/ckeditor5/issues/1341.
+        if (this.view) {
+            this.view.destroy();
+        }
+    }
+    /**
+     * Creates the {@link module:table/tableproperties/ui/tablepropertiesview~TablePropertiesView} instance.
+     *
+     * @returns The table properties form view instance.
+     */
+    _createPropertiesView() {
+        const editor = this.editor;
+        const config = editor.config.get('table.tableProperties');
+        const borderColorsConfig = normalizeColorOptions(config.borderColors);
+        const localizedBorderColors = getLocalizedColorOptions(editor.locale, borderColorsConfig);
+        const backgroundColorsConfig = normalizeColorOptions(config.backgroundColors);
+        const localizedBackgroundColors = getLocalizedColorOptions(editor.locale, backgroundColorsConfig);
+        const view = new TablePropertiesView(editor.locale, {
+            borderColors: localizedBorderColors,
+            backgroundColors: localizedBackgroundColors,
+            defaultTableProperties: this._defaultTableProperties
+        });
+        const t = editor.t;
+        // Render the view so its #element is available for the clickOutsideHandler.
+        view.render();
+        this.listenTo(view, 'submit', () => {
+            this._hideView();
+        });
+        this.listenTo(view, 'cancel', () => {
+            // https://github.com/ckeditor/ckeditor5/issues/6180
+            if (this._undoStepBatch.operations.length) {
+                editor.execute('undo', this._undoStepBatch);
+            }
+            this._hideView();
+        });
+        // Close the balloon on Esc key press.
+        view.keystrokes.set('Esc', (data, cancel) => {
+            this._hideView();
+            cancel();
+        });
+        // Close on click outside of balloon panel element.
+        clickOutsideHandler({
+            emitter: view,
+            activator: () => this._isViewInBalloon,
+            contextElements: [this._balloon.view.element],
+            callback: () => this._hideView()
+        });
+        const colorErrorText = getLocalizedColorErrorText(t);
+        const lengthErrorText = getLocalizedLengthErrorText(t);
+        // Create the "UI -> editor data" binding.
+        // These listeners update the editor data (via table commands) when any observable
+        // property of the view has changed. They also validate the value and display errors in the UI
+        // when necessary. This makes the view live, which means the changes are
+        // visible in the editing as soon as the user types or changes fields' values.
+        view.on('change:borderStyle', this._getPropertyChangeCallback('tableBorderStyle'));
+        view.on('change:borderColor', this._getValidatedPropertyChangeCallback({
+            viewField: view.borderColorInput,
+            commandName: 'tableBorderColor',
+            errorText: colorErrorText,
+            validator: colorFieldValidator
+        }));
+        view.on('change:borderWidth', this._getValidatedPropertyChangeCallback({
+            viewField: view.borderWidthInput,
+            commandName: 'tableBorderWidth',
+            errorText: lengthErrorText,
+            validator: lineWidthFieldValidator
+        }));
+        view.on('change:backgroundColor', this._getValidatedPropertyChangeCallback({
+            viewField: view.backgroundInput,
+            commandName: 'tableBackgroundColor',
+            errorText: colorErrorText,
+            validator: colorFieldValidator
+        }));
+        view.on('change:width', this._getValidatedPropertyChangeCallback({
+            viewField: view.widthInput,
+            commandName: 'tableWidth',
+            errorText: lengthErrorText,
+            validator: lengthFieldValidator
+        }));
+        view.on('change:height', this._getValidatedPropertyChangeCallback({
+            viewField: view.heightInput,
+            commandName: 'tableHeight',
+            errorText: lengthErrorText,
+            validator: lengthFieldValidator
+        }));
+        view.on('change:alignment', this._getPropertyChangeCallback('tableAlignment'));
+        return view;
+    }
+    /**
+     * In this method the "editor data -> UI" binding is happening.
+     *
+     * When executed, this method obtains selected table property values from various table commands
+     * and passes them to the {@link #view}.
+     *
+     * This way, the UI stays up–to–date with the editor data.
+     */
+    _fillViewFormFromCommandValues() {
+        const commands = this.editor.commands;
+        const borderStyleCommand = commands.get('tableBorderStyle');
+        Object.entries(propertyToCommandMap)
+            .map(([property, commandName]) => {
+            const propertyKey = property;
+            const defaultValue = this._defaultTableProperties[propertyKey] || '';
+            return [propertyKey, (commands.get(commandName).value || defaultValue)];
+        })
+            .forEach(([property, value]) => {
+            // Do not set the `border-color` and `border-width` fields if `border-style:none`.
+            if ((property === 'borderColor' || property === 'borderWidth') && borderStyleCommand.value === 'none') {
+                return;
+            }
+            this.view.set(property, value);
+        });
+        this._isReady = true;
+    }
+    /**
+     * Shows the {@link #view} in the {@link #_balloon}.
+     *
+     * **Note**: Each time a view is shown, the new {@link #_undoStepBatch} is created that contains
+     * all changes made to the document when the view is visible, allowing a single undo step
+     * for all of them.
+     */
+    _showView() {
+        const editor = this.editor;
+        if (!this.view) {
+            this.view = this._createPropertiesView();
+        }
+        this.listenTo(editor.ui, 'update', () => {
+            this._updateView();
+        });
+        // Update the view with the model values.
+        this._fillViewFormFromCommandValues();
+        this._balloon.add({
+            view: this.view,
+            position: getBalloonTablePositionData(editor)
+        });
+        // Create a new batch. Clicking "Cancel" will undo this batch.
+        this._undoStepBatch = editor.model.createBatch();
+        // Basic a11y.
+        this.view.focus();
+    }
+    /**
+     * Removes the {@link #view} from the {@link #_balloon}.
+     */
+    _hideView() {
+        const editor = this.editor;
+        this.stopListening(editor.ui, 'update');
+        this._isReady = false;
+        // Blur any input element before removing it from DOM to prevent issues in some browsers.
+        // See https://github.com/ckeditor/ckeditor5/issues/1501.
+        this.view.saveButtonView.focus();
+        this._balloon.remove(this.view);
+        // Make sure the focus is not lost in the process by putting it directly
+        // into the editing view.
+        this.editor.editing.view.focus();
+    }
+    /**
+     * Repositions the {@link #_balloon} or hides the {@link #view} if a table is no longer selected.
+     */
+    _updateView() {
+        const editor = this.editor;
+        const viewDocument = editor.editing.view.document;
+        if (!getTableWidgetAncestor(viewDocument.selection)) {
+            this._hideView();
+        }
+        else if (this._isViewVisible) {
+            repositionContextualBalloon(editor, 'table');
+        }
+    }
+    /**
+     * Returns `true` when the {@link #view} is the visible in the {@link #_balloon}.
+     */
+    get _isViewVisible() {
+        return !!this.view && this._balloon.visibleView === this.view;
+    }
+    /**
+     * Returns `true` when the {@link #view} is in the {@link #_balloon}.
+     */
+    get _isViewInBalloon() {
+        return !!this.view && this._balloon.hasView(this.view);
+    }
+    /**
+     * Creates a callback that when executed upon {@link #view view's} property change
+     * executes a related editor command with the new property value.
+     *
+     * If new value will be set to the default value, the command will not be executed.
+     *
+     * @param commandName The command that will be executed.
+     */
+    _getPropertyChangeCallback(commandName) {
+        return (evt, propertyName, newValue) => {
+            // Do not execute the command on initial call (opening the table properties view).
+            if (!this._isReady) {
+                return;
+            }
+            this.editor.execute(commandName, {
+                value: newValue,
+                batch: this._undoStepBatch
+            });
+        };
+    }
+    /**
+     * Creates a callback that when executed upon {@link #view view's} property change:
+     * * executes a related editor command with the new property value if the value is valid,
+     * * or sets the error text next to the invalid field, if the value did not pass the validation.
+     */
+    _getValidatedPropertyChangeCallback(options) {
+        const { commandName, viewField, validator, errorText } = options;
+        const setErrorTextDebounced = debounce(() => {
+            viewField.errorText = errorText;
+        }, ERROR_TEXT_TIMEOUT);
+        return (evt, propertyName, newValue) => {
+            setErrorTextDebounced.cancel();
+            // Do not execute the command on initial call (opening the table properties view).
+            if (!this._isReady) {
+                return;
+            }
+            if (validator(newValue)) {
+                this.editor.execute(commandName, {
+                    value: newValue,
+                    batch: this._undoStepBatch
+                });
+                viewField.errorText = null;
+            }
+            else {
+                setErrorTextDebounced();
+            }
+        };
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The table properties feature. Enables support for setting properties of tables (size, border, background, etc.).
+ *
+ * Read more in the {@glink features/tables/tables-styling Table and cell styling tools} section.
+ * See also the {@link module:table/tablecellproperties~TableCellProperties} plugin.
+ *
+ * This is a "glue" plugin that loads the
+ * {@link module:table/tableproperties/tablepropertiesediting~TablePropertiesEditing table properties editing feature} and
+ * the {@link module:table/tableproperties/tablepropertiesui~TablePropertiesUI table properties UI feature}.
+ */
+class TableProperties extends Plugin {
+    /**
+     * @inheritDoc
+     */
+    static get pluginName() {
+        return 'TableProperties';
+    }
+    /**
+     * @inheritDoc
+     */
+    static get requires() {
+        return [TablePropertiesEditing, TablePropertiesUI];
+    }
+}var css_248z$d = ":root{--ck-color-table-caption-background:#f7f7f7;--ck-color-table-caption-text:#333;--ck-color-table-caption-highlighted-background:#fd0}.ck-content .table>figcaption{background-color:var(--ck-color-table-caption-background);caption-side:top;color:var(--ck-color-table-caption-text);display:table-caption;font-size:.75em;outline-offset:-1px;padding:.6em;text-align:center;word-break:break-word}.ck.ck-editor__editable .table>figcaption.table__caption_highlighted{animation:ck-table-caption-highlight .6s ease-out}.ck.ck-editor__editable .table>figcaption.ck-placeholder:before{overflow:hidden;padding-left:inherit;padding-right:inherit;text-overflow:ellipsis;white-space:nowrap}@keyframes ck-table-caption-highlight{0%{background-color:var(--ck-color-table-caption-highlighted-background)}to{background-color:var(--ck-color-table-caption-background)}}";
+styleInject(css_248z$d);var css_248z$c = ":root{--ck-color-table-column-resizer-hover:var(--ck-color-base-active);--ck-table-column-resizer-width:7px;--ck-table-column-resizer-position-offset:calc(var(--ck-table-column-resizer-width)*-0.5 - 0.5px)}.ck-content .table .ck-table-resized{table-layout:fixed}.ck-content .table table{overflow:hidden}.ck-content .table td,.ck-content .table th{overflow-wrap:break-word;position:relative}.ck.ck-editor__editable .table .ck-table-column-resizer{bottom:-999999px;cursor:col-resize;position:absolute;right:var(--ck-table-column-resizer-position-offset);top:-999999px;user-select:none;width:var(--ck-table-column-resizer-width);z-index:var(--ck-z-default)}.ck.ck-editor__editable .table[draggable] .ck-table-column-resizer,.ck.ck-editor__editable.ck-column-resize_disabled .table .ck-table-column-resizer{display:none}.ck.ck-editor__editable .table .ck-table-column-resizer:hover,.ck.ck-editor__editable .table .ck-table-column-resizer__active{background-color:var(--ck-color-table-column-resizer-hover);opacity:.25}.ck.ck-editor__editable[dir=rtl] .table .ck-table-column-resizer{left:var(--ck-table-column-resizer-position-offset);right:unset}";
+styleInject(css_248z$c);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -87155,8 +87536,8 @@ function isClosingTag(line, elementsToFormat) {
 function indentLine(line, indentCount, indentChar = '    ') {
     // More about Math.max() here in https://github.com/ckeditor/ckeditor5/issues/10698.
     return `${indentChar.repeat(Math.max(0, indentCount))}${line}`;
-}var css_248z$c = ".ck-source-editing-area{overflow:hidden;position:relative}.ck-source-editing-area textarea,.ck-source-editing-area:after{border:1px solid transparent;font-family:monospace;font-size:var(--ck-font-size-normal);line-height:var(--ck-line-height-base);margin:0;padding:var(--ck-spacing-large);white-space:pre-wrap}.ck-source-editing-area:after{content:attr(data-value) \" \";display:block;visibility:hidden}.ck-source-editing-area textarea{border-color:var(--ck-color-base-border);border-radius:0;box-sizing:border-box;height:100%;outline:none;overflow:hidden;position:absolute;resize:none;width:100%}.ck-rounded-corners .ck-source-editing-area textarea,.ck-source-editing-area textarea.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}.ck-source-editing-area textarea:not([readonly]):focus{border:var(--ck-focus-ring);box-shadow:var(--ck-inner-shadow),0 0;outline:none}";
-styleInject(css_248z$c);var sourceEditingIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m12.5 0 5 4.5v15.003h-16V0h11zM3 1.5v3.25l-1.497 1-.003 8 1.5 1v3.254L7.685 18l-.001 1.504H17.5V8.002L16 9.428l-.004-4.22-4.222-3.692L3 1.5z\"/><path d=\"M4.06 6.64a.75.75 0 0 1 .958 1.15l-.085.07L2.29 9.75l2.646 1.89c.302.216.4.62.232.951l-.058.095a.75.75 0 0 1-.951.232l-.095-.058-3.5-2.5V9.14l3.496-2.5zm4.194 6.22a.75.75 0 0 1-.958-1.149l.085-.07 2.643-1.89-2.646-1.89a.75.75 0 0 1-.232-.952l.058-.095a.75.75 0 0 1 .95-.232l.096.058 3.5 2.5v1.22l-3.496 2.5zm7.644-.836 2.122 2.122-5.825 5.809-2.125-.005.003-2.116zm2.539-1.847 1.414 1.414a.5.5 0 0 1 0 .707l-1.06 1.06-2.122-2.12 1.061-1.061a.5.5 0 0 1 .707 0z\"/></svg>";
+}var css_248z$b = ".ck-source-editing-area{overflow:hidden;position:relative}.ck-source-editing-area textarea,.ck-source-editing-area:after{border:1px solid transparent;font-family:monospace;font-size:var(--ck-font-size-normal);line-height:var(--ck-line-height-base);margin:0;padding:var(--ck-spacing-large);white-space:pre-wrap}.ck-source-editing-area:after{content:attr(data-value) \" \";display:block;visibility:hidden}.ck-source-editing-area textarea{border-color:var(--ck-color-base-border);border-radius:0;box-sizing:border-box;height:100%;outline:none;overflow:hidden;position:absolute;resize:none;width:100%}.ck-rounded-corners .ck-source-editing-area textarea,.ck-source-editing-area textarea.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}.ck-source-editing-area textarea:not([readonly]):focus{border:var(--ck-focus-ring);box-shadow:var(--ck-inner-shadow),0 0;outline:none}";
+styleInject(css_248z$b);var sourceEditingIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m12.5 0 5 4.5v15.003h-16V0h11zM3 1.5v3.25l-1.497 1-.003 8 1.5 1v3.254L7.685 18l-.001 1.504H17.5V8.002L16 9.428l-.004-4.22-4.222-3.692L3 1.5z\"/><path d=\"M4.06 6.64a.75.75 0 0 1 .958 1.15l-.085.07L2.29 9.75l2.646 1.89c.302.216.4.62.232.951l-.058.095a.75.75 0 0 1-.951.232l-.095-.058-3.5-2.5V9.14l3.496-2.5zm4.194 6.22a.75.75 0 0 1-.958-1.149l.085-.07 2.643-1.89-2.646-1.89a.75.75 0 0 1-.232-.952l.058-.095a.75.75 0 0 1 .95-.232l.096.058 3.5 2.5v1.22l-3.496 2.5zm7.644-.836 2.122 2.122-5.825 5.809-2.125-.005.003-2.116zm2.539-1.847 1.414 1.414a.5.5 0 0 1 0 .707l-1.06 1.06-2.122-2.12 1.061-1.061a.5.5 0 0 1 .707 0z\"/></svg>";
 /**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -87505,8 +87886,8 @@ class ShowBlocksEditing extends Plugin {
         editor.commands.add('showBlocks', new ShowBlocksCommand(editor));
     }
 }var showBlocksIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m6.395 9.196 2.545-.007V6.498a.598.598 0 0 1 .598-.598h.299a.598.598 0 0 1 .598.598v6.877a.598.598 0 0 1-.598.598h-.299a.598.598 0 0 1-.598-.598v-2.691l-2.545.007v2.691a.598.598 0 0 1-.598.598h-.299a.598.598 0 0 1-.598-.598V6.505a.598.598 0 0 1 .598-.598h.299a.598.598 0 0 1 .598.598v2.691Z\"/><path d=\"M15.094 13.417V6.462a.562.562 0 0 0-.562-.562h-.782a1 1 0 0 0-.39.08l-1.017.43a.562.562 0 0 0-.343.517v.197c0 .4.406.67.775.519l.819-.337v6.111c0 .31.251.562.561.562h.377c.31 0 .562-.251.562-.562Z\"/><path d=\"M0 15.417v1.5h1.5v-1.5H0Z\"/><path d=\"M18.5 15.417v1.5H20v-1.5h-1.5Z\"/><path d=\"M18.5 12.333v1.5H20v-1.5h-1.5Z\"/><path d=\"M18.5 9.25v1.5H20v-1.5h-1.5Z\"/><path d=\"M18.5 6.167v1.5H20v-1.5h-1.5Z\"/><path d=\"M0 18.5v.5a1 1 0 0 0 1 1h.5v-1.5H0Z\"/><path d=\"M3.083 18.5V20h1.5v-1.5h-1.5Z\"/><path d=\"M6.167 18.5V20h1.5v-1.5h-1.5Z\"/><path d=\"M9.25 18.5V20h1.5v-1.5h-1.5Z\"/><path d=\"M12.333 18.5V20h1.5v-1.5h-1.5Z\"/><path d=\"M15.417 18.5V20h1.5v-1.5h-1.5Z\"/><path d=\"M18.5 18.5V20h.5a1 1 0 0 0 1-1v-.5h-1.5Z\"/><path clip-rule=\"evenodd\" d=\"M0 1a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v3.583h-1.5V1.5h-17v12.333H0V1Z\"/></svg>";
-var css_248z$b = ":root{--ck-show-blocks-border-color:#757575}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) address:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) address{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>ADDRESS</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) address{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>ADDRESS</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) aside:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) aside{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>ASIDE</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) aside{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>ASIDE</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) blockquote:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) blockquote{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>BLOCKQUOTE</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) blockquote{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>BLOCKQUOTE</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) details:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) details{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>DETAILS</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) details{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>DETAILS</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) div:not(.ck-widget,.ck-widget *):not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) div:not(.ck-widget,.ck-widget *){background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>DIV</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) div:not(.ck-widget,.ck-widget *){background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>DIV</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) footer:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) footer{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>FOOTER</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) footer{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>FOOTER</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h1:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h1{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H1</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h1{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H1</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h2:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h2{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H2</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h2{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H2</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h3:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h3{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H3</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h3{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H3</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h4:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h4{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H4</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h4{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H4</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h5:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h5{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H5</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h5{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H5</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h6:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h6{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H6</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h6{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H6</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) header:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) header{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>HEADER</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) header{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>HEADER</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) main:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) main{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>MAIN</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) main{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>MAIN</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) nav:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) nav{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>NAV</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) nav{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>NAV</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) pre:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) pre{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>PRE</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) pre{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>PRE</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) ol:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) ol{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>OL</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) ol{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>OL</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) ul:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) ul{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>UL</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) ul{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>UL</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) p:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) p{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>P</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) p{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>P</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) section:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) section{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>SECTION</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) section{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>SECTION</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) :where(figure.image,figure.table) figcaption:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) :where(figure.image,figure.table) figcaption{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>FIGCAPTION</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) :where(figure.image,figure.table) figcaption{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>FIGCAPTION</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}";
-styleInject(css_248z$b);/**
+var css_248z$a = ":root{--ck-show-blocks-border-color:#757575}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) address:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) address{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>ADDRESS</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) address{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>ADDRESS</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) aside:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) aside{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>ASIDE</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) aside{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>ASIDE</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) blockquote:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) blockquote{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>BLOCKQUOTE</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) blockquote{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>BLOCKQUOTE</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) details:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) details{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>DETAILS</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) details{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>DETAILS</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) div:not(.ck-widget,.ck-widget *):not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) div:not(.ck-widget,.ck-widget *){background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>DIV</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) div:not(.ck-widget,.ck-widget *){background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>DIV</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) footer:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) footer{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>FOOTER</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) footer{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>FOOTER</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h1:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h1{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H1</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h1{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H1</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h2:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h2{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H2</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h2{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H2</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h3:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h3{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H3</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h3{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H3</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h4:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h4{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H4</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h4{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H4</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h5:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h5{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H5</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h5{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H5</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h6:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h6{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H6</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) h6{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>H6</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) header:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) header{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>HEADER</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) header{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>HEADER</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) main:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) main{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>MAIN</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) main{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>MAIN</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) nav:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) nav{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>NAV</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) nav{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>NAV</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) pre:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) pre{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>PRE</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) pre{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>PRE</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) ol:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) ol{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>OL</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) ol{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>OL</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) ul:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) ul{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>UL</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) ul{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>UL</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) p:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) p{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>P</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) p{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>P</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) section:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) section{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>SECTION</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) section{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>SECTION</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}.ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) :where(figure.image,figure.table) figcaption:not(.ck-widget_selected):not(.ck-widget:hover){outline:1px dashed var(--ck-show-blocks-border-color)}[dir=ltr] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) :where(figure.image,figure.table) figcaption{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='3' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>FIGCAPTION</text></svg>\");background-position:1px 1px;background-repeat:no-repeat;padding-top:15px}[dir=rtl] .ck.ck-editor__editable.ck-editor__editable_inline.ck-show-blocks:not(.ck-widget) :where(figure.image,figure.table) figcaption{background-image:url(\"data:image/svg+xml;utf8,<svg width='120' height='12' xmlns='http://www.w3.org/2000/svg' ><text style='paint-order:stroke fill; clip-path: inset(-3px); transform:translate(-2px, 0);' stroke='%23EAEAEA' stroke-width='13' dominant-baseline='middle' fill='black' x='100%' text-anchor='end' y='7' font-size='9px' font-family='Consolas, %22Lucida Console%22, %22Lucida Sans Typewriter%22, %22DejaVu Sans Mono%22, %22Bitstream Vera Sans Mono%22, %22Liberation Mono%22, Monaco, %22Courier New%22, Courier, monospace'>FIGCAPTION</text></svg>\");background-position:calc(100% - 1px) 1px;background-repeat:no-repeat;padding-top:15px}";
+styleInject(css_248z$a);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -88102,8 +88483,8 @@ class StyleGridButtonView extends ButtonView {
         });
         return previewView;
     }
-}var css_248z$a = ":root{--ck-style-panel-columns:3}.ck.ck-style-panel .ck-style-grid{display:grid;grid-template-columns:repeat(var(--ck-style-panel-columns),auto);justify-content:start}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button{display:flex;flex-direction:column;justify-content:space-between}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button .ck-style-grid__button__preview{align-content:center;align-items:center;display:flex;flex-basis:100%;flex-grow:1;justify-content:flex-start}:root{--ck-style-panel-button-width:120px;--ck-style-panel-button-height:80px;--ck-style-panel-button-label-background:#f0f0f0;--ck-style-panel-button-hover-label-background:#ebebeb;--ck-style-panel-button-hover-border-color:#b3b3b3}.ck.ck-style-panel .ck-style-grid{column-gap:var(--ck-spacing-large);row-gap:var(--ck-spacing-large)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button{--ck-color-button-default-hover-background:var(--ck-color-base-background);--ck-color-button-default-active-background:var(--ck-color-base-background);height:var(--ck-style-panel-button-height);padding:0;width:var(--ck-style-panel-button-width)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button:not(:focus){border:1px solid var(--ck-color-base-border)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button .ck-button__label{flex-shrink:0;height:22px;line-height:22px;overflow:hidden;padding:0 var(--ck-spacing-medium);text-overflow:ellipsis;width:100%}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button .ck-style-grid__button__preview{background:var(--ck-color-base-background);border:2px solid var(--ck-color-base-background);opacity:.9;overflow:hidden;padding:var(--ck-spacing-medium);width:100%}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-disabled{--ck-color-button-default-disabled-background:var(--ck-color-base-foreground)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-disabled:not(:focus){border-color:var(--ck-style-panel-button-label-background)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-disabled .ck-style-grid__button__preview{border-color:var(--ck-color-base-foreground);filter:saturate(.3);opacity:.4}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-on{border-color:var(--ck-color-base-active)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-on .ck-button__label{box-shadow:0 -1px 0 var(--ck-color-base-active);z-index:1}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-on:hover{border-color:var(--ck-color-base-active-focus)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button:not(.ck-on) .ck-button__label{background:var(--ck-style-panel-button-label-background)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button:not(.ck-on):hover .ck-button__label{background:var(--ck-style-panel-button-hover-label-background)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button:hover:not(.ck-disabled):not(.ck-on){border-color:var(--ck-style-panel-button-hover-border-color)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button:hover:not(.ck-disabled):not(.ck-on) .ck-style-grid__button__preview{opacity:1}";
-styleInject(css_248z$a);/**
+}var css_248z$9 = ":root{--ck-style-panel-columns:3}.ck.ck-style-panel .ck-style-grid{display:grid;grid-template-columns:repeat(var(--ck-style-panel-columns),auto);justify-content:start}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button{display:flex;flex-direction:column;justify-content:space-between}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button .ck-style-grid__button__preview{align-content:center;align-items:center;display:flex;flex-basis:100%;flex-grow:1;justify-content:flex-start}:root{--ck-style-panel-button-width:120px;--ck-style-panel-button-height:80px;--ck-style-panel-button-label-background:#f0f0f0;--ck-style-panel-button-hover-label-background:#ebebeb;--ck-style-panel-button-hover-border-color:#b3b3b3}.ck.ck-style-panel .ck-style-grid{column-gap:var(--ck-spacing-large);row-gap:var(--ck-spacing-large)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button{--ck-color-button-default-hover-background:var(--ck-color-base-background);--ck-color-button-default-active-background:var(--ck-color-base-background);height:var(--ck-style-panel-button-height);padding:0;width:var(--ck-style-panel-button-width)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button:not(:focus){border:1px solid var(--ck-color-base-border)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button .ck-button__label{flex-shrink:0;height:22px;line-height:22px;overflow:hidden;padding:0 var(--ck-spacing-medium);text-overflow:ellipsis;width:100%}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button .ck-style-grid__button__preview{background:var(--ck-color-base-background);border:2px solid var(--ck-color-base-background);opacity:.9;overflow:hidden;padding:var(--ck-spacing-medium);width:100%}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-disabled{--ck-color-button-default-disabled-background:var(--ck-color-base-foreground)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-disabled:not(:focus){border-color:var(--ck-style-panel-button-label-background)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-disabled .ck-style-grid__button__preview{border-color:var(--ck-color-base-foreground);filter:saturate(.3);opacity:.4}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-on{border-color:var(--ck-color-base-active)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-on .ck-button__label{box-shadow:0 -1px 0 var(--ck-color-base-active);z-index:1}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-on:hover{border-color:var(--ck-color-base-active-focus)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button:not(.ck-on) .ck-button__label{background:var(--ck-style-panel-button-label-background)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button:not(.ck-on):hover .ck-button__label{background:var(--ck-style-panel-button-hover-label-background)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button:hover:not(.ck-disabled):not(.ck-on){border-color:var(--ck-style-panel-button-hover-border-color)}.ck.ck-style-panel .ck-style-grid .ck-style-grid__button:hover:not(.ck-disabled):not(.ck-on) .ck-style-grid__button__preview{opacity:1}";
+styleInject(css_248z$9);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -88184,8 +88565,8 @@ class StyleGridView extends View$1 {
         this.focusTracker.destroy();
         this.keystrokes.destroy();
     }
-}var css_248z$9 = ".ck.ck-style-panel .ck-style-panel__style-group>.ck-label{margin:var(--ck-spacing-large) 0}.ck.ck-style-panel .ck-style-panel__style-group:first-child>.ck-label{margin-top:0}";
-styleInject(css_248z$9);/**
+}var css_248z$8 = ".ck.ck-style-panel .ck-style-panel__style-group>.ck-label{margin:var(--ck-spacing-large) 0}.ck.ck-style-panel .ck-style-panel__style-group:first-child>.ck-label{margin-top:0}";
+styleInject(css_248z$8);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -88223,8 +88604,8 @@ class StyleGroupView extends View$1 {
             ]
         });
     }
-}var css_248z$8 = ":root{--ck-style-panel-max-height:470px}.ck.ck-style-panel{max-height:var(--ck-style-panel-max-height);overflow-y:auto;padding:var(--ck-spacing-large)}";
-styleInject(css_248z$8);/**
+}var css_248z$7 = ":root{--ck-style-panel-max-height:470px}.ck.ck-style-panel{max-height:var(--ck-style-panel-max-height);overflow-y:auto;padding:var(--ck-spacing-large)}";
+styleInject(css_248z$7);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -88573,8 +88954,8 @@ function normalizedStyleDefinitionToMatcherPattern({ element, classes }) {
         name: element,
         classes
     };
-}var css_248z$7 = ".ck.ck-dropdown.ck-style-dropdown.ck-style-dropdown_multiple-active>.ck-button>.ck-button__label{font-style:italic}";
-styleInject(css_248z$7);/**
+}var css_248z$6 = ".ck.ck-dropdown.ck-style-dropdown.ck-style-dropdown_multiple-active>.ck-button>.ck-button__label{font-style:italic}";
+styleInject(css_248z$6);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -90733,8 +91114,8 @@ function testViewName(pattern, viewName) {
         return pattern.test(viewName);
     }
     return false;
-}var css_248z$6 = ":root{--ck-html-object-embed-unfocused-outline-width:1px}.ck-widget.html-object-embed{background-color:var(--ck-color-base-foreground);font-size:var(--ck-font-size-base);min-width:calc(76px + var(--ck-spacing-standard));padding:var(--ck-spacing-small);padding-top:calc(var(--ck-font-size-tiny) + var(--ck-spacing-large))}.ck-widget.html-object-embed:not(.ck-widget_selected):not(:hover){outline:var(--ck-html-object-embed-unfocused-outline-width) dashed var(--ck-color-widget-blurred-border)}.ck-widget.html-object-embed:before{background:#999;border-radius:0 0 var(--ck-border-radius) var(--ck-border-radius);color:var(--ck-color-base-background);content:attr(data-html-object-embed-label);font-family:var(--ck-font-face);font-size:var(--ck-font-size-tiny);font-style:normal;font-weight:400;left:var(--ck-spacing-standard);padding:calc(var(--ck-spacing-tiny) + var(--ck-html-object-embed-unfocused-outline-width)) var(--ck-spacing-small) var(--ck-spacing-tiny);position:absolute;top:0;transition:background var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve)}.ck-widget.html-object-embed .ck-widget__type-around .ck-widget__type-around__button.ck-widget__type-around__button_before{margin-left:50px}.ck-widget.html-object-embed .html-object-embed__content{pointer-events:none}div.ck-widget.html-object-embed{margin:1em auto}span.ck-widget.html-object-embed{display:inline-block}";
-styleInject(css_248z$6);/**
+}var css_248z$5 = ":root{--ck-html-object-embed-unfocused-outline-width:1px}.ck-widget.html-object-embed{background-color:var(--ck-color-base-foreground);font-size:var(--ck-font-size-base);min-width:calc(76px + var(--ck-spacing-standard));padding:var(--ck-spacing-small);padding-top:calc(var(--ck-font-size-tiny) + var(--ck-spacing-large))}.ck-widget.html-object-embed:not(.ck-widget_selected):not(:hover){outline:var(--ck-html-object-embed-unfocused-outline-width) dashed var(--ck-color-widget-blurred-border)}.ck-widget.html-object-embed:before{background:#999;border-radius:0 0 var(--ck-border-radius) var(--ck-border-radius);color:var(--ck-color-base-background);content:attr(data-html-object-embed-label);font-family:var(--ck-font-face);font-size:var(--ck-font-size-tiny);font-style:normal;font-weight:400;left:var(--ck-spacing-standard);padding:calc(var(--ck-spacing-tiny) + var(--ck-html-object-embed-unfocused-outline-width)) var(--ck-spacing-small) var(--ck-spacing-tiny);position:absolute;top:0;transition:background var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve)}.ck-widget.html-object-embed .ck-widget__type-around .ck-widget__type-around__button.ck-widget__type-around__button_before{margin-left:50px}.ck-widget.html-object-embed .html-object-embed__content{pointer-events:none}div.ck-widget.html-object-embed{margin:1em auto}span.ck-widget.html-object-embed{display:inline-block}";
+styleInject(css_248z$5);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -92974,8 +93355,8 @@ class Bold extends Plugin {
     static get pluginName() {
         return 'Bold';
     }
-}var css_248z$5 = ".ck-content code{background-color:hsla(0,0%,78%,.3);border-radius:2px;padding:.15em}.ck.ck-editor__editable .ck-code_selected{background-color:hsla(0,0%,78%,.5)}";
-styleInject(css_248z$5);/**
+}var css_248z$4 = ".ck-content code{background-color:hsla(0,0%,78%,.3);border-radius:2px;padding:.15em}.ck.ck-editor__editable .ck-code_selected{background-color:hsla(0,0%,78%,.5)}";
+styleInject(css_248z$4);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -93621,8 +94002,8 @@ class SpecialCharactersNavigationView extends FormHeaderView {
         }
         return groupDefs;
     }
-}var css_248z$4 = ".ck.ck-character-grid{max-width:100%}.ck.ck-character-grid .ck-character-grid__tiles{display:grid}:root{--ck-character-grid-tile-size:24px}.ck.ck-character-grid{max-height:200px;overflow-x:hidden;overflow-y:auto;width:350px}@media screen and (max-width:600px){.ck.ck-character-grid{width:190px}}.ck.ck-character-grid .ck-character-grid__tiles{grid-gap:var(--ck-spacing-standard);grid-template-columns:repeat(10,1fr);margin:var(--ck-spacing-standard) var(--ck-spacing-large)}@media screen and (max-width:600px){.ck.ck-character-grid .ck-character-grid__tiles{grid-template-columns:repeat(5,1fr)}}.ck.ck-character-grid .ck-character-grid__tile{border:0;font-size:1.2em;height:var(--ck-character-grid-tile-size);min-height:var(--ck-character-grid-tile-size);min-width:var(--ck-character-grid-tile-size);padding:0;transition:box-shadow .2s ease;width:var(--ck-character-grid-tile-size)}.ck.ck-character-grid .ck-character-grid__tile:focus:not(.ck-disabled),.ck.ck-character-grid .ck-character-grid__tile:hover:not(.ck-disabled){border:0;box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-focus-border)}.ck.ck-character-grid .ck-character-grid__tile .ck-button__label{line-height:var(--ck-character-grid-tile-size);text-align:center;width:100%}";
-styleInject(css_248z$4);/**
+}var css_248z$3 = ".ck.ck-character-grid{max-width:100%}.ck.ck-character-grid .ck-character-grid__tiles{display:grid}:root{--ck-character-grid-tile-size:24px}.ck.ck-character-grid{max-height:200px;overflow-x:hidden;overflow-y:auto;width:350px}@media screen and (max-width:600px){.ck.ck-character-grid{width:190px}}.ck.ck-character-grid .ck-character-grid__tiles{grid-gap:var(--ck-spacing-standard);grid-template-columns:repeat(10,1fr);margin:var(--ck-spacing-standard) var(--ck-spacing-large)}@media screen and (max-width:600px){.ck.ck-character-grid .ck-character-grid__tiles{grid-template-columns:repeat(5,1fr)}}.ck.ck-character-grid .ck-character-grid__tile{border:0;font-size:1.2em;height:var(--ck-character-grid-tile-size);min-height:var(--ck-character-grid-tile-size);min-width:var(--ck-character-grid-tile-size);padding:0;transition:box-shadow .2s ease;width:var(--ck-character-grid-tile-size)}.ck.ck-character-grid .ck-character-grid__tile:focus:not(.ck-disabled),.ck.ck-character-grid .ck-character-grid__tile:hover:not(.ck-disabled){border:0;box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-focus-border)}.ck.ck-character-grid .ck-character-grid__tile .ck-button__label{line-height:var(--ck-character-grid-tile-size);text-align:center;width:100%}";
+styleInject(css_248z$3);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -93744,8 +94125,8 @@ class CharacterGridView extends View$1 {
     focus() {
         this.tiles.first.focus();
     }
-}var css_248z$3 = ".ck.ck-character-info{border-top:1px solid var(--ck-color-base-border);display:flex;justify-content:space-between;padding:var(--ck-spacing-small) var(--ck-spacing-large)}.ck.ck-character-info>*{font-size:var(--ck-font-size-small);text-transform:uppercase}.ck.ck-character-info .ck-character-info__name{max-width:280px;overflow:hidden;text-overflow:ellipsis}.ck.ck-character-info .ck-character-info__code{opacity:.6}@media screen and (max-width:600px){.ck.ck-character-info{max-width:190px}}";
-styleInject(css_248z$3);/**
+}var css_248z$2 = ".ck.ck-character-info{border-top:1px solid var(--ck-color-base-border);display:flex;justify-content:space-between;padding:var(--ck-spacing-small) var(--ck-spacing-large)}.ck.ck-character-info>*{font-size:var(--ck-font-size-small);text-transform:uppercase}.ck.ck-character-info .ck-character-info__name{max-width:280px;overflow:hidden;text-overflow:ellipsis}.ck.ck-character-info .ck-character-info__code{opacity:.6}@media screen and (max-width:600px){.ck.ck-character-info{max-width:190px}}";
+styleInject(css_248z$2);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -93886,8 +94267,8 @@ class SpecialCharactersView extends View$1 {
         this.navigationView.focus();
     }
 }var specialCharactersIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10 2.5a7.47 7.47 0 0 1 4.231 1.31 7.268 7.268 0 0 1 2.703 3.454 7.128 7.128 0 0 1 .199 4.353c-.39 1.436-1.475 2.72-2.633 3.677h2.013c0-.226.092-.443.254-.603a.876.876 0 0 1 1.229 0c.163.16.254.377.254.603v.853c0 .209-.078.41-.22.567a.873.873 0 0 1-.547.28l-.101.006h-4.695a.517.517 0 0 1-.516-.518v-1.265c0-.21.128-.398.317-.489a5.601 5.601 0 0 0 2.492-2.371 5.459 5.459 0 0 0 .552-3.693 5.53 5.53 0 0 0-1.955-3.2A5.71 5.71 0 0 0 10 4.206 5.708 5.708 0 0 0 6.419 5.46 5.527 5.527 0 0 0 4.46 8.663a5.457 5.457 0 0 0 .554 3.695 5.6 5.6 0 0 0 2.497 2.37.55.55 0 0 1 .317.49v1.264c0 .286-.23.518-.516.518H2.618a.877.877 0 0 1-.614-.25.845.845 0 0 1-.254-.603v-.853c0-.226.091-.443.254-.603a.876.876 0 0 1 1.228 0c.163.16.255.377.255.603h1.925c-1.158-.958-2.155-2.241-2.545-3.678a7.128 7.128 0 0 1 .199-4.352 7.268 7.268 0 0 1 2.703-3.455A7.475 7.475 0 0 1 10 2.5z\"/></svg>";
-var css_248z$2 = ".ck.ck-special-characters-navigation>.ck-label{max-width:160px;overflow:hidden;text-overflow:ellipsis}.ck.ck-special-characters-navigation>.ck-dropdown .ck-dropdown__panel{max-height:250px;overflow-x:hidden;overflow-y:auto}@media screen and (max-width:600px){.ck.ck-special-characters-navigation{max-width:190px}.ck.ck-special-characters-navigation>.ck-form__header__label{overflow:hidden;text-overflow:ellipsis}}";
-styleInject(css_248z$2);/**
+var css_248z$1 = ".ck.ck-special-characters-navigation>.ck-label{max-width:160px;overflow:hidden;text-overflow:ellipsis}.ck.ck-special-characters-navigation>.ck-dropdown .ck-dropdown__panel{max-height:250px;overflow-x:hidden;overflow-y:auto}@media screen and (max-width:600px){.ck.ck-special-characters-navigation{max-width:190px}.ck.ck-special-characters-navigation>.ck-form__header__label{overflow:hidden;text-overflow:ellipsis}}";
+styleInject(css_248z$1);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -94596,8 +94977,8 @@ function getInsertHorizontalLineParent(selection, model) {
         return parent.parent;
     }
     return parent;
-}var css_248z$1 = ".ck-editor__editable .ck-horizontal-line{display:flow-root}.ck-content hr{background:#dedede;border:0;height:4px;margin:15px 0}";
-styleInject(css_248z$1);/**
+}var css_248z = ".ck-editor__editable .ck-horizontal-line{display:flow-root}.ck-content hr{background:#dedede;border:0;height:4px;margin:15px 0}";
+styleInject(css_248z);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -94947,360 +95328,7 @@ class WordCount extends Plugin {
             characters
         });
     }
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */var index$1=/*#__PURE__*/Object.freeze({__proto__:null,Essentials:Essentials});/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * The link image engine feature.
- *
- * It accepts the `linkHref="url"` attribute in the model for the {@link module:image/image~Image `<imageBlock>`} element
- * which allows linking images.
- */
-class LinkImageEditing extends Plugin {
-    /**
-     * @inheritDoc
-     */
-    static get requires() {
-        return ['ImageEditing', 'ImageUtils', LinkEditing];
-    }
-    /**
-     * @inheritDoc
-     */
-    static get pluginName() {
-        return 'LinkImageEditing';
-    }
-    /**
-     * @inheritDoc
-     */
-    init() {
-        const editor = this.editor;
-        const schema = editor.model.schema;
-        if (editor.plugins.has('ImageBlockEditing')) {
-            schema.extend('imageBlock', { allowAttributes: ['linkHref'] });
-        }
-        editor.conversion.for('upcast').add(upcastLink(editor));
-        editor.conversion.for('downcast').add(downcastImageLink(editor));
-        // Definitions for decorators are provided by the `link` command and the `LinkEditing` plugin.
-        this._enableAutomaticDecorators();
-        this._enableManualDecorators();
-    }
-    /**
-     * Processes {@link module:link/linkconfig~LinkDecoratorAutomaticDefinition automatic decorators} definitions and
-     * attaches proper converters that will work when linking an image.`
-     */
-    _enableAutomaticDecorators() {
-        const editor = this.editor;
-        const command = editor.commands.get('link');
-        const automaticDecorators = command.automaticDecorators;
-        if (automaticDecorators.length) {
-            editor.conversion.for('downcast').add(automaticDecorators.getDispatcherForLinkedImage());
-        }
-    }
-    /**
-     * Processes transformed {@link module:link/utils/manualdecorator~ManualDecorator} instances and attaches proper converters
-     * that will work when linking an image.
-     */
-    _enableManualDecorators() {
-        const editor = this.editor;
-        const command = editor.commands.get('link');
-        for (const decorator of command.manualDecorators) {
-            if (editor.plugins.has('ImageBlockEditing')) {
-                editor.model.schema.extend('imageBlock', { allowAttributes: decorator.id });
-            }
-            if (editor.plugins.has('ImageInlineEditing')) {
-                editor.model.schema.extend('imageInline', { allowAttributes: decorator.id });
-            }
-            editor.conversion.for('downcast').add(downcastImageLinkManualDecorator(decorator));
-            editor.conversion.for('upcast').add(upcastImageLinkManualDecorator(editor, decorator));
-        }
-    }
-}
-/**
- * Returns a converter for linked block images that consumes the "href" attribute
- * if a link contains an image.
- *
- * @param editor The editor instance.
- */
-function upcastLink(editor) {
-    const isImageInlinePluginLoaded = editor.plugins.has('ImageInlineEditing');
-    const imageUtils = editor.plugins.get('ImageUtils');
-    return dispatcher => {
-        dispatcher.on('element:a', (evt, data, conversionApi) => {
-            const viewLink = data.viewItem;
-            const imageInLink = imageUtils.findViewImgElement(viewLink);
-            if (!imageInLink) {
-                return;
-            }
-            const blockImageView = imageInLink.findAncestor(element => imageUtils.isBlockImageView(element));
-            // There are four possible cases to consider here
-            //
-            // 1. A "root > ... > figure.image > a > img" structure.
-            // 2. A "root > ... > figure.image > a > picture > img" structure.
-            // 3. A "root > ... > block > a > img" structure.
-            // 4. A "root > ... > block > a > picture > img" structure.
-            //
-            // but the last 2 cases should only be considered by this converter when the inline image plugin
-            // is NOT loaded in the editor (because otherwise, that would be a plain, linked inline image).
-            if (isImageInlinePluginLoaded && !blockImageView) {
-                return;
-            }
-            // There's an image inside an <a> element - we consume it so it won't be picked up by the Link plugin.
-            const consumableAttributes = { attributes: ['href'] };
-            // Consume the `href` attribute so the default one will not convert it to $text attribute.
-            if (!conversionApi.consumable.consume(viewLink, consumableAttributes)) {
-                // Might be consumed by something else - i.e. other converter with priority=highest - a standard check.
-                return;
-            }
-            const linkHref = viewLink.getAttribute('href');
-            // Missing the 'href' attribute.
-            if (!linkHref) {
-                return;
-            }
-            // A full definition of the image feature.
-            // figure > a > img: parent of the view link element is an image element (figure).
-            let modelElement = data.modelCursor.parent;
-            if (!modelElement.is('element', 'imageBlock')) {
-                // a > img: parent of the view link is not the image (figure) element. We need to convert it manually.
-                const conversionResult = conversionApi.convertItem(imageInLink, data.modelCursor);
-                // Set image range as conversion result.
-                data.modelRange = conversionResult.modelRange;
-                // Continue conversion where image conversion ends.
-                data.modelCursor = conversionResult.modelCursor;
-                modelElement = data.modelCursor.nodeBefore;
-            }
-            if (modelElement && modelElement.is('element', 'imageBlock')) {
-                // Set the linkHref attribute from link element on model image element.
-                conversionApi.writer.setAttribute('linkHref', linkHref, modelElement);
-            }
-        }, { priority: 'high' });
-        // Using the same priority that `upcastImageLinkManualDecorator()` converter guarantees
-        // that manual decorators will decorate the proper element.
-    };
-}
-/**
- * Creates a converter that adds `<a>` to linked block image view elements.
- */
-function downcastImageLink(editor) {
-    const imageUtils = editor.plugins.get('ImageUtils');
-    return dispatcher => {
-        dispatcher.on('attribute:linkHref:imageBlock', (evt, data, conversionApi) => {
-            if (!conversionApi.consumable.consume(data.item, evt.name)) {
-                return;
-            }
-            // The image will be already converted - so it will be present in the view.
-            const viewFigure = conversionApi.mapper.toViewElement(data.item);
-            const writer = conversionApi.writer;
-            // But we need to check whether the link element exists.
-            const linkInImage = Array.from(viewFigure.getChildren())
-                .find((child) => child.is('element', 'a'));
-            const viewImage = imageUtils.findViewImgElement(viewFigure);
-            // <picture>...<img/></picture> or <img/>
-            const viewImgOrPicture = viewImage.parent.is('element', 'picture') ? viewImage.parent : viewImage;
-            // If so, update the attribute if it's defined or remove the entire link if the attribute is empty.
-            if (linkInImage) {
-                if (data.attributeNewValue) {
-                    writer.setAttribute('href', data.attributeNewValue, linkInImage);
-                }
-                else {
-                    writer.move(writer.createRangeOn(viewImgOrPicture), writer.createPositionAt(viewFigure, 0));
-                    writer.remove(linkInImage);
-                }
-            }
-            else {
-                // But if it does not exist. Let's wrap already converted image by newly created link element.
-                // 1. Create an empty link element.
-                const linkElement = writer.createContainerElement('a', { href: data.attributeNewValue });
-                // 2. Insert link inside the associated image.
-                writer.insert(writer.createPositionAt(viewFigure, 0), linkElement);
-                // 3. Move the image to the link.
-                writer.move(writer.createRangeOn(viewImgOrPicture), writer.createPositionAt(linkElement, 0));
-            }
-        }, { priority: 'high' });
-    };
-}
-/**
- * Returns a converter that decorates the `<a>` element when the image is the link label.
- */
-function downcastImageLinkManualDecorator(decorator) {
-    return dispatcher => {
-        dispatcher.on(`attribute:${decorator.id}:imageBlock`, (evt, data, conversionApi) => {
-            const viewFigure = conversionApi.mapper.toViewElement(data.item);
-            const linkInImage = Array.from(viewFigure.getChildren())
-                .find((child) => child.is('element', 'a'));
-            // The <a> element was removed by the time this converter is executed.
-            // It may happen when the base `linkHref` and decorator attributes are removed
-            // at the same time (see #8401).
-            if (!linkInImage) {
-                return;
-            }
-            for (const [key, val] of toMap(decorator.attributes)) {
-                conversionApi.writer.setAttribute(key, val, linkInImage);
-            }
-            if (decorator.classes) {
-                conversionApi.writer.addClass(decorator.classes, linkInImage);
-            }
-            for (const key in decorator.styles) {
-                conversionApi.writer.setStyle(key, decorator.styles[key], linkInImage);
-            }
-        });
-    };
-}
-/**
- * Returns a converter that checks whether manual decorators should be applied to the link.
- */
-function upcastImageLinkManualDecorator(editor, decorator) {
-    const isImageInlinePluginLoaded = editor.plugins.has('ImageInlineEditing');
-    const imageUtils = editor.plugins.get('ImageUtils');
-    return dispatcher => {
-        dispatcher.on('element:a', (evt, data, conversionApi) => {
-            const viewLink = data.viewItem;
-            const imageInLink = imageUtils.findViewImgElement(viewLink);
-            // We need to check whether an image is inside a link because the converter handles
-            // only manual decorators for linked images. See #7975.
-            if (!imageInLink) {
-                return;
-            }
-            const blockImageView = imageInLink.findAncestor(element => imageUtils.isBlockImageView(element));
-            if (isImageInlinePluginLoaded && !blockImageView) {
-                return;
-            }
-            const matcher = new Matcher(decorator._createPattern());
-            const result = matcher.match(viewLink);
-            // The link element does not have required attributes or/and proper values.
-            if (!result) {
-                return;
-            }
-            // Check whether we can consume those attributes.
-            if (!conversionApi.consumable.consume(viewLink, result.match)) {
-                return;
-            }
-            // At this stage we can assume that we have the `<imageBlock>` element.
-            // `nodeBefore` comes after conversion: `<a><img></a>`.
-            // `parent` comes with full image definition: `<figure><a><img></a></figure>.
-            // See the body of the `upcastLink()` function.
-            const modelElement = data.modelCursor.nodeBefore || data.modelCursor.parent;
-            conversionApi.writer.setAttribute(decorator.id, true, modelElement);
-        }, { priority: 'high' });
-        // Using the same priority that `upcastLink()` converter guarantees that the linked image was properly converted.
-    };
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * The link image UI plugin.
- *
- * This plugin provides the `'linkImage'` button that can be displayed in the {@link module:image/imagetoolbar~ImageToolbar}.
- * It can be used to wrap images in links.
- */
-class LinkImageUI extends Plugin {
-    /**
-     * @inheritDoc
-     */
-    static get requires() {
-        return [LinkEditing, LinkUI, 'ImageBlockEditing'];
-    }
-    /**
-     * @inheritDoc
-     */
-    static get pluginName() {
-        return 'LinkImageUI';
-    }
-    /**
-     * @inheritDoc
-     */
-    init() {
-        const editor = this.editor;
-        const viewDocument = editor.editing.view.document;
-        this.listenTo(viewDocument, 'click', (evt, data) => {
-            if (this._isSelectedLinkedImage(editor.model.document.selection)) {
-                // Prevent browser navigation when clicking a linked image.
-                data.preventDefault();
-                // Block the `LinkUI` plugin when an image was clicked.
-                // In such a case, we'd like to display the image toolbar.
-                evt.stop();
-            }
-        }, { priority: 'high' });
-        this._createToolbarLinkImageButton();
-    }
-    /**
-     * Creates a `LinkImageUI` button view.
-     *
-     * Clicking this button shows a {@link module:link/linkui~LinkUI#_balloon} attached to the selection.
-     * When an image is already linked, the view shows {@link module:link/linkui~LinkUI#actionsView} or
-     * {@link module:link/linkui~LinkUI#formView} if it is not.
-     */
-    _createToolbarLinkImageButton() {
-        const editor = this.editor;
-        const t = editor.t;
-        editor.ui.componentFactory.add('linkImage', locale => {
-            const button = new ButtonView(locale);
-            const plugin = editor.plugins.get('LinkUI');
-            const linkCommand = editor.commands.get('link');
-            button.set({
-                isEnabled: true,
-                label: t('Link image'),
-                icon: linkIcon,
-                keystroke: LINK_KEYSTROKE,
-                tooltip: true,
-                isToggleable: true
-            });
-            // Bind button to the command.
-            button.bind('isEnabled').to(linkCommand, 'isEnabled');
-            button.bind('isOn').to(linkCommand, 'value', value => !!value);
-            // Show the actionsView or formView (both from LinkUI) on button click depending on whether the image is linked already.
-            this.listenTo(button, 'execute', () => {
-                if (this._isSelectedLinkedImage(editor.model.document.selection)) {
-                    plugin._addActionsView();
-                }
-                else {
-                    plugin._showUI(true);
-                }
-            });
-            return button;
-        });
-    }
-    /**
-     * Returns true if a linked image (either block or inline) is the only selected element
-     * in the model document.
-     */
-    _isSelectedLinkedImage(selection) {
-        const selectedModelElement = selection.getSelectedElement();
-        const imageUtils = this.editor.plugins.get('ImageUtils');
-        return imageUtils.isImage(selectedModelElement) && selectedModelElement.hasAttribute('linkHref');
-    }
-}var css_248z = ".ck.ck-editor__editable a span.image-inline:after,.ck.ck-editor__editable figure.image>a:after{display:block;position:absolute}:root{--ck-link-image-indicator-icon-size:20;--ck-link-image-indicator-icon-is-visible:clamp(0px,100% - 50px,1px)}.ck.ck-editor__editable a span.image-inline:after,.ck.ck-editor__editable figure.image>a:after{background-color:rgba(0,0,0,.4);background-image:url(\"data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAgMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbD0iI2ZmZiIgZD0ibTExLjA3NyAxNSAuOTkxLTEuNDE2YS43NS43NSAwIDEgMSAxLjIyOS44NmwtMS4xNDggMS42NGEuNzQ4Ljc0OCAwIDAgMS0uMjE3LjIwNiA1LjI1MSA1LjI1MSAwIDAgMS04LjUwMy01Ljk1NS43NDEuNzQxIDAgMCAxIC4xMi0uMjc0bDEuMTQ3LTEuNjM5YS43NS43NSAwIDEgMSAxLjIyOC44Nkw0LjkzMyAxMC43bC4wMDYuMDAzYTMuNzUgMy43NSAwIDAgMCA2LjEzMiA0LjI5NGwuMDA2LjAwNHptNS40OTQtNS4zMzVhLjc0OC43NDggMCAwIDEtLjEyLjI3NGwtMS4xNDcgMS42MzlhLjc1Ljc1IDAgMSAxLTEuMjI4LS44NmwuODYtMS4yM2EzLjc1IDMuNzUgMCAwIDAtNi4xNDQtNC4zMDFsLS44NiAxLjIyOWEuNzUuNzUgMCAwIDEtMS4yMjktLjg2bDEuMTQ4LTEuNjRhLjc0OC43NDggMCAwIDEgLjIxNy0uMjA2IDUuMjUxIDUuMjUxIDAgMCAxIDguNTAzIDUuOTU1em0tNC41NjMtMi41MzJhLjc1Ljc1IDAgMCAxIC4xODQgMS4wNDVsLTMuMTU1IDQuNTA1YS43NS43NSAwIDEgMS0xLjIyOS0uODZsMy4xNTUtNC41MDZhLjc1Ljc1IDAgMCAxIDEuMDQ1LS4xODR6Ii8+PC9zdmc+\");background-position:50%;background-repeat:no-repeat;background-size:14px;border-radius:100%;content:\"\";height:calc(var(--ck-link-image-indicator-icon-is-visible)*var(--ck-link-image-indicator-icon-size));overflow:hidden;right:min(var(--ck-spacing-medium),6%);top:min(var(--ck-spacing-medium),6%);width:calc(var(--ck-link-image-indicator-icon-is-visible)*var(--ck-link-image-indicator-icon-size))}";
-styleInject(css_248z);/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * The `LinkImage` plugin.
- *
- * This is a "glue" plugin that loads the {@link module:link/linkimageediting~LinkImageEditing link image editing feature}
- * and {@link module:link/linkimageui~LinkImageUI link image UI feature}.
- */
-class LinkImage extends Plugin {
-    /**
-     * @inheritDoc
-     */
-    static get requires() {
-        return [LinkImageEditing, LinkImageUI];
-    }
-    /**
-     * @inheritDoc
-     */
-    static get pluginName() {
-        return 'LinkImage';
-    }
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */var index=/*#__PURE__*/Object.freeze({__proto__:null,Link:Link,LinkEditing:LinkEditing,LinkUI:LinkUI,LinkImage:LinkImage,LinkImageEditing:LinkImageEditing,LinkImageUI:LinkImageUI,AutoLink:AutoLink,LinkCommand:LinkCommand,UnlinkCommand:UnlinkCommand});const CKEditor5Plugins = {
+}const CKEditor5Plugins = {
   Alignment,
   BlockQuote,
   Bold,
@@ -95334,5 +95362,6 @@ class LinkImage extends Plugin {
   WordCount,
 };
 
-class CKEditor5 extends ClassicEditor {}
-CKEditor5.builtinPlugins = Object.values(CKEditor5Plugins);export{CKEditor5,CKEditor5Plugins,index$2 as Clipboard,index$6 as Core,index$7 as Engine,index$1 as Essentials,index as Link,LinkActionsView,utils as LinkUtils,index$4 as Typing,index$5 as UI,index$9 as Utils,index$3 as Widget,WordCount};
+class CKEditor5 extends ClassicEditor {
+  static builtinPlugins = Object.values(CKEditor5Plugins);
+}export{CKEditor5,CKEditor5Plugins,index$2 as Clipboard,index$6 as Core,index$7 as Engine,index$1 as Essentials,index as Link,LinkActionsView,utils as LinkUtils,index$4 as Typing,index$5 as UI,index$9 as Utils,index$3 as Widget,WordCount};
