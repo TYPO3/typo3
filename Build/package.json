@@ -152,7 +152,7 @@
     "es-module-shims": "^1.7.2",
     "flatpickr": "^4.6.13",
     "interactjs": "^1.10.17",
-    "jquery": "^3.6.4",
+    "jquery": "^3.7.1",
     "jquery-ui": "^1.13.2",
     "lit": "^2.7.2",
     "lit-element": "^3.3.1",
