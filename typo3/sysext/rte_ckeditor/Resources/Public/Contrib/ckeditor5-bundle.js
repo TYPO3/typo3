@@ -1229,13 +1229,11 @@ function formatConsoleArguments(errorName, data) {
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
-const version = '38.1.0';
+const version = '39.0.2';
 // The second argument is not a month. It is `monthIndex` and starts from `0`.
-const releaseDate = new Date(2023, 5, 28);
+const releaseDate = new Date(2023, 8, 6);
 /* istanbul ignore next -- @preserve */
-const windowOrGlobal = typeof window === 'object' ? window : global;
-/* istanbul ignore next -- @preserve */
-if (windowOrGlobal.CKEDITOR_VERSION) {
+if (globalThis.CKEDITOR_VERSION) {
     /**
      * This error is thrown when due to a mistake in how CKEditor 5 was installed or initialized, some
      * of its modules were duplicated (evaluated and executed twice). Module duplication leads to inevitable runtime
@@ -1373,7 +1371,7 @@ if (windowOrGlobal.CKEDITOR_VERSION) {
     throw new CKEditorError('ckeditor-duplicated-modules', null);
 }
 else {
-    windowOrGlobal.CKEDITOR_VERSION = version;
+    globalThis.CKEDITOR_VERSION = version;
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -7863,37 +7861,6 @@ function getAncestors(node) {
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
-/* globals HTMLTextAreaElement */
-/**
- * @module utils/dom/getdatafromelement
- */
-/**
- * Gets data from a given source element.
- *
- * @param el The element from which the data will be retrieved.
- * @returns The data string.
- */
-function getDataFromElement(el) {
-    if (el instanceof HTMLTextAreaElement) {
-        return el.value;
-    }
-    return el.innerHTML;
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-/**
- * @module utils/dom/istext
- */
-/**
- * Checks if the object is a native DOM Text node.
- */
-function isText(obj) {
-    return Object.prototype.toString.call(obj) == '[object Text]';
-}/**
- * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
 /**
  * @module utils/dom/isrange
  */
@@ -7925,6 +7892,18 @@ function getBorderWidths(element) {
         bottom: parseInt(style.borderBottomWidth, 10),
         left: parseInt(style.borderLeftWidth, 10)
     };
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * @module utils/dom/istext
+ */
+/**
+ * Checks if the object is a native DOM Text node.
+ */
+function isText(obj) {
+    return Object.prototype.toString.call(obj) == '[object Text]';
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -8305,6 +8284,84 @@ function getElementPosition(element) {
  */
 function getElementOverflow(element) {
     return element.ownerDocument.defaultView.getComputedStyle(element).overflow;
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * Calculates the intersection `Rect` of a given set of elements (and/or a `document`).
+ * Also, takes into account the viewport top offset configuration.
+ *
+ * @internal
+ * @param elements
+ * @param viewportTopOffset
+ */
+function getElementsIntersectionRect(elements, viewportTopOffset = 0) {
+    const elementRects = elements.map(element => {
+        // The document (window) is yet another "element", but cropped by the top offset.
+        if (element instanceof Document) {
+            const windowRect = new Rect(global$1.window);
+            windowRect.top += viewportTopOffset;
+            windowRect.height -= viewportTopOffset;
+            return windowRect;
+        }
+        else {
+            return new Rect(element);
+        }
+    });
+    let intersectionRect = elementRects[0];
+    // @if CK_DEBUG_GETELEMENTSINTERSECTIONRECT // for ( const rect of elementRects ) {
+    // @if CK_DEBUG_GETELEMENTSINTERSECTIONRECT // 	RectDrawer.draw( rect, {
+    // @if CK_DEBUG_GETELEMENTSINTERSECTIONRECT // 		outlineWidth: '1px', opacity: '.7', outlineStyle: 'dashed'
+    // @if CK_DEBUG_GETELEMENTSINTERSECTIONRECT // 	}, 'Scrollable element' );
+    // @if CK_DEBUG_GETELEMENTSINTERSECTIONRECT // }
+    for (const rect of elementRects.slice(1)) {
+        if (intersectionRect) {
+            intersectionRect = intersectionRect.getIntersection(rect);
+        }
+    }
+    return intersectionRect;
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * Loops over the given element's ancestors to find all the scrollable elements.
+ *
+ * **Note**: The `document` is always included in the returned array.
+ *
+ * @internal
+ * @param element
+ * @returns An array of scrollable element's ancestors (including the `document`).
+ */
+function getScrollableAncestors(element) {
+    const scrollableAncestors = [];
+    let scrollableAncestor = findClosestScrollableAncestor(element);
+    while (scrollableAncestor && scrollableAncestor !== global$1.document.body) {
+        scrollableAncestors.push(scrollableAncestor);
+        scrollableAncestor = findClosestScrollableAncestor(scrollableAncestor);
+    }
+    scrollableAncestors.push(global$1.document);
+    return scrollableAncestors;
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/* globals HTMLTextAreaElement */
+/**
+ * @module utils/dom/getdatafromelement
+ */
+/**
+ * Gets data from a given source element.
+ *
+ * @param el The element from which the data will be retrieved.
+ * @returns The data string.
+ */
+function getDataFromElement(el) {
+    if (el instanceof HTMLTextAreaElement) {
+        return el.value;
+    }
+    return el.innerHTML;
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -8995,13 +9052,16 @@ function scrollViewportToShowTarget({ target, viewportOffset = 0, ancestorOffset
  * @param target A target, which supposed to become visible to the user.
  * @param ancestorOffset An offset between the target and the boundary of scrollable ancestors
  * to be maintained while scrolling.
+ * @param limiterElement The outermost ancestor that should be scrolled. If specified, it can prevent
+ * scrolling the whole page.
  */
-function scrollAncestorsToShowTarget(target, ancestorOffset) {
+function scrollAncestorsToShowTarget(target, ancestorOffset, limiterElement) {
     const targetParent = getParentElement(target);
     scrollAncestorsToShowRect({
         parent: targetParent,
         getRect: () => new Rect(target),
-        ancestorOffset
+        ancestorOffset,
+        limiterElement
     });
 }
 /**
@@ -9117,12 +9177,14 @@ function scrollWindowToShowRect({ window, rect, alignToTop, forceScroll, viewpor
  * anyway.
  * @param options.forceScroll When set `true`, the `rect` will be aligned to the top of scrollable ancestors
  * whether it is already visible or not. This option will only work when `alignToTop` is `true`
+ * @param options.limiterElement The outermost ancestor that should be scrolled. Defaults to the `<body>` element.
  */
-function scrollAncestorsToShowRect({ parent, getRect, alignToTop, forceScroll, ancestorOffset = 0 }) {
+function scrollAncestorsToShowRect({ parent, getRect, alignToTop, forceScroll, ancestorOffset = 0, limiterElement }) {
     const parentWindow = getWindow(parent);
     const forceScrollToTop = alignToTop && forceScroll;
     let parentRect, targetRect, targetFitsInTarget;
-    while (parent != parentWindow.document.body) {
+    const limiter = limiterElement || parentWindow.document.body;
+    while (parent != limiter) {
         targetRect = getRect();
         parentRect = new Rect(parent).excludeScrollbarsAndBorders();
         targetFitsInTarget = parentRect.contains(targetRect);
@@ -10249,6 +10311,8 @@ class FocusTracker extends DomEmitterMixin(ObservableMixin()) {
         super();
         /**
          * List of registered elements.
+         *
+         * @internal
          */
         this._elements = new Set();
         /**
@@ -10711,7 +10775,7 @@ function buildEmojiRegexp() {
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */var index$9=/*#__PURE__*/Object.freeze({__proto__:null,env:env,diff:diff,fastDiff:fastDiff,diffToChanges:diffToChanges,mix:mix,EmitterMixin:EmitterMixin,EventInfo:EventInfo,ObservableMixin:ObservableMixin,CKEditorError:CKEditorError,logError:logError,logWarning:logWarning,ElementReplacer:ElementReplacer,count:count,compareArrays:compareArrays,createElement:createElement,Config:Config,isIterable:isIterable,DomEmitterMixin:DomEmitterMixin,findClosestScrollableAncestor:findClosestScrollableAncestor,global:global$1,getAncestors:getAncestors,getDataFromElement:getDataFromElement,isText:isText,Rect:Rect,ResizeObserver:ResizeObserver,setDataInElement:setDataInElement,toUnit:toUnit,indexOf:indexOf,insertAt:insertAt,isComment:isComment,isNode:isNode,isRange:isRange,isValidAttributeName:isValidAttributeName,isVisible:isVisible,getOptimalPosition:getOptimalPosition,remove:remove$1,Locale:Locale,Collection:Collection,first:first,FocusTracker:FocusTracker,KeystrokeHandler:KeystrokeHandler,toArray:toArray$1,toMap:toMap,priorities:priorities,insertToPriorityArray:insertToPriorityArray,spliceArray:spliceArray,uid:uid,delay:delay,verifyLicense:verifyLicense,version:version,releaseDate:releaseDate,scrollViewportToShowTarget:scrollViewportToShowTarget,scrollAncestorsToShowTarget:scrollAncestorsToShowTarget,keyCodes:keyCodes,getCode:getCode,parseKeystroke:parseKeystroke,getEnvKeystrokeText:getEnvKeystrokeText,isArrowKeyCode:isArrowKeyCode,getLocalizedArrowKeyCodeDirection:getLocalizedArrowKeyCodeDirection,isForwardArrowKeyCode:isForwardArrowKeyCode,getLanguageDirection:getLanguageDirection,isCombiningMark:isCombiningMark,isHighSurrogateHalf:isHighSurrogateHalf,isLowSurrogateHalf:isLowSurrogateHalf,isInsideSurrogatePair:isInsideSurrogatePair,isInsideCombinedSymbol:isInsideCombinedSymbol,isInsideEmojiSequence:isInsideEmojiSequence});/**
+ */var index$9=/*#__PURE__*/Object.freeze({__proto__:null,env:env,diff:diff,fastDiff:fastDiff,diffToChanges:diffToChanges,mix:mix,EmitterMixin:EmitterMixin,EventInfo:EventInfo,ObservableMixin:ObservableMixin,CKEditorError:CKEditorError,logError:logError,logWarning:logWarning,ElementReplacer:ElementReplacer,count:count,compareArrays:compareArrays,createElement:createElement,Config:Config,isIterable:isIterable,DomEmitterMixin:DomEmitterMixin,findClosestScrollableAncestor:findClosestScrollableAncestor,global:global$1,getAncestors:getAncestors,getElementsIntersectionRect:getElementsIntersectionRect,getScrollableAncestors:getScrollableAncestors,getDataFromElement:getDataFromElement,isText:isText,Rect:Rect,ResizeObserver:ResizeObserver,setDataInElement:setDataInElement,toUnit:toUnit,indexOf:indexOf,insertAt:insertAt,isComment:isComment,isNode:isNode,isRange:isRange,isValidAttributeName:isValidAttributeName,isVisible:isVisible,getOptimalPosition:getOptimalPosition,remove:remove$1,Locale:Locale,Collection:Collection,first:first,FocusTracker:FocusTracker,KeystrokeHandler:KeystrokeHandler,toArray:toArray$1,toMap:toMap,priorities:priorities,insertToPriorityArray:insertToPriorityArray,spliceArray:spliceArray,uid:uid,delay:delay,verifyLicense:verifyLicense,version:version,releaseDate:releaseDate,scrollViewportToShowTarget:scrollViewportToShowTarget,scrollAncestorsToShowTarget:scrollAncestorsToShowTarget,keyCodes:keyCodes,getCode:getCode,parseKeystroke:parseKeystroke,getEnvKeystrokeText:getEnvKeystrokeText,isArrowKeyCode:isArrowKeyCode,getLocalizedArrowKeyCodeDirection:getLocalizedArrowKeyCodeDirection,isForwardArrowKeyCode:isForwardArrowKeyCode,getLanguageDirection:getLanguageDirection,isCombiningMark:isCombiningMark,isHighSurrogateHalf:isHighSurrogateHalf,isLowSurrogateHalf:isLowSurrogateHalf,isInsideSurrogatePair:isInsideSurrogatePair,isInsideCombinedSymbol:isInsideCombinedSymbol,isInsideEmojiSequence:isInsideEmojiSequence});/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -10935,8 +10999,8 @@ function styleInject(css, { insertAt } = {}) {
   } else {
     style.appendChild(document.createTextNode(css));
   }
-}var css_248z$14 = ".ck-hidden{display:none!important}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{box-sizing:border-box;height:auto;position:static;width:auto}:root{--ck-z-default:1;--ck-z-modal:calc(var(--ck-z-default) + 999)}.ck-transitions-disabled,.ck-transitions-disabled *{transition:none!important}:root{--ck-powered-by-line-height:10px;--ck-powered-by-padding-vertical:2px;--ck-powered-by-padding-horizontal:4px;--ck-powered-by-text-color:#4f4f4f;--ck-powered-by-border-radius:var(--ck-border-radius);--ck-powered-by-background:#fff;--ck-powered-by-border-color:var(--ck-color-focus-border)}.ck.ck-balloon-panel.ck-powered-by-balloon{--ck-border-radius:var(--ck-powered-by-border-radius);background:var(--ck-powered-by-background);box-shadow:none;min-height:unset;z-index:calc(var(--ck-z-modal) - 1)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by{line-height:var(--ck-powered-by-line-height)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by a{align-items:center;cursor:pointer;display:flex;filter:grayscale(80%);line-height:var(--ck-powered-by-line-height);opacity:.66;padding:var(--ck-powered-by-padding-vertical) var(--ck-powered-by-padding-horizontal)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-powered-by__label{color:var(--ck-powered-by-text-color);cursor:pointer;font-size:7.5px;font-weight:700;letter-spacing:-.2px;line-height:normal;margin-right:4px;padding-left:2px;text-transform:uppercase}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-icon{cursor:pointer;display:block}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by:hover a{filter:grayscale(0);opacity:1}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_inside]{border-color:transparent}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_border]{border:var(--ck-focus-ring);border-color:var(--ck-powered-by-border-color)}:root{--ck-color-base-foreground:#fafafa;--ck-color-base-background:#fff;--ck-color-base-border:#ccced1;--ck-color-base-action:#53a336;--ck-color-base-focus:#6cb5f9;--ck-color-base-text:#333;--ck-color-base-active:#2977ff;--ck-color-base-active-focus:#0d65ff;--ck-color-base-error:#db3700;--ck-color-focus-border-coordinates:218,81.8%,56.9%;--ck-color-focus-border:hsl(var(--ck-color-focus-border-coordinates));--ck-color-focus-outer-shadow:#cae1fc;--ck-color-focus-disabled-shadow:rgba(119,186,248,.3);--ck-color-focus-error-shadow:rgba(255,64,31,.3);--ck-color-text:var(--ck-color-base-text);--ck-color-shadow-drop:rgba(0,0,0,.15);--ck-color-shadow-drop-active:rgba(0,0,0,.2);--ck-color-shadow-inner:rgba(0,0,0,.1);--ck-color-button-default-background:transparent;--ck-color-button-default-hover-background:#f0f0f0;--ck-color-button-default-active-background:#f0f0f0;--ck-color-button-default-disabled-background:transparent;--ck-color-button-on-background:#f0f7ff;--ck-color-button-on-hover-background:#dbecff;--ck-color-button-on-active-background:#dbecff;--ck-color-button-on-disabled-background:#f0f2f4;--ck-color-button-on-color:#2977ff;--ck-color-button-action-background:var(--ck-color-base-action);--ck-color-button-action-hover-background:#4d9d30;--ck-color-button-action-active-background:#4d9d30;--ck-color-button-action-disabled-background:#7ec365;--ck-color-button-action-text:var(--ck-color-base-background);--ck-color-button-save:#008a00;--ck-color-button-cancel:#db3700;--ck-color-switch-button-off-background:#939393;--ck-color-switch-button-off-hover-background:#7d7d7d;--ck-color-switch-button-on-background:var(--ck-color-button-action-background);--ck-color-switch-button-on-hover-background:#4d9d30;--ck-color-switch-button-inner-background:var(--ck-color-base-background);--ck-color-switch-button-inner-shadow:rgba(0,0,0,.1);--ck-color-dropdown-panel-background:var(--ck-color-base-background);--ck-color-dropdown-panel-border:var(--ck-color-base-border);--ck-color-input-background:var(--ck-color-base-background);--ck-color-input-border:var(--ck-color-base-border);--ck-color-input-error-border:var(--ck-color-base-error);--ck-color-input-text:var(--ck-color-base-text);--ck-color-input-disabled-background:#f2f2f2;--ck-color-input-disabled-border:var(--ck-color-base-border);--ck-color-input-disabled-text:#757575;--ck-color-list-background:var(--ck-color-base-background);--ck-color-list-button-hover-background:var(--ck-color-button-default-hover-background);--ck-color-list-button-on-background:var(--ck-color-button-on-color);--ck-color-list-button-on-background-focus:var(--ck-color-button-on-color);--ck-color-list-button-on-text:var(--ck-color-base-background);--ck-color-panel-background:var(--ck-color-base-background);--ck-color-panel-border:var(--ck-color-base-border);--ck-color-toolbar-background:var(--ck-color-base-background);--ck-color-toolbar-border:var(--ck-color-base-border);--ck-color-tooltip-background:var(--ck-color-base-text);--ck-color-tooltip-text:var(--ck-color-base-background);--ck-color-engine-placeholder-text:#707070;--ck-color-upload-bar-background:#6cb5f9;--ck-color-link-default:#0000f0;--ck-color-link-selected-background:rgba(31,176,255,.1);--ck-color-link-fake-selection:rgba(31,176,255,.3);--ck-color-highlight-background:#ff0;--ck-disabled-opacity:.5;--ck-focus-outer-shadow-geometry:0 0 0 3px;--ck-focus-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-outer-shadow);--ck-focus-disabled-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-disabled-shadow);--ck-focus-error-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-error-shadow);--ck-focus-ring:1px solid var(--ck-color-focus-border);--ck-font-size-base:13px;--ck-line-height-base:1.84615;--ck-font-face:Helvetica,Arial,Tahoma,Verdana,Sans-Serif;--ck-font-size-tiny:0.7em;--ck-font-size-small:0.75em;--ck-font-size-normal:1em;--ck-font-size-big:1.4em;--ck-font-size-large:1.8em;--ck-ui-component-min-height:2.3em}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{word-wrap:break-word;background:transparent;border:0;margin:0;padding:0;text-decoration:none;transition:none;vertical-align:middle}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset_all{border-collapse:collapse;color:var(--ck-color-text);cursor:auto;float:none;font:normal normal normal var(--ck-font-size-base)/var(--ck-line-height-base) var(--ck-font-face);text-align:left;white-space:nowrap}.ck-reset_all .ck-rtl :not(.ck-reset_all-excluded *){text-align:right}.ck-reset_all iframe:not(.ck-reset_all-excluded *){vertical-align:inherit}.ck-reset_all textarea:not(.ck-reset_all-excluded *){white-space:pre-wrap}.ck-reset_all input[type=password]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text]:not(.ck-reset_all-excluded *),.ck-reset_all textarea:not(.ck-reset_all-excluded *){cursor:text}.ck-reset_all input[type=password][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all textarea[disabled]:not(.ck-reset_all-excluded *){cursor:default}.ck-reset_all fieldset:not(.ck-reset_all-excluded *){border:2px groove #dfdee3;padding:10px}.ck-reset_all button:not(.ck-reset_all-excluded *)::-moz-focus-inner{border:0;padding:0}.ck[dir=rtl],.ck[dir=rtl] .ck{text-align:right}:root{--ck-border-radius:2px;--ck-inner-shadow:2px 2px 3px var(--ck-color-shadow-inner) inset;--ck-drop-shadow:0 1px 2px 1px var(--ck-color-shadow-drop);--ck-drop-shadow-active:0 3px 6px 1px var(--ck-color-shadow-drop-active);--ck-spacing-unit:0.6em;--ck-spacing-large:calc(var(--ck-spacing-unit)*1.5);--ck-spacing-standard:var(--ck-spacing-unit);--ck-spacing-medium:calc(var(--ck-spacing-unit)*0.8);--ck-spacing-small:calc(var(--ck-spacing-unit)*0.5);--ck-spacing-tiny:calc(var(--ck-spacing-unit)*0.3);--ck-spacing-extra-tiny:calc(var(--ck-spacing-unit)*0.16)}";
-styleInject(css_248z$14);/**
+}var css_248z$15 = ".ck-hidden{display:none!important}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{box-sizing:border-box;height:auto;position:static;width:auto}:root{--ck-z-default:1;--ck-z-modal:calc(var(--ck-z-default) + 999)}.ck-transitions-disabled,.ck-transitions-disabled *{transition:none!important}:root{--ck-powered-by-line-height:10px;--ck-powered-by-padding-vertical:2px;--ck-powered-by-padding-horizontal:4px;--ck-powered-by-text-color:#4f4f4f;--ck-powered-by-border-radius:var(--ck-border-radius);--ck-powered-by-background:#fff;--ck-powered-by-border-color:var(--ck-color-focus-border)}.ck.ck-balloon-panel.ck-powered-by-balloon{--ck-border-radius:var(--ck-powered-by-border-radius);background:var(--ck-powered-by-background);box-shadow:none;min-height:unset;z-index:calc(var(--ck-z-modal) - 1)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by{line-height:var(--ck-powered-by-line-height)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by a{align-items:center;cursor:pointer;display:flex;filter:grayscale(80%);line-height:var(--ck-powered-by-line-height);opacity:.66;padding:var(--ck-powered-by-padding-vertical) var(--ck-powered-by-padding-horizontal)}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-powered-by__label{color:var(--ck-powered-by-text-color);cursor:pointer;font-size:7.5px;font-weight:700;letter-spacing:-.2px;line-height:normal;margin-right:4px;padding-left:2px;text-transform:uppercase}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by .ck-icon{cursor:pointer;display:block}.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by:hover a{filter:grayscale(0);opacity:1}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_inside]{border-color:transparent}.ck.ck-balloon-panel.ck-powered-by-balloon[class*=position_border]{border:var(--ck-focus-ring);border-color:var(--ck-powered-by-border-color)}:root{--ck-color-base-foreground:#fafafa;--ck-color-base-background:#fff;--ck-color-base-border:#ccced1;--ck-color-base-action:#53a336;--ck-color-base-focus:#6cb5f9;--ck-color-base-text:#333;--ck-color-base-active:#2977ff;--ck-color-base-active-focus:#0d65ff;--ck-color-base-error:#db3700;--ck-color-focus-border-coordinates:218,81.8%,56.9%;--ck-color-focus-border:hsl(var(--ck-color-focus-border-coordinates));--ck-color-focus-outer-shadow:#cae1fc;--ck-color-focus-disabled-shadow:rgba(119,186,248,.3);--ck-color-focus-error-shadow:rgba(255,64,31,.3);--ck-color-text:var(--ck-color-base-text);--ck-color-shadow-drop:rgba(0,0,0,.15);--ck-color-shadow-drop-active:rgba(0,0,0,.2);--ck-color-shadow-inner:rgba(0,0,0,.1);--ck-color-button-default-background:transparent;--ck-color-button-default-hover-background:#f0f0f0;--ck-color-button-default-active-background:#f0f0f0;--ck-color-button-default-disabled-background:transparent;--ck-color-button-on-background:#f0f7ff;--ck-color-button-on-hover-background:#dbecff;--ck-color-button-on-active-background:#dbecff;--ck-color-button-on-disabled-background:#f0f2f4;--ck-color-button-on-color:#2977ff;--ck-color-button-action-background:var(--ck-color-base-action);--ck-color-button-action-hover-background:#4d9d30;--ck-color-button-action-active-background:#4d9d30;--ck-color-button-action-disabled-background:#7ec365;--ck-color-button-action-text:var(--ck-color-base-background);--ck-color-button-save:#008a00;--ck-color-button-cancel:#db3700;--ck-color-switch-button-off-background:#939393;--ck-color-switch-button-off-hover-background:#7d7d7d;--ck-color-switch-button-on-background:var(--ck-color-button-action-background);--ck-color-switch-button-on-hover-background:#4d9d30;--ck-color-switch-button-inner-background:var(--ck-color-base-background);--ck-color-switch-button-inner-shadow:rgba(0,0,0,.1);--ck-color-dropdown-panel-background:var(--ck-color-base-background);--ck-color-dropdown-panel-border:var(--ck-color-base-border);--ck-color-input-background:var(--ck-color-base-background);--ck-color-input-border:var(--ck-color-base-border);--ck-color-input-error-border:var(--ck-color-base-error);--ck-color-input-text:var(--ck-color-base-text);--ck-color-input-disabled-background:#f2f2f2;--ck-color-input-disabled-border:var(--ck-color-base-border);--ck-color-input-disabled-text:#757575;--ck-color-list-background:var(--ck-color-base-background);--ck-color-list-button-hover-background:var(--ck-color-button-default-hover-background);--ck-color-list-button-on-background:var(--ck-color-button-on-color);--ck-color-list-button-on-background-focus:var(--ck-color-button-on-color);--ck-color-list-button-on-text:var(--ck-color-base-background);--ck-color-panel-background:var(--ck-color-base-background);--ck-color-panel-border:var(--ck-color-base-border);--ck-color-toolbar-background:var(--ck-color-base-background);--ck-color-toolbar-border:var(--ck-color-base-border);--ck-color-tooltip-background:var(--ck-color-base-text);--ck-color-tooltip-text:var(--ck-color-base-background);--ck-color-engine-placeholder-text:#707070;--ck-color-upload-bar-background:#6cb5f9;--ck-color-link-default:#0000f0;--ck-color-link-selected-background:rgba(31,176,255,.1);--ck-color-link-fake-selection:rgba(31,176,255,.3);--ck-color-highlight-background:#ff0;--ck-disabled-opacity:.5;--ck-focus-outer-shadow-geometry:0 0 0 3px;--ck-focus-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-outer-shadow);--ck-focus-disabled-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-disabled-shadow);--ck-focus-error-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-error-shadow);--ck-focus-ring:1px solid var(--ck-color-focus-border);--ck-font-size-base:13px;--ck-line-height-base:1.84615;--ck-font-face:Helvetica,Arial,Tahoma,Verdana,Sans-Serif;--ck-font-size-tiny:0.7em;--ck-font-size-small:0.75em;--ck-font-size-normal:1em;--ck-font-size-big:1.4em;--ck-font-size-large:1.8em;--ck-ui-component-min-height:2.3em}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset,.ck.ck-reset_all{word-wrap:break-word;background:transparent;border:0;margin:0;padding:0;text-decoration:none;transition:none;vertical-align:middle}.ck-reset_all :not(.ck-reset_all-excluded *),.ck.ck-reset_all{border-collapse:collapse;color:var(--ck-color-text);cursor:auto;float:none;font:normal normal normal var(--ck-font-size-base)/var(--ck-line-height-base) var(--ck-font-face);text-align:left;white-space:nowrap}.ck-reset_all .ck-rtl :not(.ck-reset_all-excluded *){text-align:right}.ck-reset_all iframe:not(.ck-reset_all-excluded *){vertical-align:inherit}.ck-reset_all textarea:not(.ck-reset_all-excluded *){white-space:pre-wrap}.ck-reset_all input[type=password]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text]:not(.ck-reset_all-excluded *),.ck-reset_all textarea:not(.ck-reset_all-excluded *){cursor:text}.ck-reset_all input[type=password][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all input[type=text][disabled]:not(.ck-reset_all-excluded *),.ck-reset_all textarea[disabled]:not(.ck-reset_all-excluded *){cursor:default}.ck-reset_all fieldset:not(.ck-reset_all-excluded *){border:2px groove #dfdee3;padding:10px}.ck-reset_all button:not(.ck-reset_all-excluded *)::-moz-focus-inner{border:0;padding:0}.ck[dir=rtl],.ck[dir=rtl] .ck{text-align:right}:root{--ck-border-radius:2px;--ck-inner-shadow:2px 2px 3px var(--ck-color-shadow-inner) inset;--ck-drop-shadow:0 1px 2px 1px var(--ck-color-shadow-drop);--ck-drop-shadow-active:0 3px 6px 1px var(--ck-color-shadow-drop-active);--ck-spacing-unit:0.6em;--ck-spacing-large:calc(var(--ck-spacing-unit)*1.5);--ck-spacing-standard:var(--ck-spacing-unit);--ck-spacing-medium:calc(var(--ck-spacing-unit)*0.8);--ck-spacing-small:calc(var(--ck-spacing-unit)*0.5);--ck-spacing-tiny:calc(var(--ck-spacing-unit)*0.3);--ck-spacing-extra-tiny:calc(var(--ck-spacing-unit)*0.16)}";
+styleInject(css_248z$15);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -12684,8 +12748,8 @@ class BodyCollection extends ViewCollection {
             wrapper.remove();
         }
     }
-}var css_248z$13 = ".ck.ck-icon{vertical-align:middle}:root{--ck-icon-size:calc(var(--ck-line-height-base)*var(--ck-font-size-normal))}.ck.ck-icon{font-size:.8333350694em;height:var(--ck-icon-size);width:var(--ck-icon-size);will-change:transform}.ck.ck-icon,.ck.ck-icon *{cursor:inherit}.ck.ck-icon.ck-icon_inherit-color,.ck.ck-icon.ck-icon_inherit-color *{color:inherit}.ck.ck-icon.ck-icon_inherit-color :not([fill]){fill:currentColor}";
-styleInject(css_248z$13);/**
+}var css_248z$14 = ".ck.ck-icon{vertical-align:middle}:root{--ck-icon-size:calc(var(--ck-line-height-base)*var(--ck-font-size-normal))}.ck.ck-icon{font-size:.8333350694em;height:var(--ck-icon-size);width:var(--ck-icon-size);will-change:transform}.ck.ck-icon,.ck.ck-icon *{cursor:inherit}.ck.ck-icon.ck-icon_inherit-color,.ck.ck-icon.ck-icon_inherit-color *{color:inherit}.ck.ck-icon.ck-icon_inherit-color :not([fill]){fill:currentColor}";
+styleInject(css_248z$14);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -12790,8 +12854,8 @@ IconView.presentationalAttributeNames = [
     'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke-width',
     'text-anchor', 'text-decoration', 'text-overflow', 'text-rendering', 'transform', 'unicode-bidi', 'vector-effect',
     'visibility', 'white-space', 'word-spacing', 'writing-mode'
-];var css_248z$12 = ".ck.ck-button,a.ck.ck-button{align-items:center;display:inline-flex;justify-content:left;position:relative;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-button .ck-button__label,a.ck.ck-button .ck-button__label{display:none}.ck.ck-button.ck-button_with-text .ck-button__label,a.ck.ck-button.ck-button_with-text .ck-button__label{display:inline-block}.ck.ck-button:not(.ck-button_with-text),a.ck.ck-button:not(.ck-button_with-text){justify-content:center}.ck.ck-button,a.ck.ck-button{background:var(--ck-color-button-default-background)}.ck.ck-button:not(.ck-disabled):hover,a.ck.ck-button:not(.ck-disabled):hover{background:var(--ck-color-button-default-hover-background)}.ck.ck-button:not(.ck-disabled):active,a.ck.ck-button:not(.ck-disabled):active{background:var(--ck-color-button-default-active-background)}.ck.ck-button.ck-disabled,a.ck.ck-button.ck-disabled{background:var(--ck-color-button-default-disabled-background)}.ck.ck-button,a.ck.ck-button{border-radius:0}.ck-rounded-corners .ck.ck-button,.ck-rounded-corners a.ck.ck-button,.ck.ck-button.ck-rounded-corners,a.ck.ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-button,a.ck.ck-button{-webkit-appearance:none;border:1px solid transparent;cursor:default;font-size:inherit;line-height:1;min-height:var(--ck-ui-component-min-height);min-width:var(--ck-ui-component-min-height);padding:var(--ck-spacing-tiny);text-align:center;transition:box-shadow .2s ease-in-out,border .2s ease-in-out;vertical-align:middle;white-space:nowrap}.ck.ck-button:active,.ck.ck-button:focus,a.ck.ck-button:active,a.ck.ck-button:focus{border:var(--ck-focus-ring);box-shadow:var(--ck-focus-outer-shadow),0 0;outline:none}.ck.ck-button .ck-button__icon use,.ck.ck-button .ck-button__icon use *,a.ck.ck-button .ck-button__icon use,a.ck.ck-button .ck-button__icon use *{color:inherit}.ck.ck-button .ck-button__label,a.ck.ck-button .ck-button__label{color:inherit;cursor:inherit;font-size:inherit;font-weight:inherit;vertical-align:middle}[dir=ltr] .ck.ck-button .ck-button__label,[dir=ltr] a.ck.ck-button .ck-button__label{text-align:left}[dir=rtl] .ck.ck-button .ck-button__label,[dir=rtl] a.ck.ck-button .ck-button__label{text-align:right}.ck.ck-button .ck-button__keystroke,a.ck.ck-button .ck-button__keystroke{color:inherit}[dir=ltr] .ck.ck-button .ck-button__keystroke,[dir=ltr] a.ck.ck-button .ck-button__keystroke{margin-left:var(--ck-spacing-large)}[dir=rtl] .ck.ck-button .ck-button__keystroke,[dir=rtl] a.ck.ck-button .ck-button__keystroke{margin-right:var(--ck-spacing-large)}.ck.ck-button .ck-button__keystroke,a.ck.ck-button .ck-button__keystroke{font-weight:700;opacity:.7}.ck.ck-button.ck-disabled:active,.ck.ck-button.ck-disabled:focus,a.ck.ck-button.ck-disabled:active,a.ck.ck-button.ck-disabled:focus{box-shadow:var(--ck-focus-disabled-outer-shadow),0 0}.ck.ck-button.ck-disabled .ck-button__icon,.ck.ck-button.ck-disabled .ck-button__label,a.ck.ck-button.ck-disabled .ck-button__icon,a.ck.ck-button.ck-disabled .ck-button__label{opacity:var(--ck-disabled-opacity)}.ck.ck-button.ck-disabled .ck-button__keystroke,a.ck.ck-button.ck-disabled .ck-button__keystroke{opacity:.3}.ck.ck-button.ck-button_with-text,a.ck.ck-button.ck-button_with-text{padding:var(--ck-spacing-tiny) var(--ck-spacing-standard)}[dir=ltr] .ck.ck-button.ck-button_with-text .ck-button__icon,[dir=ltr] a.ck.ck-button.ck-button_with-text .ck-button__icon{margin-left:calc(var(--ck-spacing-small)*-1);margin-right:var(--ck-spacing-small)}[dir=rtl] .ck.ck-button.ck-button_with-text .ck-button__icon,[dir=rtl] a.ck.ck-button.ck-button_with-text .ck-button__icon{margin-left:var(--ck-spacing-small);margin-right:calc(var(--ck-spacing-small)*-1)}.ck.ck-button.ck-button_with-keystroke .ck-button__label,a.ck.ck-button.ck-button_with-keystroke .ck-button__label{flex-grow:1}.ck.ck-button.ck-on,a.ck.ck-button.ck-on{background:var(--ck-color-button-on-background)}.ck.ck-button.ck-on:not(.ck-disabled):hover,a.ck.ck-button.ck-on:not(.ck-disabled):hover{background:var(--ck-color-button-on-hover-background)}.ck.ck-button.ck-on:not(.ck-disabled):active,a.ck.ck-button.ck-on:not(.ck-disabled):active{background:var(--ck-color-button-on-active-background)}.ck.ck-button.ck-on.ck-disabled,a.ck.ck-button.ck-on.ck-disabled{background:var(--ck-color-button-on-disabled-background)}.ck.ck-button.ck-on,a.ck.ck-button.ck-on{color:var(--ck-color-button-on-color)}.ck.ck-button.ck-button-save,a.ck.ck-button.ck-button-save{color:var(--ck-color-button-save)}.ck.ck-button.ck-button-cancel,a.ck.ck-button.ck-button-cancel{color:var(--ck-color-button-cancel)}.ck.ck-button-action,a.ck.ck-button-action{background:var(--ck-color-button-action-background)}.ck.ck-button-action:not(.ck-disabled):hover,a.ck.ck-button-action:not(.ck-disabled):hover{background:var(--ck-color-button-action-hover-background)}.ck.ck-button-action:not(.ck-disabled):active,a.ck.ck-button-action:not(.ck-disabled):active{background:var(--ck-color-button-action-active-background)}.ck.ck-button-action.ck-disabled,a.ck.ck-button-action.ck-disabled{background:var(--ck-color-button-action-disabled-background)}.ck.ck-button-action,a.ck.ck-button-action{color:var(--ck-color-button-action-text)}.ck.ck-button-bold,a.ck.ck-button-bold{font-weight:700}";
-styleInject(css_248z$12);/**
+];var css_248z$13 = ".ck.ck-button,a.ck.ck-button{align-items:center;display:inline-flex;justify-content:left;position:relative;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-button .ck-button__label,a.ck.ck-button .ck-button__label{display:none}.ck.ck-button.ck-button_with-text .ck-button__label,a.ck.ck-button.ck-button_with-text .ck-button__label{display:inline-block}.ck.ck-button:not(.ck-button_with-text),a.ck.ck-button:not(.ck-button_with-text){justify-content:center}.ck.ck-button,a.ck.ck-button{background:var(--ck-color-button-default-background)}.ck.ck-button:not(.ck-disabled):hover,a.ck.ck-button:not(.ck-disabled):hover{background:var(--ck-color-button-default-hover-background)}.ck.ck-button:not(.ck-disabled):active,a.ck.ck-button:not(.ck-disabled):active{background:var(--ck-color-button-default-active-background)}.ck.ck-button.ck-disabled,a.ck.ck-button.ck-disabled{background:var(--ck-color-button-default-disabled-background)}.ck.ck-button,a.ck.ck-button{border-radius:0}.ck-rounded-corners .ck.ck-button,.ck-rounded-corners a.ck.ck-button,.ck.ck-button.ck-rounded-corners,a.ck.ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-button,a.ck.ck-button{-webkit-appearance:none;border:1px solid transparent;cursor:default;font-size:inherit;line-height:1;min-height:var(--ck-ui-component-min-height);min-width:var(--ck-ui-component-min-height);padding:var(--ck-spacing-tiny);text-align:center;transition:box-shadow .2s ease-in-out,border .2s ease-in-out;vertical-align:middle;white-space:nowrap}.ck.ck-button:active,.ck.ck-button:focus,a.ck.ck-button:active,a.ck.ck-button:focus{border:var(--ck-focus-ring);box-shadow:var(--ck-focus-outer-shadow),0 0;outline:none}.ck.ck-button .ck-button__icon use,.ck.ck-button .ck-button__icon use *,a.ck.ck-button .ck-button__icon use,a.ck.ck-button .ck-button__icon use *{color:inherit}.ck.ck-button .ck-button__label,a.ck.ck-button .ck-button__label{color:inherit;cursor:inherit;font-size:inherit;font-weight:inherit;vertical-align:middle}[dir=ltr] .ck.ck-button .ck-button__label,[dir=ltr] a.ck.ck-button .ck-button__label{text-align:left}[dir=rtl] .ck.ck-button .ck-button__label,[dir=rtl] a.ck.ck-button .ck-button__label{text-align:right}.ck.ck-button .ck-button__keystroke,a.ck.ck-button .ck-button__keystroke{color:inherit}[dir=ltr] .ck.ck-button .ck-button__keystroke,[dir=ltr] a.ck.ck-button .ck-button__keystroke{margin-left:var(--ck-spacing-large)}[dir=rtl] .ck.ck-button .ck-button__keystroke,[dir=rtl] a.ck.ck-button .ck-button__keystroke{margin-right:var(--ck-spacing-large)}.ck.ck-button .ck-button__keystroke,a.ck.ck-button .ck-button__keystroke{font-weight:700;opacity:.7}.ck.ck-button.ck-disabled:active,.ck.ck-button.ck-disabled:focus,a.ck.ck-button.ck-disabled:active,a.ck.ck-button.ck-disabled:focus{box-shadow:var(--ck-focus-disabled-outer-shadow),0 0}.ck.ck-button.ck-disabled .ck-button__icon,.ck.ck-button.ck-disabled .ck-button__label,a.ck.ck-button.ck-disabled .ck-button__icon,a.ck.ck-button.ck-disabled .ck-button__label{opacity:var(--ck-disabled-opacity)}.ck.ck-button.ck-disabled .ck-button__keystroke,a.ck.ck-button.ck-disabled .ck-button__keystroke{opacity:.3}.ck.ck-button.ck-button_with-text,a.ck.ck-button.ck-button_with-text{padding:var(--ck-spacing-tiny) var(--ck-spacing-standard)}[dir=ltr] .ck.ck-button.ck-button_with-text .ck-button__icon,[dir=ltr] a.ck.ck-button.ck-button_with-text .ck-button__icon{margin-left:calc(var(--ck-spacing-small)*-1);margin-right:var(--ck-spacing-small)}[dir=rtl] .ck.ck-button.ck-button_with-text .ck-button__icon,[dir=rtl] a.ck.ck-button.ck-button_with-text .ck-button__icon{margin-left:var(--ck-spacing-small);margin-right:calc(var(--ck-spacing-small)*-1)}.ck.ck-button.ck-button_with-keystroke .ck-button__label,a.ck.ck-button.ck-button_with-keystroke .ck-button__label{flex-grow:1}.ck.ck-button.ck-on,a.ck.ck-button.ck-on{background:var(--ck-color-button-on-background)}.ck.ck-button.ck-on:not(.ck-disabled):hover,a.ck.ck-button.ck-on:not(.ck-disabled):hover{background:var(--ck-color-button-on-hover-background)}.ck.ck-button.ck-on:not(.ck-disabled):active,a.ck.ck-button.ck-on:not(.ck-disabled):active{background:var(--ck-color-button-on-active-background)}.ck.ck-button.ck-on.ck-disabled,a.ck.ck-button.ck-on.ck-disabled{background:var(--ck-color-button-on-disabled-background)}.ck.ck-button.ck-on,a.ck.ck-button.ck-on{color:var(--ck-color-button-on-color)}.ck.ck-button.ck-button-save,a.ck.ck-button.ck-button-save{color:var(--ck-color-button-save)}.ck.ck-button.ck-button-cancel,a.ck.ck-button.ck-button-cancel{color:var(--ck-color-button-cancel)}.ck.ck-button-action,a.ck.ck-button-action{background:var(--ck-color-button-action-background)}.ck.ck-button-action:not(.ck-disabled):hover,a.ck.ck-button-action:not(.ck-disabled):hover{background:var(--ck-color-button-action-hover-background)}.ck.ck-button-action:not(.ck-disabled):active,a.ck.ck-button-action:not(.ck-disabled):active{background:var(--ck-color-button-action-active-background)}.ck.ck-button-action.ck-disabled,a.ck.ck-button-action.ck-disabled{background:var(--ck-color-button-action-disabled-background)}.ck.ck-button-action,a.ck.ck-button-action{color:var(--ck-color-button-action-text)}.ck.ck-button-bold,a.ck.ck-button-bold{font-weight:700}";
+styleInject(css_248z$13);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -13014,8 +13078,8 @@ class ButtonView extends View$1 {
         }
         return '';
     }
-}var css_248z$11 = ".ck.ck-button.ck-switchbutton .ck-button__toggle,.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{display:block}:root{--ck-switch-button-toggle-width:2.6153846154em;--ck-switch-button-toggle-inner-size:calc(1.07692em + 1px);--ck-switch-button-translation:calc(var(--ck-switch-button-toggle-width) - var(--ck-switch-button-toggle-inner-size) - 2px);--ck-switch-button-inner-hover-shadow:0 0 0 5px var(--ck-color-switch-button-inner-shadow)}.ck.ck-button.ck-switchbutton,.ck.ck-button.ck-switchbutton.ck-on:active,.ck.ck-button.ck-switchbutton.ck-on:focus,.ck.ck-button.ck-switchbutton.ck-on:hover,.ck.ck-button.ck-switchbutton:active,.ck.ck-button.ck-switchbutton:focus,.ck.ck-button.ck-switchbutton:hover{background:transparent;color:inherit}[dir=ltr] .ck.ck-button.ck-switchbutton .ck-button__label{margin-right:calc(var(--ck-spacing-large)*2)}[dir=rtl] .ck.ck-button.ck-switchbutton .ck-button__label{margin-left:calc(var(--ck-spacing-large)*2)}.ck.ck-button.ck-switchbutton .ck-button__toggle{border-radius:0}.ck-rounded-corners .ck.ck-button.ck-switchbutton .ck-button__toggle,.ck.ck-button.ck-switchbutton .ck-button__toggle.ck-rounded-corners{border-radius:var(--ck-border-radius)}[dir=ltr] .ck.ck-button.ck-switchbutton .ck-button__toggle{margin-left:auto}[dir=rtl] .ck.ck-button.ck-switchbutton .ck-button__toggle{margin-right:auto}.ck.ck-button.ck-switchbutton .ck-button__toggle{background:var(--ck-color-switch-button-off-background);border:1px solid transparent;transition:background .4s ease,box-shadow .2s ease-in-out,outline .2s ease-in-out;width:var(--ck-switch-button-toggle-width)}.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{border-radius:0}.ck-rounded-corners .ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner,.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner.ck-rounded-corners{border-radius:var(--ck-border-radius);border-radius:calc(var(--ck-border-radius)*.5)}.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{background:var(--ck-color-switch-button-inner-background);height:var(--ck-switch-button-toggle-inner-size);transition:all .3s ease;width:var(--ck-switch-button-toggle-inner-size)}.ck.ck-button.ck-switchbutton .ck-button__toggle:hover{background:var(--ck-color-switch-button-off-hover-background)}.ck.ck-button.ck-switchbutton .ck-button__toggle:hover .ck-button__toggle__inner{box-shadow:var(--ck-switch-button-inner-hover-shadow)}.ck.ck-button.ck-switchbutton.ck-disabled .ck-button__toggle{opacity:var(--ck-disabled-opacity)}.ck.ck-button.ck-switchbutton:focus{border-color:transparent;box-shadow:none;outline:none}.ck.ck-button.ck-switchbutton:focus .ck-button__toggle{box-shadow:0 0 0 1px var(--ck-color-base-background),0 0 0 5px var(--ck-color-focus-outer-shadow);outline:var(--ck-focus-ring);outline-offset:1px}.ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle{background:var(--ck-color-switch-button-on-background)}.ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle:hover{background:var(--ck-color-switch-button-on-hover-background)}[dir=ltr] .ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle .ck-button__toggle__inner{transform:translateX(var( --ck-switch-button-translation ))}[dir=rtl] .ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle .ck-button__toggle__inner{transform:translateX(calc(var( --ck-switch-button-translation )*-1))}";
-styleInject(css_248z$11);/**
+}var css_248z$12 = ".ck.ck-button.ck-switchbutton .ck-button__toggle,.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{display:block}:root{--ck-switch-button-toggle-width:2.6153846154em;--ck-switch-button-toggle-inner-size:calc(1.07692em + 1px);--ck-switch-button-translation:calc(var(--ck-switch-button-toggle-width) - var(--ck-switch-button-toggle-inner-size) - 2px);--ck-switch-button-inner-hover-shadow:0 0 0 5px var(--ck-color-switch-button-inner-shadow)}.ck.ck-button.ck-switchbutton,.ck.ck-button.ck-switchbutton.ck-on:active,.ck.ck-button.ck-switchbutton.ck-on:focus,.ck.ck-button.ck-switchbutton.ck-on:hover,.ck.ck-button.ck-switchbutton:active,.ck.ck-button.ck-switchbutton:focus,.ck.ck-button.ck-switchbutton:hover{background:transparent;color:inherit}[dir=ltr] .ck.ck-button.ck-switchbutton .ck-button__label{margin-right:calc(var(--ck-spacing-large)*2)}[dir=rtl] .ck.ck-button.ck-switchbutton .ck-button__label{margin-left:calc(var(--ck-spacing-large)*2)}.ck.ck-button.ck-switchbutton .ck-button__toggle{border-radius:0}.ck-rounded-corners .ck.ck-button.ck-switchbutton .ck-button__toggle,.ck.ck-button.ck-switchbutton .ck-button__toggle.ck-rounded-corners{border-radius:var(--ck-border-radius)}[dir=ltr] .ck.ck-button.ck-switchbutton .ck-button__toggle{margin-left:auto}[dir=rtl] .ck.ck-button.ck-switchbutton .ck-button__toggle{margin-right:auto}.ck.ck-button.ck-switchbutton .ck-button__toggle{background:var(--ck-color-switch-button-off-background);border:1px solid transparent;transition:background .4s ease,box-shadow .2s ease-in-out,outline .2s ease-in-out;width:var(--ck-switch-button-toggle-width)}.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{border-radius:0}.ck-rounded-corners .ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner,.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner.ck-rounded-corners{border-radius:var(--ck-border-radius);border-radius:calc(var(--ck-border-radius)*.5)}.ck.ck-button.ck-switchbutton .ck-button__toggle .ck-button__toggle__inner{background:var(--ck-color-switch-button-inner-background);height:var(--ck-switch-button-toggle-inner-size);transition:all .3s ease;width:var(--ck-switch-button-toggle-inner-size)}.ck.ck-button.ck-switchbutton .ck-button__toggle:hover{background:var(--ck-color-switch-button-off-hover-background)}.ck.ck-button.ck-switchbutton .ck-button__toggle:hover .ck-button__toggle__inner{box-shadow:var(--ck-switch-button-inner-hover-shadow)}.ck.ck-button.ck-switchbutton.ck-disabled .ck-button__toggle{opacity:var(--ck-disabled-opacity)}.ck.ck-button.ck-switchbutton:focus{border-color:transparent;box-shadow:none;outline:none}.ck.ck-button.ck-switchbutton:focus .ck-button__toggle{box-shadow:0 0 0 1px var(--ck-color-base-background),0 0 0 5px var(--ck-color-focus-outer-shadow);outline:var(--ck-focus-ring);outline-offset:1px}.ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle{background:var(--ck-color-switch-button-on-background)}.ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle:hover{background:var(--ck-color-switch-button-on-hover-background)}[dir=ltr] .ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle .ck-button__toggle__inner{transform:translateX(var( --ck-switch-button-translation ))}[dir=rtl] .ck.ck-button.ck-switchbutton.ck-on .ck-button__toggle .ck-button__toggle__inner{transform:translateX(calc(var( --ck-switch-button-translation )*-1))}";
+styleInject(css_248z$12);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -13189,7 +13253,7 @@ class ColorTileView extends ButtonView {
                 class: [
                     'ck',
                     'ck-color-grid__tile',
-                    bind.if('hasBorder', 'ck-color-table__color-tile_bordered')
+                    bind.if('hasBorder', 'ck-color-selector__color-tile_bordered')
                 ]
             }
         });
@@ -13201,8 +13265,8 @@ class ColorTileView extends ButtonView {
         super.render();
         this.iconView.fillColor = 'hsl(0, 0%, 100%)';
     }
-}var css_248z$10 = ".ck.ck-color-grid{display:grid}:root{--ck-color-grid-tile-size:24px;--ck-color-color-grid-check-icon:#166fd4}.ck.ck-color-grid{grid-gap:5px;padding:8px}.ck.ck-color-grid__tile{border:0;height:var(--ck-color-grid-tile-size);min-height:var(--ck-color-grid-tile-size);min-width:var(--ck-color-grid-tile-size);padding:0;transition:box-shadow .2s ease;width:var(--ck-color-grid-tile-size)}.ck.ck-color-grid__tile.ck-disabled{cursor:unset;transition:unset}.ck.ck-color-grid__tile.ck-color-table__color-tile_bordered{box-shadow:0 0 0 1px var(--ck-color-base-border)}.ck.ck-color-grid__tile .ck.ck-icon{color:var(--ck-color-color-grid-check-icon);display:none}.ck.ck-color-grid__tile.ck-on{box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-base-text)}.ck.ck-color-grid__tile.ck-on .ck.ck-icon{display:block}.ck.ck-color-grid__tile.ck-on,.ck.ck-color-grid__tile:focus:not(.ck-disabled),.ck.ck-color-grid__tile:hover:not(.ck-disabled){border:0}.ck.ck-color-grid__tile:focus:not(.ck-disabled),.ck.ck-color-grid__tile:hover:not(.ck-disabled){box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-focus-border)}.ck.ck-color-grid__label{padding:0 var(--ck-spacing-standard)}";
-styleInject(css_248z$10);/**
+}var css_248z$11 = ".ck.ck-color-grid{display:grid}:root{--ck-color-grid-tile-size:24px;--ck-color-color-grid-check-icon:#166fd4}.ck.ck-color-grid{grid-gap:5px;padding:8px}.ck.ck-color-grid__tile{border:0;height:var(--ck-color-grid-tile-size);min-height:var(--ck-color-grid-tile-size);min-width:var(--ck-color-grid-tile-size);padding:0;transition:box-shadow .2s ease;width:var(--ck-color-grid-tile-size)}.ck.ck-color-grid__tile.ck-disabled{cursor:unset;transition:unset}.ck.ck-color-grid__tile.ck-color-selector__color-tile_bordered{box-shadow:0 0 0 1px var(--ck-color-base-border)}.ck.ck-color-grid__tile .ck.ck-icon{color:var(--ck-color-color-grid-check-icon);display:none}.ck.ck-color-grid__tile.ck-on{box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-base-text)}.ck.ck-color-grid__tile.ck-on .ck.ck-icon{display:block}.ck.ck-color-grid__tile.ck-on,.ck.ck-color-grid__tile:focus:not(.ck-disabled),.ck.ck-color-grid__tile:hover:not(.ck-disabled){border:0}.ck.ck-color-grid__tile:focus:not(.ck-disabled),.ck.ck-color-grid__tile:hover:not(.ck-disabled){box-shadow:inset 0 0 0 1px var(--ck-color-base-background),0 0 0 2px var(--ck-color-focus-border)}.ck.ck-color-grid__label{padding:0 var(--ck-spacing-standard)}";
+styleInject(css_248z$11);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -14740,8 +14804,8 @@ function parseColorString(colorString) {
 }
 function canConvertParsedColor(parsedColor) {
     return Object.keys(convert$1).includes(parsedColor.space);
-}var css_248z$$ = ".ck.ck-label{display:block}.ck.ck-voice-label{display:none}.ck.ck-label{font-weight:700}";
-styleInject(css_248z$$);/**
+}var css_248z$10 = ".ck.ck-label{display:block}.ck.ck-voice-label{display:none}.ck.ck-label{font-weight:700}";
+styleInject(css_248z$10);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -14775,8 +14839,8 @@ class LabelView extends View$1 {
             ]
         });
     }
-}var css_248z$_ = ".ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper{display:flex;position:relative}.ck.ck-labeled-field-view .ck.ck-label{display:block;position:absolute}:root{--ck-labeled-field-view-transition:.1s cubic-bezier(0,0,0.24,0.95);--ck-labeled-field-empty-unfocused-max-width:100% - 2 * var(--ck-spacing-medium);--ck-labeled-field-label-default-position-x:var(--ck-spacing-medium);--ck-labeled-field-label-default-position-y:calc(var(--ck-font-size-base)*0.6);--ck-color-labeled-field-label-background:var(--ck-color-base-background)}.ck.ck-labeled-field-view{border-radius:0}.ck-rounded-corners .ck.ck-labeled-field-view,.ck.ck-labeled-field-view.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper{width:100%}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{top:0}[dir=ltr] .ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{left:0}[dir=rtl] .ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{right:0}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{background:var(--ck-color-labeled-field-label-background);font-weight:400;line-height:normal;max-width:100%;overflow:hidden;padding:0 calc(var(--ck-font-size-tiny)*.5);pointer-events:none;text-overflow:ellipsis;transform:translate(var(--ck-spacing-medium),-6px) scale(.75);transform-origin:0 0;transition:transform var(--ck-labeled-field-view-transition),padding var(--ck-labeled-field-view-transition),background var(--ck-labeled-field-view-transition)}.ck.ck-labeled-field-view.ck-error .ck-input:not([readonly])+.ck.ck-label,.ck.ck-labeled-field-view.ck-error>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{color:var(--ck-color-base-error)}.ck.ck-labeled-field-view .ck-labeled-field-view__status{font-size:var(--ck-font-size-small);margin-top:var(--ck-spacing-small);white-space:normal}.ck.ck-labeled-field-view .ck-labeled-field-view__status.ck-labeled-field-view__status_error{color:var(--ck-color-base-error)}.ck.ck-labeled-field-view.ck-disabled>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{color:var(--ck-color-input-disabled-text)}[dir=ltr] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,[dir=ltr] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{transform:translate(var(--ck-labeled-field-label-default-position-x),var(--ck-labeled-field-label-default-position-y)) scale(1)}[dir=rtl] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,[dir=rtl] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{transform:translate(calc(var(--ck-labeled-field-label-default-position-x)*-1),var(--ck-labeled-field-label-default-position-y)) scale(1)}.ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{background:transparent;max-width:calc(var(--ck-labeled-field-empty-unfocused-max-width));padding:0}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown>.ck.ck-button{background:transparent}.ck.ck-labeled-field-view.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown>.ck-button>.ck-button__label{opacity:0}.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown+.ck-label{max-width:calc(var(--ck-labeled-field-empty-unfocused-max-width) - var(--ck-dropdown-arrow-size) - var(--ck-spacing-standard))}";
-styleInject(css_248z$_);/**
+}var css_248z$$ = ".ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper{display:flex;position:relative}.ck.ck-labeled-field-view .ck.ck-label{display:block;position:absolute}:root{--ck-labeled-field-view-transition:.1s cubic-bezier(0,0,0.24,0.95);--ck-labeled-field-empty-unfocused-max-width:100% - 2 * var(--ck-spacing-medium);--ck-labeled-field-label-default-position-x:var(--ck-spacing-medium);--ck-labeled-field-label-default-position-y:calc(var(--ck-font-size-base)*0.6);--ck-color-labeled-field-label-background:var(--ck-color-base-background)}.ck.ck-labeled-field-view{border-radius:0}.ck-rounded-corners .ck.ck-labeled-field-view,.ck.ck-labeled-field-view.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper{width:100%}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{top:0}[dir=ltr] .ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{left:0}[dir=rtl] .ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{right:0}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{background:var(--ck-color-labeled-field-label-background);font-weight:400;line-height:normal;max-width:100%;overflow:hidden;padding:0 calc(var(--ck-font-size-tiny)*.5);pointer-events:none;text-overflow:ellipsis;transform:translate(var(--ck-spacing-medium),-6px) scale(.75);transform-origin:0 0;transition:transform var(--ck-labeled-field-view-transition),padding var(--ck-labeled-field-view-transition),background var(--ck-labeled-field-view-transition)}.ck.ck-labeled-field-view.ck-error .ck-input:not([readonly])+.ck.ck-label,.ck.ck-labeled-field-view.ck-error>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{color:var(--ck-color-base-error)}.ck.ck-labeled-field-view .ck-labeled-field-view__status{font-size:var(--ck-font-size-small);margin-top:var(--ck-spacing-small);white-space:normal}.ck.ck-labeled-field-view .ck-labeled-field-view__status.ck-labeled-field-view__status_error{color:var(--ck-color-base-error)}.ck.ck-labeled-field-view.ck-disabled>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{color:var(--ck-color-input-disabled-text)}[dir=ltr] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,[dir=ltr] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{transform:translate(var(--ck-labeled-field-label-default-position-x),var(--ck-labeled-field-label-default-position-y)) scale(1)}[dir=rtl] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,[dir=rtl] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{transform:translate(calc(var(--ck-labeled-field-label-default-position-x)*-1),var(--ck-labeled-field-label-default-position-y)) scale(1)}.ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label{background:transparent;max-width:calc(var(--ck-labeled-field-empty-unfocused-max-width));padding:0}.ck.ck-labeled-field-view>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown>.ck.ck-button{background:transparent}.ck.ck-labeled-field-view.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown>.ck-button>.ck-button__label{opacity:0}.ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck-dropdown+.ck-label{max-width:calc(var(--ck-labeled-field-empty-unfocused-max-width) - var(--ck-dropdown-arrow-size) - var(--ck-spacing-standard))}";
+styleInject(css_248z$$);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -14925,8 +14989,8 @@ class LabeledFieldView extends View$1 {
     focus() {
         this.fieldView.focus();
     }
-}var css_248z$Z = ":root{--ck-input-width:18em;--ck-input-text-width:var(--ck-input-width)}.ck.ck-input{border-radius:0}.ck-rounded-corners .ck.ck-input,.ck.ck-input.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-input{background:var(--ck-color-input-background);border:1px solid var(--ck-color-input-border);min-height:var(--ck-ui-component-min-height);min-width:var(--ck-input-width);padding:var(--ck-spacing-extra-tiny) var(--ck-spacing-medium);transition:box-shadow .1s ease-in-out,border .1s ease-in-out}.ck.ck-input:focus{border:var(--ck-focus-ring);box-shadow:var(--ck-focus-outer-shadow),0 0;outline:none}.ck.ck-input[readonly]{background:var(--ck-color-input-disabled-background);border:1px solid var(--ck-color-input-disabled-border);color:var(--ck-color-input-disabled-text)}.ck.ck-input[readonly]:focus{box-shadow:var(--ck-focus-disabled-outer-shadow),0 0}.ck.ck-input.ck-error{animation:ck-input-shake .3s ease both;border-color:var(--ck-color-input-error-border)}.ck.ck-input.ck-error:focus{box-shadow:var(--ck-focus-error-outer-shadow),0 0}@keyframes ck-input-shake{20%{transform:translateX(-2px)}40%{transform:translateX(2px)}60%{transform:translateX(-1px)}80%{transform:translateX(1px)}}";
-styleInject(css_248z$Z);/**
+}var css_248z$_ = ":root{--ck-input-width:18em;--ck-input-text-width:var(--ck-input-width)}.ck.ck-input{border-radius:0}.ck-rounded-corners .ck.ck-input,.ck.ck-input.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-input{background:var(--ck-color-input-background);border:1px solid var(--ck-color-input-border);min-height:var(--ck-ui-component-min-height);min-width:var(--ck-input-width);padding:var(--ck-spacing-extra-tiny) var(--ck-spacing-medium);transition:box-shadow .1s ease-in-out,border .1s ease-in-out}.ck.ck-input:focus{border:var(--ck-focus-ring);box-shadow:var(--ck-focus-outer-shadow),0 0;outline:none}.ck.ck-input[readonly]{background:var(--ck-color-input-disabled-background);border:1px solid var(--ck-color-input-disabled-border);color:var(--ck-color-input-disabled-text)}.ck.ck-input[readonly]:focus{box-shadow:var(--ck-focus-disabled-outer-shadow),0 0}.ck.ck-input.ck-error{animation:ck-input-shake .3s ease both;border-color:var(--ck-color-input-error-border)}.ck.ck-input.ck-error:focus{box-shadow:var(--ck-focus-error-outer-shadow),0 0}@keyframes ck-input-shake{20%{transform:translateX(-2px)}40%{transform:translateX(2px)}60%{transform:translateX(-1px)}80%{transform:translateX(1px)}}";
+styleInject(css_248z$_);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -15110,7 +15174,8 @@ class DropdownPanelView extends View$1 {
                     'ck-dropdown__panel',
                     bind.to('position', value => `ck-dropdown__panel_${value}`),
                     bind.if('isVisible', 'ck-dropdown__panel-visible')
-                ]
+                ],
+                tabindex: '-1'
             },
             children: this.children,
             on: {
@@ -15172,8 +15237,8 @@ class DropdownPanelView extends View$1 {
             }
         }
     }
-}var css_248z$Y = ":root{--ck-dropdown-max-width:75vw}.ck.ck-dropdown{display:inline-block;position:relative}.ck.ck-dropdown .ck-dropdown__arrow{pointer-events:none;z-index:var(--ck-z-default)}.ck.ck-dropdown .ck-button.ck-dropdown__button{width:100%}.ck.ck-dropdown .ck-dropdown__panel{display:none;max-width:var(--ck-dropdown-max-width);position:absolute;z-index:var(--ck-z-modal)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel-visible{display:inline-block}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_n,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nmw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nw{bottom:100%}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw{bottom:auto;top:100%}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se{left:0}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw{right:0}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_n,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s{left:50%;transform:translateX(-50%)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nmw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw{left:75%;transform:translateX(-75%)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme{left:25%;transform:translateX(-25%)}.ck.ck-toolbar .ck-dropdown__panel{z-index:calc(var(--ck-z-modal) + 1)}:root{--ck-dropdown-arrow-size:calc(var(--ck-icon-size)*0.5)}.ck.ck-dropdown{font-size:inherit}.ck.ck-dropdown .ck-dropdown__arrow{width:var(--ck-dropdown-arrow-size)}[dir=ltr] .ck.ck-dropdown .ck-dropdown__arrow{margin-left:var(--ck-spacing-standard);right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-dropdown .ck-dropdown__arrow{left:var(--ck-spacing-standard);margin-right:var(--ck-spacing-small)}.ck.ck-dropdown.ck-disabled .ck-dropdown__arrow{opacity:var(--ck-disabled-opacity)}[dir=ltr] .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text){padding-left:var(--ck-spacing-small)}[dir=rtl] .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text){padding-right:var(--ck-spacing-small)}.ck.ck-dropdown .ck-button.ck-dropdown__button .ck-button__label{overflow:hidden;text-overflow:ellipsis;width:7em}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-disabled .ck-button__label{opacity:var(--ck-disabled-opacity)}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on{border-bottom-left-radius:0;border-bottom-right-radius:0}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-dropdown__button_label-width_auto .ck-button__label{width:auto}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-off:active,.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on:active{box-shadow:none}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-off:active:focus,.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on:active:focus{box-shadow:var(--ck-focus-outer-shadow),0 0}.ck.ck-dropdown__panel{border-radius:0}.ck-rounded-corners .ck.ck-dropdown__panel,.ck.ck-dropdown__panel.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-dropdown__panel{background:var(--ck-color-dropdown-panel-background);border:1px solid var(--ck-color-dropdown-panel-border);bottom:0;box-shadow:var(--ck-drop-shadow),0 0;min-width:100%}.ck.ck-dropdown__panel.ck-dropdown__panel_se{border-top-left-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_sw{border-top-right-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_ne{border-bottom-left-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_nw{border-bottom-right-radius:0}";
-styleInject(css_248z$Y);/**
+}var css_248z$Z = ":root{--ck-dropdown-max-width:75vw}.ck.ck-dropdown{display:inline-block;position:relative}.ck.ck-dropdown .ck-dropdown__arrow{pointer-events:none;z-index:var(--ck-z-default)}.ck.ck-dropdown .ck-button.ck-dropdown__button{width:100%}.ck.ck-dropdown .ck-dropdown__panel{display:none;max-width:var(--ck-dropdown-max-width);position:absolute;z-index:var(--ck-z-modal)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel-visible{display:inline-block}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_n,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nmw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nw{bottom:100%}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw{bottom:auto;top:100%}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se{left:0}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw{right:0}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_n,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s{left:50%;transform:translateX(-50%)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nmw,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw{left:75%;transform:translateX(-75%)}.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_nme,.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme{left:25%;transform:translateX(-25%)}.ck.ck-toolbar .ck-dropdown__panel{z-index:calc(var(--ck-z-modal) + 1)}:root{--ck-dropdown-arrow-size:calc(var(--ck-icon-size)*0.5)}.ck.ck-dropdown{font-size:inherit}.ck.ck-dropdown .ck-dropdown__arrow{width:var(--ck-dropdown-arrow-size)}[dir=ltr] .ck.ck-dropdown .ck-dropdown__arrow{margin-left:var(--ck-spacing-standard);right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-dropdown .ck-dropdown__arrow{left:var(--ck-spacing-standard);margin-right:var(--ck-spacing-small)}.ck.ck-dropdown.ck-disabled .ck-dropdown__arrow{opacity:var(--ck-disabled-opacity)}[dir=ltr] .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text){padding-left:var(--ck-spacing-small)}[dir=rtl] .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text){padding-right:var(--ck-spacing-small)}.ck.ck-dropdown .ck-button.ck-dropdown__button .ck-button__label{overflow:hidden;text-overflow:ellipsis;width:7em}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-disabled .ck-button__label{opacity:var(--ck-disabled-opacity)}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on{border-bottom-left-radius:0;border-bottom-right-radius:0}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-dropdown__button_label-width_auto .ck-button__label{width:auto}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-off:active,.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on:active{box-shadow:none}.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-off:active:focus,.ck.ck-dropdown .ck-button.ck-dropdown__button.ck-on:active:focus{box-shadow:var(--ck-focus-outer-shadow),0 0}.ck.ck-dropdown__panel{border-radius:0}.ck-rounded-corners .ck.ck-dropdown__panel,.ck.ck-dropdown__panel.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-dropdown__panel{background:var(--ck-color-dropdown-panel-background);border:1px solid var(--ck-color-dropdown-panel-border);bottom:0;box-shadow:var(--ck-drop-shadow),0 0;min-width:100%}.ck.ck-dropdown__panel.ck-dropdown__panel_se{border-top-left-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_sw{border-top-right-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_ne{border-bottom-left-radius:0}.ck.ck-dropdown__panel.ck-dropdown__panel_nw{border-bottom-right-radius:0}.ck.ck-dropdown__panel:focus{outline:none}";
+styleInject(css_248z$Z);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -16092,9 +16157,14 @@ class Command extends ObservableMixin() {
             if (!this.affectsData) {
                 return;
             }
+            const selection = editor.model.document.selection;
+            const selectionInGraveyard = selection.getFirstPosition().root.rootName == '$graveyard';
+            const canEditAtSelection = !selectionInGraveyard && editor.model.canEditAt(selection);
+            // Disable if editor is read only, or when selection is in a place which cannot be edited.
+            //
             // Checking `editor.isReadOnly` is needed for all commands that have `_isEnabledBasedOnSelection == false`.
             // E.g. undo does not base on selection, but affects data and should be disabled when the editor is in read-only mode.
-            if (editor.isReadOnly || this._isEnabledBasedOnSelection && !editor.model.canEditAt(editor.model.document.selection)) {
+            if (editor.isReadOnly || this._isEnabledBasedOnSelection && !canEditAtSelection) {
                 evt.return = false;
                 evt.stop();
             }
@@ -17024,29 +17094,31 @@ class ContextPlugin extends ObservableMixin() {
     static get isContextPlugin() {
         return true;
     }
-}var css_248z$X = ".ck .ck-placeholder,.ck.ck-placeholder{position:relative}.ck .ck-placeholder:before,.ck.ck-placeholder:before{content:attr(data-placeholder);left:0;pointer-events:none;position:absolute;right:0}.ck.ck-read-only .ck-placeholder:before{display:none}.ck.ck-reset_all .ck-placeholder{position:relative}.ck .ck-placeholder:before,.ck.ck-placeholder:before{color:var(--ck-color-engine-placeholder-text);cursor:text}";
-styleInject(css_248z$X);/**
+}var css_248z$Y = ".ck .ck-placeholder,.ck.ck-placeholder{position:relative}.ck .ck-placeholder:before,.ck.ck-placeholder:before{content:attr(data-placeholder);left:0;pointer-events:none;position:absolute;right:0}.ck.ck-read-only .ck-placeholder:before{display:none}.ck.ck-reset_all .ck-placeholder{position:relative}.ck .ck-placeholder:before,.ck.ck-placeholder:before{color:var(--ck-color-engine-placeholder-text);cursor:text}";
+styleInject(css_248z$Y);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 // Each document stores information about its placeholder elements and check functions.
 const documentPlaceholders = new WeakMap();
+let hasDisplayedPlaceholderDeprecationWarning = false;
 /**
  * A helper that enables a placeholder on the provided view element (also updates its visibility).
  * The placeholder is a CSS pseudo–element (with a text content) attached to the element.
  *
- * To change the placeholder text, simply call this method again with new options.
+ * To change the placeholder text, change value of the `placeholder` property in the provided `element`.
  *
  * To disable the placeholder, use {@link module:engine/view/placeholder~disablePlaceholder `disablePlaceholder()`} helper.
  *
  * @param options Configuration options of the placeholder.
  * @param options.view Editing view instance.
  * @param options.element Element that will gain a placeholder. See `options.isDirectHost` to learn more.
- * @param options.text Placeholder text.
  * @param options.isDirectHost If set `false`, the placeholder will not be enabled directly
  * in the passed `element` but in one of its children (selected automatically, i.e. a first empty child element).
  * Useful when attaching placeholders to elements that can host other elements (not just text), for instance,
  * editable root elements.
+ * @param options.text Placeholder text. It's **deprecated** and will be removed soon. Use
+ * {@link module:engine/view/placeholder~PlaceholderableElement#placeholder `options.element.placeholder`} instead.
  * @param options.keepOnFocus If set `true`, the placeholder stay visible when the host element is focused.
  */
 function enablePlaceholder({ view, element, text, isDirectHost = true, keepOnFocus = false }) {
@@ -17062,15 +17134,31 @@ function enablePlaceholder({ view, element, text, isDirectHost = true, keepOnFoc
             view.change(writer => updateDocumentPlaceholders(doc, writer));
         }, { priority: 'high' });
     }
-    // Store information about the element placeholder under its document.
-    documentPlaceholders.get(doc).set(element, {
-        text,
-        isDirectHost,
-        keepOnFocus,
-        hostElement: isDirectHost ? element : null
-    });
-    // Update the placeholders right away.
-    view.change(writer => updateDocumentPlaceholders(doc, writer));
+    if (element.is('editableElement')) {
+        element.on('change:placeholder', (evtInfo, evt, text) => {
+            setPlaceholder(text);
+        });
+    }
+    if (element.placeholder) {
+        setPlaceholder(element.placeholder);
+    }
+    else if (text) {
+        setPlaceholder(text);
+    }
+    if (text) {
+        showPlaceholderTextDeprecationWarning();
+    }
+    function setPlaceholder(text) {
+        // Store information about the element placeholder under its document.
+        documentPlaceholders.get(doc).set(element, {
+            text,
+            isDirectHost,
+            keepOnFocus,
+            hostElement: isDirectHost ? element : null
+        });
+        // Update the placeholders right away.
+        view.change(writer => updateDocumentPlaceholders(doc, writer));
+    }
 }
 /**
  * Disables the placeholder functionality from a given element.
@@ -17250,6 +17338,24 @@ function getChildPlaceholderHostSubstitute(parent) {
         }
     }
     return null;
+}
+/**
+ * Displays a deprecation warning message in the console, but only once per page load.
+ */
+function showPlaceholderTextDeprecationWarning() {
+    if (!hasDisplayedPlaceholderDeprecationWarning) {
+        /**
+         * The "text" option in the {@link module:engine/view/placeholder~enablePlaceholder `enablePlaceholder()`}
+         * function is deprecated and will be removed soon.
+         *
+         * See the {@glink updating/guides/update-to-39#view-element-placeholder Migration to v39} guide for
+         * more information on how to apply this change.
+         *
+         * @error enableplaceholder-deprecated-text-option
+         */
+        logWarning('enableplaceholder-deprecated-text-option');
+    }
+    hasDisplayedPlaceholderDeprecationWarning = true;
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -17500,7 +17606,7 @@ Node$2.prototype.is = function (type) {
  * {@link module:engine/view/upcastwriter~UpcastWriter#createText `UpcastWriter#createText()`}
  * method when working on non-semantic views.
  */
-class Text$2 extends Node$2 {
+class Text$1 extends Node$2 {
     /**
      * Creates a tree view text node.
      *
@@ -17552,7 +17658,7 @@ class Text$2 extends Node$2 {
      * @param otherNode Node to check if it is same as this node.
      */
     isSimilar(otherNode) {
-        if (!(otherNode instanceof Text$2)) {
+        if (!(otherNode instanceof Text$1)) {
             return false;
         }
         return this === otherNode || this.data === otherNode.data;
@@ -17564,12 +17670,12 @@ class Text$2 extends Node$2 {
      * @returns Text node that is a clone of this node.
      */
     _clone() {
-        return new Text$2(this.document, this.data);
+        return new Text$1(this.document, this.data);
     }
 }
 // The magic of type inference using `is` method is centralized in `TypeCheckable` class.
 // Proper overload would interfere with that.
-Text$2.prototype.is = function (type) {
+Text$1.prototype.is = function (type) {
     return type === '$text' || type === 'view:$text' ||
         // This are legacy values kept for backward compatibility.
         type === 'text' || type === 'view:text' ||
@@ -19656,7 +19762,7 @@ function parseClasses(classesSet, classesString) {
 function normalize$3(document, nodes) {
     // Separate condition because string is iterable.
     if (typeof nodes == 'string') {
-        return [new Text$2(document, nodes)];
+        return [new Text$1(document, nodes)];
     }
     if (!isIterable(nodes)) {
         nodes = [nodes];
@@ -19665,10 +19771,10 @@ function normalize$3(document, nodes) {
     return Array.from(nodes)
         .map(node => {
         if (typeof node == 'string') {
-            return new Text$2(document, node);
+            return new Text$1(document, node);
         }
         if (node instanceof TextProxy$1) {
-            return new Text$2(document, node.data);
+            return new Text$1(document, node.data);
         }
         return node;
     });
@@ -19775,6 +19881,7 @@ class EditableElement extends ObservableMixin(ContainerElement) {
         super(document, name, attributes, children);
         this.set('isReadOnly', false);
         this.set('isFocused', false);
+        this.set('placeholder', undefined);
         this.bind('isReadOnly').to(document);
         this.bind('isFocused').to(document, 'isFocused', isFocused => isFocused && document.selection.editableElement == this);
         // Update focus state based on selection changes.
@@ -19980,7 +20087,7 @@ class TreeWalker$1 {
         // Get node just after current position.
         let node;
         // Text is a specific parent because it contains string instead of child nodes.
-        if (parent instanceof Text$2) {
+        if (parent instanceof Text$1) {
             if (position.isAtEnd) {
                 // Prevent returning "elementEnd" for Text node. Skip that value and return the next walker step.
                 this._position = Position$1._createAfter(parent);
@@ -20005,7 +20112,7 @@ class TreeWalker$1 {
             this._position = position;
             return this._formatReturnValue('elementStart', node, previousPosition, position, 1);
         }
-        if (node instanceof Text$2) {
+        if (node instanceof Text$1) {
             if (this.singleCharacters) {
                 position = new Position$1(node, 0);
                 this._position = position;
@@ -20068,7 +20175,7 @@ class TreeWalker$1 {
         // Get node just before current position.
         let node;
         // Text {@link module:engine/view/text~Text} element is a specific parent because contains string instead of child nodes.
-        if (parent instanceof Text$2) {
+        if (parent instanceof Text$1) {
             if (position.isAtStart) {
                 // Prevent returning "elementStart" for Text node. Skip that value and return the next walker step.
                 this._position = Position$1._createBefore(parent);
@@ -20092,7 +20199,7 @@ class TreeWalker$1 {
             }
             return this._formatReturnValue('elementEnd', node, previousPosition, position);
         }
-        if (node instanceof Text$2) {
+        if (node instanceof Text$1) {
             if (this.singleCharacters) {
                 position = new Position$1(node, node.data.length);
                 this._position = position;
@@ -21926,7 +22033,7 @@ function getDeeperRangeParent(range) {
  * Document class creates an abstract layer over the content editable area, contains a tree of view elements and
  * {@link module:engine/view/documentselection~DocumentSelection view selection} associated with this document.
  */
-class Document$1 extends BubblingEmitterMixin(ObservableMixin()) {
+class Document$2 extends BubblingEmitterMixin(ObservableMixin()) {
     /**
      * Creates a Document instance.
      *
@@ -22750,7 +22857,7 @@ DocumentFragment$1.prototype.is = function (type) {
 function normalize$2(document, nodes) {
     // Separate condition because string is iterable.
     if (typeof nodes == 'string') {
-        return [new Text$2(document, nodes)];
+        return [new Text$1(document, nodes)];
     }
     if (!isIterable(nodes)) {
         nodes = [nodes];
@@ -22759,10 +22866,10 @@ function normalize$2(document, nodes) {
     return Array.from(nodes)
         .map(node => {
         if (typeof node == 'string') {
-            return new Text$2(document, node);
+            return new Text$1(document, node);
         }
         if (node instanceof TextProxy$1) {
-            return new Text$2(document, node.data);
+            return new Text$1(document, node.data);
         }
         return node;
     });
@@ -22835,7 +22942,7 @@ class DowncastWriter {
      * @returns The created text node.
      */
     createText(data) {
-        return new Text$2(this.document, data);
+        return new Text$1(this.document, data);
     }
     /**
      * Creates a new {@link module:engine/view/attributeelement~AttributeElement}.
@@ -23294,7 +23401,7 @@ class DowncastWriter {
             throw new CKEditorError('view-writer-merge-containers-invalid-position', this.document);
         }
         const lastChild = prev.getChild(prev.childCount - 1);
-        const newPosition = lastChild instanceof Text$2 ? Position$1._createAt(lastChild, 'end') : Position$1._createAt(prev, 'end');
+        const newPosition = lastChild instanceof Text$1 ? Position$1._createAt(lastChild, 'end') : Position$1._createAt(prev, 'end');
         this.move(Range$1._createIn(next), Position$1._createAt(prev, 'end'));
         this.remove(Range$1._createOn(next));
         return newPosition;
@@ -23949,7 +24056,7 @@ class DowncastWriter {
         // If position is placed between text nodes - merge them and return position inside.
         const nodeBefore = newPosition.nodeBefore;
         const nodeAfter = newPosition.nodeAfter;
-        if (nodeBefore instanceof Text$2 && nodeAfter instanceof Text$2) {
+        if (nodeBefore instanceof Text$1 && nodeAfter instanceof Text$1) {
             return mergeTextNodes(nodeBefore, nodeAfter);
         }
         // If position is next to text node - move position inside.
@@ -24353,7 +24460,7 @@ function breakTextNode(position) {
     // Leave rest of the text in position's parent.
     position.parent._data = position.parent.data.slice(0, position.offset);
     // Insert new text node after position's parent text node.
-    position.parent.parent._insertChild(position.parent.index + 1, new Text$2(position.root.document, textToMove));
+    position.parent.parent._insertChild(position.parent.index + 1, new Text$1(position.root.document, textToMove));
     // Return new position between two newly created text nodes.
     return new Position$1(position.parent.parent, position.parent.index + 1);
 }
@@ -24371,7 +24478,7 @@ function mergeTextNodes(t1, t2) {
     t2._remove();
     return new Position$1(t1, nodeBeforeLength);
 }
-const validNodesToInsert = [Text$2, AttributeElement, ContainerElement, EmptyElement, RawElement, UIElement];
+const validNodesToInsert = [Text$1, AttributeElement, ContainerElement, EmptyElement, RawElement, UIElement];
 /**
  * Checks if provided nodes are valid to insert.
  *
@@ -24532,6 +24639,9 @@ const INLINE_FILLER = '\u2060'.repeat(INLINE_FILLER_LENGTH);
  * @returns True if the text node starts with the {@link module:engine/view/filler~INLINE_FILLER inline filler}.
  */
 function startsWithFiller(domNode) {
+    if (typeof domNode == 'string') {
+        return domNode.substr(0, INLINE_FILLER_LENGTH) === INLINE_FILLER;
+    }
     return isText(domNode) && (domNode.data.substr(0, INLINE_FILLER_LENGTH) === INLINE_FILLER);
 }
 /**
@@ -24561,12 +24671,11 @@ function isInlineFiller(domText) {
  * @returns Data without filler.
  */
 function getDataWithoutFiller(domText) {
+    const data = typeof domText == 'string' ? domText : domText.data;
     if (startsWithFiller(domText)) {
-        return domText.data.slice(INLINE_FILLER_LENGTH);
+        return data.slice(INLINE_FILLER_LENGTH);
     }
-    else {
-        return domText.data;
-    }
+    return data;
 }
 /**
  * Assign key observer which move cursor from the end of the inline filler to the beginning of it when
@@ -24591,8 +24700,8 @@ function jumpOverInlineFiller(evt, data) {
             }
         }
     }
-}var css_248z$W = ".ck.ck-editor__editable span[data-ck-unsafe-element]{display:none}";
-styleInject(css_248z$W);/**
+}var css_248z$X = ".ck.ck-editor__editable span[data-ck-unsafe-element]{display:none}";
+styleInject(css_248z$X);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -24989,7 +25098,7 @@ class Renderer extends ObservableMixin() {
         }
         const nodeBefore = selectionPosition.nodeBefore;
         const nodeAfter = selectionPosition.nodeAfter;
-        if (nodeBefore instanceof Text$2 || nodeAfter instanceof Text$2) {
+        if (nodeBefore instanceof Text$1 || nodeAfter instanceof Text$1) {
             return false;
         }
         // Do not use inline filler while typing outside inline elements on Android.
@@ -25331,8 +25440,7 @@ class Renderer extends ObservableMixin() {
         // @if CK_DEBUG_TYPING // 		'color: green;font-weight: bold', '', anchor, focus
         // @if CK_DEBUG_TYPING // 	);
         // @if CK_DEBUG_TYPING // }
-        domSelection.collapse(anchor.parent, anchor.offset);
-        domSelection.extend(focus.parent, focus.offset);
+        domSelection.setBaseAndExtent(anchor.parent, anchor.offset, focus.parent, focus.offset);
         // Firefox–specific hack (https://github.com/ckeditor/ckeditor5-engine/issues/1439).
         if (env.isGecko) {
             fixGeckoSelectionAfterBr(focus, domSelection);
@@ -25635,9 +25743,9 @@ class DomConverter {
          */
         this._rawContentElementMatcher = new Matcher();
         /**
-         * A set of encountered raw content DOM nodes. It is used for preventing left trimming of the following text node.
+         * Matcher for inline object view elements. This is an extension of a simple {@link #inlineObjectElements} array of element names.
          */
-        this._encounteredRawContentDomNodes = new WeakSet();
+        this._inlineObjectElementMatcher = new Matcher();
         this.document = document;
         this.renderingMode = renderingMode;
         this.blockFillerMode = blockFillerMode || (renderingMode === 'editing' ? 'br' : 'nbsp');
@@ -26040,68 +26148,22 @@ class DomConverter {
      * or the given node is an empty text node.
      */
     domToView(domNode, options = {}) {
-        if (this.isBlockFiller(domNode)) {
+        const inlineNodes = [];
+        const generator = this._domToView(domNode, options, inlineNodes);
+        // Get the first yielded value or a returned value.
+        const node = generator.next().value;
+        if (!node) {
             return null;
         }
-        // When node is inside a UIElement or a RawElement return that parent as it's view representation.
-        const hostElement = this.getHostViewElement(domNode);
-        if (hostElement) {
-            return hostElement;
-        }
-        if (isComment(domNode) && options.skipComments) {
+        // Trigger children handling.
+        generator.next();
+        // Whitespace cleaning.
+        this._processDomInlineNodes(null, inlineNodes, options);
+        // Text not got trimmed to an empty string so there is no result node.
+        if (node.is('$text') && node.data.length == 0) {
             return null;
         }
-        if (isText(domNode)) {
-            if (isInlineFiller(domNode)) {
-                return null;
-            }
-            else {
-                const textData = this._processDataFromDomText(domNode);
-                return textData === '' ? null : new Text$2(this.document, textData);
-            }
-        }
-        else {
-            if (this.mapDomToView(domNode)) {
-                return this.mapDomToView(domNode);
-            }
-            let viewElement;
-            if (this.isDocumentFragment(domNode)) {
-                // Create view document fragment.
-                viewElement = new DocumentFragment$1(this.document);
-                if (options.bind) {
-                    this.bindDocumentFragments(domNode, viewElement);
-                }
-            }
-            else {
-                // Create view element.
-                viewElement = this._createViewElement(domNode, options);
-                if (options.bind) {
-                    this.bindElements(domNode, viewElement);
-                }
-                // Copy element's attributes.
-                const attrs = domNode.attributes;
-                if (attrs) {
-                    for (let l = attrs.length, i = 0; i < l; i++) {
-                        viewElement._setAttribute(attrs[i].name, attrs[i].value);
-                    }
-                }
-                // Treat this element's content as a raw data if it was registered as such.
-                // Comment node is also treated as an element with raw data.
-                if (this._isViewElementWithRawContent(viewElement, options) || isComment(domNode)) {
-                    const rawContent = isComment(domNode) ? domNode.data : domNode.innerHTML;
-                    viewElement._setCustomProperty('$rawContent', rawContent);
-                    // Store a DOM node to prevent left trimming of the following text node.
-                    this._encounteredRawContentDomNodes.add(domNode);
-                    return viewElement;
-                }
-            }
-            if (options.withChildren !== false) {
-                for (const child of this.domChildrenToView(domNode, options)) {
-                    viewElement._appendChild(child);
-                }
-            }
-            return viewElement;
-        }
+        return node;
     }
     /**
      * Converts children of the DOM element to view nodes using
@@ -26110,16 +26172,27 @@ class DomConverter {
      *
      * @param domElement Parent DOM element.
      * @param options See {@link module:engine/view/domconverter~DomConverter#domToView} options parameter.
+     * @param inlineNodes An array that will be populated with inline nodes. It's used internally for whitespace processing.
      * @returns View nodes.
      */
-    *domChildrenToView(domElement, options) {
+    *domChildrenToView(domElement, options = {}, inlineNodes = []) {
         for (let i = 0; i < domElement.childNodes.length; i++) {
             const domChild = domElement.childNodes[i];
-            const viewChild = this.domToView(domChild, options);
+            const generator = this._domToView(domChild, options, inlineNodes);
+            // Get the first yielded value or a returned value.
+            const viewChild = generator.next().value;
             if (viewChild !== null) {
+                // Whitespace cleaning before entering a block element (between block elements).
+                if (this._isBlockViewElement(viewChild)) {
+                    this._processDomInlineNodes(domElement, inlineNodes, options);
+                }
                 yield viewChild;
+                // Trigger children handling.
+                generator.next();
             }
         }
+        // Whitespace cleaning before leaving a block element (content of block element).
+        this._processDomInlineNodes(domElement, inlineNodes, options);
     }
     /**
      * Converts DOM selection to view {@link module:engine/view/selection~Selection}.
@@ -26289,7 +26362,7 @@ class DomConverter {
             if (viewElement) {
                 const nextSibling = viewElement.nextSibling;
                 // It might be filler which has no corresponding view node.
-                if (nextSibling instanceof Text$2) {
+                if (nextSibling instanceof Text$1) {
                     return nextSibling;
                 }
                 else {
@@ -26303,7 +26376,7 @@ class DomConverter {
             if (viewElement) {
                 const firstChild = viewElement.getChild(0);
                 // It might be filler which has no corresponding view node.
-                if (firstChild instanceof Text$2) {
+                if (firstChild instanceof Text$1) {
                     return firstChild;
                 }
                 else {
@@ -26371,6 +26444,24 @@ class DomConverter {
             // Restore the scrollX and scrollY positions after the focus.
             // https://github.com/ckeditor/ckeditor5-engine/issues/951
             global$1.window.scrollTo(scrollX, scrollY);
+        }
+    }
+    /**
+     * Remove DOM selection from blurred editable, so it won't interfere with clicking on dropdowns (especially on iOS).
+     *
+     * @internal
+     */
+    _clearDomSelection() {
+        const domEditable = this.mapViewToDom(this.document.selection.editableElement);
+        if (!domEditable) {
+            return;
+        }
+        // Check if DOM selection is inside editor editable element.
+        const domSelection = domEditable.ownerDocument.defaultView.getSelection();
+        const newViewSelection = this.domSelectionToView(domSelection);
+        const selectionInEditable = newViewSelection && newViewSelection.rangeCount > 0;
+        if (selectionInEditable) {
+            domSelection.removeAllRanges();
         }
     }
     /**
@@ -26494,6 +26585,19 @@ class DomConverter {
         this._rawContentElementMatcher.add(pattern);
     }
     /**
+     * Registers a {@link module:engine/view/matcher~MatcherPattern} for inline object view elements.
+     *
+     * This is affecting how {@link module:engine/view/domconverter~DomConverter#domToView} and
+     * {@link module:engine/view/domconverter~DomConverter#domChildrenToView} process DOM nodes.
+     *
+     * This is an extension of a simple {@link #inlineObjectElements} array of element names.
+     *
+     * @param pattern Pattern matching a view element which should be treated as an inline object.
+     */
+    registerInlineObjectMatcher(pattern) {
+        this._inlineObjectElementMatcher.add(pattern);
+    }
+    /**
      * Returns the block {@link module:engine/view/filler filler} node based on the current {@link #blockFillerMode} setting.
      */
     _getBlockFiller() {
@@ -26531,6 +26635,194 @@ class DomConverter {
             return false;
         }
         return true;
+    }
+    /**
+     * Internal generator for {@link #domToView}. Also used by {@link #domChildrenToView}.
+     * Separates DOM nodes conversion from whitespaces processing.
+     *
+     * @param domNode DOM node or document fragment to transform.
+     * @param inlineNodes An array of recently encountered inline nodes truncated to the block element boundaries.
+     * Used later to process whitespaces.
+     */
+    *_domToView(domNode, options, inlineNodes) {
+        if (this.isBlockFiller(domNode)) {
+            return null;
+        }
+        // When node is inside a UIElement or a RawElement return that parent as it's view representation.
+        const hostElement = this.getHostViewElement(domNode);
+        if (hostElement) {
+            return hostElement;
+        }
+        if (isComment(domNode) && options.skipComments) {
+            return null;
+        }
+        if (isText(domNode)) {
+            if (isInlineFiller(domNode)) {
+                return null;
+            }
+            else {
+                const textData = domNode.data;
+                if (textData === '') {
+                    return null;
+                }
+                const textNode = new Text$1(this.document, textData);
+                inlineNodes.push(textNode);
+                return textNode;
+            }
+        }
+        else {
+            let viewElement = this.mapDomToView(domNode);
+            if (viewElement) {
+                if (this._isInlineObjectElement(viewElement)) {
+                    inlineNodes.push(viewElement);
+                }
+                return viewElement;
+            }
+            if (this.isDocumentFragment(domNode)) {
+                // Create view document fragment.
+                viewElement = new DocumentFragment$1(this.document);
+                if (options.bind) {
+                    this.bindDocumentFragments(domNode, viewElement);
+                }
+            }
+            else {
+                // Create view element.
+                viewElement = this._createViewElement(domNode, options);
+                if (options.bind) {
+                    this.bindElements(domNode, viewElement);
+                }
+                // Copy element's attributes.
+                const attrs = domNode.attributes;
+                if (attrs) {
+                    for (let l = attrs.length, i = 0; i < l; i++) {
+                        viewElement._setAttribute(attrs[i].name, attrs[i].value);
+                    }
+                }
+                // Treat this element's content as a raw data if it was registered as such.
+                if (this._isViewElementWithRawContent(viewElement, options)) {
+                    viewElement._setCustomProperty('$rawContent', domNode.innerHTML);
+                    if (!this._isBlockViewElement(viewElement)) {
+                        inlineNodes.push(viewElement);
+                    }
+                    return viewElement;
+                }
+                // Comment node is also treated as an element with raw data.
+                if (isComment(domNode)) {
+                    viewElement._setCustomProperty('$rawContent', domNode.data);
+                    return viewElement;
+                }
+            }
+            // Yield the element first so the flow of nested inline nodes is not reversed inside elements.
+            yield viewElement;
+            const nestedInlineNodes = [];
+            if (options.withChildren !== false) {
+                for (const child of this.domChildrenToView(domNode, options, nestedInlineNodes)) {
+                    viewElement._appendChild(child);
+                }
+            }
+            // Check if this is an inline object after processing child nodes so matcher
+            // for inline objects can verify if the element is empty.
+            if (this._isInlineObjectElement(viewElement)) {
+                inlineNodes.push(viewElement);
+            }
+            else {
+                // It's an inline element that is not an object (like <b>, <i>) or a block element.
+                for (const inlineNode of nestedInlineNodes) {
+                    inlineNodes.push(inlineNode);
+                }
+            }
+        }
+    }
+    /**
+     * Internal helper that walks the list of inline view nodes already generated from DOM nodes
+     * and handles whitespaces and NBSPs.
+     *
+     * @param domParent The DOM parent of the given inline nodes. This should be a document fragment or
+     * a block element to whitespace processing start cleaning.
+     * @param inlineNodes An array of recently encountered inline nodes truncated to the block element boundaries.
+     */
+    _processDomInlineNodes(domParent, inlineNodes, options) {
+        if (!inlineNodes.length) {
+            return;
+        }
+        // Process text nodes only after reaching a block or document fragment,
+        // do not alter whitespaces while processing an inline element like <b> or <i>.
+        if (domParent && !this.isDocumentFragment(domParent) && !this._isBlockDomElement(domParent)) {
+            return;
+        }
+        let prevNodeEndsWithSpace = false;
+        for (let i = 0; i < inlineNodes.length; i++) {
+            const node = inlineNodes[i];
+            if (!node.is('$text')) {
+                prevNodeEndsWithSpace = false;
+                continue;
+            }
+            let data;
+            let nodeEndsWithSpace = false;
+            if (_hasViewParentOfType(node, this.preElements)) {
+                data = getDataWithoutFiller(node.data);
+            }
+            else {
+                // Change all consecutive whitespace characters (from the [ \n\t\r] set –
+                // see https://github.com/ckeditor/ckeditor5-engine/issues/822#issuecomment-311670249) to a single space character.
+                // That's how multiple whitespaces are treated when rendered, so we normalize those whitespaces.
+                // We're replacing 1+ (and not 2+) to also normalize singular \n\t\r characters (#822).
+                data = node.data.replace(/[ \n\t\r]{1,}/g, ' ');
+                nodeEndsWithSpace = /[^\S\u00A0]/.test(data.charAt(data.length - 1));
+                const prevNode = i > 0 ? inlineNodes[i - 1] : null;
+                const nextNode = i + 1 < inlineNodes.length ? inlineNodes[i + 1] : null;
+                const shouldLeftTrim = !prevNode || prevNode.is('element') && prevNode.name == 'br' || prevNodeEndsWithSpace;
+                const shouldRightTrim = nextNode ? false : !startsWithFiller(node.data);
+                // Do not try to clear whitespaces if this is flat mapping for the purpose of mutation observer and differ in rendering.
+                if (options.withChildren !== false) {
+                    // If the previous dom text node does not exist or it ends by whitespace character, remove space character from the
+                    // beginning of this text node. Such space character is treated as a whitespace.
+                    if (shouldLeftTrim) {
+                        data = data.replace(/^ /, '');
+                    }
+                    // If the next text node does not exist remove space character from the end of this text node.
+                    if (shouldRightTrim) {
+                        data = data.replace(/ $/, '');
+                    }
+                }
+                // At the beginning and end of a block element, Firefox inserts normal space + <br> instead of non-breaking space.
+                // This means that the text node starts/end with normal space instead of non-breaking space.
+                // This causes a problem because the normal space would be removed in `.replace` calls above. To prevent that,
+                // the inline filler is removed only after the data is initially processed (by the `.replace` above). See ckeditor5#692.
+                data = getDataWithoutFiller(data);
+                // At this point we should have removed all whitespaces from DOM text data.
+                //
+                // Now, We will reverse the process that happens in `_processDataFromViewText`.
+                //
+                // We have to change &nbsp; chars, that were in DOM text data because of rendering reasons, to spaces.
+                // First, change all ` \u00A0` pairs (space + &nbsp;) to two spaces. DOM converter changes two spaces from model/view to
+                // ` \u00A0` to ensure proper rendering. Since here we convert back, we recognize those pairs and change them back to `  `.
+                data = data.replace(/ \u00A0/g, '  ');
+                const isNextNodeInlineObjectElement = nextNode && nextNode.is('element') && nextNode.name != 'br';
+                const isNextNodeStartingWithSpace = nextNode && nextNode.is('$text') && nextNode.data.charAt(0) == ' ';
+                // Then, let's change the last nbsp to a space.
+                if (/[ \u00A0]\u00A0$/.test(data) || !nextNode || isNextNodeInlineObjectElement || isNextNodeStartingWithSpace) {
+                    data = data.replace(/\u00A0$/, ' ');
+                }
+                // Then, change &nbsp; character that is at the beginning of the text node to space character.
+                // We do that replacement only if this is the first node or the previous node ends on whitespace character.
+                if (shouldLeftTrim || prevNode && prevNode.is('element') && prevNode.name != 'br') {
+                    data = data.replace(/^\u00A0/, ' ');
+                }
+            }
+            // At this point, all whitespaces should be removed and all &nbsp; created for rendering reasons should be
+            // changed to normal space. All left &nbsp; are &nbsp; inserted intentionally.
+            if (data.length == 0 && node.parent) {
+                node._remove();
+                inlineNodes.splice(i, 1);
+                i--;
+            }
+            else {
+                node._data = data;
+                prevNodeEndsWithSpace = nodeEndsWithSpace;
+            }
+        }
+        inlineNodes.length = 0;
     }
     /**
      * Takes text data from a given {@link module:engine/view/text~Text#data} and processes it so
@@ -26598,103 +26890,6 @@ class DomConverter {
         return data.charAt(data.length - 1) == ' ';
     }
     /**
-     * Takes text data from native `Text` node and processes it to a correct {@link module:engine/view/text~Text view text node} data.
-     *
-     * Following changes are done:
-     *
-     * * multiple whitespaces are replaced to a single space,
-     * * space at the beginning of a text node is removed if it is the first text node in its container
-     * element or if the previous text node ends with a space character,
-     * * space at the end of the text node is removed if there are two spaces at the end of a node or if next node
-     * starts with a space or if it is the last text node in its container
-     * * nbsps are converted to spaces.
-     *
-     * @param node DOM text node to process.
-     * @returns Processed data.
-     */
-    _processDataFromDomText(node) {
-        let data = node.data;
-        if (_hasDomParentOfType(node, this.preElements)) {
-            return getDataWithoutFiller(node);
-        }
-        // Change all consecutive whitespace characters (from the [ \n\t\r] set –
-        // see https://github.com/ckeditor/ckeditor5-engine/issues/822#issuecomment-311670249) to a single space character.
-        // That's how multiple whitespaces are treated when rendered, so we normalize those whitespaces.
-        // We're replacing 1+ (and not 2+) to also normalize singular \n\t\r characters (#822).
-        data = data.replace(/[ \n\t\r]{1,}/g, ' ');
-        const prevNode = this._getTouchingInlineDomNode(node, false);
-        const nextNode = this._getTouchingInlineDomNode(node, true);
-        const shouldLeftTrim = this._checkShouldLeftTrimDomText(node, prevNode);
-        const shouldRightTrim = this._checkShouldRightTrimDomText(node, nextNode);
-        // If the previous dom text node does not exist or it ends by whitespace character, remove space character from the beginning
-        // of this text node. Such space character is treated as a whitespace.
-        if (shouldLeftTrim) {
-            data = data.replace(/^ /, '');
-        }
-        // If the next text node does not exist remove space character from the end of this text node.
-        if (shouldRightTrim) {
-            data = data.replace(/ $/, '');
-        }
-        // At the beginning and end of a block element, Firefox inserts normal space + <br> instead of non-breaking space.
-        // This means that the text node starts/end with normal space instead of non-breaking space.
-        // This causes a problem because the normal space would be removed in `.replace` calls above. To prevent that,
-        // the inline filler is removed only after the data is initially processed (by the `.replace` above). See ckeditor5#692.
-        data = getDataWithoutFiller(new Text(data));
-        // At this point we should have removed all whitespaces from DOM text data.
-        //
-        // Now, We will reverse the process that happens in `_processDataFromViewText`.
-        //
-        // We have to change &nbsp; chars, that were in DOM text data because of rendering reasons, to spaces.
-        // First, change all ` \u00A0` pairs (space + &nbsp;) to two spaces. DOM converter changes two spaces from model/view to
-        // ` \u00A0` to ensure proper rendering. Since here we convert back, we recognize those pairs and change them back to `  `.
-        data = data.replace(/ \u00A0/g, '  ');
-        const isNextNodeInlineObjectElement = nextNode && this.isElement(nextNode) && nextNode.tagName != 'BR';
-        const isNextNodeStartingWithSpace = nextNode && isText(nextNode) && nextNode.data.charAt(0) == ' ';
-        // Then, let's change the last nbsp to a space.
-        if (/( |\u00A0)\u00A0$/.test(data) || !nextNode || isNextNodeInlineObjectElement || isNextNodeStartingWithSpace) {
-            data = data.replace(/\u00A0$/, ' ');
-        }
-        // Then, change &nbsp; character that is at the beginning of the text node to space character.
-        // We do that replacement only if this is the first node or the previous node ends on whitespace character.
-        if (shouldLeftTrim || prevNode && this.isElement(prevNode) && prevNode.tagName != 'BR') {
-            data = data.replace(/^\u00A0/, ' ');
-        }
-        // At this point, all whitespaces should be removed and all &nbsp; created for rendering reasons should be
-        // changed to normal space. All left &nbsp; are &nbsp; inserted intentionally.
-        return data;
-    }
-    /**
-     * Helper function which checks if a DOM text node, preceded by the given `prevNode` should
-     * be trimmed from the left side.
-     *
-     * @param prevNode Either DOM text or `<br>` or one of `#inlineObjectElements`.
-     */
-    _checkShouldLeftTrimDomText(node, prevNode) {
-        if (!prevNode) {
-            return true;
-        }
-        if (this.isElement(prevNode)) {
-            return prevNode.tagName === 'BR';
-        }
-        // Shouldn't left trim if previous node is a node that was encountered as a raw content node.
-        if (this._encounteredRawContentDomNodes.has(node.previousSibling)) {
-            return false;
-        }
-        return /[^\S\u00A0]/.test(prevNode.data.charAt(prevNode.data.length - 1));
-    }
-    /**
-     * Helper function which checks if a DOM text node, succeeded by the given `nextNode` should
-     * be trimmed from the right side.
-     *
-     * @param nextNode Either DOM text or `<br>` or one of `#inlineObjectElements`.
-     */
-    _checkShouldRightTrimDomText(node, nextNode) {
-        if (nextNode) {
-            return false;
-        }
-        return !startsWithFiller(node);
-    }
-    /**
      * Helper function. For given {@link module:engine/view/text~Text view text node}, it finds previous or next sibling
      * that is contained in the same container element. If there is no such sibling, `null` is returned.
      *
@@ -26708,17 +26903,17 @@ class DomConverter {
             direction: getNext ? 'forward' : 'backward'
         });
         for (const value of treeWalker) {
+            // <br> found – it works like a block boundary, so do not scan further.
+            if (value.item.is('element', 'br')) {
+                return null;
+            }
             // Found an inline object (for example an image).
-            if (value.item.is('element') && this.inlineObjectElements.includes(value.item.name)) {
+            else if (this._isInlineObjectElement(value.item)) {
                 return value.item;
             }
             // ViewContainerElement is found on a way to next ViewText node, so given `node` was first/last
             // text node in its container element.
             else if (value.item.is('containerElement')) {
-                return null;
-            }
-            // <br> found – it works like a block boundary, so do not scan further.
-            else if (value.item.is('element', 'br')) {
                 return null;
             }
             // Found a text node in the same container element.
@@ -26729,61 +26924,27 @@ class DomConverter {
         return null;
     }
     /**
-     * Helper function. For the given text node, it finds the closest touching node which is either
-     * a text, `<br>` or an {@link #inlineObjectElements inline object}.
-     *
-     * If no such node is found, `null` is returned.
-     *
-     * For instance, in the following DOM structure:
-     *
-     * ```html
-     * <p>foo<b>bar</b><br>bom</p>
-     * ```
-     *
-     * * `foo` doesn't have its previous touching inline node (`null` is returned),
-     * * `foo`'s next touching inline node is `bar`
-     * * `bar`'s next touching inline node is `<br>`
-     *
-     * This method returns text nodes and `<br>` elements because these types of nodes affect how
-     * spaces in the given text node need to be converted.
-     */
-    _getTouchingInlineDomNode(node, getNext) {
-        if (!node.parentNode) {
-            return null;
-        }
-        const stepInto = getNext ? 'firstChild' : 'lastChild';
-        const stepOver = getNext ? 'nextSibling' : 'previousSibling';
-        let skipChildren = true;
-        let returnNode = node;
-        do {
-            if (!skipChildren && returnNode[stepInto]) {
-                returnNode = returnNode[stepInto];
-            }
-            else if (returnNode[stepOver]) {
-                returnNode = returnNode[stepOver];
-                skipChildren = false;
-            }
-            else {
-                returnNode = returnNode.parentNode;
-                skipChildren = true;
-            }
-            if (!returnNode || this._isBlockElement(returnNode)) {
-                return null;
-            }
-        } while (!(isText(returnNode) || returnNode.tagName == 'BR' || this._isInlineObjectElement(returnNode)));
-        return returnNode;
-    }
-    /**
      * Returns `true` if a DOM node belongs to {@link #blockElements}. `false` otherwise.
      */
-    _isBlockElement(node) {
+    _isBlockDomElement(node) {
         return this.isElement(node) && this.blockElements.includes(node.tagName.toLowerCase());
+    }
+    /**
+     * Returns `true` if a view node belongs to {@link #blockElements}. `false` otherwise.
+     */
+    _isBlockViewElement(node) {
+        return node.is('element') && this.blockElements.includes(node.name);
     }
     /**
      * Returns `true` if a DOM node belongs to {@link #inlineObjectElements}. `false` otherwise.
      */
     _isInlineObjectElement(node) {
-        return this.isElement(node) && this.inlineObjectElements.includes(node.tagName.toLowerCase());
+        if (!node.is('element')) {
+            return false;
+        }
+        return node.name == 'br' ||
+            this.inlineObjectElements.includes(node.name) ||
+            !!this._inlineObjectElementMatcher.match(node);
     }
     /**
      * Creates view element basing on the node type.
@@ -26805,7 +26966,7 @@ class DomConverter {
      * @param options Conversion options. See {@link module:engine/view/domconverter~DomConverter#domToView} options parameter.
      */
     _isViewElementWithRawContent(viewElement, options) {
-        return options.withChildren !== false && !!this._rawContentElementMatcher.match(viewElement);
+        return options.withChildren !== false && viewElement.is('element') && !!this._rawContentElementMatcher.match(viewElement);
     }
     /**
      * Checks whether a given element name should be renamed in a current rendering mode.
@@ -26844,9 +27005,8 @@ class DomConverter {
  *
  * @returns`true` if such parent exists or `false` if it does not.
  */
-function _hasDomParentOfType(node, types) {
-    const parents = getAncestors(node);
-    return parents.some(parent => parent.tagName && types.includes(parent.tagName.toLowerCase()));
+function _hasViewParentOfType(node, types) {
+    return node.getAncestors().some(parent => parent.is('element') && types.includes(parent.name));
 }
 /**
  * A helper that executes given callback for each DOM node's ancestor, starting from the given node
@@ -27670,6 +27830,8 @@ class SelectionObserver extends Observer {
             return;
         }
         this.view.hasDomSelection = true;
+        // Mark the latest focus change as complete (we got new selection after the focus so the selection is in the focused element).
+        this.focusObserver.flush();
         if (this.selection.isEqual(newViewSelection) && this.domConverter.isDomSelectionCorrect(domSelection)) {
             return;
         }
@@ -27684,8 +27846,6 @@ class SelectionObserver extends Observer {
             this._reportInfiniteLoop();
             return;
         }
-        // Mark the latest focus change as complete (we got new selection after the focus so the selection is in the focused element).
-        this.focusObserver.flush();
         if (this.selection.isSimilar(newViewSelection)) {
             // If selection was equal and we are at this point of algorithm, it means that it was incorrect.
             // Just re-render it, no need to fire any events, etc.
@@ -28172,7 +28332,7 @@ class View extends ObservableMixin() {
          * It stores information about changed selection and changed elements from attached document roots.
          */
         this._hasChangedSinceTheLastRendering = false;
-        this.document = new Document$1(stylesProcessor);
+        this.document = new Document$2(stylesProcessor);
         this.domConverter = new DomConverter(this.document);
         this.set('isRenderingInProgress', false);
         this.set('hasDomSelection', false);
@@ -28181,6 +28341,7 @@ class View extends ObservableMixin() {
             .to(this.document, 'isFocused', 'isSelecting', 'isComposing');
         this._writer = new DowncastWriter(this.document);
         // Add default observers.
+        // Make sure that this list matches AlwaysRegisteredObservers type.
         this.addObserver(MutationObserver);
         this.addObserver(FocusObserver);
         this.addObserver(SelectionObserver);
@@ -28209,6 +28370,17 @@ class View extends ObservableMixin() {
         this.listenTo(this.document, 'change:isFocused', () => {
             this._hasChangedSinceTheLastRendering = true;
         });
+        // Remove ranges from DOM selection if editor is blurred.
+        // See https://github.com/ckeditor/ckeditor5/issues/5753.
+        if (env.isiOS) {
+            this.listenTo(this.document, 'blur', (evt, data) => {
+                const relatedViewElement = this.domConverter.mapDomToView(data.domEvent.relatedTarget);
+                // Do not modify DOM selection if focus is moved to other editable of the same editor.
+                if (!relatedViewElement) {
+                    this.domConverter._clearDomSelection();
+                }
+            });
+        }
     }
     /**
      * Attaches a DOM root element to the view element and enable all observers on that element.
@@ -29155,7 +29327,7 @@ class NodeList {
  * this behavior, keeping references to `Text` is not recommended. Instead, consider creating
  * {@link module:engine/model/liveposition~LivePosition live position} placed before the text node.
  */
-class Text$1 extends Node$1 {
+class Text extends Node$1 {
     /**
      * Creates a text node.
      *
@@ -29199,7 +29371,7 @@ class Text$1 extends Node$1 {
      * @returns `Text` instance created using given plain object.
      */
     _clone() {
-        return new Text$1(this.data, this.getAttributes());
+        return new Text(this.data, this.getAttributes());
     }
     /**
      * Creates a `Text` instance from given plain object (i.e. parsed JSON string).
@@ -29208,12 +29380,12 @@ class Text$1 extends Node$1 {
      * @returns `Text` instance created using given plain object.
      */
     static fromJSON(json) {
-        return new Text$1(json.data, json.attributes);
+        return new Text(json.data, json.attributes);
     }
 }
 // The magic of type inference using `is` method is centralized in `TypeCheckable` class.
 // Proper overload would interfere with that.
-Text$1.prototype.is = function (type) {
+Text.prototype.is = function (type) {
     return type === '$text' || type === 'model:$text' ||
         // This are legacy values kept for backward compatibility.
         type === 'text' || type === 'model:text' ||
@@ -29635,7 +29807,7 @@ class Element extends Node$1 {
                 }
                 else {
                     // Otherwise, it is a Text node.
-                    children.push(Text$1.fromJSON(child));
+                    children.push(Text.fromJSON(child));
                 }
             }
         }
@@ -29658,7 +29830,7 @@ Element.prototype.is = function (type, name) {
 function normalize$1(nodes) {
     // Separate condition because string is iterable.
     if (typeof nodes == 'string') {
-        return [new Text$1(nodes)];
+        return [new Text(nodes)];
     }
     if (!isIterable(nodes)) {
         nodes = [nodes];
@@ -29667,10 +29839,10 @@ function normalize$1(nodes) {
     return Array.from(nodes)
         .map(node => {
         if (typeof node == 'string') {
-            return new Text$1(node);
+            return new Text(node);
         }
         if (node instanceof TextProxy) {
-            return new Text$1(node.data, node.getAttributes());
+            return new Text(node.data, node.getAttributes());
         }
         return node;
     });
@@ -29811,7 +29983,7 @@ class TreeWalker {
             this._position = position;
             return formatReturnValue('elementStart', node, previousPosition, position, 1);
         }
-        if (node instanceof Text$1) {
+        if (node instanceof Text) {
             let charactersCount;
             if (this.singleCharacters) {
                 charactersCount = 1;
@@ -29873,7 +30045,7 @@ class TreeWalker {
             }
             return formatReturnValue('elementEnd', node, previousPosition, position);
         }
-        if (node instanceof Text$1) {
+        if (node instanceof Text) {
             let charactersCount;
             if (this.singleCharacters) {
                 charactersCount = 1;
@@ -32263,10 +32435,10 @@ class Mapper extends EmitterMixin() {
         // If the position is just before a text node, put it at the beginning of that text node.
         const nodeBefore = viewPosition.nodeBefore;
         const nodeAfter = viewPosition.nodeAfter;
-        if (nodeBefore instanceof Text$2) {
+        if (nodeBefore instanceof Text$1) {
             return new Position$1(nodeBefore, nodeBefore.data.length);
         }
-        else if (nodeAfter instanceof Text$2) {
+        else if (nodeAfter instanceof Text$1) {
             return new Position$1(nodeAfter, 0);
         }
         // Otherwise, just return the given position.
@@ -32793,38 +32965,47 @@ class DowncastDispatcher extends EmitterMixin() {
      * @param writer View writer that should be used to modify the view document.
      */
     convertSelection(selection, markers, writer) {
-        const markersAtSelection = Array.from(markers.getMarkersAtPosition(selection.getFirstPosition()));
         const conversionApi = this._createConversionApi(writer);
+        // First perform a clean-up at the current position of the selection.
+        this.fire('cleanSelection', { selection }, conversionApi);
+        // Don't convert selection if it is in a model root that does not have a view root (for now this is only the graveyard root).
+        const modelRoot = selection.getFirstPosition().root;
+        if (!conversionApi.mapper.toViewElement(modelRoot)) {
+            return;
+        }
+        // Now, perform actual selection conversion.
+        const markersAtSelection = Array.from(markers.getMarkersAtPosition(selection.getFirstPosition()));
         this._addConsumablesForSelection(conversionApi.consumable, selection, markersAtSelection);
         this.fire('selection', { selection }, conversionApi);
         if (!selection.isCollapsed) {
             return;
         }
         for (const marker of markersAtSelection) {
-            const markerRange = marker.getRange();
-            if (!shouldMarkerChangeBeConverted(selection.getFirstPosition(), marker, conversionApi.mapper)) {
-                continue;
-            }
-            const data = {
-                item: selection,
-                markerName: marker.name,
-                markerRange
-            };
+            // Do not fire event if the marker has been consumed.
             if (conversionApi.consumable.test(selection, 'addMarker:' + marker.name)) {
+                const markerRange = marker.getRange();
+                if (!shouldMarkerChangeBeConverted(selection.getFirstPosition(), marker, conversionApi.mapper)) {
+                    continue;
+                }
+                const data = {
+                    item: selection,
+                    markerName: marker.name,
+                    markerRange
+                };
                 this.fire(`addMarker:${marker.name}`, data, conversionApi);
             }
         }
         for (const key of selection.getAttributeKeys()) {
-            const data = {
-                item: selection,
-                range: selection.getFirstRange(),
-                attributeKey: key,
-                attributeOldValue: null,
-                attributeNewValue: selection.getAttribute(key)
-            };
             // Do not fire event if the attribute has been consumed.
-            if (conversionApi.consumable.test(selection, 'attribute:' + data.attributeKey)) {
-                this.fire(`attribute:${data.attributeKey}:$text`, data, conversionApi);
+            if (conversionApi.consumable.test(selection, 'attribute:' + key)) {
+                const data = {
+                    item: selection,
+                    range: selection.getFirstRange(),
+                    attributeKey: key,
+                    attributeOldValue: null,
+                    attributeNewValue: selection.getAttribute(key)
+                };
+                this.fire(`attribute:${key}:$text`, data, conversionApi);
             }
         }
     }
@@ -34883,14 +35064,19 @@ class LiveSelection extends Selection {
     _getSurroundingAttributes() {
         const position = this.getFirstPosition();
         const schema = this._model.schema;
+        if (position.root.rootName == '$graveyard') {
+            return null;
+        }
         let attrs = null;
         if (!this.isCollapsed) {
             // 1. If selection is a range...
             const range = this.getFirstRange();
             // ...look for a first character node in that range and take attributes from it.
             for (const value of range) {
-                // If the item is an object, we don't want to get attributes from its children.
+                // If the item is an object, we don't want to get attributes from its children...
                 if (value.item.is('element') && schema.isObject(value.item)) {
+                    // ...but collect attributes from inline object.
+                    attrs = getTextAttributes(value.item, schema);
                     break;
                 }
                 if (value.type == 'text') {
@@ -34961,7 +35147,7 @@ function getTextAttributes(node, schema) {
     if (!node) {
         return null;
     }
-    if (node instanceof TextProxy || node instanceof Text$1) {
+    if (node instanceof TextProxy || node instanceof Text) {
         return node.getAttributes();
     }
     if (!schema.isInline(node)) {
@@ -34974,7 +35160,8 @@ function getTextAttributes(node, schema) {
     const attributes = [];
     // Collect all attributes that can be applied to the text node.
     for (const [key, value] of node.getAttributes()) {
-        if (schema.checkAttribute('$text', key)) {
+        if (schema.checkAttribute('$text', key) &&
+            schema.getAttributeProperties(key).copyFromObject !== false) {
             attributes.push([key, value]);
         }
     }
@@ -35735,7 +35922,7 @@ class DowncastHelpers extends ConversionHelpers {
      * ```ts
      * // Using a custom function which is the same as the default conversion:
      * editor.conversion.for( 'dataDowncast' ).markerToData( {
-     * 	model: 'comment'
+     * 	model: 'comment',
      * 	view: markerName => ( {
      * 		group: 'comment',
      * 		name: markerName.substr( 8 ) // Removes 'comment:' part.
@@ -35744,7 +35931,7 @@ class DowncastHelpers extends ConversionHelpers {
      *
      * // Using the converter priority:
      * editor.conversion.for( 'dataDowncast' ).markerToData( {
-     * 	model: 'comment'
+     * 	model: 'comment',
      * 	view: markerName => ( {
      * 		group: 'comment',
      * 		name: markerName.substr( 8 ) // Removes 'comment:' part.
@@ -35896,7 +36083,7 @@ function convertRangeSelection() {
  * converted, broken attributes might be merged again, or the position where the selection is may be wrapped
  * with different, appropriate attribute elements.
  *
- * See also {@link module:engine/conversion/downcasthelpers~clearAttributes} which does a clean-up
+ * See also {@link module:engine/conversion/downcasthelpers~cleanSelection} which does a clean-up
  * by merging attributes.
  *
  * @returns Selection converter.
@@ -35918,7 +36105,7 @@ function convertCollapsedSelection() {
     };
 }
 /**
- * Function factory that creates a converter which clears artifacts after the previous
+ * Function factory that creates a converter which cleans artifacts after the previous
  * {@link module:engine/model/selection~Selection model selection} conversion. It removes all empty
  * {@link module:engine/view/attributeelement~AttributeElement view attribute elements} and merges sibling attributes at all start and end
  * positions of all ranges.
@@ -35937,7 +36124,7 @@ function convertCollapsedSelection() {
  * This listener should be assigned before any converter for the new selection:
  *
  * ```ts
- * modelDispatcher.on( 'selection', clearAttributes() );
+ * modelDispatcher.on( 'cleanSelection', cleanSelection() );
  * ```
  *
  * See {@link module:engine/conversion/downcasthelpers~convertCollapsedSelection}
@@ -35945,7 +36132,7 @@ function convertCollapsedSelection() {
  *
  * @returns Selection converter.
  */
-function clearAttributes() {
+function cleanSelection() {
     return (evt, data, conversionApi) => {
         const viewWriter = conversionApi.writer;
         const viewSelection = viewWriter.document.selection;
@@ -37216,8 +37403,7 @@ function defaultConsumer(item, consumable, { preflight } = {}) {
  */
 function autoParagraphEmptyRoots(writer) {
     const { schema, document } = writer.model;
-    for (const rootName of document.getRootNames()) {
-        const root = document.getRoot(rootName);
+    for (const root of document.getRoots()) {
         if (root.isEmpty && !schema.checkChild(root, '$text')) {
             // If paragraph element is allowed in the root, create paragraph element.
             if (schema.checkChild(root, 'paragraph')) {
@@ -37438,7 +37624,7 @@ class UpcastHelpers extends ConversionHelpers {
      * <div class="dark"><div>foo</div></div>    -->    <div dark="true"><div>foo</div></div>
      * ```
      *
-     * Above, `class="dark"` attribute is added only to the `<div>` elements that has it. This is in contrary to
+     * Above, `class="dark"` attribute is added only to the `<div>` elements that has it. This is in contrast to
      * {@link module:engine/conversion/upcasthelpers~UpcastHelpers#elementToAttribute} which sets attributes for
      * all the children in the model:
      *
@@ -38519,7 +38705,7 @@ class EditingController extends ObservableMixin() {
         this.downcastDispatcher.on('insert', insertAttributesAndChildren(), { priority: 'lowest' });
         this.downcastDispatcher.on('remove', remove(), { priority: 'low' });
         // Attach default model selection converters.
-        this.downcastDispatcher.on('selection', clearAttributes(), { priority: 'high' });
+        this.downcastDispatcher.on('cleanSelection', cleanSelection());
         this.downcastDispatcher.on('selection', convertRangeSelection(), { priority: 'low' });
         this.downcastDispatcher.on('selection', convertCollapsedSelection(), { priority: 'low' });
         // Binds {@link module:engine/view/document~Document#roots view roots collection} to
@@ -39782,7 +39968,7 @@ class Schema extends ObservableMixin() {
             const firstPosition = selection.getFirstPosition();
             const context = [
                 ...firstPosition.getAncestors(),
-                new Text$1('', selection.getAttributes())
+                new Text('', selection.getAttributes())
             ];
             // Check whether schema allows for a text with the attribute in the selection.
             return this.checkAttribute(context, attribute);
@@ -39836,6 +40022,11 @@ class Schema extends ObservableMixin() {
      * @returns Nearest selection range or `null` if one cannot be found.
      */
     getNearestSelectionRange(position, direction = 'both') {
+        if (position.root.rootName == '$graveyard') {
+            // No valid selection range in the graveyard.
+            // This is important when getting the document selection default range.
+            return null;
+        }
         // Return collapsed range if provided position is valid.
         if (this.checkChild(position, '$text')) {
             return new Range(position);
@@ -40991,7 +41182,7 @@ class DataController extends EmitterMixin() {
         this.upcastDispatcher = new UpcastDispatcher({
             schema: model.schema
         });
-        this.viewDocument = new Document$1(stylesProcessor);
+        this.viewDocument = new Document$2(stylesProcessor);
         this.stylesProcessor = stylesProcessor;
         this.htmlProcessor = new HtmlDataProcessor(this.viewDocument);
         this.processor = this.htmlProcessor;
@@ -42189,10 +42380,10 @@ function _normalizeNodes(nodes) {
     const normalized = [];
     function convert(nodes) {
         if (typeof nodes == 'string') {
-            normalized.push(new Text$1(nodes));
+            normalized.push(new Text(nodes));
         }
         else if (nodes instanceof TextProxy) {
-            normalized.push(new Text$1(nodes.data, nodes.getAttributes()));
+            normalized.push(new Text(nodes.data, nodes.getAttributes()));
         }
         else if (nodes instanceof Node$1) {
             normalized.push(nodes);
@@ -42209,9 +42400,9 @@ function _normalizeNodes(nodes) {
     for (let i = 1; i < normalized.length; i++) {
         const node = normalized[i];
         const prev = normalized[i - 1];
-        if (node instanceof Text$1 && prev instanceof Text$1 && _haveSameAttributes(node, prev)) {
+        if (node instanceof Text && prev instanceof Text && _haveSameAttributes(node, prev)) {
             // Doing this instead changing `prev.data` because `data` is readonly.
-            normalized.splice(i - 1, 2, new Text$1(prev.data + node.data, prev.getAttributes()));
+            normalized.splice(i - 1, 2, new Text(prev.data + node.data, prev.getAttributes()));
             i--;
         }
     }
@@ -42232,7 +42423,7 @@ function _mergeNodesAtIndex(element, index) {
     // Check if both of those nodes are text objects with same attributes.
     if (nodeBefore && nodeAfter && nodeBefore.is('$text') && nodeAfter.is('$text') && _haveSameAttributes(nodeBefore, nodeAfter)) {
         // Append text of text node after index to the before one.
-        const mergedNode = new Text$1(nodeBefore.data + nodeAfter.data, nodeBefore.getAttributes());
+        const mergedNode = new Text(nodeBefore.data + nodeAfter.data, nodeBefore.getAttributes());
         // Remove separate text nodes.
         element._removeChildren(index - 1, 2);
         // Insert merged text node.
@@ -42252,8 +42443,8 @@ function _splitNodeAtPosition(position) {
         const offsetDiff = position.offset - textNode.startOffset;
         const index = textNode.index;
         element._removeChildren(index, 1);
-        const firstPart = new Text$1(textNode.data.substr(0, offsetDiff), textNode.getAttributes());
-        const secondPart = new Text$1(textNode.data.substr(offsetDiff), textNode.getAttributes());
+        const firstPart = new Text(textNode.data.substr(0, offsetDiff), textNode.getAttributes());
+        const secondPart = new Text(textNode.data.substr(offsetDiff), textNode.getAttributes());
         element._insertChild(index, [firstPart, secondPart]);
     }
 }
@@ -42545,7 +42736,7 @@ class InsertOperation extends Operation {
             }
             else {
                 // Otherwise, it is a Text node.
-                children.push(Text$1.fromJSON(child));
+                children.push(Text.fromJSON(child));
             }
         }
         const insert = new InsertOperation(Position.fromJSON(json.position, document), children, json.baseVersion);
@@ -43487,29 +43678,6 @@ class RootOperation extends Operation {
      */
     getReversed() {
         return new RootOperation(this.rootName, this.elementName, !this.isAdd, this._document, this.baseVersion + 1);
-    }
-    /**
-     * @inheritDoc
-     */
-    _validate() {
-        // Keep in mind that at this point the root will always exist as it was created in the `constructor()`, even for detach operation.
-        const root = this._document.getRoot(this.rootName);
-        if (root.isAttached() && this.isAdd) {
-            /**
-             * Trying to attach a root that is already attached.
-             *
-             * @error root-operation-root-attached
-             */
-            throw new CKEditorError('root-operation-root-attached', this);
-        }
-        else if (!root.isAttached() && !this.isAdd) {
-            /**
-             * Trying to detach a root that is already detached.
-             *
-             * @error root-operation-root-detached
-             */
-            throw new CKEditorError('root-operation-root-detached', this);
-        }
     }
     /**
      * @inheritDoc
@@ -45199,8 +45367,8 @@ setTransformation(RootAttributeOperation, RootAttributeOperation, (a, b, context
     return [a];
 });
 // -----------------------
-setTransformation(RootOperation, RootOperation, (a, b, context) => {
-    if (a.rootName === b.rootName && a.isAdd === b.isAdd && !context.bWasUndone) {
+setTransformation(RootOperation, RootOperation, (a, b) => {
+    if (a.rootName === b.rootName && a.isAdd === b.isAdd) {
         return [new NoOperation(0)];
     }
     return [a];
@@ -45809,6 +45977,9 @@ class Differ {
         // Marking changes in them would cause a "double" changing then.
         //
         const operation = operationToBuffer;
+        // Note: an operation that happens inside a non-loaded root will be ignored. If the operation happens partially inside
+        // a non-loaded root, that part will be ignored (this may happen for move or marker operations).
+        //
         switch (operation.type) {
             case 'insert': {
                 if (this._isInInsertedElement(operation.position.parent)) {
@@ -45894,12 +46065,23 @@ class Differ {
             }
             case 'detachRoot':
             case 'addRoot': {
+                const root = operation.affectedSelectable;
+                if (!root._isLoaded) {
+                    return;
+                }
+                // Don't buffer if the root state does not change.
+                if (root.isAttached() == operation.isAdd) {
+                    return;
+                }
                 this._bufferRootStateChange(operation.rootName, operation.isAdd);
                 break;
             }
             case 'addRootAttribute':
             case 'removeRootAttribute':
             case 'changeRootAttribute': {
+                if (!operation.root._isLoaded) {
+                    return;
+                }
                 const rootName = operation.root.rootName;
                 this._bufferRootAttributeChange(rootName, operation.key, operation.oldValue, operation.newValue);
                 break;
@@ -45916,20 +46098,24 @@ class Differ {
      * @param newMarkerData Marker data after the change.
      */
     bufferMarkerChange(markerName, oldMarkerData, newMarkerData) {
-        const buffered = this._changedMarkers.get(markerName);
+        if (oldMarkerData.range && oldMarkerData.range.root.is('rootElement') && !oldMarkerData.range.root._isLoaded) {
+            oldMarkerData.range = null;
+        }
+        if (newMarkerData.range && newMarkerData.range.root.is('rootElement') && !newMarkerData.range.root._isLoaded) {
+            newMarkerData.range = null;
+        }
+        let buffered = this._changedMarkers.get(markerName);
         if (!buffered) {
-            this._changedMarkers.set(markerName, {
-                newMarkerData,
-                oldMarkerData
-            });
+            buffered = { newMarkerData, oldMarkerData };
+            this._changedMarkers.set(markerName, buffered);
         }
         else {
             buffered.newMarkerData = newMarkerData;
-            if (buffered.oldMarkerData.range == null && newMarkerData.range == null) {
-                // The marker is going to be removed (`newMarkerData.range == null`) but it did not exist before the first buffered change
-                // (`buffered.oldMarkerData.range == null`). In this case, do not keep the marker in buffer at all.
-                this._changedMarkers.delete(markerName);
-            }
+        }
+        if (buffered.oldMarkerData.range == null && newMarkerData.range == null) {
+            // The marker is going to be removed (`newMarkerData.range == null`) but it did not exist before the first buffered change
+            // (`buffered.oldMarkerData.range == null`). In this case, do not keep the marker in buffer at all.
+            this._changedMarkers.delete(markerName);
         }
     }
     /**
@@ -46211,7 +46397,7 @@ class Differ {
         }
         const diffItem = this._changedRoots.get(rootName);
         if (diffItem.state !== undefined) {
-            // Root `state` can only toggle between of the values ('attached' or 'detached') and no value. It cannot be any other way,
+            // Root `state` can only toggle between one of the values and no value. It cannot be any other way,
             // because if the root was originally attached it can only become detached. Then, if it is re-attached in the same batch of
             // changes, it gets back to "no change" (which means no value). Same if the root was originally detached.
             delete diffItem.state;
@@ -46283,9 +46469,44 @@ class Differ {
         this._cachedChanges = null;
     }
     /**
+     * Buffers all the data related to given root like it was all just added to the editor.
+     *
+     * Following changes are buffered:
+     *
+     * * root is attached,
+     * * all root content is inserted,
+     * * all root attributes are added,
+     * * all markers inside the root are added.
+     *
+     * @internal
+     */
+    _bufferRootLoad(root) {
+        if (!root.isAttached()) {
+            return;
+        }
+        this._bufferRootStateChange(root.rootName, true);
+        this._markInsert(root, 0, root.maxOffset);
+        // Buffering root attribute changes makes sense and is actually needed, even though we buffer root state change above.
+        // Because the root state change is buffered, the root attributes changes are not returned by the differ.
+        // But, if the root attribute is removed in the same change block, or the root is detached, then the differ results would be wrong.
+        //
+        for (const key of root.getAttributeKeys()) {
+            this._bufferRootAttributeChange(root.rootName, key, null, root.getAttribute(key));
+        }
+        for (const marker of this._markerCollection) {
+            if (marker.getRange().root == root) {
+                const markerData = marker.getData();
+                this.bufferMarkerChange(marker.name, { ...markerData, range: null }, markerData);
+            }
+        }
+    }
+    /**
      * Saves and handles an insert change.
      */
     _markInsert(parent, offset, howMany) {
+        if (parent.root.is('rootElement') && !parent.root._isLoaded) {
+            return;
+        }
         const changeItem = { type: 'insert', offset, howMany, count: this._changeCount++ };
         this._markChange(parent, changeItem);
     }
@@ -46293,6 +46514,9 @@ class Differ {
      * Saves and handles a remove change.
      */
     _markRemove(parent, offset, howMany) {
+        if (parent.root.is('rootElement') && !parent.root._isLoaded) {
+            return;
+        }
         const changeItem = { type: 'remove', offset, howMany, count: this._changeCount++ };
         this._markChange(parent, changeItem);
         this._removeAllNestedChanges(parent, offset, howMany);
@@ -46301,6 +46525,9 @@ class Differ {
      * Saves and handles an attribute change.
      */
     _markAttribute(item) {
+        if (item.root.is('rootElement') && !item.root._isLoaded) {
+            return;
+        }
         const changeItem = { type: 'attribute', offset: item.startOffset, howMany: item.offsetSize, count: this._changeCount++ };
         this._markChange(item.parent, changeItem);
     }
@@ -47028,6 +47255,12 @@ class RootElement extends Element {
          * @internal
          */
         this._isAttached = true;
+        /**
+         * Informs if the root element is loaded (default).
+         *
+         * @internal
+         */
+        this._isLoaded = true;
         this._document = document;
         this.rootName = rootName;
     }
@@ -47092,7 +47325,7 @@ const graveyardName = '$graveyard';
  * However, the document may contain multiple roots – e.g. when the editor has multiple editable areas
  * (e.g. a title and a body of a message).
  */
-class Document extends EmitterMixin() {
+class Document$1 extends EmitterMixin() {
     /**
      * Creates an empty document instance with no {@link #roots} (other than
      * the {@link #graveyard graveyard root}).
@@ -47242,12 +47475,21 @@ class Document extends EmitterMixin() {
      * on the document data know which roots are still a part of the document and should be processed.
      *
      * @param includeDetached Specified whether detached roots should be returned as well.
-     * @returns Roots names.
      */
     getRootNames(includeDetached = false) {
+        return this.getRoots(includeDetached).map(root => root.rootName);
+    }
+    /**
+     * Returns an array with all roots added to the document (except the {@link #graveyard graveyard root}).
+     *
+     * Detached roots **are not** returned by this method by default. This is to make sure that all features or algorithms that operate
+     * on the document data know which roots are still a part of the document and should be processed.
+     *
+     * @param includeDetached Specified whether detached roots should be returned as well.
+     */
+    getRoots(includeDetached = false) {
         return Array.from(this.roots)
-            .filter(root => root.rootName != graveyardName && (includeDetached || root.isAttached()))
-            .map(root => root.rootName);
+            .filter(root => root != this.graveyard && (includeDetached || root.isAttached()) && root._isLoaded);
     }
     /**
      * Used to register a post-fixer callback. A post-fixer mechanism guarantees that the features
@@ -47346,12 +47588,8 @@ class Document extends EmitterMixin() {
      * @returns The default root for this document.
      */
     _getDefaultRoot() {
-        for (const root of this.roots) {
-            if (root !== this.graveyard) {
-                return root;
-            }
-        }
-        return this.graveyard;
+        const roots = this.getRoots();
+        return roots.length ? roots[0] : this.graveyard;
     }
     /**
      * Returns the default range for this selection. The default range is a collapsed range that starts and ends
@@ -48100,7 +48338,7 @@ class DocumentFragment extends TypeCheckable {
             }
             else {
                 // Otherwise, it is a Text node.
-                children.push(Text$1.fromJSON(child));
+                children.push(Text.fromJSON(child));
             }
         }
         return new DocumentFragment(children);
@@ -48161,7 +48399,7 @@ DocumentFragment.prototype.is = function (type) {
 function normalize(nodes) {
     // Separate condition because string is iterable.
     if (typeof nodes == 'string') {
-        return [new Text$1(nodes)];
+        return [new Text(nodes)];
     }
     if (!isIterable(nodes)) {
         nodes = [nodes];
@@ -48170,10 +48408,10 @@ function normalize(nodes) {
     return Array.from(nodes)
         .map(node => {
         if (typeof node == 'string') {
-            return new Text$1(node);
+            return new Text(node);
         }
         if (node instanceof TextProxy) {
-            return new Text$1(node.data, node.getAttributes());
+            return new Text(node.data, node.getAttributes());
         }
         return node;
     });
@@ -48230,7 +48468,7 @@ class Writer {
      * @returns {module:engine/model/text~Text} Created text node.
      */
     createText(data, attributes) {
-        return new Text$1(data, attributes);
+        return new Text(data, attributes);
     }
     /**
      * Creates a new {@link module:engine/model/element~Element element}.
@@ -48313,7 +48551,7 @@ class Writer {
      */
     insert(item, itemOrPosition, offset = 0) {
         this._assertWriterUsedCorrectly();
-        if (item instanceof Text$1 && item.data == '') {
+        if (item instanceof Text && item.data == '') {
             return;
         }
         const position = Position._createAt(itemOrPosition, offset);
@@ -48345,7 +48583,7 @@ class Writer {
         }
         const version = position.root.document ? position.root.document.version : null;
         const insert = new InsertOperation(position, item, version);
-        if (item instanceof Text$1) {
+        if (item instanceof Text) {
             insert.shouldReceiveAttributes = true;
         }
         this.batch.addOperation(insert);
@@ -51132,7 +51370,7 @@ class Model$1 extends ObservableMixin() {
     constructor() {
         super();
         this.markers = new MarkerCollection();
-        this.document = new Document(this);
+        this.document = new Document$1(this);
         this.schema = new Schema();
         this._pendingChanges = [];
         this._currentWriter = null;
@@ -51888,7 +52126,6 @@ class Model$1 extends ObservableMixin() {
     /**
      * Common part of {@link module:engine/model/model~Model#change} and {@link module:engine/model/model~Model#enqueueChange}
      * which calls callbacks and returns array of values returned by these callbacks.
-     *
      */
     _runPendingChanges() {
         const ret = [];
@@ -52051,7 +52288,7 @@ class UpcastWriter {
      * @returns The created text node.
      */
     createText(data) {
-        return new Text$2(this.document, data);
+        return new Text$1(this.document, data);
     }
     /**
      * Clones the provided element.
@@ -53003,7 +53240,7 @@ function addPaddingRules(stylesProcessor) {
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */var index$7=/*#__PURE__*/Object.freeze({__proto__:null,EditingController:EditingController,DataController:DataController,Conversion:Conversion,HtmlDataProcessor:HtmlDataProcessor,InsertOperation:InsertOperation,MoveOperation:MoveOperation,MergeOperation:MergeOperation,SplitOperation:SplitOperation,MarkerOperation:MarkerOperation,OperationFactory:OperationFactory,AttributeOperation:AttributeOperation,RenameOperation:RenameOperation,RootAttributeOperation:RootAttributeOperation,RootOperation:RootOperation,NoOperation:NoOperation,transformSets:transformSets,DocumentSelection:DocumentSelection,Range:Range,LiveRange:LiveRange,LivePosition:LivePosition,Model:Model$1,TreeWalker:TreeWalker,Element:Element,Position:Position,DocumentFragment:DocumentFragment,History:History,Text:Text$1,TextProxy:TextProxy,findOptimalInsertionRange:findOptimalInsertionRange$1,DataTransfer:DataTransfer,DomConverter:DomConverter,Renderer:Renderer,View:View,ViewDocument:Document$1,ViewText:Text$2,ViewElement:Element$1,ViewContainerElement:ContainerElement,ViewEditableElement:EditableElement,ViewRootEditableElement:RootEditableElement,ViewAttributeElement:AttributeElement,ViewEmptyElement:EmptyElement,ViewRawElement:RawElement,ViewUIElement:UIElement,ViewDocumentFragment:DocumentFragment$1,ViewTreeWalker:TreeWalker$1,AttributeElement:AttributeElement,getFillerOffset:getFillerOffset$5,Observer:Observer,ClickObserver:ClickObserver,DomEventObserver:DomEventObserver,MouseObserver:MouseObserver,TabObserver:TabObserver,DowncastWriter:DowncastWriter,UpcastWriter:UpcastWriter,Matcher:Matcher,BubblingEventInfo:BubblingEventInfo,DomEventData:DomEventData,StylesProcessor:StylesProcessor,enablePlaceholder:enablePlaceholder,disablePlaceholder:disablePlaceholder,showPlaceholder:showPlaceholder,hidePlaceholder:hidePlaceholder,needsPlaceholder:needsPlaceholder,addBackgroundRules:addBackgroundRules,addBorderRules:addBorderRules,addMarginRules:addMarginRules,addPaddingRules:addPaddingRules,isColor:isColor,isLineStyle:isLineStyle,isLength:isLength,isPercentage:isPercentage,isRepeat:isRepeat,isPosition:isPosition,isAttachment:isAttachment,isURL:isURL,getBoxSidesValues:getBoxSidesValues,getBoxSidesValueReducer:getBoxSidesValueReducer,getBoxSidesShorthandValue:getBoxSidesShorthandValue,getPositionShorthandNormalizer:getPositionShorthandNormalizer,getShorthandValues:getShorthandValues});/**
+ */var index$7=/*#__PURE__*/Object.freeze({__proto__:null,EditingController:EditingController,DataController:DataController,Conversion:Conversion,HtmlDataProcessor:HtmlDataProcessor,InsertOperation:InsertOperation,MoveOperation:MoveOperation,MergeOperation:MergeOperation,SplitOperation:SplitOperation,MarkerOperation:MarkerOperation,OperationFactory:OperationFactory,AttributeOperation:AttributeOperation,RenameOperation:RenameOperation,RootAttributeOperation:RootAttributeOperation,RootOperation:RootOperation,NoOperation:NoOperation,transformSets:transformSets,DocumentSelection:DocumentSelection,Range:Range,LiveRange:LiveRange,LivePosition:LivePosition,Model:Model$1,TreeWalker:TreeWalker,Element:Element,Position:Position,DocumentFragment:DocumentFragment,History:History,Text:Text,TextProxy:TextProxy,findOptimalInsertionRange:findOptimalInsertionRange$1,DataTransfer:DataTransfer,DomConverter:DomConverter,Renderer:Renderer,View:View,ViewDocument:Document$2,ViewText:Text$1,ViewElement:Element$1,ViewContainerElement:ContainerElement,ViewEditableElement:EditableElement,ViewRootEditableElement:RootEditableElement,ViewAttributeElement:AttributeElement,ViewEmptyElement:EmptyElement,ViewRawElement:RawElement,ViewUIElement:UIElement,ViewDocumentFragment:DocumentFragment$1,ViewTreeWalker:TreeWalker$1,AttributeElement:AttributeElement,getFillerOffset:getFillerOffset$5,Observer:Observer,ClickObserver:ClickObserver,DomEventObserver:DomEventObserver,MouseObserver:MouseObserver,TabObserver:TabObserver,FocusObserver:FocusObserver,DowncastWriter:DowncastWriter,UpcastWriter:UpcastWriter,Matcher:Matcher,BubblingEventInfo:BubblingEventInfo,DomEventData:DomEventData,StylesProcessor:StylesProcessor,enablePlaceholder:enablePlaceholder,disablePlaceholder:disablePlaceholder,showPlaceholder:showPlaceholder,hidePlaceholder:hidePlaceholder,needsPlaceholder:needsPlaceholder,addBackgroundRules:addBackgroundRules,addBorderRules:addBorderRules,addMarginRules:addMarginRules,addPaddingRules:addPaddingRules,isColor:isColor,isLineStyle:isLineStyle,isLength:isLength,isPercentage:isPercentage,isRepeat:isRepeat,isPosition:isPosition,isAttachment:isAttachment,isURL:isURL,getBoxSidesValues:getBoxSidesValues,getBoxSidesValueReducer:getBoxSidesValueReducer,getBoxSidesShorthandValue:getBoxSidesShorthandValue,getPositionShorthandNormalizer:getPositionShorthandNormalizer,getShorthandValues:getShorthandValues});/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -53690,11 +53927,11 @@ class PendingActions extends ContextPlugin {
     [Symbol.iterator]() {
         return this._actions[Symbol.iterator]();
     }
-}var cancel = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m11.591 10.177 4.243 4.242a1 1 0 0 1-1.415 1.415l-4.242-4.243-4.243 4.243a1 1 0 0 1-1.414-1.415l4.243-4.242L4.52 5.934A1 1 0 0 1 5.934 4.52l4.243 4.243 4.242-4.243a1 1 0 1 1 1.415 1.414l-4.243 4.243z\"/></svg>";
+}var cancelButtonIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m11.591 10.177 4.243 4.242a1 1 0 0 1-1.415 1.415l-4.242-4.243-4.243 4.243a1 1 0 0 1-1.414-1.415l4.243-4.242L4.52 5.934A1 1 0 0 1 5.934 4.52l4.243 4.243 4.242-4.243a1 1 0 1 1 1.415 1.414l-4.243 4.243z\"/></svg>";
 var caption = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 16h9a1 1 0 0 1 0 2H2a1 1 0 0 1 0-2z\"/><path d=\"M17 1a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h14zm0 1.5H3a.5.5 0 0 0-.492.41L2.5 3v9a.5.5 0 0 0 .41.492L3 12.5h14a.5.5 0 0 0 .492-.41L17.5 12V3a.5.5 0 0 0-.41-.492L17 2.5z\" fill-opacity=\".6\"/></svg>";
-var check = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6.972 16.615a.997.997 0 0 1-.744-.292l-4.596-4.596a1 1 0 1 1 1.414-1.414l3.926 3.926 9.937-9.937a1 1 0 0 1 1.414 1.415L7.717 16.323a.997.997 0 0 1-.745.292z\"/></svg>";
+var checkButtonIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6.972 16.615a.997.997 0 0 1-.744-.292l-4.596-4.596a1 1 0 1 1 1.414-1.414l3.926 3.926 9.937-9.937a1 1 0 0 1 1.414 1.415L7.717 16.323a.997.997 0 0 1-.745.292z\"/></svg>";
 var cog = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m11.333 2 .19 2.263a5.899 5.899 0 0 1 1.458.604L14.714 3.4 16.6 5.286l-1.467 1.733c.263.452.468.942.605 1.46L18 8.666v2.666l-2.263.19a5.899 5.899 0 0 1-.604 1.458l1.467 1.733-1.886 1.886-1.733-1.467a5.899 5.899 0 0 1-1.46.605L11.334 18H8.667l-.19-2.263a5.899 5.899 0 0 1-1.458-.604L5.286 16.6 3.4 14.714l1.467-1.733a5.899 5.899 0 0 1-.604-1.458L2 11.333V8.667l2.262-.189a5.899 5.899 0 0 1 .605-1.459L3.4 5.286 5.286 3.4l1.733 1.467a5.899 5.899 0 0 1 1.46-.605L8.666 2h2.666zM10 6.267a3.733 3.733 0 1 0 0 7.466 3.733 3.733 0 0 0 0-7.466z\"/></svg>";
-var eraser = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m8.636 9.531-2.758 3.94a.5.5 0 0 0 .122.696l3.224 2.284h1.314l2.636-3.736L8.636 9.53zm.288 8.451L5.14 15.396a2 2 0 0 1-.491-2.786l6.673-9.53a2 2 0 0 1 2.785-.49l3.742 2.62a2 2 0 0 1 .491 2.785l-7.269 10.053-2.147-.066z\"/><path d=\"M4 18h5.523v-1H4zm-2 0h1v-1H2z\"/></svg>";
+var removeButtonIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m8.636 9.531-2.758 3.94a.5.5 0 0 0 .122.696l3.224 2.284h1.314l2.636-3.736L8.636 9.53zm.288 8.451L5.14 15.396a2 2 0 0 1-.491-2.786l6.673-9.53a2 2 0 0 1 2.785-.49l3.742 2.62a2 2 0 0 1 .491 2.785l-7.269 10.053-2.147-.066z\"/><path d=\"M4 18h5.523v-1H4zm-2 0h1v-1H2z\"/></svg>";
 var lowVision = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5.085 6.22 2.943 4.078a.75.75 0 1 1 1.06-1.06l2.592 2.59A11.094 11.094 0 0 1 10 5.068c4.738 0 8.578 3.101 8.578 5.083 0 1.197-1.401 2.803-3.555 3.887l1.714 1.713a.75.75 0 0 1-.09 1.138.488.488 0 0 1-.15.084.75.75 0 0 1-.821-.16L6.17 7.304c-.258.11-.51.233-.757.365l6.239 6.24-.006.005.78.78c-.388.094-.78.166-1.174.215l-1.11-1.11h.011L4.55 8.197a7.2 7.2 0 0 0-.665.514l-.112.098 4.897 4.897-.005.006 1.276 1.276a10.164 10.164 0 0 1-1.477-.117l-.479-.479-.009.009-4.863-4.863-.022.031a2.563 2.563 0 0 0-.124.2c-.043.077-.08.158-.108.241a.534.534 0 0 0-.028.133.29.29 0 0 0 .008.072.927.927 0 0 0 .082.226c.067.133.145.26.234.379l3.242 3.365.025.01.59.623c-3.265-.918-5.59-3.155-5.59-4.668 0-1.194 1.448-2.838 3.663-3.93zm7.07.531a4.632 4.632 0 0 1 1.108 5.992l.345.344.046-.018a9.313 9.313 0 0 0 2-1.112c.256-.187.5-.392.727-.613.137-.134.27-.277.392-.431.072-.091.141-.185.203-.286.057-.093.107-.19.148-.292a.72.72 0 0 0 .036-.12.29.29 0 0 0 .008-.072.492.492 0 0 0-.028-.133.999.999 0 0 0-.036-.096 2.165 2.165 0 0 0-.071-.145 2.917 2.917 0 0 0-.125-.2 3.592 3.592 0 0 0-.263-.335 5.444 5.444 0 0 0-.53-.523 7.955 7.955 0 0 0-1.054-.768 9.766 9.766 0 0 0-1.879-.891c-.337-.118-.68-.219-1.027-.301zm-2.85.21-.069.002a.508.508 0 0 0-.254.097.496.496 0 0 0-.104.679.498.498 0 0 0 .326.199l.045.005c.091.003.181.003.272.012a2.45 2.45 0 0 1 2.017 1.513c.024.061.043.125.069.185a.494.494 0 0 0 .45.287h.008a.496.496 0 0 0 .35-.158.482.482 0 0 0 .13-.335.638.638 0 0 0-.048-.219 3.379 3.379 0 0 0-.36-.723 3.438 3.438 0 0 0-2.791-1.543l-.028-.001h-.013z\"/></svg>";
 var image = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6.91 10.54c.26-.23.64-.21.88.03l3.36 3.14 2.23-2.06a.64.64 0 0 1 .87 0l2.52 2.97V4.5H3.2v10.12l3.71-4.08zm10.27-7.51c.6 0 1.09.47 1.09 1.05v11.84c0 .59-.49 1.06-1.09 1.06H2.79c-.6 0-1.09-.47-1.09-1.06V4.08c0-.58.49-1.05 1.1-1.05h14.38zm-5.22 5.56a1.96 1.96 0 1 1 3.4-1.96 1.96 1.96 0 0 1-3.4 1.96z\"/></svg>";
 var alignBottom = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m9.239 13.938-2.88-1.663a.75.75 0 0 1 .75-1.3L9 12.067V4.75a.75.75 0 1 1 1.5 0v7.318l1.89-1.093a.75.75 0 0 1 .75 1.3l-2.879 1.663a.752.752 0 0 1-.511.187.752.752 0 0 1-.511-.187zM4.25 17a.75.75 0 1 1 0-1.5h10.5a.75.75 0 0 1 0 1.5H4.25z\"/></svg>";
@@ -53730,11 +53967,11 @@ var importExport = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/sv
  */
 const icons$1 = {
     bold,
-    cancel,
+    cancel: cancelButtonIcon,
     caption,
-    check,
+    check: checkButtonIcon,
     cog,
-    eraser,
+    eraser: removeButtonIcon,
     image,
     lowVision,
     importExport,
@@ -53763,8 +54000,8 @@ const icons$1 = {
     pilcrow: pilcrow$1,
     quote,
     threeVerticalDots: threeVerticalDots$1
-};var index$6=/*#__PURE__*/Object.freeze({__proto__:null,icons:icons$1,Plugin:Plugin,Command:Command,MultiCommand:MultiCommand,Context:Context,ContextPlugin:ContextPlugin,Editor:Editor,attachToForm:attachToForm,DataApiMixin:DataApiMixin,ElementApiMixin:ElementApiMixin,secureSourceElement:secureSourceElement,PendingActions:PendingActions});var css_248z$V = ".ck.ck-toolbar{align-items:center;display:flex;flex-flow:row nowrap;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-toolbar>.ck-toolbar__items{align-items:center;display:flex;flex-flow:row wrap;flex-grow:1}.ck.ck-toolbar .ck.ck-toolbar__separator{display:inline-block}.ck.ck-toolbar .ck.ck-toolbar__separator:first-child,.ck.ck-toolbar .ck.ck-toolbar__separator:last-child{display:none}.ck.ck-toolbar .ck-toolbar__line-break{flex-basis:100%}.ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items{flex-wrap:nowrap}.ck.ck-toolbar.ck-toolbar_vertical>.ck-toolbar__items{flex-direction:column}.ck.ck-toolbar.ck-toolbar_floating>.ck-toolbar__items{flex-wrap:nowrap}.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown>.ck-dropdown__button .ck-dropdown__arrow{display:none}.ck.ck-toolbar{border-radius:0}.ck-rounded-corners .ck.ck-toolbar,.ck.ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-toolbar{background:var(--ck-color-toolbar-background);border:1px solid var(--ck-color-toolbar-border);padding:0 var(--ck-spacing-small)}.ck.ck-toolbar .ck.ck-toolbar__separator{align-self:stretch;background:var(--ck-color-toolbar-border);margin-bottom:var(--ck-spacing-small);margin-top:var(--ck-spacing-small);min-width:1px;width:1px}.ck.ck-toolbar .ck-toolbar__line-break{height:0}.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break){margin-right:var(--ck-spacing-small)}.ck.ck-toolbar>.ck-toolbar__items:empty+.ck.ck-toolbar__separator{display:none}.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break),.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown{margin-bottom:var(--ck-spacing-small);margin-top:var(--ck-spacing-small)}.ck.ck-toolbar.ck-toolbar_vertical{padding:0}.ck.ck-toolbar.ck-toolbar_vertical>.ck-toolbar__items>.ck{border-radius:0;margin:0;width:100%}.ck.ck-toolbar.ck-toolbar_compact{padding:0}.ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>*{margin:0}.ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>:not(:first-child):not(:last-child){border-radius:0}.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown>.ck.ck-button.ck-dropdown__button{padding-left:var(--ck-spacing-tiny)}.ck.ck-toolbar .ck-toolbar__nested-toolbar-dropdown>.ck-dropdown__panel{min-width:auto}.ck.ck-toolbar .ck-toolbar__nested-toolbar-dropdown>.ck-button>.ck-button__label{max-width:7em;width:auto}.ck.ck-toolbar:focus{outline:none}.ck-toolbar-container .ck.ck-toolbar{border:0}.ck.ck-toolbar[dir=rtl]>.ck-toolbar__items>.ck,[dir=rtl] .ck.ck-toolbar>.ck-toolbar__items>.ck{margin-right:0}.ck.ck-toolbar[dir=rtl]:not(.ck-toolbar_compact)>.ck-toolbar__items>.ck,[dir=rtl] .ck.ck-toolbar:not(.ck-toolbar_compact)>.ck-toolbar__items>.ck{margin-left:var(--ck-spacing-small)}.ck.ck-toolbar[dir=rtl]>.ck-toolbar__items>.ck:last-child,[dir=rtl] .ck.ck-toolbar>.ck-toolbar__items>.ck:last-child{margin-left:0}.ck.ck-toolbar.ck-toolbar_compact[dir=rtl]>.ck-toolbar__items>.ck:first-child,[dir=rtl] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:first-child{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-toolbar.ck-toolbar_compact[dir=rtl]>.ck-toolbar__items>.ck:last-child,[dir=rtl] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:last-child{border-bottom-right-radius:0;border-top-right-radius:0}.ck.ck-toolbar.ck-toolbar_grouping[dir=rtl]>.ck-toolbar__items:not(:empty):not(:only-child),.ck.ck-toolbar[dir=rtl]>.ck.ck-toolbar__separator,[dir=rtl] .ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items:not(:empty):not(:only-child),[dir=rtl] .ck.ck-toolbar>.ck.ck-toolbar__separator{margin-left:var(--ck-spacing-small)}.ck.ck-toolbar[dir=ltr]>.ck-toolbar__items>.ck:last-child,[dir=ltr] .ck.ck-toolbar>.ck-toolbar__items>.ck:last-child{margin-right:0}.ck.ck-toolbar.ck-toolbar_compact[dir=ltr]>.ck-toolbar__items>.ck:first-child,[dir=ltr] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:first-child{border-bottom-right-radius:0;border-top-right-radius:0}.ck.ck-toolbar.ck-toolbar_compact[dir=ltr]>.ck-toolbar__items>.ck:last-child,[dir=ltr] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:last-child{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-toolbar.ck-toolbar_grouping[dir=ltr]>.ck-toolbar__items:not(:empty):not(:only-child),.ck.ck-toolbar[dir=ltr]>.ck.ck-toolbar__separator,[dir=ltr] .ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items:not(:empty):not(:only-child),[dir=ltr] .ck.ck-toolbar>.ck.ck-toolbar__separator{margin-right:var(--ck-spacing-small)}";
-styleInject(css_248z$V);/**
+};var index$6=/*#__PURE__*/Object.freeze({__proto__:null,icons:icons$1,Plugin:Plugin,Command:Command,MultiCommand:MultiCommand,Context:Context,ContextPlugin:ContextPlugin,Editor:Editor,attachToForm:attachToForm,DataApiMixin:DataApiMixin,ElementApiMixin:ElementApiMixin,secureSourceElement:secureSourceElement,PendingActions:PendingActions});var css_248z$W = ".ck.ck-toolbar{align-items:center;display:flex;flex-flow:row nowrap;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-toolbar>.ck-toolbar__items{align-items:center;display:flex;flex-flow:row wrap;flex-grow:1}.ck.ck-toolbar .ck.ck-toolbar__separator{display:inline-block}.ck.ck-toolbar .ck.ck-toolbar__separator:first-child,.ck.ck-toolbar .ck.ck-toolbar__separator:last-child{display:none}.ck.ck-toolbar .ck-toolbar__line-break{flex-basis:100%}.ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items{flex-wrap:nowrap}.ck.ck-toolbar.ck-toolbar_vertical>.ck-toolbar__items{flex-direction:column}.ck.ck-toolbar.ck-toolbar_floating>.ck-toolbar__items{flex-wrap:nowrap}.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown>.ck-dropdown__button .ck-dropdown__arrow{display:none}.ck.ck-toolbar{border-radius:0}.ck-rounded-corners .ck.ck-toolbar,.ck.ck-toolbar.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-toolbar{background:var(--ck-color-toolbar-background);border:1px solid var(--ck-color-toolbar-border);padding:0 var(--ck-spacing-small)}.ck.ck-toolbar .ck.ck-toolbar__separator{align-self:stretch;background:var(--ck-color-toolbar-border);margin-bottom:var(--ck-spacing-small);margin-top:var(--ck-spacing-small);min-width:1px;width:1px}.ck.ck-toolbar .ck-toolbar__line-break{height:0}.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break){margin-right:var(--ck-spacing-small)}.ck.ck-toolbar>.ck-toolbar__items:empty+.ck.ck-toolbar__separator{display:none}.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break),.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown{margin-bottom:var(--ck-spacing-small);margin-top:var(--ck-spacing-small)}.ck.ck-toolbar.ck-toolbar_vertical{padding:0}.ck.ck-toolbar.ck-toolbar_vertical>.ck-toolbar__items>.ck{border-radius:0;margin:0;width:100%}.ck.ck-toolbar.ck-toolbar_compact{padding:0}.ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>*{margin:0}.ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>:not(:first-child):not(:last-child){border-radius:0}.ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown>.ck.ck-button.ck-dropdown__button{padding-left:var(--ck-spacing-tiny)}.ck.ck-toolbar .ck-toolbar__nested-toolbar-dropdown>.ck-dropdown__panel{min-width:auto}.ck.ck-toolbar .ck-toolbar__nested-toolbar-dropdown>.ck-button>.ck-button__label{max-width:7em;width:auto}.ck.ck-toolbar:focus{outline:none}.ck-toolbar-container .ck.ck-toolbar{border:0}.ck.ck-toolbar[dir=rtl]>.ck-toolbar__items>.ck,[dir=rtl] .ck.ck-toolbar>.ck-toolbar__items>.ck{margin-right:0}.ck.ck-toolbar[dir=rtl]:not(.ck-toolbar_compact)>.ck-toolbar__items>.ck,[dir=rtl] .ck.ck-toolbar:not(.ck-toolbar_compact)>.ck-toolbar__items>.ck{margin-left:var(--ck-spacing-small)}.ck.ck-toolbar[dir=rtl]>.ck-toolbar__items>.ck:last-child,[dir=rtl] .ck.ck-toolbar>.ck-toolbar__items>.ck:last-child{margin-left:0}.ck.ck-toolbar.ck-toolbar_compact[dir=rtl]>.ck-toolbar__items>.ck:first-child,[dir=rtl] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:first-child{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-toolbar.ck-toolbar_compact[dir=rtl]>.ck-toolbar__items>.ck:last-child,[dir=rtl] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:last-child{border-bottom-right-radius:0;border-top-right-radius:0}.ck.ck-toolbar.ck-toolbar_grouping[dir=rtl]>.ck-toolbar__items:not(:empty):not(:only-child),.ck.ck-toolbar[dir=rtl]>.ck.ck-toolbar__separator,[dir=rtl] .ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items:not(:empty):not(:only-child),[dir=rtl] .ck.ck-toolbar>.ck.ck-toolbar__separator{margin-left:var(--ck-spacing-small)}.ck.ck-toolbar[dir=ltr]>.ck-toolbar__items>.ck:last-child,[dir=ltr] .ck.ck-toolbar>.ck-toolbar__items>.ck:last-child{margin-right:0}.ck.ck-toolbar.ck-toolbar_compact[dir=ltr]>.ck-toolbar__items>.ck:first-child,[dir=ltr] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:first-child{border-bottom-right-radius:0;border-top-right-radius:0}.ck.ck-toolbar.ck-toolbar_compact[dir=ltr]>.ck-toolbar__items>.ck:last-child,[dir=ltr] .ck.ck-toolbar.ck-toolbar_compact>.ck-toolbar__items>.ck:last-child{border-bottom-left-radius:0;border-top-left-radius:0}.ck.ck-toolbar.ck-toolbar_grouping[dir=ltr]>.ck-toolbar__items:not(:empty):not(:only-child),.ck.ck-toolbar[dir=ltr]>.ck.ck-toolbar__separator,[dir=ltr] .ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items:not(:empty):not(:only-child),[dir=ltr] .ck.ck-toolbar>.ck.ck-toolbar__separator{margin-right:var(--ck-spacing-small)}";
+styleInject(css_248z$W);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -54466,8 +54703,8 @@ class DynamicGrouping {
             this.viewFocusables.add(this.groupedItemsDropdown);
         }
     }
-}var css_248z$U = ".ck.ck-list{display:flex;flex-direction:column;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-list .ck-list__item,.ck.ck-list .ck-list__separator{display:block}.ck.ck-list .ck-list__item>:focus{position:relative;z-index:var(--ck-z-default)}.ck.ck-list{border-radius:0}.ck-rounded-corners .ck.ck-list,.ck.ck-list.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-list{background:var(--ck-color-list-background);list-style-type:none}.ck.ck-list__item{cursor:default;min-width:12em}.ck.ck-list__item .ck-button{border-radius:0;min-height:unset;padding:calc(var(--ck-line-height-base)*.2*var(--ck-font-size-base)) calc(var(--ck-line-height-base)*.4*var(--ck-font-size-base));text-align:left;width:100%}.ck.ck-list__item .ck-button .ck-button__label{line-height:calc(var(--ck-line-height-base)*1.2*var(--ck-font-size-base))}.ck.ck-list__item .ck-button:active{box-shadow:none}.ck.ck-list__item .ck-button.ck-on{background:var(--ck-color-list-button-on-background);color:var(--ck-color-list-button-on-text)}.ck.ck-list__item .ck-button.ck-on:active{box-shadow:none}.ck.ck-list__item .ck-button.ck-on:hover:not(.ck-disabled){background:var(--ck-color-list-button-on-background-focus)}.ck.ck-list__item .ck-button.ck-on:focus:not(.ck-switchbutton):not(.ck-disabled){border-color:var(--ck-color-base-background)}.ck.ck-list__item .ck-button:hover:not(.ck-disabled){background:var(--ck-color-list-button-hover-background)}.ck.ck-list__item .ck-switchbutton.ck-on{background:var(--ck-color-list-background);color:inherit}.ck.ck-list__item .ck-switchbutton.ck-on:hover:not(.ck-disabled){background:var(--ck-color-list-button-hover-background);color:inherit}.ck.ck-list__separator{background:var(--ck-color-base-border);height:1px;width:100%}";
-styleInject(css_248z$U);/**
+}var css_248z$V = ".ck.ck-list{display:flex;flex-direction:column;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.ck.ck-list .ck-list__item,.ck.ck-list .ck-list__separator{display:block}.ck.ck-list .ck-list__item>:focus{position:relative;z-index:var(--ck-z-default)}.ck.ck-list{border-radius:0}.ck-rounded-corners .ck.ck-list,.ck.ck-list.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck.ck-list{background:var(--ck-color-list-background);list-style-type:none}.ck.ck-list__item{cursor:default;min-width:12em}.ck.ck-list__item .ck-button{border-radius:0;min-height:unset;padding:calc(var(--ck-line-height-base)*.2*var(--ck-font-size-base)) calc(var(--ck-line-height-base)*.4*var(--ck-font-size-base));text-align:left;width:100%}.ck.ck-list__item .ck-button .ck-button__label{line-height:calc(var(--ck-line-height-base)*1.2*var(--ck-font-size-base))}.ck.ck-list__item .ck-button:active{box-shadow:none}.ck.ck-list__item .ck-button.ck-on{background:var(--ck-color-list-button-on-background);color:var(--ck-color-list-button-on-text)}.ck.ck-list__item .ck-button.ck-on:active{box-shadow:none}.ck.ck-list__item .ck-button.ck-on:hover:not(.ck-disabled){background:var(--ck-color-list-button-on-background-focus)}.ck.ck-list__item .ck-button.ck-on:focus:not(.ck-switchbutton):not(.ck-disabled){border-color:var(--ck-color-base-background)}.ck.ck-list__item .ck-button:hover:not(.ck-disabled){background:var(--ck-color-list-button-hover-background)}.ck.ck-list__item .ck-switchbutton.ck-on{background:var(--ck-color-list-background);color:inherit}.ck.ck-list__item .ck-switchbutton.ck-on:hover:not(.ck-disabled){background:var(--ck-color-list-button-hover-background);color:inherit}.ck.ck-list__separator{background:var(--ck-color-base-border);height:1px;width:100%}";
+styleInject(css_248z$V);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -54607,8 +54844,8 @@ class ListSeparatorView extends View$1 {
             }
         });
     }
-}var css_248z$T = ".ck.ck-splitbutton{font-size:inherit}.ck.ck-splitbutton .ck-splitbutton__action:focus{z-index:calc(var(--ck-z-default) + 1)}:root{--ck-color-split-button-hover-background:#ebebeb;--ck-color-split-button-hover-border:#b3b3b3}[dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,[dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__action{border-bottom-right-radius:unset;border-top-right-radius:unset}[dir=rtl] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,[dir=rtl] .ck.ck-splitbutton:hover>.ck-splitbutton__action{border-bottom-left-radius:unset;border-top-left-radius:unset}.ck.ck-splitbutton>.ck-splitbutton__arrow{min-width:unset}[dir=ltr] .ck.ck-splitbutton>.ck-splitbutton__arrow{border-bottom-left-radius:unset;border-top-left-radius:unset}[dir=rtl] .ck.ck-splitbutton>.ck-splitbutton__arrow{border-bottom-right-radius:unset;border-top-right-radius:unset}.ck.ck-splitbutton>.ck-splitbutton__arrow svg{width:var(--ck-dropdown-arrow-size)}.ck.ck-splitbutton>.ck-splitbutton__arrow:not(:focus){border-bottom-width:0;border-top-width:0}.ck.ck-splitbutton.ck-splitbutton_open>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover),.ck.ck-splitbutton:hover>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover){background:var(--ck-color-split-button-hover-background)}.ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,.ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{background-color:var(--ck-color-split-button-hover-border);content:\"\";height:100%;position:absolute;width:1px}.ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:focus:after,.ck.ck-splitbutton:hover>.ck-splitbutton__arrow:focus:after{--ck-color-split-button-hover-border:var(--ck-color-focus-border)}[dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,[dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{left:-1px}[dir=rtl] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,[dir=rtl] .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{right:-1px}.ck.ck-splitbutton.ck-splitbutton_open{border-radius:0}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners>.ck-splitbutton__action{border-bottom-left-radius:0}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners>.ck-splitbutton__arrow{border-bottom-right-radius:0}";
-styleInject(css_248z$T);/**
+}var css_248z$U = ".ck.ck-splitbutton{font-size:inherit}.ck.ck-splitbutton .ck-splitbutton__action:focus{z-index:calc(var(--ck-z-default) + 1)}:root{--ck-color-split-button-hover-background:#ebebeb;--ck-color-split-button-hover-border:#b3b3b3}[dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,[dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__action{border-bottom-right-radius:unset;border-top-right-radius:unset}[dir=rtl] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,[dir=rtl] .ck.ck-splitbutton:hover>.ck-splitbutton__action{border-bottom-left-radius:unset;border-top-left-radius:unset}.ck.ck-splitbutton>.ck-splitbutton__arrow{min-width:unset}[dir=ltr] .ck.ck-splitbutton>.ck-splitbutton__arrow{border-bottom-left-radius:unset;border-top-left-radius:unset}[dir=rtl] .ck.ck-splitbutton>.ck-splitbutton__arrow{border-bottom-right-radius:unset;border-top-right-radius:unset}.ck.ck-splitbutton>.ck-splitbutton__arrow svg{width:var(--ck-dropdown-arrow-size)}.ck.ck-splitbutton>.ck-splitbutton__arrow:not(:focus){border-bottom-width:0;border-top-width:0}.ck.ck-splitbutton.ck-splitbutton_open>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover),.ck.ck-splitbutton:hover>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover){background:var(--ck-color-split-button-hover-background)}.ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,.ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{background-color:var(--ck-color-split-button-hover-border);content:\"\";height:100%;position:absolute;width:1px}.ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:focus:after,.ck.ck-splitbutton:hover>.ck-splitbutton__arrow:focus:after{--ck-color-split-button-hover-border:var(--ck-color-focus-border)}[dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,[dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{left:-1px}[dir=rtl] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,[dir=rtl] .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after{right:-1px}.ck.ck-splitbutton.ck-splitbutton_open{border-radius:0}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners{border-radius:var(--ck-border-radius)}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners>.ck-splitbutton__action{border-bottom-left-radius:0}.ck-rounded-corners .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow,.ck.ck-splitbutton.ck-splitbutton_open.ck-rounded-corners>.ck-splitbutton__arrow{border-bottom-right-radius:0}";
+styleInject(css_248z$U);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -54751,9 +54988,9 @@ class SplitButtonView extends View$1 {
         arrowView.delegate('execute').to(this, 'open');
         return arrowView;
     }
-}var css_248z$S = ":root{--ck-toolbar-dropdown-max-width:60vw}.ck.ck-toolbar-dropdown>.ck-dropdown__panel{max-width:var(--ck-toolbar-dropdown-max-width);width:max-content}.ck.ck-toolbar-dropdown>.ck-dropdown__panel .ck-button:focus{z-index:calc(var(--ck-z-default) + 1)}.ck.ck-toolbar-dropdown .ck-toolbar{border:0}";
-styleInject(css_248z$S);var css_248z$R = ".ck.ck-dropdown .ck-dropdown__panel .ck-list{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list,.ck.ck-dropdown .ck-dropdown__panel .ck-list.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0}.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button,.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius);border-bottom-left-radius:0;border-bottom-right-radius:0;border-top-left-radius:0}.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button,.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}";
-styleInject(css_248z$R);/**
+}var css_248z$T = ":root{--ck-toolbar-dropdown-max-width:60vw}.ck.ck-toolbar-dropdown>.ck-dropdown__panel{max-width:var(--ck-toolbar-dropdown-max-width);width:max-content}.ck.ck-toolbar-dropdown>.ck-dropdown__panel .ck-button:focus{z-index:calc(var(--ck-z-default) + 1)}.ck.ck-toolbar-dropdown .ck-toolbar{border:0}";
+styleInject(css_248z$T);var css_248z$S = ".ck.ck-dropdown .ck-dropdown__panel .ck-list{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list,.ck.ck-dropdown .ck-dropdown__panel .ck-list.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0}.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button,.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:first-child .ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius);border-bottom-left-radius:0;border-bottom-right-radius:0;border-top-left-radius:0}.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button{border-radius:0}.ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button,.ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button.ck-rounded-corners{border-radius:var(--ck-border-radius);border-top-left-radius:0;border-top-right-radius:0}";
+styleInject(css_248z$S);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -55090,7 +55327,10 @@ function closeDropdownOnClickOutside(dropdownView) {
             callback: () => {
                 dropdownView.isOpen = false;
             },
-            contextElements: [dropdownView.element]
+            contextElements: () => [
+                dropdownView.element,
+                ...dropdownView.focusTracker._elements
+            ]
         });
     });
 }
@@ -55649,12 +55889,15 @@ class HexBase extends ColorPicker {
  */
 class HexColorPicker extends HexBase {
 }
-customElements.define('hex-color-picker', HexColorPicker);var css_248z$Q = ".color-picker-hex-input{width:max-content}.color-picker-hex-input .ck.ck-input{min-width:unset}.ck.ck-color-picker__row{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between}.ck.ck-color-picker__row .ck-color-picker__hash-view{padding-right:var(--ck-spacing-medium);padding-top:var(--ck-spacing-tiny)}";
-styleInject(css_248z$Q);/**
+customElements.define('hex-color-picker', HexColorPicker);var css_248z$R = ".color-picker-hex-input{width:max-content}.color-picker-hex-input .ck.ck-input{min-width:unset}.ck.ck-color-picker__row{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between;margin:var(--ck-spacing-large) 0 0;width:unset}.ck.ck-color-picker__row .ck.ck-labeled-field-view{padding-top:unset}.ck.ck-color-picker__row .ck.ck-input-text{width:unset}.ck.ck-color-picker__row .ck-color-picker__hash-view{padding-right:var(--ck-spacing-medium);padding-top:var(--ck-spacing-tiny)}";
+styleInject(css_248z$R);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 const waitingTime = 150;
+/**
+ * A class which represents a color picker with an input field for defining custom colors.
+ */
 class ColorPickerView extends View$1 {
     /**
      * Creates a view of color picker.
@@ -55662,14 +55905,17 @@ class ColorPickerView extends View$1 {
      * @param locale
      * @param config
      */
-    constructor(locale, config) {
+    constructor(locale, config = {}) {
         super(locale);
-        this.set('color', '');
-        this.set('_hexColor', '');
-        this._format = config.format || 'hsl';
+        this.set({
+            color: '',
+            _hexColor: ''
+        });
         this.hexInputRow = this._createInputRow();
         const children = this.createCollection();
-        children.add(this.hexInputRow);
+        if (!config.hideInput) {
+            children.add(this.hexInputRow);
+        }
         this.setTemplate({
             tag: 'div',
             attributes: {
@@ -55678,21 +55924,27 @@ class ColorPickerView extends View$1 {
             },
             children
         });
+        this._config = config;
         this._debounceColorPickerEvent = debounce((color) => {
+            // At first, set the color internally in the component. It's converted to the configured output format.
             this.set('color', color);
+            // Then let the outside world know that the user changed the color.
+            this.fire('colorSelected', { color: this.color });
         }, waitingTime, {
             leading: true
         });
-        // Sets color in the picker if color was updated.
+        // The `color` property holds the color in the configured output format.
+        // Ensure it before actually setting the value.
         this.on('set:color', (evt, propertyName, newValue) => {
-            // The color needs always to be kept in the output format.
-            evt.return = convertColor(newValue, this._format);
+            evt.return = convertColor(newValue, this._config.format || 'hsl');
         });
+        // The `_hexColor` property is bound to the `color` one, but requires conversion.
         this.on('change:color', () => {
             this._hexColor = convertColorToCommonHexFormat(this.color);
         });
         this.on('change:_hexColor', () => {
-            // Should update color in color picker when its not focused
+            // Update the selected color in the color picker palette when it's not focused.
+            // It means the user typed the color in the input.
             if (document.activeElement !== this.picker) {
                 this.picker.setAttribute('color', this._hexColor);
             }
@@ -55713,7 +55965,12 @@ class ColorPickerView extends View$1 {
         this.picker.setAttribute('tabindex', '-1');
         this._createSlidersView();
         if (this.element) {
-            this.element.insertBefore(this.picker, this.hexInputRow.element);
+            if (this.hexInputRow.element) {
+                this.element.insertBefore(this.picker, this.hexInputRow.element);
+            }
+            else {
+                this.element.appendChild(this.picker);
+            }
             // Create custom stylesheet with a look of focused pointer in color picker and append it into the color picker shadowDom
             const styleSheetForFocusedColorPicker = document.createElement('style');
             styleSheetForFocusedColorPicker.textContent = '[role="slider"]:focus [part$="pointer"] {' +
@@ -55742,7 +55999,7 @@ class ColorPickerView extends View$1 {
         // See: https://github.com/cksource/ckeditor5-internal/issues/3245, https://github.com/ckeditor/ckeditor5/issues/14119,
         // https://github.com/cksource/ckeditor5-internal/issues/3268.
         /* istanbul ignore next -- @preserve */
-        if (env.isGecko || env.isiOS || env.isSafari) {
+        if (!this._config.hideInput && (env.isGecko || env.isiOS || env.isSafari)) {
             const input = this.hexInputRow.children.get(1);
             input.focus();
         }
@@ -55850,7 +56107,7 @@ class SliderView extends View$1 {
         this.element.focus();
     }
 }
-// View abstaction over the `#` character before color input.
+// View abstraction over the `#` character before color input.
 class HashView extends View$1 {
     constructor(locale) {
         super(locale);
@@ -55890,6 +56147,765 @@ class ColorPickerInputRowView extends View$1 {
             },
             children: this.children
         });
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * A collection to store document colors. It enforces colors to be unique.
+ */
+class DocumentColorCollection extends ObservableMixin((Collection)) {
+    constructor(options) {
+        super(options);
+        this.set('isEmpty', true);
+        this.on('change', () => {
+            this.set('isEmpty', this.length === 0);
+        });
+    }
+    /**
+     * Adds a color to the document color collection.
+     *
+     * This method ensures that no color duplicates are inserted (compared using
+     * the color value of the {@link module:ui/colorgrid/colorgridview~ColorDefinition}).
+     *
+     * If the item does not have an ID, it will be automatically generated and set on the item.
+     *
+     * @param index The position of the item in the collection. The item is pushed to the collection when `index` is not specified.
+     * @fires add
+     * @fires change
+     */
+    add(item, index) {
+        if (this.find(element => element.color === item.color)) {
+            // No duplicates are allowed.
+            return this;
+        }
+        return super.add(item, index);
+    }
+    /**
+     * Checks if an object with given colors is present in the document color collection.
+     */
+    hasColor(color) {
+        return !!this.find(item => item.color === color);
+    }
+}var colorPaletteIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10.209 18.717A8.5 8.5 0 1 1 18.686 9.6h-.008l.002.12a3 3 0 0 1-2.866 2.997h-.268l-.046-.002v.002h-4.791a2 2 0 1 0 0 4 1 1 0 1 1-.128 1.992 8.665 8.665 0 0 1-.372.008Zm-3.918-7.01a1.25 1.25 0 1 0-2.415-.648 1.25 1.25 0 0 0 2.415.647ZM5.723 8.18a1.25 1.25 0 1 0 .647-2.414 1.25 1.25 0 0 0-.647 2.414ZM9.76 6.155a1.25 1.25 0 1 0 .647-2.415 1.25 1.25 0 0 0-.647 2.415Zm4.028 1.759a1.25 1.25 0 1 0 .647-2.415 1.25 1.25 0 0 0-.647 2.415Z\"/></svg>";
+/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * One of the fragments of {@link module:ui/colorselector/colorselectorview~ColorSelectorView}.
+ *
+ * It provides a UI that allows users to select colors from the a predefined set and from existing document colors.
+ *
+ * It consists of the following sub–components:
+ *
+ * * A "Remove color" button,
+ * * A static {@link module:ui/colorgrid/colorgridview~ColorGridView} of colors defined in the configuration,
+ * * A dynamic {@link module:ui/colorgrid/colorgridview~ColorGridView} of colors used in the document.
+ * * If color picker is configured, the "Color Picker" button is visible too.
+ */
+class ColorGridsFragmentView extends View$1 {
+    /**
+     * Creates an instance of the view.
+     *
+     * @param locale The localization services instance.
+     * @param colors An array with definitions of colors to be displayed in the table.
+     * @param columns The number of columns in the color grid.
+     * @param removeButtonLabel The label of the button responsible for removing the color.
+     * @param colorPickerLabel The label of the button responsible for color picker appearing.
+     * @param documentColorsLabel The label for the section with the document colors.
+     * @param documentColorsCount The number of colors in the document colors section inside the color dropdown.
+     * @param focusTracker Tracks information about the DOM focus in the list.
+     * @param focusables A collection of views that can be focused in the view.
+     */
+    constructor(locale, { colors, columns, removeButtonLabel, documentColorsLabel, documentColorsCount, colorPickerLabel, focusTracker, focusables }) {
+        super(locale);
+        const bind = this.bindTemplate;
+        this.set('isVisible', true);
+        this.focusTracker = focusTracker;
+        this.items = this.createCollection();
+        this.colorDefinitions = colors;
+        this.columns = columns;
+        this.documentColors = new DocumentColorCollection();
+        this.documentColorsCount = documentColorsCount;
+        this._focusables = focusables;
+        this._removeButtonLabel = removeButtonLabel;
+        this._colorPickerLabel = colorPickerLabel;
+        this._documentColorsLabel = documentColorsLabel;
+        this.setTemplate({
+            tag: 'div',
+            attributes: {
+                class: [
+                    'ck-color-grids-fragment',
+                    bind.if('isVisible', 'ck-hidden', value => !value)
+                ]
+            },
+            children: this.items
+        });
+        this.removeColorButtonView = this._createRemoveColorButton();
+        this.items.add(this.removeColorButtonView);
+    }
+    /**
+     * Scans through the editor model and searches for text node attributes with the given attribute name.
+     * Found entries are set as document colors.
+     *
+     * All the previously stored document colors will be lost in the process.
+     *
+     * @param model The model used as a source to obtain the document colors.
+     * @param attributeName Determines the name of the related model's attribute for a given dropdown.
+     */
+    updateDocumentColors(model, attributeName) {
+        const document = model.document;
+        const maxCount = this.documentColorsCount;
+        this.documentColors.clear();
+        for (const root of document.getRoots()) {
+            const range = model.createRangeIn(root);
+            for (const node of range.getItems()) {
+                if (node.is('$textProxy') && node.hasAttribute(attributeName)) {
+                    this._addColorToDocumentColors(node.getAttribute(attributeName));
+                    if (this.documentColors.length >= maxCount) {
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    /**
+     * Refreshes the state of the selected color in one or both {@link module:ui/colorgrid/colorgridview~ColorGridView}s
+     * available in the {@link module:ui/colorselector/colorselectorview~ColorSelectorView}. It guarantees that the selection will
+     * occur only in one of them.
+     */
+    updateSelectedColors() {
+        const documentColorsGrid = this.documentColorsGrid;
+        const staticColorsGrid = this.staticColorsGrid;
+        const selectedColor = this.selectedColor;
+        staticColorsGrid.selectedColor = selectedColor;
+        if (documentColorsGrid) {
+            documentColorsGrid.selectedColor = selectedColor;
+        }
+    }
+    /**
+     * @inheritDoc
+     */
+    render() {
+        super.render();
+        this.staticColorsGrid = this._createStaticColorsGrid();
+        this.items.add(this.staticColorsGrid);
+        if (this.documentColorsCount) {
+            // Create a label for document colors.
+            const bind = Template.bind(this.documentColors, this.documentColors);
+            const label = new LabelView(this.locale);
+            label.text = this._documentColorsLabel;
+            label.extendTemplate({
+                attributes: {
+                    class: [
+                        'ck',
+                        'ck-color-grid__label',
+                        bind.if('isEmpty', 'ck-hidden')
+                    ]
+                }
+            });
+            this.items.add(label);
+            this.documentColorsGrid = this._createDocumentColorsGrid();
+            this.items.add(this.documentColorsGrid);
+        }
+        this._createColorPickerButton();
+        this._addColorSelectorElementsToFocusTracker();
+        this.focus();
+    }
+    /**
+     * Focuses the component.
+     */
+    focus() {
+        this.removeColorButtonView.focus();
+    }
+    /**
+     * @inheritDoc
+     */
+    destroy() {
+        super.destroy();
+    }
+    /**
+     * Handles displaying the color picker button (if it was previously created) and making it focusable.
+     */
+    addColorPickerButton() {
+        if (this.colorPickerButtonView) {
+            this.items.add(this.colorPickerButtonView);
+            this.focusTracker.add(this.colorPickerButtonView.element);
+            this._focusables.add(this.colorPickerButtonView);
+        }
+    }
+    /**
+     * Adds color selector elements to focus tracker.
+     */
+    _addColorSelectorElementsToFocusTracker() {
+        this.focusTracker.add(this.removeColorButtonView.element);
+        this._focusables.add(this.removeColorButtonView);
+        if (this.staticColorsGrid) {
+            this.focusTracker.add(this.staticColorsGrid.element);
+            this._focusables.add(this.staticColorsGrid);
+        }
+        if (this.documentColorsGrid) {
+            this.focusTracker.add(this.documentColorsGrid.element);
+            this._focusables.add(this.documentColorsGrid);
+        }
+    }
+    /**
+     * Creates the button responsible for displaying the color picker component.
+     */
+    _createColorPickerButton() {
+        this.colorPickerButtonView = new ButtonView();
+        this.colorPickerButtonView.set({
+            label: this._colorPickerLabel,
+            withText: true,
+            icon: colorPaletteIcon,
+            class: 'ck-color-selector__color-picker'
+        });
+        this.colorPickerButtonView.on('execute', () => {
+            this.fire('colorPicker:show');
+        });
+    }
+    /**
+     * Adds the remove color button as a child of the current view.
+     */
+    _createRemoveColorButton() {
+        const buttonView = new ButtonView();
+        buttonView.set({
+            withText: true,
+            icon: removeButtonIcon,
+            label: this._removeButtonLabel
+        });
+        buttonView.class = 'ck-color-selector__remove-color';
+        buttonView.on('execute', () => {
+            this.fire('execute', {
+                value: null,
+                source: 'removeColorButton'
+            });
+        });
+        buttonView.render();
+        return buttonView;
+    }
+    /**
+     * Creates a static color grid based on the editor configuration.
+     */
+    _createStaticColorsGrid() {
+        const colorGrid = new ColorGridView(this.locale, {
+            colorDefinitions: this.colorDefinitions,
+            columns: this.columns
+        });
+        colorGrid.on('execute', (evt, data) => {
+            this.fire('execute', {
+                value: data.value,
+                source: 'staticColorsGrid'
+            });
+        });
+        return colorGrid;
+    }
+    /**
+     * Creates the document colors section view and binds it to {@link #documentColors}.
+     */
+    _createDocumentColorsGrid() {
+        const bind = Template.bind(this.documentColors, this.documentColors);
+        const documentColorsGrid = new ColorGridView(this.locale, {
+            columns: this.columns
+        });
+        documentColorsGrid.extendTemplate({
+            attributes: {
+                class: bind.if('isEmpty', 'ck-hidden')
+            }
+        });
+        documentColorsGrid.items.bindTo(this.documentColors).using(colorObj => {
+            const colorTile = new ColorTileView();
+            colorTile.set({
+                color: colorObj.color,
+                hasBorder: colorObj.options && colorObj.options.hasBorder
+            });
+            if (colorObj.label) {
+                colorTile.set({
+                    label: colorObj.label,
+                    tooltip: true
+                });
+            }
+            colorTile.on('execute', () => {
+                this.fire('execute', {
+                    value: colorObj.color,
+                    source: 'documentColorsGrid'
+                });
+            });
+            return colorTile;
+        });
+        // Selected color should be cleared when document colors became empty.
+        this.documentColors.on('change:isEmpty', (evt, name, val) => {
+            if (val) {
+                documentColorsGrid.selectedColor = null;
+            }
+        });
+        return documentColorsGrid;
+    }
+    /**
+     * Adds a given color to the document colors list. If possible, the method will attempt to use
+     * data from the {@link #colorDefinitions} (label, color options).
+     *
+     * @param color A string that stores the value of the recently applied color.
+     */
+    _addColorToDocumentColors(color) {
+        const predefinedColor = this.colorDefinitions
+            .find(definition => definition.color === color);
+        if (!predefinedColor) {
+            this.documentColors.add({
+                color,
+                label: color,
+                options: {
+                    hasBorder: false
+                }
+            });
+        }
+        else {
+            this.documentColors.add(Object.assign({}, predefinedColor));
+        }
+    }
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * One of the fragments of {@link module:ui/colorselector/colorselectorview~ColorSelectorView}.
+ *
+ * It allows users to select a color from a color picker.
+ *
+ * It consists of the following sub–components:
+ *
+ * * A color picker saturation and hue sliders,
+ * * A text input accepting colors in HEX format,
+ * * "Save" and "Cancel" action buttons.
+ */
+class ColorPickerFragmentView extends View$1 {
+    /**
+     * Creates an instance of the view.
+     *
+     * @param locale The localization services instance.
+     * @param focusTracker Tracks information about the DOM focus in the list.
+     * @param focusables A collection of views that can be focused in the view..
+     * @param keystrokes An instance of the {@link module:utils/keystrokehandler~KeystrokeHandler}.
+     * @param colorPickerViewConfig The configuration of color picker feature. If set to `false`, the color picker
+     * will not be rendered.
+     */
+    constructor(locale, { focusTracker, focusables, keystrokes, colorPickerViewConfig }) {
+        super(locale);
+        this.items = this.createCollection();
+        this.focusTracker = focusTracker;
+        this.keystrokes = keystrokes;
+        this.set('isVisible', false);
+        this.set('selectedColor', undefined);
+        this._focusables = focusables;
+        this._colorPickerViewConfig = colorPickerViewConfig;
+        const bind = this.bindTemplate;
+        const { saveButtonView, cancelButtonView } = this._createActionButtons();
+        this.saveButtonView = saveButtonView;
+        this.cancelButtonView = cancelButtonView;
+        this.actionBarView = this._createActionBarView({ saveButtonView, cancelButtonView });
+        this.setTemplate({
+            tag: 'div',
+            attributes: {
+                class: [
+                    'ck-color-picker-fragment',
+                    bind.if('isVisible', 'ck-hidden', value => !value)
+                ]
+            },
+            children: this.items
+        });
+    }
+    /**
+     * @inheritDoc
+     */
+    render() {
+        super.render();
+        const colorPickerView = new ColorPickerView(this.locale, {
+            ...this._colorPickerViewConfig
+        });
+        this.colorPickerView = colorPickerView;
+        this.colorPickerView.render();
+        if (this.selectedColor) {
+            colorPickerView.color = this.selectedColor;
+        }
+        this.listenTo(this, 'change:selectedColor', (evt, name, value) => {
+            colorPickerView.color = value;
+        });
+        this.items.add(this.colorPickerView);
+        this.items.add(this.actionBarView);
+        this._addColorPickersElementsToFocusTracker();
+        this._stopPropagationOnArrowsKeys();
+        this._executeOnEnterPress();
+        this._executeUponColorChange();
+    }
+    /**
+     * @inheritDoc
+     */
+    destroy() {
+        super.destroy();
+    }
+    /**
+     * Focuses the color picker.
+     */
+    focus() {
+        this.colorPickerView.focus();
+    }
+    /**
+     * When color picker is focused and "enter" is pressed it executes command.
+     */
+    _executeOnEnterPress() {
+        this.keystrokes.set('enter', evt => {
+            if (this.isVisible && this.focusTracker.focusedElement !== this.cancelButtonView.element) {
+                this.fire('execute', {
+                    value: this.selectedColor
+                });
+                evt.stopPropagation();
+                evt.preventDefault();
+            }
+        });
+    }
+    /**
+     * Removes default behavior of arrow keys in dropdown.
+     */
+    _stopPropagationOnArrowsKeys() {
+        const stopPropagation = (data) => data.stopPropagation();
+        this.keystrokes.set('arrowright', stopPropagation);
+        this.keystrokes.set('arrowleft', stopPropagation);
+        this.keystrokes.set('arrowup', stopPropagation);
+        this.keystrokes.set('arrowdown', stopPropagation);
+    }
+    /**
+     * Adds color picker elements to focus tracker.
+     */
+    _addColorPickersElementsToFocusTracker() {
+        for (const slider of this.colorPickerView.slidersView) {
+            this.focusTracker.add(slider.element);
+            this._focusables.add(slider);
+        }
+        const input = this.colorPickerView.hexInputRow.children.get(1);
+        if (input.element) {
+            this.focusTracker.add(input.element);
+            this._focusables.add(input);
+        }
+        this.focusTracker.add(this.saveButtonView.element);
+        this._focusables.add(this.saveButtonView);
+        this.focusTracker.add(this.cancelButtonView.element);
+        this._focusables.add(this.cancelButtonView);
+    }
+    /**
+     * Creates bar containing "Save" and "Cancel" buttons.
+     */
+    _createActionBarView({ saveButtonView, cancelButtonView }) {
+        const actionBarRow = new View$1();
+        const children = this.createCollection();
+        children.add(saveButtonView);
+        children.add(cancelButtonView);
+        actionBarRow.setTemplate({
+            tag: 'div',
+            attributes: {
+                class: [
+                    'ck',
+                    'ck-color-selector_action-bar'
+                ]
+            },
+            children
+        });
+        return actionBarRow;
+    }
+    /**
+     * Creates "Save" and "Cancel" buttons.
+     */
+    _createActionButtons() {
+        const locale = this.locale;
+        const t = locale.t;
+        const saveButtonView = new ButtonView(locale);
+        const cancelButtonView = new ButtonView(locale);
+        saveButtonView.set({
+            icon: checkButtonIcon,
+            class: 'ck-button-save',
+            type: 'button',
+            withText: false,
+            label: t('Accept')
+        });
+        cancelButtonView.set({
+            icon: cancelButtonIcon,
+            class: 'ck-button-cancel',
+            type: 'button',
+            withText: false,
+            label: t('Cancel')
+        });
+        saveButtonView.on('execute', () => {
+            this.fire('execute', {
+                source: 'colorPickerSaveButton',
+                value: this.selectedColor
+            });
+        });
+        cancelButtonView.on('execute', () => {
+            this.fire('colorPicker:cancel');
+        });
+        return {
+            saveButtonView, cancelButtonView
+        };
+    }
+    /**
+     * Fires the `execute` event if color in color picker has been changed
+     * by the user.
+     */
+    _executeUponColorChange() {
+        this.colorPickerView.on('colorSelected', (evt, data) => {
+            this.fire('execute', {
+                value: data.color,
+                source: 'colorPicker'
+            });
+            this.set('selectedColor', data.color);
+        });
+    }
+}var css_248z$Q = ".ck.ck-color-selector .ck-color-grids-fragment .ck-button.ck-color-selector__color-picker,.ck.ck-color-selector .ck-color-grids-fragment .ck-button.ck-color-selector__remove-color{align-items:center;display:flex}[dir=rtl] .ck.ck-color-selector .ck-color-grids-fragment .ck-button.ck-color-selector__color-picker,[dir=rtl] .ck.ck-color-selector .ck-color-grids-fragment .ck-button.ck-color-selector__remove-color{justify-content:flex-start}.ck.ck-color-selector .ck-color-picker-fragment .ck.ck-color-selector_action-bar{display:flex;flex-direction:row;justify-content:space-around}.ck.ck-color-selector .ck-color-picker-fragment .ck.ck-color-selector_action-bar .ck-button-cancel,.ck.ck-color-selector .ck-color-picker-fragment .ck.ck-color-selector_action-bar .ck-button-save{flex:1}.ck.ck-color-selector .ck-color-grids-fragment .ck-button.ck-color-selector__color-picker,.ck.ck-color-selector .ck-color-grids-fragment .ck-button.ck-color-selector__remove-color{width:100%}.ck.ck-color-selector .ck-color-grids-fragment .ck-button.ck-color-selector__color-picker{border-bottom-left-radius:0;border-bottom-right-radius:0;padding:calc(var(--ck-spacing-standard)/2) var(--ck-spacing-standard)}.ck.ck-color-selector .ck-color-grids-fragment .ck-button.ck-color-selector__color-picker:not(:focus){border-top:1px solid var(--ck-color-base-border)}[dir=ltr] .ck.ck-color-selector .ck-color-grids-fragment .ck-button.ck-color-selector__color-picker .ck.ck-icon{margin-right:var(--ck-spacing-standard)}[dir=rtl] .ck.ck-color-selector .ck-color-grids-fragment .ck-button.ck-color-selector__color-picker .ck.ck-icon{margin-left:var(--ck-spacing-standard)}.ck.ck-color-selector .ck-color-grids-fragment label.ck.ck-color-grid__label{font-weight:unset}.ck.ck-color-selector .ck-color-picker-fragment .ck.ck-color-picker{padding:8px}.ck.ck-color-selector .ck-color-picker-fragment .ck.ck-color-picker .hex-color-picker{height:100px;min-width:180px}.ck.ck-color-selector .ck-color-picker-fragment .ck.ck-color-picker .hex-color-picker::part(saturation){border-radius:var(--ck-border-radius) var(--ck-border-radius) 0 0}.ck.ck-color-selector .ck-color-picker-fragment .ck.ck-color-picker .hex-color-picker::part(hue){border-radius:0 0 var(--ck-border-radius) var(--ck-border-radius)}.ck.ck-color-selector .ck-color-picker-fragment .ck.ck-color-picker .hex-color-picker::part(hue-pointer),.ck.ck-color-selector .ck-color-picker-fragment .ck.ck-color-picker .hex-color-picker::part(saturation-pointer){height:15px;width:15px}.ck.ck-color-selector .ck-color-picker-fragment .ck.ck-color-selector_action-bar{padding:0 8px 8px}";
+styleInject(css_248z$Q);/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
+ * The configurable color selector view class. It allows users to select colors from a predefined set of colors as well as from
+ * a color picker.
+ *
+ * This meta-view is is made of two components (fragments):
+ *
+ * * {@link module:ui/colorselector/colorselectorview~ColorSelectorView#colorGridsFragmentView},
+ * * {@link module:ui/colorselector/colorselectorview~ColorSelectorView#colorPickerFragmentView}.
+ *
+ * ```ts
+ * const colorDefinitions = [
+ * 	{ color: '#000', label: 'Black', options: { hasBorder: false } },
+ * 	{ color: 'rgb(255, 255, 255)', label: 'White', options: { hasBorder: true } },
+ * 	{ color: 'red', label: 'Red', options: { hasBorder: false } }
+ * ];
+ *
+ * const selectorView = new ColorSelectorView( locale, {
+ * 	colors: colorDefinitions,
+ * 	columns: 5,
+ * 	removeButtonLabel: 'Remove color',
+ * 	documentColorsLabel: 'Document colors',
+ * 	documentColorsCount: 4,
+ * 	colorPickerViewConfig: {
+ * 		format: 'hsl'
+ * 	}
+ * } );
+ *
+ * selectorView.appendUI();
+ * selectorView.selectedColor = 'red';
+ * selectorView.updateSelectedColors();
+ *
+ * selectorView.on<ColorSelectorExecuteEvent>( 'execute', ( evt, data ) => {
+ * 	console.log( 'Color changed', data.value, data.source );
+ * } );
+ *
+ * selectorView.on<ColorSelectorColorPickerShowEvent>( 'colorPicker:show', ( evt ) => {
+ * 	console.log( 'Color picker showed up', evt );
+ * } );
+ *
+ * selectorView.on<ColorSelectorColorPickerCancelEvent>( 'colorPicker:cancel', ( evt ) => {
+ * 	console.log( 'Color picker cancel', evt );
+ * } );
+ *
+ * selectorView.render();
+ *
+ * document.body.appendChild( selectorView.element );
+ * ```
+ */
+class ColorSelectorView extends View$1 {
+    /**
+     * Creates a view to be inserted as a child of {@link module:ui/dropdown/dropdownview~DropdownView}.
+     *
+     * @param locale The localization services instance.
+     * @param colors An array with definitions of colors to be displayed in the table.
+     * @param columns The number of columns in the color grid.
+     * @param removeButtonLabel The label of the button responsible for removing the color.
+     * @param colorPickerLabel The label of the button responsible for color picker appearing.
+     * @param documentColorsLabel The label for the section with the document colors.
+     * @param documentColorsCount The number of colors in the document colors section inside the color dropdown.
+     * @param colorPickerViewConfig The configuration of color picker feature. If set to `false`, the color picker will be hidden.
+     */
+    constructor(locale, { colors, columns, removeButtonLabel, documentColorsLabel, documentColorsCount, colorPickerLabel, colorPickerViewConfig }) {
+        super(locale);
+        this.items = this.createCollection();
+        this.focusTracker = new FocusTracker();
+        this.keystrokes = new KeystrokeHandler();
+        this._focusables = new ViewCollection();
+        this._colorPickerViewConfig = colorPickerViewConfig;
+        this._focusCycler = new FocusCycler({
+            focusables: this._focusables,
+            focusTracker: this.focusTracker,
+            keystrokeHandler: this.keystrokes,
+            actions: {
+                // Navigate list items backwards using the <kbd>Shift</kbd> + <kbd>Tab</kbd> keystroke.
+                focusPrevious: 'shift + tab',
+                // Navigate list items forwards using the <kbd>Tab</kbd> key.
+                focusNext: 'tab'
+            }
+        });
+        this.colorGridsFragmentView = new ColorGridsFragmentView(locale, {
+            colors, columns, removeButtonLabel, documentColorsLabel, documentColorsCount, colorPickerLabel,
+            focusTracker: this.focusTracker,
+            focusables: this._focusables
+        });
+        this.colorPickerFragmentView = new ColorPickerFragmentView(locale, {
+            focusables: this._focusables,
+            focusTracker: this.focusTracker,
+            keystrokes: this.keystrokes,
+            colorPickerViewConfig
+        });
+        this.set('_isColorGridsFragmentVisible', true);
+        this.set('_isColorPickerFragmentVisible', false);
+        this.set('selectedColor', undefined);
+        this.colorGridsFragmentView.bind('isVisible').to(this, '_isColorGridsFragmentVisible');
+        this.colorPickerFragmentView.bind('isVisible').to(this, '_isColorPickerFragmentVisible');
+        /**
+         * This is kind of bindings. Unfortunately we could not use this.bind() method because the same property
+         * can not be bound twice. So this is work around how to bind 'selectedColor' property between components.
+         */
+        this.on('change:selectedColor', (evt, evtName, data) => {
+            this.colorGridsFragmentView.set('selectedColor', data);
+            this.colorPickerFragmentView.set('selectedColor', data);
+        });
+        this.colorGridsFragmentView.on('change:selectedColor', (evt, evtName, data) => {
+            this.set('selectedColor', data);
+        });
+        this.colorPickerFragmentView.on('change:selectedColor', (evt, evtName, data) => {
+            this.set('selectedColor', data);
+        });
+        this.setTemplate({
+            tag: 'div',
+            attributes: {
+                class: [
+                    'ck',
+                    'ck-color-selector'
+                ]
+            },
+            children: this.items
+        });
+    }
+    /**
+     * @inheritDoc
+     */
+    render() {
+        super.render();
+        // Start listening for the keystrokes coming from #element.
+        this.keystrokes.listenTo(this.element);
+    }
+    /**
+     * @inheritDoc
+     */
+    destroy() {
+        super.destroy();
+        this.focusTracker.destroy();
+        this.keystrokes.destroy();
+    }
+    /**
+     * Renders the internals of the component on demand:
+     * * {@link #colorPickerFragmentView},
+     * * {@link #colorGridsFragmentView}.
+     *
+     * It allows for deferring component initialization to improve the performance.
+     *
+     * See {@link #showColorPickerFragment}, {@link #showColorGridsFragment}.
+     */
+    appendUI() {
+        this._appendColorGridsFragment();
+        if (this._colorPickerViewConfig) {
+            this._appendColorPickerFragment();
+        }
+    }
+    /**
+     * Shows the {@link #colorPickerFragmentView} and hides the {@link #colorGridsFragmentView}.
+     *
+     * **Note**: It requires {@link #appendUI} to be called first.
+     *
+     * See {@link #showColorGridsFragment}, {@link ~ColorSelectorView#event:colorPicker:show}.
+     */
+    showColorPickerFragment() {
+        if (!this.colorPickerFragmentView.colorPickerView || this._isColorPickerFragmentVisible) {
+            return;
+        }
+        this._isColorPickerFragmentVisible = true;
+        this.colorPickerFragmentView.focus();
+        this._isColorGridsFragmentVisible = false;
+    }
+    /**
+     * Shows the {@link #colorGridsFragmentView} and hides the {@link #colorPickerFragmentView}.
+     *
+     * See {@link #showColorPickerFragment}.
+     *
+     * **Note**: It requires {@link #appendUI} to be called first.
+     */
+    showColorGridsFragment() {
+        if (this._isColorGridsFragmentVisible) {
+            return;
+        }
+        this._isColorGridsFragmentVisible = true;
+        this.colorGridsFragmentView.focus();
+        this._isColorPickerFragmentVisible = false;
+    }
+    /**
+     * Focuses the first focusable element in {@link #items}.
+     */
+    focus() {
+        this._focusCycler.focusFirst();
+    }
+    /**
+     * Focuses the last focusable element in {@link #items}.
+     */
+    focusLast() {
+        this._focusCycler.focusLast();
+    }
+    /**
+     * Scans through the editor model and searches for text node attributes with the given `attributeName`.
+     * Found entries are set as document colors in {@link #colorGridsFragmentView}.
+     *
+     * All the previously stored document colors will be lost in the process.
+     *
+     * @param model The model used as a source to obtain the document colors.
+     * @param attributeName Determines the name of the related model's attribute for a given dropdown.
+     */
+    updateDocumentColors(model, attributeName) {
+        this.colorGridsFragmentView.updateDocumentColors(model, attributeName);
+    }
+    /**
+     * Refreshes the state of the selected color in one or both grids located in {@link #colorGridsFragmentView}.
+     *
+     * It guarantees that the selection will occur only in one of them.
+     */
+    updateSelectedColors() {
+        this.colorGridsFragmentView.updateSelectedColors();
+    }
+    /**
+     * Appends the view containing static and document color grid views.
+     */
+    _appendColorGridsFragment() {
+        if (this.items.length) {
+            return;
+        }
+        this.items.add(this.colorGridsFragmentView);
+        this.colorGridsFragmentView.delegate('execute').to(this);
+        this.colorGridsFragmentView.delegate('colorPicker:show').to(this);
+    }
+    /**
+     * Appends the view with the color picker.
+     */
+    _appendColorPickerFragment() {
+        if (this.items.length === 2) {
+            return;
+        }
+        this.items.add(this.colorPickerFragmentView);
+        if (this.colorGridsFragmentView.colorPickerButtonView) {
+            this.colorGridsFragmentView.colorPickerButtonView.on('execute', () => {
+                this.showColorPickerFragment();
+            });
+        }
+        this.colorGridsFragmentView.addColorPickerButton();
+        this.colorPickerFragmentView.delegate('execute').to(this);
+        this.colorPickerFragmentView.delegate('colorPicker:cancel').to(this);
     }
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
@@ -57577,8 +58593,13 @@ function getLowerCornerPosition(focusedEditableElement, config, getBalloonLeft) 
             const firstScrollableEditableElementAncestor = findClosestScrollableAncestor(focusedEditableElement);
             if (firstScrollableEditableElementAncestor) {
                 const firstScrollableEditableElementAncestorRect = new Rect(firstScrollableEditableElementAncestor);
+                const notVisibleVertically = visibleEditableElementRect.bottom + balloonRect.height / 2 >
+                    firstScrollableEditableElementAncestorRect.bottom;
+                const notVisibleHorizontally = config.side === 'left' ?
+                    editableElementRect.left < firstScrollableEditableElementAncestorRect.left :
+                    editableElementRect.right > firstScrollableEditableElementAncestorRect.right;
                 // The watermark cannot be positioned in this corner because the corner is "not visible enough".
-                if (visibleEditableElementRect.bottom + balloonRect.height / 2 > firstScrollableEditableElementAncestorRect.bottom) {
+                if (notVisibleVertically || notVisibleHorizontally) {
                     return OFF_THE_SCREEN_POSITION;
                 }
             }
@@ -58005,7 +59026,7 @@ function getToolbarDefinitionWeight(toolbarDef) {
         weight--;
     }
     return weight;
-}var css_248z$N = ":root{--ck-color-editable-blur-selection:#d9d9d9}.ck.ck-editor__editable:not(.ck-editor__nested-editable){border-radius:0}.ck-rounded-corners .ck.ck-editor__editable:not(.ck-editor__nested-editable),.ck.ck-editor__editable.ck-rounded-corners:not(.ck-editor__nested-editable){border-radius:var(--ck-border-radius)}.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable){border:var(--ck-focus-ring);box-shadow:var(--ck-inner-shadow),0 0;outline:none}.ck.ck-editor__editable_inline{border:1px solid transparent;overflow:auto;padding:0 var(--ck-spacing-standard)}.ck.ck-editor__editable_inline[dir=ltr]{text-align:left}.ck.ck-editor__editable_inline[dir=rtl]{text-align:right}.ck.ck-editor__editable_inline>:first-child{margin-top:var(--ck-spacing-large)}.ck.ck-editor__editable_inline>:last-child{margin-bottom:var(--ck-spacing-large)}.ck.ck-editor__editable_inline.ck-blurred ::selection{background:var(--ck-color-editable-blur-selection)}.ck.ck-balloon-panel.ck-toolbar-container[class*=arrow_n]:after{border-bottom-color:var(--ck-color-base-foreground)}.ck.ck-balloon-panel.ck-toolbar-container[class*=arrow_s]:after{border-top-color:var(--ck-color-base-foreground)}";
+}var css_248z$N = ":root{--ck-color-editable-blur-selection:#d9d9d9}.ck.ck-editor__editable:not(.ck-editor__nested-editable){border-radius:0}.ck-rounded-corners .ck.ck-editor__editable:not(.ck-editor__nested-editable),.ck.ck-editor__editable.ck-rounded-corners:not(.ck-editor__nested-editable){border-radius:var(--ck-border-radius)}.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable){border:var(--ck-focus-ring);box-shadow:var(--ck-inner-shadow),0 0;outline:none}.ck.ck-editor__editable_inline{border:1px solid transparent;overflow:auto;padding:0 var(--ck-spacing-standard)}.ck.ck-editor__editable_inline[dir=ltr]{text-align:left}.ck.ck-editor__editable_inline[dir=rtl]{text-align:right}.ck.ck-editor__editable_inline>:first-child{margin-top:var(--ck-spacing-large)}.ck.ck-editor__editable_inline>:last-child{margin-bottom:var(--ck-spacing-large)}.ck.ck-editor__editable_inline.ck-blurred ::selection{background:var(--ck-color-editable-blur-selection)}.ck.ck-balloon-panel.ck-toolbar-container[class*=arrow_n]:after{border-bottom-color:var(--ck-color-panel-background)}.ck.ck-balloon-panel.ck-toolbar-container[class*=arrow_s]:after{border-top-color:var(--ck-color-panel-background)}";
 styleInject(css_248z$N);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -59169,8 +60190,9 @@ class StickyPanelView extends View$1 {
         this.set('limiterBottomOffset', 50);
         this.set('viewportTopOffset', 0);
         this.set('_marginLeft', null);
-        this.set('_isStickyToTheLimiter', false);
-        this.set('_hasViewportTopOffset', false);
+        this.set('_isStickyToTheBottomOfLimiter', false);
+        this.set('_stickyTopOffset', null);
+        this.set('_stickyBottomOffset', null);
         this.content = this.createCollection();
         this._contentPanelPlaceholder = new Template({
             tag: 'div',
@@ -59182,7 +60204,7 @@ class StickyPanelView extends View$1 {
                 style: {
                     display: bind.to('isSticky', isSticky => isSticky ? 'block' : 'none'),
                     height: bind.to('isSticky', isSticky => {
-                        return isSticky ? toPx$4(this._panelRect.height) : null;
+                        return isSticky ? toPx$4(this._contentPanelRect.height) : null;
                     })
                 }
             }
@@ -59195,18 +60217,14 @@ class StickyPanelView extends View$1 {
                     'ck-sticky-panel__content',
                     // Toggle class of the panel when "sticky" state changes in the view.
                     bind.if('isSticky', 'ck-sticky-panel__content_sticky'),
-                    bind.if('_isStickyToTheLimiter', 'ck-sticky-panel__content_sticky_bottom-limit')
+                    bind.if('_isStickyToTheBottomOfLimiter', 'ck-sticky-panel__content_sticky_bottom-limit')
                 ],
                 style: {
                     width: bind.to('isSticky', isSticky => {
                         return isSticky ? toPx$4(this._contentPanelPlaceholder.getBoundingClientRect().width) : null;
                     }),
-                    top: bind.to('_hasViewportTopOffset', _hasViewportTopOffset => {
-                        return _hasViewportTopOffset ? toPx$4(this.viewportTopOffset) : null;
-                    }),
-                    bottom: bind.to('_isStickyToTheLimiter', _isStickyToTheLimiter => {
-                        return _isStickyToTheLimiter ? toPx$4(this.limiterBottomOffset) : null;
-                    }),
+                    top: bind.to('_stickyTopOffset', value => value ? toPx$4(value) : value),
+                    bottom: bind.to('_stickyBottomOffset', value => value ? toPx$4(value) : value),
                     marginLeft: bind.to('_marginLeft')
                 }
             },
@@ -59232,52 +60250,146 @@ class StickyPanelView extends View$1 {
     render() {
         super.render();
         // Check if the panel should go into the sticky state immediately.
-        this._checkIfShouldBeSticky();
-        // Update sticky state of the panel as the window is being scrolled.
-        this.listenTo(global$1.window, 'scroll', () => {
-            this._checkIfShouldBeSticky();
-        });
+        this.checkIfShouldBeSticky();
+        // Update sticky state of the panel as the window and ancestors are being scrolled.
+        this.listenTo(global$1.document, 'scroll', (evt, data) => {
+            this.checkIfShouldBeSticky(data.target);
+        }, { useCapture: true });
         // Synchronize with `model.isActive` because sticking an inactive panel is pointless.
         this.listenTo(this, 'change:isActive', () => {
-            this._checkIfShouldBeSticky();
+            this.checkIfShouldBeSticky();
         });
     }
     /**
-     * Analyzes the environment to decide whether the panel should
-     * be sticky or not.
+     * Analyzes the environment to decide whether the panel should be sticky or not.
+     * Then handles the positioning of the panel.
+     *
+     * @param [scrollTarget] The element which is being scrolled.
      */
-    _checkIfShouldBeSticky() {
-        const panelRect = this._panelRect = this._contentPanel.getBoundingClientRect();
-        let limiterRect;
-        if (!this.limiterElement) {
-            this.isSticky = false;
+    checkIfShouldBeSticky(scrollTarget) {
+        // @if CK_DEBUG_STICKYPANEL // RectDrawer.clear();
+        if (!this.limiterElement || !this.isActive) {
+            this._unstick();
+            return;
+        }
+        const scrollableAncestors = getScrollableAncestors(this.limiterElement);
+        if (scrollTarget && !scrollableAncestors.includes(scrollTarget)) {
+            return;
+        }
+        const visibleAncestorsRect = getElementsIntersectionRect(scrollableAncestors, this.viewportTopOffset);
+        const limiterRect = new Rect(this.limiterElement);
+        // @if CK_DEBUG_STICKYPANEL // if ( visibleAncestorsRect ) {
+        // @if CK_DEBUG_STICKYPANEL // 	RectDrawer.draw( visibleAncestorsRect,
+        // @if CK_DEBUG_STICKYPANEL // 		{ outlineWidth: '3px', opacity: '.8', outlineColor: 'red', outlineOffset: '-3px' },
+        // @if CK_DEBUG_STICKYPANEL // 		'Visible anc'
+        // @if CK_DEBUG_STICKYPANEL // 	);
+        // @if CK_DEBUG_STICKYPANEL // }
+        // @if CK_DEBUG_STICKYPANEL //
+        // @if CK_DEBUG_STICKYPANEL // RectDrawer.draw( limiterRect,
+        // @if CK_DEBUG_STICKYPANEL // 	{ outlineWidth: '3px', opacity: '.8', outlineColor: 'green', outlineOffset: '-3px' },
+        // @if CK_DEBUG_STICKYPANEL // 	'Limiter'
+        // @if CK_DEBUG_STICKYPANEL // );
+        // Stick the panel only if
+        // * the limiter's ancestors are intersecting with each other so that some of their rects are visible,
+        // * and the limiter's top edge is above the visible ancestors' top edge.
+        if (visibleAncestorsRect && limiterRect.top < visibleAncestorsRect.top) {
+            const visibleLimiterRect = limiterRect.getIntersection(visibleAncestorsRect);
+            // Sticky the panel only if the limiter's visible rect is at least partially visible in the
+            // visible ancestors' rects intersection.
+            if (visibleLimiterRect) {
+                // @if CK_DEBUG_STICKYPANEL // RectDrawer.draw( visibleLimiterRect,
+                // @if CK_DEBUG_STICKYPANEL // 	{ outlineWidth: '3px', opacity: '.8', outlineColor: 'fuchsia', outlineOffset: '-3px',
+                // @if CK_DEBUG_STICKYPANEL // 		backgroundColor: 'rgba(255, 0, 255, .3)' },
+                // @if CK_DEBUG_STICKYPANEL // 	'Visible limiter'
+                // @if CK_DEBUG_STICKYPANEL // );
+                const visibleAncestorsTop = visibleAncestorsRect.top;
+                // Check if there's a change the panel can be sticky to the bottom of the limiter.
+                if (visibleAncestorsTop + this._contentPanelRect.height + this.limiterBottomOffset > visibleLimiterRect.bottom) {
+                    const stickyBottomOffset = Math.max(limiterRect.bottom - visibleAncestorsRect.bottom, 0) + this.limiterBottomOffset;
+                    // @if CK_DEBUG_STICKYPANEL // const stickyBottomOffsetRect = new Rect( {
+                    // @if CK_DEBUG_STICKYPANEL // 	top: limiterRect.bottom - stickyBottomOffset, left: 0, right: 2000,
+                    // @if CK_DEBUG_STICKYPANEL // 	bottom: limiterRect.bottom - stickyBottomOffset, width: 2000, height: 1
+                    // @if CK_DEBUG_STICKYPANEL // } );
+                    // @if CK_DEBUG_STICKYPANEL // RectDrawer.draw( stickyBottomOffsetRect,
+                    // @if CK_DEBUG_STICKYPANEL // 	{ outlineWidth: '1px', opacity: '.8', outlineColor: 'black' },
+                    // @if CK_DEBUG_STICKYPANEL // 	'Sticky bottom offset'
+                    // @if CK_DEBUG_STICKYPANEL // );
+                    // Check if sticking the panel to the bottom of the limiter does not cause it to suddenly
+                    // move upwards if there's not enough space for it.
+                    if (limiterRect.bottom - stickyBottomOffset > limiterRect.top + this._contentPanelRect.height) {
+                        this._stickToBottomOfLimiter(stickyBottomOffset);
+                    }
+                    else {
+                        this._unstick();
+                    }
+                }
+                else {
+                    if (this._contentPanelRect.height + this.limiterBottomOffset < limiterRect.height) {
+                        this._stickToTopOfAncestors(visibleAncestorsTop);
+                    }
+                    else {
+                        this._unstick();
+                    }
+                }
+            }
+            else {
+                this._unstick();
+            }
         }
         else {
-            limiterRect = this._limiterRect = this.limiterElement.getBoundingClientRect();
-            // The panel must be active to become sticky.
-            this.isSticky = this.isActive &&
-                // The limiter's top edge must be beyond the upper edge of the visible viewport (+the viewportTopOffset).
-                limiterRect.top < this.viewportTopOffset &&
-                // The model#limiterElement's height mustn't be smaller than the panel's height and model#limiterBottomOffset.
-                // There's no point in entering the sticky mode if the model#limiterElement is very, very small, because
-                // it would immediately set model#_isStickyToTheLimiter true and, given model#limiterBottomOffset, the panel
-                // would be positioned before the model#limiterElement.
-                this._panelRect.height + this.limiterBottomOffset < limiterRect.height;
+            this._unstick();
         }
-        // Stick the panel to the top edge of the viewport simulating CSS position:sticky.
-        // TODO: Possibly replaced by CSS in the future http://caniuse.com/#feat=css-sticky
-        if (this.isSticky) {
-            this._isStickyToTheLimiter =
-                limiterRect.bottom < panelRect.height + this.limiterBottomOffset + this.viewportTopOffset;
-            this._hasViewportTopOffset = !this._isStickyToTheLimiter && !!this.viewportTopOffset;
-            this._marginLeft = this._isStickyToTheLimiter ? null : toPx$4(-global$1.window.scrollX);
-        }
-        // Detach the panel from the top edge of the viewport.
-        else {
-            this._isStickyToTheLimiter = false;
-            this._hasViewportTopOffset = false;
-            this._marginLeft = null;
-        }
+        // @if CK_DEBUG_STICKYPANEL // console.clear();
+        // @if CK_DEBUG_STICKYPANEL // console.log( 'isSticky', this.isSticky );
+        // @if CK_DEBUG_STICKYPANEL // console.log( '_isStickyToTheBottomOfLimiter', this._isStickyToTheBottomOfLimiter );
+        // @if CK_DEBUG_STICKYPANEL // console.log( '_stickyTopOffset', this._stickyTopOffset );
+        // @if CK_DEBUG_STICKYPANEL // console.log( '_stickyBottomOffset', this._stickyBottomOffset );
+    }
+    /**
+     * Sticks the panel at the given CSS `top` offset.
+     *
+     * @private
+     * @param topOffset
+     */
+    _stickToTopOfAncestors(topOffset) {
+        this.isSticky = true;
+        this._isStickyToTheBottomOfLimiter = false;
+        this._stickyTopOffset = topOffset;
+        this._stickyBottomOffset = null;
+        this._marginLeft = toPx$4(-global$1.window.scrollX);
+    }
+    /**
+     * Sticks the panel at the bottom of the limiter with a given CSS `bottom` offset.
+     *
+     * @private
+     * @param stickyBottomOffset
+     */
+    _stickToBottomOfLimiter(stickyBottomOffset) {
+        this.isSticky = true;
+        this._isStickyToTheBottomOfLimiter = true;
+        this._stickyTopOffset = null;
+        this._stickyBottomOffset = stickyBottomOffset;
+        this._marginLeft = toPx$4(-global$1.window.scrollX);
+    }
+    /**
+     * Unsticks the panel putting it back to its original position.
+     *
+     * @private
+     */
+    _unstick() {
+        this.isSticky = false;
+        this._isStickyToTheBottomOfLimiter = false;
+        this._stickyTopOffset = null;
+        this._stickyBottomOffset = null;
+        this._marginLeft = null;
+    }
+    /**
+     * Returns the bounding rect of the {@link #_contentPanel}.
+     *
+     * @private
+     */
+    get _contentPanelRect() {
+        return new Rect(this._contentPanel);
     }
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
@@ -59982,14 +61094,13 @@ class BlockToolbar extends Plugin {
         const offset = isRTL ? (buttonRect.left - editableRect.right) + buttonRect.width : editableRect.left - buttonRect.left;
         return toPx$1(editableRect.width + offset);
     }
-}var colorPaletteIcon = "<svg viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10.209 18.717A8.5 8.5 0 1 1 18.686 9.6h-.008l.002.12a3 3 0 0 1-2.866 2.997h-.268l-.046-.002v.002h-4.791a2 2 0 1 0 0 4 1 1 0 1 1-.128 1.992 8.665 8.665 0 0 1-.372.008Zm-3.918-7.01a1.25 1.25 0 1 0-2.415-.648 1.25 1.25 0 0 0 2.415.647ZM5.723 8.18a1.25 1.25 0 1 0 .647-2.414 1.25 1.25 0 0 0-.647 2.414ZM9.76 6.155a1.25 1.25 0 1 0 .647-2.415 1.25 1.25 0 0 0-.647 2.415Zm4.028 1.759a1.25 1.25 0 1 0 .647-2.415 1.25 1.25 0 0 0-.647 2.415Z\"/></svg>";
-/**
+}/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 const icons = {
     colorPaletteIcon
-};var index$5=/*#__PURE__*/Object.freeze({__proto__:null,icons:icons,clickOutsideHandler:clickOutsideHandler,injectCssTransitionDisabler:injectCssTransitionDisabler,CssTransitionDisablerMixin:CssTransitionDisablerMixin,submitHandler:submitHandler,addKeyboardHandlingForGrid:addKeyboardHandlingForGrid,BodyCollection:BodyCollection,ButtonView:ButtonView,SwitchButtonView:SwitchButtonView,ColorGridView:ColorGridView,ColorTileView:ColorTileView,ColorPickerView:ColorPickerView,ComponentFactory:ComponentFactory,DropdownView:DropdownView,DropdownPanelView:DropdownPanelView,DropdownButtonView:DropdownButtonView,SplitButtonView:SplitButtonView,EditorUI:EditorUI,EditorUIView:EditorUIView,BoxedEditorUIView:BoxedEditorUIView,InlineEditableUIView:InlineEditableUIView,FormHeaderView:FormHeaderView,FocusCycler:FocusCycler,IconView:IconView,InputView:InputView,InputTextView:InputTextView,InputNumberView:InputNumberView,IframeView:IframeView,LabelView:LabelView,LabeledFieldView:LabeledFieldView,ListItemView:ListItemView,ListView:ListView,Notification:Notification,Model:Model,BalloonPanelView:BalloonPanelView,ContextualBalloon:ContextualBalloon,StickyPanelView:StickyPanelView,TooltipManager:TooltipManager,Template:Template,ToolbarView:ToolbarView,ToolbarLineBreakView:ToolbarLineBreakView,ToolbarSeparatorView:ToolbarSeparatorView,normalizeToolbarConfig:normalizeToolbarConfig,BalloonToolbar:BalloonToolbar,BlockToolbar:BlockToolbar,View:View$1,ViewCollection:ViewCollection,getLocalizedColorOptions:getLocalizedColorOptions,normalizeColorOptions:normalizeColorOptions,normalizeSingleColorDefinition:normalizeSingleColorDefinition,createDropdown:createDropdown,addToolbarToDropdown:addToolbarToDropdown,addListToDropdown:addListToDropdown,focusChildOnDropdownOpen:focusChildOnDropdownOpen,createLabeledInputText:createLabeledInputText,createLabeledInputNumber:createLabeledInputNumber,createLabeledDropdown:createLabeledDropdown});/**
+};var index$5=/*#__PURE__*/Object.freeze({__proto__:null,icons:icons,clickOutsideHandler:clickOutsideHandler,injectCssTransitionDisabler:injectCssTransitionDisabler,CssTransitionDisablerMixin:CssTransitionDisablerMixin,submitHandler:submitHandler,addKeyboardHandlingForGrid:addKeyboardHandlingForGrid,BodyCollection:BodyCollection,ButtonView:ButtonView,SwitchButtonView:SwitchButtonView,ColorGridView:ColorGridView,ColorTileView:ColorTileView,ColorPickerView:ColorPickerView,ColorSelectorView:ColorSelectorView,ComponentFactory:ComponentFactory,DropdownView:DropdownView,DropdownPanelView:DropdownPanelView,DropdownButtonView:DropdownButtonView,SplitButtonView:SplitButtonView,EditorUI:EditorUI,EditorUIView:EditorUIView,BoxedEditorUIView:BoxedEditorUIView,InlineEditableUIView:InlineEditableUIView,FormHeaderView:FormHeaderView,FocusCycler:FocusCycler,IconView:IconView,InputView:InputView,InputTextView:InputTextView,InputNumberView:InputNumberView,IframeView:IframeView,LabelView:LabelView,LabeledFieldView:LabeledFieldView,ListItemView:ListItemView,ListView:ListView,Notification:Notification,Model:Model,BalloonPanelView:BalloonPanelView,ContextualBalloon:ContextualBalloon,StickyPanelView:StickyPanelView,TooltipManager:TooltipManager,Template:Template,ToolbarView:ToolbarView,ToolbarLineBreakView:ToolbarLineBreakView,ToolbarSeparatorView:ToolbarSeparatorView,normalizeToolbarConfig:normalizeToolbarConfig,BalloonToolbar:BalloonToolbar,BlockToolbar:BlockToolbar,View:View$1,ViewCollection:ViewCollection,getLocalizedColorOptions:getLocalizedColorOptions,normalizeColorOptions:normalizeColorOptions,normalizeSingleColorDefinition:normalizeSingleColorDefinition,createDropdown:createDropdown,addToolbarToDropdown:addToolbarToDropdown,addListToDropdown:addListToDropdown,focusChildOnDropdownOpen:focusChildOnDropdownOpen,createLabeledInputText:createLabeledInputText,createLabeledInputNumber:createLabeledInputNumber,createLabeledDropdown:createLabeledDropdown});/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -60083,7 +61194,7 @@ class ClassicEditorUI extends EditorUI {
         this.addToolbar(view.toolbar);
     }
     /**
-     * Enable the placeholder text on the editing root, if any was configured.
+     * Enable the placeholder text on the editing root.
      */
     _initPlaceholder() {
         const editor = this.editor;
@@ -60099,14 +61210,14 @@ class ClassicEditorUI extends EditorUI {
             placeholderText = sourceElement.getAttribute('placeholder');
         }
         if (placeholderText) {
-            enablePlaceholder({
-                view: editingView,
-                element: editingRoot,
-                text: placeholderText,
-                isDirectHost: false,
-                keepOnFocus: true
-            });
+            editingRoot.placeholder = placeholderText;
         }
+        enablePlaceholder({
+            view: editingView,
+            element: editingRoot,
+            isDirectHost: false,
+            keepOnFocus: true
+        });
     }
     /**
      * Provides an integration between the sticky toolbar and {@link module:utils/dom/scroll~scrollViewportToShowTarget}.
@@ -60479,6 +61590,14 @@ class EditorWatchdog extends Watchdog {
          * The current editor instance.
          */
         this._editor = null;
+        /**
+         * Specifies whether the editor was initialized using document data (`true`) or HTML elements (`false`).
+         */
+        this._initUsingData = true;
+        /**
+         * The latest record of the editor editable elements. Used to restart the editor.
+         */
+        this._editables = {};
         // this._editorClass = Editor;
         this._throttledSave = throttle(this._save.bind(this), typeof watchdogConfig.saveInterval === 'number' ? watchdogConfig.saveInterval : 5000);
         // Set default creator and destructor functions:
@@ -60547,14 +61666,56 @@ class EditorWatchdog extends Watchdog {
             console.error('An error happened during the editor destroying.', err);
         })
             .then(() => {
-            if (typeof this._elementOrData === 'string') {
-                return this.create(this._data, this._config, this._config.context);
+            // Pre-process some data from the original editor config.
+            // Our goal here is to make sure that the restarted editor will be reinitialized with correct set of roots.
+            // We are not interested in any data set in config or in `.create()` first parameter. It will be replaced anyway.
+            // But we need to set them correctly to make sure that proper roots are created.
+            //
+            // Since a different set of roots will be created, `lazyRoots` and `rootsAttributes` properties must be managed too.
+            // Keys are root names, values are ''. Used when the editor was initialized by setting the first parameter to document data.
+            const existingRoots = {};
+            // Keeps lazy roots. They may be different when compared to initial config if some of the roots were loaded.
+            const lazyRoots = [];
+            // Roots attributes from the old config. Will be referred when setting new attributes.
+            const oldRootsAttributes = this._config.rootsAttributes || {};
+            // New attributes to be set. Is filled only for roots that still exist in the document.
+            const rootsAttributes = {};
+            // Traverse through the roots saved when the editor crashed and set up the discussed values.
+            for (const [rootName, rootData] of Object.entries(this._data.roots)) {
+                if (rootData.isLoaded) {
+                    existingRoots[rootName] = '';
+                    rootsAttributes[rootName] = oldRootsAttributes[rootName] || {};
+                }
+                else {
+                    lazyRoots.push(rootName);
+                }
+            }
+            const updatedConfig = {
+                ...this._config,
+                extraPlugins: this._config.extraPlugins || [],
+                lazyRoots,
+                rootsAttributes,
+                _watchdogInitialData: this._data
+            };
+            // Delete `initialData` as it is not needed. Data will be set by the watchdog based on `_watchdogInitialData`.
+            // First parameter of the editor `.create()` will be used to set up initial roots.
+            delete updatedConfig.initialData;
+            updatedConfig.extraPlugins.push(EditorWatchdogInitPlugin);
+            if (this._initUsingData) {
+                return this.create(existingRoots, updatedConfig, updatedConfig.context);
             }
             else {
-                const updatedConfig = Object.assign({}, this._config, {
-                    initialData: this._data
-                });
-                return this.create(this._elementOrData, updatedConfig, updatedConfig.context);
+                // Set correct editables to make sure that proper roots are created and linked with DOM elements.
+                // No need to set initial data, as it would be discarded anyway.
+                //
+                // If one element was initially set in `elementOrData`, then use that original element to restart the editor.
+                // This is for compatibility purposes with single-root editor types.
+                if (isElement$1(this._elementOrData)) {
+                    return this.create(this._elementOrData, updatedConfig, updatedConfig.context);
+                }
+                else {
+                    return this.create(this._editables, updatedConfig, updatedConfig.context);
+                }
             }
         })
             .then(() => {
@@ -60573,6 +61734,10 @@ class EditorWatchdog extends Watchdog {
             .then(() => {
             super._startErrorHandling();
             this._elementOrData = elementOrData;
+            // Use document data in the first parameter of the editor `.create()` call only if it was used like this originally.
+            // Use document data if a string or object with strings was passed.
+            this._initUsingData = typeof elementOrData == 'string' ||
+                (Object.keys(elementOrData).length > 0 && typeof Object.values(elementOrData)[0] == 'string');
             // Clone configuration because it might be shared within multiple watchdog instances. Otherwise,
             // when an error occurs in one of these editors, the watchdog will restart all of them.
             this._config = this._cloneEditorConfiguration(config) || {};
@@ -60584,6 +61749,9 @@ class EditorWatchdog extends Watchdog {
             editor.model.document.on('change:data', this._throttledSave);
             this._lastDocumentVersion = editor.model.document.version;
             this._data = this._getData();
+            if (!this._initUsingData) {
+                this._editables = this._getEditables();
+            }
             this.state = 'ready';
             this._fire('stateChange');
         });
@@ -60606,8 +61774,7 @@ class EditorWatchdog extends Watchdog {
         return Promise.resolve()
             .then(() => {
             this._stopErrorHandling();
-            // Save data if there is a remaining editor data change.
-            this._throttledSave.flush();
+            this._throttledSave.cancel();
             const editor = this._editor;
             this._editor = null;
             // Remove the `change:data` listener before destroying the editor.
@@ -60625,6 +61792,9 @@ class EditorWatchdog extends Watchdog {
         const version = this._editor.model.document.version;
         try {
             this._data = this._getData();
+            if (!this._initUsingData) {
+                this._editables = this._getEditables();
+            }
             this._lastDocumentVersion = version;
         }
         catch (err) {
@@ -60639,14 +61809,58 @@ class EditorWatchdog extends Watchdog {
         this._excludedProps = props;
     }
     /**
-     * Returns the editor data.
+     * Gets all data that is required to reinitialize editor instance.
      */
     _getData() {
-        const data = {};
-        for (const rootName of this._editor.model.document.getRootNames()) {
-            data[rootName] = this._editor.data.get({ rootName });
+        const editor = this._editor;
+        const roots = editor.model.document.roots.filter(root => root.isAttached() && root.rootName != '$graveyard');
+        const { plugins } = editor;
+        // `as any` to avoid linking from external private repo.
+        const commentsRepository = plugins.has('CommentsRepository') && plugins.get('CommentsRepository');
+        const trackChanges = plugins.has('TrackChanges') && plugins.get('TrackChanges');
+        const data = {
+            roots: {},
+            markers: {},
+            commentThreads: JSON.stringify([]),
+            suggestions: JSON.stringify([])
+        };
+        roots.forEach(root => {
+            data.roots[root.rootName] = {
+                content: JSON.stringify(Array.from(root.getChildren())),
+                attributes: JSON.stringify(Array.from(root.getAttributes())),
+                isLoaded: root._isLoaded
+            };
+        });
+        for (const marker of editor.model.markers) {
+            if (!marker._affectsData) {
+                continue;
+            }
+            data.markers[marker.name] = {
+                rangeJSON: marker.getRange().toJSON(),
+                usingOperation: marker._managedUsingOperations,
+                affectsData: marker._affectsData
+            };
+        }
+        if (commentsRepository) {
+            data.commentThreads = JSON.stringify(commentsRepository.getCommentThreads({ toJSON: true, skipNotAttached: true }));
+        }
+        if (trackChanges) {
+            data.suggestions = JSON.stringify(trackChanges.getSuggestions({ toJSON: true, skipNotAttached: true }));
         }
         return data;
+    }
+    /**
+     * For each attached model root, returns its HTML editable element (if available).
+     */
+    _getEditables() {
+        const editables = {};
+        for (const rootName of this.editor.model.document.getRootNames()) {
+            const editable = this.editor.ui.getEditableElement(rootName);
+            if (editable) {
+                editables[rootName] = editable;
+            }
+        }
+        return editables;
     }
     /**
      * Traverses the error context and the current editor to find out whether these structures are connected
@@ -60668,6 +61882,109 @@ class EditorWatchdog extends Watchdog {
             }
             if (key === 'context') {
                 return value;
+            }
+        });
+    }
+}
+/**
+ * Internal plugin that is used to stop the default editor initialization and restoring the editor state
+ * based on the `editor.config._watchdogInitialData` data.
+ */
+class EditorWatchdogInitPlugin {
+    constructor(editor) {
+        this.editor = editor;
+        this._data = editor.config.get('_watchdogInitialData');
+    }
+    /**
+     * @inheritDoc
+     */
+    init() {
+        // Stops the default editor initialization and use the saved data to restore the editor state.
+        // Some of data could not be initialize as a config properties. It is important to keep the data
+        // in the same form as it was before the restarting.
+        this.editor.data.on('init', evt => {
+            evt.stop();
+            this.editor.model.enqueueChange({ isUndoable: false }, writer => {
+                this._restoreCollaborationData();
+                this._restoreEditorData(writer);
+            });
+            this.editor.data.fire('ready');
+            // Keep priority `'high' - 1` to be sure that RTC initialization will be first.
+        }, { priority: 1000 - 1 });
+    }
+    /**
+     * Creates a model node (element or text) based on provided JSON.
+     */
+    _createNode(writer, jsonNode) {
+        if ('name' in jsonNode) {
+            // If child has name property, it is an Element.
+            const element = writer.createElement(jsonNode.name, jsonNode.attributes);
+            if (jsonNode.children) {
+                for (const child of jsonNode.children) {
+                    element._appendChild(this._createNode(writer, child));
+                }
+            }
+            return element;
+        }
+        else {
+            // Otherwise, it is a Text node.
+            return writer.createText(jsonNode.data, jsonNode.attributes);
+        }
+    }
+    /**
+     * Restores the editor by setting the document data, roots attributes and markers.
+     */
+    _restoreEditorData(writer) {
+        const editor = this.editor;
+        Object.entries(this._data.roots).forEach(([rootName, { content, attributes }]) => {
+            const parsedNodes = JSON.parse(content);
+            const parsedAttributes = JSON.parse(attributes);
+            const rootElement = editor.model.document.getRoot(rootName);
+            for (const [key, value] of parsedAttributes) {
+                writer.setAttribute(key, value, rootElement);
+            }
+            for (const child of parsedNodes) {
+                const node = this._createNode(writer, child);
+                writer.insert(node, rootElement, 'end');
+            }
+        });
+        Object.entries(this._data.markers).forEach(([markerName, markerOptions]) => {
+            const { document } = editor.model;
+            const { rangeJSON: { start, end }, ...options } = markerOptions;
+            const root = document.getRoot(start.root);
+            const startPosition = writer.createPositionFromPath(root, start.path, start.stickiness);
+            const endPosition = writer.createPositionFromPath(root, end.path, end.stickiness);
+            const range = writer.createRange(startPosition, endPosition);
+            writer.addMarker(markerName, {
+                range,
+                ...options
+            });
+        });
+    }
+    /**
+     * Restores the editor collaboration data - comment threads and suggestions.
+     */
+    _restoreCollaborationData() {
+        // `as any` to avoid linking from external private repo.
+        const parsedCommentThreads = JSON.parse(this._data.commentThreads);
+        const parsedSuggestions = JSON.parse(this._data.suggestions);
+        parsedCommentThreads.forEach(commentThreadData => {
+            const channelId = this.editor.config.get('collaboration.channelId');
+            const commentsRepository = this.editor.plugins.get('CommentsRepository');
+            if (commentsRepository.hasCommentThread(commentThreadData.threadId)) {
+                const commentThread = commentsRepository.getCommentThread(commentThreadData.threadId);
+                commentThread.remove();
+            }
+            commentsRepository.addCommentThread({ channelId, ...commentThreadData });
+        });
+        parsedSuggestions.forEach(suggestionData => {
+            const trackChangesEditing = this.editor.plugins.get('TrackChangesEditing');
+            if (trackChangesEditing.hasSuggestion(suggestionData.id)) {
+                const suggestion = trackChangesEditing.getSuggestion(suggestionData.id);
+                suggestion.attributes = suggestionData.attributes;
+            }
+            else {
+                trackChangesEditing.addSuggestionData(suggestionData);
             }
         });
     }
@@ -61876,6 +63193,7 @@ class InsertTextObserver extends Observer {
      */
     constructor(view) {
         super(view);
+        this.focusObserver = view.getObserver(FocusObserver);
         // On Android composition events should immediately be applied to the model. Rendering is not disabled.
         // On non-Android the model is updated only on composition end.
         // On Android we can't rely on composition start/end to update model.
@@ -61891,6 +63209,9 @@ class InsertTextObserver extends Observer {
             if (!TYPING_INPUT_TYPES.includes(inputType)) {
                 return;
             }
+            // Mark the latest focus change as complete (we are typing in editable after the focus
+            // so the selection is in the focused element).
+            this.focusObserver.flush();
             const eventInfo = new EventInfo(viewDocument, 'insertText');
             viewDocument.fire(eventInfo, new DomEventData(view, domEvent, {
                 text,
@@ -62026,6 +63347,7 @@ class Input extends Plugin {
                 insertTextCommandData.resultRange = editor.editing.mapper.toModelRange(viewResultRange);
             }
             editor.execute('insertText', insertTextCommandData);
+            view.scrollToTheSelection();
         });
         if (env.isAndroid) {
             // On Android with English keyboard, the composition starts just by putting caret
@@ -63152,7 +64474,15 @@ function setSelectionAttributesFromTheNodeBefore(model, attributes, position) {
     const nodeBefore = position.nodeBefore;
     model.change(writer => {
         if (nodeBefore) {
-            writer.setSelectionAttribute(nodeBefore.getAttributes());
+            const attributes = [];
+            const isInlineObject = model.schema.isObject(nodeBefore) && model.schema.isInline(nodeBefore);
+            for (const [key, value] of nodeBefore.getAttributes()) {
+                if (model.schema.checkAttribute('$text', key) &&
+                    (!isInlineObject || model.schema.getAttributeProperties(key).copyFromObject !== false)) {
+                    attributes.push([key, value]);
+                }
+            }
+            writer.setSelectionAttribute(attributes);
         }
         else {
             writer.removeSelectionAttribute(attributes);
@@ -68909,7 +70239,7 @@ class DragDropBlockToolbar extends Plugin {
  * selection so it contains the entire content of the editable root of the editor the selection is
  * {@link module:engine/model/selection~Selection#anchor anchored} in.
  *
- * If the selection was anchored in a {@glink framework/tutorials/implementing-a-block-widget nested editable}
+ * If the selection was anchored in a {@glink tutorials/widgets/implementing-a-block-widget nested editable}
  * (e.g. a caption of an image), the new selection will contain its entire content. Successive executions of this command
  * will expand the selection to encompass more and more content up to the entire editable root of the editor.
  */
@@ -69273,8 +70603,11 @@ class UndoCommand extends BaseCommand {
             this._undo(item.batch, undoingBatch);
             const operations = this.editor.model.document.history.getOperations(item.batch.baseVersion);
             this._restoreSelection(item.selection.ranges, item.selection.isBackward, operations);
-            this.fire('revert', item.batch, undoingBatch);
         });
+        // Firing `revert` event after the change block to make sure that it includes all changes from post-fixers
+        // and make sure that the selection is "stabilized" (the selection range is saved after undo is executed and then
+        // restored on redo, so it is important that the selection range is saved after post-fixers are done).
+        this.fire('revert', item.batch, undoingBatch);
         this.refresh();
     }
 }/**
@@ -70324,9 +71657,12 @@ class ReplaceAllCommand extends ReplaceCommandBase {
             textToReplace : model.document.getRootNames()
             .reduce(((currentResults, rootName) => findAndReplaceUtils.updateFindResultFromRange(model.createRangeIn(model.document.getRoot(rootName)), model, findAndReplaceUtils.findByTextCallback(textToReplace, this._state), currentResults)), null);
         if (results.length) {
-            [...results].forEach(searchResult => {
-                // Just reuse logic from the replace command to replace a single match.
-                this._replace(newText, searchResult);
+            // Wrapped in single change will batch it into one transaction.
+            model.change(() => {
+                [...results].forEach(searchResult => {
+                    // Just reuse logic from the replace command to replace a single match.
+                    this._replace(newText, searchResult);
+                });
             });
         }
     }
@@ -70955,22 +72291,46 @@ class InsertParagraphCommand extends Command {
             return;
         }
         model.change(writer => {
+            position = this._findPositionToInsertParagraph(position, writer);
+            if (!position) {
+                return;
+            }
             const paragraph = writer.createElement('paragraph');
             if (attributes) {
                 model.schema.setAllowedAttributes(paragraph, attributes, writer);
             }
-            if (!model.schema.checkChild(position.parent, paragraph)) {
-                const allowedParent = model.schema.findAllowedParent(position, paragraph);
-                // It could be there's no ancestor limit that would allow paragraph.
-                // In theory, "paragraph" could be disallowed even in the "$root".
-                if (!allowedParent) {
-                    return;
-                }
-                position = writer.split(position, allowedParent).position;
-            }
             model.insertContent(paragraph, position);
             writer.setSelection(paragraph, 'in');
         });
+    }
+    /**
+     * Returns the best position to insert a new paragraph.
+     */
+    _findPositionToInsertParagraph(position, writer) {
+        const model = this.editor.model;
+        if (model.schema.checkChild(position, 'paragraph')) {
+            return position;
+        }
+        const allowedParent = model.schema.findAllowedParent(position, 'paragraph');
+        // It could be there's no ancestor limit that would allow paragraph.
+        // In theory, "paragraph" could be disallowed even in the "$root".
+        if (!allowedParent) {
+            return null;
+        }
+        const positionParent = position.parent;
+        const isTextAllowed = model.schema.checkChild(positionParent, '$text');
+        // At empty $block or at the end of $block.
+        // <paragraph>[]</paragraph> ---> <paragraph></paragraph><paragraph>[]</paragraph>
+        // <paragraph>foo[]</paragraph> ---> <paragraph>foo</paragraph><paragraph>[]</paragraph>
+        if (positionParent.isEmpty || isTextAllowed && position.isAtEnd) {
+            return model.createPositionAfter(positionParent);
+        }
+        // At the start of $block with text.
+        // <paragraph>[]foo</paragraph> ---> <paragraph>[]</paragraph><paragraph>foo</paragraph>
+        if (!positionParent.isEmpty && isTextAllowed && position.isAtStart) {
+            return model.createPositionBefore(positionParent);
+        }
+        return writer.split(position, allowedParent).position;
     }
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
@@ -77241,7 +78601,7 @@ function removeBoldWrapper(documentFragment, writer) {
  * @param documentFragment The view structure to be transformed.
  */
 function transformBlockBrsToParagraphs(documentFragment, writer) {
-    const viewDocument = new Document$1(writer.document.stylesProcessor);
+    const viewDocument = new Document$2(writer.document.stylesProcessor);
     const domConverter = new DomConverter(viewDocument, { renderingMode: 'data' });
     const blockElements = domConverter.blockElements;
     const inlineObjectElements = domConverter.inlineObjectElements;
@@ -77431,7 +78791,7 @@ class GoogleSheetsNormalizer {
  */
 /**
  * Replaces last space preceding elements closing tag with `&nbsp;`. Such operation prevents spaces from being removed
- * during further DOM/View processing (see especially {@link module:engine/view/domconverter~DomConverter#_processDataFromDomText}).
+ * during further DOM/View processing (see especially {@link module:engine/view/domconverter~DomConverter#_processDomInlineNodes}).
  * This method also takes into account Word specific `<o:p></o:p>` empty tags.
  * Additionally multiline sequences of spaces and new lines between tags are removed (see #39 and #40).
  *
@@ -77444,6 +78804,7 @@ function normalizeSpacing(htmlString) {
         // Remove all \r\n from "spacerun spans" so the last replace line doesn't strip all whitespaces.
         .replace(/(<span\s+style=['"]mso-spacerun:yes['"]>[^\S\r\n]*?)[\r\n]+([^\S\r\n]*<\/span>)/g, '$1$2')
         .replace(/<span\s+style=['"]mso-spacerun:yes['"]><\/span>/g, '')
+        .replace(/(<span\s+style=['"]letter-spacing:[^'"]+?['"]>)[\r\n]+(<\/span>)/g, '$1 $2')
         .replace(/ <\//g, '\u00A0</')
         .replace(/ <o:p><\/o:p>/g, '\u00A0<o:p></o:p>')
         // Remove <o:p> block filler from empty paragraph. Safari uses \u00A0 instead of &nbsp;.
@@ -77454,7 +78815,7 @@ function normalizeSpacing(htmlString) {
 /**
  * Normalizes spacing in special Word `spacerun spans` (`<span style='mso-spacerun:yes'>\s+</span>`) by replacing
  * all spaces with `&nbsp; ` pairs. This prevents spaces from being removed during further DOM/View processing
- * (see especially {@link module:engine/view/domconverter~DomConverter#_processDataFromDomText}).
+ * (see especially {@link module:engine/view/domconverter~DomConverter#_processDomInlineNodes}).
  *
  * @param htmlDocument Native `Document` object in which spacing should be normalized.
  */
@@ -77516,7 +78877,7 @@ function parseHtml(htmlString, stylesProcessor) {
  * @param htmlDocument Native `Document` object to be transformed.
  */
 function documentToView(htmlDocument, stylesProcessor) {
-    const viewDocument = new Document$1(stylesProcessor);
+    const viewDocument = new Document$2(stylesProcessor);
     const domConverter = new DomConverter(viewDocument, { renderingMode: 'data' });
     const fragment = htmlDocument.createDocumentFragment();
     const nodes = htmlDocument.body.childNodes;
@@ -78344,6 +79705,10 @@ class TableWalker {
      * @param options.includeAllSlots Also return values for spanned cells. Default value is "false".
      */
     constructor(table, options = {}) {
+        /**
+         * Indicates whether the iterator jumped to (or close to) the start row, ignoring rows that don't need to be traversed.
+         */
+        this._jumpedToStartRow = false;
         this._table = table;
         this._startRow = options.row !== undefined ? options.row : options.startRow || 0;
         this._endRow = options.row !== undefined ? options.row : options.endRow;
@@ -78370,6 +79735,9 @@ class TableWalker {
      * @returns The next table walker's value.
      */
     next() {
+        if (this._canJumpToStartRow()) {
+            this._jumpToNonSpannedRowClosestToStartRow();
+        }
         const row = this._table.getChild(this._rowIndex);
         // Iterator is done when there's no row (table ended) or the row is after `endRow` limit.
         if (!row || this._isOverEndRow()) {
@@ -78518,6 +79886,59 @@ class TableWalker {
         }
         const rowSpans = this._spannedCells.get(row);
         rowSpans.set(column, data);
+    }
+    /**
+     * Checks if part of the table can be skipped.
+     */
+    _canJumpToStartRow() {
+        return !!this._startRow &&
+            this._startRow > 0 &&
+            !this._jumpedToStartRow;
+    }
+    /**
+     * Sets the current row to `this._startRow` or the first row before it that has the number of cells
+     * equal to the number of columns in the table.
+     *
+     * Example:
+     * 	+----+----+----+
+     *  | 00 | 01 | 02 |
+     *  |----+----+----+
+     *  | 10      | 12 |
+     *  |         +----+
+     *  |         | 22 |
+     *  |         +----+
+     *  |         | 32 | <--- Start row
+     *  +----+----+----+
+     *  | 40 | 41 | 42 |
+     *  +----+----+----+
+     *
+     * If the 4th row is a `this._startRow`, this method will:
+     * 1.) Count the number of columns this table has based on the first row (3 columns in this case).
+     * 2.) Check if the 4th row contains 3 cells. It doesn't, so go to the row before it.
+     * 3.) Check if the 3rd row contains 3 cells. It doesn't, so go to the row before it.
+     * 4.) Check if the 2nd row contains 3 cells. It does, so set the current row to that row.
+     *
+     * Setting the current row this way is necessary to let the `next()`  method loop over the cells
+     * spanning multiple rows or columns and update the `this._spannedCells` property.
+     */
+    _jumpToNonSpannedRowClosestToStartRow() {
+        const firstRowLength = this._getRowLength(0);
+        for (let i = this._startRow; !this._jumpedToStartRow; i--) {
+            if (firstRowLength === this._getRowLength(i)) {
+                this._row = i;
+                this._rowIndex = i;
+                this._jumpedToStartRow = true;
+            }
+        }
+    }
+    /**
+     * Returns a number of columns in a row taking `colspan` into consideration.
+     */
+    _getRowLength(rowIndex) {
+        const row = this._table.getChild(rowIndex);
+        return [...row.getChildren()].reduce((cols, row) => {
+            return cols + parseInt(row.getAttribute('colspan') || '1');
+        }, 0);
     }
 }
 /**
@@ -79904,6 +81325,39 @@ class SetHeaderColumnCommand extends Command {
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 /**
+ * Returns a 'tableColumnGroup' element from the 'table'.
+ *
+ * @internal
+ * @param element A 'table' or 'tableColumnGroup' element.
+ * @returns A 'tableColumnGroup' element.
+ */
+function getColumnGroupElement(element) {
+    if (element.is('element', 'tableColumnGroup')) {
+        return element;
+    }
+    const children = element.getChildren();
+    return Array
+        .from(children)
+        .find(element => element.is('element', 'tableColumnGroup'));
+}
+/**
+ * Returns an array of 'tableColumn' elements. It may be empty if there's no `tableColumnGroup` element.
+ *
+ * @internal
+ * @param element A 'table' or 'tableColumnGroup' element.
+ * @returns An array of 'tableColumn' elements.
+ */
+function getTableColumnElements(element) {
+    const columnGroupElement = getColumnGroupElement(element);
+    if (!columnGroupElement) {
+        return [];
+    }
+    return Array.from(columnGroupElement.getChildren());
+}/**
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+/**
  * The table utilities plugin.
  */
 class TableUtils extends Plugin {
@@ -80271,6 +81725,7 @@ class TableUtils extends Plugin {
         const last = options.at + columnsToRemove - 1;
         model.change(writer => {
             adjustHeadingColumns(table, { first, last }, writer);
+            const tableColumns = getTableColumnElements(table);
             for (let removedColumnIndex = last; removedColumnIndex >= first; removedColumnIndex--) {
                 for (const { cell, column, cellWidth } of [...new TableWalker(table)]) {
                     // If colspaned cell overlaps removed column decrease its span.
@@ -80281,6 +81736,18 @@ class TableUtils extends Plugin {
                         // The cell in removed column has colspan of 1.
                         writer.remove(cell);
                     }
+                }
+                // If table has `tableColumn` elements, we need to update it manually.
+                // See https://github.com/ckeditor/ckeditor5/issues/14521#issuecomment-1662102889 for details.
+                if (tableColumns[removedColumnIndex]) {
+                    // If the removed column is the first one then we need to add its width to the next column.
+                    // Otherwise we add it to the previous column.
+                    const adjacentColumn = removedColumnIndex === 0 ? tableColumns[1] : tableColumns[removedColumnIndex - 1];
+                    const removedColumnWidth = parseFloat(tableColumns[removedColumnIndex].getAttribute('columnWidth'));
+                    const adjacentColumnWidth = parseFloat(adjacentColumn.getAttribute('columnWidth'));
+                    writer.remove(tableColumns[removedColumnIndex]);
+                    // Add the removed column width (in %) to the adjacent column.
+                    writer.setAttribute('columnWidth', removedColumnWidth + adjacentColumnWidth + '%', adjacentColumn);
                 }
             }
             // Remove empty rows that could appear after removing columns.
@@ -81685,7 +83152,7 @@ function shouldRefresh(child, mapper) {
         return false;
     }
     return isSingleParagraphWithoutAttributes(child) !== viewElement.is('element', 'span');
-}var css_248z$n = ":root{--ck-color-table-focused-cell-background:rgba(158,201,250,.3)}.ck-widget.table td.ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck-widget.table td.ck-editor__nested-editable:focus,.ck-widget.table th.ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck-widget.table th.ck-editor__nested-editable:focus{background:var(--ck-color-table-focused-cell-background);border-style:none;outline:1px solid var(--ck-color-focus-border);outline-offset:-1px}";
+}var css_248z$n = ":root{--ck-color-selector-focused-cell-background:rgba(158,201,250,.3)}.ck-widget.table td.ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck-widget.table td.ck-editor__nested-editable:focus,.ck-widget.table th.ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck-widget.table th.ck-editor__nested-editable:focus{background:var(--ck-color-selector-focused-cell-background);border-style:none;outline:1px solid var(--ck-color-focus-border);outline-offset:-1px}";
 styleInject(css_248z$n);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -83720,10 +85187,9 @@ class ColorInputView extends View$1 {
         const locale = this.locale;
         const t = locale.t;
         const bind = this.bindTemplate;
-        const colorGrid = this._createColorGrid(locale);
+        const colorSelector = this._createColorSelector(locale);
         const dropdown = createDropdown(locale);
         const colorPreview = new View$1();
-        const removeColorButton = this._createRemoveColorButton();
         colorPreview.setTemplate({
             tag: 'span',
             attributes: {
@@ -83755,13 +85221,16 @@ class ColorInputView extends View$1 {
         dropdown.buttonView.label = t('Color picker');
         dropdown.buttonView.tooltip = true;
         dropdown.panelPosition = locale.uiLanguageDirection === 'rtl' ? 'se' : 'sw';
-        dropdown.panelView.children.add(removeColorButton);
-        dropdown.panelView.children.add(colorGrid);
+        dropdown.panelView.children.add(colorSelector);
         dropdown.bind('isEnabled').to(this, 'isReadOnly', value => !value);
-        this._focusables.add(removeColorButton);
-        this._focusables.add(colorGrid);
-        this.focusTracker.add(removeColorButton.element);
-        this.focusTracker.add(colorGrid.element);
+        this._focusables.add(colorSelector);
+        this.focusTracker.add(colorSelector.element);
+        dropdown.on('change:isOpen', (evt, name, isVisible) => {
+            if (isVisible) {
+                colorSelector.updateSelectedColors();
+                colorSelector.showColorGridsFragment();
+            }
+        });
         return dropdown;
     }
     /**
@@ -83795,40 +85264,56 @@ class ColorInputView extends View$1 {
         return inputView;
     }
     /**
-     * Creates and configures the button that clears the color.
+     * Creates and configures the panel with "color grid" and "color picker" inside the {@link #dropdownView}.
      */
-    _createRemoveColorButton() {
-        const locale = this.locale;
+    _createColorSelector(locale) {
         const t = locale.t;
-        const removeColorButton = new ButtonView(locale);
         const defaultColor = this.options.defaultColorValue || '';
         const removeColorButtonLabel = defaultColor ? t('Restore default') : t('Remove color');
-        removeColorButton.class = 'ck-input-color__remove-color';
-        removeColorButton.withText = true;
-        removeColorButton.icon = icons$1.eraser;
-        removeColorButton.label = removeColorButtonLabel;
-        removeColorButton.on('execute', () => {
-            this.value = defaultColor;
-            this.dropdownView.isOpen = false;
+        const colorSelector = new ColorSelectorView(locale, {
+            colors: this.options.colorDefinitions,
+            columns: this.options.columns,
+            removeButtonLabel: removeColorButtonLabel,
+            colorPickerLabel: t('Color picker'),
+            colorPickerViewConfig: this.options.colorPickerConfig === false ? false : {
+                ...this.options.colorPickerConfig,
+                hideInput: true
+            }
+        });
+        colorSelector.appendUI();
+        colorSelector.on('execute', (evt, data) => {
+            if (data.source === 'colorPickerSaveButton') {
+                this.dropdownView.isOpen = false;
+                return;
+            }
+            this.value = data.value || defaultColor;
+            // Trigger the listener that actually applies the set value.
             this.fire('input');
+            if (data.source !== 'colorPicker') {
+                this.dropdownView.isOpen = false;
+            }
         });
-        return removeColorButton;
-    }
-    /**
-     * Creates and configures the color grid inside the {@link #dropdownView}.
-     */
-    _createColorGrid(locale) {
-        const colorGrid = new ColorGridView(locale, {
-            colorDefinitions: this.options.colorDefinitions,
-            columns: this.options.columns
-        });
-        colorGrid.on('execute', (evtData, data) => {
-            this.value = data.value;
-            this.dropdownView.isOpen = false;
+        /**
+         * Color is saved before changes in color picker. In case "cancel button" is pressed
+         * this color will be applied.
+         */
+        let backupColor = this.value;
+        colorSelector.on('colorPicker:cancel', () => {
+            /**
+             * Revert color to previous value before changes in color picker.
+             */
+            this.value = backupColor;
             this.fire('input');
+            this.dropdownView.isOpen = false;
         });
-        colorGrid.bind('selectedColor').to(this, 'value');
-        return colorGrid;
+        colorSelector.colorGridsFragmentView.colorPickerButtonView.on('execute', () => {
+            /**
+             * Save color value before changes in color picker.
+             */
+            backupColor = this.value;
+        });
+        colorSelector.bind('selectedColor').to(this, 'value');
+        return colorSelector;
     }
     /**
      * Sets {@link #inputView}'s value property to the color value or color label,
@@ -83921,7 +85406,7 @@ function getLocalizedLengthErrorText(t) {
  * See {@link module:engine/view/styles/utils~isColor}.
  */
 function colorFieldValidator(value) {
-    value = value.trim();
+    value = value.trim().toLowerCase();
     return isEmpty(value) || isColor(value);
 }
 /**
@@ -84184,13 +85669,15 @@ const defaultColors = [
  * @param options.columns The configuration of the number of columns the color palette consists of in the input's dropdown.
  * @param options.defaultColorValue If specified, the color input view will replace the "Remove color" button with
  * the "Restore default" button. Instead of clearing the input field, the default color value will be set.
+ * @param options.colorPickerConfig The configuration of the color picker. You could disable it or define your output format.
  */
 function getLabeledColorInputCreator(options) {
     return (labeledFieldView, viewUid, statusUid) => {
         const colorInputView = new ColorInputView(labeledFieldView.locale, {
             colorDefinitions: colorConfigToColorGridDefinitions(options.colorConfig),
             columns: options.columns,
-            defaultColorValue: options.defaultColorValue
+            defaultColorValue: options.defaultColorValue,
+            colorPickerConfig: options.colorPickerConfig
         });
         colorInputView.inputView.set({
             id: viewUid,
@@ -84497,7 +85984,8 @@ class TableCellPropertiesView extends View$1 {
         const colorInputCreator = getLabeledColorInputCreator({
             colorConfig: this.options.borderColors,
             columns: 5,
-            defaultColorValue: defaultBorder.color
+            defaultColorValue: defaultBorder.color,
+            colorPickerConfig: this.options.colorPickerConfig
         });
         const locale = this.locale;
         const t = this.t;
@@ -84588,7 +86076,8 @@ class TableCellPropertiesView extends View$1 {
         const colorInputCreator = getLabeledColorInputCreator({
             colorConfig: this.options.backgroundColors,
             columns: 5,
-            defaultColorValue: this.options.defaultTableCellProperties.backgroundColor
+            defaultColorValue: this.options.defaultTableCellProperties.backgroundColor,
+            colorPickerConfig: this.options.colorPickerConfig
         });
         const backgroundInput = new LabeledFieldView(locale, colorInputCreator);
         backgroundInput.set({
@@ -85085,10 +86574,12 @@ class TableCellPropertiesUI extends Plugin {
         const localizedBorderColors = getLocalizedColorOptions(editor.locale, borderColorsConfig);
         const backgroundColorsConfig = normalizeColorOptions(config.backgroundColors);
         const localizedBackgroundColors = getLocalizedColorOptions(editor.locale, backgroundColorsConfig);
+        const hasColorPicker = config.colorPicker !== false;
         const view = new TableCellPropertiesView(editor.locale, {
             borderColors: localizedBorderColors,
             backgroundColors: localizedBackgroundColors,
-            defaultTableCellProperties: this._defaultTableCellProperties
+            defaultTableCellProperties: this._defaultTableCellProperties,
+            colorPickerConfig: hasColorPicker ? (config.colorPicker || {}) : false
         });
         const t = editor.t;
         // Render the view so its #element is available for the clickOutsideHandler.
@@ -86825,7 +88316,8 @@ class TablePropertiesView extends View$1 {
         const colorInputCreator = getLabeledColorInputCreator({
             colorConfig: this.options.borderColors,
             columns: 5,
-            defaultColorValue: defaultBorder.color
+            defaultColorValue: defaultBorder.color,
+            colorPickerConfig: this.options.colorPickerConfig
         });
         const locale = this.locale;
         const t = this.t;
@@ -86916,7 +88408,8 @@ class TablePropertiesView extends View$1 {
         const backgroundInputCreator = getLabeledColorInputCreator({
             colorConfig: this.options.backgroundColors,
             columns: 5,
-            defaultColorValue: this.options.defaultTableProperties.backgroundColor
+            defaultColorValue: this.options.defaultTableProperties.backgroundColor,
+            colorPickerConfig: this.options.colorPickerConfig
         });
         const backgroundInput = new LabeledFieldView(locale, backgroundInputCreator);
         backgroundInput.set({
@@ -87169,10 +88662,12 @@ class TablePropertiesUI extends Plugin {
         const localizedBorderColors = getLocalizedColorOptions(editor.locale, borderColorsConfig);
         const backgroundColorsConfig = normalizeColorOptions(config.backgroundColors);
         const localizedBackgroundColors = getLocalizedColorOptions(editor.locale, backgroundColorsConfig);
+        const hasColorPicker = config.colorPicker !== false;
         const view = new TablePropertiesView(editor.locale, {
             borderColors: localizedBorderColors,
             backgroundColors: localizedBackgroundColors,
-            defaultTableProperties: this._defaultTableProperties
+            defaultTableProperties: this._defaultTableProperties,
+            colorPickerConfig: hasColorPicker ? (config.colorPicker || {}) : false
         });
         const t = editor.t;
         // Render the view so its #element is available for the clickOutsideHandler.
@@ -87407,8 +88902,8 @@ class TableProperties extends Plugin {
     static get requires() {
         return [TablePropertiesEditing, TablePropertiesUI];
     }
-}var css_248z$d = ":root{--ck-color-table-caption-background:#f7f7f7;--ck-color-table-caption-text:#333;--ck-color-table-caption-highlighted-background:#fd0}.ck-content .table>figcaption{background-color:var(--ck-color-table-caption-background);caption-side:top;color:var(--ck-color-table-caption-text);display:table-caption;font-size:.75em;outline-offset:-1px;padding:.6em;text-align:center;word-break:break-word}.ck.ck-editor__editable .table>figcaption.table__caption_highlighted{animation:ck-table-caption-highlight .6s ease-out}.ck.ck-editor__editable .table>figcaption.ck-placeholder:before{overflow:hidden;padding-left:inherit;padding-right:inherit;text-overflow:ellipsis;white-space:nowrap}@keyframes ck-table-caption-highlight{0%{background-color:var(--ck-color-table-caption-highlighted-background)}to{background-color:var(--ck-color-table-caption-background)}}";
-styleInject(css_248z$d);var css_248z$c = ":root{--ck-color-table-column-resizer-hover:var(--ck-color-base-active);--ck-table-column-resizer-width:7px;--ck-table-column-resizer-position-offset:calc(var(--ck-table-column-resizer-width)*-0.5 - 0.5px)}.ck-content .table .ck-table-resized{table-layout:fixed}.ck-content .table table{overflow:hidden}.ck-content .table td,.ck-content .table th{overflow-wrap:break-word;position:relative}.ck.ck-editor__editable .table .ck-table-column-resizer{bottom:-999999px;cursor:col-resize;position:absolute;right:var(--ck-table-column-resizer-position-offset);top:-999999px;user-select:none;width:var(--ck-table-column-resizer-width);z-index:var(--ck-z-default)}.ck.ck-editor__editable .table[draggable] .ck-table-column-resizer,.ck.ck-editor__editable.ck-column-resize_disabled .table .ck-table-column-resizer{display:none}.ck.ck-editor__editable .table .ck-table-column-resizer:hover,.ck.ck-editor__editable .table .ck-table-column-resizer__active{background-color:var(--ck-color-table-column-resizer-hover);opacity:.25}.ck.ck-editor__editable[dir=rtl] .table .ck-table-column-resizer{left:var(--ck-table-column-resizer-position-offset);right:unset}";
+}var css_248z$d = ":root{--ck-color-selector-caption-background:#f7f7f7;--ck-color-selector-caption-text:#333;--ck-color-selector-caption-highlighted-background:#fd0}.ck-content .table>figcaption{background-color:var(--ck-color-selector-caption-background);caption-side:top;color:var(--ck-color-selector-caption-text);display:table-caption;font-size:.75em;outline-offset:-1px;padding:.6em;text-align:center;word-break:break-word}.ck.ck-editor__editable .table>figcaption.table__caption_highlighted{animation:ck-table-caption-highlight .6s ease-out}.ck.ck-editor__editable .table>figcaption.ck-placeholder:before{overflow:hidden;padding-left:inherit;padding-right:inherit;text-overflow:ellipsis;white-space:nowrap}@keyframes ck-table-caption-highlight{0%{background-color:var(--ck-color-selector-caption-highlighted-background)}to{background-color:var(--ck-color-selector-caption-background)}}";
+styleInject(css_248z$d);var css_248z$c = ":root{--ck-color-selector-column-resizer-hover:var(--ck-color-base-active);--ck-table-column-resizer-width:7px;--ck-table-column-resizer-position-offset:calc(var(--ck-table-column-resizer-width)*-0.5 - 0.5px)}.ck-content .table .ck-table-resized{table-layout:fixed}.ck-content .table table{overflow:hidden}.ck-content .table td,.ck-content .table th{overflow-wrap:break-word;position:relative}.ck.ck-editor__editable .table .ck-table-column-resizer{bottom:0;cursor:col-resize;position:absolute;right:var(--ck-table-column-resizer-position-offset);top:0;user-select:none;width:var(--ck-table-column-resizer-width);z-index:var(--ck-z-default)}.ck.ck-editor__editable .table[draggable] .ck-table-column-resizer,.ck.ck-editor__editable.ck-column-resize_disabled .table .ck-table-column-resizer{display:none}.ck.ck-editor__editable .table .ck-table-column-resizer:hover,.ck.ck-editor__editable .table .ck-table-column-resizer__active{background-color:var(--ck-color-selector-column-resizer-hover);bottom:-999999px;opacity:.25;top:-999999px}.ck.ck-editor__editable[dir=rtl] .table .ck-table-column-resizer{left:var(--ck-table-column-resizer-position-offset);right:unset}";
 styleInject(css_248z$c);/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -87434,12 +88929,12 @@ function formatHtml(input) {
     // a full list of HTML block-level elements.
     // A void element is an element that cannot have any child - https://html.spec.whatwg.org/multipage/syntax.html#void-elements.
     // Note that <pre> element is not listed on this list to avoid breaking whitespace formatting.
+    // Note that <br> element is not listed and handled separately so no additional white spaces are injected.
     const elementsToFormat = [
         { name: 'address', isVoid: false },
         { name: 'article', isVoid: false },
         { name: 'aside', isVoid: false },
         { name: 'blockquote', isVoid: false },
-        { name: 'br', isVoid: true },
         { name: 'details', isVoid: false },
         { name: 'dialog', isVoid: false },
         { name: 'dd', isVoid: false },
@@ -87482,6 +88977,8 @@ function formatHtml(input) {
         // Add new line before and after `<tag>` and `</tag>`.
         // It may separate individual elements with two new lines, but this will be fixed below.
         .replace(new RegExp(`</?(${elementNamesToFormat})( .*?)?>`, 'g'), '\n$&\n')
+        // Keep `<br>`s at the end of line to avoid adding additional whitespaces before `<br>`.
+        .replace(/<br[^>]*>/g, '$&\n')
         // Divide input string into lines, which start with either an opening tag, a closing tag, or just a text.
         .split('\n');
     let indentCount = 0;
@@ -87672,6 +89169,7 @@ class SourceEditing extends Plugin {
             // This prevents empty undo steps after switching to the normal editor.
             if (oldData !== newData) {
                 data[rootName] = newData;
+                this._dataFromRoots.set(rootName, newData);
             }
         }
         if (Object.keys(data).length) {
@@ -88894,7 +90392,7 @@ class StyleUtils extends Plugin {
     /**
      * This is where the styles feature configures the GHS feature. This method translates normalized
      * {@link module:style/styleconfig~StyleDefinition style definitions} to
-     * {@link module:engine/view/matcher~MatcherPattern matcher patterns} and feeds them to the GHS
+     * {@link module:engine/view/matcher~MatcherObjectPattern matcher patterns} and feeds them to the GHS
      * {@link module:html-support/datafilter~DataFilter} plugin.
      *
      * @internal
@@ -89881,8 +91379,8 @@ function createObjectView(viewName, modelElement, writer) {
  *
  * @returns Returns a conversion callback.
 */
-function viewToAttributeInlineConverter({ view: viewName, model: attributeKey }, dataFilter) {
-    return (dispatcher) => {
+function viewToAttributeInlineConverter({ view: viewName, model: attributeKey, allowEmpty }, dataFilter) {
+    return dispatcher => {
         dispatcher.on(`element:${viewName}`, (evt, data, conversionApi) => {
             let viewAttributes = dataFilter.processViewAttributes(data.viewItem, conversionApi);
             // Do not apply the attribute if the element itself is already consumed and there are no view attributes to store.
@@ -89899,17 +91397,48 @@ function viewToAttributeInlineConverter({ view: viewName, model: attributeKey },
             if (!data.modelRange) {
                 data = Object.assign(data, conversionApi.convertChildren(data.viewItem, data.modelCursor));
             }
+            // Convert empty inline element if allowed and has any attributes.
+            if (allowEmpty && data.modelRange.isCollapsed && Object.keys(viewAttributes).length) {
+                const modelElement = conversionApi.writer.createElement('htmlEmptyElement');
+                if (!conversionApi.safeInsert(modelElement, data.modelCursor)) {
+                    return;
+                }
+                const parts = conversionApi.getSplitParts(modelElement);
+                data.modelRange = conversionApi.writer.createRange(data.modelRange.start, conversionApi.writer.createPositionAfter(parts[parts.length - 1]));
+                conversionApi.updateConversionResult(modelElement, data);
+                setAttributeOnItem(modelElement, viewAttributes, conversionApi);
+                return;
+            }
             // Set attribute on each item in range according to the schema.
             for (const node of data.modelRange.getItems()) {
-                if (conversionApi.schema.checkAttribute(node, attributeKey)) {
-                    // Node's children are converted recursively, so node can already include model attribute.
-                    // We want to extend it, not replace.
-                    const nodeAttributes = node.getAttribute(attributeKey);
-                    const attributesToAdd = mergeViewElementAttributes(viewAttributes, nodeAttributes || {});
-                    conversionApi.writer.setAttribute(attributeKey, attributesToAdd, node);
-                }
+                setAttributeOnItem(node, viewAttributes, conversionApi);
             }
         }, { priority: 'low' });
+    };
+    function setAttributeOnItem(node, viewAttributes, conversionApi) {
+        if (conversionApi.schema.checkAttribute(node, attributeKey)) {
+            // Node's children are converted recursively, so node can already include model attribute.
+            // We want to extend it, not replace.
+            const nodeAttributes = node.getAttribute(attributeKey);
+            const attributesToAdd = mergeViewElementAttributes(viewAttributes, nodeAttributes || {});
+            conversionApi.writer.setAttribute(attributeKey, attributesToAdd, node);
+        }
+    }
+}
+/**
+ * Conversion helper converting an empty inline model element to an HTML element or widget.
+ */
+function emptyInlineModelElementToViewConverter({ model: attributeKey, view: viewName }, asWidget) {
+    return (item, { writer, consumable }) => {
+        if (!item.hasAttribute(attributeKey)) {
+            return null;
+        }
+        const viewElement = writer.createContainerElement(viewName);
+        const attributeValue = item.getAttribute(attributeKey);
+        consumable.consume(item, `attribute:${attributeKey}`);
+        setViewAttributes(writer, attributeValue, viewElement);
+        viewElement.getFillerOffset = () => null;
+        return asWidget ? toWidget(viewElement, writer) : viewElement;
     };
 }
 /**
@@ -91218,6 +92747,18 @@ class DataFilter extends Plugin {
         }
     }
     /**
+     * Load a configuration of one or many elements, where when empty should be allowed.
+     *
+     * **Note**: It modifies DataSchema so must be loaded before registering filtering rules.
+     *
+     * @param config Configuration of elements that should be preserved even if empty.
+     */
+    loadAllowedEmptyElementsConfig(config) {
+        for (const elementName of config) {
+            this.allowEmptyElement(elementName);
+        }
+    }
+    /**
      * Allow the given element in the editor context.
      *
      * This method will only allow elements described by the {@link module:html-support/dataschema~DataSchema} used
@@ -91245,6 +92786,23 @@ class DataFilter extends Plugin {
     disallowElement(viewName) {
         for (const definition of this._dataSchema.getDefinitionsForView(viewName, false)) {
             this._disallowedElements.add(definition.view);
+        }
+    }
+    /**
+     * Allow the given empty element in the editor context.
+     *
+     * This method will only allow elements described by the {@link module:html-support/dataschema~DataSchema} used
+     * to create data filter.
+     *
+     * **Note**: It modifies DataSchema so must be called before registering filtering rules.
+     *
+     * @param viewName String or regular expression matching view name.
+     */
+    allowEmptyElement(viewName) {
+        for (const definition of this._dataSchema.getDefinitionsForView(viewName, true)) {
+            if (definition.isInline) {
+                this._dataSchema.extendInlineElement({ ...definition, allowEmpty: true });
+            }
         }
     }
     /**
@@ -91619,6 +93177,36 @@ class DataFilter extends Plugin {
             model: attributeKey,
             view: attributeToViewInlineConverter(definition)
         });
+        if (!definition.allowEmpty) {
+            return;
+        }
+        schema.setAttributeProperties(attributeKey, { copyFromObject: false });
+        if (!schema.isRegistered('htmlEmptyElement')) {
+            schema.register('htmlEmptyElement', {
+                inheritAllFrom: '$inlineObject'
+            });
+        }
+        editor.data.htmlProcessor.domConverter.registerInlineObjectMatcher(element => {
+            // Element must be empty and have any attribute.
+            if (element.name == definition.view &&
+                element.isEmpty &&
+                Array.from(element.getAttributeKeys()).length) {
+                return {
+                    name: true
+                };
+            }
+            return null;
+        });
+        conversion.for('editingDowncast')
+            .elementToElement({
+            model: 'htmlEmptyElement',
+            view: emptyInlineModelElementToViewConverter(definition, true)
+        });
+        conversion.for('dataDowncast')
+            .elementToElement({
+            model: 'htmlEmptyElement',
+            view: emptyInlineModelElementToViewConverter(definition)
+        });
     }
 }
 /**
@@ -91752,17 +93340,17 @@ function splitPattern(pattern, attributeName) {
  */
 function splitRules(rules) {
     const { name, attributes, classes, styles } = rules;
-    const splittedRules = [];
+    const splitRules = [];
     if (attributes) {
-        splittedRules.push(...splitPattern({ name, attributes }, 'attributes'));
+        splitRules.push(...splitPattern({ name, attributes }, 'attributes'));
     }
     if (classes) {
-        splittedRules.push(...splitPattern({ name, classes }, 'classes'));
+        splitRules.push(...splitPattern({ name, classes }, 'classes'));
     }
     if (styles) {
-        splittedRules.push(...splitPattern({ name, styles }, 'styles'));
+        splitRules.push(...splitPattern({ name, styles }, 'styles'));
     }
-    return splittedRules;
+    return splitRules;
 }/**
  * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -92107,6 +93695,9 @@ class ImageElementSupport extends Plugin {
             }
             conversion.for('upcast').add(viewToModelImageAttributeConverter(dataFilter));
             conversion.for('downcast').add(modelToViewImageAttributeConverter());
+            if (editor.plugins.has('LinkImage')) {
+                conversion.for('upcast').add(viewToModelLinkImageAttributeConverter(dataFilter, editor));
+            }
             evt.stop();
         });
     }
@@ -92124,21 +93715,35 @@ function viewToModelImageAttributeConverter(dataFilter) {
                 return;
             }
             const viewImageElement = data.viewItem;
-            const viewContainerElement = viewImageElement.parent;
-            preserveElementAttributes(viewImageElement, 'htmlImgAttributes');
-            if (viewContainerElement.is('element', 'a')) {
-                preserveLinkAttributes(viewContainerElement);
+            const viewAttributes = dataFilter.processViewAttributes(viewImageElement, conversionApi);
+            if (viewAttributes) {
+                conversionApi.writer.setAttribute('htmlImgAttributes', viewAttributes, data.modelRange);
             }
-            function preserveElementAttributes(viewElement, attributeName) {
-                const viewAttributes = dataFilter.processViewAttributes(viewElement, conversionApi);
-                if (viewAttributes) {
-                    conversionApi.writer.setAttribute(attributeName, viewAttributes, data.modelRange);
-                }
+        }, { priority: 'low' });
+    };
+}
+/**
+ * View-to-model conversion helper preserving allowed attributes on {@link module:image/image~Image Image}
+ * feature model element from link view element.
+ *
+ * @returns Returns a conversion callback.
+ */
+function viewToModelLinkImageAttributeConverter(dataFilter, editor) {
+    const imageUtils = editor.plugins.get('ImageUtils');
+    return (dispatcher) => {
+        dispatcher.on('element:a', (evt, data, conversionApi) => {
+            const viewLink = data.viewItem;
+            const viewImage = imageUtils.findViewImgElement(viewLink);
+            if (!viewImage) {
+                return;
             }
-            function preserveLinkAttributes(viewContainerElement) {
-                if (data.modelRange && data.modelRange.getContainedElement().is('element', 'imageBlock')) {
-                    preserveElementAttributes(viewContainerElement, 'htmlLinkAttributes');
-                }
+            const modelImage = data.modelCursor.parent;
+            if (!modelImage.is('element', 'imageBlock')) {
+                return;
+            }
+            const viewAttributes = dataFilter.processViewAttributes(viewLink, conversionApi);
+            if (viewAttributes) {
+                conversionApi.writer.setAttribute('htmlLinkAttributes', viewAttributes, modelImage);
             }
         }, { priority: 'low' });
     };
@@ -92954,6 +94559,9 @@ class GeneralHtmlSupport extends Plugin {
     init() {
         const editor = this.editor;
         const dataFilter = editor.plugins.get(DataFilter);
+        // Load the allowed empty inline elements' configuration.
+        // Note that this modifies DataSchema so must be loaded before registering filtering rules.
+        dataFilter.loadAllowedEmptyElementsConfig(editor.config.get('htmlSupport.allowEmpty') || []);
         // Load the filtering configuration.
         dataFilter.loadAllowedConfig(editor.config.get('htmlSupport.allow') || []);
         dataFilter.loadDisallowedConfig(editor.config.get('htmlSupport.disallow') || []);
@@ -95291,12 +96899,12 @@ class WordCount extends Plugin {
     }
     _getText() {
         let txt = '';
-        for (const rootName of this.editor.model.document.getRootNames()) {
+        for (const root of this.editor.model.document.getRoots()) {
             if (txt !== '') {
                 // Add a delimiter, so words from each root are treated independently.
                 txt += '\n';
             }
-            txt += modelElementToPlainText(this.editor.model.document.getRoot(rootName));
+            txt += modelElementToPlainText(root);
         }
         return txt;
     }
