@@ -191,14 +191,6 @@ CREATE TABLE tx_styleguide_elements_imagemanipulation (
     group_db_1 text,
     group_db_2 text,
     group_db_3 text,
-    crop_1 text,
-    crop_2 text,
-    crop_3 text,
-    crop_4 text,
-    crop_5 text,
-    crop_6 text,
-    crop_7 text,
-    crop_8 text
 );
 
 
@@ -722,7 +714,6 @@ CREATE TABLE tx_styleguide_l10nreadonly (
     group text,
     group_mm text,
     group_file text,
-    image_manipulation text,
     language int(11) DEFAULT '0' NOT NULL,
     text text,
     text_rte text,
