@@ -72,6 +72,7 @@ class Check implements CheckInterface
      * @var string[]
      */
     protected $suggestedPhpExtensions = [
+        'exif' => 'This extension is used to detect the orientation of uploaded images.',
         'fileinfo' => 'This extension is used for proper file type detection in the File Abstraction Layer.',
         'openssl' => 'This extension is used for sending SMTP mails over an encrypted channel endpoint.',
     ];

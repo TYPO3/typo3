@@ -25,6 +25,7 @@
 		"typo3/cms": "*"
 	},
 	"suggest": {
+		"ext-exif": "Used to extract exif metadata 'COMMENT' and 'ImageDescription' of uploaded images",
 		"typo3/cms-scheduler": "For garbage collection of search statistics"
 	},
 	"extra": {
