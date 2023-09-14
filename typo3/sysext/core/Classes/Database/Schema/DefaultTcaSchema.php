@@ -631,6 +631,22 @@ class DefaultTcaSchema
                     ]
                 );
             }
+
+            // Add file fields for all tables, defining crop columns (TCA type=imageManipulation)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'imageManipulation'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    Types::TEXT,
+                    [
+                        'notnull' => false,
+                    ]
+                );
+            }
         }
 
         return $tables;

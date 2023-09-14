@@ -241,7 +241,6 @@ CREATE TABLE sys_file_reference (
 	description text,
 	alternative text,
 	link varchar(1024) DEFAULT '' NOT NULL,
-	crop varchar(4000) DEFAULT '' NOT NULL,
 
 	KEY tablenames_fieldname (tablenames(32),fieldname(12)),
 	KEY deleted (deleted),

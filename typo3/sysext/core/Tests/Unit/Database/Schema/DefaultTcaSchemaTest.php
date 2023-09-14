@@ -1077,4 +1077,26 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('folder')->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function enrichAddsImageManipulation(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['imageManipulation'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'imageManipulation',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`imageManipulation`',
+            Type::getType('text'),
+            [
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('imageManipulation')->toArray());
+    }
 }

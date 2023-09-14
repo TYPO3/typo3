@@ -57,6 +57,7 @@ Columns are auto-created for these :php:`TCA` :php:`columns` types:
 * :php:`type = 'email'` - new with core v13
 * :php:`type = 'check'` - new with core v13
 * :php:`type = 'folder'` - new with core v13
+* :php:`type = 'imageManipulation'` - new with core v13
 
 
 .. index:: TCA, ext:core, NotScanned
