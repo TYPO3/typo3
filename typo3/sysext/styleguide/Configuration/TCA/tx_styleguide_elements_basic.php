@@ -1842,6 +1842,13 @@ backend_layout {
             ],
         ],
 
+        'language_1' => [
+            'label' => 'language_1',
+            'description' => 'simple language selection',
+            'config' => [
+                'type' => 'language',
+            ],
+        ],
     ],
 
     'types' => [
@@ -1889,6 +1896,8 @@ backend_layout {
                     unknown_1,
                 --div--;in flex,
                     flex_1,
+                --div--;language,
+                    language_1,
                 --div--;meta,
                     disable, sys_language_uid, l10n_parent, l10n_source,
             ',
