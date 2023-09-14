@@ -563,18 +563,18 @@ final class SchedulerModuleController
     protected function renderListTasksView(ModuleTemplate $view, ModuleData $moduleData): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $tasks = $this->taskRepository->getGroupedTasks();
+        $data = $this->taskRepository->getGroupedTasks();
         $registeredClasses = $this->taskService->getAvailableTaskTypes();
 
-        foreach ($tasks['taskGroupsWithTasks'] as $key => $group) {
+        foreach ($data['taskGroupsWithTasks'] as $key => $group) {
             $group['taskGroupCollapsed'] = (bool)($moduleData->get('task-group-' . ($key ?? 0), false));
         }
 
         $view->assignMultiple([
-            'tasks' => $tasks['taskGroupsWithTasks'],
-            'groupsWithoutTasks' => $this->getGroupsWithoutTasks($tasks['taskGroupsWithTasks']),
+            'groups' => $data['taskGroupsWithTasks'],
+            'groupsWithoutTasks' => $this->getGroupsWithoutTasks($data['taskGroupsWithTasks']),
             'now' => $this->context->getAspect('date')->get('timestamp'),
-            'errorClasses' => $tasks['errorClasses'],
+            'errorClasses' => $data['errorClasses'],
             'errorClassesCollapsed' => (bool)($moduleData->get('task-group-missing', false)),
         ]);
         $view->setTitle(
@@ -926,7 +926,7 @@ final class SchedulerModuleController
 
     private function getGroupsWithoutTasks(array $taskGroupsWithTasks): array
     {
-        $uidGroupsWithTasks = array_filter(array_column($taskGroupsWithTasks, 'groupUid'));
+        $uidGroupsWithTasks = array_filter(array_column($taskGroupsWithTasks, 'uid'));
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task_group');
         $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         $resultEmptyGroups = $queryBuilder->select('*')

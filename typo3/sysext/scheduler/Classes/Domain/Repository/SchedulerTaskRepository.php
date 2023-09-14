@@ -344,11 +344,11 @@ class SchedulerTaskRepository
             $groupIndex = $row['isTaskGroupDeleted'] === 1 || $row['isTaskGroupDeleted'] === null ? 0 : (int)$row['task_group'];
             if (!isset($taskGroupsWithTasks[$groupIndex])) {
                 $taskGroupsWithTasks[$groupIndex] = [
-                    'tasks' => [],
+                    'uid' => $row['taskGroupId'],
                     'groupName' => $row['taskGroupName'],
-                    'groupUid' => $row['taskGroupId'],
-                    'groupDescription' => $row['taskGroupDescription'],
-                    'groupHidden' => $row['isTaskGroupHidden'],
+                    'description' => $row['taskGroupDescription'],
+                    'hidden' => $row['isTaskGroupHidden'],
+                    'tasks' => [],
                 ];
             }
             $taskGroupsWithTasks[$groupIndex]['tasks'][] = $taskData;

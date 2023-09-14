@@ -15,8 +15,8 @@
     </f:if>
 
     <f:comment><!-- Wrap only groups, ignore "No task group" in draggable list --></f:comment>
-    <div class="t3js-group-draggable">
-        <f:for each="{tasks}" as="taskGroup" key="taskGroupId">
+    <div class="t3js-group-draggable-container">
+        <f:for each="{groups}" as="group" key="groupKey">
             <f:render section="table" arguments="{_all}"/>
         </f:for>
     </div>
@@ -102,48 +102,52 @@
     </f:if>
 
     <f:section name="table">
-        <div class="{f:if(condition: '{taskGroup.groupUid} == 0', then: 't3js-scheduler-sorting-disabled')} panel panel-default scheduler-group-panel" data-multi-record-selection-identifier="task-group-{taskGroup.groupUid}">
-            <div class="panel-heading multi-record-selection-panel {f:if(condition: '{taskGroup.groupUid} == 0', else: 'scheduler-group-dragitem t3js-group-draggable-item')}" data-task-group-id="{taskGroup.groupUid}">
+        <div
+            class="panel panel-default scheduler-panel"
+            data-multi-record-selection-identifier="task-group-{groupKey}"
+            {f:if(condition: '{group.uid}', then: 'data-task-group-id="{group.uid}"')}
+        >
+            <div class="panel-heading multi-record-selection-panel">
                 <div class="panel-heading-row">
-                    <f:if condition="{taskGroup.groupHidden}">
+                    <f:if condition="{group.hidden}">
                         <div class="panel-heading-badge">
                             <span class="badge badge-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.isDisabled" /></span>
                         </div>
                     </f:if>
                     <div class="panel-heading-title">
-                        <f:if condition="!{taskGroup.groupName}">
+                        <f:if condition="!{group.uid}">
                             <f:then>
-                                <span>{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup')}</span>
+                                {f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup')}
                             </f:then>
                             <f:else>
                                 <typo3-scheduler-editable-group-name
-                                    groupName="{taskGroup.groupName}"
-                                    groupId="{taskGroup.groupUid}"
+                                    groupName="{group.groupName}"
+                                    groupId="{group.uid}"
                                     editable="true"
                                 >
-                                    {taskGroup.groupName}
+                                    {group.groupName}
                                 </typo3-scheduler-editable-group-name>
                             </f:else>
                         </f:if>
                     </div>
                     <div class="panel-heading-actions">
                         <form name="tx_scheduler_form_group_toggle_hidden" id="tx_scheduler_form_group_toggle_hidden" method="post">
-                            <input name="action[group][uid]" type="hidden" value="{taskGroup.groupUid}">
+                            <input name="action[group][uid]" type="hidden" value="{group.uid}">
                             <a
-                                href="{be:moduleLink(route: 'scheduler_manage', arguments: {action: 'add', groupId: taskGroupId}, currentUrlParameterName: 'redirect')}"
-                                class="btn btn-default btn-sm"
+                                href="{be:moduleLink(route: 'scheduler_manage', arguments: {action: 'add', groupId: group.uid}, currentUrlParameterName: 'redirect')}"
+                                class="btn btn-sm btn-default"
                             >
                                 <core:icon identifier="actions-plus" />
                                 <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add" />
                             </a>
-                            <f:if condition="{taskGroupId}">
-                                <f:if condition="{taskGroup.groupHidden}">
+                            <f:if condition="{group.uid}">
+                                <f:if condition="{group.hidden}">
                                     <f:then>
                                         <button
                                             type="submit"
                                             name="action[group][hidden]"
                                             value="0"
-                                            class="btn btn-default btn-sm"
+                                            class="btn btn-sm btn-default"
                                             title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable')}"
                                         >
                                             <core:icon identifier="actions-edit-unhide"/>
@@ -155,7 +159,7 @@
                                             type="submit"
                                             name="action[group][hidden]"
                                             value="1"
-                                            class="btn btn-default btn-sm"
+                                            class="btn btn-sm btn-default"
                                             title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disable')}"
                                         >
                                             <core:icon identifier="actions-edit-hide"/>
@@ -163,26 +167,34 @@
                                         </button>
                                     </f:else>
                                 </f:if>
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-default scheduler-sortable-handle t3js-group-draggable-handle"
+                                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move')}"
+                                    disabled
+                                >
+                                    <core:icon identifier="actions-move-move"/>
+                                </button>
                             </f:if>
                             <button type="button"
-                                    class="btn btn-default btn-sm t3js-toggle-table"
+                                    class="btn btn-sm btn-default t3js-toggle-table"
                                     data-bs-toggle="collapse"
-                                    data-bs-target="#scheduler-task-group-{taskGroupId}"
-                                    aria-expanded="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'false', else: 'true')}"
+                                    data-bs-target="#scheduler-task-group-{groupKey}"
+                                    aria-expanded="{f:if(condition: group.taskGroupCollapsed, then: 'false', else: 'true')}"
                             >
-                                <core:icon identifier="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
+                                <core:icon identifier="{f:if(condition: group.taskGroupCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
                             </button>
                         </form>
                     </div>
                 </div>
                 <f:render partial="MultiRecordSelectionActions" />
             </div>
-            <form name="tx_scheduler_form_{f:if(condition: '{taskGroup.groupUid} == 0', then: '0', else: taskGroup.groupUid)}" id="tx_scheduler_form_{f:if(condition: '{taskGroup.groupUid} == 0', then: '0', else: taskGroup.groupUid)}" method="post">
-                <div class="panel-collapse collapse {f:if(condition: '!{taskGroup.taskGroupCollapsed}', then: 'show')}" id="scheduler-task-group-{taskGroupId}" data-table="task-group-{taskGroup.groupUid}">
+            <form data-multi-record-selection-form="task-group-{groupKey}" name="tx_scheduler_form_{groupKey}" id="tx_scheduler_form_{groupKey}" method="post">
+                <div class="panel-collapse collapse {f:if(condition: '!{group.taskGroupCollapsed}', then: 'show')}" id="scheduler-task-group-{groupKey}" data-table="task-group-{groupKey}">
                     <div class="table-fit">
                         <table class="table table-striped table-hover" data-scheduler-table>
                             <thead>
-                                <tr class="taskGroup_{taskGroup.groupUid}">
+                                <tr>
                                     <th class="col-checkbox" data-sort-method="none">
                                         <div class="btn-group dropdown">
                                             <button type="button"
@@ -249,7 +261,7 @@
                                         </div>
                                     </th>
                                     <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.id"/></th>
-                                    <th class="col-task col-word-break"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:task"/></th>
+                                    <th class="col-task"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:task"/></th>
                                     <th class="col-min"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.status"/></th>
                                     <th class="col-state"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.type"/></th>
                                     <th class="col-state"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.frequency"/></th>
@@ -260,15 +272,19 @@
                                 </tr>
                             </thead>
                             <tbody data-multi-record-selection-row-selection="true">
-                            <f:for each="{taskGroup.tasks}" as="task">
-                                <tr class="{f:if(condition:'{task.disabled}', then: 'disabled')} taskGroup_{taskGroupId}" data-task-id="{task.uid}" data-multi-record-selection-element="true">
+                            <f:for each="{group.tasks}" as="task">
+                                <tr
+                                    data-task-id="{task.uid}"
+                                    data-task-disabled="{f:if(condition:'{task.disabled}', then: 'true', else: 'false')}"
+                                    data-multi-record-selection-element="true"
+                                >
                                     <td class="col-checkbox">
                                         <span class="form-check form-check-type-toggle">
                                             <input class="form-check-input t3js-multi-record-selection-check" type="checkbox">
                                         </span>
                                     </td>
                                     <td class="align-top">{task.uid}</td>
-                                    <td class="align-top col-task col-word-break">
+                                    <td class="align-top col-task">
                                         <div class="name">
                                             <f:be.link route="scheduler_manage" parameters="{action: 'edit', 'uid': task.uid}">
                                                 <strong>{task.classTitle} ({task.classExtension})</strong>
@@ -290,7 +306,7 @@
                                         <f:if condition="{task.isRunning}">
                                             <span class="badge badge-success"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.running" /></span>
                                         </f:if>
-                                        <f:if condition="{task.nextExecution} && {task.nextExecution} < {now} && !{taskGroup.groupHidden} && !{task.disabled}">
+                                        <f:if condition="{task.nextExecution} && {task.nextExecution} < {now} && !{group.hidden} && !{task.disabled}">
                                                 <span
                                                     class="badge badge-warning"
                                                     title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.legend.scheduled')}"
@@ -301,7 +317,7 @@
                                         <f:if condition="{task.disabled} && !{task.isRunning}">
                                             <span class="badge badge-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabled" /></span>
                                         </f:if>
-                                        <f:if condition="{taskGroup.groupHidden} && !{task.isRunning}">
+                                        <f:if condition="{group.hidden} && !{task.isRunning}">
                                             <span class="badge badge-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabledByGroup" /></span>
                                         </f:if>
                                         <f:if condition="{task.lastExecutionFailure}">
@@ -357,7 +373,7 @@
                                             </f:else>
                                         </f:if>
                                     </td>
-                                    <td class="align-top col-min">
+                                    <td class="align-top col-datetime">
                                         <f:if condition="{task.lastExecutionTime}">
                                             <f:then>
                                                 <f:format.date format="{dateFormat.day} {dateFormat.time}" date="{task.lastExecutionTime}" /><br>
@@ -373,8 +389,8 @@
                                             <f:else>-</f:else>
                                         </f:if>
                                     </td>
-                                    <td class="align-top col-min">
-                                        <f:if condition="{task.isRunning} || {task.disabled} || {taskGroup.groupHidden}">
+                                    <td class="align-top col-datetime">
+                                        <f:if condition="{task.isRunning} || {task.disabled} || {group.hidden}">
                                             <f:then>-</f:then>
                                             <f:else>
                                                 <f:if condition="{task.nextExecution}">
@@ -486,13 +502,13 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="10">
-                                        <f:if condition="!{taskGroup.groupName}">
+                                        <f:if condition="!{group.groupName}">
                                             <f:then>
-                                                <span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup.taskCount')}">{taskGroup.tasks -> f:count()}</span>
+                                                <span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup.taskCount')}">{group.tasks -> f:count()}</span>
                                                 <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup" />
                                             </f:then>
                                             <f:else>
-                                                <span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.taskCount')}">{taskGroup.tasks -> f:count()}</span>
+                                                <span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.taskCount')}">{group.tasks -> f:count()}</span>
                                                 <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler" />
                                             </f:else>
                                         </f:if>

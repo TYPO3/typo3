@@ -4,7 +4,7 @@
     data-namespace-typo3-fluid="true"
 >
 
-<div class="table-fit mb-4">
+<div class="table-fit">
     <table class="table table-striped table-hover">
         <thead>
         <tr>
@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        <f:for each="{groupsWithoutTasks}" as="group" key="taskGroupId">
+        <f:for each="{groupsWithoutTasks}" as="group" key="groupKey">
             <tr class="{f:if(condition:'{group.disabled}', then: 'disabled')}">
                 <td class="col-title col-responsive">
                     <typo3-scheduler-editable-group-name
@@ -22,9 +22,6 @@
                     >
                         {group.groupName}
                     </typo3-scheduler-editable-group-name>
-                    <f:if condition="{group.hidden}">
-                        <span class="badge badge-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.isDisabled" /></span>
-                    </f:if>
                 </td>
                 <td class="col-control nowrap">
                     <form name="tx_scheduler_form_group" id="tx_scheduler_form_group" method="post">
@@ -83,7 +80,7 @@
             </tr>
         </f:for>
         <tr>
-            <td colspan="10">
+            <td colspan="2">
                 <span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.taskUnusedCount')}">{groupsWithoutTasks -> f:count()}</span>
                 <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.unused" />
             </td>

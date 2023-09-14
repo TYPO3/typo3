@@ -167,30 +167,45 @@ class Scheduler {
    * Registers listeners
    */
   private initializeEvents(): void {
-    new RegularEvent('change', (evt: Event): void => {
-      this.toggleTaskSettingFields(evt.target as HTMLSelectElement);
-    }).bindTo(document.querySelector('#task_class'));
+    const taskClassElement = document.querySelector('#task_class');
+    if (taskClassElement) {
+      new RegularEvent('change', (evt: Event): void => {
+        this.toggleTaskSettingFields(evt.target as HTMLSelectElement);
+      }).bindTo(taskClassElement);
+    }
 
-    new RegularEvent('change', (evt: Event): void => {
-      this.toggleFieldsByTaskType((evt.target as HTMLSelectElement).value);
-    }).bindTo(document.querySelector('#task_type'));
+    const taskTypeElement = document.querySelector('#task_type');
+    if (taskTypeElement) {
+      new RegularEvent('change', (evt: Event): void => {
+        this.toggleFieldsByTaskType((evt.target as HTMLSelectElement).value);
+      }).bindTo(taskTypeElement);
+    }
 
-    new RegularEvent('change', (evt: Event): void => {
-      this.actOnChangeSchedulerTableGarbageCollectionAllTables(evt.target as HTMLInputElement);
-    }).bindTo(document.querySelector('#task_tableGarbageCollection_allTables'));
+    const taskTableGarbageCollectionAllTablesElement = document.querySelector('#task_tableGarbageCollection_allTables');
+    if (taskTableGarbageCollectionAllTablesElement) {
+      new RegularEvent('change', (evt: Event): void => {
+        this.actOnChangeSchedulerTableGarbageCollectionAllTables(evt.target as HTMLInputElement);
+      }).bindTo(taskTableGarbageCollectionAllTablesElement);
+    }
 
-    new RegularEvent('change', (evt: Event): void => {
-      this.actOnChangeSchedulerTableGarbageCollectionTable(evt.target as HTMLSelectElement);
-    }).bindTo(document.querySelector('#task_tableGarbageCollection_table'));
+    const taskTableGarbageCollectionTableElement = document.querySelector('#task_tableGarbageCollection_table');
+    if (taskTableGarbageCollectionTableElement) {
+      new RegularEvent('change', (evt: Event): void => {
+        this.actOnChangeSchedulerTableGarbageCollectionTable(evt.target as HTMLSelectElement);
+      }).bindTo(taskTableGarbageCollectionTableElement);
+    }
 
-    new RegularEvent('change', (evt: Event): void => {
-      const target = evt.target as HTMLSelectElement;
-      const taskFrequencyField = document.querySelector('#task_frequency') as HTMLInputElement;
+    const updateTaskFrequencyElement = document.querySelector('[data-update-task-frequency]');
+    if (updateTaskFrequencyElement) {
+      new RegularEvent('change', (evt: Event): void => {
+        const target = evt.target as HTMLSelectElement;
+        const taskFrequencyField = document.querySelector('#task_frequency') as HTMLInputElement;
 
-      taskFrequencyField.value = target.value;
-      target.value = '';
-      target.blur();
-    }).bindTo(document.querySelector('[data-update-task-frequency]'));
+        taskFrequencyField.value = target.value;
+        target.value = '';
+        target.blur();
+      }).bindTo(updateTaskFrequencyElement);
+    }
 
     document.querySelectorAll('[data-scheduler-table]').forEach((table: HTMLTableElement) => {
       new SortableTable(table);
@@ -270,20 +285,20 @@ class Scheduler {
     Scheduler.storeCollapseState((e.target as HTMLElement).dataset.table, isCollapsed);
   }
 
-  private executeTasks(e: CustomEvent): void {
-    const form: HTMLFormElement = document.querySelector('#tx_scheduler_form');
+  private executeTasks(event: CustomEvent): void {
+    const form: HTMLFormElement = document.querySelector('[data-multi-record-selection-form="' + event.detail.identifier + '"]');
     if (form === null) {
       return;
     }
     const taskIds: Array<string> = [];
-    ((e.detail as ActionEventDetails).checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox: HTMLInputElement) => {
+    ((event.detail as ActionEventDetails).checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox: HTMLInputElement) => {
       const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
       if (checkboxContainer !== null && checkboxContainer.dataset.taskId) {
         taskIds.push(checkboxContainer.dataset.taskId);
       }
     });
     if (taskIds.length) {
-      if (e.type === 'multiRecordSelection:action:go_cron') {
+      if (event.type === 'multiRecordSelection:action:go_cron') {
         // Schedule selected tasks for next cron run
         const goCron: HTMLInputElement = document.createElement('input');
         goCron.setAttribute('type', 'hidden');

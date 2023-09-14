@@ -1,18 +1,12 @@
 //
 // Scheduler module
 //
-.scheduler-group-dragitem {
-    cursor: move;
-
-    [editable="true"],
-    a,
-    button {
-        cursor: initial;
-    }
+.scheduler-sortable-handle {
+    cursor: move !important;
 }
 
-.scheduler-group-panel {
-    + .scheduler-group-panel {
+.scheduler-panel {
+    + .scheduler-panel {
         margin-top: calc(var(--typo3-spacing) * 1.5);
     }
 }
@@ -21,15 +15,6 @@
     margin-bottom: .5rem !important;
 }
 
-.task-form .row > .form-group {
-    @include media-breakpoint-up('lg') {
-        width: 50%;
-    }
-}
-
-#task_start_col,
-#task_end_col {
-    @include media-breakpoint-up('lg') {
-        width: 25%;
-    }
+.task-form .row {
+    max-width: 800px;
 }

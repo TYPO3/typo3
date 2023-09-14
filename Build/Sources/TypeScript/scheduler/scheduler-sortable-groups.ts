@@ -19,8 +19,8 @@ import AjaxDataHandler from '@typo3/backend/ajax-data-handler';
  * @exports @typo3/scheduler/scheduler-sortable-groups
  */
 class SchedulerSortableGroups {
-  container: string = '.t3js-group-draggable';
-  dragHandle: string = '.t3js-group-draggable-item';
+  container: string = '.t3js-group-draggable-container';
+  dragHandle: string = '.t3js-group-draggable-handle';
 
   constructor() {
     this.initialize();
@@ -31,28 +31,26 @@ class SchedulerSortableGroups {
     if(element) {
       new Sortable(element, {
         handle: this.dragHandle,
-        ignore: 'input',
-        filter: 'typo3-scheduler-editable-group-name, a, button, .t3js-scheduler-sorting-disabled',
-        preventOnFilter: false,
-        onMove: function (evt) {
-          // Exclude "not assigned tasks" group from sorting.
-          return evt.related.className.indexOf('disabled') === -1;
+        onMove: (event): boolean => {
+          return ('taskGroupId' in event.related.dataset) && Number(event.related.dataset.taskGroupId) !== 0;
         },
         onSort: (event: SortableEvent): void => {
           const previousItem = event.target.children[event.newDraggableIndex - 1];
           let letMoveTarget = 0;
           if(previousItem) {
-            const previousGroupElementUid: string = (<HTMLElement>previousItem.querySelector('[data-task-group-id]')).dataset.taskGroupId;
-            letMoveTarget = Number('-' + previousGroupElementUid);
+            const previousUid: string = (<HTMLElement>previousItem).dataset.taskGroupId;
+            letMoveTarget = Number('-' + previousUid);
           }
 
-          const groupElement = <HTMLElement>event.item.querySelector('[data-task-group-id]');
-          const uid: number = Number(groupElement.dataset.taskGroupId);
+          const uid: number = Number(event.item.dataset.taskGroupId);
           const table: string = 'tx_scheduler_task_group';
           const eventData = { component: 'contextmenu', action: 'delete', table, uid };
 
           AjaxDataHandler.process('cmd[' + table + '][' + uid + '][move][action]=paste&cmd[' + table + '][' + uid + '][move][target]=' + letMoveTarget + '&cmd[' + table + '][' + uid + '][move][update][colPos]=0&cmd[' + table + '][' + uid + '][move][update][sys_language_uid]=0', eventData);
         },
+      });
+      (document.querySelectorAll(this.dragHandle) as NodeListOf<HTMLButtonElement>).forEach(handle => {
+        handle.disabled = false;
       });
     }
   }

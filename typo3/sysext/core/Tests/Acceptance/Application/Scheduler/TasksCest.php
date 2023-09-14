@@ -59,7 +59,7 @@ final class TasksCest
         // run the task
         $I->click('button[name="execute"]');
         $I->waitForText('Task "System Status Update (reports)" with uid');
-        $I->seeElement('[data-module-name="scheduler_manage"] .disabled');
+        $I->seeElement('[data-module-name="scheduler_manage"] tr[data-task-disabled="true"]');
         $I->see('disabled');
     }
 
@@ -78,7 +78,7 @@ final class TasksCest
     {
         $I->wantTo('See a enable button for a task');
         $I->click('//button[contains(@title, "Enable")]', '#tx_scheduler_form_0');
-        $I->dontSeeElement('[data-module-name="scheduler_manage"] .disabled');
+        $I->dontSeeElement('[data-module-name="scheduler_manage"] tr[data-task-disabled="true"]');
         $I->dontSee('disabled');
         $I->wantTo('See a disable button for a task');
         // Give tooltips some time to fully init
@@ -87,7 +87,7 @@ final class TasksCest
         $I->wait(1);
         $I->click('//button[contains(@title, "Disable")]');
         $I->waitForElementVisible('[data-module-name="scheduler_manage"]');
-        $I->seeElement('[data-module-name="scheduler_manage"] .disabled');
+        $I->seeElement('[data-module-name="scheduler_manage"] tr[data-task-disabled="true"]');
         $I->see('disabled');
     }
 
