@@ -11,7 +11,7 @@ See :issue:`101396`
 Description
 ===========
 
-With PHP 8.1, native support for enums has been introduces. This is quite handy
+With PHP 8.1, native support for enums has been introduced. This is quite handy
 if a database field has a specific set of values which can be represented by a
 PHP enum.
 
