@@ -127,7 +127,7 @@ class SchedulerListCommand extends Command
             }
 
             // Flag as disabled group
-            $groupDisabledLabel = $group['groupHidden'] ? '<fg=yellow>' . $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabled') . '</>' : '';
+            $groupDisabledLabel = $group['hidden'] ? '<fg=yellow>' . $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabled') . '</>' : '';
             $groupLabel = ($group['groupName'] ?? $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup')) . ' (id:' . $uid . ') ' . $groupDisabledLabel;
 
             $rows[] = [new TableSeparator(['colspan' => 5])];
@@ -146,7 +146,7 @@ class SchedulerListCommand extends Command
                 $now = $this->context->getAspect('date')->get('timestamp');
 
                 // Flag as late
-                if ($task['nextExecution'] && $task['nextExecution'] < $now && !(int)$group['groupHidden'] && !(int)$task['disabled']) {
+                if ($task['nextExecution'] && $task['nextExecution'] < $now && !(int)$group['hidden'] && !(int)$task['disabled']) {
                     $taskStatus[] = '<fg=yellow>' . $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.late') . '</>';
                 }
 
@@ -161,7 +161,7 @@ class SchedulerListCommand extends Command
                 }
 
                 // Flag as disabled by group
-                if ($group['groupHidden'] && !$task['isRunning']) {
+                if ($group['hidden'] && !$task['isRunning']) {
                     $taskStatus[] = '<fg=yellow>' . $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabledByGroup') . '</>';
                 }
 

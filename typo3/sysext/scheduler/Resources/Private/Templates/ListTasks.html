@@ -32,7 +32,7 @@
     />
 
     <h1><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler" /></h1>
-    <f:if condition="{tasks} || {errorClasses}">
+    <f:if condition="{groups} || {errorClasses}">
         <f:then>
             <f:render partial="TaskList" arguments="{_all}" />
         </f:then>

@@ -4435,16 +4435,10 @@ html{scroll-behavior:smooth}
 .draggable-dragging .draggable-copy-message{font-size:10.5px;position:absolute;top:-1.25rem}
 .tx_recycler_recycler tr.collapse{display:none}
 .tx_recycler_recycler tr.collapse.show{display:table-row}
-.scheduler-group-dragitem{cursor:move}
-.scheduler-group-dragitem [editable=true],.scheduler-group-dragitem a,.scheduler-group-dragitem button{cursor:initial}
-.scheduler-group-panel+.scheduler-group-panel{margin-top:calc(var(--typo3-spacing) * 1.5)}
+.scheduler-sortable-handle{cursor:move!important}
+.scheduler-panel+.scheduler-panel{margin-top:calc(var(--typo3-spacing) * 1.5)}
 .task-form .form-wizards-wrap{margin-bottom:.5rem!important}
-@media (min-width:992px){
-.task-form .row>.form-group{width:50%}
-}
-@media (min-width:992px){
-#task_end_col,#task_start_col{width:25%}
-}
+.task-form .row{max-width:800px}
 #SetupModuleController .form-wizards-wrap{margin-bottom:.5rem!important}
 @media (min-width:992px){
 #SetupModuleController .row>.form-group{width:50%}
