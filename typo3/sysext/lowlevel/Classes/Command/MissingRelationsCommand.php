@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -337,14 +338,7 @@ If you want to get more detailed information, use the --verbose option.')
                 $io->writeln('Removing references in offline versions which there are references pointing towards.');
             }
             foreach ($references as $hash => $recordReference) {
-                $io->writeln('Removing reference in record "' . $recordReference . '" (Hash: ' . $hash . ')');
-                if (!$dryRun) {
-                    $sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
-                    $error = $sysRefObj->setReferenceValue($hash, null);
-                    if ($error) {
-                        $io->error('ReferenceIndex::setReferenceValue() reported "' . $error . '"');
-                    }
-                }
+                $this->removeReference($hash, $recordReference, $dryRun, $io);
             }
         }
 
@@ -354,15 +348,29 @@ If you want to get more detailed information, use the --verbose option.')
                 $io->writeln('Removing references to non-existing records.');
             }
             foreach ($references as $hash => $recordReference) {
-                $io->writeln('Removing reference in record "' . $recordReference . '" (Hash: ' . $hash . ')');
-                if (!$dryRun) {
-                    $sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
-                    $error = $sysRefObj->setReferenceValue($hash, null);
-                    if ($error) {
-                        $io->error('ReferenceIndex::setReferenceValue() reported "' . $error . '"');
-                    }
-                }
+                $this->removeReference($hash, $recordReference, $dryRun, $io);
             }
+        }
+    }
+
+    /**
+     * Remove a reference to a missing record
+     */
+    protected function removeReference(string $hash, string $recordReference, bool $dryRun, SymfonyStyle $io): void
+    {
+        $io->writeln('Removing reference in record "' . $recordReference . '" (Hash: ' . $hash . ')');
+        if ($dryRun) {
+            return;
+        }
+
+        $sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+        try {
+            $error = $sysRefObj->setReferenceValue($hash, null);
+            if ($error) {
+                $io->error('ReferenceIndex::setReferenceValue() reported "' . $error . '"');
+            }
+        } catch (FileDoesNotExistException $e) {
+            $io->error('Unexpected exception thrown: ' . $e->getMessage());
         }
     }
 
