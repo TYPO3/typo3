@@ -2532,7 +2532,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $listNum = (string)random_int(0, count($temp) - 1);
         }
         $index = $this->calc(str_ireplace('last', $last, $listNum));
-        return $temp[$index];
+        return $temp[$index] ?? '';
     }
 
     /**
