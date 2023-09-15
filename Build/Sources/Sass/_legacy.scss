@@ -94,23 +94,6 @@ $input-height-base: ($line-height-computed + ($padding-base-vertical * 2) + 2) !
     @extend .input-group-text !optional;
 }
 
-//
-// used in the admin tools => DB check
-//
-.t3-overview-list dt {
-    padding: 0 0 2px 20px;
-
-    img {
-        vertical-align: middle;
-        margin-right: 5px;
-    }
-}
-
-.t3-overview-list dd {
-    margin: 2px 0 15px 20px;
-    padding-left: 22px;
-}
-
 // nav fallback
 // todo add ".nav-item" and ".nav-link" classes to markup
 .nav.nav-tabs {
