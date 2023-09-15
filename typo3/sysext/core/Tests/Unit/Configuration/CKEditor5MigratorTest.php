@@ -599,6 +599,96 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
+            'CKEditor5 toolbar.removeItems and CKEditor4 removeButtons' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'toolbar' => [
+                                'items' => [
+                                    'bold',
+                                ],
+                                'removeItems' => [
+                                    'subscript',
+                                    'underline',
+                                ],
+                            ],
+                            'removeButtons' => [
+                                'Superscript',
+                                'Strike',
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'bold',
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [
+                                    'subscript',
+                                    'underline',
+                                    'superscript',
+                                    'strikethrough',
+                                ],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'CKEditor5 shouldNotGroupWhenFull' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'toolbar' => [
+                                'shouldNotGroupWhenFull' => false,
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => false,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
 
             // TYPO3 11.5 Toolbar Presets
             'CKEditor4 Toolbar Default' => [

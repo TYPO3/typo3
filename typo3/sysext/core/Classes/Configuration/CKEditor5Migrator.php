@@ -247,8 +247,8 @@ class CKEditor5Migrator
          */
         $toolbar = [
             'items' => [],
-            'removeItems' => [],
-            'shouldNotGroupWhenFull' => true,
+            'removeItems' => $this->configuration['editor']['config']['toolbar']['removeItems'] ?? [],
+            'shouldNotGroupWhenFull' => $this->configuration['editor']['config']['toolbar']['shouldNotGroupWhenFull'] ?? true,
         ];
 
         // Migrate CKEditor4 toolbarGroups
