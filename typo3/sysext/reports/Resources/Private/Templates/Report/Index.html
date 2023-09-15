@@ -8,27 +8,43 @@
 <f:layout name="Module" />
 
 <f:section name="Content">
+    <div class="container-small">
 
-    <h1><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview"/></h1>
+        <h1><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview"/></h1>
 
-    <f:if condition="!{reports}">
-        <f:be.infobox state="-1" title="{f:translate(key:'LLL:EXT:reports/Resources/Private/Language/locallang.xlf:noReportsTitle')}">
-            <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:noReportsMessage"/>
-        </f:be.infobox>
-    </f:if>
+        <f:if condition="!{reports}">
+            <f:be.infobox state="-1" title="{f:translate(key:'LLL:EXT:reports/Resources/Private/Language/locallang.xlf:noReportsTitle')}">
+                <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:noReportsMessage"/>
+            </f:be.infobox>
+        </f:if>
 
-    <dl class="t3-overview-list">
-        <f:for each="{reports}" as="report">
-            <dt>
-                <a href="{be:moduleLink(route: 'system_reports', arguments: '{action: \'detail\', report: report.identifier}')}">
-                    <core:icon identifier="{report.iconIdentifier}"/>
-                    <f:translate key="{report.title}" default="{report.title}"/>
+        <section class="card-container">
+            <f:for each="{reports}" as="report">
+                <a
+                    href="{be:moduleLink(route: 'system_reports', arguments: '{action: \'detail\', report: report.identifier}')}"
+                    title="{f:translate(key: report.title, default: report.title)}"
+                    class="card card-size-medium"
+                >
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <core:icon identifier="{report.iconIdentifier}" size="medium" />
+                        </div>
+                        <div class="card-header-body">
+                            <h3 class="card-title"><f:translate key="{report.title}" default="{report.title}"/></h3>
+                            <f:if condition="{report.description}">
+                                <div class="card-longdesc">
+                                    <f:sanitize.html>
+                                        <f:translate key="{report.description}" default="{report.description}"/>
+                                    </f:sanitize.html>
+                                </div>
+                            </f:if>
+                        </div>
+                    </div>
                 </a>
-            </dt>
-            <dd><f:translate key="{report.description}" default="{report.description}"/></dd>
-        </f:for>
-    </dl>
+            </f:for>
+        </section>
 
+    </div>
 </f:section>
 
 </html>
