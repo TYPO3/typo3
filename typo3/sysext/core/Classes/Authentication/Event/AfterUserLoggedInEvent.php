@@ -21,9 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 
 /**
- * Event fired after a user has been actively logged in (incl. possible MFA).
- * Currently only working in BE context, but might get opened up in FE context
- * as well in TYPO3 v13+.
+ * Event fired after a user has been actively logged in to backend (incl. possible MFA) or frontend.
  */
 final class AfterUserLoggedInEvent
 {

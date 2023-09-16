@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Middleware;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -24,6 +25,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\RateLimiter\LimiterInterface;
+use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\RateLimiter\RateLimiterFactory;
 use TYPO3\CMS\Core\RateLimiter\RequestRateLimitedException;
@@ -41,7 +43,8 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
 
     public function __construct(
         protected readonly Context $context,
-        protected readonly RateLimiterFactory $rateLimiterFactory
+        protected readonly RateLimiterFactory $rateLimiterFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -68,6 +71,7 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
 
         if ($this->context->getAspect('frontend.user')->isLoggedIn() && $rateLimiter) {
             $rateLimiter->reset();
+            $this->eventDispatcher->dispatch(new AfterUserLoggedInEvent($frontendUser, $request));
         }
 
         $response = $handler->handle($request);
