@@ -7585,4 +7585,56 @@ final class ContentObjectRendererTest extends UnitTestCase
         $result = $contentObjectRenderer->mergeTSRef($inputArray, 'tempKey');
         self::assertSame($expected, $result);
     }
+
+    public static function listNumDataProvider(): array
+    {
+        return [
+            'Numeric non-zero $listNum' => [
+                'expected' => 'foo',
+                'content' => 'hello,foo,bar,',
+                'listNum' => '1',
+                'delimeter' => ',',
+            ],
+            'Numeric non-zero $listNum, without passing delimeter' => [
+                'expected' => 'foo',
+                'content' => 'hello,foo,bar',
+                'listNum' => '1',
+                'delimeter' => '',
+            ],
+            '$listNum = last' => [
+                'expected' => 'bar',
+                'content' => 'hello,foo,bar',
+                'listNum' => 'last',
+                'delimeter' => ',',
+            ],
+            '$listNum arithmetic' => [
+                'expected' => 'foo',
+                'content' => 'hello,foo,bar',
+                'listNum' => '3-2',
+                'delimeter' => ',',
+            ],
+        ];
+
+    }
+
+    /**
+     * @test
+     * @dataProvider listNumDataProvider
+     */
+    public function listNum(string $expected, string $content, string $listNum, string $delimeter): void
+    {
+        $contentObjectRenderer = new ContentObjectRenderer();
+        self::assertEquals($expected, $contentObjectRenderer->listNum($content, $listNum, $delimeter));
+    }
+
+    /**
+     * @test
+     */
+    public function listNumWithListNumRandReturnsString(): void
+    {
+        $contentObjectRenderer = new ContentObjectRenderer();
+        $result = $contentObjectRenderer->listNum('hello,foo,bar', 'rand', ',');
+        self::assertTrue($result === 'hello' || $result === 'foo' || $result === 'bar');
+    }
+
 }
