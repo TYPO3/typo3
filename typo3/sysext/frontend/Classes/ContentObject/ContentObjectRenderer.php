@@ -1483,7 +1483,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_preIfEmptyListNum($content = '', $conf = [])
     {
-        return $this->listNum($content, $conf['preIfEmptyListNum'] ?? null, $conf['preIfEmptyListNum.']['splitChar'] ?? null);
+        return $this->listNum($content, $conf['preIfEmptyListNum'] ?? '0', $conf['preIfEmptyListNum.']['splitChar'] ?? ',');
     }
 
     /**
@@ -1545,7 +1545,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_listNum($content = '', $conf = [])
     {
-        return $this->listNum($content, $conf['listNum'] ?? null, $conf['listNum.']['splitChar'] ?? null);
+        return $this->listNum($content, $conf['listNum'] ?? '0', $conf['listNum.']['splitChar'] ?? ',');
     }
 
     /**
@@ -2566,20 +2566,20 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Exploding a string by the $char value (if integer its an ASCII value) and returning index $listNum
+     * Explode a string by the $delimeter value and return the value of index $listNum
      *
      * @param string $content String to explode
-     * @param string $listNum Index-number. You can place the word "last" in it and it will be substituted with the pointer to the last value. You can use math operators like "+-/*" (passed to calc())
-     * @param string $char Either a string used to explode the content string or an integer value which will then be changed into a character, eg. "10" for a linebreak char.
+     * @param string $listNum Index-number | 'last' | 'rand' | arithmetic expression. You can place the word "last" in it and it will be substituted with the pointer to the last value. You can use math operators like "+-/*" (passed to calc())
+     * @param string $delimeter Either a string used to explode the content string or an integer value (as string) which will then be changed into a character, eg. "10" for a linebreak char.
      * @return string
      */
-    public function listNum($content, $listNum, $char)
+    public function listNum($content, $listNum, $delimeter = ',')
     {
-        $char = $char ?: ',';
-        if (MathUtility::canBeInterpretedAsInteger($char)) {
-            $char = chr((int)$char);
+        $delimeter = $delimeter ?: ',';
+        if (MathUtility::canBeInterpretedAsInteger($delimeter)) {
+            $delimeter = chr((int)$delimeter);
         }
-        $temp = explode($char, $content);
+        $temp = explode($delimeter, $content);
         if (empty($temp)) {
             return '';
         }
