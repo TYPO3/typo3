@@ -2584,6 +2584,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param bool $respectFileMounts
      * @return Folder
+     * @todo: this is a bad method design, because the calling code can never fetch all filemounts nor traverse them.
      */
     public function getRootLevelFolder($respectFileMounts = true)
     {
