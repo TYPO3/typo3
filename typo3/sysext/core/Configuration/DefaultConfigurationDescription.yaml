@@ -5,12 +5,6 @@ GFX:
         thumbnails:
             type: bool
             description: 'Enables the use of thumbnails in the backend interface.'
-        thumbnails_png:
-            type: bool
-            description: 'If disabled, thumbnails from non-image files will be converted to ''gif'', otherwise ''png'' (default).'
-        gif_compress:
-            type: bool
-            description: 'Enables the use of the <code>\TYPO3\CMS\Core\Imaging\GraphicalFunctions::gifCompress()</code> workaround function for compressing .gif files made with GD or IM, which probably use only RLE or no compression at all.'
         imagefile_ext:
             type: list
             description: 'Commalist of file extensions perceived as images by TYPO3. List should be set to ''gif,png,jpeg,jpg'' if IM is not available. Lowercase and no spaces between!'

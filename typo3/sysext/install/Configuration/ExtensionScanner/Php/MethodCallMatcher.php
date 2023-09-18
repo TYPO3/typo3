@@ -5856,4 +5856,11 @@ return [
             'Breaking-101612-LinkParameterProviderInterfaceChanged.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Imaging\GraphicalFunctions->IMreduceColors' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-101941-VariousGFX-relatedLegacyOptionsRemoved.rst',
+        ],
+    ],
 ];

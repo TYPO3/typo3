@@ -185,6 +185,9 @@ class SilentConfigurationUpgradeService
         // #101793
         'BE/checkStoredRecords',
         'BE/checkStoredRecordsLoose',
+        // #101941
+        'GFX/thumbnails_png',
+        'GFX/gif_compress',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager)
@@ -205,7 +208,6 @@ class SilentConfigurationUpgradeService
         $this->transferHttpSettings();
         $this->disableImageMagickDetailSettingsIfImageMagickIsDisabled();
         $this->setImageMagickDetailSettings();
-        $this->migrateThumbnailsPngSetting();
         $this->migrateLockSslSetting();
         $this->migrateDatabaseConnectionSettings();
         $this->migrateDatabaseConnectionCharset();
@@ -642,29 +644,6 @@ class SilentConfigurationUpgradeService
 
         if (!empty(array_filter($changedSettings))) {
             $this->configurationManager->removeLocalConfigurationKeysByPath(array_keys($changedSettings));
-            $this->throwConfigurationChangedException();
-        }
-    }
-
-    /**
-     * Migrate the configuration value thumbnails_png to a boolean value.
-     *
-     * @throws ConfigurationChangedException
-     */
-    protected function migrateThumbnailsPngSetting(): void
-    {
-        $changedValues = [];
-        try {
-            $currentThumbnailsPngValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/thumbnails_png');
-        } catch (MissingArrayPathException) {
-            $currentThumbnailsPngValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/thumbnails_png');
-        }
-
-        if (is_int($currentThumbnailsPngValue) && $currentThumbnailsPngValue > 0) {
-            $changedValues['GFX/thumbnails_png'] = true;
-        }
-        if (!empty($changedValues)) {
-            $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
             $this->throwConfigurationChangedException();
         }
     }

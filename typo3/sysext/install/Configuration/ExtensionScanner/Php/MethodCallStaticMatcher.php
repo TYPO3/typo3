@@ -1585,4 +1585,12 @@ return [
             'Deprecation-101807-ExtensionManagementUtilityaddUserTSConfig.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Imaging\GraphicalFunctions::gifCompress' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-101941-VariousGFX-relatedLegacyOptionsRemoved.rst',
+        ],
+    ],
+
 ];

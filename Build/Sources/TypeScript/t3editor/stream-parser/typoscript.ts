@@ -732,7 +732,6 @@ export class TypoScriptStreamParserFactory {
         'recursive': kw('recursive'),
         'redirect': kw('redirect'),
         'redirectToURL': kw('redirectToURL'),
-        'reduceColors': kw('reduceColors'),
         'references': kw('references'),
         'register': kw('register'),
         'relPathPrefix': kw('relPathPrefix'),

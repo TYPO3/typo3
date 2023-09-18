@@ -1026,4 +1026,9 @@ return [
             'Deprecation-101793-DataHandlerCheckStoredRecordsProperties.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Imaging\GraphicalFunctions->dontCompress' => [
+        'restFiles' => [
+            'Breaking-101941-VariousGFX-relatedLegacyOptionsRemoved.rst',
+        ],
+    ],
 ];

@@ -1346,12 +1346,6 @@ If value is tx_myextension[input][  |  ]  then the fieldname "email" would be
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="reduceColors" type="int">
-			<description><![CDATA[posint (1-255)
-			Reduce the number of colors (if gif-file)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="transparentBackground" type="boolean">
 			<description><![CDATA[Set this flag to render the background transparent. TYPO3 makes the color found at position 0,0 of the image (upper left corner) transparent.
 If you render text you should leave the niceText option OFF as the result with probably be more precise without the niceText antialiasing hack]]></description>
@@ -1369,9 +1363,7 @@ red
 
 Option:
 transparentColor.closest = 1
-This will allow for the closest color to be matched instead. You may need this if you image is not guaranteed "clean".
-
-NOTE: You may experience that this doesn't work if you use reduceColors-option or render text with niceText-option.]]></description>
+This will allow for the closest color to be matched instead. You may need this if your image is not guaranteed "clean".]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

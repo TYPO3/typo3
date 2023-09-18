@@ -443,25 +443,6 @@ class EnvironmentController extends AbstractController
         $imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '300', '', '', '', [], true);
         $messages = new FlashMessageQueue('install');
         if ($imResult !== null && is_file($imResult[3])) {
-            if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']) {
-                clearstatcache();
-                $previousSize = GeneralUtility::formatSize((int)filesize($imResult[3]));
-                $methodUsed = GraphicalFunctions::gifCompress($imResult[3], '');
-                clearstatcache();
-                $compressedSize = GeneralUtility::formatSize((int)filesize($imResult[3]));
-                $messages->enqueue(new FlashMessage(
-                    'Method used by compress: ' . $methodUsed . LF
-                    . ' Previous filesize: ' . $previousSize . '. Current filesize:' . $compressedSize,
-                    'Compressed gif',
-                    ContextualFeedbackSeverity::INFO
-                ));
-            } else {
-                $messages->enqueue(new FlashMessage(
-                    '',
-                    'Gif compression not enabled by [GFX][gif_compress]',
-                    ContextualFeedbackSeverity::INFO
-                ));
-            }
             $result = [
                 'status' => $messages,
                 'fileExists' => true,
@@ -948,7 +929,6 @@ class EnvironmentController extends AbstractController
         $imageProcessor = GeneralUtility::makeInstance(GraphicalFunctions::class);
         $imageProcessor->dontCheckForExistingTempFile = true;
         $imageProcessor->filenamePrefix = 'installTool-';
-        $imageProcessor->dontCompress = true;
         $imageProcessor->alternativeOutputKey = 'typo3InstallTest';
         $imageProcessor->setImageFileExt(self::IMAGE_FILE_EXT);
         return $imageProcessor;

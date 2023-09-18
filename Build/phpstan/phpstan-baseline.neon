@@ -572,7 +572,7 @@ parameters:
 
 		-
 			message: "#^If condition is always true\\.$#"
-			count: 9
+			count: 8
 			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
 		-
@@ -2332,7 +2332,7 @@ parameters:
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:\\$setup \\(array\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 9
+			count: 8
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
 
 		-

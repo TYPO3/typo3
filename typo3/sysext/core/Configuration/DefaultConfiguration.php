@@ -24,8 +24,6 @@ return [
     ],
     'GFX' => [ // Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and GD library respectively.
         'thumbnails' => true,
-        'thumbnails_png' => true,
-        'gif_compress' => true,
         'imagefile_ext' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai,svg',
         'gdlib' => true,
         'gdlib_png' => false,

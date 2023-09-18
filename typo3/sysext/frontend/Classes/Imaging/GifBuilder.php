@@ -150,7 +150,6 @@ class GifBuilder extends GraphicalFunctions
             }
             $this->setup['transparentColor_array'] = explode('|', trim((string)$this->cObj->stdWrapValue('transparentColor', $this->setup ?? [])));
             $this->setup['transparentBackground'] = $this->cObj->stdWrapValue('transparentBackground', $this->setup ?? []);
-            $this->setup['reduceColors'] = $this->cObj->stdWrapValue('reduceColors', $this->setup ?? []);
             // Set default dimensions
             $this->setup['XY'] = $this->cObj->stdWrapValue('XY', $this->setup ?? []);
             if (!$this->setup['XY']) {
@@ -373,7 +372,7 @@ class GifBuilder extends GraphicalFunctions
         $this->w = $XY[0];
         $this->h = $XY[1];
         // Transparent layer as background if set and requirements are met
-        if (!empty($this->setup['backColor']) && $this->setup['backColor'] === 'transparent' && !$this->setup['reduceColors'] && (empty($this->setup['format']) || $this->setup['format'] === 'png')) {
+        if (($this->setup['backColor'] ?? '') === 'transparent' && (empty($this->setup['format']) || $this->setup['format'] === 'png')) {
             // Set transparency properties
             imagesavealpha($this->im, true);
             // Fill with a transparent background

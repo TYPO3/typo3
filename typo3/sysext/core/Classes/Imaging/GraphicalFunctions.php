@@ -169,13 +169,6 @@ class GraphicalFunctions
     public $dontCheckForExistingTempFile = false;
 
     /**
-     * Prevents imageMagickConvert() from compressing the gif-files with self::gifCompress()
-     *
-     * @var bool
-     */
-    public $dontCompress = false;
-
-    /**
      * For debugging only.
      * Filenames will not be based on mtime and only filename (not path) will be used.
      * This key is also included in the hash of the filename...
@@ -1860,33 +1853,6 @@ class GraphicalFunctions
         }
     }
 
-    /**
-     * Reduce colors in image using IM and create a palette based image if possible (<=256 colors)
-     *
-     * @param string $file Image file to reduce
-     * @param int $cols Number of colors to reduce the image to.
-     * @return string Reduced file
-     */
-    public function IMreduceColors($file, $cols)
-    {
-        $fI = GeneralUtility::split_fileref($file);
-        $ext = strtolower($fI['fileext']);
-        $result = $this->randomName() . '.' . $ext;
-        $reduce = MathUtility::forceIntegerInRange($cols, 0, $ext === 'gif' ? 256 : $this->truecolorColors, 0);
-        if ($reduce > 0) {
-            $params = ' -colors ' . $reduce;
-            if ($reduce <= 256) {
-                $params .= ' -type Palette';
-            }
-            $prefix = $ext === 'png' && $reduce <= 256 ? 'png8:' : '';
-            $this->imageMagickExec($file, $prefix . $result, $params);
-            if ($result) {
-                return $result;
-            }
-        }
-        return '';
-    }
-
     /*********************************
      *
      * GIFBUILDER Helper functions
@@ -2175,9 +2141,6 @@ class GraphicalFunctions
             // params might change some image data!
             if ($params) {
                 $info = $this->getImageDimensions($info[3]);
-            }
-            if ($info !== null && $info[2] === $this->gifExtension && !$this->dontCompress) {
-                self::gifCompress($info[3], '');
             }
             return $info;
         }
@@ -2539,63 +2502,6 @@ class GraphicalFunctions
     }
 
     /**
-     * Compressing a GIF file if not already compressed.
-     * This function is a workaround for the fact that ImageMagick and/or GD does not compress GIF-files to their minimum size (that is RLE or no compression used)
-     *
-     * The function takes a file-reference, $theFile, and saves it again through GD or ImageMagick in order to compress the file
-     * GIF:
-     * If $type is not set, the compression is done with ImageMagick
-     * If $type is set to either 'IM' or 'GD' the compression is done with ImageMagick and GD respectively
-     * PNG:
-     * No changes.
-     *
-     * $theFile is expected to be a valid GIF-file!
-     * The function returns a code for the operation.
-     *
-     * @param string $theFile Filepath
-     * @param string $type See description of function
-     * @return string Returns "GD" if GD was used, otherwise "IM" if ImageMagick was used. If nothing done at all, it returns empty string.
-     */
-    public static function gifCompress($theFile, $type)
-    {
-        $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
-        if (!$gfxConf['gif_compress'] || strtolower(substr($theFile, -4, 4)) !== '.gif') {
-            return '';
-        }
-
-        if (($type === 'IM' || !$type) && $gfxConf['processor_enabled']) {
-            // Use temporary file to prevent problems with read and write lock on same file on network file systems
-            $temporaryName = PathUtility::dirname($theFile) . '/' . md5(StringUtility::getUniqueId()) . '.gif';
-            // Rename could fail, if a simultaneous thread is currently working on the same thing
-            if (@rename($theFile, $temporaryName)) {
-                $cmd = CommandUtility::imageMagickCommand(
-                    'convert',
-                    ImageMagickFile::fromFilePath($temporaryName) . ' ' . CommandUtility::escapeShellArgument($theFile),
-                    $gfxConf['processor_path']
-                );
-                CommandUtility::exec($cmd);
-                unlink($temporaryName);
-            }
-            $returnCode = 'IM';
-            if (@is_file($theFile)) {
-                GeneralUtility::fixPermissions($theFile);
-            }
-        } elseif (($type === 'GD' || !$type) && $gfxConf['gdlib'] && !$gfxConf['gdlib_png']) {
-            $tempImage = imagecreatefromgif($theFile);
-            imagegif($tempImage, $theFile);
-            imagedestroy($tempImage);
-            $returnCode = 'GD';
-            if (@is_file($theFile)) {
-                GeneralUtility::fixPermissions($theFile);
-            }
-        } else {
-            $returnCode = '';
-        }
-
-        return $returnCode;
-    }
-
-    /**
      * Returns filename of the png/gif version of the input file (which can be png or gif).
      * If input file type does not match the wanted output type a conversion is made and temp-filename returned.
      *
@@ -2695,19 +2601,7 @@ class GraphicalFunctions
             switch ($ext) {
                 case 'gif':
                 case 'png':
-                    if ($this->ImageWrite($this->im, $file)) {
-                        // ImageMagick operations
-                        if ($this->setup['reduceColors'] ?? false) {
-                            $reduced = $this->IMreduceColors($file, MathUtility::forceIntegerInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256));
-                            if ($reduced) {
-                                @copy($reduced, $file);
-                                @unlink($reduced);
-                            }
-                        }
-                        // Compress with IM! (adds extra compression, LZW from ImageMagick)
-                        // (Workaround for the absence of lzw-compression in GD)
-                        self::gifCompress($file, 'IM');
-                    }
+                    $this->ImageWrite($this->im, $file);
                     break;
                 case 'jpg':
                 case 'jpeg':
