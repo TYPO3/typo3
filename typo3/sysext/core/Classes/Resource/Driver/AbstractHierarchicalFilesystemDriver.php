@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Class AbstractHierarchicalFilesystemDriver
+ * Contains a few classes that might be useful for hierarchical drivers.
  */
 abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
 {
@@ -30,7 +30,6 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
      * Wrapper for \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
      *
      * @return bool TRUE if no '/', '..' or '\' is in the $theFile
-     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
      */
     protected function isPathValid(string $theFile): bool
     {
@@ -38,11 +37,10 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
     }
 
     /**
-     * Makes sure the Path given as parameter is valid
+     * Makes sure the given path is valid.
      *
      * @phpstan-param non-empty-string $filePath The file path (including the file name!)
      * @phpstan-return non-empty-string
-     * @throws InvalidPathException
      */
     protected function canonicalizeAndCheckFilePath(string $filePath): string
     {
@@ -55,11 +53,10 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
     }
 
     /**
-     * Makes sure the Path given as parameter is valid
+     * Makes sure the Path given as parameter is valid.
      *
      * @phpstan-param non-empty-string $fileIdentifier The file path (including the file name!)
      * @phpstan-return non-empty-string
-     * @throws InvalidPathException
      */
     protected function canonicalizeAndCheckFileIdentifier(string $fileIdentifier): string
     {
@@ -74,23 +71,21 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
     }
 
     /**
-     * Makes sure the Path given as parameter is valid
+     * Makes sure the Path given as parameter is valid.
      *
-     * @phpstan-param non-empty-string $folderPath The file path (including the file name!)
+     * @phpstan-param non-empty-string $folderIdentifier The file path (including the file name!)
      * @phpstan-return non-empty-string
      */
-    protected function canonicalizeAndCheckFolderIdentifier(string $folderPath): string
+    protected function canonicalizeAndCheckFolderIdentifier(string $folderIdentifier): string
     {
-        if ($folderPath === '/') {
-            $canonicalizedIdentifier = $folderPath;
-        } else {
-            $canonicalizedIdentifier = rtrim($this->canonicalizeAndCheckFileIdentifier($folderPath), '/') . '/';
+        if ($folderIdentifier === '/') {
+            return '/';
         }
-        return $canonicalizedIdentifier;
+        return rtrim($this->canonicalizeAndCheckFileIdentifier($folderIdentifier), '/') . '/';
     }
 
     /**
-     * Returns the identifier of the folder the file resides in
+     * Returns the identifier of the folder the file resides in.
      *
      * @phpstan-param non-empty-string $fileIdentifier
      * @phpstan-return non-empty-string
