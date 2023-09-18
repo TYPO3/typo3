@@ -80,8 +80,7 @@ class BackendController
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly PageRenderer $pageRenderer,
         private readonly FlashMessageService $flashMessageService,
-    ) {
-    }
+    ) {}
 
     /**
      * Main entry point dispatcher

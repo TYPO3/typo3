@@ -29,7 +29,7 @@ return (new \PhpCsFixer\Config())
         'declare_parentheses' => true,
         'dir_constant' => true,
         'function_to_constant' => ['functions' => ['get_called_class', 'get_class', 'get_class_this', 'php_sapi_name', 'phpversion', 'pi']],
-        'function_typehint_space' => true,
+        'type_declaration_spaces' => true,
         'lowercase_cast' => true,
         'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
         'modernize_strpos' => true,

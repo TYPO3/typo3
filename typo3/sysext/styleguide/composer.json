@@ -44,7 +44,7 @@
         "codeception/module-asserts": "^3.0",
         "codeception/module-cli": "^2.0",
         "codeception/module-webdriver": "^4.0",
-        "friendsofphp/php-cs-fixer": "^3.16.0",
+        "friendsofphp/php-cs-fixer": "^3.27",
         "phpstan/phpstan": "^1.10.14",
         "typo3/cms-core": "~13.0@dev",
         "typo3/cms-frontend": "~13.0@dev",

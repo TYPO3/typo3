@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 /**
  * TcaDataGenerator exception
  */
-class Exception extends \TYPO3\CMS\Styleguide\Exception
-{
-}
+class Exception extends \TYPO3\CMS\Styleguide\Exception {}

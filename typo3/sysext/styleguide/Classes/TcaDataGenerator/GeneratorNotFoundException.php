@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 /**
  * Exception thrown if FieldGenerator does not find a class
  */
-class GeneratorNotFoundException extends Exception
-{
-}
+class GeneratorNotFoundException extends Exception {}

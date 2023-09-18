@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Styleguide;
 /**
  * General styleguide exception
  */
-class Exception extends \Exception
-{
-}
+class Exception extends \Exception {}
