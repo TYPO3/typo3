@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Schema\Exception\DefaultTcaSchemaTablePositionException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -74,7 +75,7 @@ class DefaultTcaSchema
             if (!$this->isColumnDefinedForTable($tables, $tableName, 'uid')) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote('uid'),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'notnull' => true,
                         'unsigned' => true,
@@ -92,7 +93,7 @@ class DefaultTcaSchema
                     'notnull' => true,
                     'unsigned' => true,
                 ];
-                $tables[$tablePosition]->addColumn($this->quote('pid'), 'integer', $options);
+                $tables[$tablePosition]->addColumn($this->quote('pid'), Types::INTEGER, $options);
                 $pidColumnAdded = true;
             }
 
@@ -102,7 +103,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote($tableDefinition['ctrl']['tstamp']),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -117,7 +118,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote($tableDefinition['ctrl']['crdate']),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -132,7 +133,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote($tableDefinition['ctrl']['delete']),
-                    'smallint',
+                    Types::SMALLINT,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -147,7 +148,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote($tableDefinition['ctrl']['enablecolumns']['disabled']),
-                    'smallint',
+                    Types::SMALLINT,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -162,7 +163,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote($tableDefinition['ctrl']['enablecolumns']['starttime']),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -177,7 +178,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote($tableDefinition['ctrl']['enablecolumns']['endtime']),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -192,7 +193,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote($tableDefinition['ctrl']['enablecolumns']['fe_group']),
-                    'string',
+                    Types::STRING,
                     [
                         'default' => '0',
                         'notnull' => true,
@@ -207,7 +208,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote($tableDefinition['ctrl']['sortby']),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -234,7 +235,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote($tableDefinition['ctrl']['descriptionColumn']),
-                    'text',
+                    Types::TEXT,
                     [
                         'notnull' => false,
                         'length' => 65535,
@@ -248,7 +249,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote($tableDefinition['ctrl']['editlock']),
-                    'smallint',
+                    Types::SMALLINT,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -263,7 +264,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote((string)$tableDefinition['ctrl']['languageField']),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -279,7 +280,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote((string)$tableDefinition['ctrl']['transOrigPointerField']),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -295,7 +296,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote((string)$tableDefinition['ctrl']['translationSource']),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -312,7 +313,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote('l10n_state'),
-                    'text',
+                    Types::TEXT,
                     [
                         'notnull' => false,
                         'length' => 65535,
@@ -326,7 +327,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote($tableDefinition['ctrl']['origUid']),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -341,7 +342,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote($tableDefinition['ctrl']['transOrigDiffSourceField']),
-                    'blob',
+                    Types::BLOB,
                     [
                         // mediumblob (16MB) on mysql
                         'length' => 16777215,
@@ -357,7 +358,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote('t3ver_oid'),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -373,7 +374,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote('t3ver_wsid'),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -389,7 +390,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote('t3ver_state'),
-                    'smallint',
+                    Types::SMALLINT,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -405,7 +406,7 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addColumn(
                     $this->quote('t3ver_stage'),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -439,7 +440,7 @@ class DefaultTcaSchema
                 if (($fieldConfig['config']['relationship'] ?? '') === 'oneToMany') {
                     $tables[$tablePosition]->addColumn(
                         $this->quote($fieldName),
-                        'text',
+                        Types::TEXT,
                         [
                             'notnull' => false,
                         ]
@@ -447,7 +448,7 @@ class DefaultTcaSchema
                 } else {
                     $tables[$tablePosition]->addColumn(
                         $this->quote($fieldName),
-                        'integer',
+                        Types::INTEGER,
                         [
                             'default' => 0,
                             'notnull' => true,
@@ -477,7 +478,7 @@ class DefaultTcaSchema
                 } else {
                     $tables[$tablePosition]->addColumn(
                         $this->quote($fieldName),
-                        'integer',
+                        Types::INTEGER,
                         [
                             'default' => 0,
                             'notnull' => !($fieldConfig['config']['nullable'] ?? false),
@@ -497,7 +498,7 @@ class DefaultTcaSchema
 
                 $tables[$tablePosition]->addColumn(
                     $this->quote($fieldName),
-                    'string',
+                    Types::STRING,
                     [
                         'length' => 2048,
                         'notnull' => false,
@@ -515,7 +516,7 @@ class DefaultTcaSchema
 
                 $tables[$tablePosition]->addColumn(
                     $this->quote($fieldName),
-                    'json',
+                    Types::JSON,
                     [
                         'notnull' => false,
                     ]
@@ -532,7 +533,7 @@ class DefaultTcaSchema
 
                 $tables[$tablePosition]->addColumn(
                     $this->quote($fieldName),
-                    'string',
+                    Types::STRING,
                     [
                         'length' => 36,
                         'default' => '',
@@ -595,7 +596,7 @@ class DefaultTcaSchema
                 if ($hasUid && !$this->isColumnDefinedForTable($tables, $mmTableName, 'uid')) {
                     $tables[$tablePosition]->addColumn(
                         $this->quote('uid'),
-                        'integer',
+                        Types::INTEGER,
                         [
                             'notnull' => true,
                             'unsigned' => true,
@@ -608,7 +609,7 @@ class DefaultTcaSchema
                 if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'uid_local')) {
                     $tables[$tablePosition]->addColumn(
                         $this->quote('uid_local'),
-                        'integer',
+                        Types::INTEGER,
                         [
                             'default' => 0,
                             'notnull' => true,
@@ -623,7 +624,7 @@ class DefaultTcaSchema
                 if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'uid_foreign')) {
                     $tables[$tablePosition]->addColumn(
                         $this->quote('uid_foreign'),
-                        'integer',
+                        Types::INTEGER,
                         [
                             'default' => 0,
                             'notnull' => true,
@@ -638,7 +639,7 @@ class DefaultTcaSchema
                 if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'sorting')) {
                     $tables[$tablePosition]->addColumn(
                         $this->quote('sorting'),
-                        'integer',
+                        Types::INTEGER,
                         [
                             'default' => 0,
                             'notnull' => true,
@@ -649,7 +650,7 @@ class DefaultTcaSchema
                 if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'sorting_foreign')) {
                     $tables[$tablePosition]->addColumn(
                         $this->quote('sorting_foreign'),
-                        'integer',
+                        Types::INTEGER,
                         [
                             'default' => 0,
                             'notnull' => true,
@@ -665,7 +666,7 @@ class DefaultTcaSchema
                     if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'tablenames')) {
                         $tables[$tablePosition]->addColumn(
                             $this->quote('tablenames'),
-                            'string',
+                            Types::STRING,
                             [
                                 'default' => '',
                                 'length' => 64,
@@ -676,7 +677,7 @@ class DefaultTcaSchema
                     if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'fieldname')) {
                         $tables[$tablePosition]->addColumn(
                             $this->quote('fieldname'),
-                            'string',
+                            Types::STRING,
                             [
                                 'default' => '',
                                 'length' => 64,
