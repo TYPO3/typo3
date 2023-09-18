@@ -21,33 +21,33 @@
 .t3-form-x-component ol,.t3-form-x-component ul:not(.dropdown-menu){list-style:none;padding:0}
 .t3-form-x-component .form-sortable-ghost{outline-offset:-1px!important}
 .t3-form-x-component-inner-wrapper{position:relative;padding:1.5em}
-#t3-form-navigation-component{overflow:hidden;left:0}
-#t3-form-structure-panel{overflow:auto;padding-top:var(--module-docheader-height);height:100%}
+#t3-form-navigation-component{overflow:hidden;inset-inline-start:0}
+#t3-form-structure-panel{overflow:auto;padding-top:var(--module-docheader-height);height:100%;direction:ltr}
 #t3-form-structure-panel .icon{z-index:1}
 #t3-form-structure-panel #t3-form-navigation-component-tree-root-container,#t3-form-structure-panel .tree li>div{border:1px solid transparent;cursor:pointer}
-#t3-form-structure-panel .tree .svg-wrapper svg{overflow:visible;position:relative;top:-1em;left:.6em}
+#t3-form-structure-panel .tree .svg-wrapper svg{overflow:visible;position:relative;top:-1em;inset-inline-start:.6em}
 #t3-form-structure-panel .tree .svg-wrapper path{fill:none;shape-rendering:crispEdges;stroke:#ddd;stroke-width:1}
 #t3-form-structure-panel .tree li{white-space:nowrap}
 #t3-form-structure-panel .tree li.mjs-nestedSortable-collapsed>ol{display:none}
 #t3-form-structure-panel .tree li.mjs-nestedSortable-collapsed>div>span[data-identifier=treeExpander]{transform:rotate(0);transition:transform .2s}
 #t3-form-structure-panel .tree li.mjs-nestedSortable-expanded>div>span[data-identifier=treeExpander]{transform:rotate(90deg);transition:transform .2s}
-#t3-form-structure-panel .tree li small{padding-left:.5em;font-size:80%}
-#t3-form-structure-panel .tree .t3-form-icon{margin-right:.5em;margin-left:.5em}
-#t3-form-structure-panel .tree .t3-form-element-has-children>div .t3-form-icon{margin-left:.1em}
+#t3-form-structure-panel .tree li small{padding-inline-start:.5em;font-size:80%}
+#t3-form-structure-panel .tree .t3-form-icon{margin-inline:.5em}
+#t3-form-structure-panel .tree .t3-form-element-has-children>div .t3-form-icon{margin-inline-start:.1em}
 #t3-form-structure-panel .tree .sortable-hover{outline:1px solid #aaa}
-#t3-form-structure-panel .icon{margin-top:1px}
+#t3-form-structure-panel .icon{margin-block-start:1px}
 #t3-form-structure-panel #t3-form-navigation-component-tree-root-container,#t3-form-structure-panel .tree li>div{height:20px}
 #t3-form-structure-panel #t3-form-navigation-component-tree-root-container>span,#t3-form-structure-panel .tree li>div>span{display:inline-block;vertical-align:top;line-height:20px}
 #t3-form-structure-panel #t3-form-navigation-component-tree-root{width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#t3-form-structure-panel #t3-form-navigation-component-tree-root-container:hover,#t3-form-structure-panel .t3-form-form-element-selected,#t3-form-structure-panel .t3-form-root-element-selected,#t3-form-structure-panel .tree li>div:hover{background-color:#f2f2f2;border-color:#dcdcdc;border-radius:2px;margin-left:-20px;padding-left:20px;margin-right:-1.3em}
+#t3-form-structure-panel #t3-form-navigation-component-tree-root-container:hover,#t3-form-structure-panel .t3-form-form-element-selected,#t3-form-structure-panel .t3-form-root-element-selected,#t3-form-structure-panel .tree li>div:hover{background-color:#f2f2f2;border-color:#dcdcdc;border-radius:2px;margin-inline:-20px -1.3em;padding-inline-start:20px}
 #t3-form-structure-panel #t3-form-navigation-component-tree-root-container.t3-form-root-element-selected,#t3-form-structure-panel #t3-form-navigation-component-tree-root-container.t3-form-root-element-selected:hover,#t3-form-structure-panel .tree li>.t3-form-form-element-selected,#t3-form-structure-panel .tree li>.t3-form-form-element-selected:hover{background-color:#fff;border-color:#dcdcdc}
 #t3-form-structure-panel .t3-form-x-component-inner-wrapper{padding-top:2.5em}
 #t3-form-structure-panel .form-sortable-drag #t3-form-navigation-component-tree-root-container:hover,#t3-form-structure-panel .form-sortable-drag .t3-form-form-element-selected,#t3-form-structure-panel .form-sortable-drag .t3-form-root-element-selected,#t3-form-structure-panel .form-sortable-drag>div:hover{background-color:transparent!important;border-color:transparent!important}
 #t3-form-structure-panel .form-sortable-drag svg{opacity:0}
-#t3-form-structure-panel .mjs-nestedSortable-branch span[data-identifier=treeExpander]{margin-left:-1.7em;margin-top:-2px}
-#t3-form-structure-panel .mjs-nestedSortable-leaf span.t3-form-icon{margin-left:initial}
+#t3-form-structure-panel .mjs-nestedSortable-branch span[data-identifier=treeExpander]{margin-inline-start:-1.7em;margin-block-start:-2px}
+#t3-form-structure-panel .mjs-nestedSortable-leaf span.t3-form-icon{margin-inline-start:initial}
 .form-group.t3-form-collection-element-remove-button,.form-group.t3-form-inspector-validators-editor-removeButton,.t3-form-inspector-finishers-editor-removeButton{margin:0!important;font-size:0}
-#t3-form-inspector-panels-container{overflow:hidden;right:0;padding-top:var(--module-docheader-height)}
+#t3-form-inspector-panels-container{overflow:hidden;inset-inline-end:0;padding-top:var(--module-docheader-height)}
 #t3-form-inspector-panels{overflow:auto;height:100%}
 #t3-form-inspector{padding:1em 0}
 #t3-form-inspector h2,#t3-form-inspector h3,#t3-form-inspector h4{margin:0;padding:.1em .2em .2em .5em;border-top:1px solid var(--module-docheader-border);clear:both;font:inherit;font-weight:700}
@@ -74,10 +74,10 @@
 .t3-form-collection-container{margin-top:-1em;padding:.5em}
 .t3-form-collection-container .form-sortable-handle{cursor:auto}
 .t3-form-collection-container h4{cursor:move}
-.t3-form-collection-container .t3-form-control-group{margin-right:.5em;margin-left:.5em}
+.t3-form-collection-container .t3-form-control-group{margin-inline:.5em}
 .t3-form-collection-element{position:relative;margin-bottom:.5em;border:1px solid var(--module-docheader-border);border-top:none;background:#f5f5f5}
-.t3-form-collection-element .t3-form-collection-element-remove-button{position:absolute;right:.5em;top:.5em}
-.t3-form-collection-element h4>.icon{position:absolute;left:1em}
+.t3-form-collection-element .t3-form-collection-element-remove-button{position:absolute;inset-inline-end:.5em;top:.5em}
+.t3-form-collection-element h4>.icon{position:absolute;inset-inline-start:1em}
 .t3-form-collection-element .form-editor{padding:0}
 .t3-form-collection-element .panel-collapse .form-editor:first-child{margin-top:1em}
 .t3-form-validator-editor .collapsed .icon-actions-view-table-expand{transform:rotate(0);transition:transform .2s}
@@ -93,13 +93,13 @@
 .property-grid .table>tbody>tr>td:nth-child(5){width:35px}
 .property-grid .sort-row-field{cursor:move}
 .property-grid .form-sortable-drag td{border:none}
-.property-grid .form-sortable-ghost{height:45px;border-left:1px solid var(--module-docheader-border)!important;border-right:1px solid var(--module-docheader-border)!important;outline-offset:-5px!important}
-#t3-form-stage-inner-container{position:relative;left:-5px;display:inline-block;width:90%;max-width:800px;text-align:left}
+.property-grid .form-sortable-ghost{height:45px;border-inline-start:1px solid var(--module-docheader-border)!important;border-inline-end:1px solid var(--module-docheader-border)!important;outline-offset:-5px!important}
+#t3-form-stage-inner-container{position:relative;inset-inline-start:-5px;display:inline-block;width:90%;max-width:800px;text-align:start}
 #t3-form-stage-container{overflow:auto;position:relative;height:calc(100% - var(--module-docheader-height));max-height:100%;text-align:center}
 #t3-form-stage-container ol,#t3-form-stage-container ul{list-style:none}
 #t3-form-stage-container .form-section{border:none}
 #t3-form-stage-container .panel-heading button{outline:0}
-#t3-form-stage-container .panel-heading .paginiation-label{margin-right:1em}
+#t3-form-stage-container .panel-heading .paginiation-label{margin-inline-end:1em}
 #t3-form-stage-container .t3-form-new-element-container{display:flex;justify-content:center;align-items:center;height:62px;border:1px dashed #ddd}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-page-title{margin:0 0 .5em}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage-inner-container{overflow:hidden}
@@ -112,26 +112,26 @@
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .form-sortable-handle:hover .t3-form-icon-container,#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-composit.sortable-hover>.form-sortable-handle .t3-form-icon-container{background-color:#777}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .form-sortable-handle{position:relative;height:62px;margin-bottom:1em;border:1px solid #ddd;background-color:#fff}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .form-sortable-handle:first-of-type{margin-top:1em}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .form-sortable-handle:hover .t3-form-validator-list{right:0;transition:right .2s}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract .form-sortable-handle:hover .t3-form-validator-list{inset-inline-end:0;transition:right .2s}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .form-sortable-handle:hover .t3-form-element-info .element-content div,#t3-form-stage-container.t3-form-stage-viewmode-abstract .form-sortable-handle:hover .t3-form-element-info .element-content span{color:#5a5a5a}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .form-sortable-handle:hover .t3-form-validator-info .t3-form-icon{margin-right:75px;transition:margin .2s}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract .form-sortable-handle:hover .t3-form-validator-info .t3-form-icon{margin-inline-end:75px;transition:margin .2s}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .ui-state-disabled{cursor:auto}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .ui-state-disabled:hover{background:0 0}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .form-sortable-ghost{margin-bottom:1em}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-icon-container{float:left;width:40px;height:100%;padding:1em;cursor:move;background-color:#ddd}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-icon-container{float:var(--typo3-position-start);width:40px;height:100%;padding:1em;cursor:move;background-color:#ddd}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-icon-container .t3-form-icon{height:100%}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-form-element-body{height:100%}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info{position:relative;float:left;width:55%;height:100%;padding-left:1em}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info{position:relative;float:var(--typo3-position-start);width:55%;height:100%;padding-inline-start:1em}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info:after,#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info:before{z-index:1;display:block;content:"";position:absolute;bottom:0;right:0;left:0}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info:before{height:.8em;background:#fff}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info:after{bottom:.8em;height:1em;background:linear-gradient(to bottom,rgba(255,255,255,0) 0,#fff 100%)}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info .element-label-container{float:left;position:relative;width:45%;height:100%}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info .element-label-container{float:var(--typo3-position-start);position:relative;width:45%;height:100%}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info .element-label-container .element-label{overflow:hidden;position:absolute;top:50%;width:100%;text-overflow:ellipsis;transform:translateY(-50%)}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info .element-content{padding-top:1em;white-space:nowrap;font-size:.8em}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info .element-content div,#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-element-info .element-content span{color:#ddd}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info{position:relative;overflow:hidden;float:right;height:100%}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info .t3-form-icon{height:100%;z-index:1;margin-left:1em;transition:margin .3s;filter:grayscale(100%)}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info .t3-form-validator-list{position:absolute;top:0;right:-100px;width:100px;height:100%;padding:1em 1em 1em 35px;font-size:.8em;transition:right .3s;background-color:#ddd}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info{position:relative;overflow:hidden;float:var(--typo3-position-end);height:100%}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info .t3-form-icon{height:100%;z-index:1;margin-inline-start:1em;transition:margin .3s;filter:grayscale(100%)}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info .t3-form-validator-list{position:absolute;top:0;inset-inline-end:-100px;width:100px;height:100%;padding:1em 1em 1em 35px;font-size:.8em;transition:right .3s;background-color:#ddd}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info .t3-form-validator-list:after,#t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info .t3-form-validator-list:before{z-index:1;display:block;content:"";position:absolute;bottom:0;right:0;left:0}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info .t3-form-validator-list:before{height:1em;background:#ddd}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-validator-info .t3-form-validator-list:after{bottom:1em;height:1em;background:linear-gradient(to bottom,rgba(221,221,221,0) 0,#ddd 100%)}
@@ -140,21 +140,21 @@
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .t3-form-form-element-body{border:1px solid #0078e6}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .t3-form-icon-container{background-color:#0078e6}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .t3-form-element-info .element-content div,#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .t3-form-element-info .element-content span{color:#5a5a5a}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .t3-form-validator-list{right:0;transition:none;background-color:#ebf3fb}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .t3-form-validator-list{inset-inline-end:0;transition:none;background-color:#ebf3fb}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .t3-form-validator-list:before{background-color:#ebf3fb}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .t3-form-validator-list:after{background:linear-gradient(to bottom,rgba(235,243,251,0) 0,#ebf3fb 100%)}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .t3-form-validator-info .t3-form-icon{margin-right:75px;filter:none}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container{position:absolute;top:0;right:0;width:100%;height:35px;border:1px solid #0078e6;background-color:#0078e6;padding-right:.7em;padding-top:.4em}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .t3-form-validator-info .t3-form-icon{margin-inline-end:75px;filter:none}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container{position:absolute;top:0;inset-inline-end:0;width:100%;height:35px;border:1px solid #0078e6;background-color:#0078e6;padding-inline-end:.7em;padding-top:.4em}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container:after,#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container:before{position:absolute;top:0;display:block;width:1px;height:100%;content:" ";background-color:#0078e6}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container:before{left:-1px}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container:after{right:-1px}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container:before{inset-inline-start:-1px}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container:after{inset-inline-end:-1px}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .caret{color:#0078e6}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .t3-form-dropdown-buttons .icon{margin-right:.5em}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar{float:right}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .t3-form-dropdown-buttons .icon{margin-inline-end:.5em}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar{float:var(--typo3-position-end)}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar .btn{background-color:#fff;border-color:#fff}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar .btn.active,#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar .btn:focus,#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar .btn:hover{background-color:#ebf3fb}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar .btn .icon svg path{fill:#0078e6}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .meta-label{display:inline-block;top:1em;left:5em;bottom:auto;font-size:.9em;color:#fff}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .meta-label{display:inline-block;top:1em;inset-inline-start:5em;bottom:auto;font-size:.9em;color:#fff}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .meta-label span{color:#fff}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected{border-color:#0078e6}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected>.panel-heading{background-color:#0078e6;border-color:#0078e6;color:#fff}
@@ -172,7 +172,7 @@
 #t3-form-stage-container.t3-form-stage-viewmode-preview textarea{min-height:100px}
 #t3-form-stage-container.t3-form-stage-viewmode-preview .container{width:auto}
 #t3-form-stage-container.t3-form-stage-viewmode-preview legend.t3-form-form-element-selected{border-color:var(--module-docheader-border)}
-#t3-form-stage-container.t3-form-stage-viewmode-preview .form-navigation .btn-group button,#t3-form-stage-container.t3-form-stage-viewmode-preview .form-navigation .btn-group span{display:inline-block;margin-right:1em}
+#t3-form-stage-container.t3-form-stage-viewmode-preview .form-navigation .btn-group button,#t3-form-stage-container.t3-form-stage-viewmode-preview .form-navigation .btn-group span{display:inline-block;margin-inline-end:1em}
 #t3-form-stage-container.t3-form-stage-viewmode-preview .preview-table-first-col{width:30%}
 #t3-form-stage-container.t3-form-stage-viewmode-preview .t3-form-element-preview{position:relative;display:inline-block;width:100%}
 #t3-form-stage-container.t3-form-stage-viewmode-preview .t3-form-new-element-container{display:none}
@@ -180,19 +180,19 @@
 #t3-form-stage-container #t3-form-stage>ol,#t3-form-stage-container #t3-form-stage>ol>li>ol{padding-left:0;padding-right:0}
 #t3-form-stage-container #t3-form-stage .t3-form-element-toplevel>.t3-form-form-element-selected{height:auto;padding-top:0}
 #t3-form-stage-container #t3-form-stage .t3-form-element-toplevel>.t3-form-form-element-selected .btn-toolbar-container{display:none}
-.meta-label{z-index:2;position:absolute;bottom:1em;left:5.5em;display:none;color:#0078e6;line-height:1.6;font-size:.8em}
+.meta-label{z-index:2;position:absolute;bottom:1em;inset-inline-start:5.5em;display:none;color:#0078e6;line-height:1.6;font-size:.8em}
 .form-sortable-handle:hover>.meta-label{display:inline-block}
 .form-sortable-ghost,.t3-form-element-composit.form-sortable-ghost{z-index:1;position:relative;background-color:#fff!important;border:none!important;outline:1px dashed #3fe63f!important;outline-offset:-2px!important;visibility:visible!important}
 .form-sortable-ghost.mjs-nestedSortable-error{outline:1px dashed #c83c3c!important}
-.t3-form-icon{margin-right:1em}
+.t3-form-icon{margin-inline-end:1em}
 .t3-form-validation-child-has-error{color:#c83c3c}
 #t3-form-navigation-component .t3-form-validation-errors,#t3-form-stage-container .t3-form-validation-errors{position:relative;color:#c83c3c}
 #t3-form-navigation-component .t3-form-validation-errors:before,#t3-form-stage-container .t3-form-validation-errors:before{z-index:1;position:absolute;display:inline-block;width:14px;height:14px;border-radius:50%;background:0 0}
 #t3-form-navigation-component .t3-form-validation-errors:before{content:"";vertical-align:middle;-webkit-mask:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' xml:space='preserve' viewBox='0 0 16 16'%3e%3cg fill='currentColor'%3e%3cpath d='M8 2c3.3 0 6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6 2.7-6 6-6m0-1C4.1 1 1 4.1 1 8s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z'/%3e%3ccircle cx='8' cy='11' r='1'/%3e%3cpath d='M8.5 9h-1l-.445-4.45A.5.5 0 0 1 7.552 4h.896a.5.5 0 0 1 .497.55L8.5 9z'/%3e%3c/g%3e%3c/svg%3e");mask:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' xml:space='preserve' viewBox='0 0 16 16'%3e%3cg fill='currentColor'%3e%3cpath d='M8 2c3.3 0 6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6 2.7-6 6-6m0-1C4.1 1 1 4.1 1 8s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z'/%3e%3ccircle cx='8' cy='11' r='1'/%3e%3cpath d='M8.5 9h-1l-.445-4.45A.5.5 0 0 1 7.552 4h.896a.5.5 0 0 1 .497.55L8.5 9z'/%3e%3c/g%3e%3c/svg%3e");background-color:#c83c3c;background-size:contain;display:inline-block;margin-top:.2em}
-.t3-form-validation-errors#t3-form-navigation-component-tree-root:before{left:-2em!important;margin-top:.1em}
+.t3-form-validation-errors#t3-form-navigation-component-tree-root:before{inset-inline-start:-2em!important;margin-top:.1em}
 #t3-form-stage-container .t3-form-validation-errors.form-sortable-handle{border-color:#c83c3c}
-#t3-form-stage-container .t3-form-validation-errors.form-sortable-handle:before{content:"";vertical-align:middle;-webkit-mask:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' xml:space='preserve' viewBox='0 0 16 16'%3e%3cg fill='currentColor'%3e%3cpath d='M8 2c3.3 0 6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6 2.7-6 6-6m0-1C4.1 1 1 4.1 1 8s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z'/%3e%3ccircle cx='8' cy='11' r='1'/%3e%3cpath d='M8.5 9h-1l-.445-4.45A.5.5 0 0 1 7.552 4h.896a.5.5 0 0 1 .497.55L8.5 9z'/%3e%3c/g%3e%3c/svg%3e");mask:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' xml:space='preserve' viewBox='0 0 16 16'%3e%3cg fill='currentColor'%3e%3cpath d='M8 2c3.3 0 6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6 2.7-6 6-6m0-1C4.1 1 1 4.1 1 8s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z'/%3e%3ccircle cx='8' cy='11' r='1'/%3e%3cpath d='M8.5 9h-1l-.445-4.45A.5.5 0 0 1 7.552 4h.896a.5.5 0 0 1 .497.55L8.5 9z'/%3e%3c/g%3e%3c/svg%3e");background-color:#c83c3c;background-size:contain;display:inline-block;left:4.5em;margin-top:1.9em}
-#t3-form-stage-container .t3-form-validation-errors.form-sortable-handle .element-label{padding-left:1.5em}
+#t3-form-stage-container .t3-form-validation-errors.form-sortable-handle:before{content:"";vertical-align:middle;-webkit-mask:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' xml:space='preserve' viewBox='0 0 16 16'%3e%3cg fill='currentColor'%3e%3cpath d='M8 2c3.3 0 6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6 2.7-6 6-6m0-1C4.1 1 1 4.1 1 8s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z'/%3e%3ccircle cx='8' cy='11' r='1'/%3e%3cpath d='M8.5 9h-1l-.445-4.45A.5.5 0 0 1 7.552 4h.896a.5.5 0 0 1 .497.55L8.5 9z'/%3e%3c/g%3e%3c/svg%3e");mask:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' xml:space='preserve' viewBox='0 0 16 16'%3e%3cg fill='currentColor'%3e%3cpath d='M8 2c3.3 0 6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6 2.7-6 6-6m0-1C4.1 1 1 4.1 1 8s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z'/%3e%3ccircle cx='8' cy='11' r='1'/%3e%3cpath d='M8.5 9h-1l-.445-4.45A.5.5 0 0 1 7.552 4h.896a.5.5 0 0 1 .497.55L8.5 9z'/%3e%3c/g%3e%3c/svg%3e");background-color:#c83c3c;background-size:contain;display:inline-block;inset-inline-start:4.5em;margin-top:1.9em}
+#t3-form-stage-container .t3-form-validation-errors.form-sortable-handle .element-label{padding-inline-start:1.5em}
 #t3-form-inspector-panels .t3-form-collection-element .t3-form-validation-errors{display:inline-block;color:#fff;font-size:.8em;font-weight:700;background-color:#c83c3c;margin-bottom:.5em;padding:.1em .5em;border-radius:2px}
 #t3-form-inspector-panels .t3-form-validation-errors.t3-form-collection-element{border-color:#c83c3c}
 #t3-form-inspector-panels .t3-form-validation-errors.t3-form-collection-element h4{border-color:#c83c3c;background-color:#c83c3c;color:#fff}
@@ -208,4 +208,4 @@
 .module.web_FormFormbuilder_FormEditor .module-body,.module.web_FormFormbuilder_FormEditor div[data-identifier=moduleWrapper]{height:100%}
 .module.web_FormFormbuilder_FormEditor .module-body{padding-bottom:.5em}
 .module.web_FormFormbuilder_FormEditor .module-docheader-bar-column-left button,.module.web_FormFormbuilder_FormEditor .module-docheader-bar-column-left button:active,.module.web_FormFormbuilder_FormEditor .module-docheader-bar-column-left button:focus{outline:initial initial 0}
-.t3-form-element-new-page-button{position:absolute;left:.5em}
+.t3-form-element-new-page-button{position:absolute;inset-inline-start:.5em}

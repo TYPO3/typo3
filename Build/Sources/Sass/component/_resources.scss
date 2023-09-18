@@ -196,7 +196,7 @@
 .resource-tile-image-icon {
     position: absolute;
     top: calc(var(--resource-tile-spacing) * -.5);
-    left: calc(var(--resource-tile-spacing) * -.5);
+    inset-inline-start: calc(var(--resource-tile-spacing) * -.5);
 }
 
 .resource-tile-nameplate {
@@ -223,7 +223,7 @@
     display: none;
     position: absolute;
     font-size: var(--resource-tile-checkbox-size);
-    right: calc(var(--resource-tile-spacing) / 2);
+    inset-inline-end: calc(var(--resource-tile-spacing) / 2);
     top: calc(var(--resource-tile-spacing) / 2);
 }
 

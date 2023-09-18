@@ -16,7 +16,7 @@ td {
     }
 
     &.permission-column-group {
-        padding-left: 0;
+        padding-inline-start: 0;
         width: 200px;
         white-space: nowrap;
     }
@@ -35,8 +35,7 @@ td {
         height: 16px;
         display: inline-block;
         text-align: center;
-        margin-right: 5px;
-        margin-left: 10px;
+        margin-inline: 10px 5px;
         line-height: 14px;
         font-weight: bold;
     }
@@ -47,12 +46,12 @@ td {
         background: #000;
         display: block;
         margin-top: 8px;
-        margin-left: 6px;
+        margin-inline-start: 6px;
 
         span {
             width: 10px;
             height: 1px;
-            margin-left: 1px;
+            margin-inline-start: 1px;
         }
     }
 
@@ -62,7 +61,7 @@ td {
         background: #000;
         display: block;
         margin-top: -1px;
-        margin-left: -4px;
+        margin-inline-start: -4px;
     }
 
     .t3-vr span {
@@ -70,7 +69,7 @@ td {
         height: 20px;
         background: #000;
         margin-top: -2px;
-        margin-left: 6px;
+        margin-inline-start: 6px;
         display: block;
     }
 }

@@ -40,7 +40,7 @@ $nprogress-color: #ff8700;
     position: fixed;
     z-index: 1031;
     top: 15px;
-    right: 15px;
+    inset-inline-end: 15px;
 }
 
 #nprogress .spinner-icon {
@@ -49,7 +49,7 @@ $nprogress-color: #ff8700;
     box-sizing: border-box;
     border: solid 2px transparent;
     border-top-color: $nprogress-color;
-    border-left-color: $nprogress-color;
+    border-inline-start-color: $nprogress-color;
     border-radius: 50%;
     animation: nprogress-spinner 400ms linear infinite;
 }

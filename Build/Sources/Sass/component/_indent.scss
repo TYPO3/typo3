@@ -10,7 +10,7 @@
 .indent {
     --indent-base: 16px;
     --indent-level: 0;
-    margin-left: calc(var(--indent-base) * var(--indent-level));
+    margin-inline-start: calc(var(--indent-base) * var(--indent-level));
 }
 
 .indent-inline-block {

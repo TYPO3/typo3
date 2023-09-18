@@ -95,7 +95,7 @@
             height: calc(var(--statusreport-icon-size) * 1.5);
             width: calc(var(--statusreport-icon-size) * 1.5);
             background-color: var(--statusreport-icon-bg);
-            transform: translate(-50%, -50%);
+            transform: translate(calc(-50% * var(--typo3-position-modifier)), -50%);
             border-radius: 50%;
         }
     }

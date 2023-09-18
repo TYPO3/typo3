@@ -1,0 +1,19 @@
+//
+// Border Radius
+// =============
+//
+// Bugfixes for Bootstrap to support RTL
+//
+@mixin border-end-radius($radius: $border-radius) {
+    @if $enable-rounded {
+        border-start-end-radius: valid-radius($radius);
+        border-end-end-radius: valid-radius($radius);
+    }
+}
+
+@mixin border-start-radius($radius: $border-radius) {
+    @if $enable-rounded {
+        border-start-start-radius: valid-radius($radius);
+        border-end-start-radius: valid-radius($radius);
+    }
+}

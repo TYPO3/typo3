@@ -54,7 +54,7 @@ $diff-title-bgcolor: #fafafa;
 
 .diff-item-title {
     background-color: $diff-title-bgcolor;
-    padding-right: 10px;
+    padding-inline-end: 10px;
     font-style: italic;
     white-space: nowrap;
 }

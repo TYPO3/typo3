@@ -124,7 +124,7 @@ $panel-heading-bg-scale: -85%;
     border: var(--panel-border-width) solid var(--panel-border-color);
     border-radius: var(--panel-border-radius);
     box-shadow: var(--panel-box-shadow);
-    margin-bottom: var(--typo3-spacing);
+    margin-block-end: var(--typo3-spacing);
     transition: all .2s ease-in-out;
     transition-property: box-shadow, border, transform;
 
@@ -152,7 +152,7 @@ $panel-heading-bg-scale: -85%;
     display: none;
     position: absolute;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
     height: 3px;
     width: 100%;
     z-index: 1;
@@ -274,12 +274,12 @@ $panel-heading-bg-scale: -85%;
 .panel-table {
     th:first-child,
     td:first-child {
-        padding-left: var(--panel-header-padding-x);
+        padding-inline-start: var(--panel-header-padding-x);
     }
 
     th:last-child,
     td:last-child {
-        padding-right: var(--panel-header-padding-x);
+        padding-inline-end: var(--panel-header-padding-x);
     }
 }
 
@@ -365,8 +365,8 @@ $panel-heading-bg-scale: -85%;
     > .tab-content > .tab-pane > .form-section,
     > [role="tabpanel"] > .tab-content > .form-section,
     > [role="tabpanel"] > .tab-content > .tab-pane > .form-section {
-        border-left: 0;
-        border-right: 0;
+        border-inline-start: 0;
+        border-inline-end: 0;
         border-bottom: 0;
     }
 
@@ -376,7 +376,7 @@ $panel-heading-bg-scale: -85%;
         padding-top: 8px;
 
         > li {
-            margin-left: -1px;
+            margin-inline-start: -1px;
         }
     }
 }

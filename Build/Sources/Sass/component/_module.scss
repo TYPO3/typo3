@@ -69,7 +69,7 @@
     position: sticky;
     width: 100%;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
     display: flex;
     flex-direction: column;
     min-height: var(--module-docheader-height);

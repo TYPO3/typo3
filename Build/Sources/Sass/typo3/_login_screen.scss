@@ -71,7 +71,7 @@ $login-container-padding-horizontal: 2.5em;
         flex: none;
         position: absolute;
         bottom: 1.5em;
-        right: 0;
+        inset-inline-end: 0;
     }
 
     p {
@@ -227,16 +227,16 @@ $login-container-padding-horizontal: 2.5em;
     }
 
     &.left {
-        left: -20px;
+        inset-inline-start: -20px;
         border: 1px solid darken($login-bg, 10%);
-        border-right: 0;
+        border-inline-end: 0;
         border-radius: 2px 0 0 2px;
     }
 
     &.right {
-        right: -20px;
+        inset-inline-end: -20px;
         border: 1px solid darken($login-bg, 10%);
-        border-left: 0;
+        border-inline-start: 0;
         border-radius: 0 2px 2px 0;
     }
 }
@@ -250,7 +250,7 @@ $login-container-padding-horizontal: 2.5em;
     @extend .clearfix;
 
     > img {
-        float: right;
+        float: var(--typo3-position-end);
         margin-top: -4px;
     }
 }

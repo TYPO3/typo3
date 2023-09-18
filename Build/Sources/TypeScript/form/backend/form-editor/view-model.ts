@@ -726,16 +726,16 @@ export function renderUndoRedo(): void {
 export function renderAbstractStageArea(useFadeEffect?: boolean, toolbarUseFadeEffect?: boolean): void {
   $(getHelper().getDomElementDataIdentifierSelector('structureSection'))
     .animate({
-      'left': '0px'
+      'inset-inline-start': '0px'
     }, 'slow');
   $(getHelper().getDomElementDataIdentifierSelector('inspectorSection'))
     .animate({
-      'right': '0px'
+      'inset-inline-end': '0px'
     }, 'slow');
   $(getHelper().getDomElementDataIdentifierSelector('stageContainer'))
     .animate({
-      'margin-left': configuration.panels.stage.marginLeft + 'px',
-      'margin-right': configuration.panels.stage.marginRight + 'px'
+      'margin-inline-start': configuration.panels.stage.marginLeft + 'px',
+      'margin-inline-end': configuration.panels.stage.marginRight + 'px'
     }, 'slow');
   $(getHelper().getDomElementDataIdentifierSelector('stageContainerInner'))
     .animate({
@@ -743,7 +743,7 @@ export function renderAbstractStageArea(useFadeEffect?: boolean, toolbarUseFadeE
     }, 'slow');
   $(getHelper().getDomElementClassName('headerButtonBar', true))
     .animate({
-      'margin-left': configuration.panels.structure.width + 'px'
+      'margin-inline-start': configuration.panels.structure.width + 'px'
     }, 'slow');
 
   if (getUtility().isUndefinedOrNull(useFadeEffect)) {
@@ -818,16 +818,16 @@ export function renderAbstractStageArea(useFadeEffect?: boolean, toolbarUseFadeE
 export function renderPreviewStageArea(html: string): void {
   $(getHelper().getDomElementDataIdentifierSelector('structureSection'))
     .animate({
-      'left': '-=' + configuration.panels.structure.width + 'px'
+      'inset-inline-start': '-' + configuration.panels.structure.width + 'px'
     }, 'slow');
   $(getHelper().getDomElementDataIdentifierSelector('inspectorSection'))
     .animate({
-      'right': '-=' + configuration.panels.inspector.width + 'px'
+      'inset-inline-end': '-' + configuration.panels.inspector.width + 'px'
     }, 'slow');
   $(getHelper().getDomElementDataIdentifierSelector('stageContainer'))
     .animate({
-      'margin-left': configuration.panels.stage.marginLeftCollapsed + 'px',
-      'margin-right': configuration.panels.stage.marginRightCollapsed + 'px'
+      'margin-inline-start': configuration.panels.stage.marginLeftCollapsed + 'px',
+      'margin-inline-end': configuration.panels.stage.marginRightCollapsed + 'px'
     }, 'slow');
   $(getHelper().getDomElementDataIdentifierSelector('stageContainerInner'))
     .animate({
@@ -835,7 +835,7 @@ export function renderPreviewStageArea(html: string): void {
     }, 'slow');
   $(getHelper().getDomElementClassName('headerButtonBar', true))
     .animate({
-      'margin-left': configuration.panels.stage.marginLeftCollapsed + 'px'
+      'margin-inline-start': configuration.panels.stage.marginLeftCollapsed + 'px'
     }, 'slow');
 
   setButtonActive($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderViewModePreview')));
@@ -1115,23 +1115,23 @@ export function onViewReadyBatch(): void {
   $(getHelper().getDomElementDataIdentifierSelector('structureSection'))
     .css({
       width: configuration.panels.structure.width + 'px',
-      left: '-=' + configuration.panels.structure.width + 'px'
+      insetStart: '-=' + configuration.panels.structure.width + 'px'
     });
   $(getHelper().getDomElementDataIdentifierSelector('inspectorSection'))
     .css({
       width: configuration.panels.inspector.width + 'px',
-      right: '-=' + configuration.panels.inspector.width + 'px'
+      insetEnd: '-=' + configuration.panels.inspector.width + 'px'
     });
 
   $(getHelper().getDomElementClassName('headerButtonBar', true))
     .css({
-      'margin-left': configuration.panels.structure.width + 'px'
+      'margin-inline-start': configuration.panels.structure.width + 'px'
     });
 
   $(getHelper().getDomElementDataIdentifierSelector('stageContainer'))
     .css({
-      'margin-left': configuration.panels.stage.marginLeft + 'px',
-      'margin-right': configuration.panels.stage.marginRight + 'px'
+      'margin-inline-start': configuration.panels.stage.marginLeft + 'px',
+      'margin-inline-end': configuration.panels.stage.marginRight + 'px'
     });
 
   hideComponent($(getHelper().getDomElementDataIdentifierSelector('buttonStageNewElementBottom')));

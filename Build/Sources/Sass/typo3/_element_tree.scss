@@ -11,7 +11,7 @@ $navigation-bg: $gray-100;
     display: inline-block;
     margin-top: -.5rem;
     margin-bottom: -.5rem;
-    margin-right: 2px;
+    margin-inline-end: 2px;
     padding: 0;
     height: 41px;
     width: 16px;
@@ -23,15 +23,15 @@ $navigation-bg: $gray-100;
     &:before {
         position: absolute;
         content: '';
-        left: 50%;
+        inset-inline-start: 50%;
     }
 
     &:before {
         top: 0;
         height: 100%;
         width: 2px;
-        margin-left: -1px;
-        border-left: 1px solid var(--treelist-border-color);
+        margin-inline-start: -1px;
+        border-inline-start: 1px solid var(--treelist-border-color);
     }
 
     &:after {

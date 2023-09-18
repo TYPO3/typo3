@@ -91,7 +91,7 @@ a.modulemenu-action {
 .modulemenu-name {
     overflow: hidden;
     flex-grow: 1;
-    margin-left: 1em;
+    margin-inline-start: 1em;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
@@ -135,12 +135,12 @@ a.modulemenu-action {
         }
 
         &:before {
-            left: 3px;
+            inset-inline-start: 3px;
             transform: rotate(45deg);
         }
 
         &:after {
-            right: 3px;
+            inset-inline-end: 3px;
             transform: rotate(-45deg);
         }
     }
@@ -181,7 +181,7 @@ button[aria-expanded="true"]:not(:disabled) {
 //
 .scaffold-modulemenu-expanded {
     .modulemenu-action {
-        margin-left: 0;
+        margin-inline-start: 0;
         width: 100%;
     }
 

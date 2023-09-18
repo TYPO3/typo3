@@ -69,10 +69,10 @@
 }
 
 // Display Variants
-.badge-space-left {
-    margin-left: 1em;
+.badge-space-start {
+    margin-inline-start: 1em;
 }
 
-.badge-space-right {
-    margin-right: 1em;
+.badge-space-end {
+    margin-inline-end: 1em;
 }

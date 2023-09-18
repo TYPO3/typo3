@@ -6,7 +6,7 @@ $autocomplete-zindex: $zindex-dropdown;
 
 typo3-backend-formengine-suggest-result-container {
     position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     z-index: $autocomplete-zindex;
     max-width: calc(100vw - 20px);
 }

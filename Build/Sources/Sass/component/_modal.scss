@@ -71,27 +71,23 @@ $modal-sidebar-button-space: $padding-small-vertical;
 
 .modal-footer {
     .btn {
-        margin-right: 0;
-        padding-left: 1em;
-        padding-right: 1em;
+        margin-inline-end: 0;
+        padding-inline: 1em;
         display: inline-flex;
         align-items: center;
 
         typo3-backend-icon {
-            margin-left: -2px;
-            margin-right: 4px;
+            margin-inline: -2px 4px;
         }
     }
 
     .progress {
         flex-basis: 100%;
-        margin-right: 0;
-        margin-left: 0;
+        margin-inline: 0;
     }
 
     .modal-btn-group {
-        margin-right: 0;
-        margin-left: 0;
+        margin-inline: 0;
     }
 }
 
@@ -152,7 +148,7 @@ $modal-sidebar-button-space: $padding-small-vertical;
     .modal-panel-sidebar {
         padding: 15px;
         flex-shrink: 0;
-        border-left: 1px solid rgba(0, 0, 0, .25);
+        border-inline-start: 1px solid rgba(0, 0, 0, .25);
         position: relative;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
@@ -180,7 +176,7 @@ $modal-sidebar-button-space: $padding-small-vertical;
     }
 
     .panel-body {
-        border-left: 2px solid $color-orange;
+        border-inline-start: 2px solid $color-orange;
     }
 }
 
@@ -202,7 +198,7 @@ $modal-sidebar-button-space: $padding-small-vertical;
     width: 100%;
     position: absolute;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
 }
 
 //
@@ -303,7 +299,7 @@ $modal-sidebar-button-space: $padding-small-vertical;
 
     .modal-footer {
         .btn + .btn {
-            margin-left: .5em;
+            margin-inline-start: .5em;
         }
 
         .progress-bar {

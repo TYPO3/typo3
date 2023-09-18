@@ -352,7 +352,7 @@ a.card {
     .card-image-badge {
         position: absolute;
         top: var(--typo3-card-padding);
-        right: calc(var(--typo3-card-padding) * .5);
+        inset-inline-end: calc(var(--typo3-card-padding) * .5);
     }
 
     img {
@@ -370,8 +370,8 @@ a.card {
     border-bottom: none;
 
     .card-icon {
-        float: left;
-        margin-right: calc(var(--typo3-card-padding) * .5);
+        float: var(--typo3-position-start);
+        margin-inline-end: calc(var(--typo3-card-padding) * .5);
     }
 
     .card-header-body {

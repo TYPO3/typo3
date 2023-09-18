@@ -1,0 +1,16 @@
+//
+// Switch
+// ======
+//
+// Bugfixes for Bootstrap to support RTL
+//
+.form-switch {
+    padding-left: unset; /* stylelint-disable-line */
+    padding-inline-start: $form-switch-padding-start;
+
+    & .form-check-input {
+        float: var(--typo3-position-start);
+        margin-left: unset; /* stylelint-disable-line */
+        margin-inline-start: $form-switch-padding-start * -1;
+    }
+}

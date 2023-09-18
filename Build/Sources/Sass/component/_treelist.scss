@@ -53,7 +53,7 @@
     color: var(--treelist-color);
     background: var(--treelist-bg);
     padding: 0;
-    padding-left: calc(var(--treelist-indentation) / 2);
+    padding-inline-start: calc(var(--treelist-indentation) / 2);
     list-style: none;
     position: relative;
 
@@ -64,9 +64,9 @@
         position: absolute;
         top: 0;
         bottom: calc(var(--treelist-item-line-height) / 2);
-        left: calc(var(--treelist-indentation) / 2 - var(--treelist-border-width) / 2);
+        inset-inline-start: calc(var(--treelist-indentation) / 2 - var(--treelist-border-width) / 2);
         margin-bottom: -2px;
-        border-left: 1px solid var(--treelist-border-color);
+        border-inline-start: 1px solid var(--treelist-border-color);
     }
 
     &:after {
@@ -86,13 +86,13 @@
             margin-top: -2px;
             position: absolute;
             top: calc((var(--treelist-item-line-height) / 2) + 1px);
-            left: 0;
+            inset-inline-start: 0;
         }
 
         &:last-child:before {
             background: var(--treelist-bg);
             height: auto;
-            left: 0;
+            inset-inline-start: 0;
             width: calc(var(--treelist-indentation) - var(--treelist-indentation-spacer));
             bottom: 0;
         }
@@ -120,7 +120,7 @@
             }
         }
         margin: var(--treelist-item-spacer) 0;
-        padding-left: var(--treelist-indentation);
+        padding-inline-start: var(--treelist-indentation);
         line-height: var(--treelist-item-line-height);
         position: relative;
 
@@ -167,14 +167,14 @@
     display: inline-block;
     width: var(--treelist-control-size);
     text-align: center;
-    margin-left: -2px;
+    margin-inline-start: -2px;
 }
 
 .treelist-control {
     position: absolute;
     top: calc(var(--treelist-item-line-height) / 2);
-    transform: translate(-50%, -50%);
-    left: 0;
+    transform: translate(calc(-50% * var(--typo3-position-modifier)), -50%);
+    inset-inline-start: 0;
     display: block;
     text-align: center;
     line-height: var(--treelist-control-size);
@@ -187,8 +187,8 @@
         content: '';
         position: absolute;
         top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        inset-inline-start: 50%;
+        transform: translate(calc(-50% * var(--typo3-position-modifier)), -50%);
         width: var(--treelist-control-size);
         height: var(--treelist-control-size);
         background-color: var(--treelist-bg);
@@ -208,14 +208,14 @@
 }
 
 .treelist-root {
-    padding-left: 0;
+    padding-inline-start: 0;
 
     &:before {
         display: none;
     }
 
     > li {
-        padding-left: var(--treelist-control-size);
+        padding-inline-start: var(--treelist-control-size);
 
         &:before {
             display: none;
@@ -223,7 +223,7 @@
 
         > .treelist-group {
             > .treelist-control {
-                margin-left: calc(var(--treelist-control-size) * -1);
+                margin-inline-start: calc(var(--treelist-control-size) * -1);
 
                 &:before {
                     background-color: transparent;
@@ -235,7 +235,7 @@
 
 .treelist-root-clean {
     > li {
-        padding-left: 0;
+        padding-inline-start: 0;
     }
 }
 

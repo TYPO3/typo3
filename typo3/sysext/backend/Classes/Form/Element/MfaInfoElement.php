@@ -83,7 +83,7 @@ class MfaInfoElement extends AbstractFormElement
         $lang = $this->getLanguageService();
         $enabledLabel = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.mfa.enabled'));
         $disabledLabel = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.mfa.disabled'));
-        $status = '<span class="badge badge-danger badge-space-right t3js-mfa-status-label" data-alternative-label="' . $enabledLabel . '">' . $disabledLabel . '</span>';
+        $status = '<span class="badge badge-danger badge-space-end t3js-mfa-status-label" data-alternative-label="' . $enabledLabel . '">' . $disabledLabel . '</span>';
 
         // Unset invalid providers
         foreach ($mfaProviders as $identifier => $providerSettings) {
@@ -108,7 +108,7 @@ class MfaInfoElement extends AbstractFormElement
 
             if ($activeProviders !== []) {
                 // Change status label to MFA being enabled
-                $status = '<span class="badge badge-success badge-space-right t3js-mfa-status-label"' . ' data-alternative-label="' . $disabledLabel . '">' . $enabledLabel . '</span>';
+                $status = '<span class="badge badge-success badge-space-end t3js-mfa-status-label"' . ' data-alternative-label="' . $disabledLabel . '">' . $enabledLabel . '</span>';
 
                 // Add providers list
                 $childHtml[] = '<ul class="list-group t3js-mfa-active-providers-list">';

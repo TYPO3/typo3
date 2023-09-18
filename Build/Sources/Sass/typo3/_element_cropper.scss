@@ -60,6 +60,7 @@
     }
 
     .cropper-image-container {
+        direction: ltr;
         display: block;
         width: 100%;
         max-width: 1000px;
@@ -88,7 +89,7 @@
     // Cropper style tweaks for Bootstrap .panel
     .panel-group {
         [aria-expanded=true] {
-            border-left: 2px solid $color-orange;
+            border-inline-start: 2px solid $color-orange;
             position: relative;
 
             &[data-bs-toggle=collapse] {
@@ -97,7 +98,7 @@
         }
 
         [aria-expanded=false] {
-            border-left: 2px solid #444;
+            border-inline-start: 2px solid #444;
             position: relative;
         }
 
@@ -161,7 +162,7 @@
             background-color: $color-orange;
             content: "Cropped area";
             position: absolute;
-            left: 0;
+            inset-inline-start: 0;
             top: 0;
             font-size: 10px;
             color: black;
@@ -288,7 +289,7 @@
             background-color: rgba(255, 255, 255, .95);
             content: "Focus";
             position: absolute;
-            left: 0;
+            inset-inline-start: 0;
             top: 0;
             font-size: 10px;
             color: black;
@@ -315,7 +316,7 @@
             background-color: rgba(255, 255, 255, .95);
             content: "Cover area";
             position: absolute;
-            left: 0;
+            inset-inline-start: 0;
             top: 0;
             font-size: 10px;
             color: black;
@@ -331,6 +332,7 @@
     }
 
     .cropper-preview-thumbnail {
+        direction: ltr;
         position: relative;
         max-width: 100px;
         max-height: 100px;
@@ -360,7 +362,7 @@
     }
 
     .cropper-preview-thumbnail-image {
-        left: 0;
+        inset-inline-start: 0;
         top: 0;
     }
 

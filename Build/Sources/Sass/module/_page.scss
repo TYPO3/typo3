@@ -99,9 +99,9 @@ html {
     font-weight: $font-weight-bold;
     margin: var(--pagemodule-element-spacing) var(--pagemodule-grid-inner-spacing);
     // duplicate offset for edit icon, inverted in .t3-page-column-header-icons
-    margin-right: calc(var(--pagemodule-grid-inner-spacing) * 2);
+    margin-inline-end: calc(var(--pagemodule-grid-inner-spacing) * 2);
     position: relative;
-    text-align: left;
+    text-align: start;
     font-size: var(--pagemodule-grid-cell-header-size);
 
     a {
@@ -113,7 +113,7 @@ html {
     @include transition(opacity .15s ease-in);
     opacity: .3;
     position: absolute;
-    right: calc(var(--pagemodule-grid-inner-spacing) * -1);
+    inset-inline-end: calc(var(--pagemodule-grid-inner-spacing) * -1);
     bottom: 0;
 
     &:hover {

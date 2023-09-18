@@ -68,7 +68,7 @@ $toolbar-item-padding-horizontal: 15px;
     }
 
     &.topbar-button-modulemenu {
-        left: 0;
+        inset-inline-start: 0;
 
         @include media-breakpoint-up('lg') {
             background-color: $topbar-button-active-bg;
@@ -76,28 +76,11 @@ $toolbar-item-padding-horizontal: 15px;
     }
 
     &.topbar-button-toolbar {
-        right: $topbar-button-width;
+        inset-inline-end: $topbar-button-width;
     }
 
     &.topbar-button-search {
-        right: 0;
-    }
-
-    [dir="rtl"] & {
-        &.topbar-button-modulemenu {
-            right: 0;
-            left: auto;
-        }
-
-        &.topbar-button-toolbar {
-            right: auto;
-            left: $topbar-button-width;
-        }
-
-        &.topbar-button-search {
-            right: auto;
-            left: 0;
-        }
+        inset-inline-end: 0;
     }
 }
 
@@ -169,26 +152,13 @@ $toolbar-item-padding-horizontal: 15px;
     }
 
     &:before {
-        right: 0;
+        inset-inline-end: 0;
         background: $topbar-bg;
     }
 
     &:after {
-        right: 1em;
-        background: linear-gradient(to right, transparentize($topbar-bg, 1) 0%, transparentize($topbar-bg, 0) 100%);
-    }
-
-    [dir="rtl"] & {
-        &:before {
-            right: auto;
-            left: 0;
-        }
-
-        &:after {
-            right: auto;
-            left: 1em;
-            background: linear-gradient(to left, transparentize($topbar-bg, 1) 0%, transparentize($topbar-bg, 0) 100%);
-        }
+        inset-inline-end: 1em;
+        background: linear-gradient(to var(--typo3-position-end), transparentize($topbar-bg, 1) 0%, transparentize($topbar-bg, 0) 100%);
     }
 }
 

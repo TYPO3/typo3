@@ -121,6 +121,10 @@ $input-color-disabled: $gray-600;
 $input-height-large: (ceil($font-size-large * $line-height-large) + ($padding-large-vertical * 1.6) + 2);
 $input-border-color: $gray-500;
 $form-label-font-weight: 600;
+$input-btn-padding-x: .75rem;
+$input-padding-x: $input-btn-padding-x;
+$form-select-padding-x: $input-padding-x;
+$form-select-bg-position: var(--typo3-position-end) $form-select-padding-x center;
 
 // Navbar
 $navbar-height: 45px;
@@ -218,3 +222,24 @@ $card-cap-bg: transparent;
 $progress-bg: #dedede;
 $progress-height: 1.25rem;
 $progress-font-size: $font-size-base * .9;
+$utilities: (
+    "float": (
+        property: float,
+        class: float,
+        values: (
+            start: var(--typo3-position-start),
+            end: var(--typo3-position-end),
+            none: none,
+        )
+    ),
+    "text-align": (
+        responsive: true,
+        property: text-align,
+        class: text,
+        values: (
+            start: start,
+            end: end,
+            center: center,
+        )
+    ),
+);

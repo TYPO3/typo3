@@ -23,7 +23,7 @@
 
 .widget-content-title {
     padding: ($widget-padding * .5) $widget-padding;
-    padding-right: $widget-action-size * 2 + $widget-padding;
+    padding-inline-end: $widget-action-size * 2 + $widget-padding;
     border-bottom: 1px solid $gray-300;
     font-family: $widget-title-font-family;
     font-size: $widget-title-size;
@@ -54,7 +54,7 @@
     position: absolute;
     display: flex;
     top: calc(((#{$widget-title-size} * #{$widget-title-line-height}) / 2) + (#{$widget-padding} / 2));
-    right: ($widget-padding * .5);
+    inset-inline-end: ($widget-padding * .5);
     transform: translate(0, -50%);
     opacity: 0;
     transition: opacity .2s ease-in-out;
@@ -75,8 +75,8 @@
     .icon {
         position: absolute;
         top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        inset-inline-start: 50%;
+        transform: translate(calc(-50% * var(--typo3-position-modifier)), -50%);
     }
 }
 
@@ -90,8 +90,8 @@
     top: 50%;
     left: 50%;
     line-height: 300px;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
+    margin-inline-end: -50%;
+    transform: translate(calc(-50% * var(--typo3-position-modifier)), -50%);
 }
 
 .widget-error {

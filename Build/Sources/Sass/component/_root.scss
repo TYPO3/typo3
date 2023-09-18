@@ -170,6 +170,21 @@
 }
 
 //
+// Utility Variables
+//
+:root {
+    --typo3-position-modifier: 1;
+    --typo3-position-start: left;
+    --typo3-position-end: right;
+}
+
+[dir="rtl"] {
+    --typo3-position-modifier: -1;
+    --typo3-position-start: right;
+    --typo3-position-end: left;
+}
+
+//
 // Bootstrap Corrections
 //
 // Note:

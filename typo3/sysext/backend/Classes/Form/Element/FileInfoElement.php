@@ -69,7 +69,7 @@ class FileInfoElement extends AbstractFormElement
         if ($file !== null) {
             $content = '';
             if ($file->isMissing()) {
-                $content .= '<span class="badge badge-danger badge-space-right">'
+                $content .= '<span class="badge badge-danger badge-space-end">'
                     . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                     . '</span>';
             }

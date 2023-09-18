@@ -32,7 +32,7 @@ $dropzone-icon-ok-bg: $success;
     cursor: pointer;
     margin: $dropzone-margin;
     padding: 1.25em;
-    padding-right: $dropzone-close-width + 20px;
+    padding-inline-end: $dropzone-close-width + 20px;
     color: $dropzone-text;
     border: 1px dashed $dropzone-border;
 
@@ -45,10 +45,7 @@ $dropzone-icon-ok-bg: $success;
 
 .dropzone-mask {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
+    inset: 0;
 }
 
 //
@@ -58,7 +55,7 @@ $dropzone-icon-ok-bg: $success;
     cursor: pointer;
     position: absolute;
     top: 5px;
-    right: 5px;
+    inset-inline-end: 5px;
     height: $dropzone-close-height;
     width: $dropzone-close-width;
     text-align: center;
@@ -104,7 +101,7 @@ $dropzone-icon-ok-bg: $success;
     display: table;
     background: transparent;
     border: 0;
-    text-align: left;
+    text-align: start;
     padding: 0;
 }
 
@@ -125,7 +122,7 @@ $dropzone-icon-ok-bg: $success;
 }
 
 .dropzone-hint-media {
-    padding-right: 1em;
+    padding-inline-end: 1em;
 }
 
 .dropzone-hint-icon {
@@ -193,14 +190,14 @@ $upload-queue-progress-error-bg: $danger;
     color: #fff;
     background-color: #999;
     border: 1px solid rgba(0, 0, 0, .15);
-    text-align: right;
+    text-align: end;
 }
 
 .upload-queue-progress-bar {
     position: absolute;
     z-index: 1;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
     bottom: 0;
     background-color: $upload-queue-progress-bg;
 }
@@ -218,7 +215,7 @@ $upload-queue-progress-error-bg: $danger;
 .upload-file-picker {
     position: fixed;
     bottom: 0;
-    right: 0;
+    inset-inline-end: 0;
     height: 1px;
     width: 1px;
     visibility: hidden;
