@@ -176,8 +176,7 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
         if ($metaDataInDatabase === []) {
             $this->metaData = $this->getMetaDataRepository()->createMetaDataRecord($this->file->getUid(), $this->metaData);
         } else {
-            $this->getMetaDataRepository()->update($this->file->getUid(), $this->metaData);
-            $this->metaData = array_merge($metaDataInDatabase, $this->metaData);
+            $this->metaData = $this->getMetaDataRepository()->update($this->file->getUid(), $this->metaData, $metaDataInDatabase);
         }
     }
 

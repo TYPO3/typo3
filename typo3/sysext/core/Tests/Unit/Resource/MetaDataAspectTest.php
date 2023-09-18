@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
@@ -170,17 +171,28 @@ final class MetaDataAspectTest extends UnitTestCase
      */
     public function existingMetaDataGetsUpdated(): void
     {
-        $metaData = ['foo' => 'bar'];
+        $metaData = ['uid' => 12, 'foo' => 'bar'];
+        $updatedMetadata = array_merge($metaData, ['testproperty' => 'testvalue']);
 
         $file = new File(['uid' => 12], $this->storageMock);
 
+        $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $eventDispatcherMock->expects(self::atLeastOnce())->method('dispatch')->with(self::anything())->willReturnArgument(0);
+
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
-            ->onlyMethods(['createMetaDataRecord', 'update'])
+            ->onlyMethods(['createMetaDataRecord', 'getTableFields'])
             ->addMethods(['loadFromRepository'])
-            ->disableOriginalConstructor()
+            ->setConstructorArgs([$eventDispatcherMock])
             ->getMock();
 
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->method('update')->with('sys_file_metadata', self::anything())->willReturn(1);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->method('getConnectionForTable')->with(self::anything())->willReturn($connectionMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
+
         $metaDataRepositoryMock->method('createMetaDataRecord')->willReturn($metaData);
+        $metaDataRepositoryMock->method('getTableFields')->willReturn(array_flip(['foo', 'testproperty']));
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepositoryMock);
 
         $metaDataAspectMock = $this->getMockBuilder(MetaDataAspect::class)
@@ -188,11 +200,15 @@ final class MetaDataAspectTest extends UnitTestCase
             ->onlyMethods(['loadFromRepository'])
             ->getMock();
 
-        $metaDataAspectMock->method('loadFromRepository')->will(self::onConsecutiveCalls([], $metaData));
+        $metaDataAspectMock->method('loadFromRepository')->will(self::onConsecutiveCalls([], $metaData, $updatedMetadata));
         $metaDataAspectMock->add($metaData)->save();
         $metaDataAspectMock->add(['testproperty' => 'testvalue'])->save();
 
-        self::assertSame(['foo' => 'bar', 'testproperty' => 'testvalue'], $metaDataAspectMock->get());
+        self::assertSame('bar', $metaDataAspectMock->offsetGet('foo'));
+        self::assertSame('testvalue', $metaDataAspectMock->offsetGet('testproperty'));
+
+        $metaDataAspectMock->add($updatedMetadata)->save();
+        self::assertFalse($metaDataAspectMock->offsetExists('tstamp'));
     }
 
     public static function propertyDataProvider(): array

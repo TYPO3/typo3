@@ -85,7 +85,7 @@ class MetaDataRepository implements SingletonInterface
                     'height' => $imageInfo->getHeight(),
                 ];
 
-                $this->update($file->getUid(), $additionalMetaInformation);
+                $this->update($file->getUid(), $additionalMetaInformation, $record);
             }
             $record = $this->findByFileUid($file->getUid());
         }
@@ -163,29 +163,43 @@ class MetaDataRepository implements SingletonInterface
      * Updates the metadata record in the database
      *
      * @param int $fileUid the file uid to update
-     * @param array $data Data to update
+     * @param array $updateData Data to update
+     * @param ?array $metaDataFromDatabase Current meta data from database
+     * @return array The updated database record - or just $metaDataFromDatabase if no update was done
      * @internal
      */
-    public function update($fileUid, array $data)
+    public function update($fileUid, array $updateData, ?array $metaDataFromDatabase = null): array
     {
-        $updateRow = array_intersect_key($data, $this->getTableFields());
+        // backwards compatibility layer
+        $metaDataFromDatabase ??= $this->findByFileUid($fileUid);
+
+        $updateRow = array_intersect_key($updateData, $this->getTableFields());
+        if ($updateRow === []) {
+            // No valid keys to update - return current database row
+            return $metaDataFromDatabase;
+        }
         if (array_key_exists('uid', $updateRow)) {
             unset($updateRow['uid']);
         }
-        $row = $this->findByFileUid($fileUid);
-        if (!empty($updateRow)) {
-            $updateRow['tstamp'] = time();
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tableName);
-            $connection->update(
-                $this->tableName,
-                $updateRow,
-                [
-                    'uid' => (int)$row['uid'],
-                ]
-            );
-
-            $this->eventDispatcher->dispatch(new AfterFileMetaDataUpdatedEvent($fileUid, (int)$row['uid'], array_merge($row, $updateRow)));
+        $updateRow = array_diff($updateRow, $metaDataFromDatabase);
+        if ($updateRow === []) {
+            // Nothing to update - return current database row
+            return $metaDataFromDatabase;
         }
+
+        $updateRow['tstamp'] = time();
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tableName);
+        $connection->update(
+            $this->tableName,
+            $updateRow,
+            [
+                'uid' => (int)$metaDataFromDatabase['uid'],
+            ]
+        );
+
+        return $this->eventDispatcher->dispatch(
+            new AfterFileMetaDataUpdatedEvent($fileUid, (int)$metaDataFromDatabase['uid'], array_merge($metaDataFromDatabase, $updateRow))
+        )->getRecord();
     }
 
     /**
