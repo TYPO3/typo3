@@ -10,61 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var CspReportAttribute,__decorate=function(e,t,i,o){var l,s=arguments.length,n=s<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(e,t,i,o);else for(var r=e.length-1;r>=0;r--)(l=e[r])&&(n=(s<3?l(n):s>3?l(t,i,n):l(t,i))||n);return s>3&&n&&Object.defineProperty(t,i,n),n};import{customElement,property,state}from"lit/decorators.js";import{html,LitElement,nothing}from"lit";import{classMap}from"lit/directives/class-map.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import{styleTag,lll}from"@typo3/core/lit-helper.js";!function(e){e.fixable="fixable",e.irrelevant="irrelevant",e.suspicious="suspicious"}(CspReportAttribute||(CspReportAttribute={}));let CspReports=class extends LitElement{constructor(){super(...arguments),this.selectedScope=null,this.reports=[],this.selectedReport=null,this.suggestions=[]}connectedCallback(){super.connectedCallback(),this.fetchReports()}createRenderRoot(){return this}render(){return html`
-      ${styleTag`
-        .infolist-container {
-          container-type: inline-size;
-        }
-        .infolist {
-          display: flex;
-          gap: var(--typo3-spacing);
-          flex-direction: column;
-        }
-        .infolist-info {
-          display: none;
-        }
-        .infolist-overlay {
-          position: relative;
-          z-index: 10;
-        }
-
-        @container (max-width: 899px) {
-          .infolist-info-showrecord {
-            display: block;
-            background: rgba(0,0,0,.5);
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-          }
-        }
-
-        @container (min-width: 900px) {
-          .infolist {
-            display: grid;
-            grid-template:
-              "header header"
-              "content info";
-            grid-template-columns: auto 400px;
-          }
-          .infolist-header {
-            grid-area: header;
-          }
-          .infolist-content {
-            grid-area: content;
-          }
-          .infolist-info {
-            display: block;
-            grid-area: info;
-          }
-          .infolist-info-norecord,
-          .infolist-info-record {
-            position: sticky;
-            top: calc(var(--module-docheader-height) + var(--typo3-spacing));
-          }
-        }
-      `}
+var CspReportAttribute,__decorate=function(e,t,l,o){var i,s=arguments.length,n=s<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,l):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(e,t,l,o);else for(var r=e.length-1;r>=0;r--)(i=e[r])&&(n=(s<3?i(n):s>3?i(t,l,n):i(t,l))||n);return s>3&&n&&Object.defineProperty(t,l,n),n};import{customElement,property,state}from"lit/decorators.js";import{html,LitElement,nothing}from"lit";import{classMap}from"lit/directives/class-map.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import{lll}from"@typo3/core/lit-helper.js";!function(e){e.fixable="fixable",e.irrelevant="irrelevant",e.suspicious="suspicious"}(CspReportAttribute||(CspReportAttribute={}));let CspReports=class extends LitElement{constructor(){super(...arguments),this.selectedScope=null,this.reports=[],this.selectedReport=null,this.suggestions=[]}connectedCallback(){super.connectedCallback(),this.fetchReports()}createRenderRoot(){return this}render(){return html`
       <div class="infolist-container infolist-overlay">
         <div class="infolist">
           <div class="infolist-header">
@@ -224,4 +170,4 @@ var CspReportAttribute,__decorate=function(e,t,i,o){var l,s=arguments.length,n=s
           </div>
         </div>
       </div>
-    `:nothing}`}renderCodeLocation(e){if(!e.details.lineNumber)return nothing;const t=[e.details.lineNumber];return e.details.columnNumber&&t.push(e.details.columnNumber),html`(${t.join(":")})`}selectReport(e){this.suggestions=[],null!==e&&this.selectedReport!==e?(this.selectedReport=e,this.invokeHandleReportAction(e).then((e=>this.suggestions=e))):this.selectedReport=null}selectScope(e){this.selectedScope=e,this.fetchReports()}fetchReports(){this.invokeFetchReportsAction().then((e=>this.reports=e))}filterReports(...e){e.includes(this.selectedReport?.uuid)&&(this.selectedReport=null),this.reports=this.reports.filter((t=>!e.includes(t.uuid)))}invokeFetchReportsAction(){return new AjaxRequest(this.controlUri).post({action:"fetchReports",scope:this.selectedScope||""}).then((e=>e.resolve("application/json")))}invokeHandleReportAction(e){return new AjaxRequest(this.controlUri).post({action:"handleReport",uuid:e.uuid}).then((e=>e.resolve("application/json")))}invokeMutateReportAction(e,t){const i=this.reports.filter((e=>e.mutationHashes.includes(t.hash))).map((e=>e.summary));return new AjaxRequest(this.controlUri).post({action:"mutateReport",scope:e.scope,hmac:t.hmac,suggestion:t,summaries:i}).then((e=>e.resolve("application/json"))).then((e=>this.filterReports(...e.uuids)))}invokeMuteReportAction(e){new AjaxRequest(this.controlUri).post({action:"muteReport",summaries:[e.summary]}).then((e=>e.resolve("application/json"))).then((e=>this.filterReports(...e.uuids)))}invokeDeleteReportAction(e){new AjaxRequest(this.controlUri).post({action:"deleteReport",summaries:[e.summary]}).then((e=>e.resolve("application/json"))).then((e=>this.filterReports(...e.uuids)))}invokeDeleteReportsAction(){new AjaxRequest(this.controlUri).post({action:"deleteReports",scope:this.selectedScope||""}).then((e=>e.resolve("application/json"))).then((()=>this.fetchReports())).then((()=>this.selectReport(null)))}shortenUri(e){if("inline"===e)return e;try{return new URL(e).hostname}catch(t){return e}}};__decorate([property({type:Array})],CspReports.prototype,"scopes",void 0),__decorate([property({type:String})],CspReports.prototype,"controlUri",void 0),__decorate([state()],CspReports.prototype,"selectedScope",void 0),__decorate([state()],CspReports.prototype,"reports",void 0),__decorate([state()],CspReports.prototype,"selectedReport",void 0),__decorate([state()],CspReports.prototype,"suggestions",void 0),CspReports=__decorate([customElement("typo3-backend-security-csp-reports")],CspReports);export{CspReports};
+    `:nothing}`}renderCodeLocation(e){if(!e.details.lineNumber)return nothing;const t=[e.details.lineNumber];return e.details.columnNumber&&t.push(e.details.columnNumber),html`(${t.join(":")})`}selectReport(e){this.suggestions=[],null!==e&&this.selectedReport!==e?(this.selectedReport=e,this.invokeHandleReportAction(e).then((e=>this.suggestions=e))):this.selectedReport=null}selectScope(e){this.selectedScope=e,this.fetchReports()}fetchReports(){this.invokeFetchReportsAction().then((e=>this.reports=e))}filterReports(...e){e.includes(this.selectedReport?.uuid)&&(this.selectedReport=null),this.reports=this.reports.filter((t=>!e.includes(t.uuid)))}invokeFetchReportsAction(){return new AjaxRequest(this.controlUri).post({action:"fetchReports",scope:this.selectedScope||""}).then((e=>e.resolve("application/json")))}invokeHandleReportAction(e){return new AjaxRequest(this.controlUri).post({action:"handleReport",uuid:e.uuid}).then((e=>e.resolve("application/json")))}invokeMutateReportAction(e,t){const l=this.reports.filter((e=>e.mutationHashes.includes(t.hash))).map((e=>e.summary));return new AjaxRequest(this.controlUri).post({action:"mutateReport",scope:e.scope,hmac:t.hmac,suggestion:t,summaries:l}).then((e=>e.resolve("application/json"))).then((e=>this.filterReports(...e.uuids)))}invokeMuteReportAction(e){new AjaxRequest(this.controlUri).post({action:"muteReport",summaries:[e.summary]}).then((e=>e.resolve("application/json"))).then((e=>this.filterReports(...e.uuids)))}invokeDeleteReportAction(e){new AjaxRequest(this.controlUri).post({action:"deleteReport",summaries:[e.summary]}).then((e=>e.resolve("application/json"))).then((e=>this.filterReports(...e.uuids)))}invokeDeleteReportsAction(){new AjaxRequest(this.controlUri).post({action:"deleteReports",scope:this.selectedScope||""}).then((e=>e.resolve("application/json"))).then((()=>this.fetchReports())).then((()=>this.selectReport(null)))}shortenUri(e){if("inline"===e)return e;try{return new URL(e).hostname}catch(t){return e}}};__decorate([property({type:Array})],CspReports.prototype,"scopes",void 0),__decorate([property({type:String})],CspReports.prototype,"controlUri",void 0),__decorate([state()],CspReports.prototype,"selectedScope",void 0),__decorate([state()],CspReports.prototype,"reports",void 0),__decorate([state()],CspReports.prototype,"selectedReport",void 0),__decorate([state()],CspReports.prototype,"suggestions",void 0),CspReports=__decorate([customElement("typo3-backend-security-csp-reports")],CspReports);export{CspReports};

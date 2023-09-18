@@ -13,7 +13,6 @@
 
 import { html, LitElement, TemplateResult, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
-import { styleTag } from '@typo3/core/lit-helper';
 
 interface Position {
   x: number;
@@ -158,19 +157,6 @@ export class DraggableResizableElement extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      ${styleTag([`
-        :host, typo3-backend-draggable-resizable {
-          display: inline-block;
-          position: absolute;
-          transition: none;
-        }
-        :host[reverting], typo3-backend-draggable-resizable[reverting] {
-          transition-property: left, top, width, height;
-          transition-duration: 0.25s;
-        }
-        #t3js-cropper-focus-area { width: 100%; height: 100%; }
-        ui-resizable-handle { z-index: 90; }
-      `], this.windowRef)}
       <div id="t3js-cropper-focus-area" class="cropper-focus-area ui-draggable ui-draggable-handle ui-resizable">
         <div class="ui-resizable-handle ui-resizable-n" data-resize="n"></div>
         <div class="ui-resizable-handle ui-resizable-e" data-resize="e"></div>

@@ -78,6 +78,7 @@ export const classesArrayToClassInfo = (classes: Array<string>): ClassInfo => {
  *    </style>
  *    <div class="my-style">...</div>
  * ```
+ * @deprecated avoid using dynamic styles in light DOM elements
  */
 export const styleTag = (strings: string[]|TemplateStringsArray|CSSResultArray, windowRef?: Window): HTMLTemplateResult => {
   const nonce = ((windowRef || window) as LitNonceWindow).litNonce;

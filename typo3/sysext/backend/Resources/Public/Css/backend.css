@@ -3874,8 +3874,54 @@ typo3-backend-live-search-result-item-action>* .livesearch-result-item-title .sm
 .ui-resizable-sw{cursor:sw-resize;width:9px;height:9px;left:-5px;bottom:-5px}
 .ui-resizable-nw{cursor:nw-resize;width:9px;height:9px;left:-5px;top:-5px}
 .ui-resizable-ne{cursor:ne-resize;width:9px;height:9px;right:-5px;top:-5px}
+typo3-backend-draggable-resizable{display:inline-block;position:absolute;transition:none}
+typo3-backend-draggable-resizable[reverting]{transition-property:left,top,width,height;transition-duration:.25s}
+typo3-backend-draggable-resizable #t3js-cropper-focus-area{width:100%;height:100%}
+typo3-backend-draggable-resizable .ui-resizable-handle{z-index:90}
 typo3-backend-editable-page-title{display:block;white-space:nowrap;text-overflow:ellipsis}
 typo3-backend-new-content-element-wizard{--typo3-component-color:var(--typo3-light-color);--typo3-component-primary-color:var(--typo3-light-primary-color);--typo3-component-secondary-color:var(--typo3-light-secondary-color);--typo3-component-bg:var(--typo3-light-bg);--typo3-component-border-color:var(--typo3-light-border-color);--typo3-component-link-color:var(--typo3-light-link-color);--typo3-component-link-hover-color:var(--typo3-light-link-hover-color);--typo3-component-hover-color:var(--typo3-light-hover-color);--typo3-component-hover-bg:var(--typo3-light-hover-bg);--typo3-component-hover-border-color:var(--typo3-light-hover-border-color);--typo3-component-focus-color:var(--typo3-light-focus-color);--typo3-component-focus-bg:var(--typo3-light-focus-bg);--typo3-component-focus-border-color:var(--typo3-light-focus-border-color);--typo3-component-active-color:var(--typo3-light-active-color);--typo3-component-active-bg:var(--typo3-light-active-bg);--typo3-component-active-border-color:var(--typo3-light-active-border-color);--typo3-component-disabled-color:var(--typo3-light-disabled-color);--typo3-component-disabled-bg:var(--typo3-light-disabled-bg);--typo3-component-disabled-border-color:var(--typo3-light-disabled-border-color)}
+typo3-backend-security-csp-reports .infolist-container{container-type:inline-size}
+typo3-backend-security-csp-reports .infolist{display:flex;gap:var(--typo3-spacing);flex-direction:column}
+typo3-backend-security-csp-reports .infolist-info{display:none}
+typo3-backend-security-csp-reports .infolist-overlay{position:relative;z-index:10}
+
+@container (max-width: 899px) {
+  typo3-backend-security-csp-reports .infolist-info-showrecord {
+    display: block;
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+}
+@container (min-width: 900px) {
+  typo3-backend-security-csp-reports .infolist {
+    display: grid;
+    grid-template: "header header" "content info";
+    grid-template-columns: auto 400px;
+  }
+  typo3-backend-security-csp-reports .infolist-header {
+    grid-area: header;
+  }
+  typo3-backend-security-csp-reports .infolist-content {
+    grid-area: content;
+  }
+  typo3-backend-security-csp-reports .infolist-info {
+    display: block;
+    grid-area: info;
+  }
+  typo3-backend-security-csp-reports .infolist-info-norecord,
+  typo3-backend-security-csp-reports .infolist-info-record {
+    position: sticky;
+    top: calc(var(--module-docheader-height) + var(--typo3-spacing));
+  }
+}
+
+typo3-backend-security-sudo-mode{display:block}
+typo3-backend-security-sudo-mode #sudo-mode-verification{display:block}
+typo3-backend-table-wizard{display:inline-block}
 #alert-container{width:400px;position:fixed;inset-inline-end:5px;top:45px;z-index:10000}
 #alert-container typo3-notification-message{margin-top:5px}
 typo3-notification-message{display:block}

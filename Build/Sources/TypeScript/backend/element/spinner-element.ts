@@ -11,11 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, TemplateResult } from 'lit';
+import { css, html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { Sizes } from '../enum/icon-types';
 import { IconStyles } from '@typo3/backend/icons';
-import { styleTag } from '@typo3/core/lit-helper';
 
 enum Variant {
   light = 'light',
@@ -31,20 +30,19 @@ enum Variant {
  */
 @customElement('typo3-backend-spinner')
 export class SpinnerElement extends LitElement {
+  public static styles = [
+    ...IconStyles.getStyles(),
+    css`
+      :host([variant=dark]) svg { fill: #212121; }
+      :host([variant=light]) svg { fill: #fff; }
+    `
+  ];
+
   @property({ type: String }) size: Sizes = Sizes.default;
   @property({ type: String }) variant: Variant = Variant.dark;
 
   protected render(): TemplateResult {
     return html`
-      ${styleTag(IconStyles.getStyles())}
-      ${styleTag`
-        :host([variant=dark]) svg {
-          fill: #212121;
-        }
-        :host([variant=light]) svg {
-          fill: #fff;
-        }
-      `}
       <div class="icon-wrapper">
         <span class="icon icon-size-small icon-state-default icon-spin">
           <span class="icon-markup">

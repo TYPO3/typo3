@@ -15,7 +15,7 @@ import { customElement, property, query, state } from 'lit/decorators';
 import { html, LitElement, nothing, PropertyValues, TemplateResult } from 'lit';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { styleTag, lll } from '@typo3/core/lit-helper';
+import { lll } from '@typo3/core/lit-helper';
 import Viewport from '@typo3/backend/viewport';
 
 interface SudoModeResponse {
@@ -39,16 +39,11 @@ export class SudoMode extends LitElement {
   @query('#password') passwordElement: HTMLInputElement;
 
   protected createRenderRoot(): HTMLElement | ShadowRoot {
-    // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
   protected render(): TemplateResult {
     return html`
-      ${styleTag`
-        :host { display: block; }
-        #sudo-mode-verification { display: block; }
-      `}
       <div id="sudo-mode-verification" class="modal modal-severity-notice modal-size-small" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -112,5 +107,11 @@ export class SudoMode extends LitElement {
   private toggleUseInstallToolPassword(evt: MouseEvent): void {
     evt.preventDefault();
     this.useInstallToolPassword = !this.useInstallToolPassword;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-security-sudo-mode': SudoMode;
   }
 }

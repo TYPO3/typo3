@@ -10,16 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var Variant,__decorate=function(e,t,r,n){var o,i=arguments.length,a=i<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,r):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,r,n);else for(var s=e.length-1;s>=0;s--)(o=e[s])&&(a=(i<3?o(a):i>3?o(t,r,a):o(t,r))||a);return i>3&&a&&Object.defineProperty(t,r,a),a};import{html,LitElement}from"lit";import{customElement,property}from"lit/decorators.js";import{Sizes}from"@typo3/backend/enum/icon-types.js";import{IconStyles}from"@typo3/backend/icons.js";import{styleTag}from"@typo3/core/lit-helper.js";!function(e){e.light="light",e.dark="dark"}(Variant||(Variant={}));let SpinnerElement=class extends LitElement{constructor(){super(...arguments),this.size=Sizes.default,this.variant=Variant.dark}render(){return html`
-      ${styleTag(IconStyles.getStyles())}
-      ${styleTag`
-        :host([variant=dark]) svg {
-          fill: #212121;
-        }
-        :host([variant=light]) svg {
-          fill: #fff;
-        }
-      `}
+var Variant,__decorate=function(e,t,r,n){var i,o=arguments.length,s=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,r):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)s=Reflect.decorate(e,t,r,n);else for(var a=e.length-1;a>=0;a--)(i=e[a])&&(s=(o<3?i(s):o>3?i(t,r,s):i(t,r))||s);return o>3&&s&&Object.defineProperty(t,r,s),s};import{css,html,LitElement}from"lit";import{customElement,property}from"lit/decorators.js";import{Sizes}from"@typo3/backend/enum/icon-types.js";import{IconStyles}from"@typo3/backend/icons.js";!function(e){e.light="light",e.dark="dark"}(Variant||(Variant={}));let SpinnerElement=class extends LitElement{constructor(){super(...arguments),this.size=Sizes.default,this.variant=Variant.dark}render(){return html`
       <div class="icon-wrapper">
         <span class="icon icon-size-small icon-state-default icon-spin">
           <span class="icon-markup">
@@ -32,4 +23,7 @@ var Variant,__decorate=function(e,t,r,n){var o,i=arguments.length,a=i<3?t:null==
           </span>
         </span>
       </div>
-    `}};__decorate([property({type:String})],SpinnerElement.prototype,"size",void 0),__decorate([property({type:String})],SpinnerElement.prototype,"variant",void 0),SpinnerElement=__decorate([customElement("typo3-backend-spinner")],SpinnerElement);export{SpinnerElement};
+    `}};SpinnerElement.styles=[...IconStyles.getStyles(),css`
+      :host([variant=dark]) svg { fill: #212121; }
+      :host([variant=light]) svg { fill: #fff; }
+    `],__decorate([property({type:String})],SpinnerElement.prototype,"size",void 0),__decorate([property({type:String})],SpinnerElement.prototype,"variant",void 0),SpinnerElement=__decorate([customElement("typo3-backend-spinner")],SpinnerElement);export{SpinnerElement};
