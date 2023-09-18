@@ -161,15 +161,31 @@ class FileStorageTreeProvider
                 return -1;
             });
             try {
-                $files = $resourceStorage->getFilesInFolder($resourceStorage->getRootLevelFolder(), 0, 0, true, true);
+                $files = $folders = [];
+                // Because $resourceStorage->getRootLevelFolder() does not return an actual root folder but
+                // the first file mount, we first need to check if we have file mounts and then fetch them one by one.
+                if (($fileMounts = $resourceStorage->getFileMounts()) !== []) {
+                    foreach ($fileMounts as $identifier => $configuration) {
+                        foreach ($resourceStorage->getFilesInFolder($resourceStorage->getFolder($identifier), 0, 0, true, true) as $file) {
+                            $files[] = $file;
+                        }
+                        foreach ($resourceStorage->getFolderIdentifiersInFolder($identifier, true, true) as $folder) {
+                            $folders[] = $folder;
+                        }
+                    }
+                } else {
+                    $files = $resourceStorage->getFilesInFolder($resourceStorage->getRootLevelFolder(), 0, 0, true, true);
+                    $folders = $resourceStorage->getFolderIdentifiersInFolder($resourceStorage->getRootLevelFolder()->getIdentifier(), true, true);
+                }
                 foreach ($files as $file) {
                     $folder = $file->getParentFolder();
                     $foundFolders[$folder->getCombinedIdentifier()] = $folder;
                 }
-                $folders = $resourceStorage->getFolderIdentifiersInFolder($resourceStorage->getRootLevelFolder()->getIdentifier(), true, true);
                 foreach ($folders as $folder) {
                     $folderObj = $resourceStorage->getFolder($folder);
-                    $foundFolders[$folderObj->getCombinedIdentifier()] = $folderObj;
+                    if ($folderObj !== null) {
+                        $foundFolders[$folderObj->getCombinedIdentifier()] = $folderObj;
+                    }
                 }
             } catch (InsufficientFolderAccessPermissionsException $e) {
                 // do nothing
