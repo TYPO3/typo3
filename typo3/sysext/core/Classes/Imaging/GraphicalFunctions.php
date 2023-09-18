@@ -280,7 +280,6 @@ class GraphicalFunctions
      * @param array $options An array with options passed to getImageScale (see this function).
      * @param bool $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding measures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
      * @return array|null [0]/[1] is w/h, [2] is file extension and [3] is the filename.
-     * @see getImageScale()
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
      * @see maskImageOntoImage()
      * @see copyImageOntoImage()
@@ -317,59 +316,56 @@ class GraphicalFunctions
             return null;
         }
 
-        $data = $this->getImageScale($info, $w, $h, $options);
-        $w = $data['origW'];
-        $h = $data['origH'];
+        $processingInstructions = ImageProcessingInstructions::fromCropScaleValues($info, $newExt, $w, $h, $options);
+        $w = $processingInstructions->originalWidth;
+        $h = $processingInstructions->originalHeight;
         // If no conversion should be performed
         // this flag is TRUE if the width / height does NOT dictate
         // the image to be scaled!! (that is if no width / height is
         // given or if the destination w/h matches the original image
         // dimensions or if the option to not scale the image is set)
-        $noScale = !$w && !$h || $data[0] == $info[0] && $data[1] == $info[1] || !empty($options['noScale']);
-        if ($noScale && !$data['crs'] && !$params && !$frame && $newExt == $info[2] && !$mustCreate) {
+        $noScale = !$w && !$h || $processingInstructions->width === (int)$info[0] && $processingInstructions->height === (int)$info[1] || !empty($options['noScale']);
+        if ($noScale && !$processingInstructions->cropArea && !$params && !$frame && $processingInstructions->fileExtension === $info[2] && !$mustCreate) {
             // Set the new width and height before returning,
-            // if the noScale option is set
+            // if the noScale option is set, otherwise the incoming
+            // values are calculated
             if (!empty($options['noScale'])) {
-                $info[0] = $data[0];
-                $info[1] = $data[1];
+                $info[0] = $processingInstructions->width;
+                $info[1] = $processingInstructions->height;
             }
             $info[3] = $imagefile;
             return $info;
         }
-        $info[0] = $data[0];
-        $info[1] = $data[1];
+        $info[0] = $processingInstructions->width;
+        $info[1] = $processingInstructions->height;
         $frame = $this->addFrameSelection ? (int)$frame : 0;
         if (!$params) {
             $params = $this->cmds[$newExt] ?? '';
         }
-        // Cropscaling:
-        if ($data['crs']) {
-            if (!$data['origW']) {
-                $data['origW'] = $data[0];
-            }
-            if (!$data['origH']) {
-                $data['origH'] = $data[1];
-            }
-            $offsetX = (int)(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
-            $offsetY = (int)(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
-            $params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! +repage';
+        if ($processingInstructions->cropArea) {
+            $cropArea = $processingInstructions->cropArea;
+            $params .= ' -crop ' . $cropArea->getWidth() . 'x' . $cropArea->getHeight() . '+' . $cropArea->getOffsetLeft() . '+' . $cropArea->getOffsetTop() . '! +repage';
         }
         // start with the default scale command
-
         // check if we should use -sample or -geometry
         if ($options['sample'] ?? false) {
             $command = '-auto-orient -sample';
         } else {
             $command = $this->scalecmd;
         }
+        // from the IM docs -- https://imagemagick.org/script/command-line-processing.php
+        // "We see that ImageMagick is very good about preserving aspect ratios of images, to prevent distortion
+        // of your favorite photos and images. But you might really want the dimensions to be 100x200, thereby
+        // stretching the image. In this case just tell ImageMagick you really mean it (!) by appending an exclamation
+        // operator to the geometry. This will force the image size to exactly what you specify.
+        // So, for example, if you specify 100x200! the dimensions will become exactly 100x200"
         $command .= ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
         // re-apply colorspace-setting for the resulting image so colors don't appear to dark (sRGB instead of RGB)
         $command .= ' -colorspace ' . $this->colorspace;
-        $cropscale = $data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '';
         if ($this->alternativeOutputKey) {
-            $theOutputName = md5($command . $cropscale . PathUtility::basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
+            $theOutputName = md5($command . $processingInstructions->cropArea . PathUtility::basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
         } else {
-            $theOutputName = md5($command . $cropscale . $imagefile . filemtime($imagefile) . '[' . $frame . ']');
+            $theOutputName = md5($command . $processingInstructions->cropArea . $imagefile . filemtime($imagefile) . '[' . $frame . ']');
         }
         if ($this->imageMagickConvert_forceFileNameBody) {
             $theOutputName = $this->imageMagickConvert_forceFileNameBody;
@@ -417,7 +413,7 @@ class GraphicalFunctions
             $targetFileExtension,
             '',
             '',
-            sprintf('-crop %dx%d+%d+%d +repage -quality %d', $newWidth, $newHeight, $offsetLeft, $offsetTop, $this->jpegQuality),
+            sprintf('-crop %dx%d+%d+%d! +repage -quality %d', $newWidth, $newHeight, $offsetLeft, $offsetTop, $this->jpegQuality),
             '',
             isset($options['skipProfile']) ? ['skipProfile' => $options['skipProfile']] : [],
             true
@@ -473,167 +469,6 @@ class GraphicalFunctions
             ];
         }
         return null;
-    }
-
-    /**
-     * Get numbers for scaling the image based on input.
-     *
-     * Notes by Benni in 2023 in order to understand this magic:
-     * ----------------------------
-     * Relevant if an image should be
-     * - scaled
-     * - cropped
-     * - keep the aspect ratio while scaling?
-     * - use a target width or height
-     * - or rather have a minimum or maximum width and/or height
-     *
-     * This method does a lot of magic:
-     * - $info contains [0] = width and [1] the width of an original image for example.
-     * - $w and $h are the width and height that are originally required the image to be like
-     * when scaled. They could contain a "c" for cropping information or "m" for "Ensure that even though $w and $h are given, one containing an $m that we keep the aspect ratio."
-     * "m" really allows to say $w="50c" that this might in a result with [0]=100 because $w would follow $h in order to keep aspect ratio.
-     * Obviously this only works properly if both m and c are working
-     * - $options contain "maxW" (never go beyond this width, even if scaling larger as this), same with "maxH" and "minW" and "minH"
-     *
-     * The return values are a bit tricky to understand, so I added a few tests:
-     * - AFAICS "0" and "1" are always used as "these are the target width / height" which my image
-     *   should be scaled to, or cropped down to.
-     *   Notes: If you hand in $info[0] and $info[1] a "0", you will get "0" as return value back!
-     *          but
-     * - "crs" if the image should be cropped (which is indicated by one of $w or $h contain the "c" at the end)
-     * - "cropH" and "cropV" is also set when one of the incoming $w or $h contains a "c".
-     *   Notes: "cropH" and "cropV" are rather cryptic, and can't really be used outside of this context.
-     *          They are then "magically calculated" outside of this function
-     *          $offsetX = (int)(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
-     *          $offsetY = (int)(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
-     *
-     * - "origW" / "origH" seems to be the values that were handed in as $w and $h, but they might be altered
-     *   f.e. "origH" is set when $w is given and $options["maxH"]
-     * - When such a rearranging calculation was made ("maxH" reduces the original $w due to constraints),
-     *   then the return value "max" is set.
-     * - When using the "c" argument, origH and origW seem to contain the values that you would expect when NOT doing a crop scenario
-     *   whereas [0] and [1] contain the target width and height that could be larger than originally requested.
-     *
-     * @todo in this method:
-     * - use real values for "cropH" and "cropV"
-     * - clean up "max" value to use a better naming, same as "crs"
-     * - we might just replace "0" and "1" with "width" and "height" for the sake of having it in place for the future.
-     *
-     * ----------------------------
-     * @param array $info Current image information: Width, Height etc.
-     * @param string $w "required" width
-     * @param string $h "required" height
-     * @param array $options Options: Keys are like "maxW", "maxH", "minW", "minH"
-     * @return array keys "0" and "1" explain the target width and height that should be adopted, but can be null
-     * @internal
-     * @see imageMagickConvert()
-     */
-    public function getImageScale($info, $w, $h, $options)
-    {
-        $out = [];
-        $max = str_contains($w . $h, 'm') ? 1 : 0;
-        if (str_contains($w . $h, 'c')) {
-            $out['cropH'] = (int)substr((string)strstr((string)$w, 'c'), 1);
-            $out['cropV'] = (int)substr((string)strstr((string)$h, 'c'), 1);
-            $crs = true;
-        } else {
-            $crs = false;
-        }
-        $out['crs'] = $crs;
-        $w = (int)$w;
-        $h = (int)$h;
-        // If there are max-values...
-        if (!empty($options['maxW'])) {
-            // If width is given...
-            if ($w) {
-                if ($w > $options['maxW']) {
-                    $w = $options['maxW'];
-                    // Height should follow
-                    $max = 1;
-                }
-            } else {
-                if ($info[0] > $options['maxW']) {
-                    $w = $options['maxW'];
-                    // Height should follow
-                    $max = 1;
-                }
-            }
-        }
-        if (!empty($options['maxH'])) {
-            // If height is given...
-            if ($h) {
-                if ($h > $options['maxH']) {
-                    $h = $options['maxH'];
-                    // Height should follow
-                    $max = 1;
-                }
-            } else {
-                // Changed [0] to [1] 290801
-                if ($info[1] > $options['maxH']) {
-                    $h = $options['maxH'];
-                    // Height should follow
-                    $max = 1;
-                }
-            }
-        }
-        $out['origW'] = $w;
-        $out['origH'] = $h;
-        $out['max'] = $max;
-        if (!$this->mayScaleUp) {
-            if ($w > $info[0]) {
-                $w = $info[0];
-            }
-            if ($h > $info[1]) {
-                $h = $info[1];
-            }
-        }
-        // If scaling should be performed. Check that input "info" array will not cause division-by-zero
-        if (($w || $h) && $info[0] && $info[1]) {
-            if ($w && !$h) {
-                $info[1] = (int)ceil($info[1] * ($w / $info[0]));
-                $info[0] = $w;
-            }
-            if (!$w && $h) {
-                $info[0] = (int)ceil($info[0] * ($h / $info[1]));
-                $info[1] = $h;
-            }
-            if ($w && $h) {
-                if ($max) {
-                    $ratio = $info[0] / $info[1];
-                    if ($h * $ratio > $w) {
-                        $h = (int)round($w / $ratio);
-                    } else {
-                        $w = (int)round($h * $ratio);
-                    }
-                }
-                if ($crs) {
-                    $ratio = $info[0] / $info[1];
-                    if ($h * $ratio < $w) {
-                        $h = (int)round($w / $ratio);
-                    } else {
-                        $w = (int)round($h * $ratio);
-                    }
-                }
-                $info[0] = $w;
-                $info[1] = $h;
-            }
-        }
-        $out[0] = $info[0];
-        $out[1] = $info[1];
-        // Set minimum-measures!
-        if (isset($options['minW']) && $out[0] < $options['minW']) {
-            if (($max || $crs) && $out[0]) {
-                $out[1] = (int)round($out[1] * $options['minW'] / $out[0]);
-            }
-            $out[0] = $options['minW'];
-        }
-        if (isset($options['minH']) && $out[1] < $options['minH']) {
-            if (($max || $crs) && $out[1]) {
-                $out[0] = (int)round($out[0] * $options['minH'] / $out[1]);
-            }
-            $out[1] = $options['minH'];
-        }
-        return $out;
     }
 
     /***********************************

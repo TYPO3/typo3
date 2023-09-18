@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper;
 use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Representing an image dimension (width and height)
@@ -31,26 +30,26 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ImageDimension
 {
     /**
-     * @var int
+     * @param int<0, max> $width
+     * @param int<0, max> $height
      */
-    private $width;
-
-    /**
-     * @var int
-     */
-    private $height;
-
-    public function __construct(int $width, int $height)
-    {
-        $this->width = $width;
-        $this->height = $height;
+    public function __construct(
+        private int $width,
+        private int $height
+    ) {
     }
 
+    /**
+     * @return int<0, max>
+     */
     public function getWidth(): int
     {
         return $this->width;
     }
 
+    /**
+     * @return int<0, max>
+     */
     public function getHeight(): int
     {
         return $this->height;
@@ -76,24 +75,24 @@ class ImageDimension
         if ($imageDimension->width <= 0 || $imageDimension->height <= 0) {
             throw new ZeroImageDimensionException('Width and height of the image must be greater than zero.', 1597310560);
         }
-        $result = GeneralUtility::makeInstance(GraphicalFunctions::class)->getImageScale(
+        $result = ImageProcessingInstructions::fromCropScaleValues(
             [
                 $imageDimension->width,
                 $imageDimension->height,
                 $processedFile->getExtension(),
             ],
-            (string)($config['width'] ?? ''),
-            (string)($config['height'] ?? ''),
+            $task->getTargetFileExtension(),
+            $config['width'] ?? '',
+            $config['height'] ?? '',
             $config
         );
-        $imageWidth = $geometryWidth = (int)$result[0];
-        $imageHeight = $geometryHeight = (int)$result[1];
-        $isCropScaled = $result['crs'];
+        $imageWidth = $geometryWidth = $result->width;
+        $imageHeight = $geometryHeight = $result->height;
 
-        if ($isCropScaled) {
-            $cropWidth = (int)$result['origW'];
-            $cropHeight = (int)$result['origH'];
-            // If the image is crop scaled, use the dimension of the crop
+        if ($result->useCropScaling) {
+            $cropWidth = $result->originalWidth;
+            $cropHeight = $result->originalHeight;
+            // If the image is crop-scaled, use the dimension of the crop
             // unless crop area exceeds the dimension of the scaled image
             if ($cropWidth <= $geometryWidth && $cropHeight <= $geometryHeight) {
                 $imageWidth = $cropWidth;

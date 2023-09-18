@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Imaging\ImageProcessingInstructions;
 use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -65,18 +65,18 @@ class LocalCropScaleMaskHelper
         $configuration = $targetFile->getProcessingConfiguration();
         $configuration['additionalParameters'] ??= '';
 
-        $options = $this->getConfigurationForImageCropScaleMask($targetFile);
-
         $croppedImage = null;
         if (!empty($configuration['crop'])) {
             // the result info is an array with 0=width,1=height,2=extension,3=filename
-            $result = $imageOperations->crop($originalFileName, $targetFileExtension, $configuration['crop'], $options);
+            $result = $imageOperations->crop($originalFileName, $targetFileExtension, $configuration['crop'], $configuration);
+            // @todo: in the future, we want this to be one crop call (together with the scale command)
+            unset($configuration['crop']);
             if ($result !== null) {
                 $originalFileName = $croppedImage = $result[3];
             }
         }
 
-        // Normal situation (no masking)
+        // Normal situation (no masking) - just scale the image
         if (!is_array($configuration['maskImages'] ?? null)) {
             // the result info is an array with 0=width,1=height,2=extension,3=filename
             $result = $imageOperations->imageMagickConvert(
@@ -86,7 +86,7 @@ class LocalCropScaleMaskHelper
                 $configuration['height'] ?? '',
                 $configuration['additionalParameters'],
                 $configuration['frame'] ?? '',
-                $options,
+                $configuration,
                 // in case file is in `/typo3temp/` from the crop operation above, it must create a result
                 $result !== null
             );
@@ -103,7 +103,7 @@ class LocalCropScaleMaskHelper
                     $configuration['height'] ?? '',
                     $configuration['additionalParameters'],
                     $configuration['frame'] ?? '',
-                    $options
+                    $configuration
                 );
                 if (is_array($tempFileInfo)) {
                     // Scaling
@@ -114,7 +114,7 @@ class LocalCropScaleMaskHelper
                         $maskImage->getForLocalProcessing(),
                         $maskBackgroundImage->getForLocalProcessing(),
                         $command,
-                        $options
+                        $configuration
                     );
                     $maskBottomImage = $configuration['maskImages']['maskBottomImage'] ?? null;
                     $maskBottomImageMask = $configuration['maskImages']['maskBottomImageMask'] ?? null;
@@ -126,7 +126,7 @@ class LocalCropScaleMaskHelper
                             $maskBottomImage->getForLocalProcessing(),
                             $maskBottomImageMask->getForLocalProcessing(),
                             $command,
-                            $options
+                            $configuration
                         );
                     }
                     $tempFileInfo[3] = $temporaryFileName;
@@ -159,54 +159,24 @@ class LocalCropScaleMaskHelper
         // the result is discarded due to the fact that the original image is used.
         // @see https://forge.typo3.org/issues/100972
         // Note: This should only happen if no image has been generated ($result === null).
-        if ($result === null && ($options['noScale'] ?? false)) {
+        if ($result === null && ($configuration['noScale'] ?? false)) {
             $configuration = $task->getConfiguration();
             $localProcessedFile = $task->getSourceFile()->getForLocalProcessing(false);
             $imageDimensions = $imageOperations->getImageDimensions($localProcessedFile);
-            $imageScaleInfo = $imageOperations->getImageScale(
+            $imageScaleInfo = ImageProcessingInstructions::fromCropScaleValues(
                 $imageDimensions,
+                $task->getSourceFile()->getExtension(),
                 $configuration['width'] ?? '',
                 $configuration['height'] ?? '',
-                $options
+                $configuration
             );
             $targetFile->updateProperties([
-                'width' => $imageScaleInfo[0],
-                'height' => $imageScaleInfo[1],
+                'width' => $imageScaleInfo->width,
+                'height' => $imageScaleInfo->height,
             ]);
         }
 
         return $result;
-    }
-
-    protected function getConfigurationForImageCropScaleMask(ProcessedFile $processedFile): array
-    {
-        $configuration = $processedFile->getProcessingConfiguration();
-
-        $options = [];
-        if ($configuration['sample'] ?? false) {
-            $options['sample'] = true;
-        }
-        if ($configuration['maxWidth'] ?? false) {
-            $options['maxW'] = $configuration['maxWidth'];
-        }
-        if ($configuration['maxHeight'] ?? false) {
-            $options['maxH'] = $configuration['maxHeight'];
-        }
-        if ($configuration['minWidth'] ?? false) {
-            $options['minW'] = $configuration['minWidth'];
-        }
-        if ($configuration['minHeight'] ?? false) {
-            $options['minH'] = $configuration['minHeight'];
-        }
-        if (isset($configuration['stripProfile'])) {
-            $options['stripProfile'] = (bool)$configuration['stripProfile'];
-        }
-
-        if (isset($configuration['noScale'])) {
-            $options['noScale'] = (bool)$configuration['noScale'];
-        }
-
-        return $options;
     }
 
     /**
