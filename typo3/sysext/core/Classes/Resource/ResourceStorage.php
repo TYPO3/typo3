@@ -1918,6 +1918,14 @@ class ResourceStorage implements ResourceStorageInterface
         }
         $newFileObject = $this->getFileByIdentifier($newFileObjectIdentifier);
 
+        // In case we deal with a file, also copy corresponding metadata
+        if ($file instanceof File && $newFileObject !== null) {
+            $metaDataAspect = $newFileObject->getMetaData();
+            // Add meta data of file while keeping existing properties like "file", "uid", etc.
+            $metaDataAspect->add(array_replace($file->getMetaData()->get(), $metaDataAspect->get()));
+            $metaDataAspect->save();
+        }
+
         $this->eventDispatcher->dispatch(
             new AfterFileCopiedEvent($file, $targetFolder, $newFileObjectIdentifier, $newFileObject)
         );
