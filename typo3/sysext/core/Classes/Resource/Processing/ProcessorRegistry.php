@@ -18,26 +18,23 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Registry for images processors.
  */
-class ProcessorRegistry implements SingletonInterface
+class ProcessorRegistry
 {
-    /**
-     * @var array
-     */
-    protected $registeredProcessors = [];
+    protected array $registeredProcessors = [];
 
     /**
      * Auto register processors from configuration
      */
-    public function __construct()
+    public function __construct(DependencyOrderingService $dependencyOrderingService)
     {
-        $this->registeredProcessors = GeneralUtility::makeInstance(DependencyOrderingService::class)
-            ->orderByDependencies($this->getRegisteredProcessors());
+        $this->registeredProcessors = $dependencyOrderingService->orderByDependencies(
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processors'] ?? []
+        );
     }
 
     /**
@@ -84,10 +81,5 @@ class ProcessorRegistry implements SingletonInterface
         }
 
         return $processor;
-    }
-
-    protected function getRegisteredProcessors(): array
-    {
-        return $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processors'] ?? [];
     }
 }

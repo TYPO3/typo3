@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Processing;
 use TYPO3\CMS\Core\Resource\Processing\AbstractTask;
 use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorRegistry;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ProcessorRegistryTest extends UnitTestCase
@@ -36,7 +37,9 @@ final class ProcessorRegistryTest extends UnitTestCase
                 'className' => LocalImageProcessor::class,
             ],
         ];
-        $subject = new ProcessorRegistry();
+        $subject = new ProcessorRegistry(
+            new DependencyOrderingService()
+        );
         $taskMock = $this->createMock(AbstractTask::class);
         $taskMock->method('getType')->willReturn('Image');
         $taskMock->method('getName')->willReturn('CropScaleMask');
@@ -54,7 +57,9 @@ final class ProcessorRegistryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processors'] = [];
         $this->expectExceptionCode(1560876294);
 
-        $subject = new ProcessorRegistry();
+        $subject = new ProcessorRegistry(
+            new DependencyOrderingService()
+        );
         $taskMock = $this->createMock(AbstractTask::class);
         $subject->getProcessorByTask($taskMock);
     }
@@ -73,7 +78,9 @@ final class ProcessorRegistryTest extends UnitTestCase
                 'after' => 'LocalImageProcessor',
             ],
         ];
-        $subject = new ProcessorRegistry();
+        $subject = new ProcessorRegistry(
+            new DependencyOrderingService()
+        );
         $taskMock = $this->createMock(AbstractTask::class);
         $taskMock->method('getType')->willReturn('Image');
         $taskMock->method('getName')->willReturn('CropScaleMask');

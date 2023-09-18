@@ -236,9 +236,8 @@ class File extends AbstractFile
      *
      * @param string $taskType The task type of this processing
      * @param array $configuration the processing configuration, see manual for that
-     * @return ProcessedFile The processed file
      */
-    public function process($taskType, array $configuration)
+    public function process(string $taskType, array $configuration): ProcessedFile
     {
         return $this->getStorage()->processFile($this, $taskType, $configuration);
     }

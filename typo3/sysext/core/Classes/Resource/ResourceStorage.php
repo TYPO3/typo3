@@ -1380,21 +1380,13 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Passes a file to the File Processing Services and returns the resulting ProcessedFile object.
-     *
-     * @param FileInterface $fileObject The file object
-     * @param string $context
-     *
-     * @return ProcessedFile
-     * @throws \InvalidArgumentException
      */
-    public function processFile(FileInterface $fileObject, $context, array $configuration)
+    public function processFile(File|FileReference $fileObject, string $context, array $configuration): ProcessedFile
     {
         if ($fileObject->getStorage() !== $this) {
             throw new \InvalidArgumentException('Cannot process files of foreign storage', 1353401835);
         }
-        $processedFile = $this->getFileProcessingService()->processFile($fileObject, $this, $context, $configuration);
-
-        return $processedFile;
+        return $this->getFileProcessingService()->processFile($fileObject, $context, $this->driver, $configuration);
     }
 
     /**
@@ -2666,7 +2658,7 @@ class ResourceStorage implements ResourceStorageInterface
     protected function getFileProcessingService()
     {
         if (!$this->fileProcessingService) {
-            $this->fileProcessingService = GeneralUtility::makeInstance(FileProcessingService::class, $this, $this->driver, $this->eventDispatcher);
+            $this->fileProcessingService = GeneralUtility::makeInstance(FileProcessingService::class);
         }
         return $this->fileProcessingService;
     }

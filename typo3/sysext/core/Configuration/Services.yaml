@@ -204,6 +204,9 @@ services:
   TYPO3\CMS\Core\Resource\FileRepository:
     public: true
 
+  TYPO3\CMS\Core\Resource\Service\FileProcessingService:
+    public: true
+
   TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver:
     public: true
 
