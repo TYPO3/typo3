@@ -85,3 +85,26 @@
     right: -5px;
     top: -5px;
 }
+
+/**
+ * TYPO3 specific styles
+ */
+typo3-backend-draggable-resizable {
+    display: inline-block;
+    position: absolute;
+    transition: none;
+
+    &[reverting] {
+        transition-property: left, top, width, height;
+        transition-duration: .25s;
+    }
+
+    #t3js-cropper-focus-area {
+        width: 100%;
+        height: 100%;
+    }
+
+    .ui-resizable-handle {
+        z-index: 90;
+    }
+}

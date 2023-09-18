@@ -16,7 +16,7 @@ import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { styleTag, lll } from '@typo3/core/lit-helper';
+import { lll } from '@typo3/core/lit-helper';
 
 enum CspReportAttribute {
   fixable= 'fixable',
@@ -100,66 +100,11 @@ export class CspReports extends LitElement {
   }
 
   protected createRenderRoot(): HTMLElement | ShadowRoot {
-    // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
   protected render(): TemplateResult {
     return html`
-      ${styleTag`
-        .infolist-container {
-          container-type: inline-size;
-        }
-        .infolist {
-          display: flex;
-          gap: var(--typo3-spacing);
-          flex-direction: column;
-        }
-        .infolist-info {
-          display: none;
-        }
-        .infolist-overlay {
-          position: relative;
-          z-index: 10;
-        }
-
-        @container (max-width: 899px) {
-          .infolist-info-showrecord {
-            display: block;
-            background: rgba(0,0,0,.5);
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-          }
-        }
-
-        @container (min-width: 900px) {
-          .infolist {
-            display: grid;
-            grid-template:
-              "header header"
-              "content info";
-            grid-template-columns: auto 400px;
-          }
-          .infolist-header {
-            grid-area: header;
-          }
-          .infolist-content {
-            grid-area: content;
-          }
-          .infolist-info {
-            display: block;
-            grid-area: info;
-          }
-          .infolist-info-norecord,
-          .infolist-info-record {
-            position: sticky;
-            top: calc(var(--module-docheader-height) + var(--typo3-spacing));
-          }
-        }
-      `}
       <div class="infolist-container infolist-overlay">
         <div class="infolist">
           <div class="infolist-header">
@@ -436,5 +381,11 @@ export class CspReports extends LitElement {
     } catch (err) {
       return value;
     }
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-security-csp-reports': CspReports;
   }
 }
