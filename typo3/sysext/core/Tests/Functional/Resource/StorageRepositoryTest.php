@@ -563,4 +563,31 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $newFile = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/bar_01.txt');
         self::assertInstanceOf(File::class, $newFile);
     }
+
+    /**
+     * @test
+     */
+    public function copyFileCopiesMetadata(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        mkdir(Environment::getPublicPath() . '/fileadmin/foo');
+        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file');
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $fileToCopyMetaData = [
+            'title' => 'Temp file title',
+            'description' => 'Temp file description',
+        ];
+        /** @var File $fileToCopy */
+        $fileToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $fileToCopy->getMetaData()->add($fileToCopyMetaData);
+        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
+        /** @var File $newFile */
+        $newFile = $subject->copyFile($fileToCopy, $targetParentFolder);
+        self::assertNotEquals($fileToCopy->getMetaData()->get()['file'], $newFile->getMetaData()->get()['file']);
+        self::assertNotEquals($fileToCopy->getMetaData()->get()['uid'], $newFile->getMetaData()->get()['uid']);
+        self::assertEquals($fileToCopyMetaData['title'], $newFile->getMetaData()->get()['title']);
+        self::assertEquals($fileToCopyMetaData['description'], $newFile->getMetaData()->get()['description']);
+    }
 }
