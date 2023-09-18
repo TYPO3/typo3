@@ -30,7 +30,7 @@ It is now possible to load a list of all countries via PHP:
 
     use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-    $countryProvider = GeneralUtility::makeInstance(CountryProvider:php);
+    $countryProvider = GeneralUtility::makeInstance(CountryProvider::class);
     $france = $countryProvider->getByIsoCode('FR');
     // or
     $france = $countryProvider->getByEnglishName('France');
