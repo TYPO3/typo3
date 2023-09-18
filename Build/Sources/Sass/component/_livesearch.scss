@@ -12,9 +12,9 @@ typo3-backend-live-search {
 
     .search-option-badge {
         position: absolute !important;
-        transform: translate(-50%, -50%);
+        transform: translate(calc(-50% * var(--typo3-position-modifier)), -50%);
         top: 0 !important;
-        left: 100%;
+        inset-inline-start: 100%;
         --bs-badge-border-radius: .65rem;
     }
 
@@ -134,10 +134,10 @@ typo3-backend-live-search-result-item-action {
         align-items: center;
         margin: calc(var(--typo3-list-item-padding-y) * -1) calc(var(--typo3-list-item-padding-x) * -1);
         padding: var(--typo3-list-item-padding-y) calc(var(--typo3-list-item-padding-x) / 2);
-        border-left: 1px solid transparent;
+        border-inline-start: 1px solid transparent;
 
         &:hover {
-            border-left: 1px solid tint-color($primary, 85%);
+            border-inline-start: 1px solid tint-color($primary, 85%);
         }
     }
 

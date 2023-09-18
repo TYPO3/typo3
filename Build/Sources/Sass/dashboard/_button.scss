@@ -27,7 +27,7 @@
 .dashboard-button-add {
     position: fixed;
     padding: $dashboard-button-padding * 2;
-    right: 24px;
+    inset-inline-end: 24px;
     bottom: 24px;
     z-index: 2;
 }

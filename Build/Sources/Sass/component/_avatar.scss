@@ -107,7 +107,7 @@ $avatar-size-mega: 64px !default;
 .avatar-icon {
     position: absolute;
     bottom: 0;
-    right: 0;
+    inset-inline-end: 0;
     height: calc(var(--avatar-size, 1em) * .5);
     width: calc(var(--avatar-size, 1em) * .5);
 

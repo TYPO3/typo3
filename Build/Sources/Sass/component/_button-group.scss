@@ -1,0 +1,13 @@
+//
+// Button Group
+// ============
+//
+// Bugfixes for Bootstrap to support RTL
+//
+.btn-group {
+    > :not(.btn-check:first-child) + .btn,
+    > .btn-group:not(:first-child) {
+        margin-left: unset;
+        margin-inline-start: calc(#{$btn-border-width} * -1);
+    }
+}

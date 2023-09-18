@@ -57,7 +57,7 @@ $callout-padding: 1rem;
     --callout-box-shadow: var(--typo3-component-box-shadow);
     color: var(--callout-color);
     background-color: var(--callout-bg);
-    border-left: .5em solid var(--callout-border-color);
+    border-inline-start: .5em solid var(--callout-border-color);
     border-radius: var(--callout-border-radius);
     margin-bottom: 1rem;
     padding: $callout-padding;

@@ -20,8 +20,8 @@
 
 // preview image in sys_file records
 img.t3-tceforms-sysfile-imagepreview {
-    float: left;
-    margin-right: 10px;
+    float: var(--typo3-position-start);
+    margin-inline-end: 10px;
     margin-bottom: 10px;
 }
 
@@ -56,7 +56,7 @@ img.t3-tceforms-sysfile-imagepreview {
 }
 
 .t3-form-original-language .icon {
-    margin-right: 5px;
+    margin-inline-end: 5px;
 }
 
 //

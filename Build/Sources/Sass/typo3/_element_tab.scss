@@ -9,11 +9,11 @@
 
     > li {
         + li {
-            margin-left: 2px;
+            margin-inline-start: 2px;
         }
 
         > a.nav-link {
-            margin-right: 0;
+            margin-inline-end: 0;
 
             @include transition(all .25s ease-in-out);
 

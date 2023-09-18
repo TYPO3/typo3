@@ -94,7 +94,7 @@ label {
     position: relative;
 
     > .t3js-charcounter-wrapper {
-        left: 0;
+        inset-inline-start: 0;
         position: absolute;
         top: 100%;
         display: flex;
@@ -174,7 +174,7 @@ select {
 
     &.icon-select {
         option {
-            padding-left: 22px;
+            padding-inline-start: 22px;
         }
     }
 }
@@ -187,7 +187,7 @@ select {
 // </div>
 //
 .form-control-clearable {
-    padding-right: 2.3em;
+    padding-inline-end: 2.3em;
 }
 
 .form-control-clearable-wrapper {
@@ -200,7 +200,7 @@ select {
     }
 
     .form-control {
-        padding-right: 2.3em;
+        padding-inline-end: 2.3em;
     }
 
     .close {
@@ -210,7 +210,7 @@ select {
         height: 16px;
         z-index: 3;
         top: 50%;
-        right: .5em;
+        inset-inline-end: .5em;
         transform: translate(0, -50%);
         opacity: .2;
 
@@ -234,7 +234,7 @@ select {
 //
 .form-notice-capslock {
     position: absolute;
-    right: 25px;
+    inset-inline-end: 25px;
     top: 50%;
     margin-top: -10px;
     height: 20px;
@@ -312,7 +312,7 @@ select {
     > .form-wizards-items-aside {
         align-self: flex-start;
         white-space: nowrap;
-        padding-left: 5px;
+        padding-inline-start: 5px;
 
         &--move {
             grid-area: side-move;
@@ -355,21 +355,21 @@ select {
 
 .form-irre-header-button {
     display: flex;
-    text-align: left;
+    text-align: start;
     align-items: center;
     align-self: stretch;
     background: transparent;
     border: 0;
     width: 100%;
-    margin-left: -15px;
-    padding-left: 20px;
+    margin-inline-start: -15px;
+    padding-inline-start: 20px;
 }
 
 .form-irre-header-body {
     width: 100%;
     font-weight: normal;
     white-space: normal;
-    padding-left: 5px;
+    padding-inline-start: 5px;
 
     dl,
     dd,
@@ -379,11 +379,11 @@ select {
 }
 
 .form-irre-header-icon {
-    padding-right: 0;
+    padding-inline-end: 0;
 }
 
 .form-irre-header-thumbnail {
-    padding-right: 5px;
+    padding-inline-end: 5px;
 }
 
 .form-irre-header-control {
@@ -406,7 +406,7 @@ select {
         align-self: flex-start;
 
         + .form-multigroup-item {
-            padding-left: 5px;
+            padding-inline-start: 5px;
         }
     }
 
@@ -467,8 +467,7 @@ textarea {
     background: $white;
 
     .modal-body & {
-        margin-left: calc(var(--#{$prefix}modal-padding) * -1);
-        margin-right: calc(var(--#{$prefix}modal-padding) * -1);
+        margin-inline: calc(var(--#{$prefix}modal-padding) * -1);
         margin-bottom: var(--#{$prefix}modal-padding);
         padding: calc(var(--#{$prefix}modal-padding) / 2) var(--#{$prefix}modal-padding);
         border-bottom: var(--#{$prefix}modal-border-width) solid var(--#{$prefix}modal-border-color);

@@ -52,18 +52,18 @@
     th,
     td {
         &:first-child {
-            padding-left: var(--typo3-component-padding-x);
+            padding-inline-start: var(--typo3-component-padding-x);
         }
 
         &:last-child {
-            padding-right: var(--typo3-component-padding-x);
+            padding-inline-end: var(--typo3-component-padding-x);
         }
     }
 
     .col-icon,
     .col-checkbox,
     .col-avatar {
-        padding-right: 0;
+        padding-inline-end: 0;
     }
 
     .col-title,
@@ -112,11 +112,11 @@
 
     .col-control,
     .col-clipboard {
-        text-align: right;
+        text-align: end;
     }
 
     .col-border-left {
-        border-left: 1px solid var(--bs-table-border-color);
+        border-inline-start: 1px solid var(--bs-table-border-color);
     }
 
     .col-min {

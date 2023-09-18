@@ -134,7 +134,7 @@ body {
         overflow: visible;
         background-color: transparent;
         height: $scaffold-topbar-height;
-        left: auto;
+        inset-inline-start: auto;
         bottom: auto;
         display: block;
     }
@@ -183,7 +183,7 @@ body {
     }
     flex-direction: column;
     position: sticky !important;
-    left: 0;
+    inset-inline-start: 0;
     top: 0;
     bottom: 0;
     height: 100%;
@@ -259,7 +259,7 @@ body {
         background-color: rgb(150, 150, 150);
 
         &:after {
-            border-right: 2px solid rgb(150, 150, 150);
+            border-inline-end: 2px solid rgb(150, 150, 150);
         }
     }
 
@@ -268,8 +268,8 @@ body {
         position: absolute;
         height: 100%;
         width: 8px;
-        margin-left: -5px;
-        border-right: 2px solid transparent;
+        margin-inline-start: -5px;
+        border-inline-end: 2px solid transparent;
     }
 
     &.resizing {
@@ -301,7 +301,7 @@ body {
         display: flex;
         position: relative;
         flex-direction: column;
-        border-right: 1px solid #c3c3c3;
+        border-inline-end: 1px solid #c3c3c3;
         padding: 4px;
         background: #eee;
     }
@@ -311,9 +311,9 @@ body {
         display: block;
         width: 0;
         height: 30px;
-        border-right: 0;
+        border-inline-end: 0;
         background: transparent;
-        transform: translate(-36px, 4px);
+        transform: translate(calc(-36px * var(--typo3-position-modifier)), 4px);
         z-index: 3;
         padding: 0;
     }

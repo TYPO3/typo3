@@ -17,7 +17,7 @@
 // Extension List
 .extension-list-last-updated {
     font-weight: bold;
-    padding-right: .4em;
+    padding-inline-end: .4em;
     cursor: help;
 }
 
@@ -71,7 +71,7 @@
 }
 
 .extension-list-search {
-    padding-right: 2.3em;
+    padding-inline-end: 2.3em;
 }
 
 .extension-icon {
@@ -98,7 +98,7 @@
 .distribution-official-badge {
     position: absolute;
     bottom: 0;
-    right: .75em;
+    inset-inline-end: .75em;
     transform: translate(0, 25%);
 
     img {
@@ -123,8 +123,8 @@
     max-width: 100%;
 
     @include media-breakpoint-up('md') {
-        float: left;
-        margin-right: 3em;
+        float: var(--typo3-position-start);
+        margin-inline-end: 3em;
     }
 }
 

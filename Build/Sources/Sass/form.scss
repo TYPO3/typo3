@@ -143,13 +143,14 @@ $tree-line-height: 20px;
 //
 #t3-form-navigation-component {
     overflow: hidden;
-    left: 0;
+    inset-inline-start: 0;
 }
 
 #t3-form-structure-panel {
     overflow: auto;
     padding-top: var(--module-docheader-height);
     height: 100%;
+    direction: ltr;
 
     .icon {
         z-index: 1;
@@ -167,7 +168,7 @@ $tree-line-height: 20px;
                 overflow: visible;
                 position: relative;
                 top: -1em;
-                left: .6em;
+                inset-inline-start: .6em;
             }
 
             path {
@@ -202,18 +203,17 @@ $tree-line-height: 20px;
             }
 
             small {
-                padding-left: .5em;
+                padding-inline-start: .5em;
                 font-size: 80%;
             }
         }
 
         .t3-form-icon {
-            margin-right: .5em;
-            margin-left: .5em;
+            margin-inline: .5em;
         }
 
         .t3-form-element-has-children > div .t3-form-icon {
-            margin-left: .1em;
+            margin-inline-start: .1em;
         }
 
         .sortable-hover {
@@ -222,7 +222,7 @@ $tree-line-height: 20px;
     }
 
     .icon {
-        margin-top: 1px;
+        margin-block-start: 1px;
     }
 
     .tree li > div,
@@ -250,9 +250,8 @@ $tree-line-height: 20px;
         background-color: darken($navigation-bg, 1%);
         border-color: darken($navigation-bg, 10%);
         border-radius: 2px;
-        margin-left: -$tree-indentation;
-        padding-left: $tree-indentation;
-        margin-right: -1.3em;
+        margin-inline: -$tree-indentation -1.3em;
+        padding-inline-start: $tree-indentation;
     }
 
     .tree li > .t3-form-form-element-selected,
@@ -283,14 +282,14 @@ $tree-line-height: 20px;
 
     .mjs-nestedSortable-branch {
         span[data-identifier="treeExpander"] {
-            margin-left: -1.7em;
-            margin-top: -2px;
+            margin-inline-start: -1.7em;
+            margin-block-start: -2px;
         }
     }
 
     .mjs-nestedSortable-leaf {
         span.t3-form-icon {
-            margin-left: initial;
+            margin-inline-start: initial;
         }
     }
 }
@@ -307,7 +306,7 @@ $tree-line-height: 20px;
 
 #t3-form-inspector-panels-container {
     overflow: hidden;
-    right: 0;
+    inset-inline-end: 0;
     padding-top: var(--module-docheader-height);
 }
 
@@ -446,8 +445,7 @@ $tree-line-height: 20px;
     }
 
     .t3-form-control-group {
-        margin-right: .5em;
-        margin-left: .5em;
+        margin-inline: .5em;
     }
 }
 
@@ -460,14 +458,14 @@ $tree-line-height: 20px;
 
     .t3-form-collection-element-remove-button {
         position: absolute;
-        right: .5em;
+        inset-inline-end: .5em;
         top: .5em;
     }
 
     h4 {
         > .icon {
             position: absolute;
-            left: 1em;
+            inset-inline-start: 1em;
         }
     }
 
@@ -554,8 +552,8 @@ $tree-line-height: 20px;
 
     .form-sortable-ghost {
         height: 45px;
-        border-left: 1px solid var(--module-docheader-border) !important;
-        border-right: 1px solid var(--module-docheader-border) !important;
+        border-inline-start: 1px solid var(--module-docheader-border) !important;
+        border-inline-end: 1px solid var(--module-docheader-border) !important;
         outline-offset: -5px !important;
     }
 }
@@ -565,11 +563,11 @@ $tree-line-height: 20px;
 //
 #t3-form-stage-inner-container {
     position: relative;
-    left: -5px;
+    inset-inline-start: -5px;
     display: inline-block;
     width: 90%;
     max-width: $stage-max-width;
-    text-align: left;
+    text-align: start;
 }
 
 #t3-form-stage-container {
@@ -594,7 +592,7 @@ $tree-line-height: 20px;
         }
 
         .paginiation-label {
-            margin-right: 1em;
+            margin-inline-end: 1em;
         }
     }
 
@@ -663,7 +661,7 @@ $tree-line-height: 20px;
 
             &:hover {
                 .t3-form-validator-list {
-                    right: 0;
+                    inset-inline-end: 0;
                     transition: right $stage-validation-transition-time-in;
                 }
 
@@ -675,7 +673,7 @@ $tree-line-height: 20px;
                 }
 
                 .t3-form-validator-info .t3-form-icon {
-                    margin-right: ($stage-validation-list-width - 25);
+                    margin-inline-end: ($stage-validation-list-width - 25);
                     transition: margin $stage-validation-transition-time-in;
                 }
             }
@@ -694,7 +692,7 @@ $tree-line-height: 20px;
         }
 
         .t3-form-icon-container {
-            float: left;
+            float: var(--typo3-position-start);
             width: $stage-icon-container-width;
             height: 100%;
             padding: 1em;
@@ -712,15 +710,15 @@ $tree-line-height: 20px;
 
         .t3-form-element-info {
             position: relative;
-            float: left;
+            float: var(--typo3-position-start);
             width: 55%;
             height: 100%;
-            padding-left: 1em;
+            padding-inline-start: 1em;
 
             @include fade-out-gradient-effect-bottom(#fff, .8em, 1em);
 
             .element-label-container {
-                float: left;
+                float: var(--typo3-position-start);
                 position: relative;
                 width: 45%;
                 height: 100%;
@@ -750,13 +748,13 @@ $tree-line-height: 20px;
         .t3-form-validator-info {
             position: relative;
             overflow: hidden;
-            float: right;
+            float: var(--typo3-position-end);
             height: 100%;
 
             .t3-form-icon {
                 height: 100%;
                 z-index: 1;
-                margin-left: 1em;
+                margin-inline-start: 1em;
                 transition: margin $stage-validation-transition-time-out;
                 filter: grayscale(100%);
             }
@@ -765,7 +763,7 @@ $tree-line-height: 20px;
                 @include fade-out-gradient-effect-bottom($panel-default-heading-bg, 1em, 1em);
                 position: absolute;
                 top: 0;
-                right: -$stage-validation-list-width;
+                inset-inline-end: -$stage-validation-list-width;
                 width: $stage-validation-list-width;
                 height: 100%;
                 padding: 1em 1em 1em ($stage-validation-list-width - 65);
@@ -805,7 +803,7 @@ $tree-line-height: 20px;
 
             .t3-form-validator-list {
                 $validation-list-background: lighten($info, 30%);
-                right: 0;
+                inset-inline-end: 0;
                 transition: none;
                 background-color: $validation-list-background;
 
@@ -819,19 +817,19 @@ $tree-line-height: 20px;
             }
 
             .t3-form-validator-info .t3-form-icon {
-                margin-right: ($stage-validation-list-width - 25);
+                margin-inline-end: ($stage-validation-list-width - 25);
                 filter: none;
             }
 
             .btn-toolbar-container {
                 position: absolute;
                 top: 0;
-                right: 0;
+                inset-inline-end: 0;
                 width: 100%;
                 height: $stage-abstract-element-toolbar-height;
                 border: 1px solid $primary;
                 background-color: $primary;
-                padding-right: .7em;
+                padding-inline-end: .7em;
                 padding-top: .4em;
 
                 &:before,
@@ -846,11 +844,11 @@ $tree-line-height: 20px;
                 }
 
                 &:before {
-                    left: -1px;
+                    inset-inline-start: -1px;
                 }
 
                 &:after {
-                    right: -1px;
+                    inset-inline-end: -1px;
                 }
 
                 .caret {
@@ -859,12 +857,12 @@ $tree-line-height: 20px;
 
                 .t3-form-dropdown-buttons {
                     .icon {
-                        margin-right: .5em;
+                        margin-inline-end: .5em;
                     }
                 }
 
                 .btn-toolbar {
-                    float: right;
+                    float: var(--typo3-position-end);
 
                     @include selected-button-style-primary();
                 }
@@ -873,7 +871,7 @@ $tree-line-height: 20px;
             .meta-label {
                 display: inline-block;
                 top: 1em;
-                left: 5em;
+                inset-inline-start: 5em;
                 bottom: auto;
                 font-size: .9em;
                 color: #fff;
@@ -955,7 +953,7 @@ $tree-line-height: 20px;
                 span,
                 button {
                     display: inline-block;
-                    margin-right: 1em;
+                    margin-inline-end: 1em;
                 }
             }
         }
@@ -1002,7 +1000,7 @@ $tree-line-height: 20px;
     z-index: 2;
     position: absolute;
     bottom: 1em;
-    left: 5.5em;
+    inset-inline-start: 5.5em;
     display: none;
     color: $primary;
     line-height: 1.6;
@@ -1032,7 +1030,7 @@ $tree-line-height: 20px;
 // Icons
 //
 .t3-form-icon {
-    margin-right: 1em;
+    margin-inline-end: 1em;
 }
 
 //
@@ -1072,7 +1070,7 @@ $tree-line-height: 20px;
     }
 
     &#t3-form-navigation-component-tree-root:before {
-        left: -2em !important;
+        inset-inline-start: -2em !important;
         margin-top: .1em;
     }
 
@@ -1086,12 +1084,12 @@ $tree-line-height: 20px;
             background-color: $danger;
             background-size: contain;
             display: inline-block;
-            left: 4.5em;
+            inset-inline-start: 4.5em;
             margin-top: 1.9em;
         }
 
         .element-label {
-            padding-left: 1.5em;
+            padding-inline-start: 1.5em;
         }
     }
 
@@ -1192,5 +1190,5 @@ $tree-line-height: 20px;
 
 .t3-form-element-new-page-button {
     position: absolute;
-    left: .5em;
+    inset-inline-start: .5em;
 }

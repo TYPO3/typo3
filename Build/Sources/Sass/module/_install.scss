@@ -46,7 +46,7 @@
             display: flex;
             gap: .5rem;
             top: calc(var(--panel-padding) / 2);
-            right: var(--panel-padding);
+            inset-inline-end: var(--panel-padding);
 
             ~ .panel-body {
                 padding-top: calc(var(--panel-padding) * 2);
@@ -58,7 +58,7 @@
             display: flex;
             gap: .5rem;
             bottom: calc(var(--panel-padding) / 2);
-            right: var(--panel-padding);
+            inset-inline-end: var(--panel-padding);
 
             ~ .panel-body {
                 padding-bottom: calc(var(--panel-padding) * 2);

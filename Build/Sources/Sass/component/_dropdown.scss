@@ -2,6 +2,7 @@
 // Dropdown Adjustments
 //
 .dropdown-menu {
+    text-align: start;
     font-size: var(--typo3-component-font-size);
     line-height: var(--typo3-component-line-height);
     max-width: calc(100vw - 20px);
@@ -137,7 +138,7 @@ h4.dropdown-headline {
 }
 
 .dropdown-item-column-value {
-    padding-left: 1em;
+    padding-inline-start: 1em;
 }
 
 .dropdown-row {
@@ -160,11 +161,11 @@ h4.dropdown-headline {
         vertical-align: top;
 
         &:first-child {
-            padding-left: var(--typo3-list-item-padding-x);
+            padding-inline-start: var(--typo3-list-item-padding-x);
         }
 
         &:last-child {
-            padding-right: var(--typo3-list-item-padding-x);
+            padding-inline-end: var(--typo3-list-item-padding-x);
         }
 
         &[data-type="title"] {
@@ -176,7 +177,7 @@ h4.dropdown-headline {
 
         &[data-type="icon"] {
             &:first-child {
-                padding-right: 0;
+                padding-inline-end: 0;
             }
 
             .icon {

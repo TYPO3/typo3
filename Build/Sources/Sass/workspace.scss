@@ -54,15 +54,15 @@ $workspace-topbar-logo-width: 22px;
 
 .typo3-topbar-site {
     line-height: $workspace-topbar-line-height;
-    float: left;
+    float: var(--typo3-position-start);
     font-size: 12px;
     position: relative;
-    margin-right: 2em;
+    margin-inline-end: 2em;
 }
 
 .typo3-topbar-site-logo {
     padding-top: 1px;
-    padding-right: .25em;
+    padding-inline-end: .25em;
     display: inline-block;
     vertical-align: top;
 
@@ -78,8 +78,8 @@ $workspace-topbar-logo-width: 22px;
 }
 
 .typo3-topbar-tabs {
-    margin-right: 2em;
-    float: left;
+    margin-inline-end: 2em;
+    float: var(--typo3-position-start);
     position: relative;
 
     .nav-tabs {
@@ -90,8 +90,8 @@ $workspace-topbar-logo-width: 22px;
 
         > li {
             + li {
-                margin-left: 0;
-                border-left: 1px solid rgba(0, 0, 0, .5);
+                margin-inline-start: 0;
+                border-inline-start: 1px solid rgba(0, 0, 0, .5);
             }
             margin-bottom: 0;
 
@@ -113,25 +113,25 @@ $workspace-topbar-logo-width: 22px;
 
 .typo3-topbar-workspace-actions {
     clear: none;
-    float: left;
+    float: var(--typo3-position-start);
 
     .workspace-action {
         margin-top: 0;
         margin-bottom: 0;
-        float: left;
-        margin-right: 2em;
+        float: var(--typo3-position-start);
+        margin-inline-end: 2em;
     }
 }
 
 @media (max-width: 920px) {
     .typo3-topbar-workspace-actions {
-        clear: left;
+        clear: inline-start;
         margin-top: 0;
 
         .workspace-action {
             display: block;
             float: none;
-            margin-right: 0;
+            margin-inline-end: 0;
             height: auto;
             margin-bottom: .75em;
 
@@ -142,8 +142,7 @@ $workspace-topbar-logo-width: 22px;
         }
 
         .dropdown-menu-right {
-            right: auto;
-            left: 0;
+            inset-inline: 0 auto;
         }
 
         .btn {
@@ -165,7 +164,7 @@ $workspace-topbar-logo-width: 22px;
 
     .active-preview-mode {
         display: inline-block;
-        text-align: left;
+        text-align: start;
     }
 
     .btn-group {
@@ -215,7 +214,7 @@ $workspace-topbar-logo-width: 22px;
     &vbox iframe {
         width: 50%;
         height: 100%;
-        float: left;
+        float: var(--typo3-position-start);
     }
 
     &hbox iframe {

@@ -57,7 +57,7 @@ $dropzone-close-hover-text: $white;
 
         .dropzone-close {
             top: .5rem;
-            right: .5rem;
+            inset-inline-end: .5rem;
             height: $dropzone-close-height;
             width: $dropzone-close-width;
             font-size: $dropzone-close-size;

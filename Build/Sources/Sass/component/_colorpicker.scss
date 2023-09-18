@@ -55,7 +55,7 @@ $minicolors-panel-border-radius: $border-radius;
     margin: 0;
     display: inline-block;
     top: 50%;
-    left: $padding-base-horizontal;
+    inset-inline-start: $padding-base-horizontal;
     z-index: 2;
     transform: translate(0, -50%);
     width: $minicolors-swatch-width;
@@ -77,7 +77,7 @@ $minicolors-panel-border-radius: $border-radius;
 //
 .minicolors-input {
     float: none;
-    padding-left: ($padding-base-horizontal * 2) + $minicolors-swatch-width;
+    padding-inline-start: ($padding-base-horizontal * 2) + $minicolors-swatch-width;
 }
 
 //
@@ -114,7 +114,7 @@ $minicolors-panel-border-radius: $border-radius;
 }
 
 .minicolors-position-right .minicolors-panel {
-    right: 0;
+    inset-inline-end: 0;
 }
 
 .minicolors-position-bottom .minicolors-panel {
@@ -122,7 +122,7 @@ $minicolors-panel-border-radius: $border-radius;
 }
 
 .minicolors-position-left .minicolors-panel {
-    left: 0;
+    inset-inline-start: 0;
 }
 
 .minicolors-with-opacity .minicolors-panel {
@@ -135,7 +135,7 @@ $minicolors-panel-border-radius: $border-radius;
 .minicolors .minicolors-grid {
     position: absolute;
     top: 1px;
-    left: 1px;
+    inset-inline-start: 1px;
     width: 150px;
     height: 150px;
     background-position: -120px 0;
@@ -178,7 +178,7 @@ $minicolors-panel-border-radius: $border-radius;
 .minicolors-opacity-slider {
     position: absolute;
     top: 1px;
-    left: 152px;
+    inset-inline-start: 152px;
     width: 20px;
     height: 150px;
     background-color: white;

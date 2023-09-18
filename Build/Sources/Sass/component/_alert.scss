@@ -24,8 +24,14 @@
     }
 
     > ul {
-        padding-left: 1.5em;
+        padding-left: 0;
+        padding-inline-start: 1.5em;
     }
+}
+
+.alert-dismissible {
+    padding-inline-start: var(--#{$prefix}alert-padding-x);
+    padding-inline-end: $alert-dismissible-padding-r;
 }
 
 .alert-message {
@@ -42,8 +48,8 @@
         line-height: 1;
         padding: 0;
         position: absolute;
-        right: .625rem;
-        top: .625rem;
+        inset-inline-end: .625rem;
+        inset-block-start: .625rem;
         opacity: .5;
 
         &:hover {
@@ -53,7 +59,7 @@
     }
 
     .alert-actions {
-        margin-right: $alert-dismissible-padding-r * -1;
+        margin-inline-end: $alert-dismissible-padding-r * -1;
     }
 }
 
@@ -63,7 +69,7 @@
     margin: var(--#{$prefix}alert-padding-y) calc(var(--#{$prefix}alert-padding-x) * -1) calc(var(--#{$prefix}alert-padding-y) * -1);
 
     a {
-        border-top: 1px solid var(--#{$prefix}alert-border-color);
+        border-block-start: 1px solid var(--#{$prefix}alert-border-color);
         flex-basis: 25%;
         flex-grow: 1;
         font-weight: bold;
@@ -85,7 +91,7 @@
         }
 
         &:not(:last-child) {
-            border-right: 1px solid var(--#{$prefix}alert-border-color);
+            border-inline-end: 1px solid var(--#{$prefix}alert-border-color);
         }
     }
 }

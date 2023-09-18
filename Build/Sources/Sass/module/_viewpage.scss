@@ -26,7 +26,7 @@ $viewpage-topbar-height: 40px;
         text-align: center;
 
         .typo3-messages {
-            text-align: left;
+            text-align: start;
         }
     }
 
@@ -99,6 +99,8 @@ $viewpage-topbar-height: 40px;
 }
 
 .viewpage-topbar-size {
+    direction: ltr;
+
     input {
         background-color: transparent;
         padding-left: 0;

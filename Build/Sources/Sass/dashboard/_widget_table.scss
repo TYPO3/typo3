@@ -60,11 +60,11 @@
         th,
         td {
             &:first-child {
-                padding-left: $widget-padding;
+                padding-inline-start: $widget-padding;
             }
 
             &:last-child {
-                padding-right: $widget-padding;
+                padding-inline-end: $widget-padding;
             }
         }
     }
