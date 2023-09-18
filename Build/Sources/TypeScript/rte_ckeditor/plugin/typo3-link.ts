@@ -1,7 +1,9 @@
 import { UI, Core, Engine, Typing, Link, LinkUtils, LinkActionsView, Widget, Utils } from '@typo3/ckeditor5-bundle';
 import { default as modalObject, ModalElement } from '@typo3/backend/modal';
-import type AttributeElement from '@ckeditor/ckeditor5-engine/src/view/attributeelement';
-import { ViewElement } from '@ckeditor/ckeditor5-engine';
+import type { AttributeElement, ViewElement } from '@ckeditor/ckeditor5-engine';
+import type { GeneralHtmlSupport, DataFilter } from '@ckeditor/ckeditor5-html-support';
+import type { GHSViewAttributes } from '@ckeditor/ckeditor5-html-support/src/utils';
+
 const linkIcon = '<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="m11.077 15 .991-1.416a.75.75 0 1 1 1.229.86l-1.148 1.64a.748.748 0 0 1-.217.206 5.251 5.251 0 0 1-8.503-5.955.741.741 0 0 1 .12-.274l1.147-1.639a.75.75 0 1 1 1.228.86L4.933 10.7l.006.003a3.75 3.75 0 0 0 6.132 4.294l.006.004zm5.494-5.335a.748.748 0 0 1-.12.274l-1.147 1.639a.75.75 0 1 1-1.228-.86l.86-1.23a3.75 3.75 0 0 0-6.144-4.301l-.86 1.229a.75.75 0 0 1-1.229-.86l1.148-1.64a.748.748 0 0 1 .217-.206 5.251 5.251 0 0 1 8.503 5.955zm-4.563-2.532a.75.75 0 0 1 .184 1.045l-3.155 4.505a.75.75 0 1 1-1.229-.86l3.155-4.506a.75.75 0 0 1 1.045-.184z"/></svg>';
 
 export const LINK_ALLOWED_ATTRIBUTES = ['href', 'title', 'class', 'target', 'rel'];
@@ -72,8 +74,7 @@ export class Typo3LinkCommand extends Core.Command {
           // Then update `linkHref` value.
           const linkRange = Typing.findAttributeRange(position, 'linkHref', selection.getAttribute('linkHref') as string, model);
           writer.setAttribute('linkHref', href, linkRange);
-          // apply `linkAttr`
-          for (const [attribute, value] of Object.entries(linkAttr.attrs)) {
+          for (const [attribute, value] of Object.entries(this.composeLinkAttributes(linkAttr))) {
             writer.setAttribute(attribute, value, linkRange);
           }
           // Put the selection at the end of the updated link.
@@ -85,8 +86,7 @@ export class Typo3LinkCommand extends Core.Command {
           // So, if `href` is empty, do not create text node.
           const attributes = Utils.toMap(selection.getAttributes() as any);
           attributes.set('linkHref', href);
-          // apply `linkAttr`
-          for (const [attribute, value] of Object.entries(linkAttr.attrs)) {
+          for (const [attribute, value] of Object.entries(this.composeLinkAttributes(linkAttr))) {
             attributes.set(attribute, value);
           }
           const { end: positionAfter } = model.insertContent(writer.createText(href, attributes as any), position);
@@ -123,13 +123,34 @@ export class Typo3LinkCommand extends Core.Command {
         }
         for (const range of rangesToUpdate) {
           writer.setAttribute('linkHref', href, range);
-          // apply link attributes (linkAttr)
-          for (const [attribute, value] of Object.entries(linkAttr.attrs)) {
+          for (const [attribute, value] of Object.entries(this.composeLinkAttributes(linkAttr))) {
             writer.setAttribute(attribute, value, range);
           }
         }
       }
     });
+  }
+
+  private composeLinkAttributes(linkAttr: Typo3LinkDict): Record<string, GHSViewAttributes|string> {
+    const attrs: Record<string, GHSViewAttributes|string> = {};
+    for (const [attribute, value] of Object.entries(linkAttr.attrs)) {
+      if (attribute === 'linkClass') {
+        const htmlSupport: GeneralHtmlSupport = this.editor.plugins.get('GeneralHtmlSupport');
+        const ghsAttributeName = htmlSupport.getGhsAttributeNameForElement('a');
+        const selection = this.editor.model.document.selection;
+        let htmlA: GHSViewAttributes;
+        if (selection.hasAttribute(ghsAttributeName)) {
+          htmlA = { ...(selection.getAttribute(ghsAttributeName) as GHSViewAttributes) };
+        } else {
+          htmlA = {};
+        }
+        htmlA.classes = value.split(' ');
+        attrs[ghsAttributeName] = htmlA;
+      } else {
+        attrs[attribute] = value;
+      }
+    }
+    return attrs;
   }
 
   private isRangeToUpdate(range: Engine.Range, allowedRanges: Engine.Range[]) {
@@ -179,7 +200,6 @@ export class Typo3UnlinkCommand extends Core.Command {
       for (const range of rangesToUnlink) {
         writer.removeAttribute('linkHref', range);
         writer.removeAttribute('linkTarget', range);
-        writer.removeAttribute('linkClass', range);
         writer.removeAttribute('linkTitle', range);
         writer.removeAttribute('linkRel', range);
       }
@@ -192,10 +212,14 @@ export class Typo3LinkEditing extends Core.Plugin {
 
   init(): void {
     const editor = this.editor;
+    // @todo: Why is this needed? Remove.
     (window as any).editor = editor;
 
     // @todo YAML additionalAttributes is not implemented yet
-    editor.model.schema.extend('$text', { allowAttributes: ['linkTitle', 'linkClass', 'linkTarget', 'linkRel', 'linkDataRteError'] });
+    editor.model.schema.extend('$text', { allowAttributes: ['linkTitle', 'linkTarget', 'linkRel', 'linkDataRteError'] });
+
+    const ghsDataFilter: DataFilter = editor.plugins.get('DataFilter');
+    ghsDataFilter.loadAllowedConfig([{ name: 'a', classes: true }]);
 
     // linkDataRteError <=> data-rte-error
     // This is used for marking broken links (e.g. by linkvalidator) when editing in RTE.
@@ -225,19 +249,6 @@ export class Typo3LinkEditing extends Core.Plugin {
     editor.conversion.for('upcast').elementToAttribute({
       view: { name: 'a', attributes: { title: true } },
       model: { key: 'linkTitle', value: (viewElement: ViewElement) => viewElement.getAttribute('title') }
-    });
-    // linkClass <=> class
-    editor.conversion.for('downcast').attributeToElement({
-      model: 'linkClass',
-      view: (value: string, { writer }) => {
-        const linkElement = writer.createAttributeElement('a', { class: value }, { priority: 5 });
-        writer.setCustomProperty('linkClass', true, linkElement);
-        return linkElement;
-      }
-    });
-    editor.conversion.for('upcast').elementToAttribute({
-      view: { name: 'a', attributes: { class: true } },
-      model: { key: 'linkClass', value: (viewElement: ViewElement) => viewElement.getAttribute('class') }
     });
     // linkTarget <=> target
     editor.conversion.for('downcast').attributeToElement({
@@ -650,6 +661,6 @@ export class Typo3LinkUI extends Core.Plugin {
 
 export default class Typo3Link extends Core.Plugin {
   static readonly pluginName = 'Typo3Link';
-  static readonly requires = [Link.LinkEditing, Link.AutoLink, Typo3LinkEditing, Typo3LinkUI];
+  static readonly requires = ['GeneralHtmlSupport', Link.LinkEditing, Link.AutoLink, Typo3LinkEditing, Typo3LinkUI];
   static readonly overrides?: Array<typeof Core.Plugin> = [Link.Link];
 }

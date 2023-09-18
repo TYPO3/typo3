@@ -25,6 +25,25 @@ export default [
       name: 'ckeditor5',
     },
     plugins: [
+      {
+        name: 'patchLinkEditing',
+        transform(code, id) {
+          if (id.endsWith('@ckeditor/ckeditor5-link/src/linkediting.js')) {
+            // Workaround a CKEditor5 bug where a link without an `href` attribute is created
+            // when the cursor is placed at the end of a link containing a class attribute.
+            // @todo: Fix this upstream: htmlA should theoretically be removed automatically
+            // when linkHref is removed as it is defined to be a coupledAttribute with linkHref.
+            // (see @ckeditor/ckeditor5-html-support/src/schemadefinitions.js)
+            const source = "return textAttributes.filter(attribute => attribute.startsWith('link'));";
+            const target = "return textAttributes.filter(attribute => attribute.startsWith('link') || attribute === 'htmlA');";
+            if (!code.includes(source)) {
+              throw new Error(`Expected to find "${search}" in "${id}". Please adapt the rollup plugin "patchLinkEditing".`);
+            }
+            return code.replace(source, target);
+          }
+          return code;
+        }
+      },
       postcss({
         ...postCssConfig,
         inject: function (cssVariableName, fileId) {
