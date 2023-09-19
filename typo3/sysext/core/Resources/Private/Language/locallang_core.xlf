@@ -796,6 +796,12 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="online_media.error.invalid_url" resname="online_media.error.invalid_url">
 				<source>Unknown/not allowed URL</source>
 			</trans-unit>
+			<trans-unit id="online_media.update.success" resname="online_media.update.success">
+				<source>Successfully updated online media</source>
+			</trans-unit>
+			<trans-unit id="online_media.update.error" resname="online_media.update.error">
+				<source>Error on updating online media</source>
+			</trans-unit>
 			<trans-unit id="file_clipupload.php.warning_head" resname="file_clipupload.php.warning_head">
 				<source>Upload path error</source>
 			</trans-unit>

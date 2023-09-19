@@ -296,6 +296,31 @@ class ContextMenuActions {
       modal.hideModal();
     });
   }
+
+  public static updateOnlineMedia(table: string, uid: string, dataset: DOMStringMap)
+  {
+    if (!dataset.actionUrl || !dataset.filecontextUid || dataset.filecontextType !== 'file') {
+      return;
+    }
+
+    const payload = {
+      resource: {
+        'type': dataset.filecontextType,
+        'uid': dataset.filecontextUid
+      }
+    };
+
+    (new AjaxRequest(dataset.actionUrl)).post(payload)
+      .then(() => {
+        Notification.success(lll('online_media.update.success'));
+      })
+      .catch(() => {
+        Notification.error(lll('online_media.update.error'));
+      })
+      .finally(() => {
+        window.location.reload();
+      });
+  }
 }
 
 export default ContextMenuActions;

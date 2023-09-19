@@ -29,6 +29,7 @@ export enum FileListActionEvent {
   rename = 'typo3:filelist:resource:action:rename',
   select = 'typo3:filelist:resource:action:select',
   download = 'typo3:filelist:resource:action:download',
+  updateOnlineMedia = 'typo3:filelist:resource:action:updateOnlineMedia',
 }
 
 export enum FileListActionSelector {
@@ -99,6 +100,9 @@ class FileListActions {
           break;
         case 'download':
           document.dispatchEvent(new CustomEvent(FileListActionEvent.download, { detail: detail }));
+          break;
+        case 'updateOnlineMedia':
+          document.dispatchEvent(new CustomEvent(FileListActionEvent.updateOnlineMedia, { detail: detail }));
           break;
         default:
           break;

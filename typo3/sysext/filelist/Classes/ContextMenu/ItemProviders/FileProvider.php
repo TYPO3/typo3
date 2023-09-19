@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\ElementBrowser\CreateFolderBrowser;
@@ -92,6 +93,11 @@ class FileProvider extends AbstractProvider
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info',
             'iconIdentifier' => 'actions-document-info',
             'callbackAction' => 'openInfoPopUp',
+        ],
+        'updateOnlineMedia' => [
+            'label' => 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:reloadMetadata',
+            'iconIdentifier' => 'actions-refresh',
+            'callbackAction' => 'updateOnlineMedia',
         ],
         'divider' => [
             'type' => 'divider',
@@ -168,6 +174,9 @@ class FileProvider extends AbstractProvider
                 break;
             case 'editMetadata':
                 $canRender = $this->canEditMetadata();
+                break;
+            case 'updateOnlineMedia':
+                $canRender = $this->isOnlineMedia() && $this->canEditMetadata();
                 break;
             case 'info':
                 $canRender = $this->canShowInfo();
@@ -314,6 +323,12 @@ class FileProvider extends AbstractProvider
             GeneralUtility::trimExplode(',', (string)($fileDownloadConfiguration['disallowedFileExtensions'] ?? ''), true)
         );
         return $filter->isAllowed($this->record->getExtension());
+    }
+
+    protected function isOnlineMedia(): bool
+    {
+        return $this->isFile()
+            && GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->hasOnlineMediaHelper($this->record->getExtension());
     }
 
     /**
@@ -477,6 +492,9 @@ class FileProvider extends AbstractProvider
                 break;
             case 'newFile':
                 $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_create'));
+                break;
+            case 'updateOnlineMedia':
+                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_update_online_media'));
                 break;
         }
 

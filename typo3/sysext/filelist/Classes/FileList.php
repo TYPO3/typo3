@@ -31,6 +31,7 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\JsConfirmation;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\Uri;
@@ -42,6 +43,7 @@ use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsExcepti
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
@@ -50,6 +52,7 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Filelist\Dto\PaginationLink;
 use TYPO3\CMS\Filelist\Dto\ResourceCollection;
@@ -157,6 +160,7 @@ class FileList
     protected ResourceFactory $resourceFactory;
     protected UriBuilder $uriBuilder;
     protected TranslationConfigurationProvider $translateTools;
+    protected OnlineMediaHelperRegistry $onlineMediaHelperRegistry;
 
     public function __construct(ServerRequestInterface $request)
     {
@@ -176,6 +180,7 @@ class FileList
         $this->clipObj->initializeClipboard($request);
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $this->onlineMediaHelperRegistry = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class);
 
         // Initialize Resource Download
         $this->resourceDownloadMatcher = GeneralUtility::makeInstance(Matcher::class);
@@ -659,7 +664,18 @@ class FileList
             ]
         );
 
-        return '<br><img src="' . htmlspecialchars($processedFile->getPublicUrl() ?? '') . '" ' .
+        if (($thumbnailUrl = ($processedFile->getPublicUrl() ?? '')) === '') {
+            // Prevent rendering of a "img" tag with an empty "src" attribute
+            return '';
+        }
+
+        if (PathUtility::isAbsolutePath($thumbnailUrl)) {
+            $thumbnailUrl .= '?' . filemtime(
+                GeneralUtility::resolveBackPath(Environment::getPublicPath() . $thumbnailUrl)
+            );
+        }
+
+        return '<br><img src="' . htmlspecialchars($thumbnailUrl) . '" ' .
             'width="' . htmlspecialchars($processedFile->getProperty('width')) . '" ' .
             'height="' . htmlspecialchars($processedFile->getProperty('height')) . '" ' .
             'title="' . htmlspecialchars($resourceView->getName()) . '" />';
@@ -868,6 +884,7 @@ class FileList
             'copy' => $this->createControlCopy($resourceView),
             'cut' => $this->createControlCut($resourceView),
             'paste' => $this->createControlPaste($resourceView),
+            'updateOnlineMedia' => $this->createControlUpdateOnlineMedia($resourceView),
         ];
 
         $event = new ProcessFileListActionsEvent($resourceView->resource, $actions);
@@ -1309,6 +1326,29 @@ class FileList
             'bs-content' => $this->clipObj->confirmMsgText('_FILE', $resourceView->getName(), 'into', $elementsToConfirm),
         ]);
         $button->setIcon($this->iconFactory->getIcon('actions-document-paste-into', IconSize::SMALL));
+
+        return $button;
+    }
+
+    protected function createControlUpdateOnlineMedia(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!($resourceView->resource instanceof File)
+            || !$resourceView->canEditMetadata()
+            || !$this->onlineMediaHelperRegistry->hasOnlineMediaHelper($resourceView->resource->getExtension())
+        ) {
+            return null;
+        }
+
+        $title = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:reloadMetadata');
+        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button->setLabel($title);
+        $button->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
+        $button->setAttributes([
+            'type' => 'button',
+            'data-title' => $title,
+            'data-filelist-action' => 'updateOnlineMedia',
+            'data-filelist-action-url' => $this->uriBuilder->buildUriFromRoute('file_update_online_media'),
+        ]);
 
         return $button;
     }

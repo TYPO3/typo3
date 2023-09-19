@@ -416,6 +416,8 @@ class FileListController implements LoggerAwareInterface
                 'type.file' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:file'),
                 'permissions.read' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:read'),
                 'permissions.write' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:write'),
+                'online_media.update.success' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.update.success'),
+                'online_media.update.error' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.update.error'),
             ]);
             $this->view->assign('dragUploader', [
                 'fileDenyPattern' => $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] ?? null,

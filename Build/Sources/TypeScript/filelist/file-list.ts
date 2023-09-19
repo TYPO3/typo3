@@ -30,6 +30,7 @@ import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 import ContextMenu from '@typo3/backend/context-menu';
+import { ResourceInterface } from '@typo3/backend/resource/resource';
 
 type QueryParameters = Record<string, string>;
 
@@ -122,6 +123,12 @@ export default class Filelist {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
       this.triggerDownload([resource.identifier], detail.url, detail.trigger);
+    }).bindTo(document);
+
+    new RegularEvent(FileListActionEvent.updateOnlineMedia, (event: CustomEvent): void => {
+      const detail: FileListActionDetail = event.detail;
+      const resource = detail.resources[0];
+      this.updateOnlineMedia(resource, detail.url);
     }).bindTo(document);
 
     DocumentService.ready().then((): void => {
@@ -354,6 +361,25 @@ export default class Filelist {
           button.removeAttribute('disabled');
           button.innerHTML = targetContent;
         }
+      });
+  }
+
+  private updateOnlineMedia(resource: ResourceInterface, url: string): void {
+    if (!url || !resource.uid || resource.type !== 'file') {
+      return;
+    }
+
+    NProgress.configure({ parent: '#typo3-filelist', showSpinner: false }).start();
+    (new AjaxRequest(url)).post({ resource: resource })
+      .then(() => {
+        Notification.success(lll('online_media.update.success'));
+      })
+      .catch(() => {
+        Notification.error(lll('online_media.update.error'));
+      })
+      .finally(() => {
+        NProgress.done();
+        window.location.reload();
       });
   }
 }

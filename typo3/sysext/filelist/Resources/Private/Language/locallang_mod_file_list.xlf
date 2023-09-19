@@ -93,6 +93,9 @@
 			<trans-unit id="targetNoDir" resname="targetNoDir">
 				<source>Target was not a directory!</source>
 			</trans-unit>
+			<trans-unit id="reloadMetadata" resname="reloadMetadata">
+				<source>Reload Metadata</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

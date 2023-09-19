@@ -41,4 +41,10 @@ return [
         'methods' => ['POST'],
         'target' => \TYPO3\CMS\Filelist\Controller\FileDownloadController::class . '::handleRequest',
     ],
+
+    'file_update_online_media' => [
+        'path' => '/file/update-online-media',
+        'methods' => ['POST'],
+        'target' => \TYPO3\CMS\Filelist\Controller\FileUpdateOnlineMediaController::class . '::handleRequest',
+    ],
 ];
