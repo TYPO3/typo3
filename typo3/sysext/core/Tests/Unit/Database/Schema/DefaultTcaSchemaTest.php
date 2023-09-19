@@ -1099,4 +1099,28 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('imageManipulation')->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function enrichAddsLanguage(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['language'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'language',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`language`',
+            Type::getType('integer'),
+            [
+                'default' => 0,
+                'notnull' => true,
+                'unsigned' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('language')->toArray());
+    }
 }

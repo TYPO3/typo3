@@ -647,6 +647,24 @@ class DefaultTcaSchema
                     ]
                 );
             }
+
+            // Add fields for all tables, defining language columns (TCA type=language)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'language'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    'integer',
+                    [
+                        'default' => 0,
+                        'notnull' => true,
+                        'unsigned' => false,
+                    ]
+                );
+            }
         }
 
         return $tables;
