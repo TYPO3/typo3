@@ -116,7 +116,7 @@ class DefaultDataProvider implements DataProviderInterface
     protected function getIconPath(array $icon)
     {
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        $references = $fileRepository->findByRelation($this->tableName, 'icon', $icon['uid']);
+        $references = $fileRepository->findByRelation($this->tableName, 'icon', (int)$icon['uid']);
         if (!empty($references)) {
             $icon = reset($references);
             return $icon->getPublicUrl();

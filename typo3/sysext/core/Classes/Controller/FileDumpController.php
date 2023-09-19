@@ -214,12 +214,11 @@ class FileDumpController
         } elseif (isset($parameters['p'])) {
             try {
                 $processedFileRepository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
-                /** @var ProcessedFile|null $file */
-                $file = $processedFileRepository->findByUid($parameters['p']);
-                if (!$file || $file->isDeleted() || !$this->isFileValid($file->getOriginalFile())) {
+                $file = $processedFileRepository->findByUid((int)$parameters['p']);
+                if ($file->isDeleted() || !$this->isFileValid($file->getOriginalFile())) {
                     $file = null;
                 }
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $file = null;
             }
         }

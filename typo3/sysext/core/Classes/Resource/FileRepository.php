@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,40 +25,51 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Repository for accessing files
- * it also serves as the public API for the indexing part of files in general
- * @extends AbstractRepository<File>
+ * Repository for accessing file objects.
+ * It also serves as the public API for the indexing part of files in general.
+ *
+ * It is however recommended to use the ResourceFactory instead of this class,
+ * as it is more flexible.
  */
-class FileRepository extends AbstractRepository
+class FileRepository
 {
-    /**
-     * The main object type of this class. In some cases (fileReference) this
-     * repository can also return FileReference objects, implementing the
-     * common FileInterface.
-     *
-     * @var string
-     */
-    protected $objectType = File::class;
+    public function __construct(
+        protected readonly ResourceFactory $factory
+    ) {
+    }
 
     /**
-     * Main File object storage table. Note that this repository also works on
-     * the sys_file_reference table when returning FileReference objects.
-     *
-     * @var string
+     * Finds a File matching the given uid, regardless of the storage.
      */
-    protected $table = 'sys_file';
+    public function findByUid(int $uid): File
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file');
+        if ($this->isFrontend()) {
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+        }
+        $row = $queryBuilder
+            ->select('*')
+            ->from('sys_file')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+        if (!is_array($row)) {
+            throw new \RuntimeException('Could not find row with UID "' . $uid . '" in table "sys_file"', 1314354065);
+        }
+        return $this->createDomainObject($row);
+    }
 
     /**
      * Creates an object managed by this repository.
-     *
-     * @return File
      */
-    protected function createDomainObject(array $databaseRow)
+    protected function createDomainObject(array $databaseRow): File
     {
-        return $this->factory->getFileObject($databaseRow['uid'], $databaseRow);
+        return $this->factory->getFileObject((int)$databaseRow['uid'], $databaseRow);
     }
 
     /**
@@ -66,20 +79,13 @@ class FileRepository extends AbstractRepository
      * @param string $fieldName Field name of the related record
      * @param int $uid The UID of the related record (needs to be the localized uid, as translated IRRE elements relate to them)
      * @param ?int $workspaceId
-     * @return array An array of objects, empty if no objects found
-     * @throws \InvalidArgumentException
+     * @return FileReference[] An array of file references, empty if no objects found
      */
-    public function findByRelation($tableName, $fieldName, $uid, int $workspaceId = null)
+    public function findByRelation(string $tableName, string $fieldName, int $uid, int $workspaceId = null): array
     {
         $itemList = [];
-        if (!MathUtility::canBeInterpretedAsInteger($uid)) {
-            throw new \InvalidArgumentException(
-                'UID of related record has to be an integer. UID given: "' . $uid . '"',
-                1316789798
-            );
-        }
         $referenceUids = [];
-        if ($this->getEnvironmentMode() === 'FE') {
+        if ($this->isFrontend()) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_file_reference');
 
@@ -130,7 +136,7 @@ class FileRepository extends AbstractRepository
                     // Just passing the reference uid, the factory is doing workspace
                     // overlays automatically depending on the current environment
                     $itemList[] = $this->factory->getFileReferenceObject($referenceUid);
-                } catch (ResourceDoesNotExistException $exception) {
+                } catch (ResourceDoesNotExistException) {
                     // No handling, just omit the invalid reference uid
                 }
             }
@@ -141,27 +147,10 @@ class FileRepository extends AbstractRepository
     }
 
     /**
-     * Find FileReference objects by uid
-     *
-     * @param int $uid The UID of the sys_file_reference record
-     * @return FileReference|bool
-     * @throws \InvalidArgumentException
-     */
-    public function findFileReferenceByUid($uid)
-    {
-        if (!MathUtility::canBeInterpretedAsInteger($uid)) {
-            throw new \InvalidArgumentException('The UID of record has to be an integer. UID given: "' . $uid . '"', 1316889798);
-        }
-        try {
-            $fileReferenceObject = $this->factory->getFileReferenceObject($uid);
-        } catch (\InvalidArgumentException $exception) {
-            $fileReferenceObject = false;
-        }
-        return $fileReferenceObject;
-    }
-
-    /**
      * As sorting might have changed due to workspace overlays, PHP does the sorting again.
+     *
+     * @param FileReference[] $itemList
+     * @return FileReference[]
      */
     protected function reapplySorting(array $itemList): array
     {
@@ -179,5 +168,14 @@ class FileRepository extends AbstractRepository
             }
         );
         return $itemList;
+    }
+
+    /**
+     * Function to return the current application type based on $GLOBALS['TSFE'].
+     * This function can be mocked in unit tests to be able to test frontend behaviour.
+     */
+    protected function isFrontend(): bool
+    {
+        return ($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController;
     }
 }

@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 
@@ -437,7 +438,9 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getProcessedFileRepository(ContainerInterface $container): Resource\ProcessedFileRepository
     {
-        return self::new($container, Resource\ProcessedFileRepository::class);
+        return self::new($container, Resource\ProcessedFileRepository::class, [
+            $container->get(ResourceFactory::class),
+        ]);
     }
 
     public static function getResourceFactory(ContainerInterface $container): Resource\ResourceFactory

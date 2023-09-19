@@ -110,7 +110,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
     public function addFileReferences(array $fileReferenceUids = [])
     {
         foreach ($fileReferenceUids as $fileReferenceUid) {
-            $fileObject = $this->getFileRepository()->findFileReferenceByUid($fileReferenceUid);
+            $fileObject = $this->getResourceFactory()->getFileReferenceObject((int)$fileReferenceUid);
             if (!$fileObject instanceof FileInterface) {
                 continue;
             }
@@ -281,8 +281,8 @@ class FileCollector implements \Countable, LoggerAwareInterface
      */
     protected function getFileReferences($tableName, $fieldName, array $element): array
     {
-        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        $currentId = !empty($element['uid']) ? $element['uid'] : 0;
+        $fileRepository = $this->getFileRepository();
+        $currentId = !empty($element['uid']) ? (int)$element['uid'] : 0;
 
         // Fetch the references of the default element
         try {
@@ -319,7 +319,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
             && !empty($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
         );
         if ($isTableLocalizable && $localizedId !== null) {
-            $localizedReferences = $fileRepository->findByRelation($tableName, $fieldName, $localizedId);
+            $localizedReferences = $fileRepository->findByRelation($tableName, $fieldName, (int)$localizedId);
             $references = $localizedReferences;
         }
 

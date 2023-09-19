@@ -2357,4 +2357,9 @@ return [
             'Breaking-101133-IconStateChangedType.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\AbstractRepository' => [
+        'restFiles' => [
+            'Breaking-101948-FileBasedAbstractRepositoryClassRemoved.rst',
+        ],
+    ],
 ];

@@ -201,6 +201,9 @@ services:
       $assetsCache: '@cache.assets'
       $cacheIdentifier: '@=service("TYPO3\\CMS\\Core\\Package\\Cache\\PackageDependentCacheIdentifier").withPrefix("ImportMap").toString()'
 
+  TYPO3\CMS\Core\Resource\FileRepository:
+    public: true
+
   TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver:
     public: true
 

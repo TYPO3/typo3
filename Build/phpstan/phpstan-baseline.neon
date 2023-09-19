@@ -1301,11 +1301,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Index/ExtractorRegistryTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractRepository\\<object\\>\\:\\:findByUid\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Repository/AbstractRepositoryTest.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Serializer/Typo3XmlParserTest.php
@@ -2349,11 +2344,6 @@ parameters:
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Middleware/PreviewSimulator.php
-
-		-
-			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Exception\\\\FileDoesNotExistException is never thrown in the try block\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Resource/FileCollector.php
 
 		-
 			message: "#^Cannot unset offset 'parameter\\.' on array\\{parameter\\: mixed\\}\\.$#"

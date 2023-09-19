@@ -152,8 +152,7 @@ class Typo3tempFileService
      */
     public function clearProcessedFiles(int $storageUid): int
     {
-        $repository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
-        return $repository->removeAll($storageUid);
+        return $this->processedFileRepository->removeAll($storageUid);
     }
 
     /**

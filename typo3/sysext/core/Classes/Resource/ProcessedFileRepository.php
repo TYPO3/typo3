@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,108 +19,65 @@ namespace TYPO3\CMS\Core\Resource;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Repository for accessing files
- * it also serves as the public API for the indexing part of files in general
+ * A repository for accessing and storing processed files.
+ *
+ * This class is mainly meant to be used internally in TYPO3 for accessing via
+ * FileProcessingService or custom FAL Processors.
  */
-class ProcessedFileRepository extends AbstractRepository implements LoggerAwareInterface
+class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterface
 {
     use LoggerAwareTrait;
 
     /**
-     * The main object type of this class. In some cases (fileReference) this
-     * repository can also return FileReference objects, implementing the
-     * common FileInterface.
+     * As determining the table columns is a costly operation this is done only once
+     * during runtime and cached afterward.
      *
-     * @var string
-     */
-    protected $objectType = ProcessedFile::class;
-
-    /**
-     * Main File object storage table. Note that this repository also works on
-     * the sys_file_reference table when returning FileReference objects.
-     *
-     * @var string
-     */
-    protected $table = 'sys_file_processedfile';
-
-    /**
-     * As determining the table columns is a costly operation this is done only once during runtime and cached then
-     *
-     * @var array
      * @see cleanUnavailableColumns()
      */
-    protected $tableColumns = [];
+    protected array $tableColumns = [];
 
-    /**
-     * Creates this object.
-     */
-    public function __construct()
-    {
-        parent::__construct();
+    public function __construct(
+        protected readonly ResourceFactory $factory
+    ) {
     }
 
     /**
-     * Creates a ProcessedFile object from a file object and a processing configuration
-     *
-     * @param string $taskType
-     * @return ProcessedFile
+     * Finds a processed file matching the given UID.
      */
-    public function createNewProcessedFileObject(FileInterface $originalFile, $taskType, array $configuration)
+    public function findByUid(int $uid): ProcessedFile
     {
-        return GeneralUtility::makeInstance(
-            $this->objectType,
-            $originalFile,
-            $taskType,
-            $configuration
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_processedfile');
+        $row = $queryBuilder
+            ->select('*')
+            ->from('sys_file_processedfile')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+        if (!is_array($row)) {
+            throw new \RuntimeException('Could not find row with UID "' . $uid . '" in table "sys_file_processedfile"', 1695122090);
+        }
+        return $this->createDomainObject($row);
     }
 
-    /**
-     * @return ProcessedFile
-     */
-    protected function createDomainObject(array $databaseRow)
-    {
-        $originalFile = $this->factory->getFileObject((int)$databaseRow['original']);
-        $taskType = $databaseRow['task_type'];
-        // Allow deserialization of Area class, since Area objects get serialized in configuration
-        // TODO: This should be changed to json encode and decode at some point
-        $configuration = unserialize(
-            $databaseRow['configuration'],
-            [
-                'allowed_classes' => [
-                    Area::class,
-                ],
-            ]
-        );
-
-        return GeneralUtility::makeInstance(
-            $this->objectType,
-            $originalFile,
-            $taskType,
-            $configuration,
-            $databaseRow
-        );
-    }
-
-    /**
-     * @param string $identifier
-     * @return ProcessedFile|null
-     */
-    public function findByStorageAndIdentifier(ResourceStorage $storage, $identifier)
+    public function findByStorageAndIdentifier(ResourceStorage $storage, string $identifier): ?ProcessedFile
     {
         $processedFileObject = null;
         if ($storage->hasFile($identifier)) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_processedfile');
             $databaseRow = $queryBuilder
                 ->select('*')
-                ->from($this->table)
+                ->from('sys_file_processedfile')
                 ->where(
                     $queryBuilder->expr()->eq(
                         'storage',
@@ -140,16 +99,16 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     }
 
     /**
-     * Count processed files by storage. This is used in the install tool
+     * Count processed files by storage. This is used in the "Install Tool"
      * to render statistics of processed files.
      */
     public function countByStorage(ResourceStorage $storage): int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->table);
+            ->getQueryBuilderForTable('sys_file_processedfile');
         return (int)$queryBuilder
             ->count('uid')
-            ->from($this->table)
+            ->from('sys_file_processedfile')
             ->where(
                 $queryBuilder->expr()->eq(
                     'storage',
@@ -161,38 +120,36 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     }
 
     /**
-     * Adds a processedfile object in the database
-     *
-     * @param ProcessedFile $processedFile
+     * Adds a processed file object to the database.
      */
-    public function add($processedFile)
+    public function add(ProcessedFile $processedFile): void
     {
         if ($processedFile->isPersisted()) {
             $this->update($processedFile);
         } else {
+            $currentTimestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
             $insertFields = $processedFile->toArray();
-            $insertFields['crdate'] = $insertFields['tstamp'] = time();
+            $insertFields['crdate'] = $currentTimestamp;
+            $insertFields['tstamp'] = $currentTimestamp;
             $insertFields = $this->cleanUnavailableColumns($insertFields);
 
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
-
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_processedfile');
             $connection->insert(
-                $this->table,
+                'sys_file_processedfile',
                 $insertFields,
                 ['configuration' => Connection::PARAM_LOB]
             );
 
-            $uid = $connection->lastInsertId($this->table);
+            $uid = $connection->lastInsertId('sys_file_processedfile');
             $processedFile->updateProperties(['uid' => $uid]);
         }
     }
 
     /**
-     * Updates an existing file object in the database
-     *
-     * @param ProcessedFile $processedFile
+     * Updates an existing file object in the database. If the file has not been
+     * persisted yet, nothing changes.
      */
-    public function update($processedFile)
+    public function update(ProcessedFile $processedFile): void
     {
         if ($processedFile->isPersisted()) {
             $uid = (int)$processedFile->getUid();
@@ -200,12 +157,12 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
             unset($updateFields['uid']);
             $updateFields['tstamp'] = time();
 
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_processedfile');
             $connection->update(
-                $this->table,
+                'sys_file_processedfile',
                 $updateFields,
                 [
-                    'uid' => (int)$uid,
+                    'uid' => $uid,
                 ],
                 ['configuration' => Connection::PARAM_LOB]
             );
@@ -214,16 +171,14 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
 
     /**
      * @param string $taskType The task that should be executed on the file
-     *
-     * @return ProcessedFile
      */
-    public function findOneByOriginalFileAndTaskTypeAndConfiguration(File $file, $taskType, array $configuration)
+    public function findOneByOriginalFileAndTaskTypeAndConfiguration(File $file, string $taskType, array $configuration): ProcessedFile
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_processedfile');
 
         $databaseRow = $queryBuilder
             ->select('*')
-            ->from($this->table)
+            ->from('sys_file_processedfile')
             ->where(
                 $queryBuilder->expr()->eq(
                     'original',
@@ -248,18 +203,13 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
 
     /**
      * @return ProcessedFile[]
-     * @throws \InvalidArgumentException
      */
-    public function findAllByOriginalFile(FileInterface $file)
+    public function findAllByOriginalFile(File $file): array
     {
-        if (!$file instanceof File) {
-            throw new \InvalidArgumentException('Parameter is no File object but got type "' . get_debug_type($file) . '"', 1382006142);
-        }
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_processedfile');
         $result = $queryBuilder
             ->select('*')
-            ->from($this->table)
+            ->from('sys_file_processedfile')
             ->where(
                 $queryBuilder->expr()->eq(
                     'original',
@@ -282,10 +232,10 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
      * @param int|null $storageUid If not NULL, only the processed files of the given storage are removed
      * @return int Number of failed deletions
      */
-    public function removeAll($storageUid = null)
+    public function removeAll(int $storageUid = null): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->table);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_processedfile');
+        $queryBuilder = $connection->createQueryBuilder();
         $where = [
             $queryBuilder->expr()->neq('identifier', $queryBuilder->createNamedParameter('')),
         ];
@@ -297,14 +247,14 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
         }
         $result = $queryBuilder
             ->select('*')
-            ->from($this->table)
+            ->from('sys_file_processedfile')
             ->where(...$where)
             ->executeQuery();
 
         $errorCount = 0;
 
         while ($row = $result->fetchAssociative()) {
-            if ($storageUid && (int)$storageUid !== (int)$row['storage']) {
+            if ($storageUid && $storageUid !== (int)$row['storage']) {
                 continue;
             }
             try {
@@ -323,35 +273,65 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
 
         if ($storageUid === null) {
             // Truncate entire table if not restricted to specific storage
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($this->table)
-                ->truncate($this->table);
+            $connection->truncate('sys_file_processedfile');
         } else {
             // else remove db rows of this storage only
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($this->table)
-                ->delete($this->table, ['storage' => $storageUid], [Connection::PARAM_INT]);
+            $connection->delete('sys_file_processedfile', ['storage' => $storageUid], [Connection::PARAM_INT]);
         }
 
         return $errorCount;
     }
 
     /**
-     * Removes all array keys which cannot be persisted
-     *
-     *
-     * @return array
+     * Creates a ProcessedFile object from a file object and a processing configuration.
      */
-    protected function cleanUnavailableColumns(array $data)
+    protected function createNewProcessedFileObject(FileInterface $originalFile, string $taskType, array $configuration): ProcessedFile
+    {
+        return GeneralUtility::makeInstance(
+            ProcessedFile::class,
+            $originalFile,
+            $taskType,
+            $configuration
+        );
+    }
+
+    protected function createDomainObject(array $databaseRow): ProcessedFile
+    {
+        $originalFile = $this->factory->getFileObject((int)$databaseRow['original']);
+        $taskType = $databaseRow['task_type'];
+        // Allow deserialization of Area class, since Area objects get serialized in configuration
+        // TODO: This should be changed to json encode and decode at some point
+        $configuration = unserialize(
+            $databaseRow['configuration'],
+            [
+                'allowed_classes' => [
+                    Area::class,
+                ],
+            ]
+        );
+
+        return GeneralUtility::makeInstance(
+            ProcessedFile::class,
+            $originalFile,
+            $taskType,
+            $configuration,
+            $databaseRow
+        );
+    }
+
+    /**
+     * Removes all array keys which cannot be persisted.
+     */
+    protected function cleanUnavailableColumns(array $data): array
     {
         // As determining the table columns is a costly operation this is done only once during runtime and cached then
-        if (empty($this->tableColumns[$this->table])) {
-            $this->tableColumns[$this->table] = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($this->table)
+        if ($this->tableColumns === []) {
+            $this->tableColumns = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_file_processedfile')
                 ->createSchemaManager()
-                ->listTableColumns($this->table);
+                ->listTableColumns('sys_file_processedfile');
         }
 
-        return array_intersect_key($data, $this->tableColumns[$this->table]);
+        return array_intersect_key($data, $this->tableColumns);
     }
 }
