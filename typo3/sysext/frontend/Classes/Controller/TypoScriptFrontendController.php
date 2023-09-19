@@ -86,6 +86,7 @@ use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
 use TYPO3\CMS\Frontend\Event\AfterPageAndLanguageIsResolvedEvent;
 use TYPO3\CMS\Frontend\Event\AfterPageWithRootLineIsResolvedEvent;
 use TYPO3\CMS\Frontend\Event\BeforePageIsResolvedEvent;
+use TYPO3\CMS\Frontend\Event\ModifyTypoScriptConstantsEvent;
 use TYPO3\CMS\Frontend\Event\ShouldUseCachedPageDataIfAvailableEvent;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
@@ -1296,6 +1297,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // children for not matching conditions, which is important to create the correct AST.
             $includeTreeTraverserConditionVerdictAware->traverse($constantIncludeTree, $includeTreeTraverserConditionVerdictAwareVisitors);
             $constantsAst = $constantAstBuilderVisitor->getAst();
+            // @internal Dispatch and experimental event allowing listeners to still change the constants AST,
+            //           to for instance implement nested constants if really needed. Note this event may change
+            //           or vanish later without further notice.
+            $constantsAst = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(new ModifyTypoScriptConstantsEvent($constantsAst))->getConstantsAst();
             $flatConstants = $constantsAst->flatten();
             if (!$this->no_cache) {
                 // We are allowed to cache and can create both the full list of conditions, plus the constant AST and flat constant
