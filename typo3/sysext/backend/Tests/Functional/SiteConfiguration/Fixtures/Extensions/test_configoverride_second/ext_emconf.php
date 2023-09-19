@@ -14,9 +14,10 @@ $EM_CONF[$_EXTKEY] = [
     'constraints' => [
         'depends' => [
             'typo3' => '12.4.7',
-            'a' => '12.4.7',
         ],
         'conflicts' => [],
-        'suggests' => [],
+        'suggests' => [
+            'test_configoverride_first' => '12.4.7',
+        ],
     ],
 ];
