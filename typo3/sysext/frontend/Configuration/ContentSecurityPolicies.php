@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Backend;
+namespace TYPO3\CMS\Frontend;
 
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Mutation;
