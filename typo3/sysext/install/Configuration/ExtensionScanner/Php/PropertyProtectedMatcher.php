@@ -1402,4 +1402,39 @@ return [
             'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Imaging\GifBuilder->charRangeMap' => [
+        'restFiles' => [
+            'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Imaging\GifBuilder->combinedFileNames' => [
+        'restFiles' => [
+            'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Imaging\GifBuilder->combinedTextStrings' => [
+        'restFiles' => [
+            'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Imaging\GifBuilder->data' => [
+        'restFiles' => [
+            'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Imaging\GifBuilder->defaultWorkArea' => [
+        'restFiles' => [
+            'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Imaging\GifBuilder->objBB' => [
+        'restFiles' => [
+            'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Imaging\GifBuilder->XY' => [
+        'restFiles' => [
+            'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst',
+        ],
+    ],
 ];

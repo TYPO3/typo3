@@ -1592,5 +1592,11 @@ return [
             'Breaking-101941-VariousGFX-relatedLegacyOptionsRemoved.rst',
         ],
     ],
-
+    'TYPO3\CMS\Core\Imaging\GraphicalFunctions::readPngGif' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst',
+        ],
+    ],
 ];

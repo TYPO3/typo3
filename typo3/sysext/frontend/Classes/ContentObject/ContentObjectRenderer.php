@@ -3658,7 +3658,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $gifCreator->start($fileArray, $this->data);
                 $theImage = $gifCreator->gifBuild();
                 if ($theImage !== '') {
-                    $imageResource = $gifCreator->getImageDimensions(Environment::getPublicPath() . '/' . $theImage);
+                    $imageResource = $gifCreator->getGraphicalFunctions()->getImageDimensions(Environment::getPublicPath() . '/' . $theImage);
                     $imageResource['origFile'] = $theImage;
                 }
             }

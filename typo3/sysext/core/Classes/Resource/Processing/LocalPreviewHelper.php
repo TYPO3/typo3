@@ -15,12 +15,12 @@
 
 namespace TYPO3\CMS\Core\Resource\Processing;
 
-use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Imaging\ImageMagickFile;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
  * Helper for creating local image previews using TYPO3s image processing classes.
@@ -121,7 +121,7 @@ class LocalPreviewHelper
         // Check file extension
         if ($file->getType() !== File::FILETYPE_IMAGE && !$file->isImage()) {
             // Create a default image
-            $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+            $graphicalFunctions = GeneralUtility::makeInstance(GifBuilder::class);
             $graphicalFunctions->getTemporaryImageWithText(
                 $targetFilePath,
                 'Not imagefile!',
@@ -161,12 +161,11 @@ class LocalPreviewHelper
 
             if (!file_exists($targetFilePath)) {
                 // Create an error gif
-                $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+                $graphicalFunctions = GeneralUtility::makeInstance(GifBuilder::class);
                 $graphicalFunctions->getTemporaryImageWithText(
                     $targetFilePath,
                     'No thumb',
-                    'generated!',
-                    ''
+                    'generated!'
                 );
             }
         }

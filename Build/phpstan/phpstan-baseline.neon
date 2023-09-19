@@ -571,146 +571,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Http/SelfEmittableLazyOpenStream.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 8
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:imageCreateFromFile\\(\\) should return resource but returns GdImage\\|false\\.$#"
-			count: 4
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$destImg of method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:ImageWrite\\(\\) expects resource, GdImage\\|false given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$dst_image of function imagecopyresized expects GdImage, resource given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolorallocate expects GdImage, resource given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolorallocatealpha expects GdImage, resource given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolorclosest expects GdImage, resource given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolorexact expects GdImage, resource given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolorset expects GdImage, resource given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolorsforindex expects GdImage, resource given\\.$#"
-			count: 4
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolorstotal expects GdImage, resource given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolortransparent expects GdImage, resource given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagedestroy expects GdImage, resource given\\.$#"
-			count: 6
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagefilledellipse expects GdImage, resource given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagefilledrectangle expects GdImage, resource given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagegif expects GdImage, resource given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imageinterlace expects GdImage, resource given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagejpeg expects GdImage, resource given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagepng expects GdImage, resource given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagesx expects GdImage, resource given\\.$#"
-			count: 10
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagesy expects GdImage, resource given\\.$#"
-			count: 10
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagetruecolortopalette expects GdImage, resource given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagettftext expects GdImage, resource given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#2 \\$enable of function imageinterlace expects bool\\|null, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#2 \\$src_image of function imagecopyresized expects GdImage, resource given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#3 \\$red of function imagecolorset expects int, float given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#4 \\$green of function imagecolorset expects int, float given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
-			message: "#^Parameter \\#5 \\$blue of function imagecolorset expects int, float given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
 			message: "#^Right side of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
@@ -2321,12 +2181,152 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Http/RequestHandler.php
 
 		-
+			message: "#^If condition is always true\\.$#"
+			count: 8
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\Imaging\\\\GifBuilder\\:\\:imageCreateFromFile\\(\\) should return resource but returns GdImage\\|false\\.$#"
+			count: 4
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 3
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:\\$setup \\(array\\) on left side of \\?\\? is not nullable\\.$#"
+			message: "#^Parameter \\#1 \\$destImg of method TYPO3\\\\CMS\\\\Frontend\\\\Imaging\\\\GifBuilder\\:\\:ImageWrite\\(\\) expects resource, GdImage\\|false given\\.$#"
+			count: 2
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$dst_image of function imagecopyresized expects GdImage, resource given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagecolorallocate expects GdImage, resource given\\.$#"
+			count: 3
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagecolorallocatealpha expects GdImage, resource given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagecolorclosest expects GdImage, resource given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagecolorexact expects GdImage, resource given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagecolorset expects GdImage, resource given\\.$#"
+			count: 3
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagecolorsforindex expects GdImage, resource given\\.$#"
+			count: 4
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagecolorstotal expects GdImage, resource given\\.$#"
+			count: 3
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagecolortransparent expects GdImage, resource given\\.$#"
+			count: 3
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagedestroy expects GdImage, resource given\\.$#"
+			count: 6
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagefilledellipse expects GdImage, resource given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagefilledrectangle expects GdImage, resource given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagegif expects GdImage, resource given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imageinterlace expects GdImage, resource given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagejpeg expects GdImage, resource given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagepng expects GdImage, resource given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagesx expects GdImage, resource given\\.$#"
+			count: 10
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagesy expects GdImage, resource given\\.$#"
+			count: 10
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagetruecolortopalette expects GdImage, resource given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagettftext expects GdImage, resource given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#2 \\$enable of function imageinterlace expects bool\\|null, int given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#2 \\$src_image of function imagecopyresized expects GdImage, resource given\\.$#"
+			count: 3
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#3 \\$red of function imagecolorset expects int, float given\\.$#"
+			count: 2
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#4 \\$green of function imagecolorset expects int, float given\\.$#"
+			count: 2
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Parameter \\#5 \\$blue of function imagecolorset expects int, float given\\.$#"
+			count: 2
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
+			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\Imaging\\\\GifBuilder\\:\\:\\$setup \\(array\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 8
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
 
