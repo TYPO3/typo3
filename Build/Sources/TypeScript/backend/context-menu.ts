@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ContextMenuActions from './context-menu-actions';
@@ -49,7 +48,7 @@ interface MenuItems {
 class ContextMenu {
   private mousePos: MousePosition = { X: null, Y: null };
   private record: ActiveRecord = { uid: null, table: null };
-  private readonly eventSources: Element[] = [];
+  private readonly eventSources: HTMLElement[] = [];
 
   constructor() {
     document.addEventListener('click', (event: PointerEvent) => {
@@ -68,17 +67,31 @@ class ContextMenu {
    * @param {MenuItem} item
    * @returns {string}
    */
-  private static drawActionItem(item: MenuItem): string {
+  private static drawActionItem(item: MenuItem): HTMLElement {
+
+    const menuitem = document.createElement('li');
+    menuitem.role = 'menuitem';
+    menuitem.classList.add('context-menu-item');
+    menuitem.dataset.callbackAction = item.callbackAction;
+    menuitem.tabIndex = -1;
     const attributes: Record<string, string> = item.additionalAttributes || {};
-    let attributesString = '';
     for (const attribute of Object.entries(attributes)) {
-      const [k, v] = attribute;
-      attributesString += ' ' + k + '="' + v + '"';
+      const [qualifiedName, value] = attribute;
+      menuitem.setAttribute(qualifiedName, value);
     }
 
-    return '<li role="menuitem" class="context-menu-item" tabindex="-1"'
-      + ' data-callback-action="' + item.callbackAction + '"'
-      + attributesString + '><span class="context-menu-item-icon">' + item.icon + '</span> <span class="context-menu-item-label">' + item.label + '</span></li>';
+    const icon = document.createElement('span');
+    icon.classList.add('context-menu-item-icon');
+    icon.innerHTML = item.icon;
+
+    const label = document.createElement('span');
+    label.classList.add('context-menu-item-label');
+    label.innerHTML = item.label;
+
+    menuitem.append(icon);
+    menuitem.append(label);
+
+    return menuitem;
   }
 
   private static within(element: HTMLElement, x: number, y: number): boolean {
@@ -99,18 +112,20 @@ class ContextMenu {
    * @param {string} context Context of the item
    * @param {string} unusedParam1
    * @param {string} unusedParam2
-   * @param {Element} eventSource Source Element
+   * @param {HTMLElement} eventSource Source Element
    */
-  public show(table: string, uid: number|string, context: string, unusedParam1: string, unusedParam2: string, eventSource: Element = null): void {
+  public show(table: string, uid: number|string, context: string, unusedParam1: string, unusedParam2: string, eventSource: HTMLElement = null): void {
     this.hideAll();
 
     this.record = { table: table, uid: uid };
-    // fix: [tabindex=-1] is not focusable!!!
-    const focusableSource = eventSource.matches('a, button, [tabindex]') ? eventSource : eventSource.closest('a, button, [tabindex]');
-    this.eventSources.push(focusableSource);
+    const focusableSource = eventSource.matches('a, button, [tabindex]:not([tabindex="-1"])')
+      ? eventSource
+      : eventSource.closest('a, button, [tabindex]:not([tabindex="-1"])') as HTMLElement;
+    if (this.eventSources.includes(focusableSource) === false) {
+      this.eventSources.push(focusableSource);
+    }
 
     let parameters = '';
-
     if (typeof table !== 'undefined') {
       parameters += 'table=' + encodeURIComponent(table);
     }
@@ -120,6 +135,7 @@ class ContextMenu {
     if (typeof context !== 'undefined') {
       parameters += (parameters.length > 0 ? '&' : '') + 'context=' + encodeURIComponent(context);
     }
+
     this.fetch(parameters);
   }
 
@@ -127,10 +143,19 @@ class ContextMenu {
    * Manipulates the DOM to add the divs needed for context menu at the bottom of the <body>-tag
    */
   private initializeContextMenuContainer(): void {
-    if ($('#contentMenu0').length === 0) {
-      const code = '<div id="contentMenu0" class="context-menu" style="display: none;"></div>'
-        + '<div id="contentMenu1" class="context-menu" data-parent="#contentMenu0" style="display: none;"></div>';
-      $('body').append(code);
+    if (document.querySelector('#contentMenu0') === null) {
+      const contextMenu1 = document.createElement('div');
+      contextMenu1.classList.add('context-menu');
+      contextMenu1.id = 'contentMenu0';
+      contextMenu1.style.display = 'none';
+      document.querySelector('body').append(contextMenu1);
+
+      const contextMenu2 = document.createElement('div');
+      contextMenu2.classList.add('context-menu');
+      contextMenu2.id = 'contentMenu1';
+      contextMenu2.style.display = 'none';
+      contextMenu2.dataset.parent = '#contentMenu0'
+      document.querySelector('body').append(contextMenu2);
 
       document.querySelectorAll('.context-menu').forEach((contextMenu: Element): void => {
         // Explicitly update cursor position if element is entered to avoid timing issues
@@ -147,13 +172,13 @@ class ContextMenu {
             && (childMenu === null || childMenu.offsetParent === null); // child menu, if any, is not visible
 
           if (hideThisMenu) {
-            this.hide('#' + target.id);
+            this.hide(target);
 
             // close parent menu (if any) if cursor is outside its boundaries
             let parent: HTMLElement | null;
             if (typeof target.dataset.parent !== 'undefined' && (parent = document.querySelector(target.dataset.parent)) !== null) {
               if (!ContextMenu.within(parent, this.mousePos.X, this.mousePos.Y)) {
-                this.hide(target.dataset.parent);
+                this.hide(document.querySelector(target.dataset.parent));
               }
             }
           }
@@ -221,23 +246,39 @@ class ContextMenu {
   private populateData(items: MenuItems, level: number): void {
     this.initializeContextMenuContainer();
 
-    const $obj = $('#contentMenu' + level);
+    const contentMenuCurrent = document.querySelector('#contentMenu' + level) as HTMLElement;
+    const contentMenuParent = document.querySelector('#contentMenu' + (level - 1)) as HTMLElement;
+    if (contentMenuCurrent !== null && contentMenuParent?.offsetParent !== null) {
+      const menuGroup = document.createElement('ul');
+      menuGroup.classList.add('context-menu-group');
+      menuGroup.role = 'menu';
+      this.drawMenu(items, level).forEach((childItem) => {
+        menuGroup.appendChild(childItem);
+      });
 
-    if ($obj.length && (level === 0 || $('#contentMenu' + (level - 1)).is(':visible'))) {
-      const elements = this.drawMenu(items, level);
-      $obj.html('<ul class="context-menu-group" role="menu">' + elements + '</ul>');
+      contentMenuCurrent.innerHTML = '';
+      contentMenuCurrent.appendChild(menuGroup);
+      contentMenuCurrent.style.display = null;
+      const position = this.getPosition(contentMenuCurrent);
+      contentMenuCurrent.style.top = position.top;
+      contentMenuCurrent.style.insetInlineStart = position.start;
+      (contentMenuCurrent.querySelector('.context-menu-item[tabindex="-1"]') as HTMLElement).focus();
+      this.initializeEvents(contentMenuCurrent, level);
+    }
+  }
 
-      $('li.context-menu-item', $obj).on('click', (event: JQueryEventObject): void => {
+  private initializeEvents(contentMenu: HTMLElement, level: number) {
+    contentMenu.querySelectorAll('li.context-menu-item').forEach((element: HTMLElement) => {
+      // clock
+      element.addEventListener('click', (event: PointerEvent): void => {
         event.preventDefault();
-        const me = event.currentTarget as HTMLElement;
-
-        if (me.classList.contains('context-menu-item-submenu')) {
-          this.openSubmenu(level, $(me), false);
+        const target = event.currentTarget as HTMLElement;
+        if (target.classList.contains('context-menu-item-submenu')) {
+          this.openSubmenu(level, target);
           return;
         }
-
-        const { callbackAction, callbackModule, ...dataAttributesToPass } = me.dataset;
-        if (me.dataset.callbackModule) {
+        const { callbackAction, callbackModule, ...dataAttributesToPass } = target.dataset;
+        if (target.dataset.callbackModule) {
           import(callbackModule + '.js').then(({ default: callbackModuleCallback }: {default: any}): void => {
             callbackModuleCallback[callbackAction](this.record.table, this.record.uid, dataAttributesToPass);
           });
@@ -248,40 +289,42 @@ class ContextMenu {
         }
         this.hideAll();
       });
-      $('li.context-menu-item', $obj).on('keydown', (event: JQueryEventObject): void => {
-        const $currentItem = $(event.currentTarget);
+      // keyboard control
+      element.addEventListener('keydown', (event: KeyboardEvent): void => {
+        event.preventDefault();
+        const target = event.target as HTMLElement;
         switch (event.key) {
           case 'Down': // IE/Edge specific value
           case 'ArrowDown':
-            this.setFocusToNextItem($currentItem.get(0));
+            this.setFocusToNextItem(target);
             break;
           case 'Up': // IE/Edge specific value
           case 'ArrowUp':
-            this.setFocusToPreviousItem($currentItem.get(0));
+            this.setFocusToPreviousItem(target);
             break;
           case 'Right': // IE/Edge specific value
           case 'ArrowRight':
-            if ($currentItem.hasClass('context-menu-item-submenu')) {
-              this.openSubmenu(level, $currentItem, true);
+            if (target.classList.contains('context-menu-item-submenu')) {
+              this.openSubmenu(level, target);
             } else {
               return; // allow default behaviour of right key
             }
             break;
           case 'Home':
-            this.setFocusToFirstItem($currentItem.get(0));
+            this.setFocusToFirstItem(target);
             break;
           case 'End':
-            this.setFocusToLastItem($currentItem.get(0));
+            this.setFocusToLastItem(target);
             break;
           case 'Enter':
           case 'Space':
-            $currentItem.click();
+            target.click();
             break;
           case 'Esc': // IE/Edge specific value
           case 'Escape':
           case 'Left': // IE/Edge specific value
           case 'ArrowLeft':
-            this.hide('#' + $currentItem.parents('.context-menu').first().attr('id'));
+            this.hide(target.closest('.context-menu'));
             break;
           case 'Tab':
             this.hideAll();
@@ -289,13 +332,8 @@ class ContextMenu {
           default:
             return; // return to allow default keypress behaviour
         }
-        // if not returned yet, prevent the default action of the event.
-        event.preventDefault();
       });
-      $obj.css(this.getPosition($obj, false)).show();
-      // focus the first element on creation to enable keyboard shortcuts
-      $('li.context-menu-item[tabindex=-1]', $obj).first().focus();
-    }
+    });
   }
 
   private setFocusToPreviousItem(currentItem: HTMLElement): void {
@@ -358,67 +396,75 @@ class ContextMenu {
     return this.getItemBackward(item.parentElement.lastElementChild);
   }
 
-  /**
-   * @param {number} level
-   * @param {JQuery} $item
-   * @param {boolean} keyboard
-   */
-  private openSubmenu(level: number, $item: JQuery, keyboard: boolean): void {
-    this.eventSources.push($item[0]);
-    const $obj = $('#contentMenu' + (level + 1)).html('');
-    $item.next().find('.context-menu-group').clone(true).appendTo($obj);
-    $obj.css(this.getPosition($obj, keyboard)).show();
-    $('.context-menu-item[tabindex=-1]',$obj).first().focus();
+  private openSubmenu(level: number, item: HTMLElement): void {
+    if (this.eventSources.includes(item) === false) {
+      this.eventSources.push(item);
+    }
+
+    const contentMenu = document.querySelector('#contentMenu' + (level + 1)) as HTMLElement|null;
+    contentMenu.innerHTML = '';
+    contentMenu.appendChild(item.nextElementSibling.querySelector('.context-menu-group').cloneNode(true));
+    contentMenu.style.display = null;
+
+    const position = this.getPosition(contentMenu);
+    contentMenu.style.top = position.top;
+    contentMenu.style.insetInlineStart = position.start;
+    (contentMenu.querySelector('.context-menu-item[tabindex="-1"]') as HTMLElement).focus();
+
+    this.initializeEvents(contentMenu, level);
   }
 
-  private getPosition($obj: JQuery, keyboard: boolean): {[key: string]: string} {
-    let x = 0, y = 0;
-    if (this.eventSources.length && (this.mousePos.X === null || keyboard)) {
-      const boundingRect = this.eventSources[this.eventSources.length - 1].getBoundingClientRect();
-      x = this.eventSources.length > 1 ? boundingRect.right : boundingRect.x;
-      y = boundingRect.y;
+  private getPosition(element: HTMLElement): { start: string; top: string; } {
+
+    const space = 10;
+    const offset = 5;
+    const direction = document.querySelector('html').dir === 'rtl' ? 'rtl' : 'ltr';
+    const origin: HTMLElement|undefined|null = this.eventSources?.[this.eventSources.length - 1];
+
+    const dimensions = {
+      width: element.offsetWidth,
+      height: element.offsetHeight
+    };
+
+    const windowDimentions = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+
+    let
+      start : number = 0,
+      top : number = 0;
+
+    if (origin !== undefined && origin !== null) {
+      const boundingRect = origin.getBoundingClientRect();
+      top = boundingRect.y;
+      start = direction === 'ltr' ? boundingRect.x + boundingRect.width : windowDimentions.width - boundingRect.x;
+      if (origin.classList.contains('context-menu-item-submenu')) {
+        top -= 3 + offset;
+      }
     } else {
-      x = this.mousePos.X - 1;
-      y = this.mousePos.Y - 1;
-    }
-    const dimsWindow = {
-      width: $(window).width() - 20, // saving margin for scrollbars
-      height: $(window).height(),
-    };
-
-    // dimensions for the context menu
-    const dims = {
-      width: $obj.width(),
-      height: $obj.height(),
-    };
-
-    const relative = {
-      X: x - $(document).scrollLeft(),
-      Y: y - $(document).scrollTop(),
-    };
-
-    // adjusting the Y position of the layer to fit it into the window frame
-    // if there is enough space above then put it upwards,
-    // otherwise adjust it to the bottom of the window
-    if (dimsWindow.height - dims.height < relative.Y) {
-      if (relative.Y > dims.height) {
-        y -= (dims.height - 10);
-      } else {
-        y += (dimsWindow.height - dims.height - relative.Y);
-      }
-    }
-    // adjusting the X position like Y above, but align it to the left side of the viewport if it does not fit completely
-    if (dimsWindow.width - dims.width < relative.X) {
-      if (relative.X > dims.width) {
-        x -= (dims.width - 10);
-      } else if ((dimsWindow.width - dims.width - relative.X) < $(document).scrollLeft()) {
-        x = $(document).scrollLeft();
-      } else {
-        x += (dimsWindow.width - dims.width - relative.X);
-      }
+      top = this.mousePos.Y;
+      start = direction === 'ltr' ? this.mousePos.X : windowDimentions.width - this.mousePos.X;
     }
 
-    return { left: x + 'px', top: y + 'px' };
+    const canPlaceBelow = (top + dimensions.height + space + offset < windowDimentions.height);
+    const canPlaceStart = (start + dimensions.width + space + offset < windowDimentions.width);
+
+    // adjusting the top position of the layer to fit it into the window frame
+    if (!canPlaceBelow) {
+      top = windowDimentions.height - dimensions.height - space;
+    } else {
+      top += offset;
+    }
+
+    // adjusting the start position of the layer to fit it into the window frame
+    if (!canPlaceStart) {
+      start = windowDimentions.width - dimensions.width - space;
+    } else {
+      start += offset;
+    }
+
+    return { start: Math.round(start) + 'px', top: Math.round(top) + 'px' };
   }
 
   /**
@@ -426,49 +472,73 @@ class ContextMenu {
    * depending on the mouse position
    *
    * @param {MenuItems} items The data that will be put in the menu
-   * @param {Number} level The depth of the context menu
-   * @return {string}
+   * @param {number} level The depth of the context menu
    */
-  private drawMenu(items: MenuItems, level: number): string {
-    let elements: string = '';
+  private drawMenu(items: MenuItems, level: number): Array<HTMLElement> {
+
+    const elements: Array<HTMLElement> = [];
     for (const item of Object.values(items)) {
       if (item.type === 'item') {
-        elements += ContextMenu.drawActionItem(item);
+        elements.push(ContextMenu.drawActionItem(item));
       } else if (item.type === 'divider') {
-        elements += '<li role="separator" class="context-menu-item context-menu-item-divider"></li>';
+        const separator = document.createElement('li');
+        separator.role = 'separator';
+        separator.classList.add('context-menu-divider');
+        elements.push(separator);
       } else if (item.type === 'submenu' || item.childItems) {
-        elements += '<li role="menuitem" aria-haspopup="true" class="context-menu-item context-menu-item-submenu" tabindex="-1">'
-          + '<span class="context-menu-item-icon">' + item.icon + '</span>'
-          + '<span class="context-menu-item-label">' + item.label + '</span>'
-          + '<span class="context-menu-item-indicator"><typo3-backend-icon identifier="actions-chevron-right" size="small"></typo3-backend-icon></span>'
-          + '</li>';
-
-        const childElements = this.drawMenu(item.childItems, 1);
-        elements += '<div class="context-menu contentMenu' + (level + 1) + '" style="display:none;">'
-          + '<ul role="menu" class="context-menu-group">' + childElements + '</ul>'
-          + '</div>';
+        const submenuItem = document.createElement('li');
+        submenuItem.role = 'menuitem';
+        submenuItem.ariaHasPopup = 'true';
+        submenuItem.classList.add('context-menu-item', 'context-menu-item-submenu');
+        submenuItem.tabIndex = -1;
+        const submenuIcon = document.createElement('span');
+        submenuIcon.classList.add('context-menu-item-icon');
+        submenuIcon.innerHTML = item.icon;
+        submenuItem.appendChild(submenuIcon);
+        const submenuLabel = document.createElement('span');
+        submenuLabel.classList.add('context-menu-item-label');
+        submenuLabel.innerHTML = item.label;
+        submenuItem.appendChild(submenuLabel);
+        const submenuIndicator = document.createElement('span');
+        submenuIndicator.classList.add('context-menu-item-indicator');
+        submenuIndicator.innerHTML = '<typo3-backend-icon identifier="actions-chevron-' + (document.querySelector('html').dir === 'rtl' ? 'left' : 'right') + '" size="small"></typo3-backend-icon>';
+        submenuItem.appendChild(submenuIndicator);
+        elements.push(submenuItem);
+        const submenu = document.createElement('div');
+        submenu.classList.add('context-menu', 'contentMenu' + (level + 1));
+        submenu.style.display = 'none';
+        const submenuList = document.createElement('ul');
+        submenuList.role = 'menu';
+        submenuList.classList.add('context-menu-group');
+        this.drawMenu(item.childItems, 1).forEach((childItem) => {
+          submenuList.appendChild(childItem);
+        })
+        submenu.appendChild(submenuList);
+        elements.push(submenu);
       }
     }
     return elements;
   }
 
   /**
-   * event handler function that saves the
-   * actual position of the mouse
-   * in the context menu object
+   * event handler function that saves the actual position of the
+   * mouse in the context menu object
    */
   private readonly storeMousePositionEvent = (event: MouseEvent): void => {
     this.mousePos = { X: event.pageX, Y: event.pageY };
   };
 
-  /**
-   * @param {string} obj
-   */
-  private hide(obj: string): void {
-    $(obj).hide();
+  private hide(element: HTMLElement|null): void {
+    if (element === null) {
+      return;
+    }
+
+    element.style.top = null;
+    element.style.insetInlineStart = null;
+    element.style.display = 'none';
     const source = this.eventSources.pop();
     if (source) {
-      $(source).focus();
+      source.focus()
     }
   }
 
@@ -476,8 +546,8 @@ class ContextMenu {
    * Hides all context menus
    */
   private hideAll(): void {
-    this.hide('#contentMenu0');
-    this.hide('#contentMenu1');
+    this.hide(document.querySelector('#contentMenu0'));
+    this.hide(document.querySelector('#contentMenu1'));
   }
 }
 

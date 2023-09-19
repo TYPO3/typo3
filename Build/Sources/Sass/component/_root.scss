@@ -8,11 +8,13 @@
     --typo3-font-family: var(--typo3-font-family-sans-serif);
     --typo3-font-family-code: var(--typo3-font-family-monospace);
     --typo3-spacing: 1rem;
+    --typo3-color-scheme: auto;
 
     // Header
     --typo3-header-font-family: "Source Sans 3", sans-serif;
 
     // Light
+    --typo3-light-color-scheme: light;
     --typo3-light-color: #{$body-color};
     --typo3-light-primary-color: #{$primary};
     --typo3-light-secondary-color: #{tint-color($body-color, 40%)};
@@ -34,6 +36,7 @@
     --typo3-light-disabled-border-color: transparent;
 
     // Dark
+    --typo3-dark-color-scheme: dark;
     --typo3-dark-color: #{$white};
     --typo3-dark-primary-color: #{tint-color($primary, 40%)};
     --typo3-dark-secondary-color: #{shade-color($white, 40%)};
@@ -55,6 +58,7 @@
     --typo3-dark-disabled-border-color: transparent;
 
     // Component
+    --typo3-component-color-scheme: var(--typo3-light-color-scheme);
     --typo3-component-color: var(--typo3-light-color);
     --typo3-component-primary-color: var(--typo3-light-primary-color);
     --typo3-component-secondary-color: var(--typo3-light-secondary-color);
@@ -69,6 +73,7 @@
     --typo3-component-padding-y: .75rem;
     --typo3-component-padding-x: 1rem;
     --typo3-component-box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+    --typo3-component-box-shadow-strong: 0 2px 4px rgba(0, 0, 0, .5);
     --typo3-component-hover-color: var(--typo3-light-hover-color);
     --typo3-component-hover-bg: var(--typo3-light-hover-bg);
     --typo3-component-hover-border-color: var(--typo3-light-hover-border-color);
@@ -120,6 +125,7 @@
 }
 
 @mixin lightmode {
+    --typo3-component-color-scheme: var(--typo3-light-color-scheme);
     --typo3-component-color: var(--typo3-light-color);
     --typo3-component-primary-color: var(--typo3-light-primary-color);
     --typo3-component-secondary-color: var(--typo3-light-secondary-color);
@@ -142,6 +148,7 @@
 }
 
 @mixin darkmode {
+    --typo3-component-color-scheme: var(--typo3-dark-color-scheme);
     --typo3-component-color: var(--typo3-dark-color);
     --typo3-component-primary-color: var(--typo3-dark-primary-color);
     --typo3-component-secondary-color: var(--typo3-dark-secondary-color);
