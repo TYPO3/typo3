@@ -16,11 +16,11 @@
 namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
  * Helper class to locally perform a crop/scale/mask task with the TYPO3 image processing classes.
@@ -60,7 +60,7 @@ class LocalCropScaleMaskHelper
         $result = null;
         $targetFile = $task->getTargetFile();
 
-        $gifBuilder = GeneralUtility::makeInstance(GifBuilder::class);
+        $imageOperations = GeneralUtility::makeInstance(GraphicalFunctions::class);
 
         $configuration = $targetFile->getProcessingConfiguration();
         $configuration['additionalParameters'] = $this->modifyImageMagickStripProfileParameters((string)($configuration['additionalParameters'] ?? ''), $configuration);
@@ -69,7 +69,7 @@ class LocalCropScaleMaskHelper
             $configuration['fileExtension'] = $task->getTargetFileExtension();
         }
 
-        $options = $this->getConfigurationForImageCropScaleMask($targetFile, $gifBuilder);
+        $options = $this->getConfigurationForImageCropScaleMask($targetFile, $imageOperations);
 
         $croppedImage = null;
         if (!empty($configuration['crop'])) {
@@ -84,13 +84,13 @@ class LocalCropScaleMaskHelper
                 [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $configuration['crop'], 4);
             }
 
-            $backupPrefix = $gifBuilder->filenamePrefix;
-            $gifBuilder->filenamePrefix = 'crop_';
+            $backupPrefix = $imageOperations->filenamePrefix;
+            $imageOperations->filenamePrefix = 'crop_';
 
             $jpegQuality = MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality'], 10, 100, 85);
 
             // the result info is an array with 0=width,1=height,2=extension,3=filename
-            $result = $gifBuilder->imageMagickConvert(
+            $result = $imageOperations->imageMagickConvert(
                 $originalFileName,
                 $configuration['fileExtension'],
                 '',
@@ -100,7 +100,7 @@ class LocalCropScaleMaskHelper
                 ['noScale' => true],
                 true
             );
-            $gifBuilder->filenamePrefix = $backupPrefix;
+            $imageOperations->filenamePrefix = $backupPrefix;
 
             if ($result !== null) {
                 $originalFileName = $croppedImage = $result[3];
@@ -110,7 +110,7 @@ class LocalCropScaleMaskHelper
         // Normal situation (no masking)
         if (!(is_array($configuration['maskImages'] ?? null) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'])) {
             // the result info is an array with 0=width,1=height,2=extension,3=filename
-            $result = $gifBuilder->imageMagickConvert(
+            $result = $imageOperations->imageMagickConvert(
                 $originalFileName,
                 $configuration['fileExtension'],
                 $configuration['width'] ?? '',
@@ -128,7 +128,7 @@ class LocalCropScaleMaskHelper
             $maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
             if ($maskImage instanceof FileInterface && $maskBackgroundImage instanceof FileInterface) {
                 $temporaryExtension = 'png';
-                $tempFileInfo = $gifBuilder->imageMagickConvert(
+                $tempFileInfo = $imageOperations->imageMagickConvert(
                     $originalFileName,
                     $temporaryExtension,
                     $configuration['width'] ?? '',
@@ -149,25 +149,25 @@ class LocalCropScaleMaskHelper
                     $tempScale = [];
                     $command = '-geometry ' . $tempFileInfo[0] . 'x' . $tempFileInfo[1] . '!';
                     $command = $this->modifyImageMagickStripProfileParameters($command, $configuration);
-                    $tmpStr = $gifBuilder->randomName();
+                    $tmpStr = $imageOperations->randomName();
                     //	m_mask
                     $tempScale['m_mask'] = $tmpStr . '_mask.' . $temporaryExtension;
-                    $gifBuilder->imageMagickExec($maskImage->getForLocalProcessing(true), $tempScale['m_mask'], $command);
+                    $imageOperations->imageMagickExec($maskImage->getForLocalProcessing(true), $tempScale['m_mask'], $command);
                     //	m_bgImg
                     $tempScale['m_bgImg'] = $tmpStr . '_bgImg.miff';
-                    $gifBuilder->imageMagickExec($maskBackgroundImage->getForLocalProcessing(), $tempScale['m_bgImg'], $command);
+                    $imageOperations->imageMagickExec($maskBackgroundImage->getForLocalProcessing(), $tempScale['m_bgImg'], $command);
                     //	m_bottomImg / m_bottomImg_mask
                     if ($maskBottomImage instanceof FileInterface && $maskBottomImageMask instanceof FileInterface) {
                         $tempScale['m_bottomImg'] = $tmpStr . '_bottomImg.' . $temporaryExtension;
-                        $gifBuilder->imageMagickExec($maskBottomImage->getForLocalProcessing(), $tempScale['m_bottomImg'], $command);
+                        $imageOperations->imageMagickExec($maskBottomImage->getForLocalProcessing(), $tempScale['m_bottomImg'], $command);
                         $tempScale['m_bottomImg_mask'] = ($tmpStr . '_bottomImg_mask.') . $temporaryExtension;
-                        $gifBuilder->imageMagickExec($maskBottomImageMask->getForLocalProcessing(), $tempScale['m_bottomImg_mask'], $command);
+                        $imageOperations->imageMagickExec($maskBottomImageMask->getForLocalProcessing(), $tempScale['m_bottomImg_mask'], $command);
                         // BEGIN combining:
                         // The image onto the background
-                        $gifBuilder->combineExec($tempScale['m_bgImg'], $tempScale['m_bottomImg'], $tempScale['m_bottomImg_mask'], $tempScale['m_bgImg']);
+                        $imageOperations->combineExec($tempScale['m_bgImg'], $tempScale['m_bottomImg'], $tempScale['m_bottomImg_mask'], $tempScale['m_bgImg']);
                     }
                     // The image onto the background
-                    $gifBuilder->combineExec($tempScale['m_bgImg'], $tempFileInfo[3], $tempScale['m_mask'], $temporaryFileName);
+                    $imageOperations->combineExec($tempScale['m_bgImg'], $tempFileInfo[3], $tempScale['m_mask'], $temporaryFileName);
                     $tempFileInfo[3] = $temporaryFileName;
                     // Unlink the temp-images...
                     foreach ($tempScale as $tempFile) {
@@ -205,12 +205,12 @@ class LocalCropScaleMaskHelper
     /**
      * @return array
      */
-    protected function getConfigurationForImageCropScaleMask(ProcessedFile $processedFile, GifBuilder $gifBuilder)
+    protected function getConfigurationForImageCropScaleMask(ProcessedFile $processedFile, GraphicalFunctions $imageOperations)
     {
         $configuration = $processedFile->getProcessingConfiguration();
 
         if ($configuration['useSample'] ?? false) {
-            $gifBuilder->scalecmd = '-sample';
+            $imageOperations->scalecmd = '-sample';
         }
         $options = [];
         if ($configuration['maxWidth'] ?? false) {

@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Html\HtmlCropper;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Html\SanitizerInitiator;
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\DateFormatter;
@@ -3757,7 +3758,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (!isset($imageResource) && is_string($file)) {
             try {
                 $theImage = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($file);
-                $info = GeneralUtility::makeInstance(GifBuilder::class)->imageMagickConvert($theImage, 'WEB');
+                $info = GeneralUtility::makeInstance(GraphicalFunctions::class)->imageMagickConvert($theImage, 'WEB');
                 if ($info !== null) {
                     $info['origFile'] = $theImage;
                     // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, ln 100ff in order for the setup-array to create a unique filename hash.
