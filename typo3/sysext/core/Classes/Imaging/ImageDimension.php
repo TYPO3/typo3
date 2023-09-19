@@ -145,7 +145,7 @@ class ImageDimension
                 // check if it is a json object
                 $cropData = json_decode($configuration['crop']);
                 if ($cropData) {
-                    $options['crop'] = new Area($cropData->x, $cropData->y, $cropData->width, $cropData->height);
+                    $options['crop'] = new Area((float)$cropData->x, (float)$cropData->y, (float)$cropData->width, (float)$cropData->height);
                 } else {
                     [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $configuration['crop'], 4);
                     $options['crop'] = new Area((float)$offsetLeft, (float)$offsetTop, (float)$newWidth, (float)$newHeight);
