@@ -35,9 +35,6 @@ GFX:
         processor_allowFrameSelection:
             type: bool
             description: 'If set, the [x] frame selector is appended to input filenames in stdgraphic. This speeds up image processing for PDF files considerably. Disable if your image processor or environment can''t cope with the frame selection.'
-        processor_allowTemporaryMasksAsPng:
-            type: bool
-            description: 'This should be set if your processor supports using PNGs as masks as this is usually faster.'
         processor_stripColorProfileByDefault:
             type: bool
             description: 'If set, the processor_stripColorProfileCommand is used with all processor image operations by default. See tsRef for setting this parameter explicitly for IMAGE generation.'

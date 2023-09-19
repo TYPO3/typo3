@@ -128,10 +128,6 @@ class LocalCropScaleMaskHelper
             $maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
             if ($maskImage instanceof FileInterface && $maskBackgroundImage instanceof FileInterface) {
                 $temporaryExtension = 'png';
-                if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowTemporaryMasksAsPng']) {
-                    // If ImageMagick version 5+
-                    $temporaryExtension = $gifBuilder->gifExtension;
-                }
                 $tempFileInfo = $gifBuilder->imageMagickConvert(
                     $originalFileName,
                     $temporaryExtension,

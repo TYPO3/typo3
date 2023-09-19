@@ -188,6 +188,8 @@ class SilentConfigurationUpgradeService
         // #101941
         'GFX/thumbnails_png',
         'GFX/gif_compress',
+        // #101950
+        'GFX/processor_allowTemporaryMasksAsPng',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager)
@@ -549,12 +551,6 @@ class SilentConfigurationUpgradeService
         }
 
         try {
-            $currentProcessorMaskValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng');
-        } catch (MissingArrayPathException) {
-            $currentProcessorMaskValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng');
-        }
-
-        try {
             $currentProcessorEffectsValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_effects');
         } catch (MissingArrayPathException) {
             $currentProcessorEffectsValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_effects');
@@ -563,10 +559,6 @@ class SilentConfigurationUpgradeService
         if ((string)$currentProcessorValue !== '') {
             if (!is_bool($currentProcessorEffectsValue)) {
                 $changedValues['GFX/processor_effects'] = (int)$currentProcessorEffectsValue > 0;
-            }
-
-            if ($currentProcessorMaskValue != 0) {
-                $changedValues['GFX/processor_allowTemporaryMasksAsPng'] = 0;
             }
         }
         if (!empty($changedValues)) {

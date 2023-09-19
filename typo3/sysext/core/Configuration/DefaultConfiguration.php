@@ -33,7 +33,6 @@ return [
         'processor_effects' => false,
         'processor_allowUpscaling' => true,
         'processor_allowFrameSelection' => true,
-        'processor_allowTemporaryMasksAsPng' => false,
         'processor_stripColorProfileByDefault' => true,
         'processor_stripColorProfileCommand' => '+profile \'*\'',
         'processor_colorspace' => 'RGB',

@@ -331,39 +331,11 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function setImageMagickDetailSettings(): void
-    {
-        $testConfig = [
-            'GFX' => [
-                'processor' => 'GraphicsMagick',
-                'processor_allowTemporaryMasksAsPng' => 1,
-                'processor_effects' => false,
-            ],
-        ];
-        $configurationManager = $this->get(ConfigurationManager::class);
-        $configurationManager->updateLocalConfiguration($testConfig);
-
-        $subject = $this->get(SilentConfigurationUpgradeService::class);
-        $exceptionCaught = false;
-        try {
-            $subject->execute();
-        } catch (ConfigurationChangedException) {
-            $exceptionCaught = true;
-        } finally {
-            self::assertTrue($exceptionCaught);
-            self::assertSame(0, $configurationManager->getLocalConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng'));
-        }
-    }
-
-    /**
-     * @test
-     */
     public function doNotSetImageMagickDetailSettings(): void
     {
         $testConfig = [
             'GFX' => [
                 'processor' => '',
-                'processor_allowTemporaryMasksAsPng' => 0,
                 'processor_effects' => 0,
             ],
         ];
@@ -420,7 +392,6 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         $testConfig = [
             'GFX' => [
                 'processor' => 'GraphicsMagick',
-                'processor_allowTemporaryMasksAsPng' => false,
                 'processor_effects' => $currentValue,
             ],
         ];
