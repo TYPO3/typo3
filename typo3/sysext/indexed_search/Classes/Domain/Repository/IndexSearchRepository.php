@@ -262,6 +262,69 @@ class IndexSearchRepository
     }
 
     /**
+     * Write statistics information to database for the search operation if there was at least one search word.
+     *
+     * @param array $searchWords Search Word array
+     */
+    public function writeSearchStat(int $pageId, array $searchWords): void
+    {
+        if (empty($searchWords)) {
+            return;
+        }
+        $entries = [];
+        foreach ($searchWords as $val) {
+            $entries[] = [
+                mb_substr($val['sword'], 0, 50),
+                $GLOBALS['EXEC_TIME'],
+                $pageId,
+            ];
+        }
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_stat_word')
+            ->bulkInsert(
+                'index_stat_word',
+                $entries,
+                ['word', 'tstamp', 'pageid'],
+                [Connection::PARAM_STR, Connection::PARAM_INT, Connection::PARAM_INT]
+            );
+    }
+
+    public function getFullTextRowByPhash(int $phash): ?array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_fulltext');
+        return $queryBuilder
+            ->select('*')
+            ->from('index_fulltext')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'phash',
+                    $queryBuilder->createNamedParameter($phash, Connection::PARAM_INT)
+                )
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative() ?: null;
+    }
+
+    public function getIndexConfigurationById(int $id): ?array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('index_config');
+        return $queryBuilder
+            ->select('uid', 'title')
+            ->from('index_config')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
+                )
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative() ?: null;
+    }
+
+    /**
      * Gets a SQL result pointer to traverse for the search records.
      *
      * @param array $searchWords Search words

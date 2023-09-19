@@ -20,9 +20,6 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -298,28 +295,19 @@ class SearchController extends ActionController
             // Create header if we are searching more than one indexing configuration
             if (count($indexCfgs) > 1) {
                 if ($freeIndexUid > 0) {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getQueryBuilderForTable('index_config');
-                    $indexCfgRec = $queryBuilder
-                        ->select('title')
-                        ->from('index_config')
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                'uid',
-                                $queryBuilder->createNamedParameter($freeIndexUid, Connection::PARAM_INT)
-                            )
-                        )
-                        ->executeQuery()
-                        ->fetchAssociative();
-                    $categoryTitle = LocalizationUtility::translate('indexingConfigurationHeader.' . $freeIndexUid, 'IndexedSearch');
-                    $categoryTitle = $categoryTitle ?: $indexCfgRec['title'];
+                    $indexCfgRec = $this->searchRepository->getIndexConfigurationById($freeIndexUid);
+                    if (is_array($indexCfgRec)) {
+                        $categoryTitle = LocalizationUtility::translate('indexingConfigurationHeader.' . $freeIndexUid, 'IndexedSearch');
+                        $categoryTitle = $categoryTitle ?: $indexCfgRec['title'];
+                        $resultsets[$freeIndexUid]['categoryTitle'] = $categoryTitle;
+                    }
                 } else {
                     $categoryTitle = LocalizationUtility::translate('indexingConfigurationHeader.' . $freeIndexUid, 'IndexedSearch');
+                    $resultsets[$freeIndexUid]['categoryTitle'] = $categoryTitle;
                 }
-                $resultsets[$freeIndexUid]['categoryTitle'] = $categoryTitle;
             }
             // Write search statistics
-            $this->writeSearchStat($this->searchWords ?: []);
+            $this->searchRepository->writeSearchStat($GLOBALS['TSFE']->id, $this->searchWords ?: []);
         }
         $this->view->assign('resultsets', $resultsets);
         $this->view->assign('searchParams', $searchData);
@@ -734,19 +722,8 @@ class SearchController extends ActionController
         $outputStr = '';
         if ($row['show_resume']) {
             if (!$noMarkup) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_fulltext');
-                $ftdrow = $queryBuilder
-                    ->select('*')
-                    ->from('index_fulltext')
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'phash',
-                            $queryBuilder->createNamedParameter($row['phash'], Connection::PARAM_INT)
-                        )
-                    )
-                    ->executeQuery()
-                    ->fetchAssociative();
-                if ($ftdrow !== false) {
+                $ftdrow = $this->searchRepository->getFullTextRowByPhash($row['phash']);
+                if (is_array($ftdrow)) {
                     // Cut HTTP references after some length
                     $content = preg_replace('/(http:\\/\\/[^ ]{' . $this->settings['results.']['hrefInSummaryCropAfter'] . '})([^ ]+)/i', '$1...', $ftdrow['fulltextdata']);
                     $markedSW = $this->markupSWpartsOfString($content);
@@ -838,36 +815,6 @@ class SearchController extends ActionController
         }
         // Return result:
         return implode('', $output);
-    }
-
-    /**
-     * Write statistics information to database for the search operation if there was at least one search word.
-     *
-     * @param array $searchWords Search Word array
-     */
-    protected function writeSearchStat(array $searchWords): void
-    {
-        if (empty($searchWords)) {
-            return;
-        }
-        $entries = [];
-        foreach ($searchWords as $val) {
-            $entries[] = [
-                mb_substr($val['sword'], 0, 50),
-                // Time stamp
-                $GLOBALS['EXEC_TIME'],
-                // search page id for indexed search stats
-                $GLOBALS['TSFE']->id,
-            ];
-        }
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_stat_word')
-            ->bulkInsert(
-                'index_stat_word',
-                $entries,
-                [ 'word', 'tstamp', 'pageid' ],
-                [ Connection::PARAM_STR, Connection::PARAM_INT, Connection::PARAM_INT ]
-            );
     }
 
     /**
@@ -1178,24 +1125,13 @@ class SearchController extends ActionController
             $defaultFreeIndexUidList = (string)($this->settings['defaultFreeIndexUidList'] ?? '');
             if ($defaultFreeIndexUidList) {
                 $uidList = GeneralUtility::intExplode(',', $defaultFreeIndexUidList);
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('index_config');
-                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-                $result = $queryBuilder
-                    ->select('uid', 'title')
-                    ->from('index_config')
-                    ->where(
-                        $queryBuilder->expr()->in(
-                            'uid',
-                            $queryBuilder->createNamedParameter($uidList, Connection::PARAM_INT_ARRAY)
-                        )
-                    )
-                    ->executeQuery();
-
-                while ($row = $result->fetchAssociative()) {
-                    $indexId = (int)$row['uid'];
-                    $title = LocalizationUtility::translate('indexingConfigurations.' . $indexId, 'IndexedSearch');
-                    $allOptions[$indexId] = $title ?: $row['title'];
+                foreach ($uidList as $uid) {
+                    $row = $this->searchRepository->getIndexConfigurationById($uid);
+                    if (is_array($row)) {
+                        $indexId = (int)$row['uid'];
+                        $title = LocalizationUtility::translate('indexingConfigurations.' . $indexId, 'IndexedSearch');
+                        $allOptions[$indexId] = $title ?: $row['title'];
+                    }
                 }
             }
             // disable single entries by TypoScript
