@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -29,74 +31,62 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Object to collect files from various sources during runtime
- * Sources can be file references, file collections or folders
+ * Object to collect files from various sources during runtime.
+ * Sources can be file references, file collections or folders.
  *
- * Use in FILES Content Object or for a Fluid Data Processor
+ * Use in FILES Content Object or for a Fluid Data Processor.
  *
  * Is not persisted, use only in FE.
+ *
  * @internal this is an internal TYPO3 implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
+ *
+ * @todo The file collector is used for intermediate collection in scoped places. Therefore, the collector
+ *       can't be shared. Evaluate if the collector can be build scope aware and made sharable again.
  */
 class FileCollector implements \Countable, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     /**
-     * The files
+     * The collected File or FileReference objects
      *
-     * @var array
+     * @var FileInterface[]
      */
-    protected $files = [];
+    protected array $files = [];
+
+    public function __construct(
+        protected readonly ResourceFactory $resourceFactory,
+        protected readonly FileCollectionRepository $fileCollectionRepository,
+        protected readonly FileRepository $fileRepository,
+    ) {
+    }
 
     /**
-     * The file repository
-     *
-     * @var \TYPO3\CMS\Core\Resource\FileRepository
+     * Add files by UID
      */
-    protected $fileRepository;
-
-    /**
-     * The file collection repository
-     *
-     * @var \TYPO3\CMS\Core\Resource\FileCollectionRepository
-     */
-    protected $fileCollectionRepository;
-
-    /**
-     * The resource factory
-     *
-     * @var \TYPO3\CMS\Core\Resource\ResourceFactory
-     */
-    protected $resourceFactory;
-
-    /**
-     * Add files
-     */
-    public function addFiles(array $fileUids = [])
+    public function addFiles(array $fileUids = []): void
     {
-        if (!empty($fileUids)) {
-            foreach ($fileUids as $fileUid) {
-                try {
-                    $this->addFileObject($this->getResourceFactory()->getFileObject($fileUid));
-                } catch (Exception $e) {
-                    $this->logger->warning(
-                        'The file with uid  "' . $fileUid
-                        . '" could not be found and won\'t be included in frontend output',
-                        ['exception' => $e]
-                    );
-                }
+        foreach ($fileUids as $fileUid) {
+            try {
+                $this->addFileObject($this->resourceFactory->getFileObject($fileUid));
+            } catch (Exception $e) {
+                $this->logger->warning(
+                    'The file with uid  "' . $fileUid
+                    . '" could not be found and won\'t be included in frontend output',
+                    ['exception' => $e]
+                );
             }
         }
     }
 
     /**
-     * Add files to the collection from a relation
+     * Add files to the collection from a relation.
      *
      * @param string $relationTable The table of the relation (e.g. tt_content or pages)
      * @param string $relationField The field which holds the files (e.g. media or images)
      * @param array $referenceRecord the record which is referencing the files
      */
-    public function addFilesFromRelation($relationTable, $relationField, array $referenceRecord)
+    public function addFilesFromRelation(string $relationTable, string $relationField, array $referenceRecord): void
     {
         $fileReferences = $this->getFileReferences($relationTable, $relationField, $referenceRecord);
         if (!empty($fileReferences)) {
@@ -105,12 +95,12 @@ class FileCollector implements \Countable, LoggerAwareInterface
     }
 
     /**
-     * Add files from UIDs of a reference
+     * Add files from UIDs of a reference.
      */
-    public function addFileReferences(array $fileReferenceUids = [])
+    public function addFileReferences(array $fileReferenceUids = []): void
     {
         foreach ($fileReferenceUids as $fileReferenceUid) {
-            $fileObject = $this->getResourceFactory()->getFileReferenceObject((int)$fileReferenceUid);
+            $fileObject = $this->resourceFactory->getFileReferenceObject((int)$fileReferenceUid);
             if (!$fileObject instanceof FileInterface) {
                 continue;
             }
@@ -119,51 +109,46 @@ class FileCollector implements \Countable, LoggerAwareInterface
     }
 
     /**
-     * Add files to the collection from multiple file collections
-     *
-     * @param array $fileCollectionUids The file collections uids
+     * Add files to the collection from multiple file collections.
      */
-    public function addFilesFromFileCollections(array $fileCollectionUids = [])
+    public function addFilesFromFileCollections(array $fileCollectionUids = []): void
     {
         foreach ($fileCollectionUids as $fileCollectionUid) {
-            $this->addFilesFromFileCollection($fileCollectionUid);
+            $this->addFilesFromFileCollection((int)$fileCollectionUid);
         }
     }
 
     /**
-     * Add files to the collection from one single file collection
-     *
-     * @param int $fileCollectionUid The file collections uid
+     * Add files to the collection from one single file collection.
      */
-    public function addFilesFromFileCollection($fileCollectionUid = null)
+    public function addFilesFromFileCollection(int $fileCollectionUid): void
     {
-        if (!empty($fileCollectionUid)) {
-            try {
-                $fileCollection = $this->getFileCollectionRepository()->findByUid($fileCollectionUid);
-
-                if ($fileCollection instanceof AbstractFileCollection) {
-                    $fileCollection->loadContents();
-                    $files = $fileCollection->getItems();
-
-                    $this->addFileObjects($files);
-                }
-            } catch (Exception $e) {
-                $this->logger->warning(
-                    'The file-collection with uid  "' . $fileCollectionUid
-                    . '" could not be found or contents could not be loaded and won\'t be included in frontend output.',
-                    ['exception' => $e]
-                );
+        if ($fileCollectionUid <= 0) {
+            return;
+        }
+        try {
+            $fileCollection = $this->fileCollectionRepository->findByUid($fileCollectionUid);
+            if ($fileCollection instanceof AbstractFileCollection) {
+                $fileCollection->loadContents();
+                $files = $fileCollection->getItems();
+                $this->addFileObjects($files);
             }
+        } catch (Exception $e) {
+            $this->logger->warning(
+                'The file-collection with uid  "' . $fileCollectionUid
+                . '" could not be found or contents could not be loaded and won\'t be included in frontend output.',
+                ['exception' => $e]
+            );
         }
     }
 
     /**
-     * Add files to the collection from multiple folders
+     * Add files to the collection from multiple folders.
      *
      * @param array $folderIdentifiers The folder identifiers
      * @param bool $recursive Add files recursive from given folders
      */
-    public function addFilesFromFolders(array $folderIdentifiers = [], $recursive = false)
+    public function addFilesFromFolders(array $folderIdentifiers, bool $recursive = false): void
     {
         foreach ($folderIdentifiers as $folderIdentifier) {
             $this->addFilesFromFolder($folderIdentifier, $recursive);
@@ -171,12 +156,12 @@ class FileCollector implements \Countable, LoggerAwareInterface
     }
 
     /**
-     * Add files to the collection from one single folder
+     * Add files to the collection from one single folder.
      *
      * @param string $folderIdentifier The folder identifier
      * @param bool $recursive Add files recursive from given folders
      */
-    public function addFilesFromFolder($folderIdentifier, $recursive = false)
+    public function addFilesFromFolder(string $folderIdentifier, bool $recursive = false): void
     {
         if ($folderIdentifier) {
             try {
@@ -186,7 +171,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
                     $data = $linkService->resolveByStringRepresentation($folderIdentifier);
                     $folder = $data['folder'];
                 } else {
-                    $folder = $this->getResourceFactory()->getFolderObjectFromCombinedIdentifier($folderIdentifier);
+                    $folder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($folderIdentifier);
                 }
                 if ($folder instanceof Folder) {
                     $files = $folder->getFiles(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive);
@@ -202,12 +187,12 @@ class FileCollector implements \Countable, LoggerAwareInterface
     }
 
     /**
-     * Sort the file objects based on a property
+     * Sort the file objects based on a property.
      *
      * @param string $sortingProperty The sorting property
-     * @param string $sortingOrder can be ascending or descending or "random"
+     * @param 'ascending'|'descending'|'random' $sortingOrder The sorting order
      */
-    public function sort($sortingProperty = '', $sortingOrder = 'ascending')
+    public function sort(string $sortingProperty = '', string $sortingOrder = 'ascending'): void
     {
         if ($sortingProperty !== '' && count($this->files) > 1) {
             @usort(
@@ -237,31 +222,27 @@ class FileCollector implements \Countable, LoggerAwareInterface
     }
 
     /**
-     * Add a file object to the collection
-     *
-     * @param FileInterface $file The file object
+     * Add a file object to the collection.
      */
-    public function addFileObject(FileInterface $file)
+    public function addFileObject(FileInterface $file): void
     {
         $this->files[] = $file;
     }
 
     /**
-     * Add multiple file objects to the collection
+     * Add multiple file objects to the collection.
      *
      * @param FileInterface[] $files The file objects
      */
-    public function addFileObjects($files)
+    public function addFileObjects(array $files): void
     {
         $this->files = array_merge($this->files, $files);
     }
 
     /**
-     * Final getter method to fetch the accumulated data
-     *
-     * @return array
+     * Final getter method to fetch the accumulated data.
      */
-    public function getFiles()
+    public function getFiles(): array
     {
         return $this->files;
     }
@@ -279,14 +260,13 @@ class FileCollector implements \Countable, LoggerAwareInterface
      * @param string $fieldName Name of the field
      * @param array $element The parent element referencing to files
      */
-    protected function getFileReferences($tableName, $fieldName, array $element): array
+    protected function getFileReferences(string $tableName, string $fieldName, array $element): array
     {
-        $fileRepository = $this->getFileRepository();
         $currentId = !empty($element['uid']) ? (int)$element['uid'] : 0;
 
         // Fetch the references of the default element
         try {
-            $references = $fileRepository->findByRelation($tableName, $fieldName, $currentId);
+            $references = $this->fileRepository->findByRelation($tableName, $fieldName, $currentId);
         } catch (FileDoesNotExistException $e) {
             /**
              * We just catch the exception here
@@ -319,43 +299,10 @@ class FileCollector implements \Countable, LoggerAwareInterface
             && !empty($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
         );
         if ($isTableLocalizable && $localizedId !== null) {
-            $localizedReferences = $fileRepository->findByRelation($tableName, $fieldName, (int)$localizedId);
+            $localizedReferences = $this->fileRepository->findByRelation($tableName, $fieldName, (int)$localizedId);
             $references = $localizedReferences;
         }
 
         return $references;
-    }
-
-    /**
-     * @return ResourceFactory
-     */
-    protected function getResourceFactory()
-    {
-        if ($this->resourceFactory === null) {
-            $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        }
-        return $this->resourceFactory;
-    }
-
-    /**
-     * @return FileCollectionRepository
-     */
-    protected function getFileCollectionRepository()
-    {
-        if ($this->fileCollectionRepository === null) {
-            $this->fileCollectionRepository = GeneralUtility::makeInstance(FileCollectionRepository::class);
-        }
-        return $this->fileCollectionRepository;
-    }
-
-    /**
-     * @return FileRepository
-     */
-    protected function getFileRepository()
-    {
-        if ($this->fileRepository === null) {
-            $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        }
-        return $this->fileRepository;
     }
 }

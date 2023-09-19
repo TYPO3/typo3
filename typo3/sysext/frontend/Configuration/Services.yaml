@@ -38,6 +38,12 @@ services:
   TYPO3\CMS\Frontend\Resource\PublicUrlPrefixer:
     public: true
 
+  TYPO3\CMS\Frontend\Resource\FileCollector:
+    public: true
+    # @todo The file collector is used for intermediate collection in scoped places. Therefore, the collector can't be
+    # @todo shared. Evaluate if the collector can be build scope aware and made sharable again.
+    shared: false
+
   TYPO3\CMS\Frontend\Html\HtmlWorker:
     public: true
 
