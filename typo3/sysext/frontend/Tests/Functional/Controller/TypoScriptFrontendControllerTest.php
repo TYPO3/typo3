@@ -54,7 +54,7 @@ final class TypoScriptFrontendControllerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageWithUserInt.typoscript']
+            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageWithUserInt.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
@@ -83,9 +83,7 @@ final class TypoScriptFrontendControllerTest extends FunctionalTestCase
     public function jsIncludesWithUserIntIsRendered(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
-        $this->setUpFrontendRootPage(
-            2,
-        );
+        $this->setUpFrontendRootPage(2);
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(2, 'https://website.local/'),
@@ -127,7 +125,7 @@ alert(yes);', $body);
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageWithUserObjectUsingSlWithoutLLL.typoscript']
+            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageWithUserObjectUsingSlWithoutLLL.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
@@ -148,7 +146,7 @@ alert(yes);', $body);
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageWithUserObjectUsingSlWithLLL.typoscript']
+            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageWithUserObjectUsingSlWithLLL.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
@@ -188,7 +186,7 @@ alert(yes);', $body);
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageExposingTsfeMpParameter.typoscript']
+            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageExposingTsfeMpParameter.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
@@ -382,7 +380,7 @@ alert(yes);', $body);
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageExposingTsfeMpParameter.typoscript']
+            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageExposingTsfeMpParameter.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
@@ -407,7 +405,7 @@ alert(yes);', $body);
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageHttpsConditionHelloWorld.typoscript']
+            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageHttpsConditionHelloWorld.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
@@ -427,7 +425,7 @@ alert(yes);', $body);
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageHttpsConditionHelloWorld.typoscript']
+            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageHttpsConditionHelloWorld.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',

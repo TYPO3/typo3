@@ -71,7 +71,7 @@ final class MetaTagTest extends AbstractTestCase
      */
     public function ensureMetaDataAreCorrect(int $pageId, array $expectedMetaTags): void
     {
-        $this->setUpFrontendRootPage(1, ['typo3/sysext/seo/Tests/Functional/Fixtures/page' . $pageId . '.typoscript']);
+        $this->setUpFrontendRootPage(1, ['EXT:seo/Tests/Functional/Fixtures/page' . $pageId . '.typoscript']);
 
         // First hit to create a cached version
         $uncachedResponse = $this->executeFrontendSubRequest(

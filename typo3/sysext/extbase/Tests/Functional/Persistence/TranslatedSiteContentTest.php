@@ -58,8 +58,8 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/LiveDefaultPages.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/LiveDefaultElements.csv');
         $this->setUpFrontendRootPage(1, [
-            'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Configuration/TypoScript/setup.typoscript',
-            'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/ContentJsonRenderer.typoscript',
+            'EXT:extbase/Tests/Functional/Fixtures/Extensions/blog_example/Configuration/TypoScript/setup.typoscript',
+            'EXT:extbase/Tests/Functional/Persistence/Fixtures/Frontend/ContentJsonRenderer.typoscript',
         ]);
     }
 

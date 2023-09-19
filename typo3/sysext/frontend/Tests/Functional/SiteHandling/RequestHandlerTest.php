@@ -49,7 +49,7 @@ final class RequestHandlerTest extends AbstractTestCase
             $this->setUpFrontendRootPage(
                 1000,
                 [
-                    'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/RequestHandler.typoscript',
+                    'EXT:frontend/Tests/Functional/SiteHandling/Fixtures/RequestHandler.typoscript',
                 ],
                 [
                     'title' => 'ACME Root',

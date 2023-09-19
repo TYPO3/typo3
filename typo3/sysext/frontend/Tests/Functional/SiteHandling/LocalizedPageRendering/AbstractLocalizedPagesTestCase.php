@@ -49,7 +49,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
     {
         $this->setUpFrontendRootPage(
             1000,
-            ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript'],
+            ['EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript'],
             [
                 'title' => 'ACME Root',
             ]
@@ -67,7 +67,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
     {
         $this->setUpFrontendRootPage(
             1000,
-            ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']
+            ['EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']
         );
 
         $response = $this->executeFrontendSubRequest(new InternalRequest($url));
@@ -78,7 +78,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
     {
         $this->setUpFrontendRootPage(
             1000,
-            ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'],
+            ['EXT:frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'],
             [
                 'title' => 'ACME Root',
             ]
@@ -108,7 +108,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
     {
         $this->setUpFrontendRootPage(
             1000,
-            ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'],
+            ['EXT:frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'],
             ['title' => 'ACME Root']
         );
 

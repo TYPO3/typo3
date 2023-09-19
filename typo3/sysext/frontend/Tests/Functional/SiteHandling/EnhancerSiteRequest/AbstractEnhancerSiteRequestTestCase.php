@@ -62,8 +62,8 @@ abstract class AbstractEnhancerSiteRequestTestCase extends AbstractTestCase
             $writer = DataHandlerWriter::withBackendUser($backendUser);
             $writer->invokeFactory($factory);
             static::failIfArrayIsNotEmpty($writer->getErrors());
-            $this->setUpFrontendRootPage(1000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkRequest.typoscript'], ['title' => 'ACME Root']);
-            $this->setUpFrontendRootPage(3000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkRequest.typoscript'], ['title' => 'ACME Archive']);
+            $this->setUpFrontendRootPage(1000, ['EXT:frontend/Tests/Functional/SiteHandling/Fixtures/LinkRequest.typoscript'], ['title' => 'ACME Root']);
+            $this->setUpFrontendRootPage(3000, ['EXT:frontend/Tests/Functional/SiteHandling/Fixtures/LinkRequest.typoscript'], ['title' => 'ACME Archive']);
         });
     }
 

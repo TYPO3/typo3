@@ -49,7 +49,7 @@ final class EnableFieldsTest extends FunctionalTestCase
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
-        $this->setUpFrontendRootPage(1, ['typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/JsonRenderer.typoscript']);
+        $this->setUpFrontendRootPage(1, ['EXT:extbase/Tests/Functional/Persistence/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 
     /**

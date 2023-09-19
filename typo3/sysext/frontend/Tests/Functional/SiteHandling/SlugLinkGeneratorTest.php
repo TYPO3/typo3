@@ -85,8 +85,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                 $writer = DataHandlerWriter::withBackendUser($backendUser);
                 $writer->invokeFactory($factory);
                 static::failIfArrayIsNotEmpty($writer->getErrors());
-                $this->setUpFrontendRootPage(1000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME Root']);
-                $this->setUpFrontendRootPage(2000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME Blog']);
+                $this->setUpFrontendRootPage(1000, ['EXT:frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME Root']);
+                $this->setUpFrontendRootPage(2000, ['EXT:frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME Blog']);
             },
             function () {
                 $this->setUpBackendUser(1);

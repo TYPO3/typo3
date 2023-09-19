@@ -42,8 +42,8 @@ final class SiteRequestTest extends AbstractTestCase
             $this->setUpFrontendRootPage(
                 1000,
                 [
-                    'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
-                    'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
+                    'EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+                    'EXT:frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
                 ],
                 [
                     'title' => 'ACME Root',
@@ -989,8 +989,8 @@ final class SiteRequestTest extends AbstractTestCase
         $this->setUpFrontendRootPage(
             2000,
             [
-                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
+                'EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+                'EXT:frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
             ],
             [
                 'title' => 'ACME Blog',
@@ -1042,8 +1042,8 @@ final class SiteRequestTest extends AbstractTestCase
         $this->setUpFrontendRootPage(
             2000,
             [
-                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
+                'EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+                'EXT:frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
             ],
             [
                 'title' => 'ACME Blog',

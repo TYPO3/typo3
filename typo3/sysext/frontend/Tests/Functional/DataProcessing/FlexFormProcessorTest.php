@@ -63,7 +63,7 @@ final class FlexFormProcessorTest extends FunctionalTestCase
     {
         $this->setUpFrontendRootPage(
             1,
-            ['typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_fluid_template/Configuration/TypoScript/flexform_dataprocessor.typoscript']
+            ['EXT:frontend/Tests/Functional/Fixtures/Extensions/test_fluid_template/Configuration/TypoScript/flexform_dataprocessor.typoscript']
         );
 
         $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/'))->withPageId(1));

@@ -72,7 +72,7 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
                 ['uid' => 1000]
             );
             $this->setUpFileStorage();
-            $this->setUpFrontendRootPage(1000, ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME Root']);
+            $this->setUpFrontendRootPage(1000, ['EXT:frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'], ['title' => 'ACME Root']);
         });
     }
 

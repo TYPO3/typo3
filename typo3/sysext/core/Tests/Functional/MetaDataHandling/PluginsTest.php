@@ -60,7 +60,7 @@ final class PluginsTest extends AbstractTestCase
      */
     public function ensurePageSetupIsOk(int $pageId, bool $expectPluginOutput): void
     {
-        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta/Configuration/TypoScript/page' . $pageId . '.typoscript']);
+        $this->setUpFrontendRootPage(1, ['EXT:core/Tests/Functional/Fixtures/Extensions/test_meta/Configuration/TypoScript/page' . $pageId . '.typoscript']);
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest('http://localhost/'))->withQueryParameters([
                 'id' => $pageId,
@@ -96,7 +96,7 @@ final class PluginsTest extends AbstractTestCase
      */
     public function ensureMetaDataAreCorrect(int $pageId, string $expectedTitle, string $expectedMetaOgTitle): void
     {
-        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta/Configuration/TypoScript/page' . $pageId . '.typoscript']);
+        $this->setUpFrontendRootPage(1, ['EXT:core/Tests/Functional/Fixtures/Extensions/test_meta/Configuration/TypoScript/page' . $pageId . '.typoscript']);
 
         // First hit to create a cached version
         $uncachedResponse = $this->executeFrontendSubRequest(

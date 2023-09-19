@@ -63,7 +63,7 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages-canonical.csv');
         $this->setUpFrontendRootPage(
             1,
-            ['typo3/sysext/seo/Tests/Functional/Fixtures/Canonical.typoscript']
+            ['EXT:seo/Tests/Functional/Fixtures/Canonical.typoscript']
         );
     }
 

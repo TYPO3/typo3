@@ -78,7 +78,7 @@ final class HrefLangGeneratorTest extends FunctionalTestCase
     {
         $this->setUpFrontendRootPage(
             1000,
-            ['typo3/sysext/seo/Tests/Functional/Fixtures/HrefLang.typoscript']
+            ['EXT:seo/Tests/Functional/Fixtures/HrefLang.typoscript']
         );
 
         $response = $this->executeFrontendSubRequest(

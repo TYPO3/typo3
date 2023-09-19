@@ -67,7 +67,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
                 $this->buildLanguageConfiguration('DE', '/de/', ['DK', 'EN']),
             ]
         );
-        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
+        $this->setUpFrontendRootPage(1, ['EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 
     /**

@@ -21,7 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
@@ -48,8 +47,6 @@ final class RedirectServiceTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['redirects'];
 
-    protected array $testFilesToDelete = [];
-
     protected array $configurationToUseInTestInstance = [
         'FE' => [
             'cacheHash' => [
@@ -67,16 +64,6 @@ final class RedirectServiceTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
     }
 
-    protected function tearDown(): void
-    {
-        foreach ($this->testFilesToDelete as $filename) {
-            if (@is_file($filename)) {
-                unlink($filename);
-            }
-        }
-        parent::tearDown();
-    }
-
     /**
      * @test
      */
@@ -89,10 +76,7 @@ final class RedirectServiceTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, 'https://acme.com/')
         );
 
-        $typoscriptFile = Environment::getVarPath() . '/transient/setup.typoscript';
-        file_put_contents($typoscriptFile, 'page = PAGE' . PHP_EOL . 'page.typeNum = 0');
-        $this->testFilesToDelete[] = $typoscriptFile;
-        $this->setUpFrontendRootPage(1, [$typoscriptFile]);
+        $this->setUpFrontendRootPage(1, ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']);
 
         $logger = new NullLogger();
         $frontendUserAuthentication = new FrontendUserAuthentication();
@@ -173,7 +157,7 @@ final class RedirectServiceTest extends FunctionalTestCase
 
         $this->setUpFrontendRootPage(
             1,
-            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+            ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -322,7 +306,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         );
         $this->setUpFrontendRootPage(
             1,
-            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+            ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -352,7 +336,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         );
         $this->setUpFrontendRootPage(
             1,
-            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+            ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -380,7 +364,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         );
         $this->setUpFrontendRootPage(
             1,
-            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+            ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -538,7 +522,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         );
         $this->setUpFrontendRootPage(
             1,
-            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+            ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -683,7 +667,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         );
         $this->setUpFrontendRootPage(
             1,
-            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+            ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -848,7 +832,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         );
         $this->setUpFrontendRootPage(
             1,
-            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+            ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -875,10 +859,6 @@ final class RedirectServiceTest extends FunctionalTestCase
             'acme-com',
             $this->buildSiteConfiguration(1, 'https://acme.com/')
         );
-        $typoscriptFile = Environment::getVarPath() . '/transient/setup.typoscript';
-        file_put_contents($typoscriptFile, 'page = PAGE' . PHP_EOL . 'page.typeNum = 0');
-        $this->testFilesToDelete[] = $typoscriptFile;
-        $this->setUpFrontendRootPage(1, [$typoscriptFile]);
 
         $logger = new NullLogger();
         $frontendUserAuthentication = new FrontendUserAuthentication();
@@ -974,7 +954,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         );
         $this->setUpFrontendRootPage(
             1,
-            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+            ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
         );
 
         $response = $this->executeFrontendSubRequest(

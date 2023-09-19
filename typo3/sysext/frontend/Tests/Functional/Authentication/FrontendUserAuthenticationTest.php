@@ -43,7 +43,7 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
             'frontend_authentication',
             $this->buildSiteConfiguration(self::ROOT_PAGE_ID, '/'),
         );
-        $this->setUpFrontendRootPage(self::ROOT_PAGE_ID, ['typo3/sysext/frontend/Tests/Functional/Fixtures/TypoScript/page.typoscript']);
+        $this->setUpFrontendRootPage(self::ROOT_PAGE_ID, ['EXT:frontend/Tests/Functional/Fixtures/TypoScript/page.typoscript']);
     }
 
     /**

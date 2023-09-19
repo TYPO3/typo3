@@ -54,7 +54,7 @@ final class MultiSiteTest extends FunctionalTestCase
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
-        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
+        $this->setUpFrontendRootPage(1, ['EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 
     /**

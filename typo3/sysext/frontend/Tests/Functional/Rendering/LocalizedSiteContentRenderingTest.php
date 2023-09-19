@@ -124,7 +124,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultElements.csv');
         $this->setUpFrontendRootPage(1, [
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+            'EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
         ]);
     }
 

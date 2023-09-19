@@ -70,8 +70,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->setUpFrontendRootPage(
             1,
             [
-                'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Configuration/TypoScript/JsonRenderer.typoscript',
-                'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Configuration/TypoScript/ExtbaseJsonRenderer.typoscript',
+                'EXT:core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Configuration/TypoScript/JsonRenderer.typoscript',
+                'EXT:core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Configuration/TypoScript/ExtbaseJsonRenderer.typoscript',
             ]
         );
     }
