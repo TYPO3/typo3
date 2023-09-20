@@ -161,7 +161,7 @@ class GraphicalFunctions
      *
      * @var string
      */
-    public $scalecmd = '-auto-orient';
+    public $scalecmd = '-auto-orient -geometry';
 
     /**
      * Used by v5_blur() to simulate 10 continuous steps of blurring
@@ -368,9 +368,13 @@ class GraphicalFunctions
             $params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! +repage';
         }
         // start with the default scale command
-        $command = $this->scalecmd;
+
         // check if we should use -sample or -geometry
-        $command .= ' ' . (($options['sample'] ?? false) ? '-sample' : '-geometry');
+        if ($options['sample'] ?? false) {
+            $command = '-auto-orient -sample';
+        } else {
+            $command = $this->scalecmd;
+        }
         $command .= ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
         // re-apply colorspace-setting for the resulting image so colors don't appear to dark (sRGB instead of RGB)
         $command .= ' -colorspace ' . $this->colorspace;
