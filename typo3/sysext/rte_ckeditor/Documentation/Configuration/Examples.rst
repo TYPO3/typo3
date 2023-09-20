@@ -149,20 +149,20 @@ Make sure to replace `<my_extension>` with your extension key.
             // The button will be an instance of ButtonView.
             const button = new UI.ButtonView();
 
-            button.set( {
+            button.set({
               label: 'Timestamp',
               withText: true
-            } );
+            });
 
-            //Execute a callback function when the button is clicked
+            // Execute a callback function when the button is clicked
             button.on('execute', () => {
               const now = new Date();
 
-              //Change the model using the model writer
+              // Change the model using the model writer
               editor.model.change(writer => {
 
-                //Insert the text at the user's current position
-                editor.model.insertContent(writer.createText( now.toString()));
+                // Insert the text at the user's current position
+                editor.model.insertContent(writer.createText(now.toString()));
               });
             });
 
@@ -183,7 +183,7 @@ Make sure to replace `<my_extension>` with your extension key.
               'backend.form',
           ],
           'imports' => [
-              '@myvendor/mypackage/timestamp-plugin.js' => 'EXT:<my_extension>/Resources/Public/JavaScript/Ckeditor/timestamp-plugin.js',
+              '@my-vendor/my-package/timestamp-plugin.js' => 'EXT:<my_extension>/Resources/Public/JavaScript/Ckeditor/timestamp-plugin.js',
           ],
       ];
 
@@ -195,7 +195,7 @@ Make sure to replace `<my_extension>` with your extension key.
       editor:
         config:
           importModules:
-            - '@myvender/mypackage/timestamp-plugin.js'
+            - '@my-vendor/my-package/timestamp-plugin.js'
           toolbar:
             items:
               - bold
