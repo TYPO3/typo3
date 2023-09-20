@@ -47,14 +47,13 @@ which adds a toolbar item to add the current timestamp into the editor.
 
 ..  code-block:: javascript
 
-    import {Core, UI} from '@typo3/ckeditor5-bundle';
-    import {EditorWithUI} from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
+    import {Core, UI} from '@typo3/ckeditor5-bundle.js';
 
     export default class Timestamp extends Core.Plugin {
-      static readonly pluginName = 'Timestamp';
+      static pluginName = 'Timestamp';
 
-      init(): void {
-        const editor = this.editor as EditorWithUI;
+      init() {
+        const editor = this.editor;
 
         // The button must be registered among the UI components of the editor
         // to be displayed in the toolbar.
@@ -62,20 +61,20 @@ which adds a toolbar item to add the current timestamp into the editor.
           // The button will be an instance of ButtonView.
           const button = new UI.ButtonView();
 
-          button.set( {
+          button.set({
             label: 'Timestamp',
             withText: true
-          } );
+          });
 
-          //Execute a callback function when the button is clicked
+          // Execute a callback function when the button is clicked
           button.on('execute', () => {
             const now = new Date();
 
-            //Change the model using the model writer
+            // Change the model using the model writer
             editor.model.change(writer => {
 
-              //Insert the text at the user's current position
-              editor.model.insertContent(writer.createText( now.toString()));
+              // Insert the text at the user's current position
+              editor.model.insertContent(writer.createText(now.toString()));
             });
           });
 
@@ -86,10 +85,21 @@ which adds a toolbar item to add the current timestamp into the editor.
 
 In the RTE configuration, this then needs to be added like this:
 
-..  code-block:: yaml
+.. code-block:: yaml
 
-    editor:
-       importModules:
-          - '@my-vendor/my-package/timestamp-plugin.js'
+  editor:
+    config:
+      importModules:
+        - '@my-vendor/my-package/timestamp-plugin.js'
+      toolbar:
+        items:
+          - bold
+          - italic
+          - '|'
+          - clipboard
+          - undo
+          - redo
+          - '|'
+          - timestamp
 
 .. index:: RTE, NotScanned, ext:rte_ckeditor
