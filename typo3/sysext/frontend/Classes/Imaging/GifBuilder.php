@@ -58,11 +58,15 @@ class GifBuilder
 {
     /**
      * Contains all text strings used on this image
+     *
+     * @var list<string>
      */
     protected array $combinedTextStrings = [];
 
     /**
      * Contains all filenames (basename without extension) used on this image
+     *
+     * @var list<string>
      */
     protected array $combinedFileNames = [];
 
@@ -71,15 +75,25 @@ class GifBuilder
      */
     protected array $data = [];
     protected array $objBB = [];
+
+    /**
+     * @var array<string, array>
+     */
     protected array $charRangeMap = [];
 
     /**
-     * @var int[]
+     * @var array{0?: int<0, max>, 1?: int<0, max>}
      */
     protected array $XY = [];
     protected ?ContentObjectRenderer $cObj = null;
 
+    /**
+     * @var list<int>
+     */
     protected array $workArea = [];
+    /**
+     * @var list<int>
+     */
     protected array $defaultWorkArea = [];
 
     /**
@@ -89,6 +103,8 @@ class GifBuilder
 
     /**
      * Array mapping HTML color names to RGB values.
+     *
+     * @var array<non-empty-string, array{0: int<0, 255>, 1: int<0, 255>, 2: int<0, 255>}>
      */
     protected array $colMap = [
         'aqua' => [0, 255, 255],
@@ -117,17 +133,26 @@ class GifBuilder
      */
     public array $setup = [];
 
+    /**
+     * @var int<0, max>
+     */
     protected int $w = 0;
+    /**
+     * @var int<0, max>
+     */
     protected int $h = 0;
-    protected array $OFFSET;
 
     /**
-     * @var \GdImage|null
+     * @var list<int>
      */
+    protected array $OFFSET;
+
     protected ?\GdImage $im = null;
 
     /**
      * File formats supported by gdlib. This variable gets filled in the constructor
+     *
+     * @var list<non-empty-string>
      */
     protected array $gdlibExtensions = [];
 
@@ -138,6 +163,10 @@ class GifBuilder
      * Enable ImageMagick effects, disabled by default as IM5+ effects slow down the image generation
      */
     protected bool $processorEffectsEnabled = false;
+
+    /**
+     * @var int<10, 100>
+     */
     protected int $jpegQuality = 85;
 
     public function __construct()
