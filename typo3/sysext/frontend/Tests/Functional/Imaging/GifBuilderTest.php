@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Imaging;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -216,6 +217,7 @@ final class GifBuilderTest extends FunctionalTestCase
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
         $file = $storageRepository->getFile('kasper-skarhoj1.jpg');
 
+        self::assertInstanceOf(File::class, $file);
         self::assertFalse($file->isMissing());
 
         $conf = [

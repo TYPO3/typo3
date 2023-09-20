@@ -122,9 +122,9 @@ class GifBuilder
     protected array $OFFSET;
 
     /**
-     * @var resource|\GdImage
+     * @var \GdImage|null
      */
-    protected $im;
+    protected ?\GdImage $im = null;
 
     /**
      * File formats supported by gdlib. This variable gets filled in the constructor
@@ -206,14 +206,14 @@ class GifBuilder
         // Getting sorted list of TypoScript keys from setup.
         $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($this->setup);
         // Setting the background color, passing it through stdWrap
-        $this->setup['backColor'] = $this->cObj->stdWrapValue('backColor', $this->setup ?? []);
+        $this->setup['backColor'] = $this->cObj->stdWrapValue('backColor', $this->setup);
         if (!$this->setup['backColor']) {
             $this->setup['backColor'] = 'white';
         }
-        $this->setup['transparentColor_array'] = explode('|', trim((string)$this->cObj->stdWrapValue('transparentColor', $this->setup ?? [])));
-        $this->setup['transparentBackground'] = $this->cObj->stdWrapValue('transparentBackground', $this->setup ?? []);
+        $this->setup['transparentColor_array'] = explode('|', trim((string)$this->cObj->stdWrapValue('transparentColor', $this->setup)));
+        $this->setup['transparentBackground'] = $this->cObj->stdWrapValue('transparentBackground', $this->setup);
         // Set default dimensions
-        $this->setup['XY'] = $this->cObj->stdWrapValue('XY', $this->setup ?? []);
+        $this->setup['XY'] = $this->cObj->stdWrapValue('XY', $this->setup);
         if (!$this->setup['XY']) {
             $this->setup['XY'] = '120,50';
         }
@@ -297,9 +297,9 @@ class GifBuilder
         }
         // Calculate offsets on elements
         $this->setup['XY'] = $this->calcOffset($this->setup['XY']);
-        $this->setup['offset'] = (string)$this->cObj->stdWrapValue('offset', $this->setup ?? []);
+        $this->setup['offset'] = (string)$this->cObj->stdWrapValue('offset', $this->setup);
         $this->setup['offset'] = $this->calcOffset($this->setup['offset']);
-        $this->setup['workArea'] = (string)$this->cObj->stdWrapValue('workArea', $this->setup ?? []);
+        $this->setup['workArea'] = (string)$this->cObj->stdWrapValue('workArea', $this->setup);
         $this->setup['workArea'] = $this->calcOffset($this->setup['workArea']);
         foreach ($sKeyArray as $theKey) {
             $theValue = $this->setup[$theKey];
@@ -366,8 +366,8 @@ class GifBuilder
         }
         // Get trivial data
         $XY = GeneralUtility::intExplode(',', $this->setup['XY']);
-        $maxWidth = (int)$this->cObj->stdWrapValue('maxWidth', $this->setup ?? []);
-        $maxHeight = (int)$this->cObj->stdWrapValue('maxHeight', $this->setup ?? []);
+        $maxWidth = (int)$this->cObj->stdWrapValue('maxWidth', $this->setup);
+        $maxHeight = (int)$this->cObj->stdWrapValue('maxHeight', $this->setup);
         $XY[0] = MathUtility::forceIntegerInRange($XY[0], 1, $maxWidth ?: 2000);
         $XY[1] = MathUtility::forceIntegerInRange($XY[1], 1, $maxHeight ?: 2000);
         $this->XY = $XY;
@@ -460,7 +460,7 @@ class GifBuilder
         $this->saveAlphaLayer = false;
         // Gif-start
         $im = imagecreatetruecolor($XY[0], $XY[1]);
-        if ($im === false) {
+        if (!$im instanceof \GdImage) {
             throw new \RuntimeException('imagecreatetruecolor returned false', 1598350445);
         }
         $this->im = $im;
@@ -621,12 +621,12 @@ class GifBuilder
      * It reads the two images defined by $conf['file'] and $conf['mask'] and copies the $conf['file'] onto the input image pointer image using the $conf['mask'] as a grayscale mask
      * The operation involves ImageMagick for combining.
      *
-     * @param resource $im GDlib image pointer
+     * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
      * @see make()
      */
-    protected function maskImageOntoImage(&$im, $conf, $workArea)
+    protected function maskImageOntoImage(\GdImage &$im, $conf, $workArea)
     {
         if ($conf['file'] && $conf['mask']) {
             $imgInf = pathinfo($conf['file']);
@@ -705,13 +705,13 @@ class GifBuilder
     /**
      * Implements the "IMAGE" GIFBUILDER object, when the "mask" property is FALSE (using only $conf['file'])
      *
-     * @param resource $im GDlib image pointer
+     * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
      * @see make()
      * @see maskImageOntoImage()
      */
-    protected function copyImageOntoImage(&$im, $conf, $workArea)
+    protected function copyImageOntoImage(\GdImage &$im, $conf, $workArea)
     {
         if ($conf['file']) {
             if (!in_array($conf['BBOX'][2], $this->gdlibExtensions, true)) {
@@ -727,13 +727,13 @@ class GifBuilder
     /**
      * Implements the "TEXT" GIFBUILDER object
      *
-     * @param resource $im GDlib image pointer
+     * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
      * @see make()
      * @internal
      */
-    public function makeText(&$im, $conf, $workArea)
+    public function makeText(\GdImage &$im, $conf, $workArea)
     {
         // Spacing
         [$spacing, $wordSpacing] = $this->calcWordSpacing($conf);
@@ -822,14 +822,14 @@ class GifBuilder
     /**
      * Implements the "OUTLINE" GIFBUILDER object / property for the TEXT object
      *
-     * @param resource $im GDlib image pointer
+     * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
      * @param array $txtConf TypoScript array with configuration for the associated TEXT GIFBUILDER object.
      * @see make()
      * @see makeText()
      */
-    protected function makeOutline(&$im, $conf, $workArea, $txtConf)
+    protected function makeOutline(\GdImage &$im, $conf, $workArea, $txtConf)
     {
         $thickness = (int)$conf['thickness'];
         if ($thickness) {
@@ -852,14 +852,14 @@ class GifBuilder
     /**
      * Implements the "EMBOSS" GIFBUILDER object / property for the TEXT object
      *
-     * @param resource $im GDlib image pointer
+     * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
      * @param array $txtConf TypoScript array with configuration for the associated TEXT GIFBUILDER object.
      * @see make()
      * @see makeShadow()
      */
-    protected function makeEmboss(&$im, $conf, $workArea, $txtConf)
+    protected function makeEmboss(\GdImage &$im, $conf, $workArea, $txtConf)
     {
         $conf['color'] = $conf['highColor'];
         $this->makeShadow($im, $conf, $workArea, $txtConf);
@@ -875,7 +875,7 @@ class GifBuilder
      * Implements the "SHADOW" GIFBUILDER object / property for the TEXT object
      * The operation involves ImageMagick for combining.
      *
-     * @param resource $im GDlib image pointer
+     * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
      * @param array $txtConf TypoScript array with configuration for the associated TEXT GIFBUILDER object.
@@ -884,7 +884,7 @@ class GifBuilder
      * @see makeEmboss()
      * @internal
      */
-    public function makeShadow(&$im, $conf, $workArea, $txtConf)
+    public function makeShadow(\GdImage &$im, $conf, $workArea, $txtConf)
     {
         $workArea = $this->applyOffset($workArea, GeneralUtility::intExplode(',', (string)($conf['offset'])));
         $blurRate = MathUtility::forceIntegerInRange((int)$conf['blur'], 0, 99);
@@ -972,13 +972,13 @@ class GifBuilder
     /**
      * Implements the "BOX" GIFBUILDER object
      *
-     * @param resource $im GDlib image pointer
+     * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
      * @see make()
      * @internal
      */
-    public function makeBox(&$im, $conf, $workArea)
+    public function makeBox(\GdImage &$im, $conf, $workArea)
     {
         $cords = GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
         $conf['offset'] = $cords[0] . ',' . $cords[1];
@@ -1012,12 +1012,12 @@ class GifBuilder
      * $workArea = X,Y
      * $conf['dimensions'] = offset x, offset y, width of ellipse, height of ellipse
      *
-     * @param resource $im GDlib image pointer
+     * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
      * @see make()
      */
-    public function makeEllipse(&$im, array $conf, array $workArea)
+    public function makeEllipse(\GdImage &$im, array $conf, array $workArea)
     {
         $ellipseConfiguration = GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
         // Ellipse offset inside workArea (x/y)
@@ -1033,12 +1033,12 @@ class GifBuilder
      * Implements the "EFFECT" GIFBUILDER object
      * The operation involves ImageMagick for applying effects
      *
-     * @param resource $im GDlib image pointer
+     * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @see make()
      * @see applyImageMagickToPHPGif()
      */
-    protected function makeEffect(&$im, $conf)
+    protected function makeEffect(\GdImage &$im, $conf)
     {
         $commands = $this->IMparams($conf['value']);
         if ($commands) {
@@ -1049,14 +1049,14 @@ class GifBuilder
     /**
      * Implements the "ADJUST" GIFBUILDER object
      *
-     * @param resource $im GDlib image pointer
+     * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @see make()
      * @see autoLevels()
      * @see outputLevels()
      * @see inputLevels()
      */
-    protected function adjust(&$im, $conf)
+    protected function adjust(\GdImage &$im, $conf)
     {
         $setup = $conf['value'];
         if (!trim($setup)) {
@@ -1087,11 +1087,11 @@ class GifBuilder
     /**
      * Implements the "CROP" GIFBUILDER object
      *
-     * @param resource $im GDlib image pointer
+     * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @see make()
      */
-    protected function crop(&$im, $conf)
+    protected function crop(\GdImage &$im, $conf)
     {
         // Clears workArea to total image
         $this->setWorkArea('');
@@ -1125,11 +1125,11 @@ class GifBuilder
     /**
      * Implements the "SCALE" GIFBUILDER object
      *
-     * @param resource $im GDlib image pointer
+     * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @see make()
      */
-    protected function scale(&$im, $conf)
+    protected function scale(\GdImage &$im, $conf)
     {
         if ($conf['width'] || $conf['height'] || $conf['params']) {
             $tmpStr = $this->imageService->randomName();
@@ -1539,12 +1539,12 @@ class GifBuilder
     /**
      * Copies two GDlib image pointers onto each other, using TypoScript configuration from $conf and the input $workArea definition.
      *
-     * @param resource $im GDlib image pointer, destination (bottom image)
-     * @param resource $cpImg GDlib image pointer, source (top image)
+     * @param \GdImage $im GDlib image pointer, destination (bottom image)
+     * @param \GdImage $cpImg GDlib image pointer, source (top image)
      * @param array $conf TypoScript array with the properties for the IMAGE GIFBUILDER object. Only used for the "tile" property value.
      * @param array $workArea Work area
      */
-    protected function copyGifOntoGif(&$im, $cpImg, $conf, $workArea)
+    protected function copyGifOntoGif(\GdImage &$im, \GdImage &$cpImg, $conf, $workArea)
     {
         $cpW = imagesx($cpImg);
         $cpH = imagesy($cpImg);
@@ -1611,8 +1611,8 @@ class GifBuilder
      * It works, but the resulting images is now a true-color PNG which may be very large.
      * So, why not use 'imagetruecolortopalette ($im, TRUE, 256)' - well because it does NOT WORK! So simple is that.
      *
-     * @param resource $dstImg Destination image
-     * @param resource $srcImg Source image
+     * @param \GdImage $dstImg Destination image
+     * @param \GdImage $srcImg Source image
      * @param int $dstX Destination x-coordinate
      * @param int $dstY Destination y-coordinate
      * @param int $srcX Source x-coordinate
@@ -1622,7 +1622,7 @@ class GifBuilder
      * @param int $srcWidth Source width
      * @param int $srcHeight Source height
      */
-    protected function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight)
+    protected function imagecopyresized(\GdImage &$dstImg, \GdImage &$srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight)
     {
         if (!$this->saveAlphaLayer) {
             // Make true color image
@@ -1768,12 +1768,12 @@ class GifBuilder
     /**
      * Unifies all colors given in the colArr color array to the first color in the array.
      *
-     * @param resource $img Image resource
+     * @param \GdImage $img Image resource
      * @param array $colArr Array containing RGB color arrays
      * @param bool $closest
      * @return int The index of the unified color
      */
-    protected function unifyColors(&$img, $colArr, $closest = false)
+    protected function unifyColors(\GdImage &$img, $colArr, $closest = false)
     {
         $retCol = -1;
         if (is_array($colArr) && !empty($colArr) && function_exists('imagepng') && function_exists('imagecreatefrompng')) {
@@ -2008,7 +2008,7 @@ class GifBuilder
      * Spacing is done by printing one char at a time and this means that the spacing is rather uneven and probably not very nice.
      * See
      *
-     * @param resource $im (See argument for PHP function imageTTFtext())
+     * @param \GdImage $im (See argument for PHP function imageTTFtext())
      * @param int $fontSize (See argument for PHP function imageTTFtext())
      * @param int $angle (See argument for PHP function imageTTFtext())
      * @param int $x (See argument for PHP function imageTTFtext())
@@ -2022,7 +2022,7 @@ class GifBuilder
      * @param int $sF Scale factor
      * @internal
      */
-    protected function SpacedImageTTFText(&$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing, $splitRenderingConf, $sF = 1)
+    protected function SpacedImageTTFText(\GdImage &$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing, $splitRenderingConf, $sF = 1)
     {
         $spacing *= $sF;
         $wordSpacing *= $sF;
@@ -2126,7 +2126,7 @@ class GifBuilder
     /**
      * Wrapper for ImageTTFText
      *
-     * @param resource $im (See argument for PHP function imageTTFtext())
+     * @param \GdImage $im (See argument for PHP function imageTTFtext())
      * @param int $fontSize (See argument for PHP function imageTTFtext())
      * @param int $angle (See argument for PHP function imageTTFtext())
      * @param int $x (See argument for PHP function imageTTFtext())
@@ -2137,7 +2137,7 @@ class GifBuilder
      * @param array $splitRendering Split-rendering configuration
      * @param int $sF Scale factor
      */
-    protected function ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering, $sF = 1)
+    protected function ImageTTFTextWrapper(\GdImage &$im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering, $sF = 1)
     {
         // Initialize:
         $stringParts = $this->splitString($string, $splitRendering, $fontSize, $fontFile);
@@ -2348,7 +2348,7 @@ class GifBuilder
     /**
      * Renders a regular text and takes care of a possible line break automatically.
      *
-     * @param resource $im (See argument for PHP function imageTTFtext())
+     * @param \GdImage $im (See argument for PHP function imageTTFtext())
      * @param int $fontSize (See argument for PHP function imageTTFtext())
      * @param int $angle (See argument for PHP function imageTTFtext())
      * @param int $x (See argument for PHP function imageTTFtext())
@@ -2360,7 +2360,7 @@ class GifBuilder
      * @param array $conf The configuration
      * @param int $sF Scale factor
      */
-    protected function renderTTFText(&$im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering, $conf, $sF = 1)
+    protected function renderTTFText(\GdImage &$im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering, $conf, $sF = 1)
     {
         if (isset($conf['breakWidth']) && $conf['breakWidth'] && $this->getRenderedTextWidth($string, $conf) > $conf['breakWidth']) {
             $phrase = '';
@@ -2472,15 +2472,15 @@ class GifBuilder
     /**
      * Apply auto-levels to input image pointer
      *
-     * @param resource $im GDlib Image Pointer
+     * @param \GdImage $im GDlib Image Pointer
      */
-    protected function autolevels(&$im)
+    protected function autolevels(\GdImage &$im)
     {
         $totalCols = imagecolorstotal($im);
         $grayArr = [];
         for ($c = 0; $c < $totalCols; $c++) {
             $cols = imagecolorsforindex($im, $c);
-            $grayArr[] = round(($cols['red'] + $cols['green'] + $cols['blue']) / 3);
+            $grayArr[] = (int)round(($cols['red'] + $cols['green'] + $cols['blue']) / 3);
         }
         $min = min($grayArr);
         $max = max($grayArr);
@@ -2488,9 +2488,9 @@ class GifBuilder
         if ($delta) {
             for ($c = 0; $c < $totalCols; $c++) {
                 $cols = imagecolorsforindex($im, $c);
-                $cols['red'] = floor(($cols['red'] - $min) / $delta * 255);
-                $cols['green'] = floor(($cols['green'] - $min) / $delta * 255);
-                $cols['blue'] = floor(($cols['blue'] - $min) / $delta * 255);
+                $cols['red'] = (int)floor(($cols['red'] - $min) / $delta * 255);
+                $cols['green'] = (int)floor(($cols['green'] - $min) / $delta * 255);
+                $cols['blue'] = (int)floor(($cols['blue'] - $min) / $delta * 255);
                 imagecolorset($im, $c, $cols['red'], $cols['green'], $cols['blue']);
             }
         }
@@ -2499,12 +2499,12 @@ class GifBuilder
     /**
      * Apply output levels to input image pointer (decreasing contrast)
      *
-     * @param resource $im GDlib Image Pointer
+     * @param \GdImage $im GDlib Image Pointer
      * @param int $low The "low" value (close to 0)
      * @param int $high The "high" value (close to 255)
      * @param bool $swap If swap, then low and high are swapped. (Useful for negated masks...)
      */
-    protected function outputLevels(&$im, $low, $high, $swap = false)
+    protected function outputLevels(\GdImage &$im, $low, $high, $swap = false)
     {
         if ($low < $high) {
             $low = MathUtility::forceIntegerInRange($low, 0, 255);
@@ -2521,7 +2521,7 @@ class GifBuilder
                 $cols['red'] = $low + floor($cols['red'] / 255 * $delta);
                 $cols['green'] = $low + floor($cols['green'] / 255 * $delta);
                 $cols['blue'] = $low + floor($cols['blue'] / 255 * $delta);
-                imagecolorset($im, $c, $cols['red'], $cols['green'], $cols['blue']);
+                imagecolorset($im, $c, (int)$cols['red'], (int)$cols['green'], (int)$cols['blue']);
             }
         }
     }
@@ -2529,11 +2529,11 @@ class GifBuilder
     /**
      * Apply input levels to input image pointer (increasing contrast)
      *
-     * @param resource $im GDlib Image Pointer
+     * @param \GdImage $im GDlib Image Pointer
      * @param int $low The "low" value (close to 0)
      * @param int $high The "high" value (close to 255)
      */
-    protected function inputLevels(&$im, $low, $high)
+    protected function inputLevels(\GdImage &$im, $low, $high)
     {
         if ($low < $high) {
             $low = MathUtility::forceIntegerInRange($low, 0, 255);
@@ -2551,12 +2551,13 @@ class GifBuilder
     }
 
     /**
-     * Applies an ImageMagick parameter to a GDlib image pointer resource by writing the resource to file, performing an IM operation upon it and reading back the result into the ImagePointer.
+     * Applies an ImageMagick parameter to a GDlib image pointer resource by writing the resource to file,
+     * performing an IM operation upon it and reading back the result into the ImagePointer.
      *
-     * @param resource $im The image pointer (reference)
+     * @param \GdImage $im The image pointer (reference)
      * @param string $command The ImageMagick parameters. Like effects, scaling etc.
      */
-    protected function applyImageMagickToPHPGif(&$im, $command)
+    protected function applyImageMagickToPHPGif(\GdImage &$im, $command)
     {
         $tmpStr = $this->imageService->randomName();
         $theFile = $tmpStr . '.' . $this->imageService->gifExtension;
@@ -2575,7 +2576,7 @@ class GifBuilder
     /**
      * Writes the input GDlib image pointer to file
      *
-     * @param resource $destImg The GDlib image resource pointer
+     * @param \GdImage $destImg The GDlib image resource pointer
      * @param string $theImage The absolute file path to write to
      * @param int $quality The image quality (for JPEGs)
      * @return bool The output of either imageGif, imagePng or imageJpeg based on the filename to write
@@ -2583,9 +2584,9 @@ class GifBuilder
      * @see scale()
      * @see output()
      */
-    public function ImageWrite($destImg, $theImage, $quality = 0)
+    public function ImageWrite(\GdImage &$destImg, $theImage, $quality = 0)
     {
-        imageinterlace($destImg, 0);
+        imageinterlace($destImg, false);
         $ext = strtolower(substr($theImage, (int)strrpos($theImage, '.') + 1));
         $result = false;
         switch ($ext) {
@@ -2621,7 +2622,7 @@ class GifBuilder
      * If it fails creating an image from the input file a blank gray image with the dimensions of the input image will be created instead.
      *
      * @param string $sourceImg Image filename
-     * @return resource Image Resource pointer
+     * @return \GdImage Image Resource pointer
      */
     public function imageCreateFromFile(string $sourceImg)
     {
