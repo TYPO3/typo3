@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver;
+use TYPO3\CMS\Core\Resource\Exception\OnlineMediaAlreadyExistsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -59,7 +60,13 @@ class OnlineMediaController
 
         if (!empty($url)) {
             $data = [];
-            $file = $this->addMediaFromUrl($url, $targetFolderIdentifier, $allowedExtensions);
+            try {
+                $file = $this->addMediaFromUrl($url, $targetFolderIdentifier, $allowedExtensions);
+            } catch (OnlineMediaAlreadyExistsException $e) {
+                // Ignore this exception since the endpoint is called e.g. in inline context, where the
+                // folder is not relevant and the same asset can be attached to a record multiple times.
+                $file = $e->getOnlineMedia();
+            }
             if ($file !== null) {
                 $data['file'] = $file->getUid();
             } else {
@@ -87,21 +94,34 @@ class OnlineMediaController
         foreach ($newMedia as $media) {
             if (!empty($media['url']) && !empty($media['target'])) {
                 $allowed = !empty($media['allowed']) ? GeneralUtility::trimExplode(',', $media['allowed']) : [];
-                $file = $this->addMediaFromUrl($media['url'], $media['target'], $allowed);
-                if ($file !== null) {
+                try {
+                    $file = $this->addMediaFromUrl($media['url'], $media['target'], $allowed);
+                    if ($file !== null) {
+                        $flashMessage = GeneralUtility::makeInstance(
+                            FlashMessage::class,
+                            $file->getName(),
+                            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.added'),
+                            ContextualFeedbackSeverity::OK,
+                            true
+                        );
+                    } else {
+                        $flashMessage = GeneralUtility::makeInstance(
+                            FlashMessage::class,
+                            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.error.invalid_url'),
+                            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.error.new_media.failed'),
+                            ContextualFeedbackSeverity::ERROR,
+                            true
+                        );
+                    }
+                } catch (OnlineMediaAlreadyExistsException $e) {
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        $file->getName(),
-                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.added'),
-                        ContextualFeedbackSeverity::OK,
-                        true
-                    );
-                } else {
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
-                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.error.invalid_url'),
+                        sprintf(
+                            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.error.already_exists'),
+                            $e->getOnlineMedia()->getName()
+                        ),
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.error.new_media.failed'),
-                        ContextualFeedbackSeverity::ERROR,
+                        ContextualFeedbackSeverity::WARNING,
                         true
                     );
                 }
