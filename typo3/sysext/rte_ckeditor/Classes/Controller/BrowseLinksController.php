@@ -160,17 +160,15 @@ class BrowseLinksController extends AbstractLinkBrowserController
             }
             if (isset($this->linkAttributeValues['class'])) {
                 // Cleanup current link class value by removing any invalid class, including
-                // the automatically applied highlighting class `ck-link_selected` and using the
-                // first allowed class, since only one class can be selected in the link browser!
-                $allowedClasses = array_intersect(
-                    $classesAnchorArray,
-                    GeneralUtility::trimExplode(' ', $this->linkAttributeValues['class'], true)
-                );
-                if ($allowedClasses !== []) {
-                    $this->linkAttributeValues['class'] = (string)reset($allowedClasses);
+                // the automatically applied highlighting class `ck-link_selected`.
+                $linkClass = trim(str_replace('ck-link_selected', '', $this->linkAttributeValues['class']));
+                if (in_array($linkClass, $classesAnchorArray, true)) {
+                    $this->linkAttributeValues['class'] = $linkClass;
+                } else {
+                    unset($this->linkAttributeValues['class']);
                 }
                 if (isset($classesAnchor[$this->displayedLinkHandlerId])
-                    && !in_array($this->linkAttributeValues['class'], $classesAnchor[$this->displayedLinkHandlerId], true)
+                    && !in_array($linkClass, $classesAnchor[$this->displayedLinkHandlerId], true)
                 ) {
                     unset($this->linkAttributeValues['class']);
                 }
