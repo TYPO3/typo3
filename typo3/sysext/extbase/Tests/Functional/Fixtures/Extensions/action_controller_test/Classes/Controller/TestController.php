@@ -112,4 +112,22 @@ class TestController extends ActionController
     {
         return $this->htmlResponse('');
     }
+
+    public function initializeValidateModelAction(): void
+    {
+        $propertyMappingConfiguration = $this->arguments['model']->getPropertyMappingConfiguration();
+        $propertyMappingConfiguration->allowAllProperties();
+        $propertyMappingConfiguration->setTypeConverterOption(
+            PersistentObjectConverter::class,
+            PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
+            true
+        );
+    }
+
+    public function validateModelAction(
+        #[Extbase\Validate(validator: 'GenericObject')]
+        Model $model
+    ): ResponseInterface {
+        return $this->htmlResponse('success:' . $model->getValue());
+    }
 }

@@ -21,18 +21,23 @@ use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\UploadedFile;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+use TYPO3\CMS\Extbase\Security\HashScope;
 use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator\CustomValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
@@ -345,6 +350,201 @@ final class ActionControllerTest extends FunctionalTestCase
         $subject->mapRequestArgumentsToControllerArguments();
 
         self::assertSame([$uploadedFile], $subject->arguments['fooParam']->getUploadedFiles());
+    }
+
+    #[Test]
+    public function errorActionWithValidationErrorsForwardsFlashMessagesWithoutWritingToSession(): void
+    {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+
+        // Create a referring request to ensure ForwardResponse is used
+        $referringRequest = [
+            '@extension' => 'ActionControllerTest',
+            '@controller' => 'Test',
+            '@action' => 'qux',
+        ];
+        $referringRequestSerialized = (new HashService())->appendHmac(
+            json_encode($referringRequest),
+            HashScope::ReferringRequest->prefix(),
+            HashAlgo::SHA3_256
+        );
+
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = (new Request($serverRequest))
+            ->withControllerExtensionName('ActionControllerTest')
+            ->withControllerName('Test')
+            ->withControllerActionName('baz')
+            ->withPluginName('Pi1')
+            ->withArgument('bazParam', []) // Empty array will fail NotEmpty validation
+            ->withArgument('__referrer', ['@request' => $referringRequestSerialized]);
+
+        $subject = $this->get(TestController::class);
+        $response = $subject->processRequest($request);
+
+        // Verify the response is a ForwardResponse with flash messages
+        self::assertInstanceOf(ForwardResponse::class, $response);
+        self::assertSame(400, $response->getStatusCode());
+
+        // Verify flash messages are attached to ForwardResponse
+        $flashMessages = $response->getFlashMessages();
+        self::assertCount(1, $flashMessages);
+        $flashMessage = $flashMessages[0];
+        self::assertSame(ContextualFeedbackSeverity::ERROR, $flashMessage->getSeverity());
+        self::assertFalse($flashMessage->isSessionMessage(), 'Flash messages should not be written to session');
+    }
+
+    #[Test]
+    public function errorActionFlashMessagesAreTransferredViaExtbaseRequestParameters(): void
+    {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+
+        // Create a referring request to ensure ForwardResponse is used
+        $referringRequest = [
+            '@extension' => 'ActionControllerTest',
+            '@controller' => 'Test',
+            '@action' => 'qux',
+        ];
+        $referringRequestSerialized = (new HashService())->appendHmac(
+            json_encode($referringRequest),
+            HashScope::ReferringRequest->prefix(),
+            HashAlgo::SHA3_256
+        );
+
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = (new Request($serverRequest))
+            ->withControllerExtensionName('ActionControllerTest')
+            ->withControllerName('Test')
+            ->withControllerActionName('baz')
+            ->withPluginName('Pi1')
+            ->withArgument('bazParam', []) // Empty array will fail NotEmpty validation
+            ->withArgument('__referrer', ['@request' => $referringRequestSerialized]);
+
+        $subject = $this->get(TestController::class);
+        $response = $subject->processRequest($request);
+
+        // Verify the response is a ForwardResponse with flash messages
+        self::assertInstanceOf(ForwardResponse::class, $response);
+        self::assertSame(400, $response->getStatusCode());
+
+        // Verify flash messages are attached to ForwardResponse
+        $flashMessages = $response->getFlashMessages();
+        self::assertCount(1, $flashMessages);
+        $flashMessage = $flashMessages[0];
+        self::assertSame(ContextualFeedbackSeverity::ERROR, $flashMessage->getSeverity());
+        self::assertStringContainsString(TestController::class . '->bazAction()', $flashMessage->getMessage());
+    }
+
+    #[Test]
+    public function errorActionPreservesOriginalFlashMessagesFromExtbaseRequestParameters(): void
+    {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+
+        // Create an ExtbaseRequestParameters with original flash messages (simulating a forwarded request)
+        $originalFlashMessage = new FlashMessage(
+            'Original error message',
+            'Original Error',
+            ContextualFeedbackSeverity::WARNING,
+            false
+        );
+
+        $extbaseRequestParameters = new ExtbaseRequestParameters();
+        $extbaseRequestParameters->setOriginalFlashMessages($originalFlashMessage);
+
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
+        $request = (new Request($serverRequest))
+            ->withControllerExtensionName('ActionControllerTest')
+            ->withControllerName('Test')
+            ->withControllerActionName('qux')
+            ->withPluginName('Pi1');
+
+        $subject = $this->get(TestController::class);
+        $subject->processRequest($request);
+
+        // Verify the original flash message was restored from ExtbaseRequestParameters
+        $flashMessageQueue = $subject->getFlashMessageQueue();
+        $flashMessages = $flashMessageQueue->getAllMessages();
+        self::assertCount(1, $flashMessages);
+        $flashMessage = $flashMessages[0];
+        self::assertSame('Original error message', $flashMessage->getMessage());
+        self::assertSame(ContextualFeedbackSeverity::WARNING, $flashMessage->getSeverity());
+        self::assertFalse($flashMessage->isSessionMessage(), 'Restored flash messages should not be stored in session');
+    }
+
+    #[Test]
+    public function errorActionIsCalledWhenModelValidationFails(): void
+    {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+
+        // Create a referring request to ensure ForwardResponse is used
+        $referringRequest = [
+            '@extension' => 'ActionControllerTest',
+            '@controller' => 'Test',
+            '@action' => 'qux',
+        ];
+        $referringRequestSerialized = (new HashService())->appendHmac(
+            json_encode($referringRequest),
+            HashScope::ReferringRequest->prefix(),
+            HashAlgo::SHA3_256
+        );
+
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = (new Request($serverRequest))
+            ->withControllerExtensionName('ActionControllerTest')
+            ->withControllerName('Test')
+            ->withControllerActionName('validateModel')
+            ->withPluginName('Pi1')
+            ->withArgument('model', ['value' => '']) // Empty value will fail NotEmpty validation
+            ->withArgument('__referrer', ['@request' => $referringRequestSerialized]);
+
+        $subject = $this->get(TestController::class);
+        $response = $subject->processRequest($request);
+
+        // Verify the response is a ForwardResponse (errorAction was triggered)
+        self::assertInstanceOf(ForwardResponse::class, $response);
+        self::assertSame(400, $response->getStatusCode());
+
+        // Verify flash messages contain validation error and are not stored in session
+        $flashMessages = $response->getFlashMessages();
+        self::assertCount(1, $flashMessages);
+        self::assertSame(ContextualFeedbackSeverity::ERROR, $flashMessages[0]->getSeverity());
+        self::assertFalse($flashMessages[0]->isSessionMessage(), 'Flash messages should not be written to session');
+    }
+
+    #[Test]
+    public function actionIsExecutedWhenModelValidationPasses(): void
+    {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = (new Request($serverRequest))
+            ->withControllerExtensionName('ActionControllerTest')
+            ->withControllerName('Test')
+            ->withControllerActionName('validateModel')
+            ->withPluginName('Pi1')
+            ->withArgument('model', ['value' => 'valid value']);
+
+        $subject = $this->get(TestController::class);
+        $response = $subject->processRequest($request);
+
+        // Verify the action was executed (not errorAction)
+        self::assertNotInstanceOf(ForwardResponse::class, $response);
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('success:valid value', (string)$response->getBody());
     }
 
     /**

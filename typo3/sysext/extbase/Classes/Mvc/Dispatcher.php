@@ -121,6 +121,7 @@ class Dispatcher
         $extbaseRequestParameters = clone $request->getAttribute('extbase');
         $extbaseRequestParameters->setOriginalRequest($currentRequest);
         $extbaseRequestParameters->setOriginalRequestMappingResults($forwardResponse->getArgumentsValidationResult());
+        $extbaseRequestParameters->setOriginalFlashMessages(...$forwardResponse->getFlashMessages());
         return $request->withAttribute('extbase', $extbaseRequestParameters);
     }
 }

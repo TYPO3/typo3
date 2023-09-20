@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\ActionControllerTest\Domain\Model;
 
+use TYPO3\CMS\Extbase\Attribute\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
@@ -24,10 +25,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class Model extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $value;
+    #[Validate(validator: 'NotEmpty')]
+    protected string $value = '';
 
     /**
      * @var Model

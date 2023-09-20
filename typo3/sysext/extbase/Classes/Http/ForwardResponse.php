@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Http;
 
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extbase\Error\Result;
 
 class ForwardResponse extends Response
@@ -26,6 +27,10 @@ class ForwardResponse extends Response
     private ?string $extensionName = null;
     private ?array $arguments = null;
     private Result $argumentsValidationResult;
+    /**
+     * @var list<FlashMessage>
+     */
+    private array $flashMessages = [];
 
     public function __construct(private readonly string $actionName)
     {
@@ -82,6 +87,16 @@ class ForwardResponse extends Response
         return $clone;
     }
 
+    public function withFlashMessages(FlashMessage ...$flashMessages): self
+    {
+        if ($flashMessages === []) {
+            return $this;
+        }
+        $clone = clone $this;
+        $clone->flashMessages = array_merge($this->flashMessages, $flashMessages);
+        return $clone;
+    }
+
     public function getActionName(): string
     {
         return $this->actionName;
@@ -105,5 +120,13 @@ class ForwardResponse extends Response
     public function getArgumentsValidationResult(): Result
     {
         return $this->argumentsValidationResult;
+    }
+
+    /**
+     * @return list<FlashMessage>
+     */
+    public function getFlashMessages(): array
+    {
+        return $this->flashMessages;
     }
 }

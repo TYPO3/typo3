@@ -319,6 +319,19 @@ abstract class ActionController implements ControllerInterface
         }
     }
 
+    protected function initializeStateFromExtbaseRequestParameters(): void
+    {
+        $extbaseRequestParameters = $this->request->getAttribute('extbase');
+        if (!$extbaseRequestParameters instanceof ExtbaseRequestParameters) {
+            return;
+        }
+        $flashMessageQueue = $this->getFlashMessageQueue();
+        foreach ($extbaseRequestParameters->getOriginalFlashMessages() as $flashMessage) {
+            $flashMessage->setStoreInSession(false);
+            $flashMessageQueue->enqueue($flashMessage);
+        }
+    }
+
     /**
      * Handles an incoming request and returns a response object
      *
@@ -333,6 +346,7 @@ abstract class ActionController implements ControllerInterface
         $this->actionMethodName = $this->resolveActionMethodName();
         $this->initializeActionMethodArguments();
         $this->initializeActionMethodValidators();
+        $this->initializeStateFromExtbaseRequestParameters();
         $this->mvcPropertyMappingConfigurationService->initializePropertyMappingConfigurationFromRequest($request, $this->arguments);
         $this->fileHandlingService->initializeFileUploadConfigurationsFromRequest($request, $this->arguments);
         $this->initializeAction();
@@ -551,11 +565,17 @@ abstract class ActionController implements ControllerInterface
      */
     protected function errorAction(): ResponseInterface
     {
-        $this->addErrorFlashMessage();
         if (($response = $this->forwardToReferringRequest()) !== null) {
+            if ($response instanceof ForwardResponse) {
+                // Add flash messages to queue
+                $this->addErrorFlashMessage();
+                // Extract all pending flash messages out of th queue and ensure they
+                // are passed along the response but without invoking the session.
+                $flashMessages = $this->getFlashMessageQueue()->getAllMessagesAndFlush();
+                $response = $response->withFlashMessages(...$flashMessages);
+            }
             return $response->withStatus(400);
         }
-
         $response = $this->htmlResponse($this->getFlattenedValidationErrorMessage());
         return $response->withStatus(400);
     }
@@ -569,8 +589,8 @@ abstract class ActionController implements ControllerInterface
     protected function addErrorFlashMessage(): void
     {
         $errorFlashMessage = $this->getErrorFlashMessage();
-        if ($errorFlashMessage !== false) {
-            $this->addFlashMessage($errorFlashMessage, '', ContextualFeedbackSeverity::ERROR);
+        if (is_string($errorFlashMessage)) {
+            $this->addFlashMessage($errorFlashMessage, '', ContextualFeedbackSeverity::ERROR, false);
         }
     }
 
@@ -590,7 +610,6 @@ abstract class ActionController implements ControllerInterface
      * If information on the request before the current request was sent, this method forwards back
      * to the originating request. This effectively ends processing of the current request, so do not
      * call this method before you have finished the necessary business logic!
-     *
      *
      * @internal
      */

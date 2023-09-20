@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Mvc;
 
 use Psr\Http\Message\UploadedFileInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
@@ -100,6 +101,11 @@ class ExtbaseRequestParameters
      * If the request is a forward because of an error, these mapping results get filled here.
      */
     protected ?Result $originalRequestMappingResults = null;
+
+    /**
+     * @var list<FlashMessage>
+     */
+    protected array $originalFlashMessages = [];
 
     /**
      * If files were uploaded, this array holds the files
@@ -281,6 +287,20 @@ class ExtbaseRequestParameters
     public function setOriginalRequestMappingResults(Result $originalRequestMappingResults): self
     {
         $this->originalRequestMappingResults = $originalRequestMappingResults;
+        return $this;
+    }
+
+    /**
+     * @return list<FlashMessage>
+     */
+    public function getOriginalFlashMessages(): array
+    {
+        return $this->originalFlashMessages;
+    }
+
+    public function setOriginalFlashMessages(FlashMessage ...$originalFlashMessages): self
+    {
+        $this->originalFlashMessages = $originalFlashMessages;
         return $this;
     }
 
