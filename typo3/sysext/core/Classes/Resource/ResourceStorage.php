@@ -1991,7 +1991,9 @@ class ResourceStorage implements ResourceStorageInterface
                     $file->updateProperties(['storage' => $this->getUid(), 'identifier' => $newIdentifier]);
                 }
             }
-            $this->getIndexer()->updateIndexEntry($file);
+            if ($file instanceof File) {
+                $this->getIndexer()->updateIndexEntry($file);
+            }
         } catch (\TYPO3\CMS\Core\Exception $e) {
             echo $e->getMessage();
         }
@@ -2029,8 +2031,8 @@ class ResourceStorage implements ResourceStorageInterface
             $newIdentifier = $this->driver->renameFile($file->getIdentifier(), $sanitizedTargetFileName);
             if ($file instanceof File) {
                 $file->updateProperties(['identifier' => $newIdentifier]);
+                $this->getIndexer()->updateIndexEntry($file);
             }
-            $this->getIndexer()->updateIndexEntry($file);
         } catch (ExistingTargetFileNameException $exception) {
             if ($conflictMode->equals(DuplicationBehavior::RENAME)) {
                 $newName = $this->getUniqueName($file->getParentFolder(), $sanitizedTargetFileName);
