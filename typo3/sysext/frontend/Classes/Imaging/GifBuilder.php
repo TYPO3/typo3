@@ -264,7 +264,6 @@ class GifBuilder
                             $txtInfo = $this->calcBBox($this->setup[$theKey . '.']);
                             $this->setup[$theKey . '.']['BBOX'] = $txtInfo;
                             $this->objBB[$theKey] = $txtInfo;
-                            $this->setup[$theKey . '.']['imgMap'] = 0;
                         }
                         break;
                     case 'IMAGE':
@@ -576,7 +575,6 @@ class GifBuilder
                                     }
                                     $this->makeOutline($this->im, $conf['outline.'], $this->workArea, $conf);
                                 }
-                                $conf['imgMap'] = 1;
                                 $this->makeText($this->im, $conf, $this->workArea);
                             }
                             break;

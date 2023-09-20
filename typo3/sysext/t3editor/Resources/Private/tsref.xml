@@ -1734,12 +1734,6 @@ This feature may be used if you need a shadow-object to base a shadow on the tex
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="imgMap" type="IMGMAP">
-			<description><![CDATA[
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="iterations" type="int">
 			<description><![CDATA[posint
 			How many times the text should be "printed" onto it self. This will add the effect of bold text.
@@ -3127,35 +3121,6 @@ Additional Note: ONLY active if linkWrap is NOT set and file is NOT GIFBUILDER (
 		</property>
 		<property name="stdWrap" type="stdWrap">
 			<description><![CDATA[ ]]></description>
-			<default><![CDATA[]]></default>
-		</property>
-	</type>
-	<type id="IMGMAP">
-		<property name="altText" type="string">
-			<description><![CDATA[Value of the alt-attribute.
-
-(Used from TEXT Gifbuilding objects, this has stdWrap properties. Otherwise not)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="explode" type="intList">
-			<description><![CDATA[This "explodes" or "implodes" the image-map. Useful to let the hot area cover a little more than just the letters of the text.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="target" type="target">
-			<description><![CDATA[target for link]]></description>
-			<default><![CDATA[]]></default>
-		</property>
-		<property name="titleText" type="string">
-			<description><![CDATA[Value of the title attribute.
-
-(Used from TEXT Gifbuilding objects, this has stdWrap properties. Otherwise not)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="url" type="string">
-			<description><![CDATA[url to link]]></description>
 			<default><![CDATA[]]></default>
 		</property>
 	</type>
