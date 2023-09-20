@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -671,11 +672,11 @@ class EnvironmentController extends AbstractController
         $resultFile = $this->getImagesPath() . $imageService->filenamePrefix
             . StringUtility::getUniqueId($imageService->alternativeOutputKey . 'combine1') . '.jpg';
         $imageService->combineExec($inputFile, $overlayFile, $maskFile, $resultFile);
-        $imResult = $imageService->getImageDimensions($resultFile);
-        if ($imResult) {
+        $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $resultFile);
+        if ($imageInfo->getWidth() > 0) {
             $result = [
                 'fileExists' => true,
-                'outputFile' => $imResult[3],
+                'outputFile' => $resultFile,
                 'referenceFile' => self::TEST_REFERENCE_PATH . '/Combine-1.jpg',
                 'command' => $imageService->IM_commands,
             ];
@@ -707,11 +708,11 @@ class EnvironmentController extends AbstractController
         $resultFile = $this->getImagesPath() . $imageService->filenamePrefix
             . StringUtility::getUniqueId($imageService->alternativeOutputKey . 'combine2') . '.jpg';
         $imageService->combineExec($inputFile, $overlayFile, $maskFile, $resultFile);
-        $imResult = $imageService->getImageDimensions($resultFile);
-        if ($imResult) {
+        $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $resultFile);
+        if ($imageInfo->getWidth() > 0) {
             $result = [
                 'fileExists' => true,
-                'outputFile' => $imResult[3],
+                'outputFile' => $resultFile,
                 'referenceFile' => self::TEST_REFERENCE_PATH . '/Combine-2.jpg',
                 'command' => $imageService->IM_commands,
             ];
@@ -742,10 +743,9 @@ class EnvironmentController extends AbstractController
         $gifBuilder->makeBox($image, $conf, $workArea);
         $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdSimple') . '.' . $gifOrPng;
         $gifBuilder->ImageWrite($image, $outputFile);
-        $imResult = $gifBuilder->getGraphicalFunctions()->getImageDimensions($outputFile);
         $result = [
             'fileExists' => true,
-            'outputFile' => $imResult[3],
+            'outputFile' => $outputFile,
             'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-simple.' . $gifOrPng,
             'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];
@@ -770,10 +770,9 @@ class EnvironmentController extends AbstractController
         $gifBuilder->makeBox($image, $conf, $workArea);
         $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdBox') . '.' . $gifOrPng;
         $gifBuilder->ImageWrite($image, $outputFile);
-        $imResult = $gifBuilder->getGraphicalFunctions()->getImageDimensions($outputFile);
         $result = [
             'fileExists' => true,
-            'outputFile' => $imResult[3],
+            'outputFile' => $outputFile,
             'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-box.' . $gifOrPng,
             'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];
@@ -805,10 +804,9 @@ class EnvironmentController extends AbstractController
         $gifBuilder->makeText($image, $conf, $workArea);
         $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
         $gifBuilder->ImageWrite($image, $outputFile);
-        $imResult = $gifBuilder->getGraphicalFunctions()->getImageDimensions($outputFile);
         $result = [
             'fileExists' => true,
-            'outputFile' => $imResult[3],
+            'outputFile' => $outputFile,
             'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-text.' . $gifOrPng,
             'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];
@@ -851,10 +849,9 @@ class EnvironmentController extends AbstractController
         $gifBuilder->makeText($image, $conf, $workArea);
         $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.' . $gifOrPng;
         $gifBuilder->ImageWrite($image, $outputFile);
-        $imResult = $gifBuilder->getGraphicalFunctions()->getImageDimensions($outputFile);
         $result = [
             'fileExists' => true,
-            'outputFile' => $imResult[3],
+            'outputFile' => $outputFile,
             'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-niceText.' . $gifOrPng,
             'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];
@@ -910,10 +907,9 @@ class EnvironmentController extends AbstractController
         $gifBuilder->makeText($image, $conf, $workArea);
         $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.' . $gifOrPng;
         $gifBuilder->ImageWrite($image, $outputFile);
-        $imResult = $gifBuilder->getGraphicalFunctions()->getImageDimensions($outputFile);
         $result = [
             'fileExists' => true,
-            'outputFile' => $imResult[3],
+            'outputFile' => $outputFile,
             'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-shadow.' . $gifOrPng,
             'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];

@@ -57,6 +57,7 @@ use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\BitSet;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
@@ -3658,8 +3659,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $gifCreator->start($fileArray, $this->data);
                 $theImage = $gifCreator->gifBuild();
                 if ($theImage !== '') {
-                    $imageResource = $gifCreator->getGraphicalFunctions()->getImageDimensions(Environment::getPublicPath() . '/' . $theImage);
-                    $imageResource['origFile'] = $theImage;
+                    $fullPath = Environment::getPublicPath() . '/' . $theImage;
+                    $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $fullPath);
+                    if ($imageInfo->getWidth() > 0) {
+                        $imageResource = [
+                            0 => $imageInfo->getWidth(),
+                            1 => $imageInfo->getHeight(),
+                            2 => $imageInfo->getExtension(),
+                            3 => $fullPath,
+                            'origFile' => $theImage,
+                        ];
+                    }
                 }
             }
         } else {

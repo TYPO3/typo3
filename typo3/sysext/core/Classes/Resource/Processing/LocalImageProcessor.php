@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Resource\Processing;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -68,12 +68,12 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
                 $task->getTargetFile()->setUsesOriginalFile();
             } elseif (!empty($result['filePath']) && file_exists($result['filePath'])) {
                 $task->setExecuted(true);
-                $imageDimensions = $this->getGraphicalFunctionsObject()->getImageDimensions($result['filePath']);
+                $imageInformation = GeneralUtility::makeInstance(ImageInfo::class, $result['filePath']);
                 $task->getTargetFile()->setName($task->getTargetFileName());
                 $task->getTargetFile()->updateProperties([
-                    'width' => $imageDimensions[0] ?? 0,
-                    'height' => $imageDimensions[1] ?? 0,
-                    'size' => filesize($result['filePath']),
+                    'width' => $imageInformation->getWidth(),
+                    'height' => $imageInformation->getHeight(),
+                    'size' => $imageInformation->getSize(),
                     'checksum' => $task->getConfigurationChecksum(),
                 ]);
                 $task->getTargetFile()->updateWithLocalFile($result['filePath']);
@@ -112,11 +112,11 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
             // have no API for fetching file metadata from a remote file.
             $localProcessedFile = $storage->getFileForLocalProcessing($task->getTargetFile(), false);
             $task->setExecuted(true);
-            $imageDimensions = $this->getGraphicalFunctionsObject()->getImageDimensions($localProcessedFile);
+            $imageInformation = GeneralUtility::makeInstance(ImageInfo::class, $localProcessedFile);
             $properties = [
-                'width' => $imageDimensions[0] ?? 0,
-                'height' => $imageDimensions[1] ?? 0,
-                'size' => filesize($localProcessedFile),
+                'width' => $imageInformation->getWidth(),
+                'height' => $imageInformation->getHeight(),
+                'size' => $imageInformation->getSize(),
                 'checksum' => $task->getConfigurationChecksum(),
             ];
             $task->getTargetFile()->updateProperties($properties);
@@ -145,10 +145,5 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
         }
 
         return $helper;
-    }
-
-    protected function getGraphicalFunctionsObject(): GraphicalFunctions
-    {
-        return GeneralUtility::makeInstance(GraphicalFunctions::class);
     }
 }

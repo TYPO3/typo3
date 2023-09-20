@@ -6059,4 +6059,18 @@ return [
             'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Imaging\GraphicalFunctions->getCachedImageDimensions' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-102009-ImagesizesCacheRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Imaging\GraphicalFunctions->cacheImageDimensions' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-102009-ImagesizesCacheRemoved.rst',
+        ],
+    ],
 ];

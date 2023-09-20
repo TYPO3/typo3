@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Install\Configuration\Cache;
 
 use TYPO3\CMS\Core\Cache\Backend\FileBackend;
-use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Install\Configuration\AbstractPreset;
 
 class FileCachePreset extends AbstractPreset
@@ -38,8 +37,6 @@ class FileCachePreset extends AbstractPreset
         'SYS/caching/cacheConfigurations/hash/backend' => FileBackend::class,
         'SYS/caching/cacheConfigurations/pages/backend' => FileBackend::class,
         'SYS/caching/cacheConfigurations/pages/options/compression' => '__UNSET',
-        'SYS/caching/cacheConfigurations/imagesizes/backend' => SimpleFileBackend::class,
-        'SYS/caching/cacheConfigurations/imagesizes/options/compression' => '__UNSET',
         'SYS/caching/cacheConfigurations/rootline/backend' => FileBackend::class,
         'SYS/caching/cacheConfigurations/rootline/options/compression' => '__UNSET',
     ];

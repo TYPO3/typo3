@@ -9215,9 +9215,6 @@ class DataHandler implements LoggerAwareInterface
      *
      * The following cache_* are intentionally not cleared by 'all'
      *
-     * - imagesizes:	Clearing this table would cause a lot of unneeded
-     * Imagemagick calls because the size information has
-     * to be fetched again after clearing.
      * - all caches inside the cache manager that are inside the group "system"
      * - they are only needed to build up the core system and templates.
      *   If the group of system caches needs to be deleted explicitly, use

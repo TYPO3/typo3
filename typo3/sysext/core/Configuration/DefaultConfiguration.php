@@ -191,14 +191,6 @@ return [
                     ],
                     'groups' => ['pages'],
                 ],
-                'imagesizes' => [
-                    'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-                    'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                    'options' => [
-                        'defaultLifetime' => 0,
-                    ],
-                    'groups' => ['lowlevel'],
-                ],
                 'assets' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,

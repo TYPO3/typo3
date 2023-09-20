@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Core\Imaging;
 
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -28,7 +27,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  * Standard graphical functions
  *
  * Class contains a bunch of cool functions for manipulating graphics with GDlib/Freetype and ImageMagick.
- * VERY OFTEN used with gifbuilder that extends this class and provides a TypoScript API to using these functions
+ * VERY OFTEN used with gifbuilder that uses this class and provides a TypoScript API to using these functions
  */
 class GraphicalFunctions
 {
@@ -464,114 +463,24 @@ class GraphicalFunctions
      */
     public function getImageDimensions($imageFile)
     {
-        $returnArr = null;
         preg_match('/([^\\.]*)$/', $imageFile, $reg);
-        if (file_exists($imageFile) && in_array(strtolower($reg[0]), $this->imageFileExt, true)) {
-            $returnArr = $this->getCachedImageDimensions($imageFile);
-            if (!$returnArr) {
-                $imageInfoObject = GeneralUtility::makeInstance(ImageInfo::class, $imageFile);
-                if ($imageInfoObject->getWidth()) {
-                    $returnArr = [
-                        $imageInfoObject->getWidth(),
-                        $imageInfoObject->getHeight(),
-                        strtolower($reg[0]),
-                        $imageFile,
-                    ];
-                    $this->cacheImageDimensions($returnArr);
-                } else {
-                    // Size could not be determined, return null instead of boolean
-                    $returnArr = null;
-                }
-            }
+        if (!file_exists($imageFile)) {
+            return null;
         }
-        return $returnArr;
-    }
-
-    /**
-     * Caches the result of the getImageDimensions function into the database. Does not check if the file exists.
-     *
-     * @param array $identifyResult Result of the getImageDimensions function
-     *
-     * @return bool always TRUE
-     */
-    public function cacheImageDimensions(array $identifyResult)
-    {
-        $filePath = $identifyResult[3];
-        $statusHash = $this->generateStatusHashForImageFile($filePath);
-        $identifier = $this->generateCacheKeyForImageFile($filePath);
-
-        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('imagesizes');
-        $imageDimensions = [
-            'hash'        => $statusHash,
-            'imagewidth'  => $identifyResult[0],
-            'imageheight' => $identifyResult[1],
-        ];
-        $cache->set($identifier, $imageDimensions);
-
-        return true;
-    }
-
-    /**
-     * Fetches the cached image dimensions from the cache. Does not check if the image file exists.
-     *
-     * @param string $filePath The absolute image file path
-     *
-     * @return array|bool an array where [0]/[1] is w/h, [2] is extension and [3] is the file name,
-     *                    or FALSE for a cache miss
-     */
-    public function getCachedImageDimensions($filePath)
-    {
-        $statusHash = $this->generateStatusHashForImageFile($filePath);
-        $identifier = $this->generateCacheKeyForImageFile($filePath);
-        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('imagesizes');
-        $cachedImageDimensions = $cache->get($identifier);
-        if (!isset($cachedImageDimensions['hash'])) {
-            return false;
+        // @todo: check if we actually need this, ass ImageInfo deals with this much more professionally
+        if (!in_array(strtolower($reg[0]), $this->imageFileExt, true)) {
+            return null;
         }
-
-        if ($cachedImageDimensions['hash'] !== $statusHash) {
-            // The file has changed. Delete the cache entry.
-            $cache->remove($identifier);
-            $result = false;
-        } else {
-            preg_match('/([^\\.]*)$/', $filePath, $imageExtension);
-            $result = [
-                (int)$cachedImageDimensions['imagewidth'],
-                (int)$cachedImageDimensions['imageheight'],
-                strtolower($imageExtension[0]),
-                $filePath,
+        $imageInfoObject = GeneralUtility::makeInstance(ImageInfo::class, $imageFile);
+        if ($imageInfoObject->isFile() && $imageInfoObject->getWidth()) {
+            return [
+                $imageInfoObject->getWidth(),
+                $imageInfoObject->getHeight(),
+                $imageInfoObject->getExtension(),
+                $imageFile,
             ];
         }
-
-        return $result;
-    }
-
-    /**
-     * Creates the key for the image dimensions cache for an image file.
-     *
-     * This method does not check if the image file actually exists.
-     *
-     * @param string $filePath Absolute image file path
-     *
-     * @return string the hash key (an SHA1 hash), will not be empty
-     */
-    protected function generateCacheKeyForImageFile($filePath)
-    {
-        return sha1(PathUtility::stripPathSitePrefix($filePath));
-    }
-
-    /**
-     * Creates the status hash to check whether a file has been changed.
-     *
-     * @param string $filePath Absolute image file path
-     *
-     * @return string the status hash (an SHA1 hash)
-     */
-    protected function generateStatusHashForImageFile($filePath)
-    {
-        $fileStatus = stat($filePath);
-
-        return sha1($fileStatus['mtime'] . $fileStatus['size']);
+        return null;
     }
 
     /**

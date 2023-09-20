@@ -383,13 +383,6 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getImgResourceCallsGetImgResourcePostProcessHook(): void
     {
-        $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->disableOriginalConstructor()->getMock();
-        $cacheMock = $this->getMockBuilder(CacheFrontendInterface::class)->disableOriginalConstructor()->getMock();
-        $cacheMock->method('get')->willReturn(false);
-        $cacheMock->method('set')->willReturn(false);
-        $cacheManagerMock->method('getCache')->with('imagesizes')->willReturn($cacheMock);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
-
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $this->subject->method('getResourceFactory')->willReturn($resourceFactory);
 
