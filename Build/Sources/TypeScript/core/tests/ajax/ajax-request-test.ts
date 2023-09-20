@@ -121,7 +121,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
         const response = new Response(responseText, { headers: headers });
         promiseHelper.resolve(response);
 
-        (new AjaxRequest('https://example.com')).get().then(async (response: AjaxResponse): Promise<void> => {
+        (new AjaxRequest(new URL('https://example.com'))).get().then(async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           expect(window.fetch).toHaveBeenCalledWith(new URL('https://example.com/'), jasmine.objectContaining({ method: 'GET' }));
           onfulfill(data, responseText);
@@ -135,13 +135,13 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
     function* urlInputDataProvider(): any {
       yield [
         'absolute url with domain',
-        'https://example.com',
+        new URL('https://example.com'),
         {},
         new URL('https://example.com/'),
       ];
       yield [
         'absolute url with domain, with query parameter',
-        'https://example.com',
+        new URL('https://example.com'),
         { foo: 'bar', bar: { baz: 'bencer' } },
         new URL('https://example.com/?foo=bar&bar%5Bbaz%5D=bencer'),
       ];

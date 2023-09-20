@@ -37,8 +37,8 @@ class AjaxRequest {
   private readonly url: URL;
   private readonly abortController: AbortController;
 
-  constructor(url: string) {
-    this.url = new URL(url, window.location.origin + window.location.pathname);
+  constructor(url: URL|string) {
+    this.url = url instanceof URL ? url : new URL(url, window.location.origin + window.location.pathname);
     this.abortController = new AbortController();
   }
 
@@ -48,10 +48,12 @@ class AjaxRequest {
    * @param {string|array|GenericKeyValue} data
    * @return {AjaxRequest}
    */
-  public withQueryArguments(data: string | Array<string> | GenericKeyValue): AjaxRequest {
+  public withQueryArguments(data: string | Array<string> | GenericKeyValue | URLSearchParams): AjaxRequest {
     const clone = this.clone();
 
-    data = new URLSearchParams(InputTransformer.toSearchParams(data));
+    if (!(data instanceof URLSearchParams)) {
+      data = new URLSearchParams(InputTransformer.toSearchParams(data));
+    }
     for (const [key, value] of data.entries()) {
       this.url.searchParams.append(key, value);
     }
