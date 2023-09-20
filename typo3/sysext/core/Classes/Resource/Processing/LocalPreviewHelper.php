@@ -15,9 +15,8 @@
 
 namespace TYPO3\CMS\Core\Resource\Processing;
 
-use TYPO3\CMS\Core\Imaging\ImageMagickFile;
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
@@ -148,17 +147,11 @@ class LocalPreviewHelper
     {
         // Create the temporary file
         if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled']) {
-            $arguments = CommandUtility::escapeShellArguments([
-                'width' => $configuration['width'],
-                'height' => $configuration['height'],
-            ]);
-            $parameters = '-sample ' . $arguments['width'] . 'x' . $arguments['height']
-                . ' ' . ImageMagickFile::fromFilePath($originalFileName, 0)
-                . ' ' . CommandUtility::escapeShellArgument($targetFilePath);
-
-            $cmd = CommandUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
-            CommandUtility::exec($cmd);
-
+            $imageService = GeneralUtility::makeInstance(GraphicalFunctions::class);
+            $result = $imageService->imageMagickConvert($originalFileName, 'WEB', $configuration['width'], $configuration['height'], '', '0', ['sample' => true]);
+            if ($result) {
+                $targetFilePath = $result[3];
+            }
             if (!file_exists($targetFilePath)) {
                 // Create an error gif
                 $graphicalFunctions = GeneralUtility::makeInstance(GifBuilder::class);

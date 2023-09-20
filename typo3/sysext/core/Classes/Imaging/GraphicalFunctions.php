@@ -407,6 +407,54 @@ class GraphicalFunctions
     }
 
     /**
+     * @internal until API is finalized
+     */
+    public function crop(string $imageFile, string $targetFileExtension, string $cropInformation): ?array
+    {
+        // check if it is a json object
+        $cropData = json_decode($cropInformation);
+        if ($cropData) {
+            $offsetLeft = (int)($cropData->x ?? 0);
+            $offsetTop = (int)($cropData->y ?? 0);
+            $newWidth = (int)($cropData->width ?? 0);
+            $newHeight = (int)($cropData->height ?? 0);
+        } else {
+            [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $cropInformation, 4);
+        }
+
+        return $this->imageMagickConvert(
+            $imageFile,
+            $targetFileExtension,
+            '',
+            '',
+            sprintf('-crop %dx%d+%d+%d +repage -quality %d', $newWidth, $newHeight, $offsetLeft, $offsetTop, $this->jpegQuality),
+            '',
+            ['noScale' => true],
+            true
+        );
+    }
+
+    /**
+     * This applies an image onto the $inputFile with an additional backgroundImage for the mask
+     * @internal until API is finalized
+     */
+    public function mask(string $inputFile, string $outputFile, string $maskImage, string $maskBackgroundImage, string $params)
+    {
+        $tmpStr = $this->randomName();
+        //	m_mask
+        $intermediateMaskFile = $tmpStr . '_mask.png';
+        $this->imageMagickExec($maskImage, $intermediateMaskFile, $params);
+        //	m_bgImg
+        $intermediateMaskBackgroundFile = $tmpStr . '_bgImg.miff';
+        $this->imageMagickExec($maskBackgroundImage, $intermediateMaskBackgroundFile, $params);
+        // The image onto the background
+        $this->combineExec($intermediateMaskBackgroundFile, $inputFile, $intermediateMaskFile, $outputFile);
+        // Unlink the temp-images...
+        @unlink($intermediateMaskFile);
+        @unlink($intermediateMaskBackgroundFile);
+    }
+
+    /**
      * Gets the input image dimensions.
      *
      * @param string $imageFile The absolute image filepath
