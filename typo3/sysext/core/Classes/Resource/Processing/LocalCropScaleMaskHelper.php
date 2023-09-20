@@ -58,33 +58,30 @@ class LocalCropScaleMaskHelper
     {
         $result = null;
         $targetFile = $task->getTargetFile();
+        $targetFileExtension = $task->getTargetFileExtension();
 
         $imageOperations = GeneralUtility::makeInstance(GraphicalFunctions::class);
 
         $configuration = $targetFile->getProcessingConfiguration();
-        $configuration['additionalParameters'] = $this->modifyImageMagickStripProfileParameters((string)($configuration['additionalParameters'] ?? ''), $configuration);
-
-        if (empty($configuration['fileExtension'])) {
-            $configuration['fileExtension'] = $task->getTargetFileExtension();
-        }
+        $configuration['additionalParameters'] ??= '';
 
         $options = $this->getConfigurationForImageCropScaleMask($targetFile);
 
         $croppedImage = null;
         if (!empty($configuration['crop'])) {
             // the result info is an array with 0=width,1=height,2=extension,3=filename
-            $result = $imageOperations->crop($originalFileName, $configuration['fileExtension'], $configuration['crop']);
+            $result = $imageOperations->crop($originalFileName, $targetFileExtension, $configuration['crop'], $options);
             if ($result !== null) {
                 $originalFileName = $croppedImage = $result[3];
             }
         }
 
         // Normal situation (no masking)
-        if (!(is_array($configuration['maskImages'] ?? null) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'])) {
+        if (!is_array($configuration['maskImages'] ?? null)) {
             // the result info is an array with 0=width,1=height,2=extension,3=filename
             $result = $imageOperations->imageMagickConvert(
                 $originalFileName,
-                $configuration['fileExtension'],
+                $targetFileExtension,
                 $configuration['width'] ?? '',
                 $configuration['height'] ?? '',
                 $configuration['additionalParameters'],
@@ -94,8 +91,7 @@ class LocalCropScaleMaskHelper
                 $result !== null
             );
         } else {
-            $targetFileName = $this->getFilenameForImageCropScaleMask($task);
-            $temporaryFileName = Environment::getPublicPath() . '/typo3temp/' . $targetFileName;
+            $temporaryFileName = $this->getFilenameForImageCropScaleMask($task);
             $maskImage = $configuration['maskImages']['maskImage'] ?? null;
             $maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
             if ($maskImage instanceof FileInterface && $maskBackgroundImage instanceof FileInterface) {
@@ -112,14 +108,13 @@ class LocalCropScaleMaskHelper
                 if (is_array($tempFileInfo)) {
                     // Scaling
                     $command = '-geometry ' . $tempFileInfo[0] . 'x' . $tempFileInfo[1] . '!';
-                    $command = $this->modifyImageMagickStripProfileParameters($command, $configuration);
-
                     $imageOperations->mask(
                         $tempFileInfo[3],
                         $temporaryFileName,
                         $maskImage->getForLocalProcessing(),
                         $maskBackgroundImage->getForLocalProcessing(),
-                        $command
+                        $command,
+                        $options
                     );
                     $maskBottomImage = $configuration['maskImages']['maskBottomImage'] ?? null;
                     $maskBottomImageMask = $configuration['maskImages']['maskBottomImageMask'] ?? null;
@@ -130,7 +125,8 @@ class LocalCropScaleMaskHelper
                             $temporaryFileName,
                             $maskBottomImage->getForLocalProcessing(),
                             $maskBottomImageMask->getForLocalProcessing(),
-                            $command
+                            $command,
+                            $options
                         );
                     }
                     $tempFileInfo[3] = $temporaryFileName;
@@ -202,44 +198,23 @@ class LocalCropScaleMaskHelper
         if ($configuration['minHeight'] ?? false) {
             $options['minH'] = $configuration['minHeight'];
         }
+        if (isset($configuration['stripProfile'])) {
+            $options['stripProfile'] = (bool)$configuration['stripProfile'];
+        }
 
-        $options['noScale'] = $configuration['noScale'] ?? null;
+        if (isset($configuration['noScale'])) {
+            $options['noScale'] = (bool)$configuration['noScale'];
+        }
 
         return $options;
     }
 
     /**
-     * Returns the filename for a cropped/scaled/masked file.
-     *
-     * @return string
+     * Returns the filename for a cropped/scaled/masked file which will be put in typo3temp for the time being.
      */
-    protected function getFilenameForImageCropScaleMask(TaskInterface $task)
+    protected function getFilenameForImageCropScaleMask(TaskInterface $task): string
     {
-        $configuration = $task->getTargetFile()->getProcessingConfiguration();
-        $targetFileExtension = $configuration['fileExtension'] ?? $task->getSourceFile()->getExtension();
-        return $task->getTargetFile()->generateProcessedFileNameWithoutExtension() . '.' . ltrim(trim($targetFileExtension), '.');
-    }
-
-    /**
-     * Modifies the parameters for ImageMagick for stripping of profile information.
-     *
-     * @param string $parameters The parameters to be modified (if required)
-     * @param array $configuration The TypoScript configuration of [IMAGE].file
-     * @return string
-     */
-    protected function modifyImageMagickStripProfileParameters(string $parameters, array $configuration)
-    {
-        // Strips profile information of image to save some space:
-        if (isset($configuration['stripProfile'])) {
-            if (
-                $configuration['stripProfile']
-                && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand'] !== ''
-            ) {
-                $parameters = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand'] . $parameters;
-            } else {
-                $parameters .= '###SkipStripProfile###';
-            }
-        }
-        return $parameters;
+        $targetFileExtension = $task->getTargetFileExtension();
+        return Environment::getPublicPath() . '/typo3temp/' . $task->getTargetFile()->generateProcessedFileNameWithoutExtension() . '.' . ltrim(trim($targetFileExtension), '.');
     }
 }

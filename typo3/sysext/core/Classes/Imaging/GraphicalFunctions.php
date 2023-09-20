@@ -102,9 +102,8 @@ class GraphicalFunctions
 
     /**
      * Whether ImageMagick/GraphicsMagick is enabled or not
-     * @var bool
      */
-    protected $processorEnabled;
+    protected bool $processorEnabled;
 
     /**
      * @var bool
@@ -298,6 +297,7 @@ class GraphicalFunctions
             return null;
         }
 
+        $params = $this->modifyImageMagickStripProfileParameters($params, $options);
         $newExt = strtolower(trim($newExt));
         // If no extension is given the original extension is used
         if (!$newExt) {
@@ -394,9 +394,12 @@ class GraphicalFunctions
     }
 
     /**
+     * This only crops the image, but does not take other "options" such as maxWidth etc. not into account. Do not use
+     * standalone if you don't know what you are doing.
+     *
      * @internal until API is finalized
      */
-    public function crop(string $imageFile, string $targetFileExtension, string $cropInformation): ?array
+    public function crop(string $imageFile, string $targetFileExtension, string $cropInformation, array $options): ?array
     {
         // check if it is a json object
         $cropData = json_decode($cropInformation);
@@ -416,7 +419,7 @@ class GraphicalFunctions
             '',
             sprintf('-crop %dx%d+%d+%d +repage -quality %d', $newWidth, $newHeight, $offsetLeft, $offsetTop, $this->jpegQuality),
             '',
-            ['noScale' => true],
+            isset($options['skipProfile']) ? ['skipProfile' => $options['skipProfile']] : [],
             true
         );
     }
@@ -425,8 +428,9 @@ class GraphicalFunctions
      * This applies an image onto the $inputFile with an additional backgroundImage for the mask
      * @internal until API is finalized
      */
-    public function mask(string $inputFile, string $outputFile, string $maskImage, string $maskBackgroundImage, string $params)
+    public function mask(string $inputFile, string $outputFile, string $maskImage, string $maskBackgroundImage, string $params, array $options)
     {
+        $params = $this->modifyImageMagickStripProfileParameters($params, $options);
         $tmpStr = $this->randomName();
         //	m_mask
         $intermediateMaskFile = $tmpStr . '_mask.png';
@@ -745,6 +749,24 @@ class GraphicalFunctions
             @unlink($theMask);
         }
         return $ret;
+    }
+
+    /**
+     * Modifies the parameters for ImageMagick for stripping of profile information.
+     * Strips profile information of image to save some space ideally
+     *
+     * @param string $parameters The parameters to be modified (if required)
+     */
+    protected function modifyImageMagickStripProfileParameters(string $parameters, array $options): string
+    {
+        if (isset($options['stripProfile'])) {
+            if ($options['stripProfile'] && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand'] !== '') {
+                $parameters = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand'] . ' ' . $parameters;
+            } else {
+                $parameters .= '###SkipStripProfile###';
+            }
+        }
+        return $parameters;
     }
 
     /***********************************

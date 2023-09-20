@@ -146,21 +146,19 @@ class LocalPreviewHelper
     protected function generatePreviewFromLocalFile(string $originalFileName, array $configuration, string $targetFilePath)
     {
         // Create the temporary file
-        if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled']) {
-            $imageService = GeneralUtility::makeInstance(GraphicalFunctions::class);
-            $result = $imageService->imageMagickConvert($originalFileName, 'WEB', $configuration['width'], $configuration['height'], '', '0', ['sample' => true]);
-            if ($result) {
-                $targetFilePath = $result[3];
-            }
-            if (!file_exists($targetFilePath)) {
-                // Create an error gif
-                $graphicalFunctions = GeneralUtility::makeInstance(GifBuilder::class);
-                $graphicalFunctions->getTemporaryImageWithText(
-                    $targetFilePath,
-                    'No thumb',
-                    'generated!'
-                );
-            }
+        $imageService = GeneralUtility::makeInstance(GraphicalFunctions::class);
+        $result = $imageService->imageMagickConvert($originalFileName, 'WEB', $configuration['width'], $configuration['height'], '', '0', ['sample' => true]);
+        if ($result) {
+            $targetFilePath = $result[3];
+        }
+        if (!file_exists($targetFilePath)) {
+            // Create an error gif
+            $graphicalFunctions = GeneralUtility::makeInstance(GifBuilder::class);
+            $graphicalFunctions->getTemporaryImageWithText(
+                $targetFilePath,
+                'No thumb',
+                'generated!'
+            );
         }
 
         return [
