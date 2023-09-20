@@ -384,9 +384,9 @@ class Backend extends Workspaces {
         let iconIdentifier;
 
         if ($me.first().attr('aria-expanded') === 'true') {
-          iconIdentifier = 'apps-pagetree-expand';
+          iconIdentifier = 'actions-caret-down';
         } else {
-          iconIdentifier = 'apps-pagetree-collapse';
+          iconIdentifier = 'actions-caret-right';
         }
 
         $me.empty().append(this.getIcon(iconIdentifier));
@@ -630,7 +630,7 @@ class Backend extends Workspaces {
         this.getAction(
           hasSubitems,
           'expand',
-          (item.expanded ? 'apps-pagetree-expand' : 'apps-pagetree-collapse'),
+          (item.expanded ? 'actions-caret-down' : 'actions-caret-right'),
         ).attr('title', TYPO3.lang['tooltip.expand'])
           .attr('data-bs-target', '[data-collection="' + item.Workspaces_CollectionCurrent + '"]')
           .attr('aria-expanded', !hasSubitems || item.expanded ? 'true' : 'false')
