@@ -31,7 +31,6 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\JsConfirmation;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\Uri;
@@ -670,9 +669,7 @@ class FileList
         }
 
         if (PathUtility::isAbsolutePath($thumbnailUrl)) {
-            $thumbnailUrl .= '?' . filemtime(
-                GeneralUtility::resolveBackPath(Environment::getPublicPath() . $thumbnailUrl)
-            );
+            $thumbnailUrl .= '?' . filemtime($processedFile->getForLocalProcessing(false));
         }
 
         return '<br><img src="' . htmlspecialchars($thumbnailUrl) . '" ' .
