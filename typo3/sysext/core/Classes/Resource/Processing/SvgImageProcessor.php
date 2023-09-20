@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Processing;
 
+use TYPO3\CMS\Core\Imaging\Exception\ZeroImageDimensionException;
 use TYPO3\CMS\Core\Imaging\ImageDimension;
 
 /**
@@ -43,7 +44,7 @@ class SvgImageProcessor implements ProcessorInterface
         $task->getTargetFile()->setUsesOriginalFile();
         try {
             $imageDimension = ImageDimension::fromProcessingTask($task);
-        } catch (\Throwable $e) {
+        } catch (ZeroImageDimensionException $e) {
             // To not fail image processing, we just assume an SVG image dimension here
             $imageDimension = new ImageDimension(64, 64);
         }
