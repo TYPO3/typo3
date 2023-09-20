@@ -655,26 +655,29 @@ class EditDocumentController
                 if (!in_array($table . '.' . $uid, $erroneousRecords, true)) {
                     $realUidInPayload = ($tceSubstId = array_search($uid, $tce->substNEWwithIDs, true)) !== false ? $tceSubstId : $uid;
                     $row = $this->data[$table][$uid] ?? $this->data[$table][$realUidInPayload] ?? null;
-                    if ($row !== null) {
-                        if ($this->columnsOnly) {
-                            // If label of the record is not available, fetch it from database
-                            // This is the case when EditDocumentController is booted in single field mode (e.g. Template module > 'info/modify' > edit 'setup' field)
-                            $labelArray = [$GLOBALS['TCA'][$table]['ctrl']['label'] ?? null];
-                            $labelAltArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'] ?? '', true);
-                            $labelFields = array_unique(array_filter(array_merge($labelArray, $labelAltArray)));
-                            foreach ($labelFields as $labelField) {
-                                if (!isset($row[$labelField])) {
-                                    $tmpRecord = BackendUtility::getRecord($table, $uid, implode(',', $labelFields));
-                                    if ($tmpRecord !== null) {
-                                        $row = array_merge($row, $tmpRecord);
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                        $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $row), (int)$this->getBackendUser()->uc['titleLen']);
-                        $messages[] = sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:notification.record_saved.message'), $recordTitle);
+                    if ($row === null) {
+                        continue;
                     }
+                    // Ensure, uid is always available to make labels with foreign table lookups possible
+                    $row['uid'] ??= $realUidInPayload;
+                    // If the label column of the record is not available, fetch it from database.
+                    // This is the when EditDocumentController is booted in single field mode (e.g.
+                    // Template module > 'info/modify' > edit 'setup' field) or in case the field is
+                    // not in "showitem" or is set to readonly (e.g. "file" in sys_file_metadata).
+                    $labelArray = [$GLOBALS['TCA'][$table]['ctrl']['label'] ?? null];
+                    $labelAltArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'] ?? '', true);
+                    $labelFields = array_unique(array_filter(array_merge($labelArray, $labelAltArray)));
+                    foreach ($labelFields as $labelField) {
+                        if (!isset($row[$labelField])) {
+                            $tmpRecord = BackendUtility::getRecord($table, $uid, implode(',', $labelFields));
+                            if ($tmpRecord !== null) {
+                                $row = array_merge($row, $tmpRecord);
+                            }
+                            break;
+                        }
+                    }
+                    $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $row), (int)$this->getBackendUser()->uc['titleLen']);
+                    $messages[] = sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:notification.record_saved.message'), $recordTitle);
                 }
             }
 
