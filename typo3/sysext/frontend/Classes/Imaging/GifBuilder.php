@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -711,10 +712,12 @@ class GifBuilder extends GraphicalFunctions
         // shorten prefix to avoid overly long file names
         $filePrefix = substr($filePrefix, 0, 100);
 
-        // Only take relevant parameters to ease the pain for json_encode and make the final string short
-        // so shortMD5 is not as slow. see https://forge.typo3.org/issues/64158
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+
+        // we use ConfigurationService::serialize here to use as much of $this->setup as possible,
+        // but preventing inclusion of objects that could cause problems with json_encode
         $hashInputForFileName = [
-            array_keys($this->setup),
+            $configurationService->serialize($this->setup),
             $filePrefix,
             $this->im,
             $this->XY,
