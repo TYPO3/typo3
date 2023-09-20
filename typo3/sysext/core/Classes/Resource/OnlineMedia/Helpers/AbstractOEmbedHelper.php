@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource\OnlineMedia\Helpers;
 
+use TYPO3\CMS\Core\Resource\Exception\OnlineMediaAlreadyExistsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -42,18 +43,17 @@ abstract class AbstractOEmbedHelper extends AbstractOnlineMediaHelper
     protected function transformMediaIdToFile($mediaId, Folder $targetFolder, $fileExtension)
     {
         $file = $this->findExistingFileByOnlineMediaId($mediaId, $targetFolder, $fileExtension);
-
-        // no existing file create new
-        if ($file === null) {
-            $oEmbed = $this->getOEmbedData($mediaId);
-            if (!empty($oEmbed['title'])) {
-                $fileName = $oEmbed['title'] . '.' . $fileExtension;
-            } else {
-                $fileName = $mediaId . '.' . $fileExtension;
-            }
-            $file = $this->createNewFile($targetFolder, $fileName, $mediaId);
+        if ($file !== null) {
+            throw new OnlineMediaAlreadyExistsException($file, 1695236851);
         }
-        return $file;
+        // no existing file create new
+        $oEmbed = $this->getOEmbedData($mediaId);
+        if (!empty($oEmbed['title'])) {
+            $fileName = $oEmbed['title'] . '.' . $fileExtension;
+        } else {
+            $fileName = $mediaId . '.' . $fileExtension;
+        }
+        return $this->createNewFile($targetFolder, $fileName, $mediaId);
     }
 
     /**
