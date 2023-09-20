@@ -110,11 +110,6 @@ class GifBuilder
     ];
 
     /**
-     * HTML output for a imagemap
-     */
-    protected string $map = '';
-
-    /**
      * This holds the operational setup.
      * Basically this is a TypoScript array with properties.
      *
@@ -745,9 +740,6 @@ class GifBuilder
         // Position
         $txtPos = $this->txtPosition($conf, $workArea, $conf['BBOX']);
         $theText = $conf['text'] ?? '';
-        if (($conf['imgMap'] ?? false) && is_array($conf['imgMap.'] ?? null)) {
-            $this->addToMap($this->calcTextCordsForMap($conf['BBOX'][2], $txtPos, $conf['imgMap.']), $conf['imgMap.']);
-        }
         if (!($conf['hideButCreateMap'] ?? false)) {
             // Font Color:
             $cols = $this->convertColor($conf['fontColor']);
@@ -1373,7 +1365,6 @@ class GifBuilder
             $this->im,
             $this->w,
             $this->h,
-            $this->map,
             $this->workArea,
             $this->combinedTextStrings,
             $this->combinedFileNames,
@@ -2010,48 +2001,6 @@ class GifBuilder
             }
         }
         return [$x, $y, $theBBoxInfo];
-    }
-
-    /**
-     * Adds an <area> tag to the internal variable $this->map which is used to accumulate the content for an ImageMap
-     *
-     * @param array $cords Coordinates for a polygon image map as created by ->calcTextCordsForMap()
-     * @param array $conf Configuration for "imgMap." property of a TEXT GIFBUILDER object.
-     * @see makeText()
-     * @see calcTextCordsForMap()
-     */
-    public function addToMap($cords, $conf)
-    {
-        $this->map .= '<area shape="poly" coords="' . implode(',', $cords) . '"'
-            . ' href="' . htmlspecialchars($conf['url']) . '"'
-            . ($conf['target'] ? ' target="' . htmlspecialchars($conf['target']) . '"' : '')
-            . ((string)$conf['titleText'] !== '' ? ' title="' . htmlspecialchars($conf['titleText']) . '"' : '')
-            . ' alt="' . htmlspecialchars($conf['altText']) . '" />';
-    }
-
-    /**
-     * Calculating the coordinates for a TEXT string on an image map. Used in an <area> tag
-     *
-     * @param array $cords Coordinates (from BBOX array)
-     * @param array $offset Offset array
-     * @param array $conf Configuration for "imgMap." property of a TEXT GIFBUILDER object.
-     * @return array
-     * @see makeText()
-     * @see calcTextCordsForMap()
-     */
-    protected function calcTextCordsForMap($cords, $offset, $conf)
-    {
-        $newCords = [];
-        $pars = GeneralUtility::intExplode(',', $conf['explode'] . ',');
-        $newCords[0] = $cords[0] + $offset[0] - $pars[0];
-        $newCords[1] = $cords[1] + $offset[1] + $pars[1];
-        $newCords[2] = $cords[2] + $offset[0] + $pars[0];
-        $newCords[3] = $cords[3] + $offset[1] + $pars[1];
-        $newCords[4] = $cords[4] + $offset[0] + $pars[0];
-        $newCords[5] = $cords[5] + $offset[1] - $pars[1];
-        $newCords[6] = $cords[6] + $offset[0] - $pars[0];
-        $newCords[7] = $cords[7] + $offset[1] - $pars[1];
-        return $newCords;
     }
 
     /**
