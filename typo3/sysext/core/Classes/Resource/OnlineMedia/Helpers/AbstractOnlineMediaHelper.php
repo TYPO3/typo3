@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Core\Resource\OnlineMedia\Helpers;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
@@ -64,8 +66,13 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
             if ($file->getSize() > 2048) {
                 return '';
             }
-            // By definition these files only contain the ID of the remote media source
-            $this->onlineMediaIdCache[$file->getUid()] = trim($file->getContents());
+            try {
+                // By definition these files only contain the ID of the remote media source
+                $this->onlineMediaIdCache[$file->getUid()] = trim($file->getContents());
+            } catch (InsufficientFileAccessPermissionsException | IllegalFileExtensionException $e) {
+                // User has no access to the file - online media id can not be fetched
+                return '';
+            }
         }
         return $this->onlineMediaIdCache[$file->getUid()];
     }
