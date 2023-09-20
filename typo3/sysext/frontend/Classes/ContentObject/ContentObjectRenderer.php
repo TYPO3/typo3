@@ -3678,7 +3678,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
 
                     if (MathUtility::canBeInterpretedAsInteger($file)) {
-                        $treatIdAsReference = $this->stdWrapValue('treatIdAsReference', $fileArray ?? []);
+                        $treatIdAsReference = $this->stdWrapValue('treatIdAsReference', $fileArray);
                         if (!empty($treatIdAsReference)) {
                             $fileReference = $this->getResourceFactory()->getFileReferenceObject($file);
                             $fileObject = $fileReference->getOriginalFile();
@@ -3702,18 +3702,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
             }
             if ($fileObject instanceof File) {
-                $processingConfiguration = [];
-                $processingConfiguration['width'] = $this->stdWrapValue('width', $fileArray ?? []);
-                $processingConfiguration['height'] = $this->stdWrapValue('height', $fileArray ?? []);
-                $processingConfiguration['fileExtension'] = $this->stdWrapValue('ext', $fileArray ?? []);
-                $processingConfiguration['maxWidth'] = (int)$this->stdWrapValue('maxW', $fileArray ?? []);
-                $processingConfiguration['maxHeight'] = (int)$this->stdWrapValue('maxH', $fileArray ?? []);
-                $processingConfiguration['minWidth'] = (int)$this->stdWrapValue('minW', $fileArray ?? []);
-                $processingConfiguration['minHeight'] = (int)$this->stdWrapValue('minH', $fileArray ?? []);
-                $processingConfiguration['noScale'] = $this->stdWrapValue('noScale', $fileArray ?? []);
+                $processingConfiguration['width'] = $this->stdWrapValue('width', $fileArray);
+                $processingConfiguration['height'] = $this->stdWrapValue('height', $fileArray);
+                $processingConfiguration['fileExtension'] = $this->stdWrapValue('ext', $fileArray);
+                $processingConfiguration['maxWidth'] = (int)$this->stdWrapValue('maxW', $fileArray);
+                $processingConfiguration['maxHeight'] = (int)$this->stdWrapValue('maxH', $fileArray);
+                $processingConfiguration['minWidth'] = (int)$this->stdWrapValue('minW', $fileArray);
+                $processingConfiguration['minHeight'] = (int)$this->stdWrapValue('minH', $fileArray);
+                $processingConfiguration['noScale'] = $this->stdWrapValue('noScale', $fileArray);
                 $processingConfiguration['sample'] = (bool)$this->stdWrapValue('sample', $fileArray);
-                $processingConfiguration['additionalParameters'] = $this->stdWrapValue('params', $fileArray ?? []);
-                $processingConfiguration['frame'] = (int)$this->stdWrapValue('frame', $fileArray ?? []);
+                $processingConfiguration['additionalParameters'] = $this->stdWrapValue('params', $fileArray);
+                $processingConfiguration['frame'] = (int)$this->stdWrapValue('frame', $fileArray);
                 if ($fileReference instanceof FileReference) {
                     $processingConfiguration['crop'] = $this->getCropAreaFromFileReference($fileReference, $fileArray);
                 } else {
