@@ -706,7 +706,7 @@ class SearchController extends ActionController
                     if ($fullPath) {
                         $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $fullPath);
                         $iconPath = PathUtility::getAbsoluteWebPath($fullPath);
-                        $this->iconFileNameCache[$imageType] = $imageInfo->getWidth()
+                        $this->iconFileNameCache[$imageType] = $imageInfo->getWidth() > 0
                             ? '<img src="' . $iconPath
                               . '" width="' . $imageInfo->getWidth()
                               . '" height="' . $imageInfo->getHeight()
