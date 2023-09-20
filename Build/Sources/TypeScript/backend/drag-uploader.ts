@@ -521,7 +521,7 @@ class DragUploaderPlugin {
           this.askForOverride[index].action = <Action>select.value;
         }
       } else {
-        $modal.find('.t3js-actions').removeProp('disabled');
+        modal.querySelectorAll('.t3js-actions').forEach((select: HTMLSelectElement) => select.disabled = false);
       }
     });
 
