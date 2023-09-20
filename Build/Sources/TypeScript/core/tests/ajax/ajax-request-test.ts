@@ -32,7 +32,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
 
   it('sends GET request', (): void => {
     (new AjaxRequest('https://example.com')).get();
-    expect(window.fetch).toHaveBeenCalledWith('https://example.com/', jasmine.objectContaining({ method: 'GET' }));
+    expect(window.fetch).toHaveBeenCalledWith(new URL('https://example.com/'), jasmine.objectContaining({ method: 'GET' }));
   });
 
   for (const requestMethod of ['POST', 'PUT', 'DELETE']) {
@@ -77,7 +77,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
         it(`with ${name}`, (done: DoneFn): void => {
           const request: any = (new AjaxRequest('https://example.com'));
           request[requestFn](payload, { headers: headers });
-          expect(window.fetch).toHaveBeenCalledWith('https://example.com/', jasmine.objectContaining({ method: requestMethod, body: expectedFn() }));
+          expect(window.fetch).toHaveBeenCalledWith(new URL('https://example.com/'), jasmine.objectContaining({ method: requestMethod, body: expectedFn() }));
           done();
         });
       }
@@ -123,7 +123,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
 
         (new AjaxRequest('https://example.com')).get().then(async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          expect(window.fetch).toHaveBeenCalledWith('https://example.com/', jasmine.objectContaining({ method: 'GET' }));
+          expect(window.fetch).toHaveBeenCalledWith(new URL('https://example.com/'), jasmine.objectContaining({ method: 'GET' }));
           onfulfill(data, responseText);
           done();
         });
@@ -137,43 +137,43 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
         'absolute url with domain',
         'https://example.com',
         {},
-        'https://example.com/',
+        new URL('https://example.com/'),
       ];
       yield [
         'absolute url with domain, with query parameter',
         'https://example.com',
         { foo: 'bar', bar: { baz: 'bencer' } },
-        'https://example.com/?foo=bar&bar[baz]=bencer',
+        new URL('https://example.com/?foo=bar&bar%5Bbaz%5D=bencer'),
       ];
       yield [
         'absolute url without domain',
         '/foo/bar',
         {},
-        window.location.origin + '/foo/bar',
+        new URL(window.location.origin + '/foo/bar'),
       ];
       yield [
         'absolute url without domain, with query parameter',
         '/foo/bar',
         { foo: 'bar', bar: { baz: 'bencer' } },
-        window.location.origin + '/foo/bar?foo=bar&bar[baz]=bencer',
+        new URL(window.location.origin + '/foo/bar?foo=bar&bar%5Bbaz%5D=bencer'),
       ];
       yield [
         'relative url without domain',
         'foo/bar',
         {},
-        window.location.origin + '/foo/bar',
+        new URL(window.location.origin + '/foo/bar'),
       ];
       yield [
         'relative url without domain, with query parameter',
         'foo/bar',
         { foo: 'bar', bar: { baz: 'bencer' } },
-        window.location.origin + '/foo/bar?foo=bar&bar[baz]=bencer',
+        new URL(window.location.origin + '/foo/bar?foo=bar&bar%5Bbaz%5D=bencer'),
       ];
       yield [
         'fallback to current script if not defined',
         '?foo=bar&baz=bencer',
         {},
-        window.location.origin + window.location.pathname + '?foo=bar&baz=bencer',
+        new URL(window.location.origin + window.location.pathname + '?foo=bar&baz=bencer'),
       ];
     }
 
@@ -191,27 +191,27 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
       yield [
         'single level of arguments',
         { foo: 'bar', bar: 'baz' },
-        'https://example.com/?foo=bar&bar=baz',
+        new URL('https://example.com/?foo=bar&bar=baz'),
       ];
       yield [
         'nested arguments',
         { foo: 'bar', bar: { baz: 'bencer' } },
-        'https://example.com/?foo=bar&bar[baz]=bencer',
+        new URL('https://example.com/?foo=bar&bar%5Bbaz%5D=bencer'),
       ];
       yield [
         'string argument',
         'hello=world&foo=bar',
-        'https://example.com/?hello=world&foo=bar',
+        new URL('https://example.com/?hello=world&foo=bar'),
       ];
       yield [
         'array of arguments',
         ['foo=bar', 'husel=pusel'],
-        'https://example.com/?foo=bar&husel=pusel',
+        new URL('https://example.com/?foo=bar&husel=pusel'),
       ];
       yield [
         'object with array',
         { foo: ['bar', 'baz'] },
-        'https://example.com/?foo[0]=bar&foo[1]=baz',
+        new URL('https://example.com/?foo%5B0%5D=bar&foo%5B1%5D=baz'),
       ];
       yield [
         'complex object',
@@ -224,7 +224,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
           },
           array: ['1', '2']
         },
-        'https://example.com/?foo=bar&nested[husel]=pusel&nested[bar]=baz&nested[array][0]=5&nested[array][1]=6&array[0]=1&array[1]=2',
+        new URL('https://example.com/?foo=bar&nested%5Bhusel%5D=pusel&nested%5Bbar%5D=baz&nested%5Barray%5D%5B0%5D=5&nested%5Barray%5D%5B1%5D=6&array%5B0%5D=1&array%5B1%5D=2'),
       ];
       yield [
         'complex, deeply nested object',
@@ -242,7 +242,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
           },
           array: ['1', '2']
         },
-        'https://example.com/?foo=bar&nested[husel]=pusel&nested[bar]=baz&nested[array][0]=5&nested[array][1]=6&nested[deep_nested][husel]=pusel&nested[deep_nested][bar]=baz&nested[deep_nested][array][0]=5&nested[deep_nested][array][1]=6&array[0]=1&array[1]=2',
+        new URL('https://example.com/?foo=bar&nested%5Bhusel%5D=pusel&nested%5Bbar%5D=baz&nested%5Barray%5D%5B0%5D=5&nested%5Barray%5D%5B1%5D=6&nested%5Bdeep_nested%5D%5Bhusel%5D=pusel&nested%5Bdeep_nested%5D%5Bbar%5D=baz&nested%5Bdeep_nested%5D%5Barray%5D%5B0%5D=5&nested%5Bdeep_nested%5D%5Barray%5D%5B1%5D=6&array%5B0%5D=1&array%5B1%5D=2'),
       ];
     }
 

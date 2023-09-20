@@ -34,12 +34,11 @@ class AjaxRequest {
     credentials: 'same-origin'
   };
 
-  private readonly url: string;
+  private readonly url: URL;
   private readonly abortController: AbortController;
-  private queryArguments: string = '';
 
   constructor(url: string) {
-    this.url = url;
+    this.url = new URL(url, window.location.origin + window.location.pathname);
     this.abortController = new AbortController();
   }
 
@@ -51,7 +50,11 @@ class AjaxRequest {
    */
   public withQueryArguments(data: string | Array<string> | GenericKeyValue): AjaxRequest {
     const clone = this.clone();
-    clone.queryArguments = (clone.queryArguments !== '' ? '&' : '') + InputTransformer.toSearchParams(data);
+
+    data = new URLSearchParams(InputTransformer.toSearchParams(data));
+    for (const [key, value] of data.entries()) {
+      this.url.searchParams.append(key, value);
+    }
     return clone;
   }
 
@@ -152,27 +155,11 @@ class AjaxRequest {
    * @return {Promise<Response>}
    */
   private async send(init: RequestInit = {}): Promise<Response> {
-    const response = await fetch(this.composeRequestUrl(), this.getMergedOptions(init));
+    const response = await fetch(this.url, this.getMergedOptions(init));
     if (!response.ok) {
       throw new AjaxResponse(response);
     }
     return response;
-  }
-
-  private composeRequestUrl(): string {
-    let url = this.url;
-    if (url.charAt(0) === '?') {
-      // URL is a search string only, prepend current location
-      url = window.location.origin + window.location.pathname + url;
-    }
-    url = new URL(url, window.location.origin).toString();
-
-    if (this.queryArguments !== '') {
-      const delimiter = !this.url.includes('?') ? '?' : '&';
-      url += delimiter + this.queryArguments;
-    }
-
-    return url;
   }
 
   /**
