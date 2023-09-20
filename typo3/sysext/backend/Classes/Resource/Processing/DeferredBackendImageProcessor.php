@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Imaging\Exception\ZeroImageDimensionException;
 use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorInterface;
@@ -48,7 +49,12 @@ class DeferredBackendImageProcessor implements ProcessorInterface
 
     public function processTask(TaskInterface $task): void
     {
-        $imageDimension = ImageDimension::fromProcessingTask($task);
+        try {
+            $imageDimension = ImageDimension::fromProcessingTask($task);
+        } catch (ZeroImageDimensionException $e) {
+            // To not fail image processing, we just assume an image dimension here
+            $imageDimension = new ImageDimension(64, 64);
+        }
         $processedFile = $task->getTargetFile();
         if (!$processedFile->isPersisted()) {
             // For now, we need to persist the processed file in the repository to be able to reference its uid

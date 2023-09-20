@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Imaging;
 
+use TYPO3\CMS\Core\Imaging\Exception\ZeroImageDimensionException;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper;
@@ -73,7 +74,7 @@ class ImageDimension
             );
         }
         if ($imageDimension->width <= 0 || $imageDimension->height <= 0) {
-            throw new \BadMethodCallException('Width and height of the image must be greater than zero', 1597310560);
+            throw new ZeroImageDimensionException('Width and height of the image must be greater than zero.', 1597310560);
         }
         $result = GeneralUtility::makeInstance(GraphicalFunctions::class)->getImageScale(
             [
