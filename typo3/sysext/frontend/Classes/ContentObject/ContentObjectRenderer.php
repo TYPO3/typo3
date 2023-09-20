@@ -3711,6 +3711,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $processingConfiguration['minWidth'] = (int)$this->stdWrapValue('minW', $fileArray ?? []);
                 $processingConfiguration['minHeight'] = (int)$this->stdWrapValue('minH', $fileArray ?? []);
                 $processingConfiguration['noScale'] = $this->stdWrapValue('noScale', $fileArray ?? []);
+                $processingConfiguration['sample'] = (bool)$this->stdWrapValue('sample', $fileArray);
                 $processingConfiguration['additionalParameters'] = $this->stdWrapValue('params', $fileArray ?? []);
                 $processingConfiguration['frame'] = (int)$this->stdWrapValue('frame', $fileArray ?? []);
                 if ($fileReference instanceof FileReference) {

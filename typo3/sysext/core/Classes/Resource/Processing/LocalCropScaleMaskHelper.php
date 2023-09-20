@@ -209,10 +209,10 @@ class LocalCropScaleMaskHelper
     {
         $configuration = $processedFile->getProcessingConfiguration();
 
-        if ($configuration['useSample'] ?? false) {
-            $imageOperations->scalecmd = '-sample';
-        }
         $options = [];
+        if ($configuration['sample'] ?? false) {
+            $options['sample'] = true;
+        }
         if ($configuration['maxWidth'] ?? false) {
             $options['maxW'] = $configuration['maxWidth'];
         }
