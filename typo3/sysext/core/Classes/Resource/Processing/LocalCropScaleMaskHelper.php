@@ -213,10 +213,10 @@ class LocalCropScaleMaskHelper
     {
         $configuration = $processedFile->getProcessingConfiguration();
 
-        if ($configuration['useSample'] ?? false) {
-            $gifBuilder->scalecmd = '-sample';
-        }
         $options = [];
+        if ($configuration['sample'] ?? false) {
+            $options['sample'] = true;
+        }
         if ($configuration['maxWidth'] ?? false) {
             $options['maxW'] = $configuration['maxWidth'];
         }

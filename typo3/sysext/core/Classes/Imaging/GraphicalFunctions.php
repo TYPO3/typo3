@@ -208,7 +208,7 @@ class GraphicalFunctions
      *
      * @var string
      */
-    public $scalecmd = '-auto-orient -geometry';
+    public $scalecmd = '-auto-orient';
 
     /**
      * Used by v5_blur() to simulate 10 continuous steps of blurring
@@ -2150,7 +2150,11 @@ class GraphicalFunctions
             $offsetY = (int)(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
             $params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! +repage';
         }
-        $command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
+        // start with the default scale command
+        $command = $this->scalecmd;
+        // check if we should use -sample or -geometry
+        $command .= ' ' . (($options['sample'] ?? false) ? '-sample' : '-geometry');
+        $command .= ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
         // re-apply colorspace-setting for the resulting image so colors don't appear to dark (sRGB instead of RGB)
         $command .= ' -colorspace ' . $this->colorspace;
         $cropscale = $data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '';
