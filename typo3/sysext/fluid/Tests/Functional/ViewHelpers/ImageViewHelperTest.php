@@ -60,6 +60,10 @@ class ImageViewHelperTest extends FunctionalTestCase
                 '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="null" />',
                 '@^<img src="typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg" width="300" height="500" alt="" />$@',
             ],
+            'crop as array' => [
+                '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="{\'x\': 200, \'y\': 200, \'width\': 200, \'height\': 200}" />',
+                '@^<img src="typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg" width="300" height="500" alt="" />$@',
+            ],
             'jpg file extension' => [
                 '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="null" fileExtension="jpg" />',
                 '@^<img src="typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg" width="300" height="500" alt="" />$@',
