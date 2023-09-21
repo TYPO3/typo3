@@ -106,7 +106,6 @@ CREATE TABLE tt_content (
 	target varchar(30) DEFAULT '' NOT NULL,
 	recursive tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	imageheight mediumint(8) unsigned DEFAULT '0' NOT NULL,
-	pi_flexform mediumtext,
 	accessibility_title varchar(30) DEFAULT '' NOT NULL,
 	accessibility_bypass_text varchar(30) DEFAULT '' NOT NULL,
 	category_field varchar(64) DEFAULT '' NOT NULL,

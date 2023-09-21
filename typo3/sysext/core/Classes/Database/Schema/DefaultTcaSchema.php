@@ -657,7 +657,7 @@ class DefaultTcaSchema
                 }
                 $tables[$tablePosition]->addColumn(
                     $this->quote($fieldName),
-                    'integer',
+                    Types::INTEGER,
                     [
                         'default' => 0,
                         'notnull' => true,
@@ -676,22 +676,38 @@ class DefaultTcaSchema
                 if (isset($fieldConfig['config']['MM'])) {
                     $tables[$tablePosition]->addColumn(
                         $this->quote($fieldName),
-                        'integer',
+                        Types::INTEGER,
                         [
-                        'default' => 0,
-                        'notnull' => true,
-                        'unsigned' => true,
-                    ]
+                            'default' => 0,
+                            'notnull' => true,
+                            'unsigned' => true,
+                        ]
                     );
                 } else {
                     $tables[$tablePosition]->addColumn(
                         $this->quote($fieldName),
-                        'text',
+                        Types::TEXT,
                         [
                             'notnull' => false,
                         ]
                     );
                 }
+            }
+
+            // Add fields for all tables, defining flex columns (TCA type=flex)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'flex'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    Types::TEXT,
+                    [
+                        'notnull' => false,
+                    ]
+                );
             }
         }
 

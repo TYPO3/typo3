@@ -145,7 +145,6 @@ CREATE TABLE sys_filemounts (
 CREATE TABLE sys_file_storage (
 	name varchar(255) DEFAULT '' NOT NULL,
 	driver tinytext,
-	configuration text,
 	is_public tinyint(4) DEFAULT '0' NOT NULL,
 	processingfolder tinytext
 );

@@ -1,5 +1,4 @@
 CREATE TABLE tx_testselectflexmm_local (
-	flex_1 text
 );
 
 # MM tables for fields defined in flex form data structures

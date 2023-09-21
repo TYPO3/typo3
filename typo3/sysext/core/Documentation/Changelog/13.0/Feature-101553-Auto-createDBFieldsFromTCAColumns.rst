@@ -60,6 +60,7 @@ Columns are auto-created for these :php:`TCA` :php:`columns` types:
 * :php:`type = 'imageManipulation'` - new with core v13
 * :php:`type = 'language'` - new with core v13
 * :php:`type = 'group'` - new with core v13
+* :php:`type = 'flex'` - new with core v13
 
 
 .. index:: TCA, ext:core, NotScanned

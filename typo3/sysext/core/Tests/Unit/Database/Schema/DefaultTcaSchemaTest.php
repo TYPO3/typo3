@@ -1170,4 +1170,26 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('groupWithMM')->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function enrichAddsFlex(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['flex'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'flex',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`flex`',
+            Type::getType('text'),
+            [
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('flex')->toArray());
+    }
 }

@@ -32,6 +32,5 @@ CREATE TABLE pages
 
 CREATE TABLE tt_content
 (
-  tx_testirreforeignfieldnonws_hotels int(11) DEFAULT '0' NOT NULL,
-  tx_testirreforeignfieldnonws_flexform mediumtext
+  tx_testirreforeignfieldnonws_hotels int(11) DEFAULT '0' NOT NULL
 );

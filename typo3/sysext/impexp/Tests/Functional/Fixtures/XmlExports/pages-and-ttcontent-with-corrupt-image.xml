@@ -341,7 +341,12 @@
 				<field index="description" type="NULL"></field>
 				<field index="name">fileadmin</field>
 				<field index="driver">Local</field>
-				<field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
+                <field index="is_public">1</field>
+                <field index="is_browsable">1</field>
+                <field index="is_default">0</field>
+                <field index="is_writable">1</field>
+                <field index="is_online">1</field>
+                <field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
 &lt;T3FlexForms&gt;
 	&lt;data&gt;
 		&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -359,11 +364,6 @@
 		&lt;/sheet&gt;
 	&lt;/data&gt;
 &lt;/T3FlexForms&gt;</field>
-				<field index="is_public">1</field>
-				<field index="is_browsable">1</field>
-				<field index="is_default">0</field>
-				<field index="is_writable">1</field>
-				<field index="is_online">1</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="configuration" type="array">
