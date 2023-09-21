@@ -565,13 +565,16 @@ class SchedulerModuleController
         $data = $this->taskRepository->getGroupedTasks();
         $registeredClasses = $this->taskService->getAvailableTaskTypes();
 
-        foreach ($data['taskGroupsWithTasks'] as $key => $group) {
-            $group['taskGroupCollapsed'] = (bool)($moduleData->get('task-group-' . ($key ?? 0), false));
-        }
+        $groups = $data['taskGroupsWithTasks'] ?? [];
+        $groups = array_map(
+            static fn (int $key, array $group): array => array_merge($group, ['taskGroupCollapsed' => (bool)($moduleData->get('task-group-' . $key, false))]),
+            array_keys($groups),
+            $groups
+        );
 
         $view->assignMultiple([
-            'groups' => $data['taskGroupsWithTasks'],
-            'groupsWithoutTasks' => $this->getGroupsWithoutTasks($data['taskGroupsWithTasks']),
+            'groups' => $groups,
+            'groupsWithoutTasks' => $this->getGroupsWithoutTasks($groups),
             'now' => $this->context->getAspect('date')->get('timestamp'),
             'errorClasses' => $data['errorClasses'],
             'errorClassesCollapsed' => (bool)($moduleData->get('task-group-missing', false)),
