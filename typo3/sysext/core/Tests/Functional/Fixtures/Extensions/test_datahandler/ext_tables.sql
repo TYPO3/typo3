@@ -7,8 +7,6 @@ CREATE TABLE tt_content (
 		tx_testdatahandler_radio text,
 		tx_testdatahandler_input_minvalue text,
 		tx_testdatahandler_input_minvalue_zero text,
-		tx_testdatahandler_text_minvalue text,
-		tx_testdatahandler_richttext_minvalue text
 );
 
 #

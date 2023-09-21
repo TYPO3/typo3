@@ -3,21 +3,17 @@
 #
 CREATE TABLE sys_file_metadata (
 	status varchar(24) DEFAULT '',
-	keywords text,
-	caption text,
 	creator_tool varchar(255) DEFAULT '',
 	download_name varchar(255) DEFAULT '',
 	creator varchar(255) DEFAULT '',
 	publisher varchar(45) DEFAULT '',
 	source varchar(255) DEFAULT '',
-	copyright text,
 	location_country varchar(45) DEFAULT '',
 	location_region varchar(45) DEFAULT '',
 	location_city varchar(45) DEFAULT '',
 	latitude decimal(24,14) DEFAULT '0.00000000000000',
 	longitude decimal(24,14) DEFAULT '0.00000000000000',
 	ranking int(11) unsigned DEFAULT '0',
-	note text,
 
 	# px,mm,cm,m,p, ...
 	unit char(3) DEFAULT '',

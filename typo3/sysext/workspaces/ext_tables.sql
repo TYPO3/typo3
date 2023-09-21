@@ -33,7 +33,6 @@ CREATE TABLE sys_workspace (
 #
 CREATE TABLE sys_workspace_stage (
 	title varchar(30) DEFAULT '' NOT NULL,
-	default_mailcomment text,
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable varchar(255) DEFAULT '' NOT NULL,
 );

@@ -210,9 +210,9 @@
 				<field index="sorting_foreign" type="integer">0</field>
 				<field index="uid_local" type="integer">1</field>
 				<field index="title" type="NULL"></field>
-				<field index="description" type="NULL"></field>
 				<field index="alternative" type="NULL"></field>
 				<field index="link"></field>
+				<field index="description" type="NULL"></field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="uid_local" type="array">
@@ -341,12 +341,12 @@
 				<field index="description" type="NULL"></field>
 				<field index="name">fileadmin</field>
 				<field index="driver">Local</field>
-                <field index="is_public">1</field>
-                <field index="is_browsable">1</field>
-                <field index="is_default">0</field>
-                <field index="is_writable">1</field>
-                <field index="is_online">1</field>
-                <field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="is_public">1</field>
+				<field index="is_browsable">1</field>
+				<field index="is_default">0</field>
+				<field index="is_writable">1</field>
+				<field index="is_online">1</field>
+				<field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
 &lt;T3FlexForms&gt;
 	&lt;data&gt;
 		&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -385,8 +385,8 @@
 				<field index="title">Dummy image</field>
 				<field index="width">400</field>
 				<field index="height">300</field>
-				<field index="description">This is a dummy image.</field>
 				<field index="alternative">Photo of program code</field>
+				<field index="description">This is a dummy image.</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="file" type="array">
@@ -410,8 +410,8 @@
 				<field index="title">Beispiel Bild</field>
 				<field index="width">400</field>
 				<field index="height">300</field>
-				<field index="description">Nur ein Beispielbild.</field>
 				<field index="alternative">Foto von Programmcode</field>
+				<field index="description">Nur ein Beispielbild.</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="l10n_parent" type="array">

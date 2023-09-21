@@ -715,6 +715,22 @@ class DefaultTcaSchema
                     ]
                 );
             }
+
+            // Add fields for all tables, defining text columns (TCA type=text)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'text'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    Types::TEXT,
+                    [
+                        'notnull' => false,
+                    ]
+                );
+            }
         }
 
         return $tables;

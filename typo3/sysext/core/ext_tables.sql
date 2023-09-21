@@ -15,7 +15,6 @@ CREATE TABLE be_groups (
 	mfa_providers text,
 	file_mountpoints text,
 	file_permissions text,
-	TSconfig text,
 	subgroup text,
 );
 
@@ -46,7 +45,6 @@ CREATE TABLE be_users (
 	uc mediumblob,
 	file_mountpoints text,
 	file_permissions text,
-	TSconfig text,
 	workspace_id int(11) DEFAULT '0' NOT NULL,
 	mfa mediumblob,
 	KEY username (username)
@@ -63,18 +61,14 @@ CREATE TABLE pages (
 	perms_everybody tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	title varchar(255) DEFAULT '' NOT NULL,
 	doktype int(11) unsigned DEFAULT '0' NOT NULL,
-	TSconfig text,
 	url varchar(255) DEFAULT '' NOT NULL,
 	shortcut_mode int(10) unsigned DEFAULT '0' NOT NULL,
 	subtitle varchar(255) DEFAULT '' NOT NULL,
 	layout int(11) unsigned DEFAULT '0' NOT NULL,
 	target varchar(80) DEFAULT '' NOT NULL,
-	keywords text,
 	cache_timeout int(10) unsigned DEFAULT '0' NOT NULL,
 	cache_tags varchar(255) DEFAULT '' NOT NULL,
-	description text,
 	SYS_LASTCHANGED int(10) unsigned DEFAULT '0' NOT NULL,
-	abstract text,
 	module varchar(255) DEFAULT '' NOT NULL,
 	author varchar(255) DEFAULT '' NOT NULL,
 	nav_title varchar(255) DEFAULT '' NOT NULL,
@@ -187,7 +181,6 @@ CREATE TABLE sys_file_metadata (
 	title tinytext,
 	width int(11) DEFAULT '0' NOT NULL,
 	height int(11) DEFAULT '0' NOT NULL,
-	description text,
 	alternative text,
 
 	KEY file (file),
@@ -240,7 +233,6 @@ CREATE TABLE sys_file_reference (
 
 	# Local usage overlay fields
 	title tinytext,
-	description text,
 	alternative text,
 	link varchar(1024) DEFAULT '' NOT NULL,
 

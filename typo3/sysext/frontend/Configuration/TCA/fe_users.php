@@ -99,6 +99,7 @@ return [
                 'type' => 'text',
                 'cols' => 20,
                 'rows' => 3,
+                'default' => '',
             ],
         ],
         'telephone' => [

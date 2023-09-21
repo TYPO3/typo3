@@ -46,7 +46,6 @@ CREATE TABLE fe_users (
 	first_name varchar(50) DEFAULT '' NOT NULL,
 	middle_name varchar(50) DEFAULT '' NOT NULL,
 	last_name varchar(50) DEFAULT '' NOT NULL,
-	address varchar(255) DEFAULT '' NOT NULL,
 	telephone varchar(30) DEFAULT '' NOT NULL,
 	fax varchar(30) DEFAULT '' NOT NULL,
 	uc blob,
@@ -70,8 +69,6 @@ CREATE TABLE fe_users (
 CREATE TABLE sys_template (
 	title varchar(255) DEFAULT '' NOT NULL,
 	include_static_file text,
-	constants text,
-	config text,
 	static_file_mode tinyint(4) unsigned DEFAULT '0' NOT NULL,
 
 	KEY roottemplate (deleted,hidden,root)
@@ -84,8 +81,6 @@ CREATE TABLE tt_content (
 	CType varchar(255) DEFAULT '' NOT NULL,
 	header varchar(255) DEFAULT '' NOT NULL,
 	header_position varchar(255) DEFAULT '' NOT NULL,
-	rowDescription text,
-	bodytext mediumtext,
 	bullets_type tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	uploads_type tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	imagewidth mediumint(11) unsigned DEFAULT '0' NOT NULL,
@@ -125,5 +120,4 @@ CREATE TABLE tt_content (
 #
 CREATE TABLE backend_layout (
 	title varchar(255) DEFAULT '' NOT NULL,
-	config text NOT NULL,
 );

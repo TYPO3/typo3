@@ -23,5 +23,4 @@ CREATE TABLE tx_scheduler_task (
 #
 CREATE TABLE tx_scheduler_task_group (
 	groupName varchar(80) DEFAULT '' NOT NULL,
-	description text
 );
