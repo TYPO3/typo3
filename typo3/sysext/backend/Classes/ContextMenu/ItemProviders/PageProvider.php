@@ -532,9 +532,8 @@ class PageProvider extends RecordProvider
     }
 
     /**
-     * Checks if user has access to this column
-     * and the page doktype is lower than 200 (exclude sys_folder, ...)
-     * and it contains given value
+     * Checks if user has access to this column, the doktype
+     * is not excluded and that it contains the given value.
      */
     protected function canBeToggled(string $fieldName, int $value): bool
     {
@@ -542,7 +541,7 @@ class PageProvider extends RecordProvider
             return false;
         }
         if (!empty($GLOBALS['TCA'][$this->table]['columns'][$fieldName]['exclude'])
-            && $this->record['doktype'] <= PageRepository::DOKTYPE_SPACER
+            && !$this->isExcludedDoktype()
             && $this->backendUser->check('non_exclude_fields', $this->table . ':' . $fieldName)
             && $this->backendUser->check('tables_modify', $this->table)
         ) {
