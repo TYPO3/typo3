@@ -63,10 +63,10 @@ class AdministrationController extends ActionController
     protected function initializeModuleTemplate(ServerRequestInterface $request): ModuleTemplate
     {
         $menuItems = [
-            'index' => [
+            'statistic' => [
                 'controller' => 'Administration',
-                'action' => 'index',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.general'),
+                'action' => 'statistic',
+                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.statistic'),
             ],
             'pages' => [
                 'controller' => 'Administration',
@@ -78,10 +78,10 @@ class AdministrationController extends ActionController
                 'action' => 'externalDocuments',
                 'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.externalDocuments'),
             ],
-            'statistic' => [
+            'index' => [
                 'controller' => 'Administration',
-                'action' => 'statistic',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.statistic'),
+                'action' => 'index',
+                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.general'),
             ],
         ];
 
