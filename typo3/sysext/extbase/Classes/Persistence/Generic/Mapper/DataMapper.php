@@ -517,8 +517,9 @@ class DataMapper
         $dataMap = $this->getDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($propertyName);
         $workspaceId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id');
+        $parentId = $this->resolveParentId($parentObject, $workspaceId, $columnMap);
         if ($columnMap && $workspaceId > 0) {
-            $resolvedRelationIds = $this->resolveRelationValuesOfField($dataMap, $columnMap, $parentObject, $fieldValue, $workspaceId);
+            $resolvedRelationIds = $this->resolveRelationValuesOfField($dataMap, $columnMap, $parentId, $fieldValue, $workspaceId);
         } else {
             $resolvedRelationIds = [];
         }
@@ -533,6 +534,13 @@ class DataMapper
                 if ($columnMap->typeOfRelation === Relation::HAS_AND_BELONGS_TO_MANY) {
                     $query->getQuerySettings()->setEnableFieldsToBeIgnored(['pid']);
                     $query->getQuerySettings()->setIgnoreEnableFields(true);
+                }
+                // Also, we still need to restrict the MM on the foreign side
+                if ($columnMap->getParentKeyFieldName() !== null) {
+                    $constraint = $query->logicalAnd(
+                        $constraint,
+                        $query->equals($columnMap->getParentKeyFieldName(), $parentId)
+                    );
                 }
             } else {
                 $constraint = $query->in('uid', $resolvedRelationIds);
@@ -573,6 +581,23 @@ class DataMapper
     }
 
     /**
+     * Fetch the actual "uid" which we need to query to fetch relations to this UID.
+     */
+    protected function resolveParentId(DomainObjectInterface $parentObject, int $workspaceId, ?ColumnMap $columnMap): ?int
+    {
+        $parentId = $parentObject->getUid();
+        if ($columnMap && $workspaceId > 0) {
+            // versionedUid in a multi-language setup is the overlaid versioned AND translated ID
+            if ($parentObject->_hasProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) && $parentObject->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) > 0 && $parentObject->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) !== $parentId) {
+                $parentId = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID);
+            } elseif ($parentObject->_hasProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) && $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) > 0) {
+                $parentId = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
+            }
+        }
+        return $parentId;
+    }
+
+    /**
      * This resolves relations via RelationHandler and returns their UIDs respectively, and works for MM/ForeignField/CSV in IRRE + Select + Group.
      *
      * Note: This only happens for resolving properties for models. When limiting a parentQuery, the Typo3DbQueryParser is taking care of it.
@@ -584,20 +609,13 @@ class DataMapper
      *
      * @param DataMap $dataMap
      * @param ColumnMap $columnMap
-     * @param DomainObjectInterface $parentObject
+     * @param int|null $parentId
      * @param string $fieldValue
      * @param int $workspaceId
      * @return array|false|mixed
      */
-    protected function resolveRelationValuesOfField(DataMap $dataMap, ColumnMap $columnMap, DomainObjectInterface $parentObject, $fieldValue, int $workspaceId)
+    protected function resolveRelationValuesOfField(DataMap $dataMap, ColumnMap $columnMap, ?int $parentId, $fieldValue, int $workspaceId)
     {
-        $parentId = $parentObject->getUid();
-        // versionedUid in a multi-language setup is the overlaid versioned AND translated ID
-        if ($parentObject->_hasProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) && $parentObject->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) > 0 && $parentObject->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) !== $parentId) {
-            $parentId = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID);
-        } elseif ($parentObject->_hasProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) && $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) > 0) {
-            $parentId = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
-        }
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         $relationHandler->setWorkspaceId($workspaceId);
         $relationHandler->setUseLiveReferenceIds(true);
