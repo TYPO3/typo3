@@ -93,7 +93,7 @@ final class ImageViewHelper extends AbstractViewHelper
         $this->registerArgument('src', 'string', 'src', false, '');
         $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record', false, false);
         $this->registerArgument('image', 'object', 'image');
-        $this->registerArgument('crop', 'string|bool', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
+        $this->registerArgument('crop', 'string|bool|array', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
         $this->registerArgument('cropVariant', 'string', 'select a cropping variant, in case multiple croppings have been specified or stored in FileReference', false, 'default');
         $this->registerArgument('fileExtension', 'string', 'Custom file extension to use');
 
@@ -133,6 +133,11 @@ final class ImageViewHelper extends AbstractViewHelper
 
             if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
                 $cropString = $image->getProperty('crop');
+            }
+
+            // CropVariantCollection needs a string, but this VH could also receive an array
+            if (is_array($cropString)) {
+                $cropString = json_encode($cropString);
             }
 
             $cropVariantCollection = CropVariantCollection::create((string)$cropString);
