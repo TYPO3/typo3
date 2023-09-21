@@ -61,10 +61,6 @@ CREATE TABLE tx_styleguide_displaycond (
     select_2 text,
     select_3 text,
     select_4 text,
-
-    flex_1 text,
-    flex_2 text,
-    flex_3 text,
 );
 
 
@@ -162,17 +158,12 @@ CREATE TABLE tx_styleguide_elements_basic (
     user_2 text,
 
     unknown_1 text,
-
-    flex_1 text
 );
 
 CREATE TABLE tx_styleguide_elements_group (
-    flex_1 text
 );
 
-CREATE TABLE tx_styleguide_elements_folder
-(
-    flex_1 text
+CREATE TABLE tx_styleguide_elements_folder (
 );
 
 CREATE TABLE tx_styleguide_elements_imagemanipulation (
@@ -186,7 +177,6 @@ CREATE TABLE tx_styleguide_elements_rte (
     rte_4 text,
     rte_5 text,
     rte_inline_1 text,
-    rte_flex_1 text,
     input_palette_1 text,
     rte_palette_1 text
 );
@@ -263,8 +253,6 @@ CREATE TABLE tx_styleguide_elements_select (
     select_tree_5 text,
     select_tree_6 text,
 
-    flex_1 text,
-
     select_requestUpdate_1 text
 );
 
@@ -296,7 +284,6 @@ CREATE TABLE tx_styleguide_elements_t3editor (
     t3editor_2 text,
     t3editor_reload_1 int(11) DEFAULT '0' NOT NULL,
     t3editor_inline_1 text,
-    t3editor_flex_1 text
 );
 
 
@@ -317,11 +304,6 @@ CREATE TABLE tx_styleguide_elements_t3editor_inline_1_child (
 
 
 CREATE TABLE tx_styleguide_flex (
-    flex_file_1 text,
-    flex_1 text,
-    flex_2 text,
-    flex_3 text,
-    flex_5 text,
 );
 
 
@@ -430,7 +412,6 @@ CREATE TABLE tx_styleguide_inline_expandsingle_child (
 );
 
 CREATE TABLE tx_styleguide_file (
-    file_flex_1 text
 );
 
 
@@ -602,9 +583,6 @@ CREATE TABLE tx_styleguide_required (
     inline_2 text,
     inline_3 text,
 
-    flex_1 text,
-    flex_2 text,
-
     palette_input_1 text,
     palette_input_2 text
 );
@@ -706,7 +684,6 @@ CREATE TABLE tx_styleguide_l10nreadonly (
     select_multiplesidebyside text,
     select_multiplesidebyside_mm text,
     inline text,
-    flex text
 );
 
 CREATE TABLE tx_styleguide_l10nreadonly_inline_child (
