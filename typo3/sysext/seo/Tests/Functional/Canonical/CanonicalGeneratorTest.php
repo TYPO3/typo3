@@ -17,7 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\Canonical;
 
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Seo\Canonical\CanonicalGenerator;
+use TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -144,6 +150,37 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         } else {
             self::assertStringNotContainsString('<link rel="canonical"', (string)$response->getBody());
         }
+    }
+
+    /**
+     * @test
+     */
+    public function afterContentObjectRendererInitializedEventIsCalled(): void
+    {
+        $modifyUrlForCanonicalTagEvent = null;
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'modify-url-for-canonical-tag-listener',
+            static function (ModifyUrlForCanonicalTagEvent $event) use (&$modifyUrlForCanonicalTagEvent) {
+                $modifyUrlForCanonicalTagEvent = $event;
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(ModifyUrlForCanonicalTagEvent::class, 'modify-url-for-canonical-tag-listener');
+
+        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
+        $GLOBALS['TSFE']->id = 123;
+        $GLOBALS['TSFE']->page['no_index'] = 1;
+
+        (new CanonicalGenerator())->generate(['request' => new ServerRequest('https://example.com'), 'page' => ['uid' => 123]]);
+
+        self::assertInstanceOf(ModifyUrlForCanonicalTagEvent::class, $modifyUrlForCanonicalTagEvent);
+        self::assertEmpty('', $modifyUrlForCanonicalTagEvent->getUrl());
+        self::assertEquals('https://example.com', (string)$modifyUrlForCanonicalTagEvent->getRequest()->getUri());
+        self::assertEquals(123, $modifyUrlForCanonicalTagEvent->getPage()->getPageId());
     }
 
     private function buildPageTypoScript(): TypoScriptInstruction

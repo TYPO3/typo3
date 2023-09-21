@@ -17,12 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Domain\Page;
+
 /**
- * PSR-14 to alter (or empty) a canonical URL for the href="" attribute of a canonical URL.
+ * PSR-14 event to alter (or empty) a canonical URL for the href="" attribute of a canonical URL.
  */
 final class ModifyUrlForCanonicalTagEvent
 {
-    public function __construct(private string $url) {}
+    public function __construct(
+        private string $url,
+        private readonly ServerRequestInterface $request,
+        private readonly Page $page
+    ) {}
 
     public function getUrl(): string
     {
@@ -32,5 +39,15 @@ final class ModifyUrlForCanonicalTagEvent
     public function setUrl(string $url): void
     {
         $this->url = $url;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
+    }
+
+    public function getPage(): Page
+    {
+        return $this->page;
     }
 }
