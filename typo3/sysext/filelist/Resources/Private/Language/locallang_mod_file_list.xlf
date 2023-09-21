@@ -72,6 +72,12 @@
 			<trans-unit id="missingFolderPermissionsMessage" resname="missingFolderPermissionsMessage">
 				<source>You have no access to the folder "%s".</source>
 			</trans-unit>
+			<trans-unit id="localStorageOfflineTitle" resname="localStorageOfflineTitle">
+				<source>Base folder for local storage missing</source>
+			</trans-unit>
+			<trans-unit id="localStorageOfflineMessage" resname="localStorageOfflineMessage">
+				<source>Base folder for local storage does not exists. Verify that the base folder for "%s" exists.</source>
+			</trans-unit>
 			<trans-unit id="folderNotFoundTitle" resname="folderNotFoundTitle">
 				<source>Folder not found.</source>
 			</trans-unit>

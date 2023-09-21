@@ -112,6 +112,7 @@ class FileListController implements LoggerAwareInterface
             $parsedBody['overwriteExistingFiles'] ?? $queryParams['overwriteExistingFiles'] ?? null
         );
 
+        $storage = null;
         try {
             if ($this->id !== '') {
                 $backendUser->evaluateUserSpecificFileFilterSettings();
@@ -150,11 +151,22 @@ class FileListController implements LoggerAwareInterface
             }
         } catch (InsufficientFolderAccessPermissionsException $permissionException) {
             $this->folderObject = null;
-            $this->addFlashMessage(
-                sprintf($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:missingFolderPermissionsMessage'), $this->id),
-                $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:missingFolderPermissionsTitle'),
-                ContextualFeedbackSeverity::ERROR
-            );
+            if ($storage !== null && $storage->getDriverType() === 'Local' && !$storage->isOnline()) {
+                // If the base folder for a local storage does not exists, the storage is marked as offline and the
+                // access permission exception is thrown. In this case we however want to display another error message.
+                // @see https://forge.typo3.org/issues/85323
+                $this->addFlashMessage(
+                    sprintf($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:localStorageOfflineMessage'), $storage->getName()),
+                    $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:localStorageOfflineTitle'),
+                    ContextualFeedbackSeverity::ERROR
+                );
+            } else {
+                $this->addFlashMessage(
+                    sprintf($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:missingFolderPermissionsMessage'), $this->id),
+                    $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:missingFolderPermissionsTitle'),
+                    ContextualFeedbackSeverity::ERROR
+                );
+            }
         } catch (Exception $fileException) {
             $this->folderObject = null;
             // Take the first object of the first storage
