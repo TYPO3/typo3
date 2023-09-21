@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Seo\Canonical;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -43,13 +44,14 @@ class CanonicalGenerator
         $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
     }
 
-    public function generate(): string
+    public function generate(array $params): string
     {
         if ($this->typoScriptFrontendController->config['config']['disableCanonical'] ?? false) {
             return '';
         }
 
-        $event = $this->eventDispatcher->dispatch(new ModifyUrlForCanonicalTagEvent(''));
+        $event = new ModifyUrlForCanonicalTagEvent('', $params['request'], new Page($params['page']));
+        $event = $this->eventDispatcher->dispatch($event);
         $href = $event->getUrl();
 
         if (empty($href) && (int)$this->typoScriptFrontendController->page['no_index'] === 1) {
