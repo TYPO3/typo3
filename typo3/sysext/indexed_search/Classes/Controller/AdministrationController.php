@@ -267,7 +267,7 @@ class AdministrationController extends ActionController
             unset($debugInfo['lexer']);
         }
         $pageRecord = BackendUtility::getRecord('pages', $pageHashRow['data_page_id']);
-        $keywords = is_array($pageRecord) ? array_flip(GeneralUtility::trimExplode(',', $pageRecord['keywords'], true)) : [];
+        $keywords = is_array($pageRecord) ? array_flip(GeneralUtility::trimExplode(',', (string)$pageRecord['keywords'], true)) : [];
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_words');
         $wordRecords = $queryBuilder
