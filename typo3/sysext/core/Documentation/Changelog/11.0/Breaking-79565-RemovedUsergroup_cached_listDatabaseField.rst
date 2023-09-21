@@ -22,6 +22,9 @@ Impact
 The mentioned database field is removed, any direct SQL queries
 accessing or writing this field will result in a database error.
 
+The PHP entry is removed from
+:php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->user` array.
+Accessing the array key will result in warnings since PHP 8.0.
 
 Affected Installations
 ======================
@@ -29,10 +32,13 @@ Affected Installations
 TYPO3 installations using or querying this database field
 with third-party extensions.
 
+TYPO3 installations reading the array key from
+:php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->user` array.
 
 Migration
 =========
 
-Use the class :php:`GroupResolver` to fetch all groups of a user directly.
+Use the class :php:`\TYPO3\CMS\Core\Authentication\GroupResolver`
+to fetch all groups of a user directly.
 
 .. index:: Backend, PHP-API, NotScanned, ext:core
