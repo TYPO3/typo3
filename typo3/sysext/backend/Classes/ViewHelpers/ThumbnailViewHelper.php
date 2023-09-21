@@ -40,7 +40,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  *
  * Output::
  *
- *    <img src="/typo3/thumbnails?token=&parameters={"fileId":1,"configuration":{"_context":"Image.Preview","maxWidth":64,"maxHeight":64}}&hmac="
+ *    <img src="https://www.example.com/typo3/image/process?token=XYZ&id=1160"
  *         width="64"
  *         height="64"
  *         alt="alt set in image record"
@@ -55,7 +55,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  *
  * Output::
  *
- *    <img src="/typo3/thumbnails?token=&parameters={"fileId":1,"configuration":{"_context":"Image.Preview","maxWidth":64,"maxHeight":64}}&hmac="
+ *    <img src="https://www.example.com/typo3/image/process?token=XYZ&id=1160"
  *         width="64"
  *         height="64"
  *         alt="alt set in image record"

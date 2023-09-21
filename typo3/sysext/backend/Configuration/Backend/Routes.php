@@ -271,12 +271,6 @@ return [
         ],
     ],
 
-    // Thumbnails
-    'thumbnails' => [
-        'path' => '/thumbnails',
-        'target' => Controller\File\ThumbnailController::class . '::render',
-    ],
-
     // Image processing
     'image_processing' => [
         'path' => '/image/process',

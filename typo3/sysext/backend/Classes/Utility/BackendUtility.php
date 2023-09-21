@@ -1003,7 +1003,7 @@ class BackendUtility
     /**
      * Returns a linked image-tag for thumbnail(s)/fileicons/truetype-font-previews from a database row with sys_file_references
      * All $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] extension are made to thumbnails + ttf file (renders font-example)
-     * Thumbnails are linked to ShowItemController (/thumbnails route)
+     * Thumbnails are linked to FileInterface->getPublicUrl().
      *
      * @param array $row Row is the database row from the table, $table.
      * @param string $table Table name for $row (present in TCA)
