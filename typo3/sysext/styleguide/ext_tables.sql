@@ -25,7 +25,6 @@ CREATE TABLE fe_users (
 
 CREATE TABLE tx_styleguide_ctrl_common (
     title text,
-    description text,
 );
 
 
@@ -120,25 +119,7 @@ CREATE TABLE tx_styleguide_elements_basic (
     number_6 int(11) DEFAULT '0' NOT NULL,
     number_7 int(11) DEFAULT '0' NOT NULL,
 
-    text_1 text,
-    text_2 text,
-    text_3 text,
-    text_4 text,
-    text_5 text,
-    text_6 text,
-    text_7 text,
-    text_9 text,
-    text_10 text,
-    text_11 text,
     text_12 text,
-    text_13 text,
-    text_14 text,
-    text_15 text,
-    text_16 text,
-    text_17 text,
-    text_18 text,
-    text_19 text,
-    text_20 text,
 
     radio_1 int(11) DEFAULT '0' NOT NULL,
     radio_2 int(11) DEFAULT '0' NOT NULL,
@@ -162,11 +143,6 @@ CREATE TABLE tx_styleguide_elements_basic (
 
 
 CREATE TABLE tx_styleguide_elements_rte (
-    rte_1 text,
-    rte_2 text,
-    rte_3 text,
-    rte_4 text,
-    rte_5 text,
     rte_inline_1 text,
     input_palette_1 text,
     rte_palette_1 text
@@ -182,16 +158,12 @@ CREATE TABLE tx_styleguide_elements_slugs (
 CREATE TABLE tx_styleguide_elements_rte_flex_1_inline_1_child (
     parentid int(11) DEFAULT '0' NOT NULL,
     parenttable text,
-
-    rte_1 text
 );
 
 
 CREATE TABLE tx_styleguide_elements_rte_inline_1_child (
     parentid int(11) DEFAULT '0' NOT NULL,
     parenttable text,
-
-    rte_1 text
 );
 
 
@@ -262,8 +234,6 @@ CREATE TABLE tx_styleguide_elements_select_flex_1_multiplesidebyside_2_mm (
 
 
 CREATE TABLE tx_styleguide_elements_t3editor (
-    t3editor_1 text,
-    t3editor_2 text,
     t3editor_reload_1 int(11) DEFAULT '0' NOT NULL,
     t3editor_inline_1 text,
 );
@@ -272,16 +242,12 @@ CREATE TABLE tx_styleguide_elements_t3editor (
 CREATE TABLE tx_styleguide_elements_t3editor_flex_1_inline_1_child (
     parentid int(11) DEFAULT '0' NOT NULL,
     parenttable text,
-
-    t3editor_1 text
 );
 
 
 CREATE TABLE tx_styleguide_elements_t3editor_inline_1_child (
     parentid int(11) DEFAULT '0' NOT NULL,
     parenttable text,
-
-    t3editor_1 text
 );
 
 
@@ -326,9 +292,7 @@ CREATE TABLE tx_styleguide_inline_1n_inline_2_child (
     parenttable text,
 
     input_1 text,
-    rte_1 text,
     select_tree_1 text,
-    t3editor_1 text
 );
 
 CREATE TABLE tx_styleguide_inline_1nnol10n (
@@ -375,9 +339,7 @@ CREATE TABLE tx_styleguide_inline_expand_inline_1_child (
     parenttable text,
 
     dummy_1 text,
-    rte_1 text,
     select_tree_1 text,
-    t3editor_1 text
 );
 
 
@@ -550,8 +512,6 @@ CREATE TABLE tx_styleguide_required (
 
     link_1 text,
 
-    text_1 text,
-
     select_1 text,
     select_2 text,
     select_3 text,
@@ -605,8 +565,6 @@ CREATE TABLE tx_styleguide_required_inline_3_child (
 CREATE TABLE tx_styleguide_required_rte_2_child (
     parentid int(11) DEFAULT '0' NOT NULL,
     parenttable text,
-
-    rte_1 text
 );
 
 
@@ -619,7 +577,6 @@ CREATE TABLE tx_styleguide_type (
     record_type text,
     input_1 text,
     color_1 text,
-    text_1 text
 );
 
 
@@ -627,7 +584,6 @@ CREATE TABLE tx_styleguide_typeforeign (
     foreign_table int(11) DEFAULT '0' NOT NULL,
     input_1 text,
     color_1 text,
-    text_1 text
 );
 
 
@@ -635,8 +591,6 @@ CREATE TABLE tx_styleguide_valuesdefault (
     input_1 text,
 
     number_1 int(11) DEFAULT '0' NOT NULL,
-
-    text_1 text,
 
     radio_1 int(11) DEFAULT '0' NOT NULL,
     radio_2 text,
@@ -653,11 +607,6 @@ CREATE TABLE tx_styleguide_l10nreadonly (
     radio int(11) DEFAULT '0' NOT NULL,
     none text,
     language int(11) DEFAULT '0' NOT NULL,
-    text text,
-    text_rte text,
-    text_belayoutwizard text,
-    text_t3editor text,
-    text_table text,
     select_single text,
     select_single_box text,
     select_checkbox text,
