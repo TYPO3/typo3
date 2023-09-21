@@ -114,6 +114,20 @@ class ImageDimension
         return $imageDimension;
     }
 
+    /**
+     * @return array{
+     *           width?: int<0, max>|string,
+     *           height?: int<0, max>|string,
+     *           maxWidth?: int<0, max>,
+     *           maxHeight?: int<0, max>,
+     *           maxW?: int<0, max>,
+     *           maxH?: int<0, max>,
+     *           minW?: int<0, max>,
+     *           minH?: int<0, max>,
+     *           crop?: Area,
+     *           noScale?: bool
+     *         }
+     */
     private static function getConfigurationForImageCropScaleMask(TaskInterface $task): array
     {
         $configuration = $task->getConfiguration();
