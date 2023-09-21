@@ -158,6 +158,27 @@ class LocalCropScaleMaskHelper
             GeneralUtility::unlink_tempfile($croppedImage);
         }
 
+        // If noScale option is applied, we need to reset the width and height to ensure the scaled values
+        // are used for the generated image tag even if the image itself is not scaled. This is needed, as
+        // the result is discarded due to the fact that the original image is used.
+        // @see https://forge.typo3.org/issues/100972
+        // Note: This should only happen if no image has been generated ($result === null).
+        if ($result === null && ($options['noScale'] ?? false)) {
+            $configuration = $task->getConfiguration();
+            $localProcessedFile = $task->getSourceFile()->getForLocalProcessing(false);
+            $imageDimensions = $imageOperations->getImageDimensions($localProcessedFile);
+            $imageScaleInfo = $imageOperations->getImageScale(
+                $imageDimensions,
+                $configuration['width'] ?? '',
+                $configuration['height'] ?? '',
+                $options
+            );
+            $targetFile->updateProperties([
+                'width' => $imageScaleInfo[0],
+                'height' => $imageScaleInfo[1],
+            ]);
+        }
+
         return $result;
     }
 
