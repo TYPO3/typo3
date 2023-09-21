@@ -122,4 +122,14 @@ interface TaskInterface
      * @throws \LogicException If the task has not been executed already
      */
     public function isSuccessful();
+
+    /**
+     * For some tasks it might be important and useful to clean up the configuration, in order to find the
+     * ProcessedFile that uses this configuration.
+     *
+     * Ideally, a task has some information what needs to be used or not.
+     *
+     * @todo: Make this part of the Interface once further changes are removed. See ProcessedFileRepository->prepareTaskObject() for more information. see #102165
+     */
+    // public function sanitizeConfiguration(array $configuration): void;
 }

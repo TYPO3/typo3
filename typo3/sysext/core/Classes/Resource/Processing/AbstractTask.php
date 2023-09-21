@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Abstract base implementation of a task.
@@ -222,5 +223,23 @@ abstract class AbstractTask implements TaskInterface
         }
 
         return $this->successful;
+    }
+
+    /**
+     * Can be extended in the actual subclasses, but be careful on what to sanitize, as Processors might need
+     * information that you actually throw away.
+     *
+     * Ensure that the processing configuration which is part of the hash sum is properly cast, so
+     * unnecessary duplicate images are not produced, see #80942
+     */
+    public function sanitizeConfiguration(): void
+    {
+        foreach ($this->configuration as &$value) {
+            if (MathUtility::canBeInterpretedAsInteger($value)) {
+                $value = (int)$value;
+            }
+        }
+        // @todo: ideally we would do a sort() on the array to really structure this, but then the checksums would change
+        // @todo: and we would need to re-create all processed files again, but this would be something we should tackle at some point
     }
 }

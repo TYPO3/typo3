@@ -25,11 +25,9 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
-use TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorInterface;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorRegistry;
 use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * This is a general service for creating Processed Files a.k.a. processing a File object with a given configuration.
@@ -56,26 +54,10 @@ class FileProcessingService
     public function processFile(File|FileReference $fileObject, string $taskType, DriverInterface $driver, array $configuration): ProcessedFile
     {
         // Processing always works on the original file
-        if ($fileObject instanceof FileReference) {
-            $fileObject = $fileObject->getOriginalFile();
-        }
+        $originalFile = $fileObject instanceof FileReference ? $fileObject->getOriginalFile() : $fileObject;
 
-        // @todo: this part needs to be moved into a DTO object where it is sanitized
-        // Enforce default configuration for preview processing here,
-        // to be sure we find already processed files below,
-        // which we wouldn't if we would change the configuration later, as configuration is part of the lookup.
-        if ($taskType === ProcessedFile::CONTEXT_IMAGEPREVIEW) {
-            $configuration = LocalPreviewHelper::preProcessConfiguration($configuration);
-        }
-        // Ensure that the processing configuration which is part of the hash sum is properly cast, so
-        // unnecessary duplicate images are not produced, see #80942
-        foreach ($configuration as &$value) {
-            if (MathUtility::canBeInterpretedAsInteger($value)) {
-                $value = (int)$value;
-            }
-        }
-
-        $processedFile = $this->processedFileRepository->findOneByOriginalFileAndTaskTypeAndConfiguration($fileObject, $taskType, $configuration);
+        // Find an entry in the DB or create a new ProcessedFile which can then be added (see ->add below)
+        $processedFile = $this->processedFileRepository->findOneByOriginalFileAndTaskTypeAndConfiguration($originalFile, $taskType, $configuration);
 
         // Pre-process the file
         $event = $this->eventDispatcher->dispatch(

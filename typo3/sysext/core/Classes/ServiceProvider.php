@@ -440,6 +440,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Resource\ProcessedFileRepository::class, [
             $container->get(ResourceFactory::class),
+            $container->get(Resource\Processing\TaskTypeRegistry::class),
         ]);
     }
 

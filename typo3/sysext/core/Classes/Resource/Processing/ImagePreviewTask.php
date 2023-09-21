@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Resource\Processing;
 
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * A task for generating an image preview.
  */
@@ -69,5 +71,32 @@ class ImagePreviewTask extends AbstractGraphicalTask
          * - width/height smaller than image, keeping aspect ratio?
          */
         return false;
+    }
+
+    /**
+     * Enforce default configuration for preview processing here,
+     * to be sure we find already processed files below,
+     * which we wouldn't if we would change the configuration later, as configuration is part of the lookup.
+     */
+    public function sanitizeConfiguration(): void
+    {
+        $configuration = array_replace(
+            [
+                'width' => 64,
+                'height' => 64,
+            ],
+            $this->configuration
+        );
+        $configuration['width'] = MathUtility::forceIntegerInRange($configuration['width'], 1, 1000);
+        $configuration['height'] = MathUtility::forceIntegerInRange($configuration['height'], 1, 1000);
+
+        $this->configuration = array_filter(
+            $configuration,
+            static function ($value, $name) {
+                return !empty($value) && in_array($name, ['width', 'height'], true);
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
+        parent::sanitizeConfiguration();
     }
 }

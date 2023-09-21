@@ -29,15 +29,17 @@ class LocalPreviewHelper
     /**
      * Default preview configuration
      *
-     * @var array
+     * @todo once preProcessConfiguration() is not needed anymore (or the whole class), this property can be removed
      */
-    protected static $defaultConfiguration = [
+    protected static array $defaultConfiguration = [
         'width' => 64,
         'height' => 64,
     ];
 
     /**
      * Enforce default configuration for preview processing
+     *
+     * @todo This method is not needed anymore and will be deprecated (once the whole class can be removed)
      */
     public static function preProcessConfiguration(array $configuration): array
     {
@@ -76,7 +78,13 @@ class LocalPreviewHelper
     public function process(TaskInterface $task)
     {
         $sourceFile = $task->getSourceFile();
-        $configuration = static::preProcessConfiguration($task->getConfiguration());
+        // @todo see #102165 to remove this check
+        if (method_exists($task, 'sanitizeConfiguration')) {
+            $task->sanitizeConfiguration();
+            $configuration = $task->getConfiguration();
+        } else {
+            $configuration = static::preProcessConfiguration($task->getConfiguration());
+        }
 
         // Do not scale up if the source file has a size and the target size is larger
         if ($sourceFile->getProperty('width') > 0 && $sourceFile->getProperty('height') > 0

@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
+use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
+use TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry;
 use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -46,7 +48,8 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
     protected array $tableColumns = [];
 
     public function __construct(
-        protected readonly ResourceFactory $factory
+        protected readonly ResourceFactory $factory,
+        protected readonly TaskTypeRegistry $taskTypeRegistry
     ) {
     }
 
@@ -174,8 +177,11 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
      */
     public function findOneByOriginalFileAndTaskTypeAndConfiguration(File $file, string $taskType, array $configuration): ProcessedFile
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_processedfile');
+        // Creating a task object to only fetch cleaned configuration properties
+        $task = $this->prepareTaskObject($file, $taskType, $configuration);
+        $configuration = $task->getConfiguration();
 
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_processedfile');
         $databaseRow = $queryBuilder
             ->select('*')
             ->from('sys_file_processedfile')
@@ -333,5 +339,31 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
         }
 
         return array_intersect_key($data, $this->tableColumns);
+    }
+
+    /**
+     * We need a task object, so the task can define what configuration is necessary. This way, we can then
+     * use a cleaned up configuration to find already processed files.
+     *
+     * The method sanitizeConfiguration should then be part of the TaskInterface later-on.
+     *
+     * Note: The Task object needs to be re-created with a real processed file, once we have one,
+     * as the current API Design is very tightly coupled:
+     * - TaskInterface has a constructor in the interface (which is bad)
+     * - TaskObject requires a constituted ProcessedFile object in order to "work"
+     * - ProcessedFile creates a TaskObject in ProcessedFile->getTask()
+     * - ProcessedFile AND TaskObject contain both the configuration, which should be avoided as well.
+     *
+     * @todo: This should be shifted into a TaskFactory or the TaskRegistry
+     */
+    protected function prepareTaskObject(FileInterface $fileObject, string $taskType, array $configuration): TaskInterface
+    {
+        $temporaryProcessedFile = $this->createNewProcessedFileObject($fileObject, $taskType, $configuration);
+        $taskObject = $this->taskTypeRegistry->getTaskForType($taskType, $temporaryProcessedFile, $configuration);
+        // @todo see #102165 to remove this check
+        if (method_exists($taskObject, 'sanitizeConfiguration')) {
+            $taskObject->sanitizeConfiguration();
+        }
+        return $taskObject;
     }
 }

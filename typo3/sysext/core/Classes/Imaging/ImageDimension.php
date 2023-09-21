@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Imaging;
 use TYPO3\CMS\Core\Imaging\Exception\ZeroImageDimensionException;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper;
 use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
 
 /**
@@ -133,7 +132,11 @@ class ImageDimension
         $configuration = $task->getConfiguration();
 
         if ($task->getTargetFile()->getTaskIdentifier() === ProcessedFile::CONTEXT_IMAGEPREVIEW) {
-            $configuration = LocalPreviewHelper::preProcessConfiguration($configuration);
+            // @todo: this ideally should not be necessary anymore with #102165
+            if (method_exists($task, 'sanitizeConfiguration')) {
+                $task->sanitizeConfiguration();
+            }
+            $configuration = $task->getConfiguration();
             $configuration['maxWidth'] = $configuration['width'];
             unset($configuration['width']);
             $configuration['maxHeight'] = $configuration['height'];
