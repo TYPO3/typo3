@@ -3913,6 +3913,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($jsonCropArea->isEmpty() && preg_match('/^[0-9]+,[0-9]+,[0-9]+,[0-9]+$/', $cropSettings)) {
                 $cropSettings = explode(',', $cropSettings);
                 if (count($cropSettings) === 4) {
+                    $cropSettings = array_map(floatval(...), $cropSettings);
                     $stringCropArea = GeneralUtility::makeInstance(
                         Area::class,
                         ...$cropSettings
