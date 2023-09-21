@@ -22,21 +22,21 @@ use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * A SPL FileInfo class providing information related to an image.
+ * An SPL FileInfo class providing information related to an image.
  */
 class ImageInfo extends FileInfo implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     /**
-     * @var array|false|null
+     * @var array{0: int<0, max>|string, 1: int<0, max>|string, 2?: string, 3?: string, 4?: string}|false|null
      */
     protected $imageSizes;
 
     /**
-     * Returns the width of the Image.
+     * Returns the width of the image.
      *
-     * @return int
+     * @return int<0, max>
      */
     public function getWidth()
     {
@@ -45,9 +45,9 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
     }
 
     /**
-     * Returns the height of the Image.
+     * Returns the height of the image.
      *
-     * @return int
+     * @return int<0, max>
      */
     public function getHeight()
     {
@@ -59,7 +59,7 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
      * Gets the image size, considering the exif-rotation present in the file
      *
      * @param string $imageFile The image filepath
-     * @return array|false Returns an array where [0]/[1] is w/h.
+     * @return array{0: int<0, max>, 1: int<0, max>}|false an array where [0]/[1] is w/h
      */
     protected function getExifAwareImageSize(string $imageFile)
     {
@@ -84,7 +84,7 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
     }
 
     /**
-     * @return array
+     * @return array{0: int<0, max>|string, 1: int<0, max>|string, 2?: string, 3?: string, 4?: string}
      */
     protected function getImageSizes()
     {
@@ -109,6 +109,9 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
         return $this->imageSizes;
     }
 
+    /**
+     * @return array{0: string, 1: string, 2: string, 3: string, 4: string}|null
+     */
     protected function getImageSizesFromImageMagick(): ?array
     {
         try {
@@ -124,10 +127,9 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
     }
 
     /**
-     * Try to read SVG as XML file and
-     * find width and height
+     * Tries to read SVG as XML file and find width and height.
      *
-     * @return false|array
+     * @return array{0: int<0, max>, 1: int<0, max>}|false
      */
     protected function extractSvgImageSizes()
     {
