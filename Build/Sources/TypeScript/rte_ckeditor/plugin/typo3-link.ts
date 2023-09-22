@@ -75,7 +75,11 @@ export class Typo3LinkCommand extends Core.Command {
           const linkRange = Typing.findAttributeRange(position, 'linkHref', selection.getAttribute('linkHref') as string, model);
           writer.setAttribute('linkHref', href, linkRange);
           for (const [attribute, value] of Object.entries(this.composeLinkAttributes(linkAttr))) {
-            writer.setAttribute(attribute, value, linkRange);
+            if (value !== null) {
+              writer.setAttribute(attribute, value, linkRange);
+            } else {
+              writer.removeAttribute(attribute, linkRange);
+            }
           }
           // Put the selection at the end of the updated link.
           writer.setSelection(writer.createPositionAfter(linkRange.end.nodeBefore));
@@ -87,7 +91,9 @@ export class Typo3LinkCommand extends Core.Command {
           const attributes = Utils.toMap(selection.getAttributes() as any);
           attributes.set('linkHref', href);
           for (const [attribute, value] of Object.entries(this.composeLinkAttributes(linkAttr))) {
-            attributes.set(attribute, value);
+            if (value !== null) {
+              attributes.set(attribute, value);
+            }
           }
           const { end: positionAfter } = model.insertContent(writer.createText(href, attributes as any), position);
           // Put the selection at the end of the inserted link.
@@ -124,7 +130,11 @@ export class Typo3LinkCommand extends Core.Command {
         for (const range of rangesToUpdate) {
           writer.setAttribute('linkHref', href, range);
           for (const [attribute, value] of Object.entries(this.composeLinkAttributes(linkAttr))) {
-            writer.setAttribute(attribute, value, range);
+            if (value !== null) {
+              writer.setAttribute(attribute, value, range);
+            } else {
+              writer.removeAttribute(attribute, range);
+            }
           }
         }
       }
@@ -144,7 +154,7 @@ export class Typo3LinkCommand extends Core.Command {
     }
   }
 
-  private composeLinkAttributes(linkAttr: Typo3LinkDict): Record<string, GHSViewAttributes|string> {
+  private composeLinkAttributes(linkAttr: Typo3LinkDict): Record<string, GHSViewAttributes|string|null> {
     const attrs: Record<string, GHSViewAttributes|string> = {};
     for (const [attribute, value] of Object.entries(linkAttr.attrs)) {
       if (attribute === 'linkClass') {
@@ -157,10 +167,15 @@ export class Typo3LinkCommand extends Core.Command {
         } else {
           htmlA = {};
         }
-        htmlA.classes = value.split(' ');
-        attrs[ghsAttributeName] = htmlA;
+        const classes = value.replace(/\s+/g, ' ').trim();
+        if (classes !== '') {
+          htmlA.classes = classes.split(' ');
+        } else if ('classes' in htmlA) {
+          delete htmlA.classes;
+        }
+        attrs[ghsAttributeName] = Object.keys(htmlA).length !== 0 ? htmlA : null;
       } else {
-        attrs[attribute] = value;
+        attrs[attribute] = value !== '' ? value : null;
       }
     }
     return attrs;

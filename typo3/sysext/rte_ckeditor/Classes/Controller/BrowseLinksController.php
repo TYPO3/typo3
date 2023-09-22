@@ -158,31 +158,50 @@ class BrowseLinksController extends AbstractLinkBrowserController
                     }
                 }
             }
-            if (isset($this->linkAttributeValues['class'])) {
-                // Cleanup current link class value by removing any invalid class, including
-                // the automatically applied highlighting class `ck-link_selected`.
-                $linkClass = trim(str_replace('ck-link_selected', '', $this->linkAttributeValues['class']));
-                if (in_array($linkClass, $classesAnchorArray, true)) {
-                    $this->linkAttributeValues['class'] = $linkClass;
-                } else {
-                    unset($this->linkAttributeValues['class']);
+
+            $linkClass = trim(str_replace('ck-link_selected', '', $this->linkAttributeValues['class'] ?? ''));
+            if ($linkClass !== '') {
+                // Cleanup current link class value by removing the automatically applied highlighting class `ck-link_selected`.
+                $this->linkAttributeValues['class'] = $linkClass;
+
+                $currentLinkClassIsAllowed = true;
+                if (!in_array($linkClass, $classesAnchorArray, true)) {
+                    // Current class is not a globally allowed class
+                    $currentLinkClassIsAllowed = false;
                 }
                 if (
-                    in_array($linkClass, $classesAnchor['all']) &&
                     isset($classesAnchor[$this->displayedLinkHandlerId]) &&
+                    in_array($linkClass, $classesAnchor['all'], true) &&
                     !in_array($linkClass, $classesAnchor[$this->displayedLinkHandlerId], true)
                 ) {
-                    unset($this->linkAttributeValues['class']);
+                    // Current class is limited to specific link types but not available in current link type
+                    $currentLinkClassIsAllowed = false;
+                }
+
+                if (!$currentLinkClassIsAllowed) {
+                    $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] ??= '';
+                    // Add a dummy option that preserved the current class value (despite being invalid)
+                    // in order to prevent unintentional modification of assigned classes.
+                    $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] .= sprintf(
+                        '<option selected="selected" value="%s">%s</option>',
+                        htmlspecialchars($linkClass),
+                        htmlspecialchars(
+                            @sprintf(
+                                '[ ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue') . ' ]',
+                                $linkClass
+                            )
+                        )
+                    );
                 }
             }
 
             // Constructing the class selector options
             foreach ($classesAnchorArray as $class) {
                 if (
-                    !in_array($class, $classesAnchor['all'])
+                    !in_array($class, $classesAnchor['all'], true)
                     || (
-                        in_array($class, $classesAnchor['all'])
-                        && isset($classesAnchor[$this->displayedLinkHandlerId])
+                        isset($classesAnchor[$this->displayedLinkHandlerId])
+                        && in_array($class, $classesAnchor['all'], true)
                         && is_array($classesAnchor[$this->displayedLinkHandlerId])
                         && in_array($class, $classesAnchor[$this->displayedLinkHandlerId])
                     )

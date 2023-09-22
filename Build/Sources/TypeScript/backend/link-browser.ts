@@ -65,7 +65,7 @@ class LinkBrowser {
     const linkAttributeValues: LinkAttributes = {};
     for (const fieldName of this.linkAttributeFields.values()) {
       const linkAttribute: HTMLInputElement = document.querySelector('[name="l' + fieldName + '"]');
-      if (linkAttribute !== null && linkAttribute.value !== '') {
+      if (linkAttribute !== null) {
         linkAttributeValues[fieldName] = linkAttribute.value;
       }
     }
