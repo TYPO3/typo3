@@ -37,6 +37,9 @@
 			<trans-unit id="httpMiddlewareStacks" resname="httpMiddlewareStacks">
 				<source>HTTP Middlewares (PSR-15)</source>
 			</trans-unit>
+			<trans-unit id="contentSecurityPolicyMutations" resname="contentSecurityPolicyMutations">
+				<source>Content Security Policy Mutations</source>
+			</trans-unit>
 			<trans-unit id="sitesTcaConfiguration" resname="sitesTcaConfiguration">
 				<source>Sites: TCA configuration</source>
 			</trans-unit>
