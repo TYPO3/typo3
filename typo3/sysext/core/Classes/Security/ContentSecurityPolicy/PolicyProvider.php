@@ -24,12 +24,9 @@ use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyMutatedEvent;
-use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\Resolution;
-use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ResolutionRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Type\Map;
 
 /**
  * Provide a Content-Security-Policy representation for a given scope (e.g. backend, frontend, frontend.my-site).
@@ -40,17 +37,12 @@ final class PolicyProvider
 {
     protected const REPORTING_URI = '@http-reporting';
 
-    /**
-     * @param Map<Scope, Map<MutationOrigin, MutationCollection>> $mutations
-     */
     public function __construct(
-        private readonly Map $mutations,
         private readonly RequestId $requestId,
         private readonly SiteFinder $siteFinder,
-        private readonly ModelService $modelService,
         private readonly PolicyRegistry $policyRegistry,
-        private readonly ResolutionRepository $resolutionRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly MutationRepository $mutationRepository,
     ) {
     }
 
@@ -60,11 +52,10 @@ final class PolicyProvider
     public function provideFor(Scope $scope): Policy
     {
         // @todo add policy cache per scope
-        $defaultPolicy = $this->provideDefaultFor($scope);
-        // fetch violation resolutions from database
-        $mutationCollections = array_map(
-            static fn (Resolution $resolution) => $resolution->mutationCollection,
-            $this->resolutionRepository->findByScope($scope)
+        $defaultPolicy = new Policy();
+        $mutationCollections = iterator_to_array(
+            $this->mutationRepository->findByScope($scope),
+            false
         );
         // add temporary(!) mutations that were collected during processing this request
         if ($this->policyRegistry->hasMutationCollections()) {
@@ -79,33 +70,6 @@ final class PolicyProvider
         $event = new PolicyMutatedEvent($scope, $defaultPolicy, $currentPolicy, ...$mutationCollections);
         $this->eventDispatcher->dispatch($event);
         return $event->getCurrentPolicy();
-    }
-
-    /**
-     * Provides the base policy which contains only static mutations - either from
-     * `Configuration/ContentSecurityPolicies.php of each extension, or from the
-     * corresponding `contentSecurityPolicies.mutations` section of a frontend
-     * site definition.
-     */
-    public function provideDefaultFor(Scope $scope): Policy
-    {
-        // @todo add runtime policy cache per scope
-        if ($scope->isFrontendSite() && $this->shallInheritDefault($scope)) {
-            $policy = $this->provideFor(Scope::frontend());
-        } else {
-            $policy = new Policy();
-        }
-        // apply static mutations (from DI, declared in `Configuration/ContentSecurityPolicies.php`)
-        foreach ($this->mutations[$scope] ?? [] as $mutationCollection) {
-            $policy = $policy->mutate($mutationCollection);
-        }
-        // apply site mutations (declared in corresponding site configuration's csp.yaml file)
-        if ($scope->isFrontendSite()) {
-            foreach ($this->resolveSiteMutations($scope) as $mutation) {
-                $policy = $policy->mutate($mutation);
-            }
-        }
-        return $policy;
     }
 
     public function getReportingUrlFor(Scope $scope, ServerRequestInterface $request): ?UriInterface
@@ -156,31 +120,6 @@ final class PolicyProvider
         // `/en/@http-reporting?csp=report` (relative)
         // `https://ip12.anyhost.it:8443/en/@http-reporting?csp=report` (absolute)
         return $uri->withPath($uri->getPath() . self::REPORTING_URI)->withQuery('csp=report');
-    }
-
-    /**
-     * Whether to inherit default (site-unspecific) frontend policy mutations.
-     */
-    private function shallInheritDefault(Scope $scope): bool
-    {
-        $site = $this->resolveSite($scope);
-        return (bool)($site->getConfiguration()['contentSecurityPolicies']['inheritDefault'] ?? true);
-    }
-
-    /**
-     * @return list<Mutation>
-     */
-    private function resolveSiteMutations(Scope $scope): array
-    {
-        $site = $this->resolveSite($scope);
-        $mutationConfigurations = $site->getConfiguration()['contentSecurityPolicies']['mutations'] ?? [];
-        if (empty($mutationConfigurations) || !is_array($mutationConfigurations)) {
-            return [];
-        }
-        return array_map(
-            fn (array $array) => $this->modelService->buildMutationFromArray($array),
-            $mutationConfigurations
-        );
     }
 
     private function resolveSite(Scope $scope): Site

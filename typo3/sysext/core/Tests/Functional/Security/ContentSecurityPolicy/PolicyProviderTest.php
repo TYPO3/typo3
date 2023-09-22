@@ -35,8 +35,6 @@ final class PolicyProviderTest extends FunctionalTestCase
         'FR' => ['id' => 1, 'title' => 'Français', 'locale' => 'fr_FR.UTF8'],
     ];
 
-    protected bool $initializeDatabase = false;
-
     protected function setUp(): void
     {
         parent::setUp();
