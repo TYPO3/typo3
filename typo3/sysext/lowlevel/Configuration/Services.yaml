@@ -158,6 +158,15 @@ services:
         before: 'sitesTcaConfiguration'
         after: 'backendModules'
 
+  lowlevel.configuration.module.provider.contentsecuritypolicymutationsprovider:
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ContentSecurityPolicyMutationsProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'contentSecurityPolicyMutations'
+        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:contentSecurityPolicyMutations'
+        before: 'softReferenceParsers'
+        after: 'httpMiddlewareStacks'
+
   lowlevel.configuration.module.provider.sitestcaconfiguration:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SitesTcaConfigurationProvider'
     tags:
@@ -165,7 +174,7 @@ services:
         identifier: 'sitesTcaConfiguration'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:sitesTcaConfiguration'
         before: 'sitesYamlConfiguration'
-        after: 'httpMiddlewareStacks'
+        after: 'contentSecurityPolicyMutations'
 
   lowlevel.configuration.module.provider.sitesyamlconfiguration:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SitesYamlConfigurationProvider'

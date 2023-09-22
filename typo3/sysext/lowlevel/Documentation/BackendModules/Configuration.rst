@@ -53,6 +53,7 @@ The Configuration module displays various configuration settings:
 - `Backend Toolbar Items`
 - :ref:`Symfony Expression Language Providers <t3coreapi:sel-ts-registering-new-provider-within-extension>`
 - :ref:`Reactions <ext_reactions:reactions-overview>` (with installed :doc:`Reactions system extension <ext_reactions:Index>`)
+- :ref:`Content Security Policy Mutations <t3coreapi:content-security-policy>`
 
 
 Extending the Configuration module
