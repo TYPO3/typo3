@@ -167,8 +167,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
                 } else {
                     unset($this->linkAttributeValues['class']);
                 }
-                if (isset($classesAnchor[$this->displayedLinkHandlerId])
-                    && !in_array($linkClass, $classesAnchor[$this->displayedLinkHandlerId], true)
+                if (
+                    in_array($linkClass, $classesAnchor['all']) &&
+                    isset($classesAnchor[$this->displayedLinkHandlerId]) &&
+                    !in_array($linkClass, $classesAnchor[$this->displayedLinkHandlerId], true)
                 ) {
                     unset($this->linkAttributeValues['class']);
                 }
