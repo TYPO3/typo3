@@ -1,6 +1,6 @@
 import { UI, Core, Engine, Typing, Link, LinkUtils, LinkActionsView, Widget, Utils } from '@typo3/ckeditor5-bundle';
 import { default as modalObject, ModalElement } from '@typo3/backend/modal';
-import type { AttributeElement, ViewElement } from '@ckeditor/ckeditor5-engine';
+import type { AttributeElement, ViewElement, Schema, Writer } from '@ckeditor/ckeditor5-engine';
 import type { GeneralHtmlSupport, DataFilter } from '@ckeditor/ckeditor5-html-support';
 import type { GHSViewAttributes } from '@ckeditor/ckeditor5-html-support/src/utils';
 
@@ -96,7 +96,7 @@ export class Typo3LinkCommand extends Core.Command {
         }
         // Remove the `linkHref` attribute and all link decorators from the selection.
         // It stops adding a new content into the link element.
-        writer.removeSelectionAttribute('linkHref');
+        this.removeLinkAttributesFromSelection(writer, this.getLinkAttributesAllowedOnText(model.schema));
       } else {
         // If selection has non-collapsed ranges, we change attribute on nodes inside those ranges
         // omitting nodes where the `linkHref` attribute is disallowed.
@@ -129,6 +129,19 @@ export class Typo3LinkCommand extends Core.Command {
         }
       }
     });
+  }
+
+  private getLinkAttributesAllowedOnText(schema: Schema): Array<string> {
+    const textAttributes = schema.getDefinition('$text').allowAttributes;
+    return textAttributes.filter(attribute => attribute.startsWith('link') || attribute === 'htmlA');
+  }
+
+  private removeLinkAttributesFromSelection(writer: Writer, linkAttributes: Array<string>): void {
+    writer.removeSelectionAttribute('linkHref');
+
+    for (const attribute of linkAttributes) {
+      writer.removeSelectionAttribute(attribute);
+    }
   }
 
   private composeLinkAttributes(linkAttr: Typo3LinkDict): Record<string, GHSViewAttributes|string> {
