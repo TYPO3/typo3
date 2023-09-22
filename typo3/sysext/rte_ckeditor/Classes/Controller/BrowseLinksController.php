@@ -212,6 +212,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                 }
             }
             if (isset($this->linkAttributeValues['class'])
+                && in_array($this->linkAttributeValues['class'], $classesAnchor['all'])
                 && isset($classesAnchor[$this->displayedLinkHandlerId])
                 && !in_array($this->linkAttributeValues['class'], $classesAnchor[$this->displayedLinkHandlerId], true)
             ) {
