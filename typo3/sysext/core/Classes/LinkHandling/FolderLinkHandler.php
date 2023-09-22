@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\LinkHandling;
 
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -46,10 +47,9 @@ class FolderLinkHandler implements LinkHandlingInterface
      */
     public function asString(array $parameters): string
     {
-        if (!isset($parameters['folder'])) {
+        if (!($parameters['folder'] ?? null) instanceof Folder) {
             return '';
         }
-
         // the magic with prepending slash if it is missing will not work on windows
         return $this->baseUrn . '?storage=' . $parameters['folder']->getStorage()->getUid() .
         '&identifier=' . urlencode('/' . ltrim($parameters['folder']->getIdentifier(), '/'));
