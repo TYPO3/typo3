@@ -536,10 +536,12 @@ services:
 
   # Content-Security-Policy Handlers
 
+  TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationRepository:
+    arguments:
+      $staticMutations: '@content.security.policies'
+
   TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider:
     public: true
-    arguments:
-      $mutations: '@content.security.policies'
 
   TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyRegistry:
     public: true
