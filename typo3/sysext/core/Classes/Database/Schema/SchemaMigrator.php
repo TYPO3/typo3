@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
-use TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 
 /**
@@ -56,7 +55,6 @@ class SchemaMigrator
      * @throws SchemaException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
-     * @throws UnexpectedSignalReturnValueTypeException
      * @throws StatementException
      */
     public function getUpdateSuggestions(array $statements, bool $remove = false): array
@@ -84,7 +82,6 @@ class SchemaMigrator
      * @throws SchemaException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
-     * @throws UnexpectedSignalReturnValueTypeException
      * @throws StatementException
      */
     public function getSchemaDiffs(array $statements): array
@@ -113,7 +110,6 @@ class SchemaMigrator
      * @throws DBALException
      * @throws SchemaException
      * @throws \InvalidArgumentException
-     * @throws UnexpectedSignalReturnValueTypeException
      * @throws StatementException
      * @throws \RuntimeException
      */
@@ -159,7 +155,6 @@ class SchemaMigrator
      * @throws SchemaException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
-     * @throws UnexpectedSignalReturnValueTypeException
      * @throws StatementException
      */
     public function install(array $statements, bool $createOnly = false): array
@@ -231,7 +226,6 @@ class SchemaMigrator
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @throws StatementException
-     * @throws UnexpectedSignalReturnValueTypeException
      */
     public function parseCreateTableStatements(array $statements): array
     {
