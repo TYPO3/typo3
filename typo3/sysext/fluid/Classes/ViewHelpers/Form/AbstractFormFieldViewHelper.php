@@ -352,17 +352,21 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      */
     protected function getMappingResultsForProperty(): Result
     {
-        if (!$this->isObjectAccessorMode()) {
+        if ($this->isObjectAccessorMode()) {
+            $formObjectName = $this->renderingContext->getViewHelperVariableContainer()->get(
+                FormViewHelper::class,
+                'formObjectName'
+            );
+            $propertyPath = $formObjectName . '.' . (string)$this->arguments['property'];
+        } elseif ($this->arguments['name'] ?? '') {
+            $propertyPath = rtrim(preg_replace('/(\\]\\[|\\[|\\])/', '.', $this->arguments['name']) ?? '', '.');
+        } else {
             return new Result();
         }
         /** @var ExtbaseRequestParameters $extbaseRequestParameters */
         $extbaseRequestParameters = $this->getRequest()->getAttribute('extbase');
         $originalRequestMappingResults = $extbaseRequestParameters->getOriginalRequestMappingResults();
-        $formObjectName = $this->renderingContext->getViewHelperVariableContainer()->get(
-            FormViewHelper::class,
-            'formObjectName'
-        );
-        return $originalRequestMappingResults->forProperty($formObjectName)->forProperty((string)$this->arguments['property']);
+        return $originalRequestMappingResults->forProperty($propertyPath);
     }
 
     /**
