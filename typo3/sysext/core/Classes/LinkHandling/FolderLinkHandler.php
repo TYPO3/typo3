@@ -46,6 +46,10 @@ class FolderLinkHandler implements LinkHandlingInterface
      */
     public function asString(array $parameters): string
     {
+        if (!isset($parameters['folder'])) {
+            return '';
+        }
+
         // the magic with prepending slash if it is missing will not work on windows
         return $this->baseUrn . '?storage=' . $parameters['folder']->getStorage()->getUid() .
         '&identifier=' . urlencode('/' . ltrim($parameters['folder']->getIdentifier(), '/'));
