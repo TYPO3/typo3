@@ -51,6 +51,19 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
+    public function enrichThrowsIfTcaTableIsNotDefinedInIncomingSet(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1696424993);
+        $GLOBALS['TCA'] = [
+            'aTable' => [],
+        ];
+        $this->subject->enrich([]);
+    }
+
+    /**
+     * @test
+     */
     public function enrichDoesNotAddColumnIfExists(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];

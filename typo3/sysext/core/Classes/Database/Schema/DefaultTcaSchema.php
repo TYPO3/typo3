@@ -49,10 +49,26 @@ class DefaultTcaSchema
      */
     public function enrich(array $tables): array
     {
+        // Sanity check to ensure all TCA tables are already defined in incoming table list.
+        // This prevents a misuse, calling code needs to ensure there is at least an empty
+        // table object (no columns) for all TCA tables.
+        $tableNamesFromTca = array_keys($GLOBALS['TCA']);
+        $existingTableNames = [];
+        foreach ($tables as $table) {
+            $existingTableNames[] = $table->getName();
+        }
+        foreach ($tableNamesFromTca as $tableName) {
+            if (!in_array($tableName, $existingTableNames, true)) {
+                throw new \RuntimeException(
+                    'Table name ' . $tableName . ' does not exist in incoming table list',
+                    1696424993
+                );
+            }
+        }
+
         $tables = $this->enrichSingleTableFieldsFromTcaCtrl($tables);
         $tables = $this->enrichSingleTableFieldsFromTcaColumns($tables);
-        $tables = $this->enrichMmTables($tables);
-        return $tables;
+        return $this->enrichMmTables($tables);
     }
 
     /**
@@ -61,11 +77,6 @@ class DefaultTcaSchema
     protected function enrichSingleTableFieldsFromTcaCtrl($tables)
     {
         foreach ($GLOBALS['TCA'] as $tableName => $tableDefinition) {
-            $isTableDefined = $this->isTableDefined($tables, $tableName);
-            if (!$isTableDefined) {
-                continue;
-            }
-
             // If the table is given in existing $tables list, add all fields to the first
             // position of that table - in case it is in there multiple times which happens
             // if extensions add single fields to tables that have been defined in
@@ -434,11 +445,6 @@ class DefaultTcaSchema
     protected function enrichSingleTableFieldsFromTcaColumns($tables)
     {
         foreach ($GLOBALS['TCA'] as $tableName => $tableDefinition) {
-            $isTableDefined = $this->isTableDefined($tables, $tableName);
-            if (!$isTableDefined) {
-                continue;
-            }
-
             // If the table is given in existing $tables list, add all fields to the first
             // position of that table - in case it is supplied multiple times which happens
             // if extensions add single fields to tables that have been defined in
@@ -723,12 +729,6 @@ class DefaultTcaSchema
     protected function enrichMmTables($tables): array
     {
         foreach ($GLOBALS['TCA'] as $tableName => $tableDefinition) {
-            // Consider this TCA table only if it is within the set of incoming tables. Important
-            // when the schema analyzer is used within extension manager for a sub set of tables.
-            $isTableDefined = $this->isTableDefined($tables, $tableName);
-            if (!$isTableDefined) {
-                continue;
-            }
             if (!is_array($tableDefinition['columns'] ?? false)) {
                 // TCA definition in general is broken if there are no specified columns. Skip to be sure here.
                 continue;
@@ -866,21 +866,6 @@ class DefaultTcaSchema
             }
         }
         return $tables;
-    }
-
-    /**
-     * True if table with given table name is defined within incoming $tables array
-     *
-     * @param Table[] $tables
-     */
-    protected function isTableDefined(array $tables, string $tableName): bool
-    {
-        foreach ($tables as $table) {
-            if ($table->getName() === $tableName) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

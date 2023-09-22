@@ -67,8 +67,7 @@ class SchemaMigrator
                 $connectionName,
                 $tables
             );
-            $updateSuggestions[$connectionName] =
-                $connectionMigrator->getUpdateSuggestions($remove);
+            $updateSuggestions[$connectionName] = $connectionMigrator->getUpdateSuggestions($remove);
         }
         return $updateSuggestions;
     }
@@ -87,9 +86,7 @@ class SchemaMigrator
     public function getSchemaDiffs(array $statements): array
     {
         $tables = $this->parseCreateTableStatements($statements);
-
         $schemaDiffs = [];
-
         foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
             $connectionMigrator = ConnectionMigrator::create(
                 $connectionName,
@@ -97,7 +94,6 @@ class SchemaMigrator
             );
             $schemaDiffs[$connectionName] = $connectionMigrator->getSchemaDiff();
         }
-
         return $schemaDiffs;
     }
 
@@ -227,7 +223,7 @@ class SchemaMigrator
      * @throws \RuntimeException
      * @throws StatementException
      */
-    public function parseCreateTableStatements(array $statements): array
+    protected function parseCreateTableStatements(array $statements): array
     {
         $tables = [];
         foreach ($statements as $statement) {
@@ -247,6 +243,23 @@ class SchemaMigrator
 
         // Flatten the array of arrays by one level
         $tables = array_merge(...$tables);
+
+        // Ensure we have a table definition for all tables within TCA, add missing ones
+        // as "empty" tables without columns. This is needed for DefaultTcaSchema: It goes
+        // through TCA to add columns automatically, but needs a table definition of all
+        // TCA tables. We're not doing this in DefaultTcaSchema to not introduce a dependency
+        // to the Parser class in there, which we have here so conveniently already.
+        $tableNamesFromTca = array_keys($GLOBALS['TCA']);
+        $tableNamesFromExtTables = [];
+        foreach ($tables as $table) {
+            $tableNamesFromExtTables[] = $table->getName();
+        }
+        $tableNamesFromExtTables = array_unique($tableNamesFromExtTables);
+        $missingTableNames = array_diff($tableNamesFromTca, $tableNamesFromExtTables);
+        foreach ($missingTableNames as $tableName) {
+            $createTableSql = 'CREATE TABLE ' . $tableName . '();';
+            $tables[] = $this->parser->parse($createTableSql)[0];
+        }
 
         // Add default TCA fields
         $tables = $this->defaultTcaSchema->enrich($tables);
