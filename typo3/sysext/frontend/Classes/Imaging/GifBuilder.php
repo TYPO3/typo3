@@ -660,14 +660,14 @@ class GifBuilder
             $imgInf = pathinfo($conf['file']);
             $imgExt = strtolower($imgInf['extension']);
             if (!in_array($imgExt, $this->gdlibExtensions, true)) {
-                $BBimage = $this->imageService->imageMagickConvert($conf['file'], $this->imageService->gifExtension);
+                $BBimage = $this->imageService->imageMagickConvert($conf['file'], 'png');
             } else {
                 $BBimage = $this->imageService->getImageDimensions($conf['file']);
             }
             $maskInf = pathinfo($conf['mask']);
             $maskExt = strtolower($maskInf['extension']);
             if (!in_array($maskExt, $this->gdlibExtensions, true)) {
-                $BBmask = $this->imageService->imageMagickConvert($conf['mask'], $this->imageService->gifExtension);
+                $BBmask = $this->imageService->imageMagickConvert($conf['mask'], 'png');
             } else {
                 $BBmask = $this->imageService->getImageDimensions($conf['mask']);
             }
@@ -675,9 +675,9 @@ class GifBuilder
                 $w = imagesx($im);
                 $h = imagesy($im);
                 $tmpStr = $this->imageService->randomName();
-                $theImage = $tmpStr . '_img.' . $this->imageService->gifExtension;
-                $theDest = $tmpStr . '_dest.' . $this->imageService->gifExtension;
-                $theMask = $tmpStr . '_mask.' . $this->imageService->gifExtension;
+                $theImage = $tmpStr . '_img.png';
+                $theDest = $tmpStr . '_dest.png';
+                $theMask = $tmpStr . '_mask.png';
                 // Prepare overlay image
                 $cpImg = $this->imageCreateFromFile($BBimage[3]);
                 $destImg = imagecreatetruecolor($w, $h);
@@ -743,7 +743,7 @@ class GifBuilder
     {
         if ($conf['file']) {
             if (!in_array($conf['BBOX'][2], $this->gdlibExtensions, true)) {
-                $conf['BBOX'] = $this->imageService->imageMagickConvert($conf['BBOX'][3], $this->imageService->gifExtension);
+                $conf['BBOX'] = $this->imageService->imageMagickConvert($conf['BBOX'][3], 'png');
                 $conf['file'] = $conf['BBOX'][3];
             }
             $cpImg = $this->imageCreateFromFile($conf['file']);
@@ -790,9 +790,9 @@ class GifBuilder
                 $w = imagesx($im);
                 $h = imagesy($im);
                 $tmpStr = $this->imageService->randomName();
-                $fileMenu = $tmpStr . '_menuNT.' . $this->imageService->gifExtension;
-                $fileColor = $tmpStr . '_colorNT.' . $this->imageService->gifExtension;
-                $fileMask = $tmpStr . '_maskNT.' . $this->imageService->gifExtension;
+                $fileMenu = $tmpStr . '_menuNT.png';
+                $fileColor = $tmpStr . '_colorNT.png';
+                $fileMask = $tmpStr . '_maskNT.png';
                 // Scalefactor
                 $sF = MathUtility::forceIntegerInRange(($conf['niceText.']['scaleFactor'] ?? 2), 2, 5);
                 $newW = (int)ceil($sF * imagesx($im));
@@ -926,9 +926,9 @@ class GifBuilder
             // Area around the blur used for cropping something
             $blurBorder = 3;
             $tmpStr = $this->imageService->randomName();
-            $fileMenu = $tmpStr . '_menu.' . $this->imageService->gifExtension;
-            $fileColor = $tmpStr . '_color.' . $this->imageService->gifExtension;
-            $fileMask = $tmpStr . '_mask.' . $this->imageService->gifExtension;
+            $fileMenu = $tmpStr . '_menu.png';
+            $fileColor = $tmpStr . '_color.png';
+            $fileMask = $tmpStr . '_mask.png';
             // BlurColor Image laves
             $blurColImg = imagecreatetruecolor($w, $h);
             $bcols = $this->convertColor($conf['color']);
@@ -1161,9 +1161,9 @@ class GifBuilder
     {
         if ($conf['width'] || $conf['height'] || $conf['params']) {
             $tmpStr = $this->imageService->randomName();
-            $theFile = $tmpStr . '.' . $this->imageService->gifExtension;
+            $theFile = $tmpStr . '.png';
             $this->ImageWrite($im, $theFile);
-            $theNewFile = $this->imageService->imageMagickConvert($theFile, $this->imageService->gifExtension, $conf['width'] ?? '', $conf['height'] ?? '', $conf['params'] ?? '');
+            $theNewFile = $this->imageService->imageMagickConvert($theFile, 'png', $conf['width'] ?? '', $conf['height'] ?? '', $conf['params'] ?? '');
             $tmpImg = $this->imageCreateFromFile($theNewFile[3]);
             if ($tmpImg) {
                 imagedestroy($im);
@@ -1342,7 +1342,7 @@ class GifBuilder
         $context->setAspect('fileProcessing', new FileProcessingAspect(false));
         try {
             if (!in_array($fileArray['ext'] ?? '', $this->imageService->getImageFileExt(), true)) {
-                $fileArray['ext'] = $this->imageService->gifExtension;
+                $fileArray['ext'] = 'png';
             }
             $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $cObj->start($this->data);
@@ -1416,12 +1416,10 @@ class GifBuilder
             case 'jpg':
             case 'jpeg':
                 return 'jpg';
-            case 'png':
-                return 'png';
             case 'gif':
                 return 'gif';
             default:
-                return $this->imageService->gifExtension;
+                return 'png';
         }
     }
 
@@ -2592,7 +2590,7 @@ class GifBuilder
     protected function applyImageMagickToPHPGif(\GdImage &$im, $command)
     {
         $tmpStr = $this->imageService->randomName();
-        $theFile = $tmpStr . '.' . $this->imageService->gifExtension;
+        $theFile = $tmpStr . '.png';
         $this->ImageWrite($im, $theFile);
         $this->imageService->imageMagickExec($theFile, $theFile, $command);
         $tmpImg = $this->imageCreateFromFile($theFile);
@@ -2719,11 +2717,7 @@ class GifBuilder
         }
         // Creates the basis for the error image
         $basePath = ExtensionManagementUtility::extPath('core') . 'Resources/Public/Images/';
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'])) {
-            $im = imagecreatefrompng($basePath . 'NotFound.png');
-        } else {
-            $im = imagecreatefromgif($basePath . 'NotFound.gif');
-        }
+        $im = imagecreatefrompng($basePath . 'NotFound.png');
         // Sets background color and print color.
         $white = imagecolorallocate($im, 255, 255, 255);
         $black = imagecolorallocate($im, 0, 0, 0);
@@ -2743,11 +2737,7 @@ class GifBuilder
             imagestring($im, $font, $x, 29, substr($textline3, -14), $black);
         }
         // Outputting the image stream and exit
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'])) {
-            imagepng($im, $filename);
-        } else {
-            imagegif($im, $filename);
-        }
+        imagepng($im, $filename);
     }
 
     /**

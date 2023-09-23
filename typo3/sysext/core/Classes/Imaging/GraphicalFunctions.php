@@ -39,13 +39,6 @@ class GraphicalFunctions
     public $addFrameSelection = true;
 
     /**
-     * This should be changed to 'png' if you want this class to read/make PNG-files instead!
-     *
-     * @var string
-     */
-    public $gifExtension = 'gif';
-
-    /**
      * defines the RGB colorspace to use
      *
      * @var string
@@ -195,17 +188,12 @@ class GraphicalFunctions
     public function __construct()
     {
         $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
-        if ($gfxConf['processor_colorspace'] && in_array($gfxConf['processor_colorspace'], $this->allowedColorSpaceNames, true)) {
-            $this->colorspace = $gfxConf['processor_colorspace'];
-        }
+        $this->colorspace = $this->getColorspaceFromConfiguration();
 
         $this->processorEnabled = (bool)$gfxConf['processor_enabled'];
         // Setting default JPG parameters:
         $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 85);
         $this->addFrameSelection = (bool)$gfxConf['processor_allowFrameSelection'];
-        if ($gfxConf['gdlib_png']) {
-            $this->gifExtension = 'png';
-        }
         $this->imageFileExt = GeneralUtility::trimExplode(',', $gfxConf['imagefile_ext']);
 
         // Boolean. This is necessary if using ImageMagick 5+.
@@ -737,7 +725,7 @@ class GraphicalFunctions
         if (!$this->processorEnabled) {
             return '';
         }
-        $theMask = $this->randomName() . '.' . $this->gifExtension;
+        $theMask = $this->randomName() . '.png';
         // +matte = no alpha layer in output
         $this->imageMagickExec($mask, $theMask, '-colorspace GRAY +matte');
 
@@ -772,12 +760,12 @@ class GraphicalFunctions
      * @param string $type The file extension, lowercase.
      * @param int $w The width of the output image.
      * @param int $h The height of the output image.
-     * @return string The filename, either "jpg" or "gif"/"png" (whatever $this->gifExtension is set to.)
+     * @return string The filename, either "jpg" or "png"
      */
     public function gif_or_jpg($type, $w, $h)
     {
         if ($type === 'ai' || $w * $h < $this->pixelLimitGif) {
-            return $this->gifExtension;
+            return 'png';
         }
         return 'jpg';
     }
@@ -796,5 +784,24 @@ class GraphicalFunctions
     public function getImageFileExt(): array
     {
         return $this->imageFileExt;
+    }
+
+    /**
+     * Returns the recommended colorspace for a processor or the one set
+     * in the configuration
+     */
+    protected function getColorspaceFromConfiguration(): string
+    {
+        $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
+
+        if ($gfxConf['processor'] === 'ImageMagick' && $gfxConf['processor_colorspace'] === '') {
+            return 'sRGB';
+        }
+
+        if ($gfxConf['processor'] === 'GraphicsMagick' && $gfxConf['processor_colorspace'] === '') {
+            return 'RGB';
+        }
+
+        return $gfxConf['processor_colorspace'];
     }
 }

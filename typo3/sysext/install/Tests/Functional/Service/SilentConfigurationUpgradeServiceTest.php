@@ -410,6 +410,49 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
+    public static function removesDefaultColorspaceSettingsDataProvider(): array
+    {
+        return [
+            'ImageMagick' => [
+                'ImageMagick',
+                'sRGB',
+            ],
+            'GraphicsMagick' => [
+                'GraphicsMagick',
+                'RGB',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider removesDefaultColorspaceSettingsDataProvider
+     */
+    public function removesDefaultColorspaceSettings(string $currentProcessor, string $currentColorspace)
+    {
+        $testConfig = [
+            'GFX' => [
+                'processor' => $currentProcessor,
+                'processor_colorspace' => $currentColorspace,
+            ],
+        ];
+
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->updateLocalConfiguration($testConfig);
+
+        $subject = $this->get(SilentConfigurationUpgradeService::class);
+        $exceptionCaught = false;
+        try {
+            $subject->execute();
+        } catch (ConfigurationChangedException) {
+            $exceptionCaught = true;
+        } finally {
+            self::assertTrue($exceptionCaught);
+            $settings = $configurationManager->getLocalConfiguration();
+            self::assertArrayNotHasKey('processor_colorspace', $settings['GFX']);
+        }
+    }
+
     /**
      * @test
      */

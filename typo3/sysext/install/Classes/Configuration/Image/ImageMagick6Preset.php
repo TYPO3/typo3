@@ -43,7 +43,6 @@ class ImageMagick6Preset extends AbstractImagePreset
         'GFX/processor_path' => '',
         'GFX/processor' => 'ImageMagick',
         'GFX/processor_effects' => true,
-        'GFX/processor_colorspace' => 'sRGB',
     ];
 
     /**

@@ -190,6 +190,8 @@ class SilentConfigurationUpgradeService
         'GFX/gif_compress',
         // #101950
         'GFX/processor_allowTemporaryMasksAsPng',
+        // #102020
+        'GFX/gdlib_png',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager)
@@ -210,6 +212,7 @@ class SilentConfigurationUpgradeService
         $this->transferHttpSettings();
         $this->disableImageMagickDetailSettingsIfImageMagickIsDisabled();
         $this->setImageMagickDetailSettings();
+        $this->removeDefaultColorspaceSettings();
         $this->migrateLockSslSetting();
         $this->migrateDatabaseConnectionSettings();
         $this->migrateDatabaseConnectionCharset();
@@ -1091,6 +1094,28 @@ class SilentConfigurationUpgradeService
             $this->throwConfigurationChangedException();
         } catch (MissingArrayPathException) {
             // no flag set, so nothing to be configured
+        }
+    }
+
+    /**
+     * Remove the colorspace setting if it's already the recommended default for a given processor
+     *
+     * @throws ConfigurationChangedException
+     */
+    protected function removeDefaultColorspaceSettings(): void
+    {
+        try {
+            $confManager = $this->configurationManager;
+            $currentProcessor = $confManager->getLocalConfigurationValueByPath('GFX/processor');
+            $currentColorspace = $confManager->getLocalConfigurationValueByPath('GFX/processor_colorspace');
+
+            if ($currentProcessor === 'ImageMagick' && $currentColorspace === 'sRGB' ||
+                $currentProcessor === 'GraphicsMagick' && $currentColorspace === 'RGB') {
+                $confManager->removeLocalConfigurationKeysByPath(['GFX/processor_colorspace']);
+                $this->throwConfigurationChangedException();
+            }
+        } catch (MissingArrayPathException) {
+            // no change inside the system/settings.php found, so nothing needs to be modified
         }
     }
 }

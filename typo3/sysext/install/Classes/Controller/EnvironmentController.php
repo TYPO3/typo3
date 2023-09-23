@@ -330,7 +330,6 @@ class EnvironmentController extends AbstractController
             'imageProcessingVersion' => $this->determineImageMagickVersion(),
             'imageProcessingEffects' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_effects'],
             'imageProcessingGdlibEnabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'],
-            'imageProcessingGdlibPng' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'],
             'imageProcessingFileFormats' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
         ]);
         return new JsonResponse([
@@ -731,7 +730,6 @@ class EnvironmentController extends AbstractController
     public function imageProcessingGdlibSimpleAction(): ResponseInterface
     {
         $gifBuilder = $this->initializeGifBuilder();
-        $gifOrPng = $gifBuilder->getGraphicalFunctions()->gifExtension;
         $image = imagecreatetruecolor(300, 225);
         $backgroundColor = imagecolorallocate($image, 0, 0, 0);
         imagefilledrectangle($image, 0, 0, 300, 225, $backgroundColor);
@@ -741,12 +739,12 @@ class EnvironmentController extends AbstractController
             'color' => 'olive',
         ];
         $gifBuilder->makeBox($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdSimple') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdSimple') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $result = [
             'fileExists' => true,
             'outputFile' => $outputFile,
-            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-simple.' . $gifOrPng,
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-simple.png',
             'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -758,9 +756,8 @@ class EnvironmentController extends AbstractController
     public function imageProcessingGdlibFromFileAction(): ResponseInterface
     {
         $gifBuilder = $this->initializeGifBuilder();
-        $gifOrPng = $gifBuilder->getGraphicalFunctions()->gifExtension;
         $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
-        $inputFile = $imageBasePath . 'TestInput/Test.' . $gifOrPng;
+        $inputFile = $imageBasePath . 'TestInput/Test.png';
         $image = $gifBuilder->imageCreateFromFile($inputFile);
         $workArea = [0, 0, 400, 300];
         $conf = [
@@ -768,12 +765,12 @@ class EnvironmentController extends AbstractController
             'color' => 'olive',
         ];
         $gifBuilder->makeBox($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdBox') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdBox') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $result = [
             'fileExists' => true,
             'outputFile' => $outputFile,
-            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-box.' . $gifOrPng,
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-box.png',
             'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -785,7 +782,6 @@ class EnvironmentController extends AbstractController
     public function imageProcessingGdlibRenderTextAction(): ResponseInterface
     {
         $gifBuilder = $this->initializeGifBuilder();
-        $gifOrPng = $gifBuilder->getGraphicalFunctions()->gifExtension;
         $image = imagecreatetruecolor(300, 225);
         $backgroundColor = imagecolorallocate($image, 128, 128, 150);
         imagefilledrectangle($image, 0, 0, 300, 225, $backgroundColor);
@@ -802,12 +798,12 @@ class EnvironmentController extends AbstractController
         ];
         $conf['BBOX'] = $gifBuilder->calcBBox($conf);
         $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdText') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $result = [
             'fileExists' => true,
             'outputFile' => $outputFile,
-            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-text.' . $gifOrPng,
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-text.png',
             'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -825,7 +821,6 @@ class EnvironmentController extends AbstractController
             ]);
         }
         $gifBuilder = $this->initializeGifBuilder();
-        $gifOrPng = $gifBuilder->getGraphicalFunctions()->gifExtension;
         $image = imagecreatetruecolor(300, 225);
         $backgroundColor = imagecolorallocate($image, 128, 128, 150);
         imagefilledrectangle($image, 0, 0, 300, 225, $backgroundColor);
@@ -842,17 +837,17 @@ class EnvironmentController extends AbstractController
         ];
         $conf['BBOX'] = $gifBuilder->calcBBox($conf);
         $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdText') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $conf['offset'] = '30,120';
         $conf['niceText'] = 1;
         $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $result = [
             'fileExists' => true,
             'outputFile' => $outputFile,
-            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-niceText.' . $gifOrPng,
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-niceText.png',
             'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -870,7 +865,6 @@ class EnvironmentController extends AbstractController
             ]);
         }
         $gifBuilder = $this->initializeGifBuilder();
-        $gifOrPng = $gifBuilder->getGraphicalFunctions()->gifExtension;
         $image = imagecreatetruecolor(300, 225);
         $backgroundColor = imagecolorallocate($image, 128, 128, 150);
         imagefilledrectangle($image, 0, 0, 300, 225, $backgroundColor);
@@ -887,12 +881,12 @@ class EnvironmentController extends AbstractController
         ];
         $conf['BBOX'] = $gifBuilder->calcBBox($conf);
         $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdText') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $conf['offset'] = '30,120';
         $conf['niceText'] = 1;
         $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $conf['offset'] = '30,160';
         $conf['niceText'] = 1;
@@ -905,12 +899,12 @@ class EnvironmentController extends AbstractController
         // Warning: Re-uses $image from above!
         $gifBuilder->makeShadow($image, $conf['shadow.'], $workArea, $conf);
         $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.' . $gifOrPng;
+        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $result = [
             'fileExists' => true,
             'outputFile' => $outputFile,
-            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-shadow.' . $gifOrPng,
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-shadow.png',
             'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];
         return $this->getImageTestResponse($result);
