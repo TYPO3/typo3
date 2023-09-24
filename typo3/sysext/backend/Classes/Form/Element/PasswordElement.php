@@ -41,11 +41,6 @@ class PasswordElement extends AbstractFormElement
         ],
     ];
 
-    public function __construct(
-        private readonly Features $features,
-    ) {
-    }
-
     /**
      * This will render a single-line password form field, possibly with various control/validation features
      *
@@ -68,12 +63,6 @@ class PasswordElement extends AbstractFormElement
         $renderedLabel = $this->renderLabel($fieldId);
 
         $passwordPolicy = $config['passwordPolicy'] ?? null;
-
-        // Ignore password policy for frontend users, if "security.usePasswordPolicyForFrontendUsers" is disabled
-        if ($table === 'fe_users' && !$this->features->isFeatureEnabled('security.usePasswordPolicyForFrontendUsers')) {
-            $passwordPolicy = null;
-        }
-
         if ($passwordPolicy) {
             // We always use PasswordPolicyAction::NEW_USER_PASSWORD here, since the password is not set by the user,
             // but either by an admin or an editor

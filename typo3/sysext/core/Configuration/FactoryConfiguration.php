@@ -23,8 +23,5 @@ return [
     'SYS' => [
         'sitename' => 'New TYPO3 site',
         'UTF8filesystem' => true,
-        'features' => [
-            'security.usePasswordPolicyForFrontendUsers' => true,
-        ],
     ],
 ];

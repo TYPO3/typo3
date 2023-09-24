@@ -192,6 +192,8 @@ class SilentConfigurationUpgradeService
         'GFX/processor_allowTemporaryMasksAsPng',
         // #102020
         'GFX/gdlib_png',
+        // #102023
+        'SYS/features/security.usePasswordPolicyForFrontendUsers',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager)

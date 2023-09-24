@@ -60,6 +60,8 @@ class Features
      * returns "enabled" for future versions.
      */
     protected array $alwaysActiveFeatures = [
+        // Enabled since v13.0 at any time.
+        'security.usePasswordPolicyForFrontendUsers',
         // Enabled since v12.0 at any time.
         'subrequestPageErrors',
         'yamlImportsFollowDeclarationOrder',

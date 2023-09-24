@@ -28,7 +28,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException;
@@ -1893,13 +1892,6 @@ class DataHandler implements LoggerAwareInterface
             // We got no salted password instance, incoming value must be a new plaintext password
             // Validate new password against password policy for field
             $passwordPolicy = $tcaFieldConf['passwordPolicy'] ?? '';
-
-            // Ignore password policy for frontend users, if "security.usePasswordPolicyForFrontendUsers" is disabled
-            $features = GeneralUtility::makeInstance(Features::class);
-            if ($table === 'fe_users' && !$features->isFeatureEnabled('security.usePasswordPolicyForFrontendUsers')) {
-                $passwordPolicy = '';
-            }
-
             $passwordPolicyValidator = GeneralUtility::makeInstance(
                 PasswordPolicyValidator::class,
                 PasswordPolicyAction::NEW_USER_PASSWORD,

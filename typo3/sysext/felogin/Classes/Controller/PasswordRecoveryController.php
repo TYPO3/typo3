@@ -136,14 +136,9 @@ class PasswordRecoveryController extends ActionController
             return $response;
         }
 
-        $passwordRequirements = null;
-        if ($this->features->isFeatureEnabled('security.usePasswordPolicyForFrontendUsers')) {
-            $passwordRequirements = $this->getPasswordPolicyValidator()->getRequirements();
-        }
-
         $this->view->assignMultiple([
             'hash' => $hash,
-            'passwordRequirements' => $passwordRequirements,
+            'passwordRequirements' => $this->getPasswordPolicyValidator()->getRequirements(),
         ]);
 
         return $this->htmlResponse();
@@ -246,31 +241,29 @@ class PasswordRecoveryController extends ActionController
         $hash = $this->request->getArgument('hash');
         $userData = $this->userRepository->findOneByForgotPasswordHash(GeneralUtility::hmac($hash));
 
-        if ($this->features->isFeatureEnabled('security.usePasswordPolicyForFrontendUsers')) {
-            // Validate against password policy
-            $passwordPolicyValidator = $this->getPasswordPolicyValidator();
-            $contextData = new ContextData(
-                loginMode: 'FE',
-                currentPasswordHash: $userData['password']
-            );
-            $contextData->setData('currentUsername', $userData['username']);
-            $contextData->setData('currentFirstname', $userData['first_name']);
-            $contextData->setData('currentLastname', $userData['last_name']);
-            $event = $this->eventDispatcher->dispatch(
-                new EnrichPasswordValidationContextDataEvent(
-                    $contextData,
-                    $userData,
-                    self::class
-                )
-            );
-            $contextData = $event->getContextData();
+        // Validate against password policy
+        $passwordPolicyValidator = $this->getPasswordPolicyValidator();
+        $contextData = new ContextData(
+            loginMode: 'FE',
+            currentPasswordHash: $userData['password']
+        );
+        $contextData->setData('currentUsername', $userData['username']);
+        $contextData->setData('currentFirstname', $userData['first_name']);
+        $contextData->setData('currentLastname', $userData['last_name']);
+        $event = $this->eventDispatcher->dispatch(
+            new EnrichPasswordValidationContextDataEvent(
+                $contextData,
+                $userData,
+                self::class
+            )
+        );
+        $contextData = $event->getContextData();
 
-            if (!$passwordPolicyValidator->isValidPassword($newPass, $contextData)) {
-                foreach ($passwordPolicyValidator->getValidationErrors() as $validationError) {
-                    $validationResult = new Result();
-                    $validationResult->addError(new Error($validationError, 1667647475));
-                    $originalResult->merge($validationResult);
-                }
+        if (!$passwordPolicyValidator->isValidPassword($newPass, $contextData)) {
+            foreach ($passwordPolicyValidator->getValidationErrors() as $validationError) {
+                $validationResult = new Result();
+                $validationResult->addError(new Error($validationError, 1667647475));
+                $originalResult->merge($validationResult);
             }
         }
 

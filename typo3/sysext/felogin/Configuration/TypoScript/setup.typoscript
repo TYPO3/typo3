@@ -57,8 +57,5 @@ plugin.tx_felogin_login {
     exposeNonexistentUserInForgotPasswordDialog = {$styles.content.loginform.exposeNonexistentUserInForgotPasswordDialog}
     forgotLinkHashValidTime = {$styles.content.loginform.forgotLinkHashValidTime}
     domains = {$styles.content.loginform.domains}
-
-    # Needed for the message hint in the default template
-    newPasswordMinLength = {$styles.content.loginform.newPasswordMinLength}
   }
 }
