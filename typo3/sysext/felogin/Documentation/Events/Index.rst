@@ -44,8 +44,8 @@ PasswordChangeEvent
 ===================
 
 Event that contains information about the password which was set,
-and is about to be stored in the database. Allows to mark the password
-as invalid. :ref:`More details <t3coreapi:PasswordChangeEvent>`
+and is about to be stored in the database.
+:ref:`More details <t3coreapi:PasswordChangeEvent>`
 
 SendRecoveryEmailEvent
 ======================
