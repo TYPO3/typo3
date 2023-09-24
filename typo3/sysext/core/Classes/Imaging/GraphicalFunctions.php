@@ -2313,13 +2313,55 @@ class GraphicalFunctions
     }
 
     /**
-     * Get numbers for scaling the image based on input
+     * Get numbers for scaling the image based on input.
      *
+     * Notes by Benni in 2023 in order to understand this magic:
+     * ----------------------------
+     * Relevant if an image should be
+     * - scaled
+     * - cropped
+     * - keep the aspect ratio while scaling?
+     * - use a target width or height
+     * - or rather have a minimum or maximum width and/or height
+     *
+     * This method does a lot of magic:
+     * - $info contains [0] = width and [1] the width of an original image for example.
+     * - $w and $h are the width and height that are originally required the image to be like
+     * when scaled. They could contain a "c" for cropping information or "m" for "Ensure that even though $w and $h are given, one containing an $m that we keep the aspect ratio."
+     * "m" really allows to say $w="50c" that this might in a result with [0]=100 because $w would follow $h in order to keep aspect ratio.
+     * Obviously this only works properly if both m and c are working
+     * - $options contain "maxW" (never go beyond this width, even if scaling larger as this), same with "maxH" and "minW" and "minH"
+     *
+     * The return values are a bit tricky to understand, so I added a few tests:
+     * - AFAICS "0" and "1" are always used as "these are the target width / height" which my image
+     *   should be scaled to, or cropped down to.
+     *   Notes: If you hand in $info[0] and $info[1] a "0", you will get "0" as return value back!
+     *          but
+     * - "crs" if the image should be cropped (which is indicated by one of $w or $h contain the "c" at the end)
+     * - "cropH" and "cropV" is also set when one of the incoming $w or $h contains a "c".
+     *   Notes: "cropH" and "cropV" are rather cryptic, and can't really be used outside of this context.
+     *          They are then "magically calculated" outside of this function
+     *          $offsetX = (int)(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
+     *          $offsetY = (int)(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
+     *
+     * - "origW" / "origH" seems to be the values that were handed in as $w and $h, but they might be altered
+     *   f.e. "origH" is set when $w is given and $options["maxH"]
+     * - When such a rearranging calculation was made ("maxH" reduces the original $w due to constraints),
+     *   then the return value "max" is set.
+     * - When using the "c" argument, origH and origW seem to contain the values that you would expect when NOT doing a crop scenario
+     *   whereas [0] and [1] contain the target width and height that could be larger than originally requested.
+     *
+     * @todo in this method:
+     * - use real values for "cropH" and "cropV"
+     * - clean up "max" value to use a better naming, same as "crs"
+     * - we might just replace "0" and "1" with "width" and "height" for the sake of having it in place for the future.
+     *
+     * ----------------------------
      * @param array $info Current image information: Width, Height etc.
      * @param string $w "required" width
      * @param string $h "required" height
-     * @param array $options Options: Keys are like "maxW", "maxH", "minW", "minH
-     * @return array
+     * @param array $options Options: Keys are like "maxW", "maxH", "minW", "minH"
+     * @return array keys "0" and "1" explain the target width and height that should be adopted, but can be null
      * @internal
      * @see imageMagickConvert()
      */
