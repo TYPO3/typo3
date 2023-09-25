@@ -71,7 +71,7 @@ Upgrade
 
 If you upgrade your TYPO3 CMS installation from one major version to another
 (for example 10.4 to 11.5), it is advised to run the
-:ref:`Upgrade Wizard <t3install:postupgradetasks>`.
+:ref:`Upgrade Wizard <t3upgrade:postupgradetasks>`.
 It guides you through the necessary steps to upgrade your database records.
 
 Open the tool at :guilabel:`Admin Tools > Upgrade > Upgrade Wizard` and run all
