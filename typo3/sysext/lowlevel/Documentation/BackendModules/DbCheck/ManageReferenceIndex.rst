@@ -10,7 +10,7 @@ Users with administrator rights can find this module at
 :guilabel:`System > DB Check > Manage Reference Index`.
 
 In TYPO3 installations with a small number of records this module can be used
-to :ref:`check or update the reference index <t3install:update_reference_index>`.
+to :ref:`check or update the reference index <t3upgrade:update_reference_index>`.
 
 On TYPO3 installations with a large number of records and many relations between
 those the maximum run time of PHP will be reached and the scripts therefore
