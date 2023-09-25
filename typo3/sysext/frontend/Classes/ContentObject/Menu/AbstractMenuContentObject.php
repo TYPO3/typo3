@@ -830,7 +830,7 @@ abstract class AbstractMenuContentObject
             $value_rec = $this->sys_page->getPage($specialValue);
             $kfieldSrc = ($this->conf['special.']['keywordsField.']['sourceField'] ?? false) ? $this->conf['special.']['keywordsField.']['sourceField'] : 'keywords';
             // keywords.
-            $kw = trim($this->parent_cObj->keywords($value_rec[$kfieldSrc]));
+            $kw = trim($this->parent_cObj->keywords($value_rec[$kfieldSrc] ?? ''));
         }
         // *'auto', 'manual', 'tstamp'
         $mode = $this->conf['special.']['mode'] ?? '';
