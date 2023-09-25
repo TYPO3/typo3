@@ -128,6 +128,9 @@ class DateTimeConverter extends AbstractTypeConverter
             $date = $targetType::createFromFormat($dateFormat, $dateAsString);
         }
         if ($date === false) {
+            $date = $targetType::createFromFormat( str_replace( ["\\",":","TH","H","i","s","P"], "", $dateFormat ) , $dateAsString);
+		}
+        if ($date === false) {
             return new \TYPO3\CMS\Extbase\Validation\Error('The date "%s" was not recognized (for format "%s").', 1307719788, [$dateAsString, $dateFormat]);
         }
         if (is_array($source)) {
