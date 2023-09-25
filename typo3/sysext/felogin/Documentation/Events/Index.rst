@@ -8,6 +8,12 @@ PSR-14 events
 
 The following PSR-14 events are available to extend the extension:
 
+AfterUserLoggedInEvent
+======================
+
+Trigger any kind of action when a frontend user has been successfully logged in.
+:ref:`More details <t3coreapi:AfterUserLoggedInEvent>`
+
 BeforeRedirectEvent
 ===================
 
